@@ -185,7 +185,7 @@ export const makeTxConfigFromTxResponse = (
     network,
     assets
   })!;
-  const ercType = guessIfErc20Tx(decodedTx.data);
+  const ercType = guessERC20Type(decodedTx.data);
   const { to, receiverAddress, amount, asset } = deriveTxFields(
     ercType,
     decodedTx.data as ITxData,
@@ -321,8 +321,8 @@ export enum ERCType {
 }
 
 // We can't interpret every transaction's data field so this interprets only if a data field is a simple erc20 transfer.
-//Therefore, we're guessing if it's a simple erc20 transfer using the data field.
-export const guessIfErc20Tx = (data: string): ERCType => {
+// Therefore, we're guessing if it's a simple erc20 transfer using the data field.
+export const guessERC20Type = (data: string): ERCType => {
   if (isTransactionDataEmpty(data)) return ERCType.NONE;
   const { _to, _value } = decodeTransfer(data);
   // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'

@@ -34,14 +34,9 @@ import {
   TTicker,
   TxQueryTypes
 } from '@types';
-import {
-  deriveTxRecipientsAndAmount,
-  generateAssetUUID,
-  guessIfErc20Tx,
-  isSameAddress
-} from '@utils';
+import { deriveTxRecipientsAndAmount, generateAssetUUID, isSameAddress } from '@utils';
+import { ERCType, guessERC20Type } from '@utils/transaction';
 import { isEmpty } from '@vendor';
-import { ERCType } from '@utils/transaction';
 
 import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
@@ -154,7 +149,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   };
 
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
-  const ercType = guessIfErc20Tx(i.data);
+  const ercType = guessERC20Type(i.data);
   const isERC20 = ercType !== ERCType.NONE;
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
