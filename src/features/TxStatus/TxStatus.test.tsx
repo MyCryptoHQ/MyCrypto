@@ -10,7 +10,8 @@ import { fAccount, fNetwork, fAssets, fNetworks, fSettings } from '@fixtures';
 import TxStatus from './TxStatus';
 
 const TX_HASH = '0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a';
-const INVALID_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
+const NON_EXISTANT_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
+const INVALID_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc';
 
 jest.mock('ethers/providers', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
@@ -54,12 +55,27 @@ describe('TxStatus', () => {
     expect(getByText(selector)).toBeInTheDocument();
   });
 
-  test('Can render error state', async () => {
+  test('Can render error state for invalid hash', async () => {
     const { getByText, container } = renderComponent('/tx-status?network=Ropsten');
     const selector = translateRaw('TX_STATUS');
     expect(getByText(selector)).toBeInTheDocument();
     fireEvent.change(container.querySelector('input[name="txhash"]')!, {
       target: { value: INVALID_TX_HASH }
+    });
+    fireEvent.click(container.querySelector('button')!);
+    await waitFor(() =>
+      expect(
+        getByText('No transaction found with that hash.', { exact: false })
+      ).toBeInTheDocument()
+    );
+  });
+
+  test('Can render error state for non existant hash', async () => {
+    const { getByText, container } = renderComponent('/tx-status?network=Ropsten');
+    const selector = translateRaw('TX_STATUS');
+    expect(getByText(selector)).toBeInTheDocument();
+    fireEvent.change(container.querySelector('input[name="txhash"]')!, {
+      target: { value: NON_EXISTANT_TX_HASH }
     });
     fireEvent.click(container.querySelector('button')!);
     await waitFor(() =>
