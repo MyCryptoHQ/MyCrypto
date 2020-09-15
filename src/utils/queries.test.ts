@@ -9,7 +9,7 @@ import {
 describe('constructCancelTxQuery', () => {
   it('correctly constructs a cancel tx query for an erc20 transfer', () => {
     const expectedCancelTxQuery =
-      'type=cancel&from=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&to=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&gasLimit=0x5208&nonce=0x7&chainId=3&value=0x0&data=0x0&gasPrice=0x2e90edd000';
+      'type=cancel&from=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&to=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&gasLimit=0x5208&nonce=0x7&chainId=3&value=0x0&data=0x&gasPrice=0x2e90edd000';
     const testFastGasPrice = 200;
     const txQuery = constructCancelTxQuery(fERC20NonWeb3TxConfig, testFastGasPrice);
     expect(txQuery).toEqual(expectedCancelTxQuery);
@@ -17,7 +17,7 @@ describe('constructCancelTxQuery', () => {
 
   it('correctly constructs a cancel tx query for an eth tx', () => {
     const expectedCancelTxQuery =
-      'type=cancel&from=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&to=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&gasLimit=0x5208&nonce=0x6&chainId=3&value=0x0&data=0x0&gasPrice=0x2e90edd000';
+      'type=cancel&from=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&to=0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017&gasLimit=0x5208&nonce=0x6&chainId=3&value=0x0&data=0x&gasPrice=0x2e90edd000';
     const testFastGasPrice = 200;
     const txQuery = constructCancelTxQuery(fETHNonWeb3TxConfig, testFastGasPrice);
     expect(txQuery).toEqual(expectedCancelTxQuery);
