@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { IAccount as IIAccount, ITxObject, ISignedTx, IPendingTxReceipt } from '@types';
+import { InlineMessage } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { makeTransaction } from '@services/EthService';
-import { WalletFactory, HardwareWallet } from '@services/WalletService';
-import { InlineMessage } from '@components';
+import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
+import { IAccount as IIAccount, IPendingTxReceipt, ISignedTx, ITxObject } from '@types';
 import { useInterval } from '@utils';
 
 import './Hardware.scss';

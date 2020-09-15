@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import { noOp } from '@utils';
 
+import { IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 import MembershipSelector, {
   MembershipSelectorItem,
   MembershipSelectorProps
 } from './MembershipSelector';
-import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
 
 export default { title: 'Selectors/MembershipSelector' };
 

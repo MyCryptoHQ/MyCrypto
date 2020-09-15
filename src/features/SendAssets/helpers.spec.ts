@@ -1,22 +1,22 @@
 import {
-  fAssets,
-  fNetwork,
   fAccounts,
+  fAdvancedERC20TxSendFormikFields,
+  fAdvancedETHTxSendFormikFields,
+  fAssets,
   fERC20NonWeb3TxConfig,
+  fERC20TxSendFormikFields,
   fETHNonWeb3TxConfig,
   fETHTxSendFormikFields,
-  fERC20TxSendFormikFields,
-  fAdvancedETHTxSendFormikFields,
-  fAdvancedERC20TxSendFormikFields
+  fNetwork
 } from '@fixtures';
 import { translateRaw } from '@translations';
-import { TTicker, TAddress, TxQueryTypes } from '@types';
+import { TAddress, TTicker, TxQueryTypes } from '@types';
 
 import {
-  parseQueryParams,
-  parseTransactionQueryParams,
   generateGenericErc20,
   isERC20Asset,
+  parseQueryParams,
+  parseTransactionQueryParams,
   processFormDataToTx,
   processFormForEstimateGas
 } from './helpers';

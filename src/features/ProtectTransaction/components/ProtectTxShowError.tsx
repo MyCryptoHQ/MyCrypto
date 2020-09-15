@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
+
 import styled from 'styled-components';
+
+import { LinkOut } from '@components';
 import { socialMediaLinks, SUPPORT_EMAIL } from '@config';
 import { COLORS, FONT_SIZE } from '@theme';
 import { Trans } from '@translations';
-import { LinkOut } from '@components';
+
 import { ProtectTxError } from '../types';
 
 const ProtectedTransactionErrorWrapper = styled.div`

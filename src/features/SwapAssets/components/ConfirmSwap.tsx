@@ -1,14 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import translate from '@translations';
-
-import { StoreAccount, TAddress } from '@types';
-import { COLORS } from '@theme';
-import { Typography, Currency } from '@components';
+import { Currency, Typography } from '@components';
 import { FromToAccount, SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { useContacts } from '@services';
+import { COLORS } from '@theme';
+import translate from '@translations';
+import { StoreAccount, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 
 import { IAssetPair } from '../types';

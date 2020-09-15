@@ -1,12 +1,12 @@
-import { useState, useReducer, useEffect } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-import { TAddress, ITxObject, ITxHash } from '@types';
-import { useUnmount } from '@vendor';
+import { ITxHash, ITxObject, TAddress } from '@types';
 import { isSameAddress } from '@utils';
+import { useUnmount } from '@vendor';
 
-import { default as WalletConnectService } from './WalletConnectService';
 import { initialState, WcReducer } from './reducer';
-import { IWalletConnectService, IUseWalletConnect } from './types';
+import { IUseWalletConnect, IWalletConnectService } from './types';
+import { default as WalletConnectService } from './WalletConnectService';
 
 const isExpectedAddress = (received: TAddress, target: TAddress): boolean =>
   isSameAddress(received, target);

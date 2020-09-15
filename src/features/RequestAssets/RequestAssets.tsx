@@ -1,29 +1,29 @@
 import React, { useContext, useState } from 'react';
-import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
+
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import questionToolTip from '@assets/images/icn-question.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
+import { AccountSelector, AssetSelector, ContentPanel, QRCode } from '@components';
+import { ROUTE_PATHS } from '@config';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from '@services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
+import translate, { translateRaw } from '@translations';
+import { IAccount as IIAccount } from '@types';
 import {
-  isValidAmount,
-  sanitizeDecimalSeparator,
-  noOp,
   filterDropdownAssets,
   filterValidAssets,
+  isValidAmount,
+  noOp,
+  sanitizeDecimalSeparator,
   sortByTicker
 } from '@utils';
-import { IAccount as IIAccount } from '@types';
-import { ROUTE_PATHS } from '@config';
-import translate, { translateRaw } from '@translations';
-
-import questionToolTip from '@assets/images/icn-question.svg';
-import receiveIcon from '@assets/images/icn-receive.svg';
 
 const isAssetToken = (tokenType: string) => {
   return tokenType !== 'base';

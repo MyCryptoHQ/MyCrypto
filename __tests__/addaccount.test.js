@@ -1,18 +1,19 @@
 import { getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
-import {
-  PAGES,
-  FIXTURE_MYC_STORAGE_KEY,
-  FIXTURE_VIEW_ONLY_ADDRESS,
-  FIXTURE_PRIVATE_KEY_ADDRESS,
-  FIXTURE_VIEW_ONLY_TOKENS,
-  FIXTURE_PRIVATE_KEY_TOKENS,
-  FIXTURES_CONST
-} from './fixtures';
-import { findByTKey } from './translation-utils';
-import { clearLocalStorage } from './localstorage-utils';
+
 import AddAccountPage from './addaccount-page.po';
 import DashboardPage from './dashboard-page.po';
+import {
+  FIXTURE_MYC_STORAGE_KEY,
+  FIXTURE_PRIVATE_KEY_ADDRESS,
+  FIXTURE_PRIVATE_KEY_TOKENS,
+  FIXTURE_VIEW_ONLY_ADDRESS,
+  FIXTURE_VIEW_ONLY_TOKENS,
+  FIXTURES_CONST,
+  PAGES
+} from './fixtures';
+import { clearLocalStorage } from './localstorage-utils';
+import { findByTKey } from './translation-utils';
 
 const addAccountPage = new AddAccountPage();
 const dashboardPage = new DashboardPage();

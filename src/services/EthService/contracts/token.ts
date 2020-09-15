@@ -1,6 +1,6 @@
 import { bufferToHex, toBuffer } from 'ethereumjs-util';
 
-import { TokenValue, Address } from '../utils';
+import { Address, TokenValue } from '../utils';
 import { ERC20 } from './erc20';
 
 export const encodeTransfer = (to: Address, value: TokenValue) =>

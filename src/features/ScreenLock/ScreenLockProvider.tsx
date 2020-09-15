@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import pipe from 'ramda/src/pipe';
 
-import { translateRaw } from '@translations';
+import pipe from 'ramda/src/pipe';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ROUTE_PATHS } from '@config';
-import { withContext, hashPassword, encrypt, decrypt } from '@utils';
-import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
+import { DataContext, IDataContext, ISettingsContext, SettingsContext } from '@services/Store';
+import { translateRaw } from '@translations';
+import { decrypt, encrypt, hashPassword, withContext } from '@utils';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 

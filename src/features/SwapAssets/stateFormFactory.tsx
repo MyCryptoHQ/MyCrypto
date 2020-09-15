@@ -1,25 +1,25 @@
 import { formatEther } from 'ethers/utils';
 
-import translate from '@translations';
-import {
-  TUseStateReducerFactory,
-  formatErrorEmailMarkdown,
-  convertToBN,
-  multiplyBNFloats,
-  divideBNFloats,
-  withCommission,
-  calculateMarkup,
-  trimBN,
-  generateAssetUUID
-} from '@utils';
-import { DexService, DexAsset, getNetworkById, useNetworks } from '@services';
-import { StoreAccount, ISwapAsset } from '@types';
 import {
   DEFAULT_NETWORK,
-  MYC_DEXAG_COMMISSION_RATE,
   DEFAULT_NETWORK_CHAINID,
-  DEFAULT_NETWORK_TICKER
+  DEFAULT_NETWORK_TICKER,
+  MYC_DEXAG_COMMISSION_RATE
 } from '@config';
+import { DexAsset, DexService, getNetworkById, useNetworks } from '@services';
+import translate from '@translations';
+import { ISwapAsset, StoreAccount } from '@types';
+import {
+  calculateMarkup,
+  convertToBN,
+  divideBNFloats,
+  formatErrorEmailMarkdown,
+  generateAssetUUID,
+  multiplyBNFloats,
+  trimBN,
+  TUseStateReducerFactory,
+  withCommission
+} from '@utils';
 
 import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 

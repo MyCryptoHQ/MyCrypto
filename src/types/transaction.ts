@@ -1,21 +1,21 @@
-import { Brand, Overwrite } from 'utility-types';
 import BN from 'bn.js';
 import { BigNumber } from 'ethers/utils';
+import { Brand, Overwrite } from 'utility-types';
 
-import { Wei, Address } from '@services/EthService';
+import { Address, Wei } from '@services/EthService';
 
+import { TAddress } from './address';
 import { Asset } from './asset';
 import {
-  ITxType,
+  ITxData,
+  ITxFromAddress,
+  ITxGasPrice,
+  ITxNonce,
   ITxStatus,
   ITxToAddress,
-  ITxValue,
-  ITxGasPrice,
-  ITxData,
-  ITxNonce,
-  ITxFromAddress
+  ITxType,
+  ITxValue
 } from './transactionFlow';
-import { TAddress } from './address';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {

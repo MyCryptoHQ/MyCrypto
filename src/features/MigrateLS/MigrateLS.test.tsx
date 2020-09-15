@@ -1,7 +1,8 @@
 import React from 'react';
-import { MemoryRouter as Router } from 'react-router-dom';
 
-import { simpleRender, screen } from 'test-utils';
+import { MemoryRouter as Router } from 'react-router-dom';
+import { screen, simpleRender } from 'test-utils';
+
 import { default as MigrateLS } from './MigrateLS';
 
 jest.mock('react-router-dom', () => ({

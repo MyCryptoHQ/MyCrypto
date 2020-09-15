@@ -1,9 +1,9 @@
 import { bigNumberify, parseEther } from 'ethers/utils';
 
-import { ITxHistoryApiResponse } from '@services/ApiService/History';
-import { ITxReceipt, Network, Asset, StoreAccount } from '@types';
-import { getAssetByContractAndNetwork, getBaseAssetByNetwork, Wei, fromWei } from '@services';
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { fromWei, getAssetByContractAndNetwork, getBaseAssetByNetwork, Wei } from '@services';
+import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { Asset, ITxReceipt, Network, StoreAccount } from '@types';
 import { isSameAddress, isVoid } from '@utils';
 
 export const makeTxReceipt = (

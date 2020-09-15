@@ -1,10 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
+import { TCurrencySymbol, TTicker, TUuid } from '@types';
 import { isFiatTicker } from '@utils';
-import { TTicker, TCurrencySymbol, TUuid } from '@types';
-import { default as Typography } from './Typography';
+
 import AssetIcon from './AssetIcon';
+import { default as Typography } from './Typography';
 
 const SContainer = styled('div')`
   display: inline-flex;

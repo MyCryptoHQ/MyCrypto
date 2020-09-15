@@ -1,5 +1,6 @@
-import { NansenReportType, getProtectTxFee, getNansenReportType, getLastTx, getBalance } from '..';
-import { GetTxResponse, GetTokenTxResponse, GetBalanceResponse } from '@services';
+import { GetBalanceResponse, GetTokenTxResponse, GetTxResponse } from '@services';
+
+import { getBalance, getLastTx, getNansenReportType, getProtectTxFee, NansenReportType } from '..';
 
 describe('getProtectTransactionFee', () => {
   const rate = 250.5;

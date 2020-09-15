@@ -1,14 +1,15 @@
 import React from 'react';
+
 import { simpleRender, waitFor } from 'test-utils';
 
-import { fTxConfig, fNetwork } from '@fixtures';
-import { WalletId } from '@types';
-import { DataContext } from '@services';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
+import { fNetwork, fTxConfig } from '@fixtures';
+import { DataContext } from '@services';
+import { WalletId } from '@types';
 
-import { getHeader } from './helper';
 // eslint-disable-next-line jest/no-mocks-import
 import { mockWindow } from '../__mocks__/web3';
+import { getHeader } from './helper';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
   txConfig: { ...fTxConfig, senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.WEB3 } },

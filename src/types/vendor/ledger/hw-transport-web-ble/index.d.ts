@@ -1,7 +1,7 @@
 declare module '@ledgerhq/hw-transport-web-ble' {
+  import { DeviceModel } from '@ledgerhq/devices';
   import Transport, { DescriptorEvent, Observer, Subscription } from '@ledgerhq/hw-transport';
   import { Observable } from 'rxjs';
-  import { DeviceModel } from '@ledgerhq/devices';
 
   export default class TransportWebBLE extends Transport<BluetoothDevice | string> {
     /**

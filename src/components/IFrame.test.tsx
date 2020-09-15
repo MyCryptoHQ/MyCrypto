@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
 import { TURL } from '@types';
 
 import { default as IFrame } from './IFrame';

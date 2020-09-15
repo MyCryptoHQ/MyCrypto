@@ -1,13 +1,15 @@
 import React from 'react';
+
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { HashRouter, BrowserRouter } from 'react-router-dom';
 
-import { theme } from '@theme';
-import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
+import { theme } from '@theme';
+import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
+
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
 

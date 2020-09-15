@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Redirect, Switch, withRouter } from 'react-router-dom';
 
 interface RouterProps {

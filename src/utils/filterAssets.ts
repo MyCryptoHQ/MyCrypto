@@ -1,5 +1,5 @@
-import { Asset, ExtendedAsset, NetworkId } from '@types';
 import { ASSET_DROPDOWN_SIZE_THRESHOLD } from '@config';
+import { Asset, ExtendedAsset, NetworkId } from '@types';
 
 import { USEFUL_ASSETS } from './constants';
 

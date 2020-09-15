@@ -1,8 +1,9 @@
 import React from 'react';
-import { renderHook, act } from '@testing-library/react-hooks';
+
+import { act, renderHook } from '@testing-library/react-hooks';
 
 import { fContacts } from '@fixtures';
-import { LSKeys, TUuid, ExtendedContact, TAddress } from '@types';
+import { ExtendedContact, LSKeys, TAddress, TUuid } from '@types';
 import { omit } from '@vendor';
 
 import { DataContext, IDataContext } from '../DataManager';

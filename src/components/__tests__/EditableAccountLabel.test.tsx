@@ -1,11 +1,12 @@
 import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
 
-import { translateRaw } from '@translations';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
+
 import { DEFAULT_NETWORK } from '@config';
-import { DataContext } from '@services/Store';
-import { ExtendedContact, TUuid, TAddress } from '@types';
 import { contacts as seedContacts } from '@database/seed/contacts';
+import { DataContext } from '@services/Store';
+import { translateRaw } from '@translations';
+import { ExtendedContact, TAddress, TUuid } from '@types';
 import { noOp } from '@utils';
 
 import EditableAccountLabel, { Props } from '../EditableAccountLabel';

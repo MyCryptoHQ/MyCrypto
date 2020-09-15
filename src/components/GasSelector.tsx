@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
+import styled from 'styled-components';
 
-import { InputField, Typography, Checkbox } from '@components';
-import { translateRaw } from '@translations';
+import { Checkbox, InputField, Typography } from '@components';
 import {
   fetchGasPriceEstimates,
-  inputGasPriceToHex,
-  hexWeiToString,
-  getNonce,
   getGasEstimate,
-  hexToNumber
+  getNonce,
+  hexToNumber,
+  hexWeiToString,
+  inputGasPriceToHex
 } from '@services';
-import { StoreAccount } from '@types';
 import { COLORS, monospace } from '@theme';
+import { translateRaw } from '@translations';
+import { StoreAccount } from '@types';
 
 const { GREY_LIGHTER } = COLORS;
 

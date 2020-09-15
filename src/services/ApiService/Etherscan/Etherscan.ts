@@ -1,8 +1,10 @@
 import { AxiosInstance } from 'axios';
+
+import { NetworkId } from '@types';
+
 import { default as ApiService } from '../ApiService';
 import { ETHERSCAN_API_URLS } from './constants';
-import { NetworkId } from '@types';
-import { GetBalanceResponse, GetTxResponse, GetTokenTxResponse } from './types';
+import { GetBalanceResponse, GetTokenTxResponse, GetTxResponse } from './types';
 
 let instantiated = false;
 export default class EtherscanService {

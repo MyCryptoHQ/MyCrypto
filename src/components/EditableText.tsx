@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Typography } from '@components';
+import React, { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 
 import editIcon from '@assets/images/icn-edit.svg';
+import { Typography } from '@components';
 import { COLORS, SPACING } from '@theme';
 
 const Wrapper = styled.div`

@@ -1,15 +1,15 @@
-import { t, Selector } from 'testcafe';
-
-import {
-  PAGES,
-  FIXTURE_ETHEREUM,
-  FIXTURE_VIEW_ONLY_ADDRESS,
-  FIXTURE_TEST_PRIVATE_KEY,
-  FIXTURE_TEST_KEYSTORE_FILE_PASSWORD
-} from './fixtures';
-import BasePage from './base-page.po';
-import { findByTKey, getTransValueByKey } from './translation-utils';
 import { getByText } from '@testing-library/testcafe';
+import { Selector, t } from 'testcafe';
+
+import BasePage from './base-page.po';
+import {
+  FIXTURE_ETHEREUM,
+  FIXTURE_TEST_KEYSTORE_FILE_PASSWORD,
+  FIXTURE_TEST_PRIVATE_KEY,
+  FIXTURE_VIEW_ONLY_ADDRESS,
+  PAGES
+} from './fixtures';
+import { findByTKey, getTransValueByKey } from './translation-utils';
 
 export default class AddAccountPage extends BasePage {
   async navigateToPage() {

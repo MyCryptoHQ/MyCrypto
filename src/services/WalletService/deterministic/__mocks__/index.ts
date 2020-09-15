@@ -1,6 +1,6 @@
 import { default as customDPaths } from './customDPaths.json';
-import { default as customDPathsPending } from './customDPathsPending.json';
 import { default as customDPathsDone } from './customDPathsDone.json';
+import { default as customDPathsPending } from './customDPathsPending.json';
 import { default as finishedAccountsDone } from './finishedAccountsDone.json';
 import { default as finishedAccountsPending } from './finishedAccountsPending.json';
 import { default as processFinishedAccountsCustomDPathsDone } from './processFinishedAccountsCustomDPathsDone.json';

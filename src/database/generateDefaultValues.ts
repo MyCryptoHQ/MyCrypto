@@ -1,32 +1,32 @@
-import mapObjIndexed from 'ramda/src/mapObjIndexed';
-import pipe from 'ramda/src/pipe';
-import map from 'ramda/src/map';
-import filter from 'ramda/src/filter';
 import chain from 'ramda/src/chain';
-import reduce from 'ramda/src/reduce';
+import filter from 'ramda/src/filter';
+import map from 'ramda/src/map';
+import mapObjIndexed from 'ramda/src/mapObjIndexed';
 import mergeRight from 'ramda/src/mergeRight';
+import pipe from 'ramda/src/pipe';
+import reduce from 'ramda/src/reduce';
 
-import { generateAssetUUID, generateContractUUID } from '@utils';
-import { Fiats, DEFAULT_ASSET_DECIMAL } from '@config';
+import { DEFAULT_ASSET_DECIMAL, Fiats } from '@config';
 import {
   Asset,
+  AssetLegacy,
+  ContractLegacy,
   ExtendedAsset,
   ExtendedContract,
+  Fiat,
   LocalStorage,
+  LSKeys,
+  Network,
   NetworkId,
   NetworkLegacy,
-  WalletId,
-  Network,
-  Fiat,
-  ContractLegacy,
-  AssetLegacy,
-  LSKeys,
-  NodeOptions
+  NodeOptions,
+  WalletId
 } from '@types';
+import { generateAssetUUID, generateContractUUID } from '@utils';
 
-import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
+import { NetworkConfig, NETWORKS_CONFIG, NODES_CONFIG } from './data';
+import { add, toArray, toObject } from './helpers';
 import { SeedData, StoreAction } from './types';
-import { toArray, toObject, add } from './helpers';
 
 /* Transducers */
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {

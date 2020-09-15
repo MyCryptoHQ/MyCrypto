@@ -1,22 +1,22 @@
+import BigNumber from 'bignumber.js';
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther } from 'ethers/utils';
 import prop from 'ramda/src/prop';
-import BigNumber from 'bignumber.js';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import {
-  ITransaction,
   IHexStrTransaction,
-  ITxGasPrice,
+  ITransaction,
   ITxGasLimit,
-  ITxValue,
-  ITxNonce
+  ITxGasPrice,
+  ITxNonce,
+  ITxValue
 } from '@types';
 import { bigify } from '@utils';
 
-import { gasPriceToBase, toTokenBase, fromWei, toWei, Wei } from './units';
 import { hexEncodeQuantity } from './hexEncode';
+import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string

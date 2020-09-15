@@ -1,6 +1,6 @@
-import mockAxios from 'jest-mock-axios';
-import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
+import mockAxios from 'jest-mock-axios';
 
 import { ANALYTICS_CATEGORIES } from '@services';
 import { useAnalytics } from '@utils/index';

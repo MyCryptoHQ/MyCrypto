@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 
 import { noOp } from '@utils';
 
-import { UndoDeleteOverlay } from './index';
 import { translateRaw } from '../translations';
+import { UndoDeleteOverlay } from './index';
 
 const address = '0xe25690fe5ee6a64996cdd8f2fff4bfa9b3a4585b';
 

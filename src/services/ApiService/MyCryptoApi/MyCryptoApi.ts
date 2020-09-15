@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { MYC_API } from '@config';
-import { TUuid, ExtendedAsset } from '@types';
+import { ExtendedAsset, TUuid } from '@types';
 
 import { default as ApiService } from '../ApiService';
 

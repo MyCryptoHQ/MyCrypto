@@ -1,12 +1,13 @@
 import { Dispatch } from 'react';
+
 import { TransactionResponse } from 'ethers/providers';
 
-import { ITxSigned, ITxObject, TStateGetter, StoreAccount, Network, ITxHash } from '@types';
-import { isWeb3Wallet, isTxSigned, isTxHash } from '@utils';
 import { ProviderHandler } from '@services';
 import { appendGasLimit, appendNonce } from '@services/EthService';
+import { ITxHash, ITxObject, ITxSigned, Network, StoreAccount, TStateGetter } from '@types';
+import { isTxHash, isTxSigned, isWeb3Wallet } from '@utils';
 
-import { TxMultiState, TxMultiAction, ActionTypes } from './types';
+import { ActionTypes, TxMultiAction, TxMultiState } from './types';
 
 export const init = (dispatch: Dispatch<TxMultiAction>) => async (
   txs: ITxObject[],

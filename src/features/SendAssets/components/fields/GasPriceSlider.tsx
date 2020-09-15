@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
 import { GAS_PRICE_DEFAULT } from '@config';
-import { GasEstimates, Network } from '@types';
 import { COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { GasEstimates, Network } from '@types';
 import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);

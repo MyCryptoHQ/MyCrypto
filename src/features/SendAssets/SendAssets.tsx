@@ -1,30 +1,32 @@
-import React, { useContext, useReducer, useEffect } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as qs from 'query-string';
+import React, { useContext, useEffect, useReducer } from 'react';
+
+import { parse } from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
-import { isWeb3Wallet, withProtectTxProvider } from '@utils';
-import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig, TxQueryTypes } from '@types';
-import { translateRaw } from '@translations';
-import { ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
+import { ROUTE_PATHS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import {
-  StoreContext,
-  useFeatureFlags,
-  useAccounts,
   ProviderHandler,
+  StoreContext,
+  useAccounts,
   useAssets,
+  useFeatureFlags,
   useNetworks
 } from '@services';
+import { translateRaw } from '@translations';
+import { IFormikFields, ISignedTx, ITxConfig, ITxReceipt, TxQueryTypes } from '@types';
+import { isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { isEmpty } from '@vendor';
 
-import { sendAssetsReducer, initialState } from './SendAssets.reducer';
 import {
   ConfirmTransactionWithProtectTx,
   SendAssetsFormWithProtectTx,
   SignTransactionWithProtectTx
 } from './components';
 import { parseQueryParams } from './helpers';
+import { initialState, sendAssetsReducer } from './SendAssets.reducer';
 
 function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
@@ -38,7 +40,7 @@ function SendAssets({ location }: RouteComponentProps) {
   const { featureFlags } = useFeatureFlags();
 
   useEffect(() => {
-    const txConfigInit = parseQueryParams(qs.parse(location.search))(networks, assets, accounts);
+    const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
     if (txConfigInit && [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)) {
       if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
         console.debug(

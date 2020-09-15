@@ -1,11 +1,12 @@
 import React from 'react';
+
 import styled, { css } from 'styled-components';
 
-import { COLORS, BREAK_POINTS } from '@theme';
+import { BREAK_POINTS, COLORS } from '@theme';
 import { TCurrencySymbol, TTicker } from '@types';
 
-import { default as Typography } from './Typography';
 import Currency from './Currency';
+import { default as Typography } from './Typography';
 
 const SAmount = styled.div`
   display: flex;

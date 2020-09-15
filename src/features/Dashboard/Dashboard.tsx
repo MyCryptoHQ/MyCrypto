@@ -1,21 +1,22 @@
 import React, { useContext } from 'react';
+
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { AccountList, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
-import { useAccounts, StoreContext } from '@services/Store';
-import { translateRaw } from '@translations';
 import { useFeatureFlags } from '@services';
+import { StoreContext, useAccounts } from '@services/Store';
+import { translateRaw } from '@translations';
 
-import { NotificationsPanel } from '../NotificationsPanel';
 import { DashboardZapCTA } from '../DeFiZap';
+import { NotificationsPanel } from '../NotificationsPanel';
 import {
   ActionTile,
-  TokenPanel,
-  WalletBreakdown,
+  MembershipPanel,
   RecentTransactionList,
-  MembershipPanel
+  TokenPanel,
+  WalletBreakdown
 } from './components';
 import { actions } from './constants';
 import { filterDashboardActions } from './helpers';

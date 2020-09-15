@@ -1,27 +1,28 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { Formik, Form, Field, FieldProps } from 'formik';
+
 import { Button } from '@mycrypto/ui';
-import isEmpty from 'lodash/isEmpty';
-import * as Yup from 'yup';
 import { parseEther } from 'ethers/utils';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import isEmpty from 'lodash/isEmpty';
+import styled from 'styled-components';
+import { number, object } from 'yup';
 
-import translate, { translateRaw } from '@translations';
-import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull } from '@types';
-import { AccountSelector, InlineMessage, AmountInput, PoweredByText } from '@components';
+import { AccountSelector, AmountInput, InlineMessage, PoweredByText } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { ETHUUID } from '@utils';
-
-import { ZapInteractionState } from '../types';
-import ZapSelectedBanner from './ZapSelectedBanner';
-import { IZapConfig } from '../config';
-import { StoreContext } from '@services/Store/StoreProvider';
-import { useNetworks } from '@services/Store/Network';
-import { getAccountBalance, useAssets } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
+import { getAccountBalance, useAssets } from '@services/Store';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { useNetworks } from '@services/Store/Network';
+import { StoreContext } from '@services/Store/StoreProvider';
+import { SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
+import { ETHUUID } from '@utils';
+
+import { IZapConfig } from '../config';
+import { ZapInteractionState } from '../types';
+import ZapSelectedBanner from './ZapSelectedBanner';
 
 interface Props extends ZapInteractionState {
   onComplete(fields: any): void;
@@ -101,8 +102,8 @@ export const ZapFormUI = ({
     network
   };
 
-  const ZapFormSchema = Yup.object().shape({
-    amount: Yup.number()
+  const ZapFormSchema = object().shape({
+    amount: number()
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))

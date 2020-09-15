@@ -1,15 +1,16 @@
-import React, { useState, useMemo, useEffect, useReducer } from 'react';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
+
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from '@theme';
+import { Downloader, IFrame, Link, NewTabLink, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { IFrame, Downloader, Link, NewTabLink, RouterLink } from '@components';
+import { BREAK_POINTS } from '@theme';
 import { useUpdateEffect } from '@vendor';
 
-import MigrateLSReducer, { defaultState, UIStates } from './reducer';
 import { bindActions } from './actions';
-import { getIFrameSrc, DBName } from './helpers';
+import { DBName, getIFrameSrc } from './helpers';
+import MigrateLSReducer, { defaultState, UIStates } from './reducer';
 
 const SActionContainer = styled.div`
   display: inline-block;

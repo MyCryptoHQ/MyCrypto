@@ -1,22 +1,22 @@
 import { bigNumberify } from 'ethers/utils';
 
+import { translateRaw } from '@translations';
 import {
-  Network,
-  AssetBalanceObject,
   Asset,
-  StoreAsset,
-  IAccount,
-  StoreAccount,
-  ITxStatus,
-  ITxReceipt,
+  AssetBalanceObject,
   ExtendedContact,
+  IAccount,
   IPendingTxReceipt,
+  ITxReceipt,
+  ITxStatus,
+  Network,
+  StoreAccount,
+  StoreAsset,
   TUuid
 } from '@types';
 
 import { getLabelByAccount } from './Contact';
 import { getNetworkById } from './Network';
-import { translateRaw } from '@translations';
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets

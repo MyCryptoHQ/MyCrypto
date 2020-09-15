@@ -1,15 +1,15 @@
 import React from 'react';
+
+import { Identicon } from '@mycrypto/ui';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import styled from 'styled-components';
-import { Identicon } from '@mycrypto/ui';
-
-import { QRCode } from '@components';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-import { Trans, translateRaw } from '@translations';
 
 import walletIcon from '@assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from '@assets/images/logo-mycrypto-transparent.png';
+import { QRCode } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { Trans, translateRaw } from '@translations';
 
 interface PaperWalletWrapperProps {
   isHidden?: boolean;

@@ -1,10 +1,11 @@
 import React from 'react';
-import { simpleRender, waitFor, fireEvent } from 'test-utils';
 
-import { fTxConfig } from '@fixtures';
-import { WalletId } from '@types';
-import { translateRaw } from '@translations';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
+
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
+import { fTxConfig } from '@fixtures';
+import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 import { getHeader } from './helper';
 

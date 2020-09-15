@@ -1,22 +1,22 @@
-import React, { useState, useContext } from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Transition } from 'react-spring/renderprops-universal.cjs';
+import React, { useContext, useState } from 'react';
+
 import { Icon } from '@mycrypto/ui';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Transition } from 'react-spring/renderprops-universal.cjs';
 import styled from 'styled-components';
 
-import { SelectLanguage } from '@features/Drawer/screens';
-import { getLinks } from './constants';
-import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import { ANALYTICS_CATEGORIES, SettingsContext, useFeatureFlags } from '@services';
-import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-import translate, { languages } from '@translations';
-import { openLink, useAnalytics } from '@utils';
-import LocalIcon from '@components/Icon';
-
-// Legacy
-import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { BannerType } from '@types';
 import { Banner } from '@components';
+import LocalIcon from '@components/Icon';
+import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
+import { SelectLanguage } from '@features/Drawer/screens';
+import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
+import { ANALYTICS_CATEGORIES, SettingsContext, useFeatureFlags } from '@services';
+import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
+import translate, { languages } from '@translations';
+import { BannerType } from '@types';
+import { openLink, useAnalytics } from '@utils';
+
+import { getLinks } from './constants';
 
 const { BLUE_BRIGHT, LIGHT_PURPLE } = COLORS;
 

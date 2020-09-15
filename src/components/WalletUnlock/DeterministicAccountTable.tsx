@@ -1,24 +1,25 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+
 import { Identicon } from '@mycrypto/ui';
+import BN from 'bn.js';
+import styled, { css } from 'styled-components';
 
 import {
+  Amount,
+  Button,
   EditableAccountLabel,
   EthAddress,
-  Typography,
-  LinkOut,
-  Button,
-  Tooltip,
   Icon,
-  Amount
+  LinkOut,
+  Tooltip,
+  Typography
 } from '@components';
-import { DWAccountDisplay, fromTokenBase, useContacts } from '@services';
-import { COLORS, SPACING, BREAK_POINTS } from '@theme';
-import { Network, ExtendedAsset, TAddress } from '@types';
-import { isSameAddress, useScreenSize } from '@utils';
-import translate, { Trans } from '@translations';
 import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
-import BN from 'bn.js';
+import { DWAccountDisplay, fromTokenBase, useContacts } from '@services';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import translate, { Trans } from '@translations';
+import { ExtendedAsset, Network, TAddress } from '@types';
+import { isSameAddress, useScreenSize } from '@utils';
 
 interface DeterministicTableProps {
   isComplete: boolean;

@@ -1,8 +1,8 @@
 import { translateRaw } from '@translations';
-import { CRYPTOSCAMDB } from './data';
 import { TURL } from '@types';
 
 import SocialTelegramIcon from '../assets/images/social-icons/social-telegram-white.svg';
+import { CRYPTOSCAMDB } from './data';
 
 interface Link {
   link: string;

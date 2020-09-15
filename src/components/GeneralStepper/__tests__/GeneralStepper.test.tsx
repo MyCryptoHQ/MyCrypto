@@ -1,6 +1,7 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import { simpleRender, fireEvent } from 'test-utils';
+
+import { MemoryRouter, Route, Switch } from 'react-router-dom';
+import { fireEvent, simpleRender } from 'test-utils';
 import { Required } from 'utility-types';
 
 import { GeneralStepper, StepperProps } from '../GeneralStepper';

@@ -1,13 +1,13 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import NotificationWrapper from './NotificationWrapper';
-import { PrintPaperWalletButton } from '@components';
-
-// Legacy
 import walletIcon from '@assets/images/icn-wallet.svg';
+import { PrintPaperWalletButton } from '@components';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

@@ -1,4 +1,5 @@
 import { GasEstimates } from '@types';
+
 import { checkHttpStatus, parseJSON } from '../utils';
 
 const MAX_GAS_FAST = 500;

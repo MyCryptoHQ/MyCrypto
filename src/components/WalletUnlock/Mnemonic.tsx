@@ -1,19 +1,19 @@
 import React, { PureComponent } from 'react';
-import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
+
 import { Tooltip } from '@mycrypto/ui';
+import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
 
-import translate, { translateRaw } from '@translations';
-import { formatMnemonic, withHook } from '@utils';
-import { TogglablePassword, Input } from '@components';
-import { FormData, WalletId } from '@types';
-import { getDPath, getDPaths } from '@services/EthService';
-import { WalletFactory } from '@services/WalletService';
-import { useNetworks, INetworkContext } from '@services';
-
-import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';
+import { Input, TogglablePassword } from '@components';
+import { INetworkContext, useNetworks } from '@services';
+import { getDPath, getDPaths } from '@services/EthService';
+import { WalletFactory } from '@services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { FormData, WalletId } from '@types';
+import { formatMnemonic, withHook } from '@utils';
 
+import DeterministicWallets from './DeterministicWallets';
 import './Mnemonic.scss';
 
 interface OwnProps {

@@ -1,5 +1,6 @@
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import EthereumApp from '@ledgerhq/hw-app-eth';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+
 import Ledger from './Ledger';
 
 /**

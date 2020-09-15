@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 import { TURL } from '@types';
 
 import { getLS, getOrigin } from './helpers';
-import { default as Reducer, MigrateLSAction } from './reducer';
+import { MigrateLSAction, default as Reducer } from './reducer';
 
 const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
   frame: HTMLIFrameElement,

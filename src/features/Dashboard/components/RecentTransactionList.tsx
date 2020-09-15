@@ -1,39 +1,39 @@
 import React, { useContext } from 'react';
+
 import styled from 'styled-components';
 
+import moreIcon from '@assets/images/icn-more.svg';
+import approval from '@assets/images/transactions/approval.svg';
+import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
+import contractInteract from '@assets/images/transactions/contract-interact.svg';
+import defizap from '@assets/images/transactions/defizap.svg';
+import inbound from '@assets/images/transactions/inbound.svg';
+import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
+import outbound from '@assets/images/transactions/outbound.svg';
+import swap from '@assets/images/transactions/swap.svg';
+import transfer from '@assets/images/transactions/transfer.svg';
 import {
-  Amount,
-  DashboardPanel,
-  AssetIcon,
   Account,
-  FixedSizeCollapsibleTable,
+  Amount,
+  AssetIcon,
+  DashboardPanel,
   EditableAccountLabel,
+  FixedSizeCollapsibleTable,
   RouterLink
 } from '@components';
-import { convertToFiat, isSameAddress } from '@utils';
-import { ITxStatus, StoreAccount, Asset } from '@types';
-import { useRates, SettingsContext, useTxHistory, ITxHistoryEntry, useContacts } from '@services';
-import { translateRaw } from '@translations';
+import { ROUTE_PATHS } from '@config';
+import { getFiat } from '@config/fiats';
+import { ITxHistoryEntry, SettingsContext, useContacts, useRates, useTxHistory } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
-import { getFiat } from '@config/fiats';
-import { ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
+import { Asset, ITxStatus, StoreAccount } from '@types';
+import { convertToFiat, isSameAddress } from '@utils';
 
+import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
-import { ITxHistoryType } from '../types';
 import './RecentTransactionList.scss';
-
-import moreIcon from '@assets/images/icn-more.svg';
-import transfer from '@assets/images/transactions/transfer.svg';
-import inbound from '@assets/images/transactions/inbound.svg';
-import outbound from '@assets/images/transactions/outbound.svg';
-import approval from '@assets/images/transactions/approval.svg';
-import contractInteract from '@assets/images/transactions/contract-interact.svg';
-import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
-import defizap from '@assets/images/transactions/defizap.svg';
-import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
-import swap from '@assets/images/transactions/swap.svg';
 
 interface Props {
   className?: string;

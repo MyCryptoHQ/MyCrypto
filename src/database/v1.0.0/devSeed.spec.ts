@@ -1,7 +1,7 @@
 import { LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
-import { SCHEMA_BASE, NETWORKS_CONFIG } from '../data';
+import { NETWORKS_CONFIG, SCHEMA_BASE } from '../data';
 import { createDefaultValues } from '../generateDefaultValues';
 import { addDevSeedToSchema } from './devSeed';
 

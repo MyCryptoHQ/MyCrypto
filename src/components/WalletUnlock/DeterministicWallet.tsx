@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
 
-import { Typography, Button, AssetSelector, Input } from '@components';
-import { COLORS, BREAK_POINTS, SPACING, FONT_SIZE } from '@theme';
-import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
-import translate, { Trans, translateRaw } from '@translations';
+import { Formik } from 'formik';
+import styled from 'styled-components';
+import { object, string } from 'yup';
+
+import { AssetSelector, Button, Input, Typography } from '@components';
+import Icon from '@components/Icon';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
+import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
+import { ExtendedAsset, Network } from '@types';
 import {
   accountsToCSV,
-  useScreenSize,
-  makeBlob,
   filterDropdownAssets,
   filterValidAssets,
-  sortByTicker
+  makeBlob,
+  sortByTicker,
+  useScreenSize
 } from '@utils';
-import { ExtendedAsset, Network } from '@types';
-import Icon from '@components/Icon';
 
 import DeterministicAccountList from './DeterministicAccountList';
 
@@ -179,9 +180,9 @@ const DeterministicWallet = ({
   const handleDownload = () =>
     window.open(makeBlob('text/csv', accountsToCSV(state.finishedAccounts, assetToUse)));
 
-  const Schema = Yup.object().shape({
-    label: Yup.string().required(translateRaw('REQUIRED')),
-    value: Yup.string()
+  const Schema = object().shape({
+    label: string().required(translateRaw('REQUIRED')),
+    value: string()
       .required(translateRaw('REQUIRED'))
       .test('check-valid-path', translateRaw('DETERMINISTIC_INVALID_DPATH'), (value) =>
         isValidPath(value)

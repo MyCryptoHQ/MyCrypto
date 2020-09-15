@@ -1,76 +1,77 @@
-import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-import flatten from 'ramda/src/flatten';
-import prop from 'ramda/src/prop';
-import uniqBy from 'ramda/src/uniqBy';
-import sortBy from 'ramda/src/sortBy';
-import isEmpty from 'lodash/isEmpty';
-import unionBy from 'lodash/unionBy';
-import property from 'lodash/property';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
+import isEmpty from 'lodash/isEmpty';
+import property from 'lodash/property';
+import unionBy from 'lodash/unionBy';
+import flatten from 'ramda/src/flatten';
+import prop from 'ramda/src/prop';
+import sortBy from 'ramda/src/sortBy';
+import uniqBy from 'ramda/src/uniqBy';
 
+import { DEFAULT_NETWORK } from '@config';
 import {
-  TAddress,
-  IRawAccount,
-  StoreAccount,
-  StoreAsset,
-  Network,
-  TTicker,
+  MEMBERSHIP_CONFIG,
+  MEMBERSHIP_CONTRACTS,
+  MembershipState,
+  MembershipStatus
+} from '@features/PurchaseMembership/config';
+import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
+import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { translateRaw } from '@translations';
+import {
+  Asset,
+  Contact,
   ExtendedAsset,
   IAccount,
-  WalletId,
-  Asset,
-  NetworkId,
-  Contact,
-  ITxType,
-  TUuid,
-  ReserveAsset,
+  IAccountAdditionData,
   IPendingTxReceipt,
-  IAccountAdditionData
+  IRawAccount,
+  ITxType,
+  Network,
+  NetworkId,
+  ReserveAsset,
+  StoreAccount,
+  StoreAsset,
+  TAddress,
+  TTicker,
+  TUuid,
+  WalletId
 } from '@types';
 import {
-  isArrayEqual,
-  useInterval,
   convertToFiatFromAsset,
-  getWeb3Config,
-  multiplyBNFloats,
-  weiToFloat,
   generateAccountUUID,
-  useAnalytics,
+  getWeb3Config,
+  isArrayEqual,
   isSameAddress,
-  sortByLabel
+  multiplyBNFloats,
+  sortByLabel,
+  useAnalytics,
+  useInterval,
+  weiToFloat
 } from '@utils';
-import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
-import {
-  MembershipStatus,
-  MEMBERSHIP_CONFIG,
-  MembershipState,
-  MEMBERSHIP_CONTRACTS
-} from '@features/PurchaseMembership/config';
-import { DEFAULT_NETWORK } from '@config';
-import { useEffectOnce, isEmpty as isVoid } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
+import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
+import { ANALYTICS_CATEGORIES, MyCryptoApiService } from '../ApiService';
+import { getDashboardAccounts, useAccounts } from './Account';
 import {
-  getStoreAccounts,
-  getPendingTransactionsFromAccounts,
-  isNotExcludedAsset
-} from './helpers';
-import {
-  getTotalByAsset,
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
+  getTotalByAsset,
   useAssets
 } from './Asset';
-import { useAccounts, getDashboardAccounts } from './Account';
-import { SettingsContext } from './Settings';
-import { getNetworkById, useNetworks } from './Network';
+import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { findNextUnusedDefaultLabel, useContacts } from './Contact';
-import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
-import { translateRaw } from '@translations';
-import { ITxHistoryApiResponse, HistoryService } from '@services/ApiService/History';
+import {
+  getPendingTransactionsFromAccounts,
+  getStoreAccounts,
+  isNotExcludedAsset
+} from './helpers';
+import { getNetworkById, useNetworks } from './Network';
+import { SettingsContext } from './Settings';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;

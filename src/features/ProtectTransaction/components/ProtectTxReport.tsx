@@ -1,19 +1,20 @@
 import React, { FC, useCallback, useContext } from 'react';
+
 import styled from 'styled-components';
 
-import { Trans, translateRaw } from '@translations';
-import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { EthAddress, LinkOut, PoweredByText, VerticalStepper } from '@components';
+import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
-import CloseIcon from '@components/icons/CloseIcon';
-import { ETHAddressExplorer } from '@config';
-import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
 import { StepData } from '@components/VerticalStepper';
+import { ETHAddressExplorer } from '@config';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { Trans, translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
 
-import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { NansenReportType, PTXReport } from '../types';
+import ProtectTxBase from './ProtectTxBase';
 
 const Wrapper = styled(ProtectTxBase)<{ isSmScreen: boolean }>`
   .title-address {

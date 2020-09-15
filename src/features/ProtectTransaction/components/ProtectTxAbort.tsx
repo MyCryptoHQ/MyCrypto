@@ -1,10 +1,13 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+
 import styled, { createGlobalStyle } from 'styled-components';
+
+import { Link } from '@components';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { COLORS, FONT_SIZE } from '@theme';
 import { translateRaw } from '@translations';
-import ProtectIconCheck from '@components/icons/ProtectIconCheck';
-import { Link } from '@components';
 import { ITxReceipt } from '@types';
+
 import { ProtectTxContext } from '../ProtectTxProvider';
 
 interface RelayedToNetworkProps {

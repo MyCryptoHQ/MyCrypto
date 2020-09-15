@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { translateRaw } from '@translations';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { ITxSigned, ITxHash, TxParcel } from '@types';
+import { StoreContext } from '@services';
+import { translateRaw } from '@translations';
+import { ITxHash, ITxSigned, TxParcel } from '@types';
 import { bigify, useStateReducer, useTxMulti } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
-import { StoreContext } from '@services';
 
-import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
+import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
 import { getTradeOrder } from './helpers';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
-import { SwapFormState, IAssetPair } from './types';
+import { IAssetPair, SwapFormState } from './types';
 
 interface TStep {
   title?: string;

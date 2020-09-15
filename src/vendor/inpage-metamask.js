@@ -1,5 +1,5 @@
-import LocalMessageDuplexStream from 'post-message-stream';
 import { initProvider } from '@metamask/inpage-provider';
+import LocalMessageDuplexStream from 'post-message-stream';
 
 // Firefox Metamask Hack
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133

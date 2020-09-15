@@ -1,11 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import { Spinner } from '@components';
 
 import { MyDomainsData } from './EnsDashboard';
-import NoDomains from './NoEnsDomains';
 import MyDomains from './MyDomains';
+import NoDomains from './NoEnsDomains';
 
 const SpinnerContainer = styled.div`
   height: 400px;

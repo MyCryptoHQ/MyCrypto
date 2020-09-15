@@ -1,8 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate from '@translations';
 
 const { BLUE_BRIGHT } = COLORS;
 

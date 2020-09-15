@@ -1,10 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { COLORS, SPACING, FONT_SIZE } from '@theme';
 import { Typography } from '@components';
-import { IMembershipConfig, getExpiryDate } from '../config';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+
+import { getExpiryDate, IMembershipConfig } from '../config';
 
 interface Props {
   membershipSelected: IMembershipConfig;

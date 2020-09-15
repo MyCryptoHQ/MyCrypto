@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { Brand } from 'utility-types';
 
-import { NetworkId, TUuid, AssetSocial } from '@types';
+import { AssetSocial, NetworkId, TUuid } from '@types';
 
 export type TTicker = Brand<string, 'Ticker'>;
 export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;

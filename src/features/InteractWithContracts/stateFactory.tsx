@@ -1,42 +1,43 @@
 import { useCallback } from 'react';
+
 import debounce from 'lodash/debounce';
 
-import { TUseStateReducerFactory, makePendingTxReceipt, isSameAddress } from '@utils';
 import { CREATION_ADDRESS } from '@config';
 import {
-  NetworkId,
-  Contract,
-  StoreAccount,
-  ITxType,
-  ITxStatus,
-  TAddress,
-  ITxHash,
-  TUuid,
-  ExtendedContract
-} from '@types';
-import {
+  EtherscanService,
+  getGasEstimate,
+  getIsValidENSAddressFunction,
   getNetworkById,
+  getResolvedENSAddress,
   isValidETHAddress,
   ProviderHandler,
-  getGasEstimate,
-  getResolvedENSAddress,
-  EtherscanService,
-  getIsValidENSAddressFunction,
   useAccounts,
   useContracts,
   useNetworks
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
-import { isWeb3Wallet } from '@utils/web3';
 import { translateRaw } from '@translations';
-
-import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
-import { ABIItem, InteractWithContractState } from './types';
 import {
-  reduceInputParams,
+  Contract,
+  ExtendedContract,
+  ITxHash,
+  ITxStatus,
+  ITxType,
+  NetworkId,
+  StoreAccount,
+  TAddress,
+  TUuid
+} from '@types';
+import { isSameAddress, makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import { isWeb3Wallet } from '@utils/web3';
+
+import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
+import {
   constructGasCallProps,
-  makeContractInteractionTxConfig
+  makeContractInteractionTxConfig,
+  reduceInputParams
 } from './helpers';
+import { ABIItem, InteractWithContractState } from './types';
 
 const interactWithContractsInitialState = {
   network: {},

@@ -1,30 +1,30 @@
 import React, { useContext, useState } from 'react';
-import Styled from 'styled-components';
+
 import BN from 'bn.js';
-
-import { StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { Amount, AssetIcon, Button, PoweredByText } from '@components';
-import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
-import { convertToFiat } from '@utils';
-import translate, { translateRaw } from '@translations';
-import { ZapSelectedBanner } from '@features/DeFiZap';
-import { BREAK_POINTS, SPACING, COLORS, FONT_SIZE } from '@theme';
-import { useRates } from '@services';
-import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
-import { IStepComponentProps, ITxType, ExtendedContact, ISettings } from '@types';
-import { getFiat } from '@config/fiats';
-import { ProtectTxContext, IFeeAmount } from '@features/ProtectTransaction/ProtectTxProvider';
-
-import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import { FromToAccount } from './displays';
-import { constructSenderFromTxConfig } from './helpers';
-import { ISender } from './types';
+import Styled from 'styled-components';
 
 import feeIcon from '@assets/images/icn-fee.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import walletIcon from '@assets/images/icn-wallet.svg';
+import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
+import { getFiat } from '@config/fiats';
+import { ZapSelectedBanner } from '@features/DeFiZap';
+import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
+import { useRates } from '@services';
+import { fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@services/EthService';
+import { SettingsContext, StoreContext, useContacts } from '@services/Store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
+import { convertToFiat } from '@utils';
+
+import { FromToAccount } from './displays';
+import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { constructSenderFromTxConfig } from './helpers';
+import { ISender } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

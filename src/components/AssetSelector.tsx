@@ -1,11 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
-import { OptionProps } from 'react-select';
-import isEmpty from 'lodash/isEmpty';
 
+import isEmpty from 'lodash/isEmpty';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
+
+import { AssetIcon, Selector, Typography } from '@components';
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TTicker, TUuid } from '@types';
-import { AssetIcon, Typography, Selector } from '@components';
 import { useEffectOnce } from '@vendor';
 
 const SContainer = styled('div')`

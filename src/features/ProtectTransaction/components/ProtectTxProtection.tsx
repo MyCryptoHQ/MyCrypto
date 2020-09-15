@@ -1,29 +1,28 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import BigNumber from 'bignumber.js';
-
-import { isWeb3Wallet as checkIsWeb3Wallet } from '@utils';
-import { SettingsContext, useRates } from '@services';
-import { IAccount, IFormikFields, Fiat } from '@types';
-import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
-import { Amount, Button, PoweredByText } from '@components';
-import translate, { translateRaw } from '@translations';
-import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { getFiat } from '@config/fiats';
-
-import { getProtectTxFee, checkFormForProtectTxErrors } from '../utils';
-import ProtectTxBase from './ProtectTxBase';
-import CloseIcon from '@components/icons/CloseIcon';
-import ProtectIcon from '@components/icons/ProtectIcon';
-import WarningIcon from '@components/icons/WarningIcon';
-import ProtectIconCheck from '@components/icons/ProtectIconCheck';
-
-import feeIcon from '@assets/images/icn-fee.svg';
-import { ProtectTxContext, IFeeAmount } from '../ProtectTxProvider';
-import { ProtectTxError } from '..';
-import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
 import bulletIcon from 'assets/images/icn-bullet.svg';
+import BigNumber from 'bignumber.js';
+import styled from 'styled-components';
+
+import feeIcon from '@assets/images/icn-fee.svg';
+import { Amount, Button, PoweredByText } from '@components';
+import CloseIcon from '@components/icons/CloseIcon';
+import ProtectIcon from '@components/icons/ProtectIcon';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
+import WarningIcon from '@components/icons/WarningIcon';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { getFiat } from '@config/fiats';
+import { SettingsContext, useRates } from '@services';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Fiat, IAccount, IFormikFields } from '@types';
+import { isWeb3Wallet as checkIsWeb3Wallet } from '@utils';
+
+import { ProtectTxError } from '..';
+import { IFeeAmount, ProtectTxContext } from '../ProtectTxProvider';
+import { checkFormForProtectTxErrors, getProtectTxFee } from '../utils';
+import ProtectTxBase from './ProtectTxBase';
+import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   svg:nth-of-type(2) {

@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 
-import translate, { translateRaw } from '@translations';
-import { TogglablePassword, Input } from '@components';
-
-import { WalletId } from '@types';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import { Input, TogglablePassword } from '@components';
 import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
-import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import translate, { translateRaw } from '@translations';
+import { WalletId } from '@types';
 import './PrivateKey.scss';
 
 export interface PrivateKeyValue {

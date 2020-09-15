@@ -1,17 +1,15 @@
 import { Contract } from '@services';
-import auctionABI from './auction/auction.json';
-import auctionOutputMappings from './auction/outputMappings';
+
 import { IAuction } from './auction/auction';
-
+import auctionABI from './auction/auction.json';
 import deedABI from './auction/deed.json';
-import deedOutputMappings from './deed/outputMappings';
-import { IDeed } from './deed/deed';
-
+import auctionOutputMappings from './auction/outputMappings';
 import registryABI from './auction/registry.json';
+import resolverABI from './auction/resolver.json';
+import { IDeed } from './deed/deed';
+import deedOutputMappings from './deed/outputMappings';
 import registryOutputMappings from './registry/outputMappings';
 import { IRegistry } from './registry/registry';
-
-import resolverABI from './auction/resolver.json';
 import resolverOutputMappings from './resolver/outputMappings';
 import { IResolver } from './resolver/resolver';
 

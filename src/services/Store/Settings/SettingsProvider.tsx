@@ -1,6 +1,7 @@
-import React, { useContext, createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-import { ISettings, IRates, LSKeys, TUuid, TFiatTicker } from '@types';
+import { IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
+
 import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {

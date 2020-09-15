@@ -1,15 +1,16 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
 import { parse } from 'query-string';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { InputField } from '@components';
+import { VerifyParams } from '@features/SignAndVerifyMessage/types';
 import { verifySignedMessage } from '@services/EthService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
-import { VerifyParams } from '@features/SignAndVerifyMessage/types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;

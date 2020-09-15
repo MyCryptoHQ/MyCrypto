@@ -1,9 +1,11 @@
 import React, { lazy } from 'react';
+
 import { Redirect } from 'react-router-dom';
 
-import { IAppRoute } from '@types';
 import { IFeatureFlags, ROUTE_PATHS } from '@config';
+import { IAppRoute } from '@types';
 import { isTruthy } from '@utils';
+
 import { requiresDesktopApp } from './helpers';
 
 const Dashboard = lazy(() =>

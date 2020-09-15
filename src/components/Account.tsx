@@ -1,14 +1,15 @@
 import React, { ReactNode } from 'react';
+
+import { Avatar, Identicon, scale } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
-import { Avatar, Identicon, scale } from '@mycrypto/ui';
 
+import { BREAK_POINTS, FONT_SIZE } from '@theme';
 import { translateRaw } from '@translations';
-import { FONT_SIZE, BREAK_POINTS } from '@theme';
 
-import Typography from './Typography';
 import EthAddress from './EthAddress';
 import Tooltip from './Tooltip';
+import Typography from './Typography';
 
 const Flex = styled.div`
   align-items: center;

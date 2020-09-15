@@ -3,7 +3,7 @@ import React from 'react';
 import { MANDATORY_TRANSACTION_QUERY_PARAMS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { TxQueryTypes } from '@types';
 
-import { Query, IQueryResults } from './Query';
+import { IQueryResults, Query } from './Query';
 
 interface Props {
   displayQueryMessage(id?: string): JSX.Element | null;

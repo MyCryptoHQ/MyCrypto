@@ -1,5 +1,5 @@
-import mockAxios from 'jest-mock-axios';
 import { waitFor } from '@testing-library/react';
+import mockAxios from 'jest-mock-axios';
 
 import AnalyticsService from './Analytics';
 

@@ -1,14 +1,15 @@
 import React from 'react';
+
 import path from 'ramda/src/path';
 
+import step2SVG from '@assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-send.svg';
+import { Typography, VerticalStepper } from '@components';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
-import { VerticalStepper, Typography } from '@components';
 import { translateRaw } from '@translations';
 import { ITxStatus, TxParcel } from '@types';
 
 import { IAssetPair } from '../types';
-import step1SVG from '@assets/images/icn-send.svg';
-import step2SVG from '@assets/images/icn-receive.svg';
 
 interface Props {
   assetPair: IAssetPair;

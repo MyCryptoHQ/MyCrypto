@@ -1,7 +1,7 @@
-import { bigNumberify, BigNumber } from 'ethers/utils';
+import { BigNumber, bigNumberify } from 'ethers/utils';
 
+import { Asset, NetworkId, StoreAccount, TAddress } from '@types';
 import { isSameAddress } from '@utils';
-import { TAddress, NetworkId, Asset, StoreAccount } from '@types';
 
 // Assume StoreAccount baseAsset balance to be 0 if asset does not exist.
 const getAccountBaseBalance = (account: StoreAccount) => {

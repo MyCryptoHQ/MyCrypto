@@ -1,34 +1,34 @@
 import { useContext } from 'react';
-import unionBy from 'lodash/unionBy';
-import property from 'lodash/property';
+
 import BigNumber from 'bignumber.js';
-import unionWith from 'ramda/src/unionWith';
-import isEmpty from 'ramda/src/isEmpty';
+import property from 'lodash/property';
+import unionBy from 'lodash/unionBy';
 import eqBy from 'ramda/src/eqBy';
+import isEmpty from 'ramda/src/isEmpty';
 import prop from 'ramda/src/prop';
+import unionWith from 'ramda/src/unionWith';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
-
 import {
-  IRawAccount,
-  IAccount,
-  ITxReceipt,
-  StoreAccount,
   Asset,
   AssetBalanceObject,
-  LSKeys,
-  TUuid,
+  IAccount,
+  IRawAccount,
+  ITxReceipt,
   ITxStatus,
   ITxType,
+  LSKeys,
   NetworkId,
-  TAddress
+  StoreAccount,
+  TAddress,
+  TUuid
 } from '@types';
-import { useAnalytics, isSameAddress } from '@utils';
+import { isSameAddress, useAnalytics } from '@utils';
 
+import { getAllTokensBalancesOfAccount } from '../BalanceService';
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
-import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
 export interface IAccountContext {
   accounts: IAccount[];

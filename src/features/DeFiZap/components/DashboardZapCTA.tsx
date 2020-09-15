@@ -1,10 +1,11 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { DashboardPanel, Typography, PoweredByText } from '@components';
+import { DashboardPanel, PoweredByText, Typography } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate from '@translations/translate';
 
 import { ZAPS_CONFIG } from '../config';

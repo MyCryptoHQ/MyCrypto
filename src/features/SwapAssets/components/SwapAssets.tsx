@@ -1,23 +1,24 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+
 import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import {
-  InputField,
-  AssetSelector,
   AccountSelector,
+  AssetSelector,
+  Button,
   InlineMessage,
-  Typography,
+  InputField,
   Tooltip,
-  Button
+  Typography
 } from '@components';
-import { SPACING, COLORS } from '@theme';
+import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
+import { StoreContext } from '@services/Store';
+import { COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISwapAsset, StoreAccount } from '@types';
 import { trimBN } from '@utils';
 
-import { getUnselectedAssets, getAccountsWithAssetBalance } from '../helpers';
-import { StoreAccount, ISwapAsset } from '@types';
-import { StoreContext } from '@services/Store';
+import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 
 const FormWrapper = styled.div`
   margin-top: 20px;

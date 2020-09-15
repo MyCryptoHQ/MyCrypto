@@ -1,20 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-import { Query, Tooltip } from '@components';
-import {
-  SUPPORTED_TRANSACTION_QUERY_PARAMS,
-  ROUTE_PATHS,
-  MANDATORY_TRANSACTION_QUERY_PARAMS
-} from '@config';
-import translate, { translateRaw } from '@translations';
-import { IQueryResults } from '@components/Query';
-import { COLORS, SPACING } from '@theme';
-import { IconID } from '@components/Tooltip';
-import { TxQueryTypes } from '@types';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import runningIcon from '@assets/images/icn-running.svg';
+import { Query, Tooltip } from '@components';
+import { IQueryResults } from '@components/Query';
+import { IconID } from '@components/Tooltip';
+import {
+  MANDATORY_TRANSACTION_QUERY_PARAMS,
+  ROUTE_PATHS,
+  SUPPORTED_TRANSACTION_QUERY_PARAMS
+} from '@config';
+import { COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { TxQueryTypes } from '@types';
 
 const BannerContainer = styled.div`
   background: ${COLORS.WARNING_ORANGE};

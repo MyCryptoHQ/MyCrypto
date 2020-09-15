@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
-import { toChecksumAddress } from 'ethereumjs-util';
-import { Copyable } from '@mycrypto/ui';
 
-import { truncate as truncateFunc } from '@utils';
+import { Copyable } from '@mycrypto/ui';
+import { toChecksumAddress } from 'ethereumjs-util';
+import styled from 'styled-components';
 
 import { COLORS, monospace } from '@theme';
+import { truncate as truncateFunc } from '@utils';
 
 // Override styles of @mycrypto/ui in order to vertically align text and icon.
 // Ensure the icon uses the discrete color.

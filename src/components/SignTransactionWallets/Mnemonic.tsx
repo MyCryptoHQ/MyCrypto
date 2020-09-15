@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Wallet, utils } from 'ethers';
+
+import { utils, Wallet } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
 import styled from 'styled-components';
 
-import { ISignComponentProps } from '@types';
-import translate, { translateRaw } from '@translations';
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import { Button, Input } from '@components';
 import { WALLETS_CONFIG } from '@config';
-
-import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import translate, { translateRaw } from '@translations';
+import { ISignComponentProps } from '@types';
 
 interface MnemonicValueState {
   seed: string;

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import moment from 'moment';
 
 import { Button, Link } from '@components';
-import { getExportFileName, getCurrentDBConfig } from '@database';
-import { makeBlob } from '@utils';
-import translate from '@translations';
+import { getCurrentDBConfig, getExportFileName } from '@database';
 import { COLORS } from '@theme';
+import translate from '@translations';
+import { makeBlob } from '@utils';
 
 const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
   data,

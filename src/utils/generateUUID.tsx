@@ -1,11 +1,12 @@
-import * as crypto from 'crypto';
-import getUuid from 'uuid-by-string';
+import { randomBytes } from 'crypto';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { TUuid, NetworkId } from '@types';
+import getUuid from 'uuid-by-string';
+
+import { NetworkId, TUuid } from '@types';
 
 // @todo: If used for anything other than generating public ids, look up a more-secure way to do this.
 export const generateUUID = (): TUuid => {
-  const hexstring = crypto.randomBytes(16).toString('hex');
+  const hexstring = randomBytes(16).toString('hex');
   const uuid =
     hexstring.substring(0, 8) +
     '-' +

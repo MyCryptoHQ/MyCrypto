@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 interface CheckboxProps {
   name: string;

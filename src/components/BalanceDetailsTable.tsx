@@ -1,20 +1,21 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
 import {
-  TableCell,
-  TableRow,
-  EthAddress,
   AssetIcon,
   Currency,
-  Typography,
+  EthAddress,
+  FixedSizeCollapsibleTable,
+  TableCell,
+  TableRow,
   Tooltip,
-  FixedSizeCollapsibleTable
+  Typography
 } from '@components';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Fiat, TUuid, Balance, BalanceAccount, BalanceDetailsTableProps } from '@types';
 import { CenteredIconArrow } from '@components/IconArrow';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TUuid } from '@types';
 
 const HeaderAlignment = styled.div<{ align?: string }>`
   display: inline-block;

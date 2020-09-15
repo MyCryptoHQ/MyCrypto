@@ -1,9 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-
 import sadWallet from '@assets/images/icn-sad-wallet.svg';
+import translate from '@translations';
 
 const NoAccountsWrapper = styled.div`
   display: flex;

@@ -1,13 +1,14 @@
 import React from 'react';
-import { simpleRender, fireEvent } from 'test-utils';
 
-import { fSettings, fTxConfig, fAccount } from '@fixtures';
+import { fireEvent, simpleRender } from 'test-utils';
+
 import { devContacts } from '@database/seed';
+import { ZAPS_CONFIG } from '@features/DeFiZap/config';
+import { fAccount, fSettings, fTxConfig } from '@fixtures';
+import { DataContext } from '@services';
+import { translateRaw } from '@translations';
 import { ExtendedContact, ITxType } from '@types';
 import { truncate } from '@utils';
-import { translateRaw } from '@translations';
-import { ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { DataContext } from '@services';
 
 import { ConfirmTransactionUI } from '../ConfirmTransaction';
 import { constructSenderFromTxConfig } from '../helpers';

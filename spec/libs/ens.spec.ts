@@ -1,5 +1,5 @@
 import { normalize } from '@services';
-import * as ens from '@services/EthService/ens';
+import { getNameHash } from '@services/EthService/ens';
 
 // @todo: write tests for:
 // ens.placeBid
@@ -13,8 +13,8 @@ describe('ENS', () => {
   });
 
   it('converts a string to hexacedimal', () => {
-    const unicodeToHash = ens.getNameHash('Süß.de');
-    const asciiToHash = ens.getNameHash('xn--s-qfa0g.de');
+    const unicodeToHash = getNameHash('Süß.de');
+    const asciiToHash = getNameHash('xn--s-qfa0g.de');
     expect(unicodeToHash && asciiToHash).toBe(
       '0x26eb2a1d5e19a5d10e4a0001e7f3b22366f27d7203c6985b6b41fe65be107f8b'
     );

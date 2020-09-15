@@ -1,12 +1,12 @@
 import React from 'react';
-import { FocusEventHandler, KeyboardEventHandler } from 'react-select/src/types';
 
-import { translateRaw } from '@translations';
-import { AccountSummary, Divider, Selector } from '@components';
-import { Asset, IReceiverAddress } from '@types';
-import { SPACING } from '@theme';
+import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
+import { AccountSummary, Divider, Selector } from '@components';
+import { SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Asset, IReceiverAddress } from '@types';
 
 export interface LabeledAddress {
   label: string;

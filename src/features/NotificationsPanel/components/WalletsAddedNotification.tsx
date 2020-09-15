@@ -1,16 +1,16 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
+import champagneIcon from '@assets/images/icn-champagne-2.svg';
+import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
+import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
+import questionsIcon from '@assets/images/icn-questions.svg';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
 import { StoreAccount } from '@types';
 
-// Legacy
-import champagneIcon from '@assets/images/icn-champagne-2.svg';
-import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
-import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
-import questionsIcon from '@assets/images/icn-questions.svg';
 import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;

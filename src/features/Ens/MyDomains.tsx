@@ -1,14 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import moment from 'moment';
 
-import { Tooltip, LinkOut, Account, FixedSizeCollapsibleTable } from '@components';
-import { translateRaw } from '@translations';
-import { breakpointToNumber, BREAK_POINTS } from '@theme';
+import moment from 'moment';
+import styled from 'styled-components';
+
+import { Account, FixedSizeCollapsibleTable, LinkOut, Tooltip } from '@components';
 import { IconID } from '@components/Tooltip';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
+import { BREAK_POINTS, breakpointToNumber } from '@theme';
+import { translateRaw } from '@translations';
 
-import { MyDomainsProps, DomainNameRecord } from './types';
+import { DomainNameRecord, MyDomainsProps } from './types';
 
 const Label = styled.span`
   display: flex;

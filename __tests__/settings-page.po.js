@@ -1,6 +1,7 @@
-import { t, Selector } from 'testcafe';
-import { ENV, NETWORK_NAME_FIXTURE, PAGES } from './fixtures';
+import { Selector, t } from 'testcafe';
+
 import BasePage from './base-page.po';
+import { ENV, NETWORK_NAME_FIXTURE, PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
 export default class SettingsPage extends BasePage {

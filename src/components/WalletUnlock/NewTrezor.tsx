@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
 
-import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw, Trans } from '@translations';
-import { Spinner, Button, RouterLink } from '@components';
-import {
-  EXT_URLS,
-  TREZOR_DERIVATION_PATHS,
-  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DEFAULT_GAP_TO_SCAN_FOR,
-  DPathsList
-} from '@config';
-import {
-  getNetworkById,
-  getAssetByUUID,
-  useDeterministicWallet,
-  useAssets,
-  useNetworks
-} from '@services';
+import prop from 'ramda/src/prop';
+import uniqBy from 'ramda/src/uniqBy';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
+import { Button, RouterLink, Spinner } from '@components';
+import {
+  DEFAULT_GAP_TO_SCAN_FOR,
+  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
+  DPathsList,
+  EXT_URLS,
+  TREZOR_DERIVATION_PATHS
+} from '@config';
+import {
+  getAssetByUUID,
+  getNetworkById,
+  useAssets,
+  useDeterministicWallet,
+  useNetworks
+} from '@services';
+import translate, { Trans, translateRaw } from '@translations';
+import { ExtendedAsset, FormData, WalletId } from '@types';
+
+import DeterministicWallet from './DeterministicWallet';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './NewTrezor.scss';
-import DeterministicWallet from './DeterministicWallet';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {

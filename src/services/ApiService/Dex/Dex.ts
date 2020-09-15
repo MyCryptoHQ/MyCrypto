@@ -1,10 +1,10 @@
-import { addHexPrefix } from 'ethereumjs-util';
-import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
+import BN from 'bn.js';
+import { addHexPrefix } from 'ethereumjs-util';
 
-import { TTicker, ITxObject, TAddress, ITxValue, ITxData } from '@types';
-import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
+import { DEX_BASE_URL, DEXAG_MYC_HANDLER_CONTRACT, DEXAG_MYC_TRADE_CONTRACT } from '@config';
 import { ERC20 } from '@services/EthService';
+import { ITxData, ITxObject, ITxValue, TAddress, TTicker } from '@types';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';

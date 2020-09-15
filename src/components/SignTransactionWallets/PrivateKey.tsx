@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { stripHexPrefix } from 'ethjs-util';
-import { Wallet } from 'ethers';
 
-import { TogglablePassword, Input, Button } from '@components';
-import { isValidPrivKey, isValidEncryptedPrivKey } from '@services/EthService';
-import { decryptPrivKey } from '@services/EthService/utils';
-import { ISignComponentProps } from '@types';
-import translate, { translateRaw } from '@translations';
+import { Wallet } from 'ethers';
+import { stripHexPrefix } from 'ethjs-util';
+
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import { Button, Input, TogglablePassword } from '@components';
 import { WALLETS_CONFIG } from '@config';
+import { isValidEncryptedPrivKey, isValidPrivKey } from '@services/EthService';
+import { decryptPrivKey } from '@services/EthService/utils';
+import translate, { translateRaw } from '@translations';
+import { ISignComponentProps } from '@types';
 
 import './PrivateKey.scss';
-import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 export interface SignWithPrivKeyState {
   key: string;

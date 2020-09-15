@@ -1,4 +1,5 @@
 import { ABIFunc, ABIFuncParamless } from '../AbiFunc';
+
 export interface IAuction {
   releaseDeed: ABIFunc<{ _hash: bytes32 }>;
   getAllowedTime: ABIFunc<{ _hash: bytes32 }, { timestamp: uint256 }>;

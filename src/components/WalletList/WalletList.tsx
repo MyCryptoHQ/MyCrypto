@@ -1,14 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-import translate, { translateRaw } from '@translations';
-import { WalletButton } from './WalletButton';
-import { WalletId, IStory } from '@types';
-import { ROUTE_PATHS, getWalletConfig } from '@config';
-import { BREAK_POINTS, COLORS } from '@theme';
-import { IS_ELECTRON, getWeb3Config, useAnalytics } from '@utils';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { BREAK_POINTS, COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { IStory, WalletId } from '@types';
+import { getWeb3Config, IS_ELECTRON, useAnalytics } from '@utils';
+
+import { WalletButton } from './WalletButton';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;

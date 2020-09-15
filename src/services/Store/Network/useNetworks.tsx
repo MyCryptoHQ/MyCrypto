@@ -1,13 +1,14 @@
 import { useContext } from 'react';
-import isString from 'lodash/isString';
+
 import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
 
-import { Network, NetworkId, NodeOptions, LSKeys } from '@types';
+import { LSKeys, Network, NetworkId, NodeOptions } from '@types';
 
-import { DataContext } from '../DataManager';
-import { NetworkUtils } from './utils';
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
+import { DataContext } from '../DataManager';
 import { getNetworkById as getNetworkByIdFunc } from './helpers';
+import { NetworkUtils } from './utils';
 
 export interface INetworkContext {
   networks: Network[];

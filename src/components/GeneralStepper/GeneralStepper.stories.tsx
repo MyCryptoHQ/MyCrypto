@@ -1,5 +1,7 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
+
+import { MemoryRouter, Route, Switch } from 'react-router-dom';
+
 import { GeneralStepper, StepperProps } from './GeneralStepper';
 
 const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => (

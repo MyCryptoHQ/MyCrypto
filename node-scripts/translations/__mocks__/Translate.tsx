@@ -1,5 +1,6 @@
 import React from 'react';
-import translate, { translateRaw, translateMarker, Trans } from '@translations';
+
+import translate, { Trans, translateMarker, translateRaw } from '@translations';
 
 const Translate: React.FC = () => {
   const translateTest2 = translate('TRANSLATE_TEST_2');

@@ -1,17 +1,17 @@
-import { isSameAddress } from '@utils';
 import {
-  TAddress,
-  ITxToAddress,
   ITxConfig,
+  ITxData,
   ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
+  ITxToAddress,
   ITxValue,
-  ITxData,
+  StoreAccount,
+  TAddress,
   TTicker,
-  TUuid,
-  StoreAccount
+  TUuid
 } from '@types';
+import { isSameAddress } from '@utils';
 
 import { fAccounts } from './account';
 import { fNetwork } from './network';

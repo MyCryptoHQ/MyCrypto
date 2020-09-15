@@ -1,4 +1,5 @@
-import { TURL, ITxType, StoreAsset } from '@types';
+import { ITxType, StoreAsset, TURL } from '@types';
+
 export interface Action {
   icon: string;
   faded?: boolean;

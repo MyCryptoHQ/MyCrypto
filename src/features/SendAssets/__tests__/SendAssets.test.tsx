@@ -1,11 +1,12 @@
 import React from 'react';
+
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
+import { fAssets, fSettings } from '@fixtures';
 import { FeatureFlagProvider, RatesContext } from '@services';
-import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings, fAssets } from '@fixtures';
+import { DataContext, SettingsContext, StoreContext } from '@services/Store';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('ethers/providers', () => {

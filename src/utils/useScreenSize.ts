@@ -1,4 +1,5 @@
 import { useMediaQuery } from 'react-responsive';
+
 import { BREAK_POINTS } from '@theme';
 
 const useScreenSize = () => {

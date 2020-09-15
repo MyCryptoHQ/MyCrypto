@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { TTicker, TUuid } from '@types';
 import { Divider } from '@components';
-import Currency from './Currency';
 import { FONT_SIZE } from '@theme';
+import { TTicker, TUuid } from '@types';
+
+import Currency from './Currency';
 
 const defaultProps: React.ComponentProps<typeof Currency> = {
   amount: '0.00012312',

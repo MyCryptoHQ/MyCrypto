@@ -1,15 +1,15 @@
-import React, { useContext, useMemo, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Button } from '@mycrypto/ui';
-import isEmpty from 'lodash/isEmpty';
-import { bigNumberify } from 'ethers/utils';
-import BN from 'bn.js';
-import styled from 'styled-components';
-import mergeDeepWith from 'ramda/src/mergeDeepWith';
-import { ValuesType } from 'utility-types';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
-import translate, { translateRaw } from '@translations';
+import { Button } from '@mycrypto/ui';
+import BN from 'bn.js';
+import { bigNumberify } from 'ethers/utils';
+import { useFormik } from 'formik';
+import isEmpty from 'lodash/isEmpty';
+import mergeDeepWith from 'ramda/src/mergeDeepWith';
+import styled from 'styled-components';
+import { ValuesType } from 'utility-types';
+import { number, object, string } from 'yup';
+
 import {
   AccountSelector,
   AmountInput,
@@ -20,32 +20,21 @@ import {
   Tooltip,
   WhenQueryExists
 } from '@components';
+import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
-  getAccountBalance,
-  getAccountsByAsset,
-  getBaseAssetByNetwork,
-  getNetworkById,
-  SettingsContext,
-  StoreContext,
-  useAssets
-} from '@services/Store';
-import {
-  Asset,
-  ErrorObject,
-  IAccount,
-  IFormikFields,
-  InlineMessageType,
-  IStepComponentProps,
-  ITxConfig,
-  Network,
-  StoreAccount,
-  StoreAsset,
-  WalletId,
-  Fiat,
-  TUuid,
-  TxQueryTypes,
-  TAddress
-} from '@types';
+  DEFAULT_ASSET_DECIMAL,
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND
+} from '@config';
+import { Fiats, getFiat } from '@config/fiats';
+import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
+import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
+import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
+import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { useRates } from '@services';
+import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
   baseToConvertedUnit,
   bigNumGasPriceToViewableGwei,
@@ -59,43 +48,55 @@ import {
   isValidPositiveNumber,
   toTokenBase
 } from '@services/EthService';
-import { useRates } from '@services';
-import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
+import { validateTxFee } from '@services/EthService/validators';
 import {
-  DEFAULT_ASSET_DECIMAL,
-  GAS_LIMIT_LOWER_BOUND,
-  GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
-} from '@config';
-import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
+  getAccountBalance,
+  getAccountsByAsset,
+  getBaseAssetByNetwork,
+  getNetworkById,
+  SettingsContext,
+  StoreContext,
+  useAssets
+} from '@services/Store';
+import translate, { translateRaw } from '@translations';
 import {
-  formatSupportEmail,
+  Asset,
+  ErrorObject,
+  Fiat,
+  IAccount,
+  IFormikFields,
+  InlineMessageType,
+  IStepComponentProps,
+  ITxConfig,
+  Network,
+  StoreAccount,
+  StoreAsset,
+  TAddress,
+  TUuid,
+  TxQueryTypes,
+  WalletId
+} from '@types';
+import {
+  bigify,
   isFormValid as checkFormValid,
   ETHUUID,
+  formatSupportEmail,
   isSameAddress,
   isVoid,
-  bigify,
   sortByLabel
 } from '@utils';
-import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
-import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
-import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
-import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { path } from '@vendor';
-import { getFiat, Fiats } from '@config/fiats';
 
+import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
   validateAmountField,
+  validateDataField,
   validateGasLimitField,
   validateGasPriceField,
-  validateNonceField,
-  validateDataField
+  validateNonceField
 } from './validators';
-import { isERC20Asset, processFormForEstimateGas } from '../helpers';
-import { validateTxFee } from '@services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -300,8 +301,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     showHideProtectTx
   } = useContext(ProtectTxContext);
 
-  const SendAssetsSchema = Yup.object().shape({
-    amount: Yup.string()
+  const SendAssetsSchema = object().shape({
+    amount: string()
       .required(translateRaw('REQUIRED'))
       .test(validateAmountField())
       .test({
@@ -327,8 +328,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
           return true;
         }
       }),
-    account: Yup.object().required(translateRaw('REQUIRED')),
-    address: Yup.object()
+    account: object().required(translateRaw('REQUIRED')),
+    address: object()
       .required(translateRaw('REQUIRED'))
       // @ts-ignore Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
@@ -373,19 +374,19 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         }
         return true;
       }),
-    gasLimitField: Yup.number()
+    gasLimitField: number()
       .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_8'))
       .test(validateGasLimitField()),
-    gasPriceField: Yup.number()
+    gasPriceField: number()
       .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
       .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('GASPRICE_ERROR'))
       .test(validateGasPriceField()),
-    nonceField: Yup.number()
+    nonceField: number()
       .integer(translateRaw('ERROR_11'))
       .min(0, translateRaw('ERROR_11'))
       .required(translateRaw('REQUIRED'))
@@ -406,7 +407,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
           return true;
         }
       ),
-    dataField: Yup.string().test(validateDataField())
+    dataField: string().test(validateDataField())
   });
 
   const initialValues = useMemo(

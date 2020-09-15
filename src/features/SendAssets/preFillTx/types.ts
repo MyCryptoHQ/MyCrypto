@@ -1,11 +1,11 @@
 import {
+  ITxData,
+  ITxFromAddress,
   ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
-  ITxValue,
   ITxToAddress,
-  ITxFromAddress,
-  ITxData,
+  ITxValue,
   TxQueryTypes
 } from '@types';
 

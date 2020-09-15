@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
+import { Button } from '@mycrypto/ui';
 import chunk from 'lodash/chunk';
 import shuffle from 'lodash/shuffle';
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, InlineMessage } from '@components';

@@ -1,23 +1,23 @@
 import {
-  saveSettingsCheck,
-  printPaperWalletCheck,
+  GetHardwareWalletNotification,
+  OnboardingPleaseUnderstandNotification,
+  OnboardingResponsibleNotification,
+  PrintPaperWalletNotification,
+  SaveDashboardNotification,
+  WalletAddedNotification,
+  WalletCreatedNotification,
+  WalletNotAddedNotification,
+  WalletsAddedNotification,
+  WalletsNotAddedNotification
+} from './components';
+import {
   getHardwareWalletCheck,
   onboardingPleaseUnderstandCheck,
-  onboardingResponsibleCheck
+  onboardingResponsibleCheck,
+  printPaperWalletCheck,
+  saveSettingsCheck
 } from './helpers';
 import { NotificationsConfigsProps } from './types';
-import {
-  WalletCreatedNotification,
-  WalletAddedNotification,
-  WalletsAddedNotification,
-  SaveDashboardNotification,
-  PrintPaperWalletNotification,
-  GetHardwareWalletNotification,
-  WalletNotAddedNotification,
-  WalletsNotAddedNotification,
-  OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification
-} from './components';
 
 export const NotificationTemplates = {
   walletCreated: 'wallet-created',

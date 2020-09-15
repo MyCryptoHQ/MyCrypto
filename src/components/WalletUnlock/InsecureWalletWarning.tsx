@@ -1,8 +1,8 @@
 import React from 'react';
 
-import translate, { translateRaw } from '@translations';
-import { DOWNLOAD_MYCRYPTO_LINK } from '@config';
 import { NewTabLink } from '@components';
+import { DOWNLOAD_MYCRYPTO_LINK } from '@config';
+import translate, { translateRaw } from '@translations';
 import { IS_DEV } from '@utils';
 import './InsecureWalletWarning.scss';
 

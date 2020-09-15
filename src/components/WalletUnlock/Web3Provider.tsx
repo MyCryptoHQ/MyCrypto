@@ -1,14 +1,15 @@
 import React, { FC, useCallback, useContext, useState } from 'react';
-import translate, { translateRaw } from '@translations';
-import { WALLETS_CONFIG, IWalletConfig } from '@config';
-import { WalletId, FormData, Network } from '@types';
+
 import { InlineMessage, NewTabLink } from '@components';
-import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
-import { SettingsContext, NetworkUtils, useNetworks } from '@services/Store';
-import { WalletFactory, Web3Wallet } from '@services/WalletService';
+import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
-import { getWeb3Config } from '@utils/web3';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { NetworkUtils, SettingsContext, useNetworks } from '@services/Store';
+import { WalletFactory, Web3Wallet } from '@services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { FormData, Network, WalletId } from '@types';
+import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
+import { getWeb3Config } from '@utils/web3';
 
 import './Web3Provider.scss';
 

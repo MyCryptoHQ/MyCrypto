@@ -1,27 +1,27 @@
 import styled from 'styled-components';
 import {
-  space,
-  SpaceProps,
-  lineHeight,
-  LineHeightProps,
-  fontSize,
-  FontSizeProps,
-  fontStyle,
-  FontStyleProps,
-  size,
-  SizeProps,
   color,
   ColorProps,
   colorStyle,
   ColorStyleProps,
-  textStyle,
-  TextStyleProps,
   fontFamily,
   FontFamilyProps,
+  fontSize,
+  FontSizeProps,
+  fontStyle,
+  FontStyleProps,
   fontWeight,
   FontWeightProps,
   letterSpacing,
-  LetterSpacingProps
+  LetterSpacingProps,
+  lineHeight,
+  LineHeightProps,
+  size,
+  SizeProps,
+  space,
+  SpaceProps,
+  textStyle,
+  TextStyleProps
 } from 'styled-system';
 
 import { textVariants, TextVariants } from '@theme';

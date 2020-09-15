@@ -1,5 +1,6 @@
 import { Overwrite } from 'utility-types';
-import { TAddress, AssetBalanceObject, TTicker, IRawAccount, WalletId, TUuid } from '@types';
+
+import { AssetBalanceObject, IRawAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 
 export interface SeedAssetBalance extends AssetBalanceObject {
   ticker: TTicker;

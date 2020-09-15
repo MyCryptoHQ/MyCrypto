@@ -1,5 +1,6 @@
-import { migrate } from './migration';
 import { LocalStorage } from '@types';
+
+import { migrate } from './migration';
 
 describe('Migrate to v1.0.0', () => {
   const getPrev = ({ assets = {}, ...rest }: any = {}) =>

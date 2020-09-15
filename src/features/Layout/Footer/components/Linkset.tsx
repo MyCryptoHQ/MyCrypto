@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { CRYPTOSCAMDB, EXT_URLS, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from '@config';
 import { translateRaw } from '@translations';
 import './Linkset.scss';
 import useAnalytics from '@utils/useAnalytics';

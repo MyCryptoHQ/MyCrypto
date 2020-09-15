@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+
 import { useHistory } from 'react-router-dom';
 
 import { ContentPanel } from '@components';
-import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
 
-import { IStepperPath } from './types';
 import QueryBanner from './QueryBanner';
+import { IStepperPath } from './types';
 
 export interface StepperProps {
   steps: IStepperPath[];

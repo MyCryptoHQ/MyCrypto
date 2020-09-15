@@ -1,18 +1,18 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { useTxMulti } from '@utils';
-import { TxParcel, ITxStatus, ISimpleTxFormFull } from '@types';
+import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { WALLET_STEPS } from '@components';
+import { ISimpleTxFormFull, ITxStatus, TxParcel } from '@types';
+import { useTxMulti } from '@utils';
 
-import { TokenMigrationState, ITokenMigrationFormFull } from './types';
-import { createMigrationTx, createApproveTx } from './helpers';
-import TokenMigrationForm from './components/TokenMigrationForm';
 import { TokenMigrationMultiTx } from './components';
+import TokenMigrationForm from './components/TokenMigrationForm';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
+import { createApproveTx, createMigrationTx } from './helpers';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
+import { ITokenMigrationFormFull, TokenMigrationState } from './types';
 
 const TokenMigrationStepper = () => {
   const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});

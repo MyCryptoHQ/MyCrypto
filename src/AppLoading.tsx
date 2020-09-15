@@ -1,9 +1,11 @@
-import { DashboardPanel } from '@components';
 import React from 'react';
+
 import styled from 'styled-components';
+
+import { DashboardPanel } from '@components';
+import Layout from '@features/Layout/Layout';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme/constants';
 import { translateRaw } from '@translations';
-import Layout from '@features/Layout/Layout';
 
 const DashboardPanelLoading = styled(DashboardPanel)`
   min-height: 40rem;

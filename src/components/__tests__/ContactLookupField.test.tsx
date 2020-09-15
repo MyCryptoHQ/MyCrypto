@@ -1,10 +1,11 @@
 import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
-import { fNetwork } from '@fixtures';
 
-import { DataContext } from '@services/Store';
-import { Contact, ExtendedContact, TUuid, IReceiverAddress } from '@types';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
+
 import { contacts as seedContacts } from '@database/seed/contacts';
+import { fNetwork } from '@fixtures';
+import { DataContext } from '@services/Store';
+import { Contact, ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 import ContactLookupField from '../ContactLookupField';
 

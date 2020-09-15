@@ -1,9 +1,9 @@
 import {
-  decryptPrivKey,
-  decodeCryptojsSalt,
-  evp_kdf,
   decipherBuffer,
-  decryptMnemonicToPrivKey
+  decodeCryptojsSalt,
+  decryptMnemonicToPrivKey,
+  decryptPrivKey,
+  evp_kdf
 } from '@services/EthService/utils/decrypt';
 
 // Elements of a V1 encrypted priv key

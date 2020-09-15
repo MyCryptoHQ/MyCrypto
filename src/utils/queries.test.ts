@@ -1,10 +1,10 @@
 import { fERC20NonWeb3TxConfig, fETHNonWeb3TxConfig } from '@fixtures';
+import { TxQueryTypes } from '@types';
 import {
   constructCancelTxQuery,
   constructSpeedUpTxQuery,
   createQueryParamsDefaultObject
 } from '@utils';
-import { TxQueryTypes } from '@types';
 
 describe('constructCancelTxQuery', () => {
   it('correctly constructs a cancel tx query for an erc20 transfer', () => {

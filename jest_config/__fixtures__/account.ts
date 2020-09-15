@@ -1,7 +1,8 @@
 import { bigNumberify } from 'ethers/utils';
-import { StoreAccount, TUuid, TAddress, WalletId, TTicker } from '@types';
-import { bigify } from '@utils';
+
 import { DWAccountDisplay } from '@services';
+import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
+import { bigify } from '@utils';
 
 import { fNetwork } from './network';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { TxReceipt } from '@components/TransactionFlow';
-import { ITxReceipt, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
+import { ITxConfig, ITxReceipt } from '@types';
 
 interface Props {
   txReceipt: ITxReceipt;

@@ -1,21 +1,20 @@
-import { mergeRight, map, pipe, reduce, concat, keys } from '@vendor';
-
-import { generateUUID } from '@utils';
 import {
   Asset,
   AssetBalanceObject,
-  IAccount,
   Contact,
-  LocalStorage,
-  NetworkId,
-  TUuid,
+  IAccount,
   ISettings,
-  LSKeys
+  LocalStorage,
+  LSKeys,
+  NetworkId,
+  TUuid
 } from '@types';
+import { generateUUID } from '@utils';
+import { concat, keys, map, mergeRight, pipe, reduce } from '@vendor';
 
-import { devAccounts, DevAccount, SeedAssetBalance, devAssets, devContacts } from '../seed';
+import { add, toArray, toObject, withUuid } from '../helpers';
+import { DevAccount, devAccounts, devAssets, devContacts, SeedAssetBalance } from '../seed';
 import { StoreAction } from '../types';
-import { withUuid, toArray, toObject, add } from '../helpers';
 
 /* DevData */
 const addDevAssets = add(LSKeys.ASSETS)((assets: Asset[], store: LocalStorage) => {

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers/utils';
 
-import { TAddress, StoreAsset, Network, StoreAccount } from '@types';
+import { Network, StoreAccount, StoreAsset, TAddress } from '@types';
 
 export interface ISender {
   address: TAddress;
