@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { fAccount, fNotifications } from '@fixtures';
-import { LSKeys, ExtendedNotification } from '@types';
 import { DataContext, IDataContext } from '@services';
+import { ExtendedNotification, LSKeys } from '@types';
 
-import { useNotifications } from './useNotifications';
 import { NotificationTemplates } from '.';
+import { useNotifications } from './useNotifications';
 
 const renderUseNotifications = ({
   notifications = [] as ExtendedNotification[],

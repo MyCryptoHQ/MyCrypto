@@ -8,8 +8,8 @@ import { SPACING } from '@theme';
 import { IAccount } from '@types';
 import { useEffectOnce } from '@vendor';
 
-import { useNotifications } from './useNotifications';
 import { notificationsConfigs, NotificationTemplates } from './constants';
+import { useNotifications } from './useNotifications';
 
 export const MainPanel = styled(Panel)`
   position: relative;

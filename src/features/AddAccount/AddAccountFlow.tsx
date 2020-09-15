@@ -11,10 +11,10 @@ import { IStory, StoreAccount, WalletId } from '@types';
 import { isSameAddress, useAnalytics } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
-import { useNotifications, NotificationTemplates } from '../NotificationsPanel';
-import { FormDataActionType as ActionType } from './types';
-import { getStories } from './stories';
+import { NotificationTemplates, useNotifications } from '../NotificationsPanel';
 import { formReducer, initialState } from './AddAccountForm.reducer';
+import { getStories } from './stories';
+import { FormDataActionType as ActionType } from './types';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId): IStory => {
