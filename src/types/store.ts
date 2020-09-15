@@ -1,18 +1,19 @@
-import { SymmetricDifference, ValuesType, $ElementType } from 'utility-types';
+import { $ElementType, SymmetricDifference, ValuesType } from 'utility-types';
+
 import {
   Asset,
   Contact,
+  ExtendedAsset,
+  ExtendedContact,
   ExtendedContract,
+  ExtendedNotification,
+  IAccount,
   ISettings,
   Network,
-  Notification,
-  ExtendedContact,
-  IAccount,
-  ExtendedAsset,
-  ExtendedNotification,
-  TUuid,
   NetworkId,
-  NetworkNodes
+  NetworkNodes,
+  Notification,
+  TUuid
 } from '@types';
 
 export enum LSKeys {

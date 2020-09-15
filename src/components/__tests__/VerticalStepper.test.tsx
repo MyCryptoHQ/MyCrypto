@@ -1,6 +1,6 @@
 import React from 'react';
+import { fireEvent, simpleRender } from 'test-utils';
 
-import { simpleRender, fireEvent } from 'test-utils';
 import VerticalStepper, { Props } from '../VerticalStepper';
 
 const defaultProps: Props = {

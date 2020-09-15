@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 
-import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
+import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { WALLET_STEPS } from '@components';
+import { ITxConfig, ITxReceipt, ITxStatus, TxParcel } from '@types';
+import { useStateReducer, useTxMulti } from '@utils';
 
-import { defaultMembershipObject } from './config';
-import MembershipInteractionFactory from './stateFactory';
-import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { createPurchaseTx, createApproveTx } from './helpers';
 import { isERC20Asset } from '../SendAssets';
-import MembershipPurchaseForm from './components/MembershipPurchaseForm';
-import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
 import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';
+import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import MembershipPurchaseForm from './components/MembershipPurchaseForm';
 import MembershipPurchaseReceipt from './components/MembershipPurchaseReceipt';
+import { defaultMembershipObject } from './config';
+import { createApproveTx, createPurchaseTx } from './helpers';
+import MembershipInteractionFactory from './stateFactory';
+import { MembershipPurchaseState, MembershipSimpleTxFormFull } from './types';
 
 const initialMembershipFlowState = {
   membershipSelected: defaultMembershipObject,

@@ -1,4 +1,5 @@
 import { ITxConfig, ITxReceipt } from '@types';
+
 import { IZapConfig } from './config';
 
 export interface ZapInteractionState {

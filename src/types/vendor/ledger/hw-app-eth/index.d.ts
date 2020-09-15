@@ -1,6 +1,6 @@
 declare module '@ledgerhq/hw-app-eth' {
-  import Transport from '@ledgerhq/hw-transport';
   import { TokenInfo } from '@ledgerhq/hw-app-eth/erc20';
+  import Transport from '@ledgerhq/hw-transport';
 
   interface Signature {
     v: string;

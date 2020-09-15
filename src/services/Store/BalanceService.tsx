@@ -1,18 +1,18 @@
+import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 import {
-  getEtherBalances,
-  getTokensBalance,
-  getTokenBalances as getTokenBalancesFromEthScan,
   BalanceMap as EthScanBalanceMap,
+  getEtherBalances,
+  getTokenBalances as getTokenBalancesFromEthScan,
+  getTokensBalance,
   ProviderLike
 } from '@mycrypto/eth-scan';
-import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
-import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
+import partition from 'lodash/partition';
 
-import { ETHSCAN_NETWORKS, ETH_SCAN_BATCH_SIZE } from '@config';
-import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN, ExtendedAsset } from '@types';
+import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
 import { ProviderHandler } from '@services/EthService';
+import { Asset, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress, TBN } from '@types';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 

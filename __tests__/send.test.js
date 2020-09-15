@@ -1,18 +1,19 @@
-import { getByText, getAllByText } from '@testing-library/testcafe';
+import { getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
+
+import { setFeatureFlag } from './featureflag-utils';
 import {
-  PAGES,
+  ENV,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
   FIXTURE_MYC_STORAGE_KEY,
-  ENV,
   FIXTURE_SEND_AMOUNT,
-  FIXTURE_SEND_CONTACT
+  FIXTURE_SEND_CONTACT,
+  PAGES
 } from './fixtures';
+import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
+import { selectMnemonicInput } from './selectors';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
-import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
-import { setFeatureFlag } from './featureflag-utils';
-import { selectMnemonicInput } from './selectors';
 
 const sendAssetsPage = new SendAssetsPage();
 

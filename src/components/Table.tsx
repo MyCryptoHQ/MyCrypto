@@ -3,16 +3,16 @@
   In order to style the headers particularyly the Icon caret
 */
 
+import isFunction from 'lodash/isFunction';
+import path from 'ramda/src/path';
 import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
-import path from 'ramda/src/path';
-import isFunction from 'lodash/isFunction';
 
-import { noOp } from '@utils';
 import { SPACING } from '@theme';
+import { noOp } from '@utils';
 
-import { default as Typography } from './Typography';
 import IconArrow from './IconArrow';
+import { default as Typography } from './Typography';
 
 export interface TableGroup {
   title: string;

@@ -6,9 +6,9 @@ import { TAddress } from '@types';
 // eslint-disable-next-line jest/no-mocks-import
 import { fixtures } from './__mocks__';
 import {
+  findFinishedZeroBalanceAccounts,
   processFinishedAccounts as process,
-  sortAccountDisplayItems,
-  findFinishedZeroBalanceAccounts
+  sortAccountDisplayItems
 } from './helpers';
 import { DWAccountDisplay } from './types';
 

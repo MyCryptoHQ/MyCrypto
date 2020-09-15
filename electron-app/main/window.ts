@@ -2,10 +2,9 @@ import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
 
 import { IS_DEV } from '../../environment';
-
-import MENU from './menu';
-import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
+import popupContextMenu from './contextMenu';
+import MENU from './menu';
 
 // Cached reference, preventing recreations
 let window: BrowserWindow | null;

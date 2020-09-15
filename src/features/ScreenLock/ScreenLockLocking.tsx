@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import moment from 'moment';
 import { Button } from '@mycrypto/ui';
+import moment from 'moment';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-
 import { SettingsContext } from '@services/Store';
+import translate, { translateRaw } from '@translations';
 import { useAnalytics } from '@utils';
 
 const MainWrapper = styled.div`

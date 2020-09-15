@@ -1,4 +1,5 @@
-import { t, ClientFunction } from 'testcafe';
+import { ClientFunction, t } from 'testcafe';
+
 import { FIXTURES_CONST } from './fixtures';
 
 export default class BasePage {

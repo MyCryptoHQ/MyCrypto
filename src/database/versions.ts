@@ -4,9 +4,9 @@ import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
 import { noOp } from '@utils/noOp';
 
-import { migrate } from './v1.0.0';
 import { SCHEMA_BASE } from './data';
 import { DBConfig } from './types';
+import { migrate } from './v1.0.0';
 
 export const dbVersions = {
   'v1.0.0': {

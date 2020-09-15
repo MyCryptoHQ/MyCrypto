@@ -1,7 +1,8 @@
-import { SelectNetworkPanel } from '../components';
-import { GeneratePhrasePanel, BackUpPhrasePanel, ConfirmPhrasePanel } from './components';
 import { ComponentType } from 'react';
+
+import { SelectNetworkPanel } from '../components';
 import { PanelProps } from '../CreateWallet';
+import { BackUpPhrasePanel, ConfirmPhrasePanel, GeneratePhrasePanel } from './components';
 
 export enum MnemonicStages {
   SelectNetwork,

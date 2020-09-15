@@ -1,4 +1,5 @@
 import { ExtendedContact, TUuid } from '@types';
+
 import { fNetwork, fNetworks } from './network';
 
 export const fContacts: ExtendedContact[] = [

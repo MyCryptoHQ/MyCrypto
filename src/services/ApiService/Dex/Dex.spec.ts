@@ -1,5 +1,6 @@
+import { ITxData, ITxToAddress, ITxValue } from '@types';
+
 import { formatApproveTx, formatTradeTx } from './Dex';
-import { ITxToAddress, ITxValue, ITxData } from '@types';
 
 describe('SwapFlow', () => {
   describe('formatApproveTx', () => {

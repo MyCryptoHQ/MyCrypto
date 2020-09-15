@@ -1,6 +1,6 @@
+import pipe from 'ramda/src/pipe';
 import React from 'react';
 import Responsive from 'react-responsive';
-import pipe from 'ramda/src/pipe';
 
 import { BREAK_POINTS } from '@theme';
 

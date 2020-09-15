@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { fTxConfig, fAccount, fSettings } from '@fixtures';
-import { ExtendedContact, ITxType } from '@types';
-import { noOp, bigify } from '@utils';
 import { devContacts } from '@database/seed';
-import { IZapConfig, ZAPS_CONFIG, IZapId } from '@features/DeFiZap/config';
+import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
+import { fAccount, fSettings, fTxConfig } from '@fixtures';
+import { ExtendedContact, ITxType } from '@types';
+import { bigify, noOp } from '@utils';
 
 import { ConfirmTransactionUI } from './ConfirmTransaction';
 import { constructSenderFromTxConfig } from './helpers';

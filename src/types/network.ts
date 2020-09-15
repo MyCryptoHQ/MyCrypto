@@ -1,14 +1,14 @@
-import { Subtract, Omit, Overwrite } from 'utility-types';
+import { Omit, Overwrite, Subtract } from 'utility-types';
 
-import { NodeOptions } from './node';
-import { BlockExplorer } from './blockExplorer';
-import { GasPrice } from './gas';
-import { DPathFormats } from './dPath';
-import { NetworkId } from './networkId';
-import { TUuid } from './uuid';
-import { Contract } from './contract';
-import { Asset, TTicker } from './asset';
 import { TAddress } from './address';
+import { Asset, TTicker } from './asset';
+import { BlockExplorer } from './blockExplorer';
+import { Contract } from './contract';
+import { DPathFormats } from './dPath';
+import { GasPrice } from './gas';
+import { NetworkId } from './networkId';
+import { NodeOptions } from './node';
+import { TUuid } from './uuid';
 
 type AssetPropsMissingInLegacy = Pick<Asset, 'networkId'> | Pick<Asset, 'contractAddress'>;
 interface AssetPropsInLegacy {

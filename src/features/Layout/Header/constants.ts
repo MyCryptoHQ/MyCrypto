@@ -1,9 +1,8 @@
-import { translateRaw } from '@translations';
-import { getAppRoutesObject } from '@routing';
-import { ROUTE_PATHS, IFeatureFlags } from '@config';
-
-import settingsIcon from '@assets/images/icn-settings.svg';
 import dashboardIcon from '@assets/images/icn-dashboard.svg';
+import settingsIcon from '@assets/images/icn-settings.svg';
+import { IFeatureFlags, ROUTE_PATHS } from '@config';
+import { getAppRoutesObject } from '@routing';
+import { translateRaw } from '@translations';
 
 export const getLinks = (featureFlags: IFeatureFlags) => {
   const APP_ROUTES_OBJECT = getAppRoutesObject(featureFlags);

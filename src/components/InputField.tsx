@@ -1,9 +1,9 @@
+import { Icon } from '@mycrypto/ui';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Icon } from '@mycrypto/ui';
 
-import { COLORS } from '@theme';
 import { InlineMessage, Spinner } from '@components';
+import { COLORS } from '@theme';
 import { InlineMessageType } from '@types';
 import { sanitizeDecimalSeparator } from '@utils';
 

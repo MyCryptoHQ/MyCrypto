@@ -1,11 +1,12 @@
 import { DPathsList } from '@config/dpaths';
-import { valid, invalid } from '../utils/testStrings';
 import {
+  isValidAddress,
   isValidETHAddress,
   isValidPath,
-  isValidPrivKey,
-  isValidAddress
+  isValidPrivKey
 } from '@services/EthService/validators';
+
+import { invalid, valid } from '../utils/testStrings';
 
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 const VALID_RSK_TESTNET_ADDRESS = '0x5aAeb6053F3e94c9b9A09F33669435E7EF1BEaEd';

@@ -1,7 +1,7 @@
 import React from 'react';
 import selectEvent from 'react-select-event';
+import { screen, simpleRender } from 'test-utils';
 
-import { simpleRender, screen } from 'test-utils';
 import Selector from '../Selector';
 
 const defaultProps: any = {

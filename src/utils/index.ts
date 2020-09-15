@@ -35,7 +35,6 @@ export {
   calculateMarkup,
   withCommission
 } from './convert';
-export { ETHUUID } from './constants';
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';

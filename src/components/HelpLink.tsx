@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+
 import NewTabLink, { AAttributes } from './NewTabLink';
 
 interface Props {

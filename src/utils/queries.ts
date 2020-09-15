@@ -1,6 +1,7 @@
 import queryString from 'querystring';
-import { ITxConfig, TxQueryTypes } from '@types';
+
 import { inputGasLimitToHex, inputGasPriceToHex } from '@services';
+import { ITxConfig, TxQueryTypes } from '@types';
 
 export function getParam(query: { [key: string]: string }, key: string) {
   const keys = Object.keys(query);

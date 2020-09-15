@@ -1,27 +1,27 @@
 import {
-  fETHNonWeb3TxConfigJSON as fETHNonWeb3TxConfig,
-  fETHNonWeb3TxResponse,
-  fETHNonWeb3TxReceipt,
-  fETHWeb3TxConfigJSON as fETHWeb3TxConfig,
-  fETHWeb3TxResponse,
-  fETHWeb3TxReceipt,
   fERC20NonWeb3TxConfigJSON as fERC20NonWeb3TxConfig,
-  fERC20NonWeb3TxResponse,
   fERC20NonWeb3TxReceipt,
+  fERC20NonWeb3TxResponse,
   fERC20Web3TxConfigJSON as fERC20Web3TxConfig,
-  fERC20Web3TxResponse,
   fERC20Web3TxReceipt,
-  fFinishedERC20Web3TxReceipt,
-  fFinishedERC20NonWeb3TxReceipt
+  fERC20Web3TxResponse,
+  fETHNonWeb3TxConfigJSON as fETHNonWeb3TxConfig,
+  fETHNonWeb3TxReceipt,
+  fETHNonWeb3TxResponse,
+  fETHWeb3TxConfigJSON as fETHWeb3TxConfig,
+  fETHWeb3TxReceipt,
+  fETHWeb3TxResponse,
+  fFinishedERC20NonWeb3TxReceipt,
+  fFinishedERC20Web3TxReceipt
 } from '@fixtures';
-import { ITxStatus, ITxType, ITxHash, ITxData, ITxToAddress, ITxValue } from '@types';
+import { ITxData, ITxHash, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 
 import {
-  toTxReceipt,
-  makePendingTxReceipt,
-  makeFinishedTxReceipt,
+  deriveTxRecipientsAndAmount,
   guessIfErc20Tx,
-  deriveTxRecipientsAndAmount
+  makeFinishedTxReceipt,
+  makePendingTxReceipt,
+  toTxReceipt
 } from './transaction';
 
 describe('toTxReceipt', () => {

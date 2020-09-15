@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FunctionDropdownItem from './FunctionDropdownItem';
 import { ABIItem } from '../types';
+import FunctionDropdownItem from './FunctionDropdownItem';
 
 interface Props {
   value: ABIItem;

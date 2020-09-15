@@ -1,4 +1,5 @@
 import { TTicker } from '@types';
+
 import isFiatTicker from './isFiatTicker';
 
 it('returns true for a valid fiat ticker', () => {

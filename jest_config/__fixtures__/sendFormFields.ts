@@ -1,7 +1,8 @@
 import { IFormikFields, IReceiverAddress } from '@types';
+
+import { fAccounts } from './account';
 import { fAssets } from './assets';
 import { fNetwork, fNetworks } from './network';
-import { fAccounts } from './account';
 
 export const fETHTxSendFormikFields: IFormikFields = {
   asset: fAssets[0],

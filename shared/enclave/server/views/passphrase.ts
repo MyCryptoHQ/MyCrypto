@@ -1,5 +1,5 @@
-import showPrompt from './showPrompt';
 import template from './passphrase.html';
+import showPrompt from './showPrompt';
 
 const EVENT = 'enclave:passphrase';
 

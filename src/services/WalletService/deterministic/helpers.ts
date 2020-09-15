@@ -1,5 +1,6 @@
-import { DWAccountDisplay, ExtendedDPath } from './types';
 import { bigify } from '@utils/bigify';
+
+import { DWAccountDisplay, ExtendedDPath } from './types';
 
 export const processFinishedAccounts = (
   finishedAccounts: DWAccountDisplay[],

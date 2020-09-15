@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InputField, InlineMessage } from '@components';
+import { ExtendedContentPanel, InlineMessage, InputField } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
 

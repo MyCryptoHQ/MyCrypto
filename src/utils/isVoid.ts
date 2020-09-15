@@ -1,4 +1,4 @@
-import { either, isNil, isEmpty } from '@vendor';
+import { either, isEmpty, isNil } from '@vendor';
 
 /**
  * Identify undefined, null and empty iterables.

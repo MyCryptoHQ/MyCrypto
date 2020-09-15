@@ -1,13 +1,14 @@
-import { TestOptions } from 'yup';
 import { isHexPrefixed } from 'ethjs-util';
+import { TestOptions } from 'yup';
+
 import {
-  isValidHex,
-  gasPriceValidator,
   gasLimitValidator,
+  gasPriceValidator,
+  isValidHex,
   isValidPositiveNumber
 } from '@services/EthService';
-import { translateRaw } from '@translations';
 import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
+import { translateRaw } from '@translations';
 
 export function validateGasPriceField(): TestOptions {
   return {

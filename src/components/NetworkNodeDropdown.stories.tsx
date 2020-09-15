@@ -1,6 +1,8 @@
-import React from 'react';
 import { storiesOf } from '@storybook/react';
+import React from 'react';
+
 import { DEFAULT_NETWORK } from '@config';
+
 import AppProviders from '../AppProviders';
 import NetworkNodeDropdown from './NetworkNodeDropdown';
 

@@ -1,5 +1,6 @@
 import PollingWorker from 'worker-loader!./polling.worker.tsx';
-import { PollingAction, IPollingWorkerAction } from './polling.worker';
+
+import { IPollingWorkerAction, PollingAction } from './polling.worker';
 
 interface IPollingService {
   start(): void;

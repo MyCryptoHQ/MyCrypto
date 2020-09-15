@@ -1,19 +1,20 @@
 import BigNumberJs from 'bignumber.js';
 import { BigNumber, formatEther } from 'ethers/utils';
 
+import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from '@config';
+import { StoreAsset } from '@types';
+
 import {
+  addBNFloats,
+  calculateMarkup,
+  convertToBN,
   convertToFiatFromAsset,
-  withCommission,
   divideBNFloats,
   multiplyBNFloats,
-  convertToBN,
-  trimBN,
-  addBNFloats,
   subtractBNFloats,
-  calculateMarkup
+  trimBN,
+  withCommission
 } from './convert';
-import { StoreAsset } from '@types';
-import { MYC_DEXAG_COMMISSION_RATE, DEFAULT_NETWORK } from '@config';
 
 const defaultAsset = {
   name: 'FakeToken',

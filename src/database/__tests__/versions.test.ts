@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-import { getExportFileName, getCurrentDBConfig } from '@database';
 import { SETTINGS_FILENAME } from '@config';
+import { getCurrentDBConfig, getExportFileName } from '@database';
 
 describe('getExportFileName', () => {
   const dbConfig = getCurrentDBConfig();

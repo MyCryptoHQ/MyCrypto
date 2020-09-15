@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { HelpLink, IButton, LegacyModal } from '@components';
 import { KB_HELP_ARTICLE } from '@config';
 import translate, { translateRaw } from '@translations';
 
-import { LegacyModal, IButton, HelpLink } from '@components';
 import './DisclaimerModal.scss';
 
 interface Props {

@@ -1,7 +1,8 @@
 import { TURL } from '@types';
-import { default as Reducer } from './reducer';
+
 import { bindActions } from './actions';
 import { DBName } from './helpers';
+import { default as Reducer } from './reducer';
 
 describe('MigrateLS actions', () => {
   test('reset()', () => {

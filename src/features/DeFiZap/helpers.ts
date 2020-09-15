@@ -1,7 +1,7 @@
-import { IHexStrTransaction, ITxObject, ITxToAddress, ISimpleTxForm, ITxData } from '@types';
-import { inputValueToHex, inputGasPriceToHex, inputNonceToHex } from '@services/EthService';
 import { DEFAULT_NETWORK_CHAINID } from '@config';
+import { inputGasPriceToHex, inputNonceToHex, inputValueToHex } from '@services/EthService';
 import { COLORS } from '@theme';
+import { IHexStrTransaction, ISimpleTxForm, ITxData, ITxObject, ITxToAddress } from '@types';
 
 export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransaction | ITxObject => {
   return {

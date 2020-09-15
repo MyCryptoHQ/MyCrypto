@@ -1,12 +1,12 @@
 import React from 'react';
-import { simpleRender, fireEvent } from 'test-utils';
+import { fireEvent, simpleRender } from 'test-utils';
 
-import { translateRaw } from '@translations';
 import { Fiats } from '@config';
+import { translateRaw } from '@translations';
 import { bigify } from '@utils';
 
-import { ProtectTxProtectionUI } from '../components/ProtectTxProtection';
 import { ProtectTxError } from '..';
+import { ProtectTxProtectionUI } from '../components/ProtectTxProtection';
 
 const defaultProps: React.ComponentProps<typeof ProtectTxProtectionUI> = {
   error: ProtectTxError.NO_ERROR,

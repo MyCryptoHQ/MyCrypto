@@ -1,30 +1,29 @@
-import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
-import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
-import { Validator } from 'jsonschema';
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import { isValidPrivate, toChecksumAddress } from 'ethereumjs-util';
 import { bigNumberify } from 'ethers/utils';
+import { Validator } from 'jsonschema';
+import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 
 import {
+  CREATION_ADDRESS,
+  DEFAULT_ASSET_DECIMAL,
   dPathRegex,
   DPathsList as DPaths,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
-  CREATION_ADDRESS,
-  DEFAULT_ASSET_DECIMAL
+  GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
-import { JsonRPCResponse, InlineMessageType, Web3RequestPermissionsResponse } from '@types';
 import { translateRaw } from '@translations';
-
-import {
-  stripHexPrefix,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  baseToConvertedUnit
-} from './utils';
+import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
 
 import { isValidENSName } from './ens/validators';
+import {
+  baseToConvertedUnit,
+  convertedToBaseUnit,
+  gasStringsToMaxGasBN,
+  stripHexPrefix
+} from './utils';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);

@@ -1,6 +1,6 @@
-import { translationKeysExtract, updateJsonTranslations } from './translations-extract';
-
 import fs from 'fs';
+
+import { translationKeysExtract, updateJsonTranslations } from './translations-extract';
 
 const BASE_DIR = 'node-scripts/translations/__mocks__/';
 const MOCKS_FILE_PATTERN = `${BASE_DIR}**/*.{ts,tsx}`;

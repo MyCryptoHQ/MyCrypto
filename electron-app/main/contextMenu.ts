@@ -1,10 +1,10 @@
 import {
-  MenuItemConstructorOptions,
-  shell,
   BrowserWindow,
-  Menu,
   clipboard,
-  PopupOptions
+  Menu,
+  MenuItemConstructorOptions,
+  PopupOptions,
+  shell
 } from 'electron';
 import { URL } from 'url';
 

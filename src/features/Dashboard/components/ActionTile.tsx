@@ -1,11 +1,11 @@
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { isUrl, openLink } from '@utils';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { TURL } from '@types';
+import { isUrl, openLink } from '@utils';
 
 import { Action } from '../types';
 

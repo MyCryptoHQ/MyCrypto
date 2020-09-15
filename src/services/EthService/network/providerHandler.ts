@@ -1,16 +1,17 @@
+import any from '@ungap/promise-any';
 import {
+  BaseProvider,
+  Block,
   FallbackProvider,
   TransactionReceipt,
-  TransactionResponse,
-  Block,
-  BaseProvider
+  TransactionResponse
 } from 'ethers/providers';
-import { formatEther, BigNumber } from 'ethers/utils';
-import any from '@ungap/promise-any';
+import { BigNumber, formatEther } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
-import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { baseToConvertedUnit, ERC20, RPCRequests } from '@services/EthService';
+import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 

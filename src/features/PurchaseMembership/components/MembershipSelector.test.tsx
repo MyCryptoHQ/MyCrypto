@@ -1,10 +1,9 @@
 import React from 'react';
 import selectEvent from 'react-select-event';
-
 import { simpleRender } from 'test-utils';
 
-import MembershipSelector, { MembershipSelectorProps } from './MembershipSelector';
 import { MEMBERSHIP_CONFIG } from '../config';
+import MembershipSelector, { MembershipSelectorProps } from './MembershipSelector';
 
 const defaultProps: MembershipSelectorProps = {
   name: 'MembershipPlan',

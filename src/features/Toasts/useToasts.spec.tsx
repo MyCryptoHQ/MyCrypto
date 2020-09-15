@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
 import toast from 'toasted-notes';
 
-import { useToasts } from './useToasts';
 import { ToastTemplates } from './constants';
+import { useToasts } from './useToasts';
 
 const renderUseToasts = () => {
   return renderHook(() => useToasts());

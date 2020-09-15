@@ -1,8 +1,8 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import React from 'react';
 
 import { fAssets } from '@fixtures';
-import { LSKeys, TUuid, ExtendedAsset } from '@types';
+import { ExtendedAsset, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';

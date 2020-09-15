@@ -1,16 +1,16 @@
 import { Brand } from 'utility-types';
 
-import {
-  Asset,
-  Network as INetwork,
-  GasEstimates,
-  ITxReceipt,
-  WalletId,
-  StoreAccount,
-  TAddress
-} from '@types';
 import { IZapConfig } from '@features/DeFiZap/config';
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
+import {
+  Asset,
+  GasEstimates,
+  Network as INetwork,
+  ITxReceipt,
+  StoreAccount,
+  TAddress,
+  WalletId
+} from '@types';
 
 export type ISignedTx = string;
 

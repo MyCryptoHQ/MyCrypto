@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 const IconCaret = styled(Icon)`
   margin: 0;

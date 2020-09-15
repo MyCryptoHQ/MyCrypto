@@ -4,7 +4,7 @@
 
 declare module 'trezor.js' {
   import { EventEmitter } from 'events';
-  import { Transport, TrezorDeviceInfoWithSession as DeviceDescriptor } from 'trezor-link';
+  import { TrezorDeviceInfoWithSession as DeviceDescriptor, Transport } from 'trezor-link';
 
   /***************/
   /* Device List */

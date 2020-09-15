@@ -1,21 +1,21 @@
-import { IStory, WalletId } from '@types';
-import { IS_DEV, IS_ELECTRON, hasWeb3Provider, IS_STAGING, IS_PROD } from '@utils';
 import {
   InsecureWalletWarning,
-  LedgerNanoSDecrypt,
   KeystoreDecrypt,
+  LedgerDecrypt,
+  LedgerNanoSDecrypt,
   MnemonicDecrypt,
+  MnemonicUnlock,
   PrivateKeyDecrypt,
   TrezorDecrypt,
-  Web3ProviderDecrypt,
-  Web3ProviderInstall,
+  TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
-  LedgerDecrypt,
-  TrezorUnlock,
-  MnemonicUnlock
+  Web3ProviderDecrypt,
+  Web3ProviderInstall
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
+import { IStory, WalletId } from '@types';
+import { hasWeb3Provider, IS_DEV, IS_ELECTRON, IS_PROD, IS_STAGING } from '@utils';
 
 import { NetworkSelectPanel } from './components';
 

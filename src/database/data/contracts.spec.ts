@@ -1,7 +1,8 @@
 import { isValidAddress } from '@services/EthService';
-import { Contracts as CONTRACTS } from './contracts';
 import { NetworkId } from '@types';
+
 import { NETWORKS_CONFIG } from '.';
+import { Contracts as CONTRACTS } from './contracts';
 
 describe('Contracts JSON', () => {
   Object.keys(CONTRACTS).forEach((network) => {

@@ -1,13 +1,11 @@
+import { Button } from '@mycrypto/ui';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 import zxcvbn from 'zxcvbn';
 
 import { ExtendedContentPanel, InputField, Spinner } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
-
-// Legacy
 
 const DescriptionItem = styled.div`
   margin-top: 18px;

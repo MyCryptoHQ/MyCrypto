@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { simpleRender, fireEvent } from 'test-utils';
+import { fireEvent, simpleRender } from 'test-utils';
 
 import EditableText, { Props } from '../EditableText';
 

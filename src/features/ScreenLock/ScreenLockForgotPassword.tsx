@@ -1,14 +1,14 @@
-import React, { FC, useContext } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import React, { FC, useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { ExtendedContentPanel } from '@components';
-import { ANALYTICS_CATEGORIES } from '@services';
-import { ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@utils';
 import mainImage from '@assets/images/icn-forgot-password.svg';
+import { ExtendedContentPanel } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { ANALYTICS_CATEGORIES } from '@services';
+import translate, { translateRaw } from '@translations';
+import { useAnalytics } from '@utils';
 
 import { ScreenLockContext } from './ScreenLockProvider';
 

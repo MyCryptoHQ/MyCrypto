@@ -7,11 +7,9 @@ enum ABIMethodTypes {
   FUNC = 'function'
 }
 
-export default interface Contract {
-  [key: string]: any;
-}
-
 export default class Contract {
+  [key: string]: any;
+
   public static getFunctions = (contract: Contract) =>
     Object.getOwnPropertyNames(contract).reduce((accu, currContractMethodName) => {
       const currContractMethod = contract[currContractMethodName];

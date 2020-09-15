@@ -2,14 +2,13 @@ import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import closeIcon from '@assets/images/icn-close.svg';
 import { SPACING } from '@theme';
 import { IAccount } from '@types';
 import { useEffectOnce } from '@vendor';
+
 import { useNotifications } from './useNotifications';
 import { notificationsConfigs, NotificationTemplates } from './constants';
-
-// Legacy
-import closeIcon from '@assets/images/icn-close.svg';
 
 export const MainPanel = styled(Panel)`
   position: relative;

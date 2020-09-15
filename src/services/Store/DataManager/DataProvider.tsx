@@ -1,28 +1,28 @@
-import React, { createContext, Dispatch, useReducer, useCallback, useMemo, useEffect } from 'react';
+import React, { createContext, Dispatch, useCallback, useEffect, useMemo, useReducer } from 'react';
 
-import { EncryptedDataStore, DataStore, LSKeys, DSKeys } from '@types';
-import { useThrottleFn, useEvent } from '@vendor';
 import {
   addDevSeedToSchema,
-  removeSeedDataFromSchema,
   getCurrentDBConfig,
   getData,
-  getEncryptedData
+  getEncryptedData,
+  removeSeedDataFromSchema
 } from '@database';
+import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
+import { useEvent, useThrottleFn } from '@vendor';
 
-import {
-  appDataReducer,
-  ActionV,
-  ActionT,
-  ActionPayload,
-  encryptedDbReducer,
-  ActionZ,
-  ActionY,
-  EncryptedDbActionPayload
-} from './reducer';
 import { ActionFactory } from './actions';
-import { deMarshallState, marshallState } from './utils';
 import { DatabaseService } from './DatabaseService';
+import {
+  ActionPayload,
+  ActionT,
+  ActionV,
+  ActionY,
+  ActionZ,
+  appDataReducer,
+  EncryptedDbActionPayload,
+  encryptedDbReducer
+} from './reducer';
+import { deMarshallState, marshallState } from './utils';
 
 export interface DataCacheManager extends DataStore {
   createActions(k: DSKeys): ReturnType<typeof ActionFactory>;

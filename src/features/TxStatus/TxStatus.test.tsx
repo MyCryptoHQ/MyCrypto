@@ -1,11 +1,11 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
-import { simpleRender, waitFor, fireEvent, screen } from 'test-utils';
 import selectEvent from 'react-select-event';
+import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { StoreContext, SettingsContext, DataContext, RatesContext } from '@services';
+import { fAccount, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
+import { DataContext, RatesContext, SettingsContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
-import { fAccount, fNetwork, fAssets, fNetworks, fSettings } from '@fixtures';
 
 import TxStatus from './TxStatus';
 

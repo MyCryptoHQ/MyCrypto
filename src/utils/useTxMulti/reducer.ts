@@ -1,12 +1,12 @@
-import map from 'ramda/src/map';
+import { TransactionResponse } from 'ethers/providers';
 import adjust from 'ramda/src/adjust';
+import map from 'ramda/src/map';
 import mergeLeft from 'ramda/src/mergeLeft';
 
+import { ITxHash, ITxObject, ITxStatus } from '@types';
 import { getUUID } from '@utils';
-import { ITxStatus, ITxObject, ITxHash } from '@types';
 
-import { ActionTypes, TxMultiState, TxMultiAction } from './types';
-import { TransactionResponse } from 'ethers/providers';
+import { ActionTypes, TxMultiAction, TxMultiState } from './types';
 
 export const initialState = {
   isSubmitting: false,

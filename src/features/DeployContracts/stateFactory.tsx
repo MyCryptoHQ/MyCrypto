@@ -1,19 +1,19 @@
 import { isHexString } from 'ethjs-util';
 
-import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
-import { StoreAccount, NetworkId, ITxType, ITxStatus, ITxHash } from '@types';
-import { ProviderHandler, getGasEstimate, useAccounts } from '@services';
-import { isWeb3Wallet } from '@utils/web3';
-import { translateRaw } from '@translations';
 import {
   DEFAULT_NETWORK,
   DEFAULT_NONCE,
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
+import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
+import { translateRaw } from '@translations';
+import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
+import { makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import { isWeb3Wallet } from '@utils/web3';
 
-import { DeployContractsState } from './types';
 import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
+import { DeployContractsState } from './types';
 
 const deployContractsInitialState = {
   account: undefined,

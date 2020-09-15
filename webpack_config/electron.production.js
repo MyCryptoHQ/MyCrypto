@@ -1,11 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const DelayPlugin = require('./plugins/delay');
-const electronMain = require('./electron-main.development');
-const electronRender = require('./production');
-const config = require('./config');
+
 const { ELECTRON } = require('../environment');
+const config = require('./config');
+const electronMain = require('./electron-main.development');
+const DelayPlugin = require('./plugins/delay');
+const electronRender = require('./production');
 
 const main = merge.smart(electronMain, {
   mode: 'production',

@@ -1,9 +1,9 @@
 import { getByText } from '@testing-library/testcafe';
 
+import AddAccountPage from './addaccount-page.po';
 import { PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
-import AddAccountPage from './addaccount-page.po';
 // import SettingsPage from './settings-page.po';
 
 const addAccountPage = new AddAccountPage();

@@ -1,10 +1,9 @@
+import { getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
-import { getByText, getAllByText } from '@testing-library/testcafe';
 
-import { PAGES, FIXTURE_SEND_AMOUNT, FIXTURES_CONST } from './fixtures';
+import { resetFeatureFlags, setFeatureFlag } from './featureflag-utils';
+import { FIXTURE_SEND_AMOUNT, FIXTURES_CONST, PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
-import { setFeatureFlag, resetFeatureFlags } from './featureflag-utils';
-
 import TxStatusPage from './txstatus-page.po';
 
 const txStatusPage = new TxStatusPage();

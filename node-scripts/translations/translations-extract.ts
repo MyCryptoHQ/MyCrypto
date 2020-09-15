@@ -1,9 +1,9 @@
 /* tslint:disable:no-console */
 import { tsquery } from '@phenomnomnominal/tsquery';
-import ts from 'typescript';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
+import ts from 'typescript';
 
 const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
 const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';

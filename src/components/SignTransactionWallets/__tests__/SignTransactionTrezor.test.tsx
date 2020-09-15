@@ -1,9 +1,9 @@
 import React from 'react';
 import { simpleRender, waitFor } from 'test-utils';
 
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
-import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 import { getHeader } from './helper';
 

@@ -1,23 +1,24 @@
 import BN from 'bn.js';
-
-import { IHexStrTransaction, INode, TxObj } from '@types';
-import {
-  Wei,
-  TokenValue,
-  stripHexPrefix,
-  isValidGetBalance,
-  isValidEstimateGas,
-  isValidCallRequest,
-  isValidTokenBalance,
-  isValidTransactionCount,
-  isValidTransactionByHash,
-  isValidTransactionReceipt,
-  isValidCurrentBlock,
-  isValidRawTxApi,
-  hexToNumber
-} from '@services/EthService';
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
+
+import {
+  hexToNumber,
+  isValidCallRequest,
+  isValidCurrentBlock,
+  isValidEstimateGas,
+  isValidGetBalance,
+  isValidRawTxApi,
+  isValidTokenBalance,
+  isValidTransactionByHash,
+  isValidTransactionCount,
+  isValidTransactionReceipt,
+  stripHexPrefix,
+  TokenValue,
+  Wei
+} from '@services/EthService';
+import { IHexStrTransaction, INode, TxObj } from '@types';
+
 import { RPCClient } from './client';
 import { RPCRequests } from './requests';
 

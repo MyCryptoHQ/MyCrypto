@@ -1,6 +1,6 @@
 import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 
-import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash, TUuid } from '@types';
+import { ITxHash, ITxObject, ITxStatus, Network, StoreAccount, TUuid } from '@types';
 
 export interface TxParcel {
   readonly _uuid: TUuid;

@@ -1,5 +1,6 @@
-import { default as Contract } from './contract';
 import { IREPV2 } from '@types';
+
+import { default as Contract } from './contract';
 
 const RepV2Abi = [
   {

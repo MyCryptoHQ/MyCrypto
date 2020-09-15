@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { WalletId, ITxReceipt, IStepComponentProps, ISignComponentProps, ISignedTx } from '@types';
 import { WALLET_STEPS } from '@components';
+import { ISignComponentProps, ISignedTx, IStepComponentProps, ITxReceipt, WalletId } from '@types';
 
 type Props = Pick<IStepComponentProps, 'txConfig' | 'onComplete'> & {
   protectTxButton?(): JSX.Element;

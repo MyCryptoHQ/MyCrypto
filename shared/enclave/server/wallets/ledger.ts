@@ -1,11 +1,10 @@
-import { Transaction as EthTx } from 'ethereumjs-tx';
-import { addHexPrefix, toBuffer } from 'ethereumjs-util';
+import LedgerEth from '@ledgerhq/hw-app-eth';
+import { byContractAddress, TokenInfo } from '@ledgerhq/hw-app-eth/erc20';
 import LedgerTransport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';
-import LedgerEth from '@ledgerhq/hw-app-eth';
-
+import { Transaction as EthTx } from 'ethereumjs-tx';
+import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { WalletLib } from 'shared/enclave/types';
-import { byContractAddress, TokenInfo } from '@ledgerhq/hw-app-eth/erc20';
 
 let transport: LedgerTransport<string> | null;
 

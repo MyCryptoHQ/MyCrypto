@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 
-import { ABIItem } from '../types';
 import { isReadOperation } from '../helpers';
+import { ABIItem } from '../types';
 
 interface OptionWrapperProps {
   isSelectable: boolean;

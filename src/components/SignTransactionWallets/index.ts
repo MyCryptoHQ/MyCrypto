@@ -1,12 +1,12 @@
-import { WalletId, SigningComponents } from '@types';
+import { SigningComponents, WalletId } from '@types';
 
 import { default as SignTransactionKeystore } from './Keystore';
 import { default as SignTransactionLedger } from './Ledger';
-import { default as SignTransactionWeb3 } from './Web3';
 import { default as SignTransactionMnemonic } from './Mnemonic';
 import { default as SignTransactionPrivateKey } from './PrivateKey';
 import { default as SignTransactionTrezor } from './Trezor';
 import { default as SignTransactionWalletConnect } from './WalletConnect';
+import { default as SignTransactionWeb3 } from './Web3';
 
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,

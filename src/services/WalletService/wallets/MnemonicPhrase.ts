@@ -1,11 +1,11 @@
-import { isValidMnemonic, HDNode, fromMnemonic } from 'ethers/utils/hdnode';
+import { fromMnemonic, HDNode, isValidMnemonic } from 'ethers/utils/hdnode';
 
 import { DPathsList } from '@config/dpaths';
 import { WalletId } from '@types';
 
-import Wallet from './Wallet';
-import { MnemonicPhraseResult } from './types';
 import { getFullPath } from './helpers';
+import { MnemonicPhraseResult } from './types';
+import Wallet from './Wallet';
 
 export default class MnemonicPhrase implements Wallet {
   public hdNode: HDNode;

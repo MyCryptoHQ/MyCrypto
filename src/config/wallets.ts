@@ -1,22 +1,21 @@
-import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
-import { WalletType, WalletId } from '@types';
-
-import { KB_HELP_ARTICLE, getKBHelpArticle, HELP_ARTICLE } from './helpArticles';
-
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
-import LedgerSVG from '@assets/images/wallets/ledger.svg';
-import TrezorSVG from '@assets/images/wallets/trezor.svg';
-import MetamaskIcon from '@assets/images/wallets/metamask.svg';
-import TrustIcon from '@assets/images/wallets/trust-3.svg';
-import Web3DefaultIcon from '@assets/images/wallets/web3-default.svg';
-import FrameIcon from '@assets/images/wallets/frame.svg';
-import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
-import WalletConnectSVG from '@assets/images/wallets/walletconnect.svg';
-import keystoreIcon from '@assets/images/icn-keystore.svg';
 import mnemonicIcon from '@assets/images/icn-create-pw.svg';
+import keystoreIcon from '@assets/images/icn-keystore.svg';
 import privateKeyIcon from '@assets/images/icn-lock-safety.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
+import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
+import FrameIcon from '@assets/images/wallets/frame.svg';
+import LedgerSVG from '@assets/images/wallets/ledger.svg';
+import MetamaskIcon from '@assets/images/wallets/metamask.svg';
+import TrezorSVG from '@assets/images/wallets/trezor.svg';
+import TrustIcon from '@assets/images/wallets/trust-3.svg';
+import WalletConnectSVG from '@assets/images/wallets/walletconnect.svg';
+import Web3DefaultIcon from '@assets/images/wallets/web3-default.svg';
+import { WalletId, WalletType } from '@types';
+import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
+
+import { getKBHelpArticle, HELP_ARTICLE, KB_HELP_ARTICLE } from './helpArticles';
 
 const {
   MIGRATE_TO_METAMASK,

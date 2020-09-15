@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
 import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from '@components';
-import { WalletId, NetworkId } from '@types';
 import { INetworkContext, useNetworks } from '@services';
+import translate, { translateRaw } from '@translations';
+import { NetworkId, WalletId } from '@types';
 import { withHook } from '@utils';
+
 import { PanelProps } from '../CreateWallet';
 
 interface Props extends PanelProps {

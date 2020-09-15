@@ -1,4 +1,5 @@
 import { Selector } from 'testcafe';
+
 import { getTransValueByKey } from './translation-utils';
 
 export const selectMnemonicInput = Selector(

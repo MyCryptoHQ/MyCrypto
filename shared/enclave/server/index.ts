@@ -1,7 +1,7 @@
-import { protocol, App } from 'electron';
+import { App, protocol } from 'electron';
+import { EnclaveMethodParams, EnclaveMethods, EnclaveResponse } from 'shared/enclave/types';
+import { isValidEventType, PROTOCOL_NAME } from 'shared/enclave/utils';
 
-import { PROTOCOL_NAME, isValidEventType } from 'shared/enclave/utils';
-import { EnclaveMethods, EnclaveMethodParams, EnclaveResponse } from 'shared/enclave/types';
 import handlers from './handlers';
 
 export function registerServer(app: App) {

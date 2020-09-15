@@ -1,11 +1,12 @@
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const merge = require('webpack-merge');
+
+const { IS_ELECTRON, LOCAL } = require('../environment');
 const common = require('./common');
 const config = require('./config');
-const { IS_ELECTRON, LOCAL } = require('../environment');
 
 const HTTP_PORT = 3000;
 

@@ -1,49 +1,49 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
 import {
-  IFormikFields,
-  ITxObject,
-  IHexStrTransaction,
+  Address,
+  encodeTransfer,
+  fromTokenBase,
+  inputGasLimitToHex,
+  inputGasPriceToHex,
+  inputNonceToHex,
+  inputValueToHex,
+  TokenValue,
+  toWei
+} from '@services/EthService';
+import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
+import { handleValues } from '@services/EthService/utils/units';
+import { translateRaw } from '@translations';
+import {
   Asset,
+  ExtendedAsset,
+  IFormikFields,
+  IHexStrTransaction,
   IHexStrWeb3Transaction,
+  ITxConfig,
   ITxData,
+  ITxObject,
   ITxToAddress,
   ITxValue,
-  ITxConfig,
   Network,
-  ExtendedAsset,
-  TAddress,
-  StoreAccount,
   NetworkId,
+  StoreAccount,
+  TAddress,
   TTicker,
   TxQueryTypes
 } from '@types';
 import {
-  Address,
-  toWei,
-  TokenValue,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputNonceToHex,
-  inputGasLimitToHex,
-  encodeTransfer,
-  fromTokenBase
-} from '@services/EthService';
-import {
-  isSameAddress,
+  deriveTxRecipientsAndAmount,
   generateAssetUUID,
   guessIfErc20Tx,
-  deriveTxRecipientsAndAmount
+  isSameAddress
 } from '@utils';
-import { handleValues } from '@services/EthService/utils/units';
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
-import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
-import { translateRaw } from '@translations';
 import { isEmpty } from '@vendor';
 
+import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
-import { TxParam, TTxQueryParam } from './preFillTx';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;

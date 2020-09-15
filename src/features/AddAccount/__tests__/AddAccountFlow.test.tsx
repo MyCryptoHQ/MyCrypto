@@ -1,13 +1,13 @@
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router';
-import { simpleRender, fireEvent } from 'test-utils';
+import { fireEvent, simpleRender } from 'test-utils';
 
-import { DataContext } from '@services/Store';
-import { translateRaw } from '@translations';
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import { WalletId } from '@types';
 import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
 import { fNetworks } from '@fixtures';
+import { DataContext } from '@services/Store';
+import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 /* Test helpers */
 describe('isValidWalletId()', () => {

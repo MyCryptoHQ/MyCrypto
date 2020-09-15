@@ -2,32 +2,30 @@ import { TransactionResponse } from 'ethers/providers';
 import { bigNumberify } from 'ethers/utils';
 
 import {
-  ITxObject,
-  ITxReceipt,
+  IFailedTxReceipt,
   IPendingTxReceipt,
   ISuccessfulTxReceipt,
-  IFailedTxReceipt,
-  ITxStatus,
-  ITxToAddress,
-  ITxValue,
   ITxData,
+  ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
-  ITxGasLimit
+  ITxObject,
+  ITxReceipt,
+  ITxStatus,
+  ITxToAddress,
+  ITxValue
 } from '@types';
 
-import { default as ethNonWeb3TxResponse } from './ethNonWeb3TxResponse.json';
-import { default as ethNonWeb3TxReceipt } from './ethNonWeb3TxReceipt.json';
-import { default as ethWeb3TxResponse } from './ethWeb3TxResponse.json';
-import { default as ethWeb3TxReceipt } from './ethWeb3TxReceipt.json';
-
-import { default as erc20NonWeb3TxResponse } from './erc20NonWeb3TxResponse.json';
 import { default as erc20NonWeb3TxReceipt } from './erc20NonWeb3TxReceipt.json';
-import { default as erc20Web3TxResponse } from './erc20Web3TxResponse.json';
-import { default as erc20Web3TxReceipt } from './erc20Web3TxReceipt.json';
-
-import { default as erc20Web3TxReceiptFinished } from './erc20Web3TxReceiptFinished.json';
 import { default as erc20NonWeb3TxReceiptFinished } from './erc20NonWeb3TxReceiptFinished.json';
+import { default as erc20NonWeb3TxResponse } from './erc20NonWeb3TxResponse.json';
+import { default as erc20Web3TxReceipt } from './erc20Web3TxReceipt.json';
+import { default as erc20Web3TxReceiptFinished } from './erc20Web3TxReceiptFinished.json';
+import { default as erc20Web3TxResponse } from './erc20Web3TxResponse.json';
+import { default as ethNonWeb3TxReceipt } from './ethNonWeb3TxReceipt.json';
+import { default as ethNonWeb3TxResponse } from './ethNonWeb3TxResponse.json';
+import { default as ethWeb3TxReceipt } from './ethWeb3TxReceipt.json';
+import { default as ethWeb3TxResponse } from './ethWeb3TxResponse.json';
 
 const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
   ...fixtureTxResponse,

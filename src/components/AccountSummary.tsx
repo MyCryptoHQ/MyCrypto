@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import { TTicker, TUuid } from '@types';
 
-import Currency from './Currency';
 import Account from './Account';
+import Currency from './Currency';
 
 interface StyleProps {
   paddingLeft?: string;

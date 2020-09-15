@@ -1,4 +1,5 @@
 import { translateRaw } from '@translations';
+
 import { MnemonicWallet } from '../deterministic';
 import { TUnlockMnemonic } from './types';
 

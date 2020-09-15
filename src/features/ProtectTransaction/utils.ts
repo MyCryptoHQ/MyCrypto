@@ -1,28 +1,28 @@
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import isNumber from 'lodash/isNumber';
+import moment from 'moment';
 
-import {
-  fromWei,
-  totalTxFeeToWei,
-  Wei,
-  gasStringsToMaxGasNumber
-} from '@services/EthService/utils';
-import {
-  GetTokenTxResponse,
-  GetTxResponse,
-  GetBalanceResponse
-} from '@services/ApiService/Etherscan/types';
-import { IFormikFields, TAddress } from '@types';
-import { bigify, isSameAddress } from '@utils';
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
   PROTECTED_TX_FIXED_FEE_AMOUNT,
   PROTECTED_TX_MIN_AMOUNT
 } from '@config';
+import {
+  GetBalanceResponse,
+  GetTokenTxResponse,
+  GetTxResponse
+} from '@services/ApiService/Etherscan/types';
+import {
+  fromWei,
+  gasStringsToMaxGasNumber,
+  totalTxFeeToWei,
+  Wei
+} from '@services/EthService/utils';
+import { IFormikFields, TAddress } from '@types';
+import { bigify, isSameAddress } from '@utils';
 
-import { ProtectTxError, NansenReportType } from './types';
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
+import { NansenReportType, ProtectTxError } from './types';
 
 export const getProtectTxFee = (
   sendAssetsValues: Pick<

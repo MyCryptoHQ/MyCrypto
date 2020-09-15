@@ -2,8 +2,9 @@ import React from 'react';
 
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, DAIUUID, ETHUUID } from '@utils';
-import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
+
 import { LAST_CHANGED_AMOUNT } from '../types';
+import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 
 export default { title: 'ConfirmSwapMultiTx' };
 

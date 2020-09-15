@@ -1,12 +1,12 @@
-import React from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import React from 'react';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
 import { InlineMessageType } from '@types';
 
-import { Spinner } from './Spinner';
 import { InlineMessage } from './InlineMessage';
+import { Spinner } from './Spinner';
 
 export interface DomainStatusProps {
   isLoading: boolean;

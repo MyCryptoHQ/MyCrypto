@@ -1,4 +1,4 @@
-import { TAddress, TTicker, ITxObject } from '@types';
+import { ITxObject, TAddress, TTicker } from '@types';
 
 interface DexMetadata {
   input: {
