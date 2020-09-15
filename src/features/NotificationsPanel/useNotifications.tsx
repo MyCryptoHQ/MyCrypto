@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import moment from 'moment';
 
 import { DataContext } from '@services/Store';
@@ -53,38 +53,6 @@ export function useNotifications() {
     category: ANALYTICS_CATEGORIES.NOTIFICATION
   });
 
-  useEffect(() => {
-    // hide notifications that should be shown only once
-    hideShowOneTimeNotifications();
-    // update notifications that should be displayed again
-    notifications.filter(isValidNotification).forEach((n) =>
-      Notification.update(n.uuid, {
-        ...n,
-        dismissed: false,
-        dateDisplayed: new Date()
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    if (currentNotification) {
-      trackNotificationDisplayed({
-        actionName: `${
-          notificationsConfigs[currentNotification.template].analyticsEvent
-        } notification displayed`
-      });
-    }
-  }, [currentNotification]);
-
-  const hideShowOneTimeNotifications = () => {
-    notifications.forEach((n) => {
-      const config = notificationsConfigs[n.template];
-      if (config.showOneTime && !n.dismissed) {
-        dismissNotification(n);
-      }
-    });
-  };
-
   const displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
     if (!notificationsConfigs[templateName].preventDismisExisting) {
@@ -136,11 +104,43 @@ export function useNotifications() {
 
   const dismissCurrentNotification = () => dismissNotification(currentNotification);
 
+  const trackNotificationViewed = () => {
+    if (currentNotification) {
+      trackNotificationDisplayed({
+        actionName: `${
+          notificationsConfigs[currentNotification.template].analyticsEvent
+        } notification displayed`
+      });
+
+      // Hide notifications that should be shown only once and update notifications that should be displayed again
+      notifications.forEach((n) => {
+        const config = notificationsConfigs[n.template];
+        if (config.showOneTime && !n.dismissed && n.viewed) {
+          dismissNotification(n);
+        } else if (isValidNotification(n)) {
+          Notification.update(n.uuid, {
+            ...n,
+            dismissed: false,
+            dateDisplayed: new Date()
+          });
+        }
+      });
+
+      if (!currentNotification.viewed) {
+        Notification.update(currentNotification.uuid, {
+          ...currentNotification,
+          viewed: true
+        });
+      }
+    }
+  };
+
   return {
     notifications,
     currentNotification,
     displayNotification,
     dismissNotification,
-    dismissCurrentNotification
+    dismissCurrentNotification,
+    trackNotificationViewed
   };
 }

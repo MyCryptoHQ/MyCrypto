@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { SPACING } from '@theme';
 import { IAccount } from '@types';
+import { useEffectOnce } from '@vendor';
 import { useNotifications } from './useNotifications';
 import { notificationsConfigs, NotificationTemplates } from './constants';
 
@@ -35,8 +36,13 @@ const NotificationsPanel = ({ accounts }: Props) => {
     notifications,
     displayNotification,
     currentNotification,
-    dismissCurrentNotification
+    dismissCurrentNotification,
+    trackNotificationViewed
   } = useNotifications();
+
+  useEffectOnce(() => {
+    trackNotificationViewed();
+  });
 
   const handleCloseClick = () => {
     if (!currentNotification) {
