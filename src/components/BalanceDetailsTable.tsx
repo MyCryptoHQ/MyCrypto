@@ -102,12 +102,12 @@ const createBalancesDetailViewRow = (
             }))}
     </Label>,
     <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
-      {`${balance.amount.toFixed(6)} ${balance.ticker}`}
+      {`${parseFloat(balance.amount).toFixed(6)} ${balance.ticker}`}
     </RowAlignment>,
     <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
       <Tooltip
         tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-          $exchangeRate: (balance.exchangeRate || 0).toFixed(3),
+          $exchangeRate: parseFloat(balance.exchangeRate).toFixed(3),
           $fiatTicker: fiat.ticker,
           $cryptoTicker: balance.ticker
         })}
@@ -154,7 +154,7 @@ const createAccountRow = (
       </Tooltip>
     </Label>,
     <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
-      {`${balanceAccount.amount.toFixed(6)} ${balanceAccount.ticker}`}
+      {`${parseFloat(balanceAccount.amount).toFixed(6)} ${balanceAccount.ticker}`}
     </RowAlignment>,
     <RowAlignment key={index} align="right" data-value={balanceAccount.fiatValue}>
       <Currency

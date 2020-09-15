@@ -126,8 +126,8 @@ export interface State {
   getDeFiAssetReserveAssets(
     asset: StoreAsset
   ): (
-      getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
-    ) => StoreAsset[];
+    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
+  ) => StoreAsset[];
   scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
@@ -174,8 +174,8 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const membershipExpirations = memberships
     ? flatten(
-      Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-    )
+        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
+      )
     : [];
 
   const membershipState = (() => {
@@ -417,7 +417,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     ) =>
       state
         .totals(selectedAccounts)
-        .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
+        .reduce(
+          (sum, asset) => (sum += parseFloat(convertToFiatFromAsset(asset, getAssetRate(asset)))),
+          0
+        ),
 
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map((a) => a.ticker))
