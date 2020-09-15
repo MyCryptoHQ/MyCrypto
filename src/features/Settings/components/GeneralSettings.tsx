@@ -1,5 +1,6 @@
-import { Button, Icon } from '@mycrypto/ui';
 import React, { FC, useCallback } from 'react';
+
+import { Button, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 

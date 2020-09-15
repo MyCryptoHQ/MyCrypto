@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';

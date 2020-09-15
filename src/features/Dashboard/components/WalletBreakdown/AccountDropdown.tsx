@@ -1,5 +1,6 @@
-import { Icon, Identicon } from '@mycrypto/ui';
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Icon, Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Checkbox } from '@components';

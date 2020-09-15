@@ -1,7 +1,8 @@
+import React, { useContext, useEffect, useReducer } from 'react';
+
 import { Input } from '@mycrypto/ui';
 import { isHexString } from 'ethers/utils';
 import queryString from 'query-string';
-import React, { useContext, useEffect, useReducer } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

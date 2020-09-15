@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+
 import { Redirect } from 'react-router-dom';
 
 import { IFeatureFlags, ROUTE_PATHS } from '@config';

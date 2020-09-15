@@ -1,5 +1,6 @@
-import { Button, Heading } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button, Heading } from '@mycrypto/ui';
 
 import closeIcon from '@assets/images/icn-close.svg';
 

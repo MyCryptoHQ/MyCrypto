@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 import { bigNumberify, parseEther } from 'ethers/utils';
-import React from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';

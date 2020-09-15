@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { useContext } from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';

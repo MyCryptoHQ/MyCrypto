@@ -1,5 +1,6 @@
-import isEmpty from 'lodash/isEmpty';
 import React from 'react';
+
+import isEmpty from 'lodash/isEmpty';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 

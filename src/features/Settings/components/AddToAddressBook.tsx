@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { Button } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import React from 'react';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 

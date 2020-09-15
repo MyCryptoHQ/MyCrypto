@@ -1,5 +1,6 @@
-import isString from 'lodash/isString';
 import React, { PureComponent } from 'react';
+
+import isString from 'lodash/isString';
 import styled from 'styled-components';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';

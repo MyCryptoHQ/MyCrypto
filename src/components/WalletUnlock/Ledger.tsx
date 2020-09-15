@@ -1,6 +1,7 @@
+import React, { useState } from 'react';
+
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
-import React, { useState } from 'react';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import { Button, NewTabLink, RouterLink, Spinner } from '@components';

@@ -1,5 +1,6 @@
-import BN from 'bn.js';
 import React, { useContext, useState } from 'react';
+
+import BN from 'bn.js';
 import Styled from 'styled-components';
 
 import feeIcon from '@assets/images/icn-fee.svg';

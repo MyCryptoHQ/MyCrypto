@@ -1,5 +1,6 @@
-import queryString from 'query-string';
 import React from 'react';
+
+import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { TxParam } from '@features/SendAssets/preFillTx';

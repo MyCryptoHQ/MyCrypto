@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import { scale } from '@mycrypto/ui';
 import { size } from 'polished';
-import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { default as Typography } from './Typography';

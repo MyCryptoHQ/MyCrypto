@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 import AppProviders from 'AppProviders';
-import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { DEFAULT_NETWORK } from '@config';

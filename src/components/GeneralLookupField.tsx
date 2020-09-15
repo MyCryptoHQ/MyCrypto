@@ -1,5 +1,6 @@
-import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
 import { isValidENSName, isValidETHAddress } from '@services/EthService';

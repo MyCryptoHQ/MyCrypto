@@ -1,5 +1,6 @@
-import { Heading } from '@mycrypto/ui';
 import React, { useContext, useState } from 'react';
+
+import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DashboardPanel, PoweredByText } from '@components';

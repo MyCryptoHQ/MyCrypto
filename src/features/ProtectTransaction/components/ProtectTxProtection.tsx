@@ -1,6 +1,7 @@
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+
 import bulletIcon from 'assets/images/icn-bullet.svg';
 import BigNumber from 'bignumber.js';
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import feeIcon from '@assets/images/icn-fee.svg';

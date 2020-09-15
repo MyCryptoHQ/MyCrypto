@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { Component } from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import zxcvbn from 'zxcvbn';
 

@@ -1,5 +1,6 @@
-import path from 'ramda/src/path';
 import React from 'react';
+
+import path from 'ramda/src/path';
 
 import step2SVG from '@assets/images/icn-receive.svg';
 import step1SVG from '@assets/images/icn-send.svg';

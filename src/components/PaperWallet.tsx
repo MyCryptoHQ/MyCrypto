@@ -1,7 +1,8 @@
+import React from 'react';
+
 import { Identicon } from '@mycrypto/ui';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import React from 'react';
 import styled from 'styled-components';
 
 import walletIcon from '@assets/images/icn-hardware-wallet.svg';

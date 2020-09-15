@@ -1,5 +1,6 @@
-import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import React, { Component } from 'react';
+
+import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import styled from 'styled-components';
 
 import { GAS_PRICE_DEFAULT } from '@config';

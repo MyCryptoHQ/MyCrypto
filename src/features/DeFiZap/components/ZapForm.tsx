@@ -1,8 +1,9 @@
+import React, { useContext } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import { parseEther } from 'ethers/utils';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
-import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 

@@ -1,5 +1,6 @@
-import { Typography } from '@mycrypto/ui';
 import React, { useContext } from 'react';
+
+import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

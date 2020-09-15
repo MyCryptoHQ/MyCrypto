@@ -1,6 +1,7 @@
+import { useContext } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
-import { useContext } from 'react';
 
 import { LSKeys, Network, NetworkId, NodeOptions } from '@types';
 

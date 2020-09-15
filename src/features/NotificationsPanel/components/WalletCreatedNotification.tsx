@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import champagneIcon from '@assets/images/icn-champagne-2.svg';

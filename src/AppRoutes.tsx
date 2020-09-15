@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';

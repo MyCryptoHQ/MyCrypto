@@ -1,6 +1,7 @@
+import React, { useContext } from 'react';
+
 import flatten from 'ramda/src/flatten';
 import uniq from 'ramda/src/uniq';
-import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

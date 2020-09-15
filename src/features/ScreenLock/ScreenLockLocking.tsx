@@ -1,6 +1,7 @@
+import React, { useContext } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import moment from 'moment';
-import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';

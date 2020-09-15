@@ -1,5 +1,6 @@
-import QRCodeLib from 'qrcode';
 import React from 'react';
+
+import QRCodeLib from 'qrcode';
 import styled from 'styled-components';
 
 import Spinner from './Spinner';

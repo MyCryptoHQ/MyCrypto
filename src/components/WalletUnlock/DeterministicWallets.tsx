@@ -1,5 +1,6 @@
-import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
+
+import BN from 'bn.js';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 

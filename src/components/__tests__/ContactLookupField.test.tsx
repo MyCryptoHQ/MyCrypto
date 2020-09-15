@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { contacts as seedContacts } from '@database/seed/contacts';

@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
-import React from 'react';
 
 import { Fiats } from '@config';
 import { COLORS } from '@theme';

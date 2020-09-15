@@ -1,7 +1,8 @@
+import React, { useState } from 'react';
+
 import { Button, Icon, Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {

@@ -1,8 +1,9 @@
+import React from 'react';
+
 import {
   ResolutionError,
   ResolutionErrorCode
 } from '@unstoppabledomains/resolution/build/resolutionError';
-import React from 'react';
 import { simpleRender } from 'test-utils';
 
 import UnstoppableService from '@services/UnstoppableService';

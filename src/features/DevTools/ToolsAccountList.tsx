@@ -1,5 +1,6 @@
-import { Button, List } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button, List } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Account } from '@components';

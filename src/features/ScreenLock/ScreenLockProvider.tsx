@@ -1,5 +1,6 @@
-import pipe from 'ramda/src/pipe';
 import React, { Component } from 'react';
+
+import pipe from 'ramda/src/pipe';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';

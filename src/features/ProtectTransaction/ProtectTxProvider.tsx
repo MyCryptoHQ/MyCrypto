@@ -1,5 +1,6 @@
-import BigNumber from 'bignumber.js';
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+
+import BigNumber from 'bignumber.js';
 
 import { WALLETS_CONFIG } from '@config';
 import { useFeatureFlags } from '@services';

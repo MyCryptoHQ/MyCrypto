@@ -1,6 +1,7 @@
+import React, { useContext } from 'react';
+
 import { Input, Panel } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 import { Button, Checkbox, Link } from '@components';

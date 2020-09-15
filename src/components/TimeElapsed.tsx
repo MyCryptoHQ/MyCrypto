@@ -1,5 +1,6 @@
-import { formatDistance } from 'date-fns';
 import React, { useState } from 'react';
+
+import { formatDistance } from 'date-fns';
 
 import { useInterval } from '@utils';
 

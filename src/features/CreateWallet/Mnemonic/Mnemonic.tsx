@@ -1,9 +1,10 @@
+import React, { Component, ReactType } from 'react';
+
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39';
 import { addHexPrefix, privateToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
 import uniq from 'lodash/uniq';
 import pipe from 'ramda/src/pipe';
-import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';

@@ -1,5 +1,6 @@
-import isEmpty from 'ramda/src/isEmpty';
 import React from 'react';
+
+import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
 import { Button, CodeBlock, Overlay, QRCodeContainer, Spinner, Typography } from '@components';

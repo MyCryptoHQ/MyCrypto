@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import { Avatar, Identicon, scale } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
-import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, FONT_SIZE } from '@theme';

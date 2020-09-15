@@ -1,5 +1,6 @@
-import infoSVG from 'assets/images/icn-info-blue.svg';
 import React, { FC } from 'react';
+
+import infoSVG from 'assets/images/icn-info-blue.svg';
 import styled from 'styled-components';
 
 import { SPACING } from '@theme';

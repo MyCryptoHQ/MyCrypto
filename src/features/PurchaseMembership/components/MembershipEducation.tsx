@@ -1,5 +1,6 @@
-import { Accordion } from '@mycrypto/ui';
 import React from 'react';
+
+import { Accordion } from '@mycrypto/ui';
 import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

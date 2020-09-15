@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import BigNumber from 'bignumber.js';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
@@ -5,7 +7,6 @@ import eqBy from 'ramda/src/eqBy';
 import isEmpty from 'ramda/src/isEmpty';
 import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
-import { useContext } from 'react';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {

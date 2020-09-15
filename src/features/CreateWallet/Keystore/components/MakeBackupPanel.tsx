@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+
 import { Button, Typography } from '@mycrypto/ui';
 import { IV3Wallet } from 'ethereumjs-wallet';
-import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import lockSafetyIcon from '@assets/images/icn-lock-safety.svg';

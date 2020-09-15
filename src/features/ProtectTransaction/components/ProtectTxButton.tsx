@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+
 import styled from 'styled-components';
 
 import ArrowRightIcon from '@components/icons/ArrowRightIcon';

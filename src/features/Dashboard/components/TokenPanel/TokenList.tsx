@@ -1,5 +1,6 @@
-import { Button, Typography } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import moreIcon from '@assets/images/icn-more.svg';

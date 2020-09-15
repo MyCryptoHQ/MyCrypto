@@ -1,6 +1,7 @@
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
-import React, { FC, useCallback, useEffect, useState } from 'react';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 

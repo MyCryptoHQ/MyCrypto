@@ -1,5 +1,6 @@
-import equals from 'ramda/src/equals';
 import React, { useMemo } from 'react';
+
+import equals from 'ramda/src/equals';
 import { Cell, Pie, PieChart, PieLabelRenderProps, Sector } from 'recharts';
 import styled from 'styled-components';
 

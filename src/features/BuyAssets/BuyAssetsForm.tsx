@@ -1,6 +1,7 @@
+import React, { useContext } from 'react';
+
 import { Button, Icon } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { object } from 'yup';

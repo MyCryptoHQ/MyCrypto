@@ -1,5 +1,6 @@
-import { parse } from 'query-string';
 import React, { useContext, useEffect, useReducer } from 'react';
+
+import { parse } from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';

@@ -1,6 +1,7 @@
+import React, { useState } from 'react';
+
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';

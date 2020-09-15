@@ -1,6 +1,7 @@
+import React, { Component, lazy } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
-import React, { Component, lazy } from 'react';
 import styled from 'styled-components';
 
 import printerIcon from '@assets/images/icn-printer.svg';

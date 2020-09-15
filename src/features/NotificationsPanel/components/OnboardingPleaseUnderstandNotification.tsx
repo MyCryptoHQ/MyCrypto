@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import cantAccessIcon from '@assets/images/onboarding/icn-cant-access.svg';

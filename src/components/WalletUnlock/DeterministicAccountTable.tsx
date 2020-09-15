@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { Identicon } from '@mycrypto/ui';
 import BN from 'bn.js';
-import React from 'react';
 import styled, { css } from 'styled-components';
 
 import {

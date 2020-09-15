@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { useState } from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DashboardPanel, InputField, NetworkSelectDropdown } from '@components';

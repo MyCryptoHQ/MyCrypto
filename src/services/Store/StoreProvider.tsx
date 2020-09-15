@@ -1,3 +1,5 @@
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
@@ -7,7 +9,6 @@ import flatten from 'ramda/src/flatten';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
 import uniqBy from 'ramda/src/uniqBy';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
 import {

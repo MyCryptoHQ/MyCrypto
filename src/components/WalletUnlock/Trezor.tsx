@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { PureComponent } from 'react';
+
+import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from '@components';

@@ -1,6 +1,7 @@
 import 'rc-steps/assets/index.css';
-import Steps, { Step } from 'rc-steps';
 import React from 'react';
+
+import Steps, { Step } from 'rc-steps';
 import styled from 'styled-components';
 
 import checkmark from '@assets/images/icn-checkmark-white.svg';

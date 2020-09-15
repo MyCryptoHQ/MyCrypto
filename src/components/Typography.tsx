@@ -1,5 +1,6 @@
-import { Typography as UITypography } from '@mycrypto/ui';
 import React from 'react';
+
+import { Typography as UITypography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from '@theme';

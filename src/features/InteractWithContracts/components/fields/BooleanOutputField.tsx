@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import checkmark from '@assets/images/checkmark_outline.svg';

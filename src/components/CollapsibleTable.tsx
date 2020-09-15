@@ -3,10 +3,11 @@
   In order to style the headers particularyly the Icon caret
 */
 
+import React, { Component, ReactNode } from 'react';
+
 import { Icon, scale, StackedCardData, Typography } from '@mycrypto/ui';
 import isFunction from 'lodash/isFunction';
 import throttle from 'lodash/throttle';
-import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { StackedCard } from './StackedCard';

@@ -1,5 +1,6 @@
-import { Identicon } from '@mycrypto/ui';
 import React, { FC } from 'react';
+
+import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Button } from '@components';

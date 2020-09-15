@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
-import React, { Component } from 'react';
 
 import { WALLETS_CONFIG } from '@config';
 import { getNetworkByChainId, INetworkContext, useNetworks } from '@services/Store';

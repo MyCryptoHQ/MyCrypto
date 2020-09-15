@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { PureComponent } from 'react';
+
+import { Button } from '@mycrypto/ui';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import { NewTabLink, Spinner } from '@components';

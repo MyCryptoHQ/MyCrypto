@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
+
+import { renderHook } from '@testing-library/react-hooks';
 
 import { fContracts } from '@fixtures';
 import { ExtendedContract, LSKeys, TAddress, TUuid } from '@types';

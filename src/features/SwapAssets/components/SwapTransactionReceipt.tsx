@@ -1,5 +1,6 @@
-import pick from 'ramda/src/pick';
 import React, { useContext } from 'react';
+
+import pick from 'ramda/src/pick';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';

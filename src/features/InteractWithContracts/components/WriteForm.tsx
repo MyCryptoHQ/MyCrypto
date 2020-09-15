@@ -1,6 +1,7 @@
+import React, { useContext } from 'react';
+
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
-import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { AccountSelector, Button, GasSelector, Typography } from '@components';

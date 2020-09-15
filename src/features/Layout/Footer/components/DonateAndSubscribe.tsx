@@ -1,5 +1,6 @@
-import classnames from 'classnames';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+
+import classnames from 'classnames';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 import bitcoin from '@assets/images/bitcoin.png';

@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
-import React from 'react';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { Network, NetworkId, WalletId } from '@types';

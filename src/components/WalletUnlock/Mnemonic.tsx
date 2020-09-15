@@ -1,6 +1,7 @@
+import React, { PureComponent } from 'react';
+
 import { Tooltip } from '@mycrypto/ui';
 import { mnemonicToSeedSync, validateMnemonic } from 'bip39';
-import React, { PureComponent } from 'react';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';

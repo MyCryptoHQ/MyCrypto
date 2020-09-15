@@ -1,5 +1,6 @@
-import debounce from 'lodash/debounce';
 import { useCallback } from 'react';
+
+import debounce from 'lodash/debounce';
 
 import { CREATION_ADDRESS } from '@config';
 import {

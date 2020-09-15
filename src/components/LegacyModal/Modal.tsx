@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 

@@ -7,6 +7,7 @@ import 'whatwg-fetch'; // @todo: Investigate utility of dependency
 import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
 import React from 'react';
+
 import { render } from 'react-dom';
 
 import { consoleAdvertisement, getRootDomain, IS_PROD, IS_STAGING } from '@utils';

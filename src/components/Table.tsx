@@ -3,9 +3,10 @@
   In order to style the headers particularyly the Icon caret
 */
 
+import React, { Component, ReactNode } from 'react';
+
 import isFunction from 'lodash/isFunction';
 import path from 'ramda/src/path';
-import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { SPACING } from '@theme';

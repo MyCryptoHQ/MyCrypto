@@ -1,5 +1,6 @@
-import { Button, Panel, Typography } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';

@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import walletIcon from '@assets/images/icn-new-wallet.svg';

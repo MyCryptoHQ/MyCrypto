@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { Copyable } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
-import React from 'react';
 import styled from 'styled-components';
 
 import { COLORS, monospace } from '@theme';

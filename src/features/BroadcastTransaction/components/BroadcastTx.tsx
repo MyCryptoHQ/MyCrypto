@@ -1,8 +1,9 @@
+import React, { useState } from 'react';
+
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { CodeBlock, InlineMessage, InputField, NetworkSelectDropdown } from '@components';

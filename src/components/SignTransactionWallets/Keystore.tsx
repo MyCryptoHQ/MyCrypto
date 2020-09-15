@@ -1,5 +1,6 @@
-import { utils, Wallet } from 'ethers';
 import React, { Component } from 'react';
+
+import { utils, Wallet } from 'ethers';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import { Button, Input } from '@components';

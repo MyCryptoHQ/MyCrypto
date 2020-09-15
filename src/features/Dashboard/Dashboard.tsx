@@ -1,5 +1,6 @@
-import { Heading } from '@mycrypto/ui';
 import React, { useContext } from 'react';
+
+import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { AccountList, Desktop, Mobile } from '@components';

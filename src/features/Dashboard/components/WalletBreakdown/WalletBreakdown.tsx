@@ -1,5 +1,6 @@
-import { Panel } from '@mycrypto/ui';
 import React, { useContext, useState } from 'react';
+
+import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Tooltip } from '@components';

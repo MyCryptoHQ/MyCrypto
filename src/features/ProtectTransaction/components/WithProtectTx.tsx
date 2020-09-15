@@ -1,5 +1,6 @@
-import { Panel } from '@mycrypto/ui';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+
+import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';

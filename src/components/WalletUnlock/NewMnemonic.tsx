@@ -1,7 +1,8 @@
+import React, { useState } from 'react';
+
 import { validateMnemonic } from 'bip39';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
-import React, { useState } from 'react';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';

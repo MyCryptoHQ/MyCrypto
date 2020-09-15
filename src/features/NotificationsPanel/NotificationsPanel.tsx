@@ -1,5 +1,6 @@
 import React from 'react';
-import { Panel, Button } from '@mycrypto/ui';
+
+import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import closeIcon from '@assets/images/icn-close.svg';

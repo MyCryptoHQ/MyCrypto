@@ -1,7 +1,8 @@
+import React, { useContext, useEffect, useRef, useState } from 'react';
+
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
-import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import {

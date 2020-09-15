@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';

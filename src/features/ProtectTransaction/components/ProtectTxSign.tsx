@@ -1,6 +1,7 @@
+import React, { FC, useCallback, useContext } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
-import React, { FC, useCallback, useContext } from 'react';
 import styled from 'styled-components';
 
 import CloseIcon from '@components/icons/CloseIcon';

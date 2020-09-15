@@ -1,5 +1,6 @@
-import { Button, Typography } from '@mycrypto/ui';
 import React, { Component } from 'react';
+
+import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import reloadIcon from '@assets/images/icn-reload.svg';

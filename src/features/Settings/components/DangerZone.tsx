@@ -1,5 +1,6 @@
-import { Button, Icon } from '@mycrypto/ui';
 import React, { useContext } from 'react';
+
+import { Button, Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DashboardPanel, Tooltip } from '@components';

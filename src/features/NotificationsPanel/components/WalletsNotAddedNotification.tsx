@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';

@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
+
+import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fTxReceipt } from '@fixtures';

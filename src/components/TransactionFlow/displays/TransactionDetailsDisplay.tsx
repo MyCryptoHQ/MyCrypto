@@ -1,6 +1,7 @@
+import React, { useState } from 'react';
+
 import { Button, Network } from '@mycrypto/ui';
 import { BigNumber, bigNumberify } from 'ethers/utils';
-import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock } from '@components';

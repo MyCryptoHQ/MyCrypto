@@ -1,5 +1,6 @@
-import { Button, Typography } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button, Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

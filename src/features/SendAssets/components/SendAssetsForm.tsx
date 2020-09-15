@@ -1,10 +1,11 @@
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import BN from 'bn.js';
 import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ValuesType } from 'utility-types';
 import { number, object, string } from 'yup';

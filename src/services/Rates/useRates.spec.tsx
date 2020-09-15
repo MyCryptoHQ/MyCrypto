@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
+
+import { renderHook } from '@testing-library/react-hooks';
 
 import { fAssets, fDefiReserveRates, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';

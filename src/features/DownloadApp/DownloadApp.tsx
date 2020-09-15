@@ -1,6 +1,7 @@
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
-import React, { FC, useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

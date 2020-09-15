@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { truncate } from '@utils';

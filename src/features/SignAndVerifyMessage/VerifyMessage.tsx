@@ -1,6 +1,7 @@
+import React, { FunctionComponent, useEffect, useState } from 'react';
+
 import { Button } from '@mycrypto/ui';
 import { parse } from 'query-string';
-import React, { FunctionComponent, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

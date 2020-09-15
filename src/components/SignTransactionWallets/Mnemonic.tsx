@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+
 import { utils, Wallet } from 'ethers';
 import { isValidMnemonic } from 'ethers/utils/hdnode';
-import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';

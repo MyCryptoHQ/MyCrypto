@@ -1,7 +1,8 @@
+import React from 'react';
+
 import { Identicon } from '@mycrypto/ui';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 import { Field, FieldProps } from 'formik';
-import React from 'react';
 import styled from 'styled-components';
 
 import { DomainStatus } from '@components';

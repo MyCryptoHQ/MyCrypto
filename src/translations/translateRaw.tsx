@@ -1,6 +1,7 @@
+import React, { FC, ReactNode } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
-import React, { FC, ReactNode } from 'react';
 
 const fallbackLanguage = 'en';
 const repository: {

@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React from 'react';
+
+import { Button } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';
 
 import { COLORS, SPACING } from '@theme';

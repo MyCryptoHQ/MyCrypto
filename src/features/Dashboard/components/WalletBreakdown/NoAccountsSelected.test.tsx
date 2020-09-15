@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { simpleRender } from 'test-utils';
 
 import { translateRaw } from '@translations';

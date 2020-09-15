@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+
 import { Wallet } from 'ethers';
 import { stripHexPrefix } from 'ethjs-util';
-import React, { Component } from 'react';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import { Button, Input, TogglablePassword } from '@components';

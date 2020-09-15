@@ -1,5 +1,6 @@
-import { act, renderHook } from '@testing-library/react-hooks';
 import React from 'react';
+
+import { act, renderHook } from '@testing-library/react-hooks';
 
 import { fContacts } from '@fixtures';
 import { ExtendedContact, LSKeys, TAddress, TUuid } from '@types';

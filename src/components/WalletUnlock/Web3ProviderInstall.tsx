@@ -1,5 +1,6 @@
-import { Typography } from '@mycrypto/ui';
 import React from 'react';
+
+import { Typography } from '@mycrypto/ui';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';

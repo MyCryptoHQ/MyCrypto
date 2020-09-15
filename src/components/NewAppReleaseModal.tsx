@@ -1,5 +1,6 @@
-import { Button, Icon, Panel, Typography } from '@mycrypto/ui';
 import React, { FC, useCallback, useEffect, useState } from 'react';
+
+import { Button, Icon, Panel, Typography } from '@mycrypto/ui';
 import semver from 'semver';
 import styled from 'styled-components';
 

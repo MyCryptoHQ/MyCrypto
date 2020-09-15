@@ -1,5 +1,6 @@
-import { Form, Formik } from 'formik';
 import React from 'react';
+
+import { Form, Formik } from 'formik';
 
 import { fNetwork } from '@fixtures';
 import { IReceiverAddress } from '@types';

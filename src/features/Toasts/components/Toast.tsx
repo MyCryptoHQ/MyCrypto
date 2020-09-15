@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import infoIcon from '@assets/images/icn-toast-alert.svg';

@@ -1,5 +1,6 @@
-import { Button } from '@mycrypto/ui';
 import React, { FC, useContext } from 'react';
+
+import { Button } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

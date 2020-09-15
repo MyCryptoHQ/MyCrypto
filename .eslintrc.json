@@ -22,6 +22,11 @@
           {
             "pattern": "@{assets,components,config,database,fixtures,features,routing,sass,services,theme,translations,types,utils,vendor,workers}{**,**/**}",
             "group": "internal"
+          },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
           }
         ],
         "pathGroupsExcludedImportTypes": [],

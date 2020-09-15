@@ -1,7 +1,8 @@
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
+
 import { Button, Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import informationalSVG from '@assets/images/icn-info-blue.svg';
