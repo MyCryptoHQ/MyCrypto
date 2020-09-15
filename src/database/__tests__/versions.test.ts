@@ -1,12 +1,11 @@
-import moment from 'moment';
-
 import { SETTINGS_FILENAME } from '@config';
 import { getCurrentDBConfig, getExportFileName } from '@database';
+import { formatDate } from '@utils';
 
 describe('getExportFileName', () => {
   const dbConfig = getCurrentDBConfig();
 
-  const now = moment();
+  const now = new Date();
 
   it('is json file', async () => {
     const fileName = getExportFileName(dbConfig, now);
@@ -20,7 +19,7 @@ describe('getExportFileName', () => {
 
   it('contains correct date', async () => {
     const fileName = getExportFileName(dbConfig, now);
-    expect(fileName).toContain(now.format('YYYY-MM-DD'));
+    expect(fileName).toContain(formatDate(now));
   });
 
   it('contains correct name', async () => {

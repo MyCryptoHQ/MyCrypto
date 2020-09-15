@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Typography } from '@mycrypto/ui';
-import moment from 'moment';
 import styled from 'styled-components';
 
 import { ITxStatus } from '@types';
+import { formatDateTime } from '@utils';
 
 import './TransactionLabel.scss';
 
@@ -20,8 +20,6 @@ const capitalize = (word: string): string =>
     .split('')
     .map((letter, index) => (index === 0 ? letter.toUpperCase() : letter))
     .join('');
-
-const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YY h:mm A');
 
 type ITxStatusConfig = { [K in ITxStatus]: { color: string } };
 
@@ -54,7 +52,7 @@ export default function TransactionLabel({ image, label, stage, date }: Props) {
           {capitalize(stage)}{' '}
         </SStage>
         <Typography className="TransactionLabel-info-Date">{`${
-          date ? ` - ${formatDate(date)}` : ''
+          date ? ` - ${formatDateTime(date)}` : ''
         }`}</Typography>
       </div>
     </div>

@@ -97,3 +97,4 @@ export { getRootDomain } from './getRootDomain';
 export * from './wallets';
 export { isTruthy } from './isTruthy';
 export { filterDropdownAssets, filterValidAssets } from './filterAssets';
+export * from './date';
