@@ -53,3 +53,5 @@ export {
   fERC20TxSendFormikFields,
   fETHTxSendFormikFields
 } from './sendFormFields';
+
+export { fNotifications } from './notifications';
