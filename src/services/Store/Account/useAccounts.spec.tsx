@@ -101,6 +101,19 @@ describe('useAccounts', () => {
     });
   });
 
+  it('removeTxFromAccount() updates account to remove tx', () => {
+    const mockUpdate = jest.fn();
+    const { result } = renderUseAccounts({
+      accounts: [{ ...fAccounts[0], transactions: [fTxReceipt] }],
+      createActions: jest.fn(() => ({ update: mockUpdate }))
+    });
+    result.current.removeTxFromAccount(fAccounts[0], fTxReceipt);
+    expect(mockUpdate).toBeCalledWith(fAccounts[0].uuid, {
+      ...fAccounts[0],
+      transactions: []
+    });
+  });
+
   it('getAccountByAddressAndNetworkName() updates account with tx', () => {
     const { result } = renderUseAccounts({
       accounts: fAccounts,

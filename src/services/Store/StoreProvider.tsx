@@ -28,6 +28,7 @@ import {
   IAccountAdditionData,
   IPendingTxReceipt,
   IRawAccount,
+  ITxStatus,
   ITxType,
   Network,
   NetworkId,
@@ -68,6 +69,7 @@ import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import {
   getPendingTransactionsFromAccounts,
   getStoreAccounts,
+  getTxsFromAccount,
   isNotExcludedAsset
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
@@ -136,6 +138,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
     addTxToAccount,
+    removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
@@ -284,6 +287,30 @@ export const StoreProvider: React.FC = ({ children }) => {
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
       pendingTransactions.forEach((pendingTxReceipt) => {
+        const senderAccount = getAccountByAddressAndNetworkName(
+          pendingTxReceipt.from,
+          pendingTxReceipt.asset.networkId
+        );
+        if (!senderAccount) return;
+
+        const storeAccount = accounts.find((acc) =>
+          isSameAddress(senderAccount.address, acc.address)
+        ) as StoreAccount;
+
+        const txs = getTxsFromAccount([storeAccount]);
+        const overwritingTx = txs.find(
+          (t) =>
+            t.nonce === pendingTxReceipt.nonce &&
+            t.asset.networkId === pendingTxReceipt.asset.networkId &&
+            t.hash !== pendingTxReceipt.hash &&
+            t.status === ITxStatus.SUCCESS
+        );
+
+        if (overwritingTx) {
+          removeTxFromAccount(senderAccount, pendingTxReceipt);
+          return;
+        }
+
         const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;
@@ -301,11 +328,6 @@ export const StoreProvider: React.FC = ({ children }) => {
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
             if (!isMounted || !txStatus || !txTimestamp) return;
-            const senderAccount = getAccountByAddressAndNetworkName(
-              pendingTxReceipt.from,
-              pendingTxReceipt.asset.networkId
-            );
-            if (!senderAccount) return;
 
             const finishedTxReceipt = makeFinishedTxReceipt(
               pendingTxReceipt,
@@ -314,9 +336,6 @@ export const StoreProvider: React.FC = ({ children }) => {
               txResponse.blockNumber
             );
             addTxToAccount(senderAccount, finishedTxReceipt);
-            const storeAccount = accounts.find((acc) =>
-              isSameAddress(senderAccount.address, acc.address)
-            ) as StoreAccount;
             if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
               state.scanAccountTokens(storeAccount);
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {

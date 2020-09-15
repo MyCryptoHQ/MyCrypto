@@ -84,6 +84,14 @@ function useAccounts() {
     updateAccount(accountData.uuid, newAccountData);
   };
 
+  const removeTxFromAccount = (accountData: IAccount, tx: ITxReceipt) => {
+    const newAccountData = {
+      ...accountData,
+      transactions: [...accountData.transactions.filter((t) => t.hash !== tx.hash)]
+    };
+    updateAccount(accountData.uuid, newAccountData);
+  };
+
   const getAccountByAddressAndNetworkName = getAccountByAddressAndNetworkNameFunc(accounts);
 
   const updateAccountAssets = async (storeAccount: StoreAccount, assets: Asset[]) => {
@@ -190,6 +198,7 @@ function useAccounts() {
     deleteAccount,
     updateAccount,
     addTxToAccount,
+    removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
