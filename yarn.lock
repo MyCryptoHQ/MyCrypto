@@ -3619,6 +3619,13 @@
     "@types/rc-tooltip" "*"
     "@types/react" "*"
 
+"@types/rc-steps@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@types/rc-steps/-/rc-steps-3.5.0.tgz#60aa8fe36d666b2111ca37f41e6bedfe8a127823"
+  integrity sha512-TeZfjKbOYKPCVC55jOEvhmWEWTnc4zqUVN0z2bqeUxp0XNUNg4mllPyzI0T9LPx1ulc2KHkK6I5D4tk3o6Rcvg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/rc-tooltip@*":
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/@types/rc-tooltip/-/rc-tooltip-3.7.2.tgz#bbf35284cc1adf6fb61cc49262fd4199ebcc7bff"
@@ -3693,10 +3700,10 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-select@3.0.13":
-  version "3.0.13"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-3.0.13.tgz#b1a05eae0f65fb4f899b4db1f89b8420cb9f3656"
-  integrity sha512-JxmSArGgzAOtb37+Jz2+3av8rVmp/3s3DGwlcP+g59/a3owkiuuU4/Jajd+qA32beDPHy4gJR2kkxagPY3j9kg==
+"@types/react-select@3.0.19":
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-3.0.19.tgz#f73b04b8113451b0597df8a8315f9bf8ce03eb44"
+  integrity sha512-d+6qtfFXZeIOAABlVL1e50RZn8ctOABE4tFDxM6KW4lKuXgTTgLVrSik5AX9XjBjV7N80FtS6GTN/WeoXL9Jww==
   dependencies:
     "@types/react" "*"
     "@types/react-dom" "*"
