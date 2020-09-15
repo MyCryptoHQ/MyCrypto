@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import moment from 'moment';
 
 import { DataContext } from '@services/Store';
@@ -13,8 +13,6 @@ export interface ProviderState {
   displayNotification(templateName: string, templateData?: object): void;
   dismissCurrentNotification(): void;
 }
-
-export const NotificationsContext = createContext({} as ProviderState);
 
 function getCurrent(notifications: ExtendedNotification[]) {
   const visible = notifications
@@ -47,9 +45,9 @@ function isValidNotification(n: ExtendedNotification) {
   return isConfigCondition && (shouldShowRepeatingNotification || isNonrepeatingNotification);
 }
 
-export const NotificationsProvider: React.FC = ({ children }) => {
+export function useNotifications() {
   const { notifications, createActions } = useContext(DataContext);
-  const [currentNotification, setCurrentNotification] = useState<ExtendedNotification>();
+  const currentNotification = getCurrent(notifications);
   const Notification = createActions(LSKeys.NOTIFICATIONS);
   const trackNotificationDisplayed = useAnalytics({
     category: ANALYTICS_CATEGORIES.NOTIFICATION
@@ -69,22 +67,20 @@ export const NotificationsProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const current = getCurrent(notifications);
-    setCurrentNotification(current);
-    if (current) {
+    if (currentNotification) {
       trackNotificationDisplayed({
         actionName: `${
-          notificationsConfigs[current.template].analyticsEvent
+          notificationsConfigs[currentNotification.template].analyticsEvent
         } notification displayed`
       });
     }
-  }, [notifications]);
+  }, [currentNotification]);
 
   const hideShowOneTimeNotifications = () => {
     notifications.forEach((n) => {
       const config = notificationsConfigs[n.template];
       if (config.showOneTime && !n.dismissed) {
-        state.dismissNotification(n);
+        dismissNotification(n);
       }
     });
   };
@@ -94,7 +90,7 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     if (!notificationsConfigs[templateName].preventDismisExisting) {
       notifications
         .filter((x) => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed)
-        .forEach(state.dismissNotification);
+        .forEach(dismissNotification);
     }
 
     // Create the notification object
@@ -128,20 +124,23 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     }
   };
 
-  const state = {
+  const dismissNotification = (notif?: ExtendedNotification) => {
+    if (notUndefined(notif)) {
+      Notification.update(notif.uuid, {
+        ...notif,
+        dismissed: true,
+        dateDismissed: new Date()
+      });
+    }
+  };
+
+  const dismissCurrentNotification = () => dismissNotification(currentNotification);
+
+  return {
     notifications,
     currentNotification,
     displayNotification,
-    dismissNotification: (notif?: ExtendedNotification) => {
-      if (notUndefined(notif)) {
-        Notification.update(notif.uuid, {
-          ...notif,
-          dismissed: true,
-          dateDismissed: new Date()
-        });
-      }
-    },
-    dismissCurrentNotification: () => state.dismissNotification(currentNotification)
+    dismissNotification,
+    dismissCurrentNotification
   };
-  return <NotificationsContext.Provider value={state}>{children}</NotificationsContext.Provider>;
-};
+}
