@@ -105,7 +105,7 @@ describe('useNotifications', () => {
   });
 
   it('trackNotificationViewed calls model.update', () => {
-    const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
+    const notification = { ...fNotifications[1], dismissed: false, dateDismissed: undefined };
     const mockUpdate = jest.fn();
     const { result } = renderUseNotifications({
       notifications: [notification],
@@ -116,6 +116,30 @@ describe('useNotifications', () => {
     act(() => result.current.trackNotificationViewed());
     expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
       ...notification,
+      viewed: true
+    });
+  });
+
+  it('trackNotificationViewed dismisses viewed notification that should only be viewed once', () => {
+    const notification = {
+      ...fNotifications[1],
+      dismissed: false,
+      dateDismissed: undefined,
+      viewed: true
+    };
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNotifications({
+      notifications: [notification],
+      createActions: jest.fn().mockImplementation(() => ({
+        update: mockUpdate
+      }))
+    });
+    // Will automatically dismiss notifications that should only be viewed once
+    act(() => result.current.trackNotificationViewed());
+    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
+      ...notification,
+      dateDismissed: expect.any(Date),
+      dismissed: true,
       viewed: true
     });
   });
