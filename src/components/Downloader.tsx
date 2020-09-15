@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import moment from 'moment';
-
 import { Button, Link } from '@components';
 import { getCurrentDBConfig, getExportFileName } from '@database';
 import { COLORS } from '@theme';
@@ -19,7 +17,7 @@ const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
   useEffect(() => {
     const settingsBlob = makeBlob('text/json;charset=UTF-8', data);
     setBlob(settingsBlob);
-    setFileName(getExportFileName(getCurrentDBConfig(), moment()));
+    setFileName(getExportFileName(getCurrentDBConfig(), new Date()));
   }, [data]);
 
   const handleDownload = () => {

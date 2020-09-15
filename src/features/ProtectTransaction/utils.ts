@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import isNumber from 'lodash/isNumber';
-import moment from 'moment';
 
 import {
   PROTECTED_TX_FEE_PERCENTAGE,
@@ -19,7 +18,7 @@ import {
   Wei
 } from '@services/EthService/utils';
 import { IFormikFields, TAddress } from '@types';
-import { bigify, isSameAddress } from '@utils';
+import { bigify, formatDate, isSameAddress } from '@utils';
 
 import { MALICIOUS_LABELS, WHITELISTED_LABELS } from './constants';
 import { NansenReportType, ProtectTxError } from './types';
@@ -94,8 +93,6 @@ export const getLastTx = (
   etherscanLastTokenTxReport: GetTokenTxResponse | null,
   receiverAddress: string | null
 ) => {
-  const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
-
   if (
     etherscanLastTxReport &&
     etherscanLastTxReport.result.length >= 0 &&

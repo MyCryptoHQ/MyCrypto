@@ -76,7 +76,8 @@ describe('getLastTx', () => {
   it('should return properly formatted output', () => {
     const mockTxReport = generateMockTxReport('15000000');
     const mockTokenReport = generateMockTokenReport('15000001');
-    expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.timestamp).toBe('06/23/1970');
+
+    expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.timestamp).toBe('1970-06-23');
     expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.value).toBe('0.076421');
   });
 });

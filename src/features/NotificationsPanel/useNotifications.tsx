@@ -1,11 +1,9 @@
 import { useContext } from 'react';
 
-import moment from 'moment';
-
 import { ANALYTICS_CATEGORIES } from '@services';
 import { DataContext } from '@services/Store';
 import { ExtendedNotification, LSKeys } from '@types';
-import { generateUUID, notUndefined, useAnalytics } from '@utils';
+import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
 
 import { notificationsConfigs } from './constants';
 
@@ -39,8 +37,7 @@ function isValidNotification(n: ExtendedNotification) {
   const shouldShowRepeatingNotification =
     config.repeatInterval &&
     n.dismissed &&
-    config.repeatInterval <=
-      moment.duration(moment(new Date()).diff(moment(n.dateDismissed))).asSeconds();
+    config.repeatInterval <= getTimeDifference(n.dateDismissed ?? 0);
   const isNonrepeatingNotification = !config.repeatInterval && !n.dismissed;
   const isConfigCondition = config.condition && config.condition(n);
 
