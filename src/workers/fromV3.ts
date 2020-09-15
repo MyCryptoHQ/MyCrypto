@@ -1,5 +1,5 @@
-import { default as Wallet } from 'ethereumjs-wallet';
 import { toBuffer } from 'ethereumjs-util';
+import { default as Wallet } from 'ethereumjs-wallet';
 import Worker from 'worker-loader!./workers/fromV3.worker.ts';
 
 export default function fromV3(

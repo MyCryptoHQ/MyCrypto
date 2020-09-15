@@ -1,12 +1,13 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 
 import { Panel } from '@mycrypto/ui';
-import { noOp } from '@utils';
-import { unknownReport, scamReport, verifiedReport, loadingReport } from '@fixtures';
+import { storiesOf } from '@storybook/react';
 
-import { ProtectTxReportUI } from './ProtectTxReport';
+import { loadingReport, scamReport, unknownReport, verifiedReport } from '@fixtures';
+import { noOp } from '@utils';
+
 import { PTXReport } from '../types';
+import { ProtectTxReportUI } from './ProtectTxReport';
 
 const ProtectTxStep3 = (report: PTXReport) => (
   <div style={{ maxWidth: '375px', position: 'relative' }}>

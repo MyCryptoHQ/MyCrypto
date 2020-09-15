@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { WalletId } from '@types';
 import { getWalletConfig } from '@config';
 import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 import { noOp } from '@utils';
 
 import { WalletButton } from './WalletButton';

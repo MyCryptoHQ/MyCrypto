@@ -1,5 +1,5 @@
 import { Wei } from '@services';
-import { toFixedIfLarger, formatNumber, formatGasLimit, formatMnemonic } from '@utils/formatters';
+import { formatGasLimit, formatMnemonic, formatNumber, toFixedIfLarger } from '@utils/formatters';
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {

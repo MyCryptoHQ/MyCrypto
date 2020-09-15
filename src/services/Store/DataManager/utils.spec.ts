@@ -1,15 +1,14 @@
-import { fNetwork, customNodeConfig } from '@fixtures';
-
-import {
-  NetworkId,
-  LSKeys,
-  LocalStorage,
-  ExtendedContract,
-  ExtendedAsset,
-  NodeOptions
-} from '@types';
 import { createDefaultValues } from '@database';
 import { NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { customNodeConfig, fNetwork } from '@fixtures';
+import {
+  ExtendedAsset,
+  ExtendedContract,
+  LocalStorage,
+  LSKeys,
+  NetworkId,
+  NodeOptions
+} from '@types';
 import { generateUUID } from '@utils';
 
 import { constructNetworkNodes, mergeConfigWithLocalStorage } from './utils';

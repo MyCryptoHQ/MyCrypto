@@ -1,4 +1,4 @@
-import { NodeOptions, NodeType, Network, ExtendedContact } from '@types';
+import { ExtendedContact, Network, NodeOptions, NodeType } from '@types';
 
 export abstract class NetworkUtils {
   public static createWeb3Node = (): NodeOptions => ({

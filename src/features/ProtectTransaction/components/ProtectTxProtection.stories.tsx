@@ -1,14 +1,15 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+
 import { Panel } from '@mycrypto/ui';
+import { storiesOf } from '@storybook/react';
 
-import { COLORS } from '@theme';
-import { noOp, bigify } from '@utils';
 import { Fiats } from '@config';
+import { COLORS } from '@theme';
+import { bigify, noOp } from '@utils';
 
-import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
-import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxError } from '..';
+import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
+import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
 
 const defaultProps: UIProps = {
   error: ProtectTxError.NO_ERROR,

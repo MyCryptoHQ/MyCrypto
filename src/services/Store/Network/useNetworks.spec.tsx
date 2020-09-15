@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 
-import { fNetwork, fNetworks, customNodeConfig } from '@fixtures';
+import { customNodeConfig, fNetwork, fNetworks } from '@fixtures';
 import { LSKeys, Network } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';

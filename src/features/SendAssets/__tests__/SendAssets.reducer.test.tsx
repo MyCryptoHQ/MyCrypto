@@ -1,9 +1,10 @@
-import { IFormikFields, ITxStatus } from '@types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
+
 import { fAccount, fNetwork } from '@fixtures';
 import { getDefaultEstimates } from '@services';
+import { IFormikFields, ITxStatus } from '@types';
 
-import { sendAssetsReducer, ReducerAction } from '../SendAssets.reducer';
+import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
 

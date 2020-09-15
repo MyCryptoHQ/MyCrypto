@@ -1,15 +1,16 @@
 import {
-  EnclaveMethods,
+  DisplayAddressParams,
+  DisplayAddressResponse,
   EnclaveMethodParams,
+  EnclaveMethods,
   GetChainCodeParams,
   GetChainCodeResponse,
-  SignTransactionParams,
-  SignTransactionResponse,
   SignMessageParams,
   SignMessageResponse,
-  DisplayAddressParams,
-  DisplayAddressResponse
+  SignTransactionParams,
+  SignTransactionResponse
 } from 'shared/enclave/types';
+
 import { makeRequest } from './requests';
 
 function makeMethod<ParamsType extends EnclaveMethodParams, ResponseType>(method: EnclaveMethods) {

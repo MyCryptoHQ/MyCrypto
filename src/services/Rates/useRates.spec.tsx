@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 
+import { fAssets, fDefiReserveRates, fSettings } from '@fixtures';
+import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
 import { IRates, TUuid } from '@types';
 
-import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
-import { fSettings, fAssets, fDefiReserveRates } from '@fixtures';
-import useRates from './useRates';
 import { ReserveMapping } from './RatesProvider';
+import useRates from './useRates';
 
 const renderUseRates = ({
   rates = {} as IRates,

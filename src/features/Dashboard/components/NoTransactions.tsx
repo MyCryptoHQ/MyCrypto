@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-import translate from '@translations';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate from '@translations';
 
 const { BLUE_BRIGHT } = COLORS;
 

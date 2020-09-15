@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
-import { DomainStatus, DomainStatusProps } from '../DomainStatus';
 import {
-  ResolutionErrorCode,
-  ResolutionError
+  ResolutionError,
+  ResolutionErrorCode
 } from '@unstoppabledomains/resolution/build/resolutionError';
+import { simpleRender } from 'test-utils';
+
 import UnstoppableService from '@services/UnstoppableService';
+
+import { DomainStatus, DomainStatusProps } from '../DomainStatus';
 
 const defaultProps: DomainStatusProps = {
   isLoading: false,

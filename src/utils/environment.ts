@@ -1,8 +1,8 @@
 import {
   IS_DEV as isDev,
+  IS_ELECTRON as isElectron,
   IS_PROD as isProd,
-  IS_STAGING as isStaging,
-  IS_ELECTRON as isElectron
+  IS_STAGING as isStaging
 } from '../../environment';
 
 export const IS_DEV: boolean = isDev;

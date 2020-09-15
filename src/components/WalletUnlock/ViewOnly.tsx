@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
-import styled from 'styled-components';
-import equals from 'ramda/src/equals';
 
-import { translateRaw } from '@translations';
-import { WalletId, FormData, IReceiverAddress, ErrorObject } from '@types';
+import { Form, Formik } from 'formik';
+import equals from 'ramda/src/equals';
+import styled from 'styled-components';
+
 import { Button, ContactLookupField } from '@components';
-import { WalletFactory } from '@services/WalletService';
 import { useNetworks } from '@services/Store';
+import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
-import { toChecksumAddressByChainId, isFormValid } from '@utils';
+import { translateRaw } from '@translations';
+import { ErrorObject, FormData, IReceiverAddress, WalletId } from '@types';
+import { isFormValid, toChecksumAddressByChainId } from '@utils';
 
 const FormWrapper = styled(Form)`
   padding: 2em 0;

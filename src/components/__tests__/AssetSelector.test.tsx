@@ -1,10 +1,11 @@
 import React from 'react';
-import selectEvent from 'react-select-event';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import selectEvent from 'react-select-event';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
 import { fAssets } from '@fixtures';
-import { Asset, TUuid, TTicker } from '@types';
 import { translateRaw } from '@translations';
+import { Asset, TTicker, TUuid } from '@types';
 import { ETHUUID } from '@utils';
 
 import AssetSelector, { AssetSelectorItem } from '../AssetSelector';

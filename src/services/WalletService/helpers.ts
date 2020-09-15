@@ -1,5 +1,5 @@
-import { default as Wallet } from 'ethereumjs-wallet';
 import { Transaction as Tx } from 'ethereumjs-tx';
+import { default as Wallet } from 'ethereumjs-wallet';
 
 import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from '@services/EthService/utils';
 

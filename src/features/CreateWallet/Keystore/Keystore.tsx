@@ -1,26 +1,27 @@
 import React, { Component, ReactType } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import pipe from 'ramda/src/pipe';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { makeBlob, generateAccountUUID, withHook } from '@utils';
-import { generateKeystore, fromV3 } from '@workers';
+import { DEFAULT_NETWORK, N_FACTOR, ROUTE_PATHS } from '@config';
+import { NotificationTemplates } from '@features/NotificationsPanel';
+import { stripHexPrefix } from '@services/EthService';
 import {
-  INetworkContext,
-  IAssetContext,
   getNewDefaultAssetTemplateByNetwork,
+  IAssetContext,
+  INetworkContext,
   useAssets,
   useNetworks
 } from '@services/Store';
-import { stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
-import { NotificationTemplates } from '@features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from '@types';
-import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from '@config';
+import { Asset, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
+import { generateAccountUUID, makeBlob, withHook } from '@utils';
+import { fromV3, generateKeystore } from '@workers';
 
-import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
+import { keystoreFlow, KeystoreStages, keystoreStageToComponentHash } from './constants';
 
 interface State {
   password: string;

@@ -1,7 +1,8 @@
-import { fAssets, fNetwork, fAccount } from '@fixtures';
+import { fAccount, fAssets, fNetwork } from '@fixtures';
+
+import { tokenMigrationConfig } from './config';
 import { createApproveTx, createMigrationTx } from './helpers';
 import { ITokenMigrationFormFull } from './types';
-import { tokenMigrationConfig } from './config';
 
 const defaultProps: ITokenMigrationFormFull = {
   tokenConfig: tokenMigrationConfig,

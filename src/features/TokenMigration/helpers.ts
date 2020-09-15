@@ -1,18 +1,18 @@
-import { ITxObject, StoreAccount, ITxConfig, TAddress, ITxData } from '@types';
+import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
+import { getAssetByUUID } from '@services';
 import {
-  inputValueToHex,
-  inputGasPriceToHex,
-  toWei,
+  fromTokenBase,
   hexToString,
   hexWeiToString,
-  fromTokenBase
+  inputGasPriceToHex,
+  inputValueToHex,
+  toWei
 } from '@services/EthService';
-import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from '@config';
-import { ERC20, decodeTransfer, RepV2Token } from '@services/EthService/contracts';
-import { getAssetByUUID } from '@services';
+import { decodeTransfer, ERC20, RepV2Token } from '@services/EthService/contracts';
+import { ITxConfig, ITxData, ITxObject, StoreAccount, TAddress } from '@types';
 
-import { ITokenMigrationFormFull } from './types';
 import { tokenMigrationConfig } from './config';
+import { ITokenMigrationFormFull } from './types';
 
 export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxObject> => {
   const data = ERC20.approve.encodeInput({

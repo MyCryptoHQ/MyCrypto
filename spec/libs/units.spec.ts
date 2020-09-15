@@ -1,11 +1,11 @@
 import {
-  fromWei,
-  Wei,
-  toWei,
-  toTokenBase,
   fromTokenBase,
+  fromWei,
   getDecimalFromEtherUnit,
-  TokenValue
+  TokenValue,
+  toTokenBase,
+  toWei,
+  Wei
 } from '@services/EthService';
 import { convertTokenBase } from '@services/EthService/utils/units';
 

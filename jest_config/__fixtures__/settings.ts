@@ -1,4 +1,4 @@
-import { TUuid, ISettings, TFiatTicker } from '@types';
+import { ISettings, TFiatTicker, TUuid } from '@types';
 
 export const fSettings: ISettings = {
   fiatCurrency: 'USD' as TFiatTicker,

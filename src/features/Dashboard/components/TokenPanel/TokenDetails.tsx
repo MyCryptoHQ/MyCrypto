@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { StoreAsset, Social } from '@types';
-import { DashboardPanel, AssetIcon, Currency } from '@components';
-import { getNetworkById, StoreContext, SettingsContext } from '@services/Store';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
-import { weiToFloat } from '@utils';
+import { AssetIcon, Currency, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config/fiats';
+import { getNetworkById, SettingsContext, StoreContext } from '@services/Store';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Social, StoreAsset } from '@types';
+import { weiToFloat } from '@utils';
 
 const etherscanUrl = ' https://etherscan.io';
 

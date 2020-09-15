@@ -1,4 +1,4 @@
-import { ValuesType, Overwrite } from 'utility-types';
+import { Overwrite, ValuesType } from 'utility-types';
 
 import { TAction } from '@types';
 

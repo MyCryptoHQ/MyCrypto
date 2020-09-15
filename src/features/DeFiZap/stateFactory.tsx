@@ -1,16 +1,16 @@
-import { TUseStateReducerFactory, makePendingTxReceipt } from '@utils';
-import { isWeb3Wallet } from '@utils/web3';
-import {
-  Asset,
-  ITxStatus,
-  ITxType,
-  ITxHash,
-  TAddress,
-  ISimpleTxFormFull,
-  TStepAction
-} from '@types';
 import { hexWeiToString, ProviderHandler } from '@services/EthService';
 import { useAccounts } from '@services/Store';
+import {
+  Asset,
+  ISimpleTxFormFull,
+  ITxHash,
+  ITxStatus,
+  ITxType,
+  TAddress,
+  TStepAction
+} from '@types';
+import { makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import { isWeb3Wallet } from '@utils/web3';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';

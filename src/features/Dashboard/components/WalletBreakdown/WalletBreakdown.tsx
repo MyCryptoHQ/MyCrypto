@@ -1,21 +1,22 @@
 import React, { useContext, useState } from 'react';
+
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
+import { Tooltip } from '@components';
+import { getFiat } from '@config/fiats';
 import { useRates } from '@services';
 import { SettingsContext, StoreContext } from '@services/Store';
-import { TUuid, Balance } from '@types';
-import { buildBalances, buildTotalFiatValue } from '@utils';
-import { BREAK_POINTS, SPACING } from '@theme';
-import { getFiat } from '@config/fiats';
-import { Tooltip } from '@components';
 import { isNotExcludedAsset } from '@services/Store/helpers';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Balance, TUuid } from '@types';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
-import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
+import WalletBreakdownView from './WalletBreakdownView';
 
 const WalletBreakdownTop = styled.div`
   display: flex;

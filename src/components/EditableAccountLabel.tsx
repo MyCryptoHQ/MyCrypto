@@ -1,9 +1,10 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { ExtendedContact, TAddress, NetworkId, TUuid, Contact } from '@types';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
+import { Contact, ExtendedContact, NetworkId, TAddress, TUuid } from '@types';
 
 import EditableText from './EditableText';
 

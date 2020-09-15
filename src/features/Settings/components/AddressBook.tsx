@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Icon, Identicon, Button } from '@mycrypto/ui';
-import isNumber from 'lodash/isNumber';
+
+import { Button, Icon, Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
+import isNumber from 'lodash/isNumber';
+import styled from 'styled-components';
 
 import {
   DashboardPanel,
-  RowDeleteOverlay,
-  Network,
-  EthAddress,
   EditableText,
+  EthAddress,
+  FixedSizeCollapsibleTable,
+  Network,
+  RowDeleteOverlay,
   Tooltip,
-  UndoDeleteOverlay,
-  FixedSizeCollapsibleTable
+  UndoDeleteOverlay
 } from '@components';
-import { Contact as IContact, TUuid, ExtendedContact } from '@types';
-import { COLORS, SPACING, BREAK_POINTS } from '@theme';
-import { translateRaw } from '@translations';
 import IconArrow from '@components/IconArrow';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { ExtendedContact, Contact as IContact, TUuid } from '@types';
 
 interface Props {
   contacts: ExtendedContact[];

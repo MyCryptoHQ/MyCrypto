@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
-import { validateMnemonic } from 'bip39';
 
-import { formatMnemonic } from '@utils';
-import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw, Trans } from '@translations';
-import { TogglablePassword, Tooltip, Input, RouterLink } from '@components';
-import { DPathsList, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DEFAULT_GAP_TO_SCAN_FOR } from '@config';
-import {
-  getNetworkById,
-  getAssetByUUID,
-  useDeterministicWallet,
-  useAssets,
-  useNetworks
-} from '@services';
+import { validateMnemonic } from 'bip39';
+import prop from 'ramda/src/prop';
+import uniqBy from 'ramda/src/uniqBy';
 
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 import questionToolTip from '@assets/images/icn-question.svg';
+import { Input, RouterLink, TogglablePassword, Tooltip } from '@components';
+import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, DPathsList } from '@config';
+import {
+  getAssetByUUID,
+  getNetworkById,
+  useAssets,
+  useDeterministicWallet,
+  useNetworks
+} from '@services';
+import translate, { Trans, translateRaw } from '@translations';
+import { ExtendedAsset, FormData, WalletId } from '@types';
+import { formatMnemonic } from '@utils';
+
+import DeterministicWallet from './DeterministicWallet';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './NewTrezor.scss';
-import DeterministicWallet from './DeterministicWallet';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {

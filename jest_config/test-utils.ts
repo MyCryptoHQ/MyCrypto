@@ -1,8 +1,9 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
-import { noOp } from '@utils';
+
 import { TAction } from '@types';
+import { noOp } from '@utils';
 
 import { ProvidersWrapper } from './providersWrapper';
 

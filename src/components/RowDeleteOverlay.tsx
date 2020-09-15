@@ -1,8 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { COLORS, BREAK_POINTS } from '@theme';
 import { Button } from '@components';
+import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
 
 /*

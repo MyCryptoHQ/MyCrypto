@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { ErrorProvider } from '@features';
-import { SettingsProvider, DataProvider } from '@services/Store';
-
-import { DevToolsProvider, StoreProvider, FeatureFlagProvider, RatesProvider } from '@services';
+import { DevToolsProvider, FeatureFlagProvider, RatesProvider, StoreProvider } from '@services';
+import { DataProvider, SettingsProvider } from '@services/Store';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (

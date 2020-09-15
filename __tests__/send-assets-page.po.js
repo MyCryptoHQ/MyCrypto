@@ -1,7 +1,8 @@
-import { t, Selector } from 'testcafe';
-import { getByText, getAllByText } from '@testing-library/testcafe';
-import { PAGES, FIXTURE_SEND_CONTACT, FIXTURE_SEND_AMOUNT } from './fixtures';
+import { getAllByText, getByText } from '@testing-library/testcafe';
+import { Selector, t } from 'testcafe';
+
 import BasePage from './base-page.po';
+import { FIXTURE_SEND_AMOUNT, FIXTURE_SEND_CONTACT, PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
 export default class SendAssetsPage extends BasePage {

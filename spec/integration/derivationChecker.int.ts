@@ -1,5 +1,5 @@
-import { default as Wallet } from 'ethereumjs-wallet';
 import { exec } from 'child_process';
+import { default as Wallet } from 'ethereumjs-wallet';
 
 import { stripHexPrefix } from '@services';
 

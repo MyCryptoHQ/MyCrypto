@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Network, IReceiverAddress, Contract } from '@types';
 import { translateRaw } from '@translations';
+import { Contract, IReceiverAddress, Network } from '@types';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
 

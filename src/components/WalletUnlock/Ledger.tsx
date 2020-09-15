@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
-import uniqBy from 'ramda/src/uniqBy';
-import prop from 'ramda/src/prop';
 
-import { IS_ELECTRON } from '@utils';
-import { FormData, WalletId, ExtendedAsset } from '@types';
-import translate, { translateRaw, Trans } from '@translations';
-import { NewTabLink, Spinner, Button, RouterLink } from '@components';
-import {
-  EXT_URLS,
-  LEDGER_DERIVATION_PATHS,
-  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DEFAULT_GAP_TO_SCAN_FOR,
-  DPathsList
-} from '@config';
-import {
-  getNetworkById,
-  getAssetByUUID,
-  useDeterministicWallet,
-  getDPaths,
-  useAssets,
-  useNetworks
-} from '@services';
+import prop from 'ramda/src/prop';
+import uniqBy from 'ramda/src/uniqBy';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import UnsupportedNetwork from './UnsupportedNetwork';
+import { Button, NewTabLink, RouterLink, Spinner } from '@components';
+import {
+  DEFAULT_GAP_TO_SCAN_FOR,
+  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
+  DPathsList,
+  EXT_URLS,
+  LEDGER_DERIVATION_PATHS
+} from '@config';
+import {
+  getAssetByUUID,
+  getDPaths,
+  getNetworkById,
+  useAssets,
+  useDeterministicWallet,
+  useNetworks
+} from '@services';
+import translate, { Trans, translateRaw } from '@translations';
+import { ExtendedAsset, FormData, WalletId } from '@types';
+import { IS_ELECTRON } from '@utils';
+
 import DeterministicWallet from './DeterministicWallet';
+import UnsupportedNetwork from './UnsupportedNetwork';
 
 interface OwnProps {
   formData: FormData;

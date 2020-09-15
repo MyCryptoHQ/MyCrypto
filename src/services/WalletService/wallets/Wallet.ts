@@ -1,5 +1,5 @@
-import { WalletResult } from './types';
 import { ExtendedDPath } from '../deterministic/types';
+import { WalletResult } from './types';
 
 export default interface Wallet {
   /**

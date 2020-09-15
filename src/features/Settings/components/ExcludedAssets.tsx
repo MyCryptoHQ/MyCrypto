@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
+
 import styled from 'styled-components';
-import { TUuid, Balance, Fiat, IAccount } from '@types';
+
+import { AddIcon, BalanceDetailsTable, DashboardPanel, Tooltip } from '@components';
 import { SettingsContext } from '@services/Store';
-import { BalanceDetailsTable, Tooltip, AddIcon, DashboardPanel } from '@components';
 import { translateRaw } from '@translations';
+import { Balance, Fiat, IAccount, TUuid } from '@types';
 
 const SIconContainer = styled.div`
   display: flex;

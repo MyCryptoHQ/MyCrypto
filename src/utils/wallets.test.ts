@@ -1,10 +1,10 @@
-import { WalletId, TAddress } from '@types';
 import { fAccounts } from '@fixtures';
+import { TAddress, WalletId } from '@types';
 
 import {
-  isViewOnlyWallet,
   isSenderAccountPresent,
-  isSenderAccountPresentAndOfMainType
+  isSenderAccountPresentAndOfMainType,
+  isViewOnlyWallet
 } from './wallets';
 
 describe('isViewOnlyWallet', () => {

@@ -1,7 +1,7 @@
-import { Selector, ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 
-import { PAGES } from './fixtures';
 import AddAccountPage from './addaccount-page.po';
+import { PAGES } from './fixtures';
 
 const addAccount = new AddAccountPage();
 fixture('Dashboard').page(PAGES.DASHBOARD);

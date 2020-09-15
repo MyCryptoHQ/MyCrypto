@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { ValuesType } from 'utility-types';
 
-import { TAddress, DPathFormat, Network, ExtendedAsset } from '@types';
+import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 
-import DeterministicWalletReducer from './reducer';
 import { Wallet } from '..';
+import DeterministicWalletReducer from './reducer';
 
 export type TDWActionError = ValuesType<typeof DeterministicWalletReducer.errorCodes>;
 

@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 
-import { DashboardPanel, CollapsibleTable, Network } from '@components';
-import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
-import { translateRaw } from '@translations';
-import { COLORS, SPACING } from '@theme';
-import { useFeatureFlags } from '@services';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import { CollapsibleTable, DashboardPanel, Network } from '@components';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
+import { useFeatureFlags } from '@services';
+import { COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
 import useScreenSize from '@utils/useScreenSize';
 
 interface Props {

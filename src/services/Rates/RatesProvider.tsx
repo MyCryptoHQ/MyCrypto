@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
-import { usePromise, useEffectOnce, prop, uniqBy } from '@vendor';
-import { StoreContext, SettingsContext, useAssets } from '@services/Store';
-import { PollingService } from '@workers';
-import { IRates, TTicker, TUuid, ExtendedAsset } from '@types';
 import { Fiats } from '@config/fiats';
 import { DeFiReserveMapService } from '@services';
+import { SettingsContext, StoreContext, useAssets } from '@services/Store';
+import { ExtendedAsset, IRates, TTicker, TUuid } from '@types';
+import { prop, uniqBy, useEffectOnce, usePromise } from '@vendor';
+import { PollingService } from '@workers';
 
 interface State {
   rates: IRates;

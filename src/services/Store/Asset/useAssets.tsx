@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 
-import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { EXCLUDED_ASSETS } from '@config';
-import { pipe, map, mergeLeft, toPairs, reduce, pickBy } from '@vendor';
+import { ExtendedAsset, LSKeys, TUuid } from '@types';
+import { map, mergeLeft, pickBy, pipe, reduce, toPairs } from '@vendor';
 
 import { DataContext } from '../DataManager';
 import { getAssetByUUID as getAssetByUUIDFunc } from './helpers';

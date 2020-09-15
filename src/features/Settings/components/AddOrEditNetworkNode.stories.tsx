@@ -1,15 +1,16 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+
 import { storiesOf } from '@storybook/react';
+import AppProviders from 'AppProviders';
+import { ThemeProvider } from 'styled-components';
 
 import { DEFAULT_NETWORK } from '@config';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import { Network, NetworkId } from '@types';
+import { customNodeConfig } from '@fixtures';
 import { theme } from '@theme';
+import { Network, NetworkId } from '@types';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
-import AppProviders from 'AppProviders';
-import { customNodeConfig } from '@fixtures';
 
 const networkId = DEFAULT_NETWORK;
 const addNode = undefined;

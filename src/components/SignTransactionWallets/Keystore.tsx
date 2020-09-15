@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { Wallet, utils } from 'ethers';
 
-import { Input, Button } from '@components';
+import { utils, Wallet } from 'ethers';
+
+import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import { Button, Input } from '@components';
+import { WALLETS_CONFIG } from '@config';
+import { isKeystorePassRequired } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
-import { isKeystorePassRequired } from '@services/WalletService';
-import { WALLETS_CONFIG } from '@config';
 
 import './Keystore.scss';
-import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
 
 export interface KeystoreValueState {
   file: string;

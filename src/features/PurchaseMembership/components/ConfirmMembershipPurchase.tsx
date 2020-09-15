@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { ConfirmTransaction } from '@components';
-import { ITxType, TxParcel, StoreAccount } from '@types';
+import { ITxType, StoreAccount, TxParcel } from '@types';
+
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
 

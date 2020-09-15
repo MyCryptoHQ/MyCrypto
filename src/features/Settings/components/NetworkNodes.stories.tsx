@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 
-import { Network as INetwork, NetworkId } from '@types';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import AppProviders from '../../../AppProviders';
+import { Network as INetwork, NetworkId } from '@types';
 
+import AppProviders from '../../../AppProviders';
 import NetworkNodes from './NetworkNodes';
 
 const emptyNetworks: INetwork[] = [];

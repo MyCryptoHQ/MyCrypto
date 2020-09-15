@@ -1,8 +1,9 @@
 'use strict';
-const path = require('path');
-const fs = require('fs');
-const rimraf = require('rimraf');
 const builder = require('electron-builder');
+const fs = require('fs');
+const path = require('path');
+const rimraf = require('rimraf');
+
 const config = require('./config');
 
 function shouldBuildOs(os) {

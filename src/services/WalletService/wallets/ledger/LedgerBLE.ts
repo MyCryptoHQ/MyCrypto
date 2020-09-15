@@ -1,6 +1,7 @@
-import { DescriptorEvent } from '@ledgerhq/hw-transport';
 import EthereumApp from '@ledgerhq/hw-app-eth';
+import { DescriptorEvent } from '@ledgerhq/hw-transport';
 import TransportWebBLE from '@ledgerhq/hw-transport-web-ble';
+
 import Ledger from './Ledger';
 
 type BluetoothDevice = any; // @todo

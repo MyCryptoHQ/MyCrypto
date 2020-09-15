@@ -1,14 +1,15 @@
 import { getByText } from '@testing-library/testcafe';
+
+import AddAccountPage from './addaccount-page.po';
 import {
   FIXTURE_LOCALSTORAGE_EMPTY,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
   FIXTURE_MYC_STORAGE_KEY,
   PAGES
 } from './fixtures';
-import AddAccountPage from './addaccount-page.po';
+import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 import SettingsPage from './settings-page.po';
 import { getTransValueByKey } from './translation-utils';
-import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
 
 const addAccountPage = new AddAccountPage();
 const settingsPage = new SettingsPage();

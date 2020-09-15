@@ -1,9 +1,11 @@
 import React from 'react';
-import selectEvent from 'react-select-event';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import selectEvent from 'react-select-event';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
 import { fAccounts } from '@fixtures';
 import { sortByLabel } from '@utils';
+
 import AccountSelector from './AccountSelector';
 
 type Props = React.ComponentProps<typeof AccountSelector>;

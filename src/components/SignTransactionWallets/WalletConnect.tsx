@@ -1,17 +1,18 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import isEmpty from 'ramda/src/isEmpty';
 
-import translate, { translateRaw } from '@translations';
-import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from '@components';
-import { WalletId, ISignComponentProps, TAddress, ITxHash } from '@types';
+import isEmpty from 'ramda/src/isEmpty';
+import styled, { css } from 'styled-components';
+
+import { Button, CodeBlock, Overlay, QRCodeContainer, Spinner, Typography } from '@components';
 import { getWalletConfig } from '@config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
-import { useUpdateEffect } from '@vendor';
-import { noOp, objToString } from '@utils';
 import { getNetworkByChainId } from '@services';
 import { useNetworks } from '@services/Store';
-import { useWalletConnect, WcReducer, TActionError } from '@services/WalletService';
+import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
+import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISignComponentProps, ITxHash, TAddress, WalletId } from '@types';
+import { noOp, objToString } from '@utils';
+import { useUpdateEffect } from '@vendor';
 
 import EthAddress from '../EthAddress';
 

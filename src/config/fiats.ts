@@ -1,4 +1,4 @@
-import { Fiat, TFiatTicker, TCurrencySymbol, ISettings } from '@types';
+import { Fiat, ISettings, TCurrencySymbol, TFiatTicker } from '@types';
 
 interface FiatObject {
   [key: string]: Fiat;

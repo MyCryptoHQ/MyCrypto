@@ -1,19 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { bigNumberify } from 'ethers/utils';
 
-import translate, { translateRaw } from '@translations';
-import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull, ExtendedAsset } from '@types';
-import { AccountSelector, InlineMessage, AmountInput, Button, Tooltip } from '@components';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { bigNumberify } from 'ethers/utils';
+import { useFormik } from 'formik';
+import styled from 'styled-components';
+import { number, object } from 'yup';
+
+import { AccountSelector, AmountInput, Button, InlineMessage, Tooltip } from '@components';
+import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { ETHUUID, noOp, weiToFloat, isFormValid as checkFormValid } from '@utils';
-import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
+import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, ExtendedAsset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
+import { isFormValid as checkFormValid, ETHUUID, noOp, weiToFloat } from '@utils';
 
 import { tokenMigrationConfig } from '../config';
 
@@ -101,8 +102,8 @@ export const TokenMigrationFormUI = ({
   };
   const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, '0.001');
 
-  const TokenMigrationFormSchema = Yup.object().shape({
-    amount: Yup.number()
+  const TokenMigrationFormSchema = object().shape({
+    amount: number()
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))

@@ -1,10 +1,11 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
+import { Typography } from '@components';
+import { FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
-import { SPACING, FONT_SIZE } from '@theme';
-import { Typography } from '@components';
 import Icon from './Icon';
 
 const Wrapper = styled.div<{ css?: string }>`

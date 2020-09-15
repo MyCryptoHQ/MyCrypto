@@ -1,9 +1,8 @@
-import { t, Selector } from 'testcafe';
+import { Selector, t } from 'testcafe';
 
-import { getTransValueByKey } from './translation-utils';
-
-import { PAGES, FIXTURE_ETHEREUM, FIXTURE_INCOMING_TX_HASH } from './fixtures';
 import BasePage from './base-page.po';
+import { FIXTURE_ETHEREUM, FIXTURE_INCOMING_TX_HASH, PAGES } from './fixtures';
+import { getTransValueByKey } from './translation-utils';
 
 export default class TxStatusPage extends BasePage {
   async navigateToPage() {

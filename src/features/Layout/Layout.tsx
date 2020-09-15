@@ -1,17 +1,18 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { BannerType } from '@types';
 import { Banner } from '@components';
-import { COLORS, BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import { DrawerContext, ErrorContext, MigrateLS } from '@features';
-import { pipe } from '@vendor';
-import { withContext, IS_E2E } from '@utils';
 import { useFeatureFlags } from '@services';
-import { StoreContext, SettingsContext } from '@services/Store';
+import { SettingsContext, StoreContext } from '@services/Store';
+import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
+import { BannerType } from '@types';
+import { IS_E2E, withContext } from '@utils';
+import { pipe } from '@vendor';
 
-import Header from './Header';
 import Footer from './Footer';
+import Header from './Header';
 
 export interface LayoutConfig {
   centered?: boolean;

@@ -1,12 +1,13 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
-import { Network, IReceiverAddress, ErrorObject } from '@types';
-import { getBaseAssetByNetwork, useAssets } from '@services/Store';
-import { isValidETHAddress, isValidENSName } from '@services/EthService';
-import UnstoppableResolution from '@services/UnstoppableService';
+import { isValidENSName, isValidETHAddress } from '@services/EthService';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
+import { getBaseAssetByNetwork, useAssets } from '@services/Store';
+import UnstoppableResolution from '@services/UnstoppableService';
+import { ErrorObject, IReceiverAddress, Network } from '@types';
 
 import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
 

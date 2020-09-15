@@ -1,17 +1,17 @@
-import React, { useCallback, FC, useState, useEffect } from 'react';
-import { OptionProps } from 'react-select';
-import styled from 'styled-components';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
-
-import { NetworkUtils, useNetworks } from '@services/Store';
-import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
-import { Typography, Selector } from '@components/index';
-import { translateRaw } from '@translations';
-import { SPACING, COLORS } from '@theme';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
 
 import addIcon from '@assets/images/icn-add.svg';
 import editIcon from '@assets/images/icn-edit.svg';
+import { Selector, Typography } from '@components/index';
+import { NetworkUtils, useNetworks } from '@services/Store';
+import { COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
 
 const SContainer = styled.div`
   display: flex;

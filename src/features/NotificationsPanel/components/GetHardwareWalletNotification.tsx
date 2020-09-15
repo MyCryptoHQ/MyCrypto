@@ -1,14 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import { EXT_URLS } from '@config';
-import NotificationWrapper from './NotificationWrapper';
-
-// Legacy
 import walletIcon from '@assets/images/icn-new-wallet.svg';
+import { EXT_URLS } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

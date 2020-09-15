@@ -1,10 +1,10 @@
 import { ethers } from 'ethers';
-import { FallbackProvider, BaseProvider } from 'ethers/providers';
-import equals from 'ramda/src/equals';
+import { BaseProvider, FallbackProvider } from 'ethers/providers';
 import isEmpty from 'lodash/isEmpty';
+import equals from 'ramda/src/equals';
 
-import { Network, NetworkId, NodeType, NodeOptions, DPathFormat } from '@types';
-import { INFURA_API_KEY, ETHERSCAN_API_KEY } from '@config';
+import { ETHERSCAN_API_KEY, INFURA_API_KEY } from '@config';
+import { DPathFormat, Network, NetworkId, NodeOptions, NodeType } from '@types';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';

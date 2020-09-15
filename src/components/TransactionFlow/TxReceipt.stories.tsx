@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { fTxConfig, fTxReceipt, fAccount, fSettings } from '@fixtures';
-import { ITxStatus, ExtendedContact, ITxType } from '@types';
-import { noOp } from '@utils';
-import { devContacts } from '@database/seed';
-import { IZapConfig, ZAPS_CONFIG, defaultZapId } from '@features/DeFiZap/config';
-import { MEMBERSHIP_CONFIG, IMembershipId } from '@features/PurchaseMembership/config';
 import { Fiats } from '@config';
+import { devContacts } from '@database/seed';
+import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
+import { IMembershipId, MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
+import { fAccount, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
+import { ExtendedContact, ITxStatus, ITxType } from '@types';
+import { noOp } from '@utils';
 
-import { TxReceiptUI } from './TxReceipt';
 import { constructSenderFromTxConfig } from './helpers';
+import { TxReceiptUI } from './TxReceipt';
 
 // Define props
 const assetRate = 1.34;

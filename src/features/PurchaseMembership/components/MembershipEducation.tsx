@@ -1,28 +1,28 @@
 import React from 'react';
-import styled from 'styled-components';
-import { withRouter, Link } from 'react-router-dom';
+
 import { Accordion } from '@mycrypto/ui';
-
-import { FullSizeContentPanel, Button, Typography } from '@components';
-import translate from '@translations';
-import { ROUTE_PATHS } from '@config';
-import { BREAK_POINTS, SPACING, COLORS } from '@theme';
-
-import {
-  FullSizePanelSection,
-  SpacedPanelSection,
-  RowPanelSection
-} from '../../../components/FullSizeContentPanel';
-import { MEMBERSHIP_CONFIG, IMembershipId, accordionContent } from '../config';
-import MembershipPlanCard from './MembershipPlanCard';
+import { Link, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
 import membershipLifetime from '@assets/images/membership/membership-lifetime.svg';
-import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
 import membershipNoAds from '@assets/images/membership/membership-no-ads.svg';
 import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor.svg';
-import membershipStickers from '@assets/images/membership/membership-stickers.svg';
 import membershipShirt from '@assets/images/membership/membership-shirt.svg';
+import membershipStickers from '@assets/images/membership/membership-stickers.svg';
+import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
+import { Button, FullSizeContentPanel, Typography } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import translate from '@translations';
+
+import {
+  FullSizePanelSection,
+  RowPanelSection,
+  SpacedPanelSection
+} from '../../../components/FullSizeContentPanel';
+import { accordionContent, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
+import MembershipPlanCard from './MembershipPlanCard';
 
 const Heading = styled(FullSizePanelSection)`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {

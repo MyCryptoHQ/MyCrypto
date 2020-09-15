@@ -1,6 +1,6 @@
+import { TFiatTicker } from './asset';
 import { IRates } from './rates';
 import { TUuid } from './uuid';
-import { TFiatTicker } from './asset';
 
 export interface ISettings {
   fiatCurrency: TFiatTicker;

@@ -1,16 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 
-import translate, { translateRaw } from '@translations';
-import { BREAK_POINTS } from '@theme';
-import NotificationWrapper from './NotificationWrapper';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import cantAccessIcon from '@assets/images/onboarding/icn-cant-access.svg';
+import cantFreezeIcon from '@assets/images/onboarding/icn-cant-freeze.svg';
 import cantModifyIcon from '@assets/images/onboarding/icn-cant-modify.svg';
 import cantReverseIcon from '@assets/images/onboarding/icn-cant-reverse.svg';
-import cantFreezeIcon from '@assets/images/onboarding/icn-cant-freeze.svg';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate, { translateRaw } from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 

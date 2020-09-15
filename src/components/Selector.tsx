@@ -1,17 +1,19 @@
 import React from 'react';
+
 import Select, {
+  FocusEventHandler,
   IndicatorProps,
+  InputActionMeta,
   OptionProps,
-  ValueContainerProps,
   components as ReactSelectComponents,
-  Styles
+  Styles,
+  ValueContainerProps
 } from 'react-select';
-import { FocusEventHandler, InputActionMeta } from 'react-select/src/types';
 import styled from 'styled-components';
 
+import crossIcon from '@assets/images/icn-cross.svg';
 import { COLORS, FONT_SIZE } from '@theme';
 
-import crossIcon from '@assets/images/icn-cross.svg';
 import { CenteredIconArrow } from './IconArrow';
 
 export interface SelectorProps<T> {

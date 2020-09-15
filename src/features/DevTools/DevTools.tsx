@@ -1,33 +1,34 @@
 import React, { useContext } from 'react';
-import { Formik, Field, Form, FieldProps, FormikProps } from 'formik';
-import { Panel, Input } from '@mycrypto/ui';
-import { Button, Link, Checkbox } from '@components';
+
+import { Input, Panel } from '@mycrypto/ui';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import styled, { css } from 'styled-components';
 
+import { Button, Checkbox, Link } from '@components';
 import { DEFAULT_NETWORK, IFeatureFlags } from '@config';
-import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
-import {
-  useAccounts,
-  getLabelByAddressAndNetwork,
-  DataContext,
-  useNetworks,
-  useContacts
-} from '@services/Store';
 import { useDevTools, useFeatureFlags } from '@services';
 import {
-  TAddress,
-  IRawAccount,
-  Contact,
-  WalletId,
-  AssetBalanceObject,
-  ExtendedContact,
-  Network
-} from '@types';
+  DataContext,
+  getLabelByAddressAndNetwork,
+  useAccounts,
+  useContacts,
+  useNetworks
+} from '@services/Store';
 import { BREAK_POINTS } from '@theme';
+import {
+  AssetBalanceObject,
+  Contact,
+  ExtendedContact,
+  IRawAccount,
+  Network,
+  TAddress,
+  WalletId
+} from '@types';
+import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 
-import ToolsNotifications from './ToolsNotifications';
-import ToolsAccountList from './ToolsAccountList';
 import { ErrorContext } from '../ErrorHandling';
+import ToolsAccountList from './ToolsAccountList';
+import ToolsNotifications from './ToolsNotifications';
 
 const DevToolsInput = styled(Input)`
   font-size: 1em;

@@ -1,17 +1,17 @@
 // @todo Used for unsupportedTabs. update to unsupportedPaths
 // import { TAB } from 'components/Header/components/constants';
 
-import { WalletId, NetworkId, TTicker, NetworkLegacy } from '@types';
-import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import {
+  DEFAULT_NETWORK,
+  DEFAULT_NETWORK_TICKER,
   DPathsList as DPaths,
   ethPlorer,
   ETHTokenExplorer,
-  GAS_PRICE_TESTNET,
   GAS_PRICE_DEFAULT,
-  DEFAULT_NETWORK_TICKER,
-  DEFAULT_NETWORK
+  GAS_PRICE_TESTNET
 } from '@config';
+import { makeExplorer } from '@services/EthService/utils/makeExplorer';
+import { NetworkId, NetworkLegacy, TTicker, WalletId } from '@types';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 export type NetworkConfig = {

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { simpleRender, waitFor } from 'test-utils';
-import { fAccount, fTransaction, fNetwork } from '@fixtures';
+
+import { fAccount, fNetwork, fTransaction } from '@fixtures';
 import { DataContext } from '@services';
 
 import { default as WalletConnectComponent } from '../WalletConnect';

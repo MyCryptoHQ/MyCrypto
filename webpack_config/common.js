@@ -1,15 +1,16 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const config = require('./config');
+const webpack = require('webpack');
+
 const { IS_DEV, IS_ELECTRON } = require('../environment');
+const config = require('./config');
 
 module.exports = {
   target: 'web',

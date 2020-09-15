@@ -1,19 +1,19 @@
-import { translateRaw } from '@translations';
 import {
-  IHexStrWeb3Transaction,
-  INode,
-  TAddress,
-  Web3RequestPermissionsResult,
-  IExposedAccountsPermission,
-  IWeb3Permission
-} from '@types';
-import {
-  isValidSendTransaction,
-  isValidSignMessage,
   isValidGetAccounts,
-  isValidGetNetVersion
+  isValidGetNetVersion,
+  isValidSendTransaction,
+  isValidSignMessage
 } from '@services/EthService';
 import { isValidRequestPermissions } from '@services/EthService/validators';
+import { translateRaw } from '@translations';
+import {
+  IExposedAccountsPermission,
+  IHexStrWeb3Transaction,
+  INode,
+  IWeb3Permission,
+  TAddress,
+  Web3RequestPermissionsResult
+} from '@types';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';

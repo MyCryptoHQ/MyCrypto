@@ -1,7 +1,7 @@
-import { StoreAsset, StoreAccount, ISettings, Balance, Asset, TUuid, BalanceAccount } from '@types';
 import { translateRaw } from '@translations';
+import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
 
-import { weiToFloat, convertToFiatFromAsset } from './convert';
+import { convertToFiatFromAsset, weiToFloat } from './convert';
 
 export const buildBalances = (
   totals: (selectedAccounts?: StoreAccount[]) => StoreAsset[],

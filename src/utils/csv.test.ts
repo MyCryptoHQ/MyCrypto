@@ -1,4 +1,5 @@
 import { fAssets, fDWAccounts } from '@fixtures';
+
 import { accountsToCSV } from './csv';
 
 describe('Convert list of accounts to CSV', () => {

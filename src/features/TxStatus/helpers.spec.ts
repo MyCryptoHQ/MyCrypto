@@ -1,18 +1,19 @@
-import {
-  fAssets,
-  fAccounts,
-  fTxReceipt,
-  fNetworks,
-  fETHWeb3TxResponse,
-  fETHNonWeb3TxResponse,
-  fETHNonWeb3TxConfig,
-  fETHNonWeb3TxReceipt
-} from '@fixtures';
-
-import { makeTx, fetchTxStatus } from './helpers';
-import { bigNumberify } from 'ethers/utils';
-import { ITxType, ITxStatus } from '@types';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { bigNumberify } from 'ethers/utils';
+
+import {
+  fAccounts,
+  fAssets,
+  fETHNonWeb3TxConfig,
+  fETHNonWeb3TxReceipt,
+  fETHNonWeb3TxResponse,
+  fETHWeb3TxResponse,
+  fNetworks,
+  fTxReceipt
+} from '@fixtures';
+import { ITxStatus, ITxType } from '@types';
+
+import { fetchTxStatus, makeTx } from './helpers';
 
 jest.mock('ethers/providers', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import

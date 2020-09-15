@@ -1,7 +1,8 @@
-import { Wei, TokenValue } from '@services/EthService';
-import { IHexStrTransaction } from '@types';
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
+
+import { TokenValue, Wei } from '@services/EthService';
+import { IHexStrTransaction } from '@types';
 
 export interface TxObj {
   to: string;

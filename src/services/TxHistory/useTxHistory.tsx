@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { ITxReceipt, Network } from '@types';
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { ITxReceipt, Network } from '@types';
 
-import { StoreContext, getTxsFromAccount, useNetworks, useContacts, useAssets } from '../Store';
-import { makeTxReceipt, merge, deriveTxType } from './helpers';
+import { getTxsFromAccount, StoreContext, useAssets, useContacts, useNetworks } from '../Store';
+import { deriveTxType, makeTxReceipt, merge } from './helpers';
 import { ITxHistoryEntry } from './types';
 
 function useTxHistory() {

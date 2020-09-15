@@ -3,13 +3,14 @@ import abi from 'ethereumjs-abi';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
 import { toChecksumAddressByChainId } from '@utils';
+
 import {
   FuncParams,
   FunctionOutputMappings,
-  Output,
   Input,
+  ISuppliedArgs,
   ITypeMapping,
-  ISuppliedArgs
+  Output
 } from './types';
 
 export class AbiFunction {

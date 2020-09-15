@@ -1,55 +1,55 @@
+import { toChecksumAddress } from 'ethereumjs-util';
+import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 import {
   Arrayish,
-  parseTransaction,
+  BigNumber,
   bigNumberify,
   formatEther,
   hexlify,
-  BigNumber
+  parseTransaction
 } from 'ethers/utils';
-import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
-import { toChecksumAddress } from 'ethereumjs-util';
 
+import { CREATION_ADDRESS } from '@config';
 import {
-  getNetworkByChainId,
-  getBaseAssetByNetwork,
-  getAssetByContractAndNetwork,
-  getStoreAccount,
-  getNetworkById
-} from '@services/Store';
-import {
-  fromTokenBase,
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther,
   decodeTransfer,
-  toWei,
+  fromTokenBase,
+  gasPriceToBase,
   getDecimalFromEtherUnit,
-  gasPriceToBase
+  toWei
 } from '@services/EthService';
 import {
+  getAssetByContractAndNetwork,
+  getBaseAssetByNetwork,
+  getNetworkByChainId,
+  getNetworkById,
+  getStoreAccount
+} from '@services/Store';
+import {
   ExtendedAsset,
-  Network,
-  ITxConfig,
-  StoreAccount,
-  TAddress,
-  ITxType,
-  ITxStatus,
-  IPendingTxReceipt,
-  ITxHash,
   IFailedTxReceipt,
+  IPendingTxReceipt,
   ISuccessfulTxReceipt,
-  ITxHistoryStatus,
-  ITxReceipt,
-  IUnknownTxReceipt,
+  ITxConfig,
   ITxData,
-  ITxToAddress,
-  ITxValue,
+  ITxFromAddress,
   ITxGasLimit,
   ITxGasPrice,
+  ITxHash,
+  ITxHistoryStatus,
   ITxNonce,
-  ITxFromAddress
+  ITxReceipt,
+  ITxStatus,
+  ITxToAddress,
+  ITxType,
+  ITxValue,
+  IUnknownTxReceipt,
+  Network,
+  StoreAccount,
+  TAddress
 } from '@types';
-import { CREATION_ADDRESS } from '@config';
 
 import { isTransactionDataEmpty } from './validators';
 

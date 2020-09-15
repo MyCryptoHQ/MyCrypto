@@ -1,7 +1,8 @@
-import { FEATURE_FLAGS } from '@config';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 
-import { useFeatureFlags, FeatureFlagProvider } from './FeatureFlagProvider';
+import { FEATURE_FLAGS } from '@config';
+
+import { FeatureFlagProvider, useFeatureFlags } from './FeatureFlagProvider';
 
 const renderUseFeatureFlags = () => {
   return renderHook(() => useFeatureFlags(), { wrapper: FeatureFlagProvider });

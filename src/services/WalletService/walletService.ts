@@ -1,27 +1,12 @@
-import { TAddress, WalletId, WalletService, Network } from '@types';
-import {
-  // EncryptedPrivateKeyWallet,
-  // PresaleWallet,
-  // MewV1Wallet,
-  // PrivKeyWallet,
-  // UtcWallet,
-  // Web3Wallet,
-  AddressOnlyWallet
-  // getUtcWallet,
-  // getPrivKeyWallet
-  // getKeystoreWallet
-} from './non-deterministic';
-import {
-  LedgerWallet,
-  TrezorWallet,
-  // HardwareWallet
-  ChainCodeResponse
-} from './deterministic';
-import { unlockKeystore, KeystoreUnlockParams } from './keystore';
-import { unlockMnemonic, MnemonicUnlockParams } from './mnemonic';
-import { unlockPrivateKey, PrivateKeyUnlockParams } from './privatekey';
+import { Network, TAddress, WalletId, WalletService } from '@types';
+
+import { ChainCodeResponse, LedgerWallet, TrezorWallet } from './deterministic';
+import { KeystoreUnlockParams, unlockKeystore } from './keystore';
+import { MnemonicUnlockParams, unlockMnemonic } from './mnemonic';
+import { AddressOnlyWallet } from './non-deterministic';
+import { PrivateKeyUnlockParams, unlockPrivateKey } from './privatekey';
+import { IUseWalletConnect, WalletConnectWallet } from './walletconnect';
 import { unlockWeb3 } from './web3';
-import { WalletConnectWallet, IUseWalletConnect } from './walletconnect';
 
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
   switch (walletId) {

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
-
-import { InputField, CodeBlock, WalletList, Button } from '@components';
-import { BREAK_POINTS } from '@theme';
-import translate, { translateRaw } from '@translations';
-import { ISignedMessage, INode, FormData, WalletId } from '@types';
-import { WALLETS_CONFIG, DEFAULT_NETWORK } from '@config';
-import { setupWeb3Node } from '@services/EthService';
-import { IFullWallet, withWalletConnect, IUseWalletConnect } from '@services/WalletService';
-
-import { getStories } from './stories';
+import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { Button, CodeBlock, InputField, WalletList } from '@components';
+import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
+import { setupWeb3Node } from '@services/EthService';
+import { IFullWallet, IUseWalletConnect, withWalletConnect } from '@services/WalletService';
+import { BREAK_POINTS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { FormData, INode, ISignedMessage, WalletId } from '@types';
+
+import { getStories } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

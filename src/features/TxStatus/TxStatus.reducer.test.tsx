@@ -1,7 +1,8 @@
-import { txStatusReducer, ReducerAction } from './TxStatus.reducer';
 import { DEFAULT_NETWORK } from '@config';
-import translate from '@translations';
 import { fTxReceipt } from '@fixtures';
+import translate from '@translations';
+
+import { ReducerAction, txStatusReducer } from './TxStatus.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => txStatusReducer(state, action);
 

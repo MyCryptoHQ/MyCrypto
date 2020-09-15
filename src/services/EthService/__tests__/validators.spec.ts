@@ -1,13 +1,14 @@
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+
 import {
+  isENSLabelHash,
   isTransactionFeeHigh,
+  isValidAddress,
   isValidETHRecipientAddress,
   isValidMixedCaseETHAddress,
   isValidUpperOrLowerCaseETHAddress,
-  isValidAddress,
-  isENSLabelHash,
-  validateTxFee,
-  TxFeeResponseType
+  TxFeeResponseType,
+  validateTxFee
 } from '../validators';
 
 describe('isTransactionFeeHigh', () => {

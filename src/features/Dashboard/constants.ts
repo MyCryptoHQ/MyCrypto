@@ -1,17 +1,16 @@
-import { translateRaw } from '@translations';
-import { ROUTE_PATHS, EXT_URLS } from '@config';
-import { StoreAsset } from '@types';
-import { REPV1UUID } from '@utils';
-import { Action } from './types';
-
-// Legacy
 import buyIcon from '@assets/images/icn-buy.svg';
-import swapIcon from '@assets/images/icn-swap.svg';
-import sendIcon from '@assets/images/icn-send.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import swapIcon from '@assets/images/icn-swap.svg';
 import repIcon from '@assets/images/rep-logo.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
+import { EXT_URLS, ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
+import { StoreAsset } from '@types';
+import { REPV1UUID } from '@utils';
+
+import { Action } from './types';
 
 const selectRandomAction = (actionsList: Action[]) =>
   actionsList[Math.floor(Math.random() * actionsList.length)];

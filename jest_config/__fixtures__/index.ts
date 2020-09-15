@@ -1,3 +1,6 @@
+import { fNetwork as network } from './network';
+import { default as txConfig } from './txConfig.json';
+
 export { fAssets, fStoreAssets } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
@@ -16,10 +19,6 @@ export {
   fFinishedERC20Web3TxReceipt
 } from './transaction';
 export { fSettings } from './settings';
-
-import { default as txConfig } from './txConfig.json';
-
-import { fNetwork as network } from './network';
 export const fTxConfig = { ...txConfig, network };
 
 export { default as fTxConfigs } from './txConfigs.json';

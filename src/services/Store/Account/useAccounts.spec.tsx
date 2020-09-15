@@ -1,13 +1,14 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
+import { waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fTxReceipt } from '@fixtures';
-import { LSKeys, IAccount, TUuid } from '@types';
+import { IAccount, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
-import useAccounts from './useAccounts';
 import { SettingsContext } from '../Settings';
-import { waitFor } from 'test-utils';
+import useAccounts from './useAccounts';
 
 jest.mock('@mycrypto/eth-scan', () => {
   return {

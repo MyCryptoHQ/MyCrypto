@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { IS_ELECTRON, IS_DEV } from '@utils';
+
 import { ApiService } from '@services/ApiService';
+import { IS_DEV, IS_ELECTRON } from '@utils';
+
 import {
   ANALYTICS_API_URL,
   ANALYTICS_ID_DESKTOP,

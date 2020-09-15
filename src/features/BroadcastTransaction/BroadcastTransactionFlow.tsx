@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { GeneralStepper, TxReceipt, ConfirmTransaction } from '@components';
+import { ConfirmTransaction, GeneralStepper, TxReceipt } from '@components';
+import { IStepperPath } from '@components/GeneralStepper/types';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { useStateReducer } from '@utils';
-import { IStepperPath } from '@components/GeneralStepper/types';
 import { ISignedTx } from '@types';
+import { useStateReducer } from '@utils';
 
-import { BroadcastTxConfigFactory, broadcastTxInitialState } from './stateFactory';
 import { BroadcastTx } from './components';
+import { BroadcastTxConfigFactory, broadcastTxInitialState } from './stateFactory';
 
 const BroadcastTransactionFlow = () => {
   const {

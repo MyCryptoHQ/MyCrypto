@@ -1,15 +1,16 @@
 import React from 'react';
+
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-import { translateRaw } from '@translations';
 import {
-  TokenMigrationProps,
-  default as TokenMigrationForm
+  default as TokenMigrationForm,
+  TokenMigrationProps
 } from '@features/TokenMigration/components/TokenMigrationForm';
+import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
-import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings, fAssets, fNetwork, fAccount } from '@fixtures';
+import { DataContext, SettingsContext, StoreContext } from '@services/Store';
+import { translateRaw } from '@translations';
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,

@@ -1,4 +1,5 @@
 import { keccak } from 'ethereumjs-util';
+
 import { normalize } from '../utils';
 
 export const getNameHash = (name: string = ''): string => {

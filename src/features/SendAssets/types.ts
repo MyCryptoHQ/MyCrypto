@@ -1,14 +1,15 @@
 import { FunctionComponent } from 'react';
+
 import {
   IStepComponentProps,
-  TStepAction,
   ITxData,
+  ITxFromAddress,
   ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
   ITxToAddress,
   ITxValue,
-  ITxFromAddress
+  TStepAction
 } from '@types';
 
 export interface IPath {

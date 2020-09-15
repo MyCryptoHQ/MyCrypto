@@ -1,7 +1,8 @@
 import { translateRaw } from '@translations';
-import { PrivateKeyUnlockParams } from './types';
+
+import { IFullWallet, IWallet } from '../IWallet';
 import { getPrivKeyWallet } from '../non-deterministic';
-import { IWallet, IFullWallet } from '../IWallet';
+import { PrivateKeyUnlockParams } from './types';
 
 export const unlockPrivateKey = async (
   payload: PrivateKeyUnlockParams

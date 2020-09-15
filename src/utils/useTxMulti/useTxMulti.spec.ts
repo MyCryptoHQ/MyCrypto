@@ -1,7 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import isEmpty from 'ramda/src/isEmpty';
+
 import { fAccount, fNetwork } from '@fixtures';
-import { ITxObject, ITxToAddress, ITxValue, ITxData } from '@types';
+import { ITxData, ITxObject, ITxToAddress, ITxValue } from '@types';
 
 import { useTxMulti } from './useTxMulti';
 

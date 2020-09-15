@@ -1,11 +1,13 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ads } from './constants';
-import { BREAK_POINTS } from '@theme';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { BREAK_POINTS } from '@theme';
 import { useAnalytics } from '@utils';
+
+import { ads } from './constants';
 
 const { SCREEN_SM } = BREAK_POINTS;
 

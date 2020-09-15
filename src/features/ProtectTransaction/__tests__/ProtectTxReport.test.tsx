@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { simpleRender } from 'test-utils';
 
+import { loadingReport, scamReport, unknownReport, verifiedReport } from '@fixtures';
 import { translateRaw } from '@translations';
 import { noOp } from '@utils';
-import { unknownReport, scamReport, verifiedReport, loadingReport } from '@fixtures';
 
 import { ProtectTxReportUI } from '../components/ProtectTxReport';
 import { PTXReport } from '../types';

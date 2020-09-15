@@ -1,4 +1,4 @@
-import { NetworkId, TURL, TTicker } from '@types';
+import { NetworkId, TTicker, TURL } from '@types';
 
 export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
 

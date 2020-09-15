@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { OptionProps } from 'react-select';
+import React, { useEffect, useState } from 'react';
+
 import BN from 'bn.js';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import {
-  Input,
-  Spinner,
-  Account,
-  LinkOut,
-  Typography,
-  Selector,
-  NewTabLink,
-  Button,
-  InlineMessage
-} from '@components';
-import { Network, TTicker } from '@types';
-import {
-  getBaseAssetByNetwork,
-  getLabelByAddressAndNetwork,
-  isValidPath,
-  fromWei
-} from '@services';
-import { useAssets, useContacts } from '@services/Store';
-import { HELP_ARTICLE, DEFAULT_NETWORK_TICKER } from '@config';
-import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
-import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
-import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from '@theme';
-
-import { Table } from '../Table';
-
+import questionSVG from '@assets/images/icn-question.svg';
 import nextIcon from '@assets/images/next-page-button.svg';
 import prevIcon from '@assets/images/previous-page-button.svg';
-import questionSVG from '@assets/images/icn-question.svg';
+import {
+  Account,
+  Button,
+  InlineMessage,
+  Input,
+  LinkOut,
+  NewTabLink,
+  Selector,
+  Spinner,
+  Typography
+} from '@components';
+import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
+import {
+  fromWei,
+  getBaseAssetByNetwork,
+  getLabelByAddressAndNetwork,
+  isValidPath
+} from '@services';
+import { useAssets, useContacts } from '@services/Store';
+import { BalanceMap, getBaseAssetBalances } from '@services/Store/BalanceService';
+import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
+import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Network, TTicker } from '@types';
+
+import { Table } from '../Table';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 

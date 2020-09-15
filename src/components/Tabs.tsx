@@ -1,8 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { Tab } from '@types';
 import { COLORS } from '@theme';
+import { Tab } from '@types';
 
 const { WHITE, BLUE_BRIGHT } = COLORS;
 

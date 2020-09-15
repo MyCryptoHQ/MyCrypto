@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import styled, { css } from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { EMPTYUUID, buildTotalFiatValue } from '@utils';
-import { TUuid, Balance } from '@types';
+import moreIcon from '@assets/images/icn-more.svg';
+import { AssetIcon, Currency, PoweredByText, Tooltip, Typography } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography, Tooltip, PoweredByText } from '@components';
+import translate, { translateRaw } from '@translations';
+import { Balance, TUuid } from '@types';
+import { buildTotalFiatValue, EMPTYUUID } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
-import NoAssets from './NoAssets';
 import { calculateShownIndex } from './helpers';
-
-import moreIcon from '@assets/images/icn-more.svg';
+import NoAssets from './NoAssets';
 import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%

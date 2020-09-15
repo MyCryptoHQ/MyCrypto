@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { fAssets } from '@fixtures';
 
+import { fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
 
-import AssetSelector, { TAssetOption, AssetSelectorItem } from './AssetSelector';
+import AssetSelector, { AssetSelectorItem, TAssetOption } from './AssetSelector';
 
 export default { title: 'Selectors/AssetSelector' };
 

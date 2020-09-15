@@ -1,14 +1,14 @@
-import { EXT_URLS } from '@config';
-import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.png';
-import ledgerMobile from '@assets/images/banners/Ledger_Mobile.png';
-import trezorDesktop from '@assets/images/banners/Trezor_Desktop.png';
-import trezorMobile from '@assets/images/banners/Trezor_Mobile.png';
 import coinbaseDesktop from '@assets/images/banners/Coinbase_Desktop.png';
 import coinbaseMobile from '@assets/images/banners/Coinbase_Mobile.png';
+import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.png';
+import ledgerMobile from '@assets/images/banners/Ledger_Mobile.png';
 import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.png';
 import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.png';
+import trezorDesktop from '@assets/images/banners/Trezor_Desktop.png';
+import trezorMobile from '@assets/images/banners/Trezor_Mobile.png';
 import unstoppableDesktop from '@assets/images/banners/UnstoppableDomains_Desktop.png';
 import unstoppableMobile from '@assets/images/banners/UnstoppableDomains_Mobile.png';
+import { EXT_URLS } from '@config';
 
 export const ads = [
   {

@@ -1,22 +1,20 @@
 import React, { FC } from 'react';
 
+import closeIcon from '@assets/images/icn-close.svg';
 import { fAccount } from '@fixtures';
 import { noOp } from '@utils';
 
 import {
-  WalletCreatedNotification,
-  WalletAddedNotification,
-  SaveDashboardNotification,
-  PrintPaperWalletNotification,
   GetHardwareWalletNotification,
-  WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification
+  OnboardingResponsibleNotification,
+  PrintPaperWalletNotification,
+  SaveDashboardNotification,
+  WalletAddedNotification,
+  WalletCreatedNotification,
+  WalletNotAddedNotification
 } from './components';
-import { MainPanel, CloseButton } from './NotificationsPanel';
-
-// Legacy
-import closeIcon from '@assets/images/icn-close.svg';
+import { CloseButton, MainPanel } from './NotificationsPanel';
 
 export default { title: 'Notifications' };
 

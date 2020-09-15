@@ -1,6 +1,7 @@
 import React from 'react';
-import moment from 'moment';
+
 import { Typography } from '@mycrypto/ui';
+import moment from 'moment';
 import styled from 'styled-components';
 
 import { ITxStatus } from '@types';

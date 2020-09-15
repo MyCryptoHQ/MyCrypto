@@ -1,25 +1,26 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 import { bigNumberify, parseEther } from 'ethers/utils';
 
+import { DEFAULT_NETWORK } from '@config';
+import { ITxHistoryType } from '@features/Dashboard/types';
 import {
-  fNetworks,
-  fAccounts,
   fAccount,
-  fTxReceipt,
+  fAccounts,
+  fAssets,
   fContacts,
   fContracts,
   fNetwork,
+  fNetworks,
   fTxHistoryAPI,
-  fAssets
+  fTxReceipt
 } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
-import { ITxHistoryType } from '@features/Dashboard/types';
-import { DEFAULT_NETWORK } from '@config';
+import { fromWei, Wei } from '@services/EthService';
 
 import useTxHistory from './useTxHistory';
-import { fromWei, Wei } from '@services/EthService';
 
 const renderUseTxHistory = ({
   apiTransactions = [] as ITxHistoryApiResponse[],

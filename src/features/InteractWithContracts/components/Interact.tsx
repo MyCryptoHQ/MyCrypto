@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import * as Yup from 'yup';
+
 import { Formik } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import { object, string } from 'yup';
 
 import {
-  NetworkSelectDropdown,
-  InputField,
-  InlineMessage,
   Button,
-  ContractLookupField
+  ContractLookupField,
+  InlineMessage,
+  InputField,
+  NetworkSelectDropdown
 } from '@components';
-import {
-  Contract,
-  StoreAccount,
-  ITxConfig,
-  ExtendedContract,
-  Network,
-  IReceiverAddress,
-  TAddress
-} from '@types';
-import { COLORS, BREAK_POINTS } from '@theme';
-import { translateRaw } from '@translations';
-import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, useNetworks } from '@services';
 import { isValidENSName } from '@services/EthService';
+import { isValidETHAddress } from '@services/EthService/validators';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { translateRaw } from '@translations';
+import {
+  Contract,
+  ExtendedContract,
+  IReceiverAddress,
+  ITxConfig,
+  Network,
+  StoreAccount,
+  TAddress
+} from '@types';
 import { isSameAddress } from '@utils';
 
-import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
+import GeneratedInteractionForm from './GeneratedInteractionForm';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -143,9 +144,9 @@ interface Props {
   handleDeleteContract(contractUuid: string): void;
 }
 
-const FormSchema = Yup.object().shape({
-  address: Yup.object({
-    value: Yup.string().test(
+const FormSchema = object().shape({
+  address: object({
+    value: string().test(
       'check-eth-address',
       translateRaw('TO_FIELD_ERROR'),
       (value) => isValidETHAddress(value) || isValidENSName(value)

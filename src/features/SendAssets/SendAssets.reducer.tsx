@@ -1,19 +1,19 @@
 import { hexlify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
+import { getBaseAssetByNetwork, hexWeiToString } from '@services';
 import {
-  ITxObject,
   Asset,
-  TAddress,
-  ITxConfig,
-  ITxReceipt,
   ISignedTx,
+  ITxConfig,
   ITxHash,
+  ITxObject,
+  ITxReceipt,
   ITxType,
   TAction,
+  TAddress,
   TxQueryTypes
 } from '@types';
-import { getBaseAssetByNetwork, hexWeiToString } from '@services';
 import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 
 import { processFormDataToTx } from './helpers';

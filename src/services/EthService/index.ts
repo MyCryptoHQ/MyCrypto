@@ -74,7 +74,6 @@ export {
   isValidRequestPermissions
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export { getResolvedENSAddress } from './ens';
 export {
   Wei,
   TokenValue,

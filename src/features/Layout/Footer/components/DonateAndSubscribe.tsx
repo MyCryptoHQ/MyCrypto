@@ -1,15 +1,17 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import classnames from 'classnames';
 
-import { ANALYTICS_CATEGORIES } from '@services';
-import { donationAddressMap } from '@config';
-import translate from '@translations';
-import ether from '@assets/images/ether.png';
+import classnames from 'classnames';
+import CopyToClipboard from 'react-copy-to-clipboard';
+
 import bitcoin from '@assets/images/bitcoin.png';
+import ether from '@assets/images/ether.png';
+import { donationAddressMap } from '@config';
+import { ANALYTICS_CATEGORIES } from '@services';
+import translate from '@translations';
+import { useAnalytics } from '@utils';
+
 import Subscribe from './Subscribe';
 import './DonateAndSubscribe.scss';
-import { useAnalytics } from '@utils';
 
 interface DonationButtonProps {
   icon: string;

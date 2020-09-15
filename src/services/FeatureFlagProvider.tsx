@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { IFeatureFlags, FEATURE_FLAGS } from '@config';
+
+import { FEATURE_FLAGS, IFeatureFlags } from '@config';
 
 export interface IFeatureFlagContext {
   featureFlags: IFeatureFlags;

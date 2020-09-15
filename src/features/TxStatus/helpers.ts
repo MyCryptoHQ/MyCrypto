@@ -1,12 +1,12 @@
 import { TransactionResponse } from 'ethers/providers';
 
-import { ProviderHandler, ITxHistoryEntry } from '@services';
+import { ITxHistoryEntry, ProviderHandler } from '@services';
+import { Asset, ITxHash, ITxReceipt, ITxType, Network, NetworkId, StoreAccount } from '@types';
 import {
-  makeTxConfigFromTxResponse,
   makeTxConfigFromTxReceipt,
+  makeTxConfigFromTxResponse,
   makeUnknownTxReceipt
 } from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,

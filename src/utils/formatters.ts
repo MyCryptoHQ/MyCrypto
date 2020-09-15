@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
+
 import { stripHexPrefix, Wei } from '@services/EthService';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {

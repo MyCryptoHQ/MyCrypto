@@ -1,19 +1,21 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+
 import BigNumber from 'bignumber.js';
 
-import { Asset, ITxReceipt, Network, WalletId, IFormikFields, TAddress } from '@types';
-import {
-  GetBalanceResponse,
-  GetTxResponse,
-  EtherscanService,
-  GetTokenTxResponse
-} from '@services/ApiService';
-import { getAssetByUUID, StoreContext, useAssets } from '@services/Store';
-import { useFeatureFlags } from '@services';
-import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 import { WALLETS_CONFIG } from '@config';
+import { useFeatureFlags } from '@services';
+import {
+  EtherscanService,
+  GetBalanceResponse,
+  GetTokenTxResponse,
+  GetTxResponse
+} from '@services/ApiService';
+import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
+import { getAssetByUUID, StoreContext, useAssets } from '@services/Store';
+import { Asset, IFormikFields, ITxReceipt, Network, TAddress, WalletId } from '@types';
+
 import { PTXReport } from './types';
-import { getNansenReportType, getLastTx, getBalance } from './utils';
+import { getBalance, getLastTx, getNansenReportType } from './utils';
 
 export interface IFeeAmount {
   amount: BigNumber | null;

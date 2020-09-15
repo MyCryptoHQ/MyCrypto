@@ -1,4 +1,5 @@
 import { bigNumberify } from 'ethers/utils';
+
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ExtendedAsset, StoreAsset, TTicker } from '@types';
 

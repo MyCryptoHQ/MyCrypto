@@ -1,5 +1,5 @@
-import { openLink } from '@utils';
 import { TURL } from '@types';
+import { openLink } from '@utils';
 
 describe('opneLink', () => {
   const { open } = window;

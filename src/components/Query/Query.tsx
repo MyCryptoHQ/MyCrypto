@@ -1,9 +1,11 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+
 import queryString from 'query-string';
-import { getParam } from '@utils';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { TxParam } from '@features/SendAssets/preFillTx';
 import { TxQueryTypes } from '@types';
+import { getParam } from '@utils';
 
 const parse = (location: RouteComponentProps<any>['location']): Query => {
   const searchStr = location.search;

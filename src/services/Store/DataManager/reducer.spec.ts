@@ -1,4 +1,5 @@
-import { LSKeys, IAccount, DSKeys } from '@types';
+import { DSKeys, IAccount, LSKeys } from '@types';
+
 import { ActionT, ActionV, appDataReducer } from './reducer';
 
 const dispatch = (action: ActionV) => (state: any) => appDataReducer(state, action);

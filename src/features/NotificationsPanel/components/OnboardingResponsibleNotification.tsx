@@ -1,16 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { BREAK_POINTS, COLORS } from '@theme';
-import NotificationWrapper from './NotificationWrapper';
-import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-
-import privateIcon from '@assets/images/onboarding/icn-key-mnemonic.svg';
-import phishingIcon from '@assets/images/onboarding/icn-phishing.svg';
 import jsonIcon from '@assets/images/onboarding/icn-json.svg';
+import privateIcon from '@assets/images/onboarding/icn-key-mnemonic.svg';
 import myCryptoIcon from '@assets/images/onboarding/icn-mnycrpto-app.svg';
+import phishingIcon from '@assets/images/onboarding/icn-phishing.svg';
+import { CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { BREAK_POINTS, COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 const { BLUE_BRIGHT } = COLORS;

@@ -1,9 +1,10 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 import { Typography } from '@components';
-import { SPACING, COLORS, BREAK_POINTS } from '@theme';
-import { useAssets, getAssetByUUID } from '@services/Store';
+import { getAssetByUUID, useAssets } from '@services/Store';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Asset } from '@types';
 
 import { IMembershipConfig, IMembershipId } from '../config';

@@ -1,12 +1,12 @@
 import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
-import { fNetwork, fContracts } from '@fixtures';
 
-import { DataContext } from '@services/Store';
-import { ExtendedContact, TUuid, IReceiverAddress } from '@types';
-import { contacts } from '@database/seed/contacts';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
+import { contacts } from '@database/seed/contacts';
+import { fContracts, fNetwork } from '@fixtures';
+import { DataContext } from '@services/Store';
+import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
   data: {

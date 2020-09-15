@@ -1,4 +1,4 @@
-import { IAccount, Fiat, TAddress, TUuid } from '@types';
+import { Fiat, IAccount, TAddress, TUuid } from '@types';
 
 export interface BalanceDetailsTableProps {
   balances: Balance[];

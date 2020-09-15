@@ -1,6 +1,6 @@
+import { ASSET_DROPDOWN_SIZE_THRESHOLD, DEFAULT_NETWORK } from '@config';
 import { fAssets } from '@fixtures';
 import { ExtendedAsset } from '@types';
-import { ASSET_DROPDOWN_SIZE_THRESHOLD, DEFAULT_NETWORK } from '@config';
 
 import { filterDropdownAssets, filterValidAssets } from './filterAssets';
 

@@ -1,18 +1,20 @@
+import { Token } from 'shared/types/network';
+
 import { ERC20, hexEncodeData } from '@services/EthService';
+import { Asset, IHexStrTransaction, TxObj } from '@types';
+
+import { UnlockToken } from '../../contracts';
 import {
   CallRequest,
   EstimateGasRequest,
   GetBalanceRequest,
-  GetTokenBalanceRequest,
-  GetTransactionCountRequest,
-  SendRawTxRequest,
   GetCurrentBlockRequest,
+  GetTokenBalanceRequest,
   GetTransactionByHashRequest,
-  GetTransactionReceiptRequest
+  GetTransactionCountRequest,
+  GetTransactionReceiptRequest,
+  SendRawTxRequest
 } from './types';
-import { Token } from 'shared/types/network';
-import { Asset, IHexStrTransaction, TxObj } from '@types';
-import { UnlockToken } from '../../contracts';
 
 export class RPCRequests {
   public getNetVersion() {

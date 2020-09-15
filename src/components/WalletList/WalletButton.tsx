@@ -1,10 +1,11 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Tooltip } from '@mycrypto/ui';
 
-import { WalletId } from '@types';
+import { Tooltip } from '@mycrypto/ui';
+import styled, { keyframes } from 'styled-components';
+
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
+import { WalletId } from '@types';
 
 const { SCREEN_SM, SCREEN_XS } = BREAK_POINTS;
 const { WHITE } = COLORS;

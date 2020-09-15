@@ -1,35 +1,36 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
-import { Heading } from '@mycrypto/ui';
+import React, { useContext, useState } from 'react';
 
+import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import settingsIcon from '@assets/images/icn-settings.svg';
+import { AccountList, Desktop, Mobile } from '@components';
+import MobileNavBar from '@components/MobileNavBar';
+import { DEFAULT_NETWORK } from '@config';
+import { getFiat } from '@config/fiats';
+import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { useFeatureFlags, useRates } from '@services';
 import {
   NetworkUtils,
   SettingsContext,
   StoreContext,
   useAssets,
-  useNetworks,
-  useContacts
+  useContacts,
+  useNetworks
 } from '@services/Store';
-import { buildBalances, buildTotalFiatValue } from '@utils';
-import { AccountList, Mobile, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig, Balance } from '@types';
-import { DEFAULT_NETWORK } from '@config';
+import { isExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
-import FlippablePanel from '@features/Settings/components/FlippablePanel';
-import { getFiat } from '@config/fiats';
-import { isExcludedAsset } from '@services/Store/helpers';
-import { useFeatureFlags, useRates } from '@services';
+import { Balance, CustomNodeConfig, NetworkId } from '@types';
+import { buildBalances, buildTotalFiatValue } from '@utils';
 
-import settingsIcon from '@assets/images/icn-settings.svg';
-import AddToAddressBook from './components/AddToAddressBook';
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
-import NetworkNodes from './components/NetworkNodes';
-import MobileNavBar from '@components/MobileNavBar';
 import AddressBookPanel from './components/AddressBook';
+import AddToAddressBook from './components/AddToAddressBook';
+import DangerZone from './components/DangerZone';
 import ExcludedAssetsPanel from './components/ExcludedAssets';
 import GeneralSettings from './components/GeneralSettings';
-import DangerZone from './components/DangerZone';
+import NetworkNodes from './components/NetworkNodes';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;

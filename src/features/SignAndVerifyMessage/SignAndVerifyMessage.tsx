@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+
 import { History } from 'history';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { Tab } from '@types';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
+import { Tab } from '@types';
+
 import { tabsConfig } from './constants';
 
 const { SCREEN_SM } = BREAK_POINTS;

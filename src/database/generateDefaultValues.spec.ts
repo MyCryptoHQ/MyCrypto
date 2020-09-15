@@ -1,8 +1,8 @@
-import { LocalStorage, LSKeys, AssetLegacy } from '@types';
+import { AssetLegacy, LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
+import { NETWORKS_CONFIG, SCHEMA_BASE } from './data';
 import { createDefaultValues } from './generateDefaultValues';
-import { SCHEMA_BASE, NETWORKS_CONFIG } from './data';
 
 const DAI = {
   address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',

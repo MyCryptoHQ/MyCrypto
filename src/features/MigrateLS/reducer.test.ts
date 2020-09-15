@@ -1,5 +1,6 @@
 import { createStore } from 'test-utils';
-import { default as MigrateLSReducer, defaultState } from './reducer';
+
+import { defaultState, default as MigrateLSReducer } from './reducer';
 
 describe('MigrateLSReducer', () => {
   const dispatch = createStore(MigrateLSReducer);

@@ -1,24 +1,26 @@
 import React, { Component, ReactType } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39';
-import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
+import { addHexPrefix, privateToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
 import uniq from 'lodash/uniq';
 import pipe from 'ramda/src/pipe';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
-import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { NotificationTemplates } from '@features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, DPathFormat, ISettings, WalletId, NetworkId } from '@types';
-import { generateAccountUUID, withHook } from '@utils';
 import {
+  getNewDefaultAssetTemplateByNetwork,
   IAssetContext,
   INetworkContext,
-  getNewDefaultAssetTemplateByNetwork,
   useAssets,
   useNetworks
 } from '@services/Store';
-import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { Asset, DPathFormat, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
+import { generateAccountUUID, withHook } from '@utils';
+
+import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
+import { mnemonicFlow, MnemonicStages, mnemonicStageToComponentHash } from './constants';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;

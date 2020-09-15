@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
-import { TxReceipt, MultiTxReceipt } from '@components/TransactionFlow';
-import { ITxType, TxParcel, StoreAccount } from '@types';
-import { makeTxItem } from '@utils/transaction';
-import { SettingsContext, useAssets, useRates } from '@services';
+import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
+import { SettingsContext, useAssets, useRates } from '@services';
+import { ITxType, StoreAccount, TxParcel } from '@types';
+import { makeTxItem } from '@utils/transaction';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';

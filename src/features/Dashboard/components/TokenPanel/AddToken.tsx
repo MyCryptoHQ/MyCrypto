@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 
-import { generateAssetUUID } from '@utils';
-import { InputField, NetworkSelectDropdown, DashboardPanel } from '@components';
-import { translateRaw } from '@translations';
-import { useAssets, useNetworks } from '@services/Store';
-import { ExtendedAsset, NetworkId, TTicker } from '@types';
-import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
-import { isValidAddress } from '@services';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import { DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
 import Icon from '@components/Icon';
+import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
+import { isValidAddress } from '@services';
+import { useAssets, useNetworks } from '@services/Store';
+import { translateRaw } from '@translations';
+import { ExtendedAsset, NetworkId, TTicker } from '@types';
+import { generateAssetUUID } from '@utils';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;

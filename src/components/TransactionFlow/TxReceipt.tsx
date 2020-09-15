@@ -1,66 +1,66 @@
 import React, {
-  useState,
+  Dispatch,
+  SetStateAction,
+  useCallback,
   useContext,
   useEffect,
-  useCallback,
-  Dispatch,
-  SetStateAction
+  useState
 } from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {
-  ITxReceipt,
-  ITxStatus,
-  IStepComponentProps,
-  ITxType,
-  TAddress,
-  ExtendedContact,
-  ISettings,
-  ITxReceiptStepProps,
-  IPendingTxReceipt,
-  ITxHistoryStatus,
-  Fiat
-} from '@types';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
 import {
   Amount,
-  TimeElapsed,
   AssetIcon,
+  Button,
   LinkOut,
   PoweredByText,
-  Tooltip,
-  Button
+  TimeElapsed,
+  Tooltip
 } from '@components';
-import { useAccounts, StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { useRates, fetchGasPriceEstimates } from '@services';
-import {
-  ProviderHandler,
-  getTimestampFromBlockNum,
-  getTransactionReceiptFromHash
-} from '@services/EthService';
 import { ROUTE_PATHS } from '@config';
-import { BREAK_POINTS } from '@theme';
-import { SwapDisplayData } from '@features/SwapAssets/types';
-import translate, { translateRaw } from '@translations';
-import { convertToFiat, truncate, isSenderAccountPresentAndOfMainType } from '@utils';
+import { getFiat } from '@config/fiats';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
-import { getFiat } from '@config/fiats';
+import { SwapDisplayData } from '@features/SwapAssets/types';
+import { fetchGasPriceEstimates, useRates } from '@services';
+import {
+  getTimestampFromBlockNum,
+  getTransactionReceiptFromHash,
+  ProviderHandler
+} from '@services/EthService';
+import { SettingsContext, StoreContext, useAccounts, useContacts } from '@services/Store';
+import { BREAK_POINTS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import {
+  ExtendedContact,
+  Fiat,
+  IPendingTxReceipt,
+  ISettings,
+  IStepComponentProps,
+  ITxHistoryStatus,
+  ITxReceipt,
+  ITxReceiptStepProps,
+  ITxStatus,
+  ITxType,
+  TAddress
+} from '@types';
+import { convertToFiat, isSenderAccountPresentAndOfMainType, truncate } from '@utils';
+import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
 
-import { ISender } from './types';
-import { constructSenderFromTxConfig } from './helpers';
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { constructSenderFromTxConfig } from './helpers';
 import { PendingTransaction } from './PendingLoader';
-
-import sentIcon from '@assets/images/icn-sent.svg';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+import { ISender } from './types';
 import './TxReceipt.scss';
-import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 
 interface PendingBtnAction {
   text: string;

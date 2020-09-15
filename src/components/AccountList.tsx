@@ -1,39 +1,40 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Button, Identicon } from '@mycrypto/ui';
-import isNumber from 'lodash/isNumber';
-import cloneDeep from 'lodash/cloneDeep';
 
-import { translateRaw } from '@translations';
-import { ROUTE_PATHS, getWalletConfig } from '@config';
+import { Button, Identicon } from '@mycrypto/ui';
+import cloneDeep from 'lodash/cloneDeep';
+import isNumber from 'lodash/isNumber';
+import styled, { css } from 'styled-components';
+
+import informationalSVG from '@assets/images/icn-info-blue.svg';
 import {
+  EditableAccountLabel,
   EthAddress,
-  Network,
-  RowDeleteOverlay,
-  RouterLink,
-  UndoDeleteOverlay,
   FixedSizeCollapsibleTable,
-  EditableAccountLabel
+  Network,
+  RouterLink,
+  RowDeleteOverlay,
+  UndoDeleteOverlay
 } from '@components';
-import { truncate } from '@utils';
-import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
-import { IAccount, StoreAccount, ExtendedContact, WalletId, TUuid } from '@types';
+import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { getFiat } from '@config/fiats';
+import { useFeatureFlags, useRates } from '@services';
 import {
-  useAccounts,
   getLabelByAccount,
-  StoreContext,
   SettingsContext,
+  StoreContext,
+  useAccounts,
   useContacts
 } from '@services/Store';
-import { useFeatureFlags, useRates } from '@services';
-import { getFiat } from '@config/fiats';
+import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
+import { truncate } from '@utils';
 
-import { DashboardPanel } from './DashboardPanel';
-import { default as Currency } from './Currency';
-import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
+import { default as Currency } from './Currency';
+import { DashboardPanel } from './DashboardPanel';
+import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
-import informationalSVG from '@assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;

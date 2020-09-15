@@ -1,9 +1,10 @@
-const path = require('path');
-const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const config = require('./config');
+const path = require('path');
+const webpack = require('webpack');
+
 const { ELECTRON } = require('../environment');
+const config = require('./config');
 
 module.exports = {
   target: 'electron-main',

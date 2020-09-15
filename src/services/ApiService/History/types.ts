@@ -1,15 +1,15 @@
 import {
-  ITxStatus,
-  TAddress,
-  ITxHash,
-  ITxType,
+  ITxData,
   ITxFromAddress,
   ITxGasLimit,
-  ITxNonce,
   ITxGasPrice,
+  ITxHash,
+  ITxNonce,
+  ITxStatus,
+  ITxToAddress,
+  ITxType,
   ITxValue,
-  ITxData,
-  ITxToAddress
+  TAddress
 } from '@types';
 
 export interface ITxHistoryApiResponse {

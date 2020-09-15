@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react';
+
 import { StateInspector } from 'reinspect';
 
 export interface ProviderState {

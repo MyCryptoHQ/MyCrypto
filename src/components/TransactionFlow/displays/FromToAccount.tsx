@@ -1,12 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-
-import { COLORS, BREAK_POINTS, SPACING } from '@theme';
-import { Typography, EditableAccountLabel, Account } from '@components';
-import { NetworkId, TAddress, ExtendedContact } from '@types';
+import { Account, EditableAccountLabel, Typography } from '@components';
 import { useContacts } from '@services';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import translate from '@translations';
+import { ExtendedContact, NetworkId, TAddress } from '@types';
 
 export interface IAddressAndLabel {
   address: TAddress;

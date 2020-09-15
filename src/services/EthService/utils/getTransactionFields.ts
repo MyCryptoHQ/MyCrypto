@@ -2,13 +2,14 @@ import { Transaction as Tx } from 'ethereumjs-tx';
 
 import {
   IHexStrTransaction,
-  ITxToAddress,
-  ITxNonce,
+  ITxData,
   ITxGasLimit,
   ITxGasPrice,
-  ITxData,
+  ITxNonce,
+  ITxToAddress,
   ITxValue
 } from '@types';
+
 import { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 
 export const getTransactionFields = (t: Tx): IHexStrTransaction => {
