@@ -7,7 +7,6 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const webpack = require('webpack');
 
 const { IS_DEV, IS_ELECTRON } = require('../environment');
 const config = require('./config');
@@ -253,10 +252,7 @@ module.exports = {
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin(),
-
-    // Ignore all locale files of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new LodashModuleReplacementPlugin()
   ],
 
   stats: {
