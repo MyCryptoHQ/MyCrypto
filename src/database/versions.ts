@@ -1,7 +1,6 @@
-import { format } from 'date-fns';
-
 import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
+import { formatDate } from '@utils';
 import { noOp } from '@utils/noOp';
 
 import { SCHEMA_BASE } from './data';
@@ -33,7 +32,7 @@ export const getCurrentDBConfig = () => dbVersions[dbHistory[0]];
 export const getPreviousDBConfig = () => dbVersions[dbHistory[1]];
 
 export const getExportFileName = (currentDb: DBConfig, date: Date) => {
-  return `${SETTINGS_FILENAME}_${format(date, 'yyyy-MM-dd')}_${currentDb.version}.json`;
+  return `${SETTINGS_FILENAME}_${formatDate(date)}_${currentDb.version}.json`;
 };
 
 export const getData = () => {
