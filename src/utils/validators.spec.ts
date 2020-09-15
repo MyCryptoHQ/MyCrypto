@@ -1,5 +1,6 @@
 import { ETHUUID } from '@utils';
-import { isUuid, isTransactionDataEmpty, isValidAmount } from './validators';
+
+import { isTransactionDataEmpty, isUuid, isValidAmount } from './validators';
 
 describe('isUuid', () => {
   it('correctly identifies a uuid', () => {

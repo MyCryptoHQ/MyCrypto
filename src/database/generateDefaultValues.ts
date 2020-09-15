@@ -6,8 +6,7 @@ import mergeRight from 'ramda/src/mergeRight';
 import pipe from 'ramda/src/pipe';
 import reduce from 'ramda/src/reduce';
 
-import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils';
-import { Fiats, DEFAULT_ASSET_DECIMAL } from '@config';
+import { DEFAULT_ASSET_DECIMAL, Fiats } from '@config';
 import {
   Asset,
   AssetLegacy,
@@ -23,6 +22,7 @@ import {
   NodeOptions,
   WalletId
 } from '@types';
+import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils';
 
 import { NetworkConfig, NETWORKS_CONFIG, NODES_CONFIG } from './data';
 import { add, toArray, toObject } from './helpers';

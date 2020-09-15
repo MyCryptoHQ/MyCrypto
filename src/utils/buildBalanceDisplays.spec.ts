@@ -1,6 +1,7 @@
-import { StoreAccount, Asset, TUuid, StoreAsset } from '@types';
-import { fAccounts, fStoreAssets, fSettings } from '@fixtures';
+import { fAccounts, fSettings, fStoreAssets } from '@fixtures';
 import { getTotalByAsset } from '@services/Store/Asset/helpers';
+import { Asset, StoreAccount, StoreAsset, TUuid } from '@types';
+
 import { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';
 
 const totals = (_: StoreAccount[]) =>
@@ -17,7 +18,7 @@ describe('buildBalances', () => {
 });
 
 describe('buildTotalFiatValue', () => {
-  it('builds total fiat values ', () => {
+  it('builds total fiat values', () => {
     const balances = buildBalances(totals, fAccounts, fSettings, getAssetRate, filterFalse);
     const actual = buildTotalFiatValue(balances);
     expect(actual).toMatchSnapshot();

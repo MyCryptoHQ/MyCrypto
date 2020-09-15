@@ -42,12 +42,12 @@ import {
 } from '@types';
 import {
   convertToFiatFromAsset,
+  generateDeterministicAddressUUID,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
   multiplyBNFloats,
-  weiToFloat,
-  generateDeterministicAddressUUID,
+  sortByLabel,
   useAnalytics,
   useInterval,
   weiToFloat

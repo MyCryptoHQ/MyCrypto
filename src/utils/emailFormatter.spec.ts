@@ -1,9 +1,10 @@
 import { SUPPORT_EMAIL } from '@config';
+
 import {
   formatEmailMarkdown,
-  formatSupportEmail,
   formatErrorEmail,
-  formatErrorEmailMarkdown
+  formatErrorEmailMarkdown,
+  formatSupportEmail
 } from './emailFormatter';
 
 const email = SUPPORT_EMAIL;

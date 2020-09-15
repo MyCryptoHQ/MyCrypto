@@ -1,7 +1,8 @@
 import { useContext } from 'react';
-import { isSameAddress, generateDeterministicAddressUUID } from '@utils';
+
 import { DataContext } from '@services/Store';
 import { Contract, ExtendedContract, LSKeys, TAddress, TUuid } from '@types';
+import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
   const { contracts, createActions } = useContext(DataContext);

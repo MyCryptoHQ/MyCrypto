@@ -1,4 +1,4 @@
-import { DEFAULT_NETWORK as networkId, DEFAULT_NETWORK_CHAINID as networkChainId } from '@config';
+import { DEFAULT_NETWORK_CHAINID as networkChainId, DEFAULT_NETWORK as networkId } from '@config';
 
 import { DAIUUID, ETHUUID } from './constants';
 import { generateAssetUUID, generateDeterministicAddressUUID, generateUUID } from './generateUUID';
