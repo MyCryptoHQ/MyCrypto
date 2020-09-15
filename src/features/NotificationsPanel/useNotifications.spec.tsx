@@ -103,4 +103,20 @@ describe('useNotifications', () => {
       dismissed: true
     });
   });
+
+  it('trackNotificationViewed calls model.update', () => {
+    const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
+    const mockUpdate = jest.fn();
+    const { result } = renderUseNotifications({
+      notifications: [notification],
+      createActions: jest.fn().mockImplementation(() => ({
+        update: mockUpdate
+      }))
+    });
+    act(() => result.current.trackNotificationViewed());
+    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
+      ...notification,
+      viewed: true
+    });
+  });
 });
