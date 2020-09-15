@@ -29,6 +29,7 @@ describe('AddAccountFlow', () => {
         value={
           {
             networks: fNetworks,
+            notifications: [],
             createActions: jest.fn()
           } as any
         }
