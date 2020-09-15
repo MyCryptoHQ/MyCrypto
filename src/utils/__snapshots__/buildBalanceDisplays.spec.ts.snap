@@ -45,4 +45,4 @@ Array [
 ]
 `;
 
-exports[`buildTotalFiatValue builds total fiat values  1`] = `0`;
+exports[`buildTotalFiatValue builds total fiat values 1`] = `0`;
