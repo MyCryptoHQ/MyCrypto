@@ -10,7 +10,7 @@ import { StoreContext } from '@services/Store';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 import { useAnalytics, isSameAddress } from '@utils';
 
-import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
+import { useNotifications, NotificationTemplates } from '../NotificationsPanel';
 import { FormDataActionType as ActionType } from './types';
 import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
@@ -49,7 +49,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     addMultipleAccounts,
     accounts
   } = useContext(StoreContext);
-  const { displayNotification } = useContext(NotificationsContext);
+  const { displayNotification } = useNotifications();
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
     actionName: 'New Account Added'
