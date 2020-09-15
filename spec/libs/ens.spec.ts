@@ -1,3 +1,4 @@
+import { normalize } from '@services';
 import * as ens from '@services/EthService/ens';
 
 // @todo: write tests for:
@@ -7,7 +8,7 @@ import * as ens from '@services/EthService/ens';
 
 describe('ENS', () => {
   it('converts a domain name to a normalized Unicode', () => {
-    const data = ens.normalise('xn--s-qfa0g.de');
+    const data = normalize('xn--s-qfa0g.de');
     expect(data).toBe('süß.de');
   });
 

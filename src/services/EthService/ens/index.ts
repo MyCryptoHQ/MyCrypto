@@ -1,16 +1,12 @@
-import uts46 from 'idna-uts46';
 import { keccak } from 'ethereumjs-util';
-
-export function normalise(name: string): string {
-  return uts46.toUnicode(name, { useStd3ASCII: true, transitional: false });
-}
+import { normalize } from '../utils';
 
 export const getNameHash = (name: string = ''): string => {
   if (name === '') {
     throw new Error('Empty string provided');
   }
 
-  const normalizedName = normalise(name);
+  const normalizedName = normalize(name);
   const labels = normalizedName.split('.');
   const emptyNode = Buffer.alloc(32);
   const rawNode = labels.reduceRight((node, currentLabel) => {

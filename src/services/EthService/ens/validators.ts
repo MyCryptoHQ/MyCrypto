@@ -1,4 +1,4 @@
-import { normalise } from '@services/EthService';
+import { normalize } from '@services/EthService';
 export interface ITLDCollection {
   [key: string]: boolean;
 }
@@ -26,7 +26,7 @@ export function getValidTLDsForChain(chainId: number): ITLDCollection {
 
 export function isValidENSName(str: string) {
   try {
-    return str.includes('.') && normalise(str) !== '';
+    return str.includes('.') && normalize(str) !== '';
   } catch (e) {
     return false;
   }
@@ -34,7 +34,7 @@ export function isValidENSName(str: string) {
 
 export function isValidENSAddress(address: string, validTLDs: ITLDCollection): boolean {
   try {
-    const normalized = normalise(address);
+    const normalized = normalize(address);
     const tld = normalized.substr(normalized.lastIndexOf('.') + 1);
 
     if (validTLDs[tld]) {

@@ -8,7 +8,7 @@ export {
   gasPriceToBase,
   fromWei,
   baseToConvertedUnit,
-  normalise,
+  normalize,
   getTransactionFields,
   makeTransaction,
   hexEncodeData,
