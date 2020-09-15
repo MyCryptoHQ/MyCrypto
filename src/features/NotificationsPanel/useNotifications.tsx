@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import moment from 'moment';
 
 import { DataContext } from '@services/Store';
@@ -13,8 +13,6 @@ export interface ProviderState {
   displayNotification(templateName: string, templateData?: object): void;
   dismissCurrentNotification(): void;
 }
-
-export const NotificationsContext = createContext({} as ProviderState);
 
 function getCurrent(notifications: ExtendedNotification[]) {
   const visible = notifications
@@ -47,54 +45,20 @@ function isValidNotification(n: ExtendedNotification) {
   return isConfigCondition && (shouldShowRepeatingNotification || isNonrepeatingNotification);
 }
 
-export const NotificationsProvider: React.FC = ({ children }) => {
+export function useNotifications() {
   const { notifications, createActions } = useContext(DataContext);
-  const [currentNotification, setCurrentNotification] = useState<ExtendedNotification>();
+  const currentNotification = getCurrent(notifications);
   const Notification = createActions(LSKeys.NOTIFICATIONS);
   const trackNotificationDisplayed = useAnalytics({
     category: ANALYTICS_CATEGORIES.NOTIFICATION
   });
-
-  useEffect(() => {
-    // hide notifications that should be shown only once
-    hideShowOneTimeNotifications();
-    // update notifications that should be displayed again
-    notifications.filter(isValidNotification).forEach((n) =>
-      Notification.update(n.uuid, {
-        ...n,
-        dismissed: false,
-        dateDisplayed: new Date()
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    const current = getCurrent(notifications);
-    setCurrentNotification(current);
-    if (current) {
-      trackNotificationDisplayed({
-        actionName: `${
-          notificationsConfigs[current.template].analyticsEvent
-        } notification displayed`
-      });
-    }
-  }, [notifications]);
-
-  const hideShowOneTimeNotifications = () => {
-    notifications.forEach((n) => {
-      const config = notificationsConfigs[n.template];
-      if (config.showOneTime && !n.dismissed) {
-        state.dismissNotification(n);
-      }
-    });
-  };
 
   const displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
     if (!notificationsConfigs[templateName].preventDismisExisting) {
       notifications
         .filter((x) => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed)
-        .forEach(state.dismissNotification);
+        .forEach(dismissNotification);
     }
 
     // Create the notification object
@@ -128,20 +92,55 @@ export const NotificationsProvider: React.FC = ({ children }) => {
     }
   };
 
-  const state = {
+  const dismissNotification = (notif?: ExtendedNotification) => {
+    if (notUndefined(notif)) {
+      Notification.update(notif.uuid, {
+        ...notif,
+        dismissed: true,
+        dateDismissed: new Date()
+      });
+    }
+  };
+
+  const dismissCurrentNotification = () => dismissNotification(currentNotification);
+
+  const trackNotificationViewed = () => {
+    if (currentNotification) {
+      trackNotificationDisplayed({
+        actionName: `${
+          notificationsConfigs[currentNotification.template].analyticsEvent
+        } notification displayed`
+      });
+
+      // Hide notifications that should be shown only once and update notifications that should be displayed again
+      notifications.forEach((n) => {
+        const config = notificationsConfigs[n.template];
+        if (config.showOneTime && !n.dismissed && n.viewed) {
+          dismissNotification(n);
+        } else if (isValidNotification(n)) {
+          Notification.update(n.uuid, {
+            ...n,
+            dismissed: false,
+            dateDisplayed: new Date()
+          });
+        }
+      });
+
+      if (!currentNotification.viewed) {
+        Notification.update(currentNotification.uuid, {
+          ...currentNotification,
+          viewed: true
+        });
+      }
+    }
+  };
+
+  return {
     notifications,
     currentNotification,
     displayNotification,
-    dismissNotification: (notif?: ExtendedNotification) => {
-      if (notUndefined(notif)) {
-        Notification.update(notif.uuid, {
-          ...notif,
-          dismissed: true,
-          dateDismissed: new Date()
-        });
-      }
-    },
-    dismissCurrentNotification: () => state.dismissNotification(currentNotification)
+    dismissNotification,
+    dismissCurrentNotification,
+    trackNotificationViewed
   };
-  return <NotificationsContext.Provider value={state}>{children}</NotificationsContext.Provider>;
-};
+}

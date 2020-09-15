@@ -2,7 +2,7 @@ export { DrawerContext, DrawerProvider, SelectLanguage } from './Drawer';
 export { DevToolsManager } from './DevTools';
 export { ScreenLockLocking, ScreenLockProvider, ScreenLockContext } from './ScreenLock';
 export { default as PageNotFound } from './PageNotFound';
-export { NotificationsProvider } from './NotificationsPanel';
+export { useNotifications } from './NotificationsPanel';
 export { useToasts } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
 export { TokenMigration } from './TokenMigration';
