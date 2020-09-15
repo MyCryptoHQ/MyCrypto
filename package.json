@@ -140,7 +140,7 @@
     "@types/query-string": "5.1.0",
     "@types/ramda": "0.27.14",
     "@types/rc-slider": "8.6.5",
-    "@types/rc-steps": "^3.5.0",
+    "@types/rc-steps": "3.5.0",
     "@types/react": "16.9.17",
     "@types/react-copy-to-clipboard": "4.3.0",
     "@types/react-dom": "16.9.4",
