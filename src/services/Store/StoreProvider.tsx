@@ -28,6 +28,7 @@ import {
   IAccountAdditionData,
   IPendingTxReceipt,
   IRawAccount,
+  ITxStatus,
   ITxType,
   Network,
   NetworkId,
@@ -37,8 +38,7 @@ import {
   TAddress,
   TTicker,
   TUuid,
-  WalletId,
-  ITxStatus
+  WalletId
 } from '@types';
 import {
   convertToFiatFromAsset,
@@ -58,9 +58,9 @@ import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 import { ANALYTICS_CATEGORIES, MyCryptoApiService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import {
-  getTotalByAsset,
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
+  getTotalByAsset,
   useAssets
 } from './Asset';
 import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
