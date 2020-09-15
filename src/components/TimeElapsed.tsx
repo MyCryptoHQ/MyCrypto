@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 
 import { formatTimeDifference, useInterval } from '@utils';
 
-interface Props {
-  value: number;
-}
-
-const TimeElapsed = ({ value }: Props) => {
+const TimeElapsed = ({ value }: { value: number }) => {
   const [timeElapsed, setTimeElapsed] = useState(formatTimeDifference(value));
 
   useInterval(
