@@ -48,7 +48,8 @@ import {
   ITxReceiptStepProps,
   ITxStatus,
   ITxType,
-  TAddress
+  TAddress,
+  TxQueryTypes
 } from '@types';
 import { convertToFiat, isSenderAccountPresentAndOfMainType, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
@@ -89,6 +90,7 @@ const SSpacer = styled.div`
 const TxReceipt = ({
   txReceipt,
   txConfig,
+  txQueryType,
   completeButtonText,
   membershipSelected,
   zapSelected,
@@ -237,6 +239,7 @@ const TxReceipt = ({
       membershipSelected={membershipSelected}
       swapDisplay={swapDisplay}
       completeButtonText={completeButtonText}
+      txQueryType={txQueryType}
       setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
       protectTxButton={protectTxButton}
@@ -291,6 +294,7 @@ export const TxReceiptUI = ({
   recipientContact,
   resetFlow,
   completeButtonText,
+  txQueryType,
   isSenderAccountPresent,
   handleTxCancelRedirect,
   handleTxSpeedUpRedirect,
@@ -487,7 +491,7 @@ export const TxReceiptUI = ({
           {completeButtonText}
         </Button>
       )}
-      {txStatus === ITxStatus.PENDING && txConfig && (
+      {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.SPEEDUP && txConfig && (
         <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
@@ -499,7 +503,7 @@ export const TxReceiptUI = ({
         </Tooltip>
       )}
       <br />
-      {txStatus === ITxStatus.PENDING && txConfig && (
+      {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.CANCEL && txConfig && (
         <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
