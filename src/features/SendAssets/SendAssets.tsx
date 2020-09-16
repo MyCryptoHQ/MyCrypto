@@ -48,21 +48,23 @@ function SendAssets({ location }: RouteComponentProps) {
   useEffect(() => {
     const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
     if (
-      txConfigInit &&
-      txConfigInit.type !== reducerState.txQueryType &&
-      [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
-    ) {
-      if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
-        console.debug(
-          '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
-        );
-      } else {
-        dispatch({
-          type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-          payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
-        });
-      }
+      !txConfigInit ||
+      txConfigInit.type === reducerState.txQueryType ||
+      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
+    )
+      return;
+
+    if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
+      console.debug(
+        '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
+      );
+      return;
     }
+
+    dispatch({
+      type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
+    });
   }, [res]);
 
   // Due to MetaMask deprecating eth_sign method,
