@@ -85,6 +85,7 @@ export interface IStepComponentProps extends IDefaultStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txType?: ITxType;
+  txQueryType?: TxQueryTypes;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;
@@ -94,6 +95,7 @@ export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
+  txQueryType?: TxQueryTypes;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;

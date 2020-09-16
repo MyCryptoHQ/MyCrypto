@@ -19,7 +19,8 @@ import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 import { processFormDataToTx } from './helpers';
 
 interface State {
-  type?: TxQueryTypes;
+  txNumber: number;
+  txQueryType?: TxQueryTypes;
   txConfig?: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: ISignedTx;
@@ -29,7 +30,7 @@ interface State {
 export type ReducerAction = TAction<ValuesType<typeof sendAssetsReducer.actionTypes>, any>;
 
 // @ts-ignore
-export const initialState: State = { txConfig: {} };
+export const initialState: State = { txConfig: {}, txNumber: 0 };
 
 export const sendAssetsReducer = (state: State, action: ReducerAction): State => {
   switch (action.type) {
@@ -59,8 +60,8 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
     }
 
     case sendAssetsReducer.actionTypes.SET_TXCONFIG: {
-      const { txConfig, type } = action.payload;
-      return { ...state, type, txConfig };
+      const { txConfig, txQueryType } = action.payload;
+      return { txQueryType, txConfig, txNumber: state.txNumber + 1 };
     }
 
     case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {

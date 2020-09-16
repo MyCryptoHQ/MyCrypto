@@ -84,6 +84,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
     txConfig: txConfigMain,
     signedTx: signedTxMain,
     txReceipt: txReceiptMain,
+    txQueryType: txQueryTypeMain,
     onComplete: onCompleteMain,
     customDetails,
     resetFlow,
@@ -183,6 +184,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
               txConfig={txConfigMain}
               signedTx={signedTxMain}
               txReceipt={txReceiptMain}
+              txQueryType={txQueryTypeMain}
               onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
                 onCompleteMain(values);
               }}

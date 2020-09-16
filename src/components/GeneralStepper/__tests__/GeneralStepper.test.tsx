@@ -41,7 +41,10 @@ const testSteps = [
   }
 ];
 
-const defaultProps: Required<Omit<StepperProps, 'wrapperClassName' | 'basic' | 'onRender'>> = {
+const defaultProps: Required<Omit<
+  StepperProps,
+  'wrapperClassName' | 'basic' | 'onRender' | 'txNumber'
+>> = {
   steps: testSteps,
   defaultBackPath: '/dashboard',
   defaultBackPathLabel: 'Dashboard',

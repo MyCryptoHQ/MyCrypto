@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { IStepperPath } from '@components/GeneralStepper/types';
-import { ROUTE_PATHS } from '@config';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS, ROUTE_PATHS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import {
   ProviderHandler,
@@ -17,7 +17,7 @@ import {
 } from '@services';
 import { translateRaw } from '@translations';
 import { IFormikFields, ISignedTx, ITxConfig, ITxReceipt, TxQueryTypes } from '@types';
-import { isWeb3Wallet, withProtectTxProvider } from '@utils';
+import { getParam, isWeb3Wallet, withProtectTxProvider } from '@utils';
 import { isEmpty } from '@vendor';
 
 import {
@@ -39,21 +39,33 @@ function SendAssets({ location }: RouteComponentProps) {
   const { networks } = useNetworks();
   const { featureFlags } = useFeatureFlags();
 
+  const query = parse(location.search);
+  const res = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce(
+    (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
+    {}
+  );
+
   useEffect(() => {
     const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
-    if (txConfigInit && [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)) {
-      if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
-        console.debug(
-          '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
-        );
-      } else {
-        dispatch({
-          type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-          payload: { txConfig: txConfigInit.txConfig, type: txConfigInit.type }
-        });
-      }
+    if (
+      !txConfigInit ||
+      txConfigInit.type === reducerState.txQueryType ||
+      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
+    )
+      return;
+
+    if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
+      console.debug(
+        '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
+      );
+      return;
     }
-  }, [assets]);
+
+    dispatch({
+      type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
+    });
+  }, [res]);
 
   // Due to MetaMask deprecating eth_sign method,
   // it has different step order, where sign and send are one panel
@@ -137,9 +149,10 @@ function SendAssets({ location }: RouteComponentProps) {
     {
       label: ' ',
       component: TxReceiptWithProtectTx,
-      props: (({ txConfig, txReceipt }) => ({
+      props: (({ txConfig, txReceipt, txQueryType }) => ({
         txConfig,
-        txReceipt
+        txReceipt,
+        txQueryType
       }))(reducerState)
     }
   ];
@@ -149,8 +162,8 @@ function SendAssets({ location }: RouteComponentProps) {
     const walletSteps =
       senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
     if (
-      reducerState.type &&
-      [TxQueryTypes.CANCEL, TxQueryTypes.SPEEDUP].includes(reducerState.type)
+      reducerState.txQueryType &&
+      [TxQueryTypes.CANCEL, TxQueryTypes.SPEEDUP].includes(reducerState.txQueryType)
     ) {
       return walletSteps.slice(1, walletSteps.length);
     }
@@ -185,6 +198,7 @@ function SendAssets({ location }: RouteComponentProps) {
   return (
     <GeneralStepper
       steps={getPath()}
+      txNumber={reducerState.txNumber}
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
