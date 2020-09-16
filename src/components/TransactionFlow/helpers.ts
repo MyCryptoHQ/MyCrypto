@@ -3,6 +3,7 @@ import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import pick from 'ramda/src/pick';
 import { ValuesType } from 'utility-types';
 
+import { bigNumGasPriceToViewableGwei } from '@services/EthService/utils';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import { ITxConfig, StoreAccount } from '@types';
 
@@ -40,3 +41,7 @@ export const constructSenderFromTxConfig = (
 
   return sender;
 };
+
+// replacement gas price must be at least 10% higher than the replaced tx's gas price
+export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: number) =>
+  Math.max(fastGasPrice, parseFloat(bigNumGasPriceToViewableGwei(txConfig.gasPrice)) * 1.101);

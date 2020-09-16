@@ -1,8 +1,8 @@
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 
-import { fAccount, fNetwork } from '@fixtures';
+import { fAccount, fERC20NonWeb3TxConfig, fNetwork } from '@fixtures';
 import { getDefaultEstimates } from '@services';
-import { IFormikFields, ITxStatus } from '@types';
+import { IFormikFields, ITxStatus, TxQueryTypes } from '@types';
 
 import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
@@ -184,6 +184,27 @@ describe('SendAssetsReducer', () => {
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
+    });
+  });
+  describe('SET_TXCONFIG', () => {
+    it('sets the tx config, increments the txNumber by one and resets the remaining fields', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: '0x12345678',
+        txNumber: 0
+      };
+      const inputTxConfig = fERC20NonWeb3TxConfig;
+      const payload = { txConfig: inputTxConfig, txQueryType: TxQueryTypes.SPEEDUP };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+        payload
+      })(prevState);
+      const { txConfig, txQueryType, txNumber } = newState!;
+
+      expect(txConfig).toStrictEqual(inputTxConfig);
+      expect(txQueryType).toBe(TxQueryTypes.SPEEDUP);
+      expect(txNumber).toBe(prevState.txNumber + 1);
     });
   });
 });
