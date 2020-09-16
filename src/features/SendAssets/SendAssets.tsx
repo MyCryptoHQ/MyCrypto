@@ -49,7 +49,7 @@ function SendAssets({ location }: RouteComponentProps) {
     const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
     if (
       txConfigInit &&
-      txConfigInit.type !== reducerState.type &&
+      txConfigInit.type !== reducerState.txQueryType &&
       [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
     ) {
       if (!txConfigInit.txConfig || isEmpty(txConfigInit.txConfig)) {
@@ -57,10 +57,9 @@ function SendAssets({ location }: RouteComponentProps) {
           '[PrefilledTxs]: Error - Missing params. Requires gasPrice, gasLimit, to, data, nonce, from, value, and chainId'
         );
       } else {
-        console.log('retrigger query params5');
         dispatch({
           type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-          payload: { txConfig: txConfigInit.txConfig, type: txConfigInit.type }
+          payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
         });
       }
     }
@@ -148,10 +147,10 @@ function SendAssets({ location }: RouteComponentProps) {
     {
       label: ' ',
       component: TxReceiptWithProtectTx,
-      props: (({ txConfig, txReceipt, type }) => ({
-        txQueryType: type,
+      props: (({ txConfig, txReceipt, txQueryType }) => ({
         txConfig,
-        txReceipt
+        txReceipt,
+        txQueryType
       }))(reducerState)
     }
   ];
@@ -161,8 +160,8 @@ function SendAssets({ location }: RouteComponentProps) {
     const walletSteps =
       senderAccount && isWeb3Wallet(senderAccount.wallet) ? web3Steps : defaultSteps;
     if (
-      reducerState.type &&
-      [TxQueryTypes.CANCEL, TxQueryTypes.SPEEDUP].includes(reducerState.type)
+      reducerState.txQueryType &&
+      [TxQueryTypes.CANCEL, TxQueryTypes.SPEEDUP].includes(reducerState.txQueryType)
     ) {
       return walletSteps.slice(1, walletSteps.length);
     }

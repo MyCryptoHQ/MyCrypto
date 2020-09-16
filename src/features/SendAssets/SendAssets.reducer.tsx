@@ -20,7 +20,7 @@ import { processFormDataToTx } from './helpers';
 
 interface State {
   txNumber: number;
-  type?: TxQueryTypes;
+  txQueryType?: TxQueryTypes;
   txConfig?: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: ISignedTx;
@@ -60,8 +60,8 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
     }
 
     case sendAssetsReducer.actionTypes.SET_TXCONFIG: {
-      const { txConfig, type } = action.payload;
-      return { type, txConfig, txNumber: state.txNumber + 1 };
+      const { txConfig, txQueryType } = action.payload;
+      return { txQueryType, txConfig, txNumber: state.txNumber + 1 };
     }
 
     case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {
