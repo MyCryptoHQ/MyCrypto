@@ -38,7 +38,7 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
   try {
     const txs = await getTxs();
     const filteredTxs = await filterAsync(txs, async (tx) => {
-      if (network && tx.type === ITxType.APPROVAL) {
+      if (network && tx.type === ITxType.APPROVAL && tx.from) {
         const { _spender, _value } = ERC20.approve.decodeInput(tx.data);
         const provider = new ProviderHandler(network);
         const allowance = await provider.getTokenAllowance(tx.to, tx.from, _spender);
