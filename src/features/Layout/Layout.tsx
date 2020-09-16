@@ -81,12 +81,16 @@ const SContainer = styled.div`
 `;
 
 const MigrateLSWithStore = pipe(withContext(StoreContext), withHook(useSettings))(MigrateLS);
-const SBanner = styled(Banner)`
+
+const BannerWrapper = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
     top: 77px;
     left: 0;
   }
+`;
+
+const SBanner = styled(Banner)`
   background-color: ${COLORS.LIGHT_PURPLE};
 `;
 
@@ -120,7 +124,10 @@ export default function Layout({ config = {}, className = '', children }: Props)
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
       // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
       window.requestAnimationFrame(() => {
-        for (const entry of entries) setTopHeight(entry.contentRect.height);
+        for (const entry of entries) {
+          console.log(entry.contentRect.height);
+          setTopHeight(entry.contentRect.height);
+        }
       });
     });
 
@@ -131,7 +138,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
 
   return (
     <SMain className={className} bgColor={bgColor}>
-      <STop ref={topRef}>
+      <STop>
         {!IS_E2E && featureFlags.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
@@ -143,7 +150,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
           setDrawerScreen={setScreen}
         />
       </STop>
-      <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+      <BannerWrapper ref={topRef}>
+        <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+      </BannerWrapper>
       <SContainer
         centered={centered}
         fluid={fluid}
