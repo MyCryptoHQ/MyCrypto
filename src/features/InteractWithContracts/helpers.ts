@@ -4,9 +4,9 @@ import sortBy from 'lodash/sortBy';
 
 import { WALLET_STEPS } from '@components';
 import { getAssetByUUID } from '@services';
-import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { ITxConfig, ITxObject, NetworkId, StoreAccount } from '@types';
+import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
 

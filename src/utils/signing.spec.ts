@@ -1,4 +1,5 @@
 import { getPrivKeyWallet } from '@services/WalletService';
+
 import { signMessageWithPrivKeyV2, verifySignedMessage } from './signing';
 
 describe('lib/signing', () => {
