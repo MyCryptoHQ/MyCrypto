@@ -57,7 +57,7 @@ import { path } from '@vendor';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import { constructSenderFromTxConfig } from './helpers';
+import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
 import { PendingTransaction } from './PendingLoader';
 import { ISender } from './types';
 import './TxReceipt.scss';
@@ -192,14 +192,14 @@ const TxReceipt = ({
   const handleTxSpeedUpRedirect = async () => {
     if (!txConfig) return;
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const query = constructSpeedUpTxQuery(txConfig, fast);
+    const query = constructSpeedUpTxQuery(txConfig, calculateReplacementGasPrice(txConfig, fast));
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 
   const handleTxCancelRedirect = async () => {
     if (!txConfig) return;
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const query = constructCancelTxQuery(txConfig, fast);
+    const query = constructCancelTxQuery(txConfig, calculateReplacementGasPrice(txConfig, fast));
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 

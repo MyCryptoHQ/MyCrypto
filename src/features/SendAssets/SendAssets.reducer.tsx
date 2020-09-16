@@ -60,7 +60,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
 
     case sendAssetsReducer.actionTypes.SET_TXCONFIG: {
       const { txConfig, type } = action.payload;
-      return { ...state, type, txConfig };
+      return { type, txConfig };
     }
 
     case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {
