@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import { Banner } from '@components';
 import { DrawerContext, ErrorContext, MigrateLS } from '@features';
-import translate from '@translations';
 import { useFeatureFlags } from '@services';
 import { StoreContext, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
+import translate from '@translations';
 import { BannerType } from '@types';
 import { IS_E2E, withContext, withHook } from '@utils';
 import { pipe } from '@vendor';
