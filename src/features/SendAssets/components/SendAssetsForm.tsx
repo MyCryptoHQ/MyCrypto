@@ -24,8 +24,10 @@ import TransactionFeeDisplay from '@components/TransactionFlow/displays/Transact
 import {
   DEFAULT_ASSET_DECIMAL,
   ETHUUID,
+  GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
@@ -34,7 +36,12 @@ import { ProtectTxShowError } from '@features/ProtectTransaction/components/Prot
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getNonce, useRates } from '@services';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
-import { isBurnAddress, isValidETHAddress, isValidPositiveNumber, validateTxFee } from '@services/EthService/validators';
+import {
+  isBurnAddress,
+  isValidETHAddress,
+  isValidPositiveNumber,
+  validateTxFee
+} from '@services/EthService/validators';
 import {
   getAccountBalance,
   getAccountsByAsset,
@@ -367,14 +374,14 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         return true;
       }),
     gasLimitField: number()
-      .min(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
+      .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
       .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_8'))
       .test(validateGasLimitField()),
     gasPriceField: number()
       .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
-      .max(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
+      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('GASPRICE_ERROR'))
       .test(validateGasPriceField()),

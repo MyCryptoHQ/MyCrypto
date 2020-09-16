@@ -1,5 +1,5 @@
 import { Network, NodeType, TTicker, TUuid } from '@types';
-import { makeExplorer } from '@utils';
+import { makeExplorer } from '@utils/makeExplorer';
 
 const Ethereum: Network = {
   id: 'Ethereum',

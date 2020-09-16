@@ -19,7 +19,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { makeExplorer } from '@utils';
+import { makeExplorer } from '@utils/makeExplorer';
 import { merge } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];

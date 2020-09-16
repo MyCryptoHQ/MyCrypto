@@ -5,7 +5,8 @@ import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
 import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject } from '@types';
-import { makeTransaction, useInterval } from '@utils';
+import { useInterval } from '@utils';
+import { makeTransaction } from '@utils/makeTransaction';
 
 import './Hardware.scss';
 
