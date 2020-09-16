@@ -4,7 +4,6 @@ import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { utils } from 'ethers';
 
 import questionToolTip from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
@@ -109,8 +108,8 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [loading, setLoading] = useState(false);
 
   const { accounts, networks } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
-  const { getContactByAddressAndNetworkId, createAddressBooks } = useContext(AddressBookContext);
+  const { assets } = useAssets();
+  const { getContactByAddressAndNetworkId, createContact } = useContacts();
 
   const initialValues = {
     recipientAddress: {} as StoreAccount

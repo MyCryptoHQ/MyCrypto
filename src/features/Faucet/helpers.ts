@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { StoreAccount } from '@types';
+
 import { FAUCET_API } from '@config';
+import { StoreAccount } from '@types';
 
 const api = axios.create({
   baseURL: FAUCET_API,
