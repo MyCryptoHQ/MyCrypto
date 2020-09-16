@@ -7,7 +7,13 @@ import styled from 'styled-components';
 import { object } from 'yup';
 
 import { AccountSelector, AssetSelector, ContentPanel, InlineMessage } from '@components';
-import { BUY_MYCRYPTO_WEBSITE, MOONPAY_API_QUERYSTRING, ROUTE_PATHS } from '@config';
+import {
+  BUY_MYCRYPTO_WEBSITE,
+  ETHUUID,
+  MOONPAY_API_QUERYSTRING,
+  MOONPAY_ASSET_UUIDS,
+  ROUTE_PATHS
+} from '@config';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { getAssetByUUID, useAssets } from '@services/Store/Asset';
@@ -15,7 +21,7 @@ import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, StoreAccount, TURL } from '@types';
-import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
+import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};

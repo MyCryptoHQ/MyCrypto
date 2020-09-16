@@ -10,6 +10,7 @@ export {
 } from './links';
 export * from './dpaths';
 export * from './constants';
+export * from './uuids';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export {
   GAS_LIMIT_LOWER_BOUND,
