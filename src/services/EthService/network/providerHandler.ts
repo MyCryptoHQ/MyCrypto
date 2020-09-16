@@ -133,7 +133,11 @@ export class ProviderHandler {
     return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
   }
 
-  public getTokenAllowance(tokenAddress: string, ownerAddress: string, spenderAddress: string) {
+  public getTokenAllowance(
+    tokenAddress: string,
+    ownerAddress: string,
+    spenderAddress: string
+  ): Promise<string> {
     return this.injectClient((client) =>
       client
         .call({
