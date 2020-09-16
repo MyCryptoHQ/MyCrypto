@@ -4,10 +4,11 @@ import styled, { css } from 'styled-components';
 
 import moreIcon from '@assets/images/icn-more.svg';
 import { AssetIcon, Currency, PoweredByText, Tooltip, Typography } from '@components';
+import { EMPTYUUID } from '@config';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Balance, TUuid } from '@types';
-import { buildTotalFiatValue, EMPTYUUID } from '@utils';
+import { buildTotalFiatValue } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
 import { calculateShownIndex } from './helpers';

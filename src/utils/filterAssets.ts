@@ -1,7 +1,5 @@
-import { ASSET_DROPDOWN_SIZE_THRESHOLD } from '@config';
+import { ASSET_DROPDOWN_SIZE_THRESHOLD, USEFUL_ASSETS } from '@config';
 import { Asset, ExtendedAsset, NetworkId } from '@types';
-
-import { USEFUL_ASSETS } from './constants';
 
 // Attempts to filter assets for display in dropdowns to decrease # of selections
 // based on a simple list of estimated usefulness (# of holders, market cap, trade volume) from etherscan

@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { DAIUUID, ETHUUID } from '@config';
 import { ISwapAsset, TTicker, TUuid } from '@types';
-import { bigify, DAIUUID, ETHUUID } from '@utils';
+import { bigify } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';

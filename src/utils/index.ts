@@ -77,7 +77,6 @@ export { withContext } from './withContext';
 export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
-export * from './constants';
 export { bigify } from './bigify';
 export { useTxMulti, TxParcel } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
