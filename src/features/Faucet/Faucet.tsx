@@ -1,38 +1,39 @@
 import React, { useContext, useState } from 'react';
-import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
-import { Heading, Tooltip, Input, Icon } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import { utils } from 'ethers';
 
+import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
+import { utils } from 'ethers';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+
+import questionToolTip from '@assets/images/icn-question.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
 import {
+  AccountSelector,
   Button,
   ExtendedContentPanel,
-  AccountDropdown,
-  NewTabLink,
   InlineMessage,
+  NewTabLink,
   TxReceipt
 } from '@components';
-import { StoreContext } from '@services/Store';
-import { AssetContext, AddressBookContext, getBaseAssetByNetwork } from '@services';
-import { noOp } from '@utils';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { getBaseAssetByNetwork } from '@services';
+import { StoreContext, useAssets, useContacts } from '@services/Store';
+import translate, { translateRaw } from '@translations';
 import {
   Asset,
   IAccount as IIAccount,
-  StoreAccount,
   InlineMessageType,
+  ITxStatus,
   ITxType,
-  ITxStatus
+  StoreAccount
 } from '@types';
-import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
-import translate, { translateRaw } from '@translations';
-import questionToolTip from '@assets/images/icn-question.svg';
+import { noOp } from '@utils';
 
 import { Error } from './components';
-import { possibleSolution, requestChallenge, solveChallenge, regenerateChallenge } from './helpers';
+import { possibleSolution, regenerateChallenge, requestChallenge, solveChallenge } from './helpers';
 
 // Legacy
-import receiveIcon from '@assets/images/icn-receive.svg';
 
 const SLabel = styled.label`
   margin-bottom: 8px;
@@ -108,8 +109,8 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [loading, setLoading] = useState(false);
 
   const { accounts, networks } = useContext(StoreContext);
-  const { assets } = useContext(AssetContext);
-  const { getContactByAddressAndNetworkId, createAddressBooks } = useContext(AddressBookContext);
+  const { assets } = useAssets();
+  const { getContactByAddressAndNetworkId, createContact } = useContacts();
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
@@ -175,7 +176,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
         if (existingContact) {
           return existingContact;
         } else {
-          createAddressBooks({
+          createContact({
             address: txResult.from,
             label: 'MyCrypto Faucet',
             network: network.id,
@@ -259,7 +260,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
             <Field
               name="recipientAddress"
               component={({ field, form }: FieldProps) => (
-                <AccountDropdown
+                <AccountSelector
                   name={field.name}
                   value={field.value}
                   accounts={validAccounts}

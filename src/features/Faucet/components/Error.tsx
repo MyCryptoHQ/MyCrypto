@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-import { formatSupportEmail } from '@utils';
 import { InlineMessage } from '@components';
+import translate from '@translations';
 import { InlineMessageType } from '@types';
+import { formatSupportEmail } from '@utils';
 
 const Box = styled.div`
   border: 1px solid #fa863f;
