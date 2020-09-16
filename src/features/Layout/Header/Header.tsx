@@ -5,7 +5,6 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Transition } from 'react-spring/renderprops-universal.cjs';
 import styled from 'styled-components';
 
-import { Banner } from '@components';
 import LocalIcon from '@components/Icon';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { SelectLanguage } from '@features/Drawer/screens';
@@ -13,12 +12,11 @@ import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 import { ANALYTICS_CATEGORIES, useFeatureFlags, useSettings } from '@services';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import translate, { languages } from '@translations';
-import { BannerType } from '@types';
 import { openLink, useAnalytics } from '@utils';
 
 import { getLinks } from './constants';
 
-const { BLUE_BRIGHT, LIGHT_PURPLE } = COLORS;
+const { BLUE_BRIGHT } = COLORS;
 
 const Navbar = styled.nav`
   width: 100%;
@@ -244,23 +242,6 @@ const IconWrapper = styled(Icon)<IconWrapperProps>`
   }
 `;
 
-const SBanner = styled(Banner)`
-  background-color: ${LIGHT_PURPLE};
-`;
-
-const CenteredBannerText = styled.div`
-  text-align: center;
-  & a {
-    &:hover {
-      font-weight: normal;
-    }
-  }
-`;
-
-export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
-);
-
 const TitleIconWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -362,7 +343,6 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
   };
 
-  const announcementMessage = ANNOUNCEMENT_MSG();
   const { featureFlags } = useFeatureFlags();
   const links = getLinks(featureFlags);
   return (
@@ -497,7 +477,6 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
             })}
         </HeaderBottomLinks>
       </HeaderBottom>
-      <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
     </Navbar>
   );
 }

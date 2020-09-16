@@ -53,6 +53,7 @@ const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
 
 const WithProtectTxSide = styled.div`
   position: absolute;
+  z-index: 999;
   left: 50%;
   transform: translateX(-50%);
   width: 375px;
