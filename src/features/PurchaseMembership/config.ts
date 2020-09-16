@@ -5,9 +5,9 @@ import onemonthIcon from '@assets/images/membership/membership-onemonth.svg';
 import sixMonthsIcon from '@assets/images/membership/membership-sixmonths.svg';
 import threemonthsIcon from '@assets/images/membership/membership-threemonths.svg';
 import twelveMonthsIcon from '@assets/images/membership/membership-twelvemonths.svg';
+import { DAIUUID, ETHUUID } from '@config';
 import translate, { translateRaw } from '@translations';
 import { TAddress } from '@types';
-import { DAIUUID, ETHUUID } from '@utils/constants';
 
 export interface IMembershipConfig {
   title: string;

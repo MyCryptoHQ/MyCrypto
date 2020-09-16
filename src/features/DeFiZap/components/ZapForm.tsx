@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { number, object } from 'yup';
 
 import { AccountSelector, AmountInput, InlineMessage, PoweredByText } from '@components';
+import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
@@ -18,7 +19,6 @@ import { StoreContext } from '@services/Store/StoreProvider';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
-import { ETHUUID } from '@utils';
 
 import { IZapConfig } from '../config';
 import { ZapInteractionState } from '../types';

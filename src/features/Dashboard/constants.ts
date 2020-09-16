@@ -5,10 +5,9 @@ import swapIcon from '@assets/images/icn-swap.svg';
 import repIcon from '@assets/images/rep-logo.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
-import { EXT_URLS, ROUTE_PATHS } from '@config';
+import { EXT_URLS, REPV1UUID, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import { StoreAsset } from '@types';
-import { REPV1UUID } from '@utils';
 
 import { Action } from './types';
 

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { number, object } from 'yup';
 
 import { AccountSelector, AmountInput, Button, InlineMessage } from '@components';
+import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
@@ -15,7 +16,7 @@ import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
-import { ETHUUID, noOp } from '@utils';
+import { noOp } from '@utils';
 
 import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';

@@ -23,6 +23,7 @@ import {
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   DEFAULT_ASSET_DECIMAL,
+  ETHUUID,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
@@ -79,7 +80,6 @@ import {
 import {
   bigify,
   isFormValid as checkFormValid,
-  ETHUUID,
   formatSupportEmail,
   isSameAddress,
   isVoid,
