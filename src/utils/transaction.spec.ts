@@ -228,8 +228,8 @@ describe('deriveTxFields', () => {
     expect(result).toStrictEqual({
       to: toAddress,
       receiverAddress: toAddress,
-      amount: '0.0',
-      asset: fAssets[1]
+      amount: '0',
+      asset: fAssets[10]
     });
   });
   it("interprets an eth tx's fields correctly", () => {
