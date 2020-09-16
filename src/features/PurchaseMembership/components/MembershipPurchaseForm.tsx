@@ -220,6 +220,7 @@ export const MembershipFormUI = ({
               </FormFieldItem>
               <FormFieldSubmitButton
                 type="submit"
+                disabled={!isValid || !selectedAccount}
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {

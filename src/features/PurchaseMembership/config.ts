@@ -7,7 +7,7 @@ import threemonthsIcon from '@assets/images/membership/membership-threemonths.sv
 import twelveMonthsIcon from '@assets/images/membership/membership-twelvemonths.svg';
 import translate, { translateRaw } from '@translations';
 import { TAddress } from '@types';
-import { DAIUUID, ETHUUID } from '@utils';
+import { DAIUUID, ETHUUID } from '@utils/constants';
 
 export interface IMembershipConfig {
   title: string;
