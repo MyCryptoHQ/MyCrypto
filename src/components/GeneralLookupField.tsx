@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
-import { isValidENSName, isValidETHAddress } from '@services/EthService';
+import { isValidETHAddress } from '@services/EthService';
+import { isValidENSName } from '@services/EthService/ens';
 import { isValidETHRecipientAddress } from '@services/EthService/validators';
 import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import UnstoppableResolution from '@services/UnstoppableService';

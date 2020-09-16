@@ -9,8 +9,9 @@ import {
 import { BigNumber, formatEther } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { baseToConvertedUnit, ERC20, RPCRequests } from '@services/EthService';
+import { ERC20, RPCRequests } from '@services/EthService';
 import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+import { baseToConvertedUnit } from '@utils';
 
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';

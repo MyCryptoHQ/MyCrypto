@@ -3,8 +3,8 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { bigNumberify, parseEther } from 'ethers/utils';
 
-import { DEFAULT_NETWORK, DEFAULT_NETWORK } from '@config';
-import { ITxHistoryType, ITxHistoryType } from '@features/Dashboard/types';
+import { DEFAULT_NETWORK } from '@config';
+import { ITxHistoryType } from '@features/Dashboard/types';
 import {
   fAccount,
   fAccounts,

@@ -1,5 +1,5 @@
-import { normalize } from '@services';
 import { getNameHash } from '@services/EthService/ens';
+import { normalize } from '@services/EthService/utils/normalize';
 
 // @todo: write tests for:
 // ens.placeBid

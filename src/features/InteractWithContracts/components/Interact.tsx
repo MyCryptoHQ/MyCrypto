@@ -13,7 +13,7 @@ import {
   NetworkSelectDropdown
 } from '@components';
 import { getNetworkById, useNetworks } from '@services';
-import { isValidENSName } from '@services/EthService';
+import { isValidENSName } from '@services/EthService/ens';
 import { isValidETHAddress } from '@services/EthService/validators';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
