@@ -51,10 +51,11 @@ export default function SignTransactionWeb3({
       setWeb3Provider(provider);
       const ethereumProvider = (window as CustomWindow).ethereum;
       if (ethereumProvider) {
-        watchForAccountChanges(ethereumProvider);
+        ethereumProvider.on('accountsChanged', attemptSign);
       } else {
         throw Error('No web3 found');
       }
+      return () => ethereumProvider.off('accountsChanged');
     });
   }, []);
 
@@ -66,6 +67,8 @@ export default function SignTransactionWeb3({
     if (!web3Provider) {
       return;
     }
+
+    setError(WalletSigningError.NONE);
 
     const web3Signer = web3Provider.getSigner();
     const web3Address = await web3Signer.getAddress();
@@ -111,10 +114,6 @@ export default function SignTransactionWeb3({
           setWalletState(WalletSigningState.NOT_READY);
         }
       });
-  };
-
-  const watchForAccountChanges = (ethereum: NonNullable<CustomWindow['ethereum']>) => {
-    ethereum.on('accountsChanged', attemptSign);
   };
 
   return (
