@@ -39,11 +39,15 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
     const txs = await getTxs();
     const filteredTxs = await filterAsync(txs, async (tx) => {
       if (network && tx.type === ITxType.APPROVAL && tx.from) {
-        const { _spender, _value } = ERC20.approve.decodeInput(tx.data);
-        const provider = new ProviderHandler(network);
-        const allowance = await provider.getTokenAllowance(tx.to, tx.from, _spender);
-        const hasAllowance = bigify(allowance).gte(bigify(_value));
-        return !hasAllowance;
+        try {
+          const { _spender, _value } = ERC20.approve.decodeInput(tx.data);
+          const provider = new ProviderHandler(network);
+          const allowance = await provider.getTokenAllowance(tx.to, tx.from, _spender);
+          const hasAllowance = bigify(allowance).gte(bigify(_value));
+          return !hasAllowance;
+        } catch (err) {
+          console.error(err);
+        }
       }
       return true;
     });
