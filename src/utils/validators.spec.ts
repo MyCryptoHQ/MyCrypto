@@ -1,4 +1,4 @@
-import { ETHUUID } from '@utils';
+import { ETHUUID } from '@config';
 
 import { isTransactionDataEmpty, isUuid, isValidAmount } from './validators';
 
