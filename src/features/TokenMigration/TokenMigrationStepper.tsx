@@ -4,7 +4,7 @@ import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { ISimpleTxFormFull, ITxStatus, TxParcel } from '@types';
+import { ISimpleTxFormFull, ITxStatus, ITxType, TxParcel } from '@types';
 import { useTxMulti } from '@utils';
 
 import { TokenMigrationMultiTx } from './components';
@@ -32,8 +32,11 @@ const TokenMigrationStepper = () => {
       actions: (formData: ITokenMigrationFormFull) => {
         initWith(
           () => {
-            const purchaseTx = createMigrationTx(formData);
-            const approveTx = createApproveTx(formData);
+            const purchaseTx = {
+              ...createMigrationTx(formData),
+              type: ITxType.REP_TOKEN_MIGRATION
+            };
+            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
             return Promise.resolve([approveTx, purchaseTx]);
           },
           formData.account,

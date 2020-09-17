@@ -1,4 +1,6 @@
 import {
+  fAccounts,
+  fAssets,
   fERC20NonWeb3TxConfigJSON as fERC20NonWeb3TxConfig,
   fERC20NonWeb3TxReceipt,
   fERC20NonWeb3TxResponse,
@@ -12,15 +14,19 @@ import {
   fETHWeb3TxReceipt,
   fETHWeb3TxResponse,
   fFinishedERC20NonWeb3TxReceipt,
-  fFinishedERC20Web3TxReceipt
+  fFinishedERC20Web3TxReceipt,
+  fNetwork
 } from '@fixtures';
 import { ITxData, ITxHash, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 
 import {
+  deriveTxFields,
   deriveTxRecipientsAndAmount,
-  guessIfErc20Tx,
+  ERCType,
+  guessERC20Type,
   makeFinishedTxReceipt,
   makePendingTxReceipt,
+  makeTxConfigFromTxResponse,
   toTxReceipt
 } from './transaction';
 
@@ -126,25 +132,25 @@ describe('makeFinishedTxReceipt', () => {
   });
 });
 
-describe('guessIfERC20Tx', () => {
+describe('guessERC20Type', () => {
   it('interprets an erc20 transfer data field to be an erc20 transfer', () => {
     const erc20DataField =
       '0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec79000000000000000000000000000000000000000000000104f6e0a229913de8a2';
-    const isERC20TX = guessIfErc20Tx(erc20DataField);
-    expect(isERC20TX).toBeTruthy();
+    const ercType = guessERC20Type(erc20DataField);
+    expect(ercType).toBe(ERCType.TRANSFER);
   });
 
   it('interprets an eth tx data field to not be an erc20 transfer', () => {
     const ethTxDataField = '0x0';
-    const isERC20TX = guessIfErc20Tx(ethTxDataField);
-    expect(isERC20TX).toBeFalsy();
+    const ercType = guessERC20Type(ethTxDataField);
+    expect(ercType).toBe(ERCType.NONE);
   });
 
   it('interprets an swap tx data field to not be an erc20 transfer', () => {
     const swapTxDataField =
       '0x5d46ec34000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000006b175474e89094c44da98b954eedeac495271d0f000000000000000000000000000000000000000000000000022316b495dd19fe0000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000001c0000000000000000000000000000000000000000000000000000000000000024000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000000000000000000000000001158e460913d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002a1530c4c41db0b0b2bb646cb5eb1a67b71586670000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000446b1d4db7000000000000000000000000000000000000000000000001158e460913d00000000000000000000000000000000000000000000000000000000000005e7a6099000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000022316b495dd19fe';
-    const isERC20TX = guessIfErc20Tx(swapTxDataField);
-    expect(isERC20TX).toBeFalsy();
+    const ercType = guessERC20Type(swapTxDataField);
+    expect(ercType).toBe(ERCType.NONE);
   });
 });
 
@@ -155,7 +161,7 @@ describe('deriveTxRecipientsAndAmount', () => {
     const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
     const value = '0x0';
     const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
-      true,
+      ERCType.TRANSFER,
       erc20DataField as ITxData,
       toAddress as ITxToAddress,
       value as ITxValue
@@ -172,7 +178,7 @@ describe('deriveTxRecipientsAndAmount', () => {
     const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
     const value = '0x104f6e0a229913de8a2';
     const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
-      false,
+      ERCType.NONE,
       ethTxDataField as ITxData,
       toAddress as ITxToAddress,
       value as ITxValue
@@ -182,5 +188,82 @@ describe('deriveTxRecipientsAndAmount', () => {
       receiverAddress: toAddress,
       amount: '0x104f6e0a229913de8a2'
     });
+  });
+});
+
+describe('deriveTxFields', () => {
+  it("interprets an erc20 transfer's fields correctly", () => {
+    const erc20DataField =
+      '0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec79000000000000000000000000000000000000000000000104f6e0a229913de8a2';
+    const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    const value = '0x0';
+    const result = deriveTxFields(
+      ERCType.TRANSFER,
+      erc20DataField as ITxData,
+      toAddress as ITxToAddress,
+      value as ITxValue,
+      fAssets[1],
+      fAssets[10]
+    );
+    expect(result).toStrictEqual({
+      to: toAddress,
+      receiverAddress: '0x5dd6e754D37baBaBEb95F34639568812900feC79',
+      amount: '4813.942855992010991778',
+      asset: fAssets[10]
+    });
+  });
+  it("interprets an erc20 approve's fields correctly", () => {
+    const erc20DataField =
+      '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+    const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    const value = '0x0';
+    const result = deriveTxFields(
+      ERCType.APPROVAL,
+      erc20DataField as ITxData,
+      toAddress as ITxToAddress,
+      value as ITxValue,
+      fAssets[1],
+      fAssets[10]
+    );
+    expect(result).toStrictEqual({
+      to: toAddress,
+      receiverAddress: toAddress,
+      amount: '0',
+      asset: fAssets[10]
+    });
+  });
+  it("interprets an eth tx's fields correctly", () => {
+    const erc20DataField = '0x';
+    const toAddress = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    const value = '0x54ab1b2ceea88000';
+    const result = deriveTxFields(
+      ERCType.NONE,
+      erc20DataField as ITxData,
+      toAddress as ITxToAddress,
+      value as ITxValue,
+      fAssets[1],
+      fAssets[10]
+    );
+    expect(result).toStrictEqual({
+      to: toAddress,
+      receiverAddress: toAddress,
+      amount: '6.101',
+      asset: fAssets[1]
+    });
+  });
+});
+
+describe('makeTxConfigFromTxResponse', () => {
+  it('interprets an web3 tx response correctly', () => {
+    const toAddress = '0x5197B5b062288Bbf29008C92B08010a92Dd677CD';
+    const result = makeTxConfigFromTxResponse(fETHWeb3TxResponse, fAssets, fNetwork, fAccounts);
+    expect(result).toStrictEqual(
+      expect.objectContaining({
+        from: toAddress,
+        receiverAddress: toAddress,
+        amount: '0.01',
+        asset: fAssets[1]
+      })
+    );
   });
 });

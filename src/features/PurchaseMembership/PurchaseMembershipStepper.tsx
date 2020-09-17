@@ -4,7 +4,7 @@ import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { ITxConfig, ITxReceipt, ITxStatus, TxParcel } from '@types';
+import { ITxConfig, ITxReceipt, ITxStatus, ITxType, TxParcel } from '@types';
 import { useStateReducer, useTxMulti } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
@@ -45,8 +45,8 @@ const PurchaseMembershipStepper = () => {
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
           () => {
-            const purchaseTx = createPurchaseTx(formData);
-            const approveTx = createApproveTx(formData);
+            const purchaseTx = { ...createPurchaseTx(formData), type: ITxType.PURCHASE_MEMBERSHIP };
+            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
             return Promise.resolve(
               isERC20Asset(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );
