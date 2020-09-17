@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button, Icon, Tooltip, Typography } from '@components';
+import { Button, Icon, PoweredByText, Tooltip, Typography } from '@components';
 import { DWAccountDisplay } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
@@ -221,15 +221,18 @@ export default function DeterministicAccountList({
             </div>
           </StatusWrapper>
         )}
-        <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
-          <Trans
-            id="DETERMINISTIC_ACCOUNT_LIST_ADD"
-            variables={{
-              $total: () => (selectedAccounts.length ? selectedAccounts.length : ''),
-              $plural: () => (selectedAccounts.length > 1 ? 's' : '')
-            }}
-          />
-        </Button>
+        <div>
+          <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
+            <Trans
+              id="DETERMINISTIC_ACCOUNT_LIST_ADD"
+              variables={{
+                $total: () => (selectedAccounts.length ? selectedAccounts.length : ''),
+                $plural: () => (selectedAccounts.length > 1 ? 's' : '')
+              }}
+            />
+          </Button>
+          <PoweredByText provider="FINDETH" />
+        </div>
       </StatusBar>
     </DeterministicAccountListWrapper>
   );
