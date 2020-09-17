@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 import { translateRaw } from '@translations';
 import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
 
@@ -57,6 +59,6 @@ export const buildBalances = (
 export const buildTotalFiatValue = (balances: Balance[]) =>
   balances
     .reduce((sum, asset) => {
-      return sum + parseFloat(asset.fiatValue);
-    }, 0)
+      return new BigNumber(asset.fiatValue).plus(sum);
+    }, new BigNumber(0))
     .toString();

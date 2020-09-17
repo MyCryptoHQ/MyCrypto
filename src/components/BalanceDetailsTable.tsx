@@ -15,7 +15,7 @@ import {
 import { CenteredIconArrow } from '@components/IconArrow';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TUuid } from '@types';
+import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TTicker, TUuid } from '@types';
 
 const HeaderAlignment = styled.div<{ align?: string }>`
   display: inline-block;
@@ -102,7 +102,7 @@ const createBalancesDetailViewRow = (
             }))}
     </Label>,
     <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
-      {`${parseFloat(balance.amount).toFixed(6)} ${balance.ticker}`}
+      <Currency amount={parseFloat(balance.amount).toFixed(6)} ticker={balance.ticker as TTicker} />
     </RowAlignment>,
     <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
       <Tooltip

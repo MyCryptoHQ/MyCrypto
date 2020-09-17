@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';
 
 import moreIcon from '@assets/images/icn-more.svg';
@@ -7,7 +8,7 @@ import { AssetIcon, Currency, PoweredByText, Tooltip, Typography } from '@compon
 import { EMPTYUUID } from '@config';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Balance, TUuid } from '@types';
+import { Balance, TTicker, TUuid } from '@types';
 import { buildTotalFiatValue } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
@@ -238,9 +239,9 @@ export default function WalletBreakdownView({
   const label = allVisible
     ? translateRaw('WALLET_BREAKDOWN_ALL_ACCOUNTS')
     : translateRaw('WALLET_BREAKDOWN_SOME_WALLETS', {
-        $current: `${selected.length}`,
-        $total: `${accounts.length}`
-      });
+      $current: `${selected.length}`,
+      $total: `${accounts.length}`
+    });
 
   useEffect(() => {
     setShouldAnimate(true);
@@ -263,7 +264,10 @@ export default function WalletBreakdownView({
   const balance = chartBalances[selectedAssetIndex.balance];
   const selectedAssetPercentage =
     balance &&
-    parseFloat(((parseFloat(balance.fiatValue) / parseFloat(totalFiatValue)) * 100).toFixed(2));
+    new BigNumber(balance.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .multipliedBy(100)
+      .toFixed(2);
 
   return (
     <>
@@ -275,49 +279,49 @@ export default function WalletBreakdownView({
         {parseFloat(totalFiatValue) === 0 ? (
           <NoAssets />
         ) : (
-          <>
-            <BreakdownChart
-              balances={chartBalances}
-              selectedAssetIndex={selectedAssetIndex.chart}
-              handleMouseOver={handleMouseOver}
-              handleMouseLeave={handleMouseLeave}
-              setIsChartAnimating={setIsChartAnimating}
-              isChartAnimating={isChartAnimating}
-              shouldAnimate={shouldAnimate}
-              setShouldAnimate={setShouldAnimate}
-            />
-            {balance && (
-              <PanelFigures>
-                <PanelFigure>
-                  <PanelFigureValue>
-                    <Typography bold={true} fontSize={'1.3rem'}>
-                      {balance.name}
-                    </Typography>
-                  </PanelFigureValue>
-                  <PanelFigureLabel>
-                    {selectedAssetPercentage}
-                    {translate('WALLET_BREAKDOWN_PERCENTAGE')}
-                  </PanelFigureLabel>
-                </PanelFigure>
-                <PanelFigure>
-                  <PanelFigureValue>
-                    <Currency
-                      amount={balance.fiatValue.toString()}
-                      symbol={fiat.symbol}
-                      ticker={fiat.ticker}
-                      decimals={2}
-                      bold={true}
-                      fontSize={'1.3rem'}
-                    />
-                  </PanelFigureValue>
-                  <PanelFigureLabel>
-                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
-                  </PanelFigureLabel>
-                </PanelFigure>
-              </PanelFigures>
-            )}
-          </>
-        )}
+            <>
+              <BreakdownChart
+                balances={chartBalances}
+                selectedAssetIndex={selectedAssetIndex.chart}
+                handleMouseOver={handleMouseOver}
+                handleMouseLeave={handleMouseLeave}
+                setIsChartAnimating={setIsChartAnimating}
+                isChartAnimating={isChartAnimating}
+                shouldAnimate={shouldAnimate}
+                setShouldAnimate={setShouldAnimate}
+              />
+              {balance && (
+                <PanelFigures>
+                  <PanelFigure>
+                    <PanelFigureValue>
+                      <Typography bold={true} fontSize={'1.3rem'}>
+                        {balance.name}
+                      </Typography>
+                    </PanelFigureValue>
+                    <PanelFigureLabel>
+                      {selectedAssetPercentage}
+                      {translate('WALLET_BREAKDOWN_PERCENTAGE')}
+                    </PanelFigureLabel>
+                  </PanelFigure>
+                  <PanelFigure>
+                    <PanelFigureValue>
+                      <Currency
+                        amount={balance.fiatValue.toString()}
+                        symbol={fiat.symbol}
+                        ticker={fiat.ticker}
+                        decimals={2}
+                        bold={true}
+                        fontSize={'1.3rem'}
+                      />
+                    </PanelFigureValue>
+                    <PanelFigureLabel>
+                      {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
+                    </PanelFigureLabel>
+                  </PanelFigure>
+                </PanelFigures>
+              )}
+            </>
+          )}
         <PoweredBy>
           <PoweredByText provider="COINGECKO" />
         </PoweredBy>
@@ -344,7 +348,12 @@ export default function WalletBreakdownView({
                   <div>
                     <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
                     <BreakDownBalanceAssetAmount silent={true}>
-                      {!isOther && `${parseFloat(amount).toFixed(4)} ${ticker}`}
+                      {!isOther && (
+                        <Currency
+                          amount={parseFloat(amount).toFixed(4)}
+                          ticker={ticker as TTicker}
+                        />
+                      )}
                     </BreakDownBalanceAssetAmount>
                   </div>
                 </BreakDownBalanceAssetInfo>
@@ -393,13 +402,15 @@ export default function WalletBreakdownView({
 const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
-  const balancesVisibleInChart = balances.filter(
-    (balanceObject) =>
-      parseFloat(balanceObject.fiatValue) / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
+  const balancesVisibleInChart = balances.filter((balanceObject) =>
+    new BigNumber(balanceObject.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .isGreaterThanOrEqualTo(SMALLEST_CHART_SHARE_SUPPORTED)
   );
-  const otherBalances = balances.filter(
-    (balanceObject) =>
-      parseFloat(balanceObject.fiatValue) / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
+  const otherBalances = balances.filter((balanceObject) =>
+    new BigNumber(balanceObject.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .isLessThan(SMALLEST_CHART_SHARE_SUPPORTED)
   );
   const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);
   otherBalances.push(...balancesVisibleInChart);
