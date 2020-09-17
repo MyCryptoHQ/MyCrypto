@@ -54,7 +54,7 @@ export const makeTx = ({
   const network = networks.find((n) => n.id === networkId)!;
   if (cachedTx) {
     return {
-      config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
+      config: makeTxConfigFromTxReceipt(cachedTx, assets, network, accounts),
       receipt: cachedTx
     };
   } else {

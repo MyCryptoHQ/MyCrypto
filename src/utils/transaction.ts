@@ -14,6 +14,7 @@ import {
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther,
+  decodeApproval,
   decodeTransfer,
   fromTokenBase,
   gasPriceToBase,
@@ -24,10 +25,10 @@ import {
   getAssetByContractAndNetwork,
   getBaseAssetByNetwork,
   getNetworkByChainId,
-  getNetworkById,
   getStoreAccount
 } from '@services/Store';
 import {
+  Asset,
   ExtendedAsset,
   IFailedTxReceipt,
   IPendingTxReceipt,
@@ -184,10 +185,19 @@ export const makeTxConfigFromTxResponse = (
     network,
     assets
   })!;
+  const ercType = guessERC20Type(decodedTx.data);
+  const { to, receiverAddress, amount, asset } = deriveTxFields(
+    ercType,
+    decodedTx.data as ITxData,
+    decodedTx.to as ITxToAddress,
+    decodedTx.value.toString() as ITxValue,
+    baseAsset,
+    contractAsset
+  );
 
   const txConfig = {
     rawTransaction: {
-      to: toChecksumAddress(decodedTx.to || '') as ITxToAddress,
+      to: toChecksumAddress(to) as ITxToAddress,
       value: hexlify(decodedTx.value) as ITxValue,
       gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
       data: decodedTx.data as ITxData,
@@ -196,15 +206,11 @@ export const makeTxConfigFromTxResponse = (
       chainId: decodedTx.chainId,
       from: toChecksumAddress(decodedTx.from) as ITxFromAddress
     },
-    receiverAddress: toChecksumAddress(
-      contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to
-    ) as TAddress,
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
-      : formatEther(decodedTx.value),
+    receiverAddress: toChecksumAddress(receiverAddress) as TAddress,
+    amount,
     network,
     value: bigNumberify(decodedTx.value).toString(),
-    asset: contractAsset || baseAsset,
+    asset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, network.id)!,
     gasPrice: decodedTx.gasPrice.toString(),
@@ -219,16 +225,12 @@ export const makeTxConfigFromTxResponse = (
 export const makeTxConfigFromTxReceipt = (
   txReceipt: ITxReceipt,
   assets: ExtendedAsset[],
-  networks: Network[],
+  network: Network,
   accounts: StoreAccount[]
 ): ITxConfig => {
-  const networkDetected = getNetworkById(txReceipt.asset.networkId, networks);
-  const contractAsset = getAssetByContractAndNetwork(
-    txReceipt.to || undefined,
-    networkDetected
-  )(assets);
+  const contractAsset = getAssetByContractAndNetwork(txReceipt.to || undefined, network)(assets);
   const baseAsset = getBaseAssetByNetwork({
-    network: networkDetected || ({} as Network),
+    network,
     assets
   });
 
@@ -240,7 +242,7 @@ export const makeTxConfigFromTxReceipt = (
       data: txReceipt.data,
       gasPrice: bigNumberify(txReceipt.gasPrice).toHexString(),
       nonce: bigNumberify(txReceipt.nonce).toHexString(),
-      chainId: networkDetected.chainId,
+      chainId: network.chainId,
       from: toChecksumAddress(txReceipt.from)
     },
     receiverAddress: toChecksumAddress(
@@ -249,11 +251,11 @@ export const makeTxConfigFromTxReceipt = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,
-    network: networkDetected,
+    network,
     value: bigNumberify(txReceipt.value).toString(),
     asset: contractAsset || baseAsset,
     baseAsset,
-    senderAccount: getStoreAccount(accounts)(txReceipt.from, networkDetected.id),
+    senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id),
     gasPrice: bigNumberify(txReceipt.gasPrice).toString(),
     gasLimit: bigNumberify(txReceipt.gasLimit).toString(),
     data: txReceipt.data,
@@ -285,25 +287,66 @@ export const makeTxItem = (
   }
 };
 
+// Derives TX Fields to be used in other functions in this file.
+// Uses below functions and standarizes output for usage in constructed objects
+export const deriveTxFields = (
+  ercType: ERCType,
+  data: ITxData,
+  toAddress: ITxToAddress,
+  value: ITxValue,
+  baseAsset: Asset,
+  contractAsset?: Asset
+) => {
+  const isERC20 = ercType !== ERCType.NONE;
+  const { to, amount: rawAmount, receiverAddress } = deriveTxRecipientsAndAmount(
+    ercType,
+    data,
+    toAddress,
+    value
+  );
+
+  const amount =
+    isERC20 && contractAsset
+      ? fromTokenBase(toWei(rawAmount, 0), contractAsset.decimal)
+      : formatEther(value);
+
+  const asset = isERC20 && contractAsset ? contractAsset : baseAsset;
+  return { to, amount, receiverAddress, asset };
+};
+
+export enum ERCType {
+  TRANSFER = 'transfer',
+  APPROVAL = 'approval',
+  NONE = 'none'
+}
+
 // We can't interpret every transaction's data field so this interprets only if a data field is a simple erc20 transfer.
-//Therefore, we're guessing if it's a simple erc20 transfer using the data field.
-export const guessIfErc20Tx = (data: string): boolean => {
-  if (isTransactionDataEmpty(data)) return false;
+// Therefore, we're guessing if it's a simple erc20 transfer using the data field.
+export const guessERC20Type = (data: string): ERCType => {
+  if (isTransactionDataEmpty(data)) return ERCType.NONE;
   const { _to, _value } = decodeTransfer(data);
   // if this isn't a valid transfer, _value will return 0 and _to will return the burn address '0x0000000000000000000000000000000000000000'
-  if (!_to || !_value || _to === CREATION_ADDRESS) return false;
-  return true;
+  if (_to && _value && _to !== CREATION_ADDRESS) return ERCType.TRANSFER;
+  const { _spender, _value: val } = decodeApproval(data);
+  if (_spender && val && _spender !== CREATION_ADDRESS) return ERCType.APPROVAL;
+  return ERCType.NONE;
 };
 
 export const deriveTxRecipientsAndAmount = (
-  isErc20: boolean,
+  ercType: ERCType,
   data: ITxData,
   toAddress: ITxToAddress,
   value: ITxValue
 ) => {
-  if (isErc20) {
-    const { _to, _value } = decodeTransfer(data);
-    return { to: toAddress, amount: _value, receiverAddress: _to };
+  switch (ercType) {
+    case ERCType.TRANSFER: {
+      const { _to, _value } = decodeTransfer(data);
+      return { to: toAddress, amount: _value, receiverAddress: _to };
+    }
+
+    case ERCType.APPROVAL: {
+      return { to: toAddress, amount: 0, receiverAddress: toAddress };
+    }
   }
   return { to: toAddress, amount: value, receiverAddress: toAddress };
 };
