@@ -2,7 +2,7 @@ import { GasEstimates } from '@types';
 
 import { checkHttpStatus, parseJSON } from '../utils';
 
-const MAX_GAS_FAST = 500;
+const MAX_GAS_FAST = 1250;
 
 interface RawGasEstimates {
   safeLow: number;
