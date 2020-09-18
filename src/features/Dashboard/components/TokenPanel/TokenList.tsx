@@ -122,9 +122,7 @@ export function TokenList(props: TokenListProps) {
                 <AssetName>{token.name}</AssetName>
               </Asset>
               <TokenValueWrapper>
-                {showValue && (
-                  <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
-                )}
+                {showValue && <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>}
                 <MoreIcon
                   src={moreIcon}
                   alt="More"

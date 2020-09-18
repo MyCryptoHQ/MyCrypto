@@ -27,7 +27,7 @@ const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
 
 interface ExcludedAssetsProps {
   balances: Balance[];
-  totalFiatValue: number;
+  totalFiatValue: string;
   fiat: Fiat;
   accounts: IAccount[];
   selected: string[];

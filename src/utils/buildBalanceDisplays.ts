@@ -1,50 +1,64 @@
+import BigNumber from 'bignumber.js';
+
 import { translateRaw } from '@translations';
 import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
 
 import { convertToFiatFromAsset, weiToFloat } from './convert';
+
+const buildAccountDisplayBalances = (
+  accounts: StoreAccount[],
+  asset: StoreAsset,
+  exchangeRate: number | undefined
+): BalanceAccount[] =>
+  accounts.reduce((acc, currAccount) => {
+    const matchingAccAssets = currAccount.assets.filter((accAsset) => accAsset.uuid === asset.uuid);
+    if (matchingAccAssets.length) {
+      return [
+        ...acc,
+        ...matchingAccAssets.map((accAsset) => ({
+          address: currAccount.address,
+          ticker: accAsset.ticker,
+          amount: weiToFloat(accAsset.balance, accAsset.decimal).toString(),
+          fiatValue: convertToFiatFromAsset(accAsset, exchangeRate),
+          label: currAccount.label
+        }))
+      ];
+    }
+    return acc;
+  }, []);
+
+const buildBalance = (
+  accounts: StoreAccount[],
+  getAssetRate: (asset: Asset) => number | undefined
+) => (asset: StoreAsset): Balance => {
+  const exchangeRate = getAssetRate(asset) || 0;
+  return {
+    id: `${asset.name}-${asset.ticker}`,
+    name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
+    ticker: asset.ticker,
+    uuid: asset.uuid,
+    amount: weiToFloat(asset.balance, asset.decimal).toString(),
+    fiatValue: convertToFiatFromAsset(asset, exchangeRate),
+    accounts: buildAccountDisplayBalances(accounts, asset, exchangeRate),
+    exchangeRate: exchangeRate.toString()
+  };
+};
 
 export const buildBalances = (
   totals: (selectedAccounts?: StoreAccount[]) => StoreAsset[],
   accounts: StoreAccount[],
   settings: ISettings,
   getAssetRate: (asset: Asset) => number | undefined,
-  filter: (excludedAssetUuids: TUuid[]) => (asset: StoreAsset) => boolean
+  assetFilter: (excludedAssetUuids: TUuid[]) => (asset: StoreAsset) => boolean
 ): Balance[] =>
   totals(accounts)
-    .filter(filter(settings.excludedAssets))
-    .map((asset: StoreAsset) => {
-      const exchangeRate = getAssetRate(asset);
-      return {
-        id: `${asset.name}-${asset.ticker}`,
-        name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
-        ticker: asset.ticker,
-        uuid: asset.uuid,
-        amount: weiToFloat(asset.balance, asset.decimal),
-        fiatValue: convertToFiatFromAsset(asset, exchangeRate),
-        exchangeRate,
-        accounts: accounts.reduce((acc, currAccount) => {
-          const matchingAccAssets = currAccount.assets.filter(
-            (accAsset) => accAsset.uuid === asset.uuid
-          );
-          if (matchingAccAssets.length) {
-            return [
-              ...acc,
-              ...matchingAccAssets.map((accAsset) => ({
-                address: currAccount.address,
-                ticker: accAsset.ticker,
-                amount: weiToFloat(accAsset.balance, accAsset.decimal),
-                fiatValue: convertToFiatFromAsset(accAsset, exchangeRate),
-                label: currAccount.label
-              }))
-            ];
-          }
-          return acc;
-        }, [] as BalanceAccount[])
-      };
-    })
-    .sort((a, b) => b.fiatValue - a.fiatValue);
+    .filter(assetFilter(settings.excludedAssets))
+    .map(buildBalance(accounts, getAssetRate))
+    .sort((a, b) => parseFloat(b.fiatValue) - parseFloat(a.fiatValue));
 
 export const buildTotalFiatValue = (balances: Balance[]) =>
-  balances.reduce((sum, asset) => {
-    return sum + asset.fiatValue;
-  }, 0);
+  balances
+    .reduce((sum, asset) => {
+      return new BigNumber(asset.fiatValue).plus(sum);
+    }, new BigNumber(0))
+    .toString();
