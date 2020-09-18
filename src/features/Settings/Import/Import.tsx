@@ -5,8 +5,9 @@ import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
 import { ScreenLockContext } from '@features/ScreenLock';
-import { SettingsContext } from '@services/Store';
+import { ISettingsContext, useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
+import { withHook } from '@utils';
 
 import { ImportBox, ImportSuccess } from './components';
 
@@ -19,7 +20,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export class Import extends React.Component<RouteComponentProps<{}>> {
+export class Import extends React.Component<RouteComponentProps<{}> & ISettingsContext> {
   public state = { step: 0 };
 
   public render() {
@@ -52,20 +53,16 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         <Content>
           <ScreenLockContext.Consumer>
             {({ resetEncrypted }) => (
-              <SettingsContext.Consumer>
-                {({ importStorage }) => (
-                  <Step
-                    onNext={this.advanceStep}
-                    importCache={(cache: string) => {
-                      const result = importStorage(cache);
-                      if (result) {
-                        resetEncrypted();
-                      }
-                      return result;
-                    }}
-                  />
-                )}
-              </SettingsContext.Consumer>
+              <Step
+                onNext={this.advanceStep}
+                importCache={(cache: string) => {
+                  const result = this.props.importStorage(cache);
+                  if (result) {
+                    resetEncrypted();
+                  }
+                  return result;
+                }}
+              />
             )}
           </ScreenLockContext.Consumer>
         </Content>
@@ -84,4 +81,4 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     }));
 }
 
-export default withRouter(Import);
+export default withHook(useSettings)(withRouter(Import));
