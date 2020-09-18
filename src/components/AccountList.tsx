@@ -20,10 +20,10 @@ import { getFiat } from '@config/fiats';
 import { useFeatureFlags, useRates } from '@services';
 import {
   getLabelByAccount,
-  SettingsContext,
   StoreContext,
   useAccounts,
-  useContacts
+  useContacts,
+  useSettings
 } from '@services/Store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -354,7 +354,7 @@ const BuildAccountTable = (
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useRates();
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const { contacts, createContact, updateContact } = useContacts();
   const { toggleAccountPrivacy } = useAccounts();
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];

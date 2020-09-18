@@ -1,10 +1,10 @@
-import React, { FC, useCallback, useContext, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
 import { InlineMessage, NewTabLink } from '@components';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { NetworkUtils, SettingsContext, useNetworks } from '@services/Store';
+import { NetworkUtils, useNetworks, useSettings } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
 import { FormData, Network, WalletId } from '@types';
@@ -29,7 +29,7 @@ const WalletService = WalletFactory(WalletId.WEB3);
 
 const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
-  const { updateSettingsNode } = useContext(SettingsContext);
+  const { updateSettingsNode } = useSettings();
   const { addNodeToNetwork, networks } = useNetworks();
   const trackSelectNetwork = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT

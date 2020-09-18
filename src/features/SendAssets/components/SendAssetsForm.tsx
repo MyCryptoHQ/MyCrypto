@@ -55,9 +55,9 @@ import {
   getAccountsByAsset,
   getBaseAssetByNetwork,
   getNetworkById,
-  SettingsContext,
   StoreContext,
-  useAssets
+  useAssets,
+  useSettings
 } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import {
@@ -252,7 +252,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.

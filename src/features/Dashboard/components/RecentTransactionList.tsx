@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -23,7 +23,7 @@ import {
 } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
-import { ITxHistoryEntry, SettingsContext, useContacts, useRates, useTxHistory } from '@services';
+import { ITxHistoryEntry, useContacts, useRates, useSettings, useTxHistory } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -145,7 +145,7 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
   const { getAssetRate } = useRates();
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const { txHistory } = useTxHistory();
   const { createContact, updateContact } = useContacts();
 

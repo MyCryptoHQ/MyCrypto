@@ -34,7 +34,7 @@ import {
   getTransactionReceiptFromHash,
   ProviderHandler
 } from '@services/EthService';
-import { SettingsContext, StoreContext, useAccounts, useContacts } from '@services/Store';
+import { StoreContext, useAccounts, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -105,7 +105,7 @@ const TxReceipt = ({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addTxToAccount } = useAccounts();
   const { accounts } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const [txStatus, setTxStatus] = useState(
     txReceipt ? txReceipt.status : (ITxStatus.PENDING as ITxHistoryStatus)
   );
