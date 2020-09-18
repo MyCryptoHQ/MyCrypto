@@ -38,7 +38,7 @@ export default function SignTransactionWeb3({
   useEffect(() => {
     const ethereumProvider = (window as CustomWindow).ethereum;
     if (ethereumProvider) {
-      (window as CustomWindow).ethereum.enable().then(() => {
+      (window as CustomWindow).ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
         attemptSign();
         ethereumProvider.on('accountsChanged', () => attemptSign());
         ethereumProvider.on('networkChanged', () => attemptSign());
