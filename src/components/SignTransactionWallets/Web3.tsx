@@ -12,9 +12,8 @@ import { getWeb3Config, isSameAddress } from '@utils';
 import './Web3.scss';
 
 enum WalletSigningState {
-  //READY, //when signerWallet is ready to sendTransaction
   SUBMITTING,
-  NOT_READY, //use when signerWallet rejects transaction
+  REJECTED,
   ADDRESS_MISMATCH,
   NETWORK_MISMATCH,
   SUCCESS,
@@ -99,7 +98,7 @@ export default function SignTransactionWeb3({
       .catch((err) => {
         console.debug(`[SignTransactionWeb3] ${err.message}`);
         if (err.message.includes('User denied transaction signature')) {
-          setWalletState(WalletSigningState.NOT_READY);
+          setWalletState(WalletSigningState.REJECTED);
         } else {
           setWalletState(WalletSigningState.UNKNOWN);
         }
@@ -121,7 +120,7 @@ export default function SignTransactionWeb3({
       <div className="SignTransactionWeb3-img">
         <img src={walletConfig.icon} />
       </div>
-      {walletState === WalletSigningState.NOT_READY ? (
+      {walletState === WalletSigningState.REJECTED ? (
         <div className="SignTransactionWeb3-rejection">{translate('SIGN_TX_WEB3_REJECTED')}</div>
       ) : null}
 
