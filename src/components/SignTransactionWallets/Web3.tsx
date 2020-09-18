@@ -38,6 +38,8 @@ export default function SignTransactionWeb3({
   useEffect(() => {
     const ethereumProvider = (window as CustomWindow).ethereum;
     if (ethereumProvider) {
+      // enable() is deprecated by MetaMask, but the alternative request() function is not implemented by all web3 wallets yet.
+      // @todo: Use request() when possible
       (window as CustomWindow).ethereum.enable().then(() => {
         attemptSign();
         ethereumProvider.on('accountsChanged', () => attemptSign());
