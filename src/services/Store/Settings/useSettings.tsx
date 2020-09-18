@@ -27,6 +27,7 @@ const isValidImportFunc = (importedCache: string, localStorage: string) => {
     const parsedImport = JSON.parse(importedCache);
     const parsedLocalStorage = JSON.parse(localStorage);
 
+    // @todo: Do migration instead of failing
     if (parsedImport.version !== parsedLocalStorage.version) {
       throw new Error(
         `Outdated version detected. Cannot import ${parsedImport.version} into ${parsedLocalStorage.version}`

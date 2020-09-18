@@ -54,3 +54,7 @@ export {
 } from './sendFormFields';
 
 export { fNotifications } from './notifications';
+
+export { fRates } from './rates';
+
+export { fLocalStorage } from './localstorage';
