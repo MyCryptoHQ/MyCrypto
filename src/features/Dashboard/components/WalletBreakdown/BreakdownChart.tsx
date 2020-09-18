@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import BigNumber from 'bignumber.js';
 import equals from 'ramda/src/equals';
 import { Cell, Pie, PieChart, PieLabelRenderProps, Sector } from 'recharts';
 import styled from 'styled-components';
@@ -130,7 +131,10 @@ const BreakdownChart = React.memo(
     setShouldAnimate
   }: BreakdownChartProps) => {
     const COLORS = useMemo(() => generateColors(balances.length), [balances.length]);
-
+    const displayBalances = balances.map((balance) => ({
+      ...balance,
+      fiatValue: new BigNumber(balance.fiatValue).toNumber()
+    }));
     return (
       <MainWrapper>
         <PieChart
@@ -143,7 +147,7 @@ const BreakdownChart = React.memo(
             isAnimationActive={shouldAnimate}
             activeIndex={selectedAssetIndex}
             activeShape={ActiveSection}
-            data={balances}
+            data={displayBalances}
             cx={200}
             cy={200}
             innerRadius={0}
