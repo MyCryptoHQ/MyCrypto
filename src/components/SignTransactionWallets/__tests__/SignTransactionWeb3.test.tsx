@@ -43,7 +43,7 @@ describe('SignTransactionWallets: Web3', () => {
     const { getByText } = getComponent();
     const selector = getHeader(WalletId.WEB3);
     expect(getByText(selector)).toBeInTheDocument();
-    expect(customWindow.ethereum.request).toHaveBeenCalled();
+    expect(customWindow.ethereum.enable).toHaveBeenCalled();
     await waitFor(() => expect(customWindow.ethereum.on).toHaveBeenCalled());
     await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
