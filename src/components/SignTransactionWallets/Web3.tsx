@@ -21,19 +21,12 @@ enum WalletSigningState {
   UNKNOWN //used upon component initialization when wallet status is not determined
 }
 
-const getWeb3Provider = async () => {
-  const ethereumProvider = (window as CustomWindow).ethereum;
-  await ethereumProvider.enable();
-  return new Web3Provider(ethereumProvider);
-};
-
 export default function SignTransactionWeb3({
   senderAccount,
   rawTransaction,
   onSuccess
 }: ISignComponentProps) {
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
-  const [web3Provider, setWeb3Provider] = useState<Web3Provider | undefined>(undefined);
 
   const desiredAddress = utils.getAddress(senderAccount.address);
 
@@ -43,27 +36,25 @@ export default function SignTransactionWeb3({
   const walletConfig = getWeb3Config();
 
   useEffect(() => {
-    getWeb3Provider().then((provider) => {
-      setWeb3Provider(provider);
-      const ethereumProvider = (window as CustomWindow).ethereum;
-      if (ethereumProvider) {
-        ethereumProvider.on('accountsChanged', attemptSign);
-        ethereumProvider.on('networkChanged', attemptSign);
-      } else {
-        throw Error('No web3 found');
-      }
-      return () => {
-        ethereumProvider.off('accountsChanged');
-        ethereumProvider.off('networkChanged');
-      };
-    });
+    const ethereumProvider = (window as CustomWindow).ethereum;
+    if (ethereumProvider) {
+      (window as CustomWindow).ethereum.enable().then(() => {
+        attemptSign();
+        ethereumProvider.on('accountsChanged', () => attemptSign());
+        ethereumProvider.on('networkChanged', () => attemptSign());
+      });
+    } else {
+      throw Error('No web3 found');
+    }
+    return () => {
+      ethereumProvider.removeAllListeners();
+    };
   }, []);
 
-  useEffect(() => {
-    attemptSign();
-  }, [web3Provider]);
-
   const attemptSign = async () => {
+    const ethereumProvider = (window as CustomWindow).ethereum;
+    const web3Provider = new Web3Provider(ethereumProvider);
+
     if (!web3Provider) {
       return;
     }
