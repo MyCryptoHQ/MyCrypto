@@ -17,7 +17,7 @@ import {
   useNetworks
 } from '@services/Store';
 import { Asset, DPathFormat, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
-import { generateAccountUUID, withHook } from '@utils';
+import { generateDeterministicAddressUUID, withHook } from '@utils';
 
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { mnemonicFlow, MnemonicStages, mnemonicStageToComponentHash } from './constants';
@@ -159,7 +159,7 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
       favorite: false,
       mtime: Date.now()
     };
-    const accountUUID = generateAccountUUID(network, account.address);
+    const accountUUID = generateDeterministicAddressUUID(network, account.address);
     createAccountWithID(account, accountUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
     createAssetWithID(newAsset, newAsset.uuid);

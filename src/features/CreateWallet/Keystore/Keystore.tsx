@@ -17,7 +17,7 @@ import {
 } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { Asset, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
-import { generateAccountUUID, makeBlob, withHook } from '@utils';
+import { generateDeterministicAddressUUID, makeBlob, withHook } from '@utils';
 import { fromV3, generateKeystore } from '@workers';
 
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
@@ -127,7 +127,7 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
       favorite: false,
       mtime: 0
     };
-    const accountUUID = generateAccountUUID(network, account.address);
+    const accountUUID = generateDeterministicAddressUUID(network, account.address);
     createAccountWithID(account, accountUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
     createAssetWithID(newAsset, newAsset.uuid);

@@ -1,4 +1,3 @@
-export * from './error';
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {
@@ -14,14 +13,12 @@ export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
   generateAssetUUID,
-  generateContractUUID,
-  generateAccountUUID,
+  generateDeterministicAddressUUID,
   getUUID
 } from './generateUUID';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
-export { trace } from './trace';
 export {
   convertToFiat,
   convertToFiatFromAsset,
@@ -47,15 +44,9 @@ export {
   createQueryParamsDefaultObject
 } from './queries';
 export { noOp } from './noOp';
-export {
-  formatGasLimit,
-  formatNumber,
-  formatMnemonic,
-  toChecksumAddressByChainId
-} from './formatters';
+export { formatMnemonic, toChecksumAddressByChainId } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
-export { tap } from './tap';
 export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,

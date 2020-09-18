@@ -153,6 +153,7 @@
     "@types/sha256": "0.2.0",
     "@types/styled-components": "5.1.0",
     "@types/trezor-connect": "6.0.3",
+    "@types/uuid": "3.4.0",
     "@types/w3c-web-usb": "1.0.3",
     "@types/web-bluetooth": "0.0.4",
     "@types/webpack-env": "1.15.0",

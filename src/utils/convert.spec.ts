@@ -29,7 +29,7 @@ const defaultAsset = {
 
 describe('convert()', () => {
   it('converts some balance to fiat', () => {
-    const expected = 2.86756;
+    const expected = '2.86756';
     const rate = 0.00008434;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('34000000000000000000000')
@@ -39,7 +39,7 @@ describe('convert()', () => {
   });
 
   it('converts some balance to fiat (1)', () => {
-    const expected = 0.4582269583;
+    const expected = '0.4582269583';
     const rate = 0.001867;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('245434900000000000000')
@@ -49,7 +49,7 @@ describe('convert()', () => {
   });
 
   it('converts some balance to fiat (2)', () => {
-    const expected = 608.342632226824;
+    const expected = '608.342632226824';
     const rate = 169.48;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('3589465613800000000')

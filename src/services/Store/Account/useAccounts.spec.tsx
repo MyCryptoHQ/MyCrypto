@@ -108,7 +108,7 @@ describe('useAccounts', () => {
       createActions: jest.fn(() => ({ update: mockUpdate }))
     });
     result.current.removeTxFromAccount(fAccounts[0], fTxReceipt);
-    expect(mockUpdate).toBeCalledWith(fAccounts[0].uuid, {
+    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
       ...fAccounts[0],
       transactions: []
     });
