@@ -9,6 +9,15 @@ import { IAccount, LSKeys, TUuid } from '@types';
 import { DataContext, IDataContext } from '../DataManager';
 import useAccounts from './useAccounts';
 
+jest.mock('../Settings', () => {
+  return {
+    useSettings: () => ({
+      addAccountToFavorites: jest.fn(),
+      addMultipleAccountsToFavorites: jest.fn()
+    })
+  };
+});
+
 jest.mock('@mycrypto/eth-scan', () => {
   return {
     getTokensBalance: jest.fn().mockImplementation(() =>
