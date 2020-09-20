@@ -379,5 +379,16 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'BscScan',
       url: 'https://bscscan.com'
     }
+  ],
+  SmartChainTestNetwork: [
+    {
+      name: NetworkUtils.makeNodeName(
+        'SmartChainTestNetwork',
+        'data-seed-prebsc-1-s3.binance.org:8545'
+      ),
+      type: NodeType.RPC,
+      service: 'BscScan',
+      url: 'https://test.bscscan.com'
+    }
   ]
 };

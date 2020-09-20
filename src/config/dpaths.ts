@@ -188,12 +188,6 @@ const EWC_DEFAULT: DPath = {
   label: 'Default (EWC)',
   value: "m/44'/246'/0'/0"
 };
-
-const SMART_CHAIN_DEFAULT: DPath = {
-  label: 'Default (Smart Chain)',
-  value: "m/44'/714'/0'/0"
-};
-
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -232,8 +226,7 @@ export const DPathsList = {
   ETH_SINGULAR,
   ERE_DEFAULT,
   VOLTA_DEFAULT,
-  EWC_DEFAULT,
-  SMART_CHAIN_DEFAULT
+  EWC_DEFAULT
 };
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

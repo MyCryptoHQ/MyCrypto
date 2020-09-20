@@ -948,7 +948,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   },
   SmartChain: {
     id: 'SmartChain',
-    name: 'BNB Smart Chain',
+    name: 'Smart Chain',
     unit: 'BNB' as TTicker,
     chainId: 56,
     isCustom: false,
@@ -960,10 +960,36 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.LEDGER_NANO_S]: DPaths.SMART_CHAIN_DEFAULT,
-      [WalletId.TREZOR]: DPaths.SMART_CHAIN_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.SMART_CHAIN_DEFAULT,
-      [WalletId.MNEMONIC_PHRASE]: DPaths.SMART_CHAIN_DEFAULT
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 20,
+      max: 60,
+      initial: 20
+    }
+  },
+  SmartChainTestNetwork: {
+    id: 'SmartChainTestNetwork',
+    name: 'Smart Chain Test Network',
+    unit: 'BNB Test' as TTicker,
+    chainId: 97,
+    isCustom: false,
+    color: '#f0b90b',
+    blockExplorer: makeExplorer({
+      name: 'BscScan Explorer',
+      origin: 'https://testnet.bscscan.com'
+    }),
+    isTestnet: true,
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
     },
     gasPriceSettings: {
       min: 20,
