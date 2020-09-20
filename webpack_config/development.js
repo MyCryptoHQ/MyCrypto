@@ -8,7 +8,7 @@ const { IS_ELECTRON, LOCAL } = require('../environment');
 const common = require('./common');
 const config = require('./config');
 
-const HTTP_PORT = 3002;
+const HTTP_PORT = 3000;
 
 module.exports = merge.smart(common, {
   mode: 'development',
