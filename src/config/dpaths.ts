@@ -188,6 +188,7 @@ const EWC_DEFAULT: DPath = {
   label: 'Default (EWC)',
   value: "m/44'/246'/0'/0"
 };
+
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
