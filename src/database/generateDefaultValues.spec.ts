@@ -49,7 +49,7 @@ describe('Schema', () => {
 
     it('adds Nodes to each Network', () => {
       const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.nodes);
-      expect(nodes.length).toBe(45);
+      expect(nodes).toHaveLength(45);
     });
 
     it('adds BaseAssets to Networks', () => {
