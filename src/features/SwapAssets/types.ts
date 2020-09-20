@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 
-import { StoreAccount, ITxObject, ITxStatus, ISwapAsset } from '@types';
+import { ISwapAsset, ITxObject, ITxStatus, StoreAccount } from '@types';
 
 export enum LAST_CHANGED_AMOUNT {
   FROM = 'FROM_AMOUNT',

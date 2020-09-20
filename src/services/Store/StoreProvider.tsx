@@ -1,76 +1,79 @@
-import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-import flatten from 'ramda/src/flatten';
-import prop from 'ramda/src/prop';
-import uniqBy from 'ramda/src/uniqBy';
-import sortBy from 'ramda/src/sortBy';
-import isEmpty from 'lodash/isEmpty';
-import unionBy from 'lodash/unionBy';
-import property from 'lodash/property';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
+import isEmpty from 'lodash/isEmpty';
+import property from 'lodash/property';
+import unionBy from 'lodash/unionBy';
+import flatten from 'ramda/src/flatten';
+import prop from 'ramda/src/prop';
+import sortBy from 'ramda/src/sortBy';
+import uniqBy from 'ramda/src/uniqBy';
 
+import { DEFAULT_NETWORK } from '@config';
 import {
-  TAddress,
-  IRawAccount,
-  StoreAccount,
-  StoreAsset,
-  Network,
-  TTicker,
+  MEMBERSHIP_CONFIG,
+  MEMBERSHIP_CONTRACTS,
+  MembershipState,
+  MembershipStatus
+} from '@features/PurchaseMembership/config';
+import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
+import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { translateRaw } from '@translations';
+import {
+  Asset,
+  Contact,
   ExtendedAsset,
   IAccount,
-  WalletId,
-  Asset,
-  NetworkId,
-  Contact,
-  ITxType,
-  TUuid,
-  ReserveAsset,
+  IAccountAdditionData,
   IPendingTxReceipt,
-  IAccountAdditionData
+  IRawAccount,
+  ITxStatus,
+  ITxType,
+  Network,
+  NetworkId,
+  ReserveAsset,
+  StoreAccount,
+  StoreAsset,
+  TAddress,
+  TTicker,
+  TUuid,
+  WalletId
 } from '@types';
 import {
-  isArrayEqual,
-  useInterval,
   convertToFiatFromAsset,
+  generateDeterministicAddressUUID,
   getWeb3Config,
-  multiplyBNFloats,
-  weiToFloat,
-  generateAccountUUID,
-  useAnalytics,
+  isArrayEqual,
   isSameAddress,
-  sortByLabel
+  multiplyBNFloats,
+  sortByLabel,
+  useAnalytics,
+  useInterval,
+  weiToFloat
 } from '@utils';
-import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
-import {
-  MembershipStatus,
-  MEMBERSHIP_CONFIG,
-  MembershipState,
-  MEMBERSHIP_CONTRACTS
-} from '@features/PurchaseMembership/config';
-import { DEFAULT_NETWORK } from '@config';
-import { useEffectOnce, isEmpty as isVoid } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
+import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
+import { ANALYTICS_CATEGORIES, MyCryptoApiService } from '../ApiService';
+import { getDashboardAccounts, useAccounts } from './Account';
 import {
-  getStoreAccounts,
-  getPendingTransactionsFromAccounts,
-  isNotExcludedAsset
-} from './helpers';
-import {
-  getTotalByAsset,
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
+  getTotalByAsset,
   useAssets
 } from './Asset';
-import { AccountContext, getDashboardAccounts } from './Account';
-import { SettingsContext } from './Settings';
-import { getNetworkById, useNetworks } from './Network';
+import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
 import { findNextUnusedDefaultLabel, useContacts } from './Contact';
-import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
-import { translateRaw } from '@translations';
-import { ITxHistoryApiResponse, HistoryService } from '@services/ApiService/History';
+import {
+  getPendingTransactionsFromAccounts,
+  getStoreAccounts,
+  getTxsFromAccount,
+  isNotExcludedAsset
+} from './helpers';
+import { getNetworkById, useNetworks } from './Network';
+import { SettingsContext } from './Settings';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -134,15 +137,16 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
-    addNewTxToAccount,
+    addTxToAccount,
+    removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccountAssets,
     updateAllAccountsAssets,
-    updateAccountsBalances,
+    updateAccounts,
     deleteAccount,
     createAccountWithID,
     createMultipleAccountsWithIDs
-  } = useContext(AccountContext);
+  } = useAccounts();
   const { assets, addAssetsFromAPI } = useAssets();
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useNetworks();
@@ -203,7 +207,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
         if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
-          updateAccountsBalances(accountsWithBalances);
+          updateAccounts(accountsWithBalances);
         }
       });
 
@@ -231,7 +235,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         contracts: Object.values(MEMBERSHIP_CONFIG).map((membership) => membership.contractAddress)
       }
     )
-      .catch((_) => {
+      .catch(() => {
         setMemberships(undefined);
       })
       .then(nestedToBigNumberJS)
@@ -283,6 +287,30 @@ export const StoreProvider: React.FC = ({ children }) => {
     // This interval is used to poll for status of txs.
     const txStatusLookupInterval = setInterval(() => {
       pendingTransactions.forEach((pendingTxReceipt) => {
+        const senderAccount = getAccountByAddressAndNetworkName(
+          pendingTxReceipt.from,
+          pendingTxReceipt.asset.networkId
+        );
+        if (!senderAccount) return;
+
+        const storeAccount = accounts.find((acc) =>
+          isSameAddress(senderAccount.address, acc.address)
+        ) as StoreAccount;
+
+        const txs = getTxsFromAccount([storeAccount]);
+        const overwritingTx = txs.find(
+          (t) =>
+            t.nonce === pendingTxReceipt.nonce &&
+            t.asset.networkId === pendingTxReceipt.asset.networkId &&
+            t.hash !== pendingTxReceipt.hash &&
+            t.status === ITxStatus.SUCCESS
+        );
+
+        if (overwritingTx) {
+          removeTxFromAccount(senderAccount, pendingTxReceipt);
+          return;
+        }
+
         const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
         // If network is not found in the pendingTransactionObject, we cannot continue.
         if (!network) return;
@@ -300,11 +328,6 @@ export const StoreProvider: React.FC = ({ children }) => {
           ]).then(([txStatus, txTimestamp]) => {
             // txStatus and txTimestamp return undefined on failed lookups.
             if (!isMounted || !txStatus || !txTimestamp) return;
-            const senderAccount = getAccountByAddressAndNetworkName(
-              pendingTxReceipt.from,
-              pendingTxReceipt.asset.networkId
-            );
-            if (!senderAccount) return;
 
             const finishedTxReceipt = makeFinishedTxReceipt(
               pendingTxReceipt,
@@ -312,10 +335,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               txTimestamp,
               txResponse.blockNumber
             );
-            addNewTxToAccount(senderAccount, finishedTxReceipt);
-            const storeAccount = accounts.find((acc) =>
-              isSameAddress(senderAccount.address, acc.address)
-            ) as StoreAccount;
+            addTxToAccount(senderAccount, finishedTxReceipt);
             if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
               state.scanAccountTokens(storeAccount);
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
@@ -342,15 +362,19 @@ export const StoreProvider: React.FC = ({ children }) => {
   // TX HISTORY
   const [txHistory, setTxHistory] = useState<ITxHistoryApiResponse[]>([]);
 
-  useEffectOnce(() => {
-    HistoryService.instance
-      .getHistory(accounts.filter((a) => a.networkId === DEFAULT_NETWORK).map((a) => a.address))
-      .then((history) => {
+  const mainnetAccounts = accounts
+    .filter((a) => a.networkId === DEFAULT_NETWORK)
+    .map((a) => a.address);
+
+  useEffect(() => {
+    if (mainnetAccounts.length > 0) {
+      HistoryService.instance.getHistory(mainnetAccounts).then((history) => {
         if (history !== null) {
           setTxHistory(history);
         }
       });
-  });
+    }
+  }, [mainnetAccounts.length]);
 
   const state: State = {
     accounts,
@@ -393,7 +417,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     ) =>
       state
         .totals(selectedAccounts)
-        .reduce((sum, asset) => (sum += convertToFiatFromAsset(asset, getAssetRate(asset))), 0),
+        .reduce(
+          (sum, asset) => (sum += parseFloat(convertToFiatFromAsset(asset, getAssetRate(asset)))),
+          0
+        ),
 
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map((a) => a.ticker))
@@ -420,7 +447,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
 
       const { uuid, ...restAccount } = account!;
-      createAccountWithID(restAccount, uuid);
+      createAccountWithID(uuid, restAccount);
       setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
     },
     addMultipleAccounts: (
@@ -445,7 +472,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         transactions: [],
         favorite: false,
         mtime: 0,
-        uuid: generateAccountUUID(networkId, address)
+        uuid: generateDeterministicAddressUUID(networkId, address)
       }));
       if (newRawAccounts.length === 0) return;
       const newLabels = findMultipleNextUnusedDefaultLabels(
@@ -484,7 +511,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       const walletType =
         accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-      const accountUUID = generateAccountUUID(networkId, address);
+      const accountUUID = generateDeterministicAddressUUID(networkId, address);
       const account: IRawAccount = {
         address,
         networkId,
@@ -511,7 +538,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         };
         createContact(newLabel);
       }
-      createAccountWithID(account, accountUUID);
+      createAccountWithID(accountUUID, account);
 
       return account;
     },

@@ -1,12 +1,9 @@
 import BN from 'bn.js';
 import { FormikErrors } from 'formik';
 
-import { InlineMessageType } from '@types';
+import { InlineMessageType, TUuid } from '@types';
 
-export const validNumber = (num: BN) => isFinite(num.toNumber()) && num.gten(0);
-export const numberIsNotNegative = (num: BN) => validNumber(num) && !num.isNeg();
-
-export const validDecimal = (input: string, decimal: number) => {
+const validDecimal = (input: string, decimal: number) => {
   const arr = input.split('.');
 
   // Only a single decimal can exist.
@@ -37,3 +34,8 @@ export const isFormValid = (errors: FormikErrors<object>) =>
   Object.values(errors).filter(
     (error) => error !== undefined && (!error.type || error.type === InlineMessageType.ERROR)
   ).length === 0;
+
+export const isUuid = (uuid: string | TUuid) => {
+  const pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return pattern.test(uuid);
+};

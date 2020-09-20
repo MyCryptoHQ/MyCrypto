@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+
 import isString from 'lodash/isString';
+import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { Spinner, Input } from '@components';
-import { WalletId } from '@types';
-import { WalletFactory, isKeystorePassRequired } from '@services/WalletService';
-import { InlineMessage } from '../InlineMessage';
 import PrivateKeyicon from '@assets/images/icn-privatekey-new.svg';
+import { Input, Spinner } from '@components';
+import { isKeystorePassRequired, WalletFactory } from '@services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
+import { InlineMessage } from '../InlineMessage';
 import './Keystore.scss';
 
 export interface KeystoreValue {

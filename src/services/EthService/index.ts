@@ -1,5 +1,5 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer, decodeTransfer } from './contracts';
+export { Contract, ERC20, encodeTransfer, decodeTransfer, decodeApproval } from './contracts';
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   makeExplorer,
@@ -8,7 +8,7 @@ export {
   gasPriceToBase,
   fromWei,
   baseToConvertedUnit,
-  normalise,
+  normalize,
   getTransactionFields,
   makeTransaction,
   hexEncodeData,
@@ -74,7 +74,6 @@ export {
   isValidRequestPermissions
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export { getResolvedENSAddress } from './ens';
 export {
   Wei,
   TokenValue,

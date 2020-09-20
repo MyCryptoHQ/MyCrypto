@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps, TAddress } from '@types';
-import translate, { translateRaw } from '@translations';
-import { getWeb3Config, isSameAddress, withHook } from '@utils';
 import { getNetworkByChainId, INetworkContext, useNetworks } from '@services/Store';
+import translate, { translateRaw } from '@translations';
+import { ISignComponentProps, TAddress } from '@types';
+import { getWeb3Config, isSameAddress, withHook } from '@utils';
 
 import './Web3.scss';
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import selectEvent from 'react-select-event';
 
+import selectEvent from 'react-select-event';
 import { simpleRender } from 'test-utils';
 
-import MembershipSelector, { MembershipSelectorProps } from './MembershipSelector';
 import { MEMBERSHIP_CONFIG } from '../config';
+import MembershipSelector, { MembershipSelectorProps } from './MembershipSelector';
 
 const defaultProps: MembershipSelectorProps = {
   name: 'MembershipPlan',
@@ -45,6 +45,6 @@ describe('MembershipSelector', () => {
 
     expect(getByRole('form')).toHaveFormValues({ [defaultProps.name]: '' });
     await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.onemonth.title);
-    expect(defaultProps.onSelect).toBeCalledWith(MEMBERSHIP_CONFIG.onemonth);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.onemonth);
   });
 });

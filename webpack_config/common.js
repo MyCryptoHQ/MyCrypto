@@ -1,15 +1,15 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const config = require('./config');
+
 const { IS_DEV, IS_ELECTRON } = require('../environment');
+const config = require('./config');
 
 module.exports = {
   target: 'web',
@@ -51,7 +51,7 @@ module.exports = {
             )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
               .join('|')
               .replace(/\//, '[\\\\/]')}`;
-            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
+            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded}).*)`);
             const includeSrc = new RegExp(/[\\/]src[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
             return (
@@ -248,15 +248,11 @@ module.exports = {
 
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.join(config.path.root, 'tsconfig.json'),
-      tslint: path.join(config.path.root, 'tslint.json'),
       reportFiles: ['**/*.{ts,tsx}', '!node_modules/**/*']
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin(),
-
-    // Ignore all locale files of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new LodashModuleReplacementPlugin()
   ],
 
   stats: {

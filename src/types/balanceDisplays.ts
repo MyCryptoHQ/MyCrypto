@@ -1,8 +1,8 @@
-import { IAccount, Fiat, TAddress, TUuid } from '@types';
+import { Fiat, IAccount, TAddress, TUuid } from '@types';
 
 export interface BalanceDetailsTableProps {
   balances: Balance[];
-  totalFiatValue: number;
+  totalFiatValue: string;
   fiat: Fiat;
   accounts: IAccount[];
   selected: string[];
@@ -12,19 +12,19 @@ export interface BalanceDetailsTableProps {
 export interface BalanceAccount {
   address: TAddress;
   ticker: string;
-  amount: number;
-  fiatValue: number;
+  amount: string;
+  fiatValue: string;
   label: string;
 }
 
 export interface Balance {
   id?: string;
   name: string;
-  amount: number;
-  fiatValue: number;
+  amount: string;
+  fiatValue: string;
   ticker: string;
+  exchangeRate: string;
   isOther?: boolean;
-  exchangeRate?: number;
   accounts?: BalanceAccount[];
   uuid?: TUuid;
 }

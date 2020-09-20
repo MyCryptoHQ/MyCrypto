@@ -1,20 +1,22 @@
-import {
-  fAssets,
-  fAccounts,
-  fTxReceipt,
-  fNetworks,
-  fETHWeb3TxResponse,
-  fETHNonWeb3TxResponse,
-  fETHNonWeb3TxConfig,
-  fETHNonWeb3TxReceipt
-} from '@fixtures';
-
-import { makeTx, fetchTxStatus } from './helpers';
-import { bigNumberify } from 'ethers/utils';
-import { ITxType, ITxStatus } from '@types';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { bigNumberify } from 'ethers/utils';
+
+import {
+  fAccounts,
+  fAssets,
+  fETHNonWeb3TxConfig,
+  fETHNonWeb3TxReceipt,
+  fETHNonWeb3TxResponse,
+  fETHWeb3TxResponse,
+  fNetworks,
+  fTxReceipt
+} from '@fixtures';
+import { ITxStatus, ITxType } from '@types';
+
+import { fetchTxStatus, makeTx } from './helpers';
 
 jest.mock('ethers/providers', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('./__mocks__/txstatus');
   return mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d');
 });
@@ -28,7 +30,7 @@ describe('fetchTxStatus', () => {
       txHash: fTxReceipt.hash
     });
     expect(result?.cachedTx).toStrictEqual(fTxReceipt);
-    expect(result?.fetchedTx).toBe(undefined);
+    expect(result?.fetchedTx).toBeUndefined();
   });
   it('fetches tx from nodes', async () => {
     const result = await fetchTxStatus({
@@ -37,7 +39,7 @@ describe('fetchTxStatus', () => {
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
     });
-    expect(result?.cachedTx).toBe(undefined);
+    expect(result?.cachedTx).toBeUndefined();
     expect({
       ...result?.fetchedTx,
       gasLimit: bigNumberify(result?.fetchedTx?.gasLimit || 0),

@@ -1,4 +1,5 @@
 import { randomBytes } from 'crypto';
+
 import { JsonRpcResponse, RPCRequest } from './types';
 
 export class RPCClient {

@@ -1,5 +1,5 @@
-import showPrompt from './showPrompt';
 import template from './pin.html';
+import showPrompt from './showPrompt';
 
 const EVENT = 'enclave:pin';
 

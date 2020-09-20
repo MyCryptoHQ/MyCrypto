@@ -1,13 +1,14 @@
-import { EnclaveMethods, EnclaveMethodParams, EnclaveMethodResponse } from 'shared/enclave/types';
-import { getChainCode } from './getChainCode';
-import { signTransaction } from './signTransaction';
-import { signMessage } from './signMessage';
+import { EnclaveMethodParams, EnclaveMethodResponse, EnclaveMethods } from 'shared/enclave/types';
+
 import { displayAddress } from './displayAddress';
+import { getChainCode } from './getChainCode';
+import { signMessage } from './signMessage';
+import { signTransaction } from './signTransaction';
 
 type EnclaveHandlers = {
   [key in EnclaveMethods]: (
     params: EnclaveMethodParams
-  ) => EnclaveMethodResponse | Promise<EnclaveMethodResponse>
+  ) => EnclaveMethodResponse | Promise<EnclaveMethodResponse>;
 };
 
 const handlers: EnclaveHandlers = {

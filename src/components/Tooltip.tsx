@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Tooltip as UITooltip } from '@mycrypto/ui';
 
-import questionSVG from '@assets/images/icn-question-white.svg';
 import informationalSVG from '@assets/images/icn-info-blue.svg';
+import questionSVG from '@assets/images/icn-question-white.svg';
 import warningSVG from '@assets/images/icn-warning.svg';
 
 export enum IconID {

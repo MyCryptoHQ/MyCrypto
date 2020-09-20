@@ -1,21 +1,21 @@
 import differenceWith from 'ramda/src/differenceWith';
-import reduce from 'ramda/src/reduce';
 import pipe from 'ramda/src/pipe';
+import reduce from 'ramda/src/reduce';
 
 import {
   Contact,
-  IAccount,
   ExtendedContact,
-  LocalStorage,
-  TUuid,
+  IAccount,
   ISettings,
+  LocalStorage,
   LSKeys,
-  TAddress
+  TAddress,
+  TUuid
 } from '@types';
 import { isSameAddress } from '@utils';
 
-import { devAccounts, DevAccount, devContacts } from '../seed';
-import { toArray, toObject, add } from '../helpers';
+import { add, toArray, toObject } from '../helpers';
+import { DevAccount, devAccounts, devContacts } from '../seed';
 
 const removeDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: LocalStorage) => {
   const cmp = (x: IAccount, y: DevAccount) => isSameAddress(x.address, y.address);

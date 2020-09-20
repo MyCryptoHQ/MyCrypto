@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+
 import { withRouter } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { useUpdateEffect } from '@vendor';
-import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from '@config';
-import { WalletId, IStory, StoreAccount } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
-import { StoreContext } from '@services/Store';
+import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { useAnalytics, isSameAddress } from '@utils';
+import { StoreContext } from '@services/Store';
+import { IStory, StoreAccount, WalletId } from '@types';
+import { isSameAddress, useAnalytics } from '@utils';
+import { useUpdateEffect } from '@vendor';
 
-import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
-import { FormDataActionType as ActionType } from './types';
-import { getStories } from './stories';
+import { NotificationTemplates, useNotifications } from '../NotificationsPanel';
 import { formReducer, initialState } from './AddAccountForm.reducer';
+import { getStories } from './stories';
+import { FormDataActionType as ActionType } from './types';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId): IStory => {
@@ -49,7 +50,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     addMultipleAccounts,
     accounts
   } = useContext(StoreContext);
-  const { displayNotification } = useContext(NotificationsContext);
+  const { displayNotification } = useNotifications();
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
     actionName: 'New Account Added'
@@ -77,7 +78,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
         const newAccount = accounts.find(
           (account) => isSameAddress(account.address, address) && account.networkId === network
         );
-        if (!!newAccount) {
+        if (newAccount) {
           trackNewAccountAdded({
             eventParams: {
               newAccountAddedType: newAccount.wallet,

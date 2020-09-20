@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { Trans } from '@translations';
-import { ExtendedAsset, TAddress, Network } from '@types';
-import { Button, Typography, Tooltip, Icon } from '@components';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Button, Icon, Tooltip, Typography } from '@components';
 import { DWAccountDisplay } from '@services';
-import { isSameAddress, accountsToCSV, useScreenSize, makeBlob } from '@utils';
-import { uniqBy, prop } from '@vendor';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Trans } from '@translations';
+import { ExtendedAsset, Network, TAddress } from '@types';
+import { accountsToCSV, isSameAddress, makeBlob, useScreenSize } from '@utils';
+import { prop, uniqBy } from '@vendor';
 
 import DeterministicTable from './DeterministicAccountTable';
 

@@ -1,8 +1,8 @@
 import { SelectNetworkPanel } from '../components';
 import {
   GenerateKeystoreFilePanel,
-  SaveKeystoreFilePanel,
   MakeBackupPanel,
+  SaveKeystoreFilePanel,
   VerifyKeystorePanel
 } from './components';
 

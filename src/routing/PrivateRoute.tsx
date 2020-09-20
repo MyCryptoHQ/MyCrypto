@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from 'react';
+
+import { Redirect, Route } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { AccountContext } from '@services/Store';
+import { useAccounts } from '@services/Store';
 
 interface PrivateRouteProps {
   [key: string]: any;
@@ -13,7 +14,7 @@ export const PrivateRoute = ({
   requireAccounts,
   ...rest
 }: PrivateRouteProps) => {
-  const { accounts } = useContext(AccountContext);
+  const { accounts } = useAccounts();
   return (
     <Route
       {...rest}

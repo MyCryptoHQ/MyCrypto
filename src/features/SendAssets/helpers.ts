@@ -1,49 +1,45 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
 import {
-  IFormikFields,
-  ITxObject,
-  IHexStrTransaction,
+  Address,
+  encodeTransfer,
+  fromTokenBase,
+  inputGasLimitToHex,
+  inputGasPriceToHex,
+  inputNonceToHex,
+  inputValueToHex,
+  TokenValue,
+  toWei
+} from '@services/EthService';
+import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
+import { handleValues } from '@services/EthService/utils/units';
+import { translateRaw } from '@translations';
+import {
   Asset,
+  ExtendedAsset,
+  IFormikFields,
+  IHexStrTransaction,
   IHexStrWeb3Transaction,
+  ITxConfig,
   ITxData,
+  ITxObject,
   ITxToAddress,
   ITxValue,
-  ITxConfig,
   Network,
-  ExtendedAsset,
-  TAddress,
-  StoreAccount,
   NetworkId,
+  StoreAccount,
+  TAddress,
   TTicker,
   TxQueryTypes
 } from '@types';
-import {
-  Address,
-  toWei,
-  TokenValue,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputNonceToHex,
-  inputGasLimitToHex,
-  encodeTransfer,
-  fromTokenBase
-} from '@services/EthService';
-import {
-  isSameAddress,
-  generateAssetUUID,
-  guessIfErc20Tx,
-  deriveTxRecipientsAndAmount
-} from '@utils';
-import { handleValues } from '@services/EthService/utils/units';
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
-import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
-import { translateRaw } from '@translations';
+import { deriveTxRecipientsAndAmount, generateAssetUUID, isSameAddress } from '@utils';
+import { ERCType, guessERC20Type } from '@utils/transaction';
 import { isEmpty } from '@vendor';
 
+import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
-import { TxParam, TTxQueryParam } from './preFillTx';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -80,17 +76,17 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
   };
 };
 
-export const isERC20Tx = (asset: Asset): boolean => {
+export const isERC20Asset = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
 export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
 export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
   // then we add the extra properties required.
   const { gasLimit, ...tx } = transform(formData);
@@ -153,16 +149,17 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   };
 
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
-  const erc20tx = guessIfErc20Tx(i.data);
+  const ercType = guessERC20Type(i.data);
+  const isERC20 = ercType !== ERCType.NONE;
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
-    erc20tx,
+    ercType,
     i.data,
     i.to,
     i.value
   );
   const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
-  const asset = erc20tx
+  const asset = isERC20
     ? assets.find(
         ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
       ) || generateGenericErc20(to, i.chainId, network.id)

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+
 import { COLORS } from '@theme';
 
 interface ProtectIconProps {

@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 
-import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
+import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { WALLET_STEPS } from '@components';
+import { ITxConfig, ITxReceipt, ITxStatus, ITxType, TxParcel } from '@types';
+import { useStateReducer, useTxMulti } from '@utils';
 
-import { defaultMembershipObject } from './config';
-import MembershipInteractionFactory from './stateFactory';
-import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { createPurchaseTx, createApproveTx } from './helpers';
-import { isERC20Tx } from '../SendAssets';
-import MembershipPurchaseForm from './components/MembershipPurchaseForm';
-import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import { isERC20Asset } from '../SendAssets';
 import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';
+import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import MembershipPurchaseForm from './components/MembershipPurchaseForm';
 import MembershipPurchaseReceipt from './components/MembershipPurchaseReceipt';
+import { defaultMembershipObject } from './config';
+import { createApproveTx, createPurchaseTx } from './helpers';
+import MembershipInteractionFactory from './stateFactory';
+import { MembershipPurchaseState, MembershipSimpleTxFormFull } from './types';
 
 const initialMembershipFlowState = {
   membershipSelected: defaultMembershipObject,
@@ -45,10 +45,10 @@ const PurchaseMembershipStepper = () => {
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
           () => {
-            const purchaseTx = createPurchaseTx(formData);
-            const approveTx = createApproveTx(formData);
+            const purchaseTx = { ...createPurchaseTx(formData), type: ITxType.PURCHASE_MEMBERSHIP };
+            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
             return Promise.resolve(
-              isERC20Tx(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
+              isERC20Asset(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );
           },
           formData.account,
@@ -105,6 +105,7 @@ const PurchaseMembershipStepper = () => {
     <GeneralStepper
       onRender={(goToNextStep) => {
         // Allows to execute code when state has been updated after MTX hook has run
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
           if (!canYield) return;
           // Make sure to prepare ETH tx before showing to user

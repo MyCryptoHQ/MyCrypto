@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
-import { Panel, Button } from '@mycrypto/ui';
+import React from 'react';
+
+import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import closeIcon from '@assets/images/icn-close.svg';
 import { SPACING } from '@theme';
 import { IAccount } from '@types';
-import { NotificationsContext } from './NotificationsProvider';
-import { notificationsConfigs, NotificationTemplates } from './constants';
+import { useEffectOnce } from '@vendor';
 
-// Legacy
-import closeIcon from '@assets/images/icn-close.svg';
+import { notificationsConfigs, NotificationTemplates } from './constants';
+import { useNotifications } from './useNotifications';
 
 export const MainPanel = styled(Panel)`
   position: relative;
@@ -35,8 +36,13 @@ const NotificationsPanel = ({ accounts }: Props) => {
     notifications,
     displayNotification,
     currentNotification,
-    dismissCurrentNotification
-  } = useContext(NotificationsContext);
+    dismissCurrentNotification,
+    trackNotificationViewed
+  } = useNotifications();
+
+  useEffectOnce(() => {
+    trackNotificationViewed();
+  });
 
   const handleCloseClick = () => {
     if (!currentNotification) {

@@ -1,9 +1,11 @@
 import React from 'react';
-import selectEvent from 'react-select-event';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import selectEvent from 'react-select-event';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
 import { fAccounts } from '@fixtures';
 import { sortByLabel } from '@utils';
+
 import AccountSelector from './AccountSelector';
 
 type Props = React.ComponentProps<typeof AccountSelector>;
@@ -19,6 +21,7 @@ function getComponent(props: Props) {
 const defaultProps = {
   accounts: fAccounts,
   name: '',
+  showAssetName: true,
   value: sortByLabel(fAccounts)[0],
   onSelect: jest.fn()
 };
@@ -64,6 +67,6 @@ describe('AccountSelector', () => {
     await selectEvent.openMenu(screen.getByText(new RegExp(accounts[0].label, 'i')));
     const option = screen.getByText(new RegExp(accounts[1].label, 'i'));
     fireEvent.pointerDown(option);
-    expect(defaultProps.onSelect).toBeCalledWith(accounts[1]);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(accounts[1]);
   });
 });

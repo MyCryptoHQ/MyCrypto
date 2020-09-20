@@ -1,5 +1,7 @@
 import { WalletTypes } from 'shared/enclave/client';
-import { WalletId, HardwareWalletId } from '@types';
+
+import { HardwareWalletId, WalletId } from '@types';
+
 import { makeEnclaveWallet } from './enclave';
 import { LedgerWallet as LedgerWalletWeb } from './ledger';
 import { TrezorWallet as TrezorWalletWeb } from './trezor';

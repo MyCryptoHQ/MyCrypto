@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
-import { size } from 'polished';
 
 import { scale } from '@mycrypto/ui';
+import { size } from 'polished';
+import styled from 'styled-components';
+
 import { default as Typography } from './Typography';
 
 const Container = styled.div`

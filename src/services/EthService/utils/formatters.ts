@@ -1,5 +1,5 @@
-import { toTokenBase } from './units';
 import { padLeftEven } from './padLeftEven';
+import { toTokenBase } from './units';
 
 export const buildEIP681EtherRequest = (
   recipientAddr: string,

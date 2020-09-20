@@ -1,14 +1,14 @@
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import {
-  ITxStatus,
-  TAddress,
-  ITxHash,
-  ITxType,
-  ITxValue,
-  ITxNonce,
+  ITxData,
   ITxGasLimit,
   ITxGasPrice,
-  ITxData
+  ITxHash,
+  ITxNonce,
+  ITxStatus,
+  ITxType,
+  ITxValue,
+  TAddress
 } from '@types';
 
 export const fTxHistoryAPI: ITxHistoryApiResponse = {

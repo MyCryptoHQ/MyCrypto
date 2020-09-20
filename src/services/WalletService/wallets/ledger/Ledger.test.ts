@@ -1,4 +1,5 @@
 import { RecordStore } from '@ledgerhq/hw-transport-mocker';
+
 import { DPathsList } from '@config';
 
 import LedgerUSB from './LedgerUSB';

@@ -1,20 +1,21 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
 import {
-  TableCell,
-  TableRow,
-  EthAddress,
   AssetIcon,
   Currency,
-  Typography,
+  EthAddress,
+  FixedSizeCollapsibleTable,
+  TableCell,
+  TableRow,
   Tooltip,
-  FixedSizeCollapsibleTable
+  Typography
 } from '@components';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Fiat, TUuid, Balance, BalanceAccount, BalanceDetailsTableProps } from '@types';
 import { CenteredIconArrow } from '@components/IconArrow';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TTicker, TUuid } from '@types';
 
 const HeaderAlignment = styled.div<{ align?: string }>`
   display: inline-block;
@@ -101,12 +102,12 @@ const createBalancesDetailViewRow = (
             }))}
     </Label>,
     <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
-      {`${balance.amount.toFixed(6)} ${balance.ticker}`}
+      <Currency amount={parseFloat(balance.amount).toFixed(6)} ticker={balance.ticker as TTicker} />
     </RowAlignment>,
     <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
       <Tooltip
         tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-          $exchangeRate: (balance.exchangeRate || 0).toFixed(3),
+          $exchangeRate: parseFloat(balance.exchangeRate).toFixed(3),
           $fiatTicker: fiat.ticker,
           $cryptoTicker: balance.ticker
         })}
@@ -153,7 +154,7 @@ const createAccountRow = (
       </Tooltip>
     </Label>,
     <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
-      {`${balanceAccount.amount.toFixed(6)} ${balanceAccount.ticker}`}
+      {`${parseFloat(balanceAccount.amount).toFixed(6)} ${balanceAccount.ticker}`}
     </RowAlignment>,
     <RowAlignment key={index} align="right" data-value={balanceAccount.fiatValue}>
       <Currency
@@ -244,18 +245,15 @@ export default function BalanceDetailsTable({
       sortFunction: (column: typeof TOKEN | typeof BALANCE | typeof VALUE) => (a: any, b: any) => {
         switch (column) {
           case VALUE:
-            const aValue = a.props['data-value'];
-            const bValue = b.props['data-value'];
-            return aValue - bValue;
+            return a.props['data-value'] - b.props['data-value'];
           case BALANCE:
-            const aBalance = a.props['data-balance'];
-            const bBalance = b.props['data-balance'];
-            return aBalance - bBalance;
+            return a.props['data-balance'] - b.props['data-balance'];
           case TOKEN:
-          default:
+          default: {
             const aLabel = a.props.children[1];
             const bLabel = b.props.children[1];
             return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+          }
         }
       },
       hiddenHeadings: [],

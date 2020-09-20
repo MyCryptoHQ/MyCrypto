@@ -1,8 +1,9 @@
 import React from 'react';
-import { renderHook, act } from '@testing-library/react-hooks';
+
+import { act, renderHook } from '@testing-library/react-hooks';
 
 import { fContacts } from '@fixtures';
-import { LSKeys, TUuid, ExtendedContact, TAddress } from '@types';
+import { ExtendedContact, LSKeys, TAddress, TUuid } from '@types';
 import { omit } from '@vendor';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -22,7 +23,7 @@ const renderUseContacts = ({
 };
 
 describe('useContacts', () => {
-  it('uses get addressbook from DataContext ', () => {
+  it('uses get addressbook from DataContext', () => {
     const { result } = renderUseContacts({ contacts: fContacts });
     expect(result.current.contacts).toEqual(fContacts);
   });
@@ -30,7 +31,7 @@ describe('useContacts', () => {
   it('uses a valid data model', () => {
     const createActions = jest.fn();
     renderUseContacts({ createActions });
-    expect(createActions).toBeCalledWith(LSKeys.ADDRESS_BOOK);
+    expect(createActions).toHaveBeenCalledWith(LSKeys.ADDRESS_BOOK);
   });
 
   it('createContact() calls model.create', () => {
@@ -40,7 +41,7 @@ describe('useContacts', () => {
       createActions: jest.fn(() => ({ create: mockCreate }))
     });
     result.current.createContact(fContacts[0]);
-    expect(mockCreate).toBeCalledWith(expect.objectContaining(omit(['uuid'], fContacts[0])));
+    expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining(omit(['uuid'], fContacts[0])));
   });
 
   it('createContactWithID() calls model.createWithId', () => {
@@ -50,7 +51,7 @@ describe('useContacts', () => {
       createActions: jest.fn(() => ({ createWithID: mockCreate }))
     });
     result.current.createContactWithID('uuid' as TUuid, fContacts[0]);
-    expect(mockCreate).toBeCalledWith(fContacts[0], 'uuid');
+    expect(mockCreate).toHaveBeenCalledWith(fContacts[0], 'uuid');
   });
 
   it('updateContact() calls model.update', () => {
@@ -63,7 +64,7 @@ describe('useContacts', () => {
       ...fContacts[0],
       label: 'My new label'
     });
-    expect(mockUpdate).toBeCalledWith(fContacts[0].uuid, {
+    expect(mockUpdate).toHaveBeenCalledWith(fContacts[0].uuid, {
       ...fContacts[0],
       label: 'My new label'
     });
@@ -78,7 +79,7 @@ describe('useContacts', () => {
     act(() => {
       result.current.deleteContact(fContacts[0].uuid);
     });
-    expect(mockDestroy).toBeCalledWith(fContacts[0]);
+    expect(mockDestroy).toHaveBeenCalledWith(fContacts[0]);
   });
 
   it('getContactByAddress()', () => {
@@ -125,10 +126,10 @@ describe('useContacts', () => {
     act(() => {
       result.current.deleteContact(fContacts[0].uuid);
     });
-    expect(mockDestroy).toBeCalledWith(fContacts[0]);
+    expect(mockDestroy).toHaveBeenCalledWith(fContacts[0]);
     act(() => {
       result.current.restoreDeletedContact(fContacts[0].uuid);
     });
-    expect(mockCreate).toBeCalledWith(fContacts[0], fContacts[0].uuid);
+    expect(mockCreate).toHaveBeenCalledWith(fContacts[0], fContacts[0].uuid);
   });
 });

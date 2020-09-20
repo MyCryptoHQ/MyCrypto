@@ -1,14 +1,15 @@
 import React, { FC, useCallback } from 'react';
+
 import { Button, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from '@theme';
-import translate, { translateRaw } from '@translations';
-import { ANALYTICS_CATEGORIES } from '@services';
-import { ISettings, TFiatTicker } from '@types';
 import { DashboardPanel, Tooltip } from '@components';
-import { ROUTE_PATHS, Fiats } from '@config';
+import { Fiats, ROUTE_PATHS } from '@config';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISettings, TFiatTicker } from '@types';
 import { useAnalytics } from '@utils';
 
 const Divider = styled.div`

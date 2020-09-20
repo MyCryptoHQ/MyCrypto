@@ -1,4 +1,4 @@
-import { EnclaveMethods, EnclaveMethodParams, EnclaveResponse } from 'shared/enclave/types';
+import { EnclaveMethodParams, EnclaveMethods, EnclaveResponse } from 'shared/enclave/types';
 import { PROTOCOL_NAME } from 'shared/enclave/utils';
 
 export function makeRequest<T>(type: EnclaveMethods, params: EnclaveMethodParams): Promise<T> {
@@ -6,7 +6,7 @@ export function makeRequest<T>(type: EnclaveMethods, params: EnclaveMethodParams
     method: 'POST',
     body: JSON.stringify(params)
   })
-    .then(res => res.json())
+    .then((res) => res.json())
     .then((res: EnclaveResponse<T>) => {
       const { error, data } = res;
       if (data) {

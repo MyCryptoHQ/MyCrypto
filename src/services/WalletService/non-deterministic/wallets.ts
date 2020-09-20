@@ -1,12 +1,13 @@
 import { default as Wallet } from 'ethereumjs-wallet';
 import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 
-import { fromV3 } from '@workers';
 import { decryptPrivKey } from '@services/EthService/utils';
+import { fromV3 } from '@workers';
+
 import { signWrapper } from '../helpers';
+import AddressOnlyWallet from './address';
 import { determineKeystoreType, KeystoreTypes } from './helpers';
 import Web3Wallet from './web3';
-import AddressOnlyWallet from './address';
 
 const EncryptedPrivateKeyWallet = (encryptedPrivateKey: string, password: string) =>
   signWrapper(Wallet.fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));

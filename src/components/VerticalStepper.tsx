@@ -1,16 +1,15 @@
+import 'rc-steps/assets/index.css';
 import React from 'react';
 
-import styled from 'styled-components';
-import 'rc-steps/assets/index.css';
-//@ts-ignore No types available at the moment
 import Steps, { Step } from 'rc-steps';
-
-import Typography from './Typography';
-import Button from './Button';
-import { COLORS, SPACING, FONT_SIZE } from '@theme';
+import styled from 'styled-components';
 
 import checkmark from '@assets/images/icn-checkmark-white.svg';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+
+import Button from './Button';
+import Typography from './Typography';
 
 export interface StepData {
   icon?: string;

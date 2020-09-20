@@ -1,7 +1,7 @@
 import { Overwrite } from 'utility-types';
 
-import { ITxReceipt, ExtendedContact, NetworkId } from '@types';
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { ExtendedContact, ITxReceipt, NetworkId } from '@types';
 
 export interface ITxHistoryEntry
   extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {

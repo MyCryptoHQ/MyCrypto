@@ -19,7 +19,8 @@ module.exports = {
   port: 3000,
   title: 'MyCrypto - Ethereum Wallet Manager',
   // description < 200 characters
-  description: 'Securely manage ALL of your crypto accounts with MyCrypto. Swap, send, and buy crypto with your favorite wallets like Ledger, Metamask, and Trezor.',
+  description:
+    'Securely manage ALL of your crypto accounts with MyCrypto. Swap, send, and buy crypto with your favorite wallets like Ledger, Metamask, and Trezor.',
   url: 'https://beta.mycrypto.com/',
   type: 'website',
   // img < 5MB

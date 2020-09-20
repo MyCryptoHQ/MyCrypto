@@ -1,4 +1,4 @@
-import { Web3RequestPermissionsResponse, TAddress } from '@types';
+import { TAddress, Web3RequestPermissionsResponse } from '@types';
 
 export const RequestPermissionsReturn: Web3RequestPermissionsResponse = {
   id: '5a99d4d1f5bd9113ddeb3a699fc2dc1e',

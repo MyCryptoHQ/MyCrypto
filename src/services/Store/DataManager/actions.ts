@@ -1,19 +1,22 @@
 import { Dispatch } from 'react';
+
 import { SymmetricDifference } from 'utility-types';
+
 import {
-  LSKeys,
-  TUuid,
+  DataStore,
   DataStoreEntry,
   DataStoreItem,
-  DataStore,
-  Network,
-  NetworkId,
+  DSKeys,
   ISettings,
   LocalStorage,
-  DSKeys
+  LSKeys,
+  Network,
+  NetworkId,
+  TUuid
 } from '@types';
-import { ActionPayload, ActionV, ActionT } from './reducer';
-import { marshallState, deMarshallState } from './utils';
+
+import { ActionPayload, ActionT, ActionV } from './reducer';
+import { deMarshallState, marshallState } from './utils';
 
 type createPayload = (m: DSKeys) => <T>(v: T) => ActionPayload<T>;
 const createPayload: createPayload = (model) => (v) => ({ model, data: v });

@@ -1,18 +1,18 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { useTxMulti } from '@utils';
-import { TxParcel, ITxStatus, ISimpleTxFormFull } from '@types';
+import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { WALLET_STEPS } from '@components';
+import { ISimpleTxFormFull, ITxStatus, ITxType, TxParcel } from '@types';
+import { useTxMulti } from '@utils';
 
-import { TokenMigrationState, ITokenMigrationFormFull } from './types';
-import { createMigrationTx, createApproveTx } from './helpers';
-import TokenMigrationForm from './components/TokenMigrationForm';
 import { TokenMigrationMultiTx } from './components';
+import TokenMigrationForm from './components/TokenMigrationForm';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
+import { createApproveTx, createMigrationTx } from './helpers';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
+import { ITokenMigrationFormFull, TokenMigrationState } from './types';
 
 const TokenMigrationStepper = () => {
   const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
@@ -32,8 +32,11 @@ const TokenMigrationStepper = () => {
       actions: (formData: ITokenMigrationFormFull) => {
         initWith(
           () => {
-            const purchaseTx = createMigrationTx(formData);
-            const approveTx = createApproveTx(formData);
+            const purchaseTx = {
+              ...createMigrationTx(formData),
+              type: ITxType.REP_TOKEN_MIGRATION
+            };
+            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
             return Promise.resolve([approveTx, purchaseTx]);
           },
           formData.account,
@@ -87,6 +90,7 @@ const TokenMigrationStepper = () => {
     <GeneralStepper
       onRender={(goToNextStep) => {
         // Allows to execute code when state has been updated after MTX hook has run
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
           if (!canYield) return;
           // Make sure to prepare ETH tx before showing to user

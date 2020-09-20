@@ -1,8 +1,9 @@
 'use strict';
-const path = require('path');
-const fs = require('fs');
-const rimraf = require('rimraf');
 const builder = require('electron-builder');
+const fs = require('fs');
+const path = require('path');
+const rimraf = require('rimraf');
+
 const config = require('./config');
 
 function shouldBuildOs(os) {
@@ -19,10 +20,7 @@ async function build() {
   console.log('Clearing out old builds...');
   rimraf.sync(electronBuildsDir);
 
-  fs.copyFileSync(
-    path.join(mainBuildDir, 'main.js'),
-    path.join(jsBuildDir, 'main.js')
-  );
+  fs.copyFileSync(path.join(mainBuildDir, 'main.js'), path.join(jsBuildDir, 'main.js'));
 
   // Builder requires package.json be in the app directory, so copy it in
   fs.copyFileSync(
@@ -64,7 +62,7 @@ async function build() {
         // IMPORTANT: Prevents extending configs in node_modules
         extends: null,
         // IMPORTANT: Prevents build issues for Github Actions
-        npmRebuild: false,
+        npmRebuild: false
       }
     });
 

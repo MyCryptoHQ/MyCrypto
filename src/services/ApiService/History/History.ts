@@ -6,7 +6,7 @@ import { TAddress } from '@types';
 import { default as ApiService } from '../ApiService';
 import { ITxHistoryApiResponse } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 export default class HistoryService {
   public static instance = new HistoryService();

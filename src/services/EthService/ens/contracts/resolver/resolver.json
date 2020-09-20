@@ -1,91 +1,125 @@
-[{
+[
+  {
     "constant": true,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "interfaceID",
         "type": "bytes4"
-    }],
+      }
+    ],
     "name": "supportsInterface",
-    "outputs": [{
+    "outputs": [
+      {
         "name": "",
         "type": "bool"
-    }],
+      }
+    ],
     "payable": false,
     "type": "function"
-}, {
+  },
+  {
     "constant": true,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "node",
         "type": "bytes32"
-    }],
+      }
+    ],
     "name": "addr",
-    "outputs": [{
+    "outputs": [
+      {
         "name": "ret",
         "type": "address"
-    }],
+      }
+    ],
     "payable": false,
     "type": "function"
-}, {
+  },
+  {
     "constant": true,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "node",
         "type": "bytes32"
-    }, {
+      },
+      {
         "name": "kind",
         "type": "bytes32"
-    }],
+      }
+    ],
     "name": "has",
-    "outputs": [{
+    "outputs": [
+      {
         "name": "",
         "type": "bool"
-    }],
+      }
+    ],
     "payable": false,
     "type": "function"
-}, {
+  },
+  {
     "constant": false,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "node",
         "type": "bytes32"
-    }, {
+      },
+      {
         "name": "addr",
         "type": "address"
-    }],
+      }
+    ],
     "name": "setAddr",
     "outputs": [],
     "payable": false,
     "type": "function"
-}, {
+  },
+  {
     "constant": true,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "node",
         "type": "bytes32"
-    }],
+      }
+    ],
     "name": "content",
-    "outputs": [{
+    "outputs": [
+      {
         "name": "ret",
         "type": "bytes32"
-    }],
+      }
+    ],
     "payable": false,
     "type": "function"
-}, {
+  },
+  {
     "constant": false,
-    "inputs": [{
+    "inputs": [
+      {
         "name": "node",
         "type": "bytes32"
-    }, {
+      },
+      {
         "name": "hash",
         "type": "bytes32"
-    }],
+      }
+    ],
     "name": "setContent",
     "outputs": [],
     "payable": false,
     "type": "function"
-}, {
-    "inputs": [{
+  },
+  {
+    "inputs": [
+      {
         "name": "ensAddr",
         "type": "address"
-    }],
+      }
+    ],
     "type": "constructor"
-}, {
+  },
+  {
     "payable": false,
     "type": "fallback"
-}]
+  }
+]

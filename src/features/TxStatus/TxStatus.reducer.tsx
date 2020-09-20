@@ -1,9 +1,9 @@
-import { ValuesType } from 'utility-types';
 import { TransactionResponse } from 'ethers/providers';
+import { ValuesType } from 'utility-types';
 
-import { ITxReceipt, TAction, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import translate from '@translations';
+import { ITxReceipt, NetworkId, TAction } from '@types';
 
 interface State {
   txHash: string;

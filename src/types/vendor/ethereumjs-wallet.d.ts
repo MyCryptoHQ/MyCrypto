@@ -1,5 +1,6 @@
 declare module 'ethereumjs-wallet/thirdparty' {
-  import { Wallet, IEtherWalletLocked, IEtherWalletUnlocked } from 'ethereumjs-wallet';
+  import { IEtherWalletLocked, IEtherWalletUnlocked, Wallet } from 'ethereumjs-wallet';
+
   /**
    * @description import a brain wallet used by Ether.Camp
    * @param input
@@ -33,9 +34,6 @@ declare module 'ethereumjs-wallet/thirdparty' {
 }
 
 declare module 'ethereumjs-wallet/hdkey' {
-  import { Buffer } from 'buffer';
-  import { Wallet } from 'ethereumjs-wallet';
-
   interface IHDNodePublic {
     /**
      * @description return a BIP32 extended public key (xpub)
@@ -102,8 +100,6 @@ declare module 'ethereumjs-wallet/hdkey' {
 }
 
 declare module 'ethereumjs-wallet' {
-  import { Buffer } from 'buffer';
-
   interface IPresaleWallet {
     encseed: string;
     ethaddr: string;

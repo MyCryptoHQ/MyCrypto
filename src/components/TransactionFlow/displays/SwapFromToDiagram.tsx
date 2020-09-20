@@ -1,11 +1,11 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { TTicker, TUuid } from '@types';
+import arrowIcon from '@assets/images/arrow-right.svg';
 import { AssetIcon, Currency } from '@components';
 import { FONT_SIZE } from '@theme';
-
-import arrowIcon from '@assets/images/arrow-right.svg';
+import { TTicker, TUuid } from '@types';
 
 interface Props {
   fromSymbol: TTicker;

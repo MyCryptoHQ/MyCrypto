@@ -1,7 +1,8 @@
 import { bigNumberify } from 'ethers/utils';
-import { StoreAccount, TUuid, TAddress, WalletId, TTicker } from '@types';
-import { bigify } from '@utils';
+
 import { DWAccountDisplay } from '@services';
+import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
+import { bigify } from '@utils';
 
 import { fNetwork } from './network';
 
@@ -53,7 +54,7 @@ export const fAccounts: StoreAccount[] = [
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
+    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70c' as TUuid,
     network: fNetwork,
     label: 'Ledger Account'
   },
@@ -127,7 +128,7 @@ export const fAccounts: StoreAccount[] = [
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1ad' as TUuid,
+    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1au' as TUuid,
     network: fNetwork,
     label: 'View Only Address 1'
   },
@@ -165,7 +166,7 @@ export const fAccounts: StoreAccount[] = [
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1ad' as TUuid,
+    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1at' as TUuid,
     network: fNetwork,
     label: 'Trust Wallet Address 1'
   },
@@ -190,7 +191,7 @@ export const fAccounts: StoreAccount[] = [
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
+    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70y' as TUuid,
     network: fNetwork,
     label: 'WalletConnect Account 2'
   }

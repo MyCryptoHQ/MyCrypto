@@ -1,9 +1,10 @@
-import { IFormikFields, ITxStatus } from '@types';
 import { fAssets } from '@../jest_config/__fixtures__/assets';
-import { fAccount, fNetwork } from '@fixtures';
-import { getDefaultEstimates } from '@services';
 
-import { sendAssetsReducer, ReducerAction } from '../SendAssets.reducer';
+import { fAccount, fERC20NonWeb3TxConfig, fNetwork } from '@fixtures';
+import { getDefaultEstimates } from '@services';
+import { IFormikFields, ITxStatus, TxQueryTypes } from '@types';
+
+import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
 
@@ -26,6 +27,7 @@ const defaultTxConfig = {
 };
 
 jest.mock('ethers/utils', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/utils');
   // Uses a similar txConfig to defaultTxConfig, but can't use the same one due to import issues with Jest
   return mockFactory({
@@ -78,7 +80,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('SIGN_SUCCESS', () => {
-    it('it updates txConfig and signedTx', () => {
+    it('updates txConfig and signedTx', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,
@@ -110,7 +112,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('WEB3_SIGN_SUCCESS', () => {
-    it('it updates the txReceipt with values from txConfig', () => {
+    it('updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,
@@ -154,7 +156,7 @@ describe('SendAssetsReducer', () => {
     });
   });
   describe('SEND_SUCCESS', () => {
-    it('it updates the txReceipt with values from txConfig', () => {
+    it('updates the txReceipt with values from txConfig', () => {
       const prevState = {
         txReceipt: undefined,
         txConfig: defaultTxConfig,
@@ -182,6 +184,27 @@ describe('SendAssetsReducer', () => {
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
+    });
+  });
+  describe('SET_TXCONFIG', () => {
+    it('sets the tx config, increments the txNumber by one and resets the remaining fields', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: '0x12345678',
+        txNumber: 0
+      };
+      const inputTxConfig = fERC20NonWeb3TxConfig;
+      const payload = { txConfig: inputTxConfig, txQueryType: TxQueryTypes.SPEEDUP };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
+        payload
+      })(prevState);
+      const { txConfig, txQueryType, txNumber } = newState!;
+
+      expect(txConfig).toStrictEqual(inputTxConfig);
+      expect(txQueryType).toBe(TxQueryTypes.SPEEDUP);
+      expect(txNumber).toBe(prevState.txNumber + 1);
     });
   });
 });

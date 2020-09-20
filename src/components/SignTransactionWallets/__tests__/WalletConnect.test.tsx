@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { simpleRender, waitFor } from 'test-utils';
-import { fAccount, fTransaction, fNetwork } from '@fixtures';
+
+import { fAccount, fNetwork, fTransaction } from '@fixtures';
 import { DataContext } from '@services';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
@@ -59,9 +60,9 @@ describe('SignTransactionWallets: WalletConnect', () => {
     expect(getByText(footerText)).toBeDefined();
 
     // Ensure service is triggered
-    expect(mockCreateSession).toBeCalledTimes(1);
+    expect(mockCreateSession).toHaveBeenCalledTimes(1);
 
-    await waitFor(() => expect(defaultProps.onSuccess).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onSuccess).toHaveBeenCalledWith('txhash'));
     expect(mockSend).toHaveBeenCalled();
   });
 });

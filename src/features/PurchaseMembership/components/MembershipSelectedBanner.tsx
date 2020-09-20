@@ -1,11 +1,13 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { COLORS, SPACING, FONT_SIZE } from '@theme';
-import { Typography, Tooltip } from '@components';
+import { Tooltip, Typography } from '@components';
 import { useAssets } from '@services';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 import { Asset } from '@types';
+
 import { IMembershipConfig } from '../config';
 
 interface Props {

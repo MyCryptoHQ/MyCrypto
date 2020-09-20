@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { COLORS } from '@theme';
 
 const getColor = (type: LinkType) => {

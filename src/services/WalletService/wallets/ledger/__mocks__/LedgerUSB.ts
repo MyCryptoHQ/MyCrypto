@@ -1,5 +1,5 @@
-import Transport from '@ledgerhq/hw-transport';
 import EthereumApp from '@ledgerhq/hw-app-eth';
+import Transport from '@ledgerhq/hw-transport';
 import { createTransportReplayer, RecordStore } from '@ledgerhq/hw-transport-mocker';
 
 import Ledger from '../Ledger';

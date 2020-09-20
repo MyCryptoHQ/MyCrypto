@@ -1,10 +1,11 @@
 import { Transaction as EthTx } from 'ethereumjs-tx';
-
 import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
-import { translateRaw } from '@translations';
+
 import { getTransactionFields } from '@services/EthService';
+import { translateRaw } from '@translations';
+
 import { IFullWallet } from '../IWallet';
-import { HardwareWallet, ChainCodeResponse } from './hardware';
+import { ChainCodeResponse, HardwareWallet } from './hardware';
 
 const walletTypeNames = {
   [WalletTypes.LEDGER]: 'X_LEDGER',
@@ -19,10 +20,6 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
         walletType,
         dpath
       });
-    }
-
-    constructor(address: string, dPath: string, index: number) {
-      super(address, dPath, index);
     }
 
     public async signRawTransaction(tx: EthTx): Promise<Buffer> {

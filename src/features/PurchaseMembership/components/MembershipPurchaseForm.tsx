@@ -1,24 +1,26 @@
 import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import isEmpty from 'lodash/isEmpty';
-import * as Yup from 'yup';
 
-import translate, { translateRaw } from '@translations';
-import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, TUuid } from '@types';
-import { AccountSelector, InlineMessage, AmountInput, Button } from '@components';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import isEmpty from 'lodash/isEmpty';
+import styled from 'styled-components';
+import { number, object } from 'yup';
+
+import { AccountSelector, AmountInput, Button, InlineMessage } from '@components';
+import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { ETHUUID, noOp } from '@utils';
-import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
+import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
+import { noOp } from '@utils';
 
-import MembershipSelector from './MembershipSelector';
+import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
-import { IMembershipId, IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
+import MembershipSelector from './MembershipSelector';
 
 interface Props extends MembershipPurchaseState {
   isSubmitting: boolean;
@@ -92,8 +94,8 @@ export const MembershipFormUI = ({
     network
   };
 
-  const MembershipFormSchema = Yup.object().shape({
-    amount: Yup.number()
+  const MembershipFormSchema = object().shape({
+    amount: number()
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))
@@ -129,6 +131,7 @@ export const MembershipFormUI = ({
             amount
           );
 
+          // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {
             if (
               amount &&
@@ -218,6 +221,7 @@ export const MembershipFormUI = ({
               </FormFieldItem>
               <FormFieldSubmitButton
                 type="submit"
+                disabled={!isValid || !selectedAccount}
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {

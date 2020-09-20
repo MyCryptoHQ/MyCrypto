@@ -1,9 +1,11 @@
 import { MenuItemConstructorOptions } from 'electron';
 
-const MENU: MenuItemConstructorOptions[] = process.platform === 'darwin' ? [
-    {
-        label: 'Edit',
-        submenu: [
+const MENU: MenuItemConstructorOptions[] =
+  process.platform === 'darwin'
+    ? [
+        {
+          label: 'Edit',
+          submenu: [
             { role: 'undo' },
             { role: 'redo' },
             { type: 'separator' },
@@ -13,8 +15,9 @@ const MENU: MenuItemConstructorOptions[] = process.platform === 'darwin' ? [
             { role: 'pasteAndMatchStyle' },
             { role: 'delete' },
             { role: 'selectAll' }
-        ]
-    }
-] : [];
+          ]
+        }
+      ]
+    : [];
 
 export default MENU;

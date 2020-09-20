@@ -1,20 +1,21 @@
 import { useContext, useState } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 
 import {
   Contact,
   ExtendedContact,
   IAccount,
-  StoreAccount,
   LSKeys,
-  TUuid,
   NetworkId,
-  TAddress
+  StoreAccount,
+  TAddress,
+  TUuid
 } from '@types';
 import { generateUUID, isSameAddress } from '@utils';
 
-import { DataContext } from '../DataManager';
 import { useContracts } from '../Contract';
+import { DataContext } from '../DataManager';
 
 export interface IAddressBookContext {
   contacts: ExtendedContact[];

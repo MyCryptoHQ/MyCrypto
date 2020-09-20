@@ -1,13 +1,14 @@
 import BN from 'bn.js';
-import { DeviceList, Session } from 'trezor.js';
-import mapValues from 'lodash/mapValues';
-import { addHexPrefix } from 'ethereumjs-util';
 import { Transaction as EthTx } from 'ethereumjs-tx';
-import { WalletLib } from 'shared/enclave/types';
+import { addHexPrefix } from 'ethereumjs-util';
+import mapValues from 'lodash/mapValues';
 import { padLeftEven } from 'services/EthService/utils/padLeftEven';
 import { stripHexPrefixAndLower } from 'services/EthService/utils/stripHexPrefix';
-import { showPinPrompt } from '../views/pin';
+import { WalletLib } from 'shared/enclave/types';
+import { DeviceList, Session } from 'trezor.js';
+
 import { showPassphrasePrompt } from '../views/passphrase';
+import { showPinPrompt } from '../views/pin';
 import config from './msg-config';
 
 const deviceList = new DeviceList({ config });

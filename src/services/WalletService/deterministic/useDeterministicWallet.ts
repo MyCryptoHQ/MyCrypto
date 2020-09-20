@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useReducer } from 'reinspect';
-import { uniqBy, identity, prop, pipe } from '@vendor';
 
-import { Network, DPathFormat, ExtendedAsset } from '@types';
+import { DPathFormat, ExtendedAsset, Network } from '@types';
+import { identity, pipe, prop, uniqBy } from '@vendor';
 
-import { Wallet, processFinishedAccounts } from '..';
+import { processFinishedAccounts, Wallet } from '..';
 import { default as DeterministicWalletService } from './DeterministicWalletService';
-import DeterministicWalletReducer, { initialState, DWActionTypes } from './reducer';
-import {
-  IUseDeterministicWallet,
-  IDeterministicWalletService,
-  DWAccountDisplay,
-  ExtendedDPath
-} from './types';
 import { findFinishedZeroBalanceAccounts } from './helpers';
+import DeterministicWalletReducer, { DWActionTypes, initialState } from './reducer';
+import {
+  DWAccountDisplay,
+  ExtendedDPath,
+  IDeterministicWalletService,
+  IUseDeterministicWallet
+} from './types';
 
 interface MnemonicPhraseInputs {
   phrase: string;

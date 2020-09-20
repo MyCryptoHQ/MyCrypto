@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
-import { SPACING } from '@theme';
-import { translateRaw } from '@translations';
 
 import infoSVG from 'assets/images/icn-info-blue.svg';
+import styled from 'styled-components';
+
+import { SPACING } from '@theme';
+import { translateRaw } from '@translations';
 
 const Wrapper = styled.div`
   margin-top: ${SPACING.SM};

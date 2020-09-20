@@ -10,6 +10,7 @@ export {
 } from './links';
 export * from './dpaths';
 export * from './constants';
+export * from './uuids';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export {
   GAS_LIMIT_LOWER_BOUND,
@@ -32,15 +33,8 @@ export {
   getWalletConfig
 } from './wallets';
 export { KB_HELP_ARTICLE, HELP_ARTICLE, getKBHelpArticle } from './helpArticles';
-export {
-  DEFAULT_NETWORK_FOR_FALLBACK,
-  DEFAULT_NETWORK,
-  GITHUB_RELEASE_NOTES_URL,
-  TOKEN_INFO_URL,
-  MYC_DEXAG_COMMISSION_RATE
-} from './constants';
 export { Fiats } from './fiats';
-export { IS_ACTIVE_FEATURE, IIS_ACTIVE_FEATURE } from './isActiveFeature';
+export { FEATURE_FLAGS, IFeatureFlags } from './features';
 export { ROUTE_PATHS } from './routePaths';
 export { IWalletConfig } from './wallets';
 export {

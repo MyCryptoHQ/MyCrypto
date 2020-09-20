@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import isEmpty from 'ramda/src/isEmpty';
 
+import isEmpty from 'ramda/src/isEmpty';
+import styled, { css } from 'styled-components';
+
+import { Button, Overlay, QRCodeContainer, Typography } from '@components';
+import { getWalletConfig } from '@config';
+import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
+import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { WalletId } from '@types';
-import { getWalletConfig } from '@config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
-import { QRCodeContainer, Overlay, Button, Typography } from '@components';
-import { WalletFactory, IUseWalletConnect } from '@services/WalletService';
 
 interface OwnProps {
   useWalletConnectProps: IUseWalletConnect;

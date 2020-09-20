@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
-import { ITxType, TTicker, ITxConfig, TUuid, ISwapAsset } from '@types';
-import { noOp, bigify, DAIUUID, ETHUUID } from '@utils';
+import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
-import { Fiats } from '@config';
+import { fAccount, fNetwork, fTxConfigs, fTxParcels } from '@fixtures';
+import { ISwapAsset, ITxConfig, ITxType, TTicker, TUuid } from '@types';
+import { bigify, noOp } from '@utils';
 
 import MultiTxReceipt from './MultiTxReceipt';
 

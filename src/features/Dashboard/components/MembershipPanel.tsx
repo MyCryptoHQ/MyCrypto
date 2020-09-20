@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import uniq from 'ramda/src/uniq';
+
 import flatten from 'ramda/src/flatten';
+import uniq from 'ramda/src/uniq';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { StoreContext } from '@services';
-import { DashboardPanel, Typography, Button, Link } from '@components';
-import { FONT_SIZE, COLORS, SPACING } from '@theme';
-import translate, { translateRaw } from '@translations';
-import { ROUTE_PATHS, KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
-import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
-
-import defaultIcon from '@assets/images/membership/membership-none.svg';
 import expiredIcon from '@assets/images/membership/membership-expired.svg';
+import defaultIcon from '@assets/images/membership/membership-none.svg';
+import { Button, DashboardPanel, Link, Typography } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
+import { StoreContext } from '@services';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;

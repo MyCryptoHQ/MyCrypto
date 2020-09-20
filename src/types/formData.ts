@@ -1,6 +1,6 @@
-import { WalletId } from './walletId';
-import { NetworkId } from './networkId';
 import { TAddress } from './address';
+import { NetworkId } from './networkId';
+import { WalletId } from './walletId';
 
 export interface FormData {
   network: NetworkId;

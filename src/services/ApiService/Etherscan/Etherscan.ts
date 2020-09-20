@@ -1,10 +1,12 @@
 import { AxiosInstance } from 'axios';
+
+import { NetworkId } from '@types';
+
 import { default as ApiService } from '../ApiService';
 import { ETHERSCAN_API_URLS } from './constants';
-import { NetworkId } from '@types';
-import { GetBalanceResponse, GetTxResponse, GetTokenTxResponse } from './types';
+import { GetBalanceResponse, GetTokenTxResponse, GetTxResponse } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 export default class EtherscanService {
   public static instance = new EtherscanService();
   private service: AxiosInstance = ApiService.generateInstance();
@@ -18,22 +20,18 @@ export default class EtherscanService {
   }
 
   public getContractAbi = async (address: string, networkId: NetworkId) => {
-    try {
-      const params = {
-        module: 'contract',
-        action: 'getAbi',
-        address
-      };
+    const params = {
+      module: 'contract',
+      action: 'getAbi',
+      address
+    };
 
-      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1') {
-        return data.result;
-      }
-      return undefined;
-    } catch (e) {
-      throw e;
+    if (data.status === '1') {
+      return data.result;
     }
+    return undefined;
   };
 
   public getBalance = async (
@@ -46,23 +44,19 @@ export default class EtherscanService {
       );
     }
 
-    try {
-      const params = {
-        module: 'account',
-        action: 'balance',
-        tag: 'latest',
-        address
-      };
+    const params = {
+      module: 'account',
+      action: 'balance',
+      tag: 'latest',
+      address
+    };
 
-      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1') {
-        return data;
-      }
-      return null;
-    } catch (e) {
-      throw e;
+    if (data.status === '1') {
+      return data;
     }
+    return null;
   };
 
   public getTokenTransactions = async (
@@ -75,23 +69,19 @@ export default class EtherscanService {
       );
     }
 
-    try {
-      const params = {
-        module: 'account',
-        action: 'tokentx',
-        address,
-        sort: 'desc'
-      };
+    const params = {
+      module: 'account',
+      action: 'tokentx',
+      address,
+      sort: 'desc'
+    };
 
-      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1' || data.message === 'No transactions found') {
-        return data;
-      }
-      return null;
-    } catch (e) {
-      throw e;
+    if (data.status === '1' || data.message === 'No transactions found') {
+      return data;
     }
+    return null;
   };
 
   public getTransactions = async (
@@ -104,22 +94,18 @@ export default class EtherscanService {
       );
     }
 
-    try {
-      const params = {
-        module: 'account',
-        action: 'txlist',
-        address,
-        sort: 'desc'
-      };
+    const params = {
+      module: 'account',
+      action: 'txlist',
+      address,
+      sort: 'desc'
+    };
 
-      const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
+    const { data } = await this.service.get(ETHERSCAN_API_URLS[networkId]!, { params });
 
-      if (data.status === '1' || data.message === 'No transactions found') {
-        return data;
-      }
-      return null;
-    } catch (e) {
-      throw e;
+    if (data.status === '1' || data.message === 'No transactions found') {
+      return data;
     }
+    return null;
   };
 }

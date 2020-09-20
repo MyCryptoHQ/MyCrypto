@@ -1,13 +1,13 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
+import addIcon from '@assets/images/icn-add-assets.svg';
+import { BUY_MYCRYPTO_WEBSITE } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
-import { BUY_MYCRYPTO_WEBSITE } from '@config';
+import translate from '@translations';
 import { openLink } from '@utils';
-
-import addIcon from '@assets/images/icn-add-assets.svg';
 import useAnalytics from '@utils/useAnalytics';
 
 const { BLUE_BRIGHT } = COLORS;

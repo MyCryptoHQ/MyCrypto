@@ -1,9 +1,10 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
-import { TURL } from '@types';
 import { makeExplorer } from '@services/EthService/utils/makeExplorer';
-import packageJson from '../../package.json';
 import translate from '@translations';
+import { TURL } from '@types';
+
+import packageJson from '../../package.json';
 
 // Displays in the footer
 export const VERSION = packageJson.version;

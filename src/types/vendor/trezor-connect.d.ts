@@ -1,5 +1,5 @@
 /**
- * TODO: These declarations are pretty broken since `Path` is not defined. Adding a definition for
+ * @todo: These declarations are pretty broken since `Path` is not defined. Adding a definition for
  * `Path`, e.g. `type Path = string | number[];` results in other code being broken, so this should
  * be fixed in the future.
  */

@@ -1,12 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Copyable } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 interface Props {
   children?: React.ReactNode;
 }
 
-const truncate = (_: string) => {
+const truncate = () => {
   return '';
 };
 

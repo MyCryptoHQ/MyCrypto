@@ -1,11 +1,12 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
+import { ScreenLockContext } from '@features/ScreenLock';
 import { SettingsContext } from '@services/Store';
 import { translateRaw } from '@translations';
-import { ScreenLockContext } from '@features/ScreenLock';
 
 import { ImportBox, ImportSuccess } from './components';
 

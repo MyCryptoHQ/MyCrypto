@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+
 import { Button, Icon } from '@mycrypto/ui';
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from '@theme';
-import translate from '@translations';
-import { DataContext } from '@services/Store';
+import styled from 'styled-components';
+
 import { DashboardPanel, Tooltip } from '@components';
+import { DataContext } from '@services/Store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate from '@translations';
 
 const Divider = styled.div`
   height: 2px;

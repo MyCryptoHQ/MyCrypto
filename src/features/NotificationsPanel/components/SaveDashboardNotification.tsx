@@ -1,13 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import NotificationWrapper from './NotificationWrapper';
-
-// Legacy
 import saveIcon from '@assets/images/icn-save-dash-board-settings.svg';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+
 import { Button, Identicon } from '@mycrypto/ui';
 import { Transaction as EthTx } from 'ethereumjs-tx';
-import styled from 'styled-components';
-import { parseTransaction, Transaction } from 'ethers/utils';
 import { toBuffer } from 'ethereumjs-util';
+import { parseTransaction, Transaction } from 'ethers/utils';
+import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { InputField, CodeBlock, NetworkSelectDropdown, InlineMessage } from '@components';
+import { CodeBlock, InlineMessage, InputField, NetworkSelectDropdown } from '@components';
 import { getTransactionFields } from '@services/EthService';
-import { NetworkId, ISignedTx } from '@types';
+import translate, { translateRaw } from '@translations';
+import { ISignedTx, NetworkId } from '@types';
 
 const ContentWrapper = styled.div`
   display: flex;

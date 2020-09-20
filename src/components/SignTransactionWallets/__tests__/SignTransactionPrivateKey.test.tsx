@@ -1,10 +1,11 @@
 import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
 
-import { fTxConfig } from '@fixtures';
-import { WalletId } from '@types';
-import { translateRaw } from '@translations';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
+
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
+import { fTxConfig } from '@fixtures';
+import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 import { getHeader } from './helper';
 
@@ -22,6 +23,7 @@ const getComponent = () => {
 
 jest.mock('ethers', () => {
   // Must be imported here to prevent issues with jest
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('../__mocks__/privkey');
   return mockFactory('txhash');
 });
@@ -41,6 +43,6 @@ describe('SignTransactionWallets: PrivateKey', () => {
     fireEvent.change(input!, { target: { value: 'privkey' } });
     fireEvent.click(getByText(translateRaw('DEP_SIGNTX')));
 
-    await waitFor(() => expect(defaultProps.onComplete).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
   });
 });

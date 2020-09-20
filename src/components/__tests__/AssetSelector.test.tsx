@@ -1,17 +1,19 @@
 import React from 'react';
-import selectEvent from 'react-select-event';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import selectEvent from 'react-select-event';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
+import { ETHUUID } from '@config';
 import { fAssets } from '@fixtures';
-import { Asset, TUuid, TTicker } from '@types';
 import { translateRaw } from '@translations';
-import { ETHUUID } from '@utils';
+import { Asset, TTicker, TUuid } from '@types';
 
 import AssetSelector, { AssetSelectorItem } from '../AssetSelector';
 
 const defaultProps: React.ComponentProps<typeof AssetSelector> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
+  showAssetName: true,
   label: 'test-asset-selector',
   onSelect: jest.fn()
 };
@@ -40,14 +42,14 @@ describe('AssetSelector', () => {
     const props = Object.assign({}, defaultProps, { searchable: true });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
-    expect(screen.getAllByText(fAssets[0].name).length).toBe(2);
+    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(2);
   });
 
   test('it is searchable by symbol', async () => {
-    const props = Object.assign({}, defaultProps, { searchable: true, showOnlySymbol: true });
+    const props = Object.assign({}, defaultProps, { searchable: true, showAssetName: false });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[5].ticker } });
-    expect(screen.getAllByText(fAssets[5].ticker).length).toBe(2);
+    expect(screen.getAllByText(fAssets[5].ticker)).toHaveLength(2);
   });
 
   test('it displays the list of assets on click', async () => {
@@ -68,7 +70,7 @@ describe('AssetSelector', () => {
     await selectEvent.openMenu(screen.getByLabelText(defaultProps.label!));
     const option = screen.getByTestId(`asset-selector-option-${fAssets[0].ticker}`);
     fireEvent.pointerDown(option);
-    expect(defaultProps.onSelect).toBeCalledWith(fAssets[0]);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(fAssets[0]);
   });
 });
 

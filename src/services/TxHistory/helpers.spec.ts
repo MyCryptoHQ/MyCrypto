@@ -1,7 +1,7 @@
+import { ITxHistoryType } from '@features/Dashboard/types';
 import { fAccounts, fTxReceipt } from '@fixtures';
 
 import { deriveTxType } from './helpers';
-import { ITxHistoryType } from '@features/Dashboard/types';
 
 describe('deriveTxType', () => {
   it('derives OUTBOUND tx correctly', () => {

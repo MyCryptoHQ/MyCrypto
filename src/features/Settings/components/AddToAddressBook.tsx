@@ -1,17 +1,18 @@
 import React from 'react';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import * as Yup from 'yup';
+
 import { Button } from '@mycrypto/ui';
+import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
+import { object, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { DashboardPanel, NetworkSelectDropdown, InputField } from '@components';
-import { Contact, NetworkId } from '@types';
-import { useToasts } from '@features/Toasts';
-import { translateRaw } from '@translations';
-import { isValidETHAddress } from '@services/EthService';
-import { useContacts } from '@services';
+import { DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
 import { DEFAULT_NETWORK } from '@config/constants';
+import { useToasts } from '@features/Toasts';
+import { useContacts } from '@services';
+import { isValidETHAddress } from '@services/EthService';
+import { translateRaw } from '@translations';
+import { Contact, NetworkId } from '@types';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -56,9 +57,9 @@ interface Props {
 export default function AddToAddressBook({ toggleFlipped, createContact }: Props) {
   const { getContactByAddress } = useContacts();
 
-  const Schema = Yup.object().shape({
-    label: Yup.string().required(translateRaw('REQUIRED')),
-    address: Yup.string()
+  const Schema = object().shape({
+    label: string().required(translateRaw('REQUIRED')),
+    address: string()
       .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), (value) =>
         isValidETHAddress(value)
       )

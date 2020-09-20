@@ -1,17 +1,16 @@
 import React from 'react';
+
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-import { translateRaw } from '@translations';
 import {
-  TokenMigrationProps,
-  default as TokenMigrationForm
+  default as TokenMigrationForm,
+  TokenMigrationProps
 } from '@features/TokenMigration/components/TokenMigrationForm';
-import { FeatureFlagContext } from '@services';
-import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings, fAssets, fNetwork, fAccount } from '@fixtures';
-import { IS_ACTIVE_FEATURE } from '@config';
-import { noOp } from '@utils';
+import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
+import { FeatureFlagProvider } from '@services';
+import { DataContext, SettingsContext, StoreContext } from '@services/Store';
+import { translateRaw } from '@translations';
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
@@ -39,9 +38,7 @@ function getComponent(props: TokenMigrationProps) {
           } as unknown) as any
         }
       >
-        <FeatureFlagContext.Provider
-          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
-        >
+        <FeatureFlagProvider>
           <SettingsContext.Provider
             value={
               ({
@@ -63,7 +60,7 @@ function getComponent(props: TokenMigrationProps) {
               <TokenMigrationForm {...((props as unknown) as any)} />
             </StoreContext.Provider>
           </SettingsContext.Provider>
-        </FeatureFlagContext.Provider>
+        </FeatureFlagProvider>
       </DataContext.Provider>
     </MemoryRouter>
   );

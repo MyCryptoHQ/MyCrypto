@@ -1,26 +1,27 @@
-import React, { useContext, useReducer, useEffect } from 'react';
-import { Input } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import queryString from 'query-string';
-import styled from 'styled-components';
-import { isHexString } from 'ethers/utils';
+import React, { useContext, useEffect, useReducer } from 'react';
 
-import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { NetworkId } from '@types';
+import { Input } from '@mycrypto/ui';
+import { isHexString } from 'ethers/utils';
+import queryString from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { Button, ContentPanel, InlineMessage, NetworkSelectDropdown, TxReceipt } from '@components';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import {
-  StoreContext,
   ANALYTICS_CATEGORIES,
+  StoreContext,
   useAssets,
   useNetworks,
   useTxHistory
 } from '@services';
-import { noOp, isVoid, useAnalytics } from '@utils';
-import { useEffectOnce, useUpdateEffect } from '@vendor';
-import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
+import { NetworkId } from '@types';
+import { isVoid, noOp, useAnalytics } from '@utils';
+import { useEffectOnce, useUpdateEffect } from '@vendor';
 
-import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 import { fetchTxStatus, makeTx } from './helpers';
+import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 

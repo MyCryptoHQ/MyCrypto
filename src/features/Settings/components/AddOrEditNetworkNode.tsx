@@ -1,35 +1,35 @@
 import React, { useCallback, useState } from 'react';
-import { Field, FieldProps, Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { Button } from '@mycrypto/ui';
-import styled from 'styled-components';
 
+import { Button } from '@mycrypto/ui';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import styled from 'styled-components';
+import { boolean, lazy, object, string } from 'yup';
+
+import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { Checkbox, DashboardPanel, InputField, LinkOut, NetworkSelectDropdown } from '@components';
+import {
+  DEFAULT_NETWORK,
+  DPathsList as DPaths,
+  EXT_URLS,
+  GITHUB_RELEASE_NOTES_URL,
+  LETS_ENCRYPT_URL
+} from '@config';
+import { ProviderHandler } from '@services/EthService/network';
+import { NetworkUtils } from '@services/Store/Network';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown, LinkOut } from '@components';
+import { Trans, translateRaw } from '@translations';
 import {
   CustomNodeConfig,
+  ExtendedAsset,
   Network,
   NetworkId,
   NodeOptions,
   NodeType,
-  WalletId,
   TTicker,
-  ExtendedAsset,
-  TUuid
+  TUuid,
+  WalletId
 } from '@types';
-import { translateRaw, Trans } from '@translations';
-import {
-  DEFAULT_NETWORK,
-  GITHUB_RELEASE_NOTES_URL,
-  LETS_ENCRYPT_URL,
-  EXT_URLS,
-  DPathsList as DPaths
-} from '@config';
 import { generateAssetUUID } from '@utils';
-import { NetworkUtils } from '@services/Store/Network';
-import { ProviderHandler } from '@services/EthService/network';
-
-import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};
@@ -210,20 +210,20 @@ export default function AddOrEditNetworkNode({
     [deleteNode, onComplete]
   );
 
-  const Schema = Yup.lazy((values: NetworkNodeFields) =>
-    Yup.object().shape({
-      name: Yup.string()
+  const Schema = lazy((values: NetworkNodeFields) =>
+    object().shape({
+      name: string()
         .required(translateRaw('REQUIRED'))
         .test('check-name-available', 'Duplicated name, please change name!', (name) => {
           return isNodeNameAvailable(values.networkId, name, editNode ? [editNode.name] : []);
         }),
-      networkId: Yup.string().required(translateRaw('REQUIRED')),
-      url: Yup.string().required(translateRaw('REQUIRED')),
-      auth: Yup.boolean().nullable(false),
-      username: Yup.string().test('auth-required', translateRaw('REQUIRED'), (username) => {
+      networkId: string().required(translateRaw('REQUIRED')),
+      url: string().required(translateRaw('REQUIRED')),
+      auth: boolean().nullable(false),
+      username: string().test('auth-required', translateRaw('REQUIRED'), (username) => {
         return values.auth ? !!username : true;
       }),
-      password: Yup.string().test('auth-required', translateRaw('REQUIRED'), (password) => {
+      password: string().test('auth-required', translateRaw('REQUIRED'), (password) => {
         return values.auth ? !!password : true;
       })
     })

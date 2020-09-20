@@ -1,17 +1,17 @@
 import eqBy from 'ramda/src/eqBy';
 import prop from 'ramda/src/prop';
-import unionWith from 'ramda/src/unionWith';
 import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
+import unionWith from 'ramda/src/unionWith';
 
 import {
-  LSKeys,
+  DataStore,
   DataStoreEntry,
   DataStoreItem,
-  TUuid,
-  Network,
+  DSKeys,
   EncryptedDataStore,
-  DataStore,
-  DSKeys
+  LSKeys,
+  Network,
+  TUuid
 } from '@types';
 
 export enum ActionT {

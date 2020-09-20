@@ -1,20 +1,20 @@
-import find from 'ramda/src/find';
 import allPass from 'ramda/src/allPass';
-import propEq from 'ramda/src/propEq';
-import values from 'ramda/src/values';
 import curry from 'ramda/src/curry';
-import prop from 'ramda/src/prop';
-import uniq from 'ramda/src/uniq';
+import find from 'ramda/src/find';
 import map from 'ramda/src/map';
+import prop from 'ramda/src/prop';
+import propEq from 'ramda/src/propEq';
+import uniq from 'ramda/src/uniq';
+import values from 'ramda/src/values';
 
 import {
-  LocalStorage,
   Asset,
-  TUuid,
+  AssetBalanceObject,
   IAccount,
-  TTicker,
+  LocalStorage,
   NetworkId,
-  AssetBalanceObject
+  TTicker,
+  TUuid
 } from '@types';
 
 // Migration from v0.0.1 to v1.0.0

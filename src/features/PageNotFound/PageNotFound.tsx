@@ -1,12 +1,12 @@
 import React from 'react';
+
+import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
-
-import translate from '@translations';
-import { ROUTE_PATHS } from '@config';
 
 import cryingWallet from '@assets/images/icn-sad-wallet.svg';
+import { ROUTE_PATHS } from '@config';
+import translate from '@translations';
 
 const PageNotFoundContainer = styled.div`
   display: flex;

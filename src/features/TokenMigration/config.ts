@@ -1,5 +1,5 @@
+import { REPV1UUID, REPV2UUID } from '@config';
 import { TAddress, TUuid } from '@types';
-import { REPV1UUID, REPV2UUID } from '@utils';
 
 export interface ITokenMigrationConfig {
   title: string;

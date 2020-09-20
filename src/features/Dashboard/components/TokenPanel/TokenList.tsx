@@ -1,15 +1,14 @@
 import React from 'react';
-import { Typography, Button } from '@mycrypto/ui';
+
+import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { convertToFiatFromAsset } from '@utils';
-import { StoreAsset } from '@types';
-import { AssetIcon, DashboardPanel, Spinner, Tooltip } from '@components';
-import { translateRaw } from '@translations';
-
-import { FONT_SIZE, SPACING } from '@theme';
-
 import moreIcon from '@assets/images/icn-more.svg';
+import { AssetIcon, DashboardPanel, Spinner, Tooltip } from '@components';
+import { FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { StoreAsset } from '@types';
+import { convertToFiatFromAsset } from '@utils';
 
 const TokenListWrapper = styled.div`
   min-height: 0;
@@ -123,9 +122,7 @@ export function TokenList(props: TokenListProps) {
                 <AssetName>{token.name}</AssetName>
               </Asset>
               <TokenValueWrapper>
-                {showValue && (
-                  <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
-                )}
+                {showValue && <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>}
                 <MoreIcon
                   src={moreIcon}
                   alt="More"

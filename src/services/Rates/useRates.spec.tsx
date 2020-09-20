@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 
+import { fAssets, fDefiReserveRates, fSettings } from '@fixtures';
+import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
 import { IRates, TUuid } from '@types';
 
-import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
-import { fSettings, fAssets, fDefiReserveRates } from '@fixtures';
-import useRates from './useRates';
 import { ReserveMapping } from './RatesProvider';
+import useRates from './useRates';
 
 const renderUseRates = ({
   rates = {} as IRates,
@@ -36,7 +37,7 @@ describe('useRates', () => {
     const mockTrackAsset = jest.fn();
     const { result } = renderUseRates({ rates: {}, trackAsset: mockTrackAsset });
     expect(result.current.getAssetRate(fAssets[0])).toBe(0);
-    expect(mockTrackAsset).toBeCalledWith(fAssets[0].uuid);
+    expect(mockTrackAsset).toHaveBeenCalledWith(fAssets[0].uuid);
   });
 
   it('getAssetRateInCurrency() gets correct rate from settings', () => {
@@ -48,7 +49,7 @@ describe('useRates', () => {
     const mockTrackAsset = jest.fn();
     const { result } = renderUseRates({ rates: {}, trackAsset: mockTrackAsset });
     expect(result.current.getAssetRateInCurrency(fAssets[0], 'EUR')).toBe(0);
-    expect(mockTrackAsset).toBeCalledWith(fAssets[0].uuid);
+    expect(mockTrackAsset).toHaveBeenCalledWith(fAssets[0].uuid);
   });
 
   it('getPoolAssetReserveRate() returns asset with reserveExchangeRate', () => {

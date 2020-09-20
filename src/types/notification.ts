@@ -6,6 +6,7 @@ export interface Notification {
   dateDisplayed: Date;
   dismissed: boolean;
   dateDismissed: Date | undefined;
+  viewed?: boolean;
 }
 
 export interface ExtendedNotification extends Notification {

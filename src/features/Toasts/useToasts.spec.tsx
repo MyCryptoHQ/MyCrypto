@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
 import toast from 'toasted-notes';
 
-import { useToasts } from './useToasts';
 import { ToastTemplates } from './constants';
+import { useToasts } from './useToasts';
 
 const renderUseToasts = () => {
   return renderHook(() => useToasts());
@@ -19,7 +19,7 @@ describe('useToasts', () => {
   it('calls toasted-notes to display toast', () => {
     const { result } = renderUseToasts();
     result.current.displayToast(ToastTemplates.addedAddress);
-    expect(toast.notify).toBeCalledWith(expect.anything(), {
+    expect(toast.notify).toHaveBeenCalledWith(expect.anything(), {
       duration: undefined,
       position: 'top-left'
     });

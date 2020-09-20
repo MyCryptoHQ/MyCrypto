@@ -1,7 +1,7 @@
-import { Asset, Contact, LocalStorage, NetworkId, Network, TUuid, Fiat, LSKeys } from '@types';
+import { Asset, Contact, Fiat, LocalStorage, LSKeys, Network, NetworkId, TUuid } from '@types';
 
-import { DevAccount } from './seed';
 import { NETWORKS_CONFIG } from './data';
+import { DevAccount } from './seed';
 
 /* Types */
 type DevData = Asset[] | DevAccount[] | Record<string | TUuid, Contact>;

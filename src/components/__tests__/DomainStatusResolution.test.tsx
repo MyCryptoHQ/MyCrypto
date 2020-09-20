@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
-import { DomainStatus, DomainStatusProps } from '../DomainStatus';
 import {
-  ResolutionErrorCode,
-  ResolutionError
+  ResolutionError,
+  ResolutionErrorCode
 } from '@unstoppabledomains/resolution/build/resolutionError';
+import { simpleRender } from 'test-utils';
+
 import UnstoppableService from '@services/UnstoppableService';
+
+import { DomainStatus, DomainStatusProps } from '../DomainStatus';
 
 const defaultProps: DomainStatusProps = {
   isLoading: false,
@@ -61,7 +63,7 @@ describe('DomainStatus', () => {
         .spyOn(resolution, 'getResolvedAddress')
         .mockResolvedValue('0x45b31e01AA6f42F0549aD482BE81635ED3149abb');
       const addr = await resolution.getResolvedAddress('brad.crypto', 'ETH');
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(addr).toBe('0x45b31e01AA6f42F0549aD482BE81635ED3149abb');
     });
   });

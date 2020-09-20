@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { simpleRender } from 'test-utils';
 
 import { translateRaw } from '@translations';
+
 import { default as NoAccountsSelected } from './NoAccountsSelected';
 
 describe('NoAccountsSelected', () => {

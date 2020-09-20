@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
-import moment from 'moment';
+
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-
 import { SettingsContext } from '@services/Store';
-import { useAnalytics } from '@utils';
+import translate, { translateRaw } from '@translations';
+import { formatTimeDuration, useAnalytics } from '@utils';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -103,7 +102,7 @@ export default function ScreenLockLocking({
               ? `SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION`
               : `SCREEN_LOCK_LOCKING_DESCRIPTION`,
             {
-              $inactive_time: moment.duration(settings.inactivityTimer).humanize()
+              $inactive_time: formatTimeDuration(settings.inactivityTimer)
             }
           )}{' '}
           <b>

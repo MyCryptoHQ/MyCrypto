@@ -1,4 +1,4 @@
-import { JsonRpcResponse, RPCRequest, RPCRequestBase, DATA, QUANTITY } from '../rpc';
+import { DATA, JsonRpcResponse, QUANTITY, RPCRequest, RPCRequestBase } from '../rpc';
 
 type MESSAGE_HEX = string;
 type ADDRESS = string;

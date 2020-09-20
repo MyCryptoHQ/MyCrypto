@@ -1,4 +1,4 @@
-import { Contract, StoreAccount, ITxConfig, ITxReceipt, Network } from '@types';
+import { Contract, ITxConfig, ITxReceipt, Network, StoreAccount } from '@types';
 
 export enum ABIItemType {
   FUNCTION = 'function',

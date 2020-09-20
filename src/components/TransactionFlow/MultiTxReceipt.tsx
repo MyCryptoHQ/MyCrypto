@@ -1,32 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 import { Button } from '@mycrypto/ui';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {
-  ITxStatus,
-  IStepComponentProps,
-  ITxType,
-  ITxConfig,
-  TxParcel,
-  StoreAccount,
-  Network,
-  Fiat
-} from '@types';
-import { TimeElapsedCounter, LinkOut } from '@components';
+import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+import { LinkOut, TimeElapsedCounter } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { SwapDisplayData } from '@features/SwapAssets/types';
-import translate, { translateRaw } from '@translations';
-import { truncate } from '@utils';
-import { COLORS, SPACING } from '@theme';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
+import { SwapDisplayData } from '@features/SwapAssets/types';
+import { COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import {
+  Fiat,
+  IStepComponentProps,
+  ITxConfig,
+  ITxStatus,
+  ITxType,
+  Network,
+  StoreAccount,
+  TxParcel
+} from '@types';
+import { truncate } from '@utils';
 
+import Typography from '../Typography';
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
-import Typography from '../Typography';
 
 interface PendingBtnAction {
   text: string;

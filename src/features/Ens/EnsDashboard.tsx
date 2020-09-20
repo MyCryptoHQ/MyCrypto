@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { Heading } from '@mycrypto/ui';
 
+import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import { DashboardPanel, PoweredByText } from '@components';
 import { StoreContext } from '@services';
 import EnsService from '@services/ApiService/Ens/EnsService.ts';
-import { DashboardPanel, PoweredByText } from '@components';
-import { translateRaw } from '@translations';
-import { BREAK_POINTS, SPACING } from '@theme';
-import { useEffectOnce, usePromise } from '@vendor/react-use';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { BREAK_POINTS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { useEffectOnce, usePromise } from '@vendor/react-use';
 
-import { DomainNameRecord } from './types';
 import { EnsTable } from './EnsTable';
+import { DomainNameRecord } from './types';
 
 const DashboardWrapper = styled.div`
   width: 100%;

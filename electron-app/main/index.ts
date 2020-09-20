@@ -1,8 +1,9 @@
 import '@babel/polyfill';
 import { app } from 'electron';
-import { registerServer } from 'shared/enclave/server';
-import getWindow from './window';
 import { registerProtocol } from 'shared/enclave/preload';
+import { registerServer } from 'shared/enclave/server';
+
+import getWindow from './window';
 
 registerProtocol(); // Needs be called before 'ready' event is emitted
 

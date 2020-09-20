@@ -1,6 +1,7 @@
 import { isWeb3Node, setupWeb3Node, Web3Node } from '@services/EthService';
-import { Network } from '@types';
 import { getNetworkByChainId } from '@services/Store';
+import { Network } from '@types';
+
 import { Web3Wallet } from '../non-deterministic';
 
 export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: Network[]) => {

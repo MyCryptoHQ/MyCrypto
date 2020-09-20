@@ -1,19 +1,20 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Panel, Button, Icon, Typography } from '@mycrypto/ui';
-import styled from 'styled-components';
-import semver from 'semver';
 
-import { BREAK_POINTS, COLORS } from '@theme';
-import { TURL } from '@types';
-import { GITHUB_RELEASE_NOTES_URL, OS, VERSION as currentVersion } from '@config';
-import { getFeaturedOS, useAnalytics, openLink } from '@utils';
+import { Button, Icon, Panel, Typography } from '@mycrypto/ui';
+import semver from 'semver';
+import styled from 'styled-components';
+
+import closeIcon from '@assets/images/icn-close.svg';
+import updateImportantIcon from '@assets/images/icn-important-update.svg';
+import updateIcon from '@assets/images/icn-update.svg';
+import { VERSION as currentVersion, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
 import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
+import { TURL } from '@types';
+import { getFeaturedOS, openLink, useAnalytics } from '@utils';
 
 import Modal from './Modal';
-import closeIcon from '@assets/images/icn-close.svg';
-import updateIcon from '@assets/images/icn-update.svg';
-import updateImportantIcon from '@assets/images/icn-important-update.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { PASTEL_RED } = COLORS;
