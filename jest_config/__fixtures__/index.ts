@@ -57,4 +57,4 @@ export { fNotifications } from './notifications';
 
 export { fRates } from './rates';
 
-export { fLocalStorage } from './localstorage';
+export { SCHEMA_BASE as fLocalStorage } from '@database/data';
