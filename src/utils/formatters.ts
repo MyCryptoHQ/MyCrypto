@@ -20,8 +20,7 @@ export const buildEIP681TokenRequest = (
 ) =>
   `ethereum:${contractAddr}${
     chainId !== 1 ? `@${chainId}` : ''
-  }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}
-  }`;
+  }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}`;
 
 // Regex modified from this stackoverflow answer
 // https://stackoverflow.com/a/10805198, with the comma character added as a
