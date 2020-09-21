@@ -45,14 +45,13 @@ export {
 } from './queries';
 export { noOp } from './noOp';
 export {
+  hexToNumber,
   formatGasLimit,
   formatNumber,
-  messageToData,
   formatMnemonic,
   toChecksumAddressByChainId,
   buildEIP681EtherRequest,
-  buildEIP681TokenRequest,
-  hexToNumber
+  buildEIP681TokenRequest
 } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';

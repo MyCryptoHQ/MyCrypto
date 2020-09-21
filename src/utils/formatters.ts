@@ -1,6 +1,8 @@
+import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 
+import { stripHexPrefix } from './stripHexPrefix';
 import { toTokenBase, Wei } from './units';
 
 export const buildEIP681EtherRequest = (
@@ -16,7 +18,8 @@ export const buildEIP681TokenRequest = (
   tokenValue: string,
   decimal: number
 ) =>
-  `ethereum:${contractAddr}${chainId !== 1 ? `@${chainId}` : ''
+  `ethereum:${contractAddr}${
+    chainId !== 1 ? `@${chainId}` : ''
   }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}
   }`;
 
@@ -131,4 +134,8 @@ function getChecksumAddressFunction(chainId: number) {
 
 export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
+}
+
+export function hexToNumber(hex: string) {
+  return new BN(stripHexPrefix(hex)).toNumber();
 }
