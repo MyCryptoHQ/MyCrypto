@@ -30,3 +30,4 @@ export { default as concat } from 'ramda/src/concat';
 export { default as keys } from 'ramda/src/keys';
 export { default as view } from 'ramda/src/view';
 export { default as lensIndex } from 'ramda/src/lensIndex';
+export { default as adjust } from 'ramda/src/adjust';

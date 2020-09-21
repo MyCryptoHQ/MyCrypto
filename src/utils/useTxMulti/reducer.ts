@@ -1,10 +1,8 @@
 import { TransactionResponse } from 'ethers/providers';
-import adjust from 'ramda/src/adjust';
-import map from 'ramda/src/map';
-import mergeLeft from 'ramda/src/mergeLeft';
 
 import { ITxHash, ITxObject, ITxStatus, ITxType } from '@types';
 import { getUUID } from '@utils';
+import { adjust, map, mergeLeft } from '@vendor';
 
 import { ActionTypes, TxMultiAction, TxMultiState } from './types';
 

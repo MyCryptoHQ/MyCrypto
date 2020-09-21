@@ -11,4 +11,5 @@ export interface IERC20 {
   balanceOf: ABIFunc<{ _owner: address }, { balance: uint256 }>;
   transfer: ABIFunc<{ _to: address; _value: uint256 }>;
   transferFrom: ABIFunc<{ _from: address; _to: address; _value: uint256 }>;
+  allowance: ABIFunc<{ _owner: address; _spender: address }, { allowance: uint256 }>;
 }

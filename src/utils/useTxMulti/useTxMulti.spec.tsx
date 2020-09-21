@@ -48,7 +48,12 @@ jest.mock('ethers/providers', () => {
           })
         ),
       waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
-      getBlock: jest.fn().mockImplementation(() => Promise.resolve({}))
+      getBlock: jest.fn().mockImplementation(() => Promise.resolve({})),
+      call: jest
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve('0x000000000000000000000000000000000000000000000000016345785d8a0000')
+        )
     }),
     InfuraProvider: () => ({})
   };
@@ -221,5 +226,97 @@ describe('useTxMulti', () => {
       })
     );
     expect(mockUpdate).toHaveBeenCalledTimes(2);
+  });
+
+  it('filters out unnecessary approvals', async () => {
+    const mockUpdate = jest.fn();
+    const { result: r } = renderUseTxMulti({
+      createActions: jest.fn().mockImplementation(() => ({
+        update: mockUpdate
+      }))
+    });
+
+    const rawTx = {
+      to: 'address' as ITxToAddress,
+      value: '0x' as ITxValue,
+      data: '0x' as ITxData,
+      from: fAccount.address,
+      chainId: 3
+    };
+
+    await act(async () => {
+      await r.current.initWith(
+        () =>
+          Promise.resolve([
+            {
+              ...rawTx,
+              value: '0x1' as ITxValue,
+              data: '0x095ea7b30000000000000000000000006ca105d2af7095b1bceeb6a2113d168dddcd57cf000000000000000000000000000000000000000000000000016345785d8a0000' as ITxData,
+              type: ITxType.APPROVAL
+            },
+            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
+          ]),
+        fAccount,
+        fNetwork
+      );
+    });
+
+    await waitFor(() =>
+      expect(r.current.currentTx).toStrictEqual(
+        expect.objectContaining({
+          txRaw: expect.objectContaining({
+            value: '0x2'
+          }),
+          type: ITxType.PURCHASE_MEMBERSHIP
+        })
+      )
+    );
+    expect(mockUpdate).toHaveBeenCalledTimes(0);
+  });
+
+  it('doesnt filter out necessary approvals', async () => {
+    const mockUpdate = jest.fn();
+    const { result: r } = renderUseTxMulti({
+      createActions: jest.fn().mockImplementation(() => ({
+        update: mockUpdate
+      }))
+    });
+
+    const rawTx = {
+      to: 'address' as ITxToAddress,
+      value: '0x' as ITxValue,
+      data: '0x' as ITxData,
+      from: fAccount.address,
+      chainId: 3
+    };
+
+    await act(async () => {
+      await r.current.initWith(
+        () =>
+          Promise.resolve([
+            {
+              ...rawTx,
+              value: '0x1' as ITxValue,
+              data: '0x095ea7b30000000000000000000000006ca105d2af7095b1bceeb6a2113d168dddcd57cf0000000000000000000000000000000000000000000000008ac7230489e80000' as ITxData,
+              type: ITxType.APPROVAL
+            },
+            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
+          ]),
+        fAccount,
+        fNetwork
+      );
+    });
+
+    await waitFor(() =>
+      expect(r.current.currentTx).toStrictEqual(
+        expect.objectContaining({
+          txRaw: expect.objectContaining({
+            value: '0x1'
+          }),
+          type: ITxType.APPROVAL
+        })
+      )
+    );
+    expect(mockUpdate).toHaveBeenCalledTimes(0);
   });
 });
