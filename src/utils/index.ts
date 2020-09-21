@@ -46,8 +46,6 @@ export {
 export { noOp } from './noOp';
 export {
   hexToNumber,
-  formatGasLimit,
-  formatNumber,
   formatMnemonic,
   toChecksumAddressByChainId,
   buildEIP681EtherRequest,
@@ -139,9 +137,7 @@ export {
   hexWeiToString,
   hexToString,
   inputNonceToHex,
-  bigNumGasPriceToViewableWei,
   bigNumGasLimitToViewable,
-  hexValueToViewableEther,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther
 } from './makeTransaction';
