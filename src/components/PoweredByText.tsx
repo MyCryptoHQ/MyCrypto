@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Typography } from '@components';
 import { FONT_SIZE, SPACING } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 
 import Icon from './Icon';
 
@@ -23,22 +23,24 @@ const Logo = styled(Icon)`
   height: 24px;
 `;
 
-const Text = styled(Typography)<{ flipped?: boolean }>`
-  ${({ flipped }) =>
+const Text = styled(Typography)<{ flipped?: boolean; icon?: JSX.Element }>`
+  ${({ flipped, icon }) =>
     flipped &&
+    icon &&
     `
 margin-left: ${SPACING.XS};
 `}
-  ${({ flipped }) =>
+  ${({ flipped, icon }) =>
     !flipped &&
+    icon &&
     `
 margin-right: ${SPACING.XS};
 `}
 `;
 
 interface PoweredByProvider {
-  icon: string;
-  text: string;
+  icon?: string;
+  text: string | JSX.Element;
   flipped?: boolean;
   fontSize?: string;
   css?: string;
@@ -69,6 +71,13 @@ const providers: Record<string, PoweredByProvider> = {
     icon: 'zapperLogo',
     text: translateRaw('ZAP_POWERED_BY'),
     flipped: true
+  },
+  FINDETH: {
+    css: `
+    && {
+      justify-content: left;
+    }`,
+    text: translate('POWERED_BY_FINDETH')
   }
 };
 
@@ -78,11 +87,11 @@ const PoweredByText = ({ provider }: { provider: PoweredByProviders }) => {
   const { text, icon, flipped, fontSize, css } = providers[provider];
   return (
     <Wrapper css={css}>
-      {flipped && <Logo type={icon} />}
+      {flipped && icon && <Logo type={icon} />}
       <Text flipped={flipped} fontSize={fontSize}>
         {text}
       </Text>
-      {!flipped && <Logo type={icon} />}
+      {!flipped && icon && <Logo type={icon} />}
     </Wrapper>
   );
 };
