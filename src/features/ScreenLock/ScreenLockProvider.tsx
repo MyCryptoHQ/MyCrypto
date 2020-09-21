@@ -100,7 +100,10 @@ class ScreenLockProvider extends Component<
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      importStorage(decryptedData);
+      const importResult = importStorage(decryptedData);
+      if (!importResult) {
+        return false;
+      }
 
       destroyEncryptedCache();
 
