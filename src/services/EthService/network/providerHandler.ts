@@ -133,6 +133,22 @@ export class ProviderHandler {
     return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
   }
 
+  public getTokenAllowance(
+    tokenAddress: string,
+    ownerAddress: string,
+    spenderAddress: string
+  ): Promise<string> {
+    return this.injectClient((client) =>
+      client
+        .call({
+          to: tokenAddress,
+          data: ERC20.allowance.encodeInput({ _owner: ownerAddress, _spender: spenderAddress })
+        })
+        .then((data) => ERC20.allowance.decodeOutput(data))
+        .then(({ allowance }) => allowance)
+    );
+  }
+
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {
     if (clientInjectCb) {
       if (this.isFallbackProvider) {
