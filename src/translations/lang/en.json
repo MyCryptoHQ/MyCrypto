@@ -1043,6 +1043,7 @@
     "TX_QUERY_CANCEL_TOOLTIP": "This transaction aims to cancel a previously pending transaction. It does so by sending a 0.00 ETH transaction to yourself (with the same nonce as the previous transaction) with the purpose of being mined before the original transaction.",
     "SENDING_TO_TOKEN_ADDRESS": "You are sending to the $token contract. If you want to send $token to an address, change the Recipient to the address you want to send the $token to. If you send value to the $token contract itself, it will likely be irrecoverable.",
     "LEDGER_NANO_S_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto)",
-    "LEDGER_NANO_S_NEW_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)"
+    "LEDGER_NANO_S_NEW_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)",
+    "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)"
   }
 }
