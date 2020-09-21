@@ -43,8 +43,8 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
           const { _spender, _value } = ERC20.approve.decodeInput(tx.data);
           const provider = new ProviderHandler(network);
           const allowance = await provider.getTokenAllowance(tx.to, tx.from, _spender);
-          const hasAllowance = bigify(allowance).gte(bigify(_value));
-          return !hasAllowance;
+          // If allowance is less than the value being sent, the approval is needed
+          return bigify(allowance).lt(bigify(_value));
         } catch (err) {
           console.error(err);
         }
