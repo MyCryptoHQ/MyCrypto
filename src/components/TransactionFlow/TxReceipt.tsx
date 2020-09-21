@@ -459,7 +459,7 @@ export const TxReceiptUI = ({
             {displayTxReceipt &&
               (timestamp !== 0 ? (
                 <div>
-                  {<TimeElapsed value={timestamp * 1000} />}
+                  {<TimeElapsed value={timestamp} />}
                   <br /> {localTimestamp}
                 </div>
               ) : (
