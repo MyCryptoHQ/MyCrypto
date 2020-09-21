@@ -120,9 +120,9 @@ export default function SignTransactionWeb3({
       <div className="SignTransactionWeb3-img">
         <img src={walletConfig.icon} />
       </div>
-      {walletState === WalletSigningState.REJECTED ? (
+      {walletState === WalletSigningState.REJECTED && (
         <div className="SignTransactionWeb3-rejection">{translate('SIGN_TX_WEB3_REJECTED')}</div>
-      ) : null}
+      )}
 
       <div className="SignTransactionWeb3-input">
         <div className="SignTransactionWeb3-errors">
