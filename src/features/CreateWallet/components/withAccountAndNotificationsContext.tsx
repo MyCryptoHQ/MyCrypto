@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { useNotifications } from '@features/NotificationsPanel';
-import { SettingsContext, useAccounts, useAssets } from '@services/Store';
+import { useAccounts, useAssets, useSettings } from '@services/Store';
 
 export const withAccountAndNotificationsContext = (Component: any) => (props: any) => {
   const { createAccountWithID } = useAccounts();
-  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+  const { settings, updateSettingsAccounts } = useSettings();
   const { displayNotification } = useNotifications();
   const { createAssetWithID } = useAssets();
 

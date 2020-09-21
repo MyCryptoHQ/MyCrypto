@@ -4,9 +4,9 @@ import pipe from 'ramda/src/pipe';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext, ISettingsContext, SettingsContext } from '@services/Store';
+import { DataContext, IDataContext, ISettingsContext, useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
-import { decrypt, encrypt, hashPassword, withContext } from '@utils';
+import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -269,5 +269,5 @@ class ScreenLockProvider extends Component<
 export default pipe(
   withRouter,
   withContext(DataContext),
-  withContext(SettingsContext)
+  withHook(useSettings)
 )(ScreenLockProvider);

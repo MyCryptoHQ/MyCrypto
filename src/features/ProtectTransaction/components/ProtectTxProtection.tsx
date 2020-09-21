@@ -12,7 +12,7 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WarningIcon from '@components/icons/WarningIcon';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getFiat } from '@config/fiats';
-import { SettingsContext, useRates } from '@services';
+import { useRates, useSettings } from '@services';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Fiat, IAccount, IFormikFields } from '@types';
@@ -163,7 +163,7 @@ interface Props {
 
 export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const { getAssetRate } = useRates();
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
 
   const [isLoading, setIsLoading] = useState(false);
 

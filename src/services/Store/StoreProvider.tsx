@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { BigNumber } from 'bignumber.js';
@@ -73,7 +73,7 @@ import {
   isNotExcludedAsset
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
-import { SettingsContext } from './Settings';
+import { useSettings } from './Settings';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -148,7 +148,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     createMultipleAccountsWithIDs
   } = useAccounts();
   const { assets, addAssetsFromAPI } = useAssets();
-  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+  const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
 

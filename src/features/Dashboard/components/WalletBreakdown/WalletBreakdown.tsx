@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Tooltip } from '@components';
 import { getFiat } from '@config/fiats';
 import { useRates } from '@services';
-import { SettingsContext, StoreContext } from '@services/Store';
+import { StoreContext, useSettings } from '@services/Store';
 import { isNotExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -61,7 +61,7 @@ const WalletBreakdownPanel = styled(Panel)`
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
-  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+  const { settings, updateSettingsAccounts } = useSettings();
   const { getAssetRate } = useRates();
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view

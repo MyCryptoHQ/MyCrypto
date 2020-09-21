@@ -5,7 +5,7 @@ import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, RatesContext, SettingsContext, StoreContext } from '@services';
+import { DataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import TxStatus from './TxStatus';
@@ -31,16 +31,15 @@ describe('TxStatus', () => {
             networks: fNetworks,
             addressBook: [],
             contracts: [],
+            settings: fSettings,
             createActions: jest.fn()
           } as any
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <SettingsContext.Provider value={{ settings: fSettings } as any}>
-            <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
-              <TxStatus />
-            </RatesContext.Provider>
-          </SettingsContext.Provider>
+          <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
+            <TxStatus />
+          </RatesContext.Provider>
         </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>

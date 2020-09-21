@@ -27,7 +27,7 @@ import { isSameAddress, useAnalytics } from '@utils';
 
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 import { DataContext } from '../DataManager';
-import { SettingsContext } from '../Settings';
+import { useSettings } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
@@ -46,7 +46,7 @@ export interface IAccountContext {
 
 function useAccounts() {
   const { createActions, accounts } = useContext(DataContext);
-  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useContext(SettingsContext);
+  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
   const model = createActions(LSKeys.ACCOUNTS);
   const trackTxHistory = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_HISTORY,

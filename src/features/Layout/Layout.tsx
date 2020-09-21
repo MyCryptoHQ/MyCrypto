@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Banner } from '@components';
 import { DrawerContext, ErrorContext, MigrateLS } from '@features';
 import { useFeatureFlags } from '@services';
-import { SettingsContext, StoreContext } from '@services/Store';
+import { StoreContext, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import { BannerType } from '@types';
-import { IS_E2E, withContext } from '@utils';
+import { IS_E2E, withContext, withHook } from '@utils';
 import { pipe } from '@vendor';
 
 import Footer from './Footer';
@@ -78,7 +78,7 @@ const SContainer = styled.div`
     `}
 `;
 
-const MigrateLSWithStore = pipe(withContext(StoreContext), withContext(SettingsContext))(MigrateLS);
+const MigrateLSWithStore = pipe(withContext(StoreContext), withHook(useSettings))(MigrateLS);
 
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
