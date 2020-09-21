@@ -3,12 +3,20 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fTxReceipt } from '@fixtures';
+import { fAccounts, fAssets, fSettings, fTxReceipt } from '@fixtures';
 import { IAccount, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
-import { SettingsContext } from '../Settings';
 import useAccounts from './useAccounts';
+
+jest.mock('../Settings', () => {
+  return {
+    useSettings: () => ({
+      addAccountToFavorites: jest.fn(),
+      addMultipleAccountsToFavorites: jest.fn()
+    })
+  };
+});
 
 jest.mock('@mycrypto/eth-scan', () => {
   return {
@@ -24,13 +32,11 @@ jest.mock('@mycrypto/eth-scan', () => {
 
 const renderUseAccounts = ({ accounts = [] as IAccount[], createActions = jest.fn() } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ accounts, createActions } as any) as IDataContext}>
-      <SettingsContext.Provider
-        value={{ addAccountToFavorites: jest.fn, addMultipleAccountsToFavorites: jest.fn() } as any}
-      >
-        {' '}
-        {children}
-      </SettingsContext.Provider>
+    <DataContext.Provider
+      value={({ accounts, settings: fSettings, createActions } as any) as IDataContext}
+    >
+      {' '}
+      {children}
     </DataContext.Provider>
   );
   return renderHook(() => useAccounts(), { wrapper });

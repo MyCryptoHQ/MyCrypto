@@ -9,7 +9,7 @@ import {
 } from '@features/TokenMigration/components/TokenMigrationForm';
 import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
-import { DataContext, SettingsContext, StoreContext } from '@services/Store';
+import { DataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 const defaultProps: TokenMigrationProps = {
@@ -33,33 +33,26 @@ function getComponent(props: TokenMigrationProps) {
         value={
           ({
             assets: [{ uuid: fNetwork.baseAsset }],
+            settings: fSettings,
             networks: [fNetwork],
             createActions: jest.fn()
           } as unknown) as any
         }
       >
         <FeatureFlagProvider>
-          <SettingsContext.Provider
+          <StoreContext.Provider
             value={
               ({
-                settings: fSettings
+                userAssets: [],
+                accounts: [],
+                defaultAccount: { assets: [] },
+                getAccount: jest.fn(),
+                networks: [{ nodes: [] }]
               } as unknown) as any
             }
           >
-            <StoreContext.Provider
-              value={
-                ({
-                  userAssets: [],
-                  accounts: [],
-                  defaultAccount: { assets: [] },
-                  getAccount: jest.fn(),
-                  networks: [{ nodes: [] }]
-                } as unknown) as any
-              }
-            >
-              <TokenMigrationForm {...((props as unknown) as any)} />
-            </StoreContext.Provider>
-          </SettingsContext.Provider>
+            <TokenMigrationForm {...((props as unknown) as any)} />
+          </StoreContext.Provider>
         </FeatureFlagProvider>
       </DataContext.Provider>
     </MemoryRouter>

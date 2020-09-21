@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
-import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
+import { ANALYTICS_CATEGORIES, useSettings } from '@services';
 import { languages, translateRaw } from '@translations';
 import { useAnalytics } from '@utils';
 
@@ -43,7 +43,7 @@ const handleLanguageSelect = (
 };
 
 function LanguageSelect() {
-  const { language, updateLanguageSelection } = useContext(SettingsContext);
+  const { language, updateLanguageSelection } = useSettings();
   const trackLangChange = useAnalytics({
     category: ANALYTICS_CATEGORIES.SIDEBAR,
     actionName: 'Language changed'

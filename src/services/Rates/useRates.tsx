@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { SettingsContext } from '@services/Store';
+import { useSettings } from '@services/Store';
 import { Asset, ReserveAsset, TUuid } from '@types';
 import { notUndefined } from '@utils';
 
@@ -16,7 +16,7 @@ const DEFAULT_FIAT_RATE = 0;
 
 function useRates() {
   const { rates, reserveRateMapping, trackAsset } = useContext(RatesContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
 
   const getAssetRate = (asset: Asset) => {
     const uuid = asset.uuid;

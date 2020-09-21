@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 
 import { Fiats } from '@config/fiats';
 import { DeFiReserveMapService } from '@services';
-import { SettingsContext, StoreContext, useAssets } from '@services/Store';
+import { StoreContext, useAssets, useSettings } from '@services/Store';
 import { ExtendedAsset, IRates, TTicker, TUuid } from '@types';
 import { prop, uniqBy, useEffectOnce, usePromise } from '@vendor';
 import { PollingService } from '@workers';
@@ -53,7 +53,7 @@ export const RatesContext = createContext({} as State);
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
-  const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const { settings, updateSettingsRates } = useSettings();
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMapping);
   const worker = useRef<undefined | PollingService>();
   const accountAssets = getAssets();

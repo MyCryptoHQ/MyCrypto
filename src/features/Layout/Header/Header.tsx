@@ -10,7 +10,7 @@ import LocalIcon from '@components/Icon';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { ANALYTICS_CATEGORIES, SettingsContext, useFeatureFlags } from '@services';
+import { ANALYTICS_CATEGORIES, useFeatureFlags, useSettings } from '@services';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import translate, { languages } from '@translations';
 import { BannerType } from '@types';
@@ -300,7 +300,7 @@ interface LinkElement {
 
 type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
-  const { language: languageSelection } = useContext(SettingsContext);
+  const { language: languageSelection } = useSettings();
   const { startLockCountdown } = useContext(ScreenLockContext);
   const trackHeader = useAnalytics({
     category: ANALYTICS_CATEGORIES.HEADER

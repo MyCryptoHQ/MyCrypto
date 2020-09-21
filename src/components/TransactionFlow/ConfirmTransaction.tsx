@@ -14,7 +14,7 @@ import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/Prote
 import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { useRates } from '@services';
 import { fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@services/EthService';
-import { SettingsContext, StoreContext, useContacts } from '@services/Store';
+import { StoreContext, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
@@ -127,7 +127,7 @@ export default function ConfirmTransaction({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
   const { accounts } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
     if (ptxState && ptxState.protectTxEnabled && !ptxState.isPTXFree) {

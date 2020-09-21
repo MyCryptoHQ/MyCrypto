@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { fAssets, fDefiReserveRates, fSettings } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
+import { DataContext, IDataContext, RatesContext } from '@services';
 import { IRates, TUuid } from '@types';
 
 import { ReserveMapping } from './RatesProvider';
@@ -15,13 +15,13 @@ const renderUseRates = ({
   trackAsset = jest.fn()
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ createActions: jest.fn() } as any) as IDataContext}>
-      <SettingsContext.Provider value={{ settings: fSettings } as any}>
-        <RatesContext.Provider value={{ rates, reserveRateMapping, trackAsset } as any}>
-          {' '}
-          {children}
-        </RatesContext.Provider>
-      </SettingsContext.Provider>
+    <DataContext.Provider
+      value={({ settings: fSettings, createActions: jest.fn() } as any) as IDataContext}
+    >
+      <RatesContext.Provider value={{ rates, reserveRateMapping, trackAsset } as any}>
+        {' '}
+        {children}
+      </RatesContext.Provider>
     </DataContext.Provider>
   );
   return renderHook(() => useRates(), { wrapper });

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { SettingsContext } from '@services/Store';
+import { useSettings } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { formatTimeDuration, useAnalytics } from '@utils';
 
@@ -73,7 +73,7 @@ export default function ScreenLockLocking({
   onCancelLockCountdown,
   lockingOnDemand
 }: LockScreenProps) {
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const trackScreenLock = useAnalytics({
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK
   });

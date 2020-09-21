@@ -12,11 +12,11 @@ import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { useFeatureFlags, useRates } from '@services';
 import {
   NetworkUtils,
-  SettingsContext,
   StoreContext,
   useAssets,
   useContacts,
-  useNetworks
+  useNetworks,
+  useSettings
 } from '@services/Store';
 import { isExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS } from '@theme';
@@ -58,7 +58,7 @@ const StyledLayout = styled.div`
 
 function RendedExcludedAssetsPanel() {
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const { getAssetRate } = useRates();
   const balances: Balance[] = buildBalances(
     totals,
@@ -188,7 +188,7 @@ function RenderNetworkNodes() {
 }
 
 function RenderGeneralSettingsPanel() {
-  const { updateSettings, settings } = useContext(SettingsContext);
+  const { updateSettings, settings } = useSettings();
   return (
     <>
       <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />

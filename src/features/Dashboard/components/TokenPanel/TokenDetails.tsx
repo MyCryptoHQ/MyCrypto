@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { AssetIcon, Currency, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config/fiats';
-import { getNetworkById, SettingsContext, StoreContext } from '@services/Store';
+import { getNetworkById, StoreContext, useSettings } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Social, StoreAsset } from '@types';
@@ -135,7 +135,7 @@ export function TokenDetails(props: Props) {
     contractAddress
   } = currentToken;
   const { networks } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useSettings();
   const network = getNetworkById(networkId, networks);
 
   const contractUrl = `${
