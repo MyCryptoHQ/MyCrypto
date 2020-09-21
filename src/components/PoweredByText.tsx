@@ -73,6 +73,10 @@ const providers: Record<string, PoweredByProvider> = {
     flipped: true
   },
   FINDETH: {
+    css: `
+    && {
+      justify-content: left;
+    }`,
     text: translate('POWERED_BY_FINDETH')
   }
 };

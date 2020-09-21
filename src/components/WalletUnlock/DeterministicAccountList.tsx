@@ -182,6 +182,7 @@ export default function DeterministicAccountList({
                 <Trans id="DETERMINISTIC_SCAN_AGAIN" />
               </SButton>
               .
+              <PoweredByText provider="FINDETH" />
             </Typography>
           </StatusWrapper>
         )}
@@ -190,10 +191,13 @@ export default function DeterministicAccountList({
             <IconWrapper>
               <Icon type="info-small" />
             </IconWrapper>
-            <Trans
-              id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
-              variables={{ $asset: () => asset.ticker }}
-            />
+            <Typography>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
+                variables={{ $asset: () => asset.ticker }}
+              />
+              <PoweredByText provider="FINDETH" />
+            </Typography>
           </StatusWrapper>
         )}
         {!isComplete && (
@@ -218,6 +222,7 @@ export default function DeterministicAccountList({
                   </>
                 }
               />
+              <PoweredByText provider="FINDETH" />
             </div>
           </StatusWrapper>
         )}
@@ -231,7 +236,6 @@ export default function DeterministicAccountList({
               }}
             />
           </Button>
-          <PoweredByText provider="FINDETH" />
         </div>
       </StatusBar>
     </DeterministicAccountListWrapper>
