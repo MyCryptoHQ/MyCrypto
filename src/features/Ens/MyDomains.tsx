@@ -30,7 +30,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_RENEW_HEADER')
     ],
     body: domainOwnershipRecords.map((record: DomainNameRecord, index: number) => {
-      const unixTimestamp = parseInt(record.expiryDate);
+      const unixTimestamp = parseInt(record.expiryDate, 10);
       return [
         <RowAlignment key={index}>
           {getTimeDifference(new Date(), unixTimestamp) < SECONDS_IN_MONTH && (
