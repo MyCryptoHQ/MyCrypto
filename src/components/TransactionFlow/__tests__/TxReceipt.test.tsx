@@ -29,7 +29,6 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   txStatus: ITxStatus.SUCCESS,
   timestamp: 1583266291,
   displayTxReceipt: fTxReceipt,
-  isSenderAccountPresent: false,
   resetFlow: noOp,
   handleTxCancelRedirect: noOp,
   handleTxSpeedUpRedirect: noOp,

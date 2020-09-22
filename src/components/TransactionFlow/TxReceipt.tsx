@@ -21,7 +21,7 @@ import {
   TimeElapsed,
   Tooltip
 } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -49,9 +49,10 @@ import {
   ITxStatus,
   ITxType,
   TAddress,
-  TxQueryTypes
+  TxQueryTypes,
+  WalletId
 } from '@types';
-import { convertToFiat, isSenderAccountPresentAndOfMainType, truncate } from '@utils';
+import { convertToFiat, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
@@ -215,8 +216,6 @@ const TxReceipt = ({
   );
 
   // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
-  const isSenderAccountPresent =
-    txConfig && isSenderAccountPresentAndOfMainType(accounts, txConfig.senderAccount?.address);
 
   const fiat = getFiat(settings);
 
@@ -230,9 +229,7 @@ const TxReceipt = ({
       recipientContact={recipientContact}
       displayTxReceipt={displayTxReceipt}
       protectTxEnabled={ptxState && ptxState.protectTxEnabled}
-      web3Wallet={ptxState && ptxState.isWeb3Wallet}
       fiat={fiat}
-      isSenderAccountPresent={isSenderAccountPresent}
       txConfig={txConfig}
       txReceipt={txReceipt}
       zapSelected={zapSelected}
@@ -263,10 +260,8 @@ export interface TxReceiptDataProps {
   fiat: Fiat;
   swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
-  web3Wallet?: boolean;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
-  isSenderAccountPresent: boolean;
   handleTxCancelRedirect(): void;
   handleTxSpeedUpRedirect(): void;
   resetFlow(): void;
@@ -295,15 +290,17 @@ export const TxReceiptUI = ({
   resetFlow,
   completeButtonText,
   txQueryType,
-  isSenderAccountPresent,
   handleTxCancelRedirect,
   handleTxSpeedUpRedirect,
   protectTxEnabled = false,
-  web3Wallet = false,
   protectTxButton
 }: UIProps) => {
   /* Determining User's Contact */
   const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
+
+  const walletConfig = getWalletConfig(sender.account ? sender.account.wallet : WalletId.VIEW_ONLY);
+  const web3Wallet = isWeb3Wallet(walletConfig.id);
+  const supportsResubmit = walletConfig.flags.supportsNonce;
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = useCallback(() => {
@@ -496,7 +493,7 @@ export const TxReceiptUI = ({
           <Button
             className="TransactionReceipt-another"
             onClick={handleTxSpeedUpRedirect}
-            disabled={!isSenderAccountPresent}
+            disabled={!supportsResubmit}
           >
             {translateRaw('SPEED_UP_TX_BTN')}
           </Button>
@@ -508,7 +505,7 @@ export const TxReceiptUI = ({
           <Button
             className="TransactionReceipt-another"
             onClick={handleTxCancelRedirect}
-            disabled={!isSenderAccountPresent}
+            disabled={!supportsResubmit}
           >
             {translateRaw('CANCEL_TX_BTN')}
           </Button>

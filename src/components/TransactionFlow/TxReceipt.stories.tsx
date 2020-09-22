@@ -20,7 +20,6 @@ const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
 const resetFlow = noOp;
 const handleTxCancelRedirect = noOp;
 const handleTxSpeedUpRedirect = noOp;
-const isSenderAccountPresent = false;
 
 export default { title: 'TxReceipt' };
 
@@ -40,7 +39,6 @@ export const transactionReceiptPending = () => (
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -62,7 +60,6 @@ export const transactionReceipt = () => (
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -88,7 +85,6 @@ export const transactionReceiptDeFiZap = () => (
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
@@ -113,7 +109,6 @@ export const transactionReceiptMembership = () => (
       fiat={Fiats.USD}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      isSenderAccountPresent={isSenderAccountPresent}
     />
   </div>
 );
