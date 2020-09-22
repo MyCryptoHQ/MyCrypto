@@ -40,6 +40,9 @@ export interface IWalletConfig {
     googlePlay?: string;
     appStore?: string;
   };
+  flags: {
+    supportsNonce: boolean;
+  };
 }
 
 export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
@@ -53,7 +56,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_WEB3_DEFAULT',
     icon: Web3DefaultIcon,
     description: 'ADD_WEB3DESC',
-    helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK)
+    helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
+    flags: {
+      supportsNonce: false
+    }
   },
   [WalletId.METAMASK]: {
     id: WalletId.METAMASK,
@@ -68,6 +74,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
     install: {
       getItLink: 'https://metamask.io'
+    },
+    flags: {
+      supportsNonce: false
     }
   },
   [WalletId.TRUST]: {
@@ -85,6 +94,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
       getItLink: 'https://trustwallet.com',
       appStore: 'https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409',
       googlePlay: 'https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp'
+    },
+    flags: {
+      supportsNonce: false
     }
   },
   [WalletId.FRAME]: {
@@ -100,6 +112,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
     install: {
       getItLink: 'https://frame.sh/'
+    },
+    flags: {
+      supportsNonce: false
     }
   },
   [WalletId.COINBASE]: {
@@ -117,6 +132,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
       getItLink: 'https://wallet.coinbase.com/',
       appStore: 'https://itunes.apple.com/app/coinbase-wallet/id1278383455?ls=1&mt=8',
       googlePlay: 'https://play.google.com/store/apps/details?id=org.toshi'
+    },
+    flags: {
+      supportsNonce: false
     }
   },
   [WalletId.LEDGER_NANO_S]: {
@@ -129,7 +147,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_LEDGER',
     icon: LedgerSVG,
     description: 'ADD_HARDWAREDESC',
-    helpLink: HELP_ARTICLE.LEDGER
+    helpLink: HELP_ARTICLE.LEDGER,
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.LEDGER_NANO_S_NEW]: {
     id: WalletId.LEDGER_NANO_S_NEW,
@@ -141,7 +162,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'Ledger',
     icon: LedgerSVG,
     description: 'ADD_HARDWAREDESC',
-    helpLink: HELP_ARTICLE.LEDGER
+    helpLink: HELP_ARTICLE.LEDGER,
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.TREZOR]: {
     id: WalletId.TREZOR,
@@ -153,7 +177,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_TREZOR',
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
-    helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
+    helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.TREZOR_NEW]: {
     id: WalletId.TREZOR_NEW,
@@ -165,7 +192,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'Trezor',
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
-    helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR)
+    helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.KEYSTORE_FILE]: {
     id: WalletId.KEYSTORE_FILE,
@@ -177,7 +207,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_KEYSTORE2',
     icon: keystoreIcon,
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)
+    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.MNEMONIC_PHRASE]: {
     id: WalletId.MNEMONIC_PHRASE,
@@ -189,7 +222,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_MNEMONIC',
     icon: mnemonicIcon,
     description: 'brain surround have swap horror cheese file distinct',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)
+    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.MNEMONIC_PHRASE_NEW]: {
     id: WalletId.MNEMONIC_PHRASE_NEW,
@@ -201,7 +237,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'Mnemonic Phrase',
     icon: mnemonicIcon,
     description: 'brain surround have swap horror cheese file distinct',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)
+    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.PRIVATE_KEY]: {
     id: WalletId.PRIVATE_KEY,
@@ -213,7 +252,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_PRIVKEY2',
     icon: privateKeyIcon,
     description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE)
+    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
+    flags: {
+      supportsNonce: true
+    }
   },
   [WalletId.VIEW_ONLY]: {
     id: WalletId.VIEW_ONLY,
@@ -225,7 +267,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'VIEW_ADDR',
     icon: viewOnlyIcon,
     description: 'ADD_VIEW_ADDRESS_DESC',
-    helpLink: ''
+    helpLink: '',
+    flags: {
+      supportsNonce: false
+    }
   },
   [WalletId.WALLETCONNECT]: {
     id: WalletId.WALLETCONNECT,
@@ -237,7 +282,10 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'X_WALLETCONNECT',
     icon: WalletConnectSVG,
     description: 'ADD_WALLETCONNECTDESC',
-    helpLink: getKBHelpArticle(WALLETCONNECT)
+    helpLink: getKBHelpArticle(WALLETCONNECT),
+    flags: {
+      supportsNonce: false
+    }
   }
 };
 
