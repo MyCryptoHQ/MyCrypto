@@ -5,6 +5,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import styled from 'styled-components';
 
 import { Checkbox, InputField, Typography } from '@components';
+import { getWalletConfig } from '@config';
 import { fetchGasPriceEstimates, getGasEstimate, getNonce } from '@services';
 import { COLORS, monospace } from '@theme';
 import { translateRaw } from '@translations';
@@ -44,19 +45,20 @@ interface Props {
   setNonce(nonce: string): void;
 }
 
-export default function GasSelector(props: Props) {
-  const {
-    gasPrice,
-    gasLimit,
-    nonce,
-    setGasPrice,
-    setGasLimit,
-    setNonce,
-    estimateGasCallProps,
-    account
-  } = props;
-
+export default function GasSelector({
+  gasPrice,
+  gasLimit,
+  nonce,
+  setGasPrice,
+  setGasLimit,
+  setNonce,
+  estimateGasCallProps,
+  account
+}: Props) {
   const [isAutoGasSet, setIsAutoGasSet] = useState(true);
+
+  const walletConfig = getWalletConfig(account.wallet);
+  const supportsNonce = walletConfig.flags.supportsNonce;
 
   useEffect(() => {
     if (isAutoGasSet) {
@@ -136,6 +138,7 @@ export default function GasSelector(props: Props) {
           value={nonce}
           onChange={handleNonceChange}
           inputMode="decimal"
+          disabled={!supportsNonce}
         />
       </FieldWrapper>
     </Wrapper>
