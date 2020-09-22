@@ -2,12 +2,9 @@ import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import translate from '@translations';
 import { TURL } from '@types';
-import { makeExplorer } from '@utils/makeExplorer';
+import { makeExplorer } from '@utils/makeExplorer'; // leads to circular dependency if importing from base utils dir
 
 import packageJson from '../../package.json';
-
-
-
 
 // Displays in the footer
 export const VERSION = packageJson.version;

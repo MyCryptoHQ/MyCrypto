@@ -2,8 +2,7 @@ import { bufferToHex } from 'ethereumjs-util';
 
 import { Web3Node } from '@services/EthService';
 import { INode, ITxFromAddress } from '@types';
-import { getTransactionFields } from '@utils';
-import { makeTransaction } from '@utils/makeTransaction';
+import { getTransactionFields, makeTransaction } from '@utils';
 
 import { IFullWallet } from '../IWallet';
 
