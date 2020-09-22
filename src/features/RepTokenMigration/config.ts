@@ -13,6 +13,8 @@ export const repTokenMigrationConfig: ITokenMigrationConfig = {
   fromAssetUuid: REPV1UUID,
   toAssetUuid: REPV2UUID,
   formTitle: translateRaw('REP_TOKEN_MIGRATION'),
+  formActionBtn: translateRaw('REP_TOKEN_MIGRATION'),
+  formAmountTooltip: translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
   receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
   txConstructionConfigs: [
     {

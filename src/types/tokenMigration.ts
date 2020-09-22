@@ -24,6 +24,8 @@ export interface ITokenMigrationConfig {
   fromAssetUuid: TUuid;
   toAssetUuid: TUuid;
   formTitle: string;
+  formActionBtn: string;
+  formAmountTooltip: string;
   receiptTitle: string;
   txConstructionConfigs: ITokenMigrationTxConfig[];
 }

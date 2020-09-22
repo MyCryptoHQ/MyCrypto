@@ -3,7 +3,7 @@ import React from 'react';
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
 import { useAssets, useRates, useSettings } from '@services';
-import { ITokenMigrationConfig, ITxType, StoreAccount, TxParcel } from '@types';
+import { ITokenMigrationConfig, StoreAccount, TxParcel } from '@types';
 import { makeTxItem } from '@utils/transaction';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
@@ -27,7 +27,7 @@ export default function TokenMigrationReceipt({
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account)(tokenMigrationConfig);
     // @todo: handle non-rep migration
-    const txType = idx === transactions.length - 1 ? ITxType.REP_TOKEN_MIGRATION : ITxType.APPROVAL;
+    const txType = tokenMigrationConfig.txConstructionConfigs[idx].txType;
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
@@ -39,7 +39,11 @@ export default function TokenMigrationReceipt({
 
   return (
     <MultiTxReceipt
-      txType={ITxType.REP_TOKEN_MIGRATION} // @todo: handle non-rep migration
+      txType={
+        tokenMigrationConfig.txConstructionConfigs[
+          tokenMigrationConfig.txConstructionConfigs.length - 1
+        ].txType
+      }
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}

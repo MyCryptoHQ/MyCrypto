@@ -191,7 +191,7 @@ export const TokenMigrationFormUI = ({
           <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
         </FormFieldLabel>
         <>
-          <Tooltip tooltip={translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP')}>
+          <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
             <AmountInput
               disabled={true}
               asset={values.asset}
@@ -220,7 +220,7 @@ export const TokenMigrationFormUI = ({
         }}
         disabled={!isFormValid}
       >
-        {translateRaw('REP_TOKEN_MIGRATION')}
+        {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
     </div>
   );
