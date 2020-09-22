@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { IS_ELECTRON, IS_DEV } from '@utils';
+
 import { ApiService } from '@services/ApiService';
+import { IS_DEV, IS_ELECTRON } from '@utils';
+
 import {
   ANALYTICS_API_URL,
   ANALYTICS_ID_DESKTOP,
@@ -10,7 +12,7 @@ import {
 } from './constants';
 import { CvarEntry, Params } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 let analyticsId: number = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
 export default class AnalyticsService {

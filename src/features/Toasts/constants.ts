@@ -1,5 +1,5 @@
-import { ToastConfigsProps, ToastType } from '@types';
 import { translateRaw } from '@translations';
+import { ToastConfigsProps, ToastType } from '@types';
 
 export const ToastTemplates = {
   addedAddress: 'added-address',

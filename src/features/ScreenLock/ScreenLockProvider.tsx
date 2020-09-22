@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import pipe from 'ramda/src/pipe';
 
-import { translateRaw } from '@translations';
+import pipe from 'ramda/src/pipe';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ROUTE_PATHS } from '@config';
-import { withContext, hashPassword, encrypt, decrypt } from '@utils';
-import { DataContext, IDataContext, SettingsContext, ISettingsContext } from '@services/Store';
+import { DataContext, IDataContext, ISettingsContext, useSettings } from '@services/Store';
+import { translateRaw } from '@translations';
+import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -26,8 +27,8 @@ export const ScreenLockContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
-const defaultCountDownDuration: number = 59;
-const onDemandLockCountDownDuration: number = 5;
+const defaultCountDownDuration = 59;
+const onDemandLockCountDownDuration = 5;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
@@ -99,7 +100,10 @@ class ScreenLockProvider extends Component<
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      importStorage(decryptedData);
+      const importResult = importStorage(decryptedData);
+      if (!importResult) {
+        return false;
+      }
 
       destroyEncryptedCache();
 
@@ -161,11 +165,13 @@ class ScreenLockProvider extends Component<
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
+    // @todo: Refactor to use .bind() probably
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
     if (lockingOnDemand && this.props.getUnlockPassword()) {
-      appContext.handleCountdownEnded();
+      this.handleCountdownEnded();
       return;
     }
     if (
@@ -263,5 +269,5 @@ class ScreenLockProvider extends Component<
 export default pipe(
   withRouter,
   withContext(DataContext),
-  withContext(SettingsContext)
+  withHook(useSettings)
 )(ScreenLockProvider);

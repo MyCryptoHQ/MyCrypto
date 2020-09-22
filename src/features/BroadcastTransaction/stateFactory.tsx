@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 
-import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
-import { ITxReceipt, ITxConfig, ISignedTx, NetworkId, ITxType, ITxHash } from '@types';
 import { DEFAULT_NETWORK } from '@config';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { useToasts } from '@features/Toasts';
 import { ProviderHandler } from '@services/EthService';
-import { ToastContext } from '@features/Toasts';
+import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { ISignedTx, ITxConfig, ITxHash, ITxReceipt, ITxType, NetworkId } from '@types';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx, TUseStateReducerFactory } from '@utils';
 
 const broadcastTxInitialState: State = {
   network: DEFAULT_NETWORK,
@@ -24,7 +24,7 @@ interface State {
 const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
-  const { displayToast, toastTemplates } = useContext(ToastContext);
+  const { displayToast, toastTemplates } = useToasts();
   const { accounts } = useContext(StoreContext);
 
   const handleNetworkChanged = (network: NetworkId) => {

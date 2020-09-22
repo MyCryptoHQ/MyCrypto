@@ -1,26 +1,25 @@
 import { TransactionResponse } from 'ethers/providers';
 
-import { ProviderHandler, getTxsFromAccount } from '@services';
+import { ITxHistoryEntry, ProviderHandler } from '@services';
+import { Asset, ITxHash, ITxReceipt, ITxType, Network, NetworkId, StoreAccount } from '@types';
 import {
-  makeTxConfigFromTxResponse,
   makeTxConfigFromTxReceipt,
+  makeTxConfigFromTxResponse,
   makeUnknownTxReceipt
 } from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
   networkId,
   networks,
-  accounts
+  txCache
 }: {
   txHash: string;
   networkId: NetworkId;
   networks: Network[];
-  accounts: StoreAccount[];
+  txCache: ITxHistoryEntry[];
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
-  const txCache = getTxsFromAccount(accounts);
   const cachedTx = txCache.find(
     (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
   );
@@ -30,7 +29,7 @@ export const fetchTxStatus = async ({
   const provider = new ProviderHandler(network);
   const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
   if (!fetchedTx) {
-    return undefined;
+    return;
   }
   return { fetchedTx, cachedTx: undefined };
 };
@@ -55,7 +54,7 @@ export const makeTx = ({
   const network = networks.find((n) => n.id === networkId)!;
   if (cachedTx) {
     return {
-      config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
+      config: makeTxConfigFromTxReceipt(cachedTx, assets, network, accounts),
       receipt: cachedTx
     };
   } else {

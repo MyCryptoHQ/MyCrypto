@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import { fireEvent, screen, simpleRender } from 'test-utils';
 
 import Downloader from './Downloader';
 

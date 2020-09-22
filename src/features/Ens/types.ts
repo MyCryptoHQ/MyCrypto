@@ -31,6 +31,6 @@ export interface DomainNameRecord {
   owner: string;
   ownerLabel: string;
   domainName: string;
-  expiryDate: number;
+  expiryDate: string;
   readableDomainName: string;
 }

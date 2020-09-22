@@ -1,6 +1,6 @@
-import { NodeType, NetworkId, StaticNodeConfig } from '@types';
 import { INFURA_API_KEY, POCKET_API_KEY } from '@config';
 import { NetworkUtils } from '@services/Store/Network';
+import { NetworkId, NodeType, StaticNodeConfig } from '@types';
 
 export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   Ethereum: [
@@ -26,7 +26,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('ETH', 'pocket'),
       type: NodeType.POCKET,
       service: 'Pocket',
-      url: `https://eth-mainnet.gateway.pokt.network/v1/${POCKET_API_KEY}`
+      url: `https://eth-mainnet.gateway.pokt.network/v1/lb/${POCKET_API_KEY}`
     }
   ],
 

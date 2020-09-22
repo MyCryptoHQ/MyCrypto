@@ -1,8 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const development = require('./development');
+
 const config = require('./config');
+const development = require('./development');
 
 module.exports = merge.smart(development, {
   output: {
@@ -11,7 +12,7 @@ module.exports = merge.smart(development, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': 'electron'
+      TARGET_ENV: 'electron'
     })
   ]
 });

@@ -1,8 +1,9 @@
 export const mockWindow = (customWindow: CustomWindow) => {
   // Mock window.ethereum
   customWindow.ethereum = {
-    enable: jest.fn().mockImplementation(() => true),
-    on: jest.fn()
+    enable: jest.fn().mockImplementation(() => Promise.resolve({})),
+    on: jest.fn(),
+    removeAllListeners: jest.fn()
   };
 };
 

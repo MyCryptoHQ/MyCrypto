@@ -1,8 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { COLORS } from '@theme';
 import { Typography } from '@components';
+import { COLORS } from '@theme';
 
 const { GREY } = COLORS;
 

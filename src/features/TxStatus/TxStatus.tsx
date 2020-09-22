@@ -1,20 +1,27 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
+
 import { Input } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import queryString from 'query-string';
-import styled from 'styled-components';
 import { isHexString } from 'ethers/utils';
+import queryString from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { NetworkId } from '@types';
-import { StoreContext, ANALYTICS_CATEGORIES, useAssets, useNetworks } from '@services';
-import { noOp, isVoid, useAnalytics } from '@utils';
-import { useEffectOnce, useUpdateEffect } from '@vendor';
+import { Button, ContentPanel, InlineMessage, NetworkSelectDropdown, TxReceipt } from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import {
+  ANALYTICS_CATEGORIES,
+  StoreContext,
+  useAssets,
+  useNetworks,
+  useTxHistory
+} from '@services';
 import { translateRaw } from '@translations';
+import { NetworkId } from '@types';
+import { isVoid, noOp, useAnalytics } from '@utils';
+import { useEffectOnce, useUpdateEffect } from '@vendor';
 
-import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 import { fetchTxStatus, makeTx } from './helpers';
+import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
 
 const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
@@ -51,6 +58,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const { accounts } = useContext(StoreContext);
+  const { txHistory } = useTxHistory();
 
   const defaultTxHash = qs.hash ? qs.hash : '';
   const defaultNetwork =
@@ -61,7 +69,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
   const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
-
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -87,7 +94,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   useEffect(() => {
     if (fetching) {
-      fetchTxStatus({ accounts, networks, txHash, networkId })
+      fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
@@ -155,7 +162,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               disableDynamicTxReceiptDisplay={true}
               disableAddTxToAccount={true}
             />
-            <Button onClick={clearForm} fullwidth={true}>
+            <Button onClick={clearForm} fullwidth={true} inverted={true}>
               {translateRaw('TX_STATUS_GO_BACK')}
             </Button>
           </>

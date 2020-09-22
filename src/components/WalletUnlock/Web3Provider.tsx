@@ -1,14 +1,15 @@
-import React, { FC, useCallback, useContext, useState } from 'react';
-import translate, { translateRaw } from '@translations';
-import { WALLETS_CONFIG, IWalletConfig } from '@config';
-import { WalletId, FormData, Network } from '@types';
+import React, { FC, useCallback, useState } from 'react';
+
 import { InlineMessage, NewTabLink } from '@components';
-import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
-import { SettingsContext, NetworkUtils, useNetworks } from '@services/Store';
-import { WalletFactory, Web3Wallet } from '@services/WalletService';
+import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
-import { getWeb3Config } from '@utils/web3';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { NetworkUtils, useNetworks, useSettings } from '@services/Store';
+import { WalletFactory, Web3Wallet } from '@services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { FormData, Network, WalletId } from '@types';
+import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
+import { getWeb3Config } from '@utils/web3';
 
 import './Web3Provider.scss';
 
@@ -28,7 +29,7 @@ const WalletService = WalletFactory(WalletId.WEB3);
 
 const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
-  const { updateSettingsNode } = useContext(SettingsContext);
+  const { updateSettingsNode } = useSettings();
   const { addNodeToNetwork, networks } = useNetworks();
   const trackSelectNetwork = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT

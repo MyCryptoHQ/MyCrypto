@@ -1,12 +1,13 @@
 import React, { FC, useCallback } from 'react';
+
 import styled from 'styled-components';
 
+import ArrowRightIcon from '@components/icons/ArrowRightIcon';
+import ProtectIcon from '@components/icons/ProtectIcon';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
-import ProtectIcon from '@components/icons/ProtectIcon';
-import ProtectIconCheck from '@components/icons/ProtectIconCheck';
-import ArrowRightIcon from '@components/icons/ArrowRightIcon';
 
 const TransactionProtectionButtonText = styled.div`
   max-width: 85%;

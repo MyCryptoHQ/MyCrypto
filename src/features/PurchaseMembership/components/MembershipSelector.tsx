@@ -1,11 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
-import { OptionProps } from 'react-select';
 
-import { translateRaw } from '@translations';
-import { Typography, Selector } from '@components';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
+
+import { Selector, Typography } from '@components';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
-import { MEMBERSHIP_CONFIG, IMembershipConfig } from '../config';
+import { translateRaw } from '@translations';
+
+import { IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 
 const SContainer = styled('div')`
   display: flex;

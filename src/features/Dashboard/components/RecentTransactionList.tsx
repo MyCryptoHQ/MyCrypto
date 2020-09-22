@@ -1,63 +1,43 @@
-import React, { useContext } from 'react';
+import React from 'react';
+
 import styled from 'styled-components';
-import { Overwrite } from 'utility-types';
-
-import {
-  Amount,
-  DashboardPanel,
-  AssetIcon,
-  Account,
-  FixedSizeCollapsibleTable,
-  EditableAccountLabel,
-  RouterLink
-} from '@components';
-import { convertToFiat } from '@utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, Network, ExtendedContact } from '@types';
-import {
-  getLabelByAddressAndNetwork,
-  SettingsContext,
-  useNetworks,
-  useContacts,
-  useRates
-} from '@services';
-import { translateRaw } from '@translations';
-import {
-  getTxsFromAccount,
-  txIsFailed,
-  txIsPending,
-  txIsSuccessful
-} from '@services/Store/helpers';
-import { COLORS } from '@theme';
-import { getFiat } from '@config/fiats';
-import { ROUTE_PATHS } from '@config';
-
-import NoTransactions from './NoTransactions';
-import TransactionLabel from './TransactionLabel';
-import { ITxHistoryType } from '../types';
-import { deriveTxType } from '../helpers';
-import './RecentTransactionList.scss';
 
 import moreIcon from '@assets/images/icn-more.svg';
-import transfer from '@assets/images/transactions/transfer.svg';
-import inbound from '@assets/images/transactions/inbound.svg';
-import outbound from '@assets/images/transactions/outbound.svg';
 import approval from '@assets/images/transactions/approval.svg';
-import contractInteract from '@assets/images/transactions/contract-interact.svg';
 import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
+import contractInteract from '@assets/images/transactions/contract-interact.svg';
 import defizap from '@assets/images/transactions/defizap.svg';
+import inbound from '@assets/images/transactions/inbound.svg';
 import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
+import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
+import transfer from '@assets/images/transactions/transfer.svg';
+import {
+  Account,
+  Amount,
+  AssetIcon,
+  DashboardPanel,
+  EditableAccountLabel,
+  FixedSizeCollapsibleTable,
+  RouterLink
+} from '@components';
+import { ROUTE_PATHS } from '@config';
+import { getFiat } from '@config/fiats';
+import { ITxHistoryEntry, useContacts, useRates, useSettings, useTxHistory } from '@services';
+import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
+import { COLORS } from '@theme';
+import { translateRaw } from '@translations';
+import { Asset, ITxStatus, StoreAccount } from '@types';
+import { convertToFiat, isSameAddress } from '@utils';
+
+import { ITxHistoryType } from '../types';
+import NoTransactions from './NoTransactions';
+import TransactionLabel from './TransactionLabel';
+import './RecentTransactionList.scss';
 
 interface Props {
   className?: string;
   accountsList: StoreAccount[];
-}
-
-interface ITxHistoryEntry
-  extends Overwrite<ITxReceipt, { txType: ITxHistoryType; timestamp: number }> {
-  network: Network;
-  toAddressBookEntry?: ExtendedContact;
-  fromAddressBookEntry?: ExtendedContact;
 }
 
 interface ITxTypeConfigObj {
@@ -92,19 +72,19 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: transfer
   },
   [ITxHistoryType.REP_TOKEN_MIGRATION]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_REP_MIGRATION'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_REP_MIGRATION'),
     icon: transfer
   },
   [ITxHistoryType.DEFIZAP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
     icon: defizap
   },
   [ITxHistoryType.PURCHASE_MEMBERSHIP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
     icon: membershipPurchase
   },
   [ITxHistoryType.SWAP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),
     icon: swap
   },
   [ITxHistoryType.APPROVAL]: {
@@ -113,11 +93,11 @@ const TxTypeConfig: ITxTypeConfig = {
     icon: approval
   },
   [ITxHistoryType.CONTRACT_INTERACT]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
     icon: contractInteract
   },
   [ITxHistoryType.DEPLOY_CONTRACT]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
     icon: contractDeploy
   }
 };
@@ -164,24 +144,14 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
 };
 
 export default function RecentTransactionList({ accountsList, className = '' }: Props) {
-  const { contacts } = useContacts();
   const { getAssetRate } = useRates();
-  const { settings } = useContext(SettingsContext);
-  const { networks } = useNetworks();
+  const { settings } = useSettings();
+  const { txHistory } = useTxHistory();
+  const { createContact, updateContact } = useContacts();
 
-  const accountTxs: ITxHistoryEntry[] = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => {
-    const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-    const toContact = getLabelByAddressAndNetwork(tx.receiverAddress || tx.to, contacts, network);
-    const fromContact = getLabelByAddressAndNetwork(tx.from, contacts, network);
-    return {
-      ...tx,
-      timestamp: tx.timestamp || 0,
-      txType: deriveTxType(accountsList, tx) || ITxHistoryType.UNKNOWN,
-      toContact,
-      fromContact,
-      network
-    };
-  });
+  const accountTxs = txHistory.filter((tx) =>
+    accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
+  );
 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
@@ -200,18 +170,22 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         asset,
         fromAddressBookEntry,
         toAddressBookEntry,
-        network,
+        networkId,
         txType
       }) => {
         const editableFromLabel = EditableAccountLabel({
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId: network.id
+          networkId,
+          createContact,
+          updateContact
         });
         const editableToLabel = EditableAccountLabel({
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId: network.id
+          networkId,
+          createContact,
+          updateContact
         });
 
         return [
@@ -242,7 +216,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           />,
           <RouterLink
             key={4}
-            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${network.id}`}
+            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}
           >
             <img src={moreIcon} alt="View more information about this transaction" />
           </RouterLink>

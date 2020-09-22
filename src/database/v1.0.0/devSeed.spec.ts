@@ -1,7 +1,7 @@
 import { LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
-import { SCHEMA_BASE, NETWORKS_CONFIG } from '../data';
+import { NETWORKS_CONFIG, SCHEMA_BASE } from '../data';
 import { createDefaultValues } from '../generateDefaultValues';
 import { addDevSeedToSchema } from './devSeed';
 
@@ -27,7 +27,7 @@ describe('Data Seed', () => {
     it('includes a label for each addressBook entry', () => {
       const contacts = toArray(testData[LSKeys.ADDRESS_BOOK]);
       const withLabels = contacts.filter(({ label }) => label);
-      expect(contacts.length).toEqual(withLabels.length);
+      expect(contacts).toHaveLength(withLabels.length);
     });
 
     it('includes accounts in settings', () => {

@@ -1,14 +1,14 @@
 import React from 'react';
-import { MemoryRouter, Route, Switch } from 'react-router';
-import { simpleRender, fireEvent } from 'test-utils';
 
-import { AccountContext, DataContext } from '@services/Store';
-import { translateRaw } from '@translations';
+import { MemoryRouter, Route, Switch } from 'react-router';
+import { fireEvent, simpleRender } from 'test-utils';
+
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import { WalletId } from '@types';
 import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
-import { IAccountContext } from '@services/Store/Account/AccountProvider';
 import { fNetworks } from '@fixtures';
+import { DataContext } from '@services/Store';
+import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 /* Test helpers */
 describe('isValidWalletId()', () => {
@@ -30,28 +30,21 @@ describe('AddAccountFlow', () => {
         value={
           {
             networks: fNetworks,
+            notifications: [],
             createActions: jest.fn()
           } as any
         }
       >
-        <AccountContext.Provider
-          value={
-            ({
-              getAccountByAddressAndNetworkName: jest.fn()
-            } as unknown) as IAccountContext
-          }
-        >
-          <Switch>
-            <Route
-              path="*"
-              render={(props) => {
-                history = props.history;
-                location = props.location;
-                return <AddAccountFlow {...props} />;
-              }}
-            />
-          </Switch>
-        </AccountContext.Provider>
+        <Switch>
+          <Route
+            path="*"
+            render={(props) => {
+              history = props.history;
+              location = props.location;
+              return <AddAccountFlow {...props} />;
+            }}
+          />
+        </Switch>
       </DataContext.Provider>
     </MemoryRouter>
   );

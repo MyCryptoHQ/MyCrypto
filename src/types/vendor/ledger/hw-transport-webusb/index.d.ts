@@ -1,6 +1,6 @@
 declare module '@ledgerhq/hw-transport-webusb' {
-  import Transport, { DescriptorEvent, Observer, Subscription } from '@ledgerhq/hw-transport';
   import { DeviceModel } from '@ledgerhq/devices';
+  import Transport, { DescriptorEvent, Observer, Subscription } from '@ledgerhq/hw-transport';
 
   export default class TransportWebUSB extends Transport<USBDevice> {
     /**

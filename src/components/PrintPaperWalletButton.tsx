@@ -1,14 +1,13 @@
 import React, { Component, lazy } from 'react';
+
 import { Button } from '@mycrypto/ui';
-import styled from 'styled-components';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import styled from 'styled-components';
 
-const PaperWallet = lazy(() => import(/* webpackChunkName: "PaperWallet" */ './PaperWallet'));
-
+import printerIcon from '@assets/images/icn-printer.svg';
 import { Spinner } from '@components';
 
-// Legacy
-import printerIcon from '@assets/images/icn-printer.svg';
+const PaperWallet = lazy(() => import(/* webpackChunkName: "PaperWallet" */ './PaperWallet'));
 
 const PrinterImage = styled.img`
   width: 24px;

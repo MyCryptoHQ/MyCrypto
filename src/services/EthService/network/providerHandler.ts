@@ -1,16 +1,17 @@
+import any from '@ungap/promise-any';
 import {
+  BaseProvider,
+  Block,
   FallbackProvider,
   TransactionReceipt,
-  TransactionResponse,
-  Block,
-  BaseProvider
+  TransactionResponse
 } from 'ethers/providers';
-import { formatEther, BigNumber } from 'ethers/utils';
-import any from '@ungap/promise-any';
+import { BigNumber, formatEther } from 'ethers/utils';
 
-import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
-import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { baseToConvertedUnit, ERC20, RPCRequests } from '@services/EthService';
+import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 
@@ -92,16 +93,14 @@ export class ProviderHandler {
         const providers = (client as FallbackProvider).providers;
         return any(
           providers.map((p) => {
-            return new Promise(async (resolve, reject) => {
-              try {
-                const tx = await p.getTransaction(txhash);
-                // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
-                // Instead, we reject if the tx is undefined such that we keep searching in other nodes
-                return tx ? resolve(tx) : reject();
-              } catch (err) {
-                reject(err);
-              }
-            });
+            // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
+            // Instead, we reject if the tx is undefined such that we keep searching in other nodes
+            return new Promise((resolve, reject) =>
+              p
+                .getTransaction(txhash)
+                .then((tx) => (tx ? resolve(tx) : reject()))
+                .catch((err) => reject(err))
+            );
           })
         );
       }
@@ -132,6 +131,22 @@ export class ProviderHandler {
 
   public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
     return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
+  }
+
+  public getTokenAllowance(
+    tokenAddress: string,
+    ownerAddress: string,
+    spenderAddress: string
+  ): Promise<string> {
+    return this.injectClient((client) =>
+      client
+        .call({
+          to: tokenAddress,
+          data: ERC20.allowance.encodeInput({ _owner: ownerAddress, _spender: spenderAddress })
+        })
+        .then((data) => ERC20.allowance.decodeOutput(data))
+        .then(({ allowance }) => allowance)
+    );
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

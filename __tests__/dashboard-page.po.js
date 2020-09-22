@@ -1,8 +1,8 @@
-import { t, Selector } from 'testcafe';
 import { getAllByText } from '@testing-library/testcafe';
+import { Selector, t } from 'testcafe';
 
-import { PAGES, FIXTURES_CONST } from './fixtures';
 import BasePage from './base-page.po';
+import { FIXTURES_CONST, PAGES } from './fixtures';
 
 export default class DashboardPage extends BasePage {
   async navigateToPage() {
@@ -18,7 +18,9 @@ export default class DashboardPage extends BasePage {
   }
 
   async expectAccountTableToMatchCount(count) {
-    await t.expect(Selector('section:first-of-type > div > table tbody tr').count).eql(count);
+    await t
+      .expect(Selector('section[data-testid="account-list"] > div > table tbody tr').count)
+      .eql(count);
   }
 
   async expectBalanceInBalanceList(token) {

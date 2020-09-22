@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { withRouter } from 'react-router-dom';
 
-import { IZapConfig, ZAPS_CONFIG, IZapId } from './config';
-import ZapStepper from './ZapStepper';
 import ZapEducation from './components/ZapSelection';
+import { IZapConfig, IZapId, ZAPS_CONFIG } from './config';
+import ZapStepper from './ZapStepper';
 
 const DeFiZapFlow = withRouter(({ match }) => {
   const { zapName: zapId } = match.params;

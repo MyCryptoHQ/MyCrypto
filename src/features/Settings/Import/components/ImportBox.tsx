@@ -1,7 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
-import translate from '@translations';
+
 import { InlineMessage } from '@components';
+import translate from '@translations';
 
 const FilePicker = styled.label`
   background: none;

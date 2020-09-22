@@ -1,27 +1,26 @@
+import compoundDaiBreakdown from '@assets/images/defizap/breakdowns/cdaiBreakdown.svg';
+import unipoolDaiBreakdown from '@assets/images/defizap/breakdowns/unidaiBreakdown.svg';
+import unipoolSethBreakdown from '@assets/images/defizap/breakdowns/unisethBreakdown.svg';
+import collateralizationIcn from '@assets/images/defizap/icn-collateralization.svg';
+import diversificationIcn from '@assets/images/defizap/icn-diversification.svg';
+import innovationIcn from '@assets/images/defizap/icn-innovation.svg';
+import inverstingIcn from '@assets/images/defizap/icn-investing.svg';
+import liquidityIcn from '@assets/images/defizap/icn-liquidity.svg';
+import smartContractIcn from '@assets/images/defizap/icn-smart-contract.svg';
+import cdaiMobileIllustration from '@assets/images/defizap/illustrations/cdai-mobile.svg';
+import cdaiIllustration from '@assets/images/defizap/illustrations/cdai.svg';
+import unidaiMobileIllustration from '@assets/images/defizap/illustrations/unidai-mobile.svg';
+import unidaiIllustration from '@assets/images/defizap/illustrations/unidai.svg';
+import unisethMobileIllustration from '@assets/images/defizap/illustrations/uniseth-mobile.svg';
+import unisethIllustration from '@assets/images/defizap/illustrations/uniseth.svg';
+import moderateRisk from '@assets/images/icn-jogging.svg';
+import aggressiveRisk from '@assets/images/icn-running.svg';
+import conservativeRisk from '@assets/images/icn-walking.svg';
 import translate, { translateRaw } from '@translations';
 
-import ProtocolsExplainer from './components/ProtocolsExplainer';
 import AvailableZaps from './components/AvailableZaps';
-
-import moderateRisk from '@assets/images/defizap/moderateRisk.svg';
-import conservativeRisk from '@assets/images/defizap/conservativeRisk.svg';
-import aggressiveRisk from '@assets/images/defizap/aggressiveRisk.svg';
-import unipoolSethBreakdown from '@assets/images/defizap/breakdowns/unisethBreakdown.svg';
-import unipoolDaiBreakdown from '@assets/images/defizap/breakdowns/unidaiBreakdown.svg';
-import compoundDaiBreakdown from '@assets/images/defizap/breakdowns/cdaiBreakdown.svg';
-import smartContractIcn from '@assets/images/defizap/icn-smart-contract.svg';
-import inverstingIcn from '@assets/images/defizap/icn-investing.svg';
-import collateralizationIcn from '@assets/images/defizap/icn-collateralization.svg';
-import liquidityIcn from '@assets/images/defizap/icn-liquidity.svg';
-import innovationIcn from '@assets/images/defizap/icn-innovation.svg';
-import diversificationIcn from '@assets/images/defizap/icn-diversification.svg';
-import unisethIllustration from '@assets/images/defizap/illustrations/uniseth.svg';
-import unidaiIllustration from '@assets/images/defizap/illustrations/unidai.svg';
-import cdaiIllustration from '@assets/images/defizap/illustrations/cdai.svg';
-import unisethMobileIllustration from '@assets/images/defizap/illustrations/uniseth-mobile.svg';
-import unidaiMobileIllustration from '@assets/images/defizap/illustrations/unidai-mobile.svg';
-import cdaiMobileIllustration from '@assets/images/defizap/illustrations/cdai-mobile.svg';
-import { BullishIndicator, NeutralIndicator, BearishIndicator } from './components/ZapIndicators';
+import ProtocolsExplainer from './components/ProtocolsExplainer';
+import { BearishIndicator, BullishIndicator, NeutralIndicator } from './components/ZapIndicators';
 
 export enum IZapType {
   UNIPOOL = 'UNIPOOL',
@@ -45,6 +44,7 @@ export interface IZapConfig {
   poolTokenUUID: string;
   breakdownImage: any;
   breakdownTooltip: string;
+  withdrawTooltip?: React.ReactElement | string;
   positionDetails(): JSX.Element;
 }
 
@@ -96,7 +96,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     breakdownImage: unipoolSethBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
-      BullishIndicator({ text: translateRaw('ZAP_POSITION_BULLISH', { $asset: 'ETH' }) })
+      BullishIndicator({ text: translateRaw('ZAP_POSITION_BULLISH', { $asset: 'ETH' }) }),
+    withdrawTooltip: translate('ZAP_WITHDRAW_TOOLTIP')
   },
 
   unipooldai: {
@@ -117,7 +118,8 @@ export const ZAPS_CONFIG: IZapConfigObject = {
     breakdownImage: unipoolDaiBreakdown,
     breakdownTooltip: translateRaw('ZAP_UNISWAP_TOOLTIP'),
     positionDetails: () =>
-      NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) })
+      NeutralIndicator({ text: translateRaw('ZAP_POSITION_NEUTRAL', { $asset: 'ETH' }) }),
+    withdrawTooltip: translate('ZAP_WITHDRAW_TOOLTIP')
   },
 
   compounddai: {

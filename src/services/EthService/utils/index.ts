@@ -18,7 +18,7 @@ export {
   convertedToBaseUnit
 } from './units';
 export { padLeftEven } from './padLeftEven';
-export { normalise } from './normalise';
+export { normalize } from './normalize';
 export { getTransactionFields } from './getTransactionFields';
 export {
   makeTransaction,

@@ -1,48 +1,45 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
-import {
-  IFormikFields,
-  ITxObject,
-  IHexStrTransaction,
-  Asset,
-  IHexStrWeb3Transaction,
-  ITxData,
-  ITxToAddress,
-  ITxValue,
-  ITxConfig,
-  Network,
-  ExtendedAsset,
-  TAddress,
-  StoreAccount,
-  NetworkId,
-  TTicker
-} from '@types';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
 import {
   Address,
-  toWei,
-  TokenValue,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputNonceToHex,
-  inputGasLimitToHex,
   encodeTransfer,
-  fromTokenBase
+  fromTokenBase,
+  inputGasLimitToHex,
+  inputGasPriceToHex,
+  inputNonceToHex,
+  inputValueToHex,
+  TokenValue,
+  toWei
 } from '@services/EthService';
-import {
-  isSameAddress,
-  generateAssetUUID,
-  guessIfErc20Tx,
-  deriveTxRecipientsAndAmount
-} from '@utils';
-import { handleValues } from '@services/EthService/utils/units';
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
 import { hexNonceToViewable, hexToString } from '@services/EthService/utils/makeTransaction';
+import { handleValues } from '@services/EthService/utils/units';
 import { translateRaw } from '@translations';
+import {
+  Asset,
+  ExtendedAsset,
+  IFormikFields,
+  IHexStrTransaction,
+  IHexStrWeb3Transaction,
+  ITxConfig,
+  ITxData,
+  ITxObject,
+  ITxToAddress,
+  ITxValue,
+  Network,
+  NetworkId,
+  StoreAccount,
+  TAddress,
+  TTicker,
+  TxQueryTypes
+} from '@types';
+import { deriveTxRecipientsAndAmount, generateAssetUUID, isSameAddress } from '@utils';
+import { ERCType, guessERC20Type } from '@utils/transaction';
 import { isEmpty } from '@vendor';
 
+import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
-import { TxParam, TTxQueryParam } from './preFillTx';
 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
@@ -79,17 +76,17 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
   };
 };
 
-export const isERC20Tx = (asset: Asset): boolean => {
+export const isERC20Asset = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
 export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
 export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
   // then we add the extra properties required.
   const { gasLimit, ...tx } = transform(formData);
@@ -107,22 +104,27 @@ export const parseQueryParams = (queryParams: any) => (
 ) => {
   if (!queryParams || isEmpty(queryParams)) return;
   switch (queryParams.type) {
-    case 'resubmit':
+    case TxQueryTypes.SPEEDUP:
       return {
-        type: 'resubmit',
-        txConfig: parseResubmitParams(queryParams)(networks, assets, accounts)
+        type: TxQueryTypes.SPEEDUP,
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
+      };
+    case TxQueryTypes.CANCEL:
+      return {
+        type: TxQueryTypes.CANCEL,
+        txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
-      return { type: 'default' };
+      return { type: TxQueryTypes.DEFAULT };
   }
 };
 
-export const parseResubmitParams = (queryParams: any) => (
+export const parseTransactionQueryParams = (queryParams: any) => (
   networks: Network[],
   assets: ExtendedAsset[],
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
-  // if resubmit tx does not contain all the necessary parameters to construct a tx config return undefined
+  // if speedup tx does not contain all the necessary parameters to construct a tx config return undefined
   const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
     if (queryParams[cv] === undefined) return { ...acc, invalid: true };
     acc[cv] = queryParams[cv];
@@ -147,16 +149,17 @@ export const parseResubmitParams = (queryParams: any) => (
   };
 
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
-  const erc20tx = guessIfErc20Tx(i.data);
+  const ercType = guessERC20Type(i.data);
+  const isERC20 = ercType !== ERCType.NONE;
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
-    erc20tx,
+    ercType,
     i.data,
     i.to,
     i.value
   );
   const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
-  const asset = erc20tx
+  const asset = isERC20
     ? assets.find(
         ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
       ) || generateGenericErc20(to, i.chainId, network.id)

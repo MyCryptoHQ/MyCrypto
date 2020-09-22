@@ -1,19 +1,20 @@
 import React, { Suspense } from 'react';
+
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { Layout, LayoutConfig } from '@features/Layout';
-import { PageNotFound, Dashboard, ScreenLockProvider, DrawerProvider } from '@features';
-import { ScrollToTop, useScreenSize } from '@utils';
-import { useFeatureFlags } from '@services';
 import { ROUTE_PATHS } from '@config';
+import { Dashboard, DrawerProvider, PageNotFound, ScreenLockProvider } from '@features';
+import { Layout, LayoutConfig } from '@features/Layout';
 import {
-  PageVisitsAnalytics,
-  LegacyRoutesHandler,
   DefaultHomeHandler,
-  PrivateRoute,
-  getAppRoutes
+  getAppRoutes,
+  LegacyRoutesHandler,
+  PageVisitsAnalytics,
+  PrivateRoute
 } from '@routing';
+import { useFeatureFlags } from '@services';
 import { COLORS, SPACING } from '@theme';
+import { ScrollToTop, useScreenSize } from '@utils';
 
 import { AppLoading } from './AppLoading';
 
@@ -53,7 +54,7 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
 });
 
 export const AppRoutes = () => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
 
   return (
     <>
@@ -68,7 +69,7 @@ export const AppRoutes = () => {
                   <LayoutWithLocation>
                     <Switch>
                       <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
-                      {getAppRoutes(IS_ACTIVE_FEATURE)
+                      {getAppRoutes(featureFlags)
                         .filter((route) => !route.seperateLayout)
                         .map((config, idx) => (
                           <PrivateRoute key={idx} {...config} />

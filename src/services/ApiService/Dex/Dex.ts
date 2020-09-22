@@ -1,15 +1,15 @@
-import { addHexPrefix } from 'ethereumjs-util';
-import BN from 'bn.js';
 import axios, { AxiosInstance } from 'axios';
+import BN from 'bn.js';
+import { addHexPrefix } from 'ethereumjs-util';
 
-import { TTicker, ITxObject, TAddress, ITxValue, ITxData } from '@types';
-import { DEXAG_MYC_TRADE_CONTRACT, DEXAG_MYC_HANDLER_CONTRACT, DEX_BASE_URL } from '@config';
+import { DEX_BASE_URL, DEXAG_MYC_HANDLER_CONTRACT, DEXAG_MYC_TRADE_CONTRACT } from '@config';
 import { ERC20 } from '@services/EthService';
+import { ITxData, ITxObject, ITxValue, TAddress, TTicker } from '@types';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 const CancelToken = axios.CancelToken;
 let cancel: any = null;
@@ -41,13 +41,8 @@ export default class DexService {
   }
 
   public getTokenList = async (): Promise<DexAsset[]> => {
-    try {
-      const { data: tokenList }: { data: DexAsset[] } = await this.service.get('token-list-full');
-
-      return tokenList;
-    } catch (e) {
-      throw e;
-    }
+    const { data: tokenList }: { data: DexAsset[] } = await this.service.get('token-list-full');
+    return tokenList;
   };
 
   public getTokenPriceFrom = async (
@@ -85,41 +80,37 @@ export default class DexService {
     fromAmount?: string,
     toAmount?: string
   ): Promise<Partial<ITxObject>[]> => {
-    try {
-      const params = {
-        ...DexService.defaultParams,
-        from,
-        to,
-        fromAmount,
-        toAmount,
-        dex: 'ag',
-        proxy: DEXAG_MYC_TRADE_CONTRACT
-      };
-      const { data }: { data: DexTrade } = await this.service.get('trade', {
-        params
-      });
-      const isMultiTx = !!(data.metadata && data.metadata.input);
+    const params = {
+      ...DexService.defaultParams,
+      from,
+      to,
+      fromAmount,
+      toAmount,
+      dex: 'ag',
+      proxy: DEXAG_MYC_TRADE_CONTRACT
+    };
+    const { data }: { data: DexTrade } = await this.service.get('trade', {
+      params
+    });
+    const isMultiTx = !!(data.metadata && data.metadata.input);
 
-      return [
-        // Include the Approve transaction when necessary.
-        // ie. any trade that is not an ETH/Token
-        ...(isMultiTx
-          ? [
-              formatApproveTx({
-                to: data.metadata.input.address,
-                value: data.metadata.input.amount as ITxValue
-              })
-            ]
-          : []),
-        formatTradeTx({
-          to: data.trade.to,
-          data: data.trade.data,
-          value: data.trade.value
-        })
-      ];
-    } catch (e) {
-      throw e;
-    }
+    return [
+      // Include the Approve transaction when necessary.
+      // ie. any trade that is not an ETH/Token
+      ...(isMultiTx
+        ? [
+            formatApproveTx({
+              to: data.metadata.input.address,
+              value: data.metadata.input.amount as ITxValue
+            })
+          ]
+        : []),
+      formatTradeTx({
+        to: data.trade.to,
+        data: data.trade.data,
+        value: data.trade.value
+      })
+    ];
   };
 
   private getTokenPrice = async (

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
+
 import { createPortal } from 'react-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import ModalBody from './ModalBody';
 import { IButton } from './types';

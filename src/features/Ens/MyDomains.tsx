@@ -1,14 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import moment from 'moment';
 
-import { Tooltip, LinkOut, Account, FixedSizeCollapsibleTable } from '@components';
-import { translateRaw } from '@translations';
-import { breakpointToNumber, BREAK_POINTS } from '@theme';
+import styled from 'styled-components';
+
+import { Account, FixedSizeCollapsibleTable, LinkOut, Tooltip } from '@components';
 import { IconID } from '@components/Tooltip';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
+import { BREAK_POINTS, breakpointToNumber } from '@theme';
+import { translateRaw } from '@translations';
+import { formatDateTime, getTimeDifference } from '@utils';
 
-import { MyDomainsProps, DomainNameRecord } from './types';
+import { DomainNameRecord, MyDomainsProps } from './types';
 
 const Label = styled.span`
   display: flex;
@@ -19,12 +20,7 @@ const RowAlignment = styled.div`
   float: ${(props: { align?: string }) => props.align || 'inherit'};
 `;
 
-const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
-
 export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
-  const formatDate = (timestamp: number): string =>
-    moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
-
   const domainTable = {
     head: [
       '',
@@ -34,9 +30,10 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_RENEW_HEADER')
     ],
     body: domainOwnershipRecords.map((record: DomainNameRecord, index: number) => {
+      const unixTimestamp = parseInt(record.expiryDate, 10);
       return [
         <RowAlignment key={index}>
-          {isLessThanAMonth(record.expiryDate, moment().unix()) && (
+          {getTimeDifference(new Date(), unixTimestamp) < SECONDS_IN_MONTH && (
             <Tooltip type={IconID.warning} tooltip={translateRaw('ENS_EXPIRING_SOON')} />
           )}
         </RowAlignment>,
@@ -47,7 +44,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           {record.readableDomainName}
         </RowAlignment>,
         <RowAlignment key={4} align="left">
-          {formatDate(record.expiryDate)}
+          {formatDateTime(unixTimestamp)}
         </RowAlignment>,
         <RowAlignment key={5} align="left">
           <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`} />

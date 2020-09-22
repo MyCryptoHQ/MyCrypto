@@ -11,7 +11,7 @@ interface CustomWindow extends Window {
   Web3Signer?: Web3Provider;
 
   // Makes FeatureFlagProvider functions available during E2E testing
-  setFeatureFlag?(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
+  setFeatureFlag?(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags?(): void;
 }
 
@@ -41,7 +41,7 @@ interface ResizeObserver {
   disconnect(): void;
 }
 
-declare var ResizeObserver: {
+declare const ResizeObserver: {
   prototype: ResizeObserver;
   new (callback: ResizeObserverCallback): ResizeObserver;
 };

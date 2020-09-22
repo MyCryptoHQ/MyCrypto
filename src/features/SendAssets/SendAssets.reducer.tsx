@@ -1,29 +1,26 @@
 import { hexlify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
+import { getBaseAssetByNetwork, hexWeiToString } from '@services';
 import {
-  ITxObject,
   Asset,
-  TAddress,
-  ITxConfig,
-  ITxReceipt,
   ISignedTx,
+  ITxConfig,
   ITxHash,
+  ITxObject,
+  ITxReceipt,
   ITxType,
-  TAction
+  TAction,
+  TAddress,
+  TxQueryTypes
 } from '@types';
-import {
-  getBaseAssetByNetwork,
-  hexWeiToString,
-  bigNumGasPriceToViewableGwei,
-  inputGasPriceToHex
-} from '@services';
-import { makePendingTxReceipt, makeTxConfigFromSignedTx, bigify } from '@utils';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 
 import { processFormDataToTx } from './helpers';
 
 interface State {
-  type?: 'resubmit';
+  txNumber: number;
+  txQueryType?: TxQueryTypes;
   txConfig?: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: ISignedTx;
@@ -33,7 +30,7 @@ interface State {
 export type ReducerAction = TAction<ValuesType<typeof sendAssetsReducer.actionTypes>, any>;
 
 // @ts-ignore
-export const initialState: State = { txConfig: {} };
+export const initialState: State = { txConfig: {}, txNumber: 0 };
 
 export const sendAssetsReducer = (state: State, action: ReducerAction): State => {
   switch (action.type) {
@@ -63,8 +60,8 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
     }
 
     case sendAssetsReducer.actionTypes.SET_TXCONFIG: {
-      const { txConfig, type } = action.payload;
-      return { ...state, type, txConfig };
+      const { txConfig, txQueryType } = action.payload;
+      return { txQueryType, txConfig, txNumber: state.txNumber + 1 };
     }
 
     case sendAssetsReducer.actionTypes.SIGN_SUCCESS: {
@@ -101,22 +98,6 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
       return { ...state, send: false, txReceipt };
     }
 
-    case sendAssetsReducer.actionTypes.REQUEST_RESUBMIT: {
-      const { txConfig: prevTxConfig } = state;
-      const rawTransaction = prevTxConfig!.rawTransaction;
-
-      // add 10 gwei to current gas price
-      const resubmitGasPrice =
-        parseFloat(bigNumGasPriceToViewableGwei(bigify(rawTransaction.gasPrice))) + 10;
-      const hexGasPrice = inputGasPriceToHex(resubmitGasPrice.toString());
-
-      const txConfig = {
-        ...prevTxConfig!,
-        rawTransaction: { ...rawTransaction, gasPrice: hexGasPrice }
-      };
-      return { ...state, txConfig };
-    }
-
     case sendAssetsReducer.actionTypes.RESET:
       return initialState;
     default:
@@ -130,7 +111,6 @@ sendAssetsReducer.actionTypes = {
   WEB3_SIGN_SUCCESS: 'WEB3_SIGN_SUCCESS',
   REQUEST_SEND: 'REQUEST_SEND',
   SEND_SUCCESS: 'SEND_SUCCESS',
-  REQUEST_RESUBMIT: 'REQUEST_RESUBMIT',
   RESET: 'RESET',
   SET_TXCONFIG: 'SET_TXCONFIG'
 };

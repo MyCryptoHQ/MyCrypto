@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
 
 import { fAssets } from '@fixtures';
-import { LSKeys, TUuid, ExtendedAsset } from '@types';
+import { ExtendedAsset, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';
@@ -18,7 +19,7 @@ const renderUseAssets = ({ assets = [] as ExtendedAsset[], createActions = jest.
 };
 
 describe('useAssets', () => {
-  it('uses get assets from DataContext ', () => {
+  it('uses get assets from DataContext', () => {
     const { result } = renderUseAssets({ assets: fAssets });
     expect(result.current.assets).toEqual(fAssets);
   });
@@ -26,7 +27,7 @@ describe('useAssets', () => {
   it('uses a valid data model', () => {
     const createActions = jest.fn();
     renderUseAssets({ createActions });
-    expect(createActions).toBeCalledWith(LSKeys.ASSETS);
+    expect(createActions).toHaveBeenCalledWith(LSKeys.ASSETS);
   });
 
   it('createAssetWithID() calls model.createWithID', () => {
@@ -36,7 +37,7 @@ describe('useAssets', () => {
       createActions: jest.fn(() => ({ createWithID: mockCreate }))
     });
     result.current.createAssetWithID(fAssets[0], 'MyUUID' as TUuid);
-    expect(mockCreate).toBeCalledWith(fAssets[0], 'MyUUID');
+    expect(mockCreate).toHaveBeenCalledWith(fAssets[0], 'MyUUID');
   });
 
   it('getAssetByUUID() finds an asset and returns it', () => {
@@ -58,6 +59,6 @@ describe('useAssets', () => {
       return obj;
     }, {});
     result.current.addAssetsFromAPI(assets);
-    expect(mockUpdateAll).toBeCalledWith(expect.arrayContaining(fAssets));
+    expect(mockUpdateAll).toHaveBeenCalledWith(expect.arrayContaining(fAssets));
   });
 });

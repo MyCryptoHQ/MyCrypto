@@ -1,39 +1,40 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Button, Identicon } from '@mycrypto/ui';
-import isNumber from 'lodash/isNumber';
-import cloneDeep from 'lodash/cloneDeep';
 
-import { translateRaw } from '@translations';
-import { ROUTE_PATHS, getWalletConfig } from '@config';
+import { Button, Identicon } from '@mycrypto/ui';
+import cloneDeep from 'lodash/cloneDeep';
+import isNumber from 'lodash/isNumber';
+import styled, { css } from 'styled-components';
+
+import informationalSVG from '@assets/images/icn-info-blue.svg';
 import {
+  EditableAccountLabel,
   EthAddress,
-  Network,
-  RowDeleteOverlay,
-  RouterLink,
-  UndoDeleteOverlay,
   FixedSizeCollapsibleTable,
-  EditableAccountLabel
+  Network,
+  RouterLink,
+  RowDeleteOverlay,
+  UndoDeleteOverlay
 } from '@components';
-import { truncate } from '@utils';
-import { BREAK_POINTS, COLORS, SPACING, breakpointToNumber } from '@theme';
-import { IAccount, StoreAccount, ExtendedContact, WalletId, TUuid } from '@types';
+import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { getFiat } from '@config/fiats';
+import { useFeatureFlags, useRates } from '@services';
 import {
-  AccountContext,
   getLabelByAccount,
   StoreContext,
-  SettingsContext,
-  useContacts
+  useAccounts,
+  useContacts,
+  useSettings
 } from '@services/Store';
-import { useFeatureFlags, useRates } from '@services';
-import { getFiat } from '@config/fiats';
+import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
+import { truncate } from '@utils';
 
-import { DashboardPanel } from './DashboardPanel';
-import { default as Currency } from './Currency';
-import IconArrow from './IconArrow';
 import Checkbox from './Checkbox';
+import { default as Currency } from './Currency';
+import { DashboardPanel } from './DashboardPanel';
+import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
-import informationalSVG from '@assets/images/icn-info-blue.svg';
 
 const Label = styled.span`
   display: flex;
@@ -199,7 +200,7 @@ export default function AccountList(props: AccountListProps) {
   const { deleteAccountFromCache, restoreDeletedAccount, accountRestore } = useContext(
     StoreContext
   );
-  const { updateAccount } = useContext(AccountContext);
+  const { updateAccount } = useAccounts();
   const [deletingIndex, setDeletingIndex] = useState<number | undefined>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
@@ -243,11 +244,12 @@ export default function AccountList(props: AccountListProps) {
       actionLink={actionLink}
       className={`AccountList ${className}`}
       footer={<Footer />}
+      data-testid="account-list"
     >
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
         maxHeight={'450px'}
-        {...buildAccountTable(
+        {...BuildAccountTable(
           getDisplayAccounts(),
           deleteAccountFromCache,
           updateAccount,
@@ -335,7 +337,7 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
-const buildAccountTable = (
+const BuildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
   updateAccount: (u: TUuid, a: IAccount) => void,
@@ -348,13 +350,13 @@ const buildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
   const { getAssetRate } = useRates();
-  const { settings } = useContext(SettingsContext);
-  const { contacts } = useContacts();
-  const { toggleAccountPrivacy } = useContext(AccountContext);
+  const { settings } = useSettings();
+  const { contacts, createContact, updateContact } = useContacts();
+  const { toggleAccountPrivacy } = useAccounts();
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
   const updateSortingState = (id: IColumnValues) => {
@@ -510,6 +512,8 @@ const buildAccountTable = (
               addressBookEntry={addressCard}
               address={account.address}
               networkId={account.networkId}
+              createContact={createContact}
+              updateContact={updateContact}
             />
             <WalletLabelContainer>
               {account.wallet === WalletId.VIEW_ONLY && (
@@ -518,7 +522,7 @@ const buildAccountTable = (
                 </Tooltip>
               )}
               <WalletTypeLabel>{getWalletConfig(account.wallet).name}</WalletTypeLabel>
-              {IS_ACTIVE_FEATURE.PRIVATE_TAGS && account.isPrivate && (
+              {featureFlags.PRIVATE_TAGS && account.isPrivate && (
                 <PrivateWalletLabel>{translateRaw('PRIVATE_ACCOUNT')}</PrivateWalletLabel>
               )}
             </WalletLabelContainer>

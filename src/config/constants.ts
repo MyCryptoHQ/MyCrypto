@@ -1,4 +1,4 @@
-import { NetworkId, TURL, TTicker } from '@types';
+import { NetworkId, TTicker, TURL } from '@types';
 
 export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
 
@@ -17,6 +17,8 @@ export const TOKEN_INFO_URL = 'https://api.mycryptoapi.com/tokens';
 
 // The URL for MYC api.
 export const MYC_API = 'https://mycryptoapi.com/api/v1';
+
+export const HISTORY_API = 'https://history.mycryptoapi.com/history';
 
 export const NANSEN_API = 'https://nansen.mycryptoapi.com/v1';
 
@@ -53,3 +55,5 @@ export const DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN = 5;
 export const DEFAULT_GAP_TO_SCAN_FOR = 5;
 
 export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';
+
+export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;

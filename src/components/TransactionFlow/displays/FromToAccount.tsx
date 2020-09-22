@@ -1,11 +1,12 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
+import { Account, EditableAccountLabel, Typography } from '@components';
+import { useContacts } from '@services';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
-
-import { COLORS, BREAK_POINTS, SPACING } from '@theme';
-import { Typography, EditableAccountLabel, Account } from '@components';
-import { NetworkId, TAddress, ExtendedContact } from '@types';
+import { ExtendedContact, NetworkId, TAddress } from '@types';
 
 export interface IAddressAndLabel {
   address: TAddress;
@@ -69,15 +70,20 @@ const LabelWrapper = styled.div`
 `;
 
 const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = true }: Props) => {
+  const { updateContact, createContact } = useContacts();
   const editableFromAccountLabel = EditableAccountLabel({
     address: fromAccount.address,
     addressBookEntry: fromAccount.addressBookEntry,
-    networkId
+    networkId,
+    createContact,
+    updateContact
   });
   const editableToAccountLabel = EditableAccountLabel({
     address: toAccount.address,
     addressBookEntry: toAccount.addressBookEntry,
-    networkId
+    networkId,
+    createContact,
+    updateContact
   });
   return (
     <Addresses>

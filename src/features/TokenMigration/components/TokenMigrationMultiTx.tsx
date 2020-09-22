@@ -1,12 +1,12 @@
 import React from 'react';
+
 import path from 'ramda/src/path';
 
-import { ITxStatus, TxParcel } from '@types';
+import step2SVG from '@assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-send.svg';
 import { VerticalStepper } from '@components';
 import { translateRaw } from '@translations';
-
-import step1SVG from '@assets/images/icn-send.svg';
-import step2SVG from '@assets/images/icn-receive.svg';
+import { ITxStatus, TxParcel } from '@types';
 
 interface Props {
   currentTxIdx: number;

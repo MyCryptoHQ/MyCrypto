@@ -1,6 +1,6 @@
-import { IAccount, Contact, Network, WalletId, ExtendedContact, TAddress } from '@types';
+import { DEFAULT_NETWORK, getWalletConfig } from '@config';
+import { Contact, ExtendedContact, IAccount, Network, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
-import { getWalletConfig, DEFAULT_NETWORK } from '@config';
 
 export const getLabelByAccount = (
   account: IAccount,

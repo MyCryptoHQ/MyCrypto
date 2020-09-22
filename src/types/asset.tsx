@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { Brand } from 'utility-types';
 
-import { NetworkId, TUuid, AssetSocial } from '@types';
+import { AssetSocial, NetworkId, TUuid } from '@types';
 
 export type TTicker = Brand<string, 'Ticker'>;
 export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;
@@ -14,6 +14,12 @@ export interface Fiat {
   ticker: TFiatTicker;
   symbol: TCurrencySymbol;
   prefix?: boolean;
+}
+
+export interface IMappings {
+  readonly coinGeckoId?: string;
+  readonly cryptoCompareId?: string;
+  readonly coinCapId?: string;
 }
 
 export interface Asset {
@@ -31,11 +37,7 @@ export interface ExtendedAsset extends Asset {
   website?: string;
   whitepaper?: string;
   social?: AssetSocial;
-  mappings?: {
-    coinGeckoId?: string;
-    cryptoCompareId?: string;
-    coinCapId?: string;
-  };
+  mappings?: IMappings;
 }
 
 export interface ReserveAsset extends Asset {

@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Typography } from '@mycrypto/ui';
+import React from 'react';
 
-import translate, { translateRaw } from '@translations';
-import { ContentPanel, Downloader, Button, RouterLink } from '@components';
-import { SettingsContext } from '@services/Store';
+import { Typography } from '@mycrypto/ui';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { Button, ContentPanel, Downloader, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
+import { useSettings } from '@services/Store';
 import { COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -28,7 +29,7 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps<{}>) {
   const { history } = props;
   const onBack = history.goBack;
-  const { exportStorage } = useContext(SettingsContext);
+  const { exportStorage } = useSettings();
   const data = exportStorage();
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>

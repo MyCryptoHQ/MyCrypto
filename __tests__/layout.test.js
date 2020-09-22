@@ -1,6 +1,7 @@
 import { Selector } from 'testcafe';
-import { PAGES } from './fixtures';
+
 import AddAccountPage from './addaccount-page.po';
+import { PAGES } from './fixtures';
 
 const addAccountPage = new AddAccountPage();
 

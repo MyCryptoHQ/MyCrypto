@@ -1,10 +1,11 @@
 import React from 'react';
-import { List, Button } from '@mycrypto/ui';
+
+import { Button, List } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Contact, IAccount } from '@types';
-import { getLabelByAccount, useContacts } from '@services/Store';
 import { Account } from '@components';
+import { getLabelByAccount, useContacts } from '@services/Store';
+import { Contact, IAccount } from '@types';
 
 const AccountContainer = styled.div`
   display: flex;

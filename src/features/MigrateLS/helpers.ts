@@ -1,6 +1,6 @@
-import { prop, path } from '@vendor';
-import { TURL } from '@types';
 import { getCurrentDBConfig } from '@database';
+import { TURL } from '@types';
+import { path, prop } from '@vendor';
 
 const getDomain: (obj: Document) => string | undefined = prop('domain');
 export const DBName = prop('main', getCurrentDBConfig());

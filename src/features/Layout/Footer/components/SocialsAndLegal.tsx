@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { ANALYTICS_CATEGORIES } from '@services';
-import { socialMediaLinks, VERSION } from '@config';
-import { translateRaw } from '@translations';
 import { DisclaimerModal, NewTabLink } from '@components';
+import { socialMediaLinks, VERSION } from '@config';
+import { ANALYTICS_CATEGORIES } from '@services';
+import { translateRaw } from '@translations';
 import './SocialsAndLegal.scss';
 import { useAnalytics } from '@utils';
 

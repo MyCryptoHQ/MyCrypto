@@ -1,19 +1,19 @@
-import BN from 'bignumber.js';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import BN from 'bignumber.js';
 import flatten from 'ramda/src/flatten';
 
-import { Network, ExtendedAsset, WalletId, TAddress } from '@types';
 import {
+  BalanceMap,
   getBaseAssetBalances,
-  getTokenAssetBalances,
-  BalanceMap
+  getTokenAssetBalances
 } from '@services/Store/BalanceService';
+import { ExtendedAsset, Network, TAddress, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { LedgerUSB, Wallet, getDeterministicWallets } from '..';
-import { LedgerU2F, Trezor, MnemonicPhrase, WalletResult } from '../wallets';
+import { getDeterministicWallets, LedgerUSB, Wallet } from '..';
+import { LedgerU2F, MnemonicPhrase, Trezor, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
-import { IDeterministicWalletService, DWAccountDisplay, ExtendedDPath } from './types';
+import { DWAccountDisplay, ExtendedDPath, IDeterministicWalletService } from './types';
 
 interface IPrefetchBundle {
   [key: string]: KeyInfo;
@@ -33,11 +33,12 @@ interface EventHandlers {
 const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string) => {
   switch (walletId) {
     default:
-    case WalletId.LEDGER_NANO_S_NEW:
+    case WalletId.LEDGER_NANO_S_NEW: {
       const isWebUSBSupported = !navigator.platform.includes('Win')
         ? await TransportWebUSB.isSupported().catch(() => false)
         : false;
       return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
+    }
     case WalletId.TREZOR_NEW:
       return new Trezor();
     case WalletId.MNEMONIC_PHRASE_NEW: {

@@ -1,11 +1,11 @@
 import {
-  fromWei,
-  Wei,
-  toWei,
-  toTokenBase,
   fromTokenBase,
+  fromWei,
   getDecimalFromEtherUnit,
-  TokenValue
+  TokenValue,
+  toTokenBase,
+  toWei,
+  Wei
 } from '@services/EthService';
 import { convertTokenBase } from '@services/EthService/utils/units';
 
@@ -93,7 +93,7 @@ describe('Units', () => {
         expect(converted).toEqual('0.00008');
       });
       it('toTokenBase should equal 8000', () => {
-        expect(toTokenBase(converted, decimal));
+        expect(toTokenBase(converted, decimal).toString()).toEqual('8000');
       });
     });
     describe('convertTokenBase', () => {

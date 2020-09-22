@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
+
 import styled from 'styled-components';
-import { StoreContext } from '@services';
-import { TUuid } from '@types';
-import { MYC_API } from '@config';
-import { CoinGeckoManifest } from '@services/Store/StoreProvider';
 
 import genericIcon from '@assets/generic.svg';
+import { MYC_API } from '@config';
+import { StoreContext } from '@services';
+import { CoinGeckoManifest } from '@services/Store/StoreProvider';
+import { TUuid } from '@types';
 
 const baseURL = `${MYC_API}/images`;
 

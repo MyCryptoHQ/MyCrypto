@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import styled from 'styled-components';
 
 const ProtectedTransactionModalBackdropLayout = styled.div`

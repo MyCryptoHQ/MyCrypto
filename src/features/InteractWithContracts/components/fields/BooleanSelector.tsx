@@ -1,9 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-import { OptionProps } from 'react-select';
 
-import { Contract } from '@types';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
+
 import { Selector } from '@components';
+import { Contract } from '@types';
 
 import FieldLabel from './FieldLabel';
 

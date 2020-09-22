@@ -1,20 +1,20 @@
 import React, { useContext } from 'react';
 
-import styled from 'styled-components';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
+import styled from 'styled-components';
 
-import { AccountSelector, Button, Typography, GasSelector } from '@components';
-import { StoreAccount, ITxConfig, Network } from '@types';
+import { AccountSelector, Button, GasSelector, Typography } from '@components';
 import {
-  StoreContext,
-  hexToString,
   baseToConvertedUnit,
+  hexToString,
+  hexWeiToString,
   inputGasPriceToHex,
-  hexWeiToString
+  StoreContext
 } from '@services';
-import { translateRaw } from '@translations';
 import { COLORS } from '@theme';
+import { translateRaw } from '@translations';
+import { ITxConfig, Network, StoreAccount } from '@types';
 
 import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';

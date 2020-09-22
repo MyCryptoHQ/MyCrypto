@@ -1,33 +1,34 @@
 import React, { useContext } from 'react';
-import { Formik, Field, Form, FieldProps, FormikProps } from 'formik';
-import { Panel, Input } from '@mycrypto/ui';
-import { Button, Link, Checkbox } from '@components';
+
+import { Input, Panel } from '@mycrypto/ui';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import styled, { css } from 'styled-components';
 
-import { DEFAULT_NETWORK, IIS_ACTIVE_FEATURE } from '@config';
-import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
-import {
-  AccountContext,
-  getLabelByAddressAndNetwork,
-  DataContext,
-  useNetworks,
-  useContacts
-} from '@services/Store';
+import { Button, Checkbox, Link } from '@components';
+import { DEFAULT_NETWORK, IFeatureFlags } from '@config';
 import { useDevTools, useFeatureFlags } from '@services';
 import {
-  TAddress,
-  IRawAccount,
-  Contact,
-  WalletId,
-  AssetBalanceObject,
-  ExtendedContact,
-  Network
-} from '@types';
+  DataContext,
+  getLabelByAddressAndNetwork,
+  useAccounts,
+  useContacts,
+  useNetworks
+} from '@services/Store';
 import { BREAK_POINTS } from '@theme';
+import {
+  AssetBalanceObject,
+  Contact,
+  ExtendedContact,
+  IRawAccount,
+  Network,
+  TAddress,
+  WalletId
+} from '@types';
+import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
 
-import ToolsNotifications from './ToolsNotifications';
-import ToolsAccountList from './ToolsAccountList';
 import { ErrorContext } from '../ErrorHandling';
+import ToolsAccountList from './ToolsAccountList';
+import ToolsNotifications from './ToolsNotifications';
 
 const DevToolsInput = styled(Input)`
   font-size: 1em;
@@ -133,27 +134,31 @@ const ErrorTools = () => {
 };
 
 const FeatureFlags = () => {
-  const { IS_ACTIVE_FEATURE, setFeatureFlag } = useFeatureFlags();
+  const { featureFlags, setFeatureFlag } = useFeatureFlags();
   return (
-    <>
-      {' '}
-      {Object.entries(IS_ACTIVE_FEATURE).map((f) => (
-        <Checkbox
-          key={f[0]}
-          name={f[0]}
-          label={f[0]}
-          checked={f[1]}
-          onChange={() => setFeatureFlag(f[0] as keyof IIS_ACTIVE_FEATURE, !f[1])}
-        />
-      ))}{' '}
-    </>
+    <div style={{ marginBottom: '1em' }}>
+      <p style={{ fontWeight: 600 }}>Feature Flags</p>
+      <div>
+        {Object.entries(featureFlags)
+          .filter(([, v]) => v !== 'core')
+          .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+            <Checkbox
+              key={k}
+              name={k}
+              label={k}
+              checked={v}
+              onChange={() => setFeatureFlag(k, !v)}
+            />
+          ))}
+      </div>
+    </div>
   );
 };
 
 const DevTools = () => {
   const { getNetworkById } = useNetworks();
   const { contacts } = useContacts();
-  const { accounts, createAccountWithID, deleteAccount } = useContext(AccountContext);
+  const { accounts, createAccountWithID, deleteAccount } = useAccounts();
   const dummyAccount = {
     label: 'Foo',
     address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d' as TAddress,
@@ -193,7 +198,7 @@ const DevTools = () => {
         <Formik
           initialValues={dummyAccount}
           onSubmit={(values: IRawAccount, { setSubmitting }) => {
-            createAccountWithID(values, generateUUID());
+            createAccountWithID(generateUUID(), values);
             setSubmitting(false);
           }}
         >

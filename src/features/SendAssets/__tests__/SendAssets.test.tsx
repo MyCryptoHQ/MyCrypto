@@ -1,13 +1,12 @@
 import React from 'react';
+
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { FeatureFlagContext, RatesContext } from '@services';
-import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings, fAssets } from '@fixtures';
-import { IS_ACTIVE_FEATURE } from '@config';
-import { noOp } from '@utils';
+import { fAssets, fSettings } from '@fixtures';
+import { FeatureFlagProvider, RatesContext } from '@services';
+import { DataContext, StoreContext } from '@services/Store';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('ethers/providers', () => {
@@ -27,38 +26,29 @@ describe('SendAssetsFlow', () => {
         value={
           {
             addressBook: [],
+            settings: fSettings,
             assets: fAssets,
             createActions: jest.fn()
           } as any
         }
       >
-        <FeatureFlagContext.Provider
-          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
-        >
-          <SettingsContext.Provider
+        <FeatureFlagProvider>
+          <StoreContext.Provider
             value={
               ({
-                settings: fSettings
+                userAssets: [],
+                accounts: [],
+                defaultAccount: { assets: [] },
+                getAccount: jest.fn(),
+                networks: [{ nodes: [] }]
               } as unknown) as any
             }
           >
-            <StoreContext.Provider
-              value={
-                ({
-                  userAssets: [],
-                  accounts: [],
-                  defaultAccount: { assets: [] },
-                  getAccount: jest.fn(),
-                  networks: [{ nodes: [] }]
-                } as unknown) as any
-              }
-            >
-              <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
-                <SendAssets />
-              </RatesContext.Provider>
-            </StoreContext.Provider>
-          </SettingsContext.Provider>
-        </FeatureFlagContext.Provider>
+            <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
+              <SendAssets />
+            </RatesContext.Provider>
+          </StoreContext.Provider>
+        </FeatureFlagProvider>
       </DataContext.Provider>
     </MemoryRouter>
   );

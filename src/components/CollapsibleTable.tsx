@@ -4,14 +4,14 @@
 */
 
 import React, { Component, ReactNode } from 'react';
-import throttle from 'lodash/throttle';
+
+import { Icon, scale, StackedCardData, Typography } from '@mycrypto/ui';
 import isFunction from 'lodash/isFunction';
+import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 
-import { scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
-
-import { Table, TableData, TableConfig } from './Table';
 import { StackedCard } from './StackedCard';
+import { Table, TableConfig, TableData } from './Table';
 
 export enum CollapsibleTableModes {
   Mobile,
@@ -106,6 +106,7 @@ const GroupHeading = styled(Typography)`
   text-transform: uppercase;
   font-size: ${scale(2)};
   cursor: pointer;
+  z-index: 3;
 `;
 
 GroupHeading.defaultProps = {

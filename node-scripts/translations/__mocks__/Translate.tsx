@@ -1,14 +1,15 @@
 import React from 'react';
-import translate, { translateRaw, translateMarker, Trans } from '@translations';
+
+import translate, { Trans, translateMarker, translateRaw } from '@translations';
 
 const Translate: React.FC = () => {
   const translateTest2 = translate('TRANSLATE_TEST_2');
   const translateTest2Duplicate = translate('TRANSLATE_TEST_2');
   const translateTest2Reduplicate = translate('TRANSLATE_TEST_2');
-  const translateTest3 = translate('TRANSLATE_TEST_3', {$var1: 'var-1'});
+  const translateTest3 = translate('TRANSLATE_TEST_3', { $var1: 'var-1' });
 
   const mapTranslationKey = (message: string) => {
-    switch(message) {
+    switch (message) {
       case 'success':
         return translateMarker('TRANSLATE_TEST_4');
       case 'error':
@@ -35,3 +36,5 @@ const Translate: React.FC = () => {
     </div>
   );
 };
+
+export default Translate;

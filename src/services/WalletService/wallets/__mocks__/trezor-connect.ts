@@ -1,5 +1,5 @@
 // @ts-ignore
-import { TrezorData, GetPublicKeyPayload, EthereumGetAddressPayload } from 'trezor-connect';
+import { EthereumGetAddressPayload, GetPublicKeyPayload, TrezorData } from 'trezor-connect';
 
 export default {
   manifest: jest.fn(),

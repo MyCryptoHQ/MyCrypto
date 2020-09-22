@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { Network, Button } from '@mycrypto/ui';
-import { bigNumberify, BigNumber } from 'ethers/utils';
+
+import { Button, Network } from '@mycrypto/ui';
+import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { Asset, ITxObject, Fiat } from '@types';
-import {
-  baseToConvertedUnit,
-  totalTxFeeToString,
-  calculateGasUsedPercentage
-} from '@services/EthService';
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { weiToFloat, isTransactionDataEmpty, convertToFiat } from '@utils';
-import translate, { translateRaw } from '@translations';
+import {
+  baseToConvertedUnit,
+  calculateGasUsedPercentage,
+  totalTxFeeToString
+} from '@services/EthService';
 import { COLORS } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, Fiat, ITxObject } from '@types';
+import { convertToFiat, isTransactionDataEmpty, weiToFloat } from '@utils';
 
 import { ISender } from '../types';
 
@@ -127,26 +128,24 @@ function TransactionDetailsDisplay({
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
-            {confirmations && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">
-                  {translateRaw('CONFIRMATIONS')}:
-                </div>
-                <div className="TransactionDetails-row-column">{`${confirmations}`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('CONFIRMATIONS')}:</div>
+              <div className="TransactionDetails-row-column">
+                {confirmations ? `${confirmations}` : translate('UNKNOWN')}
               </div>
-            )}
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
-            {gasUsed && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
-                <div className="TransactionDetails-row-column">{`${gasUsed.toString()} (${gasUsedPercentage?.toFixed(
-                  2
-                )}%)`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
+              <div className="TransactionDetails-row-column">
+                {gasUsed
+                  ? `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
+                  : translate('UNKNOWN')}
               </div>
-            )}
+            </div>
             {baseAsset && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
@@ -156,14 +155,16 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
-            {actualTxFeeBase && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">
-                  {translateRaw('TRANSACTION_FEE')}:
-                </div>
-                <div className="TransactionDetails-row-column">{`${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`}</div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">
+                {translateRaw('TRANSACTION_FEE')}:
               </div>
-            )}
+              <div className="TransactionDetails-row-column">
+                {actualTxFeeBase
+                  ? `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
+                  : translate('UNKNOWN')}
+              </div>
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
               <div className="TransactionDetails-row-column">

@@ -1,3 +1,6 @@
+import { fNetwork as network } from './network';
+import { default as txConfig } from './txConfig.json';
+
 export { fAssets, fStoreAssets } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
@@ -16,10 +19,6 @@ export {
   fFinishedERC20Web3TxReceipt
 } from './transaction';
 export { fSettings } from './settings';
-
-import { default as txConfig } from './txConfig.json';
-
-import { fNetwork as network } from './network';
 export const fTxConfig = { ...txConfig, network };
 
 export { default as fTxConfigs } from './txConfigs.json';
@@ -45,3 +44,17 @@ export { default as fETHNonWeb3TxConfigJSON } from './ethNonWeb3TxConfig.json';
 export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';
 
 export { fDefiReserveRates } from './defiRates';
+export { fTxHistoryAPI } from './txHistory';
+
+export {
+  fAdvancedETHTxSendFormikFields,
+  fAdvancedERC20TxSendFormikFields,
+  fERC20TxSendFormikFields,
+  fETHTxSendFormikFields
+} from './sendFormFields';
+
+export { fNotifications } from './notifications';
+
+export { fRates } from './rates';
+
+export { SCHEMA_BASE as fLocalStorage } from '@database/data';

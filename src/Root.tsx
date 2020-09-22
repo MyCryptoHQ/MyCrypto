@@ -1,73 +1,47 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { HashRouter, BrowserRouter } from 'react-router-dom';
 
-import { GAU_THEME } from '@theme';
-import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
+import { theme } from '@theme';
+import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
+
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
 
-const AppProvidersInnerContainer = styled.div`
+const FullHeight = styled.div`
   display: flex;
   min-height: 100%;
 `;
-const AppRouterContainer = styled.div`
+const FullScreen = styled.div`
   flex: 1;
   max-width: 100vw;
   max-height: 100vh;
 `;
 
-class RootClass extends Component {
-  public componentDidMount() {
-    this.addBodyClasses();
-  }
+const RootClass = () => {
+  const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
-  public render() {
-    const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
-
-    return (
-      <ThemeProvider theme={GAU_THEME}>
-        <Router>
-          <AppProviders>
-            <AppProvidersInnerContainer>
-              {/* DevToolsManager */}
-              <DevToolsManager />
-
-              {/* Router */}
-              <AppRouterContainer>
-                <AppRoutes />
-                <div id="ModalContainer" />
-                {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
-              </AppRouterContainer>
-            </AppProvidersInnerContainer>
-          </AppProviders>
-        </Router>
-      </ThemeProvider>
-    );
-  }
-
-  private addBodyClasses() {
-    const classes: string[] = [];
-
-    if (IS_ELECTRON) {
-      classes.push('is-electron');
-
-      if (navigator.appVersion.includes('Win')) {
-        classes.push('is-windows');
-      } else if (navigator.appVersion.includes('Mac')) {
-        classes.push('is-osx');
-      } else {
-        classes.push('is-linux');
-      }
-    }
-
-    document.body.className += ` ${classes.join(' ')}`;
-  }
-}
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppProviders>
+          <FullHeight>
+            <DevToolsManager />
+            <FullScreen id="ModalContainer">
+              <AppRoutes />
+              {IS_ELECTRON && <NewAppReleaseModal />}
+            </FullScreen>
+          </FullHeight>
+        </AppProviders>
+      </Router>
+    </ThemeProvider>
+  );
+};
 
 // Silence RHL 'reconciliation failed' errors
 // https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021

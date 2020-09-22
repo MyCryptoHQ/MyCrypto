@@ -1,7 +1,10 @@
 import React from 'react';
-import { fNetwork, fContracts } from '@fixtures';
-import { Formik, Form } from 'formik';
+
+import { Form, Formik } from 'formik';
+
+import { fContracts, fNetwork } from '@fixtures';
 import { IReceiverAddress } from '@types';
+
 import ContractLookupField from './ContractLookupField';
 
 const props = {

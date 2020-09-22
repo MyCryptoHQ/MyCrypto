@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import downloadIcon from '@assets/images/icn-download.svg';
+import keystoreIcon from '@assets/images/icn-keystore.svg';
 import { ExtendedContentPanel, InlineMessage } from '@components';
 import { PanelProps } from '@features/CreateWallet';
 import translate, { translateRaw } from '@translations';
-
-import keystoreIcon from '@assets/images/icn-keystore.svg';
-import downloadIcon from '@assets/images/icn-download.svg';
 
 const DownloadImage = styled.img`
   width: 16px;

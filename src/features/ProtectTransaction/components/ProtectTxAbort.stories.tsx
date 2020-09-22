@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 
 import { noOp } from '@utils';
 
-import { ProtectTxAbort } from './ProtectTxAbort';
 import ProtectTxProvider from '../ProtectTxProvider';
+import { ProtectTxAbort } from './ProtectTxAbort';
 
 const AbortTransaction = () => (
   <div style={{ width: '700px', position: 'relative' }}>
@@ -14,7 +15,7 @@ const AbortTransaction = () => (
 
 storiesOf('ProtectTransaction', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Abort transaction', (_) => AbortTransaction(), {
+  .add('Abort transaction', () => AbortTransaction(), {
     design: {
       type: 'figma',
       url:

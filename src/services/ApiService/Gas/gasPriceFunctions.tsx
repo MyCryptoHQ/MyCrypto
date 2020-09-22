@@ -1,6 +1,7 @@
 import { GAS_PRICE_DEFAULT } from '@config';
-import { ITxObject, GasEstimates, Network, IHexStrWeb3Transaction } from '@types';
 import { ProviderHandler } from '@services/EthService';
+import { GasEstimates, IHexStrWeb3Transaction, ITxObject, Network } from '@types';
+
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network: Network | undefined) {

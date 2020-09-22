@@ -1,16 +1,16 @@
 import { Brand } from 'utility-types';
 
-import {
-  Asset,
-  Network as INetwork,
-  GasEstimates,
-  ITxReceipt,
-  WalletId,
-  StoreAccount,
-  TAddress
-} from '@types';
 import { IZapConfig } from '@features/DeFiZap/config';
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
+import {
+  Asset,
+  GasEstimates,
+  Network as INetwork,
+  ITxReceipt,
+  StoreAccount,
+  TAddress,
+  WalletId
+} from '@types';
 
 export type ISignedTx = string;
 
@@ -85,6 +85,7 @@ export interface IStepComponentProps extends IDefaultStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txType?: ITxType;
+  txQueryType?: TxQueryTypes;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;
@@ -94,6 +95,7 @@ export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
+  txQueryType?: TxQueryTypes;
   zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;
@@ -160,3 +162,9 @@ export interface ISimpleTxFormFull extends ISimpleTxForm {
 }
 
 export type TStepAction = (payload: any, after: () => void) => void;
+
+export enum TxQueryTypes {
+  SPEEDUP = 'speedup',
+  CANCEL = 'cancel',
+  DEFAULT = 'default'
+}

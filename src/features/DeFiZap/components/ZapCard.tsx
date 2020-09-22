@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { formatEther } from 'ethers/utils';
 
-import { RouterLink, Tooltip, Button } from '@components';
-import { ROUTE_PATHS } from '@config';
-import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
-import { weiToFloat, trimBN } from '@utils';
-import { StoreContext, getTotalByAsset, useRates } from '@services';
-import translate, { translateRaw } from '@translations';
+import { formatEther } from 'ethers/utils';
+import styled from 'styled-components';
+
+import { Button, RouterLink, Tooltip } from '@components';
 import { IconID } from '@components/Tooltip';
+import { ROUTE_PATHS } from '@config';
+import { getTotalByAsset, StoreContext, useRates } from '@services';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { trimBN, weiToFloat } from '@utils';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -207,6 +208,10 @@ const TooltipWrapper = styled.div`
   right: 2px;
 `;
 
+const WithdrawButton = () => (
+  <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+);
+
 interface Props {
   config: IZapConfig;
 }
@@ -304,9 +309,13 @@ const ZapCard = ({ config }: Props) => {
               <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
-              <Tooltip tooltip={translate('ZAP_WITHDRAW_TOOLTIP')}>
-                <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
-              </Tooltip>
+              {config.withdrawTooltip ? (
+                <Tooltip tooltip={config.withdrawTooltip}>
+                  <WithdrawButton />
+                </Tooltip>
+              ) : (
+                <WithdrawButton />
+              )}
             </a>
           </>
         )}

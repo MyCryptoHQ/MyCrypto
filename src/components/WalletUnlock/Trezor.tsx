@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
+
 import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import translate, { translateRaw } from '@translations';
 import { Spinner } from '@components';
-import { WalletId, FormData } from '@types';
-import { getDPath, getDPaths, useNetworks, INetworkContext } from '@services';
-import { WalletFactory, ChainCodeResponse } from '@services/WalletService';
 import { EXT_URLS } from '@config';
+import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
+import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
+import translate, { translateRaw } from '@translations';
+import { FormData, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';

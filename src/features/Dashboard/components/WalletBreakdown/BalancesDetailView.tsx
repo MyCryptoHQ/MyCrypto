@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import React from 'react';
 
-import { TUuid } from '@types';
-import { SettingsContext } from '@services/Store';
-import { BalanceDetailsTable, Tooltip, SubtractIcon, DashboardPanel, Currency } from '@components';
-import { translateRaw } from '@translations';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
+
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { BalanceDetailsTable, Currency, DashboardPanel, SubtractIcon, Tooltip } from '@components';
+import { useSettings } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
+import { translateRaw } from '@translations';
+import { TUuid } from '@types';
+
 import { BalancesDetailProps } from './types';
 
 const { SCREEN_MD } = BREAK_POINTS;
@@ -47,7 +49,7 @@ const SIconContainer = styled.div`
 `;
 
 const HideAssetButton = ({ uuid, key }: { uuid: TUuid; key: string }) => {
-  const { addAssetToExclusionList } = useContext(SettingsContext);
+  const { addAssetToExclusionList } = useSettings();
   return (
     <SIconContainer key={key} onClick={() => addAssetToExclusionList(uuid)}>
       <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>

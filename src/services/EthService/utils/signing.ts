@@ -1,12 +1,12 @@
 import { Transaction as EthTx } from 'ethereumjs-tx';
 import {
   addHexPrefix,
-  ecsign,
   ecrecover,
-  keccak,
+  ecsign,
   hashPersonalMessage,
-  toBuffer,
-  pubToAddress
+  keccak,
+  pubToAddress,
+  toBuffer
 } from 'ethereumjs-util';
 
 import { stripHexPrefixAndLower } from '@services/EthService';

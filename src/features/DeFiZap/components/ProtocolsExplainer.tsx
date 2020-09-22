@@ -1,7 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
-import { SPACING } from '@theme';
+
 import { Link } from '@components';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 const Container = styled.div`

@@ -1,12 +1,13 @@
 import { translateRaw } from '@translations';
+
 import { signWrapper } from '../helpers';
+import { IWallet } from '../IWallet';
 import {
   determineKeystoreType,
   getKeystoreWallet,
   getUtcWallet,
   KeystoreTypes
 } from '../non-deterministic';
-import { IWallet } from '../IWallet';
 import { KeystoreUnlockParams } from './types';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {

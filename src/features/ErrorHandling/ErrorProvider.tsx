@@ -1,9 +1,11 @@
 import React, { Component, createContext } from 'react';
-import translate from '@translations';
-import { formatErrorEmail, IS_DEV } from '@utils';
+
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ROUTE_PATHS } from '@config';
+import translate from '@translations';
 import { IRoutePath } from '@types';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { formatErrorEmail, IS_DEV } from '@utils';
 
 interface IError {
   error: Error;

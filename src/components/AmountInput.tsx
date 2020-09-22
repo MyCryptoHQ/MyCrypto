@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Input } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { Asset } from '@types';
 import { sanitizeDecimalSeparator } from '@utils';

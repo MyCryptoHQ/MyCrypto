@@ -1,4 +1,4 @@
-import { ABIFunc, ABIFuncParamless } from '../AbiFunc';
+import { ABIFunc } from '../AbiFunc';
 
 export interface IRegistry {
   resolver: ABIFunc<{ node: bytes32 }, { resolverAddress: address }>;

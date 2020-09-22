@@ -1,23 +1,23 @@
 import React from 'react';
+
+import { Identicon } from '@mycrypto/ui';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import styled from 'styled-components';
-import { Identicon } from '@mycrypto/ui';
-
-import { QRCode } from '@components';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-import { Trans, translateRaw } from '@translations';
 
 import walletIcon from '@assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from '@assets/images/logo-mycrypto-transparent.png';
+import { QRCode } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { Trans, translateRaw } from '@translations';
 
 interface PaperWalletWrapperProps {
   isHidden?: boolean;
 }
 
 // size of paper wallet is 2 times of design size
-const paperWalletWidth: number = 1458;
-const paperWalletHeight: number = 612;
+const paperWalletWidth = 1458;
+const paperWalletHeight = 612;
 
 const PaperWalletWrapper = styled.div<PaperWalletWrapperProps>`
   ${(props) => props.isHidden && `position: fixed; top: -${paperWalletHeight}px;`}
@@ -296,8 +296,8 @@ export default class PaperWallet extends React.Component<Props, {}> {
 
   private getQRAddressWrapper = (isPrivate: boolean) => {
     const { mnemonic, privateKey, path, address } = this.props;
-    let dataText: string = '';
-    let data: string = '';
+    let dataText = '';
+    let data = '';
     if (isPrivate) {
       if (mnemonic) {
         data = mnemonic;

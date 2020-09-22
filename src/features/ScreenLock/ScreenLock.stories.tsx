@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ScreenLockForgotPassword from './ScreenLockForgotPassword';
-import ScreenLockNew from './ScreenLockNew';
 import ScreenLockLocked from './ScreenLockLocked';
+import ScreenLockNew from './ScreenLockNew';
 
 export default { title: 'ScreenLock' };
 

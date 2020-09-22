@@ -1,7 +1,8 @@
 import React from 'react';
-import AmountInput from './AmountInput';
-import { noOp } from '../utils';
+
 import { assets } from '../database/seed/assets';
+import { noOp } from '../utils';
+import AmountInput from './AmountInput';
 
 export default { title: 'AmountInput' };
 

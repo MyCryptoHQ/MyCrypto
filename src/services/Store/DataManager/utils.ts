@@ -1,25 +1,25 @@
-import { ValuesType } from 'utility-types';
 import isEmpty from 'ramda/src/isEmpty';
+import { ValuesType } from 'utility-types';
 
+import { createDefaultValues } from '@database';
+import { NetworkConfig, NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { makeExplorer } from '@services/EthService';
 import {
+  DataStore,
+  ExtendedAsset,
+  ExtendedContact,
+  ExtendedContract,
+  ExtendedNotification,
+  ITxReceipt,
   LocalStorage,
+  LSKeys,
   Network,
   NetworkId,
-  Notification,
-  ExtendedContact,
-  ExtendedNotification,
-  LSKeys,
-  TUuid,
-  DataStore,
-  ExtendedContract,
-  ExtendedAsset,
-  TAddress,
   NetworkNodes,
-  ITxReceipt
+  Notification,
+  TAddress,
+  TUuid
 } from '@types';
-import { makeExplorer } from '@services/EthService';
-import { NETWORKS_CONFIG, SCHEMA_BASE, NetworkConfig } from '@database/data';
-import { createDefaultValues } from '@database';
 import { merge } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];

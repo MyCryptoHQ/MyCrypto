@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
-import { usePromise, useEffectOnce, prop, uniqBy } from '@vendor';
-import { StoreContext, SettingsContext, useAssets } from '@services/Store';
-import { PollingService } from '@workers';
-import { IRates, TTicker, TUuid, ExtendedAsset } from '@types';
 import { Fiats } from '@config/fiats';
 import { DeFiReserveMapService } from '@services';
+import { StoreContext, useAssets, useSettings } from '@services/Store';
+import { ExtendedAsset, IRates, TTicker, TUuid } from '@types';
+import { prop, uniqBy, useEffectOnce, usePromise } from '@vendor';
+import { PollingService } from '@workers';
 
 interface State {
   rates: IRates;
@@ -53,7 +53,7 @@ export const RatesContext = createContext({} as State);
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
-  const { settings, updateSettingsRates } = useContext(SettingsContext);
+  const { settings, updateSettingsRates } = useSettings();
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMapping);
   const worker = useRef<undefined | PollingService>();
   const accountAssets = getAssets();

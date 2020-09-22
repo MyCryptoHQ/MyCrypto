@@ -1,4 +1,4 @@
-import { ABIFunc, ABIFuncParamless } from '../AbiFunc';
+import { ABIFunc } from '../AbiFunc';
 
 export interface IResolver {
   supportsInterface: ABIFunc<{ interfaceID: bytes4 }, { doesSupportInterface: bool }>;

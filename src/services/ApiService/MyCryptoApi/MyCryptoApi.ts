@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
 
 import { MYC_API } from '@config';
-import { TUuid, ExtendedAsset } from '@types';
+import { ExtendedAsset, TUuid } from '@types';
 
 import { default as ApiService } from '../ApiService';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 export default class MyCryptoApiService {
   public static instance = new MyCryptoApiService();

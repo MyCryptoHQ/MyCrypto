@@ -13,7 +13,7 @@ export const getStatusFromHash = async (
     .then((receipt) => {
       return receipt.status === 1 ? true : false;
     })
-    .catch((_) => {
+    .catch(() => {
       return undefined;
     });
 
@@ -26,7 +26,7 @@ export const getTimestampFromBlockNum = async (
     .then((block) => {
       return block.timestamp;
     })
-    .catch((_) => {
+    .catch(() => {
       return undefined;
     });
 
@@ -37,7 +37,7 @@ export const getTransactionReceiptFromHash = async (
   await provider
     .getTransactionReceipt(txHash)
     .then((receipt) => receipt)
-    .catch((_) => {
+    .catch(() => {
       return undefined;
     });
 

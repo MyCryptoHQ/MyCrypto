@@ -1,16 +1,17 @@
 import React from 'react';
+
 import { Identicon } from '@mycrypto/ui';
-import { FieldProps, Field } from 'formik';
+import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import { Field, FieldProps } from 'formik';
 import styled from 'styled-components';
 
-import { Network, InlineMessageType } from '@types';
 import { DomainStatus } from '@components';
+import { InlineMessage } from '@components/InlineMessage';
+import InputField from '@components/InputField';
 import { getIsValidENSAddressFunction, isValidENSName } from '@services/EthService';
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
-import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
-import InputField from '@components/InputField';
-import { InlineMessage } from '@components/InlineMessage';
+import { InlineMessageType, Network } from '@types';
 
 /*
   Eth address field to be used within a Formik Form

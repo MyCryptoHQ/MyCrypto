@@ -1,18 +1,19 @@
 import BigNumberJs from 'bignumber.js';
-import { bigNumberify, BigNumber, parseEther, formatEther } from 'ethers/utils';
-import { fromTokenBase } from '@services/EthService';
-import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { StoreAsset } from '@types';
 import BN from 'bn.js';
+import { BigNumber, bigNumberify, formatEther, parseEther } from 'ethers/utils';
 
-export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): number => {
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { fromTokenBase } from '@services/EthService';
+import { StoreAsset } from '@types';
+
+export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): string => {
   const splitRate = rate.toString().split('.');
   const decimals = splitRate.length > 1 ? splitRate[1].length : 0;
   const rateDivisor = Math.pow(10, decimals);
   const rateBN = bigNumberify(Math.round(rate * rateDivisor));
 
   const convertedFloat = weiToFloat(asset.balance.mul(rateBN), asset.decimal);
-  return convertedFloat / rateDivisor;
+  return (convertedFloat / rateDivisor).toString();
 };
 
 export const convertToFiat = (userViewableBalance: number, rate: number = 1): number => {

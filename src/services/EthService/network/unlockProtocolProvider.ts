@@ -1,5 +1,5 @@
-import { ProviderHandler } from './providerHandler';
 import { UnlockToken } from '../contracts';
+import { ProviderHandler } from './providerHandler';
 
 export class UnlockProtocolHandler extends ProviderHandler {
   /* Unlock Token Methods */

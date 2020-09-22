@@ -1,7 +1,7 @@
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
 
 import BN from 'bn.js';
-import { toBuffer, addHexPrefix, bufferToHex, stripHexPrefix, padToEven } from 'ethereumjs-util';
+import { addHexPrefix, bufferToHex, padToEven, stripHexPrefix, toBuffer } from 'ethereumjs-util';
 import trimStart from 'lodash/trimStart';
 
 // When encoding QUANTITIES (integers, numbers): encode as hex, prefix with "0x", the most compact representation (slight exception: zero should be represented as "0x0").

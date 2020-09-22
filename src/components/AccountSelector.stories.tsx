@@ -1,7 +1,8 @@
 import React from 'react';
-import { fAccounts, fAssets } from '@fixtures';
 
+import { fAccounts, fAssets } from '@fixtures';
 import { noOp } from '@utils';
+
 import AccountSelector from './AccountSelector';
 import AccountSummary from './AccountSummary';
 

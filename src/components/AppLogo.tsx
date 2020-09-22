@@ -1,9 +1,10 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
+import Icon from '@components/Icon';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import Icon from '@components/Icon';
 
 const Container = styled.div`
   display: flex;

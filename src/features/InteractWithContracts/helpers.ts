@@ -1,13 +1,13 @@
-import sortBy from 'lodash/sortBy';
-import cloneDeep from 'lodash/cloneDeep';
 import { bufferToHex } from 'ethereumjs-util';
+import cloneDeep from 'lodash/cloneDeep';
+import sortBy from 'lodash/sortBy';
 
-import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
 import { WALLET_STEPS } from '@components';
 import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
+import { ITxConfig, ITxObject, NetworkId, StoreAccount } from '@types';
 
-import { StateMutabilityType, ABIItem, ABIItemType } from './types';
+import { ABIItem, ABIItemType, StateMutabilityType } from './types';
 
 export const isReadOperation = (abiFunction: ABIItem): boolean => {
   const { stateMutability } = abiFunction;

@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { EMPTYUUID, buildTotalFiatValue } from '@utils';
-import { TUuid, Balance } from '@types';
+import moreIcon from '@assets/images/icn-more.svg';
+import { AssetIcon, Currency, PoweredByText, Tooltip, Typography } from '@components';
+import { EMPTYUUID } from '@config';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography, Tooltip, PoweredByText } from '@components';
+import translate, { translateRaw } from '@translations';
+import { Balance, TTicker, TUuid } from '@types';
+import { buildTotalFiatValue } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
-import NoAssets from './NoAssets';
 import { calculateShownIndex } from './helpers';
-
-import moreIcon from '@assets/images/icn-more.svg';
+import NoAssets from './NoAssets';
 import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
@@ -216,7 +218,7 @@ export default function WalletBreakdownView({
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
   const [previousTickers, setPreviousTickers] = useState(balances.map((x) => x.ticker));
-  const chartBalances = createChartBalances(balances, totalFiatValue);
+  const chartBalances = createChartBalances(balances, parseFloat(totalFiatValue));
   const breakdownBalances = createBreakdownBalances(balances);
 
   const handleMouseOver = (index: number) => {
@@ -261,7 +263,11 @@ export default function WalletBreakdownView({
 
   const balance = chartBalances[selectedAssetIndex.balance];
   const selectedAssetPercentage =
-    balance && parseFloat(((balance.fiatValue / totalFiatValue) * 100).toFixed(2));
+    balance &&
+    new BigNumber(balance.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .multipliedBy(100)
+      .toFixed(2);
 
   return (
     <>
@@ -270,7 +276,7 @@ export default function WalletBreakdownView({
           {translate('WALLET_BREAKDOWN_TITLE')}
           <BreakDownLabel>({label})</BreakDownLabel>
         </BreakDownHeading>
-        {totalFiatValue === 0 ? (
+        {parseFloat(totalFiatValue) === 0 ? (
           <NoAssets />
         ) : (
           <>
@@ -342,13 +348,18 @@ export default function WalletBreakdownView({
                   <div>
                     <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
                     <BreakDownBalanceAssetAmount silent={true}>
-                      {!isOther && `${amount.toFixed(4)} ${ticker}`}
+                      {!isOther && (
+                        <Currency
+                          amount={parseFloat(amount).toFixed(4)}
+                          ticker={ticker as TTicker}
+                        />
+                      )}
                     </BreakDownBalanceAssetAmount>
                   </div>
                 </BreakDownBalanceAssetInfo>
                 <Tooltip
                   tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-                    $exchangeRate: (exchangeRate || 0).toFixed(3),
+                    $exchangeRate: parseFloat(exchangeRate || '0').toFixed(3),
                     $fiatTicker: fiat.ticker,
                     $cryptoTicker: ticker
                   })}
@@ -391,11 +402,15 @@ export default function WalletBreakdownView({
 const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
-  const balancesVisibleInChart = balances.filter(
-    (balanceObject) => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
+  const balancesVisibleInChart = balances.filter((balanceObject) =>
+    new BigNumber(balanceObject.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .isGreaterThanOrEqualTo(SMALLEST_CHART_SHARE_SUPPORTED)
   );
-  const otherBalances = balances.filter(
-    (balanceObject) => balanceObject.fiatValue / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
+  const otherBalances = balances.filter((balanceObject) =>
+    new BigNumber(balanceObject.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .isLessThan(SMALLEST_CHART_SHARE_SUPPORTED)
   );
   const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);
   otherBalances.push(...balancesVisibleInChart);
@@ -420,7 +435,8 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   name: translateRaw('WALLET_BREAKDOWN_OTHER'),
   ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
   isOther: true,
-  amount: 0,
+  amount: '0',
+  exchangeRate: '0',
   uuid: EMPTYUUID as TUuid,
   fiatValue: buildTotalFiatValue(otherBalances)
 });

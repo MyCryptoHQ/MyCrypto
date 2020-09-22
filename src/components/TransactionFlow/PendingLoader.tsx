@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+
 import styled from 'styled-components';
+
 import { translateRaw } from '@translations';
 
 const SPendingTransaction = styled.div`

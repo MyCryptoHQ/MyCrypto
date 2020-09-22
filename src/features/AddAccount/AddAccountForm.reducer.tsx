@@ -1,6 +1,7 @@
 import { DEFAULT_NETWORK } from '@config';
-import { FormData, WalletId, IAccountAdditionData } from '@types';
-import { FormDataAction, FormDataActionType as ActionType } from './types';
+import { FormData, IAccountAdditionData, WalletId } from '@types';
+
+import { FormDataActionType as ActionType, FormDataAction } from './types';
 
 export const initialState: FormData = {
   network: DEFAULT_NETWORK,
@@ -12,20 +13,15 @@ export const initialState: FormData = {
 export const formReducer = (formData: FormData, action: FormDataAction) => {
   switch (action.type) {
     case ActionType.SELECT_NETWORK:
-      const { network } = action.payload;
-      return { ...formData, network };
+      return { ...formData, network: action.payload.network };
     case ActionType.SELECT_ACCOUNT_TYPE:
-      const { accountType } = action.payload;
-      return { ...formData, accountType };
+      return { ...formData, accountType: action.payload.accountType };
     case ActionType.ON_UNLOCK:
-      const accountWithDPath = handleUnlock(formData.accountType, action.payload);
-      return { ...formData, accountData: accountWithDPath };
+      return { ...formData, accountData: handleUnlock(formData.accountType, action.payload) };
     case ActionType.SET_LABEL:
-      const { label } = action.payload;
-      return { ...formData, label };
+      return { ...formData, label: action.payload.label };
     case ActionType.SET_DERIVATION_PATH:
-      const { derivationPath } = action.payload;
-      return { ...formData, derivationPath };
+      return { ...formData, derivationPath: action.payload.derivationPath };
     case ActionType.RESET_FORM:
       return initialState;
     default:

@@ -1,9 +1,9 @@
-import { ValuesType, Overwrite } from 'utility-types';
+import { Overwrite, ValuesType } from 'utility-types';
 
 import { TAction } from '@types';
+import { isSameAddress } from '@utils';
 
 import { DeterministicWalletState, TDWActionError } from './types';
-import { isSameAddress } from '@utils';
 
 export enum DWActionTypes {
   CONNECTION_REQUEST = 'CONNECTION_REQUEST',

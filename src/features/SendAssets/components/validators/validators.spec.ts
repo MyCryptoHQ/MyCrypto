@@ -1,11 +1,12 @@
-import {
-  gasPriceValidator,
-  gasLimitValidator,
-  isValidHex,
-  isValidPositiveOrZeroInteger,
-  isValidPositiveNumber
-} from '@services/EthService';
 import { isHexPrefixed } from 'ethjs-util';
+
+import {
+  gasLimitValidator,
+  gasPriceValidator,
+  isValidHex,
+  isValidPositiveNumber,
+  isValidPositiveOrZeroInteger
+} from '@services/EthService';
 
 describe('gasPriceValidators', () => {
   const failCases = ['0.00001', '1a', 'a1', 'a', '0', '-0.1', '3001'];

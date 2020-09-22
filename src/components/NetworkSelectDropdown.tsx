@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
-import translate from '@translations';
-import { isWalletFormatSupportedOnNetwork, useNetworks } from '@services/Store';
-import { NetworkId, Network, WalletId } from '@types';
+
+import { Selector, Tooltip, Typography } from '@components';
 import { DEFAULT_NETWORK } from '@config';
-import { Typography, Selector, Tooltip } from '@components';
+import { isWalletFormatSupportedOnNetwork, useNetworks } from '@services/Store';
+import translate from '@translations';
+import { Network, NetworkId, WalletId } from '@types';
 
 interface Props {
   network?: NetworkId;

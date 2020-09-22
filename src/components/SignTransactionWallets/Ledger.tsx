@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { ISignComponentProps } from '@types';
-import { translateRaw } from '@translations';
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
+import { translateRaw } from '@translations';
+import { ISignComponentProps } from '@types';
+
 import HardwareSignTransaction from './Hardware';
 
 export default function SignTransactionLedger({

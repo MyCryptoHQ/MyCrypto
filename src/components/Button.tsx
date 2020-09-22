@@ -1,11 +1,12 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import styled, { css } from 'styled-components';
+
+import { COLORS, SPACING } from '@theme';
 
 import Spinner from './Spinner';
 import Typography from './Typography';
-import { COLORS, SPACING } from '@theme';
 
 interface ButtonProps {
   children: React.ReactNode | string;
@@ -79,7 +80,9 @@ const SButton = styled(Button)<StyledButtonProps>`
         background-color: ${COLORS.BLUE_LIGHT_DARKISH};
       }
       &:focus {
-        background-color: ${COLORS.WHITE};
+        div > span {
+          color: ${COLORS.WHITE};
+        }
       }
   `}
 

@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
+
 import { formatEther } from 'ethers/utils';
 import { OptionProps } from 'react-select';
 
-import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
+import { getAccountBalance, getBaseAsset } from '@services/Store';
 import { SPACING } from '@theme';
-import { StoreAccount, Asset, TUuid, TTicker } from '@types';
+import { translateRaw } from '@translations';
+import { Asset, StoreAccount, TTicker, TUuid } from '@types';
 import { sortByLabel } from '@utils';
 import { compose, map } from '@vendor';
-import { getAccountBalance, getBaseAsset } from '@services/Store';
 
 interface Props {
   accounts: StoreAccount[];

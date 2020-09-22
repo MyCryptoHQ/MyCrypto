@@ -1,8 +1,7 @@
-import { generate, IFullWallet } from 'ethereumjs-wallet';
+import { exec } from 'child_process';
+import { default as Wallet } from 'ethereumjs-wallet';
 
 import { stripHexPrefix } from '@services';
-
-const { exec } = require('child_process');
 
 // FIXME pick a less magic number
 const derivationRounds = 500;
@@ -11,22 +10,22 @@ const dockerTag = 'latest';
 
 function promiseFromChildProcess(command: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    return exec(command, (err: string, stdout: string) => {
+    return exec(command, (err: Error, stdout: string) => {
       err ? reject(err) : resolve(stdout);
     });
   });
 }
 
-function getCleanPrivateKey(privKeyWallet: IFullWallet): string {
+function getCleanPrivateKey(privKeyWallet: Wallet): string {
   return stripHexPrefix(privKeyWallet.getPrivateKeyString());
 }
 
-function makeCommaSeparatedPrivateKeys(privKeyWallets: IFullWallet[]): string {
+function makeCommaSeparatedPrivateKeys(privKeyWallets: Wallet[]): string {
   const privateKeys = privKeyWallets.map(getCleanPrivateKey);
   return privateKeys.join(',');
 }
 
-async function privToAddrViaDocker(privKeyWallets: IFullWallet[]): Promise<string> {
+async function privToAddrViaDocker(privKeyWallets: Wallet[]): Promise<string> {
   const command = `docker run -e key=${makeCommaSeparatedPrivateKeys(
     privKeyWallets
   )} ${dockerImage}:${dockerTag}`;
@@ -35,24 +34,24 @@ async function privToAddrViaDocker(privKeyWallets: IFullWallet[]): Promise<strin
   return newlineStrippedDockerOutput;
 }
 
-function makeWallets(): IFullWallet[] {
-  const wallets: IFullWallet[] = [];
+function makeWallets(): Wallet[] {
+  const wallets: Wallet[] = [];
   let i = 0;
   while (i < derivationRounds) {
-    const privKeyWallet = generate();
+    const privKeyWallet = Wallet.generate();
     wallets.push(privKeyWallet);
     i += 1;
   }
   return wallets;
 }
 
-async function getNormalizedAddressFromWallet(wallet: IFullWallet): Promise<string> {
+async function getNormalizedAddressFromWallet(wallet: Wallet): Promise<string> {
   const privKeyWalletAddress = await wallet.getAddressString();
   // strip checksum
   return privKeyWalletAddress.toLowerCase();
 }
 
-async function getNormalizedAddressesFromWallets(wallets: IFullWallet[]): Promise<string[]> {
+async function getNormalizedAddressesFromWallets(wallets: Wallet[]): Promise<string[]> {
   return Promise.all(wallets.map(getNormalizedAddressFromWallet));
 }
 

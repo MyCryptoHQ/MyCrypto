@@ -1,8 +1,11 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
-import { noOp } from '@utils';
+
 import { TAction } from '@types';
+import { noOp } from '@utils';
+
+import { ProvidersWrapper } from './providersWrapper';
 
 // Mock features used by react-slider
 window.matchMedia =
@@ -19,7 +22,9 @@ window.requestAnimationFrame =
     setTimeout(callback, 0);
   });
 
-export const simpleRender = (ui: React.ReactElement, options?: any) => render(ui, { ...options });
+// wrapper option : Wrap renders with our providers so components can consume it
+export const simpleRender = (ui: React.ReactElement, options?: any) =>
+  render(ui, { wrapper: ProvidersWrapper, ...options });
 
 // Generate 'dispatch' for the reducer that is being tested
 export const createStore = <S>(reducer: (state: S, action: TAction<any, any>) => S) => (

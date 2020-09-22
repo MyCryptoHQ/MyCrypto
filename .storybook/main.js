@@ -11,29 +11,32 @@ module.exports = {
     '@storybook/addon-docs'
   ],
 
-  webpackFinal: async config => {
+  webpackFinal: async (config) => {
     // Remove storybooks handling of assets in favor of our own.
-    config.module.rules = config.module.rules.filter(rule => !rule.test.toString().includes('svg'));
+    config.module.rules = config.module.rules.filter(
+      (rule) => !rule.test.toString().includes('svg')
+    );
 
     // Remove storybooks css config
-    config.module.rules = config.module.rules.filter(rule => !rule.test.toString().includes('css'));
+    config.module.rules = config.module.rules.filter(
+      (rule) => !rule.test.toString().includes('css')
+    );
 
     // Remove ignored storybook files
-    custom.module.rules = custom.module.rules.filter(rule => {
-      if(rule && rule.loader) {
+    custom.module.rules = custom.module.rules.filter((rule) => {
+      if (rule && rule.loader) {
         return !rule.loader.toString() === 'ignore-loader';
       }
       return true;
     });
 
     // Rewrite babel loader test
-    const babelLoaderIndex = custom.module.rules.findIndex(rule => rule.test.toString().includes('tsx'));
+    const babelLoaderIndex = custom.module.rules.findIndex((rule) =>
+      rule.test.toString().includes('tsx')
+    );
     const babelLoader = custom.module.rules.splice(babelLoaderIndex, 1)[0];
     babelLoader.test = /\.tsx?$/;
-    custom.module.rules = [
-      babelLoader,
-      ...custom.module.rules
-    ];
+    custom.module.rules = [babelLoader, ...custom.module.rules];
 
     // Merge storybook and our custom webpack_config/development.js
     return merge.smart(

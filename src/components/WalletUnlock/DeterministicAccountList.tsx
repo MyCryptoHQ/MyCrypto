@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { Trans } from '@translations';
-import { ExtendedAsset, TAddress, Network } from '@types';
-import { Button, Typography, Tooltip, Icon } from '@components';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Button, Icon, PoweredByText, Tooltip, Typography } from '@components';
 import { DWAccountDisplay } from '@services';
-import { isSameAddress, accountsToCSV, useScreenSize, makeBlob } from '@utils';
-import { uniqBy, prop } from '@vendor';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Trans } from '@translations';
+import { ExtendedAsset, Network, TAddress } from '@types';
+import { accountsToCSV, isSameAddress, makeBlob, useScreenSize } from '@utils';
+import { prop, uniqBy } from '@vendor';
 
 import DeterministicTable from './DeterministicAccountTable';
 
@@ -181,6 +182,7 @@ export default function DeterministicAccountList({
                 <Trans id="DETERMINISTIC_SCAN_AGAIN" />
               </SButton>
               .
+              <PoweredByText provider="FINDETH" />
             </Typography>
           </StatusWrapper>
         )}
@@ -189,10 +191,13 @@ export default function DeterministicAccountList({
             <IconWrapper>
               <Icon type="info-small" />
             </IconWrapper>
-            <Trans
-              id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
-              variables={{ $asset: () => asset.ticker }}
-            />
+            <Typography>
+              <Trans
+                id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
+                variables={{ $asset: () => asset.ticker }}
+              />
+              <PoweredByText provider="FINDETH" />
+            </Typography>
           </StatusWrapper>
         )}
         {!isComplete && (
@@ -217,18 +222,21 @@ export default function DeterministicAccountList({
                   </>
                 }
               />
+              <PoweredByText provider="FINDETH" />
             </div>
           </StatusWrapper>
         )}
-        <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
-          <Trans
-            id="DETERMINISTIC_ACCOUNT_LIST_ADD"
-            variables={{
-              $total: () => (selectedAccounts.length ? selectedAccounts.length : ''),
-              $plural: () => (selectedAccounts.length > 1 ? 's' : '')
-            }}
-          />
-        </Button>
+        <div>
+          <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
+            <Trans
+              id="DETERMINISTIC_ACCOUNT_LIST_ADD"
+              variables={{
+                $total: () => (selectedAccounts.length ? selectedAccounts.length : ''),
+                $plural: () => (selectedAccounts.length > 1 ? 's' : '')
+              }}
+            />
+          </Button>
+        </div>
       </StatusBar>
     </DeterministicAccountListWrapper>
   );

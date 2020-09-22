@@ -1,30 +1,31 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
+import styled from 'styled-components';
 
 import {
-  NetworkSelectDropdown,
-  InputField,
-  Button,
-  InlineMessage,
   AccountSelector,
-  Typography,
-  GasSelector
+  Button,
+  GasSelector,
+  InlineMessage,
+  InputField,
+  NetworkSelectDropdown,
+  Typography
 } from '@components';
-import { NetworkId, StoreAccount, ITxConfig } from '@types';
-import { translateRaw } from '@translations';
 import {
-  StoreContext,
-  inputGasPriceToHex,
-  hexWeiToString,
+  baseToConvertedUnit,
   hexToString,
-  baseToConvertedUnit
+  hexWeiToString,
+  inputGasPriceToHex,
+  StoreContext
 } from '@services';
 import { COLORS } from '@theme';
+import { translateRaw } from '@translations';
+import { ITxConfig, NetworkId, StoreAccount } from '@types';
 
-import { getAccountsInNetwork, constructGasCallProps } from '../helpers';
+import { constructGasCallProps, getAccountsInNetwork } from '../helpers';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;

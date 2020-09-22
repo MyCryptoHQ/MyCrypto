@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { ApiService } from '@services/ApiService';
+
 import { NANSEN_API } from '@config';
+import { ApiService } from '@services/ApiService';
+
 import { NansenServiceResponse } from './types';
 
 export default abstract class NansenService {

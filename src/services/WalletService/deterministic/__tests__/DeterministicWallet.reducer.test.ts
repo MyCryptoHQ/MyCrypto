@@ -21,7 +21,7 @@ describe('DeterministicWalletReducer', () => {
       const state = dispatch({
         type: DWActionTypes.GET_ADDRESSES_SUCCESS
       })(prevState);
-      expect(state.errors.length).toEqual(0);
+      expect(state.errors).toHaveLength(0);
       expect(state.isGettingAccounts).toBeFalsy();
     });
   });

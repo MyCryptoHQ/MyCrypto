@@ -4,15 +4,16 @@
 */
 
 import React, { Component, ReactNode } from 'react';
-import styled from 'styled-components';
-import path from 'ramda/src/path';
+
 import isFunction from 'lodash/isFunction';
+import path from 'ramda/src/path';
+import styled from 'styled-components';
 
-import { noOp } from '@utils';
 import { SPACING } from '@theme';
+import { noOp } from '@utils';
 
-import { default as Typography } from './Typography';
 import IconArrow from './IconArrow';
+import { default as Typography } from './Typography';
 
 export interface TableGroup {
   title: string;
@@ -96,7 +97,7 @@ const TableHeading = styled(Typography)<TableHeadingProps>`
   position: sticky;
   top: 0;
   background: ${(props) => props.theme.tableHeadBackground};
-  z-index: 2;
+  z-index: 3;
   cursor: ${(props) => (props.isSortable ? 'pointer' : 'inherit')};
 `;
 
@@ -258,7 +259,7 @@ class AbstractTable extends Component<Props, State> {
               overlayRoot &&
               row.length &&
               row[0] &&
-              row[0].hasOwnProperty('key') &&
+              Object.prototype.hasOwnProperty.call(row[0], 'key') &&
               (row[0] as any).key;
             if (primaryRowKey && overlayRows!.includes(primaryRowKey)) {
               return (

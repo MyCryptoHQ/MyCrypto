@@ -1,35 +1,36 @@
 import { TURL } from '@types';
-import { default as Reducer } from './reducer';
+
 import { bindActions } from './actions';
 import { DBName } from './helpers';
+import { default as Reducer } from './reducer';
 
 describe('MigrateLS actions', () => {
   test('reset()', () => {
     const dispatch = jest.fn();
     const { reset } = bindActions(dispatch);
     reset();
-    expect(dispatch).toBeCalledWith({ type: Reducer.actionTypes.RESET });
+    expect(dispatch).toHaveBeenCalledWith({ type: Reducer.actionTypes.RESET });
   });
 
   test('destroySuccess()', () => {
     const dispatch = jest.fn();
     const { destroySuccess } = bindActions(dispatch);
     destroySuccess();
-    expect(dispatch).toBeCalledWith({ type: Reducer.actionTypes.DESTROY_SUCCESS });
+    expect(dispatch).toHaveBeenCalledWith({ type: Reducer.actionTypes.DESTROY_SUCCESS });
   });
 
   test('abortCancel()', () => {
     const dispatch = jest.fn();
     const { abortCancel } = bindActions(dispatch);
     abortCancel();
-    expect(dispatch).toBeCalledWith({ type: Reducer.actionTypes.CANCEL_ABORT });
+    expect(dispatch).toHaveBeenCalledWith({ type: Reducer.actionTypes.CANCEL_ABORT });
   });
 
   test('cancelMigration()', () => {
     const dispatch = jest.fn();
     const { cancelMigration } = bindActions(dispatch);
     cancelMigration();
-    expect(dispatch).toBeCalledWith({ type: Reducer.actionTypes.CANCEL_REQUEST });
+    expect(dispatch).toHaveBeenCalledWith({ type: Reducer.actionTypes.CANCEL_REQUEST });
   });
 
   test('migrateStorage()', () => {
@@ -61,7 +62,7 @@ describe('MigrateLS actions', () => {
     } as any) as HTMLIFrameElement;
     getStorage(frame, 'test-origin' as TURL, () => true);
 
-    expect(dispatch).toBeCalledWith({
+    expect(dispatch).toHaveBeenCalledWith({
       type: Reducer.actionTypes.IFRAME_LOAD_SUCCESS,
       payload: { frame, storage: frame.contentWindow?.localStorage[DBName] }
     });
@@ -79,7 +80,7 @@ describe('MigrateLS actions', () => {
       }
     } as any) as HTMLIFrameElement;
     getStorage(frame, 'app-origin' as TURL, () => true);
-    expect(dispatch).not.toBeCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   test('getStorage() fails with wrong DB key', () => {
@@ -94,7 +95,7 @@ describe('MigrateLS actions', () => {
       }
     } as any) as HTMLIFrameElement;
     getStorage(frame, 'app-origin' as TURL, () => true);
-    expect(dispatch).not.toBeCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   test('getStorage() fails with wrong if invalid storage', () => {
@@ -109,6 +110,6 @@ describe('MigrateLS actions', () => {
       }
     } as any) as HTMLIFrameElement;
     getStorage(frame, 'app-origin' as TURL, () => false);
-    expect(dispatch).not.toBeCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 });

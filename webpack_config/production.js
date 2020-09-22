@@ -1,12 +1,13 @@
+const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
+
+const { PRODUCTION, STAGING, ELECTRON } = require('../environment');
 const common = require('./common');
 const config = require('./config');
-const { PRODUCTION, STAGING, ELECTRON } = require('../environment');
 
 const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 
@@ -31,23 +32,14 @@ module.exports = merge.smart(common, {
 
       {
         test: /\.scss$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              prependData: `$is-electron: ${TargetEnv === ELECTRON};`
-            }
-          }
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': TargetEnv
+      TARGET_ENV: TargetEnv
     }),
 
     new MiniCSSExtractPlugin({

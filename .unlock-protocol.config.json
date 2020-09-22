@@ -2,12 +2,12 @@
   "persistentCheckout": true,
   "icon": "https://assets.unlock-protocol.com/tmp/my-crypto.png",
   "callToAction": {
-      "default": "Support the MyCrypto team and unlock your membership today!\n\nYou can make a donation by purchasing a key using your Ethereum wallet. The key is a non fungible token which represents your membership. ",
-      "confirmed": "Thank you for choosing to be a MyCrypto supporter! ❤️\n\n\n\nAt this time, your support is a simple donation that helps us continue working to bring you products.\n\n\n\nIn the future we'll be further developing this functionality with the Unlock Protocol team to reward supporters with things like custom themes, swag, and more.\n\n\n\n-Taylor & Team MyCrypto"
+    "default": "Support the MyCrypto team and unlock your membership today!\n\nYou can make a donation by purchasing a key using your Ethereum wallet. The key is a non fungible token which represents your membership. ",
+    "confirmed": "Thank you for choosing to be a MyCrypto supporter! ❤️\n\n\n\nAt this time, your support is a simple donation that helps us continue working to bring you products.\n\n\n\nIn the future we'll be further developing this functionality with the Unlock Protocol team to reward supporters with things like custom themes, swag, and more.\n\n\n\n-Taylor & Team MyCrypto"
   },
   "locks": {
-      "0x14e81196e60b128527db03d40bdba00710777805": {
-          "name": "MyCrypto Members"
-      }
+    "0x14e81196e60b128527db03d40bdba00710777805": {
+      "name": "MyCrypto Members"
+    }
   }
 }

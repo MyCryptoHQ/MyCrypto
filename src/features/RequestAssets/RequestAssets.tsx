@@ -1,23 +1,29 @@
 import React, { useContext, useState } from 'react';
-import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
+
 import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import questionToolTip from '@assets/images/icn-question.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
+import { AccountSelector, AssetSelector, ContentPanel, QRCode } from '@components';
+import { ROUTE_PATHS } from '@config';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest
 } from '@services/EthService/utils/formatters';
-import { ContentPanel, QRCode, AccountSelector, AssetSelector } from '@components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
-import { isValidAmount, sanitizeDecimalSeparator, noOp } from '@utils';
-import { IAccount as IIAccount } from '@types';
-import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
-import questionToolTip from '@assets/images/icn-question.svg';
-
-// Legacy
-import receiveIcon from '@assets/images/icn-receive.svg';
+import { IAccount as IIAccount } from '@types';
+import {
+  filterDropdownAssets,
+  filterValidAssets,
+  isValidAmount,
+  noOp,
+  sanitizeDecimalSeparator,
+  sortByTicker
+} from '@utils';
 
 const isAssetToken = (tokenType: string) => {
   return tokenType !== 'base';
@@ -107,16 +113,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
   const network = getNetworkById(networkId, networks);
-  const filteredAssets = network
-    ? assets
-        .filter((asset) => asset.networkId === network.id)
-        .filter((asset) => asset.type === 'base' || asset.type === 'erc20')
-    : [];
-  const assetOptions = filteredAssets.map((asset) => ({
-    label: asset.name,
-    id: asset.uuid,
-    ...asset
-  }));
+  const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
+  const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
 
   const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
   const selectedAsset = filteredAssets.find((asset) => asset.name === chosenAssetName);
@@ -195,7 +193,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                   component={({ field, form }: FieldProps) => (
                     <AssetSelector
                       selectedAsset={field.value}
-                      assets={assetOptions}
+                      assets={filteredAssets}
+                      showAssetName={true}
                       searchable={true}
                       onSelect={(option) => {
                         form.setFieldValue(field.name, option);

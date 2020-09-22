@@ -1,18 +1,22 @@
 import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
 
-import { translateRaw } from '@translations';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
+
 import { DEFAULT_NETWORK } from '@config';
-import { DataContext } from '@services/Store';
-import { ExtendedContact, TUuid, TAddress } from '@types';
 import { contacts as seedContacts } from '@database/seed/contacts';
+import { DataContext } from '@services/Store';
+import { translateRaw } from '@translations';
+import { ExtendedContact, TAddress, TUuid } from '@types';
+import { noOp } from '@utils';
 
 import EditableAccountLabel, { Props } from '../EditableAccountLabel';
 
 const defaultProps: Props = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
   networkId: DEFAULT_NETWORK,
-  addressBookEntry: undefined
+  addressBookEntry: undefined,
+  createContact: noOp,
+  updateContact: noOp
 };
 
 const mockMappedContacts: ExtendedContact[] = Object.entries(seedContacts).map(([key, value]) => ({
@@ -27,11 +31,14 @@ function getComponent(contacts: ExtendedContact[], props: Props) {
         ({
           addressBook: contacts,
           contracts: [],
-          createActions: jest.fn(() => ({ create: (c: ExtendedContact) => contacts.push(c) }))
+          createActions: jest.fn()
         } as unknown) as any
       }
     >
-      <EditableAccountLabel {...props} />
+      <EditableAccountLabel
+        {...props}
+        createContact={(c) => contacts.push({ ...c, uuid: 'uuid' as TUuid })}
+      />
     </DataContext.Provider>
   );
 }
@@ -60,7 +67,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input, enter));
-    expect(mockMappedContacts.length).toBe(initialContactsLength + 1);
+    expect(mockMappedContacts).toHaveLength(initialContactsLength + 1);
   });
 
   test('it enters edit mode when clicked and exits when focus lost', async () => {

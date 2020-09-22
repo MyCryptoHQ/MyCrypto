@@ -1,19 +1,20 @@
 import BigNumberJs from 'bignumber.js';
 import { BigNumber, formatEther } from 'ethers/utils';
 
+import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from '@config';
+import { StoreAsset } from '@types';
+
 import {
+  addBNFloats,
+  calculateMarkup,
+  convertToBN,
   convertToFiatFromAsset,
-  withCommission,
   divideBNFloats,
   multiplyBNFloats,
-  convertToBN,
-  trimBN,
-  addBNFloats,
   subtractBNFloats,
-  calculateMarkup
+  trimBN,
+  withCommission
 } from './convert';
-import { StoreAsset } from '@types';
-import { MYC_DEXAG_COMMISSION_RATE, DEFAULT_NETWORK } from '@config';
 
 const defaultAsset = {
   name: 'FakeToken',
@@ -26,9 +27,9 @@ const defaultAsset = {
   networkId: DEFAULT_NETWORK
 } as StoreAsset;
 
-describe('it converts balance to fiat', () => {
+describe('convert()', () => {
   it('converts some balance to fiat', () => {
-    const expected = 2.86756;
+    const expected = '2.86756';
     const rate = 0.00008434;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('34000000000000000000000')
@@ -37,8 +38,8 @@ describe('it converts balance to fiat', () => {
     expect(converted).toEqual(expected);
   });
 
-  it('converts some balance to fiat', () => {
-    const expected = 0.4582269583;
+  it('converts some balance to fiat (1)', () => {
+    const expected = '0.4582269583';
     const rate = 0.001867;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('245434900000000000000')
@@ -47,8 +48,8 @@ describe('it converts balance to fiat', () => {
     expect(converted).toEqual(expected);
   });
 
-  it('converts some balance to fiat', () => {
-    const expected = 608.342632226824;
+  it('converts some balance to fiat (2)', () => {
+    const expected = '608.342632226824';
     const rate = 169.48;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
       balance: new BigNumber('3589465613800000000')

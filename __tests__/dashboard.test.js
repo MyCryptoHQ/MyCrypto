@@ -1,13 +1,13 @@
 import { getByText } from '@testing-library/testcafe';
 
+import AddAccountPage from './addaccount-page.po';
 import { PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
-import AddAccountPage from './addaccount-page.po';
-import SettingsPage from './settings-page.po';
+// import SettingsPage from './settings-page.po';
 
 const addAccountPage = new AddAccountPage();
-const settingsPage = new SettingsPage();
+// const settingsPage = new SettingsPage();
 
 fixture('Dashboard').page(PAGES.DASHBOARD);
 

@@ -1,5 +1,5 @@
-import { Asset, IAccount, StoreAccount, NetworkId, TAddress } from '@types';
 import { DEFAULT_NETWORK } from '@config';
+import { Asset, IAccount, NetworkId, StoreAccount, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 
 export const getDashboardAccounts = (

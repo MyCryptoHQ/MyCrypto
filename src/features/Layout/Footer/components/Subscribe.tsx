@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { ANALYTICS_CATEGORIES } from '@services';
-import translate, { translateRaw } from '@translations';
 import { subscribeToMailingList } from '@services/ApiService';
+import translate, { translateRaw } from '@translations';
 import { useAnalytics } from '@utils';
 
 const Subscribe: FC = () => {

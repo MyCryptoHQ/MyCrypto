@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useHistory } from 'react-router-dom';
 
 import { ContentPanel } from '@components';
-import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
+import { translateRaw } from '@translations';
 
+import QueryBanner from './QueryBanner';
 import { IStepperPath } from './types';
 
 export interface StepperProps {
   steps: IStepperPath[];
+  txNumber?: number; // Used to start the flow over again as-needed
   defaultBackPath?: string; // Path that component reverts to when user clicks "back" from first step in flow.
   defaultBackPathLabel?: string;
   completeBtnText?: string; // Text for btn to navigate out of flow in last step.
@@ -22,12 +25,18 @@ export function GeneralStepper({
   defaultBackPath,
   defaultBackPathLabel,
   completeBtnText,
+  txNumber,
   wrapperClassName = '',
   basic = false,
   onRender
 }: StepperProps) {
   const history = useHistory();
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (!txNumber || txNumber === 0) return;
+    setStep(0);
+  }, [txNumber]);
 
   const goToPrevStep = () => {
     return setStep(Math.max(0, step - 1));
@@ -42,7 +51,8 @@ export function GeneralStepper({
 
   const getStep = (stepIndex: number) => {
     const path = steps;
-    const { label, component, actions, props } = steps[stepIndex]; // tslint:disable-line
+    const step = steps[stepIndex] || steps[0];
+    const { label, component, actions, props } = step; // tslint:disable-line
     return { currentPath: path, label, Step: component, stepAction: actions, props };
   };
 
@@ -58,7 +68,7 @@ export function GeneralStepper({
 
   const goToNextStep = () => setStep(Math.min(step + 1, currentPath.length - 1));
 
-  const stepObject = steps[step];
+  const stepObject = steps[step] || steps[0];
   const stepProps = stepObject.props;
   const stepActions = stepObject.actions;
 
@@ -75,6 +85,7 @@ export function GeneralStepper({
       className={wrapperClassName}
       basic={basic}
     >
+      <QueryBanner />
       <Step
         onComplete={(payload: any) =>
           stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()

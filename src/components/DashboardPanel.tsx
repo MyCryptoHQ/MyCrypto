@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Heading } from '@mycrypto/ui';
 
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 
 import { Panel } from './Panel';
 import RouterLink from './RouterLink';

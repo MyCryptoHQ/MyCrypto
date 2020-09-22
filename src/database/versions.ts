@@ -1,12 +1,11 @@
-import moment from 'moment';
-
 import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
-import { noOp } from '@utils';
+import { formatDate } from '@utils';
+import { noOp } from '@utils/noOp';
 
-import { migrate } from './v1.0.0';
 import { SCHEMA_BASE } from './data';
 import { DBConfig } from './types';
+import { migrate } from './v1.0.0';
 
 export const dbVersions = {
   'v1.0.0': {
@@ -26,16 +25,14 @@ export const dbVersions = {
   }
 };
 
-export const dbHistory = ['v1.0.0', 'v0.0.1'];
+export const dbHistory = ['v1.0.0', 'v0.0.1'] as const;
 
-// @ts-ignore
 export const getCurrentDBConfig = () => dbVersions[dbHistory[0]];
 
-// @ts-ignore
 export const getPreviousDBConfig = () => dbVersions[dbHistory[1]];
 
-export const getExportFileName = (currentDb: DBConfig, m: moment.Moment) => {
-  return `${SETTINGS_FILENAME}_${m.format('YYYY-MM-DD')}_${currentDb.version}.json`;
+export const getExportFileName = (currentDb: DBConfig, date: Date) => {
+  return `${SETTINGS_FILENAME}_${formatDate(date)}_${currentDb.version}.json`;
 };
 
 export const getData = () => {
@@ -63,6 +60,6 @@ export const getData = () => {
 
 export const getEncryptedData = () => {
   const latestDB = getCurrentDBConfig();
-  // TODO: Migrations?
+  // @todo: Migrations?
   return localStorage[latestDB.vault];
 };

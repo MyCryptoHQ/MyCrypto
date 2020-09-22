@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
+
 import styled from 'styled-components';
-import { TUuid, Balance, Fiat, IAccount } from '@types';
-import { SettingsContext } from '@services/Store';
-import { BalanceDetailsTable, Tooltip, AddIcon, DashboardPanel } from '@components';
+
+import { AddIcon, BalanceDetailsTable, DashboardPanel, Tooltip } from '@components';
+import { useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
+import { Balance, Fiat, IAccount, TUuid } from '@types';
 
 const SIconContainer = styled.div`
   display: flex;
@@ -11,7 +13,7 @@ const SIconContainer = styled.div`
 `;
 
 const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
-  const { removeAssetfromExclusionList } = useContext(SettingsContext);
+  const { removeAssetfromExclusionList } = useSettings();
   return (
     <SIconContainer onClick={() => removeAssetfromExclusionList(uuid)}>
       <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
@@ -25,7 +27,7 @@ const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
 
 interface ExcludedAssetsProps {
   balances: Balance[];
-  totalFiatValue: number;
+  totalFiatValue: string;
   fiat: Fiat;
   accounts: IAccount[];
   selected: string[];

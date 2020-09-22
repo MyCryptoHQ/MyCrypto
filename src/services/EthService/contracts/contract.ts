@@ -7,10 +7,12 @@ enum ABIMethodTypes {
   FUNC = 'function'
 }
 
+// eslint-disable-next-line import/export
 export default interface Contract {
   [key: string]: any;
 }
 
+// eslint-disable-next-line import/export
 export default class Contract {
   public static getFunctions = (contract: Contract) =>
     Object.getOwnPropertyNames(contract).reduce((accu, currContractMethodName) => {

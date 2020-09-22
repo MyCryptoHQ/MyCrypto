@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Accordion } from '@mycrypto/ui';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { Accordion } from '@mycrypto/ui';
 
-import { Button, AppLogo, Typography, FullSizeContentPanel } from '@components';
-import translate, { translateRaw } from '@translations';
+import { AppLogo, Button, FullSizeContentPanel, Typography } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { COLORS, BREAK_POINTS, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
-
-import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
+import { accordionContent, defaultZapId, IZapId, riskAndReward, ZAPS_CONFIG } from '../config';
 import RiskAndRewardCard from './RiskAndRewardCard';
 
 const Illustration = styled.img`

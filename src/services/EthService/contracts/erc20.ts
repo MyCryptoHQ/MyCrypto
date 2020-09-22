@@ -1,4 +1,5 @@
 import { IERC20 } from '@types';
+
 import { default as Contract } from './contract';
 
 const erc20Abi = [
@@ -150,6 +151,32 @@ const erc20Abi = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function'
+  },
+
+  {
+    name: 'allowance',
+    type: 'function',
+    constant: true,
+    payable: false,
+    stateMutability: 'view',
+
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address'
+      },
+      {
+        name: '_spender',
+        type: 'address'
+      }
+    ],
+
+    outputs: [
+      {
+        name: 'allowance',
+        type: 'uint256'
+      }
+    ]
   }
 ];
 

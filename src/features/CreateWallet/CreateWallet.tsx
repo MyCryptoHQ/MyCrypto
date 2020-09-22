@@ -1,14 +1,13 @@
 import React from 'react';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+
 import { Button, Typography } from '@mycrypto/ui';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
+import newWalletIcon from '@assets/images/icn-new-wallet.svg';
 import { ExtendedContentPanel } from '@components';
 import { ROUTE_PATHS } from '@config';
-
-// Legacy
-import newWalletIcon from '@assets/images/icn-new-wallet.svg';
+import { translateRaw } from '@translations';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
