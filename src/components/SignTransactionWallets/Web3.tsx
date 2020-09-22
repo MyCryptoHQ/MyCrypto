@@ -1,132 +1,62 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { ethers, utils } from 'ethers';
+import { utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
-import { getNetworkByChainId, INetworkContext, useNetworks } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { ISignComponentProps, TAddress } from '@types';
-import { getWeb3Config, isSameAddress, withHook } from '@utils';
+import { getWeb3Config, isSameAddress } from '@utils';
 
 import './Web3.scss';
 
 enum WalletSigningState {
-  READY, //when signerWallet is ready to sendTransaction
-  NOT_READY, //use when signerWallet rejects transaction
+  SUBMITTING,
+  REJECTED,
+  ADDRESS_MISMATCH,
+  NETWORK_MISMATCH,
+  SUCCESS,
   UNKNOWN //used upon component initialization when wallet status is not determined
 }
 
-interface Web3UserState {
-  account: string | undefined;
-  network: number | undefined;
-  accountMatches: boolean;
-  networkMatches: boolean;
-  submitting: boolean;
-  walletState: WalletSigningState;
-}
+export default function SignTransactionWeb3({
+  senderAccount,
+  rawTransaction,
+  onSuccess
+}: ISignComponentProps) {
+  const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
 
-let web3Provider: Web3Provider;
+  const desiredAddress = utils.getAddress(senderAccount.address);
 
-async function getWeb3Provider() {
-  const ethereumProvider = (window as CustomWindow).ethereum;
-  await ethereumProvider.enable();
-  return new Web3Provider(ethereumProvider);
-}
+  const { getNetworkByChainId } = useNetworks();
+  const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
+  const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
+  const walletConfig = getWeb3Config();
 
-class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContext, Web3UserState> {
-  public state: Web3UserState = {
-    account: undefined,
-    network: undefined,
-    accountMatches: false,
-    networkMatches: false,
-    submitting: false,
-    walletState: WalletSigningState.UNKNOWN
-  };
-
-  constructor(props: ISignComponentProps & INetworkContext) {
-    super(props);
-    this.getWeb3Account = this.getWeb3Account.bind(this);
-  }
-
-  public async initProvider() {
-    web3Provider = await getWeb3Provider();
-
+  useEffect(() => {
     const ethereumProvider = (window as CustomWindow).ethereum;
     if (ethereumProvider) {
-      this.getWeb3Account();
-      this.watchForAccountChanges(ethereumProvider);
+      // enable() is deprecated by MetaMask, but the alternative request() function is not implemented by all web3 wallets yet.
+      // @todo: Use request() when possible
+      (window as CustomWindow).ethereum.enable().then(() => {
+        attemptSign();
+        ethereumProvider.on('accountsChanged', () => attemptSign());
+        ethereumProvider.on('networkChanged', () => attemptSign());
+      });
     } else {
       throw Error('No web3 found');
     }
-  }
+    return () => {
+      ethereumProvider.removeAllListeners();
+    };
+  }, []);
 
-  public UNSAFE_componentWillMount() {
-    this.initProvider();
-  }
+  const attemptSign = async () => {
+    const ethereumProvider = (window as CustomWindow).ethereum;
+    const web3Provider = new Web3Provider(ethereumProvider);
 
-  public render() {
-    const { senderAccount, rawTransaction, networks } = this.props;
-    const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
-    const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
-    const walletConfig = getWeb3Config();
-    const { accountMatches, networkMatches, walletState, submitting } = this.state;
-    return (
-      <>
-        <div className="SignTransactionWeb3-title">
-          {translate('SIGN_TX_TITLE', {
-            $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
-          })}
-        </div>
-        <div className="SignTransactionWeb3-instructions">
-          {translate('SIGN_TX_WEB3_PROMPT', {
-            $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
-          })}
-        </div>
-        <div className="SignTransactionWeb3-img">
-          <img src={walletConfig.icon} />
-        </div>
-        {walletState === WalletSigningState.NOT_READY ? (
-          <div className="SignTransactionWeb3-rejection">{translate('SIGN_TX_WEB3_REJECTED')}</div>
-        ) : null}
-
-        <div className="SignTransactionWeb3-input">
-          <div className="SignTransactionWeb3-errors">
-            {!networkMatches && (
-              <div className="SignTransactionWeb3-wrong-network">
-                {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
-                  $walletName: walletConfig.name,
-                  $networkName: networkName
-                })}
-              </div>
-            )}
-            {!accountMatches && (
-              <div className="SignTransactionWeb3-wrong-address">
-                {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
-                  $walletName: walletConfig.name,
-                  $address: senderAccount.address
-                })}
-              </div>
-            )}
-          </div>
-          {submitting && translate('SIGN_TX_SUBMITTING_PENDING')}
-          <div className="SignTransactionWeb3-description">
-            {translateRaw('SIGN_TX_EXPLANATION')}
-          </div>
-          <div className="SignTransactionWeb3-footer">
-            {walletConfig.helpLink && (
-              <div className="SignTransactionWeb3-help">
-                {translate('SIGN_TX_HELP_LINK', { $helpLink: walletConfig.helpLink })}
-              </div>
-            )}
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  private async getWeb3Account() {
-    if (!Web3Provider) {
+    if (!web3Provider) {
       return;
     }
 
@@ -134,60 +64,26 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     const web3Address = await web3Signer.getAddress();
     const checksumAddress = utils.getAddress(web3Address);
 
-    this.setState({ account: checksumAddress });
-    this.getWeb3Network();
-    this.checkAddressMatches(checksumAddress);
-  }
-
-  private async getWeb3Network() {
-    if (!Web3Provider) {
-      return;
-    }
-
     const web3Network = await web3Provider.getNetwork();
-    this.setState({ network: web3Network.chainId });
-    this.checkNetworkMatches(web3Network);
-  }
-
-  private checkAddressMatches(Web3Address: string) {
-    const { senderAccount } = this.props;
-    const desiredAddress = utils.getAddress(senderAccount.address);
-    this.setState({
-      accountMatches: isSameAddress(Web3Address as TAddress, desiredAddress as TAddress)
-    });
-  }
-
-  private checkNetworkMatches(Web3Network: ethers.utils.Network) {
-    const {
-      network: { name: networkName },
-      networks
-    } = this.props;
-    const getWeb3NetworkbyChainId = getNetworkByChainId(Web3Network.chainId, networks);
-    if (!getWeb3NetworkbyChainId) {
+    const addressMatches = isSameAddress(checksumAddress as TAddress, desiredAddress as TAddress);
+    if (!addressMatches) {
+      setWalletState(WalletSigningState.ADDRESS_MISMATCH);
       return;
     }
 
-    const localCacheSenderNetwork = networkName;
-    if (getWeb3NetworkbyChainId.name === localCacheSenderNetwork) {
-      this.setState({ networkMatches: true });
-      this.maybeSendTransaction();
-    } else {
-      this.setState({ networkMatches: false });
-    }
-  }
-
-  private watchForAccountChanges(ethereum: NonNullable<CustomWindow['ethereum']>) {
-    ethereum.on('accountsChanged', this.getWeb3Account);
-  }
-
-  private async maybeSendTransaction() {
-    const { rawTransaction, onSuccess } = this.props;
-    this.setState({ submitting: true });
-    if (!this.state.accountMatches || !this.state.networkMatches) {
+    const web3NetworkByChainId = getNetworkByChainId(web3Network.chainId);
+    if (!web3NetworkByChainId) {
+      // @todo figure out error
       return;
     }
 
-    this.setState({ walletState: WalletSigningState.READY });
+    const networkMatches = web3NetworkByChainId.name === networkName;
+    if (!networkMatches) {
+      setWalletState(WalletSigningState.NETWORK_MISMATCH);
+      return;
+    }
+
+    setWalletState(WalletSigningState.SUBMITTING);
     const signerWallet = web3Provider.getSigner();
 
     // Calling ethers.js with a tx object containing a 'from' property
@@ -196,17 +92,73 @@ class SignTransactionWeb3 extends Component<ISignComponentProps & INetworkContex
     signerWallet
       .sendUncheckedTransaction(rawTx)
       .then((txHash) => {
-        this.setState({ submitting: false });
+        setWalletState(WalletSigningState.SUCCESS);
         onSuccess(txHash);
       })
       .catch((err) => {
-        this.setState({ submitting: false });
         console.debug(`[SignTransactionWeb3] ${err.message}`);
         if (err.message.includes('User denied transaction signature')) {
-          this.setState({ walletState: WalletSigningState.NOT_READY });
+          setWalletState(WalletSigningState.REJECTED);
+        } else {
+          setWalletState(WalletSigningState.UNKNOWN);
         }
       });
-  }
-}
+  };
 
-export default withHook(useNetworks)(SignTransactionWeb3);
+  return (
+    <>
+      <div className="SignTransactionWeb3-title">
+        {translate('SIGN_TX_TITLE', {
+          $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+        })}
+      </div>
+      <div className="SignTransactionWeb3-instructions">
+        {translate('SIGN_TX_WEB3_PROMPT', {
+          $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+        })}
+      </div>
+      <div className="SignTransactionWeb3-img">
+        <img src={walletConfig.icon} />
+      </div>
+
+      <div className="SignTransactionWeb3-input">
+        <div className="SignTransactionWeb3-errors">
+          {walletState === WalletSigningState.REJECTED && (
+            <div className="SignTransactionWeb3-rejection">
+              {translate('SIGN_TX_WEB3_REJECTED')}
+            </div>
+          )}
+          {walletState === WalletSigningState.NETWORK_MISMATCH && (
+            <div className="SignTransactionWeb3-wrong-network">
+              {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
+                $walletName: walletConfig.name,
+                $networkName: networkName
+              })}
+            </div>
+          )}
+          {walletState === WalletSigningState.ADDRESS_MISMATCH && (
+            <div className="SignTransactionWeb3-wrong-address">
+              {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
+                $walletName: walletConfig.name,
+                $address: senderAccount.address
+              })}
+            </div>
+          )}
+          {walletState === WalletSigningState.SUBMITTING && (
+            <div className="SignTransactionWeb3-submitting">
+              {translate('SIGN_TX_SUBMITTING_PENDING')}
+            </div>
+          )}
+        </div>
+        <div className="SignTransactionWeb3-description">{translateRaw('SIGN_TX_EXPLANATION')}</div>
+        <div className="SignTransactionWeb3-footer">
+          {walletConfig.helpLink && (
+            <div className="SignTransactionWeb3-help">
+              {translate('SIGN_TX_HELP_LINK', { $helpLink: walletConfig.helpLink })}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
