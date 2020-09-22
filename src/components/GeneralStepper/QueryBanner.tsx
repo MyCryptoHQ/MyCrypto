@@ -53,7 +53,7 @@ const createQueryWarning = ({
     <BannerContent>
       <img src={runningIcon} />
       <BannerText>{translate(contentTranslationKey)}</BannerText>
-      <Tooltip type={IconID.question} tooltip={translateRaw(tooltipTranslationKey)} />
+      <Tooltip type={IconID.questionWhite} tooltip={translateRaw(tooltipTranslationKey)} />
     </BannerContent>
     <Link to={ROUTE_PATHS.DASHBOARD.path}>
       <CancelBtn>{translateRaw('CANCEL_ACTION')}</CancelBtn>
