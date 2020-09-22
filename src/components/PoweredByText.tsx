@@ -23,7 +23,7 @@ const Logo = styled(Icon)`
   height: 24px;
 `;
 
-const Text = styled(Typography)<{ flipped?: boolean; icon?: JSX.Element }>`
+const Text = styled(Typography)<{ flipped?: boolean; icon?: string }>`
   ${({ flipped, icon }) =>
     flipped &&
     icon &&
@@ -88,7 +88,7 @@ const PoweredByText = ({ provider }: { provider: PoweredByProviders }) => {
   return (
     <Wrapper css={css}>
       {flipped && icon && <Logo type={icon} />}
-      <Text flipped={flipped} fontSize={fontSize}>
+      <Text icon={icon} flipped={flipped} fontSize={fontSize}>
         {text}
       </Text>
       {!flipped && icon && <Logo type={icon} />}
