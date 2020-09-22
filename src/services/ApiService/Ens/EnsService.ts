@@ -23,7 +23,7 @@ interface DomainNameObject {
   };
 }
 interface DomainRegistration {
-  expiryDate: number;
+  expiryDate: string;
   domain: DomainNameObject;
 }
 
