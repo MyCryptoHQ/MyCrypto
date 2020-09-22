@@ -3,17 +3,17 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-import {
-  default as TokenMigrationForm,
-  TokenMigrationProps
-} from '@features/TokenMigration/components/TokenMigrationForm';
+import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
+import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
+
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
+  tokenMigrationConfig: repTokenMigrationConfig,
   asset: fAssets[0],
   network: fNetwork,
   address: '',

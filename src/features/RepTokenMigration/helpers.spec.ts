@@ -1,11 +1,11 @@
 import { fAccount, fAssets, fNetwork } from '@fixtures';
+import { ITokenMigrationFormFull } from '@types';
 
-import { tokenMigrationConfig } from './config';
-import { createApproveTx, createMigrationTx } from './helpers';
-import { ITokenMigrationFormFull } from './types';
+import { repTokenMigrationConfig } from './config';
+import { createApproveTx, createRepMigrationTx } from './helpers';
 
 const defaultProps: ITokenMigrationFormFull = {
-  tokenConfig: tokenMigrationConfig,
+  tokenConfig: repTokenMigrationConfig,
   asset: fAssets[0],
   network: fNetwork,
   address: '',
@@ -41,8 +41,8 @@ describe('it creates token migration transactions', () => {
     expect(approveTx).toEqual(validApprovalTx);
   });
 
-  it('creates a migration transaction', () => {
-    const migrationTx = createMigrationTx(defaultProps);
+  it('creates a rep migration transaction', () => {
+    const migrationTx = createRepMigrationTx(defaultProps);
     expect(migrationTx).toEqual(validMigrationTx);
   });
 });

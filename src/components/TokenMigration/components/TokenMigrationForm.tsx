@@ -14,13 +14,20 @@ import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ExtendedAsset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
+import {
+  Asset,
+  ExtendedAsset,
+  IAccount,
+  ISimpleTxFormFull,
+  ITokenMigrationConfig,
+  Network,
+  StoreAccount
+} from '@types';
 import { isFormValid as checkFormValid, noOp, weiToFloat } from '@utils';
-
-import { tokenMigrationConfig } from '../config';
 
 export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
+  tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -31,6 +38,7 @@ interface UIProps {
   storeDefaultAccount: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
+  tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
 }
 
@@ -55,7 +63,11 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const TokenMigrationForm = ({ isSubmitting, onComplete }: TokenMigrationProps) => {
+const TokenMigrationForm = ({
+  tokenMigrationConfig,
+  isSubmitting,
+  onComplete
+}: TokenMigrationProps) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
@@ -72,6 +84,7 @@ const TokenMigrationForm = ({ isSubmitting, onComplete }: TokenMigrationProps) =
       relevantAccounts={relevantAccounts}
       storeDefaultAccount={defaultAccount || defaultStoreAccount}
       defaultAsset={defaultAsset}
+      tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
     />
   );
@@ -83,6 +96,7 @@ export const TokenMigrationFormUI = ({
   relevantAccounts,
   storeDefaultAccount,
   defaultAsset,
+  tokenMigrationConfig,
   onComplete
 }: UIProps) => {
   const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({

@@ -99,7 +99,7 @@ const TxStatus = lazy(() =>
 );
 
 const RepTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration/TokenMigrationStepper')
+  import(/* webpackChunkName: "TokenMigration" */ '@features/RepTokenMigration')
 );
 
 export interface IAppRoutes {

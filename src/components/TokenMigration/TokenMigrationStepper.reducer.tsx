@@ -1,8 +1,6 @@
 import { ValuesType } from 'utility-types';
 
-import { TAction } from '@types';
-
-import { TokenMigrationState } from './types';
+import { TAction, TokenMigrationState } from '@types';
 
 export type ReducerAction = TAction<ValuesType<typeof tokenMigrationReducer.actionTypes>, any>;
 

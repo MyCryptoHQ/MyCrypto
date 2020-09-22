@@ -112,3 +112,9 @@ export {
   IPrimaryAccountPermission,
   IExposedAccountsPermission
 } from './web3Permissions';
+export {
+  ITokenMigrationConfig,
+  ITokenMigrationTxConfig,
+  ITokenMigrationFormFull,
+  TokenMigrationState
+} from './tokenMigration';
