@@ -34,7 +34,7 @@ describe('ENSTable', () => {
         owner: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
         ownerLabel: 'MyCrypto Tip Jar',
         domainName: 'donate.mycryptoid.eth',
-        expiryDate: 1589234757,
+        expiryDate: '1589234757',
         readableDomainName: 'donate.mycryptoid.eth'
       }
     ];
