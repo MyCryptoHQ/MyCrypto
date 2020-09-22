@@ -7,6 +7,7 @@ import SendAssets from '@features/SendAssets/SendAssets';
 import { fAssets, fSettings } from '@fixtures';
 import { FeatureFlagProvider, RatesContext } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
+import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('ethers/providers', () => {
@@ -38,7 +39,7 @@ describe('SendAssetsFlow', () => {
               ({
                 userAssets: [],
                 accounts: [],
-                defaultAccount: { assets: [] },
+                defaultAccount: { assets: [], wallet: WalletId.WEB3 },
                 getAccount: jest.fn(),
                 networks: [{ nodes: [] }]
               } as unknown) as any
