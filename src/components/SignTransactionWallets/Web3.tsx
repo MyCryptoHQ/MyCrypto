@@ -120,12 +120,14 @@ export default function SignTransactionWeb3({
       <div className="SignTransactionWeb3-img">
         <img src={walletConfig.icon} />
       </div>
-      {walletState === WalletSigningState.REJECTED && (
-        <div className="SignTransactionWeb3-rejection">{translate('SIGN_TX_WEB3_REJECTED')}</div>
-      )}
 
       <div className="SignTransactionWeb3-input">
         <div className="SignTransactionWeb3-errors">
+          {walletState === WalletSigningState.REJECTED && (
+            <div className="SignTransactionWeb3-rejection">
+              {translate('SIGN_TX_WEB3_REJECTED')}
+            </div>
+          )}
           {walletState === WalletSigningState.NETWORK_MISMATCH && (
             <div className="SignTransactionWeb3-wrong-network">
               {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
@@ -142,8 +144,12 @@ export default function SignTransactionWeb3({
               })}
             </div>
           )}
+          {walletState === WalletSigningState.SUBMITTING && (
+            <div className="SignTransactionWeb3-submitting">
+              {translate('SIGN_TX_SUBMITTING_PENDING')}
+            </div>
+          )}
         </div>
-        {walletState === WalletSigningState.SUBMITTING && translate('SIGN_TX_SUBMITTING_PENDING')}
         <div className="SignTransactionWeb3-description">{translateRaw('SIGN_TX_EXPLANATION')}</div>
         <div className="SignTransactionWeb3-footer">
           {walletConfig.helpLink && (
