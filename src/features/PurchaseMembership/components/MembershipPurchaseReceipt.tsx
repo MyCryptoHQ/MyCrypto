@@ -29,7 +29,7 @@ export default function MembershipReceipt({
   const txItems = transactions.map((tx, idx) => {
     const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    return makeTxItem(txType, txConfig, tx.txResponse, tx.txReceipt);
+    return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
   const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;

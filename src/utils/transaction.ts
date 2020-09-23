@@ -270,18 +270,18 @@ export const makeTxConfigFromTxReceipt = (
 export const makeTxItem = (
   txType: ITxType,
   txConfig: ITxConfig,
-  txResponse?: TransactionResponse,
+  txHash: ITxHash,
   txReceipt?: TransactionReceipt
 ) => {
   if (!txReceipt) {
     return {
-      txReceipt: makePendingTxReceipt(txResponse!.hash as ITxHash)(txType, txConfig),
+      txReceipt: makePendingTxReceipt(txHash)(txType, txConfig),
       txConfig
     };
   } else {
     const status = txReceipt.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
     return {
-      txReceipt: toTxReceipt(txResponse!.hash as ITxHash, status)(txType, txConfig),
+      txReceipt: toTxReceipt(txHash, status)(txType, txConfig),
       txConfig
     };
   }

@@ -4,7 +4,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { DEX_BASE_URL, DEXAG_MYC_HANDLER_CONTRACT, DEXAG_MYC_TRADE_CONTRACT } from '@config';
 import { ERC20 } from '@services/EthService';
-import { ITxData, ITxObject, ITxValue, TAddress, TTicker } from '@types';
+import { ITxData, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -79,7 +79,7 @@ export default class DexService {
     to: TTicker,
     fromAmount?: string,
     toAmount?: string
-  ): Promise<Partial<ITxObject>[]> => {
+  ): Promise<Partial<ITxObject & { type: ITxType }>[]> => {
     const params = {
       ...DexService.defaultParams,
       from,
@@ -162,7 +162,10 @@ export default class DexService {
 
 // Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
 // to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
-export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxObject> => {
+export const formatApproveTx = ({
+  to,
+  value
+}: Partial<ITxObject>): Partial<ITxObject & { type: ITxType }> => {
   // [spender, amount]. Spender is the contract the user needs to authorize.
   // It's value is also available in the API response obj `data.metadata.input.spender`
   const data = ERC20.approve.encodeInput({ _spender: DEXAG_MYC_HANDLER_CONTRACT, _value: value });
@@ -171,15 +174,21 @@ export const formatApproveTx = ({ to, value }: Partial<ITxObject>): Partial<ITxO
     to,
     data: data as ITxData,
     chainId: 1,
-    value: addHexPrefix(new BN('0').toString()) as ITxValue
+    value: addHexPrefix(new BN('0').toString()) as ITxValue,
+    type: ITxType.APPROVAL
   };
 };
 
-export const formatTradeTx = ({ to, data, value }: Partial<ITxObject>): Partial<ITxObject> => {
+export const formatTradeTx = ({
+  to,
+  data,
+  value
+}: Partial<ITxObject>): Partial<ITxObject & { type: ITxType }> => {
   return {
     to,
     data,
     value: addHexPrefix(new BN(value || '0').toString(16)) as ITxValue,
-    chainId: 1
+    chainId: 1,
+    type: ITxType.SWAP
   };
 };
