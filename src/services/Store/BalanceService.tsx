@@ -160,7 +160,6 @@ const getAccountAssetsBalancesWithJsonRPC = async (
       .getRawBalance(account.address)
       // @ts-expect-error The types mismatch due to versioning of ethersjs
       .then(convertBNToBigNumberJS)
-      // @ts-expect-error The types mismatch due to versioning of ethersjs
       .then((balance) => ({ [address]: balance })),
     getTokenBalances(provider, address, tokens)
   ])

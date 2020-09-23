@@ -395,7 +395,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         'check-nonce',
         // @ts-expect-error Hack to allow for returning of Markdown
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
-        // @ts-expect-error Hack to allow for returning of Markdown
         async function (value) {
           const account = this.parent.account;
           const network = this.parent.network;

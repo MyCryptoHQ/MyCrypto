@@ -63,7 +63,6 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   // Add labels to address book
   const { dashboardAccounts = [] } = prev.settings;
-  //@ts-expect-error
   const accountUUIDs = map(prop('uuid'), values(accounts));
 
   const settings = {

@@ -21,7 +21,6 @@ export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxOb
   });
 
   return {
-    // @ts-expect-error Contract Address should be set if asset is ERC20
     to: tokenMigrationConfig.fromContractAddress,
     from: payload.account.address,
     data: data as ITxData,
