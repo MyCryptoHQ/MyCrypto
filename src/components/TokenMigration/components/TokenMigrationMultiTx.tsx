@@ -5,7 +5,7 @@ import path from 'ramda/src/path';
 import { VerticalStepper } from '@components';
 import { ITokenMigrationConfig, ITxStatus, TxParcel } from '@types';
 
-interface Props {
+export interface TokenMigrationMultiTxConfirmProps {
   currentTxIdx: number;
   transactions: TxParcel[];
   tokenMigrationConfig: ITokenMigrationConfig;
@@ -17,7 +17,7 @@ export default function ConfirmTokenMigration({
   transactions,
   tokenMigrationConfig,
   onComplete
-}: Props) {
+}: TokenMigrationMultiTxConfirmProps) {
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);

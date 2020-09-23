@@ -8,7 +8,7 @@ import { makeTxItem } from '@utils/transaction';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
-interface Props {
+export interface TokenMigrationReceiptProps {
   account: StoreAccount;
   transactions: TxParcel[];
   tokenMigrationConfig: ITokenMigrationConfig;
@@ -20,7 +20,7 @@ export default function TokenMigrationReceipt({
   transactions,
   tokenMigrationConfig,
   onComplete
-}: Props) {
+}: TokenMigrationReceiptProps) {
   const { settings } = useSettings();
   const { getAssetByUUID } = useAssets();
   const { getAssetRate } = useRates();
@@ -36,14 +36,13 @@ export default function TokenMigrationReceipt({
   const baseAssetRate = getAssetRate(baseAsset);
 
   const fiat = getFiat(settings);
-
+  const lastTxConfig =
+    tokenMigrationConfig.txConstructionConfigs[
+      tokenMigrationConfig.txConstructionConfigs.length - 1
+    ];
   return (
     <MultiTxReceipt
-      txType={
-        tokenMigrationConfig.txConstructionConfigs[
-          tokenMigrationConfig.txConstructionConfigs.length - 1
-        ].txType
-      }
+      txType={lastTxConfig.txType}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}

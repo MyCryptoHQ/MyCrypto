@@ -1,28 +1,25 @@
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
-import { ERC20, RepV2Token } from '@services/EthService/contracts';
-import { ITokenMigrationFormFull, ITxData, ITxObject } from '@types';
-import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import { RepV2Token } from '@services/EthService';
+import { ITokenMigrationFormFull, ITxData, ITxObject, ITxToAddress } from '@types';
+import { formatApproveTx, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { repTokenMigrationConfig } from './config';
 
-export const createApproveTx = (payload: ITokenMigrationFormFull): Partial<ITxObject> => {
-  const data = ERC20.approve.encodeInput({
-    _spender: repTokenMigrationConfig.toContractAddress,
-    _value: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
-  });
+export const createApproveTx = (
+  payload: ITokenMigrationFormFull
+): Omit<ITxObject, 'nonce' | 'gasLimit'> =>
+  formatApproveTx(
+    payload.asset.contractAddress as ITxToAddress,
+    toWei(payload.amount, DEFAULT_ASSET_DECIMAL),
+    payload.account.address,
+    repTokenMigrationConfig.toContractAddress,
+    DEFAULT_NETWORK_CHAINID,
+    inputGasPriceToHex(payload.gasPrice)
+  );
 
-  return {
-    // @ts-ignore Contract Address should be set if asset is ERC20
-    to: tokenMigrationConfig.fromContractAddress,
-    from: payload.account.address,
-    data: data as ITxData,
-    chainId: DEFAULT_NETWORK_CHAINID,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    value: inputValueToHex('0')
-  };
-};
-
-export const createMigrationTx = (payload: ITokenMigrationFormFull): Partial<ITxObject> => {
+export const createRepMigrationTx = (
+  payload: ITokenMigrationFormFull
+): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
   const data = RepV2Token.migrateFromLegacyReputationToken.encodeInput({});
   return {
     from: payload.account.address,

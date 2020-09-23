@@ -1,7 +1,7 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
 
-export { fAssets, fStoreAssets } from './assets';
+export { fAssets, fStoreAssets, fRopDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
 export { fNetwork, fNetworks } from './network';
@@ -58,3 +58,7 @@ export { fNotifications } from './notifications';
 export { fRates } from './rates';
 
 export { SCHEMA_BASE as fLocalStorage } from '@database/data';
+export { fTokenMigrationTxs } from './tokenMigrationMultiTx';
+
+export { default as fREPTokenMigrationTxResponse } from './repMigrationTxResponse.json';
+export { default as fApproveERC20TxResponse } from './approveErc20TxResponse.json';

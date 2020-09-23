@@ -1,3 +1,4 @@
+import { REPV1UUID } from '@config';
 import { fAccount, fAssets, fNetwork } from '@fixtures';
 import { ITokenMigrationFormFull } from '@types';
 
@@ -6,7 +7,7 @@ import { createApproveTx, createRepMigrationTx } from './helpers';
 
 const defaultProps: ITokenMigrationFormFull = {
   tokenConfig: repTokenMigrationConfig,
-  asset: fAssets[0],
+  asset: fAssets.find(({ uuid }) => uuid === REPV1UUID)!,
   network: fNetwork,
   address: '',
   amount: '5',

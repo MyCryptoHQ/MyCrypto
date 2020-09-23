@@ -4,7 +4,7 @@ import {
   getAssetByUUID,
   hexToString,
   hexWeiToString,
-  toWei
+  Wei
 } from '@services';
 import { ITokenMigrationConfig, ITxConfig, ITxObject, StoreAccount, TAddress } from '@types';
 
@@ -17,7 +17,7 @@ export const makeTokenMigrationTxConfig = (rawTransaction: ITxObject, account: S
   const asset = getAssetByUUID(account.assets)(tokenMigrationConfig.fromAssetUuid)!;
 
   const { _value: tokenBaseAmount, _to: to } = decodeTransfer(data);
-  const amount = fromTokenBase(toWei(tokenBaseAmount, 0));
+  const amount = fromTokenBase(Wei(tokenBaseAmount));
   const txConfig: ITxConfig = {
     from: address,
     receiverAddress: to as TAddress,

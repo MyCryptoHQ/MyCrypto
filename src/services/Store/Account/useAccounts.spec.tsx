@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fSettings, fTxReceipt } from '@fixtures';
+import { fAccounts, fAssets, fRopDAI, fSettings, fTxReceipt } from '@fixtures';
 import { IAccount, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -144,7 +144,7 @@ describe('useAccounts', () => {
         ...fAccounts[1],
         assets: [
           expect.objectContaining({
-            uuid: fAssets[10].uuid,
+            uuid: fRopDAI.uuid,
             balance: '1018631879600000000'
           }),
           ...fAccounts[1].assets
@@ -167,7 +167,7 @@ describe('useAccounts', () => {
           ...a,
           assets: [
             expect.objectContaining({
-              uuid: fAssets[10].uuid,
+              uuid: fRopDAI.uuid,
               balance: '1018631879600000000'
             }),
             ...a.assets
