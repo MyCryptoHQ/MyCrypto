@@ -8,7 +8,6 @@ import { COLORS } from '@theme';
 import { bigify, noOp } from '@utils';
 
 import { ProtectTxError } from '..';
-import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
 
 const defaultProps: UIProps = {
@@ -48,7 +47,6 @@ const ProtectTxStep1Mobile = () => (
         justifyContent: 'center'
       }}
     >
-      <ProtectTxModalBackdrop onBackdropClick={noOp} />
       <div style={{ maxWidth: '375px', position: 'relative' }}>
         <Panel>
           <ProtectTxProtectionUI {...defaultProps} />

@@ -118,7 +118,7 @@ describe('TxReceipt', () => {
     const { getByText } = getComponent({
       ...defaultProps,
       protectTxButton: () => <>PTXBUTTON</>,
-      protectTxEnabled: true
+      enabled: true
     });
     expect(getByText('PTXBUTTON')).toBeDefined();
     expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();

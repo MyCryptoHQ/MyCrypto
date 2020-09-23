@@ -13,7 +13,7 @@ import WarningIcon from '@components/icons/WarningIcon';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getFiat } from '@config/fiats';
 import { useRates, useSettings } from '@services';
-import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Fiat, IAccount, IFormikFields } from '@types';
 import { isWeb3Wallet as checkIsWeb3Wallet } from '@utils';
@@ -57,6 +57,13 @@ const SProtectionThisTransaction = styled(ProtectTxBase)`
       padding-left: 16px;
       text-align: left;
     }
+    @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+      flex-direction: column;
+      align-items: center;
+      > svg {
+        align-self: center;
+      }
+    }
   }
 
   .send-with-confidence {
@@ -64,7 +71,6 @@ const SProtectionThisTransaction = styled(ProtectTxBase)`
   }
 
   .protect-transaction {
-    width: 280px;
     margin: 12px 0 16px;
   }
 
@@ -149,6 +155,14 @@ const Header = styled.h4`
       margin-right: ${SPACING.XS};
     }
   }
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    flex-direction: column;
+    align-items: center;
+    svg {
+      margin-right: 0;
+    }
+  }
 `;
 
 const PoweredByWrapper = styled.div`
@@ -200,6 +214,7 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   const onProtectMyTransactionClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
+      e.stopPropagation();
 
       try {
         setIsLoading(true);

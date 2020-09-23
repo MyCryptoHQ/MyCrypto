@@ -32,7 +32,6 @@ import {
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
-import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getNonce, useRates } from '@services';
@@ -240,9 +239,10 @@ const QueryWarning = () => <WhenQueryExists displayQueryMessage={createQueryWarn
 
 interface ISendFormProps extends IStepComponentProps {
   type?: TxQueryTypes;
+  protectTxButton?(): JSX.Element;
 }
 
-const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
+const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
   const {
     accounts,
     userAssets,
@@ -297,8 +297,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     protectTxFeatureFlag,
     state: ptxState,
     updateFormValues,
-    goToInitialStepOrFetchReport,
-    showHideProtectTx
+    goToInitialStepOrFetchReport
   } = useContext(ProtectTxContext);
 
   const SendAssetsSchema = object().shape({
@@ -762,23 +761,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
           </div>
         )}
       </div>
-      {protectTxFeatureFlag && (
-        <ProtectTxButton
-          reviewReport={ptxState.protectTxEnabled}
-          onClick={(e) => {
-            e.preventDefault();
-
-            if (goToInitialStepOrFetchReport) {
-              const { address, network } = values;
-              goToInitialStepOrFetchReport(address.value, network);
-            }
-
-            if (showHideProtectTx) {
-              showHideProtectTx(true);
-            }
-          }}
-        />
-      )}
+      {protectTxFeatureFlag && protectTxButton && protectTxButton()}
       <Button
         type="submit"
         onClick={() => {

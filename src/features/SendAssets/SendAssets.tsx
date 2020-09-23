@@ -31,7 +31,7 @@ import { initialState, sendAssetsReducer } from './SendAssets.reducer';
 function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
   const {
-    state: { protectTxEnabled, protectTxShow, isPTXFree },
+    state: { enabled, protectTxShow, isPTXFree },
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
   const { accounts } = useContext(StoreContext);
@@ -75,7 +75,7 @@ function SendAssets({ location }: RouteComponentProps) {
       component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isPTXFree) {
+        if (enabled && !isPTXFree) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
@@ -110,7 +110,7 @@ function SendAssets({ location }: RouteComponentProps) {
       component: SendAssetsFormWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isPTXFree) {
+        if (enabled && !isPTXFree) {
           form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
         }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });

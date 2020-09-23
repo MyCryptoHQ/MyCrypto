@@ -14,5 +14,7 @@ interface Props {
 export const ProtectTxStepper: FC<Props> = ({ steps, currentStepIndex }) => {
   const { component: Component, props, actions } = steps[currentStepIndex % steps.length];
 
-  return <Component {...props} {...actions} />;
+  return (
+    <Component {...props} {...actions} onClick={(e: React.MouseEvent) => e.stopPropagation()} />
+  );
 };

@@ -125,7 +125,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
       // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
       window.requestAnimationFrame(() => {
         for (const entry of entries) {
-          console.log(entry.contentRect.height);
           setTopHeight(entry.contentRect.height);
         }
       });

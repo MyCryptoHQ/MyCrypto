@@ -8,13 +8,18 @@ import { ProtectTxButton } from './ProtectTxButton';
 
 const ProtectTransactionButton = () => (
   <div style={{ maxWidth: '500px', position: 'relative' }}>
-    <ProtectTxButton onClick={noOp} />
+    <ProtectTxButton onClick={noOp} protectTxShow={false} stepper={() => <></>} />
   </div>
 );
 
 const ProtectTransactionButtonProtected = () => (
   <div style={{ maxWidth: '500px', position: 'relative' }}>
-    <ProtectTxButton reviewReport={true} onClick={noOp} />
+    <ProtectTxButton
+      reviewReport={true}
+      onClick={noOp}
+      protectTxShow={false}
+      stepper={() => <></>}
+    />
   </div>
 );
 

@@ -130,7 +130,7 @@ export default function ConfirmTransaction({
   const { settings } = useSettings();
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
-    if (ptxState && ptxState.protectTxEnabled && !ptxState.isPTXFree) {
+    if (ptxState && ptxState.enabled && !ptxState.isPTXFree) {
       return ptxState.feeAmount;
     }
     return undefined;
