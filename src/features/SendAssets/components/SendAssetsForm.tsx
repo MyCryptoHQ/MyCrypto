@@ -731,7 +731,12 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
                   }}
                   name="nonceField"
                   value={values.nonceField}
-                  error={errors && errors.nonceField}
+                  error={
+                    (errors && errors.nonceField) ||
+                    (!supportsNonce
+                      ? translate('DISABLED_NONCE', { $provider: walletConfig.name })
+                      : undefined)
+                  }
                   disabled={!supportsNonce}
                 />
               </div>
