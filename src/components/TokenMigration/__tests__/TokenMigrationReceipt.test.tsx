@@ -17,6 +17,7 @@ import TokenMigrationReceipt, {
 const defaultProps: TokenMigrationReceiptProps = {
   tokenMigrationConfig: repTokenMigrationConfig,
   account: fAccounts[0],
+  amount: '4',
   transactions: fTokenMigrationTxs(),
   onComplete: jest.fn()
 };

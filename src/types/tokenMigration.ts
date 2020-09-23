@@ -2,6 +2,7 @@ import { ISimpleTxFormFull, ITxObject, ITxType, StoreAccount, TAddress, TUuid } 
 
 export interface TokenMigrationState {
   account?: StoreAccount;
+  amount?: string;
 }
 
 export interface ITokenMigrationFormFull extends ISimpleTxFormFull {

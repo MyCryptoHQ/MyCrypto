@@ -10,8 +10,8 @@ export const tokenMigrationReducer = (
 ): TokenMigrationState => {
   switch (action.type) {
     case tokenMigrationReducer.actionTypes.FORM_SUBMIT: {
-      const { account } = action.payload;
-      return { ...state, account };
+      const { account, amount } = action.payload;
+      return { ...state, account, amount };
     }
 
     default:

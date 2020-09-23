@@ -1,26 +1,19 @@
-import {
-  decodeTransfer,
-  fromTokenBase,
-  getAssetByUUID,
-  hexToString,
-  hexWeiToString,
-  Wei
-} from '@services';
-import { ITokenMigrationConfig, ITxConfig, ITxObject, StoreAccount, TAddress } from '@types';
+import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
+import { ITokenMigrationConfig, ITxConfig, ITxObject, StoreAccount } from '@types';
 
-export const makeTokenMigrationTxConfig = (rawTransaction: ITxObject, account: StoreAccount) => (
-  tokenMigrationConfig: ITokenMigrationConfig
-): ITxConfig => {
+export const makeTokenMigrationTxConfig = (
+  rawTransaction: ITxObject,
+  account: StoreAccount,
+  amount: string
+) => (tokenMigrationConfig: ITokenMigrationConfig): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, value } = rawTransaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
   const asset = getAssetByUUID(account.assets)(tokenMigrationConfig.fromAssetUuid)!;
 
-  const { _value: tokenBaseAmount, _to: to } = decodeTransfer(data);
-  const amount = fromTokenBase(Wei(tokenBaseAmount));
   const txConfig: ITxConfig = {
     from: address,
-    receiverAddress: to as TAddress,
+    receiverAddress: account.address,
     senderAccount: account,
     network,
     asset,
