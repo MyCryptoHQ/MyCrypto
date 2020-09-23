@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-const Web3WsProvider = require('web3-providers-ws');
-import { Web3Provider } from 'ethers/providers/web3-provider';
 
-import { WALLETS_CONFIG } from '@config';
-import { ISignComponentProps } from '@types';
-import translate, { translateRaw } from '@translations';
-import { isVoid } from '@utils';
-import { getNetworkByChainId, useNetworks } from '@services/Store';
+import { Web3Provider } from 'ethers/providers/web3-provider';
+import WebsocketProvider from 'web3-providers-ws';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
+import { WALLETS_CONFIG } from '@config';
+import { getNetworkByChainId, useNetworks } from '@services/Store';
+import translate, { translateRaw } from '@translations';
+import { ISignComponentProps } from '@types';
+import { isVoid } from '@utils';
 
 enum WalletSigningState {
   READY, //when signerWallet is ready to sendTransaction
@@ -24,7 +24,8 @@ const SignTransactionDesktopSigner = ({ rawTransaction, onSuccess }: ISignCompon
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
   const [error, setError] = useState('');
 
-  const ws = new Web3WsProvider('ws://localhost:8000');
+  // @ts-ignore This is a valid constructor, not sure why it's failing
+  const ws = new WebsocketProvider('ws://localhost:8000');
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 
   useEffect(() => {

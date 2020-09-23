@@ -1,13 +1,13 @@
-import React, { FC, useCallback, useContext, useState } from 'react';
-const Web3WsProvider = require('web3-providers-ws');
-import { Web3Provider } from 'ethers/providers/web3-provider';
+import React, { FC, useCallback, useState } from 'react';
 
-import translate from '@translations';
-import { FormData } from '@types';
-import { InlineMessage } from '@components';
-import { SettingsContext, useNetworks } from '@services/Store';
+import { Web3Provider } from 'ethers/providers/web3-provider';
+import WebsocketProvider from 'web3-providers-ws';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
+import { InlineMessage } from '@components';
+import { useNetworks, useSettings } from '@services/Store';
+import translate from '@translations';
+import { FormData } from '@types';
 
 interface Props {
   formDispatch: any;
@@ -22,10 +22,11 @@ interface IWeb3UnlockError {
 }
 
 const DesktopSignerDecrypt: FC<Props> = ({ formData, onUnlock }) => {
-  const { updateSettingsNode } = useContext(SettingsContext);
+  const { updateSettingsNode } = useSettings();
   const { addNodeToNetwork, networks } = useNetworks();
   const network = networks.find((n) => n.id === formData.network);
-  const ws = new Web3WsProvider('ws://localhost:8000');
+  // @ts-ignore This is a valid constructor, not sure why it's failing
+  const ws = new WebsocketProvider('ws://localhost:8000');
   const ethersProvider = new Web3Provider(ws, network!.chainId);
 
   const [web3Unlocked, setWeb3Unlocked] = useState<boolean | undefined>(undefined);
