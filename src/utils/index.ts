@@ -61,7 +61,11 @@ export {
   makeFinishedTxReceipt,
   makeUnknownTxReceipt,
   guessERC20Type,
-  deriveTxRecipientsAndAmount
+  deriveTxRecipientsAndAmount,
+  appendNonce,
+  appendGasLimit,
+  appendGasPrice,
+  appendSender
 } from './transaction';
 export {
   formatErrorEmail,
@@ -126,7 +130,7 @@ export {
   calculateGasUsedPercentage
 } from './units';
 export { padLeftEven } from './padLeftEven';
-export { normalise } from './normalise';
+export { normalize } from './normalize';
 export { getTransactionFields } from './getTransactionFields';
 export {
   hexNonceToViewable,
@@ -142,5 +146,3 @@ export {
   bigNumValueToViewableEther
 } from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
-export * from '../services/EthService/utils/providerWrappers';
-export { appendNonce, appendGasLimit, appendGasPrice, appendSender } from './transactions';

@@ -29,8 +29,9 @@ export {
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidRequestPermissions
+  isValidRequestPermissions,
+  isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export { getResolvedENSAddress } from './ens';
+export { getResolvedENSAddress, isValidENSName } from './ens';
 export * from './utils';

@@ -1,4 +1,4 @@
-import { normalize } from '../utils/normalize';
+import { normalize } from '@utils/normalize';
 
 export interface ITLDCollection {
   [key: string]: boolean;
