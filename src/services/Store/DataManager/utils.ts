@@ -130,7 +130,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
         ...x,
         transactions: x.transactions.map((tx: ITxReceipt) => {
           // @todo: Remove this in the future (7/19/2020)
-          // @ts-ignore
+          // @ts-expect-error
           const { stage, ...validTx } = tx;
           return { ...validTx, status: tx.status || stage };
         }),

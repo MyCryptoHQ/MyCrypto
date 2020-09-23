@@ -20,7 +20,7 @@ import Web3Client from './client';
 import Web3Requests from './requests';
 
 export class Web3Node extends RPCNode {
-  // @ts-ignore
+  // @ts-expect-error
   public client: Web3Client;
   public requests: Web3Requests;
 

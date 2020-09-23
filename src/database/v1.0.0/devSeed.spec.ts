@@ -38,7 +38,7 @@ describe('Data Seed', () => {
     it('provides a valid asset uuid to account assets', () => {
       const accountAssets = toArray(testData[LSKeys.ACCOUNTS])
         .flatMap(({ assets }) => assets)
-        // @ts-ignore
+        // @ts-expect-error
         .map((a) => (a.uuid ? testData.assets[a.uuid] : a));
       expect(accountAssets.length).toBeGreaterThanOrEqual(1);
       accountAssets.forEach((a) => expect(a).toBeDefined());

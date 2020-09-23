@@ -66,7 +66,7 @@ export const ProtectTxSign: FC<Props> = (props) => {
           await handleProtectTxConfirmAndSend(payload)
       };
 
-      // @ts-ignore
+      // @ts-expect-error
       return <SignComponent {...signComponentProps} />;
     }
 

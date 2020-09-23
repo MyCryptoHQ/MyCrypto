@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error
 import { EthereumGetAddressPayload, GetPublicKeyPayload, TrezorData } from 'trezor-connect';
 
 export default {

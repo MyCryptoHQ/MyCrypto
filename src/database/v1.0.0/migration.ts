@@ -31,19 +31,19 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: IAccount) => {
     const getTicker = (uuid: TUuid) => {
-      //@ts-ignore
+      //@ts-expect-error
       const asset = prev.assets[uuid] || {};
       return asset && asset.ticker ? asset.ticker : undefined;
     };
     const getUUID = (ticker: TTicker) => {
       const asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
-      //@ts-ignore
+      //@ts-expect-error
       return prop('uuid', asset);
     };
 
     const updateUUID = (assetBalance: AssetBalanceObject) => ({
       ...assetBalance,
-      //@ts-ignore
+      //@ts-expect-error
       uuid: getUUID(getTicker(assetBalance.uuid))
     });
 
@@ -63,7 +63,7 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   // Add labels to address book
   const { dashboardAccounts = [] } = prev.settings;
-  //@ts-ignore
+  //@ts-expect-error
   const accountUUIDs = map(prop('uuid'), values(accounts));
 
   const settings = {

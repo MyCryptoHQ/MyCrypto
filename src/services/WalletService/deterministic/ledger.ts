@@ -109,7 +109,7 @@ export class LedgerWallet extends HardwareWallet {
       const msgHex = Buffer.from(msg).toString('hex');
       const ethApp = await makeApp();
       const signed = await ethApp.signPersonalMessage(this.getPath(), msgHex);
-      // @ts-ignore
+      // @ts-expect-error
       const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
       return combined;
     } catch (err) {

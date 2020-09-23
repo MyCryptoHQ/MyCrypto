@@ -76,7 +76,7 @@ describe('Migrate to v1.0.0', () => {
     });
     const curr = getCurr();
     const res = migrate(prev, curr);
-    // @ts-ignore
+    // @ts-expect-error
     const account = res.accounts['0x01'];
     expect(account.assets).toContainEqual({
       uuid: 'newUUID',

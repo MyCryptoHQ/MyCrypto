@@ -22,7 +22,7 @@ export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
 ) => {
   if (prop('chainId') !== undefined) {
-    // @ts-ignore
+    // @ts-expect-error
     return new Tx(t, { chain: t.chainId });
   } else {
     return new Tx(t);

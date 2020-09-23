@@ -40,9 +40,9 @@ function AssetIcon({ uuid, size = '32px', className }: Props) {
       src={iconUrl}
       size={size}
       onError={(e) => {
-        // @ts-ignore: onError works, but ts error
+        // @ts-expect-error: onError works, but ts error
         e.target.onerror = null;
-        // @ts-ignore: onError works, but ts error
+        // @ts-expect-error: onError works, but ts error
         e.target.src = genericIcon;
       }}
       className={className}

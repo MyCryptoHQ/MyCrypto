@@ -89,7 +89,7 @@ const Typography: React.FC<Props> = ({
     // ForwardedAs is not respected so use SC as
     // https://styled-components.com/docs/api#forwardedas-prop
     <STypography
-      // @ts-ignore
+      // @ts-expect-error
       as={as}
       $bold={bold}
       $fontSize={fontSize}

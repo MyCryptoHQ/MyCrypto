@@ -31,7 +31,7 @@ describe('EthAddress', () => {
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
 
-    // @ts-ignore
+    // @ts-expect-error
     navigator.clipboard = { writeText: jest.fn() };
 
     fireEvent.click(element);
@@ -43,7 +43,7 @@ describe('EthAddress', () => {
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
 
-    // @ts-ignore
+    // @ts-expect-error
     navigator.clipboard = { writeText: jest.fn() };
 
     fireEvent.click(element);

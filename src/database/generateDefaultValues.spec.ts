@@ -71,7 +71,7 @@ describe('Schema', () => {
         .filter(Boolean);
       const networkAssets = toArray(defaultData[LSKeys.NETWORKS])
         .flatMap(({ assets }) => assets)
-        // @ts-ignore
+        // @ts-expect-error
         .filter((uuid) => allAssets[uuid].type === 'erc20')
         .filter(Boolean); // Not all networks have assets!
 

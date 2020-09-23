@@ -29,7 +29,7 @@ interface State {
 
 export type ReducerAction = TAction<ValuesType<typeof sendAssetsReducer.actionTypes>, any>;
 
-// @ts-ignore
+// @ts-expect-error
 export const initialState: State = { txConfig: {}, txNumber: 0 };
 
 export const sendAssetsReducer = (state: State, action: ReducerAction): State => {

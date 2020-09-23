@@ -54,7 +54,7 @@ describe('useAssets', () => {
     });
     const defaultAssets = fAssets.filter((a) => !a.isCustom);
     const assets = defaultAssets.reduce((obj, item) => {
-      // @ts-ignore
+      // @ts-expect-error
       obj[item.uuid] = item;
       return obj;
     }, {});

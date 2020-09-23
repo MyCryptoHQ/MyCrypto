@@ -55,7 +55,7 @@ const removeDevAddressBook = add(LSKeys.ADDRESS_BOOK)(
 type Transduce = (z: LocalStorage) => LocalStorage;
 export const removeSeedDataFromSchema: Transduce = (initialStore: LocalStorage) => {
   // Ts doesn't recognise this spread as arguments.
-  // @ts-ignore
+  // @ts-expect-error
   return pipe(
     removeDevAddressBook(toArray(devContacts)),
     removeDevAccountsFromSettings(devAccounts),
