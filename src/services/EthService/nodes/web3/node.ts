@@ -20,7 +20,7 @@ import Web3Client from './client';
 import Web3Requests from './requests';
 
 export class Web3Node extends RPCNode {
-  // @ts-expect-error
+  // @ts-expect-error: conflict between any[] and [string, string]
   public client: Web3Client;
   public requests: Web3Requests;
 
