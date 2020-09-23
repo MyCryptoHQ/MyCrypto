@@ -8,7 +8,7 @@ import { Checkbox, InputField, Typography } from '@components';
 import { getWalletConfig } from '@config';
 import { fetchGasPriceEstimates, getGasEstimate, getNonce } from '@services';
 import { COLORS, monospace } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { StoreAccount } from '@types';
 import { hexToNumber, hexWeiToString, inputGasPriceToHex } from '@utils';
 
@@ -139,6 +139,11 @@ export default function GasSelector({
           onChange={handleNonceChange}
           inputMode="decimal"
           disabled={!supportsNonce}
+          inputError={
+            !supportsNonce
+              ? translate('DISABLED_NONCE', { $provider: walletConfig.name })
+              : undefined
+          }
         />
       </FieldWrapper>
     </Wrapper>
