@@ -31,19 +31,17 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: IAccount) => {
     const getTicker = (uuid: TUuid) => {
-      //@ts-expect-error
+      //@ts-expect-error: cannot use Brand<string, "UUID"> to index Record<Brand<string, "UUID">, Asset> !?
       const asset = prev.assets[uuid] || {};
       return asset && asset.ticker ? asset.ticker : undefined;
     };
     const getUUID = (ticker: TTicker) => {
-      const asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
-      //@ts-expect-error
+      const asset: Asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
       return prop('uuid', asset);
     };
 
     const updateUUID = (assetBalance: AssetBalanceObject) => ({
       ...assetBalance,
-      //@ts-expect-error
       uuid: getUUID(getTicker(assetBalance.uuid))
     });
 
