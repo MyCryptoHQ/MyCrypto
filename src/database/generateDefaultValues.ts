@@ -203,6 +203,6 @@ const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
 /* Handler to trigger the flow according the environment */
 type Transduce = (z: LocalStorage, networkConfig: NetworkConfig) => LocalStorage;
 export const createDefaultValues: Transduce = (initialSchema: LocalStorage, networkConfig) => {
-  // @ts-expect-error
+  // @ts-expect-error: Ramda typings are at times mysterious
   return pipe(...getDefaultTransducers(networkConfig))(initialSchema);
 };
