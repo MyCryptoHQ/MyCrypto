@@ -3,7 +3,6 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { WALLET_STEPS } from '@components';
 import { DexService, getAssetByTicker, getAssetByUUID } from '@services';
-import { appendGasPrice, appendSender, hexToString } from '@services/EthService';
 import {
   IHexStrTransaction,
   ISwapAsset,
@@ -17,7 +16,7 @@ import {
   StoreAccount,
   StoreAsset
 } from '@types';
-import { weiToFloat } from '@utils';
+import { appendGasPrice, appendSender, hexToString, weiToFloat } from '@utils';
 
 import { IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
@@ -35,7 +34,7 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     toAsset.ticker,
     (isLastChangedTo ? toAmount : fromAmount).toString()
   )
-    .then((txs) => Promise.all(txs.map(appendSender(address))))
+    .then((txs) => txs.map(appendSender(address)))
     .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };
 

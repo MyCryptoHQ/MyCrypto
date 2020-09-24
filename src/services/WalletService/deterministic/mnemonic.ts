@@ -1,6 +1,6 @@
 import { default as Wallet } from 'ethereumjs-wallet';
 
-import { decryptMnemonicToPrivKey } from '@services/EthService';
+import { decryptMnemonicToPrivKey } from '@utils';
 
 import { signWrapper } from '../helpers';
 

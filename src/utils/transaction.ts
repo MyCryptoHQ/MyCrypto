@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 import {
   Arrayish,
@@ -8,19 +8,12 @@ import {
   hexlify,
   parseTransaction
 } from 'ethers/utils';
+import { Optional } from 'utility-types';
 
 import { CREATION_ADDRESS } from '@config';
-import {
-  bigNumGasLimitToViewable,
-  bigNumGasPriceToViewableGwei,
-  bigNumValueToViewableEther,
-  decodeApproval,
-  decodeTransfer,
-  fromTokenBase,
-  gasPriceToBase,
-  getDecimalFromEtherUnit,
-  toWei
-} from '@services/EthService';
+import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
+import { decodeTransfer, getNonce } from '@services/EthService';
+import { decodeApproval } from '@services/EthService/contracts/token';
 import {
   getAssetByContractAndNetwork,
   getBaseAssetByNetwork,
@@ -41,6 +34,7 @@ import {
   ITxHash,
   ITxHistoryStatus,
   ITxNonce,
+  ITxObject,
   ITxReceipt,
   ITxStatus,
   ITxToAddress,
@@ -51,8 +45,30 @@ import {
   StoreAccount,
   TAddress
 } from '@types';
+import {
+  bigNumGasLimitToViewable,
+  bigNumGasPriceToViewableGwei,
+  bigNumValueToViewableEther,
+  fromTokenBase,
+  gasPriceToBase,
+  toWei
+} from '@utils';
 
+import { bigify } from './bigify';
+import { hexToNumber } from './formatters';
+import {
+  hexWeiToString,
+  inputGasLimitToHex,
+  inputGasPriceToHex,
+  inputNonceToHex
+} from './makeTransaction';
+import { getDecimalFromEtherUnit } from './units';
 import { isTransactionDataEmpty } from './validators';
+
+type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
+type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
+type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
+type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
@@ -349,4 +365,70 @@ export const deriveTxRecipientsAndAmount = (
     }
   }
   return { to: toAddress, amount: value, receiverAddress: toAddress };
+};
+
+export const appendSender = (senderAddress: ITxFromAddress) => (
+  tx: TxBeforeSender
+): TxBeforeGasPrice => {
+  return {
+    ...tx,
+    from: senderAddress
+  };
+};
+
+export const appendGasPrice = (network: Network) => async (
+  tx: TxBeforeGasPrice
+): Promise<TxBeforeGasLimit> => {
+  const gasPrice = await fetchGasPriceEstimates(network)
+    .then(({ fast }) => fast.toString())
+    .then(inputGasPriceToHex)
+    .then(hexWeiToString)
+    .then((v) => bigify(v).toString(16))
+    .then(addHexPrefix)
+    .catch((err) => {
+      throw new Error(`getGasPriceEstimate: ${err}`);
+    });
+
+  return {
+    ...tx,
+    gasPrice: gasPrice as ITxGasPrice
+  };
+};
+
+export const appendGasLimit = (network: Network) => async (
+  tx: TxBeforeGasLimit
+): Promise<TxBeforeNonce> => {
+  // Respect gas limit if present
+  if (tx.gasLimit) {
+    return tx as TxBeforeNonce;
+  }
+  try {
+    const gasLimit = await getGasEstimate(network, tx)
+      .then(hexToNumber)
+      .then((n: number) => Math.round(n * 1.2))
+      .then((n: number) => inputGasLimitToHex(n.toString()));
+
+    return {
+      ...tx,
+      gasLimit
+    };
+  } catch (err) {
+    throw new Error(`getGasEstimate: ${err}`);
+  }
+};
+
+export const appendNonce = (network: Network, senderAddress: TAddress) => async (
+  tx: TxBeforeNonce
+): Promise<ITxObject> => {
+  const nonce = await getNonce(network, senderAddress)
+    .then((n) => n.toString())
+    .then(inputNonceToHex)
+    .catch((err) => {
+      throw new Error(`getNonce: ${err}`);
+    });
+
+  return {
+    ...tx,
+    nonce
+  };
 };

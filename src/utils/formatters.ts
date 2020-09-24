@@ -1,5 +1,26 @@
+import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
+
+import { stripHexPrefix } from './stripHexPrefix';
+import { toTokenBase } from './units';
+
+export const buildEIP681EtherRequest = (
+  recipientAddr: string,
+  chainId: number,
+  etherValue: string
+) => `ethereum:${recipientAddr}${chainId !== 1 ? `@${chainId}` : ''}?value=${etherValue}e18`;
+
+export const buildEIP681TokenRequest = (
+  recipientAddr: string,
+  contractAddr: string,
+  chainId: number,
+  tokenValue: string,
+  decimal: number
+) =>
+  `ethereum:${contractAddr}${
+    chainId !== 1 ? `@${chainId}` : ''
+  }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue, decimal)}`;
 
 // Regex modified from this stackoverflow answer
 // https://stackoverflow.com/a/10805198, with the comma character added as a
@@ -19,4 +40,8 @@ function getChecksumAddressFunction(chainId: number) {
 
 export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
+}
+
+export function hexToNumber(hex: string) {
+  return new BN(stripHexPrefix(hex)).toNumber();
 }

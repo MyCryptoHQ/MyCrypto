@@ -12,9 +12,7 @@ import {
   InputField,
   NetworkSelectDropdown
 } from '@components';
-import { getNetworkById, useNetworks } from '@services';
-import { isValidENSName } from '@services/EthService';
-import { isValidETHAddress } from '@services/EthService/validators';
+import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import {

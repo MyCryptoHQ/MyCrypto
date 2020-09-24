@@ -34,22 +34,14 @@ import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { useRates } from '@services';
+import { getNonce, useRates } from '@services';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
-  baseToConvertedUnit,
-  bigNumGasPriceToViewableGwei,
-  convertedToBaseUnit,
-  fromTokenBase,
-  gasStringsToMaxGasBN,
-  getNonce,
-  hexToNumber,
   isBurnAddress,
   isValidETHAddress,
   isValidPositiveNumber,
-  toTokenBase
-} from '@services/EthService';
-import { validateTxFee } from '@services/EthService/validators';
+  validateTxFee
+} from '@services/EthService/validators';
 import {
   getAccountBalance,
   getAccountsByAsset,
@@ -78,12 +70,19 @@ import {
   WalletId
 } from '@types';
 import {
+  baseToConvertedUnit,
   bigify,
+  bigNumGasPriceToViewableGwei,
   isFormValid as checkFormValid,
+  convertedToBaseUnit,
   formatSupportEmail,
+  fromTokenBase,
+  gasStringsToMaxGasBN,
+  hexToNumber,
   isSameAddress,
   isVoid,
-  sortByLabel
+  sortByLabel,
+  toTokenBase
 } from '@utils';
 import { path } from '@vendor';
 
@@ -289,8 +288,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
-      ({} as Asset)
+    (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
+    ({} as Asset)
   );
 
   const {
@@ -524,11 +523,11 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
         ? balance
         : baseToConvertedUnit(
-            new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
-              .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
-              .toString(),
-            DEFAULT_ASSET_DECIMAL
-          );
+          new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
+            .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
+            .toString(),
+          DEFAULT_ASSET_DECIMAL
+        );
       setFieldValue('amount', amount);
       handleGasEstimate();
     }

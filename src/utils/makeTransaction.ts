@@ -13,8 +13,8 @@ import {
   ITxNonce,
   ITxValue
 } from '@types';
-import { bigify } from '@utils';
 
+import { bigify } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
@@ -46,12 +46,6 @@ export const inputNonceToHex = (nonce: string): ITxNonce =>
 /* region:end User Input to Hex */
 
 /* region:start Hex to User Viewable */
-export const hexValueToViewableWei = (valueWeiHex: string): string =>
-  bigNumberify(valueWeiHex).toString();
-
-export const hexValueToViewableEther = (valueWeiHex: string): string =>
-  formatEther(hexValueToViewableWei(valueWeiHex));
-
 export const hexNonceToViewable = (nonceHex: string): string => hexToString(nonceHex);
 
 export const hexToString = (hexValue: string): string =>
@@ -61,11 +55,6 @@ export const hexWeiToString = (hexWeiValue: string): string => Wei(hexWeiValue).
 /* region:end Hex to User Viewable */
 
 /* region:start BigNum to User Viewable */
-export const bigNumGasPriceToViewableWei = (
-  gasPriceWeiBigNum: BigNumber
-): string /* Converts to wei from gwei */ =>
-  toWei(bigify(gasPriceWeiBigNum).toString(), 0).toString();
-
 export const bigNumGasPriceToViewableGwei = (
   gasPriceWeiBigNum: BigNumber | string
 ): string /* Converts to wei from gwei */ =>
@@ -76,7 +65,4 @@ export const bigNumGasLimitToViewable = (gasLimitBigNum: BigNumber | string): st
 
 export const bigNumValueToViewableEther = (valueWeiBigNum: BigNumber | string): string =>
   formatEther(bigNumberify(valueWeiBigNum.toString()));
-
-export const bigNumValueToViewableWei = (valueWeiBigNum: BigNumber): string =>
-  bigify(valueWeiBigNum).toString();
 /* region:end BigNum to User Viewable */

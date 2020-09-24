@@ -6,7 +6,6 @@ import { CREATION_ADDRESS } from '@config';
 import {
   EtherscanService,
   getGasEstimate,
-  getIsValidENSAddressFunction,
   getNetworkById,
   getResolvedENSAddress,
   isValidETHAddress,
@@ -16,6 +15,7 @@ import {
   useNetworks
 } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
+import { getIsValidENSAddressFunction } from '@services/EthService/ens';
 import { translateRaw } from '@translations';
 import {
   Contract,

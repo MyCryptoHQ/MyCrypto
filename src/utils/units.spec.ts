@@ -1,4 +1,5 @@
 import {
+  convertTokenBase,
   fromTokenBase,
   fromWei,
   getDecimalFromEtherUnit,
@@ -6,8 +7,7 @@ import {
   toTokenBase,
   toWei,
   Wei
-} from '@services/EthService';
-import { convertTokenBase } from '@services/EthService/utils/units';
+} from './units';
 
 const Units = {
   wei: '1',

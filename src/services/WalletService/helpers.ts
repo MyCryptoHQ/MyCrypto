@@ -1,7 +1,7 @@
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { default as Wallet } from 'ethereumjs-wallet';
 
-import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from '@services/EthService/utils';
+import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from '@utils';
 
 interface ISignWrapper {
   signRawTransaction(rawTx: Tx): Buffer;

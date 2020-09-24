@@ -1,8 +1,9 @@
 import BN from 'bn.js';
 import { unparse } from 'papaparse';
 
-import { DWAccountDisplay, fromTokenBase } from '@services';
+import { DWAccountDisplay } from '@services';
 import { Asset } from '@types';
+import { fromTokenBase } from '@utils';
 
 export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
   const infos = accounts.map((account) => ({
@@ -12,8 +13,8 @@ export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
     asset:
       (account.balance
         ? parseFloat(
-            fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
-          ).toFixed(4)
+          fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
+        ).toFixed(4)
         : '0.0000') + asset.ticker
   }));
 

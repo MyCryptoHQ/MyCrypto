@@ -7,7 +7,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { DEFAULT_NETWORK, N_FACTOR, ROUTE_PATHS } from '@config';
 import { NotificationTemplates } from '@features/NotificationsPanel';
-import { stripHexPrefix } from '@services/EthService';
 import {
   getNewDefaultAssetTemplateByNetwork,
   IAssetContext,
@@ -17,8 +16,9 @@ import {
 } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { Asset, IRawAccount, ISettings, NetworkId, TAddress, WalletId } from '@types';
-import { generateDeterministicAddressUUID, makeBlob, withHook } from '@utils';
+import { generateDeterministicAddressUUID, makeBlob, stripHexPrefix, withHook } from '@utils';
 import { fromV3, generateKeystore } from '@workers';
+
 
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { keystoreFlow, KeystoreStages, keystoreStageToComponentHash } from './constants';

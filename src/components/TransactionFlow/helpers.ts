@@ -3,9 +3,9 @@ import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import pick from 'ramda/src/pick';
 import { ValuesType } from 'utility-types';
 
-import { bigNumGasPriceToViewableGwei } from '@services/EthService/utils';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import { ITxConfig, StoreAccount } from '@types';
+import { bigNumGasPriceToViewableGwei } from '@utils';
 
 import { ISender } from './types';
 

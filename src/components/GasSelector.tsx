@@ -5,17 +5,11 @@ import { addHexPrefix } from 'ethereumjs-util';
 import styled from 'styled-components';
 
 import { Checkbox, InputField, Typography } from '@components';
-import {
-  fetchGasPriceEstimates,
-  getGasEstimate,
-  getNonce,
-  hexToNumber,
-  hexWeiToString,
-  inputGasPriceToHex
-} from '@services';
+import { fetchGasPriceEstimates, getGasEstimate, getNonce } from '@services';
 import { COLORS, monospace } from '@theme';
 import { translateRaw } from '@translations';
 import { StoreAccount } from '@types';
+import { hexToNumber, hexWeiToString, inputGasPriceToHex } from '@utils';
 
 const { GREY_LIGHTER } = COLORS;
 

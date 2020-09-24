@@ -1,3 +1,4 @@
+import { donationAddressMap } from '@config';
 import {
   fAccounts,
   fAssets,
@@ -15,11 +16,25 @@ import {
   fETHWeb3TxResponse,
   fFinishedERC20NonWeb3TxReceipt,
   fFinishedERC20Web3TxReceipt,
-  fNetwork
+  fNetwork,
+  fNetworks
 } from '@fixtures';
-import { ITxData, ITxHash, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
+import {
+  ITxData,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxHash,
+  ITxStatus,
+  ITxToAddress,
+  ITxType,
+  ITxValue,
+  TAddress
+} from '@types';
 
 import {
+  appendGasPrice,
+  appendNonce,
+  appendSender,
   deriveTxFields,
   deriveTxRecipientsAndAmount,
   ERCType,
@@ -29,6 +44,16 @@ import {
   makeTxConfigFromTxResponse,
   toTxReceipt
 } from './transaction';
+
+jest.mock('@services/ApiService/Gas', () => ({
+  fetchGasPriceEstimates: () => new Promise((resolve, _) => resolve({ fast: 20 }))
+}));
+
+jest.mock('@services/EthService/nonce', () => ({
+  getNonce: () => new Promise((resolve, _) => resolve(1))
+}));
+
+const senderAddr = donationAddressMap.ETH as TAddress;
 
 describe('toTxReceipt', () => {
   it('creates tx receipt for non-web3 eth tx', () => {
@@ -265,5 +290,71 @@ describe('makeTxConfigFromTxResponse', () => {
         asset: fAssets[1]
       })
     );
+  });
+});
+
+describe('appendSender', () => {
+  it('appends sender to transaction input', () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1
+    };
+    const actual = appendSender(senderAddr)(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      from: senderAddr
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+});
+
+describe('appendGasPrice', () => {
+  it('appends gas price to transaction input', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1
+    };
+    const actual = await appendGasPrice(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+});
+
+describe('appendNonce', () => {
+  it('appends nonce to transaction input', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice,
+      gasLimit: '0x5208' as ITxGasLimit,
+      from: senderAddr
+    };
+    const actual = await appendNonce(fNetworks[0], senderAddr)(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice,
+      gasLimit: '0x5208' as ITxGasLimit,
+      from: senderAddr,
+      nonce: '0x1'
+    };
+    expect(actual).toStrictEqual(expected);
   });
 });

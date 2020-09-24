@@ -3,9 +3,10 @@ import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 
 import { WALLET_STEPS } from '@components';
-import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from '@services';
+import { getAssetByUUID } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 import { ITxConfig, ITxObject, NetworkId, StoreAccount } from '@types';
+import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
 

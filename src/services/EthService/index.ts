@@ -1,48 +1,6 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer, decodeTransfer, decodeApproval } from './contracts';
+export { Contract, ERC20, encodeTransfer, decodeTransfer, RepV2Token } from './contracts';
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
-export {
-  makeExplorer,
-  stripHexPrefix,
-  stripHexPrefixAndLower,
-  gasPriceToBase,
-  fromWei,
-  baseToConvertedUnit,
-  normalize,
-  getTransactionFields,
-  makeTransaction,
-  hexEncodeData,
-  hexEncodeQuantity,
-  hexToNumber,
-  fromTokenBase,
-  bigNumGasLimitToViewable,
-  hexValueToViewableEther,
-  hexToString,
-  hexWeiToString,
-  bigNumGasPriceToViewableGwei,
-  bigNumGasPriceToViewableWei,
-  bigNumValueToViewableEther,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputGasLimitToHex,
-  inputNonceToHex,
-  totalTxFeeToString,
-  totalTxFeeToWei,
-  verifySignedMessage,
-  decryptMnemonicToPrivKey,
-  gasStringsToMaxGasNumber,
-  getStatusFromHash,
-  getTimestampFromBlockNum,
-  getTransactionReceiptFromHash,
-  getTxStatus,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  messageToData,
-  appendNonce,
-  appendGasLimit,
-  appendGasPrice,
-  appendSender
-} from './utils';
 export {
   isValidPath,
   isValidEncryptedPrivKey,
@@ -71,16 +29,9 @@ export {
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidRequestPermissions
+  isValidRequestPermissions,
+  isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export {
-  Wei,
-  TokenValue,
-  Address,
-  toWei,
-  getDecimalFromEtherUnit,
-  toTokenBase,
-  calculateGasUsedPercentage
-} from './utils/units';
-export * from './ens';
+export { getResolvedENSAddress, isValidENSName } from './ens';
+export * from './utils';

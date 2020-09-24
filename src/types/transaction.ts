@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import { BigNumber } from 'ethers/utils';
 import { Brand, Overwrite } from 'utility-types';
 
-import { Address, Wei } from '@services/EthService';
+import { Address, Wei } from '@utils';
 
 import { TAddress } from './address';
 import { Asset } from './asset';

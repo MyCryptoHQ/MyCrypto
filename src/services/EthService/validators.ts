@@ -16,14 +16,14 @@ import {
 } from '@config';
 import { translateRaw } from '@translations';
 import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
-
-import { isValidENSName } from './ens/validators';
 import {
   baseToConvertedUnit,
   convertedToBaseUnit,
   gasStringsToMaxGasBN,
   stripHexPrefix
-} from './utils';
+} from '@utils';
+
+import { isValidENSName } from './ens/validators';
 
 export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);

@@ -1,8 +1,8 @@
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 
-import { TokenValue, Wei } from '@services/EthService';
 import { IHexStrTransaction } from '@types';
+import { TokenValue, Wei } from '@utils';
 
 export interface TxObj {
   to: string;

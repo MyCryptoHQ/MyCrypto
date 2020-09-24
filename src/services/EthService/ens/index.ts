@@ -1,22 +1,3 @@
-import { keccak } from 'ethereumjs-util';
-
-import { normalize } from '../utils';
-
-export const getNameHash = (name: string = ''): string => {
-  if (name === '') {
-    throw new Error('Empty string provided');
-  }
-
-  const normalizedName = normalize(name);
-  const labels = normalizedName.split('.');
-  const emptyNode = Buffer.alloc(32);
-  const rawNode = labels.reduceRight((node, currentLabel) => {
-    return keccak(Buffer.concat([node, keccak(currentLabel)]));
-  }, emptyNode);
-
-  return `0x${rawNode.toString('hex')}`;
-};
-
 export interface IBaseDomainRequest {
   name: string;
   labelHash: string;

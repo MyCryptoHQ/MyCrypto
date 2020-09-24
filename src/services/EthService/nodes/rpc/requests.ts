@@ -1,7 +1,8 @@
 import { Token } from 'shared/types/network';
 
-import { ERC20, hexEncodeData } from '@services/EthService';
+import { ERC20 } from '@services/EthService';
 import { Asset, IHexStrTransaction, TxObj } from '@types';
+import { hexEncodeData } from '@utils';
 
 import { UnlockToken } from '../../contracts';
 import {
@@ -79,8 +80,8 @@ export class RPCRequests {
             'contractAddress' in token
               ? token.contractAddress
               : 'address' in token
-              ? token.address
-              : '0x0',
+                ? token.address
+                : '0x0',
           data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending'

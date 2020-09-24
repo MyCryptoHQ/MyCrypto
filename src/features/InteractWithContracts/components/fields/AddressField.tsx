@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { DomainStatus } from '@components';
 import { InlineMessage } from '@components/InlineMessage';
 import InputField from '@components/InputField';
-import { getIsValidENSAddressFunction, isValidENSName } from '@services/EthService';
+import { getIsValidENSAddressFunction, isValidENSName } from '@services/EthService/ens';
 import { monospace } from '@theme';
 import { translateRaw } from '@translations';
 import { InlineMessageType, Network } from '@types';

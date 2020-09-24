@@ -1,8 +1,8 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
-import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import translate from '@translations';
 import { TURL } from '@types';
+import { makeExplorer } from '@utils/makeExplorer'; // leads to circular dependency if importing from base utils dir
 
 import packageJson from '../../package.json';
 

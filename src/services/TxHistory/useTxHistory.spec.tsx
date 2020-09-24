@@ -18,7 +18,7 @@ import {
 } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
-import { fromWei, Wei } from '@services/EthService';
+import { fromWei, Wei } from '@utils';
 
 import useTxHistory from './useTxHistory';
 

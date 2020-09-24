@@ -10,8 +10,8 @@ import {
   GAS_PRICE_DEFAULT,
   GAS_PRICE_TESTNET
 } from '@config';
-import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import { NetworkId, NetworkLegacy, TTicker, WalletId } from '@types';
+import { makeExplorer } from '@utils/makeExplorer'; // leads to circular dependency if importing from base utils dir
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 export type NetworkConfig = {

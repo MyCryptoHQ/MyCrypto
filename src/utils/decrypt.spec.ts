@@ -4,7 +4,7 @@ import {
   decryptMnemonicToPrivKey,
   decryptPrivKey,
   evp_kdf
-} from '@services/EthService/utils/decrypt';
+} from './decrypt';
 
 // Elements of a V1 encrypted priv key
 const v1 = {
