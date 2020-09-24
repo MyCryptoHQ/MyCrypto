@@ -24,7 +24,7 @@ interface TStep {
   backBtnText: string;
 }
 
-const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
+const SwapAssetsFlow = (props: RouteComponentProps) => {
   const { defaultAccount } = useContext(StoreContext);
   const {
     fetchSwapAssets,

@@ -70,7 +70,7 @@ const tabClickRedirect = (history: History, url: string): void => {
   history.push(url);
 };
 
-function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
+function SignAndVerifyMessage(props: RouteComponentProps) {
   const [showSubtitle, setShowSubtitle] = useState(true);
 
   const { history, location } = props;

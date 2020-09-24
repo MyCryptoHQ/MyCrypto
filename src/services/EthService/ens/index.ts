@@ -48,16 +48,5 @@ export const modeStrMap = (name: string) => [
   `${name} is not yet available due to the ‘soft launch’ of names.`
 ];
 
-export interface IModeMap {
-  [x: string]: (
-    domainData: IDomainData<NameState>,
-    nameHash?: string,
-    hash?: Buffer
-  ) =>
-    | {}
-    | { ownerAddress: string; resolvedAddress: string }
-    | { auctionCloseTime: string; revealBidTime: string };
-}
-
 export * from './validators';
 export { getResolvedENSAddress } from './ensFunctions';

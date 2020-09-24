@@ -47,7 +47,7 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
+const InteractWithContractsFlow = (props: RouteComponentProps) => {
   const [step, setStep] = useState(0);
   const { defaultAccount } = useContext(StoreContext);
   const { networks } = useNetworks();

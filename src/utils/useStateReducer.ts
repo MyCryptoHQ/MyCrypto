@@ -16,12 +16,12 @@ export type TUseStateReducer<T1, T2 = FactoryApi> = (
 
 // Use a state hook like a reducer with a more custom API
 // https://medium.com/free-code-camp/why-you-should-choose-usestate-instead-of-usereducer-ffc80057f815
-export const useStateReducer: TUseStateReducer<object> = (apiFactory, initialState) => {
-  const [state, setState] = useState(initialState);
-  return apiFactory({ state, setState });
-};
+// export const useStateReducer: TUseStateReducer<object> = (apiFactory, initialState) => {
+//   const [state, setState] = useState(initialState);
+//   return apiFactory({ state, setState });
+// };
 
-export const useTStateReducer = <T1, T2 = FactoryApi>(
+export const useStateReducer = <T1, T2 = FactoryApi>(
   apiFactory: TUseStateReducerFactory<T1, T2>,
   initialState: T1
 ): T2 => {

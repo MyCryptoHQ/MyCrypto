@@ -145,7 +145,7 @@ declare module 'trezor.js' {
     xpub: string;
   }
 
-  export type DefaultMessageResponse = MessageResponse<object>;
+  export type DefaultMessageResponse = MessageResponse<TObject>;
 
   export class Session extends EventEmitter {
     public typedCall<T>(type: string, resType: string, message: T): Promise<T>;

@@ -46,7 +46,7 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
+const DeployContractsFlow = (props: RouteComponentProps) => {
   const [step, setStep] = useState(0);
   const { defaultAccount } = useContext(StoreContext);
   const {

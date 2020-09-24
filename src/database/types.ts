@@ -17,6 +17,6 @@ export interface DBConfig {
   main: string;
   vault: string;
   defaultValues?: LocalStorage;
-  schema: {};
+  schema: TObject;
   migrate?(prev: LocalStorage, curr: LocalStorage): LocalStorage;
 }

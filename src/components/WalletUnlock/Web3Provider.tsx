@@ -16,7 +16,7 @@ import './Web3Provider.scss';
 interface Props {
   formDispatch: any;
   formData: FormData;
-  wallet: object;
+  wallet: TObject;
   isMobile: boolean;
   onUnlock(param: Web3Wallet[]): void;
 }

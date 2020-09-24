@@ -22,12 +22,12 @@ import { generateDeterministicAddressUUID, withHook } from '@utils';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { mnemonicFlow, MnemonicStages, mnemonicStageToComponentHash } from './constants';
 
-interface Props extends RouteComponentProps<{}> {
+interface Props extends RouteComponentProps {
   settings: ISettings;
   createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
-  displayNotification(templateName: string, templateData?: object): void;
+  displayNotification(templateName: string, templateData?: TObject): void;
 }
 
 interface State {

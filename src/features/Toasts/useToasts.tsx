@@ -6,7 +6,7 @@ import { default as ToastComponent } from './components/Toast';
 import { toastConfigs, ToastTemplates } from './constants';
 
 export function useToasts() {
-  const displayToast = (templateName: string, templateData?: object) => {
+  const displayToast = (templateName: string, templateData?: TObject) => {
     const template = toastConfigs[templateName];
 
     toast.notify(

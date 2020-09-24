@@ -10,7 +10,7 @@ import { notificationsConfigs } from './constants';
 export interface ProviderState {
   currentNotification: ExtendedNotification | undefined;
   notifications: ExtendedNotification[];
-  displayNotification(templateName: string, templateData?: object): void;
+  displayNotification(templateName: string, templateData?: TObject): void;
   dismissCurrentNotification(): void;
 }
 
@@ -52,7 +52,7 @@ export function useNotifications() {
     category: ANALYTICS_CATEGORIES.NOTIFICATION
   });
 
-  const displayNotification = (templateName: string, templateData?: object) => {
+  const displayNotification = (templateName: string, templateData?: TObject) => {
     // Dismiss previous notifications that need to be dismissed
     if (!notificationsConfigs[templateName].preventDismisExisting) {
       notifications

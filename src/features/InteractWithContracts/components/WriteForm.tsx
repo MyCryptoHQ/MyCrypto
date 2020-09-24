@@ -38,7 +38,7 @@ interface Props {
   network: Network;
   currentFunction: ABIItem;
   rawTransaction: ITxConfig;
-  estimateGasCallProps: object;
+  estimateGasCallProps: TObject;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
   handleGasSelectorChange(payload: any): void;
