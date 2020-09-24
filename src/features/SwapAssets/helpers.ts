@@ -34,7 +34,7 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     toAsset.ticker,
     (isLastChangedTo ? toAmount : fromAmount).toString()
   )
-    .then((txs) => Promise.all(txs.map(appendSender(address))))
+    .then((txs) => txs.map(appendSender(address)))
     .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };
 

@@ -367,9 +367,9 @@ export const deriveTxRecipientsAndAmount = (
   return { to: toAddress, amount: value, receiverAddress: toAddress };
 };
 
-export const appendSender = (senderAddress: ITxFromAddress) => async (
+export const appendSender = (senderAddress: ITxFromAddress) => (
   tx: TxBeforeSender
-): Promise<TxBeforeGasPrice> => {
+): TxBeforeGasPrice => {
   return {
     ...tx,
     from: senderAddress
