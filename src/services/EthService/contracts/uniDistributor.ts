@@ -36,7 +36,7 @@ const ABI = [
   {
     inputs: [{ internalType: 'uint256', name: 'index', type: 'uint256' }],
     name: 'isClaimed',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [{ internalType: 'bool', name: 'claimed', type: 'bool' }],
     stateMutability: 'view',
     type: 'function'
   },
