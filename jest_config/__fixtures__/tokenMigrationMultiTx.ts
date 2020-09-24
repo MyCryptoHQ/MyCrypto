@@ -2,9 +2,9 @@ import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { createApproveTx, createRepMigrationTx } from '@features/RepTokenMigration/helpers';
 import { fApproveERC20TxResponse, fREPTokenMigrationTxResponse } from '@fixtures';
-import { inputGasLimitToHex, inputNonceToHex } from '@services/EthService';
 import { ITokenMigrationFormFull, ITxStatus, ITxType, TxParcel } from '@types';
-import { generateUUID } from '@utils';
+import { generateUUID, inputGasLimitToHex, inputNonceToHex } from '@utils';
+
 
 import { fAccount } from './account';
 import { fAssets } from './assets';

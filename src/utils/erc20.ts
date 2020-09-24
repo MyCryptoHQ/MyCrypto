@@ -1,8 +1,9 @@
 import BN from 'bn.js';
 
 import { DEFAULT_NETWORK_CHAINID } from '@config';
-import { ERC20, inputValueToHex } from '@services';
+import { ERC20 } from '@services';
 import { ITxData, ITxFromAddress, ITxGasPrice, ITxObject, ITxToAddress, TAddress } from '@types';
+import { inputValueToHex } from '@utils'
 
 export const formatApproveTx = (
   contractAddress: ITxToAddress,

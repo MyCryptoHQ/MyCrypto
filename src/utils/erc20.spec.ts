@@ -1,7 +1,7 @@
 import { donationAddressMap } from '@config';
 import { fAccount, fRopDAI } from '@fixtures';
-import { inputGasPriceToHex, toTokenBase } from '@services';
 import { TAddress } from '@types';
+import { inputGasPriceToHex, toTokenBase } from '@utils';
 
 import { formatApproveTx } from './erc20';
 

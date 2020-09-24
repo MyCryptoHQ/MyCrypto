@@ -1,5 +1,6 @@
-import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
+import { getAssetByUUID } from '@services';
 import { ITokenMigrationConfig, ITxConfig, ITxObject, StoreAccount } from '@types';
+import { hexToString, hexWeiToString } from '@utils'
 
 export const makeTokenMigrationTxConfig = (
   rawTransaction: ITxObject,
