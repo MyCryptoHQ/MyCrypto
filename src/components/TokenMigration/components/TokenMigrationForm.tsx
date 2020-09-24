@@ -116,7 +116,6 @@ export const TokenMigrationFormUI = ({
     uuid: defaultAsset.uuid
   };
   const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, '0.001');
-
   const TokenMigrationFormSchema = object().shape({
     amount: number()
       .min(0, translateRaw('ERROR_0'))

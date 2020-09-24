@@ -92,7 +92,7 @@ export const getAccountsWithAssetBalance = (
       return false;
     }
 
-    const asset = acc.assets.find((x) => x.ticker === fromAsset.ticker);
+    const asset = getAssetByUUID(acc.assets)(fromAsset.uuid) as StoreAsset;
     if (!asset) {
       return false;
     }

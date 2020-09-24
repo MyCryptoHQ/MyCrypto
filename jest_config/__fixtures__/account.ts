@@ -5,7 +5,7 @@ import { DWAccountDisplay } from '@services';
 import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { fNetwork } from './network';
+import { fNetwork, fNetworks } from './network';
 
 export const fAccounts: StoreAccount[] = [
   {
@@ -42,7 +42,7 @@ export const fAccounts: StoreAccount[] = [
     favorite: false,
     mtime: 0,
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
-    network: fNetwork,
+    network: fNetworks[0],
     label: 'WalletConnect Account 1'
   },
   {
