@@ -115,7 +115,7 @@ export function isValidPrivKey(privkey: string | Buffer): boolean {
     if (initialCheck) {
       const keyBuffer = Buffer.from(strippedKey, 'hex');
       try {
-        return isValidPrivate(Uint8Array.from(keyBuffer) as Buffer);
+        return isValidPrivate(keyBuffer);
       } catch {
         return false;
       }
