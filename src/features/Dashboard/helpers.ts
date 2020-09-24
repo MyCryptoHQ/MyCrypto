@@ -1,10 +1,10 @@
-import { Asset } from '@types';
+import { State as StoreContextState } from '@services/Store/StoreProvider';
 
 import { Action } from './types';
 
-export const filterDashboardActions = (actions: Action[], assets: Asset[]) =>
+export const filterDashboardActions = (actions: Action[], state: StoreContextState) =>
   actions.filter((action) => {
-    const assetFilter = action.assetFilter;
-    if (!assetFilter) return true;
-    return assets.filter(assetFilter).length > 0;
+    const filter = action.filter;
+    if (!filter) return true;
+    return filter(state);
   });

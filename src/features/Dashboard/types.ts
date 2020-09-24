@@ -1,4 +1,5 @@
-import { ITxType, StoreAsset, TURL } from '@types';
+import { State as StoreContextState } from '@services/Store/StoreProvider';
+import { ITxType, TURL } from '@types';
 
 export interface Action {
   icon: string;
@@ -6,7 +7,7 @@ export interface Action {
   title: string;
   description: string;
   link: string | TURL;
-  assetFilter?(asset: StoreAsset): boolean;
+  filter?(state: StoreContextState): boolean;
 }
 
 enum IStandardTxType {
