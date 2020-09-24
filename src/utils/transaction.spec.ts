@@ -351,7 +351,7 @@ describe('appendNonce', () => {
       data: '0x0' as ITxData,
       chainId: 1,
       gasPrice: '0x4a817c800' as ITxGasPrice,
-      senderAddr: '0x5208' as ITxGasLimit,
+      gasLimit: '0x5208' as ITxGasLimit,
       from: senderAddr,
       nonce: '0x1'
     };
