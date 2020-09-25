@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import add from '@assets/icons/actions/add.svg';
 import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
+import expandPurple from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
@@ -30,6 +31,7 @@ const icons = {
   /* Action icons */
   back,
   expand,
+  'expand-purple': expandPurple,
   add,
   confirm,
   info,

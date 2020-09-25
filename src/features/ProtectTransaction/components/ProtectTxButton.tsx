@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 import styled, { css } from 'styled-components';
 
-import ArrowRightIcon from '@components/icons/ArrowRightIcon';
+import Icon from '@components/Icon';
 import ProtectIcon from '@components/icons/ProtectIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
@@ -75,6 +75,14 @@ const ButtonWrapper = styled.div<{ opened: boolean }>`
   }
 `;
 
+const SIcon = styled(Icon)<{ expanded: boolean }>`
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    transform: rotate(${(p) => (p.expanded ? '-90deg' : '90deg')});
+  }
+  transform: rotate(${(p) => (p.expanded ? '180deg' : '0')});
+  transition: all 0.3s;
+`;
+
 interface Props {
   disabled?: boolean;
   reviewReport?: boolean;
@@ -127,7 +135,7 @@ export const ProtectTxButton: FC<Props> = ({
             </>
           )}
         </TextWrapper>
-        <ArrowRightIcon />
+        <SIcon type="expand-purple" expanded={protectTxShow} />
       </ButtonWrapper>
       {!isMdScreen && protectTxShow && stepper()}
     </SButton>
