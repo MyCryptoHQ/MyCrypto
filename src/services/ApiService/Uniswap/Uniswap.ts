@@ -20,16 +20,16 @@ interface UniClaim {
   Amount: ITxValue; // HEX
   // proof: ITxData[]; @todo
   Flags: {
-    IsSocks: boolean;
-    IsLP: boolean;
+    IsSOCKS: boolean;
+    ISLP: boolean;
     IsUser: boolean;
   };
 }
 
 export enum ClaimState {
-  NO_CLAIM,
-  UNCLAIMED,
-  CLAIMED
+  NO_CLAIM = 'NO_CLAIM',
+  UNCLAIMED = 'UNCLAIMED',
+  CLAIMED = 'CLAIMED'
 }
 export interface UniClaimResult {
   address: TAddress;
