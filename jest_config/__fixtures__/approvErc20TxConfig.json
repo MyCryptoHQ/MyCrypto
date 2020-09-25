@@ -1,0 +1,203 @@
+{
+  "amount": "5",
+  "asset": {
+    "balance": {
+      "_hex": "0x3782dace9d900000"
+    },
+    "contractAddress": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+    "decimal": 18,
+    "isCustom": false,
+    "mtime": 1581530607024,
+    "name": "REPv1",
+    "networkId": "Ethereum",
+    "ticker": "ETH",
+    "type": "erc20",
+    "uuid": "d017a1e8-bdd3-5c32-8866-da258f75b0e9"
+  },
+  "baseAsset": {
+    "balance": {
+      "_hex": "0x1b9ced41465be000"
+    },
+    "decimal": 18,
+    "isCustom": false,
+    "mtime": 1581530607024,
+    "name": "Ether",
+    "networkId": "Ethereum",
+    "ticker": "ETH",
+    "type": "base",
+    "uuid": "356a192b-7913-504c-9457-4d18c28d46e6"
+  },
+  "data": "0x095ea7b30000000000000000000000004bbeeb066ed09b7aed07bf39eee0460dfa2615200000000000000000000000000000000000000000000000004563918244f40000",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "gasLimit": "150000",
+  "gasPrice": "5000000000",
+  "network": {
+    "assets": [
+      "356a192b-7913-504c-9457-4d18c28d46e6",
+      "d017a1e8-bdd3-5c32-8866-da258f75b0e9",
+      "3dcbc269-fa47-5707-b180-4cb0ba6e5cdf"
+    ],
+    "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+    "baseUnit": "ETH",
+    "blockExplorer": {
+      "name": "Etherscan",
+      "origin": "https://etherscan.io"
+    },
+    "chainId": 1,
+    "color": "#007896",
+    "contracts": [],
+    "dPaths": {
+      "LEDGER_NANO_S": {
+        "label": "Ledger (ETH)",
+        "value": "m/44'/60'/0'"
+      },
+      "MNEMONIC_PHRASE": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0"
+      },
+      "TREZOR": {
+        "label": "Trezor (ETH)",
+        "value": "m/44'/60'/0'/0"
+      },
+      "default": {
+        "label": "Default (ETH)",
+        "value": "m/44'/60'/0'/0"
+      }
+    },
+    "gasPriceSettings": {
+      "initial": 20,
+      "max": 60,
+      "min": 1
+    },
+    "id": "Ethereum",
+    "isCustom": false,
+    "isTestnet": false,
+    "name": "Ethereum",
+    "nodes": [
+      {
+        "name": "eth_mycrypto",
+        "service": "MyCrypto",
+        "type": "rpc",
+        "url": "https://api.mycryptoapi.com/eth"
+      },
+      {
+        "name": "eth_ethscan",
+        "service": "Etherscan",
+        "type": "etherscan",
+        "url": "https://api.etherscan.io/api"
+      }
+    ],
+    "selectedNode": "eth_mycrypto"
+  },
+  "nonce": "1",
+  "rawTransaction": {
+    "chainId": 1,
+    "data": "0x095ea7b30000000000000000000000004bbeeb066ed09b7aed07bf39eee0460dfa2615200000000000000000000000000000000000000000000000004563918244f40000",
+    "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+    "gasLimit": "0x0249f0",
+    "gasPrice": "0x12a05f200",
+    "nonce": "0x1",
+    "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+    "value": "0x0"
+  },
+  "receiverAddress": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "senderAccount": {
+    "address": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+    "assets": [
+      {
+        "balance": {
+          "_hex": "0x1b9ced41465be000"
+        },
+        "decimal": 18,
+        "isCustom": false,
+        "mtime": 1581530607024,
+        "name": "Ether",
+        "networkId": "Ethereum",
+        "ticker": "ETH",
+        "type": "base",
+        "uuid": "356a192b-7913-504c-9457-4d18c28d46e6"
+      },
+      {
+        "balance": {
+          "_hex": "0x3782dace9d900000"
+        },
+        "contractAddress": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+        "decimal": 18,
+        "isCustom": false,
+        "mtime": 1581530607024,
+        "name": "REPv1",
+        "networkId": "Ethereum",
+        "ticker": "ETH",
+        "type": "erc20",
+        "uuid": "d017a1e8-bdd3-5c32-8866-da258f75b0e9"
+      }
+    ],
+    "dPath": "m/44'/1'/0'/0",
+    "favorite": false,
+    "label": "WalletConnect Account 1",
+    "mtime": 0,
+    "network": {
+      "assets": [
+        "356a192b-7913-504c-9457-4d18c28d46e6",
+        "d017a1e8-bdd3-5c32-8866-da258f75b0e9",
+        "3dcbc269-fa47-5707-b180-4cb0ba6e5cdf"
+      ],
+      "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+      "baseUnit": "ETH",
+      "blockExplorer": {
+        "name": "Etherscan",
+        "origin": "https://etherscan.io"
+      },
+      "chainId": 1,
+      "color": "#007896",
+      "contracts": [],
+      "dPaths": {
+        "LEDGER_NANO_S": {
+          "label": "Ledger (ETH)",
+          "value": "m/44'/60'/0'"
+        },
+        "MNEMONIC_PHRASE": {
+          "label": "Default (ETH)",
+          "value": "m/44'/60'/0'/0"
+        },
+        "TREZOR": {
+          "label": "Trezor (ETH)",
+          "value": "m/44'/60'/0'/0"
+        },
+        "default": {
+          "label": "Default (ETH)",
+          "value": "m/44'/60'/0'/0"
+        }
+      },
+      "gasPriceSettings": {
+        "initial": 20,
+        "max": 60,
+        "min": 1
+      },
+      "id": "Ethereum",
+      "isCustom": false,
+      "isTestnet": false,
+      "name": "Ethereum",
+      "nodes": [
+        {
+          "name": "eth_mycrypto",
+          "service": "MyCrypto",
+          "type": "rpc",
+          "url": "https://api.mycryptoapi.com/eth"
+        },
+        {
+          "name": "eth_ethscan",
+          "service": "Etherscan",
+          "type": "etherscan",
+          "url": "https://api.etherscan.io/api"
+        }
+      ],
+      "selectedNode": "eth_mycrypto"
+    },
+    "networkId": "Ethereum",
+    "transactions": [],
+    "uuid": "4ffb0d4a-adf3-1990-5eb9-fe78e613f70b",
+    "wallet": "WALLETCONNECT"
+  },
+  "value": "0"
+}

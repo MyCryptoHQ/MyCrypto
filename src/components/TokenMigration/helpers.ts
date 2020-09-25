@@ -1,6 +1,6 @@
 import { getAssetByUUID } from '@services';
 import { ITokenMigrationConfig, ITxConfig, ITxObject, StoreAccount } from '@types';
-import { hexToString, hexWeiToString } from '@utils'
+import { hexToString, hexWeiToString } from '@utils';
 
 export const makeTokenMigrationTxConfig = (
   rawTransaction: ITxObject,
@@ -11,7 +11,6 @@ export const makeTokenMigrationTxConfig = (
   const { address, network } = account;
   const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
   const asset = getAssetByUUID(account.assets)(tokenMigrationConfig.fromAssetUuid)!;
-
   const txConfig: ITxConfig = {
     from: address,
     receiverAddress: account.address,

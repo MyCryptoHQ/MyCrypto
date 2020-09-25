@@ -4,21 +4,28 @@ import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
 import { getAssetByUUID } from '@services';
 import { UnlockToken } from '@services/EthService/contracts';
 import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } from '@types';
-import { formatApproveTx, hexToString, hexWeiToString, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import {
+  formatApproveTx,
+  hexToString,
+  hexWeiToString,
+  inputGasPriceToHex,
+  inputValueToHex,
+  toWei
+} from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig } from './config';
 import { MembershipSimpleTxFormFull } from './types';
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> =>
-  formatApproveTx(
-    payload.asset.contractAddress as ITxToAddress,
-    toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL),
-    payload.account.address,
-    payload.membershipSelected.contractAddress as TAddress,
-    DEFAULT_NETWORK_CHAINID,
-    inputGasPriceToHex(payload.gasPrice)
-  );
+  formatApproveTx({
+    contractAddress: payload.asset.contractAddress as ITxToAddress,
+    baseTokenAmount: toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL),
+    fromAddress: payload.account.address,
+    spenderAddress: payload.membershipSelected.contractAddress as TAddress,
+    chainId: DEFAULT_NETWORK_CHAINID,
+    hexGasPrice: inputGasPriceToHex(payload.gasPrice)
+  });
 
 export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
   const membershipSelected = payload.membershipSelected;

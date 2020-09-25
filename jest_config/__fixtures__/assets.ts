@@ -1,13 +1,13 @@
 import { bigNumberify } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL, REPV1UUID, REPV2UUID } from '@config';
-import { ExtendedAsset, StoreAsset, TTicker } from '@types';
+import { ExtendedAsset, StoreAsset, TTicker, TUuid } from '@types';
 
-export const fRopDAI = {
-  uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1',
+export const fRopDAI: ExtendedAsset = {
+  uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
   name: 'RopDAI',
   decimal: 18,
-  ticker: 'RopDAI',
+  ticker: 'RopDAI' as TTicker,
   networkId: 'Ropsten',
   contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
   isCustom: true,

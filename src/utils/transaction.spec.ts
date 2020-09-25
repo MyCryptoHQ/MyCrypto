@@ -20,7 +20,17 @@ import {
   fNetworks,
   fRopDAI
 } from '@fixtures';
-import { Asset, ITxData, ITxGasLimit, ITxGasPrice, ITxHash, ITxStatus, ITxToAddress, ITxType, ITxValue, TAddress } from '@types';
+import {
+  ITxData,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxHash,
+  ITxStatus,
+  ITxToAddress,
+  ITxType,
+  ITxValue,
+  TAddress
+} from '@types';
 
 import {
   appendGasPrice,
@@ -219,7 +229,7 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fRopDAI as Asset
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,
@@ -239,13 +249,13 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fRopDAI as Asset
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,
       receiverAddress: toAddress,
       amount: '0',
-      asset: fRopDAI as Asset
+      asset: fRopDAI
     });
   });
   it("interprets an eth tx's fields correctly", () => {
@@ -258,7 +268,7 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fRopDAI as Asset
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,
