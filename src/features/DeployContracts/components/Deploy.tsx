@@ -11,7 +11,7 @@ import {
   GasSelector,
   InlineMessage,
   InputField,
-  NetworkSelectDropdown,
+  NetworkSelector,
   Typography
 } from '@components';
 import { StoreContext } from '@services';
@@ -19,7 +19,6 @@ import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
 import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
-
 
 import { constructGasCallProps, getAccountsInNetwork } from '../helpers';
 
@@ -135,7 +134,7 @@ export default function Deploy(props: Props) {
   return (
     <div>
       <NetworkSelectorWrapper>
-        <NetworkSelectDropdown
+        <NetworkSelector
           network={networkId}
           onChange={(network) => {
             handleNetworkSelected(network);

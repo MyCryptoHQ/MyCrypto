@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { object, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
+import { DashboardPanel, InputField, NetworkSelector } from '@components';
 import { DEFAULT_NETWORK } from '@config/constants';
 import { useToasts } from '@features/Toasts';
 import { useContacts } from '@services';
@@ -45,7 +45,7 @@ const AddressBookButtons = styled.div`
   }
 `;
 
-const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
+const SNetworkSelector = styled(NetworkSelector)`
   margin-bottom: 15px;
 `;
 
@@ -131,7 +131,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
             <AddressFieldset>
               <Field name="network">
                 {({ field, form }: FieldProps<NetworkId>) => (
-                  <SNetworkSelectDropdown
+                  <SNetworkSelector
                     network={field.value}
                     onChange={(e) => form.setFieldValue(field.name, e)}
                   />

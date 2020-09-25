@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, ContentPanel, InlineMessage, NetworkSelectDropdown, TxReceipt } from '@components';
+import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import {
   ANALYTICS_CATEGORIES,
@@ -122,7 +122,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
       <Wrapper fullPageLoading={fullPageLoading || false}>
         {!tx && !fromLink && (
           <>
-            <NetworkSelectDropdown
+            <NetworkSelector
               network={networkId ? networkId : undefined}
               onChange={(n) =>
                 dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })

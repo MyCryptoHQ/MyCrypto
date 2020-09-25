@@ -6,7 +6,7 @@ import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { CodeBlock, InlineMessage, InputField, NetworkSelectDropdown } from '@components';
+import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
 import { getTransactionFields } from '@utils';
@@ -141,7 +141,7 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
         <React.Fragment>
           {!transaction.getChainId() && (
             <NetworkSelectWrapper>
-              <NetworkSelectDropdown network={network} onChange={handleNetworkChanged} />
+              <NetworkSelector network={network} onChange={handleNetworkChanged} />
               {!network && (
                 <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
               )}
@@ -156,8 +156,8 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           </SendButton>
         </React.Fragment>
       ) : (
-          <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
-        )}
+        <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
+      )}
     </ContentWrapper>
   );
 };

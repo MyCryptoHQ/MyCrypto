@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, InputField, NetworkSelectDropdown } from '@components';
+import { DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
 import { isValidAddress } from '@services';
@@ -121,7 +121,7 @@ export function AddToken(props: Props) {
       padChildren={true}
     >
       <NetworkSelectorWrapper>
-        <NetworkSelectDropdown network={networkId} onChange={setNetworkId} />
+        <NetworkSelector network={networkId} onChange={setNetworkId} />
       </NetworkSelectorWrapper>
       <InputField
         label={translateRaw('SYMBOL')}
