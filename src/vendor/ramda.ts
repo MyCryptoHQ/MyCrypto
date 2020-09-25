@@ -31,3 +31,6 @@ export { default as keys } from 'ramda/src/keys';
 export { default as view } from 'ramda/src/view';
 export { default as lensIndex } from 'ramda/src/lensIndex';
 export { default as adjust } from 'ramda/src/adjust';
+export { default as curry } from 'ramda/src/curry';
+export { default as filter } from 'ramda/src/filter';
+export { default as when } from 'ramda/src/when';
