@@ -131,6 +131,8 @@ export const partnerLinks: Link[] = [
   }
 ];
 
+export const UNISWAP_LINK = 'https://app.uniswap.org/';
+
 function createNavLinksFromExternalLinks(links: IExtUrl[]) {
   return links.reduce((acc, link) => {
     acc[link.name] = link;

@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
+import { toChecksumAddress } from 'ethereumjs-util';
 
 import { UNISWAP_TOKEN_DISTRIBUTOR, UNISWAP_UNI_CLAIM_API } from '@config/data';
 import { ApiService } from '@services/ApiService';
 import { ProviderHandler } from '@services/EthService';
 import { UniDistributor } from '@services/EthService/contracts';
-import { ITxData, ITxValue, Network, TAddress } from '@types';
+import { ITxValue, Network, TAddress } from '@types';
 import { mapAsync } from '@utils/asyncFilter';
 
 let instantiated = false;
@@ -15,13 +16,13 @@ interface Response {
 }
 
 interface UniClaim {
-  index: number;
-  amount: ITxValue; // HEX
-  proof: ITxData[];
-  flags: {
-    isSocks: boolean;
-    isLP: boolean;
-    isUser: boolean;
+  Index: number;
+  Amount: ITxValue; // HEX
+  // proof: ITxData[]; @todo
+  Flags: {
+    IsSocks: boolean;
+    IsLP: boolean;
+    IsUser: boolean;
   };
 }
 
@@ -41,7 +42,7 @@ export default class UniswapService {
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: UNISWAP_UNI_CLAIM_API,
-    timeout: 5000
+    timeout: 10000
   });
 
   constructor() {
@@ -55,7 +56,7 @@ export default class UniswapService {
   public getClaims(addresses: TAddress[]) {
     return this.service
       .post('', {
-        addresses
+        addresses: addresses.map((a) => toChecksumAddress(a))
       })
       .then((res) => res.data)
       .then(({ claims }: Response) => {
@@ -77,14 +78,14 @@ export default class UniswapService {
         const claimed = await provider
           .call({
             to: UNISWAP_TOKEN_DISTRIBUTOR,
-            data: UniDistributor.isClaimed.encodeInput({ index: claim.index })
+            data: UniDistributor.isClaimed.encodeInput({ index: claim.Index })
           })
           .then((data) => UniDistributor.isClaimed.decodeOutput(data))
           .then(({ claimed }) => claimed);
         return {
           address,
           state: claimed ? ClaimState.CLAIMED : ClaimState.UNCLAIMED,
-          amount: claim.amount
+          amount: claim.Amount
         };
       }
       return { address, state: ClaimState.NO_CLAIM, amount: '0x0' };

@@ -3,9 +3,11 @@ import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
 import repIcon from '@assets/images/rep-logo.svg';
+import uniIcon from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 import { EXT_URLS, REPV1UUID, ROUTE_PATHS } from '@config';
+import { UNISWAP_LINK } from '@config/links';
 import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 import { translateRaw } from '@translations';
@@ -66,9 +68,9 @@ export const actions: Action[] = [
     filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === REPV1UUID)
   },
   {
-    icon: repIcon,
+    icon: uniIcon,
     title: translateRaw('DASHBOARD_ACTIONS_UNI_CLAIM_TITLE'),
-    link: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+    link: UNISWAP_LINK,
     description: translateRaw('DASHBOARD_ACTIONS_UNI_CLAIM_SUBTITLE'),
     filter: (state: StoreContextState) =>
       state.uniClaims.some((c) => c.state === ClaimState.UNCLAIMED)
