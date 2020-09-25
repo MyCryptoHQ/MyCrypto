@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
-import styled from 'styled-components';
 import { Overwrite } from 'utility-types';
 
-import { Selector, Tooltip, Typography } from '@components';
+import { Body, Box, Selector, Tooltip } from '@components';
 import { DEFAULT_NETWORK } from '@config';
 import { isWalletSupported, useNetworks } from '@services/Store';
 import translate from '@translations';
@@ -21,32 +20,33 @@ interface Props {
   filter?(network: Network): boolean;
 }
 
-type UIProps = Overwrite<Omit<Props, 'filter' | 'accountType'>, { network?: Network }> & {
+type UIProps = Overwrite<
+  Omit<Props, 'filter' | 'accountType' | 'onChange'>,
+  { network?: Network }
+> & {
+  onSelect(n: NetworkId): void;
   networks: Network[];
 };
-
-const SContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  padding: 12px;
-`;
 
 const NetworkOption = ({
   data,
   selectOption
 }: OptionProps<Network> | { data: Network; selectOption?(): void }) => (
-  <SContainer
+  <Box
+    padding={'12px'}
+    display="flex"
+    flexDirection="row"
     data-testid={`network-selector-option-${data.id}`}
     onClick={() => selectOption && selectOption(data)}
   >
-    <Typography value={data.name} />
-  </SContainer>
+    <Body as="span">{data.name}</Body>
+  </Box>
 );
 
 const NetworkSelectorUI = ({
   network,
   networks,
-  onChange,
+  onSelect,
   showTooltip = false,
   disabled = false,
   ...props
@@ -63,7 +63,7 @@ const NetworkSelectorUI = ({
         value={network}
         options={networks}
         searchable={true}
-        onChange={(option) => onChange(option.id)}
+        onChange={(option) => onSelect(option.id)}
         getOptionLabel={(option) => option.name}
         optionComponent={NetworkOption}
         valueComponent={({ value }) => <NetworkOption data={value} />}
@@ -103,7 +103,7 @@ const NetworkSelector = ({
     <NetworkSelectorUI
       networks={options as Network[]}
       network={network}
-      onChange={onChange}
+      onSelect={onChange}
       {...props}
     />
   );

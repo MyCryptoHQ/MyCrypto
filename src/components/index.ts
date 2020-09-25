@@ -80,5 +80,6 @@ export { default as TimeElapsed } from './TimeElapsed';
 export { default as Icon } from './Icon';
 export { default as IFrame } from './IFrame';
 export { default as Downloader } from './Downloader';
-export { Heading } from './Typography/Typography';
 export { TokenMigrationStepper } from './TokenMigration';
+export { Heading, Body } from './Typography/Typography';
+export { default as Box } from './Box';
