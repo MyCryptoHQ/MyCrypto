@@ -1,4 +1,4 @@
-import { INFURA_API_KEY } from '@config';
+import { INFURA_API_KEY, POCKET_API_KEY } from '@config';
 import { NetworkUtils } from '@services/Store/Network';
 import { NetworkId, NodeType, StaticNodeConfig } from '@types';
 
@@ -21,6 +21,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.INFURA,
       service: 'Infura',
       url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`
+    },
+    {
+      name: NetworkUtils.makeNodeName('ETH', 'pocket'),
+      type: NodeType.POCKET,
+      service: 'Pocket',
+      url: `https://eth-mainnet.gateway.pokt.network/v1/lb/${POCKET_API_KEY}`
     }
   ],
 

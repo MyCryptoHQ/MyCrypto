@@ -2,6 +2,8 @@ import { NetworkId, TTicker, TURL } from '@types';
 
 export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
 
+export const POCKET_API_KEY = '5f6a53d75053d3232349e41e';
+
 export const ETHERSCAN_API_KEY = '3BJCKMTC6BY9XEJPZEQ7BIWJR4MCP94UB4';
 
 export const MYC_API_MAINNET = 'https://api.mycryptoapi.com/eth';
