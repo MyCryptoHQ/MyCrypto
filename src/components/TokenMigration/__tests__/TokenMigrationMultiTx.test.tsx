@@ -3,30 +3,23 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
-import {
-  default as TokenMigrationForm,
-  TokenMigrationProps
-} from '@features/TokenMigration/components/TokenMigrationForm';
-import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
+import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
+import { fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
-import { translateRaw } from '@translations';
 
-const defaultProps: TokenMigrationProps = {
-  isSubmitting: false,
-  asset: fAssets[0],
-  network: fNetwork,
-  address: '',
-  amount: '',
-  gasLimit: '',
-  gasPrice: '',
-  nonce: '',
-  account: fAccount,
-  onComplete: jest.fn(),
-  handleUserInputFormSubmit: jest.fn()
+import ConfirmTokenMigration, {
+  TokenMigrationMultiTxConfirmProps
+} from '../components/TokenMigrationMultiTx';
+
+const defaultProps: TokenMigrationMultiTxConfirmProps = {
+  tokenMigrationConfig: repTokenMigrationConfig,
+  currentTxIdx: 0,
+  transactions: fTokenMigrationTxs(),
+  onComplete: jest.fn()
 };
 
-function getComponent(props: TokenMigrationProps) {
+function getComponent(props: TokenMigrationMultiTxConfirmProps) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <DataContext.Provider
@@ -51,7 +44,7 @@ function getComponent(props: TokenMigrationProps) {
               } as unknown) as any
             }
           >
-            <TokenMigrationForm {...((props as unknown) as any)} />
+            <ConfirmTokenMigration {...((props as unknown) as any)} />
           </StoreContext.Provider>
         </FeatureFlagProvider>
       </DataContext.Provider>
@@ -60,10 +53,12 @@ function getComponent(props: TokenMigrationProps) {
 }
 
 /* Test components */
-describe('TokenMigrationForm', () => {
-  test('Can render the first step (Token Migration Form) in the flow.', () => {
+describe('TokenMigrationMultiTx', () => {
+  test('Can render the TokenMigrationMultiTx confirm panel', () => {
     const { getByText } = getComponent(defaultProps);
-    const selector = translateRaw('REP_TOKEN_MIGRATION');
+    const selector =
+      defaultProps.tokenMigrationConfig.txConstructionConfigs[defaultProps.currentTxIdx]
+        .stepContent;
     expect(getByText(selector)).toBeInTheDocument();
   });
 });

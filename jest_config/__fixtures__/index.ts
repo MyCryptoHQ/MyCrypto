@@ -1,7 +1,7 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
 
-export { fAssets, fStoreAssets } from './assets';
+export { fAssets, fStoreAssets, fRopDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
 export { fNetwork, fNetworks } from './network';
@@ -16,7 +16,9 @@ export {
   fERC20NonWeb3TxResponse,
   fERC20NonWeb3TxReceipt,
   fFinishedERC20NonWeb3TxReceipt,
-  fFinishedERC20Web3TxReceipt
+  fFinishedERC20Web3TxReceipt,
+  fDerivedApprovalTx,
+  fDerivedRepMigrationTx
 } from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };
@@ -32,7 +34,12 @@ export { unknownReport, scamReport, verifiedReport, loadingReport } from './ptxr
 
 // Non-Web3 ERC20 Tx Items
 export { default as fERC20NonWeb3TxConfigJSON } from './erc20NonWeb3TxConfig.json';
-export { fERC20NonWeb3TxConfig, fETHNonWeb3TxConfig } from './txConfig';
+export {
+  fERC20NonWeb3TxConfig,
+  fETHNonWeb3TxConfig,
+  fApproveErc20TxConfig,
+  fTokenMigrationTxConfig
+} from './txConfig';
 
 // Web3 ERC20 Tx Items
 export { default as fERC20Web3TxConfigJSON } from './erc20Web3TxConfig.json';
@@ -58,3 +65,7 @@ export { fNotifications } from './notifications';
 export { fRates } from './rates';
 
 export { SCHEMA_BASE as fLocalStorage } from '@database/data';
+export { fTokenMigrationTxs } from './tokenMigrationMultiTx';
+
+export { default as fREPTokenMigrationTxResponse } from './repMigrationTxResponse.json';
+export { default as fApproveERC20TxResponse } from './approveErc20TxResponse.json';

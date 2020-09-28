@@ -1,7 +1,18 @@
 import { bigNumberify } from 'ethers/utils';
 
-import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { ExtendedAsset, StoreAsset, TTicker } from '@types';
+import { DEFAULT_ASSET_DECIMAL, REPV1UUID, REPV2UUID } from '@config';
+import { ExtendedAsset, StoreAsset, TTicker, TUuid } from '@types';
+
+export const fRopDAI: ExtendedAsset = {
+  uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
+  name: 'RopDAI',
+  decimal: 18,
+  ticker: 'RopDAI' as TTicker,
+  networkId: 'Ropsten',
+  contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+  isCustom: true,
+  type: 'erc20'
+};
 
 export const fAssets = [
   {
@@ -95,15 +106,26 @@ export const fAssets = [
     isCustom: false
   },
   {
-    uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1',
-    name: 'RopDAI',
+    uuid: REPV1UUID,
+    name: 'REPv1',
     decimal: 18,
-    ticker: 'RopDAI',
-    networkId: 'Ropsten',
-    contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
-    isCustom: true,
+    ticker: 'REPv1',
+    networkId: 'Ethereum',
+    contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
+    isCustom: false,
     type: 'erc20'
-  }
+  },
+  {
+    uuid: REPV2UUID,
+    name: 'REPv2',
+    decimal: 18,
+    ticker: 'REPv2',
+    networkId: 'Ethereum',
+    contractAddress: '0x221657776846890989a759BA2973e427DfF5C9bB',
+    isCustom: false,
+    type: 'erc20'
+  },
+  fRopDAI
 ] as ExtendedAsset[];
 
 export const fStoreAssets = [

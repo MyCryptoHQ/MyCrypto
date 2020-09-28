@@ -3,24 +3,32 @@ import React from 'react';
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
 import { useAssets, useRates, useSettings } from '@services';
-import { ITxType, StoreAccount, TxParcel } from '@types';
+import { ITokenMigrationConfig, StoreAccount, TxParcel } from '@types';
 import { makeTxItem } from '@utils/transaction';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
-interface Props {
+export interface TokenMigrationReceiptProps {
   account: StoreAccount;
+  amount: string;
   transactions: TxParcel[];
+  tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(): void;
 }
 
-export default function TokenMigrationReceipt({ account, transactions, onComplete }: Props) {
+export default function TokenMigrationReceipt({
+  account,
+  amount,
+  transactions,
+  tokenMigrationConfig,
+  onComplete
+}: TokenMigrationReceiptProps) {
   const { settings } = useSettings();
   const { getAssetByUUID } = useAssets();
   const { getAssetRate } = useRates();
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account);
-    const txType = idx === transactions.length - 1 ? ITxType.REP_TOKEN_MIGRATION : ITxType.APPROVAL;
+    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account, amount)(tokenMigrationConfig);
+    const txType = tokenMigrationConfig.txConstructionConfigs[idx].txType;
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
@@ -29,10 +37,13 @@ export default function TokenMigrationReceipt({ account, transactions, onComplet
   const baseAssetRate = getAssetRate(baseAsset);
 
   const fiat = getFiat(settings);
-
+  const lastTxConfig =
+    tokenMigrationConfig.txConstructionConfigs[
+    tokenMigrationConfig.txConstructionConfigs.length - 1
+    ];
   return (
     <MultiTxReceipt
-      txType={ITxType.REP_TOKEN_MIGRATION}
+      txType={lastTxConfig.txType}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}

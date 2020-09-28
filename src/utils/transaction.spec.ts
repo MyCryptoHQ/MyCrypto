@@ -17,7 +17,8 @@ import {
   fFinishedERC20NonWeb3TxReceipt,
   fFinishedERC20Web3TxReceipt,
   fNetwork,
-  fNetworks
+  fNetworks,
+  fRopDAI
 } from '@fixtures';
 import {
   ITxData,
@@ -228,13 +229,13 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fAssets[10]
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,
       receiverAddress: '0x5dd6e754D37baBaBEb95F34639568812900feC79',
       amount: '4813.942855992010991778',
-      asset: fAssets[10]
+      asset: fRopDAI
     });
   });
   it("interprets an erc20 approve's fields correctly", () => {
@@ -248,13 +249,13 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fAssets[10]
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,
       receiverAddress: toAddress,
       amount: '0',
-      asset: fAssets[10]
+      asset: fRopDAI
     });
   });
   it("interprets an eth tx's fields correctly", () => {
@@ -267,7 +268,7 @@ describe('deriveTxFields', () => {
       toAddress as ITxToAddress,
       value as ITxValue,
       fAssets[1],
-      fAssets[10]
+      fRopDAI
     );
     expect(result).toStrictEqual({
       to: toAddress,

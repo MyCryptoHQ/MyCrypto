@@ -14,13 +14,20 @@ import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ExtendedAsset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
+import {
+  Asset,
+  ExtendedAsset,
+  IAccount,
+  ISimpleTxFormFull,
+  ITokenMigrationConfig,
+  Network,
+  StoreAccount
+} from '@types';
 import { isFormValid as checkFormValid, noOp, weiToFloat } from '@utils';
-
-import { tokenMigrationConfig } from '../config';
 
 export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
+  tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -31,6 +38,7 @@ interface UIProps {
   storeDefaultAccount: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
+  tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
 }
 
@@ -55,7 +63,11 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const TokenMigrationForm = ({ isSubmitting, onComplete }: TokenMigrationProps) => {
+const TokenMigrationForm = ({
+  tokenMigrationConfig,
+  isSubmitting,
+  onComplete
+}: TokenMigrationProps) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
@@ -72,6 +84,7 @@ const TokenMigrationForm = ({ isSubmitting, onComplete }: TokenMigrationProps) =
       relevantAccounts={relevantAccounts}
       storeDefaultAccount={defaultAccount || defaultStoreAccount}
       defaultAsset={defaultAsset}
+      tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
     />
   );
@@ -83,6 +96,7 @@ export const TokenMigrationFormUI = ({
   relevantAccounts,
   storeDefaultAccount,
   defaultAsset,
+  tokenMigrationConfig,
   onComplete
 }: UIProps) => {
   const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
@@ -102,7 +116,6 @@ export const TokenMigrationFormUI = ({
     uuid: defaultAsset.uuid
   };
   const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, '0.001');
-
   const TokenMigrationFormSchema = object().shape({
     amount: number()
       .min(0, translateRaw('ERROR_0'))
@@ -177,7 +190,7 @@ export const TokenMigrationFormUI = ({
           <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
         </FormFieldLabel>
         <>
-          <Tooltip tooltip={translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP')}>
+          <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
             <AmountInput
               disabled={true}
               asset={values.asset}
@@ -206,7 +219,7 @@ export const TokenMigrationFormUI = ({
         }}
         disabled={!isFormValid}
       >
-        {translateRaw('REP_TOKEN_MIGRATION')}
+        {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
     </div>
   );

@@ -1,5 +1,12 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer, decodeTransfer, RepV2Token } from './contracts';
+export {
+  Contract,
+  ERC20,
+  encodeTransfer,
+  decodeTransfer,
+  decodeApproval,
+  RepV2Token
+} from './contracts';
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   isValidPath,

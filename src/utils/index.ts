@@ -146,3 +146,4 @@ export {
   bigNumValueToViewableEther
 } from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
+export { formatApproveTx } from './erc20';

@@ -1,10 +1,11 @@
 import { bigNumberify } from 'ethers/utils';
 
+import { REPV1UUID } from '@config';
 import { DWAccountDisplay } from '@services';
 import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { fNetwork } from './network';
+import { fNetwork, fNetworks } from './network';
 
 export const fAccounts: StoreAccount[] = [
   {
@@ -23,13 +24,25 @@ export const fAccounts: StoreAccount[] = [
         isCustom: false,
         balance: bigNumberify('0x1b9ced41465be000'),
         mtime: 1581530607024
+      },
+      {
+        uuid: REPV1UUID,
+        name: 'REPv1',
+        networkId: 'Ethereum',
+        type: 'erc20',
+        ticker: 'ETH' as TTicker,
+        decimal: 18,
+        contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
+        isCustom: false,
+        balance: bigNumberify('0x3782dace9d900000'),
+        mtime: 1581530607024
       }
     ],
     transactions: [],
     favorite: false,
     mtime: 0,
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
-    network: fNetwork,
+    network: fNetworks[0],
     label: 'WalletConnect Account 1'
   },
   {

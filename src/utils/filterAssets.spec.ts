@@ -29,6 +29,6 @@ describe('filterDropdownAssets', () => {
 describe('filterValidAssets', () => {
   it('filters assets on the same network of type erc20 and base', () => {
     const filtered = filterValidAssets(fAssets, DEFAULT_NETWORK);
-    expect(filtered).toHaveLength(1);
+    expect(filtered).toHaveLength(3);
   });
 });

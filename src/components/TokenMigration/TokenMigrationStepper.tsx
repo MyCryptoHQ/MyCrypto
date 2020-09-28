@@ -4,17 +4,26 @@ import { WALLET_STEPS } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { ISimpleTxFormFull, ITxStatus, ITxType, TxParcel } from '@types';
+import {
+  ISimpleTxFormFull,
+  ITokenMigrationConfig,
+  ITokenMigrationFormFull,
+  ITxStatus,
+  TokenMigrationState,
+  TxParcel
+} from '@types';
 import { useTxMulti } from '@utils';
 
 import { TokenMigrationMultiTx } from './components';
 import TokenMigrationForm from './components/TokenMigrationForm';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
-import { createApproveTx, createMigrationTx } from './helpers';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
-import { ITokenMigrationFormFull, TokenMigrationState } from './types';
 
-const TokenMigrationStepper = () => {
+interface Props {
+  tokenMigrationConfig: ITokenMigrationConfig;
+}
+
+const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
   const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
@@ -23,21 +32,21 @@ const TokenMigrationStepper = () => {
 
   const steps: IStepperPath[] = [
     {
-      label: translateRaw('REP_TOKEN_MIGRATION'),
+      label: tokenMigrationConfig.formTitle,
       component: TokenMigrationForm,
       props: {
+        tokenMigrationConfig,
         account,
         isSubmitting
       },
       actions: (formData: ITokenMigrationFormFull) => {
         initWith(
           () => {
-            const purchaseTx = {
-              ...createMigrationTx(formData),
-              type: ITxType.REP_TOKEN_MIGRATION
-            };
-            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
-            return Promise.resolve([approveTx, purchaseTx]);
+            const txs = tokenMigrationConfig.txConstructionConfigs.map((txConstructionConfig) => ({
+              ...txConstructionConfig.constructTxFn(formData),
+              type: txConstructionConfig.txType
+            }));
+            return Promise.resolve(txs);
           },
           formData.account,
           formData.account.network
@@ -48,12 +57,13 @@ const TokenMigrationStepper = () => {
     ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
       {
         label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: translateRaw('REP_TOKEN_MIGRATION'),
+        backBtnText: tokenMigrationConfig.formTitle,
         component: TokenMigrationMultiTx,
         props: {
           account,
           isSubmitting,
           transactions,
+          tokenMigrationConfig,
           currentTxIdx: idx
         },
         actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
@@ -77,9 +87,10 @@ const TokenMigrationStepper = () => {
       }
     ]),
     {
-      label: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
+      label: tokenMigrationConfig.receiptTitle,
       component: TokenMigrationReceipt,
       props: {
+        amount: reducerState.amount,
         account,
         transactions
       }

@@ -1,8 +1,6 @@
 import { ValuesType } from 'utility-types';
 
-import { TAction } from '@types';
-
-import { TokenMigrationState } from './types';
+import { TAction, TokenMigrationState } from '@types';
 
 export type ReducerAction = TAction<ValuesType<typeof tokenMigrationReducer.actionTypes>, any>;
 
@@ -12,8 +10,8 @@ export const tokenMigrationReducer = (
 ): TokenMigrationState => {
   switch (action.type) {
     case tokenMigrationReducer.actionTypes.FORM_SUBMIT: {
-      const { account } = action.payload;
-      return { ...state, account };
+      const { account, amount } = action.payload;
+      return { ...state, account, amount };
     }
 
     default:

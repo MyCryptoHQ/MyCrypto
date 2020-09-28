@@ -1,3 +1,4 @@
+import { REPV1UUID, REPV2UUID } from '@config';
 import { Network, NodeType, TTicker, TUuid } from '@types';
 import { makeExplorer } from '@utils';
 
@@ -32,7 +33,7 @@ const Ethereum: Network = {
     }
   },
   contracts: [],
-  assets: ['356a192b-7913-504c-9457-4d18c28d46e6'] as TUuid[],
+  assets: ['356a192b-7913-504c-9457-4d18c28d46e6', REPV1UUID, REPV2UUID] as TUuid[],
   baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
   baseUnit: 'ETH' as TTicker,
   nodes: [
