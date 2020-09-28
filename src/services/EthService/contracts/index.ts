@@ -7,3 +7,4 @@ export { RepV2Token } from './repv2Token';
 export { UniDistributor } from './uniDistributor';
 export { AaveMigrator } from './aaveMigrator';
 export { AntMigrator } from './antMigrator';
+export { GolemV2Migration } from './golemV2Migration';

@@ -82,6 +82,9 @@ const TxTypeConfig: ITxTypeConfig = {
   },
   [ITxHistoryType.ANT_TOKEN_MIGRATION]: {
     label: () => translateRaw('RECENT_TX_LIST_LABEL_ANT_MIGRATION'),
+  },
+  [ITxHistoryType.GOLEM_TOKEN_MIGRATION]: {
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_GOLEM_MIGRATION'),
     icon: transfer
   },
   [ITxHistoryType.DEFIZAP]: {
