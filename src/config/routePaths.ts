@@ -155,6 +155,11 @@ const PATHS: IRoutePath[] = [
     name: 'ANT_TOKEN_MIGRATION',
     title: 'ANT Token Migration',
     path: '/migrate/ant'
+  },
+  {
+    name: 'GOLEM_TOKEN_MIGRATION',
+    title: 'GOLEM Token Migration',
+    path: '/migrate/golem'
   }
 ];
 
