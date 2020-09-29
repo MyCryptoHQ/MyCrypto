@@ -7,51 +7,61 @@ import { ETHERSCAN_API_KEY, INFURA_API_KEY } from '@config';
 import { DPathFormat, Network, NetworkId, NodeOptions, NodeType } from '@types';
 
 // Network names accepted by ethers.EtherscanProvider
-type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
+type TValidEthersNetworkish = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli' | number;
+const validNetworkIds = ['homestead', 'ropsten', 'rinkeby', 'kovan', 'goerli'];
 
-const getValidEthscanNetworkId = (id: NetworkId): TValidEtherscanNetwork =>
-  id === 'Ethereum' ? 'homestead' : (id.toLowerCase() as TValidEtherscanNetwork);
+const getValidEthersNetworkish = (id: NetworkId, chainId: number): TValidEthersNetworkish => {
+  if (id === 'Ethereum') {
+    return 'homestead' as TValidEthersNetworkish;
+  }
+  return validNetworkIds.includes(id.toLowerCase())
+    ? (id.toLowerCase() as TValidEthersNetworkish)
+    : (chainId as TValidEthersNetworkish);
+};
 
-const getProvider = (networkId: NetworkId, node: NodeOptions) => {
-  const networkName = getValidEthscanNetworkId(networkId);
+const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) => {
+  const networkish = getValidEthersNetworkish(networkId, chainId);
   const { type, url } = node;
   switch (type) {
     case NodeType.ETHERSCAN: {
-      return new ethers.providers.EtherscanProvider(networkName, ETHERSCAN_API_KEY);
+      return new ethers.providers.EtherscanProvider(networkish, ETHERSCAN_API_KEY);
     }
     case NodeType.WEB3: {
       const ethereumProvider = (window as CustomWindow).ethereum;
-      return new ethers.providers.Web3Provider(ethereumProvider, networkName);
+      return new ethers.providers.Web3Provider(ethereumProvider, networkish);
     }
     case NodeType.INFURA:
-      return new ethers.providers.InfuraProvider(networkName, INFURA_API_KEY);
+      return new ethers.providers.InfuraProvider(networkish, INFURA_API_KEY);
 
     // default case covers the remaining NodeTypes.
     default: {
       if ('auth' in node && node.auth) {
-        return new ethers.providers.JsonRpcProvider({
-          url,
-          user: node.auth.username,
-          password: node.auth.password,
-          allowInsecure: true
-        });
+        return new ethers.providers.JsonRpcProvider(
+          {
+            url,
+            user: node.auth.username,
+            password: node.auth.password,
+            allowInsecure: true
+          },
+          chainId
+        );
       }
-      return new ethers.providers.JsonRpcProvider(url);
+      return new ethers.providers.JsonRpcProvider(url, chainId);
     }
   }
 };
 
 export const createCustomNodeProvider = (network: Network): BaseProvider => {
-  const { id, nodes } = network;
+  const { id, nodes, chainId } = network;
   if (nodes.length < 1) {
     throw new Error('At least one node required!');
   }
 
-  return getProvider(id, nodes[0] as any);
+  return getProvider(id, nodes[0] as any, chainId);
 };
 
 export const createFallbackNetworkProviders = (network: Network): FallbackProvider => {
-  const { id, nodes, selectedNode } = network;
+  const { id, nodes, selectedNode, chainId } = network;
 
   let sortedNodes = nodes;
   if (!isEmpty(selectedNode)) {
@@ -62,7 +72,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any));
+  const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any, chainId));
 
   return new ethers.providers.FallbackProvider(providers);
 };
