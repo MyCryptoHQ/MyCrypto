@@ -34,9 +34,10 @@ const DashboardWrapper = styled.div`
 
 export default function Dashboard() {
   const { featureFlags } = useFeatureFlags();
-  const { isMyCryptoMember, currentAccounts, assets } = useContext(StoreContext);
+  const storeContextState = useContext(StoreContext);
+  const { isMyCryptoMember, currentAccounts } = storeContextState;
   const { accounts } = useAccounts();
-  const relevantActions = filterDashboardActions(actions, assets());
+  const relevantActions = filterDashboardActions(actions, storeContextState);
 
   return (
     <DashboardWrapper>

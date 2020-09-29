@@ -118,3 +118,4 @@ export {
   ITokenMigrationFormFull,
   TokenMigrationState
 } from './tokenMigration';
+export { IUniDistributor } from './uniDistributor';

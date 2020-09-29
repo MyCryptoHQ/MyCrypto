@@ -18,6 +18,7 @@ import {
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
+import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
@@ -55,7 +56,7 @@ import {
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { ANALYTICS_CATEGORIES, MyCryptoApiService } from '../ApiService';
+import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import {
   getAssetByTicker,
@@ -96,6 +97,7 @@ export interface State {
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly txHistory: ITxHistoryApiResponse[];
+  readonly uniClaims: UniClaimResult[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -366,11 +368,24 @@ export const StoreProvider: React.FC = ({ children }) => {
     .filter((a) => a.networkId === DEFAULT_NETWORK)
     .map((a) => a.address);
 
+  // Uniswap UNI token claims
+  const [uniClaims, setUniClaims] = useState<UniClaimResult[]>([]);
+
   useEffect(() => {
     if (mainnetAccounts.length > 0) {
       HistoryService.instance.getHistory(mainnetAccounts).then((history) => {
         if (history !== null) {
           setTxHistory(history);
+        }
+      });
+
+      UniswapService.instance.getClaims(mainnetAccounts).then((rawClaims) => {
+        if (rawClaims !== null) {
+          UniswapService.instance
+            .isClaimed(networks.find((n) => n.id === DEFAULT_NETWORK)!, rawClaims)
+            .then((claims) => {
+              setUniClaims(claims);
+            });
         }
       });
     }
@@ -387,6 +402,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     accountRestore,
     coinGeckoAssetManifest,
     txHistory,
+    uniClaims,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },
