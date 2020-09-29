@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import saveIcon from '@assets/images/icn-save-dash-board-settings.svg';
+import { ROUTE_PATHS } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
 
@@ -30,9 +32,11 @@ export default function SaveDashboardNotification() {
       title={translate('NOTIFICATIONS_SAVE_DASHBOARD_TITLE')}
       description={translate('NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION')}
       resources={
-        <ResourceItem secondary={true}>
-          {translate('NOTIFICATIONS_SAVE_DASHBOARD_RESOURCE')}
-        </ResourceItem>
+        <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path}>
+          <ResourceItem secondary={true}>
+            {translate('NOTIFICATIONS_SAVE_DASHBOARD_RESOURCE')}
+          </ResourceItem>
+        </Link>
       }
     />
   );
