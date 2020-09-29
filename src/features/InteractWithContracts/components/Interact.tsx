@@ -10,7 +10,7 @@ import {
   ContractLookupField,
   InlineMessage,
   InputField,
-  NetworkSelectDropdown
+  NetworkSelector
 } from '@components';
 import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
@@ -302,7 +302,7 @@ function Interact(props: CombinedProps) {
         return (
           <>
             <NetworkSelectorWrapper>
-              <NetworkSelectDropdown
+              <NetworkSelector
                 network={network.id}
                 onChange={(networkId) => {
                   handleNetworkSelected(networkId);

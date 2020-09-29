@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { boolean, lazy, object, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { Checkbox, DashboardPanel, InputField, LinkOut, NetworkSelectDropdown } from '@components';
+import { Checkbox, DashboardPanel, InputField, LinkOut, NetworkSelector } from '@components';
 import {
   DEFAULT_NETWORK,
   DPathsList as DPaths,
@@ -103,7 +103,7 @@ const NetworkNodeFieldsButtons = styled.div`
   }
 `;
 
-const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
+const SNetworkSelector = styled(NetworkSelector)`
   margin-bottom: ${SPACING.SM};
 `;
 
@@ -373,7 +373,7 @@ export default function AddOrEditNetworkNode({
                   <AddressFieldset>
                     <Field name="networkId">
                       {({ field, form }: FieldProps<NetworkId>) => (
-                        <SNetworkSelectDropdown
+                        <SNetworkSelector
                           network={field.value}
                           onChange={(e) => form.setFieldValue(field.name, e)}
                           disabled={editMode}

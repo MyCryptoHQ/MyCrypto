@@ -2,7 +2,7 @@ export { INetworkContext, default as useNetworks } from './useNetworks';
 export {
   getNetworkByChainId,
   getNetworkById,
-  isWalletFormatSupportedOnNetwork,
+  isWalletSupported,
   getBaseAssetByNetwork
 } from './helpers';
 export { NetworkUtils } from './utils';

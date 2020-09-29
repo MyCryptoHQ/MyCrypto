@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { NetworkSelectDropdown } from '@components';
+import { NetworkSelector } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { useNetworks } from '@services/Store';
 import { SPACING } from '@theme';
@@ -62,7 +62,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       <div className="Panel-title">{translate('ADD_ACCOUNT_NETWORK_TITLE')}</div>
       <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELECT')}</div>
       <NetworkForm>
-        <NetworkSelectDropdown
+        <NetworkSelector
           network={network}
           accountType={formData.accountType!}
           onChange={setNetwork}

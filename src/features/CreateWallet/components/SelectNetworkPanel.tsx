@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineMessage, NetworkSelectDropdown } from '@components';
+import { ExtendedContentPanel, InlineMessage, NetworkSelector } from '@components';
 import { INetworkContext, useNetworks } from '@services';
 import translate, { translateRaw } from '@translations';
 import { NetworkId, WalletId } from '@types';
@@ -61,11 +61,7 @@ class SelectNetworkPanel extends Component<Props & INetworkContext> {
         description={translate('SELECT_NETWORK_DESCRIPTION')}
       >
         <NetworkForm>
-          <NetworkSelectDropdown
-            network={network}
-            accountType={accountType}
-            onChange={selectNetwork}
-          />
+          <NetworkSelector network={network} accountType={accountType} onChange={selectNetwork} />
         </NetworkForm>
 
         {this.state.error && (
