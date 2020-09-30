@@ -4,7 +4,6 @@ import { formatEther } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { Button, RouterLink, Tooltip } from '@components';
-import { IconID } from '@components/Tooltip';
 import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -274,7 +273,7 @@ const ZapCard = ({ config }: Props) => {
                       tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
                         $protocol: config.platformsUsed[0]
                       })}
-                      type={IconID.informational}
+                      type="informational"
                     />
                   </TooltipWrapper>
                 </ZapEstimatedBalance>

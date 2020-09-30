@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import runningIcon from '@assets/images/icn-running.svg';
 import { Query, Tooltip } from '@components';
 import { IQueryResults } from '@components/Query';
-import { IconID } from '@components/Tooltip';
 import {
   MANDATORY_TRANSACTION_QUERY_PARAMS,
   ROUTE_PATHS,
@@ -53,7 +52,7 @@ const createQueryWarning = ({
     <BannerContent>
       <img src={runningIcon} />
       <BannerText>{translate(contentTranslationKey)}</BannerText>
-      <Tooltip type={IconID.questionWhite} tooltip={translateRaw(tooltipTranslationKey)} />
+      <Tooltip type="questionWhite" tooltip={translateRaw(tooltipTranslationKey)} />
     </BannerContent>
     <Link to={ROUTE_PATHS.DASHBOARD.path}>
       <CancelBtn>{translateRaw('CANCEL_ACTION')}</CancelBtn>
