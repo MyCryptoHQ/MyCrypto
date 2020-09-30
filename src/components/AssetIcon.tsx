@@ -35,19 +35,14 @@ interface Props {
 function AssetIcon({ uuid, size = '32px', className }: Props) {
   const { coinGeckoAssetManifest } = useContext(StoreContext);
   const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
-  return (
-    <SImg
-      src={iconUrl}
-      size={size}
-      onError={(e) => {
-        // @ts-ignore: onError works, but ts error
-        e.target.onerror = null;
-        // @ts-ignore: onError works, but ts error
-        e.target.src = genericIcon;
-      }}
-      className={className}
-    />
-  );
+
+  const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const elem = event.currentTarget;
+    elem.onerror = null;
+    elem.src = genericIcon;
+  };
+
+  return <SImg src={iconUrl} size={size} className={className} onError={handleError} />;
 }
 
 export default AssetIcon;

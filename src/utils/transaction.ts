@@ -278,7 +278,7 @@ export const makeTxConfigFromTxReceipt = (
     nonce: txReceipt.nonce,
     from: toChecksumAddress(txReceipt.from)
   };
-  // @ts-ignore Ignore possible missing senderAccount for now
+  // @ts-expect-error Ignore possible missing senderAccount for now
   return txConfig;
 };
 

@@ -1,4 +1,4 @@
-import { AssetLegacy, LocalStorage, LSKeys } from '@types';
+import { Asset, AssetLegacy, LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
 import { NETWORKS_CONFIG, SCHEMA_BASE } from './data';
@@ -65,13 +65,12 @@ describe('Schema', () => {
     });
 
     it('adds Tokens to Networks', () => {
-      const allAssets = defaultData[LSKeys.ASSETS];
+      const allAssets: Record<any, Asset> = defaultData[LSKeys.ASSETS];
       const tokens = toArray(allAssets)
         .filter(({ type }) => type === 'erc20')
         .filter(Boolean);
       const networkAssets = toArray(defaultData[LSKeys.NETWORKS])
         .flatMap(({ assets }) => assets)
-        // @ts-ignore
         .filter((uuid) => allAssets[uuid].type === 'erc20')
         .filter(Boolean); // Not all networks have assets!
 

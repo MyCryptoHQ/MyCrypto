@@ -41,8 +41,7 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
     // When add seed accounts we search for asset info by uuid, or update value in the account.
 
     const match: Asset =
-      // @ts-ignore
-      store.assets[a.uuid] ||
+      (store.assets as Record<any, Asset>)[a.uuid] ||
       toArray(store.assets).find((sa) => sa.ticker === a.ticker && sa.networkId === networkId);
 
     return {
@@ -59,11 +58,11 @@ const addDevAccounts = add(LSKeys.ACCOUNTS)((accounts: DevAccount[], store: Loca
 
   return pipe(
     map(withUuid(generateUUID)),
-    //@ts-ignore ie. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25581
+    //@ts-expect-error: ie. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/25581
     map(updateAssetUuid),
     reduce(toObject('uuid'), {} as any),
     mergeRight(store.accounts)
-    //@ts-ignore
+    //@ts-expect-error: pipe() expects 0 arguments !?
   )(accounts);
 });
 
@@ -92,7 +91,6 @@ const devDataTransducers: StoreAction[] = [
 /* Handler to trigger the flow according the environment */
 type Transduce = (z: LocalStorage) => LocalStorage;
 export const addDevSeedToSchema: Transduce = (initialStore: LocalStorage) => {
-  // Ts doesn't recognise this spread as arguments.
-  // @ts-ignore
+  // @ts-expect-error: TS doesn't recognise this spread as arguments.
   return pipe(...devDataTransducers)(initialStore);
 };

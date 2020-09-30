@@ -158,9 +158,8 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   return Promise.all([
     provider
       .getRawBalance(account.address)
-      // @ts-ignore The types mismatch due to versioning of ethersjs
+      // @ts-expect-error The types mismatch due to versioning of ethersjs
       .then(convertBNToBigNumberJS)
-      // @ts-ignore The types mismatch due to versioning of ethersjs
       .then((balance) => ({ [address]: balance })),
     getTokenBalances(provider, address, tokens)
   ])

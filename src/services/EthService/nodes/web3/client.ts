@@ -11,7 +11,7 @@ export default class Web3Client extends RPCClient {
     this.provider = (window as any).ethereum || (window as any).web3.currentProvider;
   }
 
-  // @ts-ignore
+  // @ts-expect-error: conflict between Web3Client and RPCClient method signatures
   public decorateRequest = (req: RPCRequest) => ({
     ...req,
     id: this.id(),

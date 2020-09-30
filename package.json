@@ -137,7 +137,7 @@
     "@types/node-hid": "0.7.3",
     "@types/qrcode": "0.8.0",
     "@types/query-string": "5.1.0",
-    "@types/ramda": "0.27.14",
+    "@types/ramda": "0.27.18",
     "@types/rc-slider": "8.6.5",
     "@types/rc-steps": "3.5.0",
     "@types/react": "16.9.17",
@@ -266,16 +266,16 @@
     "prettier:write": "prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
-    "lint:css": "stylelint ./src/**/*.tsx",
-    "lint:eslint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
+    "lint:styles": "stylelint ./src/**/*.tsx",
+    "lint:code": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
-    "validate": "npm-run-all --parallel lint:css lint:eslint tscheck"
+    "validate": "npm-run-all --parallel lint:styles lint:code tscheck"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "yarn prettier:write",
-      "yarn lint:css",
+      "yarn lint:styles",
       "eslint --fix",
       "git add"
     ],

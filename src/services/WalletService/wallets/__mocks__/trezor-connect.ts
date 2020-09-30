@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error: @todo: solve trezor types and mocks
 import { EthereumGetAddressPayload, GetPublicKeyPayload, TrezorData } from 'trezor-connect';
 
 export default {

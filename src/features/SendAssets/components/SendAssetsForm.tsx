@@ -330,7 +330,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
     account: object().required(translateRaw('REQUIRED')),
     address: object()
       .required(translateRaw('REQUIRED'))
-      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
         if (isBurnAddress(value.value)) {
@@ -342,7 +342,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         }
         return true;
       })
-      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // @ts-expect-error Hack as Formik doesn't officially support warnings
       .test('check-sending-to-yourself', translateRaw('SENDING_TO_YOURSELF'), function (value) {
         const account = this.parent.account;
         if (
@@ -358,7 +358,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
         }
         return true;
       })
-      // @ts-ignore Hack as Formik doesn't officially support warnings
+      // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-token-address', translateRaw('SENDING_TO_TOKEN_ADDRESS'), function (
         value
@@ -393,9 +393,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       .test(validateNonceField())
       .test(
         'check-nonce',
-        // @ts-ignore Hack to allow for returning of Markdown
+        // @ts-expect-error Hack to allow for returning of Markdown
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
-        // @ts-ignore Hack to allow for returning of Markdown
         async function (value) {
           const account = this.parent.account;
           const network = this.parent.network;

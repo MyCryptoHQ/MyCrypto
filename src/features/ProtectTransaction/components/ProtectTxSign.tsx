@@ -65,8 +65,7 @@ export const ProtectTxSign: FC<Props> = (props) => {
         onSuccess: async (payload: ITxHash | ITxSigned) =>
           await handleProtectTxConfirmAndSend(payload)
       };
-
-      // @ts-ignore
+      // @ts-expect-error: JSX element type does not have any construct or call signatures.
       return <SignComponent {...signComponentProps} />;
     }
 

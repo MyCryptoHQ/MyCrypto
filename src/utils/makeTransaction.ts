@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther } from 'ethers/utils';
-import prop from 'ramda/src/prop';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import {
@@ -13,16 +12,19 @@ import {
   ITxNonce,
   ITxValue
 } from '@types';
+import { prop } from '@vendor';
 
 import { bigify } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
+const hasChainId = (t: any): t is Partial<ITransaction> | Partial<IHexStrTransaction> =>
+  !!prop('chainId', t);
+
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
 ) => {
-  if (prop('chainId') !== undefined) {
-    // @ts-ignore
+  if (hasChainId(t)) {
     return new Tx(t, { chain: t.chainId });
   } else {
     return new Tx(t);

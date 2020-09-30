@@ -329,7 +329,7 @@ function Interact(props: CombinedProps) {
                   isResolvingName={isResolvingName}
                   setIsResolvingDomain={setIsResolvingDomain}
                   onSelect={(option) => {
-                    // @ts-ignore
+                    // @ts-expect-error: Contract vs IReceiverAddress. @todo: this is a bug.
                     handleContractSelected(option);
 
                     handleAddressOrDomainChanged(option.value);

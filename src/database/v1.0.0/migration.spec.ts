@@ -1,4 +1,4 @@
-import { LocalStorage } from '@types';
+import { IAccount, LocalStorage } from '@types';
 
 import { migrate } from './migration';
 
@@ -76,8 +76,8 @@ describe('Migrate to v1.0.0', () => {
     });
     const curr = getCurr();
     const res = migrate(prev, curr);
-    // @ts-ignore
-    const account = res.accounts['0x01'];
+
+    const account = (res.accounts as Record<any, IAccount>)['0x01'];
     expect(account.assets).toContainEqual({
       uuid: 'newUUID',
       balance: 3

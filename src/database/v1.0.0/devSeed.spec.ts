@@ -1,4 +1,4 @@
-import { LocalStorage, LSKeys } from '@types';
+import { Asset, LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
 import { NETWORKS_CONFIG, SCHEMA_BASE } from '../data';
@@ -38,8 +38,7 @@ describe('Data Seed', () => {
     it('provides a valid asset uuid to account assets', () => {
       const accountAssets = toArray(testData[LSKeys.ACCOUNTS])
         .flatMap(({ assets }) => assets)
-        // @ts-ignore
-        .map((a) => (a.uuid ? testData.assets[a.uuid] : a));
+        .map((a) => (a.uuid ? (testData.assets as Record<any, Asset>)[a.uuid] : a));
       expect(accountAssets.length).toBeGreaterThanOrEqual(1);
       accountAssets.forEach((a) => expect(a).toBeDefined());
     });

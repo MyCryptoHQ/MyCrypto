@@ -35,7 +35,6 @@ const TimeElapsedCounter = ({ timestamp, isSeconds }: Props) => {
 
   useEffect(() => {
     let elapsedTimeTimer: number | null = null;
-    // @ts-ignore
     elapsedTimeTimer = setTimeout(() => {
       const newElapsedTimeSeconds = Math.floor((Date.now() - convertedTimestamp) / 1000);
       setElapsedTime(calculateTimeComponents(newElapsedTimeSeconds));

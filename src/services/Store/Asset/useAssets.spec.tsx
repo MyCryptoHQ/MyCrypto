@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { fAssets } from '@fixtures';
-import { ExtendedAsset, LSKeys, TUuid } from '@types';
+import { Asset, ExtendedAsset, LSKeys, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';
@@ -54,10 +54,9 @@ describe('useAssets', () => {
     });
     const defaultAssets = fAssets.filter((a) => !a.isCustom);
     const assets = defaultAssets.reduce((obj, item) => {
-      // @ts-ignore
       obj[item.uuid] = item;
       return obj;
-    }, {});
+    }, {} as Record<any, Asset>);
     result.current.addAssetsFromAPI(assets);
     expect(mockUpdateAll).toHaveBeenCalledWith(expect.arrayContaining(fAssets));
   });

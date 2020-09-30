@@ -61,10 +61,10 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
       },
       firstNode
         ? {
-          // Extend network if nodes are defined
-          autoNode: firstNode.name, // Select first node as auto
-          selectedNode: n.selectedNode || firstNode.name // Select first node as default
-        }
+            // Extend network if nodes are defined
+            autoNode: firstNode.name, // Select first node as auto
+            selectedNode: n.selectedNode || firstNode.name // Select first node as default
+          }
         : {}
     );
   };
@@ -203,6 +203,6 @@ const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
 /* Handler to trigger the flow according the environment */
 type Transduce = (z: LocalStorage, networkConfig: NetworkConfig) => LocalStorage;
 export const createDefaultValues: Transduce = (initialSchema: LocalStorage, networkConfig) => {
-  // @ts-ignore
+  // @ts-expect-error: Ramda typings are at times mysterious
   return pipe(...getDefaultTransducers(networkConfig))(initialSchema);
 };
