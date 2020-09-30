@@ -26,6 +26,10 @@ import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ensIcon.svg';
 import check from '@assets/images/icn-check.svg';
+import informational from '@assets/images/icn-info-blue.svg';
+import questionWhite from '@assets/images/icn-question-white.svg';
+import questionBlack from '@assets/images/icn-question.svg';
+import warning from '@assets/images/icn-warning.svg';
 
 const icons = {
   /* Action icons */
@@ -36,6 +40,12 @@ const icons = {
   confirm,
   info,
   'info-small': infoSmall,
+
+  /* Tooltips*/
+  informational,
+  questionWhite,
+  questionBlack,
+  warning,
 
   /* Noun icons */
   website,
