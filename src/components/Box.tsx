@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import {
   color,
   ColorProps,
+  display,
+  DisplayProps,
   flexbox,
   FlexboxProps,
   layout,
@@ -10,7 +12,13 @@ import {
   SpaceProps
 } from 'styled-system';
 
-type Props = SpaceProps & LayoutProps & ColorProps & FlexboxProps;
+import { flexVariants, FlexVariants } from '@theme';
+
+type Props = SpaceProps &
+  LayoutProps &
+  ColorProps &
+  FlexboxProps &
+  DisplayProps & { variant?: FlexVariants };
 
 const Box = styled.div<Props>(
   {
@@ -20,7 +28,9 @@ const Box = styled.div<Props>(
   space,
   color,
   layout,
-  flexbox
+  flexbox,
+  flexVariants,
+  display
 );
 
 export default Box;

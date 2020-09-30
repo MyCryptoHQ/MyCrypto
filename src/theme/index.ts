@@ -9,4 +9,4 @@ export {
 } from './constants';
 export { monospace } from './fonts';
 export { breakpointToNumber } from './helpers';
-export { default as theme, textVariants, TextVariants } from './theme';
+export { default as theme, textVariants, TextVariants, flexVariants, FlexVariants } from './theme';
