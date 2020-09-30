@@ -946,9 +946,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     },
     shouldEstimateGasPrice: false
   },
-  Matic: {
+  MATIC: {
     id: 'MATIC',
-    name: 'Matric',
+    name: 'MATIC',
     unit: 'HD' as TTicker,
     chainId: 137,
     isCustom: false,
