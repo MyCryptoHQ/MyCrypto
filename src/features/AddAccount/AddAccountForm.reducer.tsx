@@ -59,8 +59,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
             dPath: payload.getPath()
           }
         ];
-      case WalletId.LEDGER_NANO_S:
-        return payload;
       case WalletId.TREZOR:
         return payload;
       default:
