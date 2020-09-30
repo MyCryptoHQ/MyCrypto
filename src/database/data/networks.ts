@@ -944,5 +944,32 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     shouldEstimateGasPrice: false
+  },
+  MATIC: {
+    id: 'MATIC',
+    name: 'MATIC',
+    unit: 'HD' as TTicker,
+    chainId: 137,
+    isCustom: false,
+    color: '#282457',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://etherscan.io',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
+      [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1000,
+      initial: 10
+    },
+    shouldEstimateGasPrice: false
   }
 };

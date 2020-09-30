@@ -13,6 +13,6 @@ describe('isWalletSupported()', () => {
   });
 
   test('it returns false if walletId is an unsupported HD_WALLET', () => {
-    expect(isWalletSupported(WalletId.MNEMONIC_PHRASE_NEW, fNetwork)).toBe(false);
+    expect(isWalletSupported(WalletId.MNEMONIC_PHRASE, fNetwork)).toBe(false);
   });
 });

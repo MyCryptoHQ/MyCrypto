@@ -377,5 +377,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'Etherscan',
       url: 'https://api.etherscan.io/api'
     }
+  ],
+  MATIC: [
+    {
+      name: NetworkUtils.makeNodeName('MATIC', 'ethscan'),
+      type: NodeType.ETHERSCAN,
+      service: 'Etherscan',
+      url: 'https://api.etherscan.io/api'
+    }
   ]
 };

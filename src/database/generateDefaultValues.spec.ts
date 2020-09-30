@@ -44,7 +44,7 @@ describe('Schema', () => {
   describe('Seed: Networks', () => {
     it('adds Contracts to Networks', () => {
       const contracts = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.contracts);
-      expect(contracts.length).toBeGreaterThanOrEqual(42);
+      expect(contracts.length).toBeGreaterThanOrEqual(43);
     });
 
     it('adds Nodes to each Network', () => {
