@@ -948,13 +948,13 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   MATIC: {
     id: 'MATIC',
     name: 'MATIC',
-    unit: 'HD' as TTicker,
+    unit: 'MATIC' as TTicker,
     chainId: 137,
     isCustom: false,
     color: '#282457',
     blockExplorer: makeExplorer({
-      name: 'Etherscan',
-      origin: 'https://etherscan.io',
+      name: 'Matic',
+      origin: 'https://explorer.matic.network/',
       addressPath: 'address',
       blockPath: 'blocks'
     }),
