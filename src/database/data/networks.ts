@@ -966,9 +966,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
     },
     gasPriceSettings: {
-      min: 1,
-      max: 1000,
-      initial: 10
+      min: 0.01,
+      max: 30,
+      initial: 1
     },
     shouldEstimateGasPrice: false
   }
