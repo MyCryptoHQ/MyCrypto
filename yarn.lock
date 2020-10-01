@@ -1445,10 +1445,10 @@
     "@ethersproject/constants" ">=5.0.0-beta.128"
     "@ethersproject/logger" ">=5.0.0-beta.129"
 
-"@findeth/abi@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@findeth/abi/-/abi-0.3.0.tgz#2b5593eec806aef76ee556e7df7ad85cb946fd5c"
-  integrity sha512-+MBiYa8IfI2iDuR33Hv7d3R6vGXsHycIRW0oModR1tIj8hQ8Js6ncztCsL4dAqcBzTEuw/lIXlX5+2hRCbCQAQ==
+"@findeth/abi@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@findeth/abi/-/abi-0.3.1.tgz#fe9a25211bc0c840c8bc53f937fd9af7278b9dab"
+  integrity sha512-T9HUVEjEgM0MzVLY4gs52ffz5AlHeC3CSGFcEzL4ojKMVzMxa3na1GW/XCmunrhnWP2cDh4fE2MhqLxA0CHqTw==
   dependencies:
     keccak "^3.0.0"
 
@@ -2178,12 +2178,12 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.1.1.tgz#aed4180c7f5a6b62c0c58006cf07ccf70b820fc2"
-  integrity sha512-E5+gwM0NjWQQ7vR1fs6nVq9p//2X1KujevA3i9mve9Ppf61E60NYwn+U9Xrjm6w5gkvflKFvgzmdEr71TqTQKw==
+"@mycrypto/eth-scan@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.1.2.tgz#53bb0d5bddd53dc0f389c10e6635ce1a25d73e45"
+  integrity sha512-fysgL4OJoay1ZySFnoCQdnbRoMnqPb/h87IK/7FZ0BMMw1fBMZN9YfJG5h+xHSwvFAD4FdXspqimqhq9+51fVg==
   dependencies:
-    "@findeth/abi" "^0.3.0"
+    "@findeth/abi" "^0.3.1"
     isomorphic-unfetch "^3.1.0"
 
 "@mycrypto/ui@0.24.1":
