@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Tooltip as UITooltip } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { space, SpaceProps } from 'styled-system';
+import { space, SpaceProps, verticalAlign, VerticalAlignProps } from 'styled-system';
 import { SetIntersection } from 'utility-types';
 
 import Icon from './Icon';
@@ -12,14 +12,16 @@ type ToolTipIcon = SetIntersection<
   'questionBlack' | 'questionWhite' | 'informational' | 'warning'
 >;
 
-const Override = styled.div<SpaceProps>`
+const Override = styled.div<SpaceProps & VerticalAlignProps>`
   /* Allow caller to control spacing  */
   ${space}
+  ${verticalAlign}
   /* Make itself neutral */
   display: inline-flex;
   /* Allow UITooltip enclosing span to behave corectly*/
   span {
     display: inline-flex;
+    /* vertical-align: middle; */
   }
 `;
 
@@ -27,15 +29,16 @@ function Tooltip({
   type = 'questionBlack',
   tooltip,
   children,
-  marginLeft = '1ch', // Provide default value that can be overridden.
+  verticalAlign = 'middle',
   ...props
 }: {
   tooltip: React.ReactNode;
   type?: ToolTipIcon;
   children?: React.ReactNode;
-} & SpaceProps) {
+} & SpaceProps &
+  VerticalAlignProps) {
   return (
-    <Override marginLeft={marginLeft} {...props}>
+    <Override verticalAlign={verticalAlign} {...props}>
       <UITooltip tooltip={tooltip}>{children ? children : <Icon type={type} />}</UITooltip>
     </Override>
   );
