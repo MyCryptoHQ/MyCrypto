@@ -159,7 +159,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'UBQ' as TTicker,
     chainId: 8,
     isCustom: false,
-    color: '#b37aff',
+    color: '#007bff',
     blockExplorer: makeExplorer({
       name: 'Ubiqscan',
       origin: 'https://ubiqscan.io'
@@ -871,7 +871,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'VT' as TTicker,
     chainId: 73799,
     isCustom: false,
-    color: '#6d2eae',
+    color: '#17a2b8',
     blockExplorer: makeExplorer({
       name: 'Energy Web VOLTA Explorer',
       origin: 'https://volta-explorer.energyweb.org',
@@ -898,7 +898,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'EWT' as TTicker,
     chainId: 246,
     isCustom: false,
-    color: '#6d2eae',
+    color: '#27ffbc',
     blockExplorer: makeExplorer({
       name: 'Energy Web Chain Explorer',
       origin: 'https://explorer.energyweb.org',
@@ -924,7 +924,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'HD' as TTicker,
     chainId: 666,
     isCustom: false,
-    color: '#282457',
+    color: '#ffc107',
     blockExplorer: makeExplorer({
       name: 'HardlyDifficult Explorer',
       origin: 'https://etherscan.io',
@@ -951,7 +951,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'MATIC' as TTicker,
     chainId: 137,
     isCustom: false,
-    color: '#282457',
+    color: '#60da9a',
     blockExplorer: makeExplorer({
       name: 'Matic',
       origin: 'https://explorer.matic.network/',
