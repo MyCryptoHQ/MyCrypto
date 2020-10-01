@@ -28,9 +28,9 @@ const assetPair = {
 };
 
 export const daiToEth = () => (
-  <ConfirmSwapMultiTx currentTxIdx={0} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx currentTxIdx={0} flowConfig={assetPair} transactions={[]} />
 );
 
 export const daiToEthStep2 = () => (
-  <ConfirmSwapMultiTx currentTxIdx={1} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx currentTxIdx={1} flowConfig={assetPair} transactions={[]} />
 );

@@ -6,24 +6,17 @@ import step2SVG from '@assets/images/icn-receive.svg';
 import step1SVG from '@assets/images/icn-send.svg';
 import { VerticalStepper } from '@components';
 import { translateRaw } from '@translations';
-import { ITxStatus, TxParcel } from '@types';
+import { ITxMultiConfirmProps, ITxStatus } from '@types';
 
 import { IMembershipConfig } from '../config';
 import MembershipSelectedBanner from './MembershipSelectedBanner';
 
-interface Props {
-  membershipSelected: IMembershipConfig;
-  currentTxIdx: number;
-  transactions: TxParcel[];
-  onComplete?(): void;
-}
-
 export default function ConfirmMembershipPurchase({
-  membershipSelected,
+  flowConfig,
   currentTxIdx,
   transactions,
   onComplete
-}: Props) {
+}: ITxMultiConfirmProps) {
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);
@@ -48,7 +41,7 @@ export default function ConfirmMembershipPurchase({
 
   return (
     <div>
-      <MembershipSelectedBanner membershipSelected={membershipSelected} />
+      <MembershipSelectedBanner membershipSelected={flowConfig as IMembershipConfig} />
       <VerticalStepper
         currentStep={broadcastingIndex === -1 ? currentTxIdx : broadcastingIndex}
         steps={[approveTx, transferTx]}

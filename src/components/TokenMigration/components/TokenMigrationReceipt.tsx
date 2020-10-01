@@ -12,7 +12,7 @@ export interface TokenMigrationReceiptProps {
   account: StoreAccount;
   amount: string;
   transactions: TxParcel[];
-  tokenMigrationConfig: ITokenMigrationConfig;
+  flowConfig: ITokenMigrationConfig;
   onComplete(): void;
 }
 
@@ -20,15 +20,15 @@ export default function TokenMigrationReceipt({
   account,
   amount,
   transactions,
-  tokenMigrationConfig,
+  flowConfig,
   onComplete
 }: TokenMigrationReceiptProps) {
   const { settings } = useSettings();
   const { getAssetByUUID } = useAssets();
   const { getAssetRate } = useRates();
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account, amount)(tokenMigrationConfig);
-    const txType = tokenMigrationConfig.txConstructionConfigs[idx].txType;
+    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account, amount)(flowConfig);
+    const txType = flowConfig.txConstructionConfigs[idx].txType;
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
@@ -38,9 +38,9 @@ export default function TokenMigrationReceipt({
 
   const fiat = getFiat(settings);
   const lastTxConfig =
-    tokenMigrationConfig.txConstructionConfigs[
-    tokenMigrationConfig.txConstructionConfigs.length - 1
-    ];
+    flowConfig.txConstructionConfigs[
+    flowConfig.txConstructionConfigs.length - 1
+  ];
   return (
     <MultiTxReceipt
       txType={lastTxConfig.txType}
