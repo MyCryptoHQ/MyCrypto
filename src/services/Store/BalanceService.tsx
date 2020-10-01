@@ -3,7 +3,8 @@ import {
   getEtherBalances,
   getTokenBalances as getTokenBalancesFromEthScan,
   getTokensBalance,
-  ProviderLike
+  ProviderLike,
+  toBalanceMap
 } from '@mycrypto/eth-scan';
 import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils';
@@ -118,7 +119,7 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
       .catch(() => ({} as BalanceMap));
   } else {
     const result = await mapAsync(addresses, (address) => provider.getBalance(address));
-    return result.map(convertBNToBigNumberJS);
+    return toBigNumberJS(toBalanceMap(addresses, result));
   }
 };
 
