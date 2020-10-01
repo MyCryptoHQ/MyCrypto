@@ -4,7 +4,7 @@ import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { Button, NewTabLink, RouterLink, Spinner } from '@components';
+import { Button, NewTabLink, Spinner } from '@components';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
