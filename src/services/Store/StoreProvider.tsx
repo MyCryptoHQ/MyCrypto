@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import { BigNumber } from 'bignumber.js';
+import { BigNumber as UnlockScanBigNumber } from '@ethersproject/bignumber';
+import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
+import { BigNumber, default as BN } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
@@ -64,7 +65,7 @@ import {
   getTotalByAsset,
   useAssets
 } from './Asset';
-import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
+import { getAccountsAssetsBalances } from './BalanceService';
 import { findNextUnusedDefaultLabel, useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import {
@@ -133,6 +134,25 @@ export interface State {
   scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
+
+// @todo: Update unlock-scan to use native bigints like eth-scan
+export const convertBNToBigNumberJS = (bn: UnlockScanBigNumber): BN => {
+  return new BN(bn.toHexString(), 16);
+};
+
+export const toBigNumberJS = (balances: TimestampMap): TimestampMap<BN> => {
+  return Object.fromEntries(
+    Object.keys(balances).map((key) => [key, convertBNToBigNumberJS(balances[key])])
+  );
+};
+
+export const nestedToBigNumberJS = (
+  timestamps: TimestampMap<TimestampMap>
+): TimestampMap<TimestampMap<BN>> => {
+  return Object.fromEntries(
+    Object.keys(timestamps).map((key) => [key, toBigNumberJS(timestamps[key])])
+  );
+};
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.

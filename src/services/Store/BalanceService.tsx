@@ -1,4 +1,3 @@
-import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 import {
   BalanceMap as EthScanBalanceMap,
   getEtherBalances,
@@ -20,18 +19,19 @@ const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
 };
 
-export const convertBNToBigNumberJS = (bn: EthScanBN): BN => {
-  return new BN(bn._hex);
+export const convertBNToBigNumberJS = (bn: bigint): BN => {
+  console.log(bn);
+  return new BN(bn.toString(16), 16);
 };
 
-export const toBigNumberJS = (balances: EthScanBalanceMap): BalanceMap => {
+export const toBigNumberJS = (balances: BalanceMap<bigint>): BalanceMap => {
   return Object.fromEntries(
     Object.keys(balances).map((key) => [key, convertBNToBigNumberJS(balances[key])])
   );
 };
 
 export const nestedToBigNumberJS = (
-  balances: EthScanBalanceMap<EthScanBalanceMap>
+  balances: BalanceMap<BalanceMap<bigint>>
 ): BalanceMap<BalanceMap> => {
   return Object.fromEntries(
     Object.keys(balances).map((key) => [key, toBigNumberJS(balances[key])])
@@ -86,12 +86,11 @@ const etherBalanceFetchWrapper = async (
   provider: ProviderLike,
   address: string,
   options: any
-): Promise<EthScanBalanceMap<EthScanBN>> => {
+): Promise<BalanceMap<bigint>> => {
   try {
-    const balanceMap = await getEtherBalances(provider, [address], options);
-    return balanceMap;
+    return getEtherBalances(provider, [address], options);
   } catch {
-    return {} as EthScanBalanceMap<EthScanBN>;
+    return {};
   }
 };
 
@@ -100,23 +99,22 @@ const tokenBalanceFetchWrapper = async (
   address: string,
   contractList: string[],
   options: any
-): Promise<EthScanBalanceMap<EthScanBN>> => {
+): Promise<BalanceMap<bigint>> => {
   try {
-    const tokenBalanceMap = await getTokensBalance(provider, address, contractList, options);
-    return tokenBalanceMap;
+    return getTokensBalance(provider, address, contractList, options);
   } catch {
-    return {} as EthScanBalanceMap<EthScanBN>;
+    return {};
   }
 };
 
 export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
   if (!network) {
-    return ([] as unknown) as Promise<BalanceMap>;
+    return {};
   }
   const provider = ProviderHandler.fetchProvider(network);
   return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
     .then(toBigNumberJS)
-    .catch(() => ({} as BalanceMap));
+    .catch(() => ({}));
 };
 
 export const getTokenAssetBalances = async (
@@ -125,12 +123,12 @@ export const getTokenAssetBalances = async (
   asset: ExtendedAsset
 ) => {
   if (!network) {
-    return ([] as unknown) as Promise<BalanceMap>;
+    return {};
   }
   const provider = ProviderHandler.fetchProvider(network);
   return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress!)
     .then(toBigNumberJS)
-    .catch(() => ({} as BalanceMap));
+    .catch(() => ({}));
 };
 
 const getTokenBalances = (
@@ -139,12 +137,12 @@ const getTokenBalances = (
   tokens: StoreAsset[]
 ): Promise<BalanceMap> => {
   return tokens
-    .reduce<Promise<EthScanBalanceMap>>(async (balances, token) => {
+    .reduce<Promise<BalanceMap<bigint>>>(async (balances, token) => {
       return {
         ...balances,
         [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
       };
-    }, Promise.resolve<EthScanBalanceMap>({}))
+    }, Promise.resolve<BalanceMap<bigint>>({}))
     .then(toBigNumberJS);
 };
 
@@ -183,7 +181,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 
   const filterZeroBN = (n: TBN) => n.isZero();
 
-  const filteredUpdatedAccounts = updatedAccounts.map((updatedAccount) => ({
+  return updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
     assets:
       (updatedAccount &&
@@ -193,8 +191,6 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
         )) ||
       []
   }));
-
-  return filteredUpdatedAccounts;
 };
 
 export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {

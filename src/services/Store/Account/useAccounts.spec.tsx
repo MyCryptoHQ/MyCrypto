@@ -22,9 +22,7 @@ jest.mock('@mycrypto/eth-scan', () => {
   return {
     getTokensBalance: jest.fn().mockImplementation(() =>
       Promise.resolve({
-        '0xad6d458402f60fd3bd25163575031acdce07538d': {
-          _hex: '0x0e22e84c2c724c00'
-        }
+        '0xad6d458402f60fd3bd25163575031acdce07538d': BigInt('0x0e22e84c2c724c00')
       })
     )
   };
