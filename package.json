@@ -19,7 +19,7 @@
     "@ledgerhq/hw-transport-web-ble": "4.58.0",
     "@ledgerhq/hw-transport-webusb": "4.56.0",
     "@metamask/inpage-provider": "6.0.1",
-    "@mycrypto/eth-scan": "3.1.1",
+    "@mycrypto/eth-scan": "3.1.2",
     "@mycrypto/ui": "0.24.1",
     "@mycrypto/unlock-scan": "0.1.0",
     "@types/papaparse": "5.0.6",
