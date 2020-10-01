@@ -5,11 +5,15 @@ import { BigNumber as BigNumberish } from 'ethers/utils';
 
 export type Bigish = BigNumber;
 
-export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | EthScanBN): BigNumber => {
+export const bigify = (
+  v: BigNumber.Value | BigNumber | BigNumberish | EthScanBN | bigint
+): BigNumber => {
   if (BigNumberish.isBigNumber(v)) {
     return new BigNumber(v.toString());
   } else if (typeof v === 'object' && '_hex' in v) {
     return new BigNumber(v._hex);
+  } else if (typeof v === 'bigint') {
+    return new BigNumber(v.toString(16), 16);
   } else {
     return new BigNumber(v);
   }
