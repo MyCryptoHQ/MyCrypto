@@ -20,7 +20,6 @@ const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
 };
 
 export const convertBNToBigNumberJS = (bn: bigint): BN => {
-  console.log(bn);
   return new BN(bn.toString(16), 16);
 };
 
