@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import Common from 'ethereumjs-common';
 import { Transaction as Tx } from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther } from 'ethers/utils';
@@ -25,7 +26,9 @@ export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
 ) => {
   if (hasChainId(t)) {
-    return new Tx(t, { chain: t.chainId });
+    // HACK TO ALLOW MATIX TX
+    const common = Common.forCustomChain(1, { chainId: t.chainId });
+    return new Tx(t, { common });
   } else {
     return new Tx(t);
   }

@@ -3,6 +3,7 @@ import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import Common from 'ethereumjs-common';
 import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
@@ -49,7 +50,9 @@ export class LedgerWallet extends HardwareWallet {
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
-    const transaction = new EthTx(t, { chain: t.getChainId(), hardfork: 'tangerineWhistle' });
+    // HACK TO ALLOW MATIC TX
+    const common = Common.forCustomChain(1, { chainId: t.getChainId() }, 'tangerineWhistle');
+    const transaction = new EthTx(t, { common });
     const txFields = getTransactionFields(transaction);
     transaction.v = toBuffer(transaction.getChainId());
     transaction.r = toBuffer(0);
@@ -94,7 +97,7 @@ export class LedgerWallet extends HardwareWallet {
         s: addHexPrefix(result.s)
       };
 
-      return new EthTx(txToSerialize, { chain: txFields.chainId }).serialize();
+      return new EthTx(txToSerialize, { common }).serialize();
     } catch (err) {
       throw Error(err + '. Check to make sure contract data is on');
     }
