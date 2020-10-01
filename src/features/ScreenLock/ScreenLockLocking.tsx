@@ -102,7 +102,9 @@ export default function ScreenLockLocking({
               ? `SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION`
               : `SCREEN_LOCK_LOCKING_DESCRIPTION`,
             {
-              $inactive_time: formatTimeDuration(settings.inactivityTimer)
+              $inactive_time: formatTimeDuration(
+                Math.floor((Date.now() - settings.inactivityTimer) / 1000)
+              )
             }
           )}{' '}
           <b>
