@@ -12,6 +12,7 @@ import partition from 'lodash/partition';
 import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
 import { ProviderHandler } from '@services/EthService';
 import { Asset, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress, TBN } from '@types';
+import { mapAsync } from '@utils/asyncFilter';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
@@ -111,9 +112,14 @@ export const getBaseAssetBalances = async (addresses: string[], network: Network
     return {};
   }
   const provider = ProviderHandler.fetchProvider(network);
-  return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
-    .then(toBigNumberJS)
-    .catch(() => ({}));
+  if (ETHSCAN_NETWORKS.includes(network.id)) {
+    return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
+      .then(toBigNumberJS)
+      .catch(() => ({} as BalanceMap));
+  } else {
+    const result = await mapAsync(addresses, (address) => provider.getBalance(address));
+    return result.map(convertBNToBigNumberJS);
+  }
 };
 
 export const getTokenAssetBalances = async (
