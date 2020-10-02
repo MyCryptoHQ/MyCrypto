@@ -30,6 +30,8 @@ export type TextProps = SpaceProps &
   TypographyProps & {
     variant?: TextVariants;
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
+  } & {
+    capitalize?: boolean;
   };
 
 const Text: React.FC<TextProps> = styled.p<TextProps>`
@@ -42,6 +44,7 @@ const Text: React.FC<TextProps> = styled.p<TextProps>`
   ${textStyle}
   ${lineHeight}
   ${typography}
+  ${({ capitalize }) => capitalize && { 'text-transform': 'capitalize' }}
 `;
 
 export default Text;
