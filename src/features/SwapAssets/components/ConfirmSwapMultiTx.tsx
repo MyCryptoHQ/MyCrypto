@@ -28,7 +28,7 @@ export default function ConfirmSwapMultiTx({
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.ticker }),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
-    onComplete
+    onClick: onComplete
   };
 
   const transferTx = {
@@ -37,7 +37,7 @@ export default function ConfirmSwapMultiTx({
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
-    onComplete
+    onClick: onComplete
   };
 
   return (
