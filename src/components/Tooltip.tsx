@@ -21,7 +21,6 @@ const Override = styled.div<SpaceProps & VerticalAlignProps>`
   /* Allow UITooltip enclosing span to behave corectly*/
   span {
     display: inline-flex;
-    /* vertical-align: middle; */
   }
 `;
 

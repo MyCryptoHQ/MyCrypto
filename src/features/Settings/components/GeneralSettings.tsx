@@ -46,7 +46,6 @@ const SelectContainer = styled.div`
   border-radius: 0.125em;
   padding: 0.6rem;
   width: 125px;
-  /* text-align: center; */
   select {
     width: 100%;
     border: none;
