@@ -1046,6 +1046,7 @@
     "SENDING_TO_TOKEN_ADDRESS": "You are sending to the $token contract. If you want to send $token to an address, change the Recipient to the address you want to send the $token to. If you send value to the $token contract itself, it will likely be irrecoverable.",
     "LEDGER_NANO_S_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto)",
     "LEDGER_NANO_S_NEW_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)",
-    "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)"
+    "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
+    "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider)."
   }
 }

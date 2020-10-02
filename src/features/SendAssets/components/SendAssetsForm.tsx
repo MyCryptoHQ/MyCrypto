@@ -27,7 +27,8 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  getWalletConfig
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
@@ -545,6 +546,8 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
   const isFormValid = checkFormValid(errors);
+  const walletConfig = getWalletConfig(values.account.wallet);
+  const supportsNonce = walletConfig.flags.supportsNonce;
 
   return (
     <div className="SendAssetsForm">
@@ -719,6 +722,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
                 <label htmlFor="nonce">
                   <div>
                     {translateRaw('NONCE')} <Tooltip tooltip={translate('NONCE_TOOLTIP')} />
+                    {/* @todo: Tooltip about disabled nonce? */}
                   </div>
                 </label>
                 <NonceField
@@ -727,7 +731,13 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
                   }}
                   name="nonceField"
                   value={values.nonceField}
-                  error={errors && errors.nonceField}
+                  error={
+                    (errors && errors.nonceField) ||
+                    (!supportsNonce
+                      ? translate('DISABLED_NONCE', { $provider: walletConfig.name })
+                      : undefined)
+                  }
+                  disabled={!supportsNonce}
                 />
               </div>
             </div>

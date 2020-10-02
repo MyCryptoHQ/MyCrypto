@@ -2,7 +2,7 @@ import React from 'react';
 
 import { InputField } from '@components';
 
-export function NonceField({ value, name, onChange, error }: INonceField) {
+export function NonceField({ value, name, onChange, error, disabled }: INonceField) {
   return (
     <div>
       <InputField
@@ -14,6 +14,7 @@ export function NonceField({ value, name, onChange, error }: INonceField) {
         className="SendAssetsForm-fieldset-input"
         inputError={error}
         inputMode="decimal"
+        disabled={disabled}
       />
     </div>
   );
@@ -23,6 +24,7 @@ interface INonceField {
   value: string;
   name: string;
   error?: string | JSX.Element | undefined;
+  disabled?: boolean;
   onChange(entry: string): void;
 }
 
