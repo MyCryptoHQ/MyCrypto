@@ -7,7 +7,6 @@ import React, {
   useState
 } from 'react';
 
-import { Button as UiButton } from '@mycrypto/ui';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -490,10 +489,10 @@ export const TxReceiptUI = ({
             translateRaw('FAUCET_TWEET')
           )}`}
         >
-          <UiButton className="TransactionReceipt-tweet">
+          <Button className="TransactionReceipt-tweet">
             <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
             <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
-          </UiButton>
+          </Button>
         </NewTabLink>
       )}
       {completeButtonText && !(txStatus === ITxStatus.PENDING) && (
@@ -525,9 +524,9 @@ export const TxReceiptUI = ({
       )}
       {txType === ITxType.FAUCET ? (
         <Link to={ROUTE_PATHS.DASHBOARD.path}>
-          <UiButton secondary={true} className="TransactionReceipt-back">
+          <Button secondary={true} className="TransactionReceipt-back">
             {translate('FAUCET_CLOSE')}
-          </UiButton>
+          </Button>
         </Link>
       ) : (
         <Link to={ROUTE_PATHS.DASHBOARD.path}>

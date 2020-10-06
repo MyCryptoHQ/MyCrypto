@@ -63,4 +63,5 @@ export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
 
 // Faucet constants
 
-export const FAUCET_API = 'https://d3a0rurg7bu691.cloudfront.net';
+export const FAUCET_API =
+  'https://d3a0rurg7bu691.cloudfront.net'; /* https://faucet.mycryptoapi.com */

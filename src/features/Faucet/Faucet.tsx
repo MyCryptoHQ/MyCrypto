@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 
 import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
-import { utils } from 'ethers';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,21 +16,20 @@ import {
   TxReceipt
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
-import { getBaseAssetByNetwork } from '@services';
-import { StoreContext, useAssets, useContacts } from '@services/Store';
+import { StoreContext } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import {
-  Asset,
-  IAccount as IIAccount,
-  InlineMessageType,
-  ITxStatus,
-  ITxType,
-  StoreAccount
-} from '@types';
+import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
 import { noOp } from '@utils';
 
 import { Error } from './components';
-import { possibleSolution, regenerateChallenge, requestChallenge, solveChallenge } from './helpers';
+import {
+  makeTxConfig,
+  makeTxReceipt,
+  possibleSolution,
+  regenerateChallenge,
+  requestChallenge,
+  solveChallenge
+} from './helpers';
 
 // Legacy
 
@@ -108,9 +106,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { accounts, networks } = useContext(StoreContext);
-  const { assets } = useAssets();
-  const { getContactByAddressAndNetworkId, createContact } = useContacts();
+  const { accounts } = useContext(StoreContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
@@ -164,88 +160,8 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
 
-  const txConfig = (() => {
-    if (!('hash' in txResult)) {
-      return {} as any;
-    } else {
-      const network: any = networks.find(
-        (n) => n.id === txResult.network.charAt(0).toUpperCase() + txResult.network.slice(1)
-      );
-      const senderContact = (() => {
-        const existingContact = getContactByAddressAndNetworkId(txResult.from, network.id);
-        if (existingContact) {
-          return existingContact;
-        } else {
-          createContact({
-            address: txResult.from,
-            label: 'MyCrypto Faucet',
-            network: network.id,
-            notes: ''
-          });
-          const newContact = getContactByAddressAndNetworkId(txResult.from, network.id);
-          return newContact;
-        }
-      })();
-      const baseAsset: Asset | undefined = getBaseAssetByNetwork({
-        network,
-        assets
-      });
-      return {
-        rawTransaction: {
-          to: txResult.to,
-          value: txResult.value,
-          gasLimit: txResult.gasLimit,
-          data: txResult.data,
-          gasPrice: txResult.gasPrice,
-          nonce: txResult.nonce.toString(),
-          chainId: txResult.chainId,
-          from: txResult.from
-        },
-        amount: utils.formatEther(txResult.value),
-        receiverAddress: txResult.to,
-        senderAccount: senderContact,
-        from: txResult.from,
-        asset: baseAsset,
-        baseAsset,
-        network,
-        gasPrice: txResult.gasPrice,
-        gasLimit: txResult.gasLimit,
-        nonce: txResult.nonce.toString(),
-        data: txResult.data,
-        value: txResult.value
-      };
-    }
-  })();
-
-  const txReceipt = (() => {
-    if (!('hash' in txResult)) {
-      return {} as any;
-    } else {
-      const network: any = networks.find(
-        (n) => n.id === txResult.network.charAt(0).toUpperCase() + txResult.network.slice(1)
-      );
-      const baseAsset: Asset | undefined = getBaseAssetByNetwork({
-        network,
-        assets
-      });
-      return {
-        asset: baseAsset,
-        baseAsset,
-        txType: ITxType.FAUCET,
-        status: ITxStatus.PENDING,
-        receiverAddress: txResult.to,
-        amount: utils.formatEther(txResult.value),
-        data: txResult.data,
-        gasPrice: txResult.gasPrice,
-        gasLimit: txResult.gasLimit,
-        to: txResult.to,
-        from: txResult.from,
-        value: txResult.value,
-        nonce: txResult.nonce.toString(),
-        hash: txResult.hash
-      };
-    }
-  })();
+  const txConfig: any = 'hash' in txResult ? makeTxConfig(txResult) : {};
+  const txReceipt: any = 'hash' in txResult ? makeTxReceipt(txResult) : {};
 
   const steps = [
     <Formik
