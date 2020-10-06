@@ -77,7 +77,7 @@ export { AddIcon, SubtractIcon } from './icons';
 export { default as PoweredByText } from './PoweredByText';
 export { default as EditableAccountLabel } from './EditableAccountLabel';
 export { default as TimeElapsed } from './TimeElapsed';
-export { default as Icon } from './Icon';
+export { default as Icon, TIcon } from './Icon';
 export { default as IFrame } from './IFrame';
 export { default as Downloader } from './Downloader';
 export { TokenMigrationStepper } from './TokenMigration';
@@ -92,3 +92,4 @@ export {
   Text,
   TextProps
 } from './NewTypography';
+export { ActionPanel } from './ActionsPanel';

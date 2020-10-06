@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountList, Desktop, Mobile } from '@components';
+import { AccountList, ActionPanel, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
 import { useFeatureFlags } from '@services';
 import { StoreContext, useAccounts } from '@services/Store';
@@ -65,6 +65,9 @@ export default function Dashboard() {
           <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
             <TokenPanel />
           </div>
+          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+            <ActionPanel />
+          </div>
         </div>
         <div className="Dashboard-mobile-section">
           <AccountList
@@ -104,6 +107,9 @@ export default function Dashboard() {
             )}
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
+            </div>
+            <div className="Dashboard-desktop-top-left-tokens">
+              <ActionPanel />
             </div>
           </div>
           <div className="Dashboard-desktop-top-right">

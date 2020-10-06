@@ -27,6 +27,7 @@ import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ensIcon.svg';
 import check from '@assets/images/icn-check.svg';
 import informational from '@assets/images/icn-info-blue.svg';
+import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
 import warning from '@assets/images/icn-warning.svg';
@@ -39,6 +40,7 @@ const icons = {
   add,
   confirm,
   info,
+  more,
   'info-small': infoSmall,
 
   /* Tooltips*/
@@ -80,9 +82,10 @@ const SInlineSVG = styled(InlineSVG)`
   }
 `;
 
+export type TIcon = keyof typeof icons;
+
 interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
-  type: keyof typeof icons;
-  size?: string;
+  type: TIcon;
   color?: string;
 }
 

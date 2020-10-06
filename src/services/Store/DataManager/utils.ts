@@ -9,6 +9,7 @@ import {
   ExtendedContact,
   ExtendedContract,
   ExtendedNotification,
+  ExtendedUserAction,
   ITxReceipt,
   LocalStorage,
   LSKeys,
@@ -17,7 +18,8 @@ import {
   NetworkNodes,
   Notification,
   TAddress,
-  TUuid
+  TUuid,
+  UserAction
 } from '@types';
 import { makeExplorer } from '@utils';
 import { merge } from '@vendor';
@@ -95,7 +97,13 @@ export function marshallState(ls: LocalStorage): DataStore {
       [] as ExtendedNotification[]
     ),
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
-    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD]
+    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],
+    [LSKeys.USER_ACTIONS]: Object.entries(ls[LSKeys.USER_ACTIONS]).reduce(
+      (acc, [uuid, a]: [TUuid, UserAction]) => {
+        return acc.concat([{ ...a, uuid }]);
+      },
+      [] as ExtendedUserAction[]
+    )
   };
 }
 
@@ -146,6 +154,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
     [LSKeys.NOTIFICATIONS]: arrayToObj('uuid')(st[LSKeys.NOTIFICATIONS]),
     [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: st[LSKeys.PASSWORD],
-    [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS])
+    [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS]),
+    [LSKeys.USER_ACTIONS]: arrayToObj('uuid')(st[LSKeys.USER_ACTIONS])
   };
 }

@@ -7,13 +7,15 @@ import {
   ExtendedContact,
   ExtendedContract,
   ExtendedNotification,
+  ExtendedUserAction,
   IAccount,
   ISettings,
   Network,
   NetworkId,
   NetworkNodes,
   Notification,
-  TUuid
+  TUuid,
+  UserAction
 } from '@types';
 
 export enum LSKeys {
@@ -25,7 +27,8 @@ export enum LSKeys {
   NOTIFICATIONS = 'notifications',
   SETTINGS = 'settings',
   PASSWORD = 'password',
-  NETWORK_NODES = 'networkNodes'
+  NETWORK_NODES = 'networkNodes',
+  USER_ACTIONS = 'userActions'
 }
 
 export interface LocalStorage {
@@ -40,6 +43,7 @@ export interface LocalStorage {
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
   readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
+  readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
 }
 
 export type DSKeys = Exclude<LSKeys, LSKeys.NETWORK_NODES>;
@@ -54,6 +58,7 @@ export interface DataStore {
   readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
   readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.PASSWORD]: string;
+  readonly [LSKeys.USER_ACTIONS]: ExtendedUserAction[];
 }
 
 export interface EncryptedDataStore {
