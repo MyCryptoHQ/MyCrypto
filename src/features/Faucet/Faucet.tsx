@@ -107,9 +107,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { accounts, networks } = useContext(StoreContext);
-  const { assets } = useAssets();
-  const { getContactByAddressAndNetworkId, createContact } = useContacts();
+  const { accounts } = useContext(StoreContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
