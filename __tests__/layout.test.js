@@ -14,10 +14,10 @@ test
   async (t) => {
     await addAccountPage.waitPageLoaded();
 
-    const header = Selector('nav');
-    const layoutMargin = Selector('main').child(1).getStyleProperty('margin-top');
-    const headerHeight = await header.offsetHeight;
+    const banner = Selector('main').child(1);
+    const layoutMargin = Selector('main').child(2).getStyleProperty('margin-top');
+    const bannerHeight = await banner.offsetHeight;
 
-    await t.expect(layoutMargin).eql(`${headerHeight}px`);
+    await t.expect(layoutMargin).eql(`${bannerHeight}px`);
   }
 );

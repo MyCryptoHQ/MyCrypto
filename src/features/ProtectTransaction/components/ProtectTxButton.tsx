@@ -1,15 +1,15 @@
 import React, { FC, useCallback } from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import ArrowRightIcon from '@components/icons/ArrowRightIcon';
+import Icon from '@components/Icon';
 import ProtectIcon from '@components/icons/ProtectIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
 
-const TransactionProtectionButtonText = styled.div`
+const TextWrapper = styled.div`
   max-width: 85%;
   text-align: left;
 
@@ -31,23 +31,31 @@ const TransactionProtectionButtonText = styled.div`
   }
 `;
 
-const STransactionProtectionButton = styled.button`
+const SButton = styled.div<{ disabled: boolean }>`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
-  padding: ${SPACING.BASE} ${SPACING.BASE} 15px;
   margin: 30px 0 15px;
   border: 1px solid ${COLORS.PURPLE};
   box-sizing: border-box;
   border-radius: 2px;
   background: ${COLORS.WHITE};
 
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  ${(p) =>
+    p.disabled &&
+    css`
+      opacity: 0.5;
+      cursor: not-allowed;
+    `}
+`;
 
+const ButtonWrapper = styled.div<{ opened: boolean }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
   svg:nth-child(1) {
     display: flex;
     align-self: flex-start;
@@ -61,38 +69,39 @@ const STransactionProtectionButton = styled.button`
       align-self: center;
     }
   }
-
-  &:not([disabled]):hover {
-    background: ${COLORS.PURPLE};
-
-    h6,
-    p {
-      color: ${COLORS.WHITE};
-    }
-
-    svg {
-      path {
-        fill: ${COLORS.WHITE} !important;
-      }
-    }
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding: ${SPACING.BASE};
+    border-bottom: 2px solid ${(p) => (p.opened ? COLORS.GREY_LIGHTER : 'transparent')};
   }
+`;
+
+const SIcon = styled(Icon)<{ expanded: boolean }>`
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    transform: rotate(${(p) => (p.expanded ? '-90deg' : '90deg')});
+  }
+  transform: rotate(${(p) => (p.expanded ? '180deg' : '0')});
+  transition: all 0.3s;
 `;
 
 interface Props {
   disabled?: boolean;
   reviewReport?: boolean;
+  protectTxShow: boolean;
   onClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  stepper(): JSX.Element;
 }
 
 export const ProtectTxButton: FC<Props> = ({
   onClick: onTransactionProtectionClick,
   disabled = false,
-  reviewReport = false
+  reviewReport = false,
+  protectTxShow,
+  stepper
 }) => {
   const { isSmScreen, isMdScreen } = useScreenSize();
 
   const onClickEvent = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    (e) => {
       onTransactionProtectionClick(e);
     },
     [onTransactionProtectionClick]
@@ -108,24 +117,27 @@ export const ProtectTxButton: FC<Props> = ({
   })();
 
   return (
-    <STransactionProtectionButton type="button" onClick={onClickEvent} disabled={isDisabled}>
-      {isSmScreen && <ProtectIcon size="md" />}
-      {!isSmScreen && <ProtectIconCheck size="sm" />}
-      <TransactionProtectionButtonText>
-        {reviewReport && (
-          <>
-            <h6>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED')}</h6>
-            <p>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC')}</p>
-          </>
-        )}
-        {!reviewReport && (
-          <>
-            <h6>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION')}</h6>
-            <p>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION_DESC')}</p>
-          </>
-        )}
-      </TransactionProtectionButtonText>
-      <ArrowRightIcon />
-    </STransactionProtectionButton>
+    <SButton disabled={isDisabled}>
+      <ButtonWrapper opened={protectTxShow} onClick={onClickEvent}>
+        {isSmScreen && <ProtectIcon size="md" />}
+        {!isSmScreen && <ProtectIconCheck size="sm" />}
+        <TextWrapper>
+          {reviewReport && (
+            <>
+              <h6>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED')}</h6>
+              <p>{translateRaw('PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC')}</p>
+            </>
+          )}
+          {!reviewReport && (
+            <>
+              <h6>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION')}</h6>
+              <p>{translateRaw('PROTECTED_TX_GET_TX_PROTECTION_DESC')}</p>
+            </>
+          )}
+        </TextWrapper>
+        <SIcon type="expand-purple" expanded={protectTxShow} />
+      </ButtonWrapper>
+      {!isMdScreen && protectTxShow && stepper()}
+    </SButton>
   );
 };

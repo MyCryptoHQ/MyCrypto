@@ -7,6 +7,7 @@ import { DrawerContext, ErrorContext, MigrateLS } from '@features';
 import { useFeatureFlags } from '@services';
 import { StoreContext, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
+import translate from '@translations';
 import { BannerType } from '@types';
 import { IS_E2E, withContext, withHook } from '@utils';
 import { pipe } from '@vendor';
@@ -45,6 +46,7 @@ const STop = styled.div`
     position: fixed;
     top: 0;
     width: 100%;
+    height: 77px;
     z-index: 11;
   }
 `;
@@ -80,6 +82,33 @@ const SContainer = styled.div`
 
 const MigrateLSWithStore = pipe(withContext(StoreContext), withHook(useSettings))(MigrateLS);
 
+const BannerWrapper = styled.div`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: sticky;
+    top: 77px;
+    left: 0;
+  }
+`;
+
+const SBanner = styled(Banner)`
+  background-color: ${COLORS.LIGHT_PURPLE};
+`;
+
+const CenteredBannerText = styled.div`
+  text-align: center;
+  & a {
+    &:hover {
+      font-weight: normal;
+    }
+  }
+`;
+
+export const ANNOUNCEMENT_MSG = () => (
+  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
+);
+
+const announcementMessage = ANNOUNCEMENT_MSG();
+
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
@@ -95,7 +124,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
       // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
       window.requestAnimationFrame(() => {
-        for (const entry of entries) setTopHeight(entry.contentRect.height);
+        for (const entry of entries) {
+          setTopHeight(entry.contentRect.height);
+        }
       });
     });
 
@@ -106,7 +137,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
 
   return (
     <SMain className={className} bgColor={bgColor}>
-      <STop ref={topRef}>
+      <STop>
         {!IS_E2E && featureFlags.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
@@ -118,6 +149,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
           setDrawerScreen={setScreen}
         />
       </STop>
+      <BannerWrapper ref={topRef}>
+        <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+      </BannerWrapper>
       <SContainer
         centered={centered}
         fluid={fluid}

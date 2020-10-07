@@ -22,7 +22,6 @@ import { isWeb3Wallet, useScreenSize, useTxMulti } from '@utils';
 
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxButton } from './ProtectTxButton';
-import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxProtection } from './ProtectTxProtection';
 import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectTxSign } from './ProtectTxSign';
@@ -53,6 +52,7 @@ const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
 
 const WithProtectTxSide = styled.div`
   position: absolute;
+  z-index: 999;
   left: 50%;
   transform: translateX(-50%);
   width: 375px;
@@ -79,7 +79,11 @@ interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTx(WrappedComponent: React.ComponentType<Props>, heading: string = '') {
+export function withProtectTx(
+  WrappedComponent: React.ComponentType<Props>,
+  heading: string = '',
+  showButton?: boolean
+) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
     signedTx: signedTxMain,
@@ -95,7 +99,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
     const { transactions, _currentTxIdx, account, network } = state;
 
     const {
-      state: { protectTxShow, protectTxEnabled, stepIndex, isPTXFree },
+      state: { protectTxShow, enabled, stepIndex, isPTXFree },
       setWeb3Wallet,
       goToNextStep,
       handleTransactionReport,
@@ -191,8 +195,18 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
               customDetails={customDetails}
               resetFlow={resetFlow}
               protectTxButton={() =>
-                protectTxEnabled ? (
-                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
+                enabled || showButton ? (
+                  <ProtectTxButton
+                    reviewReport={enabled}
+                    onClick={toggleProtectTxShow}
+                    protectTxShow={protectTxShow}
+                    stepper={() => (
+                      <ProtectTxStepper
+                        currentStepIndex={stepIndex}
+                        steps={protectTxStepperSteps}
+                      />
+                    )}
+                  />
                 ) : (
                   <></>
                 )
@@ -201,9 +215,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
             />
           </WithProtectTxMain>
         </ContentPanel>
-        {protectTxShow && (
+        {protectTxShow && isMdScreen && (
           <>
-            {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
             <WithProtectTxSide>
               <Panel>
                 <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />

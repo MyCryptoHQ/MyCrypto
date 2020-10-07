@@ -13,7 +13,11 @@ const ConfirmTransactionWithProtectTx = withProtectTx(
   ConfirmTransaction,
   translateRaw('CONFIRM_TX_MODAL_TITLE')
 );
-const SendAssetsFormWithProtectTx = withProtectTx(SendAssetsForm, translateRaw('SEND_ASSETS'));
+const SendAssetsFormWithProtectTx = withProtectTx(
+  SendAssetsForm,
+  translateRaw('SEND_ASSETS'),
+  true
+);
 
 export {
   SendAssetsForm,
