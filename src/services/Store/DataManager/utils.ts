@@ -98,12 +98,11 @@ export function marshallState(ls: LocalStorage): DataStore {
     ),
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],
-    [LSKeys.USER_ACTIONS]: Object.entries(ls[LSKeys.USER_ACTIONS]).reduce(
-      (acc, [uuid, a]: [TUuid, UserAction]) => {
-        return acc.concat([{ ...a, uuid }]);
-      },
-      [] as ExtendedUserAction[]
-    )
+    [LSKeys.USER_ACTIONS]: ls[LSKeys.USER_ACTIONS]
+      ? Object.entries(ls[LSKeys.USER_ACTIONS]).reduce((acc, [uuid, a]: [TUuid, UserAction]) => {
+          return acc.concat([{ ...a, uuid }]);
+        }, [] as ExtendedUserAction[])
+      : []
   };
 }
 
