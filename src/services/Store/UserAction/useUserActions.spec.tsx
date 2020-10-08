@@ -39,10 +39,9 @@ describe('useUserActions', () => {
       create: jest.fn()
     });
     const { result } = renderUseUserActions({ createActions });
-    // Remove the uuid from fixture since we expect Contract
+
     result.current.createUserAction(fActionTemplates[0]);
-    // Since uuid are deterministic we can asset that it will be the same
-    // as the fixture.
+
     expect(createActions().create).toHaveBeenCalledWith({
       name: fActionTemplates[0].name,
       state: 'new',
