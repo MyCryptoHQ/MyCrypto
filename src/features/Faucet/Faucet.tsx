@@ -16,7 +16,8 @@ import {
   TxReceipt
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
-import { StoreContext } from '@services/Store';
+//import { StoreContext } from '@services/Store';
+import { StoreContext, useAssets, useContacts } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
 import { noOp } from '@utils';
@@ -160,8 +161,15 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
 
-  const txConfig: any = 'hash' in txResult ? makeTxConfig(txResult) : {};
-  const txReceipt: any = 'hash' in txResult ? makeTxReceipt(txResult) : {};
+  const { networks } = useContext(StoreContext);
+  const { assets } = useAssets();
+  const { getContactByAddressAndNetworkId, createContact } = useContacts();
+
+  const txConfig: any =
+    'hash' in txResult
+      ? makeTxConfig(txResult, networks, assets, getContactByAddressAndNetworkId, createContact)
+      : {};
+  const txReceipt: any = 'hash' in txResult ? makeTxReceipt(txResult, networks, assets) : {};
 
   const steps = [
     <Formik

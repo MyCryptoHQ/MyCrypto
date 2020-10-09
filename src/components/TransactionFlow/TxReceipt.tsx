@@ -489,7 +489,7 @@ export const TxReceiptUI = ({
             translateRaw('FAUCET_TWEET')
           )}`}
         >
-          <Button className="TransactionReceipt-tweet">
+          <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
             <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
             <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
           </Button>
