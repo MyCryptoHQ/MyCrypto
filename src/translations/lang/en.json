@@ -320,7 +320,7 @@
     "FAUCET_RUNNING_LOW": "Our faucet is currently running low on this network. Please try again later.",
     "FAUCET_SHARE": "Share on Twitter",
     "FAUCET_SUCCESS": "Success! The testnet ETH has been sent to your wallet.",
-    "FAUCET_TWEET": "I just got testnet ETH using @MyCrypto’s faucet! Need Ropsten, Rinkeby, Kovan, or Goerli ETH? Visit mycrypto.com/faucet",
+    "FAUCET_TWEET": "I just got testnet ETH using @MyCrypto’s faucet! Need Ropsten, Rinkeby, Kovan, or Goerli ETH? Visit $faucet_url",
     "FAUCET_UNKNOWN_ERROR": "Oops, an unknown error occured. Please try again later.",
     "FEATURE_IS_UNAVAILABLE_OFFLINE": "This feature is unavailable while offline",
     "FIND_ETH_LINK": "Can't find your ETH? [Use findeth.io](https://findeth.io)",

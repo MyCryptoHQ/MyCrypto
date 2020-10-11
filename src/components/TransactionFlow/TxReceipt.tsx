@@ -486,7 +486,10 @@ export const TxReceiptUI = ({
       {txType === ITxType.FAUCET && (
         <NewTabLink
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-            translateRaw('FAUCET_TWEET')
+            translateRaw('FAUCET_TWEET', {
+              /* TODO: How to find base url without hardcoding? */
+              $faucet_url: 'https://app.mycrypto.com' + ROUTE_PATHS.FAUCET.path
+            })
           )}`}
         >
           <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">

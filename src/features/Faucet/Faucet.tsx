@@ -204,6 +204,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
             </NoTestnetAccounts>
           )}
           <RequestButton
+            name="requestFunds"
             onClick={() => requestFunds(recipientAddress)}
             disabled={Object.keys(recipientAddress).length === 0}
           >
