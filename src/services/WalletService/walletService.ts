@@ -25,6 +25,7 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
         init: (address: TAddress, dPath: string, index: number) =>
           new LedgerWallet(address, dPath, index)
       };
+    case WalletId.TREZOR_NEW:
     case WalletId.TREZOR:
       return {
         getChainCode: (dPath: string): Promise<ChainCodeResponse> =>

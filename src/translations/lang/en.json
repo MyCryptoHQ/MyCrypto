@@ -1047,6 +1047,8 @@
     "LEDGER_NANO_S_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto)",
     "LEDGER_NANO_S_NEW_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)",
     "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
-    "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider)."
+    "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider).",
+    "TREZOR_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto)",
+    "TREZOR_NEW_REFERRAL": "Need a Trezor? [Get one now.](https://shop.trezor.io/?offer_id=10&aff_id=1735)"
   }
 }
