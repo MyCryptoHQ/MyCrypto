@@ -22,8 +22,8 @@ const getStorage = (dispatch: Dispatch<MigrateLSAction>) => (
 };
 
 const migrateStorage = (dispatch: Dispatch<MigrateLSAction>) => (
-  storage: string | object,
-  importFn: (ls: string | object) => boolean
+  storage: string | TObject,
+  importFn: (ls: string | TObject) => boolean
 ) => {
   // Start loading spinner
   dispatch({ type: Reducer.actionTypes.MIGRATE_REQUEST });

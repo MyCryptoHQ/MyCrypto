@@ -6,8 +6,5 @@ type bytes32Array = any;
 
 export interface IUniDistributor {
   isClaimed: ABIFunc<{ index: uint256 }, { claimed: boolean }>;
-  claim: ABIFunc<
-    { index: uint256; account: address; amount: uint256; merkleProof: bytes32Array },
-    {}
-  >;
+  claim: ABIFunc<{ index: uint256; account: address; amount: uint256; merkleProof: bytes32Array }>;
 }

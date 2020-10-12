@@ -97,7 +97,7 @@ const SDescription = styled('div')`
   }
 `;
 
-type Props = RouteComponentProps<{}> & Action;
+type Props = RouteComponentProps & Action;
 function ActionTile({ icon, faded, title, description, link, history }: Props) {
   const action = (dest: string | TURL) => {
     if (isUrl(dest)) {

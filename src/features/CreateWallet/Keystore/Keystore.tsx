@@ -33,12 +33,12 @@ interface State {
   accountType: WalletId;
 }
 
-interface Props extends RouteComponentProps<{}> {
+interface Props extends RouteComponentProps {
   settings: ISettings;
   createAccountWithID(accountData: IRawAccount, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
-  displayNotification(templateName: string, templateData?: object): void;
+  displayNotification(templateName: string, templateData?: TObject): void;
 }
 
 const WalletService = WalletFactory(WalletId.KEYSTORE_FILE);

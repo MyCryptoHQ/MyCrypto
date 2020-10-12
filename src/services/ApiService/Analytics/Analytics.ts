@@ -35,20 +35,20 @@ export default class AnalyticsService {
     }
   }
 
-  public trackLegacy(category: string, eventAction: string, eventParams?: object): Promise<any> {
+  public trackLegacy(category: string, eventAction: string, eventParams?: TObject): Promise<any> {
     return this.track(category, `Legacy_${eventAction}`, eventParams);
   }
 
-  public track(category: string, eventAction: string, eventParams?: object): Promise<any> {
+  public track(category: string, eventAction: string, eventParams?: TObject): Promise<any> {
     const customParams: Params = {
       local: IS_DEV.toString(),
       desktop: IS_ELECTRON.toString(),
       ...eventParams
     };
 
-    const cvar: object = this.mapParamsToCvars(customParams);
+    const cvar: TObject = this.mapParamsToCvars(customParams);
 
-    const params: object = {
+    const params: TObject = {
       action_name: eventAction,
       e_c: category,
       e_a: eventAction,
@@ -66,9 +66,9 @@ export default class AnalyticsService {
       desktop: IS_ELECTRON.toString()
     };
 
-    const cvar: object = this.mapParamsToCvars(customParams);
+    const cvar: TObject = this.mapParamsToCvars(customParams);
 
-    const params: object = {
+    const params: TObject = {
       action_name: 'Page navigation',
       url: pageUrl,
       idsite: analyticsId,
@@ -79,7 +79,7 @@ export default class AnalyticsService {
     return this.service.get('', { params }).catch();
   }
 
-  private mapParamsToCvars(params: Params): object {
+  private mapParamsToCvars(params: Params): TObject {
     return Object.keys(params).reduce((tempObject: CvarEntry, key, index) => {
       tempObject[index + 1] = [key, params[key].toString()];
       return tempObject;

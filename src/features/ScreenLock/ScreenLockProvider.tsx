@@ -34,7 +34,7 @@ const onDemandLockCountDownDuration = 5;
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<
-  RouteComponentProps<{}> & IDataContext & ISettingsContext,
+  RouteComponentProps & IDataContext & ISettingsContext,
   State
 > {
   public state: State = {

@@ -20,7 +20,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export class Import extends React.Component<RouteComponentProps<{}> & ISettingsContext> {
+export class Import extends React.Component<RouteComponentProps & ISettingsContext> {
   public state = { step: 0 };
 
   public render() {

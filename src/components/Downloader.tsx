@@ -6,7 +6,7 @@ import { COLORS } from '@theme';
 import translate from '@translations';
 import { makeBlob } from '@utils';
 
-const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
+const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
   data,
   onClick,
   children

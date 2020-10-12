@@ -39,7 +39,7 @@ interface Props {
   gasLimit: string;
   nonce: string;
   account: StoreAccount;
-  estimateGasCallProps: object;
+  estimateGasCallProps: TObject;
   setGasPrice(gasPrice: string): void;
   setGasLimit(gasLimit: string): void;
   setNonce(nonce: string): void;

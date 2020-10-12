@@ -64,7 +64,7 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
   ${(props) => !props.isMemberOrExpired && 'opacity: 0.25;'}
 `;
 
-type Props = RouteComponentProps<{}>;
+type Props = RouteComponentProps;
 function MembershipPanel({ history }: Props) {
   const { membershipState, memberships, membershipExpirations } = useContext(StoreContext);
 

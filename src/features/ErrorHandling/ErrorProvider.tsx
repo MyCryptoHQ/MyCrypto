@@ -25,7 +25,7 @@ let errorTimer: any = null;
 
 export const ErrorContext = createContext({} as ProviderState);
 
-class ErrorProvider extends Component<RouteComponentProps<{}>> {
+class ErrorProvider extends Component<RouteComponentProps> {
   public state: ProviderState = {
     error: undefined,
     suppressErrors: IS_DEV, //Remove Error catching when in dev environment.

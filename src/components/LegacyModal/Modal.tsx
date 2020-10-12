@@ -26,7 +26,7 @@ const Fade = ({ ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal" />
 );
 
-export class Modal extends PureComponent<Props, {}> {
+export class Modal extends PureComponent<Props, never> {
   public modalParent: HTMLElement;
   public modalBody: ModalBody;
 

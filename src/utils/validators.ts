@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { FormikErrors } from 'formik';
+import { FormikErrors, FormikValues } from 'formik';
 
 import { InlineMessageType, TUuid } from '@types';
 
@@ -30,7 +30,7 @@ export const isValidAmount = (decimal: number) => (amount: string) => {
 export const isTransactionDataEmpty = (data: string) => ['', '0x', '0x0', '0x00'].includes(data);
 
 // allow warnings and info errors type for form to still be valid
-export const isFormValid = (errors: FormikErrors<object>) =>
+export const isFormValid = <Values extends FormikValues>(errors: FormikErrors<Values>) =>
   Object.values(errors).filter(
     (error) => error !== undefined && (!error.type || error.type === InlineMessageType.ERROR)
   ).length === 0;

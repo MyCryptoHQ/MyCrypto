@@ -30,7 +30,7 @@ export class AbiFunction {
     this.init(outputMappings);
   }
 
-  public encodeInput = (suppliedInputs: object = {}) => {
+  public encodeInput = (suppliedInputs: TObject = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
     return encodedCall;

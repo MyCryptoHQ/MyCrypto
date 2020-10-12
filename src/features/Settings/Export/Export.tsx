@@ -26,7 +26,7 @@ const CacheDisplay = styled.code`
   height: 10rem;
 `;
 
-export function Export(props: RouteComponentProps<{}>) {
+export function Export(props: RouteComponentProps) {
   const { history } = props;
   const onBack = history.goBack;
   const { exportStorage } = useSettings();

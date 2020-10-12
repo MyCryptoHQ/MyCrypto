@@ -197,7 +197,7 @@ interface Props {
   isHidden?: boolean;
 }
 
-export default class PaperWallet extends React.Component<Props, {}> {
+export default class PaperWallet extends React.Component<Props, never> {
   private container: HTMLElement | null;
 
   public render() {

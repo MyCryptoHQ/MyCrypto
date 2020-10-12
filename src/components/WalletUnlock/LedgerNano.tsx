@@ -16,7 +16,7 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 
 interface OwnProps {
-  wallet: object;
+  wallet: TObject;
   formData: FormData;
   onUnlock(param: any): void;
 }

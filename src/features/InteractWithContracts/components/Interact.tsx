@@ -135,7 +135,7 @@ interface Props {
   displayGeneratedForm(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
-  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
   handleGasSelectorChange(payload: ITxConfig): void;
@@ -152,7 +152,7 @@ const FormSchema = object().shape({
   }).required(translateRaw('REQUIRED'))
 });
 
-type CombinedProps = RouteComponentProps<{}> & Props;
+type CombinedProps = RouteComponentProps & Props;
 
 function Interact(props: CombinedProps) {
   const {

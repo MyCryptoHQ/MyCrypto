@@ -35,12 +35,12 @@ class PollingService implements IPollingService {
   private interval: number;
   private url: string;
   private canTerminate = false;
-  private successHandler: (data: {}) => void;
+  private successHandler: (data: TObject) => void;
 
   constructor(
     url: string,
     interval: number = 60000, // set a high default value ie. 60s.
-    successHandler: (data: {}) => void,
+    successHandler: (data: TObject) => void,
     errorHandler?: (err: any) => void
   ) {
     this.interval = interval;
@@ -84,7 +84,7 @@ class PollingService implements IPollingService {
     this.worker.terminate();
   }
 
-  public setSuccessHandler = (successHandler: (data: {}) => void) => {
+  public setSuccessHandler = (successHandler: (data: TObject) => void) => {
     this.successHandler = successHandler;
   };
 }

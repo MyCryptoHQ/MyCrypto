@@ -62,7 +62,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export function CreateWallet({ history }: RouteComponentProps<{}>) {
+export function CreateWallet({ history }: RouteComponentProps) {
   return (
     <ExtendedContentPanel
       onBack={() => history.push(ROUTE_PATHS.ROOT.path)}

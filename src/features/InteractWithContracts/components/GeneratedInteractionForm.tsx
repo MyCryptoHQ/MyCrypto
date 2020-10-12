@@ -95,8 +95,8 @@ interface Props {
   rawTransaction: ITxConfig;
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
-  handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
-  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
   handleGasSelectorChange(payload: ITxConfig): void;
 }

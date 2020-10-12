@@ -107,7 +107,7 @@ const ErrorMessage = styled.span`
   display: block;
 `;
 
-export function RequestAssets({ history }: RouteComponentProps<{}>) {
+export function RequestAssets({ history }: RouteComponentProps) {
   const { accounts, defaultAccount, networks } = useContext(StoreContext);
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(accounts[0].networkId);
