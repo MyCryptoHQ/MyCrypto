@@ -8,6 +8,8 @@ import {
   FlexboxProps,
   layout,
   LayoutProps,
+  position,
+  PositionProps,
   space,
   SpaceProps
 } from 'styled-system';
@@ -18,6 +20,7 @@ type Props = SpaceProps &
   LayoutProps &
   ColorProps &
   FlexboxProps &
+  PositionProps &
   DisplayProps & { variant?: FlexVariants };
 
 const Box = styled.div<Props>(
@@ -25,6 +28,7 @@ const Box = styled.div<Props>(
     boxSizing: 'border-box',
     minWidth: 0
   },
+  position,
   space,
   color,
   layout,
