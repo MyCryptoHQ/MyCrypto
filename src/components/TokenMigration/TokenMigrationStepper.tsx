@@ -91,6 +91,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
       component: TokenMigrationReceipt,
       props: {
         amount: reducerState.amount,
+        tokenMigrationConfig,
         account,
         transactions
       }
