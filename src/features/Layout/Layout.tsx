@@ -3,14 +3,10 @@ import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { Banner } from '@components';
-import { DrawerContext, ErrorContext, MigrateLS } from '@features';
-import { useFeatureFlags } from '@services';
-import { StoreContext, useSettings } from '@services/Store';
+import { DrawerContext, ErrorContext } from '@features';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import translate from '@translations';
 import { BannerType } from '@types';
-import { IS_E2E, withContext, withHook } from '@utils';
-import { pipe } from '@vendor';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -80,8 +76,6 @@ const SContainer = styled.div`
     `}
 `;
 
-const MigrateLSWithStore = pipe(withContext(StoreContext), withHook(useSettings))(MigrateLS);
-
 const BannerWrapper = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
@@ -113,7 +107,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
-  const { featureFlags } = useFeatureFlags();
 
   const [topHeight, setTopHeight] = useState(0);
 
@@ -138,7 +131,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   return (
     <SMain className={className} bgColor={bgColor}>
       <STop>
-        {!IS_E2E && featureFlags.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}

@@ -21,8 +21,7 @@ test('It contains a favicon tag', async (t) => {
   await t.expect(hasHref).ok();
 });
 
-// For iframe of landing page
-// ie. <MigrateLS />
+// Ensure we have the same domain with the landing page.
 test('It set the correct document.domain per environment', async (t) => {
   const info = await getInfo();
   await t.expect(info.domain).eql(info.hostname);
