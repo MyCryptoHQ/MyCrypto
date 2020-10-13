@@ -1,43 +1,46 @@
 import React from 'react';
 
 import { Tooltip as UITooltip } from '@mycrypto/ui';
+import styled from 'styled-components';
+import { space, SpaceProps, verticalAlign, VerticalAlignProps } from 'styled-system';
+import { SetIntersection } from 'utility-types';
 
-import informationalSVG from '@assets/images/icn-info-blue.svg';
-import questionWhiteSVG from '@assets/images/icn-question-white.svg';
-import questionBlackSVG from '@assets/images/icn-question.svg';
-import warningSVG from '@assets/images/icn-warning.svg';
+import Icon from './Icon';
 
-export enum IconID {
-  questionBlack = 'questionBlack',
-  questionWhite = 'questionWhite',
-  informational = 'informational',
-  warning = 'warning'
-}
+type ToolTipIcon = SetIntersection<
+  React.ComponentProps<typeof Icon>['type'],
+  'questionBlack' | 'questionWhite' | 'informational' | 'warning'
+>;
 
-interface Props {
-  tooltip: React.ReactNode;
-  type?: IconID;
-  children?: React.ReactNode;
-}
-
-const selectIconType = (type: IconID): any => {
-  switch (type) {
-    default:
-    case IconID.questionBlack:
-      return questionBlackSVG;
-    case IconID.questionWhite:
-      return questionWhiteSVG;
-    case IconID.informational:
-      return informationalSVG;
-    case IconID.warning:
-      return warningSVG;
+const Override = styled.div<SpaceProps & VerticalAlignProps>`
+  /* Allow caller to control spacing  */
+  ${space}
+  ${verticalAlign}
+  /* Make itself neutral */
+  display: inline-flex;
+  /* Allow UITooltip enclosing span to behave corectly*/
+  span {
+    display: inline-flex;
   }
-};
+`;
 
-function Tooltip({ type = IconID.questionBlack, tooltip, children }: Props) {
-  const iconType = selectIconType(type);
-
-  return <UITooltip tooltip={tooltip}>{children ? children : <img src={iconType} />}</UITooltip>;
+function Tooltip({
+  type = 'questionBlack',
+  tooltip,
+  children,
+  verticalAlign = 'middle',
+  ...props
+}: {
+  tooltip: React.ReactNode;
+  type?: ToolTipIcon;
+  children?: React.ReactNode;
+} & SpaceProps &
+  VerticalAlignProps) {
+  return (
+    <Override verticalAlign={verticalAlign} {...props}>
+      <UITooltip tooltip={tooltip}>{children ? children : <Icon type={type} />}</UITooltip>
+    </Override>
+  );
 }
 
 export default Tooltip;

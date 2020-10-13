@@ -16,6 +16,7 @@ import {
   Account,
   Amount,
   AssetIcon,
+  Box,
   DashboardPanel,
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
@@ -131,14 +132,14 @@ const SCombinedCircle = (asset: Asset) => {
 const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
-    <div className="TransactionLabel-image">
+    <Box mr="16px" position="relative">
       <img
         src={TxTypeConfig[type] ? TxTypeConfig[type].icon : transfer}
-        width="56px"
-        height="56px"
+        width="45px"
+        height="45px"
       />
       {greyscaleIcon}
-    </div>
+    </Box>
   );
   return baseIcon;
 };

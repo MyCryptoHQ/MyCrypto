@@ -83,27 +83,6 @@
   }
 }
 
-@mixin show-tooltip-on-hover {
-  &:hover .Tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -100%) translateY(-$tooltip-hover-distance);
-    transition-delay: 400ms, 400ms, 300ms;
-
-    &.is-direction-left {
-      transform: translate(-100%, -50%) translateX(-$tooltip-hover-distance);
-    }
-
-    &.is-direction-right {
-      transform: translate(100%, -50%) translateX($tooltip-hover-distance);
-    }
-
-    &.is-direction-bottom {
-      transform: translate(-50%, 100%) translateY($tooltip-hover-distance);
-    }
-  }
-}
-
 @mixin input-shadow($color) {
   box-shadow: inset 0 1px 1px rgba(black, 0.075), 0 0 1px rgba($color, 0.5);
 }

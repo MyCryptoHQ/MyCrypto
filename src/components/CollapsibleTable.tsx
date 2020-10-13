@@ -104,7 +104,7 @@ const GroupHeading = styled(Typography)`
   border-bottom: 0.0625rem solid #dde3ee;
   background: ${(props) => props.theme.tableHeadBackground};
   text-transform: uppercase;
-  font-size: ${scale(2)};
+  font-size: ${scale(1)};
   cursor: pointer;
   z-index: 3;
 `;

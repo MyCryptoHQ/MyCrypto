@@ -67,7 +67,7 @@ const theme = Object.assign({}, light, {
   lineHeights: ['16px', '24px', '30px', '32px', '48px']
 });
 
-const variants = {
+const TEXT_VARIANTS = {
   heading: {
     fontSize: { _: 3, sm: 4 },
     lineHeight: { _: 2, sm: 4 },
@@ -98,10 +98,29 @@ const variants = {
   }
 };
 
-export type TextVariants = keyof typeof variants;
+export type TextVariants = keyof typeof TEXT_VARIANTS;
 
 export const textVariants = variant({
-  variants
+  variants: TEXT_VARIANTS
+});
+
+const FLEX_VARIANTS = {
+  horizontalAlign: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  verticalCenter: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+};
+
+export type FlexVariants = keyof typeof FLEX_VARIANTS;
+export const flexVariants = variant({
+  variants: FLEX_VARIANTS
 });
 
 export default theme;

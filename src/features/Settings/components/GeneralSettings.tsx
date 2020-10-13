@@ -1,13 +1,13 @@
 import React, { FC, useCallback } from 'react';
 
-import { Button, Icon } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { DashboardPanel, Tooltip } from '@components';
+import { DashboardPanel, SubHeading, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
-import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISettings, TFiatTicker } from '@types';
 import { useAnalytics } from '@utils';
@@ -22,25 +22,14 @@ const SettingsField = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 ${SPACING.BASE} ${SPACING.BASE} ${SPACING.BASE};
+  padding: ${SPACING.BASE};
+  padding-top: 0;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: block;
   }
 `;
 
-const SettingsLabel = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: ${FONT_SIZE.LG};
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 100%;
-  }
-`;
-
 const SettingsControl = styled.div`
-  button {
-    margin-left: ${SPACING.SM};
-  }
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-top: ${SPACING.SM};
     width: 100%;
@@ -52,17 +41,13 @@ const SettingsButton = styled(Button)`
   padding: ${SPACING.SM};
 `;
 
-const SettingsTooltipIcon = styled(Icon)`
-  margin-left: ${SPACING.SM};
-  height: 1em;
-`;
-
 const SelectContainer = styled.div`
   border: 0.125em solid ${COLORS.BLUE_LIGHT};
+  border-radius: 0.125em;
   padding: 0.6rem;
-  width: 205px;
-  text-align: center;
+  width: 125px;
   select {
+    width: 100%;
     border: none;
     height: 2em;
     background: none;
@@ -123,40 +108,24 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
       <Divider />
       <SettingsField>
-        <SettingsLabel>
-          {translate('SETTINGS_HANDLING_LABEL')}
-          <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>}>
-            <div>
-              <SettingsTooltipIcon icon="shape" />
-            </div>
-          </Tooltip>
-        </SettingsLabel>
+        <SubHeading fontWeight="initial">
+          {translate('SETTINGS_HANDLING_LABEL')}{' '}
+          <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
+        </SubHeading>
         <SettingsControl>
           <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
             <SettingsButton secondary={true}>{translate('SETTINGS_IMPORT_LABEL')}</SettingsButton>
           </Link>
-          <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path}>
+          <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path} style={{ marginLeft: SPACING.SM }}>
             <SettingsButton secondary={true}>{translate('SETTINGS_EXPORT_LABEL')}</SettingsButton>
           </Link>
         </SettingsControl>
       </SettingsField>
-      {/* Hidding Paper wallet section according to CH4412
-        <SettingsField>
-          <SettingsLabel>{translate('SETTINGS_PAPER_LABEL')}</SettingsLabel>
-          <SettingsControl>
-            <SettingsButton secondary={true}>{translate('SETTINGS_DOWNLOAD_LABEL')}</SettingsButton>
-            <SettingsButton secondary={true}>{translate('SETTINGS_PRINT_LABEL')}</SettingsButton>
-          </SettingsControl>
-        </SettingsField> */}
       <SettingsField>
-        <SettingsLabel>
+        <SubHeading fontWeight="initial">
           {translate('SETTINGS_INACTIVITY_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>}>
-            <div>
-              <SettingsTooltipIcon icon="shape" />
-            </div>
-          </Tooltip>
-        </SettingsLabel>
+          <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>} />
+        </SubHeading>
         <SettingsControl>
           <SelectContainer>
             <select onChange={changeTimer} value={String(globalSettings.inactivityTimer)}>
@@ -170,14 +139,10 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SettingsControl>
       </SettingsField>
       <SettingsField>
-        <SettingsLabel>
+        <SubHeading fontWeight="initial">
           {translate('SETTINGS_FIAT_SELECTION_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>}>
-            <div>
-              <SettingsTooltipIcon icon="shape" />
-            </div>
-          </Tooltip>
-        </SettingsLabel>
+          <Tooltip tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>} />
+        </SubHeading>
         <SettingsControl>
           <SelectContainer>
             <select onChange={changeCurrencySelection} value={String(globalSettings.fiatCurrency)}>

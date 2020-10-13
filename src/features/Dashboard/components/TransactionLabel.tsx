@@ -1,12 +1,8 @@
 import React from 'react';
 
-import { Typography } from '@mycrypto/ui';
-import styled from 'styled-components';
-
+import { Body, Box } from '@components';
 import { ITxStatus } from '@types';
 import { formatDateTime } from '@utils';
-
-import './TransactionLabel.scss';
 
 interface Props {
   image: JSX.Element;
@@ -14,12 +10,6 @@ interface Props {
   stage: ITxStatus;
   date: number;
 }
-
-const capitalize = (word: string): string =>
-  word
-    .split('')
-    .map((letter, index) => (index === 0 ? letter.toUpperCase() : letter))
-    .join('');
 
 type ITxStatusConfig = { [K in ITxStatus]: { color: string } };
 
@@ -37,24 +27,20 @@ const txStatusConfig: ITxStatusConfig = {
   [ITxStatus.CONFIRMED]: { color: '#75b433' }
 };
 
-const SStage = styled(Typography)`
-  color: ${(p: { color: string }) => p.color || 'transparent'};
-`;
-
 export default function TransactionLabel({ image, label, stage, date }: Props) {
   const config = txStatusConfig[stage];
   return (
-    <div className="TransactionLabel">
+    <Box variant="verticalCenter">
       {image}
-      <div className="TransactionLabel-info">
-        <Typography className="TransactionLabel-info-label">{label}</Typography>
-        <SStage color={config.color} className="TransactionLabel-info-stage">
-          {capitalize(stage)}{' '}
-        </SStage>
-        <Typography className="TransactionLabel-info-Date">{`${
-          date ? ` - ${formatDateTime(date)}` : ''
-        }`}</Typography>
+      <div>
+        <Body as="span">{label}</Body>
+        <div>
+          <Body as="span" color={config.color || 'transparent'} capitalize={true}>
+            {stage}{' '}
+          </Body>
+          <Body as="span">{`${date ? ` - ${formatDateTime(date)}` : ''}`}</Body>
+        </div>
       </div>
-    </div>
+    </Box>
   );
 }

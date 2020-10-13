@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 
-import { Button, Icon } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, Tooltip } from '@components';
+import { DashboardPanel, SubHeading, Tooltip } from '@components';
 import { DataContext } from '@services/Store';
-import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
 
 const Divider = styled.div`
@@ -24,15 +24,6 @@ const SettingsField = styled.div`
   }
 `;
 
-const SettingsLabel = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: ${FONT_SIZE.LG};
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 100%;
-  }
-`;
-
 const SettingsControl = styled.div`
   button {
     margin-left: ${SPACING.SM};
@@ -48,11 +39,6 @@ const SettingsButton = styled(Button)`
   padding: ${SPACING.SM};
 `;
 
-const SettingsTooltipIcon = styled(Icon)`
-  margin-left: ${SPACING.SM};
-  height: 1em;
-`;
-
 const DangerZone: React.FC = () => {
   const { resetAppDb } = useContext(DataContext);
 
@@ -60,14 +46,10 @@ const DangerZone: React.FC = () => {
     <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
       <Divider style={{ borderBottom: '1px solid red' }} />
       <SettingsField>
-        <SettingsLabel>
+        <SubHeading fontWeight="initial">
           {translate('SETTINGS_DB_RESET_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>}>
-            <div>
-              <SettingsTooltipIcon icon="shape" />
-            </div>
-          </Tooltip>
-        </SettingsLabel>
+          <Tooltip tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>} />
+        </SubHeading>
         <SettingsControl>
           <SettingsButton secondary={true} onClick={() => resetAppDb()}>
             {translate('SETTINGS_DB_RESET_ACTION')}

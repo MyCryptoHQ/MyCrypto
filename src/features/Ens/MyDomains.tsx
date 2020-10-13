@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Account, FixedSizeCollapsibleTable, LinkOut, Tooltip } from '@components';
-import { IconID } from '@components/Tooltip';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
 import { BREAK_POINTS, breakpointToNumber } from '@theme';
 import { translateRaw } from '@translations';
@@ -34,7 +33,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       return [
         <RowAlignment key={index}>
           {getTimeDifference(new Date(), unixTimestamp) < SECONDS_IN_MONTH && (
-            <Tooltip type={IconID.warning} tooltip={translateRaw('ENS_EXPIRING_SOON')} />
+            <Tooltip type="warning" tooltip={translateRaw('ENS_EXPIRING_SOON')} />
           )}
         </RowAlignment>,
         <Label key={2}>
