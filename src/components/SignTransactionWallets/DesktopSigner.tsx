@@ -16,7 +16,11 @@ enum WalletSigningState {
   UNKNOWN //used upon component initialization when wallet status is not determined
 }
 
-const SignTransactionDesktopSigner = ({ rawTransaction, onSuccess }: ISignComponentProps) => {
+const SignTransactionDesktopSigner = ({
+  rawTransaction,
+  senderAccount,
+  onSuccess
+}: ISignComponentProps) => {
   const { networks } = useNetworks();
   const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
 
@@ -33,7 +37,7 @@ const SignTransactionDesktopSigner = ({ rawTransaction, onSuccess }: ISignCompon
       setSubmitting(true);
       ethersProvider
         .getSigner()
-        .provider.send('eth_signTransaction', [rawTransaction])
+        .provider.send('eth_signTransaction', [{ ...rawTransaction, from: senderAccount.address }])
         .then((txHash) => {
           onSuccess(txHash);
         })
