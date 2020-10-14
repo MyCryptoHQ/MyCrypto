@@ -22,7 +22,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { truncate } from '@utils';
+import { bigify, bigNumGasLimitToViewable, truncate } from '@utils';
 
 import Typography from '../Typography';
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
@@ -176,8 +176,8 @@ export default function MultiTxReceipt({
               asset={asset}
               data={data}
               sender={account}
-              gasLimit={gasLimit}
-              gasPrice={gasPrice}
+              gasLimit={bigNumGasLimitToViewable(bigify(gasLimit))}
+              gasPrice={bigify(gasPrice).toString()}
               nonce={nonce}
               rawTransaction={transaction.txRaw}
               fiat={fiat}
