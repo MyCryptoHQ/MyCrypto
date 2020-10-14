@@ -277,9 +277,9 @@ export const StoreProvider: React.FC = ({ children }) => {
   }, [currentAccounts]);
 
   // fetch assets from api
-  useEffect(() => {
+  useEffectOnce(() => {
     MyCryptoApiService.instance.getAssets().then(addAssetsFromAPI);
-  }, [assets.length]);
+  });
 
   // A change to pending txs is detected
   useEffect(() => {
