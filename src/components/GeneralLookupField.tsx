@@ -119,7 +119,7 @@ const GeneralLookupField = ({
     }
 
     if (setFieldValue) {
-      setFieldValue(name, contact, true);
+      setFieldValue(name, contact, false);
     }
     if (setFieldTouched) {
       setFieldTouched(name, true, false);
