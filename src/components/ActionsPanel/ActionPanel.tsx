@@ -33,7 +33,8 @@ const HeadingText = styled.span`
   font-size: ${FONT_SIZE.XL};
   font-weight: bold;
   color: ${COLORS.BLUE_DARK_SLATE};
-  margin-left: ${SPACING.SM};
+  margin-left: ${SPACING.BASE};
+  max-width: 250px;
 `;
 
 export const ActionPanel = () => {
@@ -52,9 +53,7 @@ export const ActionPanel = () => {
         currentAction ? (
           <DetailsHeading>
             <Icon width={20} type={currentAction.icon ? currentAction.icon : 'logo-mycrypto'} />
-            <HeadingText style={{ maxWidth: '270px', textAlign: 'right' }}>
-              {currentAction.heading}
-            </HeadingText>
+            <HeadingText>{currentAction.heading}</HeadingText>
           </DetailsHeading>
         ) : (
           <Text color="GREY" fontSize={0} mb={0}>
