@@ -16,10 +16,8 @@ import {
   Network,
   NetworkId,
   NetworkNodes,
-  Notification,
   TAddress,
-  TUuid,
-  UserAction
+  TUuid
 } from '@types';
 import { makeExplorer } from '@utils';
 import { merge } from '@vendor';
@@ -31,6 +29,11 @@ type ArrayToObj = <K extends string | number>(
 ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
 const arrayToObj: ArrayToObj = (key) => (arr) =>
   arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
+type ObjToExtendedArray = <T>(o: T) => unknown[];
+const objToExtendedArray: ObjToExtendedArray = (obj) =>
+  Object.entries(obj).reduce((acc, [uuid, n]: [TUuid, typeof obj]) => {
+    return acc.concat([{ ...n, uuid }]);
+  }, [] as unknown[]);
 
 export const mergeConfigWithLocalStorage = (
   defaultConfig: NetworkConfig,
@@ -90,18 +93,11 @@ export function marshallState(ls: LocalStorage): DataStore {
         blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
       })
     ),
-    [LSKeys.NOTIFICATIONS]: Object.entries(ls[LSKeys.NOTIFICATIONS]).reduce(
-      (acc, [uuid, n]: [TUuid, Notification]) => {
-        return acc.concat([{ ...n, uuid }]);
-      },
-      [] as ExtendedNotification[]
-    ),
+    [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],
     [LSKeys.USER_ACTIONS]: ls[LSKeys.USER_ACTIONS]
-      ? Object.entries(ls[LSKeys.USER_ACTIONS]).reduce((acc, [uuid, a]: [TUuid, UserAction]) => {
-          return acc.concat([{ ...a, uuid }]);
-        }, [] as ExtendedUserAction[])
+      ? (objToExtendedArray(ls[LSKeys.USER_ACTIONS]) as ExtendedUserAction[])
       : []
   };
 }

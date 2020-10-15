@@ -12,15 +12,22 @@ export enum ACTION_CATEGORIES {
   THIRD_PARTY = 'thirdParty'
 }
 
+export enum ACTION_STATE {
+  DEFAULT = 'default',
+  NEW = 'new',
+  STARTED = 'started',
+  COMPLETED = 'completed'
+}
+
 export interface ActionTemplate {
   name: string;
   icon?: TIcon;
   heading: string;
   subHeading?: string;
-  body: string[];
+  body: ReactNode[];
   priority: number;
   component?(): ReactNode;
-  shouldDisplay(): boolean;
+  shouldDisplay?: boolean;
   button: {
     content: string;
     to: string;
@@ -31,7 +38,7 @@ export interface ActionTemplate {
 
 export interface UserAction {
   name: string;
-  state: 'default' | 'new' | 'started' | 'completed';
+  state: ACTION_STATE;
 }
 
 export interface ExtendedUserAction extends UserAction {

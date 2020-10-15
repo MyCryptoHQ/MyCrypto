@@ -1049,6 +1049,12 @@
     "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
     "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider).",
     "TREZOR_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto)",
-    "TREZOR_NEW_REFERRAL": "Need a Trezor? [Get one now.](https://shop.trezor.io/?offer_id=10&aff_id=1735)"
+    "TREZOR_NEW_REFERRAL": "Need a Trezor? [Get one now.](https://shop.trezor.io/?offer_id=10&aff_id=1735)",
+    "ACTION_PANEL_HEADING": "Your Action Items",
+    "ACTION_PANEL_COMPLETED_COUNT": "Completed $number / $total",
+    "UPDATE_LABEL_ACTION_HEADING": "Update a label for your past transactions",
+    "UPDATE_LABEL_ACTION_BODY_1": "Labels are the bee's knees. They can help you recall the purpose of a past transaction. They can act as a check that you are sending to the correct address. But, most importantly, they're yours. They're private. They live only in your browser, not our servers.",
+    "UPDATE_LABEL_ACTION_BODY_2": "You can add/update a label almost anywhere you see an address on MyCrypto, like in your Accounts list or Address book.",
+    "UPDATE_LABEL_ACTION_BUTTON": "Label an address"
   }
 }

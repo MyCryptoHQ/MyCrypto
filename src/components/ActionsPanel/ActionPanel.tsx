@@ -7,6 +7,7 @@ import Icon from '@components/Icon';
 import { actionTemplates } from '@config';
 import { useUserActions } from '@services';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { Trans } from '@translations';
 import { ActionTemplate } from '@types';
 
 import { Text } from '../NewTypography';
@@ -44,7 +45,7 @@ export const ActionPanel = () => {
         currentAction ? (
           <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
         ) : (
-          'Your Action Items'
+          <Trans id="ACTION_PANEL_HEADING" />
         )
       }
       headingRight={
@@ -57,9 +58,13 @@ export const ActionPanel = () => {
           </DetailsHeading>
         ) : (
           <Text color="GREY" fontSize={0} mb={0}>
-            {`Completed: ${userActions.filter((a) => a.state === 'completed').length}/${
-              actionTemplates.length
-            }`}
+            <Trans
+              id="ACTION_PANEL_COMPLETED_COUNT"
+              variables={{
+                $number: () => userActions.filter((a) => a.state === 'completed').length,
+                $total: () => actionTemplates.length
+              }}
+            />
           </Text>
         )
       }

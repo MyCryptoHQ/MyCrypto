@@ -1,6 +1,13 @@
 import { useContext } from 'react';
 
-import { ActionTemplate, ExtendedUserAction, LSKeys, TUuid, UserAction } from '@types';
+import {
+  ACTION_STATE,
+  ActionTemplate,
+  ExtendedUserAction,
+  LSKeys,
+  TUuid,
+  UserAction
+} from '@types';
 import { generateUUID } from '@utils';
 
 import { DataContext } from '../DataManager';
@@ -19,7 +26,7 @@ function useUserActions() {
   const createUserAction = (actionTemplate: ActionTemplate) => {
     const userAction: UserAction = {
       name: actionTemplate.name,
-      state: 'new'
+      state: ACTION_STATE.NEW
     };
     model.create({ ...userAction, uuid: generateUUID() });
   };

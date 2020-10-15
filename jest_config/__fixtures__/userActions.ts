@@ -1,21 +1,96 @@
-import { ACTION_CATEGORIES, ActionTemplate, ExtendedUserAction, TUuid } from '@types';
+import { ACTION_CATEGORIES, ACTION_STATE, ActionTemplate, ExtendedUserAction, TUuid } from '@types';
 
 export const fActionTemplates: ActionTemplate[] = [
   {
-    name: 'update_label',
-    heading: 'Update a label for your past transactions',
-    body: [
-      "Labels are the bee's knees. They can help you recall the purpose of a past transaction. They can act as a check that you are sending to the correct address. But, most importantly, they're yours. They're private. They live only in your browser, not our servers.",
-      'You can add/update a label almost anywhere you see an address on MyCrypto, like in your Accounts list or Address book.'
-    ],
-    shouldDisplay: () => true,
+    name: 'dummy_0',
+    heading: 'dummy action 0',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
     priority: 0,
     button: {
-      content: 'Label an address',
+      content: 'the rabit hole',
       to: '/settings',
       external: false
     },
-    category: 'mycExperience' as ACTION_CATEGORIES
+    category: ACTION_CATEGORIES.MYC_EXPERIENCE
+  },
+  {
+    name: 'dummy_1',
+    heading: 'dummy action 1',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
+    priority: 0,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.MIGRATION
+  },
+  {
+    name: 'dummy_2',
+    heading: 'dummy action 2',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: false,
+    priority: 0,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.SECURITY
+  },
+  {
+    name: 'dummy_3',
+    heading: 'dummy action 3',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
+    priority: 0,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: 'dummy_4',
+    heading: 'dummy action 4',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
+    priority: 0,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: 'dummy_5',
+    heading: 'dummy action 5',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
+    priority: 0,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.SECURITY
+  },
+  {
+    name: 'dummy_6',
+    heading: 'dummy action 6',
+    body: ['dummy action body', 'another one'],
+    shouldDisplay: true,
+    priority: 10,
+    button: {
+      content: 'the rabit hole',
+      to: '/settings',
+      external: false
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
   }
 ];
 
@@ -23,6 +98,6 @@ export const fUserActions: ExtendedUserAction[] = [
   {
     uuid: '19345669-8bad-4597-b541-02486696fcc1' as TUuid,
     name: 'update_label',
-    state: 'new'
+    state: ACTION_STATE.NEW
   }
 ];

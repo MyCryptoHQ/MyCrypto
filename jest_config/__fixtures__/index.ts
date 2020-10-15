@@ -70,4 +70,4 @@ export { fTokenMigrationTxs } from './tokenMigrationMultiTx';
 export { default as fREPTokenMigrationTxResponse } from './repMigrationTxResponse.json';
 export { default as fApproveERC20TxResponse } from './approveErc20TxResponse.json';
 
-export { fActionTemplates, fUserActions } from './userActions';
+export { fUserActions, fActionTemplates } from './userActions';

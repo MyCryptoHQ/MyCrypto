@@ -2,7 +2,21 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import styled from 'styled-components';
 
-import { ACTION_CATEGORIES, ActionTemplate } from '@types';
+import { ActionTemplate } from '@types';
+import {
+  ascend,
+  flatten,
+  groupBy,
+  ifElse,
+  last,
+  map,
+  pipe,
+  prop,
+  sort,
+  sortBy,
+  union,
+  values
+} from '@vendor';
 
 import { ActionItem } from './ActionItem';
 
@@ -16,57 +30,41 @@ const ActionsContainer = styled.div`
   overflow-y: scroll;
 `;
 
+export const areSamePriority = (actionTemplates: ActionTemplate[]) => {
+  const firstPriority = actionTemplates[0].priority;
+  for (const userAction of actionTemplates) {
+    if (userAction.priority !== firstPriority) return false;
+  }
+  return true;
+};
+
+const category = prop('category');
+
+const selectHighestPriorityAction = pipe(sortBy(category), last);
+
+export const selectActionToDisplay = ifElse(areSamePriority, last, selectHighestPriorityAction);
+
+export const getFeaturedActions: (actionTemplates: ActionTemplate[]) => ActionTemplate[] = pipe(
+  groupBy<ActionTemplate>(category),
+  // @ts-expect-error ramda types don't understand received variables as an iterable.
+  map<ActionTemplate, ActionTemplate>(selectActionToDisplay),
+  values,
+  flatten,
+  sort(ascend(category))
+);
+
 export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps) => {
-  const areSamePriority = (actionTemplates: ActionTemplate[]) => {
-    const firstPriority = actionTemplates[0].priority;
-    for (const userAction of actionTemplates) {
-      if (userAction.priority !== firstPriority) return false;
-    }
-    return true;
-  };
-
-  const getTopOfCategory = (actionTemplates: ActionTemplate[], category: ACTION_CATEGORIES) => {
-    const actionsOfCategory = actionTemplates.filter(
-      (actionTemplate) => actionTemplate.category === category
-    );
-    if (actionsOfCategory.length)
-      return areSamePriority(actionsOfCategory)
-        ? actionsOfCategory[Math.floor(Math.random() * actionsOfCategory.length)]
-        : actionsOfCategory.sort((a, b) => a.priority - b.priority)[0];
-  };
-
-  const getFeaturedActions = (actionTemplates: ActionTemplate[]) => {
-    const bestOfCategories = [] as ActionTemplate[];
-    for (const categorie in ACTION_CATEGORIES) {
-      const topOfCategory = getTopOfCategory(actionTemplates, categorie as ACTION_CATEGORIES);
-      topOfCategory && bestOfCategories.push(topOfCategory);
-    }
-
-    return bestOfCategories;
-  };
-
-  const sortActions = (actionsList: ActionTemplate[], bestOfCategories: ActionTemplate[]) => {
-    let sortedActions = actionsList;
-
-    bestOfCategories.forEach((el) => {
-      sortedActions = sortedActions.filter((action) => action != el);
-    });
-
-    return sortedActions;
-  };
-
   const featuredActions = getFeaturedActions(actionTemplates);
-
-  const sortedActions = sortActions(actionTemplates, featuredActions);
+  const actions = union(featuredActions, actionTemplates);
 
   return (
     <ActionsContainer>
-      {featuredActions.map((action: ActionTemplate, i) => (
-        <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
-      ))}
-      {sortedActions.map((action: ActionTemplate, i) => (
-        <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
-      ))}
+      {actions.map(
+        ({ shouldDisplay = true, ...action }: ActionTemplate, i) =>
+          shouldDisplay && (
+            <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
+          )
+      )}
     </ActionsContainer>
   );
 };

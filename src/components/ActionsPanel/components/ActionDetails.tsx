@@ -7,7 +7,7 @@ import Box from '@components/Box';
 import { Body } from '@components/NewTypography';
 import { useUserActions } from '@services';
 import { SPACING } from '@theme';
-import { ActionTemplate } from '@types';
+import { ACTION_STATE, ActionTemplate } from '@types';
 
 export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTemplate }) => {
   const { updateUserAction, userActions } = useUserActions();
@@ -17,7 +17,7 @@ export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTempla
 
   const handleClick = () => {
     userAction.state != 'default' &&
-      updateUserAction(userAction.uuid, { ...userAction, state: 'started' });
+      updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.STARTED });
     actionTemplate.button.external
       ? window.open(actionTemplate.button.to, '_blank', 'nopperer noreferer')
       : history.push(actionTemplate.button.to);

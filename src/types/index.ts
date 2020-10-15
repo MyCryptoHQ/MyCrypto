@@ -119,4 +119,10 @@ export {
   TokenMigrationState
 } from './tokenMigration';
 export { IUniDistributor } from './uniDistributor';
-export { UserAction, ActionTemplate, ExtendedUserAction, ACTION_CATEGORIES } from './userAction';
+export {
+  UserAction,
+  ActionTemplate,
+  ExtendedUserAction,
+  ACTION_CATEGORIES,
+  ACTION_STATE
+} from './userAction';
