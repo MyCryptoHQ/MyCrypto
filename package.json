@@ -11,6 +11,7 @@
     "yarn": ">= 1.19.1"
   },
   "dependencies": {
+    "@blockstack/stats": "0.7.0",
     "@hot-loader/react-dom": "16.11.0",
     "@ledgerhq/hw-app-eth": "5.38.0",
     "@ledgerhq/hw-transport": "5.38.0",
