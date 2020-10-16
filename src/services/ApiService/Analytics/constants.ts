@@ -1,13 +1,18 @@
+import { IS_DEV, log } from '@utils';
 // The root URL for Analytics API requests.
-export const ANALYTICS_API_URL = 'https://analytics.proxy.mycryptoapi.com/';
+export const ANALYTICS_API_URL = IS_DEV
+  ? 'http://localhost:5555'
+  : 'https://analytics.proxy.mycryptoapi.com/';
 
-// The ID of the analytic website.
-export const ANALYTICS_ID_SITE = 4; // ID could also be 7?
-export const ANALYTICS_ID_DESKTOP = 8;
-export const ANALYTICS_ID_DESKTOP_DEV = 11;
-
-// Parameter required for tracking, must be set to 1.
-export const ANALYTICS_REC = 1;
+// WriteKey for Segment API
+export const ANALYTICS_WRITE_KEY = (() => {
+  if (process.env.SEGMENT_WRITE_KEY) {
+    return process.env.SEGMENT_WRITE_KEY;
+  } else {
+    log('Missing ANALYTICS_WRITE_KEY');
+    return '';
+  }
+})();
 
 // Analytics event category names
 export enum ANALYTICS_CATEGORIES {
@@ -30,12 +35,3 @@ export enum ANALYTICS_CATEGORIES {
   TX_HISTORY = 'Tx History',
   TX_STATUS = 'TX Status'
 }
-
-/* Previous Params from 'develop'
-  // The root URL for Analytics API requests.
-  export const ANALYTICS_API_URL = 'https://analytics.proxy.mycryptoapi.com/';
-
-  // The ID of the analytics.
-  export const ANALYTICS_ID_SITE = 7;
-  export const ANALYTICS_ID_DESKTOP = 8;
-*/

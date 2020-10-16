@@ -25,8 +25,8 @@ const useAnalytics = ({
 }: Props): ((
   callbackProps?: AnalyticCallbackProps
 ) =>
-  | ReturnType<typeof AnalyticsService.instance.track>
-  | ReturnType<typeof AnalyticsService.instance.trackPageVisit>) => {
+  | ReturnType<typeof AnalyticsService.track>
+  | ReturnType<typeof AnalyticsService.trackPageVisit>) => {
   const triggerAnalytics = useCallback(
     async (
       {
@@ -43,13 +43,13 @@ const useAnalytics = ({
       const trackActionName = (callbackActionName || actionName)!;
       const shouldBeTracking = shouldTrack();
       if (!trackPageViews && shouldBeTracking && !!trackCategory && !!trackActionName) {
-        return await AnalyticsService.instance.track(
-          trackCategory,
-          trackActionName,
-          callbackEventParams || eventParams
-        );
+        return await AnalyticsService.track({
+          category: trackCategory,
+          eventAction: trackActionName,
+          eventParams: callbackEventParams || eventParams
+        });
       } else if (trackPageViews && shouldBeTracking && !!trackActionName) {
-        return await AnalyticsService.instance.trackPageVisit(trackActionName);
+        return await AnalyticsService.trackPageVisit({ name: trackActionName, url: '' });
       }
       // Reject, in case not all requirements for call are met
       return Promise.reject();

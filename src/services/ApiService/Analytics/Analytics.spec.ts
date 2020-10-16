@@ -1,73 +1,27 @@
-import { waitFor } from '@testing-library/react';
-import mockAxios from 'jest-mock-axios';
+import mockStats from '@blockstack/stats';
 
 import AnalyticsService from './Analytics';
 
-let category: string;
-let eventAction: string;
-let appUrl: string;
+jest.mock('@blockstack/stats');
 
 describe('AnalyticsService', () => {
-  beforeEach(() => {
-    category = 'Category';
-    eventAction = 'Name of Event';
-    appUrl = 'App route url';
+  it('track() params are formatted to match api', async () => {
+    const params = {
+      category: 'SignUp',
+      eventAction: 'Account Added',
+      eventParams: { accounts: 3 }
+    };
+    AnalyticsService.track(params);
+    expect(mockStats.event).toHaveBeenCalledWith({
+      name: params.eventAction,
+      category: params.category,
+      ...params.eventParams
+    });
   });
 
-  afterEach(() => {
-    mockAxios.reset();
-  });
-
-  it('should send an action name', async () => {
-    const promise = AnalyticsService.instance.track(category, eventAction);
-
-    await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('', {
-        params: expect.objectContaining({ e_c: category, action_name: eventAction })
-      })
-    );
-
-    mockAxios.mockResponse();
-
-    const result = await promise;
-
-    const { status } = result;
-
-    expect(status).toBe(200);
-  });
-
-  it('should add Legacy_ prefix to legacy event', async () => {
-    const promise = AnalyticsService.instance.trackLegacy(category, eventAction);
-
-    await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('', {
-        params: expect.objectContaining({ e_c: category, action_name: `Legacy_${eventAction}` })
-      })
-    );
-
-    mockAxios.mockResponse();
-
-    const result = await promise;
-
-    const { status } = result;
-
-    expect(status).toBe(200);
-  });
-
-  it('should add page url param to page visit event', async () => {
-    const promise = AnalyticsService.instance.trackPageVisit(appUrl);
-
-    await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('', {
-        params: expect.objectContaining({ url: appUrl })
-      })
-    );
-
-    mockAxios.mockResponse();
-
-    const result = await promise;
-
-    const { status } = result;
-    expect(status).toBe(200);
+  it('page() contains a name and a title', async () => {
+    const params = { name: 'Send', url: '/send' };
+    AnalyticsService.trackPageVisit(params);
+    expect(mockStats.page).toHaveBeenCalledWith(params);
   });
 });
