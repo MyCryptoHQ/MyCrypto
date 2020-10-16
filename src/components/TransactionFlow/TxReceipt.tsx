@@ -489,7 +489,7 @@ export const TxReceiptUI = ({
         </Button>
       )}
       {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.SPEEDUP && txConfig && (
-        <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
+        <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
             onClick={handleTxSpeedUpRedirect}
@@ -499,9 +499,8 @@ export const TxReceiptUI = ({
           </Button>
         </Tooltip>
       )}
-      <br />
       {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.CANCEL && txConfig && (
-        <Tooltip tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
+        <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
           <Button
             className="TransactionReceipt-another"
             onClick={handleTxCancelRedirect}

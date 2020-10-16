@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Fiats } from '@config';
 import { devContacts } from '@database/seed';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
 import { IMembershipId, MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { fAccount, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
+import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, ITxStatus, ITxType } from '@types';
 import { noOp } from '@utils';
 
@@ -23,7 +24,13 @@ const handleTxSpeedUpRedirect = noOp;
 
 export default { title: 'TxReceipt' };
 
-export const transactionReceiptPending = () => (
+const wrapInProvider = (component: ReactNode) => (
+  <DataContext.Provider value={({ createActions: noOp } as unknown) as IDataContext}>
+    {component}
+  </DataContext.Provider>
+);
+
+export const transactionReceiptPending = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
       settings={fSettings}
@@ -43,7 +50,7 @@ export const transactionReceiptPending = () => (
   </div>
 );
 
-export const transactionReceipt = () => (
+export const transactionReceipt = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
       settings={fSettings}
@@ -66,7 +73,7 @@ export const transactionReceipt = () => (
 
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 
-export const transactionReceiptDeFiZap = () => (
+export const transactionReceiptDeFiZap = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
       settings={fSettings}
@@ -89,7 +96,7 @@ export const transactionReceiptDeFiZap = () => (
   </div>
 );
 
-export const transactionReceiptMembership = () => (
+export const transactionReceiptMembership = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUI
       settings={fSettings}
