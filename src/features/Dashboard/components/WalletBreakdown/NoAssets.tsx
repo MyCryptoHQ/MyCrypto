@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
 import { BUY_MYCRYPTO_WEBSITE } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { COLORS } from '@theme';
 import translate from '@translations';
 import { openLink } from '@utils';
@@ -50,21 +48,10 @@ const NoAssetsDescription = styled.div`
   }
 `;
 
-const openLinkBuyMyCrypto = (trackCallback: ReturnType<typeof useAnalytics>) => {
-  openLink(BUY_MYCRYPTO_WEBSITE);
-  trackCallback({
-    actionName: `Link ${BUY_MYCRYPTO_WEBSITE} clicked`
-  });
-};
-
 export default function NoAssets() {
-  const trackLinkClicked = useAnalytics({
-    category: ANALYTICS_CATEGORIES.WALLET_BREAKDOWN
-  });
-
   return (
     <NoAssetsWrapper>
-      <NoAssetsCenter onClick={() => openLinkBuyMyCrypto(trackLinkClicked)}>
+      <NoAssetsCenter onClick={() => openLink(BUY_MYCRYPTO_WEBSITE)}>
         <PlusIcon src={addIcon} />
         <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
         <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>

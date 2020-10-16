@@ -6,8 +6,6 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import bitcoin from '@assets/images/bitcoin.png';
 import ether from '@assets/images/ether.png';
 import { donationAddressMap } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import translate from '@translations';
 
 import Subscribe from './Subscribe';
@@ -31,9 +29,6 @@ function DonationButton({ icon, title, ...rest }: DonationButtonProps) {
 const Donate: FC = () => {
   const [displayingMessage, setDisplayMassage] = useState(false);
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const trackDoncation = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
 
   const clearTimeoutId = useCallback(() => {
     if (timeoutId.current) {
@@ -57,15 +52,6 @@ const Donate: FC = () => {
     }, 3000);
   }, [setDisplayMassage]);
 
-  const trackDonationClicked = useCallback(
-    (title: string) => {
-      trackDoncation({
-        actionName: `Donate ${title} clicked`
-      });
-    },
-    [trackDoncation]
-  );
-
   const messageClassName = classnames({
     'Donate-buttons-message': true,
     visible: displayingMessage
@@ -79,7 +65,6 @@ const Donate: FC = () => {
           text={donationAddressMap.ETH}
           onCopy={() => {
             displayMessage();
-            trackDonationClicked('Ethereum');
           }}
         >
           <DonationButton icon={ether} title="Ethereum" />
@@ -88,7 +73,6 @@ const Donate: FC = () => {
           text={donationAddressMap.BTC}
           onCopy={() => {
             displayMessage();
-            trackDonationClicked('Bitcoin');
           }}
         >
           <DonationButton icon={bitcoin} title="Bitcoin" />

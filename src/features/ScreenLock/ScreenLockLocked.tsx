@@ -8,8 +8,6 @@ import styled from 'styled-components';
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
 import { ExtendedContentPanel, InputField } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
 
@@ -64,11 +62,6 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
     }
   }, [decryptError]);
 
-  const trackScreenLock = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SCREEN_LOCK,
-    actionName: 'Why do we recommend link clicked'
-  });
-
   const handleUnlockWalletClick = (e: React.FormEvent) => {
     e.preventDefault();
     decryptWithPassword(state.password);
@@ -103,7 +96,7 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
           </div>
           <div>
             {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-            <Link onClick={() => trackScreenLock()} to={ROUTE_PATHS.DASHBOARD.path}>
+            <Link to={ROUTE_PATHS.DASHBOARD.path}>
               {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
             </Link>
           </div>

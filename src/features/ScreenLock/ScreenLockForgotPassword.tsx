@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import mainImage from '@assets/images/icn-forgot-password.svg';
 import { ExtendedContentPanel } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import translate, { translateRaw } from '@translations';
 import { goBack } from '@utils';
 
@@ -45,9 +43,6 @@ const Description = styled.p`
 `;
 
 const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
-  const trackScreenLock = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SCREEN_LOCK
-  });
   const { resetAll } = useContext(ScreenLockContext);
   const onBack = () => goBack(history);
 
@@ -70,7 +65,6 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
       <FormWrapper>
         <ActionButton
           onClick={() => {
-            trackScreenLock({ actionName: 'Import Wallet Settings button clicked' });
             history.push(ROUTE_PATHS.SETTINGS_IMPORT.path);
           }}
         >
@@ -78,7 +72,6 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
         </ActionButton>
         <ActionButton
           onClick={() => {
-            trackScreenLock({ actionName: 'Start Over button clicked' });
             resetAll();
           }}
         >

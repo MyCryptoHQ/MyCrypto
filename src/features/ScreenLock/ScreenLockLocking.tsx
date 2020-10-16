@@ -4,8 +4,6 @@ import { Button } from '@mycrypto/ui';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 import { AppState, getInactivityTimer } from '@store';
 import translate, { translateRaw } from '@translations';
 import { formatTimeDuration } from '@utils';
@@ -76,22 +74,12 @@ function ScreenLockLocking({
   lockingOnDemand,
   inactivityTimer
 }: LockScreenProps & Props) {
-  const trackScreenLock = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SCREEN_LOCK
-  });
-
   const handleKeepUsingDashboardClicked = () => {
     onCancelLockCountdown();
-    trackScreenLock({
-      actionName: 'Keep Using MyCrypto button clicked'
-    });
   };
 
   const handleTurnOnScreenLockClick = () => {
     onScreenLockClicked();
-    trackScreenLock({
-      actionName: 'Turn On Screenlock button clicked'
-    });
   };
 
   return (

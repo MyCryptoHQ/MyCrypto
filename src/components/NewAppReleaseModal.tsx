@@ -9,7 +9,7 @@ import updateImportantIcon from '@assets/images/icn-important-update.svg';
 import updateIcon from '@assets/images/icn-update.svg';
 import { VERSION as currentVersion, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
 import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { GithubService } from '@services/ApiService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
 import { TURL } from '@types';
@@ -145,14 +145,6 @@ const NewAppReleaseModal: FC<Props> = (props) => {
     newVersionUrl: props.newVersionUrl || '',
     isCritical: props.isCritical || false
   });
-  const trackNowRightNow = useAnalytics({
-    category: ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
-    actionName: 'Not Right Now button clicked'
-  });
-  const trackGetNewVersion = useAnalytics({
-    category: ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
-    actionName: 'Get New Version button clicked'
-  });
 
   useEffect(() => {
     (async () => {
@@ -182,24 +174,10 @@ const NewAppReleaseModal: FC<Props> = (props) => {
       ...prevState,
       isOpen: false
     }));
-    trackNowRightNow({
-      eventParams: {
-        current_version: currentVersion,
-        new_version: state.newVersion || '',
-        os: state.OSName || ''
-      }
-    });
-  }, [state, trackNowRightNow]);
+  }, [state]);
 
   const downloadRelease = useCallback(() => {
     openLink(state.newVersionUrl as TURL, '_self');
-    trackGetNewVersion({
-      eventParams: {
-        current_version: currentVersion,
-        new_version: state.newVersion || '',
-        os: state.OSName || ''
-      }
-    });
   }, [state]);
 
   const getNonCriticalModal = useCallback(() => {

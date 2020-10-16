@@ -8,8 +8,6 @@ import styled from 'styled-components';
 
 import { DashboardPanel, SubHeading, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -72,20 +70,9 @@ const timerOptions = [
 ];
 
 const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
-  const trackSetInacticityTimer = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SETTINGS
-  });
-
   const changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
     const target = event.target as HTMLSelectElement;
     setInactivityTimer(Number(target.value));
-
-    const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
-    if (selectedTimer) {
-      trackSetInacticityTimer({
-        actionName: `User set inactivity timer to ${selectedTimer.name}`
-      });
-    }
   };
 
   const changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {

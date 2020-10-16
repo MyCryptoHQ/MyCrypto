@@ -8,7 +8,6 @@ import uniqBy from 'ramda/src/uniqBy';
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
-import { useAnalytics } from '@hooks';
 import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
@@ -59,7 +58,7 @@ import {
 } from '@utils';
 import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { ANALYTICS_CATEGORIES, UniswapService } from '../ApiService';
+import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import {
   getAssetByTicker,
@@ -193,15 +192,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     true,
     [networks]
   );
-
-  useAnalytics({
-    category: ANALYTICS_CATEGORIES.ROOT,
-    actionName: accounts.length === 0 ? 'New User' : 'Returning User',
-    eventParams: {
-      visitStartAccountNumber: accounts.length
-    },
-    triggerOnMount: true
-  });
 
   useEffectOnce(() => {
     dispatch(fetchMemberships());
