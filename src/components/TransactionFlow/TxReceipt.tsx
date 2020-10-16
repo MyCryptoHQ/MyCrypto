@@ -215,7 +215,7 @@ const TxReceipt = ({
     txConfig.network.id
   );
 
-  // cannot send from web3 or walletconnect wallets because they overwrite gas and nonce inputs.
+  const txType = displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD;
 
   const fiat = getFiat(settings);
 
@@ -244,6 +244,7 @@ const TxReceipt = ({
       baseAssetRate={baseAssetRate}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      txType={txType}
     />
   );
 };
@@ -367,6 +368,7 @@ export const TxReceiptUI = ({
               address: (receiverAddress || (displayTxReceipt && displayTxReceipt.to)) as TAddress,
               addressBookEntry: recipientContact
             }}
+            displayToAddress={txType !== ITxType.DEPLOY_CONTRACT}
           />
         </>
       )}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ConfirmTransaction } from '@components';
-import { ITxConfig } from '@types';
+import { ITxConfig, ITxType } from '@types';
 
 interface Props {
   txConfig: ITxConfig;
@@ -12,6 +12,11 @@ export default function DeployConfirm(props: Props) {
   const { goToNextStep, txConfig } = props;
 
   return (
-    <ConfirmTransaction onComplete={goToNextStep} resetFlow={goToNextStep} txConfig={txConfig} />
+    <ConfirmTransaction
+      onComplete={goToNextStep}
+      resetFlow={goToNextStep}
+      txConfig={txConfig}
+      txType={ITxType.DEPLOY_CONTRACT}
+    />
   );
 }

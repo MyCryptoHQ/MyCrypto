@@ -97,16 +97,17 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     if (!account) return;
 
     if (isWeb3Wallet(account.wallet)) {
-      const txReceipt =
+      const baseTxReceipt =
         signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
-      addTxToAccount(state.txConfig.senderAccount, {
-        ...txReceipt,
+      const txReceipt = {
+        ...baseTxReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
         txType: ITxType.DEPLOY_CONTRACT,
         stage: ITxStatus.PENDING
-      });
+      };
+      addTxToAccount(state.txConfig.senderAccount, txReceipt);
       setState((prevState: DeployContractsState) => ({
         ...prevState,
         txReceipt
