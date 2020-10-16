@@ -1,46 +1,49 @@
 import { event, page, Providers, setConfig } from '@blockstack/stats';
 
-import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY } from './constants';
+import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY, TAnalyticEvents } from './constants';
+
+interface PageParams {
+  name: string;
+  pathName: string;
+  title?: string;
+}
+
+export interface TrackParams {
+  name: TAnalyticEvents;
+  params?: TObject;
+}
 
 /**
  * Configure the lib on build time.
  */
-setConfig({
-  host: ANALYTICS_API_URL,
-  providers: [
-    {
-      name: Providers.Segment,
-      writeKey: ANALYTICS_WRITE_KEY
-    }
-  ]
-});
+let isInitialized = false;
+const initAnalytics = () => {
+  if (isInitialized) {
+    throw new Error('Analytics already initialized');
+  }
+  isInitialized = true;
+  setConfig({
+    host: ANALYTICS_API_URL,
+    providers: [
+      {
+        name: Providers.Segment,
+        writeKey: ANALYTICS_WRITE_KEY
+      }
+    ]
+  });
+};
 
-interface PageParams {
-  name: string;
-  title?: string;
-  url: string;
-}
+const track = ({ name, params }: TrackParams) => {
+  return event({ name, ...params });
+};
 
-interface TrackParams {
-  category: string;
-  eventAction: string;
-  eventParams?: TObject;
-}
+const trackPage = ({ name, title, pathName }: PageParams) => {
+  //@todo: remove any query params from url.
+  return page({ name, title, pathName });
+};
 
-function AnalyticsService() {
-  const track = ({ category, eventAction, eventParams }: TrackParams) => {
-    return event({ name: eventAction, category, ...eventParams });
-  };
-
-  const trackPageVisit = ({ name, title, url }: PageParams) => {
-    //@todo: remove any query params from url.
-    return page({ name, title, url });
-  };
-
-  return {
-    track,
-    trackPageVisit
-  };
-}
-
-export default AnalyticsService();
+export default {
+  track,
+  trackPage,
+  initAnalytics
+};

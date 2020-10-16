@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { withRouter } from 'react-router-dom';
 
 import { useAnalytics } from '@hooks';
 
-let previousURL: string | undefined;
-export const PageVisitsAnalytics = withRouter(({ history, children }) => {
-  const trackPageVisit = useAnalytics({
-    trackPageViews: true
-  });
+export const PageVisitsAnalytics = withRouter(({ history, location }) => {
+  const { trackPage } = useAnalytics();
 
-  history.listen(() => {
-    if (previousURL !== window.location.href) {
-      trackPageVisit({
-        actionName: window.location.href
-      });
-      previousURL = window.location.href;
-    }
-  });
-  return <React.Fragment>{children}</React.Fragment>;
+  useEffect(() => {
+    history.listen((to) => {
+      if (to.pathname !== location.pathname) {
+        trackPage({
+          name: '', //@todo get name and title from route config
+          pathName: to.pathname
+        });
+      }
+    });
+  }, []);
+
+  return <React.Fragment></React.Fragment>;
 });

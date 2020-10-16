@@ -1,3 +1,1 @@
-const log = (args: string) => console.debug(args);
-
-export default log;
+export const log = (args: string) => console.debug(args);

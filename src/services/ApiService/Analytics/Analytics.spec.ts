@@ -1,27 +1,25 @@
 import mockStats from '@blockstack/stats';
 
-import AnalyticsService from './Analytics';
+import AnalyticsService, { TrackParams } from './Analytics';
 
 jest.mock('@blockstack/stats');
 
 describe('AnalyticsService', () => {
   it('track() params are formatted to match api', async () => {
-    const params = {
-      category: 'SignUp',
-      eventAction: 'Account Added',
-      eventParams: { accounts: 3 }
+    const data: TrackParams = {
+      name: 'Add Account',
+      params: { accounts: 3 }
     };
-    AnalyticsService.track(params);
+    AnalyticsService.track(data);
     expect(mockStats.event).toHaveBeenCalledWith({
-      name: params.eventAction,
-      category: params.category,
-      ...params.eventParams
+      name: data.name,
+      ...data.params
     });
   });
 
   it('page() contains a name and a title', async () => {
-    const params = { name: 'Send', url: '/send' };
-    AnalyticsService.trackPageVisit(params);
-    expect(mockStats.page).toHaveBeenCalledWith(params);
+    const data = { name: 'Send', pathName: '/send' };
+    AnalyticsService.trackPage(data);
+    expect(mockStats.page).toHaveBeenCalledWith(data);
   });
 });
