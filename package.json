@@ -156,6 +156,7 @@
     "copy-webpack-plugin": "5.1.1",
     "cross-env": "6.0.3",
     "css-loader": "3.4.2",
+    "dotenv-webpack": "^4.0.0",
     "eslint": "7.8.1",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.22.0",

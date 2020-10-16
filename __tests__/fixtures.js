@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const ENV = {
   // Should be set in order to use Mnemonic in AddAccount flow
   E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
