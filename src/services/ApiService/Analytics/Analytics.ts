@@ -4,8 +4,8 @@ import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY, TAnalyticEvents } from './const
 
 interface PageParams {
   name: string;
-  pathName: string;
-  title?: string;
+  pathname?: string;
+  title: string;
 }
 
 export interface TrackParams {
@@ -37,9 +37,9 @@ const track = ({ name, params }: TrackParams) => {
   return event({ name, ...params });
 };
 
-const trackPage = ({ name, title, pathName }: PageParams) => {
+const trackPage = ({ name, title, pathname }: PageParams) => {
   //@todo: remove any query params from url.
-  return page({ name, title, pathName });
+  return page({ name, title, pathname });
 };
 
 export default {

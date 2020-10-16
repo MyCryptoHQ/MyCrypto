@@ -18,7 +18,7 @@ describe('AnalyticsService', () => {
   });
 
   it('page() contains a name and a title', async () => {
-    const data = { name: 'Send', pathName: '/send' };
+    const data = { name: 'Send', title: 'Send any crypto' };
     AnalyticsService.trackPage(data);
     expect(mockStats.page).toHaveBeenCalledWith(data);
   });

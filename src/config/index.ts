@@ -41,7 +41,7 @@ export {
 export { KB_HELP_ARTICLE, HELP_ARTICLE, getKBHelpArticle } from './helpArticles';
 export { Fiats } from './fiats';
 export { FEATURE_FLAGS, IFeatureFlags } from './features';
-export { ROUTE_PATHS } from './routePaths';
+export { ROUTE_PATHS, getRouteConfigByPath } from './routePaths';
 export { IWalletConfig } from './wallets';
 export {
   SUPPORTED_TRANSACTION_QUERY_PARAMS,

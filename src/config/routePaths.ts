@@ -1,9 +1,11 @@
 import { translateRaw } from '@translations';
 import { IRoutePath, IRoutePaths } from '@types';
+import { filter, head, pipe, whereEq } from '@vendor';
 
 const PATHS: IRoutePath[] = [
   {
     name: 'ROOT',
+    title: translateRaw('ROOT'),
     path: '/'
   },
   {
@@ -176,3 +178,7 @@ function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
 }
 
 export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
+
+export const getRouteConfigByPath = (path: IRoutePath['path']): IRoutePath =>
+  // @ts-expect-error: pipe and TS
+  pipe(filter(whereEq({ path: path })), head)(PATHS);
