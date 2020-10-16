@@ -30,99 +30,95 @@ const wrapInProvider = (component: ReactNode) => (
   </DataContext.Provider>
 );
 
-export const transactionReceiptPending = () =>
-  wrapInProvider(
-    <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <TxReceiptUI
-        settings={fSettings}
-        txStatus={ITxStatus.PENDING}
-        timestamp={timestamp}
-        resetFlow={resetFlow}
-        assetRate={assetRate}
-        senderContact={senderContact}
-        recipientContact={recipientContact}
-        txConfig={fTxConfig}
-        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-        baseAssetRate={assetRate}
-        fiat={Fiats.USD}
-        handleTxCancelRedirect={handleTxCancelRedirect}
-        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      />
-    </div>
-  );
+export const transactionReceiptPending = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txStatus={ITxStatus.PENDING}
+      timestamp={timestamp}
+      resetFlow={resetFlow}
+      assetRate={assetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
 
-export const transactionReceipt = () =>
-  wrapInProvider(
-    <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <TxReceiptUI
-        settings={fSettings}
-        txStatus={txStatus}
-        displayTxReceipt={fTxReceipt}
-        timestamp={timestamp}
-        resetFlow={resetFlow}
-        assetRate={assetRate}
-        senderContact={senderContact}
-        recipientContact={recipientContact}
-        txConfig={fTxConfig}
-        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-        baseAssetRate={assetRate}
-        fiat={Fiats.USD}
-        handleTxCancelRedirect={handleTxCancelRedirect}
-        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      />
-    </div>
-  );
+export const transactionReceipt = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txStatus={txStatus}
+      displayTxReceipt={fTxReceipt}
+      timestamp={timestamp}
+      resetFlow={resetFlow}
+      assetRate={assetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
 
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 
-export const transactionReceiptDeFiZap = () =>
-  wrapInProvider(
-    <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <TxReceiptUI
-        settings={fSettings}
-        txStatus={txStatus}
-        txType={ITxType.DEFIZAP}
-        zapSelected={zapSelected}
-        displayTxReceipt={fTxReceipt}
-        timestamp={timestamp}
-        resetFlow={resetFlow}
-        assetRate={assetRate}
-        senderContact={senderContact}
-        recipientContact={recipientContact}
-        txConfig={fTxConfig}
-        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-        baseAssetRate={assetRate}
-        fiat={Fiats.USD}
-        handleTxCancelRedirect={handleTxCancelRedirect}
-        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      />
-    </div>
-  );
+export const transactionReceiptDeFiZap = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txStatus={txStatus}
+      txType={ITxType.DEFIZAP}
+      zapSelected={zapSelected}
+      displayTxReceipt={fTxReceipt}
+      timestamp={timestamp}
+      resetFlow={resetFlow}
+      assetRate={assetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      txConfig={fTxConfig}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
 
-export const transactionReceiptMembership = () =>
-  wrapInProvider(
-    <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <TxReceiptUI
-        settings={fSettings}
-        txReceipt={fTxReceipt}
-        txConfig={fTxConfig}
-        txType={ITxType.PURCHASE_MEMBERSHIP}
-        membershipSelected={MEMBERSHIP_CONFIG[IMembershipId.threemonths]}
-        timestamp={timestamp}
-        txStatus={txStatus}
-        assetRate={assetRate}
-        displayTxReceipt={fTxReceipt}
-        senderContact={senderContact}
-        recipientContact={recipientContact}
-        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-        resetFlow={resetFlow}
-        baseAssetRate={assetRate}
-        fiat={Fiats.USD}
-        handleTxCancelRedirect={handleTxCancelRedirect}
-        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-      />
-    </div>
-  );
+export const transactionReceiptMembership = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txReceipt={fTxReceipt}
+      txConfig={fTxConfig}
+      txType={ITxType.PURCHASE_MEMBERSHIP}
+      membershipSelected={MEMBERSHIP_CONFIG[IMembershipId.threemonths]}
+      timestamp={timestamp}
+      txStatus={txStatus}
+      assetRate={assetRate}
+      displayTxReceipt={fTxReceipt}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      resetFlow={resetFlow}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
 
 // Uncomment this for Figma support:
 
