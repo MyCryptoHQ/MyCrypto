@@ -4,17 +4,10 @@ import isEmpty from 'lodash/isEmpty';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
-import { AssetIcon, Selector, Typography } from '@components';
+import { AssetIcon, Box, Label, Selector, Typography } from '@components';
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TTicker, TUuid } from '@types';
 import { useEffectOnce } from '@vendor';
-
-const SContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 14px 15px 14px 15px;
-`;
 
 interface ItemProps {
   uuid: TUuid;
@@ -32,31 +25,25 @@ export function AssetSelectorItem({
   onClick
 }: ItemProps) {
   return (
-    <SContainer
+    <Box
+      display="flex"
+      alignItems="center"
+      flexDirection="row"
+      padding="11px 10px"
       {...(onClick ? { onPointerDown: onClick } : null)}
       data-testid={`asset-selector-option-${ticker}`}
     >
       {showAssetIcon && <AssetIcon uuid={uuid} size={'1.5rem'} />}
       <Typography
-        bold={true}
+        bold={false}
         value={ticker}
         style={{ marginLeft: showAssetIcon ? '10px' : '0px' }}
       />
       {name && <span>&nbsp; - &nbsp;</span>}
       <Typography value={name} />
-    </SContainer>
+    </Box>
   );
 }
-
-const Label = styled.label`
-  font-size: 18px;
-  width: 100%;
-  line-height: 1;
-  text-align: left;
-  font-weight: normal;
-  margin-bottom: 9px;
-  color: ${(props) => props.theme.colors.GREYISH_BROWN};
-`;
 
 const Wrapper = styled('div')`
   width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};

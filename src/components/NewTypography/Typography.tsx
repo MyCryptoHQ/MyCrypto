@@ -55,3 +55,15 @@ export const Link = ({
     {children}
   </Text>
 );
+
+export const Label = ({
+  children,
+  htmlFor,
+  ...props
+}: TypographyProps & Omit<TextProps, 'variant'> & { htmlFor?: string }) => (
+  <label htmlFor={htmlFor}>
+    <Body as={'span'} fontWeight="normal" {...props}>
+      {children}
+    </Body>
+  </label>
+);
