@@ -95,6 +95,13 @@ const TEXT_VARIANTS = {
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
     color: 'BLUE_BRIGHT'
+  },
+  tableHeading: {
+    textTransform: 'uppercase',
+    fontSize: 0,
+    color: 'GREY_DARK',
+    letterSpacing: '0.1em',
+    fontWeight: '900'
   }
 };
 
