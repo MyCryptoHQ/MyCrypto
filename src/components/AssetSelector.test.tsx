@@ -8,7 +8,7 @@ import { fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
 import { Asset, TTicker, TUuid } from '@types';
 
-import AssetSelector, { AssetSelectorItem } from '../AssetSelector';
+import AssetSelector, { AssetSelectorItem } from './AssetSelector';
 
 const defaultProps: React.ComponentProps<typeof AssetSelector> = {
   assets: fAssets as Asset[],
@@ -105,8 +105,8 @@ describe('AssetSelectorItem', () => {
   });
 
   test('it triggers handler on click', async () => {
-    const { container } = getComponentItem(itemProps);
-    const component = container.querySelector('div[class^="AssetSelector__SContainer"]');
+    const { getByTestId } = getComponentItem(itemProps);
+    const component = getByTestId(/asset-selector-option/);
     fireEvent.pointerDown(component!);
     expect(itemProps.onClick).toHaveBeenCalledTimes(1);
   });
