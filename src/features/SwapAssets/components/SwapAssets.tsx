@@ -21,11 +21,6 @@ import { trimBN } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 
-const DisplayDataContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
@@ -199,7 +194,7 @@ export default function SwapAssets(props: Props) {
       </Box>
       <Box mb={SPACING.SM}>
         {exchangeRate && toAsset && fromAsset && (
-          <DisplayDataContainer>
+          <Box display="flex" justifyContent="space-between">
             <Body>
               {translateRaw('SWAP_RATE_LABEL')}{' '}
               <Tooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />
@@ -211,10 +206,10 @@ export default function SwapAssets(props: Props) {
                 $fromAssetSymbol: fromAsset.ticker
               })}
             </Body>
-          </DisplayDataContainer>
+          </Box>
         )}
         {markup && fromAsset && (
-          <DisplayDataContainer>
+          <Box display="flex" justifyContent="space-between">
             <Body>
               {translateRaw('SWAP_MARKUP_LABEL')}{' '}
               <Tooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />
@@ -224,7 +219,7 @@ export default function SwapAssets(props: Props) {
             >
               {`${makeDisplayString(markup.toString())}%`}
             </Body>
-          </DisplayDataContainer>
+          </Box>
         )}
         <Box>
           <Body>
