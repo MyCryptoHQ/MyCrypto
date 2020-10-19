@@ -5,11 +5,11 @@ import { getAccountsByAsset, StoreContext, useAssets } from '@services';
 import { translateRaw } from '@translations';
 import { Asset, TUuid } from '@types';
 
-interface ActionSubHeadProps {
+interface MigrationSubHeadProps {
   assetUuid: TUuid;
 }
 
-export const ActionSubHead = ({ assetUuid }: ActionSubHeadProps) => {
+export const MigrationSubHead = ({ assetUuid }: MigrationSubHeadProps) => {
   const { accounts } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
 
@@ -18,9 +18,12 @@ export const ActionSubHead = ({ assetUuid }: ActionSubHeadProps) => {
 
   return (
     <Text mb={0} color="GREY">
-      {translateRaw(relevantAccounts.length > 1 ? 'ACTION_SUBHEAD_PLURAL' : 'ACTION_SUBHEAD', {
-        $total: relevantAccounts.length.toString()
-      })}
+      {translateRaw(
+        relevantAccounts.length > 1 ? 'MIGRATION_SUBHEAD_PLURAL' : 'MIGRATION_SUBHEAD',
+        {
+          $total: relevantAccounts.length.toString()
+        }
+      )}
     </Text>
   );
 };

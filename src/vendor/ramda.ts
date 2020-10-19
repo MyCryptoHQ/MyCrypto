@@ -44,3 +44,5 @@ export { default as values } from 'ramda/src/values';
 export { default as flatten } from 'ramda/src/flatten';
 export { default as ascend } from 'ramda/src/ascend';
 export { default as union } from 'ramda/src/union';
+export { default as pick } from 'ramda/src/pick';
+export { default as assoc } from 'ramda/src/assoc';

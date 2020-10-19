@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-import { TIcon } from '@components';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 
 import { TUuid } from './uuid';
@@ -22,7 +21,7 @@ export enum ACTION_STATE {
 
 export interface ActionTemplate {
   name: string;
-  icon?: TIcon;
+  icon: string;
   heading: string;
   subHeading?(props: Record<string, any>): JSX.Element;
   body?: ReactNode[];

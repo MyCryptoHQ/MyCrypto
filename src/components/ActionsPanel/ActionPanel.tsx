@@ -35,7 +35,7 @@ const HeadingText = styled.span`
   font-weight: bold;
   color: ${COLORS.BLUE_DARK_SLATE};
   margin-left: ${SPACING.BASE};
-  max-width: 250px;
+  width: 250px;
 `;
 
 export const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContextState) =>
@@ -63,7 +63,7 @@ export const ActionPanel = () => {
       headingRight={
         currentAction ? (
           <DetailsHeading>
-            <Icon width={20} type={currentAction.icon ? currentAction.icon : 'logo-mycrypto'} />
+            <img width={20} src={currentAction.icon} />
             <HeadingText>{currentAction.heading}</HeadingText>
           </DetailsHeading>
         ) : (

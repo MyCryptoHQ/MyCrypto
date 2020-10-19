@@ -1,8 +1,10 @@
+import repIcon from '@assets/images/rep-logo.svg';
 import { ACTION_CATEGORIES, ACTION_STATE, ActionTemplate, ExtendedUserAction, TUuid } from '@types';
 
 export const fActionTemplates: ActionTemplate[] = [
   {
     name: 'dummy_0',
+    icon: repIcon,
     heading: 'dummy action 0',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -15,6 +17,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_1',
+    icon: repIcon,
     heading: 'dummy action 1',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -27,6 +30,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_2',
+    icon: repIcon,
     heading: 'dummy action 2',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -39,6 +43,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_3',
+    icon: repIcon,
     heading: 'dummy action 3',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -51,6 +56,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_4',
+    icon: repIcon,
     heading: 'dummy action 4',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -63,6 +69,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_5',
+    icon: repIcon,
     heading: 'dummy action 5',
     body: ['dummy action body', 'another one'],
     priority: 0,
@@ -75,6 +82,7 @@ export const fActionTemplates: ActionTemplate[] = [
   },
   {
     name: 'dummy_6',
+    icon: repIcon,
     heading: 'dummy action 6',
     body: ['dummy action body', 'another one'],
     priority: 10,

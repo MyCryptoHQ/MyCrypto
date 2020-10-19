@@ -81,7 +81,7 @@ export const ActionItem = ({
       onClick={() => onActionClick(actionTemplate)}
     >
       <IconContainer>
-        <Icon type={actionTemplate.icon ? actionTemplate.icon : 'logo-mycrypto'} />
+        <img src={actionTemplate.icon} />
       </IconContainer>
       <TitleContainer>
         <Text mb={0} fontSize={2}>
