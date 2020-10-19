@@ -73,18 +73,21 @@ const icons = {
 };
 
 const SInlineSVG = styled(InlineSVG)`
-  svg {
+  &&& svg {
+    width: ${(props) => props.width};
+    height: ${(props) => props.height};
     color: ${(props) => props.color};
   }
 `;
 
 interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
   type: keyof typeof icons;
+  size?: string;
   color?: string;
 }
 
-const Icon: React.FunctionComponent<Props> = ({ type, ...props }) => (
-  <SInlineSVG src={icons[type]} {...props} />
+const Icon: React.FunctionComponent<Props> = ({ type, size = '1rem', ...props }) => (
+  <SInlineSVG src={icons[type]} width={size} height={size} color="red" {...props} />
 );
 
 export default Icon;
