@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { DashboardPanel } from '@components';
 import Icon from '@components/Icon';
-import { actionTemplates } from '@config';
 import { useUserActions } from '@services';
+import { StoreContext, State as StoreContextState } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ActionTemplate } from '@types';
 
 import { Text } from '../NewTypography';
 import { ActionDetails, ActionsList } from './components';
+import { actionTemplates } from './constants';
 
 const SDashboardPanel = styled(DashboardPanel)`
   min-height: 384px;
@@ -37,9 +38,19 @@ const HeadingText = styled.span`
   max-width: 250px;
 `;
 
+export const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContextState) =>
+  actionTemplates.filter((action) => {
+    const filter = action.filter;
+    if (!filter) return true;
+    return filter(state);
+  });
+
 export const ActionPanel = () => {
+  const storeContextState = useContext(StoreContext);
   const { userActions } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
+
+  const relevantActions = filterUserActions(actionTemplates, storeContextState);
   return (
     <SDashboardPanel
       heading={
@@ -61,7 +72,7 @@ export const ActionPanel = () => {
               id="ACTION_PANEL_COMPLETED_COUNT"
               variables={{
                 $number: () => userActions.filter((a) => a.state === 'completed').length,
-                $total: () => actionTemplates.length
+                $total: () => relevantActions.length
               }}
             />
           </Text>
@@ -71,7 +82,7 @@ export const ActionPanel = () => {
       {currentAction ? (
         <ActionDetails actionTemplate={currentAction} />
       ) : (
-        <ActionsList actionTemplates={actionTemplates} onActionClick={setCurrentAction} />
+        <ActionsList actionTemplates={relevantActions} onActionClick={setCurrentAction} />
       )}
     </SDashboardPanel>
   );

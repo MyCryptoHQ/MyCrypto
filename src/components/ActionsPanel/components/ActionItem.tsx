@@ -24,7 +24,7 @@ const Action = styled.div<{ state: string }>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
-  min-height: 60px;
+  min-height: 80px;
   padding: 0 ${SPACING.BASE};
   cursor: pointer;
   ${(p) =>
@@ -44,9 +44,20 @@ const Action = styled.div<{ state: string }>`
     `}
 `;
 
-const SText = styled(Text)`
+const IconContainer = styled.div`
+  & > * {
+    vertical-align: middle;
+  }
+  text-align: center;
+  width: 28px;
+  height: 28px;
+`;
+
+const TitleContainer = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column;
+  margin: 0 ${SPACING.BASE};
 `;
 
 export const ActionItem = ({
@@ -62,15 +73,22 @@ export const ActionItem = ({
 
   if (!userAction) createUserAction(actionTemplate);
 
+  const SubHeading = actionTemplate.subHeading;
+
   return (
     <Action
       state={userAction ? userAction.state : 'new'}
       onClick={() => onActionClick(actionTemplate)}
     >
-      <Icon type={actionTemplate.icon ? actionTemplate.icon : 'logo-mycrypto'} />
-      <SText mb={0} mx={15} fontSize={2}>
-        {actionTemplate.heading}
-      </SText>
+      <IconContainer>
+        <Icon type={actionTemplate.icon ? actionTemplate.icon : 'logo-mycrypto'} />
+      </IconContainer>
+      <TitleContainer>
+        <Text mb={0} fontSize={2}>
+          {actionTemplate.heading}
+        </Text>
+        {SubHeading && <SubHeading {...actionTemplate.props} />}
+      </TitleContainer>
       <Icon type="more" />
     </Action>
   );

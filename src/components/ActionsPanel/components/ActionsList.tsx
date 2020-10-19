@@ -59,12 +59,9 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
 
   return (
     <ActionsContainer>
-      {actions.map(
-        ({ shouldDisplay = true, ...action }: ActionTemplate, i) =>
-          shouldDisplay && (
-            <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
-          )
-      )}
+      {actions.map((action: ActionTemplate, i) => (
+        <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
+      ))}
     </ActionsContainer>
   );
 };

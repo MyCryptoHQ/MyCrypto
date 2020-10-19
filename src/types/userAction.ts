@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { TIcon } from '@components';
+import { State as StoreContextState } from '@services/Store/StoreProvider';
 
 import { TUuid } from './uuid';
 
@@ -23,11 +24,12 @@ export interface ActionTemplate {
   name: string;
   icon?: TIcon;
   heading: string;
-  subHeading?: string;
-  body: ReactNode[];
+  subHeading?(props: object): JSX.Element;
+  body?: ReactNode[];
   priority: number;
-  component?(): ReactNode;
-  shouldDisplay?: boolean;
+  Component?(props: object): JSX.Element;
+  props?: object;
+  filter?(state: StoreContextState): boolean;
   button: {
     content: string;
     to: string;

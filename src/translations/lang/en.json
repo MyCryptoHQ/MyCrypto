@@ -1052,9 +1052,14 @@
     "TREZOR_NEW_REFERRAL": "Need a Trezor? [Get one now.](https://shop.trezor.io/?offer_id=10&aff_id=1735)",
     "ACTION_PANEL_HEADING": "Your Action Items",
     "ACTION_PANEL_COMPLETED_COUNT": "Completed $number / $total",
+    "ACTION_SUBHEAD": "$total account is ready to migrate",
+    "ACTION_SUBHEAD_PLURAL": "$total accounts are ready to migrate",
     "UPDATE_LABEL_ACTION_HEADING": "Update a label for your past transactions",
     "UPDATE_LABEL_ACTION_BODY_1": "Labels are the bee's knees. They can help you recall the purpose of a past transaction. They can act as a check that you are sending to the correct address. But, most importantly, they're yours. They're private. They live only in your browser, not our servers.",
     "UPDATE_LABEL_ACTION_BODY_2": "You can add/update a label almost anywhere you see an address on MyCrypto, like in your Accounts list or Address book.",
-    "UPDATE_LABEL_ACTION_BUTTON": "Label an address"
+    "UPDATE_LABEL_ACTION_BUTTON": "Label an address",
+    "MIGRATE_REP_ACTION_HEADING": "Migrate your $REP to V2",
+    "MIGRATE_REP_ACTION_BUTTON": "Migrate",
+    "MIGRATE_REP_ACTION_BODY": "One or more of your accounts hold REPv1 tokens. Migrate them to v2 now!"
   }
 }

@@ -31,6 +31,7 @@ import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
 import warning from '@assets/images/icn-warning.svg';
+import repLogo from '@assets/images/rep-logo.svg';
 
 const icons = {
   /* Action icons */
@@ -56,6 +57,7 @@ const icons = {
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,
   'logo-mycrypto-text': logoMyCryptoText,
+  'rep-logo': repLogo,
 
   /* Partner Icons */
   nansenLogo,
