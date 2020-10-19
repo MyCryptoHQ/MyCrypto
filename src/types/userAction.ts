@@ -24,11 +24,11 @@ export interface ActionTemplate {
   name: string;
   icon?: TIcon;
   heading: string;
-  subHeading?(props: object): JSX.Element;
+  subHeading?(props: Record<string, any>): JSX.Element;
   body?: ReactNode[];
   priority: number;
-  Component?(props: object): JSX.Element;
-  props?: object;
+  Component?(props: Record<string, any>): JSX.Element;
+  props?: Record<string, unknown>;
   filter?(state: StoreContextState): boolean;
   button: {
     content: string;
