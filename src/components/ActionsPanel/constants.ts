@@ -10,6 +10,19 @@ import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from
 
 export const actionTemplates: ActionTemplate[] = [
   {
+    name: 'update_label',
+    icon: repIcon,
+    heading: translateRaw('UPDATE_LABEL_ACTION_HEADING'),
+    body: [translate('UPDATE_LABEL_ACTION_BODY_1'), translate('UPDATE_LABEL_ACTION_BODY_2')],
+    priority: 0,
+    button: {
+      content: translateRaw('UPDATE_LABEL_ACTION_BUTTON'),
+      to: ROUTE_PATHS.SETTINGS.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.MYC_EXPERIENCE
+  },
+  {
     name: 'migrate_rep',
     heading: translateRaw('MIGRATE_REP_ACTION_HEADING'),
     subHeading: MigrationSubHead,
