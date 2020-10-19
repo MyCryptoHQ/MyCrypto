@@ -20,10 +20,14 @@ type ToolTipIcon = SetIntersection<
 >;
 
 const Override = styled.div<SpaceProps & VerticalAlignProps & DisplayProps>`
-  /* Allow caller to control spacing  */
+  /** Allow caller to control spacing  */
   ${space}
   ${verticalAlign}
   ${display}
+  /** Migrate Rep has an input inside a Tooltip. The input should fill the width of its container */
+  span {
+    width: 100%;
+  }
 `;
 
 function Tooltip({

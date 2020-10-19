@@ -5,7 +5,15 @@ import { useFormik } from 'formik';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 
-import { AccountSelector, AmountInput, Button, InlineMessage, Tooltip } from '@components';
+import {
+  AccountSelector,
+  AmountInput,
+  Box,
+  Button,
+  InlineMessage,
+  Label,
+  Tooltip
+} from '@components';
 import { ETHUUID } from '@config';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
@@ -41,19 +49,6 @@ interface UIProps {
   tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
 }
-
-const FormFieldItem = styled.fieldset`
-  margin-bottom: ${SPACING.LG};
-`;
-
-const FormFieldLabel = styled.label`
-  display: flex;
-  font-size: 1rem;
-  margin-bottom: ${SPACING.SM};
-  font-weight: 400;
-  align-items: center;
-  flex-wrap: wrap;
-`;
 
 const FormFieldSubmitButton = styled(Button)`
   width: 100%;
@@ -169,9 +164,9 @@ export const TokenMigrationFormUI = ({
   const isFormValid = checkFormValid(errors);
 
   return (
-    <div>
-      <FormFieldItem>
-        <FormFieldLabel htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</FormFieldLabel>
+    <>
+      <Box mb={SPACING.LG}>
+        <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector
           name={'account'}
           value={values.account}
@@ -184,29 +179,25 @@ export const TokenMigrationFormUI = ({
         {filteredAccounts.length === 0 && (
           <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
         )}
-      </FormFieldItem>
-      <FormFieldItem>
-        <FormFieldLabel htmlFor="amount">
-          <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
-        </FormFieldLabel>
-        <>
-          <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
-            <AmountInput
-              disabled={true}
-              asset={values.asset}
-              value={values.amount || '0'}
-              onChange={noOp}
-              onBlur={() => {
-                setFieldTouched('amount');
-              }}
-              placeholder={'0.00'}
-            />
-            {errors && errors.amount && touched && touched.amount ? (
-              <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
-            ) : null}
-          </Tooltip>
-        </>
-      </FormFieldItem>
+      </Box>
+      <Box mb={SPACING.LG} display="flex" flexDirection="column">
+        <Label htmlFor="amount">{translate('SEND_ASSETS_AMOUNT_LABEL')}</Label>
+        <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
+          <AmountInput
+            disabled={true}
+            asset={values.asset}
+            value={values.amount || '0'}
+            onChange={noOp}
+            onBlur={() => {
+              setFieldTouched('amount');
+            }}
+            placeholder={'0.00'}
+          />
+          {errors && errors.amount && touched && touched.amount ? (
+            <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
+          ) : null}
+        </Tooltip>
+      </Box>
       <FormFieldSubmitButton
         type="submit"
         loading={isSubmitting}
@@ -221,7 +212,7 @@ export const TokenMigrationFormUI = ({
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
-    </div>
+    </>
   );
 };
 
