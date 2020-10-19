@@ -3,6 +3,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
+import { fAssets } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ExtendedUserAction } from '@types';
@@ -18,6 +19,7 @@ function getComponent() {
             userActions: [
               { name: 'update_label', state: 'new' } as ExtendedUserAction
             ] as ExtendedUserAction[],
+            assets: fAssets,
             createActions: jest.fn().mockReturnValue({
               create: jest.fn()
             })
@@ -27,6 +29,9 @@ function getComponent() {
         <StoreContext.Provider
           value={
             ({
+              userAssets: [],
+              accounts: [],
+              assets: () => [fAssets[1]],
               userActions: [{ name: 'update_label', state: 'new' }],
               createUserAction: jest.fn()
             } as any) as any
