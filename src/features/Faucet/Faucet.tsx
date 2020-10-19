@@ -236,6 +236,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
       )}
       <Input
         value={solution}
+        name="captcha"
         placeholder={translateRaw('FAUCET_ENTER_RESPONSE')}
         onChange={(e) => {
           setSolution(e.target.value);
@@ -247,6 +248,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
         </IncorrectResponse>
       )}
       <SubmitCaptchaButton
+        name="submitCaptcha"
         onClick={() => finalizeRequestFunds(solution)}
         disabled={loading || !possibleSolution(solution)}
       >
