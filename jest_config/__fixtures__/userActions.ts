@@ -5,7 +5,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_0',
     heading: 'dummy action 0',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -18,7 +17,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_1',
     heading: 'dummy action 1',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -31,7 +29,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_2',
     heading: 'dummy action 2',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: false,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -44,7 +41,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_3',
     heading: 'dummy action 3',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -57,7 +53,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_4',
     heading: 'dummy action 4',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -70,7 +65,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_5',
     heading: 'dummy action 5',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 0,
     button: {
       content: 'the rabit hole',
@@ -83,7 +77,6 @@ export const fActionTemplates: ActionTemplate[] = [
     name: 'dummy_6',
     heading: 'dummy action 6',
     body: ['dummy action body', 'another one'],
-    shouldDisplay: true,
     priority: 10,
     button: {
       content: 'the rabit hole',

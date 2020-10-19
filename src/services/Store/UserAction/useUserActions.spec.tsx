@@ -2,8 +2,7 @@ import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 
-import { actionTemplates } from '@config';
-import { fUserActions } from '@fixtures';
+import { fActionTemplates, fUserActions } from '@fixtures';
 import { ACTION_STATE, ExtendedUserAction, LSKeys } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -40,10 +39,10 @@ describe('useUserActions', () => {
     });
     const { result } = renderUseUserActions({ createActions });
 
-    result.current.createUserAction(actionTemplates[0]);
+    result.current.createUserAction(fActionTemplates[0]);
 
     expect(createActions().create).toHaveBeenCalledWith({
-      name: actionTemplates[0].name,
+      name: fActionTemplates[0].name,
       state: ACTION_STATE.NEW,
       uuid: expect.any(String)
     });

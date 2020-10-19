@@ -51,13 +51,7 @@ describe('ActionsList Component', () => {
   test('Render the list of actions', async () => {
     getComponent(defaultProps);
 
-    expect(screen.getAllByText(new RegExp(fActionTemplates[0].heading, 'i'))).toBeDefined();
-  });
-
-  test('Do not display action if shouldDisplay on action is falsy', async () => {
-    getComponent({ ...defaultProps, actionTemplates: [fActionTemplates[2]] });
-
-    expect(screen.queryByText(new RegExp(fActionTemplates[2].heading, 'i'))).toBeNull();
+    expect(screen.getByText(new RegExp(fActionTemplates[0].heading, 'i'))).toBeDefined();
   });
 });
 
