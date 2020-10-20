@@ -1027,7 +1027,7 @@
     "DASHBOARD_ACTIONS_REP_MIGRATION_TITLE": "New: Migrate your REP!",
     "DASHBOARD_ACTIONS_REP_MIGRATION_SUBTITLE": "Augur v2 has launched and you need to take action to migrate your REPv1 tokens to REPv2.",
     "DASHBOARD_ACTIONS_UNI_CLAIM_TITLE": "Claim your UNI from one (or more) of your accounts",
-    "DASHBOARD_ACTIONS_UNI_CLAIM_SUBTITLE": "Begin the treasure hunt by clicking the three dots in the right corner off app.uniswap.org -> \"Claim UNI\" 🔎 💰",
+    "DASHBOARD_ACTIONS_UNI_CLAIM_SUBTITLE": "Begin the treasure hunt by clicking the three dots in the right corner of app.uniswap.org -> \"Claim UNI\" 🔎 💰",
     "NO_ACCOUNTS_SELECTED_HEADER": "You have no accounts selected.",
     "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above.",
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
