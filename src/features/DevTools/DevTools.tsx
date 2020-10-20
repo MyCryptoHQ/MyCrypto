@@ -19,10 +19,6 @@ const SLink = styled(Link)`
   font-weight: 600;
 `;
 
-const SCheckbox = styled(Checkbox)`
-  margin-bottom: 0;
-`;
-
 const SToggle = styled.button`
   position: fixed;
   bottom: 1.25em;
@@ -84,6 +80,13 @@ const ErrorTools = () => {
   );
 };
 
+const SCheckbox = styled(Checkbox)`
+  margin-bottom: 0;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.GREY_LIGHT};
+  }
+`;
+
 const FeatureFlags = () => {
   const { featureFlags, setFeatureFlag, isFeatureActive } = useFeatureFlags();
   const { track, initAnalytics } = useAnalytics();
@@ -91,7 +94,7 @@ const FeatureFlags = () => {
   // By definition, the app is already loaded when we toggle the feature
   // flag so we make sure the load event is triggered when the flag is set.
   useEffect(() => {
-    if (!isFeatureActive('ANALYTICS')) return;
+    if (!isFeatureActive('ANALYTICS')) return; // @todo: clear the id if unset
     initAnalytics();
     track({ name: 'App Load' });
   }, [featureFlags.ANALYTICS]);
