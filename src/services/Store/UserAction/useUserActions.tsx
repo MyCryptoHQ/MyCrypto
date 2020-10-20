@@ -17,6 +17,7 @@ export interface IUserActionContext {
   createUserAction(actionTemplate: UserAction): void;
   updateUserAction(uuid: TUuid, userAction: ExtendedUserAction): void;
   deleteUserAction(userAction: ExtendedUserAction): void;
+  findUserAction(actionName: string): ExtendedUserAction | undefined;
 }
 
 function useUserActions() {
@@ -36,11 +37,15 @@ function useUserActions() {
 
   const deleteUserAction = (userAction: ExtendedUserAction) => model.destroy(userAction);
 
+  const findUserAction = (actionName: string): ExtendedUserAction | undefined =>
+    userActions.find((a) => a.name === actionName);
+
   return {
     userActions,
     createUserAction,
     updateUserAction,
-    deleteUserAction
+    deleteUserAction,
+    findUserAction
   };
 }
 

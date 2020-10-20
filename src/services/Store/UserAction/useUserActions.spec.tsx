@@ -68,4 +68,20 @@ describe('useUserActions', () => {
     result.current.deleteUserAction(target);
     expect(createActions().destroy).toHaveBeenCalledWith(target);
   });
+
+  it('findUserAction() finds a specific userAction', () => {
+    const { result } = renderUseUserActions({
+      userActions: fUserActions
+    });
+
+    expect(result.current.findUserAction(fUserActions[0].name)).toEqual(fUserActions[0]);
+  });
+
+  it("findUserAction() return undefined when the userAction doesn't exist", () => {
+    const { result } = renderUseUserActions({
+      userActions: fUserActions
+    });
+
+    expect(result.current.findUserAction('foo')).toBeUndefined();
+  });
 });
