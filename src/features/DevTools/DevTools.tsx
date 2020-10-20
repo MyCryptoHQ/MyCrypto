@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import { useDevTools, useFeatureFlags } from '@services';
 import { DataContext } from '@services/Store';
 import { useDispatch, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
-import { IS_PROD } from '@utils';
+import { IS_PROD, useAnalytics } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
 import { getCount, getGreeting, increment, reset } from './slice';
@@ -85,7 +85,17 @@ const ErrorTools = () => {
 };
 
 const FeatureFlags = () => {
-  const { featureFlags, setFeatureFlag } = useFeatureFlags();
+  const { featureFlags, setFeatureFlag, isFeatureActive } = useFeatureFlags();
+  const { track, initAnalytics } = useAnalytics();
+
+  // By definition, the app is already loaded when we toggle the feature
+  // flag so we make sure the load event is triggered when the flag is set.
+  useEffect(() => {
+    if (!isFeatureActive('ANALYTICS')) return;
+    initAnalytics();
+    track({ name: 'App Load' });
+  }, [featureFlags.ANALYTICS]);
+
   return (
     <div style={{ marginBottom: '1em' }}>
       {Object.entries(featureFlags)

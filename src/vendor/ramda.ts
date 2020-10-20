@@ -67,5 +67,4 @@ export { default as mergeAll } from 'ramda/src/mergeAll';
 export { default as uniq } from 'ramda/src/uniq';
 export { default as whereEq } from 'ramda/src/whereEq';
 export { default as head } from 'ramda/src/head';
-export { default as mapObjIndexed } from 'ramda/src/mapObjIndexed';
 export { default as indexBy } from 'ramda/src/indexBy';

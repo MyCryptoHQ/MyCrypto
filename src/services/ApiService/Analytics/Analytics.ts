@@ -13,15 +13,7 @@ export interface TrackParams {
   params?: TObject;
 }
 
-/**
- * Configure the lib on build time.
- */
-let isInitialized = false;
 const initAnalytics = () => {
-  if (isInitialized) {
-    throw new Error('Analytics already initialized');
-  }
-  isInitialized = true;
   setConfig({
     host: ANALYTICS_API_URL,
     providers: [

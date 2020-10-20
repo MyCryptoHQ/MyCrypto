@@ -25,7 +25,7 @@ describe('useAnalytics', () => {
   it('calls AnalyticsService when feature is active', () => {
     const spy = jest.spyOn(AnalyticsService, 'track').mockImplementationOnce(jest.fn());
     const { result } = renderComponent();
-    act(() => result.current.track({ name: 'Header' }));
+    act(() => result.current.track({ name: 'Add Account' }));
     expect(spy).toHaveBeenCalled();
   });
   it('blocks calls to AnalyticsService when feature is inactive', async () => {

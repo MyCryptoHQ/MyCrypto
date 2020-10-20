@@ -54,10 +54,12 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
 
 export const AppRoutes = () => {
   const { featureFlags } = useFeatureFlags();
-  const { initAnalytics } = useAnalytics();
+  const { initAnalytics, track } = useAnalytics();
 
+  // Trigger load event
   useEffectOnce(() => {
     initAnalytics();
+    track({ name: 'App Load' });
   });
 
   return (

@@ -8,22 +8,4 @@ export const ANALYTICS_API_URL = IS_DEV
 export const ANALYTICS_WRITE_KEY = process.env.SEGMENT_WRITE_KEY || '';
 
 // Analytic Events
-export type TAnalyticEvents =
-  | 'Header'
-  | 'Footer'
-  | 'Sidebar'
-  | 'Root'
-  | 'Download Desktop App'
-  | 'Homepage'
-  | 'Screen Lock'
-  | 'Update Desktop App'
-  | 'Notification'
-  | 'Settings'
-  | 'Wallet breakdown'
-  | 'Ad'
-  | 'Token Scanner'
-  | 'Add Account'
-  | 'Add web3 account'
-  | 'Select network'
-  | 'Tx History'
-  | 'TX Status';
+export type TAnalyticEvents = 'App Load' | 'Add Account';
