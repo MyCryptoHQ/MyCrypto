@@ -17,6 +17,7 @@ import {
   MembershipState,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
+import ENSService from '@services/ApiService/Ens/EnsService';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -24,6 +25,7 @@ import { translateRaw } from '@translations';
 import {
   Asset,
   Contact,
+  DomainNameRecord,
   ExtendedAsset,
   IAccount,
   IAccountAdditionData,
@@ -58,6 +60,7 @@ import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
 import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
+import { isEthereumAccount } from './Account/helpers';
 import {
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
@@ -98,6 +101,7 @@ export interface State {
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly txHistory: ITxHistoryApiResponse[];
   readonly uniClaims: UniClaimResult[];
+  readonly ensOwnershipRecords: DomainNameRecord[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -391,6 +395,17 @@ export const StoreProvider: React.FC = ({ children }) => {
     }
   }, [mainnetAccounts.length]);
 
+  const [ensOwnershipRecords, setEnsOwnershipRecords] = useState<DomainNameRecord[]>(
+    [] as DomainNameRecord[]
+  );
+
+  useEffect(() => {
+    (async () =>
+      setEnsOwnershipRecords(
+        await ENSService.fetchOwnershipRecords(accounts.filter(isEthereumAccount))
+      ))();
+  }, [accounts.length]);
+
   const state: State = {
     accounts,
     networks,
@@ -403,6 +418,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     coinGeckoAssetManifest,
     txHistory,
     uniClaims,
+    ensOwnershipRecords,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },

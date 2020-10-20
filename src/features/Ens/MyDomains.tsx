@@ -6,9 +6,10 @@ import { Account, FixedSizeCollapsibleTable, LinkOut, Tooltip } from '@component
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
 import { BREAK_POINTS, breakpointToNumber } from '@theme';
 import { translateRaw } from '@translations';
+import { DomainNameRecord } from '@types';
 import { formatDateTime, getTimeDifference } from '@utils';
 
-import { DomainNameRecord, MyDomainsProps } from './types';
+import { MyDomainsProps } from './types';
 
 const Label = styled.span`
   display: flex;

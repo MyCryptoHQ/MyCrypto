@@ -126,3 +126,4 @@ export {
   ACTION_CATEGORIES,
   ACTION_STATE
 } from './userAction';
+export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens';
