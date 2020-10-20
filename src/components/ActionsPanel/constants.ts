@@ -4,7 +4,8 @@ import { EXT_URLS, REPV1UUID, ROUTE_PATHS, UNISWAP_LINK } from '@config';
 import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 import translate, { translateRaw } from '@translations';
-import { ACTION_CATEGORIES, ActionTemplate, WalletId } from '@types';
+import { ACTION_CATEGORIES, ActionTemplate } from '@types';
+import { isHardwareWallet } from '@utils';
 
 import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from './components';
 
@@ -78,15 +79,7 @@ export const actionTemplates: ActionTemplate[] = [
     heading: translateRaw('BUY_HW_ACTION_HEADING'),
     icon: 'ledger-icon',
     body: [translate('BUY_HW_ACTION_BODY')],
-    filter: (state: StoreContextState) =>
-      !state.accounts.some(
-        (c) =>
-          c.wallet ===
-          (WalletId.TREZOR ||
-            WalletId.TREZOR_NEW ||
-            WalletId.LEDGER_NANO_S ||
-            WalletId.LEDGER_NANO_S_NEW)
-      ),
+    filter: (state: StoreContextState) => !state.accounts.some((c) => isHardwareWallet(c.wallet)),
     priority: 30,
     button: {
       content: translateRaw('BUY_HW_ACTION_BUTTON'),
