@@ -1,7 +1,7 @@
 import { fAccounts } from '@fixtures';
 import { TAddress, WalletId } from '@types';
 
-import { isSenderAccountPresent, isViewOnlyWallet } from './wallets';
+import { isHardwareWallet, isSenderAccountPresent, isViewOnlyWallet } from './wallets';
 
 describe('isViewOnlyWallet', () => {
   it('correctly identifies a viewOnly wallet', () => {
@@ -10,6 +10,22 @@ describe('isViewOnlyWallet', () => {
 
   it('correctly identifies a non-viewOnly wallet', () => {
     expect(isViewOnlyWallet(WalletId.LEDGER_NANO_S)).toBeFalsy();
+  });
+});
+
+describe('isHardwareWallet', () => {
+  it('correctly identifies a Ledger wallet', () => {
+    expect(isHardwareWallet(WalletId.LEDGER_NANO_S)).toBeTruthy();
+    expect(isHardwareWallet(WalletId.LEDGER_NANO_S_NEW)).toBeTruthy();
+  });
+
+  it('correctly identifies a Trezor wallet', () => {
+    expect(isHardwareWallet(WalletId.TREZOR)).toBeTruthy();
+    expect(isHardwareWallet(WalletId.TREZOR_NEW)).toBeTruthy();
+  });
+
+  it('correctly identifies a non-hardware wallet', () => {
+    expect(isViewOnlyWallet(WalletId.WEB3)).toBeFalsy();
   });
 });
 
