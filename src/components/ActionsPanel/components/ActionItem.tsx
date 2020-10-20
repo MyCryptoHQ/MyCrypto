@@ -33,9 +33,7 @@ const Action = styled.div<{ state: string }>`
       & > * {
         opacity: 0.2;
       }
-      & > p {
-        text-decoration: line-through;
-      }
+      text-decoration: line-through;
     `}
   ${(p) =>
     p.state === 'new' &&
@@ -81,7 +79,7 @@ export const ActionItem = ({
       onClick={() => onActionClick(actionTemplate)}
     >
       <IconContainer>
-        <img src={actionTemplate.icon} />
+        <Icon type={actionTemplate.icon} />
       </IconContainer>
       <TitleContainer>
         <Text mb={0} fontSize={2}>

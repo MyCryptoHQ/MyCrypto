@@ -63,7 +63,7 @@ export const ActionPanel = () => {
       headingRight={
         currentAction ? (
           <DetailsHeading>
-            <img width={20} src={currentAction.icon} />
+            <Icon width={20} type={currentAction.icon} />
             <HeadingText>{currentAction.heading}</HeadingText>
           </DetailsHeading>
         ) : (
