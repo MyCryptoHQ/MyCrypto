@@ -103,17 +103,11 @@ interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
   color?: string;
 }
 
-const Icon: React.FunctionComponent<Props> = ({ type, size = '1rem', ...props }) => {
+const Icon: React.FunctionComponent<Props> = ({ type, ...props }) => {
   return (
     <>
       {svgIcons[type as SvgIcons] && (
-        <SInlineSVG
-          src={svgIcons[type as SvgIcons]}
-          width={size}
-          height={size}
-          color="red"
-          {...props}
-        />
+        <SInlineSVG src={svgIcons[type as SvgIcons]} color="red" {...props} />
       )}
       {pngIcons[type as PngIcons] && <img src={pngIcons[type as PngIcons]} {...props} />}
     </>
