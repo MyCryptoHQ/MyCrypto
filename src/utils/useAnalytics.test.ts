@@ -31,7 +31,7 @@ describe('useAnalytics', () => {
   it('blocks calls to AnalyticsService when feature is inactive', async () => {
     const spy = jest.spyOn(AnalyticsService, 'trackPage').mockImplementationOnce(jest.fn());
     const { result } = renderComponent(false);
-    await act(async () => result.current.trackPage({ name: 'ADD_ACCOUNT_SOM', title: '' }));
+    await act(async () => result.current.trackPage({ name: 'ADD_ACCOUNT', title: '' }));
     expect(spy).not.toHaveBeenCalled();
   });
 });
