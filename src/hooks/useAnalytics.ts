@@ -1,4 +1,5 @@
-import { AnalyticsService } from '@services';
+import { AnalyticsService, useFeatureFlags } from '@services';
+import { mapObjIndexed } from '@vendor';
 
 const useAnalytics = () => {
   /**
@@ -8,11 +9,17 @@ const useAnalytics = () => {
    */
 
   const { track, trackPage, initAnalytics } = AnalyticsService;
-  return {
+  const { isFeatureActive } = useFeatureFlags();
+
+  const doNothing = (_?: any) => Promise.resolve();
+
+  const API = {
     track,
     trackPage,
     initAnalytics
   };
+
+  return isFeatureActive('ANALYTICS') ? { ...API } : mapObjIndexed(() => doNothing)(API);
 };
 
 export default useAnalytics;

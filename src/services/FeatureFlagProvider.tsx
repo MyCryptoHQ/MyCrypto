@@ -4,6 +4,7 @@ import { FEATURE_FLAGS, IFeatureFlags } from '@config';
 
 export interface IFeatureFlagContext {
   featureFlags: IFeatureFlags;
+  isFeatureActive(f: keyof IFeatureFlags): boolean;
   setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
   resetFeatureFlags(): void;
   toggleFeatureFlag(key: keyof IFeatureFlags): void;
@@ -23,6 +24,8 @@ export const FeatureFlagProvider: React.FC = ({ children }) => {
   const resetFeatureFlags: IFeatureFlagContext['resetFeatureFlags'] = () =>
     setFeatureFlags(FEATURE_FLAGS);
 
+  const isFeatureActive: IFeatureFlagContext['isFeatureActive'] = (f) => !!featureFlags[f];
+
   useEffect(() => {
     // For use in E2E testing
     (window as CustomWindow).setFeatureFlag = setFeatureFlag;
@@ -31,6 +34,7 @@ export const FeatureFlagProvider: React.FC = ({ children }) => {
 
   const stateContext: IFeatureFlagContext = {
     featureFlags,
+    isFeatureActive,
     setFeatureFlag,
     toggleFeatureFlag,
     resetFeatureFlags
