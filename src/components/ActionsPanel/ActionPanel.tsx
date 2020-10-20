@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -50,7 +50,10 @@ export const ActionPanel = () => {
   const { userActions } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
 
-  const relevantActions = filterUserActions(actionTemplates, storeContextState);
+  const relevantActions = useMemo(() => filterUserActions(actionTemplates, storeContextState), [
+    storeContextState
+  ]);
+
   return (
     <SDashboardPanel
       heading={
