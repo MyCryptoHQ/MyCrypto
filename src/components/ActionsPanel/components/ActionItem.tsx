@@ -65,9 +65,9 @@ export const ActionItem = ({
   actionTemplate: ActionTemplate;
   onActionClick: Dispatch<SetStateAction<ActionTemplate | undefined>>;
 }) => {
-  const { userActions, createUserAction } = useUserActions();
+  const { findUserAction, createUserAction } = useUserActions();
 
-  const userAction = userActions.find((item) => item.name === actionTemplate.name);
+  const userAction = findUserAction(actionTemplate.name);
 
   if (!userAction) createUserAction(actionTemplate);
 

@@ -30,9 +30,9 @@ const EditableAccountLabel = ({
   updateContact,
   createContact
 }: Props) => {
-  const { userActions, updateUserAction } = useUserActions();
+  const { findUserAction, updateUserAction } = useUserActions();
 
-  const updateLabelAction = userActions.find((ua) => ua.name === 'update_label');
+  const updateLabelAction = findUserAction('update_label');
 
   return (
     <SWrapper>

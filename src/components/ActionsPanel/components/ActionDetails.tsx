@@ -17,10 +17,10 @@ const SBox = styled(Box)`
 `;
 
 export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTemplate }) => {
-  const { updateUserAction, userActions } = useUserActions();
+  const { updateUserAction, findUserAction } = useUserActions();
   const history = useHistory();
 
-  const userAction = userActions.find((el) => el.name === actionTemplate.name)!;
+  const userAction = findUserAction(actionTemplate.name)!;
 
   const Component = actionTemplate.Component;
   const handleClick = () => {
