@@ -9,7 +9,7 @@ import { translateRaw } from '@translations';
 import { Asset, TAddress } from '@types';
 import { bigNumValueToViewableEther } from '@utils';
 
-interface ActionTableProps {
+export interface ActionTableProps {
   accounts: {
     address: TAddress;
     amount: string;
