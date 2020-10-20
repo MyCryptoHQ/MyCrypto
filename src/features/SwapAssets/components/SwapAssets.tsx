@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import {
   AccountSelector,
   AssetSelector,
+  Body,
+  Box,
   Button,
   InlineMessage,
   InputField,
-  Tooltip,
-  Typography
+  Tooltip
 } from '@components';
 import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import { StoreContext } from '@services/Store';
@@ -20,73 +21,12 @@ import { trimBN } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 
-const FormWrapper = styled.div`
-  margin-top: 20px;
-  margin-bottom: 16px;
-`;
-
-const FormItem = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const InputWrapper = styled.div`
-  width: 100%;
-  margin-right: 15px;
-`;
-
-const LabelText = styled.p`
-  display: flex;
-`;
-
-const STooltip = styled(Tooltip)`
-  display: flex;
-`;
-
-const Label = styled.div`
-  font-size: 18px;
-  display: flex;
-  flex-direction: row;
-  line-height: 1;
-  text-align: left;
-  font-weight: normal;
-  margin-bottom: 9px;
-  color: ${(props) => props.theme.text};
-  & img {
-    margin: 0em 0.2em;
-  }
-`;
-
-const AccountLabel = styled(Typography)`
-  line-height: 1;
-  color: ${(props) => props.theme.text};
-`;
-
-const AccountLabelWrapper = styled.div`
-  width: 100%;
-  text-align: left;
-  margin-bottom: 9px;
-`;
-
-const DisplayDataContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const StyledButton = styled(Button)`
   margin-top: 12px;
   width: 100%;
   && div {
     justify-content: center;
   }
-`;
-
-const SlippageDisplay = styled(LabelText)`
-  color: ${(props) => props.color};
-`;
-
-const FormDisplay = styled.div`
-  margin-bottom: ${SPACING.SM};
 `;
 
 interface Props {
@@ -207,9 +147,9 @@ export default function SwapAssets(props: Props) {
       : `~ ${parseFloat(trimBN(amount, 10)).toFixed(2)}`;
 
   return (
-    <FormWrapper>
-      <FormItem>
-        <InputWrapper>
+    <Box mt="20px" mb="1em">
+      <Box display="flex">
+        <Box mr="1em" flex="1">
           <InputField
             label={translateRaw('SWAP_SEND_AMOUNT')}
             value={fromAmount}
@@ -220,7 +160,7 @@ export default function SwapAssets(props: Props) {
             inputError={fromAmountError}
             inputMode="decimal"
           />
-        </InputWrapper>
+        </Box>
         <AssetSelector
           selectedAsset={fromAsset}
           assets={ownedAssets}
@@ -229,9 +169,9 @@ export default function SwapAssets(props: Props) {
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />
-      </FormItem>
-      <FormItem>
-        <InputWrapper>
+      </Box>
+      <Box display="flex">
+        <Box mr="1em" flex="1">
           <InputField
             label={translateRaw('SWAP_RECEIVE_AMOUNT')}
             value={toAmount}
@@ -242,7 +182,7 @@ export default function SwapAssets(props: Props) {
             inputError={toAmountError}
             inputMode="decimal"
           />
-        </InputWrapper>
+        </Box>
         <AssetSelector
           selectedAsset={toAsset}
           assets={filteredAssets}
@@ -251,40 +191,42 @@ export default function SwapAssets(props: Props) {
           disabled={isCalculatingToAmount || isCalculatingFromAmount}
           searchable={true}
         />
-      </FormItem>
-      <FormDisplay>
+      </Box>
+      <Box mb={SPACING.SM}>
         {exchangeRate && toAsset && fromAsset && (
-          <DisplayDataContainer>
-            <Label>
-              <LabelText>{translateRaw('SWAP_RATE_LABEL')}</LabelText>
-              <STooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />:
-            </Label>
-            <LabelText>
+          <Box display="flex" justifyContent="space-between">
+            <Body>
+              {translateRaw('SWAP_RATE_LABEL')}{' '}
+              <Tooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />
+            </Body>
+            <Body>
               {translateRaw('SWAP_RATE_TEXT', {
                 $displayString: makeDisplayString(exchangeRate.toString()),
                 $toAssetSymbol: toAsset.ticker,
                 $fromAssetSymbol: fromAsset.ticker
               })}
-            </LabelText>
-          </DisplayDataContainer>
+            </Body>
+          </Box>
         )}
         {markup && fromAsset && (
-          <DisplayDataContainer>
-            <Label>
-              <LabelText>{translateRaw('SWAP_MARKUP_LABEL')}</LabelText>
-              <STooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />:
-            </Label>
-            <SlippageDisplay
+          <Box display="flex" justifyContent="space-between">
+            <Body>
+              {translateRaw('SWAP_MARKUP_LABEL')}{' '}
+              <Tooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />
+            </Body>
+            <Body
               color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? COLORS.RED : COLORS.GREEN}
             >
               {`${makeDisplayString(markup.toString())}%`}
-            </SlippageDisplay>
-          </DisplayDataContainer>
+            </Body>
+          </Box>
         )}
-        <AccountLabelWrapper>
-          <AccountLabel value={translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')} fontSize="1.13em" />{' '}
-          <STooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
-        </AccountLabelWrapper>
+        <Box>
+          <Body>
+            {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
+            <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
+          </Body>
+        </Box>
         <AccountSelector
           name="account"
           value={account}
@@ -297,7 +239,7 @@ export default function SwapAssets(props: Props) {
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
         )}
-      </FormDisplay>
+      </Box>
       <StyledButton
         onClick={onSuccess}
         disabled={
@@ -313,6 +255,6 @@ export default function SwapAssets(props: Props) {
       >
         {translate('ACTION_6')}
       </StyledButton>
-    </FormWrapper>
+    </Box>
   );
 }

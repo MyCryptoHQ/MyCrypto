@@ -88,6 +88,7 @@ export {
   Body,
   InlineLink,
   Link as NewLink,
+  Label,
   Text,
   TextProps
 } from './NewTypography';

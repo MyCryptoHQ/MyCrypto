@@ -25,7 +25,7 @@ const SInput = styled(Input)`
 `;
 
 const SAssetIcon = styled(AssetIcon)`
-  margin-right: 16px;
+  margin-right: 1ch;
 `;
 
 function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: Props) {

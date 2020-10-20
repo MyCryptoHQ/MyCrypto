@@ -20,10 +20,14 @@ type ToolTipIcon = SetIntersection<
 >;
 
 const Override = styled.div<SpaceProps & VerticalAlignProps & DisplayProps>`
-  /* Allow caller to control spacing  */
+  /** Allow caller to control spacing  */
   ${space}
   ${verticalAlign}
   ${display}
+  /** Migrate Rep has an input inside a Tooltip. The input should fill the width of its container */
+  span {
+    width: 100%;
+  }
 `;
 
 function Tooltip({
@@ -42,7 +46,9 @@ function Tooltip({
   DisplayProps) {
   return (
     <Override verticalAlign={verticalAlign} display={display} {...props}>
-      <UITooltip tooltip={tooltip}>{children ? children : <Icon type={type} />}</UITooltip>
+      <UITooltip tooltip={tooltip}>
+        {children ? children : <Icon type={type} size="1em" />}
+      </UITooltip>
     </Override>
   );
 }
