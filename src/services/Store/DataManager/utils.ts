@@ -30,7 +30,7 @@ type ArrayToObj = <K extends string | number>(
 const arrayToObj: ArrayToObj = (key) => (arr) =>
   arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
 type ObjToExtendedArray = <T>(o: T) => unknown[];
-const objToExtendedArray: ObjToExtendedArray = (obj) =>
+export const objToExtendedArray: ObjToExtendedArray = (obj) =>
   Object.entries(obj).reduce((acc, [uuid, n]: [TUuid, typeof obj]) => {
     return acc.concat([{ ...n, uuid }]);
   }, [] as unknown[]);
