@@ -2,9 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { useUserActions } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import { Contact, ExtendedContact, NetworkId, TAddress, TUuid } from '@types';
+import { ACTION_STATE, Contact, ExtendedContact, NetworkId, TAddress, TUuid } from '@types';
 
 import EditableText from './EditableText';
 
@@ -29,6 +30,10 @@ const EditableAccountLabel = ({
   updateContact,
   createContact
 }: Props) => {
+  const { userActions, updateUserAction } = useUserActions();
+
+  const updateLabelAction = userActions.find((ua) => ua.name === 'update_label');
+
   return (
     <SWrapper>
       <EditableText
@@ -36,6 +41,11 @@ const EditableAccountLabel = ({
         saveValue={(value) => {
           if (addressBookEntry) {
             updateContact(addressBookEntry.uuid, { ...addressBookEntry, label: value });
+            updateLabelAction &&
+              updateUserAction(updateLabelAction.uuid, {
+                ...updateLabelAction,
+                state: ACTION_STATE.COMPLETED
+              });
           } else {
             createContact({
               address,

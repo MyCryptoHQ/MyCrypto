@@ -1065,6 +1065,12 @@
     "MIGRATE_REP_ACTION_BODY": "One or more of your accounts hold REPv1 tokens. Migrate them to v2 now!",
     "CLAIM_UNI_ACTION_HEADING": "Claim your $UNI",
     "CLAIM_UNI_ACTION_BUTTON": "Claim",
-    "CLAIM_UNI_ACTION_BODY": "One or more of your accounts have unclaimed UNI tokens. Claim them now!"
+    "CLAIM_UNI_ACTION_BODY": "One or more of your accounts have unclaimed UNI tokens. Claim them now!",
+    "RENEW_ENS_ACTION_HEADING": "Renew your ENS names",
+    "RENEW_ENS_ACTION_BUTTON": "Renew",
+    "RENEW_ENS_ACTION_BODY": "You have one or more ENS names expiring soon. Don't let them get away from you - renew them now!",
+    "BUY_HW_ACTION_HEADING": "Level up your security: get a hardware wallet",
+    "BUY_HW_ACTION_BUTTON": "Buy Now",
+    "BUY_HW_ACTION_BODY": "If you have any amount of crypto that you would not want to lose, it's best to get yourself a hardware wallet. With a hardware wallet, your private key never leaves the device and is generally safer than any other method of storage."
   }
 }
