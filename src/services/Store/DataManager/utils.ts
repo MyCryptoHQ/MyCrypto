@@ -79,12 +79,7 @@ export function marshallState(ls: LocalStorage): DataStore {
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
-    [LSKeys.ADDRESS_BOOK]: Object.entries(ls[LSKeys.ADDRESS_BOOK]).reduce(
-      (acc, [uuid, contact]: [TUuid, ExtendedContact]) => {
-        return acc.concat([{ ...contact, uuid }]);
-      },
-      [] as ExtendedContact[]
-    ),
+    [LSKeys.ADDRESS_BOOK]: objToExtendedArray(ls[LSKeys.ADDRESS_BOOK]) as ExtendedContact[],
     [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
     [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
     [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]).map(
