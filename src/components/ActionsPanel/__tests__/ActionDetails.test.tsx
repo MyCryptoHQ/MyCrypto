@@ -62,11 +62,11 @@ describe('ActionsDetails', () => {
 
   test('button click triggers userAction state update', async () => {
     const mockUpdate = jest.fn();
-    const updateActions = jest.fn().mockReturnValue({
+    const createActions = jest.fn().mockReturnValue({
       update: mockUpdate
     });
 
-    getComponent(defaultProps, updateActions);
+    getComponent(defaultProps, createActions);
 
     const button = screen.getByText(new RegExp(defaultProps.actionTemplate.button.content, 'i'));
 
