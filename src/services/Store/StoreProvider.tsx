@@ -17,7 +17,7 @@ import {
   MembershipState,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
-import ENSService from '@services/ApiService/Ens/EnsService';
+import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -60,7 +60,6 @@ import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
 import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
-import { isEthereumAccount } from './Account/helpers';
 import {
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
