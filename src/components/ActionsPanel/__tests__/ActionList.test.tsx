@@ -5,7 +5,7 @@ import { screen, simpleRender } from 'test-utils';
 import { fActionTemplates } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ACTION_CATEGORIES, ActionTemplate, ExtendedUserAction } from '@types';
-import { ascend, filter, prop, propEq, sort } from '@vendor';
+import { descend, filter, prop, propEq, sort } from '@vendor';
 
 import {
   ActionsList,
@@ -57,11 +57,11 @@ describe('ActionsList Component', () => {
 
 describe('ActionList utils functions', () => {
   it('getFeaturedActions returns top of category action for all categories', () => {
-    const expected = sort(ascend(prop('category')))([
-      fActionTemplates[5],
-      fActionTemplates[6],
+    const expected = sort(descend(prop('priority')))([
       fActionTemplates[0],
       fActionTemplates[1],
+      fActionTemplates[5],
+      fActionTemplates[6],
       fActionTemplates[4]
     ]);
 
