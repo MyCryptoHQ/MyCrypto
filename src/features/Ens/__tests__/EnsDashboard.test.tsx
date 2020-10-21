@@ -2,6 +2,7 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { DomainNameRecord } from '@types';
 
@@ -9,16 +10,30 @@ import { EnsTable } from '../EnsTable';
 
 /* Test components */
 describe('ENSTable', () => {
-  const component = (records: DomainNameRecord[]) => <EnsTable records={records} />;
-
-  const renderComponent = (records: DomainNameRecord[]) => {
-    return simpleRender(component(records));
+  const renderComponent = (ensOwnershipRecords: DomainNameRecord[], isEnsFetched: boolean) => {
+    return simpleRender(
+      <StoreContext.Provider
+        value={
+          ({
+            ensOwnershipRecords,
+            isEnsFetched
+          } as any) as any
+        }
+      >
+        <EnsTable />
+      </StoreContext.Provider>
+    );
   };
 
   test('Can render no-domains state of component', () => {
-    const { getByText } = renderComponent([]);
+    const { getByText } = renderComponent([], true);
     const selector = translateRaw('ENS_DOMAINS_NO_DOMAINS').trim();
     expect(getByText(selector)).toBeInTheDocument();
+  });
+
+  test('Can render loading spinner state of component', () => {
+    const { container } = renderComponent([], false);
+    expect(container.querySelector('svg')).toBeDefined();
   });
 
   test('Can render domains co', () => {
@@ -31,7 +46,7 @@ describe('ENSTable', () => {
         readableDomainName: 'donate.mycryptoid.eth'
       }
     ];
-    const { getByText } = renderComponent(testRecords);
+    const { getByText } = renderComponent(testRecords, true);
     const selector = translateRaw('ENS_MY_DOMAINS_TABLE_EXPIRES_HEADER').trim();
     expect(getByText(selector)).toBeInTheDocument(); // Expect to see the Network selection step
   });

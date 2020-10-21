@@ -101,6 +101,7 @@ export interface State {
   readonly txHistory: ITxHistoryApiResponse[];
   readonly uniClaims: UniClaimResult[];
   readonly ensOwnershipRecords: DomainNameRecord[];
+  readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -397,12 +398,15 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [ensOwnershipRecords, setEnsOwnershipRecords] = useState<DomainNameRecord[]>(
     [] as DomainNameRecord[]
   );
+  const [isEnsFetched, setIsEnsFetched] = useState<boolean>(false);
 
   useEffect(() => {
-    (async () =>
+    (async () => {
       setEnsOwnershipRecords(
         await ENSService.fetchOwnershipRecords(accounts.filter(isEthereumAccount))
-      ))();
+      );
+      setIsEnsFetched(true);
+    })();
   }, [accounts.length]);
 
   const state: State = {
@@ -418,6 +422,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     txHistory,
     uniClaims,
     ensOwnershipRecords,
+    isEnsFetched,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },
