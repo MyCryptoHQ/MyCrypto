@@ -1,11 +1,19 @@
 import { add, isBefore } from 'date-fns';
 
-import { EXT_URLS, REPV1UUID, ROUTE_PATHS, UNISWAP_LINK } from '@config';
+import {
+  ETHUUID,
+  EXT_URLS,
+  REPV1UUID,
+  ROUTE_PATHS,
+  socialMediaLinks,
+  SUBSCRIBE_NEWSLETTER_LINK,
+  UNISWAP_LINK
+} from '@config';
 import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 import translate, { translateRaw } from '@translations';
 import { ACTION_CATEGORIES, ActionTemplate } from '@types';
-import { isHardwareWallet } from '@utils';
+import { formatSupportEmail, isHardwareWallet } from '@utils';
 
 import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from './components';
 
@@ -87,5 +95,115 @@ export const actionTemplates: ActionTemplate[] = [
       external: true
     },
     category: ACTION_CATEGORIES.SECURITY
+  },
+  {
+    name: 'myc_membership',
+    heading: translateRaw('MYC_MEMBERSHIP_ACTION_HEADING'),
+    icon: 'membership',
+    body: [translate('MYC_MEMBERSHIP_ACTION_BODY')],
+    filter: (state: StoreContextState) => !state.isMyCryptoMember,
+    priority: 0,
+    button: {
+      content: translateRaw('MYC_MEMBERSHIP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.MYC_MEMBERSHIP.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: 'add_account',
+    heading: translateRaw('ADD_ACCOUNT_ACTION_HEADING'),
+    icon: 'experience',
+    body: [translate('ADD_ACCOUNT_ACTION_BODY')],
+    filter: (state: StoreContextState) => state.accounts.length < 3,
+    priority: 0,
+    button: {
+      content: translateRaw('ADD_ACCOUNT_ACTION_BUTTON'),
+      to: ROUTE_PATHS.ADD_ACCOUNT.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.MYC_EXPERIENCE
+  },
+  {
+    name: 'backup',
+    heading: translateRaw('BACKUP_ACTION_HEADING'),
+    icon: 'experience',
+    body: [translate('BACKUP_ACTION_BODY')],
+    filter: (state: StoreContextState) => state.accounts.length >= 3,
+    priority: 0,
+    button: {
+      content: translateRaw('BACKUP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.SETTINGS_EXPORT.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.MYC_EXPERIENCE
+  },
+  {
+    name: 'feedback',
+    heading: translateRaw('FEEDBACK_ACTION_HEADING'),
+    icon: 'feedback',
+    body: [translate('FEEDBACK_ACTION_BODY_1'), translate('FEEDBACK_ACTION_BODY_2')],
+    priority: 0,
+    button: {
+      content: translateRaw('FEEDBACK_ACTION_BUTTON'),
+      to: formatSupportEmail(translateRaw('FEEDBACK_ACTION_MAIL_SUBJECT')),
+      external: true
+    },
+    category: ACTION_CATEGORIES.OTHER
+  },
+  {
+    name: 'newsletter',
+    heading: translateRaw('NEWSLETTER_ACTION_HEADING'),
+    icon: 'newsletter',
+    body: [translate('NEWSLETTER_ACTION_BODY')],
+    priority: 0,
+    button: {
+      content: translateRaw('NEWSLETTER_ACTION_BUTTON'),
+      to: SUBSCRIBE_NEWSLETTER_LINK,
+      external: true
+    },
+    category: ACTION_CATEGORIES.OTHER
+  },
+  {
+    name: 'telegram',
+    heading: translateRaw('TELEGRAM_ACTION_HEADING'),
+    icon: 'telegram-icon',
+    body: [translate('TELEGRAM_ACTION_BODY')],
+    priority: 0,
+    button: {
+      content: translateRaw('TELEGRAM_ACTION_BUTTON'),
+      to: socialMediaLinks.find((i) => i.text === 'telegram')!.link,
+      external: true
+    },
+    category: ACTION_CATEGORIES.OTHER
+  },
+  {
+    name: 'swap',
+    heading: translateRaw('SWAP_ACTION_HEADING'),
+    icon: 'swap',
+    body: [translate('SWAP_ACTION_BODY')],
+    filter: (state: StoreContextState) =>
+      state.assets().some((a) => a.uuid === ETHUUID) &&
+      state.assets().some((a) => a.uuid !== ETHUUID),
+    priority: 0,
+    button: {
+      content: translateRaw('SWAP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.SWAP.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.OTHER
+  },
+  {
+    name: 'twitter',
+    heading: translateRaw('TWITTER_ACTION_HEADING'),
+    icon: 'twitter-icon',
+    body: [translate('TWITTER_ACTION_BODY')],
+    priority: 0,
+    button: {
+      content: translateRaw('TWITTER_ACTION_BUTTON'),
+      to: socialMediaLinks.find((i) => i.text === 'twitter')!.link,
+      external: true
+    },
+    category: ACTION_CATEGORIES.OTHER
   }
 ];

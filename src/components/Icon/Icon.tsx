@@ -12,6 +12,8 @@ import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
+import feedback from '@assets/icons/feedback.svg';
+import newsletter from '@assets/icons/newsletter.svg';
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
 import github from '@assets/icons/social/github.svg';
@@ -19,6 +21,8 @@ import reddit from '@assets/icons/social/reddit.svg';
 import slack from '@assets/icons/social/slack.svg';
 import telegram from '@assets/icons/social/telegram.svg';
 import twitter from '@assets/icons/social/twitter.svg';
+import telegramIcon from '@assets/icons/telegram.svg';
+import twitterIcon from '@assets/icons/twitter.svg';
 import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
@@ -32,7 +36,9 @@ import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
 import warning from '@assets/images/icn-warning.svg';
+import membership from '@assets/images/membership/membership-none.svg';
 import repLogo from '@assets/images/rep-logo.svg';
+import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 
@@ -58,6 +64,12 @@ const svgIcons = {
   whitepaper,
   experience,
   'ledger-icon': ledgerIcon,
+  membership,
+  feedback,
+  newsletter,
+  'telegram-icon': telegramIcon,
+  swap,
+  'twitter-icon': twitterIcon,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,

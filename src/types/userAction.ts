@@ -10,7 +10,8 @@ export enum ACTION_CATEGORIES {
   SELF_LOVE = 'selfLove',
   MYC_EXPERIENCE = 'mycExperience',
   MIGRATION = 'migration',
-  THIRD_PARTY = 'thirdParty'
+  THIRD_PARTY = 'thirdParty',
+  OTHER = 'OTHER'
 }
 
 export enum ACTION_STATE {
