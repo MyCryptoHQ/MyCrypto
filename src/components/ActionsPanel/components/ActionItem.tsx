@@ -20,7 +20,7 @@ const greenLightup = keyframes`
   }
 `;
 
-const Action = styled.div<{ state: string }>`
+const Action = styled.div<{ state?: string }>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
@@ -36,7 +36,7 @@ const Action = styled.div<{ state: string }>`
       text-decoration: line-through;
     `}
   ${(p) =>
-    p.state === 'new' &&
+    !p.state &&
     css`
       animation: ${greenLightup} 1.5s ease-in-out;
     `}
@@ -74,10 +74,7 @@ export const ActionItem = ({
   const SubHeading = actionTemplate.subHeading;
 
   return (
-    <Action
-      state={userAction ? userAction.state : 'new'}
-      onClick={() => onActionClick(actionTemplate)}
-    >
+    <Action state={userAction && userAction.state} onClick={() => onActionClick(actionTemplate)}>
       <IconContainer>
         <Icon type={actionTemplate.icon} />
       </IconContainer>
