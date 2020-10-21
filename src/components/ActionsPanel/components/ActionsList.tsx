@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { ActionTemplate } from '@types';
 import {
-  ascend,
+  descend,
   flatten,
   groupBy,
   ifElse,
@@ -50,7 +50,7 @@ export const getFeaturedActions: (actionTemplates: ActionTemplate[]) => ActionTe
   map<ActionTemplate, ActionTemplate>(selectActionToDisplay),
   values,
   flatten,
-  sort(ascend(category))
+  sort(descend(prop('priority')))
 );
 
 export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps) => {
