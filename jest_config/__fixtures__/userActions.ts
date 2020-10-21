@@ -1,9 +1,16 @@
 import repIcon from '@assets/images/rep-logo.svg';
-import { ACTION_CATEGORIES, ACTION_STATE, ActionTemplate, ExtendedUserAction, TUuid } from '@types';
+import {
+  ACTION_CATEGORIES,
+  ACTION_NAME,
+  ACTION_STATE,
+  ActionTemplate,
+  ExtendedUserAction,
+  TUuid
+} from '@types';
 
 export const fActionTemplates: ActionTemplate[] = [
   {
-    name: 'dummy_0',
+    name: 'dummy_0' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 0',
     body: ['dummy action body', 'another one'],
@@ -16,7 +23,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
   {
-    name: 'dummy_1',
+    name: 'dummy_1' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 1',
     body: ['dummy action body', 'another one'],
@@ -29,7 +36,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MIGRATION
   },
   {
-    name: 'dummy_2',
+    name: 'dummy_2' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 2',
     body: ['dummy action body', 'another one'],
@@ -42,7 +49,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SECURITY
   },
   {
-    name: 'dummy_3',
+    name: 'dummy_3' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 3',
     body: ['dummy action body', 'another one'],
@@ -55,7 +62,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SELF_LOVE
   },
   {
-    name: 'dummy_4',
+    name: 'dummy_4' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 4',
     body: ['dummy action body', 'another one'],
@@ -68,7 +75,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
   {
-    name: 'dummy_5',
+    name: 'dummy_5' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 5',
     body: ['dummy action body', 'another one'],
@@ -81,7 +88,7 @@ export const fActionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SECURITY
   },
   {
-    name: 'dummy_6',
+    name: 'dummy_6' as ACTION_NAME,
     icon: repIcon,
     heading: 'dummy action 6',
     body: ['dummy action body', 'another one'],

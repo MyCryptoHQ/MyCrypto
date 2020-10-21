@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import {
+  ACTION_NAME,
   ACTION_STATE,
   ActionTemplate,
   ExtendedUserAction,
@@ -37,7 +38,7 @@ function useUserActions() {
 
   const deleteUserAction = (userAction: ExtendedUserAction) => model.destroy(userAction);
 
-  const findUserAction = (actionName: string): ExtendedUserAction | undefined =>
+  const findUserAction = (actionName: ACTION_NAME): ExtendedUserAction | undefined =>
     userActions.find((a) => a.name === actionName);
 
   return {

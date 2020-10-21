@@ -124,6 +124,7 @@ export {
   ActionTemplate,
   ExtendedUserAction,
   ACTION_CATEGORIES,
-  ACTION_STATE
+  ACTION_STATE,
+  ACTION_NAME
 } from './userAction';
 export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens';

@@ -12,14 +12,14 @@ import {
 import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 import translate, { translateRaw } from '@translations';
-import { ACTION_CATEGORIES, ActionTemplate } from '@types';
+import { ACTION_CATEGORIES, ACTION_NAME, ActionTemplate } from '@types';
 import { formatSupportEmail, isHardwareWallet } from '@utils';
 
 import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from './components';
 
 export const actionTemplates: ActionTemplate[] = [
   {
-    name: 'update_label',
+    name: ACTION_NAME.UPDATE_LABEL,
     icon: 'experience',
     heading: translateRaw('UPDATE_LABEL_ACTION_HEADING'),
     body: [translate('UPDATE_LABEL_ACTION_BODY_1'), translate('UPDATE_LABEL_ACTION_BODY_2')],
@@ -32,7 +32,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
   {
-    name: 'migrate_rep',
+    name: ACTION_NAME.MIGRATE_REP,
     heading: translateRaw('MIGRATE_REP_ACTION_HEADING'),
     subHeading: MigrationSubHead,
     icon: 'rep-logo',
@@ -49,7 +49,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MIGRATION
   },
   {
-    name: 'claim_uni',
+    name: ACTION_NAME.CLAIM_UNI,
     heading: translateRaw('CLAIM_UNI_ACTION_HEADING'),
     icon: 'uni-logo',
     subHeading: UniClaimSubHead,
@@ -66,7 +66,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
   {
-    name: 'renew_ens',
+    name: ACTION_NAME.RENEW_ENS,
     heading: translateRaw('RENEW_ENS_ACTION_HEADING'),
     icon: 'ensLogo',
     filter: (state: StoreContextState) =>
@@ -83,7 +83,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
   {
-    name: 'buy_hw',
+    name: ACTION_NAME.BUY_HW,
     heading: translateRaw('BUY_HW_ACTION_HEADING'),
     icon: 'ledger-icon',
     body: [translate('BUY_HW_ACTION_BODY')],
@@ -97,7 +97,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SECURITY
   },
   {
-    name: 'myc_membership',
+    name: ACTION_NAME.MYC_MEMBERSHIP,
     heading: translateRaw('MYC_MEMBERSHIP_ACTION_HEADING'),
     icon: 'membership',
     body: [translate('MYC_MEMBERSHIP_ACTION_BODY')],
@@ -111,7 +111,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SELF_LOVE
   },
   {
-    name: 'add_account',
+    name: ACTION_NAME.ADD_ACCOUNT,
     heading: translateRaw('ADD_ACCOUNT_ACTION_HEADING'),
     icon: 'experience',
     body: [translate('ADD_ACCOUNT_ACTION_BODY')],
@@ -125,7 +125,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
   {
-    name: 'backup',
+    name: ACTION_NAME.BACKUP,
     heading: translateRaw('BACKUP_ACTION_HEADING'),
     icon: 'experience',
     body: [translate('BACKUP_ACTION_BODY')],
@@ -139,7 +139,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
   {
-    name: 'feedback',
+    name: ACTION_NAME.FEEDBACK,
     heading: translateRaw('FEEDBACK_ACTION_HEADING'),
     icon: 'feedback',
     body: [translate('FEEDBACK_ACTION_BODY_1'), translate('FEEDBACK_ACTION_BODY_2')],
@@ -152,7 +152,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.OTHER
   },
   {
-    name: 'newsletter',
+    name: ACTION_NAME.NEWSLETTER,
     heading: translateRaw('NEWSLETTER_ACTION_HEADING'),
     icon: 'newsletter',
     body: [translate('NEWSLETTER_ACTION_BODY')],
@@ -165,7 +165,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.OTHER
   },
   {
-    name: 'telegram',
+    name: ACTION_NAME.TELEGRAM,
     heading: translateRaw('TELEGRAM_ACTION_HEADING'),
     icon: 'telegram-icon',
     body: [translate('TELEGRAM_ACTION_BODY')],
@@ -178,7 +178,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.OTHER
   },
   {
-    name: 'swap',
+    name: ACTION_NAME.SWAP,
     heading: translateRaw('SWAP_ACTION_HEADING'),
     icon: 'swap',
     body: [translate('SWAP_ACTION_BODY')],
@@ -194,7 +194,7 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.OTHER
   },
   {
-    name: 'twitter',
+    name: ACTION_NAME.TWITTER,
     heading: translateRaw('TWITTER_ACTION_HEADING'),
     icon: 'twitter-icon',
     body: [translate('TWITTER_ACTION_BODY')],

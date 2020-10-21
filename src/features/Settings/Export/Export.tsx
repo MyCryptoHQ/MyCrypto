@@ -9,7 +9,7 @@ import { ROUTE_PATHS } from '@config';
 import { useSettings, useUserActions } from '@services/Store';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ACTION_STATE } from '@types';
+import { ACTION_NAME, ACTION_STATE } from '@types';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -34,7 +34,7 @@ export function Export(props: RouteComponentProps) {
   const data = exportStorage();
   const { updateUserAction, findUserAction } = useUserActions();
 
-  const backupAction = findUserAction('backup');
+  const backupAction = findUserAction(ACTION_NAME.BACKUP);
 
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>

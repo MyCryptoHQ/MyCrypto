@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { fActionTemplates, fUserActions } from '@fixtures';
-import { ACTION_STATE, ExtendedUserAction, LSKeys } from '@types';
+import { ACTION_NAME, ACTION_STATE, ExtendedUserAction, LSKeys } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useUserActions from './useUserActions';
@@ -74,7 +74,9 @@ describe('useUserActions', () => {
       userActions: fUserActions
     });
 
-    expect(result.current.findUserAction(fUserActions[0].name)).toEqual(fUserActions[0]);
+    expect(result.current.findUserAction(fUserActions[0].name as ACTION_NAME)).toEqual(
+      fUserActions[0]
+    );
   });
 
   it("findUserAction() return undefined when the userAction doesn't exist", () => {
@@ -82,6 +84,6 @@ describe('useUserActions', () => {
       userActions: fUserActions
     });
 
-    expect(result.current.findUserAction('foo')).toBeUndefined();
+    expect(result.current.findUserAction('foo' as ACTION_NAME)).toBeUndefined();
   });
 });

@@ -5,6 +5,22 @@ import { State as StoreContextState } from '@services/Store/StoreProvider';
 
 import { TUuid } from './uuid';
 
+export enum ACTION_NAME {
+  UPDATE_LABEL = 'update_label',
+  MIGRATE_REP = 'migrate_rep',
+  CLAIM_UNI = 'claim_uni',
+  RENEW_ENS = 'renew_ens',
+  BUY_HW = 'buy_hw',
+  MYC_MEMBERSHIP = 'myc_membership',
+  ADD_ACCOUNT = 'add_account',
+  BACKUP = 'backup',
+  FEEDBACK = 'feedback',
+  NEWSLETTER = 'newsletter',
+  TELEGRAM = 'telegram',
+  SWAP = 'swap',
+  TWITTER = 'twitter'
+}
+
 export enum ACTION_CATEGORIES {
   SECURITY = 'security',
   SELF_LOVE = 'selfLove',
@@ -22,7 +38,7 @@ export enum ACTION_STATE {
 }
 
 export interface ActionTemplate {
-  name: string;
+  name: ACTION_NAME;
   icon: TIcon;
   heading: string;
   subHeading?(props: Record<string, any>): JSX.Element;

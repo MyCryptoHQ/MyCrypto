@@ -5,7 +5,15 @@ import styled from 'styled-components';
 import { useUserActions } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import { ACTION_STATE, Contact, ExtendedContact, NetworkId, TAddress, TUuid } from '@types';
+import {
+  ACTION_NAME,
+  ACTION_STATE,
+  Contact,
+  ExtendedContact,
+  NetworkId,
+  TAddress,
+  TUuid
+} from '@types';
 
 import EditableText from './EditableText';
 
@@ -32,7 +40,7 @@ const EditableAccountLabel = ({
 }: Props) => {
   const { findUserAction, updateUserAction } = useUserActions();
 
-  const updateLabelAction = findUserAction('update_label');
+  const updateLabelAction = findUserAction(ACTION_NAME.UPDATE_LABEL);
 
   return (
     <SWrapper>
