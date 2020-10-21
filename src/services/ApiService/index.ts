@@ -21,4 +21,4 @@ export {
 export { MoonpaySignerService } from './MoonpaySigner';
 export { UniswapService } from './Uniswap';
 export * from './constants';
-export { ENSService } from './ens';
+export { ENSService } from './Ens';
