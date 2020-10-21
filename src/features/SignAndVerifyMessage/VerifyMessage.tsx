@@ -26,7 +26,7 @@ interface VerifyButtonProps {
   disabled?: boolean;
 }
 
-const VerifyButton = styled(Button) <VerifyButtonProps>`
+const VerifyButton = styled(Button)<VerifyButtonProps>`
   ${(props) => props.disabled && 'opacity: 0.4;'}
 
   @media (max-width: ${SCREEN_XS}) {
