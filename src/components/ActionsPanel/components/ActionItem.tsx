@@ -76,7 +76,7 @@ export const ActionItem = ({
   return (
     <Action state={userAction && userAction.state} onClick={() => onActionClick(actionTemplate)}>
       <IconContainer>
-        <Icon type={actionTemplate.icon} />
+        <Icon type={actionTemplate.icon} height="28px" />
       </IconContainer>
       <TitleContainer>
         <Text mb={0} fontSize={2}>
