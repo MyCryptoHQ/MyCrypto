@@ -1,5 +1,6 @@
 import { add, isBefore } from 'date-fns';
 
+import { TIcon } from '@components';
 import {
   ETHUUID,
   EXT_URLS,
@@ -13,9 +14,33 @@ import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { State as StoreContextState } from '@services/Store/StoreProvider';
 import translate, { translateRaw } from '@translations';
 import { ACTION_CATEGORIES, ACTION_NAME, ActionTemplate } from '@types';
-import { formatSupportEmail, isHardwareWallet } from '@utils';
+import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@utils';
 
 import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from './components';
+
+interface IHwWalletElement {
+  icon: TIcon;
+  button: { to: string; content: string; external: boolean };
+}
+
+const HwWalletElements: IHwWalletElement[] = [
+  {
+    icon: 'ledger-icon',
+    button: {
+      to: EXT_URLS.LEDGER_REFERRAL.url,
+      content: translateRaw('BUY_HW_ACTION_BUTTON'),
+      external: true
+    }
+  },
+  {
+    icon: 'trezor-icon',
+    button: {
+      to: EXT_URLS.TREZOR_REFERRAL.url,
+      content: translateRaw('BUY_HW_ACTION_BUTTON'),
+      external: true
+    }
+  }
+];
 
 export const actionTemplates: ActionTemplate[] = [
   {
@@ -85,15 +110,11 @@ export const actionTemplates: ActionTemplate[] = [
   {
     name: ACTION_NAME.BUY_HW,
     heading: translateRaw('BUY_HW_ACTION_HEADING'),
-    icon: 'ledger-icon',
     body: [translate('BUY_HW_ACTION_BODY')],
+    // get randomly logo and link between trezor and ledger
+    ...randomElementFromArray(HwWalletElements),
     filter: (state: StoreContextState) => !state.accounts.some((c) => isHardwareWallet(c.wallet)),
     priority: 30,
-    button: {
-      content: translateRaw('BUY_HW_ACTION_BUTTON'),
-      to: EXT_URLS.LEDGER_REFERRAL.url,
-      external: true
-    },
     category: ACTION_CATEGORIES.SECURITY
   },
   {

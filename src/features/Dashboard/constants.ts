@@ -2,32 +2,10 @@ import buyIcon from '@assets/images/icn-buy.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
-import ledgerIcon from '@assets/images/wallets/ledger.svg';
-import trezorIcon from '@assets/images/wallets/trezor.svg';
-import { EXT_URLS, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 
 import { Action } from './types';
-
-const selectRandomAction = (actionsList: Action[]) =>
-  actionsList[Math.floor(Math.random() * actionsList.length)];
-
-const hardwareWallets: Action[] = [
-  {
-    icon: ledgerIcon,
-    faded: true,
-    title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-    link: EXT_URLS.LEDGER_REFERRAL.url,
-    description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Ledger' })
-  },
-  {
-    icon: trezorIcon,
-    faded: true,
-    title: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_TITLE'),
-    link: EXT_URLS.TREZOR_REFERRAL.url,
-    description: translateRaw('DASHBOARD_ACTIONS_GET_WALLET_SUBTITLE', { $wallet: 'Trezor' })
-  }
-];
 
 export const actions: Action[] = [
   {
@@ -53,6 +31,5 @@ export const actions: Action[] = [
     title: translateRaw('DASHBOARD_ACTIONS_BUY_TITLE'),
     link: ROUTE_PATHS.BUY.path,
     description: translateRaw('DASHBOARD_ACTIONS_BUY_SUBTITLE')
-  },
-  selectRandomAction(hardwareWallets)
+  }
 ];

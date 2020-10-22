@@ -41,6 +41,7 @@ import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
+import trezorIcon from '@assets/images/wallets/trezor.svg';
 
 const svgIcons = {
   /* Action icons */
@@ -64,6 +65,7 @@ const svgIcons = {
   whitepaper,
   experience,
   'ledger-icon': ledgerIcon,
+  'trezor-icon': trezorIcon,
   membership,
   feedback,
   newsletter,
