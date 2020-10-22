@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
 import { Spinner } from '@components';
-import { StoreContext } from '@services';
+import { DomainNameRecord } from '@types';
 
 import MyDomains from './MyDomains';
 import NoDomains from './NoEnsDomains';
@@ -20,21 +20,24 @@ const EnsTableContainer = styled.div`
   overflow: auto;
 `;
 
-export const EnsTable = () => {
-  const { ensOwnershipRecords, isEnsFetched } = useContext(StoreContext);
+export const EnsTable = ({
+  records,
+  isFetched
+}: {
+  records: DomainNameRecord[];
+  isFetched: boolean;
+}) => {
   return (
     <EnsTableContainer>
-      {ensOwnershipRecords.length === 0 &&
-        (isEnsFetched ? (
+      {records.length === 0 &&
+        (isFetched ? (
           <NoDomains />
         ) : (
           <SpinnerContainer>
             <Spinner size={'x3'} />
           </SpinnerContainer>
         ))}
-      {ensOwnershipRecords.length !== 0 && (
-        <MyDomains domainOwnershipRecords={ensOwnershipRecords} />
-      )}
+      {records.length !== 0 && <MyDomains domainOwnershipRecords={records} />}
     </EnsTableContainer>
   );
 };

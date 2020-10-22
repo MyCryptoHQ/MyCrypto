@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DashboardPanel, PoweredByText } from '@components';
+import { StoreContext } from '@services';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -30,6 +31,7 @@ const StyledLayout = styled.div`
 `;
 
 export default function EnsDashboard() {
+  const { ensOwnershipRecords, isEnsFetched } = useContext(StoreContext);
   return (
     <StyledLayout>
       <DashboardWrapper>
@@ -40,7 +42,7 @@ export default function EnsDashboard() {
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
           headingRight={<PoweredByText provider="ENS" />}
         >
-          <EnsTable />
+          <EnsTable records={ensOwnershipRecords} isFetched={isEnsFetched} />
         </DashboardPanel>
       </DashboardWrapper>
     </StyledLayout>

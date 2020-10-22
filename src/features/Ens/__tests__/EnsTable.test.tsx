@@ -2,7 +2,6 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { DomainNameRecord } from '@types';
 
@@ -10,20 +9,8 @@ import { EnsTable } from '../EnsTable';
 
 /* Test components */
 describe('ENSTable', () => {
-  const renderComponent = (ensOwnershipRecords: DomainNameRecord[], isEnsFetched: boolean) => {
-    return simpleRender(
-      <StoreContext.Provider
-        value={
-          ({
-            ensOwnershipRecords,
-            isEnsFetched
-          } as any) as any
-        }
-      >
-        <EnsTable />
-      </StoreContext.Provider>
-    );
-  };
+  const renderComponent = (records: DomainNameRecord[], isFetched: boolean) =>
+    simpleRender(<EnsTable records={records} isFetched={isFetched} />);
 
   test('Can render no-domains state of component', () => {
     const { getByText } = renderComponent([], true);
