@@ -5,6 +5,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
+  SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY_DEV }}
 
 on:
   pull_request:
