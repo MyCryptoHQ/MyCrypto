@@ -665,6 +665,8 @@
     "SETTINGS_IMPORT_SUCCESS_HEADING": "Import Complete",
     "SETTINGS_INACTIVITY_LABEL": "Inactivity Timer",
     "SETTINGS_INACTIVITY_TOOLTIP": "The amount of time before your the MyCrypto screen app locks.",
+    "SETTINGS_PRODUCT_ANALYTICS": "Product Analytics",
+    "SETTINGS_PRODUCT_ANALYTICS_TOOLTIP": "Help us improve our product by allowing us to collect behaviourial events. We never collect any identifiable information (address, transaction hash, ip etc)",
     "SETTINGS_TOOLTIP": "Your MyCrypto Settings include the Accounts in your MyCrypto Wallet, your Saved Address, and other preferences. We will only export or import your MyCrypto Settings. This does not include private keys and exporting is not a way to backup private keys.",
     "SHOW": "Show",
     "SIGNED_TRANSACTION": "Signed Transaction",
