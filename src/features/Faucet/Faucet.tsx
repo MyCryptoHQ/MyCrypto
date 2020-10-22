@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import questionToolTip from '@assets/images/icn-question.svg';
@@ -16,8 +16,7 @@ import {
   TxReceipt
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
-//import { StoreContext } from '@services/Store';
-import { StoreContext, useAssets, useContacts } from '@services/Store';
+import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
 import { noOp } from '@utils';
@@ -99,13 +98,14 @@ const SubmitCaptchaButton = styled(Button)`
 
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
 
-export function Faucet({ history }: RouteComponentProps<{}>) {
+export function Faucet() {
   const [step, setStep] = useState(0);
   const [challenge, setChallenge] = useState({} as any);
   const [solution, setSolution] = useState('');
   const [txResult, setTxResult] = useState({} as any);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const { accounts } = useContext(StoreContext);
 
@@ -161,7 +161,7 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
 
-  const { networks } = useContext(StoreContext);
+  const { networks } = useNetworks();
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId, createContact } = useContacts();
 
@@ -279,5 +279,3 @@ export function Faucet({ history }: RouteComponentProps<{}>) {
     </ExtendedContentPanel>
   );
 }
-
-export default withRouter(Faucet);

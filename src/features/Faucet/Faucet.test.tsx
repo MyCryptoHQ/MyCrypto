@@ -8,19 +8,19 @@ import { fAccount, fAssets, fNetworks, fSettings } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
-import Faucet from './Faucet';
+import { Faucet } from './Faucet';
 import { possibleSolution, requestChallenge, solveChallenge } from './helpers';
 
 jest.mock('./helpers', () => ({
   ...jest.requireActual('./helpers'),
-  requestChallenge: jest.fn(async () => {
-    return {
+  requestChallenge: jest.fn(() => {
+    return Promise.resolve({
       id: 'ffffffff',
       result: ''
-    };
+    });
   }),
-  solveChallenge: jest.fn(async () => {
-    return {
+  solveChallenge: jest.fn(() => {
+    return Promise.resolve({
       chainId: 3,
       data: '0x',
       from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
@@ -31,7 +31,7 @@ jest.mock('./helpers', () => ({
       nonce: 39,
       to: '0x0000000000000000000000000000000000000000',
       value: '1'
-    };
+    });
   })
 }));
 
@@ -47,7 +47,7 @@ describe('Faucet', () => {
             addressBook: [],
             contracts: [],
             settings: fSettings,
-            createActions: jest.fn()
+            createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
           } as any
         }
       >
@@ -72,6 +72,8 @@ describe('Faucet', () => {
       expect(possibleSolution('AbC01')).toBe(false);
     });
   });
+
+  beforeEach(() => jest.clearAllMocks());
 
   test('Can render', () => {
     const { getByText } = renderComponent();
@@ -106,12 +108,15 @@ describe('Faucet', () => {
 
   test('Tx receipt should be shown after successful captcha', async () => {
     const { container, getByText } = renderComponent();
+
     await selectEvent.openMenu(getByText(translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')));
     const option = getByText(new RegExp(fAccount.label, 'i'));
     fireEvent.pointerDown(option);
+
     fireEvent.click(container.querySelector('button[name="requestFunds"]')!);
-    await waitFor(() => expect(requestChallenge).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(requestChallenge).toHaveBeenCalledTimes(1));
     expect(getByText(translateRaw('CAPTCHA'))).toBeInTheDocument();
+
     const selector: any = container.querySelector('button[name="submitCaptcha"]');
     expect(selector.disabled).toBe(true);
     fireEvent.change(container.querySelector('input[name="captcha"]')!, {
@@ -119,9 +124,8 @@ describe('Faucet', () => {
     });
     expect(selector.disabled).toBe(false);
     fireEvent.click(container.querySelector('button[name="submitCaptcha"]')!);
-    await new Promise((r) => setTimeout(r, 2000));
+
     await waitFor(() => expect(solveChallenge).toHaveBeenCalledTimes(1));
-    console.log(container.querySelector('html'));
     await waitFor(() =>
       expect(container.querySelector('div[class="TransactionReceipt"]')).toBeInTheDocument()
     );
