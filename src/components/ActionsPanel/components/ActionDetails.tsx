@@ -8,7 +8,8 @@ import Box from '@components/Box';
 import { Body } from '@components/NewTypography';
 import { useUserActions } from '@services';
 import { SPACING } from '@theme';
-import { ACTION_STATE, ActionTemplate } from '@types';
+import { ACTION_STATE, ActionTemplate, TURL } from '@types';
+import { openLink } from '@utils';
 
 const SBox = styled(Box)`
   & > * {
@@ -27,7 +28,7 @@ export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTempla
     userAction.state != 'default' &&
       updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.STARTED });
     actionTemplate.button.external
-      ? window.open(actionTemplate.button.to, '_blank', 'nopperer noreferer')
+      ? openLink(actionTemplate.button.to as TURL)
       : history.push(actionTemplate.button.to);
   };
   return (
