@@ -3,5 +3,6 @@ export {
   getBaseAsset,
   getAccountByAddressAndNetworkName,
   getAccountsByAsset,
-  getDashboardAccounts
+  getDashboardAccounts,
+  isEthereumAccount
 } from './helpers';

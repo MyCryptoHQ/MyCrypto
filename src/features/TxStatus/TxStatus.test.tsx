@@ -32,11 +32,12 @@ describe('TxStatus', () => {
             addressBook: [],
             contracts: [],
             settings: fSettings,
-            createActions: jest.fn()
+            createActions: jest.fn(),
+            userActions: []
           } as any
         }
       >
-        <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
+        <StoreContext.Provider value={{ accounts: [fAccount], userActions: [] } as any}>
           <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
             <TxStatus />
           </RatesContext.Provider>

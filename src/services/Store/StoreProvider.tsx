@@ -17,6 +17,7 @@ import {
   MembershipState,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
+import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -24,6 +25,7 @@ import { translateRaw } from '@translations';
 import {
   Asset,
   Contact,
+  DomainNameRecord,
   ExtendedAsset,
   IAccount,
   IAccountAdditionData,
@@ -98,6 +100,8 @@ export interface State {
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly txHistory: ITxHistoryApiResponse[];
   readonly uniClaims: UniClaimResult[];
+  readonly ensOwnershipRecords: DomainNameRecord[];
+  readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -391,6 +395,20 @@ export const StoreProvider: React.FC = ({ children }) => {
     }
   }, [mainnetAccounts.length]);
 
+  const [ensOwnershipRecords, setEnsOwnershipRecords] = useState<DomainNameRecord[]>(
+    [] as DomainNameRecord[]
+  );
+  const [isEnsFetched, setIsEnsFetched] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      setEnsOwnershipRecords(
+        await ENSService.fetchOwnershipRecords(accounts.filter(isEthereumAccount))
+      );
+      setIsEnsFetched(true);
+    })();
+  }, [accounts.length]);
+
   const state: State = {
     accounts,
     networks,
@@ -403,6 +421,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     coinGeckoAssetManifest,
     txHistory,
     uniClaims,
+    ensOwnershipRecords,
+    isEnsFetched,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },

@@ -17,6 +17,8 @@ interface IExtUrl {
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
+export const SUBSCRIBE_NEWSLETTER_LINK = 'http://eepurl.com/ggh4r5';
+
 export const socialMediaLinks: Link[] = [
   {
     link: 'https://twitter.com/mycrypto',

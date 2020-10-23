@@ -6,9 +6,10 @@ import styled from 'styled-components';
 
 import { Button, ContentPanel, Downloader, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useSettings } from '@services/Store';
+import { useSettings, useUserActions } from '@services/Store';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
+import { ACTION_NAME, ACTION_STATE } from '@types';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -31,6 +32,10 @@ export function Export(props: RouteComponentProps) {
   const onBack = history.goBack;
   const { exportStorage } = useSettings();
   const data = exportStorage();
+  const { updateUserAction, findUserAction } = useUserActions();
+
+  const backupAction = findUserAction(ACTION_NAME.BACKUP);
+
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
@@ -41,7 +46,13 @@ export function Export(props: RouteComponentProps) {
             {translate('SETTINGS_EXPORT_LEAVE')}
           </Button>
         </RouterLink>
-        <Downloader data={data} />
+        <Downloader
+          data={data}
+          onClick={() =>
+            backupAction &&
+            updateUserAction(backupAction.uuid, { ...backupAction, state: ACTION_STATE.COMPLETED })
+          }
+        />
       </ImportSuccessContainer>
     </CenteredContentPanel>
   );

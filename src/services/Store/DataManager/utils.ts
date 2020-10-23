@@ -9,13 +9,13 @@ import {
   ExtendedContact,
   ExtendedContract,
   ExtendedNotification,
+  ExtendedUserAction,
   ITxReceipt,
   LocalStorage,
   LSKeys,
   Network,
   NetworkId,
   NetworkNodes,
-  Notification,
   TAddress,
   TUuid
 } from '@types';
@@ -29,6 +29,11 @@ type ArrayToObj = <K extends string | number>(
 ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
 const arrayToObj: ArrayToObj = (key) => (arr) =>
   arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
+type ObjToExtendedArray = <T>(o: T) => unknown[];
+export const objToExtendedArray: ObjToExtendedArray = (obj) =>
+  Object.entries(obj).reduce((acc, [uuid, n]: [TUuid, typeof obj]) => {
+    return acc.concat([{ ...n, uuid }]);
+  }, [] as unknown[]);
 
 export const mergeConfigWithLocalStorage = (
   defaultConfig: NetworkConfig,
@@ -74,12 +79,7 @@ export function marshallState(ls: LocalStorage): DataStore {
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
-    [LSKeys.ADDRESS_BOOK]: Object.entries(ls[LSKeys.ADDRESS_BOOK]).reduce(
-      (acc, [uuid, contact]: [TUuid, ExtendedContact]) => {
-        return acc.concat([{ ...contact, uuid }]);
-      },
-      [] as ExtendedContact[]
-    ),
+    [LSKeys.ADDRESS_BOOK]: objToExtendedArray(ls[LSKeys.ADDRESS_BOOK]) as ExtendedContact[],
     [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
     [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
     [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]).map(
@@ -88,14 +88,12 @@ export function marshallState(ls: LocalStorage): DataStore {
         blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
       })
     ),
-    [LSKeys.NOTIFICATIONS]: Object.entries(ls[LSKeys.NOTIFICATIONS]).reduce(
-      (acc, [uuid, n]: [TUuid, Notification]) => {
-        return acc.concat([{ ...n, uuid }]);
-      },
-      [] as ExtendedNotification[]
-    ),
+    [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
-    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD]
+    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],
+    [LSKeys.USER_ACTIONS]: ls[LSKeys.USER_ACTIONS]
+      ? (objToExtendedArray(ls[LSKeys.USER_ACTIONS]) as ExtendedUserAction[])
+      : []
   };
 }
 
@@ -146,6 +144,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
     [LSKeys.NOTIFICATIONS]: arrayToObj('uuid')(st[LSKeys.NOTIFICATIONS]),
     [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: st[LSKeys.PASSWORD],
-    [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS])
+    [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS]),
+    [LSKeys.USER_ACTIONS]: arrayToObj('uuid')(st[LSKeys.USER_ACTIONS])
   };
 }

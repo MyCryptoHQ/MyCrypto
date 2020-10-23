@@ -4,6 +4,7 @@ export * from './Asset';
 export * from './Contract';
 export * from './Network';
 export * from './Settings';
+export * from './UserAction';
 export * from './DataManager';
 export { StoreContext, StoreProvider, State as StoreState } from './StoreProvider';
 export { getAccountBalance, getStoreAccount } from './utils';

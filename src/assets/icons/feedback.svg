@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 76 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>feedback@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="feedback" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icn-Questions" transform="translate(2.000000, 6.000000)" fill-rule="nonzero" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.22222">
+            <path d="M42,7.3279007 L42,26.9125081 C41.9946208,30.7340194 39.0832929,33.9098859 35.3123056,34.2076963 L21.0000582,34.2076963 L11.307699,44 L11.307699,34.2076963 L7.23692853,34.2076963 C3.24376438,34.1987999 0.00888300273,30.9304693 0,26.8961737 L0,7.31158092 C0.00888300273,3.27722706 3.24376438,0.00898389866 7.23692853,0 L34.6984916,0 C38.6916267,0.00898389866 41.9265807,3.27722706 41.9354492,7.31158092 L42,7.3279007 Z" id="Path" fill="#CFDBEE"></path>
+            <path d="M58,20.2251829 L58,47.6207741 C58,51.7238814 54.7908138,55.0500242 50.831963,55.0500242 L30.799965,55.0500242 L21.2000542,65 L21.2000542,55.0500242 L17.1680514,55.0500242 C13.2128006,55.0409845 10.0087984,51.7200284 10,47.6207741 L10,27.7208225 C10.0087984,23.6215682 13.2128006,20.3006121 17.1680514,20.2915724 L34.2080153,20.2915724 L58,20.2251829 Z" id="Path_2" fill="#FFFFFF"></path>
+        </g>
+        <g id="Group-2" transform="translate(19.000000, 33.500000)" opacity="0.4" stroke="#B6BFC7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.69867">
+            <line x1="30.5" y1="19.5" x2="0" y2="19" id="Path-Copy-5"></line>
+            <line x1="18" y1="0.5" x2="0" y2="0.5" id="Path-Copy-6"></line>
+            <line x1="18" y1="7" x2="0" y2="7" id="Path-Copy-3"></line>
+            <line x1="32.5" y1="13" x2="0" y2="13" id="Path-Copy-4"></line>
+        </g>
+        <g id="Group" transform="translate(41.000000, 5.000000)" fill="#1EB8E7" fill-rule="nonzero" stroke="#163150" stroke-width="3">
+            <path d="M10.5,44 C13.9556962,44 15.8164557,43.3111546 16.3481013,40.81409 L20.4683544,20.665362 C20.7341772,19.2876712 21,17.9099804 21,16.6183953 L21,6.63013699 C21,2.23874755 17.1455696,0 10.5,0 C3.85443038,0 0,2.23874755 0,6.63013699 L0,16.6183953 C0,17.9099804 0.265822785,19.2876712 0.53164557,20.665362 L4.65189873,40.81409 C5.1835443,43.3111546 7.0443038,44 10.5,44 Z" id="Path"></path>
+            <path d="M10.5,66 C15.1646341,66 19,62.1646341 19,57.5 C19,52.8353659 15.1646341,49 10.5,49 C5.83536585,49 2,52.8353659 2,57.5 C2,62.1646341 5.83536585,66 10.5,66 Z" id="Path"></path>
+        </g>
+        <line x1="66.5" y1="22" x2="65" y2="38" id="Path-Copy" stroke="#B6BFC7" stroke-width="1.69867" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"></line>
+        <line x1="66.5" y1="12" x2="66.5" y2="17" id="Path-Copy-2" stroke="#B6BFC7" stroke-width="1.69867" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"></line>
+    </g>
+</svg>

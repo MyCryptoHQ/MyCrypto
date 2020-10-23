@@ -5,10 +5,9 @@ import isEmpty from 'ramda/src/isEmpty';
 import map from 'ramda/src/map';
 import path from 'ramda/src/path';
 
-import { DomainNameRecord } from '@features/Ens/types';
 import { isENSLabelHash } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
-import { StoreAccount } from '@types';
+import { DomainNameRecord, StoreAccount } from '@types';
 
 import { ENS_GRAPH_ENDPOINT } from './constants';
 import { QUERY_GET_ENS_DOMAINS } from './queries';

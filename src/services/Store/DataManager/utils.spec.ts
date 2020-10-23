@@ -11,7 +11,7 @@ import {
 } from '@types';
 import { generateUUID } from '@utils';
 
-import { constructNetworkNodes, mergeConfigWithLocalStorage } from './utils';
+import { constructNetworkNodes, mergeConfigWithLocalStorage, objToExtendedArray } from './utils';
 
 describe('constructNetworkNodes()', () => {
   it('returns empty networkNodes object if no custom nodes present and default node is auto selected', () => {
@@ -146,5 +146,19 @@ describe('mergeConfigWithLocalStorage()', () => {
     expect(
       mergedNetwork.nodes.find((n: NodeOptions) => n.name === customNodeConfig.name)
     ).toBeTruthy();
+  });
+});
+
+describe('objToExtendedArray()', () => {
+  it('should tranform an object with an uuid key to an array containing the uuid', () => {
+    const lsObject = {
+      '19345669-8bad-4597-b541-02486696fcc1': {
+        foo: 'bar'
+      }
+    };
+    const expected = [{ uuid: '19345669-8bad-4597-b541-02486696fcc1', foo: 'bar' }];
+    const result = objToExtendedArray(lsObject);
+
+    expect(result).toEqual(expected);
   });
 });

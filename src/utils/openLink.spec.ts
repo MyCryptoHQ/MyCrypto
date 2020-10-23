@@ -1,7 +1,7 @@
 import { TURL } from '@types';
 import { openLink } from '@utils';
 
-describe('opneLink', () => {
+describe('openLink', () => {
   const { open } = window;
   const url = 'https://example.com' as TURL;
 

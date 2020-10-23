@@ -7,6 +7,7 @@ export {
   productLinks,
   socialMediaLinks,
   DOWNLOAD_MYCRYPTO_LINK,
+  SUBSCRIBE_NEWSLETTER_LINK,
   UNISWAP_LINK
 } from './links';
 export * from './dpaths';

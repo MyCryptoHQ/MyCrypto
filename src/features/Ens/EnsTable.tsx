@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Spinner } from '@components';
+import { DomainNameRecord } from '@types';
 
-import { MyDomainsData } from './EnsDashboard';
 import MyDomains from './MyDomains';
 import NoDomains from './NoEnsDomains';
 
@@ -20,18 +20,26 @@ const EnsTableContainer = styled.div`
   overflow: auto;
 `;
 
-export const EnsTable = ({ records, isFetched }: MyDomainsData) => (
-  <EnsTableContainer>
-    {records.length === 0 &&
-      (isFetched ? (
-        <NoDomains />
-      ) : (
-        <SpinnerContainer>
-          <Spinner size={'x3'} />
-        </SpinnerContainer>
-      ))}
-    {records.length !== 0 && <MyDomains domainOwnershipRecords={records} />}
-  </EnsTableContainer>
-);
+export const EnsTable = ({
+  records,
+  isFetched
+}: {
+  records: DomainNameRecord[];
+  isFetched: boolean;
+}) => {
+  return (
+    <EnsTableContainer>
+      {records.length === 0 &&
+        (isFetched ? (
+          <NoDomains />
+        ) : (
+          <SpinnerContainer>
+            <Spinner size={'x3'} />
+          </SpinnerContainer>
+        ))}
+      {records.length !== 0 && <MyDomains domainOwnershipRecords={records} />}
+    </EnsTableContainer>
+  );
+};
 
 export default EnsTable;

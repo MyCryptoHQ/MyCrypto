@@ -31,7 +31,8 @@ function getComponent(contacts: ExtendedContact[], props: Props) {
         ({
           addressBook: contacts,
           contracts: [],
-          createActions: jest.fn()
+          createActions: jest.fn(),
+          userActions: []
         } as unknown) as any
       }
     >

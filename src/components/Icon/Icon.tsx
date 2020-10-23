@@ -12,6 +12,8 @@ import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
+import feedback from '@assets/icons/feedback.svg';
+import newsletter from '@assets/icons/newsletter.svg';
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
 import github from '@assets/icons/social/github.svg';
@@ -19,19 +21,29 @@ import reddit from '@assets/icons/social/reddit.svg';
 import slack from '@assets/icons/social/slack.svg';
 import telegram from '@assets/icons/social/telegram.svg';
 import twitter from '@assets/icons/social/twitter.svg';
+import telegramIcon from '@assets/icons/telegram.svg';
+import twitterIcon from '@assets/icons/twitter.svg';
 import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
-import ensLogo from '@assets/images/ens/ensIcon.svg';
+import ensLogo from '@assets/images/ens/ens-icon.svg';
 import check from '@assets/images/icn-check.svg';
+import experience from '@assets/images/icn-experience.svg';
 import informational from '@assets/images/icn-info-blue.svg';
+import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
 import warning from '@assets/images/icn-warning.svg';
+import membership from '@assets/images/membership/membership-none.svg';
+import repLogo from '@assets/images/rep-logo.svg';
+import swap from '@assets/images/swap copy.svg';
+import uniLogo from '@assets/images/uni-logo.png';
+import ledgerIcon from '@assets/images/wallets/ledger.svg';
+import trezorIcon from '@assets/images/wallets/trezor.svg';
 
-const icons = {
+const svgIcons = {
   /* Action icons */
   back,
   expand,
@@ -39,6 +51,7 @@ const icons = {
   add,
   confirm,
   info,
+  more,
   'info-small': infoSmall,
 
   /* Tooltips*/
@@ -50,6 +63,15 @@ const icons = {
   /* Noun icons */
   website,
   whitepaper,
+  experience,
+  'ledger-icon': ledgerIcon,
+  'trezor-icon': trezorIcon,
+  membership,
+  feedback,
+  newsletter,
+  'telegram-icon': telegramIcon,
+  swap,
+  'twitter-icon': twitterIcon,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,
@@ -60,6 +82,7 @@ const icons = {
   ensLogo,
   coinGeckoLogo,
   zapperLogo,
+  'rep-logo': repLogo,
 
   /* Social Icons */
   coinmarketcap,
@@ -72,6 +95,11 @@ const icons = {
   check
 };
 
+const pngIcons = {
+  /* Partner Icons */
+  'uni-logo': uniLogo
+};
+
 const SInlineSVG = styled(InlineSVG)`
   &&& svg {
     width: ${(props) => props.width};
@@ -80,14 +108,24 @@ const SInlineSVG = styled(InlineSVG)`
   }
 `;
 
+type SvgIcons = keyof typeof svgIcons;
+type PngIcons = keyof typeof pngIcons;
+export type TIcon = SvgIcons | PngIcons;
+
 interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
-  type: keyof typeof icons;
-  size?: string;
+  type: TIcon;
   color?: string;
 }
 
-const Icon: React.FunctionComponent<Props> = ({ type, size = '1rem', ...props }) => (
-  <SInlineSVG src={icons[type]} width={size} height={size} color="red" {...props} />
-);
+const Icon: React.FunctionComponent<Props> = ({ type, ...props }) => {
+  return (
+    <>
+      {svgIcons[type as SvgIcons] && (
+        <SInlineSVG src={svgIcons[type as SvgIcons]} color="red" {...props} />
+      )}
+      {pngIcons[type as PngIcons] && <img src={pngIcons[type as PngIcons]} {...props} />}
+    </>
+  );
+};
 
 export default Icon;

@@ -40,7 +40,7 @@ function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(
     <Router>
       <DataContext.Provider
-        value={{ addressBook: [], contracts: [], createActions: jest.fn() } as any}
+        value={{ addressBook: [], contracts: [], createActions: jest.fn(), userActions: [] } as any}
       >
         <TxReceiptUI {...props} />
       </DataContext.Provider>

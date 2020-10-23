@@ -3,29 +3,24 @@ import React from 'react';
 import { simpleRender } from 'test-utils';
 
 import { translateRaw } from '@translations';
+import { DomainNameRecord } from '@types';
 
 import { EnsTable } from '../EnsTable';
-import { DomainNameRecord } from '../types';
 
 /* Test components */
 describe('ENSTable', () => {
-  const component = (records: DomainNameRecord[], isFetched: boolean) => (
-    <EnsTable records={records} isFetched={isFetched} />
-  );
-
-  const renderComponent = (records: DomainNameRecord[], isFetched: boolean) => {
-    return simpleRender(component(records, isFetched));
-  };
-
-  test('Can render loading spinner state of component', () => {
-    const { container } = renderComponent([], false);
-    expect(container.querySelector('svg')).toBeDefined();
-  });
+  const renderComponent = (records: DomainNameRecord[], isFetched: boolean) =>
+    simpleRender(<EnsTable records={records} isFetched={isFetched} />);
 
   test('Can render no-domains state of component', () => {
     const { getByText } = renderComponent([], true);
     const selector = translateRaw('ENS_DOMAINS_NO_DOMAINS').trim();
     expect(getByText(selector)).toBeInTheDocument();
+  });
+
+  test('Can render loading spinner state of component', () => {
+    const { container } = renderComponent([], false);
+    expect(container.querySelector('svg')).toBeDefined();
   });
 
   test('Can render domains co', () => {
