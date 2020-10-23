@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
-    "@ledgerhq/hw-app-eth": "4.60.3",
+    "@ledgerhq/hw-app-eth": "4.78.0",
     "@ledgerhq/hw-transport": "4.78.0",
     "@ledgerhq/hw-transport-node-hid-noevents": "4.78.0",
     "@ledgerhq/hw-transport-u2f": "4.60.2",
