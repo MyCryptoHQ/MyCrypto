@@ -12,33 +12,31 @@ export const LEND_CONTRACT = '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03' as TAd
 export const MIGRATION_CONTRACT = '0x317625234562B1526Ea2FaC4030Ea499C5291de4' as TAddress;
 
 export const migrationConfig: ITokenMigrationConfig = {
-  title: translateRaw('REP Token Migration'),
+  title: translateRaw('AAVE Token Migration'),
   toContractAddress: AAVE_CONTRACT,
   fromContractAddress: LEND_CONTRACT,
   fromAssetUuid: generateAssetUUID(DEFAULT_NETWORK_CHAINID, LEND_CONTRACT),
   toAssetUuid: generateAssetUUID(DEFAULT_NETWORK_CHAINID, AAVE_CONTRACT),
-  formTitle: translateRaw('REP_TOKEN_MIGRATION'),
-  formActionBtn: translateRaw('REP_TOKEN_MIGRATION'),
-  formAmountTooltip: translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
-  receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
+  formTitle: translateRaw('AAVE_TOKEN_MIGRATION'),
+  formActionBtn: translateRaw('AAVE_TOKEN_MIGRATION'),
+  formAmountTooltip: translateRaw('AAVE_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
+  receiptTitle: translateRaw('AAVE_TOKEN_MIGRATION_RECEIPT'),
   txConstructionConfigs: [
     {
       txType: ITxType.APPROVAL,
-      stepTitle: translateRaw('APPROVE_REP_TOKEN_MIGRATION'),
-      stepContent: translateRaw('REP_TOKEN_MIGRATION_STEP1_TEXT'),
-      actionBtnText: translateRaw('APPROVE_REP_TOKEN_MIGRATION'),
+      stepTitle: translateRaw('APPROVE_AAVE_TOKEN_MIGRATION'),
+      stepContent: translateRaw('AAVE_TOKEN_MIGRATION_STEP1_TEXT'),
+      actionBtnText: translateRaw('APPROVE_AAVE_TOKEN_MIGRATION'),
       stepSvg: step1SVG,
       constructTxFn: createApproveTx
     },
     {
-      txType: ITxType.REP_TOKEN_MIGRATION,
-      stepTitle: translateRaw('COMPLETE_REP_TOKEN_MIGRATION'),
-      stepContent: translateRaw('REP_TOKEN_MIGRATION_STEP2_TEXT'),
+      txType: ITxType.AAVE_TOKEN_MIGRATION,
+      stepTitle: translateRaw('COMPLETE_AAVE_TOKEN_MIGRATION'),
+      stepContent: translateRaw('AAVE_TOKEN_MIGRATION_STEP2_TEXT'),
       actionBtnText: translateRaw('CONFIRM_TRANSACTION'),
       stepSvg: step2SVG,
       constructTxFn: createRepMigrationTx
     }
   ]
 };
-
-export const TOKEN_MIGRATION_GAS_LIMIT = 500000;
