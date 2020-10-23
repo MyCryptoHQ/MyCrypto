@@ -13,19 +13,19 @@ describe('opneLink', () => {
     window.open = open;
   });
 
-  it('calls window.open with _noreferrer', () => {
+  it('calls window.open with noreferrer', () => {
     openLink(url);
     expect(window.open).toHaveBeenCalledTimes(1);
-    expect(window.open).toHaveBeenCalledWith(url, '_blank', '_noreferrer');
+    expect(window.open).toHaveBeenCalledWith(url, '_blank', 'noreferrer');
   });
 
   it('sets the default target to _blank', () => {
     openLink(url);
-    expect(window.open).toHaveBeenCalledWith(url, '_blank', '_noreferrer');
+    expect(window.open).toHaveBeenCalledWith(url, '_blank', 'noreferrer');
   });
 
   it('accepts a custom target', () => {
     openLink(url, '_self');
-    expect(window.open).toHaveBeenCalledWith(url, '_self', '_noreferrer');
+    expect(window.open).toHaveBeenCalledWith(url, '_self', 'noreferrer');
   });
 });
