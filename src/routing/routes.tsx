@@ -102,6 +102,10 @@ const RepTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/RepTokenMigration')
 );
 
+const AaveTokenMigration = lazy(() =>
+  import(/* webpackChunkName: "TokenMigration" */ '@features/AaveTokenMigration')
+);
+
 export interface IAppRoutes {
   [K: string]: IAppRoute;
 }
@@ -331,6 +335,15 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     requireAccounts: true,
     enabled: isTruthy(featureFlags.REP_TOKEN_MIGRATION),
     component: RepTokenMigration
+  },
+  {
+    name: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.name,
+    title: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.title,
+    path: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: isTruthy(featureFlags.AAVE_TOKEN_MIGRATION),
+    component: AaveTokenMigration
   }
 ];
 
