@@ -26,7 +26,7 @@
     "@types/styled-system": "5.1.10",
     "@ungap/promise-any": "1.1.1",
     "@unstoppabledomains/resolution": "1.3.6",
-    "@walletconnect/browser": "1.0.0-beta.39",
+    "@walletconnect/browser": "1.0.0",
     "aes-js": "3.1.1",
     "apollo-boost": "0.4.7",
     "axios": "0.18.1",
