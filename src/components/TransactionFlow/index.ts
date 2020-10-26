@@ -7,4 +7,4 @@ import TxReceipt from './TxReceipt';
 const TxReceiptWithProtectTx = withProtectTx(TxReceipt);
 
 export { TxReceipt, TxReceiptWithProtectTx, ConfirmTransaction, MultiTxReceipt };
-export { createSignConfirmAndBroadcastTxSteps } from './helpers';
+export { createSignConfirmAndReceiptSteps } from './helpers';

@@ -8,7 +8,7 @@ import { translateRaw } from '@translations';
 import { ITxGasLimit, ITxNonce, ITxObject, ITxStatus } from '@types';
 import { generateUUID, noOp } from '@utils';
 
-import { calculateReplacementGasPrice, createSignConfirmAndBroadcastTxSteps } from './helpers';
+import { calculateReplacementGasPrice, createSignConfirmAndReceiptSteps } from './helpers';
 
 describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price with high enough fast gas price', () => {
@@ -22,7 +22,7 @@ describe('calculateReplacementGasPrice', () => {
   });
 });
 
-describe('createSignConfirmAndBroadcastTxSteps', () => {
+describe('createSignConfirmAndReceiptSteps', () => {
   it('prepares the correct number of steps', () => {
     const transactions = [
       {
@@ -44,7 +44,7 @@ describe('createSignConfirmAndBroadcastTxSteps', () => {
         status: ITxStatus.PREPARING
       }
     ];
-    const steps = createSignConfirmAndBroadcastTxSteps({
+    const steps = createSignConfirmAndReceiptSteps({
       transactions,
       amount: '5',
       backStepTitle: translateRaw('REP_TOKEN_MIGRATION'),

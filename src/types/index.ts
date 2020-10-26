@@ -86,7 +86,8 @@ export {
   ISimpleTxFormFull,
   TStepAction,
   TxQueryTypes,
-  ITxMultiConfirmProps
+  ITxMultiConfirmProps,
+  IFlowConfig
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

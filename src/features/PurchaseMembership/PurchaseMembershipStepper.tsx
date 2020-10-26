@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { createSignConfirmAndBroadcastTxSteps } from '@components';
+import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -57,7 +57,7 @@ const PurchaseMembershipStepper = () => {
         handleUserInputFormSubmit(formData);
       }
     },
-    ...createSignConfirmAndBroadcastTxSteps({
+    ...createSignConfirmAndReceiptSteps({
       transactions,
       backStepTitle: translateRaw('PURCHASE_MEMBERSHIP'),
       amount: membershipSelected!.price,

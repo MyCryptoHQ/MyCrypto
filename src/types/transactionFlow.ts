@@ -172,9 +172,11 @@ export enum TxQueryTypes {
   DEFAULT = 'default'
 }
 
+export type IFlowConfig = ITokenMigrationConfig | IMembershipConfig | IAssetPair;
+
 export interface ITxMultiConfirmProps {
   currentTxIdx: number;
   transactions: TxParcel[];
-  flowConfig: ITokenMigrationConfig | IMembershipConfig | IAssetPair;
+  flowConfig: IFlowConfig;
   onComplete?(): void;
 }

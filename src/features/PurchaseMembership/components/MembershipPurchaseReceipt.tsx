@@ -9,25 +9,25 @@ import { makeTxItem } from '@utils/transaction';
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
 
-interface Props {
+export interface IMembershipPurchaseReceiptProps {
   account: StoreAccount;
   transactions: TxParcel[];
-  membershipSelected: IMembershipConfig;
+  flowConfig: IMembershipConfig;
   onComplete(): void;
 }
 
 export default function MembershipReceipt({
   account,
   transactions,
-  membershipSelected,
+  flowConfig,
   onComplete
-}: Props) {
+}: IMembershipPurchaseReceiptProps) {
   const { getAssetByUUID } = useAssets();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
 
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
+    const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig);
     const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
@@ -42,14 +42,14 @@ export default function MembershipReceipt({
     <TxReceipt
       txReceipt={txItems.map(({ txReceipt }) => txReceipt)[0]}
       txConfig={txItems.map(({ txConfig }) => txConfig)[0]}
-      membershipSelected={membershipSelected}
+      membershipSelected={flowConfig}
       resetFlow={onComplete}
       onComplete={onComplete}
     />
   ) : (
     <MultiTxReceipt
       txType={ITxType.PURCHASE_MEMBERSHIP}
-      membershipSelected={membershipSelected}
+      membershipSelected={flowConfig}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}

@@ -7,7 +7,7 @@ import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
 
 interface Props {
-  membershipSelected: IMembershipConfig;
+  flowConfig: IMembershipConfig;
   currentTxIdx: number;
   transactions: TxParcel[];
   account: StoreAccount;
@@ -15,10 +15,10 @@ interface Props {
 }
 
 export default function ConfirmMembershipPurchase(props: Props) {
-  const { membershipSelected, transactions, currentTxIdx, account, onComplete } = props;
+  const { flowConfig, transactions, currentTxIdx, account, onComplete } = props;
 
   const txConfigs = transactions.map((tx) =>
-    makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected)
+    makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig)
   );
 
   const txConfig = txConfigs[currentTxIdx];
@@ -28,7 +28,7 @@ export default function ConfirmMembershipPurchase(props: Props) {
       onComplete={onComplete}
       resetFlow={onComplete}
       txConfig={txConfig}
-      membershipSelected={membershipSelected}
+      membershipSelected={flowConfig}
       txType={ITxType.PURCHASE_MEMBERSHIP}
     />
   );

@@ -4,13 +4,14 @@ import pick from 'ramda/src/pick';
 import { Brand, ValuesType } from 'utility-types';
 
 import { WALLET_STEPS } from '@components';
-import { IMembershipConfig } from '@features/PurchaseMembership/config';
-import { IAssetPair } from '@features/SwapAssets/types';
+import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
+import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {
+  IFlowConfig,
   ISimpleTxFormFull,
-  ITokenMigrationConfig,
   ITxConfig,
+  ITxMultiConfirmProps,
   ITxObject,
   StoreAccount,
   TxParcel
@@ -28,20 +29,22 @@ interface Props {
   amount: string;
   account: StoreAccount;
 
-  flowConfig: ITokenMigrationConfig | IMembershipConfig | IAssetPair;
+  flowConfig: IFlowConfig;
   transactions: TxParcel[];
   isSubmitting: boolean;
 
   multiTxTitle: string;
   receiptTitle: string;
-  multiTxComponent(props: any): JSX.Element;
-  receiptComponent(props: any): JSX.Element;
+  multiTxComponent(props: ITxMultiConfirmProps): JSX.Element;
+  receiptComponent(
+    props: TokenMigrationReceiptProps | IMembershipPurchaseReceiptProps
+  ): JSX.Element;
 
   prepareTx(tx: ITxObject): void;
   sendTx(walletResponse: Brand<string, 'TxHash'> | Brand<Uint8Array, 'TxSigned'>): Promise<void>;
 }
 
-export const createSignConfirmAndBroadcastTxSteps = ({
+export const createSignConfirmAndReceiptSteps = ({
   amount,
   backStepTitle,
   flowConfig,

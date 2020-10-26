@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { createSignConfirmAndBroadcastTxSteps } from '@components';
+import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -53,7 +53,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
         dispatch({ type: tokenMigrationReducer.actionTypes.FORM_SUBMIT, payload: formData });
       }
     },
-    ...createSignConfirmAndBroadcastTxSteps({
+    ...createSignConfirmAndReceiptSteps({
       transactions,
       backStepTitle: tokenMigrationConfig.formTitle,
       amount: amount!,
