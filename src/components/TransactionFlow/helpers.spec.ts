@@ -23,41 +23,49 @@ describe('calculateReplacementGasPrice', () => {
 });
 
 describe('createSignConfirmAndReceiptSteps', () => {
+  const transactions = [
+    {
+      txRaw: {
+        ...fDerivedApprovalTx,
+        gasLimit: '0xc350' as ITxGasLimit,
+        nonce: '0x1' as ITxNonce
+      } as ITxObject,
+      _uuid: generateUUID(),
+      status: ITxStatus.PREPARING
+    },
+    {
+      txRaw: ({
+        ...fDerivedRepMigrationTx,
+        gasPrice: '0xc350' as ITxGasLimit,
+        nonce: '0x2' as ITxNonce
+      } as unknown) as ITxObject,
+      _uuid: generateUUID(),
+      status: ITxStatus.PREPARING
+    }
+  ];
+  const steps = createSignConfirmAndReceiptSteps({
+    transactions,
+    amount: '5',
+    backStepTitle: translateRaw('REP_TOKEN_MIGRATION'),
+    account: fAccounts[0],
+    flowConfig: repTokenMigrationConfig,
+    receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
+    isSubmitting: false,
+    multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
+    multiTxComponent: TokenMigrationMultiTx,
+    receiptComponent: TokenMigrationReceipt,
+    prepareTx: noOp,
+    sendTx: () => new Promise(() => null)
+  });
+
   it('prepares the correct number of steps', () => {
-    const transactions = [
-      {
-        txRaw: {
-          ...fDerivedApprovalTx,
-          gasLimit: '0xc350' as ITxGasLimit,
-          nonce: '0x1' as ITxNonce
-        } as ITxObject,
-        _uuid: generateUUID(),
-        status: ITxStatus.PREPARING
-      },
-      {
-        txRaw: ({
-          ...fDerivedRepMigrationTx,
-          gasPrice: '0xc350' as ITxGasLimit,
-          nonce: '0x2' as ITxNonce
-        } as unknown) as ITxObject,
-        _uuid: generateUUID(),
-        status: ITxStatus.PREPARING
-      }
-    ];
-    const steps = createSignConfirmAndReceiptSteps({
-      transactions,
-      amount: '5',
-      backStepTitle: translateRaw('REP_TOKEN_MIGRATION'),
-      account: fAccounts[0],
-      flowConfig: repTokenMigrationConfig,
-      receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
-      isSubmitting: false,
-      multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
-      multiTxComponent: TokenMigrationMultiTx,
-      receiptComponent: TokenMigrationReceipt,
-      prepareTx: noOp,
-      sendTx: () => new Promise(() => null)
-    });
     expect(steps).toHaveLength(5);
+  });
+
+  it('prepares the steps in the correct order', () => {
+    const multiTxLabel = translateRaw('CONFIRM_TRANSACTION');
+    const receiptTxLabel = translateRaw('REP_TOKEN_MIGRATION_RECEIPT');
+    const labels = [multiTxLabel, '', multiTxLabel, '', receiptTxLabel];
+    expect(steps.map(({ label }) => label)).toStrictEqual(labels);
   });
 });
