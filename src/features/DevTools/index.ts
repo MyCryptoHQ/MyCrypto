@@ -1,1 +1,1 @@
-export { DevToolsManager } from './DevTools';
+export { default as DevToolsManager } from './DevTools';

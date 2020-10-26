@@ -3,24 +3,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { NotificationTemplates, useNotifications } from '@features/NotificationsPanel';
-import { COLORS } from '@theme';
 
 const ToolWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
   width: 100%;
-  padding: 8px;
-  border: 1px solid ${COLORS.GREY_LIGHTEST};
+  margin-bottom: 1em;
 `;
 
 const ToolsNotifications = () => {
   const { displayNotification } = useNotifications();
   return (
     <ToolWrapper>
-      <p>
-        <b>Dashboard notifications</b>
-      </p>
       <button
         onClick={() => {
           displayNotification(NotificationTemplates.walletCreated, {
