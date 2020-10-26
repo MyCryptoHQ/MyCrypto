@@ -2,6 +2,7 @@ import React from 'react';
 
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
+import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
@@ -12,6 +13,7 @@ import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
+import { store } from './store';
 
 const FullHeight = styled.div`
   display: flex;
@@ -25,21 +27,22 @@ const FullScreen = styled.div`
 
 const RootClass = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
-
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <AppProviders>
-          <FullHeight>
-            <DevToolsManager />
-            <FullScreen id="ModalContainer">
-              <AppRoutes />
-              {IS_ELECTRON && <NewAppReleaseModal />}
-            </FullScreen>
-          </FullHeight>
-        </AppProviders>
-      </Router>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <AppProviders>
+            <FullHeight>
+              <DevToolsManager />
+              <FullScreen id="ModalContainer">
+                <AppRoutes />
+                {IS_ELECTRON && <NewAppReleaseModal />}
+              </FullScreen>
+            </FullHeight>
+          </AppProviders>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
