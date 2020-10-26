@@ -1,5 +1,3 @@
-import { Token } from 'shared/types/network';
-
 import { ERC20 } from '@services/EthService';
 import { Asset, IHexStrTransaction, TxObj } from '@types';
 import { hexEncodeData } from '@utils';
@@ -71,17 +69,12 @@ export class RPCRequests {
     };
   }
 
-  public getTokenBalance(address: string, token: Asset | Token): GetTokenBalanceRequest | any {
+  public getTokenBalance(address: string, token: Asset): GetTokenBalanceRequest | any {
     return {
       method: 'eth_call',
       params: [
         {
-          to:
-            'contractAddress' in token
-              ? token.contractAddress
-              : 'address' in token
-                ? token.address
-                : '0x0',
+          to: 'contractAddress' in token ? token.contractAddress : '0x0',
           data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending'

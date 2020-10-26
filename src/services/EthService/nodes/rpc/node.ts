@@ -1,6 +1,5 @@
 import BN from 'bn.js';
-import { Token } from 'types/network';
-import { TransactionData, TransactionReceipt } from 'types/transactions';
+import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 
 import {
   isValidCallRequest,
@@ -13,7 +12,7 @@ import {
   isValidTransactionCount,
   isValidTransactionReceipt
 } from '@services/EthService';
-import { IHexStrTransaction, INode, TxObj } from '@types';
+import { Asset, IHexStrTransaction, INode, TxObj } from '@types';
 import { hexToNumber, stripHexPrefix, TokenValue, Wei } from '@utils';
 
 import { RPCClient } from './client';
@@ -60,7 +59,7 @@ export default class RPCNode implements INode {
 
   public getTokenBalance(
     address: string,
-    token: Token
+    token: Asset
   ): Promise<{ balance: TokenValue; error: string | null }> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
@@ -79,7 +78,7 @@ export default class RPCNode implements INode {
 
   public getTokenBalances(
     address: string,
-    tokens: Token[]
+    tokens: Asset[]
   ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return this.client
       .batch(tokens.map((t) => this.requests.getTokenBalance(address, t)))
@@ -107,7 +106,7 @@ export default class RPCNode implements INode {
       .then(({ result }) => result);
   }
 
-  public getTransactionByHash(txhash: string): Promise<TransactionData> {
+  public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
     return this.client
       .call(this.requests.getTransactionByHash(txhash))
       .then(isValidTransactionByHash)

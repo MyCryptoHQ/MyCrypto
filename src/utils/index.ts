@@ -106,6 +106,7 @@ export {
   decipherBuffer
 } from './decrypt';
 export { makeExplorer } from './makeExplorer';
+export { verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
 export {
   Units,
