@@ -6,25 +6,14 @@ import { IFeatureFlags, ROUTE_PATHS } from '@config';
 import { IAppRoute } from '@types';
 import { isTruthy } from '@utils';
 
-import { requiresDesktopApp } from './helpers';
-
 const Dashboard = lazy(() =>
   import(/* webpackChunkName: "Dashboard" */ '@features/Dashboard/Dashboard')
-);
-const CreateWallet = lazy(() =>
-  import(/* webpackChunkName: "CreateWallet" */ '@features/CreateWallet/CreateWallet')
 );
 const AddAccountFlow = lazy(() =>
   import(/* webpackChunkName: "AddAccountFlow" */ '@features/AddAccount/AddAccountFlow')
 );
 const SendAssets = lazy(() =>
   import(/* webpackChunkName: "SendAssets" */ '@features/SendAssets/SendAssets')
-);
-const Mnemonic = lazy(() =>
-  import(/* webpackChunkName: "Mnemonic" */ '@features/CreateWallet/Mnemonic/Mnemonic')
-);
-const Keystore = lazy(() =>
-  import(/* webpackChunkName: "Keystore" */ '@features/CreateWallet/Keystore/Keystore')
 );
 const Settings = lazy(() =>
   import(/* webpackChunkName: "Settings" */ '@features/Settings/Settings')
@@ -140,7 +129,7 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     path: ROUTE_PATHS.CREATE_WALLET.path,
     enabled: isTruthy(featureFlags.CREATE_WALLET),
     exact: true,
-    component: requiresDesktopApp(CreateWallet)(DownloadAppRedirect)
+    component: DownloadAppRedirect
   },
   {
     name: ROUTE_PATHS.CREATE_WALLET_MNEMONIC.name,
@@ -148,7 +137,7 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     path: ROUTE_PATHS.CREATE_WALLET_MNEMONIC.path,
     enabled: isTruthy(featureFlags.CREATE_WALLET),
     exact: true,
-    component: requiresDesktopApp(Mnemonic)(DownloadAppRedirect)
+    component: DownloadAppRedirect
   },
   {
     name: ROUTE_PATHS.CREATE_WALLET_KEYSTORE.name,
@@ -156,7 +145,7 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     path: ROUTE_PATHS.CREATE_WALLET_KEYSTORE.path,
     enabled: isTruthy(featureFlags.CREATE_WALLET),
     exact: true,
-    component: requiresDesktopApp(Keystore)(DownloadAppRedirect)
+    component: DownloadAppRedirect
   },
   {
     name: ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.name,
