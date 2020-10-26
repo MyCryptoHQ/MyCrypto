@@ -1,6 +1,6 @@
 import { bigNumberify } from 'ethers/utils';
 
-import { DEFAULT_ASSET_DECIMAL, REPV1UUID, REPV2UUID } from '@config';
+import { DEFAULT_ASSET_DECIMAL, LENDUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ExtendedAsset, StoreAsset, TTicker, TUuid } from '@types';
 
 export const fRopDAI: ExtendedAsset = {
@@ -122,6 +122,16 @@ export const fAssets = [
     ticker: 'REPv2',
     networkId: 'Ethereum',
     contractAddress: '0x221657776846890989a759BA2973e427DfF5C9bB',
+    isCustom: false,
+    type: 'erc20'
+  },
+  {
+    uuid: LENDUUID,
+    name: 'LEND',
+    decimal: 18,
+    ticker: 'LEND',
+    networkId: 'Ethereum',
+    contractAddress: '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03',
     isCustom: false,
     type: 'erc20'
   },

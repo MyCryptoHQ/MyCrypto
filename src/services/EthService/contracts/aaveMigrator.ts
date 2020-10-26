@@ -4,78 +4,71 @@ import Contract from './contract';
 
 const ABI = [
   {
+    inputs: [
+      { internalType: 'contract IERC20', name: 'aave', type: 'address' },
+      { internalType: 'contract IERC20', name: 'lend', type: 'address' },
+      { internalType: 'uint256', name: 'lendAaveRatio', type: 'uint256' }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: 'address', name: 'previousAdmin', type: 'address' },
-      { indexed: false, internalType: 'address', name: 'newAdmin', type: 'address' }
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: true, internalType: 'uint256', name: 'amount', type: 'uint256' }
     ],
-    name: 'AdminChanged',
+    name: 'LendMigrated',
     type: 'event'
   },
-  {
-    anonymous: false,
-    inputs: [{ indexed: true, internalType: 'address', name: 'implementation', type: 'address' }],
-    name: 'Upgraded',
-    type: 'event'
-  },
-  { stateMutability: 'payable', type: 'fallback' },
   {
     inputs: [],
-    name: 'admin',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [{ internalType: 'address', name: 'newAdmin', type: 'address' }],
-    name: 'changeAdmin',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'AAVE',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function'
   },
   {
     inputs: [],
-    name: 'implementation',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'LEND',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'LEND_AAVE_RATIO',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'REVISION',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalLendMigrated',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  { inputs: [], name: 'initialize', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'migrateFromLEND',
+    outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_logic', type: 'address' },
-      { internalType: 'address', name: '_admin', type: 'address' },
-      { internalType: 'bytes', name: '_data', type: 'bytes' }
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_logic', type: 'address' },
-      { internalType: 'bytes', name: '_data', type: 'bytes' }
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function'
-  },
-  {
-    inputs: [{ internalType: 'address', name: 'newImplementation', type: 'address' }],
-    name: 'upgradeTo',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'newImplementation', type: 'address' },
-      { internalType: 'bytes', name: 'data', type: 'bytes' }
-    ],
-    name: 'upgradeToAndCall',
-    outputs: [],
-    stateMutability: 'payable',
+    inputs: [],
+    name: 'migrationStarted',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
     type: 'function'
   }
 ];

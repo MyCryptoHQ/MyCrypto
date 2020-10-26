@@ -17,10 +17,10 @@ export const createApproveTx = (
     hexGasPrice: inputGasPriceToHex(payload.gasPrice)
   });
 
-export const createRepMigrationTx = (
+export const createMigrationTx = (
   payload: ITokenMigrationFormFull
 ): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
-  const data = AaveMigrator.migrateFromLEND.encodeInput({});
+  const data = AaveMigrator.migrateFromLEND.encodeInput({ amount: payload.amount });
   return {
     from: payload.account.address,
     to: MIGRATION_CONTRACT,

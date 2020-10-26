@@ -5,7 +5,7 @@ import { translateRaw } from '@translations';
 import { ITokenMigrationConfig, ITxType, TAddress } from '@types';
 import { generateAssetUUID } from '@utils';
 
-import { createApproveTx, createRepMigrationTx } from './helpers';
+import { createApproveTx, createMigrationTx } from './helpers';
 
 export const AAVE_CONTRACT = '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9' as TAddress;
 export const LEND_CONTRACT = '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03' as TAddress;
@@ -36,7 +36,7 @@ export const migrationConfig: ITokenMigrationConfig = {
       stepContent: translateRaw('AAVE_TOKEN_MIGRATION_STEP2_TEXT'),
       actionBtnText: translateRaw('CONFIRM_TRANSACTION'),
       stepSvg: step2SVG,
-      constructTxFn: createRepMigrationTx
+      constructTxFn: createMigrationTx
     }
   ]
 };
