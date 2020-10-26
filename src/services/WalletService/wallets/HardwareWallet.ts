@@ -1,7 +1,7 @@
 import { computeAddress } from 'ethers/utils';
 import HDKey from 'hdkey';
 
-import { WalletId } from '@types';
+import { DPath, WalletId } from '@types';
 
 import { getFullPath } from './helpers';
 import { WalletResult } from './types';

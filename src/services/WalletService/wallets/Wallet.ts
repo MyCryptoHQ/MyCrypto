@@ -1,3 +1,5 @@
+import { DPath } from '@types';
+
 import { ExtendedDPath } from '../deterministic/types';
 import { WalletResult } from './types';
 

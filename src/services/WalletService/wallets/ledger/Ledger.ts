@@ -2,7 +2,7 @@ import EthereumApp from '@ledgerhq/hw-app-eth';
 import Transport from '@ledgerhq/hw-transport';
 
 import { DPathsList, LEDGER_DERIVATION_PATHS } from '@config/dpaths';
-import { WalletId } from '@types';
+import { DPath, WalletId } from '@types';
 
 import HardwareWallet, { KeyInfo } from '../HardwareWallet';
 import { getFullPath } from '../helpers';

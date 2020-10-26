@@ -10,7 +10,7 @@ import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@confi
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
-import { ExtendedAsset, Network } from '@types';
+import { DPath, ExtendedAsset, Network } from '@types';
 import {
   accountsToCSV,
   filterDropdownAssets,

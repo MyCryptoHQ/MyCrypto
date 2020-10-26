@@ -1,11 +1,7 @@
 import {
   InsecureWalletWarning,
-  KeystoreDecrypt,
   LedgerDecrypt,
   LedgerNanoSDecrypt,
-  MnemonicDecrypt,
-  MnemonicUnlock,
-  PrivateKeyDecrypt,
   TrezorDecrypt,
   TrezorUnlock,
   ViewOnlyDecrypt,
@@ -15,7 +11,7 @@ import {
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
-import { hasWeb3Provider, IS_DEV, IS_ELECTRON, IS_PROD, IS_STAGING } from '@utils';
+import { hasWeb3Provider, IS_ELECTRON, IS_PROD, IS_STAGING } from '@utils';
 
 import { NetworkSelectPanel } from './components';
 
@@ -53,35 +49,23 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.KEYSTORE_FILE,
-    steps: [
-      NetworkSelectPanel,
-      IS_DEV || IS_STAGING || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning
-    ],
+    steps: [NetworkSelectPanel, InsecureWalletWarning],
     isDisabled: IS_WEB_AND_PRODUCTION
   },
   {
     name: WalletId.PRIVATE_KEY,
-    steps: [
-      NetworkSelectPanel,
-      IS_DEV || IS_STAGING || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning
-    ],
+    steps: [NetworkSelectPanel, InsecureWalletWarning],
     isDisabled: IS_WEB_AND_PRODUCTION
   },
   {
     name: WalletId.MNEMONIC_PHRASE,
-    steps: [
-      NetworkSelectPanel,
-      IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning
-    ],
+    steps: [NetworkSelectPanel, InsecureWalletWarning],
     isDisabled: IS_WEB_AND_PRODUCTION,
     hideFromWalletList: true
   },
   {
     name: WalletId.MNEMONIC_PHRASE_NEW,
-    steps: [
-      NetworkSelectPanel,
-      IS_DEV || IS_STAGING || IS_ELECTRON ? MnemonicUnlock : InsecureWalletWarning
-    ],
+    steps: [NetworkSelectPanel, InsecureWalletWarning],
     isDisabled: IS_WEB_AND_PRODUCTION
   },
   {

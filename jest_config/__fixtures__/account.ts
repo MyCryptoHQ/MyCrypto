@@ -2,7 +2,7 @@ import { bigNumberify } from 'ethers/utils';
 
 import { REPV1UUID } from '@config';
 import { DWAccountDisplay } from '@services';
-import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
+import { DPath, StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 import { bigify } from '@utils';
 
 import { fNetwork, fNetworks } from './network';

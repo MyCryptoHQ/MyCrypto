@@ -1,3 +1,5 @@
+import { DPath } from '@types';
+
 const ETH_DEFAULT: DPath = {
   label: 'Default (ETH)',
   value: "m/44'/60'/0'/0"

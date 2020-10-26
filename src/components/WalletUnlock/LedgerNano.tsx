@@ -8,7 +8,7 @@ import { EXT_URLS } from '@config';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { FormData, WalletId } from '@types';
+import { DPath, FormData, WalletId } from '@types';
 import { IS_ELECTRON, withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';

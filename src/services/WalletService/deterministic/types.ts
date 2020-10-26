@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { ValuesType } from 'utility-types';
 
-import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
+import { DPath, DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 
 import { Wallet } from '..';
 import DeterministicWalletReducer from './reducer';

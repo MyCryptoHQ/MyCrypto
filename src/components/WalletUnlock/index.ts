@@ -1,8 +1,5 @@
 export * from './DeterministicWallets';
-export * from './Keystore';
 export * from './LedgerNano';
-export * from './Mnemonic';
-export * from './PrivateKey';
 export * from './Trezor';
 export * from './ViewOnly';
 export { default as Web3ProviderDecrypt } from './Web3Provider';
@@ -12,4 +9,3 @@ export { default as WalletConnectDecrypt } from './WalletConnect';
 export { default as LedgerDecrypt } from './Ledger';
 export { default as DeterministicAccountList } from './DeterministicAccountList';
 export { default as TrezorUnlock } from './NewTrezor';
-export { default as MnemonicUnlock } from './NewMnemonic';
