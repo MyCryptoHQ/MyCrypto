@@ -17,6 +17,7 @@ import {
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
+import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
 import { noOp } from '@utils';
@@ -34,13 +35,13 @@ import {
 // Legacy
 
 const SLabel = styled.label`
-  margin-bottom: 8px;
-  color: #333333;
+  margin-bottom: ${SPACING.SM};
+  color: ${COLORS.GREY_DARKEST};
   font-weight: normal;
 `;
 
 const Fieldset = styled.fieldset`
-  margin-bottom: 15px;
+  margin-bottom: ${SPACING.BASE};
 `;
 
 const CodeHeader = styled.div`
@@ -49,12 +50,12 @@ const CodeHeader = styled.div`
 `;
 
 const CodeHeading = styled(Heading)`
-  margin-top: 8px;
+  margin-top: ${SPACING.SM};
 `;
 
 const LearnMoreArrowWrapper = styled.span`
   vertical-align: middle;
-  margin-left: 2px;
+  margin-left: ${SPACING.XS};
 `;
 
 const LearnMoreArrow = styled(Icon)`
@@ -64,26 +65,25 @@ const LearnMoreArrow = styled(Icon)`
 `;
 
 const NoTestnetAccounts = styled(InlineMessage)`
-  margin-bottom: 20px;
-  a {
-    color: var(--color-link-color);
-    text-decoration: none;
-  }
+  margin-bottom: ${SPACING.BASE};
+  a,
   a:hover {
-    color: var(--color-link-color);
+    color: ${COLORS.BLUE_MYC};
+    text-decoration: none;
+    font-weight: bold;
   }
 `;
 
 const IncorrectResponse = styled(InlineMessage)`
-  margin-top: 10px;
+  margin-top: ${SPACING.SM};
 `;
 
 const Description = styled.p`
-  margin-bottom: 30px;
+  margin-bottom: ${SPACING.MD};
 `;
 
 const CenterText = styled.div`
-  margin-top: 30px;
+  margin-top: ${SPACING.MD};
   text-align: center;
 `;
 
@@ -93,7 +93,7 @@ const RequestButton = styled(Button)`
 
 const SubmitCaptchaButton = styled(Button)`
   width: 100%;
-  margin-top: 30px;
+  margin-top: ${SPACING.MD};
 `;
 
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];

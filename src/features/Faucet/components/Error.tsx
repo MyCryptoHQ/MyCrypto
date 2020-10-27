@@ -3,28 +3,27 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 import { InlineMessage } from '@components';
+import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import { InlineMessageType } from '@types';
 import { formatSupportEmail } from '@utils';
 
 const Box = styled.div`
-  border: 1px solid #fa863f;
+  border: 1px solid ${COLORS.WARNING_ORANGE};
   box-sizing: border-box;
-  box-shadow: inset 0px 1px 1px rgba(63, 63, 68, 0.05);
   border-radius: 2px;
-  margin-top: 40px;
+  margin-top: ${SPACING.LG};
 `;
 
 const ContactUsText = styled(InlineMessage)`
   font-style: italic;
   font-size: 14px;
-  margin: 20px;
-  a {
-    color: var(--color-link-color);
-    text-decoration: none;
-  }
+  margin: ${SPACING.BASE};
+  a,
   a:hover {
-    color: var(--color-link-color);
+    color: ${COLORS.BLUE_MYC};
+    text-decoration: none;
+    font-weight: bold;
   }
 `;
 

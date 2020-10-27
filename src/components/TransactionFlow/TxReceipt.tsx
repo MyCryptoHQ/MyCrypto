@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip, NewTabLink } from '@components';
 import { SubHeading } from '@components/NewTypography';
-import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { getWalletConfig, ROUTE_PATHS, MYCRYPTO_FAUCET_LINK } from '@config';
 
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -487,8 +487,7 @@ export const TxReceiptUI = ({
         <NewTabLink
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
             translateRaw('FAUCET_TWEET', {
-              /* TODO: How to find base url without hardcoding? */
-              $faucet_url: 'https://app.mycrypto.com' + ROUTE_PATHS.FAUCET.path
+              $faucet_url: MYCRYPTO_FAUCET_LINK
             })
           )}`}
         >
