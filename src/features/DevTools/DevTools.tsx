@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { Panel } from '@mycrypto/ui';
-import { getGreeting, useSelector } from '@store';
+import { useDispatch, useSelector } from '@store';
 import styled from 'styled-components';
 
 import { Checkbox, Link } from '@components';
@@ -12,6 +12,7 @@ import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
+import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
 
 const SLink = styled(Link)`
@@ -105,9 +106,26 @@ const FeatureFlags = () => {
   );
 };
 
+const DemoRedux = () => {
+  const greeting = useSelector(getGreeting);
+  const count = useSelector(getCount);
+  const dispatch = useDispatch();
+  const handleIncrement = () => dispatch(increment());
+  const handleReset = () => dispatch(reset());
+
+  return (
+    <div style={{ marginBottom: '1em' }}>
+      <div>
+        {greeting} {count}
+      </div>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleReset}>Reset</button>
+    </div>
+  );
+};
+
 const DevToolsManager = () => {
   const { isActive, toggleDevTools } = useDevTools();
-  const greeting = useSelector(getGreeting);
 
   if (IS_PROD) return <></>;
 
@@ -133,8 +151,8 @@ const DevToolsManager = () => {
           <p style={{ fontWeight: 600 }}>DB Tools</p>
           <DBTools />
           {/* Redux Demo */}
-          <p style={{ fontWeight: 600 }}>Redux</p>
-          <div>Store Greeting: {greeting}</div>
+          <p style={{ fontWeight: 600 }}>Redux Demo</p>
+          <DemoRedux />
         </Panel>
       )}
     </Wrapper>
