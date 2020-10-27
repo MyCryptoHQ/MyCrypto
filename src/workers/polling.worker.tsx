@@ -36,16 +36,18 @@ function startPolling(requestUrl: string, interval: number) {
 }
 
 worker.onmessage = (event: MessageEvent) => {
-  const { action, interval, url } = event.data;
-  switch (action) {
-    case PollingAction.START:
-      startPolling(url, interval);
-      break;
-    case PollingAction.STOP:
-      stopPolling();
-      worker.postMessage({ canTerminate: true });
-      break;
-    default:
-      break;
+  if (event.data && event.data.action) {
+    const { action, interval, url } = event.data;
+    switch (action) {
+      case PollingAction.START:
+        startPolling(url, interval);
+        break;
+      case PollingAction.STOP:
+        stopPolling();
+        worker.postMessage({ canTerminate: true });
+        break;
+      default:
+        break;
+    }
   }
 };

@@ -1,5 +1,6 @@
 import { getAllByText, getByText } from '@testing-library/testcafe';
-import { Selector } from 'testcafe';
+import { Selector, t } from 'testcafe';
+import { getMetamask } from 'testcafe-browser-provider-dappeteer';
 
 import { setFeatureFlag } from './featureflag-utils';
 import {
@@ -11,7 +12,6 @@ import {
   PAGES
 } from './fixtures';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
-import { selectMnemonicInput } from './selectors';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
 
@@ -20,6 +20,11 @@ const sendAssetsPage = new SendAssetsPage();
 fixture('Send').page(PAGES.SEND);
 
 test('Complete SendFlow', async (t) => {
+  const metamask = await getMetamask(t);
+
+  await metamask.importPK(ENV.E2E_PRIVATE_KEY);
+  await metamask.switchNetwork('ropsten');
+
   await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
 
@@ -56,13 +61,21 @@ test('Complete SendFlow', async (t) => {
   await sendAssetsPage.submitForm();
 
   // Has continued to next step with sign button
-  const signBtn = getByText(findByTKey('DEP_SIGNTX'));
+  const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
   await t.expect(signBtn).ok();
 
-  await t
+  await t.click(signBtn);
+
+  //await t.wait(2 * 1000);
+
+  await metamask.approve();
+
+  //await metamask.confirmTransaction();
+
+  /**await t
     .click(selectMnemonicInput)
     .typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE)
-    .click(signBtn);
+    .click(signBtn);**/
 
   // Expect to reach confirm tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
@@ -78,7 +91,7 @@ test('Complete SendFlow', async (t) => {
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
 
-test('Valid transaction query params are correctly parsed and loaded into send flow', async (t) => {
+/**test('Valid transaction query params are correctly parsed and loaded into send flow', async (t) => {
   const validQueryParams =
     '?type=speedup&gasLimit=0xcb56&chainId=1&nonce=0xD8&gasPrice=0x059682f000&from=0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3&to=0x6B175474E89094C44Da98b954EedeAC495271d0F&value=0x0&data=0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec7900000000000000000000000000000000000000000000000000038D7EA4C68000';
 
@@ -87,16 +100,8 @@ test('Valid transaction query params are correctly parsed and loaded into send f
   await sendAssetsPage.navigateToPage(validQueryParams);
   await sendAssetsPage.waitPageLoaded(validQueryParams);
 
-  // Has continued to next step with sign button
-  const signBtn = getByText(findByTKey('DEP_SIGNTX'));
-  await t.expect(signBtn).ok();
-
-  await t
-    .click(selectMnemonicInput)
-    .typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE)
-    .click(signBtn);
-
   // Expect to reach confirm tx and correctly interpret amount field for erc20 tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
 });
+**/
