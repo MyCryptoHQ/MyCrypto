@@ -9,7 +9,7 @@ import rootSaga from './sagas';
 const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [sagaMiddleware]
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
 });
 
 // Activate HMR for store reducer
