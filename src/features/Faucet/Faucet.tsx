@@ -165,12 +165,6 @@ export function Faucet() {
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId, createContact } = useContacts();
 
-  const txConfig: any =
-    'hash' in txResult
-      ? makeTxConfig(txResult, networks, assets, getContactByAddressAndNetworkId, createContact)
-      : {};
-  const txReceipt: any = 'hash' in txResult ? makeTxReceipt(txResult, networks, assets) : {};
-
   const steps = [
     <Formik
       key="recipient"
@@ -258,8 +252,14 @@ export function Faucet() {
     <>
       {'hash' in txResult && (
         <TxReceipt
-          txConfig={txConfig}
-          txReceipt={txReceipt}
+          txConfig={makeTxConfig(
+            txResult,
+            networks,
+            assets,
+            getContactByAddressAndNetworkId,
+            createContact
+          )}
+          txReceipt={makeTxReceipt(txResult, networks, assets)}
           onComplete={() => reset()}
           resetFlow={() => reset()}
         />
