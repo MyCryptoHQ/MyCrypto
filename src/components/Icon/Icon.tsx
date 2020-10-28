@@ -36,6 +36,7 @@ import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
 import warning from '@assets/images/icn-warning.svg';
+import lendLogo from '@assets/images/lend-logo.png';
 import membership from '@assets/images/membership/membership-none.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
@@ -97,7 +98,8 @@ const svgIcons = {
 
 const pngIcons = {
   /* Partner Icons */
-  'uni-logo': uniLogo
+  'uni-logo': uniLogo,
+  'lend-logo': lendLogo
 };
 
 const SInlineSVG = styled(InlineSVG)`

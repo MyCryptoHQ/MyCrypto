@@ -93,12 +93,12 @@ export const actionTemplates: ActionTemplate[] = [
   },
   {
     name: ACTION_NAME.MIGRATE_LEND,
-    heading: translateRaw('CLAIM_UNI_ACTION_HEADING'),
-    icon: 'uni-logo',
+    heading: translateRaw('MIGRATE_LEND_ACTION_HEADING'),
+    icon: 'lend-logo',
     subHeading: MigrationSubHead,
-    body: [translate('CLAIM_UNI_ACTION_BODY')],
+    body: [translate('MIGRATE_LEND_ACTION_BODY')],
     filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === LENDUUID),
-    priority: 30,
+    priority: 10,
     Component: MigrationTable,
     props: { assetUuid: LENDUUID },
     button: {
