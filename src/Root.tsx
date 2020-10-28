@@ -9,7 +9,9 @@ import styled, { ThemeProvider } from 'styled-components';
 import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
 import { theme } from '@theme';
-import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
+import { IS_E2E, IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
+import { ethereumMock } from '@utils/ethereumMock';
+import { useEffectOnce } from '@vendor';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
@@ -27,6 +29,15 @@ const FullScreen = styled.div`
 
 const RootClass = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
+
+  useEffectOnce(() => {
+    if (IS_E2E) {
+      // ONLY FOR TESTING
+      // @ts-expect-error IGNORE FOR NOW
+      window.ethereum = ethereumMock();
+    }
+  });
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

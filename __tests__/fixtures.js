@@ -3,6 +3,7 @@ require('dotenv').config();
 const ENV = {
   // Should be set in order to use Mnemonic in AddAccount flow
   E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
+  E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
 
   // Defined in github/workflow to run against mycryptobuilds
   E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
@@ -93,7 +94,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     '1782c060-8bc0-55d6-8078-ff255b4aae90': {
       address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
       networkId: 'Ropsten',
-      wallet: 'MNEMONIC_PHRASE',
+      wallet: 'WEB3',
       dPath: "m/44'/60'/0'/0/0",
       assets: [
         {
@@ -112,7 +113,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
       favorite: false,
       mtime: 0,
       uuid: '1782c060-8bc0-55d6-8078-ff255b4aae90',
-      label: 'Mnemonic Phrase Account 1'
+      label: 'Web3 Account 1'
     }
   },
   addressBook: {

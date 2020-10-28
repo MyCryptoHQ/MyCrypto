@@ -1,6 +1,7 @@
 import { getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 
+import { setupEthereumMock } from './ethereum-mock';
 import { setFeatureFlag } from './featureflag-utils';
 import {
   ENV,
@@ -11,7 +12,6 @@ import {
   PAGES
 } from './fixtures';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
-import { selectMnemonicInput } from './selectors';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
 
@@ -51,18 +51,15 @@ test('Complete SendFlow', async (t) => {
   await t.click(Selector('.close-icon'));
   await setFeatureFlag('PROTECT_TX', false);
 
+  await setupEthereumMock(ENV.E2E_PRIVATE_KEY);
+
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
   await sendAssetsPage.submitForm();
 
   // Has continued to next step with sign button
-  const signBtn = getByText(findByTKey('DEP_SIGNTX'));
+  const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
   await t.expect(signBtn).ok();
-
-  await t
-    .click(selectMnemonicInput)
-    .typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE)
-    .click(signBtn);
 
   // Expect to reach confirm tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
@@ -86,15 +83,6 @@ test('Valid transaction query params are correctly parsed and loaded into send f
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
   await sendAssetsPage.navigateToPage(validQueryParams);
   await sendAssetsPage.waitPageLoaded(validQueryParams);
-
-  // Has continued to next step with sign button
-  const signBtn = getByText(findByTKey('DEP_SIGNTX'));
-  await t.expect(signBtn).ok();
-
-  await t
-    .click(selectMnemonicInput)
-    .typeText(selectMnemonicInput, ENV.E2E_MNEMONIC_PASSPHRASE)
-    .click(signBtn);
 
   // Expect to reach confirm tx and correctly interpret amount field for erc20 tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
