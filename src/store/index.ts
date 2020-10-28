@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector as useReduxSelector } from 'react-redux';
 
-import { default as store } from './store';
+import store from './store';
 
 /**
  * Type-safe version of the `react-redux` useSelector hook.

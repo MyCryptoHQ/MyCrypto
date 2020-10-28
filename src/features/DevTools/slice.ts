@@ -30,11 +30,12 @@ export function* watchIncrement() {
 /* Reducer */
 // 1. Toolkit sets .toString() to return the action type
 // 2. With the embeded Immer we can either modify the drat || return a new value
-const demoReducer = createReducer(initialState, {
-  [increment.type]: (s) => {
-    s.count = s.count + 1;
-  },
-  [reset.type]: () => initialState
-});
+const demoReducer = createReducer(initialState, (builder) =>
+  builder
+    .addCase(increment, (s) => {
+      s.count = s.count + 1;
+    })
+    .addCase(reset, () => initialState)
+);
 
 export default demoReducer;
