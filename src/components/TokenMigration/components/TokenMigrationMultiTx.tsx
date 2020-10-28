@@ -12,7 +12,7 @@ export interface TokenMigrationMultiTxConfirmProps {
   onComplete?(): void;
 }
 
-export default function ConfirmTokenMigration({
+export default function ConfirmTokenMigrationMultiTx({
   currentTxIdx,
   transactions,
   tokenMigrationConfig,
@@ -21,12 +21,12 @@ export default function ConfirmTokenMigration({
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);
-  const steps = tokenMigrationConfig.txConstructionConfigs.map((txConstructionConfig) => ({
+  const steps = tokenMigrationConfig.txConstructionConfigs.map((txConstructionConfig, index) => ({
     title: txConstructionConfig.stepTitle,
     icon: txConstructionConfig.stepSvg,
     content: txConstructionConfig.stepContent,
     buttonText: txConstructionConfig.actionBtnText,
-    loading: status[0] === ITxStatus.BROADCASTED,
+    loading: status[index] === ITxStatus.BROADCASTED,
     onClick: onComplete
   }));
 
