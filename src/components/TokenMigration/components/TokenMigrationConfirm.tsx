@@ -1,19 +1,18 @@
 import React from 'react';
 
 import { ConfirmTransaction } from '@components';
-import { ITxType, StoreAccount } from '@types';
+import { ITokenMigrationConfig, ITxMultiConfirmProps, ITxType, StoreAccount } from '@types';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
-import { TokenMigrationMultiTxConfirmProps } from './TokenMigrationMultiTx';
 
 export default function ConfirmTokenMigration({
   account,
   amount,
   currentTxIdx,
-  tokenMigrationConfig,
+  flowConfig,
   transactions,
   onComplete
-}: TokenMigrationMultiTxConfirmProps & { account: StoreAccount; amount: string }) {
+}: ITxMultiConfirmProps & { account: StoreAccount; amount: string }) {
   const currentTx = transactions[currentTxIdx];
 
   const complete = () => onComplete && onComplete();
@@ -22,7 +21,7 @@ export default function ConfirmTokenMigration({
     currentTx.txRaw,
     account,
     amount
-  )(tokenMigrationConfig);
+  )(flowConfig as ITokenMigrationConfig);
 
   return (
     <ConfirmTransaction
