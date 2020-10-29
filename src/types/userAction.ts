@@ -8,6 +8,7 @@ import { TUuid } from './uuid';
 export enum ACTION_NAME {
   UPDATE_LABEL = 'update_label',
   MIGRATE_REP = 'migrate_rep',
+  MIGRATE_ANT = 'migrate_ant',
   CLAIM_UNI = 'claim_uni',
   RENEW_ENS = 'renew_ens',
   BUY_HW = 'buy_hw',
