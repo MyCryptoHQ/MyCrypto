@@ -21,6 +21,11 @@ const slice = createSlice({
       const { uuid } = action.payload;
       state[uuid] = action.payload;
     },
+    updateMany(state, action: PayloadAction<IAccount[]>) {
+      action.payload.forEach((account) => {
+        state[account.uuid] = account;
+      });
+    },
     reset() {
       return initialState;
     }
