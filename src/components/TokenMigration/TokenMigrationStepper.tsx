@@ -14,8 +14,9 @@ import {
 } from '@types';
 import { useTxMulti } from '@utils';
 
-import { TokenMigrationMultiTx } from './components';
+import ConfirmTokenMigration from './components/TokenMigrationConfirm';
 import TokenMigrationForm from './components/TokenMigrationForm';
+import ConfirmTokenMigrationMultiTx from './components/TokenMigrationMultiTx';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
 
@@ -28,7 +29,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions } = state;
-  const { account }: TokenMigrationState = reducerState;
+  const { account, amount }: TokenMigrationState = reducerState;
 
   const steps: IStepperPath[] = [
     {
@@ -58,11 +59,12 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
       {
         label: translateRaw('CONFIRM_TRANSACTION'),
         backBtnText: tokenMigrationConfig.formTitle,
-        component: TokenMigrationMultiTx,
+        component: transactions.length > 1 ? ConfirmTokenMigrationMultiTx : ConfirmTokenMigration,
         props: {
           account,
           isSubmitting,
           transactions,
+          amount,
           tokenMigrationConfig,
           currentTxIdx: idx
         },

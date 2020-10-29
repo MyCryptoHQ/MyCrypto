@@ -115,7 +115,7 @@ export const fApproveErc20TxConfig = {
     mtime: 1581530607024,
     name: 'REPv1',
     networkId: 'Ethereum',
-    ticker: 'ETH',
+    ticker: 'REPv1',
     type: 'erc20',
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
@@ -153,7 +153,7 @@ export const fTokenMigrationTxConfig = {
     mtime: 1581530607024,
     name: 'REPv1',
     networkId: 'Ethereum',
-    ticker: 'ETH',
+    ticker: 'REPv1',
     type: 'erc20',
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
