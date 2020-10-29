@@ -11,15 +11,15 @@ interface Props {
 export const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
-      escapeHtml={true}
-      unwrapDisallowed={true}
-      allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
+      disallowedTypes={['html']}
       renderers={{
         root: React.Fragment,
-        link: NewTabLink
+        link: NewTabLink,
+        paragraph: React.Fragment // Remove <p> added by react-markdown.
       }}
-      source={source}
-    />
+    >
+      {source}
+    </Markdown>
   );
 };
 
