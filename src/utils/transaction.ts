@@ -57,7 +57,6 @@ import {
 import { bigify } from './bigify';
 import { hexToNumber } from './formatters';
 import {
-  hexToString,
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
@@ -280,51 +279,6 @@ export const makeTxConfigFromTxReceipt = (
     from: toChecksumAddress(txReceipt.from)
   };
   // @ts-expect-error Ignore possible missing senderAccount for now
-  return txConfig;
-};
-
-export const makeTxConfigFromRawTx = (
-  rawTransaction: ITxObject,
-  network: Network,
-  accounts: StoreAccount[],
-  assets: ExtendedAsset[]
-): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data, value, from } = rawTransaction;
-
-  const contractAsset = getAssetByContractAndNetwork(
-    rawTransaction.to || undefined,
-    network
-  )(assets);
-  const baseAsset = getBaseAssetByNetwork({
-    network,
-    assets
-  })!;
-  const ercType = guessERC20Type(data);
-  const { receiverAddress, amount, asset } = deriveTxFields(
-    ercType,
-    rawTransaction.data as ITxData,
-    rawTransaction.to as ITxToAddress,
-    rawTransaction.value.toString() as ITxValue,
-    baseAsset,
-    contractAsset
-  );
-
-  const txConfig: ITxConfig = {
-    from: from!,
-    amount,
-    receiverAddress,
-    senderAccount: getStoreAccount(accounts)(from!, network.id)!,
-    network,
-    asset,
-    baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit: hexToString(gasLimit),
-    value: hexWeiToString(value),
-    nonce: hexToString(nonce),
-    data,
-    rawTransaction
-  };
-
   return txConfig;
 };
 
