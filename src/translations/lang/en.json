@@ -1102,6 +1102,7 @@
     "AAVE_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your LEND to AAVE tokens, so this field cannot be modified.",
     "MIGRATE_LEND_ACTION_HEADING": "Migrate your $LEND to $AAVE",
     "MIGRATE_LEND_ACTION_BODY": "One or more of your accounts hold LEND tokens. Migrate them to AAVE now!",
-    "APPROVE_AAVE_TOKEN_MIGRATION": "Approve LEND Contract"
+    "APPROVE_AAVE_TOKEN_MIGRATION": "Approve LEND Contract",
+    "RECENT_TX_LIST_LABEL_AAVE_MIGRATION": "Migrated LEND to AAVE"
   }
 }
