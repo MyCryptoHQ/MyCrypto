@@ -1,16 +1,14 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { WALLET_STEPS } from '@components';
+import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
 import {
-  ISimpleTxFormFull,
   ITokenMigrationConfig,
   ITokenMigrationFormFull,
   ITxStatus,
-  TokenMigrationState,
-  TxParcel
+  TokenMigrationState
 } from '@types';
 import { useTxMulti } from '@utils';
 
@@ -55,49 +53,20 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
         dispatch({ type: tokenMigrationReducer.actionTypes.FORM_SUBMIT, payload: formData });
       }
     },
-    ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
-      {
-        label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: tokenMigrationConfig.formTitle,
-        component: transactions.length > 1 ? ConfirmTokenMigrationMultiTx : ConfirmTokenMigration,
-        props: {
-          account,
-          isSubmitting,
-          transactions,
-          amount,
-          tokenMigrationConfig,
-          currentTxIdx: idx
-        },
-        actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
-          if (transactions.length > 1) {
-            prepareTx(tx.txRaw);
-          } else {
-            goToNextStep();
-          }
-        }
-      },
-      {
-        label: '',
-        backBtnText: translateRaw('CONFIRM_TRANSACTION'),
-        component: account && WALLET_STEPS[account.wallet],
-        props: {
-          network: account && account.network,
-          senderAccount: account,
-          rawTransaction: tx.txRaw,
-          onSuccess: sendTx
-        }
-      }
-    ]),
-    {
-      label: tokenMigrationConfig.receiptTitle,
-      component: TokenMigrationReceipt,
-      props: {
-        amount: reducerState.amount,
-        tokenMigrationConfig,
-        account,
-        transactions
-      }
-    }
+    ...createSignConfirmAndReceiptSteps({
+      transactions,
+      backStepTitle: tokenMigrationConfig.formTitle,
+      amount: amount!,
+      account: account!,
+      flowConfig: tokenMigrationConfig,
+      receiptTitle: tokenMigrationConfig.receiptTitle,
+      multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
+      isSubmitting,
+      receiptComponent: TokenMigrationReceipt,
+      multiTxComponent: transactions.length > 1 ? ConfirmTokenMigrationMultiTx : ConfirmTokenMigration,
+      sendTx,
+      prepareTx
+    })
   ];
 
   return (

@@ -7,24 +7,17 @@ import step1SVG from '@assets/images/icn-send.svg';
 import { Typography, VerticalStepper } from '@components';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { translateRaw } from '@translations';
-import { ITxStatus, TxParcel } from '@types';
+import { ITxMultiConfirmProps, ITxStatus } from '@types';
 
 import { IAssetPair } from '../types';
 
-interface Props {
-  assetPair: IAssetPair;
-  currentTxIdx: number;
-  transactions: TxParcel[];
-  onClick?(): void;
-}
-
 export default function ConfirmSwapMultiTx({
-  assetPair,
+  flowConfig,
   currentTxIdx,
   transactions,
-  onClick
-}: Props) {
-  const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
+  onComplete
+}: ITxMultiConfirmProps) {
+  const { fromAsset, toAsset, fromAmount, toAmount } = flowConfig as IAssetPair;
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcasting = status.findIndex((s) => s === ITxStatus.BROADCASTED);
@@ -35,7 +28,7 @@ export default function ConfirmSwapMultiTx({
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.ticker }),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
-    onClick
+    onClick: onComplete
   };
 
   const transferTx = {
@@ -44,7 +37,7 @@ export default function ConfirmSwapMultiTx({
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
-    onClick
+    onClick: onComplete
   };
 
   return (

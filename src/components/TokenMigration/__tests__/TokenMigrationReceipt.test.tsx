@@ -15,7 +15,7 @@ import TokenMigrationReceipt, {
 } from '../components/TokenMigrationReceipt';
 
 const defaultProps: TokenMigrationReceiptProps = {
-  tokenMigrationConfig: repTokenMigrationConfig,
+  flowConfig: repTokenMigrationConfig,
   account: fAccounts[0],
   amount: '4',
   transactions: fTokenMigrationTxs(),

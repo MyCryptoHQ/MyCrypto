@@ -8,16 +8,15 @@ import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider, RatesContext } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
-import { StoreAccount } from '@types';
+import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationConfirm';
-import { TokenMigrationMultiTxConfirmProps } from '../components/TokenMigrationMultiTx';
 
-const defaultProps: TokenMigrationMultiTxConfirmProps & {
+const defaultProps: ITxMultiConfirmProps & {
   amount: string;
   account: StoreAccount;
 } = {
-  tokenMigrationConfig: repTokenMigrationConfig,
+  flowConfig: repTokenMigrationConfig,
   currentTxIdx: 0,
   amount: '1',
   account: fAccounts[0],
@@ -25,7 +24,7 @@ const defaultProps: TokenMigrationMultiTxConfirmProps & {
   onComplete: jest.fn()
 };
 
-function getComponent(props: TokenMigrationMultiTxConfirmProps) {
+function getComponent(props: ITxMultiConfirmProps) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <DataContext.Provider

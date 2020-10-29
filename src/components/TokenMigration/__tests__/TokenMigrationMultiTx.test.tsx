@@ -7,19 +7,18 @@ import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
+import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
 
-import ConfirmTokenMigration, {
-  TokenMigrationMultiTxConfirmProps
-} from '../components/TokenMigrationMultiTx';
+import ConfirmTokenMigration from '../components/TokenMigrationMultiTx';
 
-const defaultProps: TokenMigrationMultiTxConfirmProps = {
-  tokenMigrationConfig: repTokenMigrationConfig,
+const defaultProps: ITxMultiConfirmProps = {
+  flowConfig: repTokenMigrationConfig,
   currentTxIdx: 0,
   transactions: fTokenMigrationTxs(),
   onComplete: jest.fn()
 };
 
-function getComponent(props: TokenMigrationMultiTxConfirmProps) {
+function getComponent(props: ITxMultiConfirmProps) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <DataContext.Provider
@@ -56,9 +55,9 @@ function getComponent(props: TokenMigrationMultiTxConfirmProps) {
 describe('TokenMigrationMultiTx', () => {
   test('Can render the TokenMigrationMultiTx confirm panel', () => {
     const { getByText } = getComponent(defaultProps);
-    const selector =
-      defaultProps.tokenMigrationConfig.txConstructionConfigs[defaultProps.currentTxIdx]
-        .stepContent;
+    const selector = (defaultProps.flowConfig as ITokenMigrationConfig).txConstructionConfigs[
+      defaultProps.currentTxIdx
+    ].stepContent;
     expect(getByText(selector)).toBeInTheDocument();
   });
 });

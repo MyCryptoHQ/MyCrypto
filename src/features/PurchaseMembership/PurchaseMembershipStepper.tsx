@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { WALLET_STEPS } from '@components';
+import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
-import { ITxConfig, ITxReceipt, ITxStatus, ITxType, TxParcel } from '@types';
+import { ITxConfig, ITxReceipt, ITxStatus, ITxType } from '@types';
 import { useStateReducer, useTxMulti } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
@@ -57,48 +57,21 @@ const PurchaseMembershipStepper = () => {
         handleUserInputFormSubmit(formData);
       }
     },
-    ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
-      {
-        label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: translateRaw('PURCHASE_MEMBERSHIP'),
-        component:
-          transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
-        props: {
-          membershipSelected,
-          account,
-          isSubmitting,
-          transactions,
-          currentTxIdx: idx
-        },
-        actions: (_: MembershipSimpleTxFormFull, goToNextStep: () => void) => {
-          if (transactions.length > 1) {
-            prepareTx(tx.txRaw);
-          } else {
-            goToNextStep();
-          }
-        }
-      },
-      {
-        label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: translateRaw('CONFIRM_TRANSACTION'),
-        component: account && WALLET_STEPS[account.wallet],
-        props: {
-          network: account && account.network,
-          senderAccount: account,
-          rawTransaction: tx.txRaw,
-          onSuccess: sendTx
-        }
-      }
-    ]),
-    {
-      label: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
-      component: MembershipPurchaseReceipt,
-      props: {
-        account,
-        transactions,
-        membershipSelected
-      }
-    }
+    ...createSignConfirmAndReceiptSteps({
+      transactions,
+      backStepTitle: translateRaw('PURCHASE_MEMBERSHIP'),
+      amount: membershipSelected!.price,
+      account,
+      flowConfig: membershipSelected!,
+      receiptTitle: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
+      multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
+      isSubmitting,
+      receiptComponent: MembershipPurchaseReceipt,
+      multiTxComponent:
+        transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
+      sendTx,
+      prepareTx
+    })
   ];
 
   return (

@@ -1,10 +1,21 @@
 import isEmpty from 'ramda/src/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import pick from 'ramda/src/pick';
-import { ValuesType } from 'utility-types';
+import { Brand, ValuesType } from 'utility-types';
 
+import { WALLET_STEPS } from '@components';
+import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
+import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
-import { ITxConfig, StoreAccount } from '@types';
+import {
+  IFlowConfig,
+  ISimpleTxFormFull,
+  ITxConfig,
+  ITxMultiConfirmProps,
+  ITxObject,
+  StoreAccount,
+  TxParcel
+} from '@types';
 import { bigNumGasPriceToViewableGwei } from '@utils';
 
 import { ISender } from './types';
@@ -12,6 +23,84 @@ import { ISender } from './types';
 type FieldValue = ValuesType<ISender>;
 
 const preferValueFromSender = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
+
+interface Props {
+  backStepTitle: string;
+  amount: string;
+  account: StoreAccount;
+
+  flowConfig: IFlowConfig;
+  transactions: TxParcel[];
+  isSubmitting: boolean;
+
+  multiTxTitle: string;
+  receiptTitle: string;
+  multiTxComponent(props: ITxMultiConfirmProps): JSX.Element;
+  receiptComponent(
+    props: TokenMigrationReceiptProps | IMembershipPurchaseReceiptProps
+  ): JSX.Element;
+
+  prepareTx(tx: ITxObject): void;
+  sendTx(walletResponse: Brand<string, 'TxHash'> | Brand<Uint8Array, 'TxSigned'>): Promise<void>;
+}
+
+export const createSignConfirmAndReceiptSteps = ({
+  amount,
+  backStepTitle,
+  flowConfig,
+  multiTxTitle,
+  multiTxComponent,
+  receiptTitle,
+  receiptComponent,
+  account,
+  transactions,
+  isSubmitting,
+  sendTx,
+  prepareTx
+}: Props) => [
+  ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
+    {
+      label: multiTxTitle,
+      backBtnText: backStepTitle,
+      component: multiTxComponent,
+      props: {
+        account,
+        isSubmitting,
+        transactions,
+        flowConfig,
+        currentTxIdx: idx
+      },
+      actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
+        if (transactions.length > 1) {
+          prepareTx(tx.txRaw);
+        } else {
+          goToNextStep();
+        }
+      }
+    },
+    {
+      label: '',
+      backBtnText: multiTxTitle,
+      component: account && WALLET_STEPS[account.wallet],
+      props: {
+        network: account && account.network,
+        senderAccount: account,
+        rawTransaction: tx.txRaw,
+        onSuccess: sendTx
+      }
+    }
+  ]),
+  {
+    label: receiptTitle,
+    component: receiptComponent,
+    props: {
+      amount: amount,
+      account,
+      flowConfig,
+      transactions
+    }
+  }
+];
 
 export const constructSenderFromTxConfig = (
   txConfig: ITxConfig,

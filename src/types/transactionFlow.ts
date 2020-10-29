@@ -2,13 +2,16 @@ import { Brand } from 'utility-types';
 
 import { IZapConfig } from '@features/DeFiZap/config';
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
+import { IAssetPair } from '@features/SwapAssets/types';
 import {
   Asset,
   GasEstimates,
   Network as INetwork,
+  ITokenMigrationConfig,
   ITxReceipt,
   StoreAccount,
   TAddress,
+  TxParcel,
   WalletId
 } from '@types';
 
@@ -167,4 +170,13 @@ export enum TxQueryTypes {
   SPEEDUP = 'speedup',
   CANCEL = 'cancel',
   DEFAULT = 'default'
+}
+
+export type IFlowConfig = ITokenMigrationConfig | IMembershipConfig | IAssetPair;
+
+export interface ITxMultiConfirmProps {
+  currentTxIdx: number;
+  transactions: TxParcel[];
+  flowConfig: IFlowConfig;
+  onComplete?(): void;
 }
