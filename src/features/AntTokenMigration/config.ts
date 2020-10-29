@@ -16,23 +16,23 @@ export const tokenMigrationConfig: ITokenMigrationConfig = {
   fromContractAddress: ANTv1_CONTRACT,
   fromAssetUuid: generateAssetUUID(1, ANTv1_CONTRACT),
   toAssetUuid: generateAssetUUID(1, ANTv2_CONTRACT),
-  formTitle: translateRaw('REP_TOKEN_MIGRATION'),
-  formActionBtn: translateRaw('REP_TOKEN_MIGRATION'),
-  formAmountTooltip: translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
-  receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
+  formTitle: translateRaw('ANT_TOKEN_MIGRATION'),
+  formActionBtn: translateRaw('ANT_TOKEN_MIGRATION'),
+  formAmountTooltip: translateRaw('ANT_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
+  receiptTitle: translateRaw('ANT_TOKEN_MIGRATION_RECEIPT'),
   txConstructionConfigs: [
     {
       txType: ITxType.APPROVAL,
-      stepTitle: translateRaw('APPROVE_REP_TOKEN_MIGRATION'),
-      stepContent: translateRaw('REP_TOKEN_MIGRATION_STEP1_TEXT'),
-      actionBtnText: translateRaw('APPROVE_REP_TOKEN_MIGRATION'),
+      stepTitle: translateRaw('APPROVE_ANT_TOKEN_MIGRATION'),
+      stepContent: translateRaw('ANT_TOKEN_MIGRATION_STEP1_TEXT'),
+      actionBtnText: translateRaw('APPROVE_ANT_TOKEN_MIGRATION'),
       stepSvg: step1SVG,
       constructTxFn: createApproveTx
     },
     {
-      txType: ITxType.REP_TOKEN_MIGRATION,
-      stepTitle: translateRaw('COMPLETE_REP_TOKEN_MIGRATION'),
-      stepContent: translateRaw('REP_TOKEN_MIGRATION_STEP2_TEXT'),
+      txType: ITxType.ANT_TOKEN_MIGRATION,
+      stepTitle: translateRaw('COMPLETE_ANT_TOKEN_MIGRATION'),
+      stepContent: translateRaw('ANT_TOKEN_MIGRATION_STEP2_TEXT'),
       actionBtnText: translateRaw('CONFIRM_TRANSACTION'),
       stepSvg: step2SVG,
       constructTxFn: createMigrationTx

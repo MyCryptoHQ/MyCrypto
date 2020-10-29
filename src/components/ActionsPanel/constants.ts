@@ -111,10 +111,10 @@ export const actionTemplates: ActionTemplate[] = [
   },
   {
     name: ACTION_NAME.MIGRATE_ANT,
-    heading: translateRaw('MIGRATE_REP_ACTION_HEADING'),
+    heading: translateRaw('MIGRATE_ANT_ACTION_HEADING'),
     subHeading: MigrationSubHead,
-    icon: 'rep-logo',
-    body: [translate('MIGRATE_REP_ACTION_BODY')],
+    icon: 'ant-logo',
+    body: [translate('MIGRATE_ANT_ACTION_BODY')],
     filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === ANTv1UUID),
     priority: 30,
     Component: MigrationTable,

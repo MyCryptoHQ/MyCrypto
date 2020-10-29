@@ -1103,6 +1103,16 @@
     "MIGRATE_LEND_ACTION_HEADING": "Migrate your $LEND to $AAVE",
     "MIGRATE_LEND_ACTION_BODY": "One or more of your accounts hold LEND tokens. Migrate them to AAVE now!",
     "APPROVE_AAVE_TOKEN_MIGRATION": "Approve LEND Contract",
-    "RECENT_TX_LIST_LABEL_AAVE_MIGRATION": "Migrated LEND to AAVE"
+    "RECENT_TX_LIST_LABEL_AAVE_MIGRATION": "Migrated LEND to AAVE",
+    "MIGRATE_ANT_ACTION_HEADING": "Migrate your $ANT to V2",
+    "MIGRATE_ANT_ACTION_BODY": "One or more of your accounts hold ANTv1 tokens. Migrate them to v2 now!",
+    "ANT_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your v1 ANT to v2 ANT, you must approve the migrator contract which will allow for migration.",
+    "ANT_TOKEN_MIGRATION_STEP2_TEXT": "After the REP v2 contract has been approved, confirm the transaction below to conduct the actual migration. This will complete the migration.",
+    "APPROVE_ANT_TOKEN_MIGRATION": "Approve Migrator Contract",
+    "COMPLETE_ANT_TOKEN_MIGRATION": "Complete ANT Migration",
+    "ANT_TOKEN_MIGRATION": "Migrate ANT Tokens",
+    "ANT_TOKEN_MIGRATION_RECEIPT": "ANT Token Migration Receipt",
+    "ANT_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your ANT tokens from v1 to v2, so this field cannot be modified.",
+    "RECENT_TX_LIST_LABEL_ANT_MIGRATION": "Migrated ANT v1 to v2"
   }
 }
