@@ -1,119 +1,74 @@
 import React, { useContext } from 'react';
 
-import { Input, Panel } from '@mycrypto/ui';
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import styled, { css } from 'styled-components';
+import { Panel } from '@mycrypto/ui';
+import { useDispatch, useSelector } from '@store';
+import styled from 'styled-components';
 
-import { Button, Checkbox, Link } from '@components';
-import { DEFAULT_NETWORK, IFeatureFlags } from '@config';
+import { Checkbox, Link } from '@components';
+import { IFeatureFlags } from '@config';
 import { useDevTools, useFeatureFlags } from '@services';
-import {
-  DataContext,
-  getLabelByAddressAndNetwork,
-  useAccounts,
-  useContacts,
-  useNetworks
-} from '@services/Store';
+import { DataContext } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
-import {
-  AssetBalanceObject,
-  Contact,
-  ExtendedContact,
-  IRawAccount,
-  Network,
-  TAddress,
-  WalletId
-} from '@types';
-import { generateUUID, IS_DEV, IS_STAGING } from '@utils';
+import { IS_PROD } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
-import ToolsAccountList from './ToolsAccountList';
+import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
-
-const DevToolsInput = styled(Input)`
-  font-size: 1em;
-`;
-
-const renderAccountForm = (
-  contacts: ExtendedContact[],
-  getNetworkById: (name: string) => Network | undefined
-) => ({ values, handleChange, handleBlur, isSubmitting }: FormikProps<IRawAccount>) => {
-  const detectedLabel: Contact | undefined = getLabelByAddressAndNetwork(
-    values.address,
-    contacts,
-    getNetworkById(values.networkId)
-  );
-  const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
-  return (
-    <Form>
-      <fieldset>
-        Address:{' '}
-        <Field name="address">
-          {({ field }: FieldProps<Account>) => (
-            <DevToolsInput
-              {...field}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.address}
-            />
-          )}
-        </Field>
-      </fieldset>
-      <br />
-      <fieldset>
-        Label:{' '}
-        <Field name="label">
-          {({ field }: FieldProps<Account>) => (
-            <DevToolsInput {...field} onChange={handleChange} onBlur={handleBlur} value={label} />
-          )}
-        </Field>
-      </fieldset>
-      <br />
-      <fieldset>
-        Network:{' '}
-        <Field name="network">
-          {({ field }: FieldProps<Account>) => (
-            <DevToolsInput
-              {...field}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.networkId}
-            />
-          )}
-        </Field>
-      </fieldset>
-      <br />
-      <Button type="submit" disabled={isSubmitting}>
-        Submit
-      </Button>
-    </Form>
-  );
-};
 
 const SLink = styled(Link)`
   font-weight: 600;
 `;
 
-const SDevToolsToggle = styled.button`
-  position: 'fixed';
+const SCheckbox = styled(Checkbox)`
+  margin-bottom: 0;
+`;
+
+const SToggle = styled.button`
+  position: fixed;
+  bottom: 1.25em;
+  left: 1.25em;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 0;
+  font-size: 1.5em;
+  /* From smooth shadow-generator https://s.muz.li/MWNjYTY2Yjk4 */
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02), 0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+    0 12.5px 10px rgba(0, 0, 0, 0.035), 0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.05), 0 100px 80px rgba(0, 0, 0, 0.07);
+`;
+
+const Wrapper = styled.div<{ isActive: boolean }>`
+  position: fixed;
   top: 0;
   left: 0;
-  width: 112;
+  z-index: 1000;
+  max-width: 450px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+    0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
+
+  ${({ isActive }) => isActive && `height: 100vh;`}
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    max-width: 100vw;
+  }
+
 `;
 
 const DBTools = () => {
   const { resetAppDb, addSeedData, removeSeedData } = useContext(DataContext);
   return (
     <div style={{ marginBottom: '1em' }}>
-      {/*Reset Database*/}
-      <p style={{ fontWeight: 600 }}>DB Tools</p>
-      <div>
-        You can choose to
-        <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values. or
-        you can <SLink onClick={() => addSeedData()}>add seed accounts</SLink> to your existing DB,
-        or revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
-        accounts.
-      </div>
+      You can choose to
+      <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values. or you
+      can <SLink onClick={() => addSeedData()}>add seed accounts</SLink> to your existing DB, or
+      revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
+      accounts.
     </div>
   );
 };
@@ -122,8 +77,7 @@ const ErrorTools = () => {
   const { suppressErrors, toggleSuppressErrors } = useContext(ErrorContext);
   return (
     <div style={{ marginBottom: '1em' }}>
-      <p style={{ fontWeight: 600 }}>Error Tools</p>
-      <Checkbox
+      <SCheckbox
         name={'suppress_errors'}
         label={'Suppress Errors'}
         checked={suppressErrors}
@@ -137,126 +91,72 @@ const FeatureFlags = () => {
   const { featureFlags, setFeatureFlag } = useFeatureFlags();
   return (
     <div style={{ marginBottom: '1em' }}>
-      <p style={{ fontWeight: 600 }}>Feature Flags</p>
-      <div>
-        {Object.entries(featureFlags)
-          .filter(([, v]) => v !== 'core')
-          .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
-            <Checkbox
-              key={k}
-              name={k}
-              label={k}
-              checked={v}
-              onChange={() => setFeatureFlag(k, !v)}
-            />
-          ))}
-      </div>
+      {Object.entries(featureFlags)
+        .filter(([, v]) => v !== 'core')
+        .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+          <SCheckbox
+            key={k}
+            name={k}
+            label={k}
+            checked={v}
+            onChange={() => setFeatureFlag(k, !v)}
+          />
+        ))}
     </div>
   );
 };
 
-const DevTools = () => {
-  const { getNetworkById } = useNetworks();
-  const { contacts } = useContacts();
-  const { accounts, createAccountWithID, deleteAccount } = useAccounts();
-  const dummyAccount = {
-    label: 'Foo',
-    address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d' as TAddress,
-    networkId: DEFAULT_NETWORK,
-    assets: [
-      {
-        uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
-        balance: '0',
-        mtime: Date.now()
-      }
-    ] as AssetBalanceObject[],
-    wallet: WalletId.METAMASK,
-    mtime: Date.now(),
-    transactions: [],
-    uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
-    dPath: `m/44'/60'/0'/0/0`,
-    favorite: false
-  };
+const DemoRedux = () => {
+  const greeting = useSelector(getGreeting);
+  const count = useSelector(getCount);
+  const dispatch = useDispatch();
+  const handleIncrement = () => dispatch(increment());
+  const handleReset = () => dispatch(reset());
 
   return (
-    <React.Fragment>
-      <Panel style={{ marginBottom: 0, paddingTop: 50 }}>
-        <FeatureFlags />
-        {/* DB tools*/}
-        <DBTools />
-        {/* Error handling tools */}
-        <ErrorTools />
-
-        {/* Dashboard notifications */}
-        <ToolsNotifications />
-
-        {/* Accounts list */}
-        <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
-
-        {/* Form */}
-        <div className="Settings-heading">Enter a new Account</div>
-        <Formik
-          initialValues={dummyAccount}
-          onSubmit={(values: IRawAccount, { setSubmitting }) => {
-            createAccountWithID(generateUUID(), values);
-            setSubmitting(false);
-          }}
-        >
-          {renderAccountForm(contacts, getNetworkById)}
-        </Formik>
-      </Panel>
-    </React.Fragment>
-  );
-};
-
-const DevToolsManagerContainer = styled.div<{ isActive: boolean }>`
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  max-width: 450px;
-  height: auto;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      overflow-y: scroll;
-      height: 100vh;
-    `}
-
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: fixed;
-    max-width: 100vw;
-  }
-`;
-
-const DevToolsToggle = () => {
-  const { isActive, toggleDevTools } = useDevTools();
-  return (
-    <SDevToolsToggle onClick={toggleDevTools}>
-      {isActive ? 'DevMode On' : 'DevMode Off'}
-    </SDevToolsToggle>
+    <div style={{ marginBottom: '1em' }}>
+      <div>
+        {greeting} {count}
+      </div>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleReset}>Reset</button>
+    </div>
   );
 };
 
 const DevToolsManager = () => {
-  const { isActive } = useDevTools();
+  const { isActive, toggleDevTools } = useDevTools();
+
+  if (IS_PROD) return <></>;
+
   return (
-    <DevToolsManagerContainer isActive={isActive}>
-      {IS_DEV || IS_STAGING ? (
-        <div>
-          <DevToolsToggle />
-          {isActive && (
-            <div style={{ width: '400px' }}>
-              <DevTools />
-            </div>
-          )}
-        </div>
-      ) : (
-        <></>
+    <Wrapper isActive={isActive}>
+      <SToggle onClick={toggleDevTools}>
+        <span role="img" aria-label="lollipop">
+          🍭
+        </span>
+      </SToggle>
+      {isActive && (
+        <Panel style={{ marginBottom: 0, paddingTop: 50, width: '400px', height: '100%' }}>
+          {/* Toggle feature availability */}
+          <p style={{ fontWeight: 600 }}>Feature Flags</p>
+          <FeatureFlags />
+          {/* Error handling tools */}
+          <p style={{ fontWeight: 600 }}>Error Boundary</p>
+          <ErrorTools />
+          {/* Dashboard notifications */}
+          <p style={{ fontWeight: 600 }}>Notifications</p>
+          <ToolsNotifications />
+          {/* DB tools*/}
+          <p style={{ fontWeight: 600 }}>DB Tools</p>
+          <DBTools />
+          {/* Redux Demo */}
+          <p style={{ fontWeight: 600 }}>Redux Demo</p>
+          <DemoRedux />
+        </Panel>
       )}
-    </DevToolsManagerContainer>
+    </Wrapper>
   );
 };
 
-export { DevToolsManager };
+export default DevToolsManager;
