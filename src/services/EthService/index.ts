@@ -5,7 +5,8 @@ export {
   encodeTransfer,
   decodeTransfer,
   decodeApproval,
-  RepV2Token
+  RepV2Token,
+  AntMigrator
 } from './contracts';
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
