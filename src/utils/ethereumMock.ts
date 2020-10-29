@@ -1,8 +1,9 @@
 import { ethers, Wallet } from 'ethers';
-//import { JsonRpcProvider } from 'ethers/providers/json-rpc-provider';
 
 import { NODES_CONFIG } from '@database/data';
 import { NetworkId } from '@types';
+
+import { noOp } from './noOp';
 
 export const ethereumMock = () => {
   let wallet: Wallet;
@@ -35,25 +36,17 @@ export const ethereumMock = () => {
 
   const enable = () => Promise.resolve([wallet.address]);
 
-  const on = () => {
-    // DONT SUPPORT EVENTS
-    return;
-  };
-
-  const removeAllListeners = () => {
-    // DONT SUPPORT EVENTS
-    return;
-  };
+  // DONT SUPPORT EVENTS
+  const on = noOp;
+  const removeAllListeners = noOp;
 
   const getResult = async (method: string, params: any) => {
-    console.log('MockEthereum', method);
     switch (method) {
       case 'eth_accounts':
         return [wallet.address];
       case 'net_version':
         return chainId;
       case 'eth_sendTransaction': {
-        console.log(params);
         const { gas, from, ...rest } = params[0];
         const result = await wallet.sendTransaction({
           ...rest,
