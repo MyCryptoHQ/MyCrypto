@@ -30,7 +30,14 @@ export { Social, AssetSocial } from './social';
 export { StoreAccount, IRawAccount, IAccount } from './account';
 export { Contact, ExtendedContact } from './contact';
 export { Contract, ExtendedContract } from './contract';
-export { Network, NetworkLegacy, AssetLegacy, ContractLegacy, NetworkNodes } from './network';
+export {
+  Network,
+  NetworkLegacy,
+  AssetLegacy,
+  ContractLegacy,
+  NetworkNodes,
+  ExplorerConfig
+} from './network';
 export { NetworkId } from './networkId';
 export { NodeType } from './node';
 export { DPathFormat, DPath } from './dPath';
@@ -97,7 +104,6 @@ export { Tab } from './tab';
 export { ISignedMessage } from './signing';
 export { IStory } from './story';
 export { FormData, IAccountAdditionData } from './formData';
-export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';
 export { BannerType } from './banner';
 export { ToastConfig, ToastType, ToastConfigsProps } from './toast';

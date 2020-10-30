@@ -34,7 +34,7 @@ export interface GetDeterministicWalletsArgs {
 
 export interface DeterministicWalletData {
   index: number;
-  address: string;
+  address: TAddress;
   value?: TokenValue;
 }
 

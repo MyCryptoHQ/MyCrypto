@@ -22,7 +22,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigify, bigNumGasLimitToViewable, truncate } from '@utils';
+import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
 import Typography from '../Typography';
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
@@ -136,7 +136,7 @@ export default function MultiTxReceipt({
 
         const txUrl =
           network && network.blockExplorer
-            ? network.blockExplorer.txUrl(transaction.txHash as string)
+            ? buildTxUrl(network.blockExplorer, transaction.txHash!)
             : '';
 
         return (

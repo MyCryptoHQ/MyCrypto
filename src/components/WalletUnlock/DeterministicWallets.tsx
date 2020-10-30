@@ -26,7 +26,7 @@ import { DeterministicWalletData, getDeterministicWallets } from '@services/Wall
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TTicker } from '@types';
-import { fromWei } from '@utils';
+import { buildAddressUrl, fromWei } from '@utils';
 
 import { Table } from '../Table';
 
@@ -347,16 +347,10 @@ export function DeterministicWalletsClass({
     ticker: TTicker
   ) => {
     const addrBook = getLabelByAddressAndNetwork(wallet.address.toLowerCase(), contacts, network);
-    let blockExplorer;
-    if (network && !network.isCustom && network.blockExplorer) {
-      blockExplorer = network.blockExplorer;
-    } else {
-      blockExplorer = {
-        addressUrl: (address: string) => {
-          return `https://ethplorer.io/address/${address}`;
-        }
-      };
-    }
+    const addressUrl =
+      network && !network.isCustom && network.blockExplorer
+        ? buildAddressUrl(network.blockExplorer, wallet.address)
+        : `https://ethplorer.io/address/${wallet.address}`;
 
     return [
       <div key="wallet-row-0">{wallet.index + 1}</div>,
@@ -373,7 +367,7 @@ export function DeterministicWalletsClass({
           `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
-      <LinkOut key="wallet-row-3" link={blockExplorer.addressUrl(wallet.address)} />
+      <LinkOut key="wallet-row-3" link={addressUrl} />
     ];
   };
 

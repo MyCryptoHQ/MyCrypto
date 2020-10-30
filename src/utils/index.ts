@@ -97,7 +97,7 @@ export * from './wallets';
 export { isTruthy } from './isTruthy';
 export { filterDropdownAssets, filterValidAssets } from './filterAssets';
 export * from './date';
-export { makeExplorer } from './makeExplorer';
+export { makeExplorer, buildTxUrl, buildBlockUrl, buildAddressUrl } from './makeExplorer';
 export { verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
 export {
