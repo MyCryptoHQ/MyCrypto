@@ -46,9 +46,7 @@ module.exports = {
           chunks: 'all',
           name: 'vendor.bundle',
           test(mod) {
-            const excluded = `${config.chunks.individual.join(
-              '|'
-            )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
+            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.devOnly
               .join('|')
               .replace(/\//, '[\\\\/]')}`;
             const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded}).*)`);
