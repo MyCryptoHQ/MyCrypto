@@ -6,6 +6,7 @@ export const {
   create: createAccount,
   destroy: destroyAccount,
   update: updateAccount,
+  updateMany: updateAccounts,
   reset: resetAccount
 } = accountSlice.actions;
 

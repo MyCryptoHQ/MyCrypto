@@ -1,5 +1,11 @@
 import { useContext } from 'react';
 
+import {
+  createAccount,
+  destroyAccount,
+  updateAccounts as updateAccountsStore,
+  updateAccount as updateAccountStore
+} from '@store';
 import BigNumber from 'bignumber.js';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
@@ -17,7 +23,6 @@ import {
   ITxReceipt,
   ITxStatus,
   ITxType,
-  LSKeys,
   NetworkId,
   StoreAccount,
   TAddress,
@@ -45,9 +50,8 @@ export interface IAccountContext {
 }
 
 function useAccounts() {
-  const { createActions, accounts } = useContext(DataContext);
+  const { accounts } = useContext(DataContext);
   const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
-  const model = createActions(LSKeys.ACCOUNTS);
   const trackTxHistory = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_HISTORY,
     actionName: 'Tx Made'
@@ -55,18 +59,18 @@ function useAccounts() {
 
   const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
     addAccountToFavorites(uuid);
-    model.createWithID({ ...item, uuid }, uuid);
+    createAccount({ ...item, uuid });
   };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
     const allAccounts = unionWith(eqBy(prop('uuid')), newAccounts, accounts).filter(Boolean);
     addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
-    model.updateAll(allAccounts);
+    updateAccounts(allAccounts);
   };
 
-  const deleteAccount = (account: IAccount) => model.destroy(account);
+  const deleteAccount = ({ uuid }: IAccount) => destroyAccount(uuid);
 
-  const updateAccount = (uuid: TUuid, account: IAccount) => model.update(uuid, account);
+  const updateAccount = (_: TUuid, account: IAccount) => updateAccountStore(account);
 
   const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
     if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
@@ -172,14 +176,16 @@ function useAccounts() {
       })
     )
       .then((data) => data.filter((accountItem) => !isEmpty(accountItem)))
-      .then((updatedAccounts) => model.updateAll(updatedAccounts))
+      .then((updatedAccounts) => {
+        updateAccountsStore(updatedAccounts);
+      })
       .catch((err) => {
         console.debug('[AccountProvider]: Scan Tokens Error:', err);
       });
 
   const updateAccounts = (toUpdate: IAccount[]) => {
     const newAccounts = unionWith(eqBy(prop('uuid')), toUpdate, accounts).filter(Boolean);
-    model.updateAll(newAccounts);
+    updateAccountsStore(newAccounts);
   };
 
   const toggleAccountPrivacy = (uuid: TUuid) => {

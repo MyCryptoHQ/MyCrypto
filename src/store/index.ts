@@ -8,3 +8,5 @@ import store from './store';
 const useSelector: TypedUseSelectorHook<typeof store> = useReduxSelector;
 
 export { useSelector, useDispatch, store };
+export * from './selectors';
+export * from './entities';
