@@ -49,7 +49,6 @@ module.exports = {
       'graphql',
       'apollo-client'
     ],
-    devOnly: ['@hot-loader/react-dom'],
-    electronOnly: ['zxcvbn']
+    devOnly: ['@hot-loader/react-dom']
   }
 };
