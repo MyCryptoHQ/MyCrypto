@@ -51,7 +51,7 @@ test('Complete SendFlow', async (t) => {
   await t.click(Selector('.close-icon'));
   await setFeatureFlag('PROTECT_TX', false);
 
-  await setupEthereumMock(ENV.E2E_PRIVATE_KEY);
+  await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 5);
 
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();

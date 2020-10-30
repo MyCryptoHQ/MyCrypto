@@ -2,11 +2,11 @@ import { ClientFunction, t } from 'testcafe';
 
 import { FIXTURES_CONST } from './fixtures';
 
-export const _setupEthereumMock = ClientFunction((privateKey) => {
-  window.ethereum.initialize(privateKey, 3);
+export const _setupEthereumMock = ClientFunction((privateKey, chainId) => {
+  window.ethereum.initialize(privateKey, chainId);
 });
 
-export const setupEthereumMock = async (privateKey) => {
+export const setupEthereumMock = async (privateKey, chainId) => {
   await t.expect(ClientFunction(() => window.initialize)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
-  await _setupEthereumMock(privateKey);
+  await _setupEthereumMock(privateKey, chainId);
 };
