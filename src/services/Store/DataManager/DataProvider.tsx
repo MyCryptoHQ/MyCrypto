@@ -7,8 +7,10 @@ import {
   getEncryptedData,
   removeSeedDataFromSchema
 } from '@database';
+import { getAccounts, updateAccounts, useDispatch, useSelector } from '@store';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
-import { useEvent, useThrottleFn } from '@vendor';
+import { toArray } from '@utils';
+import { isEmpty, useEvent, useThrottleFn } from '@vendor';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
@@ -67,6 +69,26 @@ export const DataProvider: React.FC = ({ children }) => {
     db, // Initial state
     marshallState // method to run on initial state
   );
+
+  const reduxAccounts = useSelector(getAccounts);
+  const reduxDispatch = useDispatch();
+  // Sync existing db to redux store on load
+  useEffect(() => {
+    const legacyAccounts = appState.accounts;
+    console.log('Found existing db: syncing to redux');
+    if (!isEmpty(legacyAccounts) && isEmpty(reduxAccounts)) {
+      reduxDispatch(updateAccounts(toArray(legacyAccounts)));
+    }
+  }, []);
+
+  // Update legacy store with redux values.
+  useEffect(() => {
+    console.log('Redux change: syncing with legacy');
+    dispatch({
+      type: ActionT.ADD_ENTRY,
+      payload: { model: LSKeys.ACCOUNTS, data: toArray(reduxAccounts) }
+    });
+  }, [reduxAccounts]);
 
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,

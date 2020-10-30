@@ -1,11 +1,5 @@
 import { useContext } from 'react';
 
-import {
-  createAccount,
-  destroyAccount,
-  updateAccounts as updateAccountsStore,
-  updateAccount as updateAccountStore
-} from '@store';
 import BigNumber from 'bignumber.js';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
@@ -15,6 +9,13 @@ import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
+import {
+  createAccount,
+  destroyAccount,
+  updateAccounts as updateAccountsStore,
+  updateAccount as updateAccountStore,
+  useDispatch
+} from '@store';
 import {
   Asset,
   AssetBalanceObject,
@@ -52,6 +53,7 @@ export interface IAccountContext {
 function useAccounts() {
   const { accounts } = useContext(DataContext);
   const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
+  const dispatch = useDispatch();
   const trackTxHistory = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_HISTORY,
     actionName: 'Tx Made'
@@ -59,18 +61,18 @@ function useAccounts() {
 
   const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
     addAccountToFavorites(uuid);
-    createAccount({ ...item, uuid });
+    dispatch(createAccount({ ...item, uuid }));
   };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
     const allAccounts = unionWith(eqBy(prop('uuid')), newAccounts, accounts).filter(Boolean);
     addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
-    updateAccounts(allAccounts);
+    dispatch(updateAccountsStore(allAccounts));
   };
 
-  const deleteAccount = ({ uuid }: IAccount) => destroyAccount(uuid);
+  const deleteAccount = ({ uuid }: IAccount) => dispatch(destroyAccount(uuid));
 
-  const updateAccount = (_: TUuid, account: IAccount) => updateAccountStore(account);
+  const updateAccount = (_: TUuid, account: IAccount) => dispatch(updateAccountStore(account));
 
   const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
     if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
@@ -177,7 +179,7 @@ function useAccounts() {
     )
       .then((data) => data.filter((accountItem) => !isEmpty(accountItem)))
       .then((updatedAccounts) => {
-        updateAccountsStore(updatedAccounts);
+        dispatch(updateAccountsStore(updatedAccounts));
       })
       .catch((err) => {
         console.debug('[AccountProvider]: Scan Tokens Error:', err);
@@ -185,7 +187,7 @@ function useAccounts() {
 
   const updateAccounts = (toUpdate: IAccount[]) => {
     const newAccounts = unionWith(eqBy(prop('uuid')), toUpdate, accounts).filter(Boolean);
-    updateAccountsStore(newAccounts);
+    dispatch(updateAccountsStore(newAccounts));
   };
 
   const toggleAccountPrivacy = (uuid: TUuid) => {
