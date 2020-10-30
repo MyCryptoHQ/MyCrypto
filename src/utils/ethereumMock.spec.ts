@@ -35,7 +35,7 @@ describe('ethereumMock', () => {
     const mock = renderMock();
     function callback(_: any, data: any) {
       try {
-        expect(data).toStrictEqual(expect.objectContaining({ result: 3, id: 1 }));
+        expect(data).toStrictEqual(expect.objectContaining({ result: '3', id: 1 }));
         done();
       } catch (error) {
         done(error);
