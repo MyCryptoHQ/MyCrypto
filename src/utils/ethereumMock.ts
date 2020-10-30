@@ -45,7 +45,7 @@ export const ethereumMock = () => {
       case 'eth_accounts':
         return [wallet.address];
       case 'net_version':
-        return chainId;
+        return chainId.toString();
       case 'eth_sendTransaction': {
         const { gas, from, ...rest } = params[0];
         const result = await wallet.sendTransaction({

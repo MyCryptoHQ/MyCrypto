@@ -9,6 +9,7 @@ import {
   FIXTURE_PRIVATE_KEY_TOKENS,
   FIXTURE_VIEW_ONLY_ADDRESS,
   FIXTURE_VIEW_ONLY_TOKENS,
+  FIXTURE_WEB3_ADDRESS,
   FIXTURES_CONST,
   PAGES
 } from './fixtures';
@@ -83,4 +84,14 @@ test('Should be able to add a keystore file address', async (t) => {
   await dashboardPage.expectAccountTableToMatchCount(1);
 
   FIXTURE_PRIVATE_KEY_TOKENS.forEach((t) => dashboardPage.expectBalanceInBalanceList(t));
+});
+
+// Add Account - Web3
+test('Should be able to add a web3 address', async () => {
+  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
+  await addAccountPage.addWeb3();
+  await dashboardPage.waitPageLoaded();
+
+  await dashboardPage.expectAddressToBePresent(FIXTURE_WEB3_ADDRESS);
+  await dashboardPage.expectAccountTableToMatchCount(1);
 });
