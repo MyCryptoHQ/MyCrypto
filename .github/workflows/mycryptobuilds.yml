@@ -121,3 +121,4 @@ jobs:
         run: yarn test:e2e
         env:
           E2E_MNEMONIC_PASSPHRASE: ${{ secrets.E2E_MNEMONIC_PASSPHRASE }}
+          E2E_PRIVATE_KEY: ${{ secrets.E2E_PRIVATE_KEY }}
