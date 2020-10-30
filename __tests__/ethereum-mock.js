@@ -7,9 +7,6 @@ export const _setupEthereumMock = ClientFunction((privateKey) => {
 });
 
 export const setupEthereumMock = async (privateKey) => {
-  console.log('setting ethereum');
-  await t
-    .expect(ClientFunction(() => window.setPrivateKey))
-    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
+  await t.expect(ClientFunction(() => window.initialize)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
   await _setupEthereumMock(privateKey);
 };
