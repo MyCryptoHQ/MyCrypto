@@ -1,6 +1,6 @@
 import { ethers, Wallet } from 'ethers';
 
-import { NODES_CONFIG } from '@database/data';
+import { NODES_CONFIG } from '@database/data/nodes';
 import { NetworkId } from '@types';
 
 import { noOp } from './noOp';
