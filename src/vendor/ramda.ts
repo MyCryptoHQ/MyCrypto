@@ -47,3 +47,7 @@ export { default as union } from 'ramda/src/union';
 export { default as pick } from 'ramda/src/pick';
 export { default as assoc } from 'ramda/src/assoc';
 export { default as descend } from 'ramda/src/descend';
+export { default as lensProp } from 'ramda/src/lensProp';
+export { default as set } from 'ramda/src/set';
+export { default as toString } from 'ramda/src/toString';
+export { default as over } from 'ramda/src/over';

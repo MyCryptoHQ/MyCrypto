@@ -1,6 +1,7 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
+import { RenderHookOptions, renderHook as rtlRenderHook } from '@testing-library/react-hooks';
 
 import { TAction } from '@types';
 import { noOp } from '@utils';
@@ -21,6 +22,10 @@ window.requestAnimationFrame =
   ((callback) => {
     setTimeout(callback, 0);
   });
+
+export const renderHook = (hook: () => any, options: RenderHookOptions<unknown>) => {
+  return rtlRenderHook(hook, options);
+};
 
 // wrapper option : Wrap renders with our providers so components can consume it
 export const simpleRender = (ui: React.ReactElement, options?: any) =>
