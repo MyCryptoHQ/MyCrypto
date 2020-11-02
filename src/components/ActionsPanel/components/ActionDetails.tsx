@@ -25,8 +25,10 @@ export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTempla
 
   const Component = actionTemplate.Component;
   const handleClick = () => {
-    userAction.state != 'default' &&
-      updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.STARTED });
+    updateUserAction(userAction.uuid, {
+      ...userAction,
+      state: actionTemplate.button.shouldComplete ? ACTION_STATE.COMPLETED : ACTION_STATE.STARTED
+    });
     actionTemplate.button.external
       ? openLink(actionTemplate.button.to as TURL)
       : history.push(actionTemplate.button.to);

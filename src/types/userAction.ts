@@ -50,6 +50,7 @@ export interface ActionTemplate {
   button: {
     content: string;
     to: string;
+    shouldComplete?: boolean;
     external: boolean;
   };
   category: ACTION_CATEGORIES;

@@ -167,6 +167,7 @@ export const actionTemplates: ActionTemplate[] = [
     priority: 0,
     button: {
       content: translateRaw('FEEDBACK_ACTION_BUTTON'),
+      shouldComplete: true,
       to: formatSupportEmail(translateRaw('FEEDBACK_ACTION_MAIL_SUBJECT')),
       external: true
     },
@@ -180,6 +181,7 @@ export const actionTemplates: ActionTemplate[] = [
     priority: 0,
     button: {
       content: translateRaw('NEWSLETTER_ACTION_BUTTON'),
+      shouldComplete: true,
       to: SUBSCRIBE_NEWSLETTER_LINK,
       external: true
     },
@@ -193,6 +195,7 @@ export const actionTemplates: ActionTemplate[] = [
     priority: 0,
     button: {
       content: translateRaw('TELEGRAM_ACTION_BUTTON'),
+      shouldComplete: true,
       to: socialMediaLinks.find((i) => i.text === 'telegram')!.link,
       external: true
     },
@@ -209,6 +212,7 @@ export const actionTemplates: ActionTemplate[] = [
     priority: 0,
     button: {
       content: translateRaw('SWAP_ACTION_BUTTON'),
+      shouldComplete: true,
       to: ROUTE_PATHS.SWAP.path,
       external: false
     },
@@ -222,6 +226,7 @@ export const actionTemplates: ActionTemplate[] = [
     priority: 0,
     button: {
       content: translateRaw('TWITTER_ACTION_BUTTON'),
+      shouldComplete: true,
       to: socialMediaLinks.find((i) => i.text === 'twitter')!.link,
       external: true
     },
