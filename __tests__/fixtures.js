@@ -3,6 +3,7 @@ require('dotenv').config();
 const ENV = {
   // Should be set in order to use Mnemonic in AddAccount flow
   E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
+  E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
 
   // Defined in github/workflow to run against mycryptobuilds
   E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
@@ -26,6 +27,7 @@ const PAGES = {
   ADD_ACCOUNT_VIEWONLY: `${FIXTURES_CONST.BASE_URL}/add-account/view_only`,
   ADD_ACCOUNT_PRIVATE_KEY: `${FIXTURES_CONST.BASE_URL}/add-account/private_key`,
   ADD_ACCOUNT_KEYSTORE: `${FIXTURES_CONST.BASE_URL}/add-account/keystore_file`,
+  ADD_ACCOUNT_WEB3: `${FIXTURES_CONST.BASE_URL}/add-account/web3`,
   SEND: `${FIXTURES_CONST.BASE_URL}/send`,
   ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`,
   TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`
@@ -50,11 +52,13 @@ const FIXTURE_VIEW_ONLY_TOKENS = ['ANT', 'BAT', 'DAI'];
 
 const FIXTURE_PRIVATE_KEY_TOKENS = [];
 
-const FIXTURE_SEND_CONTACT = 'Mnemonic Phrase Account 1';
+const FIXTURE_SEND_CONTACT = 'Web3 Account 1';
 
 const FIXTURE_SEND_ADDRESS = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
 
 const FIXTURE_SEND_AMOUNT = '0.001';
+
+const FIXTURE_WEB3_ADDRESS = '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3 ';
 
 const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
 
@@ -92,15 +96,15 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
   accounts: {
     '1782c060-8bc0-55d6-8078-ff255b4aae90': {
       address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
-      networkId: 'Ropsten',
-      wallet: 'MNEMONIC_PHRASE',
+      networkId: 'Goerli',
+      wallet: 'WEB3',
       dPath: "m/44'/60'/0'/0/0",
       assets: [
         {
-          ticker: 'RopstenETH',
-          name: 'Ropsten',
+          ticker: 'GoerliETH',
+          name: 'GoerliETH',
           decimal: 18,
-          networkId: 'Ropsten',
+          networkId: 'Goerli',
           type: 'base',
           isCustom: false,
           uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
@@ -112,7 +116,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
       favorite: false,
       mtime: 0,
       uuid: '1782c060-8bc0-55d6-8078-ff255b4aae90',
-      label: 'Mnemonic Phrase Account 1'
+      label: 'Web3 Account 1'
     }
   },
   addressBook: {
@@ -124,10 +128,10 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
       uuid: 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
     },
     'b6260cfc-c6ff-b385-af20-1cc95e308b33': {
-      label: 'Mnemonic Phrase Account 1',
+      label: 'Web3 Account 1',
       address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
       notes: '',
-      network: 'Ropsten',
+      network: 'Goerli',
       uuid: 'b6260cfc-c6ff-b385-af20-1cc95e308b33'
     }
   },
@@ -181,5 +185,6 @@ export {
   FIXTURE_TEST_PRIVATE_KEY,
   FIXTURE_PRIVATE_KEY_TOKENS,
   FIXTURE_TEST_KEYSTORE_FILE_PASSWORD,
-  FIXTURE_INCOMING_TX_HASH
+  FIXTURE_INCOMING_TX_HASH,
+  FIXTURE_WEB3_ADDRESS
 };

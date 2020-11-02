@@ -27,6 +27,7 @@ const FullScreen = styled.div`
 
 const RootClass = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

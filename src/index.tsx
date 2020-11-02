@@ -10,7 +10,8 @@ import React from 'react';
 
 import { render } from 'react-dom';
 
-import { consoleAdvertisement, getRootDomain, IS_PROD, IS_STAGING } from '@utils';
+import { consoleAdvertisement, getRootDomain, IS_E2E, IS_PROD, IS_STAGING } from '@utils';
+import { ethereumMock } from '@vendor';
 
 import Root from './Root';
 
@@ -35,6 +36,11 @@ const doNothing = (event: DragEvent) => {
 };
 document.addEventListener('dragover', doNothing, false);
 document.addEventListener('drop', doNothing, false);
+
+if (IS_E2E) {
+  // ONLY FOR TESTING
+  (window as CustomWindow).ethereum = ethereumMock();
+}
 
 render(<Root />, document.getElementById('app'));
 
