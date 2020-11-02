@@ -98,13 +98,6 @@ export * from './wallets';
 export { isTruthy } from './isTruthy';
 export { filterDropdownAssets, filterValidAssets } from './filterAssets';
 export * from './date';
-export {
-  decryptPrivKey,
-  decryptMnemonicToPrivKey,
-  decodeCryptojsSalt,
-  evp_kdf,
-  decipherBuffer
-} from './decrypt';
 export { makeExplorer } from './makeExplorer';
 export { verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
