@@ -20,7 +20,9 @@ export const createApproveTx = (
 export const createMigrationTx = (
   payload: ITokenMigrationFormFull
 ): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
-  const data = AntMigrator.migrate.encodeInput({ _amount: payload.amount });
+  const data = AntMigrator.migrate.encodeInput({
+    _amount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
+  });
   return {
     from: payload.account.address,
     to: MIGRATION_CONTRACT,
