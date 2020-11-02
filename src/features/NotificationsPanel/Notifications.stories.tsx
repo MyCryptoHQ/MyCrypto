@@ -8,7 +8,6 @@ import {
   GetHardwareWalletNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification,
-  PrintPaperWalletNotification,
   SaveDashboardNotification,
   WalletAddedNotification,
   WalletCreatedNotification,
@@ -44,12 +43,6 @@ export const walletAddedNotification = () => (
 export const saveDashboardNotification = () => (
   <NotificationPanel>
     <SaveDashboardNotification />
-  </NotificationPanel>
-);
-
-export const printPaperWalletNotification = () => (
-  <NotificationPanel>
-    <PrintPaperWalletNotification address={fAccount.address} privateKey="privateKey" />
   </NotificationPanel>
 );
 

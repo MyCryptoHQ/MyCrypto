@@ -41,8 +41,6 @@ module.exports = {
     individual: [
       'ethers',
       'recharts',
-      'jspdf',
-      'html2canvas',
       '@walletconnect',
       '@ledgerhq',
       '@unstoppabledomains',
