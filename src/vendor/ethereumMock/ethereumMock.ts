@@ -1,38 +1,27 @@
 import { ethers, Wallet } from 'ethers';
 
-import { NODES_CONFIG } from '@database/data/nodes';
-import { NetworkId } from '@types';
-import { noOp } from '@utils';
-
 export const ethereumMock = () => {
   let wallet: Wallet;
   let chainId: number;
 
-  enum Networks {
-    Ethereum = 1,
-    Ropsten = 3,
-    Rinkeby = 4,
-    Kovan = 42,
-    Goerli = 5
-  }
-
   // CONFIG
-  const initialize = (privKey: string, _chainId: number) => {
+  const initialize = (privKey: string, _chainId: number, jsonRpcUrl: string) => {
     chainId = _chainId;
-    const networkName = Object.entries(Networks).find(([_, id]) => id == chainId)![0];
-    const nodes = NODES_CONFIG[networkName as NetworkId];
-    const node = nodes[0];
-    const provider = new ethers.providers.JsonRpcProvider(node, chainId);
+    const provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl, chainId);
     wallet = new Wallet(privKey, provider);
   };
 
-  // MOCKS
+  // UTILS
   const wrapResult = ({ id, result }: { id: number; result: any }) => ({
     id,
     result,
     jsonrpc: '2.0'
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const noOp = () => {};
+
+  // MOCKS
   const enable = () => Promise.resolve([wallet.address]);
 
   // DONT SUPPORT EVENTS

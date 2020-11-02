@@ -19,7 +19,7 @@ jest.mock('ethers', () => ({
 
 const renderMock = () => {
   const mock = ethereumMock();
-  mock.initialize('privatekey', 3);
+  mock.initialize('privatekey', 3, '');
   return mock;
 };
 
