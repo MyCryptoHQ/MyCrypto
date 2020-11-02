@@ -35,7 +35,7 @@ describe('it creates token migration transactions', () => {
     const migrationTx = createMigrationTx(defaultProps);
     expect(migrationTx).toEqual({
       chainId: 1,
-      data: '0x682356c00000000000000000000000000000000000000000000000000000000000000005',
+      data: '0x682356c00000000000000000000000000000000000000000000000004563918244f40000',
       from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
       gasPrice: '0x12a05f200',
       to: '0x317625234562B1526Ea2FaC4030Ea499C5291de4',

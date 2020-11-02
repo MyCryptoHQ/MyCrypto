@@ -20,7 +20,9 @@ export const createApproveTx = (
 export const createMigrationTx = (
   payload: ITokenMigrationFormFull
 ): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
-  const data = AaveMigrator.migrateFromLEND.encodeInput({ amount: payload.amount });
+  const data = AaveMigrator.migrateFromLEND.encodeInput({
+    amount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
+  });
   return {
     from: payload.account.address,
     to: MIGRATION_CONTRACT,
