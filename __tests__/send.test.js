@@ -9,6 +9,7 @@ import {
   FIXTURE_MYC_STORAGE_KEY,
   FIXTURE_SEND_AMOUNT,
   FIXTURE_SEND_CONTACT,
+  FIXTURES_CONST,
   PAGES
 } from './fixtures';
 import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
@@ -69,8 +70,12 @@ test('Complete SendFlow', async (t) => {
   // Send TX
   await t.click(getByText(findByTKey('CONFIRM_AND_SEND')));
 
+  await t.expect(getByText(findByTKey('SIGN_TX_SUBMITTING_PENDING'))).ok();
+
   // Expect to reach Tx Receipt
-  await t.expect(getByText(findByTKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD'))).ok();
+  await t
+    .expect(getByText(findByTKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')).exists)
+    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
