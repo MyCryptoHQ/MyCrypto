@@ -2,8 +2,7 @@ import { ethers, Wallet } from 'ethers';
 
 import { NODES_CONFIG } from '@database/data/nodes';
 import { NetworkId } from '@types';
-
-import { noOp } from './noOp';
+import { noOp } from '@utils';
 
 export const ethereumMock = () => {
   let wallet: Wallet;

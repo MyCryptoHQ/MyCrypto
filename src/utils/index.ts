@@ -148,4 +148,3 @@ export {
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { formatApproveTx } from './erc20';
 export { randomElementFromArray } from './random';
-export { ethereumMock } from './ethereumMock';
