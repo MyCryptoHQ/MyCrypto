@@ -70,11 +70,9 @@ test('Complete SendFlow', async (t) => {
   // Send TX
   await t.click(getByText(findByTKey('CONFIRM_AND_SEND')));
 
-  await t.expect(getByText(findByTKey('SIGN_TX_SUBMITTING_PENDING'))).ok();
-
   // Expect to reach Tx Receipt
   await t
-    .expect(getByText(findByTKey('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')).exists)
+    .expect(Selector('.TransactionReceipt-back').exists)
     .ok({ timeout: FIXTURES_CONST.TIMEOUT });
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
