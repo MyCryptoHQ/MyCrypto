@@ -5,7 +5,7 @@ import { initialState, default as slice } from './asset.slice';
 const reducer = slice.reducer;
 const { create, destroy, update, updateMany, reset } = slice.actions;
 
-describe('AccountSlice', () => {
+describe('AssetSlice', () => {
   it('create(): adds an entity by uuid', () => {
     const entity = { uuid: 'random' } as ExtendedAsset;
     const actual = reducer(initialState, create(entity));

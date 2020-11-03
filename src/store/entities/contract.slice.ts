@@ -14,6 +14,11 @@ const slice = createSlice({
     },
     destroy(state, action: PayloadAction<TUuid>) {
       delete state[action.payload];
+    },
+    updateMany(state, action: PayloadAction<ExtendedContract[]>) {
+      action.payload.forEach((contract) => {
+        state[contract.uuid] = contract;
+      });
     }
   }
 });

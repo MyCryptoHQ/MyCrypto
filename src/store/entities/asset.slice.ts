@@ -20,8 +20,8 @@ const slice = createSlice({
       state[uuid] = action.payload;
     },
     updateMany(state, action: PayloadAction<ExtendedAsset[]>) {
-      action.payload.forEach((account) => {
-        state[account.uuid] = account;
+      action.payload.forEach((asset) => {
+        state[asset.uuid] = asset;
       });
     },
     reset() {

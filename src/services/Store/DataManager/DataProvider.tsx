@@ -15,6 +15,9 @@ import {
   getNetworks,
   updateAccounts,
   updateAssets,
+  updateContacts,
+  updateContracts,
+  updateNetworks,
   useDispatch,
   useSelector
 } from '@store';
@@ -106,15 +109,15 @@ export const DataProvider: React.FC = ({ children }) => {
     }
     if (!isEmpty(legacyContacts) && isEmpty(reduxContacts)) {
       console.debug('Found legacy contacts: syncing redux with legacy');
-      reduxDispatch(updateAssets(toArray(legacyContacts)));
+      reduxDispatch(updateContacts(toArray(legacyContacts)));
     }
     if (!isEmpty(legacyContracts) && isEmpty(reduxContracts)) {
       console.debug('Found legacy contracts: syncing redux with legacy');
-      reduxDispatch(updateAssets(toArray(legacyContracts)));
+      reduxDispatch(updateContracts(toArray(legacyContracts)));
     }
     if (!isEmpty(legacyNetworks) && isEmpty(reduxNetworks)) {
       console.debug('Found legacy networks: syncing redux with legacy');
-      reduxDispatch(updateAssets(toArray(legacyNetworks)));
+      reduxDispatch(updateNetworks(toArray(legacyNetworks)));
     }
   }, []);
 

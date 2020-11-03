@@ -16,6 +16,11 @@ const slice = createSlice({
     update(state, action: PayloadAction<Network>) {
       const { id: uuid } = action.payload;
       state[uuid] = action.payload;
+    },
+    updateMany(state, action: PayloadAction<Network[]>) {
+      action.payload.forEach((network) => {
+        state[network.id] = network;
+      });
     }
   }
 });

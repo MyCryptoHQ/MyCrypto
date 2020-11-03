@@ -30,8 +30,17 @@ export const {
   reset: resetContact
 } = contactSlice.actions;
 
-export const { create: createContract, destroy: destroyContract } = contractSlice.actions;
-export const { create: createNetwork, update: updateNetwork } = networkSlice.actions;
+export const {
+  create: createContract,
+  destroy: destroyContract,
+  updateMany: updateContracts
+} = contractSlice.actions;
+
+export const {
+  create: createNetwork,
+  update: updateNetwork,
+  updateMany: updateNetworks
+} = networkSlice.actions;
 
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
 
