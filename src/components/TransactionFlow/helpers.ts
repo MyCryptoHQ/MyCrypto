@@ -68,7 +68,8 @@ export const createSignConfirmAndReceiptSteps = ({
         isSubmitting,
         transactions,
         flowConfig,
-        currentTxIdx: idx
+        currentTxIdx: idx,
+        amount
       },
       actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
         if (transactions.length > 1) {
@@ -94,7 +95,7 @@ export const createSignConfirmAndReceiptSteps = ({
     label: receiptTitle,
     component: receiptComponent,
     props: {
-      amount: amount,
+      amount,
       account,
       flowConfig,
       transactions

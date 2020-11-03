@@ -37,6 +37,7 @@ export const FEATURE_FLAGS = {
   PROTECT_TX: true,
   ENS: true,
   REP_TOKEN_MIGRATION: true,
+  AAVE_TOKEN_MIGRATION: IS_DEV,
   CUSTOM_NETWORKS: IS_DEV,
   // This features requires a landing page, same root host to be running simultaneously.
   // While this can be expected in staging and in production we SHOULD not expect every developper

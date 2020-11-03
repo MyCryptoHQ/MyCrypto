@@ -9,6 +9,7 @@ import {
   IPendingTxReceipt,
   ITxReceipt,
   ITxStatus,
+  ITxType,
   Network,
   StoreAccount,
   StoreAsset,
@@ -66,3 +67,7 @@ export const isNotExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: Store
 
 export const isExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: StoreAsset): boolean =>
   (excludedAssetUuids || []).includes(asset.uuid);
+
+const TOKEN_MIGRATIONS = [ITxType.REP_TOKEN_MIGRATION, ITxType.AAVE_TOKEN_MIGRATION];
+
+export const isTokenMigration = (type: ITxType) => type in TOKEN_MIGRATIONS;

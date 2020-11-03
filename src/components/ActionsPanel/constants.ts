@@ -4,6 +4,7 @@ import { TIcon } from '@components';
 import {
   ETHUUID,
   EXT_URLS,
+  LENDUUID,
   REPV1UUID,
   ROUTE_PATHS,
   socialMediaLinks,
@@ -87,6 +88,23 @@ export const actionTemplates: ActionTemplate[] = [
       content: translateRaw('CLAIM_UNI_ACTION_BUTTON'),
       to: UNISWAP_LINK,
       external: true
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: ACTION_NAME.MIGRATE_LEND,
+    heading: translateRaw('MIGRATE_LEND_ACTION_HEADING'),
+    icon: 'lend-logo',
+    subHeading: MigrationSubHead,
+    body: [translate('MIGRATE_LEND_ACTION_BODY')],
+    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === LENDUUID),
+    priority: 10,
+    Component: MigrationTable,
+    props: { assetUuid: LENDUUID },
+    button: {
+      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
+      external: false
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
   },

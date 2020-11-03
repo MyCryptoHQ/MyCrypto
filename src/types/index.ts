@@ -130,3 +130,4 @@ export {
   ACTION_NAME
 } from './userAction';
 export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens';
+export { IAaveMigrator } from './aaveMigrator';

@@ -1093,6 +1093,16 @@
     "SWAP_ACTION_BODY": "Swap tokens directly within your wallet, and with the best rates, thanks to [DEX.AG](http://dex.ag/)!",
     "TWITTER_ACTION_HEADING": "Follow the MyCrypto Twitter",
     "TWITTER_ACTION_BUTTON": "Follow us",
-    "TWITTER_ACTION_BODY": "Day-to-day updates, hot takes from our CEO, and more. Just do it."
+    "TWITTER_ACTION_BODY": "Day-to-day updates, hot takes from our CEO, and more. Just do it.",
+    "AAVE_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your LEND to AAVE, you must approve the migrator contract which will allow for migration.",
+    "AAVE_TOKEN_MIGRATION_STEP2_TEXT": "Confirm the transaction below to conduct the LEND to AAVE migration. This will complete the migration.",
+    "COMPLETE_AAVE_TOKEN_MIGRATION": "Complete LEND Migration",
+    "AAVE_TOKEN_MIGRATION": "Migrate LEND Tokens",
+    "AAVE_TOKEN_MIGRATION_RECEIPT": "LEND Token Migration Receipt",
+    "AAVE_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your LEND to AAVE tokens, so this field cannot be modified.",
+    "MIGRATE_LEND_ACTION_HEADING": "Migrate your $LEND to $AAVE",
+    "MIGRATE_LEND_ACTION_BODY": "One or more of your accounts hold LEND tokens. Migrate them to AAVE now!",
+    "APPROVE_AAVE_TOKEN_MIGRATION": "Approve LEND Contract",
+    "RECENT_TX_LIST_LABEL_AAVE_MIGRATION": "Migrated LEND to AAVE"
   }
 }

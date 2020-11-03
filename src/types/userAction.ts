@@ -18,7 +18,8 @@ export enum ACTION_NAME {
   NEWSLETTER = 'newsletter',
   TELEGRAM = 'telegram',
   SWAP = 'swap',
-  TWITTER = 'twitter'
+  TWITTER = 'twitter',
+  MIGRATE_LEND = 'migrate_lend'
 }
 
 export enum ACTION_CATEGORIES {

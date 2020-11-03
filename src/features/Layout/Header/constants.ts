@@ -90,6 +90,11 @@ export const getLinks = (featureFlags: IFeatureFlags) => {
           to: APP_ROUTES_OBJECT.REP_TOKEN_MIGRATION.path,
           enabled: APP_ROUTES_OBJECT.REP_TOKEN_MIGRATION.enabled,
           title: 'REP Token Migration'
+        },
+        {
+          to: APP_ROUTES_OBJECT.AAVE_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES_OBJECT.AAVE_TOKEN_MIGRATION.enabled,
+          title: 'LEND Token Migration'
         }
       ]
     },

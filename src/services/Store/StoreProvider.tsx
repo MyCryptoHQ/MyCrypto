@@ -73,7 +73,8 @@ import {
   getPendingTransactionsFromAccounts,
   getStoreAccounts,
   getTxsFromAccount,
-  isNotExcludedAsset
+  isNotExcludedAsset,
+  isTokenMigration
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
@@ -342,7 +343,10 @@ export const StoreProvider: React.FC = ({ children }) => {
               txResponse.blockNumber
             );
             addTxToAccount(senderAccount, finishedTxReceipt);
-            if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
+            if (
+              finishedTxReceipt.txType === ITxType.DEFIZAP ||
+              isTokenMigration(finishedTxReceipt.txType)
+            ) {
               state.scanAccountTokens(storeAccount);
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
               scanForMemberships([storeAccount]);

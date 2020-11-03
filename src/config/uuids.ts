@@ -8,6 +8,7 @@ export const USDTUUID = '00ff8c75-22ce-5e15-b06a-770154d7e333';
 export const ZRXUUID = '36a94c95-ec51-5e0f-b254-415e31d1c3a7';
 export const REPV1UUID = 'd017a1e8-bdd3-5c32-8866-da258f75b0e9' as TUuid;
 export const REPV2UUID = '3dcbc269-fa47-5707-b180-4cb0ba6e5cdf' as TUuid;
+export const LENDUUID = '1c77b322-a88c-57cc-b956-78c2bc17c360' as TUuid;
 
 export const EMPTYUUID = '00000000-0000-0000-0000-000000000000';
 
