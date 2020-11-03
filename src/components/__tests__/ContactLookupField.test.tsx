@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { Provider } from 'react-redux';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { contacts as seedContacts } from '@database/seed/contacts';
 import { fNetwork } from '@fixtures';
 import { DataContext } from '@services/Store';
+import { store } from '@store';
 import { Contact, ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 import ContactLookupField from '../ContactLookupField';
@@ -41,22 +43,24 @@ function getComponent(
   };
 
   return simpleRender(
-    <DataContext.Provider
-      value={
-        ({
-          assets: [{ uuid: fNetwork.baseAsset }],
-          addressBook: contacts,
-          contracts: [],
-          createActions: jest.fn(() => ({ create: (c: ExtendedContact) => contacts.push(c) }))
-        } as unknown) as any
-      }
-    >
-      <ContactLookupField
-        {...props}
-        value={output.data.address}
-        setFieldValue={(_, value) => setFormValue(value)}
-      />
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider
+        value={
+          ({
+            assets: [{ uuid: fNetwork.baseAsset }],
+            addressBook: contacts,
+            contracts: [],
+            createActions: jest.fn()
+          } as unknown) as any
+        }
+      >
+        <ContactLookupField
+          {...props}
+          value={output.data.address}
+          setFieldValue={(_, value) => setFormValue(value)}
+        />
+      </DataContext.Provider>
+    </Provider>
   );
 }
 
@@ -80,46 +84,40 @@ describe('ContactLookupField', () => {
 
   test('it adds unknown address to contact book and select it after blur', async () => {
     const address = mockMappedContacts[0].address;
-    const contacts: ExtendedContact[] = [];
     const output = { data: { ...initialFormikValues } };
-    const { container } = getComponent(getDefaultProps(), contacts, output);
+    const { container } = getComponent(getDefaultProps(), [], output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: address } });
     fireEvent.blur(input!);
 
-    expect(contacts).toHaveLength(1);
     expect(output.data.address.value).toBe(address);
-    expect(output.data.address.display).toBe(contacts[0].label);
+    expect(output.data.address.display).toBeDefined();
   });
 
   test('it adds unknown ens to contact book and select it by keypress enter', async () => {
-    const contacts: ExtendedContact[] = [];
     const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };
-    const { container } = getComponent(getDefaultProps(), contacts, output);
+    const { container } = getComponent(getDefaultProps(), [], output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: ens } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts).toHaveLength(1);
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe(ens.split('.')[0]);
   });
 
   test('it select unresolved input and not add it into contacts book', async () => {
-    const contacts: ExtendedContact[] = [];
     const inputString = '0x1234';
     const output = { data: { ...initialFormikValues } };
-    const { container } = getComponent(getDefaultProps(), contacts, output);
+    const { container } = getComponent(getDefaultProps(), [], output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: inputString } });
     fireEvent.blur(input!);
 
-    expect(contacts).toHaveLength(0);
     expect(output.data.address.value).toBe(inputString);
     expect(output.data.address.display).toBe(inputString);
   });
@@ -135,7 +133,6 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts).toHaveLength(2);
     expect(output.data.address).toStrictEqual({
       display: contact.label,
       value: contact.address

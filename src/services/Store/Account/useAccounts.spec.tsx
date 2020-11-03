@@ -57,7 +57,6 @@ describe('useAccounts', () => {
   });
 
   it('createAccountWithID() triggers create action', () => {
-    // const mockDispatch = getUseDispatchMock();
     const { result } = renderUseAccounts({ accounts: [] });
     const uuid = 'dummyuuid' as TUuid;
     result.current.createAccountWithID(uuid, fAccounts[0]);
