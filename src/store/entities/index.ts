@@ -4,6 +4,7 @@ import accountSlice from './account.slice';
 import assetSlice from './asset.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
+import networkSlice from './network.slice';
 
 export const {
   create: createAccount,
@@ -30,6 +31,7 @@ export const {
 } = contactSlice.actions;
 
 export const { create: createContract, destroy: destroyContract } = contractSlice.actions;
+export const { create: createNetwork, update: updateNetwork } = networkSlice.actions;
 
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
 
@@ -37,5 +39,6 @@ export default combineReducers({
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
   [contactSlice.name]: contactSlice.reducer,
-  [contractSlice.name]: contractSlice.reducer
+  [contractSlice.name]: contractSlice.reducer,
+  [networkSlice.name]: networkSlice.reducer
 });

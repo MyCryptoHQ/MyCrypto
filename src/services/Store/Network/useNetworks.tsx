@@ -3,7 +3,8 @@ import { useContext } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 
-import { LSKeys, Network, NetworkId, NodeOptions } from '@types';
+import { createNetwork, updateNetwork as updateNetworkStore, useDispatch } from '@store';
+import { Network, NetworkId, NodeOptions } from '@types';
 
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
 import { DataContext } from '../DataManager';
@@ -25,11 +26,11 @@ export interface INetworkContext {
 }
 
 function useNetworks() {
-  const { createActions, networks } = useContext(DataContext);
-  const model = createActions(LSKeys.NETWORKS);
+  const { networks } = useContext(DataContext);
+  const dispatch = useDispatch();
 
-  const addNetwork = (network: Network) => model.create(network);
-  const updateNetwork = (id: NetworkId, item: Network) => model.update(id, item);
+  const addNetwork = (network: Network) => dispatch(createNetwork(network));
+  const updateNetwork = (_: NetworkId, item: Network) => dispatch(updateNetworkStore(item));
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
     if (foundNetwork) {
