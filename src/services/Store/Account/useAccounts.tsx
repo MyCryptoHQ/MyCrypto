@@ -3,10 +3,6 @@ import { useContext } from 'react';
 import BigNumber from 'bignumber.js';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
-import eqBy from 'ramda/src/eqBy';
-import isEmpty from 'ramda/src/isEmpty';
-import prop from 'ramda/src/prop';
-import unionWith from 'ramda/src/unionWith';
 
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
@@ -30,6 +26,7 @@ import {
   TUuid
 } from '@types';
 import { isSameAddress, useAnalytics } from '@utils';
+import { eqBy, isEmpty, prop, unionWith } from '@vendor';
 
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 import { DataContext } from '../DataManager';

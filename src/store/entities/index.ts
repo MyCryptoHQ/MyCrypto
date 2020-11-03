@@ -11,4 +11,6 @@ export const {
 } = accountSlice.actions;
 
 const slices = combineReducers({ [accountSlice.name]: accountSlice.reducer });
+export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
+
 export default slices;

@@ -3,13 +3,19 @@ import createSagaMiddleware from 'redux-saga';
 
 import { IS_DEV } from '@utils';
 
+import { serializeEntitiesMiddleware } from './entities';
 import rootReducer from './reducer';
 import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: false // by convention we use sagas
+    })
+      .prepend(serializeEntitiesMiddleware)
+      .concat(sagaMiddleware)
 });
 
 // Activate HMR for store reducer

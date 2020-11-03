@@ -34,10 +34,7 @@ export interface Network {
   isTestnet?: boolean;
   color: string | undefined;
   blockExplorer?: ExplorerConfig;
-  tokenExplorer?: {
-    name: string;
-    address(address: string): string;
-  };
+  tokenExplorer?: ExplorerConfig;
   assets: TUuid[];
   contracts: TUuid[];
   dPaths: DPathFormats;

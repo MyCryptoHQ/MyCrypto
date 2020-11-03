@@ -77,6 +77,7 @@ export const DataProvider: React.FC = ({ children }) => {
     const legacyAccounts = appState.accounts;
     console.log('Found existing db: syncing to redux');
     if (!isEmpty(legacyAccounts) && isEmpty(reduxAccounts)) {
+      console.log('toArray(legacyAccount_', toArray(legacyAccounts));
       reduxDispatch(updateAccounts(toArray(legacyAccounts)));
     }
   }, []);

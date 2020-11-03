@@ -3,7 +3,7 @@ import { StoreAsset } from '@types';
 
 import { serializeAccount } from './helpers';
 
-const serializeAccountAssets = {
+const serializedAccountAssets = {
   assets: [
     {
       balance: '1989726000000000000',
@@ -33,7 +33,7 @@ const serializeAccountAssets = {
 
 describe('serializeAccount()', () => {
   test('it transforms assets bigish values to strings', () => {
-    expect(serializeAccount(fAccounts[0])).toMatchObject(serializeAccountAssets);
+    expect(serializeAccount(fAccounts[0])).toMatchObject(serializedAccountAssets);
   });
 
   test('it handles an empty asset array', () => {
@@ -50,7 +50,7 @@ describe('serializeAccount()', () => {
         ({ ...account.assets[1], balance: '4000000000000000000' } as unknown) as StoreAsset
       ]
     };
-    expect(serializeAccount(withSerializedAsset)).toMatchObject(serializeAccountAssets);
+    expect(serializeAccount(withSerializedAsset)).toMatchObject(serializedAccountAssets);
   });
 
   test('it serializes transaction values to strings', () => {

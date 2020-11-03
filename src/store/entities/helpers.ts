@@ -1,4 +1,4 @@
-import { StoreAccount } from '@types';
+import { IAccount, StoreAccount } from '@types';
 import { bigify, isBigish } from '@utils/bigify';
 import { identity, ifElse, lensProp, map, over, pipe, toString } from '@vendor';
 
@@ -11,7 +11,7 @@ export const stringifyBalance = over(balanceLens, ifElse(isBigish, toString, ide
 export const stringifyValue = over(txValueLens, toString);
 export const bigifyBalance = over(balanceLens, bigify);
 
-export const serializeAccount: (a: StoreAccount) => StoreAccount = pipe(
+export const serializeAccount: (a: IAccount | StoreAccount) => IAccount | StoreAccount = pipe(
   over(assetLens, map(stringifyBalance)),
-  over(txsLens, map(stringifyBalance))
+  over(txsLens, map(stringifyValue))
 );

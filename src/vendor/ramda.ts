@@ -51,3 +51,6 @@ export { default as lensProp } from 'ramda/src/lensProp';
 export { default as set } from 'ramda/src/set';
 export { default as toString } from 'ramda/src/toString';
 export { default as over } from 'ramda/src/over';
+export { default as tap } from 'ramda/src/tap';
+export { default as eqBy } from 'ramda/src/eqBy';
+export { default as unionWith } from 'ramda/src/unionWith';
