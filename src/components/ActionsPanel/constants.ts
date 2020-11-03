@@ -2,6 +2,7 @@ import { add, isBefore } from 'date-fns';
 
 import { TIcon } from '@components';
 import {
+  ANTv1UUID,
   ETHUUID,
   EXT_URLS,
   LENDUUID,
@@ -107,6 +108,23 @@ export const actionTemplates: ActionTemplate[] = [
       external: false
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: ACTION_NAME.MIGRATE_ANT,
+    heading: translateRaw('MIGRATE_ANT_ACTION_HEADING'),
+    subHeading: MigrationSubHead,
+    icon: 'ant-logo',
+    body: [translate('MIGRATE_ANT_ACTION_BODY')],
+    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === ANTv1UUID),
+    priority: 30,
+    Component: MigrationTable,
+    props: { assetUuid: ANTv1UUID },
+    button: {
+      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.MIGRATION
   },
   {
     name: ACTION_NAME.RENEW_ENS,

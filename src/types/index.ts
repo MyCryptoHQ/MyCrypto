@@ -47,6 +47,7 @@ export {
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { IREPV2 } from './repV2';
+export { IAntMigrator } from './antMigrator';
 export { IUNLOCKLOCK } from './unlockProtocolToken';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
 export {

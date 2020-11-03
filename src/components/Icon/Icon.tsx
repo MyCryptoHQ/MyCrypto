@@ -25,6 +25,7 @@ import telegramIcon from '@assets/icons/telegram.svg';
 import twitterIcon from '@assets/icons/twitter.svg';
 import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
+import antLogo from '@assets/images/ant-logo.png';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
@@ -99,7 +100,8 @@ const svgIcons = {
 const pngIcons = {
   /* Partner Icons */
   'uni-logo': uniLogo,
-  'lend-logo': lendLogo
+  'lend-logo': lendLogo,
+  'ant-logo': antLogo
 };
 
 const SInlineSVG = styled(InlineSVG)`
