@@ -11,6 +11,7 @@ import {
   getAccounts,
   getAssets,
   getContacts,
+  getContracts,
   updateAccounts,
   updateAssets,
   useDispatch,
@@ -81,13 +82,15 @@ export const DataProvider: React.FC = ({ children }) => {
   const reduxAccounts = useSelector(getAccounts);
   const reduxAssets = useSelector(getAssets);
   const reduxContacts = useSelector(getContacts);
+  const reduxContracts = useSelector(getContracts);
   const reduxDispatch = useDispatch();
   // Sync existing db to redux store on load
   useEffect(() => {
     const {
       accounts: legacyAccounts,
       assets: legacyAssets,
-      addressBook: legacyContacts
+      addressBook: legacyContacts,
+      contracts: legacyContracts
     } = appState;
 
     if (!isEmpty(legacyAccounts) && isEmpty(reduxAccounts)) {
@@ -98,9 +101,13 @@ export const DataProvider: React.FC = ({ children }) => {
       console.debug('Found legacy assets: syncing redux with legacy');
       reduxDispatch(updateAssets(toArray(legacyAccounts)));
     }
-    if (!isEmpty(legacyContacts) && isEmpty(legacyContacts)) {
+    if (!isEmpty(legacyContacts) && isEmpty(reduxContacts)) {
       console.debug('Found legacy contacts: syncing redux with legacy');
       reduxDispatch(updateAssets(toArray(legacyContacts)));
+    }
+    if (!isEmpty(legacyContracts) && isEmpty(reduxContracts)) {
+      console.debug('Found legacy contracts: syncing redux with legacy');
+      reduxDispatch(updateAssets(toArray(legacyContracts)));
     }
   }, []);
 
@@ -126,6 +133,13 @@ export const DataProvider: React.FC = ({ children }) => {
       payload: { model: LSKeys.ADDRESS_BOOK, data: toArray(reduxContacts) }
     });
   }, [reduxContacts]);
+  useEffect(() => {
+    console.debug('Redux Contracts change: syncing legacy with redux');
+    dispatch({
+      type: ActionT.ADD_ENTRY,
+      payload: { model: LSKeys.CONTRACTS, data: toArray(reduxContracts) }
+    });
+  }, [reduxContracts]);
 
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,

@@ -1,27 +1,23 @@
 import { useContext } from 'react';
 
 import { DataContext } from '@services/Store';
-import { Contract, ExtendedContract, LSKeys, TAddress, TUuid } from '@types';
+import { createContract as createContractStore, destroyContract, useDispatch } from '@store';
+import { Contract, ExtendedContract, TAddress, TUuid } from '@types';
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
-  const { contracts, createActions } = useContext(DataContext);
-  const model = createActions(LSKeys.CONTRACTS);
+  const { contracts } = useContext(DataContext);
+  const dispatch = useDispatch();
 
-  /**
-   * Save a valid contract. We rely on static typing to verify
-   * params.
-   * @param contract
-   */
   const createContract = (contract: Contract): ExtendedContract => {
     const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
     const contractWithUUID: ExtendedContract = { ...contract, uuid };
-    model.create(contractWithUUID);
+    dispatch(createContractStore(contractWithUUID));
     return contractWithUUID;
   };
 
   const deleteContract = (uuid: TUuid) => {
-    model.destroy(contracts.find((a) => a.uuid === uuid) as ExtendedContract);
+    dispatch(destroyContract(uuid));
   };
 
   const getContractsByIds = (uuids: TUuid[]) => {

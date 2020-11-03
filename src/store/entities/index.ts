@@ -3,6 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import accountSlice from './account.slice';
 import assetSlice from './asset.slice';
 import contactSlice from './contact.slice';
+import contractSlice from './contract.slice';
 
 export const {
   create: createAccount,
@@ -28,10 +29,13 @@ export const {
   reset: resetContact
 } = contactSlice.actions;
 
+export const { create: createContract, destroy: destroyContract } = contractSlice.actions;
+
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
 
 export default combineReducers({
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
-  [contactSlice.name]: contactSlice.reducer
+  [contactSlice.name]: contactSlice.reducer,
+  [contractSlice.name]: contractSlice.reducer
 });

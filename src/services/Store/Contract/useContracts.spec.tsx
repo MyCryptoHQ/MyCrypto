@@ -1,23 +1,32 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
+// eslint-disable-next-line import/no-namespace
+import * as ReactRedux from 'react-redux';
+import { Provider } from 'react-redux';
 
 import { fContracts } from '@fixtures';
-import { ExtendedContract, LSKeys, TAddress, TUuid } from '@types';
+import { store } from '@store';
+import { ExtendedContract, TAddress, TUuid } from '@types';
 import { innerJoin, map, omit, pipe, prop, slice, sort } from '@vendor';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useContracts from './useContracts';
 
-const renderUseContract = ({
-  contracts = [] as ExtendedContract[],
-  createActions = jest.fn()
-} = {}) => {
+const getUseDispatchMock = () => {
+  const mockDispatch = jest.fn();
+  jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
+  return mockDispatch;
+};
+
+const renderUseContract = ({ contracts = [] as ExtendedContract[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ contracts, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider value={({ contracts } as any) as IDataContext}>
+        {' '}
+        {children}
+      </DataContext.Provider>
+    </Provider>
   );
   return renderHook(() => useContracts(), { wrapper });
 };
@@ -26,12 +35,6 @@ describe('useContract', () => {
   it('uses get contracts from DataContext', () => {
     const { result } = renderUseContract();
     expect(result.current.contracts).toEqual([]);
-  });
-
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseContract({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.CONTRACTS);
   });
 
   it('getContractsByIds(): can filter contracts by a list of uuids', () => {
@@ -66,37 +69,31 @@ describe('useContract', () => {
   });
 
   it('createContract(): adds the uuid and calls create()', () => {
-    const createActions = jest.fn().mockReturnValue({
-      create: jest.fn()
-    });
+    const mockDispatch = getUseDispatchMock();
+
     const target = fContracts[0];
-    const { result } = renderUseContract({ createActions });
+    const { result } = renderUseContract();
     // Remove the uuid from fixture since we expect Contract
     result.current.createContract(omit(['uuid'], target));
     // Since uuid are deterministic we can asset that it will be the same
     // as the fixture.
-    expect(createActions().create).toHaveBeenCalledWith(target);
+    expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: target }));
   });
 
   it('createContract(): returns the contract with the generated uuid', () => {
-    const createActions = jest.fn().mockReturnValue({
-      create: jest.fn()
-    });
     const target = fContracts[0];
-    const { result } = renderUseContract({ createActions });
+    const { result } = renderUseContract();
 
     const res = result.current.createContract(omit(['uuid'], target));
     expect(res.uuid).toEqual(target.uuid);
   });
 
   it('deleteContract(): calls destroy() with the target contract', () => {
-    const createActions = jest.fn().mockReturnValue({
-      destroy: jest.fn()
-    });
+    const mockDispatch = getUseDispatchMock();
     const target = fContracts[0];
-    const { result } = renderUseContract({ contracts: [target], createActions });
+    const { result } = renderUseContract({ contracts: [target] });
 
     result.current.deleteContract(target.uuid);
-    expect(createActions().destroy).toHaveBeenCalledWith(target);
+    expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: target.uuid }));
   });
 });
