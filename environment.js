@@ -1,4 +1,4 @@
-const PRODUCTION = 'prod';
+const PRODUCTION = 'production';
 const DEVELOPMENT = 'development';
 const STAGING = 'staging';
 const ELECTRON = 'electron';
