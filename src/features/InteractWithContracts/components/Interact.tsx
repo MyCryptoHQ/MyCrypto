@@ -264,7 +264,7 @@ function Interact(props: CombinedProps) {
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
     >
-      {({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched }) => {
+      {({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched, resetForm }) => {
         /* eslint-disable react-hooks/rules-of-hooks */
         useEffect(() => {
           if (
@@ -306,6 +306,7 @@ function Interact(props: CombinedProps) {
                 network={network.id}
                 onChange={(networkId) => {
                   handleNetworkSelected(networkId);
+                  resetForm();
                 }}
               />
             </NetworkSelectorWrapper>
