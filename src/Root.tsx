@@ -6,10 +6,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { NewAppReleaseModal } from '@components';
 import { DevToolsManager } from '@features';
 import { theme } from '@theme';
-import { IS_ELECTRON, USE_HASH_ROUTER } from '@utils';
+import { USE_HASH_ROUTER } from '@utils';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
@@ -37,7 +36,6 @@ const RootClass = () => {
               <DevToolsManager />
               <FullScreen id="ModalContainer">
                 <AppRoutes />
-                {IS_ELECTRON && <NewAppReleaseModal />}
               </FullScreen>
             </FullHeight>
           </AppProviders>

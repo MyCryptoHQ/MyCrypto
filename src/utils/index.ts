@@ -6,8 +6,7 @@ export {
   IS_DEV,
   IS_STAGING,
   IS_PROD,
-  USE_HASH_ROUTER,
-  IS_ELECTRON
+  USE_HASH_ROUTER
 } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {

@@ -11,19 +11,17 @@ import {
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
-import { hasWeb3Provider, IS_ELECTRON, IS_PROD, IS_STAGING } from '@utils';
+import { hasWeb3Provider, IS_PROD, IS_STAGING } from '@utils';
 
 import { NetworkSelectPanel } from './components';
 
 // This const is used to disable non supported wallets
-// only if it is not the Desktop App and not the Dev environment
-export const IS_WEB_AND_PRODUCTION: boolean = !IS_ELECTRON && IS_PROD && !IS_STAGING;
+export const IS_WEB_AND_PRODUCTION: boolean = IS_PROD && !IS_STAGING;
 
 export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
-    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall],
-    hideFromWalletList: IS_ELECTRON
+    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
     name: WalletId.WALLETCONNECT,

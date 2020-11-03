@@ -1,11 +1,10 @@
 import { AxiosInstance } from 'axios';
 
 import { ApiService } from '@services/ApiService';
-import { IS_DEV, IS_ELECTRON } from '@utils';
+import { IS_DEV } from '@utils';
 
 import {
   ANALYTICS_API_URL,
-  ANALYTICS_ID_DESKTOP,
   ANALYTICS_ID_DESKTOP_DEV,
   ANALYTICS_ID_SITE,
   ANALYTICS_REC
@@ -13,7 +12,7 @@ import {
 import { CvarEntry, Params } from './types';
 
 let instantiated = false;
-let analyticsId: number = IS_ELECTRON ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
+let analyticsId: number = ANALYTICS_ID_SITE;
 
 export default class AnalyticsService {
   public static instance = new AnalyticsService();
@@ -42,7 +41,7 @@ export default class AnalyticsService {
   public track(category: string, eventAction: string, eventParams?: TObject): Promise<any> {
     const customParams: Params = {
       local: IS_DEV.toString(),
-      desktop: IS_ELECTRON.toString(),
+      desktop: 'false',
       ...eventParams
     };
 
@@ -63,7 +62,7 @@ export default class AnalyticsService {
   public trackPageVisit(pageUrl: string): Promise<any> {
     const customParams: Params = {
       local: IS_DEV.toString(),
-      desktop: IS_ELECTRON.toString()
+      desktop: 'false'
     };
 
     const cvar: TObject = this.mapParamsToCvars(customParams);

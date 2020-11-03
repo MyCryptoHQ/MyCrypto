@@ -49,11 +49,8 @@
   "automock": false,
   "collectCoverageFrom": [
     "**/src/**/*.{js,jsx,ts,tsx}",
-    "**/shared/**/*.{js,jsx,ts,tsx}",
-    "**/electron-app/**/*.{js,jsx,ts,tsx}",
     "**/node-scripts/**/*.{js,jsx,ts,tsx}",
     "!**/src/types/**",
-    "!**/shared/types/**",
     "!**/node_modules/**",
     "!**/vendor/**",
     "!**/spec/**",

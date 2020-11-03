@@ -26,7 +26,7 @@ On systems where a pre-built version of node-hid is not available (e.g. 32-bit v
 
 <sub>\*Higher versions should work fine, but may cause inconsistencies.</sub>
 <br />
-<sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
+<sub>\*\*npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
 <br />
 <br />
 <sub>\*\*\*For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
@@ -47,11 +47,6 @@ yarn start
 A development server will be available on https://localhost:3000
 If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
 To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
-
-```bash
-# run app in dev mode in electron, rebuild on file changes
-yarn dev:electron
-```
 
 #### Staging
 

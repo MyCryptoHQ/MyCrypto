@@ -22,7 +22,6 @@ import {
 } from '@services';
 import translate, { Trans, translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
-import { IS_ELECTRON } from '@utils';
 
 import DeterministicWallet from './DeterministicWallet';
 import UnsupportedNetwork from './UnsupportedNetwork';
@@ -73,7 +72,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
   }
 
-  if (!IS_ELECTRON && window.location.protocol !== 'https:') {
+  if (window.location.protocol !== 'https:') {
     return (
       <div className="Panel">
         <div className="alert alert-danger">
