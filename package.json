@@ -85,7 +85,7 @@
     "styled-components": "5.1.0",
     "styled-system": "5.1.5",
     "toasted-notes": "3.2.0",
-    "trezor-connect": "8.1.2",
+    "trezor-connect": "8.1.15",
     "trezor-link": "https://github.com/MyCryptoHQ/trezor-link#176c94f",
     "trezor.js": "9.1.0",
     "u2f-api": "1.1.1",
