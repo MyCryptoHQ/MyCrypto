@@ -257,6 +257,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  const [fetchedNonce, setFetchedNonce] = useState(0);
 
   const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
 
@@ -398,10 +399,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
         async function (value) {
           const account = this.parent.account;
-          const network = this.parent.network;
           if (!isEmpty(account)) {
-            const nonce = await getNonce(network, account.address);
-            return Math.abs(value - nonce) < 10;
+            return Math.abs(value - fetchedNonce) < 10;
           }
           return true;
         }
@@ -545,6 +544,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
     setIsEstimatingNonce(true);
     const nonce: number = await getNonce(values.network, account.address);
     setFieldValue('nonceField', nonce.toString());
+    setFetchedNonce(nonce);
     setIsEstimatingNonce(false);
   };
 
