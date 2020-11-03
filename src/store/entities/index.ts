@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import accountSlice from './account.slice';
+import assetSlice from './asset.slice';
 
 export const {
   create: createAccount,
@@ -10,6 +11,17 @@ export const {
   reset: resetAccount
 } = accountSlice.actions;
 
+export const {
+  create: createAsset,
+  destroy: destroyAsset,
+  update: updateAsset,
+  updateMany: updateAssets,
+  reset: resetAsset
+} = assetSlice.actions;
+
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
 
-export default combineReducers({ [accountSlice.name]: accountSlice.reducer });
+export default combineReducers({
+  [accountSlice.name]: accountSlice.reducer,
+  [assetSlice.name]: assetSlice.reducer
+});

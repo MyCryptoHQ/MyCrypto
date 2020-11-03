@@ -1,19 +1,31 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
+// eslint-disable-next-line import/no-namespace
+import * as ReactRedux from 'react-redux';
+import { Provider } from 'react-redux';
 
 import { fAssets } from '@fixtures';
-import { Asset, ExtendedAsset, LSKeys, TUuid } from '@types';
+import { store } from '@store';
+import { Asset, ExtendedAsset, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';
 
+const getUseDispatchMock = () => {
+  const mockDispatch = jest.fn();
+  jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
+  return mockDispatch;
+};
+
 const renderUseAssets = ({ assets = [] as ExtendedAsset[], createActions = jest.fn() } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ assets, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider value={({ assets, createActions } as any) as IDataContext}>
+        {' '}
+        {children}
+      </DataContext.Provider>
+    </Provider>
   );
   return renderHook(() => useAssets(), { wrapper });
 };
@@ -24,20 +36,13 @@ describe('useAssets', () => {
     expect(result.current.assets).toEqual(fAssets);
   });
 
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseAssets({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.ASSETS);
-  });
-
-  it('createAssetWithID() calls model.createWithID', () => {
-    const mockCreate = jest.fn();
-    const { result } = renderUseAssets({
-      assets: [],
-      createActions: jest.fn(() => ({ createWithID: mockCreate }))
-    });
+  it('createAssetWithID() dispatches a create action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAssets({ assets: [] });
     result.current.createAssetWithID(fAssets[0], 'MyUUID' as TUuid);
-    expect(mockCreate).toHaveBeenCalledWith(fAssets[0], 'MyUUID');
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ payload: { ...fAssets[0], uuid: 'MyUUID' } })
+    );
   });
 
   it('getAssetByUUID() finds an asset and returns it', () => {
@@ -46,18 +51,17 @@ describe('useAssets', () => {
   });
 
   it('addAssetsFromAPI() calls model.updateAll', () => {
-    const mockUpdateAll = jest.fn();
+    const mockDispatch = getUseDispatchMock();
     const customAssets = fAssets.filter((a) => a.isCustom);
-    const { result } = renderUseAssets({
-      assets: customAssets,
-      createActions: jest.fn(() => ({ updateAll: mockUpdateAll }))
-    });
+    const { result } = renderUseAssets({ assets: customAssets });
     const defaultAssets = fAssets.filter((a) => !a.isCustom);
     const assets = defaultAssets.reduce((obj, item) => {
       obj[item.uuid] = item;
       return obj;
     }, {} as Record<any, Asset>);
     result.current.addAssetsFromAPI(assets);
-    expect(mockUpdateAll).toHaveBeenCalledWith(expect.arrayContaining(fAssets));
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ payload: expect.arrayContaining(fAssets) })
+    );
   });
 });

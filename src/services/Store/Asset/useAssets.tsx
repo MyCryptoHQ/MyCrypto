@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 
 import { EXCLUDED_ASSETS } from '@config';
-import { ExtendedAsset, LSKeys, TUuid } from '@types';
+import { createAsset, updateAssets, useDispatch } from '@store';
+import { ExtendedAsset, TUuid } from '@types';
 import { map, mergeLeft, pickBy, pipe, reduce, toPairs } from '@vendor';
 
 import { DataContext } from '../DataManager';
@@ -15,11 +16,11 @@ export interface IAssetContext {
 }
 
 function useAssets() {
-  const { createActions, assets } = useContext(DataContext);
-  const model = createActions(LSKeys.ASSETS);
+  const { assets } = useContext(DataContext);
+  const dispatch = useDispatch();
 
   const createAssetWithID = (assetData: ExtendedAsset, id: TUuid) =>
-    model.createWithID(assetData, id);
+    dispatch(createAsset({ ...assetData, uuid: id }));
 
   const getAssetByUUID = (uuid: TUuid) => getAssetByUUIDFunc(assets)(uuid);
 
@@ -39,7 +40,7 @@ function useAssets() {
       toPairs, // Equivalent of Object.entries -> [k, v]
       map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset)) // We Need to add the uuid key to the api asset.
     );
-    model.updateAll(mergeAssets(assets));
+    dispatch(updateAssets(mergeAssets(assets)));
   };
 
   return { assets, createAssetWithID, getAssetByUUID, addAssetsFromAPI };

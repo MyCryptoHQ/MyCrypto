@@ -2,6 +2,7 @@ import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { bigNumberify, parseEther } from 'ethers/utils';
+import { Provider } from 'react-redux';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
@@ -18,6 +19,7 @@ import {
 } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { store } from '@store';
 import { fromWei, Wei } from '@utils';
 
 import useTxHistory from './useTxHistory';
@@ -28,22 +30,24 @@ const renderUseTxHistory = ({
   createActions = jest.fn()
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider
-      value={
-        ({
-          addressBook: fContacts,
-          contracts: fContracts,
-          networks: fNetworks,
-          assets: fAssets,
-          createActions
-        } as any) as IDataContext
-      }
-    >
-      <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
-        {' '}
-        {children}
-      </StoreContext.Provider>
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider
+        value={
+          ({
+            addressBook: fContacts,
+            contracts: fContracts,
+            networks: fNetworks,
+            assets: fAssets,
+            createActions
+          } as any) as IDataContext
+        }
+      >
+        <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
+          {' '}
+          {children}
+        </StoreContext.Provider>
+      </DataContext.Provider>
+    </Provider>
   );
   return renderHook(() => useTxHistory(), { wrapper });
 };

@@ -7,7 +7,14 @@ import {
   getEncryptedData,
   removeSeedDataFromSchema
 } from '@database';
-import { getAccounts, updateAccounts, useDispatch, useSelector } from '@store';
+import {
+  getAccounts,
+  getAssets,
+  updateAccounts,
+  updateAssets,
+  useDispatch,
+  useSelector
+} from '@store';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
 import { toArray } from '@utils';
 import { isEmpty, useEvent, useThrottleFn } from '@vendor';
@@ -71,25 +78,37 @@ export const DataProvider: React.FC = ({ children }) => {
   );
 
   const reduxAccounts = useSelector(getAccounts);
+  const reduxAssets = useSelector(getAssets);
   const reduxDispatch = useDispatch();
   // Sync existing db to redux store on load
   useEffect(() => {
-    const legacyAccounts = appState.accounts;
-    console.log('Found existing db: syncing to redux');
+    const { accounts: legacyAccounts, assets: legacyAssets } = appState;
+
     if (!isEmpty(legacyAccounts) && isEmpty(reduxAccounts)) {
-      console.log('toArray(legacyAccount_', toArray(legacyAccounts));
+      console.debug('Found legacy accounts: syncing redux with legacy');
       reduxDispatch(updateAccounts(toArray(legacyAccounts)));
+    }
+    if (!isEmpty(legacyAssets) && isEmpty(reduxAssets)) {
+      console.debug('Found legacy assets: syncing redux with legacy');
+      reduxDispatch(updateAssets(toArray(legacyAccounts)));
     }
   }, []);
 
   // Update legacy store with redux values.
   useEffect(() => {
-    console.log('Redux change: syncing with legacy');
+    console.debug('Redux Account change: syncing legacy with redux');
     dispatch({
       type: ActionT.ADD_ENTRY,
       payload: { model: LSKeys.ACCOUNTS, data: toArray(reduxAccounts) }
     });
   }, [reduxAccounts]);
+  useEffect(() => {
+    console.debug('Redux Asset change: syncing legacy with redux');
+    dispatch({
+      type: ActionT.ADD_ENTRY,
+      payload: { model: LSKeys.ASSETS, data: toArray(reduxAssets) }
+    });
+  }, [reduxAssets]);
 
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,

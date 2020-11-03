@@ -1,10 +1,14 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
+// eslint-disable-next-line import/no-namespace
+import * as ReactRedux from 'react-redux';
+import { Provider } from 'react-redux';
 import { waitFor } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
+import { store } from '@store';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -15,6 +19,12 @@ const createTxRaw = (idx: number): Partial<ITxObject> => ({
   value: 'any' as ITxValue,
   data: 'empty' as ITxData
 });
+
+const getUseDispatchMock = () => {
+  const mockDispatch = jest.fn();
+  jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
+  return mockDispatch;
+};
 
 jest.mock('ethers/providers', () => {
   return {
@@ -61,22 +71,24 @@ jest.mock('ethers/providers', () => {
 
 const renderUseTxMulti = ({ createActions = jest.fn() } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider
-      value={
-        ({
-          accounts: fAccounts,
-          networks: fNetworks,
-          assets: fAssets,
-          settings: fSettings,
-          createActions
-        } as any) as IDataContext
-      }
-    >
-      <StoreContext.Provider value={{ accounts: fAccounts } as any}>
-        {' '}
-        {children}
-      </StoreContext.Provider>
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider
+        value={
+          ({
+            accounts: fAccounts,
+            networks: fNetworks,
+            assets: fAssets,
+            settings: fSettings,
+            createActions
+          } as any) as IDataContext
+        }
+      >
+        <StoreContext.Provider value={{ accounts: fAccounts } as any}>
+          {' '}
+          {children}
+        </StoreContext.Provider>
+      </DataContext.Provider>
+    </Provider>
   );
   return renderHook(() => useTxMulti(), { wrapper });
 };
@@ -159,12 +171,8 @@ describe('useTxMulti', () => {
   });
 
   it('adds the txs to the tx history', async () => {
-    const mockUpdate = jest.fn();
-    const { result: r } = renderUseTxMulti({
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = getUseDispatchMock();
+    const { result: r } = renderUseTxMulti();
 
     const rawTx = {
       to: 'address' as ITxToAddress,
@@ -195,46 +203,50 @@ describe('useTxMulti', () => {
     });
 
     await waitFor(() =>
-      expect(mockUpdate).toHaveBeenCalledWith(fAccount.uuid, {
-        ...fAccount,
-        transactions: expect.arrayContaining([
-          expect.objectContaining({
-            amount: '0.0',
-            asset: fAssets[1],
-            baseAsset: fAssets[1],
-            hash: '0x1',
-            txType: ITxType.APPROVAL,
-            status: ITxStatus.PENDING
-          })
-        ])
-      })
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: {
+            ...fAccount,
+            transactions: expect.arrayContaining([
+              expect.objectContaining({
+                amount: '0.0',
+                asset: fAssets[1],
+                baseAsset: fAssets[1],
+                hash: '0x1',
+                txType: ITxType.APPROVAL,
+                status: ITxStatus.PENDING
+              })
+            ])
+          }
+        })
+      )
     );
 
     await waitFor(() =>
-      expect(mockUpdate).toHaveBeenCalledWith(fAccount.uuid, {
-        ...fAccount,
-        transactions: expect.arrayContaining([
-          expect.objectContaining({
-            amount: '0.0',
-            asset: fAssets[1],
-            baseAsset: fAssets[1],
-            hash: '0x2',
-            txType: ITxType.PURCHASE_MEMBERSHIP,
-            status: ITxStatus.PENDING
-          })
-        ])
-      })
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: {
+            ...fAccount,
+            transactions: expect.arrayContaining([
+              expect.objectContaining({
+                amount: '0.0',
+                asset: fAssets[1],
+                baseAsset: fAssets[1],
+                hash: '0x2',
+                txType: ITxType.PURCHASE_MEMBERSHIP,
+                status: ITxStatus.PENDING
+              })
+            ])
+          }
+        })
+      )
     );
-    expect(mockUpdate).toHaveBeenCalledTimes(2);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
   });
 
   it('filters out unnecessary approvals', async () => {
-    const mockUpdate = jest.fn();
-    const { result: r } = renderUseTxMulti({
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = getUseDispatchMock();
+    const { result: r } = renderUseTxMulti();
 
     const rawTx = {
       to: 'address' as ITxToAddress,
@@ -271,16 +283,12 @@ describe('useTxMulti', () => {
         })
       )
     );
-    expect(mockUpdate).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(0);
   });
 
   it('doesnt filter out necessary approvals', async () => {
-    const mockUpdate = jest.fn();
-    const { result: r } = renderUseTxMulti({
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = getUseDispatchMock();
+    const { result: r } = renderUseTxMulti();
 
     const rawTx = {
       to: 'address' as ITxToAddress,
@@ -317,6 +325,6 @@ describe('useTxMulti', () => {
         })
       )
     );
-    expect(mockUpdate).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(0);
   });
 });

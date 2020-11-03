@@ -11,7 +11,7 @@ test('buildTxUrl() returns a valid url', () => {
 
 test('buildBlockUrl() returns a valid url', () => {
   expect(buildBlockUrl(fNetworks[0]!.blockExplorer!, 58960)).toEqual(
-    'https://etherscan.io/block/myBlockNumber'
+    'https://etherscan.io/block/58960'
   );
 });
 
