@@ -21,7 +21,7 @@ const findIinsideTemplateCallExpressions = (
   node: ts.Node,
   functionName: string
 ): ts.CallExpression[] => {
-  const insideTemplateQuery = `JsxExpression CallExpression:has(Identifier[name="${functionName}"])`;
+  const insideTemplateQuery = `CallExpression:has(Identifier[name="${functionName}"])`;
   return tsquery(node, insideTemplateQuery, { visitAllChildren: true });
 };
 
@@ -33,6 +33,11 @@ const findJxsElementExpressions = (
   return tsquery(node, query, { visitAllChildren: true });
 };
 
+const findAllStringLiterals = (node: ts.Node): ts.StringLiteral[] => {
+  const query = `StringLiteral`;
+  return tsquery(node, query, { visitAllChildren: true });
+};
+
 const getStringFromExpression = (expression: ts.Node) => {
   const text = expression.getText();
 
@@ -40,7 +45,7 @@ const getStringFromExpression = (expression: ts.Node) => {
     text &&
     typeof text === 'string' &&
     text.toUpperCase() === text &&
-    /^[0-9]*['"][A-Z][A-Z0-9_'"]*$/.test(text) // Ignore only digits
+    /^[0-9]*[`'"][A-Z][A-Z0-9_'"`]*$/.test(text) // Ignore only digits
   ) {
     return [text];
   }
@@ -103,6 +108,29 @@ export const getJsonKeys = (translationFilePattern = TRANSLATION_FILE_PATTERN) =
     const translationJson = translationFileJson.data;
     return Object.keys(translationJson);
   });
+};
+
+export const findTranslationKeys = (
+  projectFilePattern = PROJECT_FILE_PATTERN,
+  jsonKeys: string[]
+) => {
+  const files = getFilesMatchingPattern(path.resolve(projectFilePattern));
+  let keys: string[] = [];
+
+  files.forEach((filePath: string) => {
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const ast = tsquery.ast(fileContent, 'filePath', ts.ScriptKind.TSX);
+
+    const stringLiterals = findAllStringLiterals(ast);
+
+    const strings = stringLiterals.map((s) => s.text);
+
+    const matchedStrings = strings.filter((s) => jsonKeys.includes(s));
+
+    keys = [...keys, ...matchedStrings];
+  });
+
+  return [...new Set(keys)];
 };
 
 export const updateJsonTranslations = (
