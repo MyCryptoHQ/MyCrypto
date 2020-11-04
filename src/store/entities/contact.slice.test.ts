@@ -24,7 +24,7 @@ describe('ContactSlice', () => {
   it('update(): updates an entity', () => {
     const entity = { uuid: 'random', label: 'John' } as ExtendedContact;
     const state = { [entity.uuid]: entity };
-    const modifiedEntity = { ...entity, address: '0x1' } as ExtendedContact;
+    const modifiedEntity = { ...entity, label: 'Edouard' } as ExtendedContact;
     const actual = reducer(state, update(modifiedEntity));
     const expected = { [entity.uuid]: modifiedEntity };
     expect(actual).toEqual(expected);

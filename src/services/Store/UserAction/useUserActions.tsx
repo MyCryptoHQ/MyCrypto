@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 
 import {
+  createUserAction as createUserActionStore,
+  destroyUserAction,
+  updateUserAction as updateUserActionStore,
+  useDispatch
+} from '@store';
+import {
   ACTION_NAME,
   ACTION_STATE,
   ActionTemplate,
   ExtendedUserAction,
-  LSKeys,
   TUuid,
   UserAction
 } from '@types';
@@ -22,21 +27,22 @@ export interface IUserActionContext {
 }
 
 function useUserActions() {
-  const { createActions, userActions } = useContext(DataContext);
-  const model = createActions(LSKeys.USER_ACTIONS);
+  const { userActions } = useContext(DataContext);
+  const dispatch = useDispatch();
 
   const createUserAction = (actionTemplate: ActionTemplate) => {
     const userAction: UserAction = {
       name: actionTemplate.name,
       state: ACTION_STATE.NEW
     };
-    model.create({ ...userAction, uuid: generateUUID() });
+    dispatch(createUserActionStore({ ...userAction, uuid: generateUUID() }));
   };
 
-  const updateUserAction = (uuid: TUuid, userAction: ExtendedUserAction) =>
-    model.update(uuid, userAction);
+  const updateUserAction = (_: TUuid, userAction: ExtendedUserAction) =>
+    dispatch(updateUserActionStore(userAction));
 
-  const deleteUserAction = (userAction: ExtendedUserAction) => model.destroy(userAction);
+  const deleteUserAction = (userAction: ExtendedUserAction) =>
+    dispatch(destroyUserAction(userAction.uuid));
 
   const findUserAction = (actionName: ACTION_NAME): ExtendedUserAction | undefined =>
     userActions.find((a) => a.name === actionName);

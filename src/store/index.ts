@@ -8,5 +8,14 @@ import store from './store';
 const useSelector: TypedUseSelectorHook<typeof store> = useReduxSelector;
 
 export { useSelector, useDispatch, store };
-export * from './selectors';
+
+/* Store models */
+export {
+  createUserAction,
+  destroyUserAction,
+  updateUserAction,
+  updateUserActions
+} from './userActions.slice';
 export * from './entities';
+
+export * from './selectors';

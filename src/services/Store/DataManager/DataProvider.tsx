@@ -13,11 +13,13 @@ import {
   getContacts,
   getContracts,
   getNetworks,
+  getUserActions,
   updateAccounts,
   updateAssets,
   updateContacts,
   updateContracts,
   updateNetworks,
+  updateUserActions,
   useDispatch,
   useSelector
 } from '@store';
@@ -88,6 +90,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const reduxContacts = useSelector(getContacts);
   const reduxContracts = useSelector(getContracts);
   const reduxNetworks = useSelector(getNetworks);
+  const reduxUserActions = useSelector(getUserActions);
   const reduxDispatch = useDispatch();
   // Sync existing db to redux store on load
   useEffect(() => {
@@ -96,7 +99,8 @@ export const DataProvider: React.FC = ({ children }) => {
       assets: legacyAssets,
       addressBook: legacyContacts,
       contracts: legacyContracts,
-      networks: legacyNetworks
+      networks: legacyNetworks,
+      userActions: legacyUserActions
     } = appState;
 
     if (!isEmpty(legacyAccounts) && isEmpty(reduxAccounts)) {
@@ -118,6 +122,10 @@ export const DataProvider: React.FC = ({ children }) => {
     if (!isEmpty(legacyNetworks) && isEmpty(reduxNetworks)) {
       console.debug('Found legacy networks: syncing redux with legacy');
       reduxDispatch(updateNetworks(toArray(legacyNetworks)));
+    }
+    if (!isEmpty(legacyUserActions) && isEmpty(reduxUserActions)) {
+      console.debug('Found legacy userActions: syncing redux with legacy');
+      reduxDispatch(updateUserActions(toArray(legacyUserActions)));
     }
   }, []);
 
@@ -157,6 +165,13 @@ export const DataProvider: React.FC = ({ children }) => {
       payload: { model: LSKeys.NETWORKS, data: toArray(reduxNetworks) }
     });
   }, [reduxNetworks]);
+  useEffect(() => {
+    console.debug('Redux UserActions change: syncing legacy with redux');
+    dispatch({
+      type: ActionT.ADD_ENTRY,
+      payload: { model: LSKeys.USER_ACTIONS, data: toArray(reduxUserActions) }
+    });
+  }, [reduxUserActions]);
 
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,
