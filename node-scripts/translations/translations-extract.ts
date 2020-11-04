@@ -5,8 +5,8 @@ import glob from 'glob';
 import path from 'path';
 import ts from 'typescript';
 
-const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
-const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
+export const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
+export const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
 const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 
@@ -93,6 +93,16 @@ export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN
     .map((k) => replaceApostrophe(k))
     .filter((k) => k.length)
     .reduce((acc, item) => ({ ...acc, [item]: '' }), {});
+};
+
+export const getJsonKeys = (translationFilePattern = TRANSLATION_FILE_PATTERN) => {
+  const translationFilePaths = getFilesMatchingPattern(path.resolve(translationFilePattern));
+  return translationFilePaths.map((translationFilePath: string) => {
+    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath, 'utf-8'));
+
+    const translationJson = translationFileJson.data;
+    return Object.keys(translationJson);
+  });
 };
 
 export const updateJsonTranslations = (
