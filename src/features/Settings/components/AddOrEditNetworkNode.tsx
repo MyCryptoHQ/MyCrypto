@@ -311,7 +311,7 @@ export default function AddOrEditNetworkNode({
                   dPaths: {
                     [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
                     [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
-                    [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+                    default: DPaths.ETH_DEFAULT
                   },
                   gasPriceSettings: {
                     min: 1,

@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const merge = require('webpack-merge');
 
-const { IS_ELECTRON, LOCAL } = require('../environment');
+const { LOCAL } = require('../environment');
 const common = require('./common');
 const config = require('./config');
 
@@ -19,7 +19,7 @@ module.exports = merge.smart(common, {
     historyApiFallback: true,
     progress: false,
     hot: true,
-    https: !IS_ELECTRON,
+    https: true,
     port: HTTP_PORT,
     clientLogLevel: 'warning', // Silence [WDS] && [HMR] output in console
     headers: {

@@ -1,3 +1,5 @@
+import { DPath } from '@types';
+
 /**
  * Get the full derivation path with address index.
  *

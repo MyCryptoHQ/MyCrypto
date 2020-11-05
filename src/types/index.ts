@@ -33,7 +33,7 @@ export { Contract, ExtendedContract } from './contract';
 export { Network, NetworkLegacy, AssetLegacy, ContractLegacy, NetworkNodes } from './network';
 export { NetworkId } from './networkId';
 export { NodeType } from './node';
-export { DPathFormat } from './dPath';
+export { DPathFormat, DPath } from './dPath';
 export { ISettings } from './settings';
 export {
   LocalStorage,

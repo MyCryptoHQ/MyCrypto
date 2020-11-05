@@ -6,11 +6,6 @@ export const saveSettingsCheck = (): boolean => {
   return true;
 };
 
-export const printPaperWalletCheck = (): boolean => {
-  // @todo: Check if all additional conditions are met for displaying the "print paper wallet" notification
-  return true;
-};
-
 export const getHardwareWalletCheck = (): boolean => {
   // @todo: Check if all additional conditions are met for displaying the "get hardware wallet" notification
   return true;

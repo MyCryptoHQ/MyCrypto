@@ -43,16 +43,6 @@ const ToolsNotifications = () => {
       </button>{' '}
       <button
         onClick={() => {
-          displayNotification(NotificationTemplates.printPaperWallet, {
-            address: 'N3WAddre3ssCreatedPap3r',
-            privateKey: 'Privat3K3y'
-          });
-        }}
-      >
-        Print Paper Wallet
-      </button>{' '}
-      <button
-        onClick={() => {
           displayNotification(NotificationTemplates.getHardwareWallet);
         }}
       >

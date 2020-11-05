@@ -18,9 +18,7 @@ export interface DPath {
 export type DPathFormat =
   | WalletId.LEDGER_NANO_S
   | WalletId.TREZOR
-  | WalletId.MNEMONIC_PHRASE
   | WalletId.LEDGER_NANO_S_NEW
-  | WalletId.TREZOR_NEW
-  | WalletId.MNEMONIC_PHRASE_NEW;
+  | WalletId.TREZOR_NEW;
 
 export type DPathFormats = Partial<Record<DPathFormat | 'default', DPath>>;

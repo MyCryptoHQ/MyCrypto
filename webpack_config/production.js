@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const SriPlugin = require('webpack-subresource-integrity');
 
-const { PRODUCTION, STAGING, ELECTRON } = require('../environment');
+const { PRODUCTION, STAGING } = require('../environment');
 const common = require('./common');
 const config = require('./config');
 
@@ -20,7 +20,7 @@ module.exports = merge.smart(common, {
     path: path.join(config.path.output, 'web'),
     filename: '[name].[contenthash].js',
     globalObject: undefined,
-    publicPath: TargetEnv === STAGING || TargetEnv === ELECTRON ? './' : '/'
+    publicPath: TargetEnv === STAGING ? './' : '/'
   },
 
   module: {

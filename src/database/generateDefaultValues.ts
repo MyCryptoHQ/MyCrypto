@@ -19,8 +19,7 @@ import {
   Network,
   NetworkId,
   NetworkLegacy,
-  NodeOptions,
-  WalletId
+  NodeOptions
 } from '@types';
 import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils';
 
@@ -49,7 +48,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
         shouldEstimateGasPrice: n.shouldEstimateGasPrice,
         dPaths: {
           ...n.dPaths,
-          default: n.dPaths[WalletId.MNEMONIC_PHRASE] // Set default dPath
+          default: n.dPaths.default // Set default dPath
         },
         blockExplorer: n.blockExplorer,
         tokenExplorer: n.tokenExplorer,

@@ -8,7 +8,7 @@ const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
-const { IS_DEV, IS_ELECTRON } = require('../environment');
+const { IS_DEV } = require('../environment');
 const config = require('./config');
 
 module.exports = {
@@ -46,9 +46,7 @@ module.exports = {
           chunks: 'all',
           name: 'vendor.bundle',
           test(mod) {
-            const excluded = `${config.chunks.individual.join(
-              '|'
-            )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
+            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.devOnly
               .join('|')
               .replace(/\//, '[\\\\/]')}`;
             const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded}).*)`);
@@ -106,12 +104,7 @@ module.exports = {
             }
           }
         ],
-        include: [
-          config.path.src,
-          config.path.shared,
-          config.path.electron,
-          config.path.testConfig
-        ],
+        include: [config.path.src, config.path.shared, config.path.testConfig],
         exclude: [/node_modules/]
       },
 
@@ -236,9 +229,7 @@ module.exports = {
       },
       metaCsp: IS_DEV
         ? ''
-        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${
-            IS_ELECTRON ? ' eth-enclave:' : ''
-          }; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://beta.mycrypto.com;`
+        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://beta.mycrypto.com;`
     }),
 
     new CopyWebpackPlugin([

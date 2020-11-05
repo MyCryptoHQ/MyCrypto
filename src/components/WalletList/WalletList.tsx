@@ -8,7 +8,7 @@ import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IStory, WalletId } from '@types';
-import { getWeb3Config, IS_ELECTRON, useAnalytics } from '@utils';
+import { getWeb3Config, useAnalytics } from '@utils';
 
 import { WalletButton } from './WalletButton';
 
@@ -131,14 +131,12 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
           {translateRaw('ADD_ACCOUNT_FOOTER_LABEL')}{' '}
           <Link to={ROUTE_PATHS.CREATE_WALLET.path}>{translateRaw('ADD_ACCOUNT_FOOTER_LINK')}</Link>
         </Info>
-        {!IS_ELECTRON && (
-          <Info>
-            {translateRaw('DOWNLOAD_APP_FOOTER_LABEL')}
-            <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
-              {translateRaw('DOWNLOAD_APP_FOOTER_LINK')}
-            </Link>
-          </Info>
-        )}
+        <Info>
+          {translateRaw('DOWNLOAD_APP_FOOTER_LABEL')}
+          <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
+            {translateRaw('DOWNLOAD_APP_FOOTER_LINK')}
+          </Link>
+        </Info>
         <Info showInOneLine={true}>
           {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LABEL')}{' '}
           <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>

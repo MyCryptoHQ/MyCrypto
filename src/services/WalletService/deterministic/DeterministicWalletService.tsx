@@ -11,7 +11,7 @@ import { ExtendedAsset, Network, TAddress, WalletId } from '@types';
 import { bigify } from '@utils';
 
 import { getDeterministicWallets, LedgerUSB, Wallet } from '..';
-import { LedgerU2F, MnemonicPhrase, Trezor, WalletResult } from '../wallets';
+import { LedgerU2F, Trezor, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
 import { DWAccountDisplay, ExtendedDPath, IDeterministicWalletService } from './types';
 
@@ -30,7 +30,7 @@ interface EventHandlers {
   handleComplete(): void;
 }
 
-const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string) => {
+const selectWallet = async (walletId: WalletId) => {
   switch (walletId) {
     default:
     case WalletId.LEDGER_NANO_S_NEW: {
@@ -41,9 +41,6 @@ const selectWallet = async (walletId: WalletId, mnemonic?: string, pass?: string
     }
     case WalletId.TREZOR_NEW:
       return new Trezor();
-    case WalletId.MNEMONIC_PHRASE_NEW: {
-      return new MnemonicPhrase(mnemonic!, pass || '');
-    }
   }
 };
 
@@ -56,13 +53,8 @@ export const DeterministicWalletService = ({
   handleEnqueueAccounts,
   handleComplete
 }: EventHandlers): IDeterministicWalletService => {
-  const init = async (
-    walletId: WalletId,
-    asset: ExtendedAsset,
-    mnemonic?: string,
-    pass?: string
-  ) => {
-    const wallet = await selectWallet(walletId, mnemonic, pass);
+  const init = async (walletId: WalletId, asset: ExtendedAsset) => {
+    const wallet = await selectWallet(walletId);
     wallet
       .initialize()
       .then(() => {

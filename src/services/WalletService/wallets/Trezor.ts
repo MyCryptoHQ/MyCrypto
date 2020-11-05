@@ -1,7 +1,7 @@
 import TrezorConnect from 'trezor-connect';
 
 import { DPathsList, TREZOR_DERIVATION_PATHS } from '@config/dpaths';
-import { WalletId } from '@types';
+import { DPath, WalletId } from '@types';
 
 import HardwareWallet, { KeyInfo } from './HardwareWallet';
 import { getFullPath } from './helpers';

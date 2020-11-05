@@ -8,7 +8,6 @@ const paths = {
   output: path.join(__dirname, '../dist'),
   assets: path.join(__dirname, '../src/assets'),
   static: path.join(__dirname, '../static'),
-  electron: path.join(__dirname, '../electron-app'),
   shared: path.join(__dirname, '../shared'),
   modules: path.join(__dirname, '../node_modules'),
   testConfig: path.join(__dirname, '../jest_config')
@@ -41,15 +40,12 @@ module.exports = {
     individual: [
       'ethers',
       'recharts',
-      'jspdf',
-      'html2canvas',
       '@walletconnect',
       '@ledgerhq',
       '@unstoppabledomains',
       'graphql',
       'apollo-client'
     ],
-    devOnly: ['@hot-loader/react-dom'],
-    electronOnly: ['zxcvbn']
+    devOnly: ['@hot-loader/react-dom']
   }
 };

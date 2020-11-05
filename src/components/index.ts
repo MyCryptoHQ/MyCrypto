@@ -22,7 +22,6 @@ export { IButton, LegacyModal } from './LegacyModal';
 export { default as NewAppReleaseModal } from './NewAppReleaseModal';
 export { default as InputField } from './InputField';
 export { default as NetworkSelector } from './NetworkSelector';
-export { default as PrintPaperWalletButton } from './PrintPaperWalletButton';
 export { default as Overlay } from './Overlay';
 export { default as QRCode, QRCodeContainer } from './QRCode';
 export { default as RouterLink } from './RouterLink';

@@ -6,7 +6,5 @@ export { default as Trezor } from './Trezor';
 
 export { default as Wallet } from './Wallet';
 
-export { default as MnemonicPhrase } from './MnemonicPhrase';
-
 export * from './types';
 export * from './helpers';

@@ -1,3 +1,4 @@
+import { DPath } from '@types';
 import { bigify } from '@utils/bigify';
 
 import { DWAccountDisplay, ExtendedDPath } from './types';
