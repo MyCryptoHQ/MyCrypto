@@ -1,5 +1,4 @@
 import {
-  InsecureWalletWarning,
   LedgerDecrypt,
   LedgerNanoSDecrypt,
   TrezorDecrypt,
@@ -44,27 +43,6 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.TREZOR_NEW,
     steps: [NetworkSelectPanel, TrezorUnlock]
-  },
-  {
-    name: WalletId.KEYSTORE_FILE,
-    steps: [NetworkSelectPanel, InsecureWalletWarning],
-    isDisabled: IS_WEB_AND_PRODUCTION
-  },
-  {
-    name: WalletId.PRIVATE_KEY,
-    steps: [NetworkSelectPanel, InsecureWalletWarning],
-    isDisabled: IS_WEB_AND_PRODUCTION
-  },
-  {
-    name: WalletId.MNEMONIC_PHRASE,
-    steps: [NetworkSelectPanel, InsecureWalletWarning],
-    isDisabled: IS_WEB_AND_PRODUCTION,
-    hideFromWalletList: true
-  },
-  {
-    name: WalletId.MNEMONIC_PHRASE_NEW,
-    steps: [NetworkSelectPanel, InsecureWalletWarning],
-    isDisabled: IS_WEB_AND_PRODUCTION
   },
   {
     name: WalletId.VIEW_ONLY,

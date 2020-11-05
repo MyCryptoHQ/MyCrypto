@@ -9,7 +9,7 @@ import { WalletButton } from './WalletButton';
 
 export default { title: 'WalletButton' };
 
-const walletInfo = getWalletConfig(WalletId.PRIVATE_KEY);
+const walletInfo = getWalletConfig(WalletId.WEB3);
 
 const getWalletButton = (disabled?: boolean) => (
   <WalletButton

@@ -19,7 +19,7 @@ const network: Network = {
 const account = {
   address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
   networkId: 'Ropsten',
-  wallet: WalletId.MNEMONIC_PHRASE
+  wallet: WalletId.LEDGER_NANO_S
 };
 
 const sampleTxConfig = {

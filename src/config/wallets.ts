@@ -1,8 +1,5 @@
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
-import mnemonicIcon from '@assets/images/icn-create-pw.svg';
-import keystoreIcon from '@assets/images/icn-keystore.svg';
-import privateKeyIcon from '@assets/images/icn-lock-safety.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
@@ -17,12 +14,7 @@ import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
 
 import { getKBHelpArticle, HELP_ARTICLE, KB_HELP_ARTICLE } from './helpArticles';
 
-const {
-  MIGRATE_TO_METAMASK,
-  MIGRATE_TO_TREZOR,
-  DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE,
-  WALLETCONNECT
-} = KB_HELP_ARTICLE;
+const { MIGRATE_TO_METAMASK, MIGRATE_TO_TREZOR, WALLETCONNECT } = KB_HELP_ARTICLE;
 
 export interface IWalletConfig {
   id: WalletId;
@@ -193,66 +185,6 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_TREZOR),
-    flags: {
-      supportsNonce: true
-    }
-  },
-  [WalletId.KEYSTORE_FILE]: {
-    id: WalletId.KEYSTORE_FILE,
-    name: 'JSON Keystore File',
-    isDeterministic: false,
-    isSecure: false,
-    isDesktopOnly: true,
-    type: WalletType.FILE,
-    lid: 'X_KEYSTORE2',
-    icon: keystoreIcon,
-    description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
-    flags: {
-      supportsNonce: true
-    }
-  },
-  [WalletId.MNEMONIC_PHRASE]: {
-    id: WalletId.MNEMONIC_PHRASE,
-    name: 'Mnemonic Phrase',
-    isDeterministic: true,
-    isSecure: false,
-    isDesktopOnly: true,
-    type: WalletType.FILE,
-    lid: 'X_MNEMONIC',
-    icon: mnemonicIcon,
-    description: 'brain surround have swap horror cheese file distinct',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
-    flags: {
-      supportsNonce: true
-    }
-  },
-  [WalletId.MNEMONIC_PHRASE_NEW]: {
-    id: WalletId.MNEMONIC_PHRASE_NEW,
-    name: 'Mnemonic Phrase',
-    isDeterministic: true,
-    isSecure: false,
-    isDesktopOnly: true,
-    type: WalletType.FILE,
-    lid: 'Mnemonic Phrase',
-    icon: mnemonicIcon,
-    description: 'brain surround have swap horror cheese file distinct',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
-    flags: {
-      supportsNonce: true
-    }
-  },
-  [WalletId.PRIVATE_KEY]: {
-    id: WalletId.PRIVATE_KEY,
-    name: 'Private Key',
-    isDeterministic: false,
-    isSecure: false,
-    isDesktopOnly: true,
-    type: WalletType.FILE,
-    lid: 'X_PRIVKEY2',
-    icon: privateKeyIcon,
-    description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-    helpLink: getKBHelpArticle(DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE),
     flags: {
       supportsNonce: true
     }

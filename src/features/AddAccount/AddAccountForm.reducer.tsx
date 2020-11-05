@@ -34,10 +34,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
     switch (walletType) {
       case WalletId.VIEW_ONLY:
         return [payload];
-      case WalletId.KEYSTORE_FILE:
-        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
-      case WalletId.PRIVATE_KEY:
-        return [{ ...payload, address: payload.getAddressString(), derivationPath: '' }];
       case WalletId.WEB3:
         return payload.map((payloadItem: any) => ({
           address: payloadItem.getAddressString(),
@@ -50,10 +46,6 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
             derivationPath: ''
           }
         ];
-      case WalletId.MNEMONIC_PHRASE:
-        return [payload];
-      case WalletId.MNEMONIC_PHRASE_NEW:
-        return payload;
       case WalletId.LEDGER_NANO_S:
         return [
           {

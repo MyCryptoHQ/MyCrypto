@@ -23,10 +23,6 @@ const Ethereum: Network = {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"
     },
-    MNEMONIC_PHRASE: {
-      label: 'Default (ETH)',
-      value: "m/44'/60'/0'/0"
-    },
     default: {
       label: 'Default (ETH)',
       value: "m/44'/60'/0'/0"
@@ -77,10 +73,6 @@ const Ropsten: Network = {
     LEDGER_NANO_S: {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"
-    },
-    MNEMONIC_PHRASE: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
     },
     default: {
       label: 'Testnet (ETH)',
