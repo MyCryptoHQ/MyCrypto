@@ -99,8 +99,8 @@ export default function ScreenLockLocking({
         <Description>
           {translate(
             lockingOnDemand
-              ? `SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION`
-              : `SCREEN_LOCK_LOCKING_DESCRIPTION`,
+              ? 'SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION'
+              : 'SCREEN_LOCK_LOCKING_DESCRIPTION',
             {
               $inactive_time: formatTimeDuration(
                 Math.floor((Date.now() - settings.inactivityTimer) / 1000)

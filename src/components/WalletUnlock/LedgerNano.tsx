@@ -115,8 +115,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             </div>
             <div className="LedgerPanel-footer">
               {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
-              {/*<br />
-              {translate('LEDGER_HELP_LINK')} */}
             </div>
           </div>
         </div>

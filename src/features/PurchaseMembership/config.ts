@@ -68,7 +68,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   },
 
   threemonths: {
-    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '3' }),
+    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '3' }),
     key: IMembershipId.threemonths,
     contractAddress: '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125',
     description: '',
@@ -81,7 +81,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   },
 
   sixmonths: {
-    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '6' }),
+    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '6' }),
     key: IMembershipId.sixmonths,
     contractAddress: '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329',
     description: '',
@@ -94,7 +94,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
   },
 
   twelvemonths: {
-    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '12' }),
+    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '12' }),
     key: IMembershipId.twelvemonths,
     contractAddress: '0xee2B7864d8bc731389562F820148e372F57571D8',
     description: '',
