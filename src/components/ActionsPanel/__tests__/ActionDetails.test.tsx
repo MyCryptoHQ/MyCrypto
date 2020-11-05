@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, screen, simpleRender } from 'test-utils';
+import { screen, simpleRender } from 'test-utils';
 
 import { fAssets, fUserActions } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
-import { ACTION_STATE, ActionTemplate } from '@types';
+import { ActionTemplate } from '@types';
 
 import { ActionDetails } from '../components/ActionDetails';
 import { actionTemplates } from '../constants';
@@ -58,23 +58,5 @@ describe('ActionsDetails', () => {
     expect(
       screen.getByText(new RegExp(defaultProps.actionTemplate.button.content, 'i'))
     ).toBeDefined();
-  });
-
-  test('button click triggers userAction state update', async () => {
-    const mockUpdate = jest.fn();
-    const createActions = jest.fn().mockReturnValue({
-      update: mockUpdate
-    });
-
-    getComponent(defaultProps, createActions);
-
-    const button = screen.getByText(new RegExp(defaultProps.actionTemplate.button.content, 'i'));
-
-    fireEvent.click(button);
-
-    expect(mockUpdate).toHaveBeenCalledWith(fUserActions[0].uuid, {
-      ...fUserActions[0],
-      state: ACTION_STATE.STARTED
-    });
   });
 });

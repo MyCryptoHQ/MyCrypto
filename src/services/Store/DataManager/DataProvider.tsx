@@ -23,11 +23,10 @@ import {
   useDispatch,
   useSelector
 } from '@store';
-import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
+import { DataStore, EncryptedDataStore, LSKeys } from '@types';
 import { toArray } from '@utils';
 import { isEmpty, useEvent, useThrottleFn } from '@vendor';
 
-import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
 import {
   ActionPayload,
@@ -42,7 +41,6 @@ import {
 import { deMarshallState, marshallState } from './utils';
 
 export interface DataCacheManager extends DataStore {
-  createActions(k: DSKeys): ReturnType<typeof ActionFactory>;
   resetAppDb(): void;
   addSeedData(): void;
   removeSeedData(): void;
@@ -257,7 +255,6 @@ export const DataProvider: React.FC = ({ children }) => {
 
   const stateContext: IDataContext = {
     ...appState,
-    createActions: (key) => ActionFactory(key, dispatch, appState),
     resetAppDb,
     encryptedDbState,
     removeSeedData,

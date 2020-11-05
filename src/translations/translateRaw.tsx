@@ -3,35 +3,13 @@ import React, { FC, ReactNode } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 
-const fallbackLanguage = 'en';
+import { LanguageCode } from '@config';
+
 const repository: {
   [language: string]: {
     [translationName: string]: string;
   };
 } = {};
-
-type LanguageCode =
-  | 'en'
-  | 'de'
-  | 'el'
-  | 'es'
-  | 'fi'
-  | 'fr'
-  | 'ht'
-  | 'hu'
-  | 'id'
-  | 'it'
-  | 'ja'
-  | 'nl'
-  | 'no'
-  | 'pl'
-  | 'pt'
-  | 'ru'
-  | 'ko'
-  | 'tr'
-  | 'vi'
-  | 'zhcn'
-  | 'zhtw';
 
 interface ILanguageData {
   code: LanguageCode;
@@ -63,9 +41,8 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
   // @todo: Either find an appropriate way to share the users language setting without needing to update all our translateRaw calls.
   // In the mean time we default to english.
   const settings = { language: 'en' };
-  const language = settings.language || fallbackLanguage;
-  const translatedString =
-    (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
+  const language = settings.language;
+  const translatedString = (repository[language] && repository[language][key]) || key;
 
   /** @desc In RegExp, $foo is two "words", but __foo is only one "word."
    *  Replace all occurences of '$' with '__' in the entire string and each variable,
@@ -94,9 +71,8 @@ interface Props {
 
 export const Trans: FC<Props> = ({ id, variables }) => {
   const settings = { language: 'en' };
-  const language = settings.language || fallbackLanguage;
-  let tString =
-    (repository[language] && repository[language][id]) || repository[fallbackLanguage][id] || id;
+  const language = settings.language;
+  let tString = (repository[language] && repository[language][id]) || id;
 
   const uniqueId = ((counter) => () => `${++counter}`)(0);
 

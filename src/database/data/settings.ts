@@ -1,3 +1,4 @@
+import { LanguageCode } from '@config';
 import { TFiatTicker } from '@types';
 
 export const defaultSettings = {
@@ -7,5 +8,5 @@ export const defaultSettings = {
   excludedAssets: [],
   inactivityTimer: 1800000,
   rates: {},
-  language: 'en'
+  language: 'en' as LanguageCode
 };

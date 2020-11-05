@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import { actionWithPayload, getUseDispatchMock, renderHook } from 'test-utils';
 
-import { Fiats } from '@config';
 import { fAccount, fAccounts, fAssets, fLocalStorage, fRates, fSettings } from '@fixtures';
-import { ISettings, LSKeys } from '@types';
+import { store } from '@store';
+import { ISettings } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
-import useSettings from './useSettings';
+import useSettings, { isValidImport } from './useSettings';
 
-const renderUseAccounts = ({ settings = {} as ISettings, createActions = jest.fn() } = {}) => {
+const renderUseAccounts = ({ settings = {} as ISettings } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ settings, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <Provider store={store}>
+      <DataContext.Provider value={({ settings } as any) as IDataContext}>
+        {children}
+      </DataContext.Provider>
+    </Provider>
   );
   return renderHook(() => useSettings(), { wrapper });
 };
@@ -26,185 +28,97 @@ describe('useSettings', () => {
     expect(result.current.language).toBe(fSettings.language);
   });
 
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseAccounts({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.SETTINGS);
+  it('addFavoriteAccount() dispatchs an update action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
+    result.current.addFavoriteAccount(fAccount.uuid);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccount.uuid));
   });
 
-  it('exportStorage()', () => {
-    const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ exportStorage: mockExport })),
-      settings: fSettings
-    });
-    expect(result.current.exportStorage()).toBe(JSON.stringify(fLocalStorage));
-  });
-
-  it('importStorage()', () => {
-    const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
-    const mockImport = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ exportStorage: mockExport, importStorage: mockImport })),
-      settings: fSettings
-    });
-    const newLS = JSON.stringify({ ...fLocalStorage, settings: fSettings });
-    result.current.importStorage(newLS);
-    expect(mockImport).toHaveBeenCalledWith(newLS);
-  });
-
-  it('addAccountToFavorites() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    result.current.addAccountToFavorites(fAccount.uuid);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: [...fSettings.dashboardAccounts, fAccount.uuid]
-    });
-  });
-
-  it('addMultipleAccountsToFavorites() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+  it('addFavoriteAccounts() dispatchs an updateMany action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const uuids = fAccounts.map((a) => a.uuid);
-    result.current.addMultipleAccountsToFavorites(uuids);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: [...fSettings.dashboardAccounts, ...uuids]
-    });
+    result.current.addFavoriteAccounts(uuids);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload([...uuids]));
   });
 
-  it('addAssetToExclusionList() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    result.current.addAssetToExclusionList(fAssets[0].uuid);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      excludedAssets: [...fSettings.excludedAssets, fAssets[0].uuid]
-    });
+  it('addExcludedAsset() dispatchs an update action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
+    result.current.addExcludedAsset(fAssets[0].uuid);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAssets[0].uuid));
   });
 
-  it('removeAssetfromExclusionList() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    result.current.removeAssetfromExclusionList(fSettings.excludedAssets[0]);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      excludedAssets: []
-    });
+  it('removeExcludedAsset() dispatchs a remove action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
+    const targetUuid = fSettings.excludedAssets[0];
+    result.current.removeExcludedAsset(targetUuid);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(targetUuid));
   });
 
-  it('updateSettingsAccounts() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+  it('setFavoriteAccounts() dispatchs an updateMany action', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const uuids = fAccounts.map((a) => a.uuid);
-    result.current.updateSettingsAccounts(uuids);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: uuids
-    });
+    result.current.setFavoriteAccounts(uuids);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(uuids));
   });
 
-  it('updateSettingsNode() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+  it('setNode() sets node', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const node = 'mynode';
-    result.current.updateSettingsNode(node);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      node
-    });
+    result.current.setNode(node);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(node));
   });
 
-  it('updateSettingsRates() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    result.current.updateSettingsRates(fRates);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      rates: fRates
-    });
+  it('updateRates() sets rates', () => {
+    const mockDispatch = getUseDispatchMock();
+    const { result } = renderUseAccounts({ settings: fSettings });
+    result.current.updateRates(fRates);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fRates));
   });
 
-  it('updateLanguageSelection() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    const language = 'da';
-    result.current.updateLanguageSelection(language);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      language
-    });
-  });
+  // it('exportState()', () => {
+  //   const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
+  //   const { result } = renderUseAccounts({ settings: fSettings });
+  //   expect(result.current.exportState()).toBe(JSON.stringify(fLocalStorage));
+  // });
 
-  it('updateFiatCurrency() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    const fiat = Fiats.EUR.ticker;
-    result.current.updateFiatCurrency(fiat);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      fiatCurrency: fiat
-    });
-  });
+  // it('importState()', () => {
+  //   const mockDispatch = getUseDispatchMock();
+  //   const { result } = renderUseAccounts({ settings: fSettings });
+  //   const newLS = JSON.stringify({ ...fLocalStorage, settings: fSettings });
+  //   result.current.importState(newLS);
+  //   expect(mockDispatch).toHaveBeenCalledWith(
+  //     expect.objectContaining({
+  //       payload: newLS,
+  //       action: importState.name
+  //     })
+  //   );
+  // });
+});
 
+describe('isValidImport()', () => {
   it('isValidImport() succeeds under normal circumstances', () => {
-    const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ exportStorage: mockExport })),
-      settings: fSettings
-    });
-    const isValid = result.current.isValidImport(JSON.stringify(fLocalStorage));
+    const isValid = isValidImport(JSON.stringify(fLocalStorage), JSON.stringify(fLocalStorage));
     expect(isValid).toBe(true);
   });
 
   it('isValidImport() fails with mismatching versions', () => {
-    const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ exportStorage: mockExport })),
-      settings: fSettings
-    });
-    const isValid = result.current.isValidImport(
-      JSON.stringify({ ...fLocalStorage, version: '0' })
-    );
-    expect(isValid).toBe(false);
+    const isValid = () =>
+      isValidImport(
+        JSON.stringify({ ...fLocalStorage, version: '0' }),
+        JSON.stringify(fLocalStorage)
+      );
+    expect(isValid()).toBe(false);
   });
 
   it('isValidImport() fails with missing keys', () => {
     const { accounts, ...lsWithoutAccounts } = fLocalStorage;
-    const mockExport = jest.fn().mockImplementation(() => lsWithoutAccounts);
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ exportStorage: mockExport })),
-      settings: fSettings
-    });
-    const isValid = result.current.isValidImport(JSON.stringify(fLocalStorage));
+    const isValid = isValidImport(JSON.stringify(lsWithoutAccounts), JSON.stringify(fLocalStorage));
     expect(isValid).toBe(false);
   });
 });

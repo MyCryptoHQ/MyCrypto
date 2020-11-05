@@ -1,3 +1,5 @@
+import { LanguageCode } from '@config';
+
 import { TFiatTicker } from './asset';
 import { IRates } from './rates';
 import { TUuid } from './uuid';
@@ -10,5 +12,5 @@ export interface ISettings {
   inactivityTimer: number;
   node?: string;
   rates: IRates;
-  language: string; // @todo: Change to enum
+  language: LanguageCode;
 }

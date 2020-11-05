@@ -25,9 +25,7 @@ const handleTxSpeedUpRedirect = noOp;
 export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider value={({ createActions: noOp } as unknown) as IDataContext}>
-    {component}
-  </DataContext.Provider>
+  <DataContext.Provider value={({} as unknown) as IDataContext}>{component}</DataContext.Provider>
 );
 
 export const transactionReceiptPending = wrapInProvider(

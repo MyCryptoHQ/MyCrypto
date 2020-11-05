@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -30,24 +30,24 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps) {
   const { history } = props;
   const onBack = history.goBack;
-  const { exportStorage } = useSettings();
-  const data = exportStorage();
+  const { exportState } = useSettings();
   const { updateUserAction, findUserAction } = useUserActions();
 
   const backupAction = findUserAction(ACTION_NAME.BACKUP);
+  const exportedState = useMemo(exportState, [exportState]);
 
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
-        <CacheDisplay>{data}</CacheDisplay>
+        <CacheDisplay>{exportedState}</CacheDisplay>
         <RouterLink fullwidth={true} to={ROUTE_PATHS.SETTINGS.path}>
           <Button color={COLORS.WHITE} fullwidth={true}>
             {translate('SETTINGS_EXPORT_LEAVE')}
           </Button>
         </RouterLink>
         <Downloader
-          data={data}
+          data={exportedState}
           onClick={() =>
             backupAction &&
             updateUserAction(backupAction.uuid, { ...backupAction, state: ACTION_STATE.COMPLETED })

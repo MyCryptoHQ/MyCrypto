@@ -54,3 +54,6 @@ export { default as over } from 'ramda/src/over';
 export { default as tap } from 'ramda/src/tap';
 export { default as eqBy } from 'ramda/src/eqBy';
 export { default as unionWith } from 'ramda/src/unionWith';
+export { default as uniq } from 'ramda/src/uniq';
+export { default as without } from 'ramda/src/without';
+export { default as symmetricDifference } from 'ramda/src/symmetricDifference';

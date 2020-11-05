@@ -56,7 +56,8 @@ const SelectContainer = styled.div`
 
 interface SettingsProps {
   globalSettings: ISettings;
-  updateGlobalSettings(settings: ISettings): void;
+  setCurrency(t: TFiatTicker): void;
+  setInactivityTimer(t: number): void;
 }
 
 const timerOptions = [
@@ -73,15 +74,19 @@ const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
-const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettings }) => {
+const GeneralSettings: FC<SettingsProps> = ({
+  globalSettings,
+  setCurrency,
+  setInactivityTimer
+}) => {
   const trackSetInacticityTimer = useAnalytics({
     category: ANALYTICS_CATEGORIES.SETTINGS
   });
 
-  const changeTimer = useCallback(
+  const handleTimerSelection = useCallback(
     (event: React.FormEvent<HTMLSelectElement>) => {
       const target = event.target as HTMLSelectElement;
-      updateGlobalSettings({ ...globalSettings, inactivityTimer: Number(target.value) });
+      setInactivityTimer(Number(target.value));
 
       const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
       if (selectedTimer) {
@@ -90,19 +95,13 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         });
       }
     },
-    [trackSetInacticityTimer, globalSettings, updateGlobalSettings]
+    [trackSetInacticityTimer, setInactivityTimer]
   );
 
-  const changeCurrencySelection = useCallback(
-    (event: React.FormEvent<HTMLSelectElement>) => {
-      const target = event.target as HTMLSelectElement;
-      updateGlobalSettings({
-        ...globalSettings,
-        fiatCurrency: target.value as TFiatTicker
-      });
-    },
-    [globalSettings, updateGlobalSettings]
-  );
+  const handleCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
+    const target = event.target as HTMLSelectElement;
+    setCurrency(target.value as TFiatTicker);
+  };
 
   return (
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
@@ -128,7 +127,7 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
-            <select onChange={changeTimer} value={String(globalSettings.inactivityTimer)}>
+            <select onChange={handleTimerSelection} value={String(globalSettings.inactivityTimer)}>
               {timerOptions.map((option) => (
                 <option value={option.value} key={option.value}>
                   {option.name}
@@ -145,7 +144,7 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
-            <select onChange={changeCurrencySelection} value={String(globalSettings.fiatCurrency)}>
+            <select onChange={handleCurrencySelection} value={String(globalSettings.fiatCurrency)}>
               {Object.keys(Fiats).map((option) => (
                 <option value={option} key={option}>
                   {option}

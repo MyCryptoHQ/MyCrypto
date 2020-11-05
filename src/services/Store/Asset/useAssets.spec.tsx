@@ -18,10 +18,10 @@ const getUseDispatchMock = () => {
   return mockDispatch;
 };
 
-const renderUseAssets = ({ assets = [] as ExtendedAsset[], createActions = jest.fn() } = {}) => {
+const renderUseAssets = ({ assets = [] as ExtendedAsset[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <Provider store={store}>
-      <DataContext.Provider value={({ assets, createActions } as any) as IDataContext}>
+      <DataContext.Provider value={({ assets } as any) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>

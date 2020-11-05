@@ -49,9 +49,9 @@ const SIconContainer = styled.div`
 `;
 
 const HideAssetButton = ({ uuid, key }: { uuid: TUuid; key: string }) => {
-  const { addAssetToExclusionList } = useSettings();
+  const { addExcludedAsset } = useSettings();
   return (
-    <SIconContainer key={key} onClick={() => addAssetToExclusionList(uuid)}>
+    <SIconContainer key={key} onClick={() => addExcludedAsset(uuid)}>
       <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
         <SIconContainer>
           <SubtractIcon size="xl" />

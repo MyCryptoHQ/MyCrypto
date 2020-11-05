@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { renderHook } from '@testing-library/react-hooks';
-// eslint-disable-next-line import/no-namespace
-import * as ReactRedux from 'react-redux';
 import { Provider } from 'react-redux';
+import { actionWithPayload, getUseDispatchMock, renderHook } from 'test-utils';
 
 import { customNodeConfig, fNetwork, fNetworks } from '@fixtures';
 import { store } from '@store';
@@ -12,18 +10,10 @@ import { Network } from '@types';
 import { DataContext, IDataContext } from '../DataManager';
 import useNetworks from './useNetworks';
 
-const getUseDispatchMock = () => {
-  const mockDispatch = jest.fn();
-  jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
-  return mockDispatch;
-};
-
-const actionWithPayload = (payload: any) => expect.objectContaining({ payload });
-
-const renderUseNetworks = ({ networks = [] as Network[], createActions = jest.fn() } = {}) => {
+const renderUseNetworks = ({ networks = [] as Network[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <Provider store={store}>
-      <DataContext.Provider value={({ networks, createActions } as any) as IDataContext}>
+      <DataContext.Provider value={({ networks } as any) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>
@@ -53,26 +43,17 @@ describe('useNetworks', () => {
   });
 
   it('getNetworkById() finds network with id', () => {
-    const { result } = renderUseNetworks({
-      networks: fNetworks,
-      createActions: jest.fn()
-    });
+    const { result } = renderUseNetworks({ networks: fNetworks });
     expect(result.current.getNetworkById(fNetworks[0].id)).toBe(fNetworks[0]);
   });
 
   it('getNetworkByChainId() finds network with chain id', () => {
-    const { result } = renderUseNetworks({
-      networks: fNetworks,
-      createActions: jest.fn()
-    });
+    const { result } = renderUseNetworks({ networks: fNetworks });
     expect(result.current.getNetworkByChainId(fNetworks[0].chainId)).toBe(fNetworks[0]);
   });
 
   it('getNetworkNodes() finds network nodes for network id', () => {
-    const { result } = renderUseNetworks({
-      networks: fNetworks,
-      createActions: jest.fn()
-    });
+    const { result } = renderUseNetworks({ networks: fNetworks });
     expect(result.current.getNetworkNodes(fNetworks[0].id)).toBe(fNetworks[0].nodes);
   });
 

@@ -49,7 +49,7 @@ export interface IAccountContext {
 
 function useAccounts() {
   const { accounts } = useContext(DataContext);
-  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
+  const { addFavoriteAccount, addFavoriteAccounts } = useSettings();
   const dispatch = useDispatch();
   const trackTxHistory = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_HISTORY,
@@ -57,13 +57,13 @@ function useAccounts() {
   });
 
   const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
-    addAccountToFavorites(uuid);
+    addFavoriteAccount(uuid);
     dispatch(createAccount({ ...item, uuid }));
   };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
     const allAccounts = unionWith(eqBy(prop('uuid')), newAccounts, accounts).filter(Boolean);
-    addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
+    addFavoriteAccounts(newAccounts.map(({ uuid }) => uuid));
     dispatch(updateAccountsStore(allAccounts));
   };
 

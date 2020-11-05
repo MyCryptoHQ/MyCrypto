@@ -43,3 +43,4 @@ export {
   SUPPORTED_TRANSACTION_QUERY_PARAMS,
   MANDATORY_TRANSACTION_QUERY_PARAMS
 } from './queryParams';
+export { LANGUAGES, LanguageCode } from './languages';

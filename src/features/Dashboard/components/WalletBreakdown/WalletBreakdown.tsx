@@ -61,7 +61,7 @@ const WalletBreakdownPanel = styled(Panel)`
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts, totals, currentAccounts } = useContext(StoreContext);
-  const { settings, updateSettingsAccounts } = useSettings();
+  const { settings, setFavoriteAccounts } = useSettings();
   const { getAssetRate } = useRates();
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
@@ -90,7 +90,7 @@ export function WalletBreakdown() {
             accounts={accounts}
             selected={settings.dashboardAccounts}
             onSubmit={(selected: TUuid[]) => {
-              updateSettingsAccounts(selected);
+              setFavoriteAccounts(selected);
             }}
           />
         </AccountDropdownWrapper>

@@ -1,4 +1,4 @@
-export const languages = {
+export const LANGUAGES = {
   en: 'English',
   de: 'Deutsch',
   el: 'Ελληνικά',
@@ -21,4 +21,4 @@ export const languages = {
   zhtw: '繁體中文'
 };
 
-export type LanguageCode = keyof typeof languages;
+export type LanguageCode = keyof typeof LANGUAGES;

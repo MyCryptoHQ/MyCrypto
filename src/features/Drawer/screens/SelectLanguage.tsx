@@ -2,8 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { LANGUAGES } from '@config';
 import { ANALYTICS_CATEGORIES, useSettings } from '@services';
-import { languages, translateRaw } from '@translations';
+import { translateRaw } from '@translations';
 import { useAnalytics } from '@utils';
 
 const LanguagesList = styled.ul`
@@ -43,7 +44,7 @@ const handleLanguageSelect = (
 };
 
 function LanguageSelect() {
-  const { language, updateLanguageSelection } = useSettings();
+  const { language, setLanguage } = useSettings();
   const trackLangChange = useAnalytics({
     category: ANALYTICS_CATEGORIES.SIDEBAR,
     actionName: 'Language changed'
@@ -51,7 +52,7 @@ function LanguageSelect() {
 
   return (
     <LanguagesList>
-      {Object.entries(languages).map(([code, languageString]: [string, string]) => (
+      {Object.entries(LANGUAGES).map(([code, languageString]: [string, string]) => (
         <Language
           isSelected={language === code}
           key={code}
@@ -61,7 +62,7 @@ function LanguageSelect() {
                 lang: code
               }
             });
-            handleLanguageSelect(code, language, updateLanguageSelection);
+            handleLanguageSelect(code, language, setLanguage);
           }}
         >
           {languageString}

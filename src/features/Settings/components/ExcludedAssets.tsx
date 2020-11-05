@@ -13,9 +13,9 @@ const SIconContainer = styled.div`
 `;
 
 const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
-  const { removeAssetfromExclusionList } = useSettings();
+  const { removeExcludedAsset } = useSettings();
   return (
-    <SIconContainer onClick={() => removeAssetfromExclusionList(uuid)}>
+    <SIconContainer onClick={() => removeExcludedAsset(uuid)}>
       <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
         <SIconContainer>
           <AddIcon size="xl" />

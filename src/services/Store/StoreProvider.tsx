@@ -155,7 +155,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     createMultipleAccountsWithIDs
   } = useAccounts();
   const { assets, addAssetsFromAPI } = useAssets();
-  const { settings, updateSettingsAccounts } = useSettings();
+  const { settings, removeFavoriteAccount } = useSettings();
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
 
@@ -475,9 +475,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));
       deleteAccount(account);
-      updateSettingsAccounts(
-        settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
-      );
+      removeFavoriteAccount(account.uuid);
       setMemberships((prevState) => prevState?.filter((s) => s.address !== account.address));
     },
     restoreDeletedAccount: (accountId) => {

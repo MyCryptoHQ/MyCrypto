@@ -6,12 +6,18 @@ import { Transition } from 'react-spring/renderprops-universal.cjs';
 import styled from 'styled-components';
 
 import LocalIcon from '@components/Icon';
-import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
+import {
+  getKBHelpArticle,
+  KB_HELP_ARTICLE,
+  LANGUAGES,
+  LATEST_NEWS_URL,
+  ROUTE_PATHS
+} from '@config';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 import { ANALYTICS_CATEGORIES, useFeatureFlags, useSettings } from '@services';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import translate, { languages } from '@translations';
+import translate from '@translations';
 import { openLink, useAnalytics } from '@utils';
 
 import { getLinks } from './constants';
@@ -281,7 +287,7 @@ interface LinkElement {
 
 type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
-  const { language: languageSelection } = useSettings();
+  const { language } = useSettings();
   const { startLockCountdown } = useContext(ScreenLockContext);
   const trackHeader = useAnalytics({
     category: ANALYTICS_CATEGORIES.HEADER
@@ -402,7 +408,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                   })}
               </MenuLinks>
               <MenuMid onClick={onLanguageClick}>
-                {languages[languageSelection]} <IconWrapper $subItems={true} icon="navDownCaret" />
+                {LANGUAGES[language]} <IconWrapper $subItems={true} icon="navDownCaret" />
               </MenuMid>
               <MenuLinks>
                 <li onClick={openHelpSupportPage}>
@@ -442,7 +448,7 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
           <Lock onClick={onLockClick}>
             <IconWrapper icon="lock" /> {translate('LOCK')}
           </Lock>
-          <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
+          <li onClick={onLanguageClick}>{LANGUAGES[language]}</li>
         </HeaderTopLeft>
       </HeaderTop>
       <HeaderBottom>

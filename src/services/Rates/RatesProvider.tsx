@@ -53,7 +53,7 @@ export const RatesContext = createContext({} as State);
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID } = useAssets();
-  const { settings, updateSettingsRates } = useSettings();
+  const { settings, updateRates } = useSettings();
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMapping);
   const worker = useRef<undefined | PollingService>();
   const accountAssets = getAssets();
@@ -75,13 +75,13 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     return acc;
   }, [] as string[]);
 
-  const updateRates = (data: IRates) =>
-    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
+  const updateRatesSettingsRates = (data: IRates) =>
+    updateRates(destructureCoinGeckoIds(data, currentAssets));
 
   // update rate worker success handler with updated settings context
   useEffect(() => {
     if (worker.current) {
-      worker.current.setSuccessHandler(updateRates);
+      worker.current.setSuccessHandler(updateRatesSettingsRates);
     }
   }, [settings]);
 
@@ -98,7 +98,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     worker.current = new PollingService(
       buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERVAL,
-      updateRates,
+      updateRatesSettingsRates,
       (err) => console.debug('[RatesProvider]', err)
     );
 

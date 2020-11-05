@@ -69,7 +69,7 @@ jest.mock('ethers/providers', () => {
   };
 });
 
-const renderUseTxMulti = ({ createActions = jest.fn() } = {}) => {
+const renderUseTxMulti = (defaults = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <Provider store={store}>
       <DataContext.Provider
@@ -79,7 +79,7 @@ const renderUseTxMulti = ({ createActions = jest.fn() } = {}) => {
             networks: fNetworks,
             assets: fAssets,
             settings: fSettings,
-            createActions
+            ...defaults
           } as any) as IDataContext
         }
       >

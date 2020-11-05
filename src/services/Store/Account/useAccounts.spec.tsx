@@ -1,9 +1,7 @@
 import React from 'react';
 
-// eslint-disable-next-line import/no-namespace
-import * as ReactRedux from 'react-redux';
 import { Provider } from 'react-redux';
-import { renderHook, waitFor } from 'test-utils';
+import { getUseDispatchMock, renderHook, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fRopDAI, fSettings, fTxReceipt } from '@fixtures';
 import { getAccounts, store, useSelector } from '@store';
@@ -15,8 +13,8 @@ import useAccounts from './useAccounts';
 jest.mock('../Settings', () => {
   return {
     useSettings: () => ({
-      addAccountToFavorites: jest.fn(),
-      addMultipleAccountsToFavorites: jest.fn()
+      addFavoriteAccount: jest.fn(),
+      addFavoriteAccounts: jest.fn()
     })
   };
 });
@@ -32,12 +30,6 @@ jest.mock('@mycrypto/eth-scan', () => {
     )
   };
 });
-
-const getUseDispatchMock = () => {
-  const mockDispatch = jest.fn();
-  jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
-  return mockDispatch;
-};
 
 const renderUseAccounts = ({ accounts = [] as IAccount[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (

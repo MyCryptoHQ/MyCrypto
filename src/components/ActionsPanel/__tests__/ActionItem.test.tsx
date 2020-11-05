@@ -4,22 +4,18 @@ import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
-import { ACTION_STATE, ActionTemplate, ExtendedUserAction } from '@types';
+import { ActionTemplate, ExtendedUserAction } from '@types';
 
 import { ActionItem } from '../components/ActionItem';
 import { actionTemplates } from '../constants';
 
-function getComponent(
-  props: { actionTemplate: ActionTemplate; onActionClick(): void },
-  createActions = jest.fn()
-) {
+function getComponent(props: { actionTemplate: ActionTemplate; onActionClick(): void }) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <DataContext.Provider
         value={
           ({
-            userActions: [] as ExtendedUserAction[],
-            createActions
+            userActions: [] as ExtendedUserAction[]
           } as any) as IDataContext
         }
       >
@@ -43,28 +39,14 @@ const onActionClick = jest.fn();
 const defaultProps = { actionTemplate: actionTemplates[0], onActionClick };
 
 describe('ActionsItem', () => {
-  const mockCreate = jest.fn();
-  const createActions = jest.fn().mockReturnValue({
-    create: mockCreate
-  });
   test('display action item', async () => {
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
     expect(screen.getByText(new RegExp(defaultProps.actionTemplate.heading, 'i'))).toBeDefined();
   });
 
-  test('call createUserAction', async () => {
-    getComponent(defaultProps, createActions);
-
-    expect(mockCreate).toHaveBeenCalledWith({
-      name: defaultProps.actionTemplate.name,
-      state: ACTION_STATE.NEW,
-      uuid: expect.any(String)
-    });
-  });
-
   test('actionItem click triggers onActionClick', async () => {
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
     const actionItem = screen.getByText(new RegExp(defaultProps.actionTemplate.heading, 'i'))
       .parentElement!.parentElement!;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
 import { ScreenLockContext } from '@features/ScreenLock';
-import { ISettingsContext, useSettings } from '@services/Store';
+import { useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
 import { withHook } from '@utils';
 
@@ -20,7 +20,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export class Import extends React.Component<RouteComponentProps & ISettingsContext> {
+export class Import extends React.Component<RouteComponentProps & ReturnType<typeof useSettings>> {
   public state = { step: 0 };
 
   public render() {
@@ -56,7 +56,7 @@ export class Import extends React.Component<RouteComponentProps & ISettingsConte
               <Step
                 onNext={this.advanceStep}
                 importCache={(cache: string) => {
-                  const result = this.props.importStorage(cache);
+                  const result = this.props.importState(cache);
                   if (result) {
                     resetEncrypted();
                   }

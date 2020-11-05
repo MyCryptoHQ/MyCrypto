@@ -29,7 +29,7 @@ const WalletService = WalletFactory(WalletId.WEB3);
 
 const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
-  const { updateSettingsNode } = useSettings();
+  const { setNode } = useSettings();
   const { addNodeToNetwork, networks } = useNetworks();
   const trackSelectNetwork = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT
@@ -46,7 +46,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
   const unlockWallet = useCallback(async () => {
     const handleUnlock = (network: Network) => {
       if (!network.isCustom) {
-        updateSettingsNode('web3');
+        setNode('web3');
         addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
       }
     };
@@ -76,7 +76,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
       setWeb3UnlockError({ error: true, message: e.message });
       setWeb3Unlocked(false);
     }
-  }, [updateSettingsNode, addNodeToNetwork, formData, formDispatch, setWeb3Unlocked]);
+  }, [setNode, addNodeToNetwork, formData, formDispatch, setWeb3Unlocked]);
 
   const isDefault = web3ProviderSettings.id === WalletId.WEB3;
   const transProps = { $walletId: web3ProviderSettings.name };

@@ -188,10 +188,14 @@ function RenderNetworkNodes() {
 }
 
 function RenderGeneralSettingsPanel() {
-  const { updateSettings, settings } = useSettings();
+  const { settings, setCurrency, setInactivityTimer } = useSettings();
   return (
     <>
-      <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />
+      <GeneralSettings
+        globalSettings={settings}
+        setCurrency={setCurrency}
+        setInactivityTimer={setInactivityTimer}
+      />
       <DangerZone />
     </>
   );

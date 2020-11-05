@@ -4,7 +4,7 @@ import pipe from 'ramda/src/pipe';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext, ISettingsContext, useSettings } from '@services/Store';
+import { DataContext, IDataContext, useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
 import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
 
@@ -34,7 +34,7 @@ const onDemandLockCountDownDuration = 5;
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<
-  RouteComponentProps & IDataContext & ISettingsContext,
+  RouteComponentProps & IDataContext & ReturnType<typeof useSettings>,
   State
 > {
   public state: State = {
@@ -83,7 +83,7 @@ class ScreenLockProvider extends Component<
       this.props.password &&
       !(this.props.encryptedDbState && this.props.encryptedDbState.data)
     ) {
-      const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
+      const encryptedData = encrypt(this.props.exportState(), this.props.password).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
@@ -92,7 +92,7 @@ class ScreenLockProvider extends Component<
   }
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
+    const { destroyEncryptedCache, encryptedDbState, importState } = this.props;
     try {
       if (!encryptedDbState) {
         return false;
@@ -100,7 +100,7 @@ class ScreenLockProvider extends Component<
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      const importResult = importStorage(decryptedData);
+      const importResult = importState(decryptedData);
       if (!importResult) {
         return false;
       }

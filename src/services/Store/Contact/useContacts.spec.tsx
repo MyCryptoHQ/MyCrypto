@@ -21,9 +21,7 @@ const getUseDispatchMock = () => {
 const renderUseContacts = ({ contacts = [] as ExtendedContact[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <Provider store={store}>
-      <DataContext.Provider
-        value={({ addressBook: contacts, createActions: jest.fn() } as any) as IDataContext}
-      >
+      <DataContext.Provider value={({ addressBook: contacts } as any) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>
