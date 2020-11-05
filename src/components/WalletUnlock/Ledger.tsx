@@ -146,8 +146,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
                 )
               }}
             />
-            {/*<br />
-						{translate('LEDGER_HELP_LINK')} */}
           </div>
         </div>
       </div>

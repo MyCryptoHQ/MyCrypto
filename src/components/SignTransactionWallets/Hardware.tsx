@@ -4,7 +4,7 @@ import { InlineMessage } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
-import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject } from '@types';
+import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
 import { makeTransaction, useInterval } from '@utils';
 
 import './Hardware.scss';
@@ -93,6 +93,29 @@ export default function HardwareSignTransaction({
         });
     }
   }, [wallet, isRequestingTxSignature]);
+
+  const helpCopy = (() => {
+    switch (senderAccount.wallet) {
+      case WalletId.TREZOR:
+      case WalletId.TREZOR_NEW:
+        return 'TREZOR_HELP';
+
+      default:
+        return 'LEDGER_HELP';
+    }
+  })();
+
+  const referralCopy = (() => {
+    switch (senderAccount.wallet) {
+      case WalletId.TREZOR:
+      case WalletId.TREZOR_NEW:
+        return 'TREZOR_REFERRAL';
+
+      default:
+        return 'LEDGER_REFERRAL';
+    }
+  })();
+
   return (
     <>
       <div className="SignTransactionHardware-title">
@@ -112,12 +135,8 @@ export default function HardwareSignTransaction({
           )}
         </div>
         <div className="SignTransactionHardware-footer">
-          <div className="SignTransactionHardware-help">
-            {translate(senderAccount.wallet + '_HELP')}
-          </div>
-          <div className="SignTransactionHardware-referal">
-            {translate(senderAccount.wallet + '_REFERRAL')}
-          </div>
+          <div className="SignTransactionHardware-help">{translate(helpCopy)}</div>
+          <div className="SignTransactionHardware-referal">{translate(referralCopy)}</div>
         </div>
       </div>
     </>
