@@ -21,7 +21,7 @@ const findIinsideTemplateCallExpressions = (
   node: ts.Node,
   functionName: string
 ): ts.CallExpression[] => {
-  const insideTemplateQuery = `CallExpression:has(Identifier[name="${functionName}"])`;
+  const insideTemplateQuery = `JsxExpression CallExpression:has(Identifier[name="${functionName}"])`;
   return tsquery(node, insideTemplateQuery, { visitAllChildren: true });
 };
 
