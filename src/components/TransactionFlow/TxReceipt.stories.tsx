@@ -3,7 +3,15 @@ import React, { ReactNode } from 'react';
 import { Fiats } from '@config';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
 import { IMembershipId, MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
-import { fAccount, fContacts, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
+import {
+  fAccount,
+  fContacts,
+  fERC20NonWeb3TxConfigJSON,
+  fERC20Web3TxReceipt,
+  fSettings,
+  fTxConfig,
+  fTxReceipt
+} from '@fixtures';
 import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, ITxStatus, ITxType } from '@types';
 import { noOp } from '@utils';
@@ -24,7 +32,9 @@ const handleTxSpeedUpRedirect = noOp;
 export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider value={({ createActions: noOp } as unknown) as IDataContext}>
+  <DataContext.Provider
+    value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
+  >
     {component}
   </DataContext.Provider>
 );
@@ -70,6 +80,27 @@ export const transactionReceipt = wrapInProvider(
   </div>
 );
 
+export const transactionReceiptToken = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txStatus={txStatus}
+      displayTxReceipt={fERC20Web3TxReceipt}
+      timestamp={timestamp}
+      resetFlow={resetFlow}
+      assetRate={assetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
+
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 
 export const transactionReceiptDeFiZap = wrapInProvider(
@@ -79,13 +110,13 @@ export const transactionReceiptDeFiZap = wrapInProvider(
       txStatus={txStatus}
       txType={ITxType.DEFIZAP}
       zapSelected={zapSelected}
-      displayTxReceipt={fTxReceipt}
+      displayTxReceipt={fERC20Web3TxReceipt}
       timestamp={timestamp}
       resetFlow={resetFlow}
       assetRate={assetRate}
       senderContact={senderContact}
       recipientContact={recipientContact}
-      txConfig={fTxConfig}
+      txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}
@@ -106,7 +137,7 @@ export const transactionReceiptMembership = wrapInProvider(
       timestamp={timestamp}
       txStatus={txStatus}
       assetRate={assetRate}
-      displayTxReceipt={fTxReceipt}
+      displayTxReceipt={fERC20Web3TxReceipt}
       senderContact={senderContact}
       recipientContact={recipientContact}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}

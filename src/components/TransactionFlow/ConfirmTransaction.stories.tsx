@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
+import { fAccount, fContacts, fERC20Web3TxConfigJSON, fSettings, fTxConfig } from '@fixtures';
+import { DataContext, IDataContext } from '@services';
 import { ExtendedContact, ITxType } from '@types';
 import { bigify, noOp } from '@utils';
 
@@ -17,7 +18,15 @@ const onComplete = noOp;
 
 export default { title: 'ConfirmTx' };
 
-export const confirmTransaction = () => (
+const wrapInProvider = (component: ReactNode) => (
+  <DataContext.Provider
+    value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
+  >
+    {component}
+  </DataContext.Provider>
+);
+
+export const confirmTransaction = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI
       settings={fSettings}
@@ -32,7 +41,7 @@ export const confirmTransaction = () => (
   </div>
 );
 
-export const confirmTransactionPtx = () => (
+export const confirmTransactionPtx = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI
       settings={fSettings}
@@ -48,10 +57,25 @@ export const confirmTransactionPtx = () => (
   </div>
 );
 
+export const confirmTransactionToken = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <ConfirmTransactionUI
+      settings={fSettings}
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      onComplete={onComplete}
+      txConfig={fERC20Web3TxConfigJSON}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+    />
+  </div>
+);
+
 const defaultZap = IZapId.unipoolseth;
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 
-export const confirmTransactionZap = () => (
+export const confirmTransactionZap = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI
       settings={fSettings}

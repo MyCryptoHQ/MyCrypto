@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Typography } from '@components';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 
 import { getExpiryDate, IMembershipConfig } from '../config';
 
@@ -46,23 +46,17 @@ const ExpiryWrapper = styled.div`
 
 const MembershipReceiptBanner = ({ membershipSelected }: Props) => {
   return (
-    <BannerContainer>
-      <MembershipWrapper>
-        <IconWrapper>
-          <Icon src={membershipSelected.icon} />
-        </IconWrapper>
-        <div>
-          <Header as="div">{translateRaw('NEW_MEMBER')}</Header>
-          <ExpiryWrapper>
-            <Typography as="div">
-              {translateRaw('EXPIRES_ON')}
-              {': '}
-              {getExpiryDate(membershipSelected.key).toLocaleDateString()}
-            </Typography>
-          </ExpiryWrapper>
-        </div>
-      </MembershipWrapper>
-    </BannerContainer>
+    <div className="TransactionReceipt-row">
+      <div className="TransactionReceipt-row-column">
+        <Icon src={membershipSelected.icon} />
+        {translate('MEMBERSHIP')}
+      </div>
+      <div className="TransactionReceipt-row-column rightAligned">
+        {translateRaw('EXPIRES_ON')}
+        {': '}
+        {getExpiryDate(membershipSelected.key).toLocaleDateString()}
+      </div>
+    </div>
   );
 };
 

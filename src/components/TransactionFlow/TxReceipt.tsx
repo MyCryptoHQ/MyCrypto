@@ -11,6 +11,9 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
+import platformUsed from '@assets/images/icn-platform-used.svg';
+import sendIcon from '@assets/images/icn-send.svg';
 import sentIcon from '@assets/images/icn-sent.svg';
 import {
   Amount,
@@ -52,7 +55,15 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { buildTxUrl, convertToFiat, isWeb3Wallet, truncate } from '@utils';
+import {
+  buildTxUrl,
+  convertToFiat,
+  fromWei,
+  isWeb3Wallet,
+  totalTxFeeToWei,
+  truncate,
+  Wei
+} from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
@@ -61,7 +72,9 @@ import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './d
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
 import { PendingTransaction } from './PendingLoader';
+import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { ISender } from './types';
+
 import './TxReceipt.scss';
 
 interface PendingBtnAction {
@@ -296,8 +309,16 @@ export const TxReceiptUI = ({
   protectTxEnabled = false,
   protectTxButton
 }: UIProps) => {
-  /* Determining User's Contact */
-  const { asset, gasPrice, gasLimit, data, nonce, baseAsset, receiverAddress } = txConfig;
+  const {
+    asset,
+    gasPrice,
+    gasLimit,
+    data,
+    nonce,
+    baseAsset,
+    receiverAddress,
+    rawTransaction
+  } = txConfig;
 
   const walletConfig = getWalletConfig(sender.account ? sender.account.wallet : WalletId.VIEW_ONLY);
   const web3Wallet = isWeb3Wallet(walletConfig.id);
@@ -319,6 +340,26 @@ export const TxReceiptUI = ({
       return txConfig.asset.ticker;
     }
   }, [displayTxReceipt, txConfig.asset]);
+
+  const gasAmount = useCallback(() => {
+    if (displayTxReceipt && path(['gasUsed'], displayTxReceipt)) {
+      return displayTxReceipt.gasUsed!.toString();
+    } else {
+      return txConfig.gasLimit;
+    }
+  }, [displayTxReceipt]);
+
+  const feeWei = totalTxFeeToWei(gasPrice, gasAmount());
+
+  const feeFormatted = parseFloat(fromWei(feeWei, 'ether')).toFixed(6);
+
+  const valueWei = Wei(txConfig.value);
+
+  const totalWei = feeWei.add(valueWei);
+
+  const totalFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
+
+  const isContractCall = data !== '0x';
 
   return (
     <div className="TransactionReceipt">
@@ -351,43 +392,35 @@ export const TxReceiptUI = ({
           />
         </div>
       )}
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
+      <FromToAccount
+        networkId={sender.network.id}
+        fromAccount={{
+          address: (sender.address || (displayTxReceipt && displayTxReceipt.from)) as TAddress,
+          addressBookEntry: senderContact
+        }}
+        toAccount={{
+          address: (receiverAddress || (displayTxReceipt && displayTxReceipt.to)) as TAddress,
+          addressBookEntry: recipientContact
+        }}
+        displayToAddress={txType !== ITxType.DEPLOY_CONTRACT}
+      />
+
+      {/* CONTRACT BOX */}
+
+      {isContractCall && (
         <div className="TransactionReceipt-row">
-          <MembershipReceiptBanner membershipSelected={membershipSelected} />
+          <TxIntermediaryDisplay address={rawTransaction.to} contractName={asset.ticker} />
         </div>
       )}
-      {txType !== ITxType.PURCHASE_MEMBERSHIP && (
-        <>
-          <FromToAccount
-            networkId={sender.network.id}
-            fromAccount={{
-              address: (sender.address || (displayTxReceipt && displayTxReceipt.from)) as TAddress,
-              addressBookEntry: senderContact
-            }}
-            toAccount={{
-              address: (receiverAddress || (displayTxReceipt && displayTxReceipt.to)) as TAddress,
-              addressBookEntry: recipientContact
-            }}
-            displayToAddress={txType !== ITxType.DEPLOY_CONTRACT}
-          />
-        </>
-      )}
+
+      {/* CUSTOM FLOW CONTENT */}
+
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <div className="TransactionReceipt-row">
-          <TxIntermediaryDisplay
-            address={membershipSelected.contractAddress}
-            contractName={asset.ticker}
-          />
-        </div>
+        <MembershipReceiptBanner membershipSelected={membershipSelected} />
       )}
+
       {txType === ITxType.DEFIZAP && zapSelected && (
         <>
-          <div className="TransactionReceipt-row">
-            <TxIntermediaryDisplay
-              address={zapSelected.contractAddress}
-              contractName={'DeFi Zap'}
-            />
-          </div>
           <div className="TransactionReceipt-row">
             <div className="TransactionReceipt-row-column">
               <SImg src={zapperLogo} size="24px" />
@@ -396,35 +429,74 @@ export const TxReceiptUI = ({
             <div className="TransactionReceipt-row-column rightAligned">{zapSelected.title}</div>
           </div>
           <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
+            <div className="TransactionReceipt-row-column">
+              <SImg src={platformUsed} size="24px" />
+              {translateRaw('PLATFORMS')}
+            </div>
             <div className="TransactionReceipt-row-column rightAligned">
               <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
             </div>
           </div>
-          <div className="TransactionReceipt-divider" />
         </>
       )}
 
-      {txType !== ITxType.SWAP && (
-        <div className="TransactionReceipt-row">
-          <div className="TransactionReceipt-row-column">
-            <img src={sentIcon} alt="Sent" />
-            {translate('CONFIRM_TX_SENT')}
-          </div>
-          <div className="TransactionReceipt-row-column rightAligned">
-            <AssetIcon uuid={asset.uuid} size={'24px'} />
-            <Amount
-              assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-              fiat={{
-                symbol: getFiat(settings).symbol,
-                ticker: getFiat(settings).ticker,
-                amount: convertToFiat(parseFloat(assetAmount()), assetRate).toFixed(2)
-              }}
-            />
-          </div>
+      <div className="TransactionReceipt-divider" />
+
+      <div className="TransactionReceipt-row">
+        <div className="TransactionReceipt-row-column">
+          <img src={sendIcon} alt="Sent" />
+          {translate('CONFIRM_TX_SENT')}
         </div>
-      )}
-      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
+        <div className="TransactionReceipt-row-column rightAligned">
+          <AssetIcon uuid={asset.uuid} size={'24px'} />
+          <Amount
+            assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
+              amount: convertToFiat(parseFloat(assetAmount()), assetRate).toFixed(2)
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="TransactionReceipt-row">
+        <div className="TransactionReceipt-row-column">
+          <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
+        </div>
+        <div className="TransactionReceipt-row-column rightAligned">
+          <AssetIcon uuid={asset.uuid} size={'24px'} />
+          <Amount
+            assetValue={`${feeFormatted} ${baseAsset.ticker}`}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
+              amount: convertToFiat(parseFloat(feeFormatted), baseAssetRate).toFixed(2)
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="TransactionReceipt-divider" />
+
+      <div className="TransactionReceipt-row">
+        <div className="TransactionReceipt-row-column">
+          <img src={sentIcon} alt="Sent" />
+          {translate('TOTAL')}
+        </div>
+        <div className="TransactionReceipt-row-column rightAligned">
+          <AssetIcon uuid={asset.uuid} size={'24px'} />
+          <Amount
+            assetValue={`${totalFormatted} ${assetTicker()}`}
+            fiat={{
+              symbol: getFiat(settings).symbol,
+              ticker: getFiat(settings).ticker,
+              amount: convertToFiat(parseFloat(totalFormatted), assetRate).toFixed(2)
+            }}
+          />
+        </div>
+      </div>
+
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
@@ -447,8 +519,8 @@ export const TxReceiptUI = ({
             {translate('TRANSACTION_STATUS')}:
           </div>
           <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt && translate(txStatus)}
-            {!displayTxReceipt && <PendingTransaction />}
+            {displayTxReceipt && <TxReceiptStatusBadge status={txStatus} />}
+            {!displayTxReceipt && <TxReceiptStatusBadge status={ITxStatus.PENDING} />}
           </div>
         </div>
 
