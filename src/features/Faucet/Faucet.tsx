@@ -16,21 +16,15 @@ import {
   TxReceipt
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { FaucetService } from '@services/ApiService/Faucet';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
 import { noOp } from '@utils';
 
-import { Error } from './components';
-import {
-  makeTxConfig,
-  makeTxReceipt,
-  possibleSolution,
-  regenerateChallenge,
-  requestChallenge,
-  solveChallenge
-} from './helpers';
+import { Error as ErrorComponent } from './components';
+import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 
 // Legacy
 
@@ -122,10 +116,16 @@ export function Faucet() {
   };
 
   const requestFunds = (recipientAddress: StoreAccount) => {
-    requestChallenge(recipientAddress)
+    const network = recipientAddress.network.name.toLowerCase();
+    const address = recipientAddress.address;
+    FaucetService.requestChallenge(network, address)
       .then((result) => {
-        setChallenge(result);
-        setStep(1);
+        if (!result.success) {
+          throw new Error(result.message);
+        } else {
+          setChallenge(result.result);
+          setStep(1);
+        }
       })
       .catch((e) => {
         setError(e.message);
@@ -134,20 +134,28 @@ export function Faucet() {
 
   const finalizeRequestFunds = (solutionInput: string) => {
     setLoading(true);
-    solveChallenge(challenge.id, solutionInput)
+    FaucetService.solveChallenge(challenge.id, solutionInput)
       .then((result) => {
-        setLoading(false);
-        setTxResult(result);
-        setStep(2);
+        if (!result.success) {
+          throw new Error(result.message);
+        } else {
+          setLoading(false);
+          setTxResult(result.result);
+          setStep(2);
+        }
       })
       .catch((e) => {
         if (e.message === 'INVALID_SOLUTION') {
-          regenerateChallenge(challenge.id)
+          FaucetService.regenerateChallenge(challenge.id)
             .then((result) => {
-              setSolution('');
-              setChallenge(result);
-              setError(e.message);
-              setLoading(false);
+              if (!result.success) {
+                throw new Error(result.message);
+              } else {
+                setSolution('');
+                setChallenge(result.result);
+                setError(e.message);
+                setLoading(false);
+              }
             })
             .catch((err) => {
               setError(err.message);
@@ -275,7 +283,7 @@ export function Faucet() {
       stepper={{ current: step + 1, total: steps.length }}
       width="750px"
     >
-      {error && error !== 'INVALID_SOLUTION' ? <Error type={error} /> : steps[step]}
+      {error && error !== 'INVALID_SOLUTION' ? <ErrorComponent type={error} /> : steps[step]}
     </ExtendedContentPanel>
   );
 }

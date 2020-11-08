@@ -6,21 +6,38 @@ import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
 import { fAccount, fAssets, fNetworks, fSettings } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
+import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
 import { Faucet } from './Faucet';
-import { possibleSolution, requestChallenge, solveChallenge } from './helpers';
+import { possibleSolution } from './helpers';
 
-jest.mock('./helpers', () => ({
-  ...jest.requireActual('./helpers'),
-  requestChallenge: jest.fn(() => {
-    return Promise.resolve({
+//jest.mock('../../services/ApiService/Faucet', () => jest.fn())
+
+FaucetService.requestChallenge = jest.fn(() =>
+  Promise.resolve({
+    success: true,
+    result: {
       id: 'ffffffff',
-      result: ''
-    });
-  }),
-  solveChallenge: jest.fn(() => {
-    return Promise.resolve({
+      challenge: ''
+    }
+  })
+);
+
+FaucetService.regenerateChallenge = jest.fn(() =>
+  Promise.resolve({
+    success: true,
+    result: {
+      id: 'ffffffff',
+      challenge: ''
+    }
+  })
+);
+
+FaucetService.solveChallenge = jest.fn(() =>
+  Promise.resolve({
+    success: true,
+    result: {
       chainId: 3,
       data: '0x',
       from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
@@ -31,9 +48,9 @@ jest.mock('./helpers', () => ({
       nonce: 39,
       to: '0x0000000000000000000000000000000000000000',
       value: '1'
-    });
+    }
   })
-}));
+);
 
 /* Test components */
 describe('Faucet', () => {
@@ -73,6 +90,18 @@ describe('Faucet', () => {
     });
   });
 
+  /*describe('makeTxConfig', () => {
+    test('makeTxConfig', () => {
+      
+    });
+  });
+
+  describe('makeTxReceipt', () => {
+    test('makeTxConfig', () => {
+      
+    });
+  });*/
+
   beforeEach(() => jest.clearAllMocks());
 
   test('Can render', () => {
@@ -102,7 +131,7 @@ describe('Faucet', () => {
     const option = getByText(new RegExp(fAccount.label, 'i'));
     fireEvent.pointerDown(option);
     fireEvent.click(container.querySelector('button[name="requestFunds"]')!);
-    await waitFor(() => expect(requestChallenge).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(FaucetService.requestChallenge).toHaveBeenCalledTimes(1));
     expect(getByText(translateRaw('CAPTCHA'))).toBeInTheDocument();
   });
 
@@ -114,7 +143,7 @@ describe('Faucet', () => {
     fireEvent.pointerDown(option);
 
     fireEvent.click(container.querySelector('button[name="requestFunds"]')!);
-    await waitFor(() => expect(requestChallenge).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(FaucetService.requestChallenge).toHaveBeenCalledTimes(1));
     expect(getByText(translateRaw('CAPTCHA'))).toBeInTheDocument();
 
     const selector: any = container.querySelector('button[name="submitCaptcha"]');
@@ -125,7 +154,7 @@ describe('Faucet', () => {
     expect(selector.disabled).toBe(false);
     fireEvent.click(container.querySelector('button[name="submitCaptcha"]')!);
 
-    await waitFor(() => expect(solveChallenge).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(FaucetService.solveChallenge).toHaveBeenCalledTimes(1));
     await waitFor(() =>
       expect(container.querySelector('div[class="TransactionReceipt"]')).toBeInTheDocument()
     );

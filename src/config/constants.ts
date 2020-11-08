@@ -60,8 +60,3 @@ export const DEFAULT_GAP_TO_SCAN_FOR = 5;
 export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';
 
 export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
-
-// Faucet constants
-
-export const FAUCET_API =
-  'https://d3a0rurg7bu691.cloudfront.net'; /* https://faucet.mycryptoapi.com */

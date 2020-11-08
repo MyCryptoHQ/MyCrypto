@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { bigNumberify, formatEther } from 'ethers/utils';
 
-import { FAUCET_API } from '@config';
 import { getBaseAssetByNetwork } from '@services';
 import {
   Asset,
@@ -16,57 +14,13 @@ import {
   ITxValue,
   Network,
   NetworkId,
-  StoreAccount,
   TAddress
 } from '@types';
 
 import { ITxFaucetResult } from './types';
 
-const api = axios.create({
-  baseURL: FAUCET_API,
-  validateStatus: () => true
-});
-
 export const possibleSolution = (solution: string) => {
   return /^[a-zA-Z0-9]{4}$/.test(solution);
-};
-
-export const requestChallenge = async (recipientAddress: StoreAccount) => {
-  const network = recipientAddress.network.name.toLowerCase();
-  const address = recipientAddress.address;
-  const result = await api.get(`/challenge/${network}/${address}`);
-
-  if (result.status !== 200) {
-    throw new Error('API_FAILURE');
-  } else if (!result.data.success) {
-    throw new Error(result.data.message);
-  } else {
-    return result.data.result;
-  }
-};
-
-export const solveChallenge = async (id: string, solution: string) => {
-  const result = await api.get(`/solve/${id}/${solution}`);
-
-  if (result.status !== 200) {
-    throw new Error('API_FAILURE');
-  } else if (!result.data.success) {
-    throw new Error(result.data.message);
-  } else {
-    return result.data.result;
-  }
-};
-
-export const regenerateChallenge = async (id: string) => {
-  const result = await api.get(`/regenerate/${id}`);
-
-  if (result.status !== 200) {
-    throw new Error('API_FAILURE');
-  } else if (!result.data.success) {
-    throw new Error(result.data.message);
-  } else {
-    return result.data.result;
-  }
 };
 
 const getNetworkByLowercaseId = (id: string, networks: Network[] = []): Network => {
