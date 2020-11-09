@@ -4,20 +4,16 @@ import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import { LinkOut, TimeElapsedCounter } from '@components';
 import { ROUTE_PATHS } from '@config';
-import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
-import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
-import { SwapDisplayData } from '@features/SwapAssets/types';
+import { useRates, useSettings } from '@services';
 import { COLORS, SPACING } from '@theme';
-import translate, { translateRaw } from '@translations';
+import translate from '@translations';
 import {
   Fiat,
   IStepComponentProps,
   ITxConfig,
   ITxStatus,
-  ITxType,
   Network,
   StoreAccount,
   TxParcel
@@ -25,9 +21,10 @@ import {
 import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
 import Typography from '../Typography';
-import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
-import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
+import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
+import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
+import { TxReceiptTotals } from './TxReceiptTotals';
 
 interface PendingBtnAction {
   text: string;
@@ -40,15 +37,11 @@ interface Props {
   account: StoreAccount;
   network: Network;
   fiat: Fiat;
-  baseAssetRate: number | undefined;
+  assetRate?: number;
+  baseAssetRate?: number;
   pendingButton?: PendingBtnAction;
-  swapDisplay?: SwapDisplayData;
+  customComponent?(): JSX.Element;
 }
-
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
 
 const TxLabel = styled(Typography)`
   color: ${COLORS.BLUE_DARK_SLATE};
@@ -58,78 +51,44 @@ const TxLabel = styled(Typography)`
 `;
 
 export default function MultiTxReceipt({
-  txType,
-  swapDisplay,
   transactions,
   transactionsConfigs,
-  zapSelected,
-  membershipSelected,
   pendingButton,
   resetFlow,
   account,
   network,
   completeButtonText,
   fiat,
-  baseAssetRate
+  baseAssetRate,
+  customComponent
 }: Omit<IStepComponentProps, 'txConfig' | 'txReceipt'> & Props) {
-  const shouldRenderPendingBtn =
-    pendingButton && transactions.find((t) => t.status === ITxStatus.PENDING);
+  const { settings } = useSettings();
+  const { getAssetRate } = useRates();
+
+  const hasPendingTx = transactions.some((t) => t.status === ITxStatus.PENDING);
+  const shouldRenderPendingBtn = pendingButton && hasPendingTx;
 
   return (
     <div className="TransactionReceipt">
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-desc">
-          {translate('TRANSACTION_BROADCASTED_DESC')}
-        </div>
-      </div>
-      {txType === ITxType.SWAP && swapDisplay && (
+      {hasPendingTx && (
         <div className="TransactionReceipt-row">
-          <SwapFromToDiagram
-            toUUID={swapDisplay.toAsset.uuid}
-            fromUUID={swapDisplay.fromAsset.uuid}
-            fromSymbol={swapDisplay.fromAsset.ticker}
-            toSymbol={swapDisplay.toAsset.ticker}
-            fromAmount={swapDisplay.fromAmount.toString()}
-            toAmount={swapDisplay.toAmount.toString()}
-          />
+          <div className="TransactionReceipt-row-desc">
+            {translate('TRANSACTION_BROADCASTED_DESC')}
+          </div>
         </div>
       )}
+      {/* CUSTOM FLOW CONTENT */}
 
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <>
-          <div className="TransactionReceipt-row">
-            <TxIntermediaryDisplay
-              address={zapSelected.contractAddress}
-              contractName={'DeFi Zap'}
-            />
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">
-              <SImg src={zapperLogo} size="24px" />
-              {translateRaw('ZAP_NAME')}
-            </div>
-            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
-            <div className="TransactionReceipt-row-column rightAligned">
-              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
-            </div>
-          </div>
-          <div className="TransactionReceipt-divider" />
-        </>
-      )}
+      {customComponent && customComponent()}
 
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <div className="TransactionReceipt-row">
-          <MembershipReceiptBanner membershipSelected={membershipSelected} />
-        </div>
-      )}
-
-      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
+      {customComponent && <div className="TransactionReceipt-divider" />}
       {transactions.map((transaction, idx) => {
         const { asset, baseAsset } = transactionsConfigs[idx];
-        const { gasPrice, gasLimit, data, nonce } = transaction.txRaw;
+        const { gasPrice, gasLimit, data, nonce, value } = transaction.txRaw;
+        const gasUsed =
+          transaction.txReceipt && transaction.txReceipt.gasUsed
+            ? transaction.txReceipt.gasUsed.toString()
+            : gasLimit;
 
         const timestamp = transaction.minedAt || 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
@@ -139,6 +98,17 @@ export default function MultiTxReceipt({
         return (
           <div key={idx} className="TransactionReceipt-details">
             <TxLabel as="div">{transaction.label}</TxLabel>
+            <TxReceiptTotals
+              asset={asset}
+              assetAmount={'0'}
+              baseAsset={baseAsset}
+              assetRate={getAssetRate(asset)}
+              baseAssetRate={baseAssetRate}
+              settings={settings}
+              gasPrice={gasPrice}
+              gasUsed={gasUsed}
+              value={value}
+            />
             <div className="TransactionReceipt-details-row">
               <div className="TransactionReceipt-details-row-column">
                 {translate('TRANSACTION_ID')}:
@@ -152,7 +122,7 @@ export default function MultiTxReceipt({
                 {translate('TRANSACTION_STATUS')}:
               </div>
               <div className="TransactionReceipt-details-row-column">
-                {translate(transaction.status)}
+                <TxReceiptStatusBadge status={transaction.status} />
               </div>
             </div>
             <div className="TransactionReceipt-details-row">

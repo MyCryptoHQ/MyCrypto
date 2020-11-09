@@ -2,6 +2,7 @@ import { TxParcel } from '@types';
 
 export default ([
   {
+    label: 'Approve',
     txRaw: {
       to: '0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD',
       data:

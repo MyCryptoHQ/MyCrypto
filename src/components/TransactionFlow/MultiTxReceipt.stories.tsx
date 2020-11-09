@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
-import { fAccount, fNetwork, fTxConfigs, fTxParcels } from '@fixtures';
+import { fAccount, fNetwork, fSettings, fTxConfigs, fTxParcels } from '@fixtures';
+import { DataContext, IDataContext, RatesContext } from '@services';
 import { ISwapAsset, ITxConfig, ITxType, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 
+import { SwapFromToDiagram } from './displays';
 import MultiTxReceipt from './MultiTxReceipt';
 
 // Define props
@@ -26,9 +28,19 @@ const swapDisplay: SwapDisplayData = {
 const transactionsConfigs: ITxConfig[] = fTxConfigs;
 const baseAssetRate = 250;
 
+const wrapInProvider = (component: ReactNode) => (
+  <DataContext.Provider
+    value={({ createActions: noOp, settings: fSettings } as unknown) as IDataContext}
+  >
+    <RatesContext.Provider value={({ rates: {}, trackAsset: noOp } as unknown) as any}>
+      {component}
+    </RatesContext.Provider>
+  </DataContext.Provider>
+);
+
 export default { title: 'MultiTxReceipt' };
 
-export const swapTransactionReceipt = () => (
+export const swapTransactionReceipt = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <MultiTxReceipt
       txType={ITxType.SWAP}
@@ -38,7 +50,16 @@ export const swapTransactionReceipt = () => (
       network={fNetwork}
       resetFlow={resetFlow}
       onComplete={resetFlow}
-      swapDisplay={swapDisplay}
+      customComponent={() => (
+        <SwapFromToDiagram
+          fromSymbol={swapDisplay.fromAsset.ticker}
+          toSymbol={swapDisplay.toAsset.ticker}
+          fromAmount={swapDisplay.fromAmount.toString()}
+          toAmount={swapDisplay.toAmount.toString()}
+          fromUUID={swapDisplay.fromAsset.uuid}
+          toUUID={swapDisplay.toAsset.uuid}
+        />
+      )}
       baseAssetRate={baseAssetRate}
       fiat={Fiats.USD}
     />

@@ -56,6 +56,17 @@ export default function SwapTransactionReceipt({
 
   const fiat = getFiat(settings);
 
+  const customComponent = () => (
+    <SwapFromToDiagram
+      fromSymbol={swapDisplay.fromAsset.ticker}
+      toSymbol={swapDisplay.toAsset.ticker}
+      fromAmount={swapDisplay.fromAmount.toString()}
+      toAmount={swapDisplay.toAmount.toString()}
+      fromUUID={swapDisplay.fromAsset.uuid}
+      toUUID={swapDisplay.toAsset.uuid}
+    />
+  );
+
   return txReceipts.length === 1 ? (
     <TxReceipt
       txReceipt={txItems[0].txReceipt}
@@ -63,16 +74,7 @@ export default function SwapTransactionReceipt({
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      customComponent={() => (
-        <SwapFromToDiagram
-          fromSymbol={swapDisplay.fromAsset.ticker}
-          toSymbol={swapDisplay.toAsset.ticker}
-          fromAmount={swapDisplay.fromAmount.toString()}
-          toAmount={swapDisplay.toAmount.toString()}
-          fromUUID={swapDisplay.fromAsset.uuid}
-          toUUID={swapDisplay.toAsset.uuid}
-        />
-      )}
+      customComponent={customComponent}
     />
   ) : (
     <MultiTxReceipt
@@ -84,7 +86,7 @@ export default function SwapTransactionReceipt({
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      swapDisplay={swapDisplay}
+      customComponent={customComponent}
       fiat={fiat}
       baseAssetRate={baseAssetRate}
     />

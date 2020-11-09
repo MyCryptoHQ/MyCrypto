@@ -10,18 +10,7 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import feeIcon from '@assets/images/icn-fee.svg';
-import sendIcon from '@assets/images/icn-send.svg';
-import sentIcon from '@assets/images/icn-sent.svg';
-import {
-  Amount,
-  AssetIcon,
-  Button,
-  LinkOut,
-  PoweredByText,
-  TimeElapsed,
-  Tooltip
-} from '@components';
+import { Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -50,15 +39,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import {
-  buildTxUrl,
-  convertToFiat,
-  fromWei,
-  isWeb3Wallet,
-  totalTxFeeToWei,
-  truncate,
-  Wei
-} from '@utils';
+import { buildTxUrl, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
@@ -68,8 +49,8 @@ import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
 import { PendingTransaction } from './PendingLoader';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
+import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
-
 import './TxReceipt.scss';
 
 interface PendingBtnAction {
@@ -317,11 +298,11 @@ export const TxReceiptUI = ({
     }
   }, [displayTxReceipt, txConfig.amount]);
 
-  const assetTicker = useCallback(() => {
+  const mainAsset = useCallback(() => {
     if (displayTxReceipt && path(['asset'], displayTxReceipt)) {
-      return displayTxReceipt.asset.ticker;
+      return displayTxReceipt.asset;
     } else {
-      return txConfig.asset.ticker;
+      return txConfig.asset;
     }
   }, [displayTxReceipt, txConfig.asset]);
 
@@ -332,16 +313,6 @@ export const TxReceiptUI = ({
       return txConfig.gasLimit;
     }
   }, [displayTxReceipt]);
-
-  const feeWei = totalTxFeeToWei(gasPrice, gasAmount());
-
-  const feeFormatted = parseFloat(fromWei(feeWei, 'ether')).toFixed(6);
-
-  const valueWei = Wei(txConfig.value);
-
-  const totalWei = feeWei.add(valueWei);
-
-  const totalFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
 
   const isContractCall = data !== '0x';
 
@@ -391,60 +362,17 @@ export const TxReceiptUI = ({
 
       {customComponent && <div className="TransactionReceipt-divider" />}
 
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-column">
-          <img src={sendIcon} alt="Sent" />
-          {translate('CONFIRM_TX_SENT')}
-        </div>
-        <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
-          <Amount
-            assetValue={`${parseFloat(assetAmount()).toFixed(6)} ${assetTicker()}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(assetAmount()), assetRate).toFixed(2)
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-column">
-          <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
-        </div>
-        <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
-          <Amount
-            assetValue={`${feeFormatted} ${baseAsset.ticker}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(feeFormatted), baseAssetRate).toFixed(2)
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="TransactionReceipt-divider" />
-
-      <div className="TransactionReceipt-row">
-        <div className="TransactionReceipt-row-column">
-          <img src={sentIcon} alt="Sent" />
-          {translate('TOTAL')}
-        </div>
-        <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
-          <Amount
-            assetValue={`${totalFormatted} ${assetTicker()}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(totalFormatted), assetRate).toFixed(2)
-            }}
-          />
-        </div>
-      </div>
+      <TxReceiptTotals
+        asset={mainAsset()}
+        assetAmount={assetAmount()}
+        baseAsset={baseAsset}
+        assetRate={assetRate}
+        baseAssetRate={baseAssetRate}
+        settings={settings}
+        gasPrice={gasPrice}
+        gasUsed={gasAmount()}
+        value={txConfig.value}
+      />
 
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
