@@ -16,5 +16,5 @@ export const TxReceiptStatusBadge = ({ status }: { status: ITxStatus }) => {
         return 'status-badge-pending';
     }
   })();
-  return <Icon type={icon} />;
+  return <Icon type={icon} data-testid={status} />;
 };
