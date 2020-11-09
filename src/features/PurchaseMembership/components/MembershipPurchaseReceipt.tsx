@@ -39,18 +39,19 @@ export default function MembershipReceipt({
 
   const fiat = getFiat(settings);
 
+  const customComponent = () => <MembershipReceiptBanner membershipSelected={flowConfig} />;
+
   return txItems.length === 1 ? (
     <TxReceipt
       txReceipt={txItems.map(({ txReceipt }) => txReceipt)[0]}
       txConfig={txItems.map(({ txConfig }) => txConfig)[0]}
-      customComponent={() => <MembershipReceiptBanner membershipSelected={flowConfig} />}
+      customComponent={customComponent}
       resetFlow={onComplete}
       onComplete={onComplete}
     />
   ) : (
     <MultiTxReceipt
       txType={ITxType.PURCHASE_MEMBERSHIP}
-      membershipSelected={flowConfig}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
       account={account}
@@ -59,6 +60,7 @@ export default function MembershipReceipt({
       onComplete={onComplete}
       fiat={fiat}
       baseAssetRate={baseAssetRate}
+      customComponent={customComponent}
     />
   );
 }

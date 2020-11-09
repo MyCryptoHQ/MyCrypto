@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
-import { LinkOut, TimeElapsedCounter } from '@components';
+import sendIcon from '@assets/images/icn-send.svg';
+import { Body, LinkOut, TimeElapsed } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useRates, useSettings } from '@services';
-import { COLORS, SPACING } from '@theme';
+import { COLORS } from '@theme';
 import translate from '@translations';
 import {
   Fiat,
@@ -20,7 +20,6 @@ import {
 } from '@types';
 import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
-import Typography from '../Typography';
 import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
@@ -42,13 +41,6 @@ interface Props {
   pendingButton?: PendingBtnAction;
   customComponent?(): JSX.Element;
 }
-
-const TxLabel = styled(Typography)`
-  color: ${COLORS.BLUE_DARK_SLATE};
-  text-transform: uppercase;
-  margin-bottom: ${SPACING.BASE};
-  font-weight: bold;
-`;
 
 export default function MultiTxReceipt({
   transactions,
@@ -81,9 +73,8 @@ export default function MultiTxReceipt({
 
       {customComponent && customComponent()}
 
-      {customComponent && <div className="TransactionReceipt-divider" />}
       {transactions.map((transaction, idx) => {
-        const { asset, baseAsset } = transactionsConfigs[idx];
+        const { asset, baseAsset, amount } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce, value } = transaction.txRaw;
         const gasUsed =
           transaction.txReceipt && transaction.txReceipt.gasUsed
@@ -96,11 +87,39 @@ export default function MultiTxReceipt({
         const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);
 
         return (
-          <div key={idx} className="TransactionReceipt-details">
-            <TxLabel as="div">{transaction.label}</TxLabel>
+          <div key={idx}>
+            <div className="TransactionReceipt-row">
+              <div className="TransactionReceipt-row-column" style={{ display: 'flex' }}>
+                <img src={sendIcon} alt="Sent" />
+                <div>
+                  {transaction.label}
+                  <Body>
+                    {translate('TRANSACTIONS_MULTI', {
+                      $current: idx + 1,
+                      $total: transactions.length
+                    })}
+                  </Body>
+                </div>
+              </div>
+              <div className="TransactionReceipt-row-column">
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <TxReceiptStatusBadge status={transaction.status} />
+                </div>
+                <div>
+                  <LinkOut
+                    text={transaction.txHash as string}
+                    truncate={truncate}
+                    link={txUrl}
+                    showIcon={false}
+                    fontColor={COLORS.BLUE_SKY}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="TransactionReceipt-divider" />
             <TxReceiptTotals
               asset={asset}
-              assetAmount={'0'}
+              assetAmount={amount}
               baseAsset={baseAsset}
               assetRate={getAssetRate(asset)}
               baseAssetRate={baseAssetRate}
@@ -109,47 +128,35 @@ export default function MultiTxReceipt({
               gasUsed={gasUsed}
               value={value}
             />
-            <div className="TransactionReceipt-details-row">
-              <div className="TransactionReceipt-details-row-column">
-                {translate('TRANSACTION_ID')}:
+            <div className="TransactionReceipt-details">
+              <div className="TransactionReceipt-details-row">
+                <div className="TransactionReceipt-details-row-column">
+                  {translate('TIMESTAMP')}:
+                </div>
+                <div className="TransactionReceipt-details-row-column">
+                  {timestamp !== 0 ? (
+                    <div>
+                      <TimeElapsed value={timestamp} />
+                      <br /> {localTimestamp}
+                    </div>
+                  ) : (
+                    translate('UNKNOWN')
+                  )}
+                </div>
               </div>
-              <div className="TransactionReceipt-details-row-column">
-                <LinkOut text={transaction.txHash as string} truncate={truncate} link={txUrl} />
-              </div>
+              <TransactionDetailsDisplay
+                baseAsset={baseAsset}
+                asset={asset}
+                data={data}
+                sender={account}
+                gasLimit={bigNumGasLimitToViewable(bigify(gasLimit))}
+                gasPrice={bigify(gasPrice).toString()}
+                nonce={nonce}
+                rawTransaction={transaction.txRaw}
+                fiat={fiat}
+                baseAssetRate={baseAssetRate}
+              />
             </div>
-            <div className="TransactionReceipt-details-row">
-              <div className="TransactionReceipt-details-row-column">
-                {translate('TRANSACTION_STATUS')}:
-              </div>
-              <div className="TransactionReceipt-details-row-column">
-                <TxReceiptStatusBadge status={transaction.status} />
-              </div>
-            </div>
-            <div className="TransactionReceipt-details-row">
-              <div className="TransactionReceipt-details-row-column">{translate('TIMESTAMP')}:</div>
-              <div className="TransactionReceipt-details-row-column">
-                {timestamp !== 0 ? (
-                  <div>
-                    <TimeElapsedCounter timestamp={timestamp} isSeconds={true} />
-                    <br /> {localTimestamp}
-                  </div>
-                ) : (
-                  translate('UNKNOWN')
-                )}
-              </div>
-            </div>
-            <TransactionDetailsDisplay
-              baseAsset={baseAsset}
-              asset={asset}
-              data={data}
-              sender={account}
-              gasLimit={bigNumGasLimitToViewable(bigify(gasLimit))}
-              gasPrice={bigify(gasPrice).toString()}
-              nonce={nonce}
-              rawTransaction={transaction.txRaw}
-              fiat={fiat}
-              baseAssetRate={baseAssetRate}
-            />
           </div>
         );
       })}
