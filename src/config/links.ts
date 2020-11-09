@@ -111,6 +111,10 @@ const affiliateLinks: IExtUrl[] = [
   {
     name: 'COINBASE_REFERRAL',
     url: 'https://coinbase-consumer.sjv.io/RVmkN' as TURL
+  },
+  {
+    name: 'POOLTOGETHER_REFERRAL',
+    url: 'https://app.pooltogether.com/?referrer=0x3186f968aaa3a670354e33a9ad679d98858dda5b' as TURL
   }
 ];
 
