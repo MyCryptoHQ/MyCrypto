@@ -167,7 +167,7 @@ module.exports = function(opts = {}) {
         creator: config.twitter.creator
       },
       metaCsp: options.isProduction
-        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src * eth-enclave://get-chain-code; frame-src 'self' https://connect.trezor.io;"
+        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src * eth-enclave://*; frame-src 'self' https://connect.trezor.io;"
         : ''
     }),
 
