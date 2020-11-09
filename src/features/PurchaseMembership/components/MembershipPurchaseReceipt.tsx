@@ -8,6 +8,7 @@ import { makeTxItem } from '@utils/transaction';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
+import MembershipReceiptBanner from './MembershipReceiptBanner';
 
 export interface IMembershipPurchaseReceiptProps {
   account: StoreAccount;
@@ -42,7 +43,7 @@ export default function MembershipReceipt({
     <TxReceipt
       txReceipt={txItems.map(({ txReceipt }) => txReceipt)[0]}
       txConfig={txItems.map(({ txConfig }) => txConfig)[0]}
-      membershipSelected={flowConfig}
+      customComponent={() => <MembershipReceiptBanner membershipSelected={flowConfig} />}
       resetFlow={onComplete}
       onComplete={onComplete}
     />

@@ -99,8 +99,6 @@ export interface ITxReceiptStepProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txQueryType?: TxQueryTypes;
-  zapSelected?: IZapConfig;
-  membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;

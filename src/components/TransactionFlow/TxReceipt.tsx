@@ -10,9 +10,7 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import feeIcon from '@assets/images/icn-fee.svg';
-import platformUsed from '@assets/images/icn-platform-used.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import sentIcon from '@assets/images/icn-sent.svg';
 import {
@@ -26,11 +24,8 @@ import {
 } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
-import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
-import { SwapDisplayData } from '@features/SwapAssets/types';
 import { fetchGasPriceEstimates, useRates } from '@services';
 import {
   getTimestampFromBlockNum,
@@ -68,7 +63,7 @@ import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries'
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
 
-import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
+import { FromToAccount, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
 import { PendingTransaction } from './PendingLoader';
@@ -83,16 +78,11 @@ interface PendingBtnAction {
 }
 interface Props {
   pendingButton?: PendingBtnAction;
-  swapDisplay?: SwapDisplayData;
   disableDynamicTxReceiptDisplay?: boolean;
   disableAddTxToAccount?: boolean;
   protectTxButton?(): JSX.Element;
+  customComponent?(): JSX.Element;
 }
-
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
 
 const SSpacer = styled.div`
   height: 60px;
@@ -106,9 +96,7 @@ const TxReceipt = ({
   txConfig,
   txQueryType,
   completeButtonText,
-  membershipSelected,
-  zapSelected,
-  swapDisplay,
+  customComponent,
   disableDynamicTxReceiptDisplay,
   disableAddTxToAccount,
   history,
@@ -245,9 +233,7 @@ const TxReceipt = ({
       fiat={fiat}
       txConfig={txConfig}
       txReceipt={txReceipt}
-      zapSelected={zapSelected}
-      membershipSelected={membershipSelected}
-      swapDisplay={swapDisplay}
+      customComponent={customComponent}
       completeButtonText={completeButtonText}
       txQueryType={txQueryType}
       setDisplayTxReceipt={setDisplayTxReceipt}
@@ -272,7 +258,6 @@ export interface TxReceiptDataProps {
   sender: ISender;
   recipientContact: ExtendedContact | undefined;
   fiat: Fiat;
-  swapDisplay?: SwapDisplayData;
   protectTxEnabled?: boolean;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
@@ -280,6 +265,7 @@ export interface TxReceiptDataProps {
   handleTxSpeedUpRedirect(): void;
   resetFlow(): void;
   protectTxButton?(): JSX.Element;
+  customComponent?(): JSX.Element;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
@@ -287,15 +273,13 @@ type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceipt
 export const TxReceiptUI = ({
   settings,
   txType,
-  swapDisplay,
   txConfig,
   txStatus,
   timestamp,
   assetRate,
   displayTxReceipt,
   setDisplayTxReceipt,
-  zapSelected,
-  membershipSelected,
+  customComponent,
   senderContact,
   sender,
   baseAssetRate,
@@ -380,18 +364,6 @@ export const TxReceiptUI = ({
           </div>
         </div>
       )}
-      {txType === ITxType.SWAP && swapDisplay && (
-        <div className="TransactionReceipt-row">
-          <SwapFromToDiagram
-            fromSymbol={swapDisplay.fromAsset.ticker}
-            toSymbol={swapDisplay.toAsset.ticker}
-            fromAmount={swapDisplay.fromAmount.toString()}
-            toAmount={swapDisplay.toAmount.toString()}
-            fromUUID={swapDisplay.fromAsset.uuid}
-            toUUID={swapDisplay.toAsset.uuid}
-          />
-        </div>
-      )}
       <FromToAccount
         networkId={sender.network.id}
         fromAccount={{
@@ -415,32 +387,9 @@ export const TxReceiptUI = ({
 
       {/* CUSTOM FLOW CONTENT */}
 
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <MembershipReceiptBanner membershipSelected={membershipSelected} />
-      )}
+      {customComponent && customComponent()}
 
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">
-              <SImg src={zapperLogo} size="24px" />
-              {translateRaw('ZAP_NAME')}
-            </div>
-            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.title}</div>
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">
-              <SImg src={platformUsed} size="24px" />
-              {translateRaw('PLATFORMS')}
-            </div>
-            <div className="TransactionReceipt-row-column rightAligned">
-              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
-            </div>
-          </div>
-        </>
-      )}
-
-      <div className="TransactionReceipt-divider" />
+      {customComponent && <div className="TransactionReceipt-divider" />}
 
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">

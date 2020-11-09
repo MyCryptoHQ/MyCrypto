@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
+import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
 import { StoreContext, useAssets, useRates, useSettings } from '@services';
 import { translateRaw } from '@translations';
@@ -62,7 +63,16 @@ export default function SwapTransactionReceipt({
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      swapDisplay={swapDisplay}
+      customComponent={() => (
+        <SwapFromToDiagram
+          fromSymbol={swapDisplay.fromAsset.ticker}
+          toSymbol={swapDisplay.toAsset.ticker}
+          fromAmount={swapDisplay.fromAmount.toString()}
+          toAmount={swapDisplay.toAmount.toString()}
+          fromUUID={swapDisplay.fromAsset.uuid}
+          toUUID={swapDisplay.toAsset.uuid}
+        />
+      )}
     />
   ) : (
     <MultiTxReceipt
