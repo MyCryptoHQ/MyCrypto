@@ -130,19 +130,20 @@ export default function MultiTxReceipt({
             />
             <div className="TransactionReceipt-details">
               <div className="TransactionReceipt-details-row">
-                <div className="TransactionReceipt-details-row-column">
-                  {translate('TIMESTAMP')}:
-                </div>
-                <div className="TransactionReceipt-details-row-column">
-                  {timestamp !== 0 ? (
-                    <div>
-                      <TimeElapsed value={timestamp} />
-                      <br /> {localTimestamp}
-                    </div>
-                  ) : (
-                    translate('UNKNOWN')
-                  )}
-                </div>
+                <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
+                  {translate('TIMESTAMP')}
+                  {': '}
+                  <span style={{ fontWeight: 'normal' }}>
+                    {timestamp !== 0 ? (
+                      <div>
+                        <TimeElapsed value={timestamp} />
+                        <br /> {localTimestamp}
+                      </div>
+                    ) : (
+                      translate('UNKNOWN')
+                    )}
+                  </span>
+                </Body>
               </div>
               <TransactionDetailsDisplay
                 baseAsset={baseAsset}

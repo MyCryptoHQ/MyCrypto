@@ -10,7 +10,7 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import { Body, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -22,7 +22,7 @@ import {
   ProviderHandler
 } from '@services/EthService';
 import { StoreContext, useAccounts, useContacts, useSettings } from '@services/Store';
-import { BREAK_POINTS } from '@theme';
+import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
   ExtendedContact,
@@ -47,7 +47,6 @@ import { path } from '@vendor';
 import { FromToAccount, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
-import { PendingTransaction } from './PendingLoader';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
@@ -374,46 +373,47 @@ export const TxReceiptUI = ({
         value={txConfig.value}
       />
 
+      <div className="TransactionReceipt-details-row">
+        <div className="TransactionReceipt-details-row-column">
+          <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
+            {translate('TIMESTAMP')}
+            {': '}
+            <span style={{ fontWeight: 'normal' }}>
+              {timestamp !== 0 ? (
+                <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
+                  {localTimestamp}
+                </Tooltip>
+              ) : (
+                translate('UNKNOWN')
+              )}
+            </span>
+          </Body>
+        </div>
+        <div className="TransactionReceipt-details-row-column">
+          <TxReceiptStatusBadge status={displayTxReceipt ? txStatus : ITxStatus.PENDING} />
+        </div>
+      </div>
+
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
-            {translate('TRANSACTION_ID')}:
-          </div>
-          <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
-              <LinkOut
-                text={displayTxReceipt.hash}
-                truncate={truncate}
-                link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
-              />
-            )}
-            {!displayTxReceipt && <PendingTransaction />}
-          </div>
-        </div>
-
-        <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">
-            {translate('TRANSACTION_STATUS')}:
-          </div>
-          <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt && <TxReceiptStatusBadge status={txStatus} />}
-            {!displayTxReceipt && <TxReceiptStatusBadge status={ITxStatus.PENDING} />}
-          </div>
-        </div>
-
-        <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">{translate('TIMESTAMP')}:</div>
-          <div className="TransactionReceipt-details-row-column">
-            {displayTxReceipt &&
-              (timestamp !== 0 ? (
-                <div>
-                  {<TimeElapsed value={timestamp} />}
-                  <br /> {localTimestamp}
-                </div>
-              ) : (
-                translate('UNKNOWN')
-              ))}
-            {!displayTxReceipt && <PendingTransaction />}
+            <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
+              {translate('TRANSACTION_ID')}
+              {': '}
+              <span style={{ fontWeight: 'normal' }}>
+                {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
+                  <LinkOut
+                    inline={true}
+                    fontColor={COLORS.BLUE_GREY}
+                    fontSize="14px"
+                    text={displayTxReceipt.hash}
+                    truncate={truncate}
+                    link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
+                  />
+                )}
+                {!displayTxReceipt && translate('UNKNOWN')}
+              </span>
+            </Body>
           </div>
         </div>
 

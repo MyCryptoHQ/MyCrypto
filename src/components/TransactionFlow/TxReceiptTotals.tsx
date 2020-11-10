@@ -40,7 +40,7 @@ export const TxReceiptTotals = ({
 
   const totalWei = feeWei.add(valueWei);
 
-  const totalFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
+  const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
 
   /** @todo solve showing both token and base asset total */
 
@@ -90,14 +90,30 @@ export const TxReceiptTotals = ({
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <AssetIcon uuid={asset.uuid} size={'24px'} />
-          <Amount
-            assetValue={`${totalFormatted} ${asset.ticker}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(totalFormatted), assetRate).toFixed(2)
-            }}
-          />
+          {asset.type === 'base' ? (
+            <Amount
+              assetValue={`${totalEtherFormatted} ${asset.ticker}`}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(parseFloat(totalEtherFormatted), assetRate).toFixed(2)
+              }}
+            />
+          ) : (
+            <Amount
+              assetValue={`${assetAmount} ${asset.ticker}`}
+              bold={true}
+              baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: (
+                  convertToFiat(parseFloat(assetAmount), assetRate) +
+                  convertToFiat(parseFloat(totalEtherFormatted), baseAssetRate)
+                ).toFixed(2)
+              }}
+            />
+          )}
         </div>
       </div>
     </>
