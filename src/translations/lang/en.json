@@ -729,7 +729,6 @@
     "TRANSACTION_ID": "Transaction ID",
     "TRANSACTION_PERFORMED_VIA_CONTRACT": "Transaction performed via $contractName contract",
     "TRANSACTION_RELAYED": "Transaction Relayed to Network",
-    "TRANSACTION_STATUS": "Transaction Status",
     "TRANSACTION_FEE": "Transaction Fee",
     "TRANS_AUTO_GAS_TOGGLE": "Automatically Calculate Gas Limit",
     "TRANS_DATA": "Data ",
