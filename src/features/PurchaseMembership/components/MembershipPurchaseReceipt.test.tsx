@@ -57,4 +57,12 @@ describe('MembershipReceipt', () => {
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
     expect(getByText(translateRaw('MEMBERSHIP'))).toBeDefined();
   });
+
+  test('it renders a multi tx receipt', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      transactions: [fTxParcels[0], fTxParcels[0]]
+    });
+    expect(getByText(translateRaw('MEMBERSHIP'))).toBeDefined();
+  });
 });
