@@ -7,12 +7,14 @@ import { WALLET_STEPS } from '@components';
 import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
+import { isTokenMigration } from '@services/Store/helpers';
 import {
   IFlowConfig,
   ISimpleTxFormFull,
   ITxConfig,
   ITxMultiConfirmProps,
   ITxObject,
+  ITxType,
   StoreAccount,
   TxParcel
 } from '@types';
@@ -135,3 +137,13 @@ export const constructSenderFromTxConfig = (
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
 export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: number) =>
   Math.max(fastGasPrice, parseFloat(bigNumGasPriceToViewableGwei(txConfig.gasPrice)) * 1.101);
+
+const CONTRACT_INTERACTION_TYPES = [
+  ITxType.SWAP,
+  ITxType.DEFIZAP,
+  ITxType.PURCHASE_MEMBERSHIP,
+  ITxType.CONTRACT_INTERACT
+];
+
+export const isContractInteraction = (type: ITxType) =>
+  CONTRACT_INTERACTION_TYPES.includes(type) || isTokenMigration(type);

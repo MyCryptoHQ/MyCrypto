@@ -46,7 +46,11 @@ import { path } from '@vendor';
 
 import { FromToAccount, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import { calculateReplacementGasPrice, constructSenderFromTxConfig } from './helpers';
+import {
+  calculateReplacementGasPrice,
+  constructSenderFromTxConfig,
+  isContractInteraction
+} from './helpers';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
@@ -313,7 +317,7 @@ export const TxReceiptUI = ({
     }
   }, [displayTxReceipt]);
 
-  const isContractCall = data !== '0x';
+  const isContractCall = data !== '0x' || (txType && isContractInteraction(txType));
 
   return (
     <div className="TransactionReceipt">

@@ -88,31 +88,6 @@ describe('TxReceipt', () => {
     expect(getAllByTestId('PENDING')).toBeDefined();
   });
 
-  // @todo: Re-add tests
-  // eslint-disable-next-line jest/no-commented-out-tests
-  /**test('it displays DeFiZap info', async () => {
-    const zap = ZAPS_CONFIG.compounddai;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      zapSelected: zap,
-      txType: ITxType.DEFIZAP
-    });
-    expect(getByText(zap.title)).toBeDefined();
-    expect(getByText(zap.contractAddress)).toBeDefined();
-    expect(getByText(zap.platformsUsed[0], { exact: false })).toBeDefined();
-  });
-
-  test('it displays membership info', async () => {
-    const membership = MEMBERSHIP_CONFIG.lifetime;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      membershipSelected: membership,
-      txType: ITxType.PURCHASE_MEMBERSHIP
-    });
-    expect(getByText(translateRaw('NEW_MEMBER'))).toBeDefined();
-    expect(getByText(membership.contractAddress)).toBeDefined();
-  });**/
-
   test('it displays PTX info', async () => {
     const { getByText } = getComponent({
       ...defaultProps,

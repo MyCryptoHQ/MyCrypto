@@ -6,6 +6,7 @@ import { simpleRender } from 'test-utils';
 import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
+import { TAddress } from '@types';
 import { noOp, truncate } from '@utils';
 
 import { IMembershipId, MEMBERSHIP_CONFIG } from '../config';
@@ -13,7 +14,12 @@ import MembershipReceipt from './MembershipPurchaseReceipt';
 
 const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
   account: fAccounts[0],
-  transactions: fTxParcels,
+  transactions: [
+    {
+      ...fTxParcels[0],
+      txRaw: { ...fTxParcels[0].txRaw, to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress }
+    }
+  ],
   flowConfig: MEMBERSHIP_CONFIG[IMembershipId.lifetime],
   onComplete: noOp
 };
@@ -56,6 +62,9 @@ describe('MembershipReceipt', () => {
     const { getByText, getAllByText } = getComponent(defaultProps);
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
     expect(getByText(translateRaw('MEMBERSHIP'))).toBeDefined();
+    expect(
+      getByText(MEMBERSHIP_CONFIG[IMembershipId.lifetime].contractAddress, { exact: false })
+    ).toBeDefined();
   });
 
   test('it renders a multi tx receipt', async () => {
