@@ -74,4 +74,4 @@ const TOKEN_MIGRATIONS = [
   ITxType.ANT_TOKEN_MIGRATION
 ];
 
-export const isTokenMigration = (type: ITxType) => type in TOKEN_MIGRATIONS;
+export const isTokenMigration = (type: ITxType) => TOKEN_MIGRATIONS.includes(type);
