@@ -11,8 +11,6 @@ export {
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   isValidPath,
-  isValidEncryptedPrivKey,
-  isValidPrivKey,
   isValidETHAddress,
   isValidHex,
   isValidPositiveOrZeroInteger,

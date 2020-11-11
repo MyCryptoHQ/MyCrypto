@@ -1,5 +1,5 @@
 import { ResolutionError } from '@unstoppabledomains/resolution';
-import { isValidPrivate, toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress } from 'ethereumjs-util';
 import { bigNumberify } from 'ethers/utils';
 import { Validator } from 'jsonschema';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
@@ -16,12 +16,7 @@ import {
 } from '@config';
 import { translateRaw } from '@translations';
 import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
-import {
-  baseToConvertedUnit,
-  convertedToBaseUnit,
-  gasStringsToMaxGasBN,
-  stripHexPrefix
-} from '@utils';
+import { baseToConvertedUnit, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
 
 import { isValidENSName } from './ens/validators';
 
@@ -172,30 +167,6 @@ export function isValidHex(str: string): boolean {
   str = str.substring(0, 2) === '0x' ? str.substring(2).toUpperCase() : str.toUpperCase();
   const re = /^[0-9A-F]*$/g; // Match 0 -> unlimited times, 0 being "0x" case
   return re.test(str);
-}
-
-export function isValidPrivKey(privkey: string | Buffer): boolean {
-  if (typeof privkey === 'string') {
-    const strippedKey = stripHexPrefix(privkey);
-    const initialCheck = strippedKey.length === 64;
-    if (initialCheck) {
-      const keyBuffer = Buffer.from(strippedKey, 'hex');
-      return isValidPrivate(keyBuffer);
-    }
-    return false;
-  } else if (privkey instanceof Buffer) {
-    return privkey.length === 32 && isValidPrivate(privkey);
-  } else {
-    return false;
-  }
-}
-
-export function isValidEncryptedPrivKey(privkey: string): boolean {
-  if (typeof privkey === 'string') {
-    return privkey.length === 128 || privkey.length === 132;
-  } else {
-    return false;
-  }
 }
 
 export function isValidPath(dPath: string) {

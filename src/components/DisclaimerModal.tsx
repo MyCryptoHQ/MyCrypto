@@ -60,7 +60,7 @@ const DisclaimerModal: React.FC<Props> = ({ isOpen, handleClose }) => {
       </p>
       <p>{translateRaw('DISCLAIMER_PERMISSION_DESC')}</p>
       <p>{translateRaw('DISCLAIMER_COPYRIGHT_NOTICE')}</p>
-      <b className="text-uppercase">{translateRaw('DISCLAIMER_THE_SOFTWARE_IS_PROVIDED_AS_IS"')}</b>
+      <b className="text-uppercase">{translateRaw('DISCLAIMER_THE_SOFTWARE_IS_PROVIDED_AS_IS')}</b>
     </LegacyModal>
   );
 };
