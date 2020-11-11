@@ -38,7 +38,7 @@ const HeadingText = styled.span`
   width: 250px;
 `;
 
-export const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContextState) =>
+const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContextState) =>
   actionTemplates.filter((action) => {
     const filter = action.filter;
     if (!filter) return true;

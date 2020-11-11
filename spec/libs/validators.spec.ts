@@ -1,20 +1,11 @@
 import { DPathsList } from '@config/dpaths';
-import {
-  isValidAddress,
-  isValidETHAddress,
-  isValidPath,
-  isValidPrivKey
-} from '@services/EthService/validators';
+import { isValidAddress, isValidETHAddress, isValidPath } from '@services/EthService/validators';
 
 import { invalid, valid } from '../utils/testStrings';
 
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 const VALID_RSK_TESTNET_ADDRESS = '0x5aAeb6053F3e94c9b9A09F33669435E7EF1BEaEd';
 const VALID_RSK_MAINNET_ADDRESS = '0x5aaEB6053f3e94c9b9a09f33669435E7ef1bEAeD';
-const VALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
-const INVALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5ZZZZ';
-const VALID_ETH_PRIVATE_BUFFER = Buffer.from(VALID_ETH_PRIVATE_KEY, 'hex');
-const VALID_ETH_PRIVATE_0X = '0x3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
 const RSK_TESTNET_CHAIN_ID = 31;
 const RSK_MAINNET_CHAIN_ID = 30;
 const ETH_CHAIN_ID = 1;
@@ -47,18 +38,6 @@ describe('Validator', () => {
   });
   it('should validate an incorrect DPath as false', () => {
     expect(isValidPath('m/44/60/0/0')).toBeFalsy();
-  });
-  it('should validate private key as true', () => {
-    expect(isValidPrivKey(VALID_ETH_PRIVATE_KEY)).toBeTruthy();
-  });
-  it('should validate invalid private key as false', () => {
-    expect(isValidPrivKey(INVALID_ETH_PRIVATE_KEY)).toBeFalsy();
-  });
-  it('should validate 0x private keys as true', () => {
-    expect(isValidPrivKey(VALID_ETH_PRIVATE_0X)).toBeTruthy();
-  });
-  it('should validate private key buffer type as true', () => {
-    expect(isValidPrivKey(VALID_ETH_PRIVATE_BUFFER)).toBeTruthy();
   });
 
   it('should validate correct DPaths as true', () => {
