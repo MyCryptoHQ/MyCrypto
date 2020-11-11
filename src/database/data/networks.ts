@@ -120,7 +120,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://goerli.etherscan.io/'
     }),
     tokens: [],
-    contracts: [],
+    contracts: require('./contracts/goerli.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
