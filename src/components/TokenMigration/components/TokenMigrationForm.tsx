@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
 import styled from 'styled-components';
 import { number, object } from 'yup';
@@ -31,7 +31,7 @@ import {
   Network,
   StoreAccount
 } from '@types';
-import { isFormValid as checkFormValid, noOp, weiToFloat } from '@utils';
+import { isFormValid as checkFormValid, noOp } from '@utils';
 
 export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
@@ -131,17 +131,14 @@ export const TokenMigrationFormUI = ({
     const accountAssetAmt = values.account.assets.find(
       (a) => a.uuid === tokenMigrationConfig.fromAssetUuid
     );
-    if (!accountAssetAmt) {
+    if (!accountAssetAmt || !asset.decimal) {
       return;
     }
-    setFieldValue(
-      'amount',
-      weiToFloat(bigNumberify(accountAssetAmt.balance), asset.decimal).toString()
-    ); // this would be better as a reducer imo.
+    setFieldValue('amount', formatUnits(bigNumberify(accountAssetAmt.balance), asset.decimal)); // this would be better as a reducer imo.
     setFieldValue('account', values.account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
 
     handleNonceEstimate(values.account);
-  }, [values.account]);
+  }, [values.account, values.asset]);
 
   const handleNonceEstimate = async (account: IAccount) => {
     const nonce: number = await getNonce(values.network, account.address);

@@ -79,6 +79,7 @@ export const trimBN = (
   return bigNumberString.substr(0, numOfPlaces);
 };
 
+// Note: This can in some cases remove useful decimals
 export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
   parseFloat(fromTokenBase(new BN(wei.toString()), decimal));
 
