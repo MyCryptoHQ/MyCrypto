@@ -22,6 +22,8 @@ export const HISTORY_API = 'https://history.mycryptoapi.com/history';
 
 export const NANSEN_API = 'https://nansen.mycryptoapi.com/v1';
 
+export const CUSTOM_ASSET_API = 'https://assets.mycryptoapi.com/custom';
+
 export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
 // this will be changed when we figure out networks
