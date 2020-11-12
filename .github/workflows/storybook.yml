@@ -13,6 +13,8 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types: [ok-to-test-command]
 
 jobs:
   build:
