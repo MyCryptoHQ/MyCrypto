@@ -2,16 +2,16 @@ import { useContext } from 'react';
 
 import { DataContext } from '@services/Store';
 import { createContract as createContractStore, destroyContract, useDispatch } from '@store';
-import { Contract, ExtendedContract, TAddress, TUuid } from '@types';
+import { Contract, TAddress, TUuid } from '@types';
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
   const { contracts } = useContext(DataContext);
   const dispatch = useDispatch();
 
-  const createContract = (contract: Contract): ExtendedContract => {
+  const createContract = (contract: Omit<Contract, 'uuid'>): Contract => {
     const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
-    const contractWithUUID: ExtendedContract = { ...contract, uuid };
+    const contractWithUUID: Contract = { ...contract, uuid };
     dispatch(createContractStore(contractWithUUID));
     return contractWithUUID;
   };
@@ -25,7 +25,7 @@ function useContracts() {
   };
 
   const getContractByAddress = (address: TAddress) =>
-    contracts.find((x: ExtendedContract) => isSameAddress(x.address, address));
+    contracts.find((x: Contract) => isSameAddress(x.address, address));
 
   return {
     contracts,

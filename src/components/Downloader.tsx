@@ -4,9 +4,10 @@ import { Button, Link } from '@components';
 import { getCurrentDBConfig, getExportFileName } from '@database';
 import { COLORS } from '@theme';
 import translate from '@translations';
+import { LocalStorage } from '@types';
 import { makeBlob } from '@utils';
 
-const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
+const Downloader: React.FC<{ data: LocalStorage; onClick?(): void }> = ({
   data,
   onClick,
   children
@@ -15,7 +16,8 @@ const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
-    const settingsBlob = makeBlob('text/json;charset=UTF-8', data);
+    const blobable = JSON.stringify(data);
+    const settingsBlob = makeBlob('text/json;charset=UTF-8', blobable);
     setBlob(settingsBlob);
     setFileName(getExportFileName(getCurrentDBConfig(), new Date()));
   }, [data]);

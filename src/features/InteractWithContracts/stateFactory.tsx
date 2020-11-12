@@ -95,7 +95,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
   };
 
-  const handleContractSelected = (contract: Contract) => {
+  const handleContractSelected = (contract: Omit<Contract, 'uuid'>) => {
     let contractAddress = '';
     let addressOrDomainInput = '';
     let contractAbi = '';

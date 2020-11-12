@@ -1,4 +1,4 @@
-import { Omit, Overwrite, Subtract } from 'utility-types';
+import { Omit, Subtract } from 'utility-types';
 
 import { TAddress } from './address';
 import { Asset, TTicker } from './asset';
@@ -44,29 +44,6 @@ export interface Network {
   selectedNode?: string;
   autoNode?: string;
 }
-
-interface NetworkPropsMissingInLegacy {
-  nodes: NodeOptions[];
-  assets: string[];
-  baseAsset: TUuid;
-  baseUnit: TTicker;
-}
-
-interface NetworkUnusedLegacyProps {
-  tokens: AssetLegacy[];
-  isTestnet?: boolean;
-  unsupportedTabs?: any[];
-  hideEquivalentValues?: boolean;
-  unit: TTicker;
-  nodes?: NodeOptions[];
-}
-
-export type NetworkLegacy = Subtract<
-  Overwrite<Network, { contracts: ContractLegacy[] }>,
-  NetworkPropsMissingInLegacy
-> &
-  NetworkUnusedLegacyProps;
-
 export interface NetworkNodes {
   nodes?: NodeOptions[];
   selectedNode?: string;

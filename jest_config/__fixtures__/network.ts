@@ -37,13 +37,15 @@ const Ethereum: Network = {
       name: 'eth_mycrypto',
       type: NodeType.RPC,
       service: 'MyCrypto',
-      url: 'https://api.mycryptoapi.com/eth'
+      url: 'https://api.mycryptoapi.com/eth',
+      isCustom: false
     },
     {
       name: 'eth_ethscan',
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api.etherscan.io/api'
+      url: 'https://api.etherscan.io/api',
+      isCustom: false
     }
   ],
   blockExplorer: makeExplorer({
@@ -96,7 +98,8 @@ const Ropsten: Network = {
       name: 'ropsten_infura',
       type: NodeType.INFURA,
       service: 'Infura',
-      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286',
+      isCustom: false
     }
   ],
   blockExplorer: makeExplorer({

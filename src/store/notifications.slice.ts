@@ -8,7 +8,7 @@ const slice = createSlice({
   name: LSKeys.NOTIFICATIONS,
   initialState,
   reducers: {
-    create(state, action: PayloadAction<ExtendedNotification>) {
+    createHere(state, action: PayloadAction<ExtendedNotification>) {
       const { uuid } = action.payload;
       state[uuid] = action.payload;
     },
@@ -28,7 +28,7 @@ const slice = createSlice({
 });
 
 export const {
-  create: createNotification,
+  createHere: createNotification,
   destroy: destroyNotification,
   update: updateNotification,
   updateMany: updateNotifications

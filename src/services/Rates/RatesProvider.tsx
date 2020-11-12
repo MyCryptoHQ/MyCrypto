@@ -26,7 +26,7 @@ interface ReserveMappingObject {
 
 export type ReserveMapping = Record<string, ReserveMappingObject>;
 
-const POLLING_INTERVAL = 90000;
+const POLLING_INTERVAL = 600000; // 10min vs previous 1.5min => 90000;
 
 const ASSET_RATES_URL = 'https://api.coingecko.com/api/v3/simple/price';
 const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `

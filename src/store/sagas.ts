@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 
-import { watchIncrement } from '@features/DevTools/slice';
+import { importStateWatcher } from './app.saga';
 
 export default function* rootSaga() {
-  yield all([watchIncrement()]);
+  yield all([importStateWatcher()]);
 }

@@ -1,5 +1,3 @@
-import { combineReducers } from '@reduxjs/toolkit';
-
 import accountSlice from './account.slice';
 import assetSlice from './asset.slice';
 import contactSlice from './contact.slice';
@@ -44,10 +42,10 @@ export const {
 
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';
 
-export default combineReducers({
+export default {
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
   [contactSlice.name]: contactSlice.reducer,
   [contractSlice.name]: contractSlice.reducer,
   [networkSlice.name]: networkSlice.reducer
-});
+};

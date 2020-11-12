@@ -15,12 +15,8 @@ export interface NodeConfig {
   url: string;
 }
 
-interface NodeBase {
+interface NodeBase extends NodeConfig {
   isCustom?: boolean;
-  name: string;
-  type: NodeType;
-  service: string;
-  url: string;
   hidden?: boolean;
 }
 
@@ -34,7 +30,7 @@ export interface CustomNodeConfig extends NodeBase {
 }
 
 export interface StaticNodeConfig extends NodeBase {
-  isCustom?: false;
+  isCustom: false;
   type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.POCKET | NodeType.RPC | NodeType.WEB3;
 }
 

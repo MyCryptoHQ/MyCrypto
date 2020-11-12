@@ -3,7 +3,7 @@ import React from 'react';
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
 
-import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { NETWORKS } from '@database/data';
 import { Network, NetworkId, WalletId } from '@types';
 import { noOp } from '@utils';
 
@@ -11,10 +11,7 @@ import ProtectTxProvider from '../ProtectTxProvider';
 import { ProtectTxSign } from './ProtectTxSign';
 
 const ropstenId: NetworkId = 'Ropsten';
-const network: Network = {
-  ...NETWORKS_CONFIG[ropstenId],
-  nodes: NODES_CONFIG[ropstenId]
-} as any;
+const network: Network = NETWORKS[ropstenId];
 
 const account = {
   address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',

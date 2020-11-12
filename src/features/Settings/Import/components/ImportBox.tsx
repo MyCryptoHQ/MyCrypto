@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { InlineMessage } from '@components';
+import { ScreenLockContext } from '@features/ScreenLock';
+import { importState, useDispatch, useSelector } from '@store';
 import translate from '@translations';
 
 const FilePicker = styled.label`
@@ -27,54 +29,29 @@ const ImportBoxContainer = styled.div<ImportBoxContainerProps>`
 `;
 
 interface ImportProps {
-  importCache(importedCache: string): boolean;
   onNext(): void;
 }
 
-export default class ImportBox extends React.Component<ImportProps> {
-  public state = { badImport: false, dragging: false };
+const ImportBox: React.FC<ImportProps> = ({ onNext }) => {
+  const [dragging, setDragging] = useState(false);
+  const dispatch = useDispatch();
+  const importError = useSelector((s) => s.importError);
+  const importSuccess = useSelector((s) => s.importSuccess);
+  const { resetEncrypted } = useContext(ScreenLockContext);
 
-  public submit = (importedCache: string) => {
-    const importSuccess = this.props.importCache(importedCache);
-    if (!importSuccess) {
-      this.setState({ badImport: true });
-    } else {
-      this.props.onNext();
+  useEffect(() => {
+    if (importSuccess) {
+      resetEncrypted();
+      onNext();
     }
-  };
+  }, [importSuccess]);
 
-  public render() {
-    const { badImport, dragging } = this.state;
-    return (
-      <ImportBoxContainer
-        onDrop={this.handleFileSelection}
-        onDragEnter={() => this.setState({ dragging: true })}
-        onDragLeave={() => this.setState({ dragging: false })}
-        dragging={dragging}
-      >
-        {badImport ? (
-          <InlineMessage>{translate('SETTINGS_IMPORT_INVALID')}</InlineMessage>
-        ) : (
-          translate('SETTINGS_IMPORT_COPY')
-        )}
-        <br />
-        <br />
-        <FilePicker htmlFor="upload">
-          {translate('SETTINGS_IMPORT_BUTTON')}
-          <FilePickerInput id="upload" type="file" onChange={this.handleFileSelection} />
-        </FilePicker>{' '}
-        {translate('SETTINGS_IMPORT_PASTE')}
-        <br />
-      </ImportBoxContainer>
-    );
-  }
-
-  private handleFileSelection = (e: any) => {
+  const handleFileSelection = (e: any) => {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
       if (fileReader.result) {
-        this.submit(fileReader.result as string);
+        dispatch(importState(fileReader.result.toString()));
       }
     };
     if (e.target.files && e.target.files[0]) {
@@ -87,4 +64,29 @@ export default class ImportBox extends React.Component<ImportProps> {
       fileReader.readAsText(draggedFile, 'utf-8');
     }
   };
-}
+
+  return (
+    <ImportBoxContainer
+      onDrop={handleFileSelection}
+      onDragEnter={() => setDragging(true)}
+      onDragLeave={() => setDragging(false)}
+      dragging={dragging}
+    >
+      {importError ? (
+        <InlineMessage>{translate('SETTINGS_IMPORT_INVALID')}</InlineMessage>
+      ) : (
+        translate('SETTINGS_IMPORT_COPY')
+      )}
+      <br />
+      <br />
+      <FilePicker htmlFor="upload">
+        {translate('SETTINGS_IMPORT_BUTTON')}
+        <FilePickerInput id="upload" type="file" onChange={handleFileSelection} />
+      </FilePicker>{' '}
+      {translate('SETTINGS_IMPORT_PASTE')}
+      <br />
+    </ImportBoxContainer>
+  );
+};
+
+export default ImportBox;

@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
 
 import { Panel } from '@mycrypto/ui';
-import { useDispatch, useSelector } from '@store';
 import styled from 'styled-components';
 
 import { Checkbox, Link } from '@components';
 import { IFeatureFlags } from '@config';
 import { useDevTools, useFeatureFlags } from '@services';
-import { DataContext } from '@services/Store';
+import { useAppStore, useDispatch } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
-import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
 
 const SLink = styled(Link)`
@@ -61,7 +59,9 @@ const Wrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const DBTools = () => {
-  const { resetAppDb, addSeedData, removeSeedData } = useContext(DataContext);
+  const { resetAppDb, addSeedData, removeSeedData } = useAppStore();
+  const dispatch = useDispatch();
+
   return (
     <div style={{ marginBottom: '1em' }}>
       You can choose to
@@ -69,6 +69,11 @@ const DBTools = () => {
       can <SLink onClick={() => addSeedData()}>add seed accounts</SLink> to your existing DB, or
       revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
       accounts.
+      <br />
+      Dispatch{' '}
+      <SLink onClick={() => dispatch({ type: 'state/import', payload: { foo: 'bar' } })}>
+        Import
+      </SLink>
     </div>
   );
 };
@@ -106,24 +111,6 @@ const FeatureFlags = () => {
   );
 };
 
-const DemoRedux = () => {
-  const greeting = useSelector(getGreeting);
-  const count = useSelector(getCount);
-  const dispatch = useDispatch();
-  const handleIncrement = () => dispatch(increment());
-  const handleReset = () => dispatch(reset());
-
-  return (
-    <div style={{ marginBottom: '1em' }}>
-      <div>
-        {greeting} {count}
-      </div>
-      <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleReset}>Reset</button>
-    </div>
-  );
-};
-
 const DevToolsManager = () => {
   const { isActive, toggleDevTools } = useDevTools();
 
@@ -150,9 +137,6 @@ const DevToolsManager = () => {
           {/* DB tools*/}
           <p style={{ fontWeight: 600 }}>DB Tools</p>
           <DBTools />
-          {/* Redux Demo */}
-          <p style={{ fontWeight: 600 }}>Redux Demo</p>
-          <DemoRedux />
         </Panel>
       )}
     </Wrapper>

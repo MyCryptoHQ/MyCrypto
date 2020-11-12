@@ -1,18 +1,16 @@
 import { TypedUseSelectorHook, useDispatch, useSelector as useReduxSelector } from 'react-redux';
 
-import { RootState } from './reducer';
+import { AppState } from './root.reducer';
 import { actions as settingsActions } from './settings';
-import { default as store } from './store';
-
-/* Store models */
 
 /**
  * Type-safe version of the `react-redux` useSelector hook.
  */
-const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
+const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
 
-export { useSelector, useDispatch, store };
-
+export { useSelector, useDispatch, AppState };
+export { resetState, setStoreState } from './root.reducer';
+export { default as store, persistor, exportState } from './store';
 export const {
   setLanguage,
   setCurrency,
@@ -38,7 +36,9 @@ export {
   updateNotification,
   updateNotifications
 } from './notifications.slice';
+export { setVault, destroyVault } from './vault.slice';
 export * from './entities';
 
 export * from './selectors';
-export * from './actions';
+export { default as useAppStore } from './useAppStore';
+export { importState, setPassword } from './app.reducer';

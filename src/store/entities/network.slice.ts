@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { NETWORKS } from '@database';
 import { LSKeys, Network } from '@types';
 
-export const initialState = {} as Record<string, Network>;
+export const initialState = NETWORKS;
 
 const slice = createSlice({
   name: LSKeys.NETWORKS,

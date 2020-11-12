@@ -8,7 +8,7 @@ import { uniq, without } from '@vendor';
 export const initialState: ISettings = defaultSettings;
 
 const slice = createSlice({
-  name: LSKeys.ACCOUNTS,
+  name: LSKeys.SETTINGS,
   initialState,
   reducers: {
     setLanguage(state, action: PayloadAction<LanguageCode>) {

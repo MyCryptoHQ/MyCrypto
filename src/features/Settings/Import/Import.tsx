@@ -4,10 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
-import { ScreenLockContext } from '@features/ScreenLock';
-import { useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
-import { withHook } from '@utils';
 
 import { ImportBox, ImportSuccess } from './components';
 
@@ -20,7 +17,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export class Import extends React.Component<RouteComponentProps & ReturnType<typeof useSettings>> {
+export class Import extends React.Component<RouteComponentProps> {
   public state = { step: 0 };
 
   public render() {
@@ -51,20 +48,7 @@ export class Import extends React.Component<RouteComponentProps & ReturnType<typ
         }}
       >
         <Content>
-          <ScreenLockContext.Consumer>
-            {({ resetEncrypted }) => (
-              <Step
-                onNext={this.advanceStep}
-                importCache={(cache: string) => {
-                  const result = this.props.importState(cache);
-                  if (result) {
-                    resetEncrypted();
-                  }
-                  return result;
-                }}
-              />
-            )}
-          </ScreenLockContext.Consumer>
+          <Step onNext={this.advanceStep} />
         </Content>
       </ContentPanel>
     );
@@ -81,4 +65,4 @@ export class Import extends React.Component<RouteComponentProps & ReturnType<typ
     }));
 }
 
-export default withHook(useSettings)(withRouter(Import));
+export default withRouter(Import);

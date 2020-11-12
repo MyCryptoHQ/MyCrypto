@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { ROUTE_PATHS } from '@config';
 import { useSettings, useUserActions } from '@services/Store';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ACTION_NAME, ACTION_STATE } from '@types';
+import { ACTION_NAME, ACTION_STATE, LocalStorage } from '@types';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -30,29 +30,35 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps) {
   const { history } = props;
   const onBack = history.goBack;
-  const { exportState } = useSettings();
   const { updateUserAction, findUserAction } = useUserActions();
+  const { exportState } = useSettings();
+  const [exportedState, setExportedState] = useState<LocalStorage | undefined>();
 
   const backupAction = findUserAction(ACTION_NAME.BACKUP);
-  const exportedState = useMemo(exportState, [exportState]);
+  const onDownload = () => {
+    if (!backupAction) return;
+    updateUserAction(backupAction.uuid, {
+      ...backupAction,
+      state: ACTION_STATE.COMPLETED
+    });
+  };
+
+  useEffect(() => {
+    // Fetch the persisted state
+    exportState().then((s) => setExportedState(s));
+  }, []);
 
   return (
     <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
-        <CacheDisplay>{exportedState}</CacheDisplay>
+        <CacheDisplay>{JSON.stringify(exportedState, null, 2)}</CacheDisplay>
         <RouterLink fullwidth={true} to={ROUTE_PATHS.SETTINGS.path}>
           <Button color={COLORS.WHITE} fullwidth={true}>
             {translate('SETTINGS_EXPORT_LEAVE')}
           </Button>
         </RouterLink>
-        <Downloader
-          data={exportedState}
-          onClick={() =>
-            backupAction &&
-            updateUserAction(backupAction.uuid, { ...backupAction, state: ACTION_STATE.COMPLETED })
-          }
-        />
+        {exportedState && <Downloader data={exportedState} onClick={onDownload} />}
       </ImportSuccessContainer>
     </CenteredContentPanel>
   );

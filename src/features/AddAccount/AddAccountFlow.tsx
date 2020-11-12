@@ -102,7 +102,9 @@ const AddAccountFlow = withRouter(({ history, match }) => {
               scanForMemberships([newAccounts[0]]);
             }
           : () => {
-              displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
+              displayNotification(NotificationTemplates.walletsAdded, {
+                accounts: newAccounts.map(({ address }) => address)
+              });
               scanTokens();
               scanForMemberships([...newAccounts]);
             };

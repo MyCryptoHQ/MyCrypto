@@ -1,4 +1,9 @@
-import { Contract } from '@types';
+import { Contract, NetworkId } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
+// @todo: solve circular dependency issues
+import { toArray } from '@utils/toArray';
+import { toObject } from '@utils/toObject';
+import { flatten, map, mapObjIndexed, pipe } from '@vendor';
 
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
@@ -13,12 +18,7 @@ import Ropsten from './ropsten.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 
-// @todo[Types]: key should really be a partial of NetworkId
-interface Contracts {
-  [key: string]: Contract[];
-}
-
-export const Contracts: Contracts = {
+const CONTRACTS_JSON = {
   ETC,
   Ethereum,
   EXP,
@@ -31,4 +31,28 @@ export const Contracts: Contracts = {
   ARTIS_SIGMA1,
   ARTIS_TAU1,
   PIRL
-};
+} as Record<Partial<NetworkId>, Contract[]>;
+
+const formatJSONToContract = (value: Contract[], key: NetworkId) =>
+  pipe(
+    map((c: Contract) => ({ ...c, networkId: key })),
+    map((c: Contract) => ({
+      ...c,
+      uuid: generateDeterministicAddressUUID(c.networkId, c.address)
+    })),
+    map((c: Contract) => ({ ...c, isCustom: false }))
+  )(value);
+
+/**
+ * Test only export
+ * From: { ETC: Contract[], Ethereum: Contract[] }
+ * To: { 'uuid1': Contract, 'uuid2': Contract }
+ */
+export const flattenContracts = pipe(
+  mapObjIndexed(formatJSONToContract),
+  toArray,
+  flatten,
+  toObject('uuid')
+);
+
+export const CONTRACTS = flattenContracts(CONTRACTS_JSON);

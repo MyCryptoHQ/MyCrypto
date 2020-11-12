@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DashboardPanel, SubHeading, Tooltip } from '@components';
-import { DataContext } from '@services/Store';
+import { useAppStore } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
 
@@ -40,7 +40,7 @@ const SettingsButton = styled(Button)`
 `;
 
 const DangerZone: React.FC = () => {
-  const { resetAppDb } = useContext(DataContext);
+  const { resetAppDb } = useAppStore();
 
   return (
     <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>

@@ -5,7 +5,7 @@ import AppProviders from 'AppProviders';
 import { ThemeProvider } from 'styled-components';
 
 import { DEFAULT_NETWORK } from '@config';
-import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { NETWORKS } from '@database/data';
 import { customNodeConfig } from '@fixtures';
 import { theme } from '@theme';
 import { Network, NetworkId } from '@types';
@@ -19,8 +19,7 @@ const addNodeToNetwork = () => undefined;
 const isNodeNameAvailable = () => true;
 const getNetworkById = (id: NetworkId) =>
   (({
-    ...NETWORKS_CONFIG[id],
-    nodes: NODES_CONFIG[id]
+    ...NETWORKS[id]
   } as unknown) as Network);
 const updateNode = () => undefined;
 const deleteNode = () => undefined;

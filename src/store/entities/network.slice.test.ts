@@ -1,3 +1,4 @@
+import { NETWORKS } from '@database';
 import { Network } from '@types';
 
 import { initialState, default as slice } from './network.slice';
@@ -15,7 +16,7 @@ describe('NetworkSlice', () => {
 
   it('update(): updates an entity', () => {
     const entity = { id: 'Ethereum', isCustom: false } as Network;
-    const state = { [entity.id]: entity };
+    const state = { [entity.id]: entity } as typeof NETWORKS;
     const modifiedEntity = { ...entity, address: '0x1' } as Network;
     const actual = reducer(state, update(modifiedEntity));
     const expected = { [entity.id]: modifiedEntity };

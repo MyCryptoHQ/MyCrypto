@@ -1,5 +1,3 @@
-import { $ElementType, SymmetricDifference, ValuesType } from 'utility-types';
-
 import {
   Asset,
   Contact,
@@ -31,6 +29,9 @@ export enum LSKeys {
   USER_ACTIONS = 'userActions'
 }
 
+/**
+ * The type of our persist layer
+ */
 export interface LocalStorage {
   readonly version: string;
   readonly mtime: number;
@@ -46,10 +47,14 @@ export interface LocalStorage {
   readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
 }
 
-export type DSKeys = Exclude<LSKeys, LSKeys.NETWORK_NODES>;
-
+/**
+ * Intermediary type used by legacy StoreProvider.
+ * Perisitence: LocalStorage > State: AppState > StoreProvider
+ * - an action within the app will update the State
+ * - redux-perist will sync the State with LocalStorage
+ * - we will be able to replace StoreProvider with selectors
+ */
 export interface DataStore {
-  readonly version: string;
   readonly [LSKeys.ACCOUNTS]: IAccount[];
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
   readonly [LSKeys.NETWORKS]: Network[];
@@ -60,13 +65,3 @@ export interface DataStore {
   readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.USER_ACTIONS]: ExtendedUserAction[];
 }
-
-export interface EncryptedDataStore {
-  readonly data?: string;
-}
-
-export type DataStoreEntry = ValuesType<Omit<DataStore, 'version' | 'password'>>;
-
-export type DataStoreItem =
-  | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>
-  | ISettings;

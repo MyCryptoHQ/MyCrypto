@@ -1,6 +1,3 @@
-// @todo Used for unsupportedTabs. update to unsupportedPaths
-// import { TAB } from 'components/Header/components/constants';
-
 import {
   DEFAULT_NETWORK,
   DEFAULT_NETWORK_TICKER,
@@ -9,19 +6,22 @@ import {
   GAS_PRICE_DEFAULT,
   GAS_PRICE_TESTNET
 } from '@config';
-import { NetworkId, NetworkLegacy, TTicker, WalletId } from '@types';
+import { Network, NetworkId, TTicker, WalletId } from '@types';
+import { generateAssetUUID } from '@utils';
 import { makeExplorer } from '@utils/makeExplorer'; // leads to circular dependency if importing from base utils dir
 
-// Temporay type to bridge the difference between v1 and v2 network definitions.
-export type NetworkConfig = {
-  [key in NetworkId]: NetworkLegacy;
-};
-
-export const NETWORKS_CONFIG: NetworkConfig = {
+/**
+ * Configuration file for app networks.
+ * When used in the app it augmented with contracts, assets, and nodes.
+ * It should NEVER be accessed directly inside the app.
+ * You access networks through the store.
+ */
+export const NETWORKS_CONFIG: Record<NetworkId, Network> = {
   Ethereum: {
-    id: DEFAULT_NETWORK, // Ethereum Network Id
+    id: DEFAULT_NETWORK,
     name: 'Ethereum',
-    unit: DEFAULT_NETWORK_TICKER,
+    baseUnit: DEFAULT_NETWORK_TICKER,
+    baseAsset: generateAssetUUID(1),
     chainId: 1,
     isCustom: false,
     color: '#007896',
@@ -33,8 +33,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'EthPlorer',
       origin: ETHPLORER_URL
     }),
-    tokens: [],
-    contracts: require('./contracts/eth.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/eth.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
@@ -48,7 +49,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Ropsten: {
     id: 'Ropsten',
     name: 'Ropsten',
-    unit: 'RopstenETH' as TTicker,
+    baseUnit: 'RopstenETH' as TTicker,
+    baseAsset: generateAssetUUID(3),
     chainId: 3,
     isCustom: false,
     color: '#adc101',
@@ -56,8 +58,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://ropsten.etherscan.io'
     }),
-    tokens: [],
-    contracts: require('./contracts/ropsten.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/ropsten.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -71,7 +74,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Kovan: {
     id: 'Kovan',
     name: 'Kovan',
-    unit: 'KovanETH' as TTicker,
+    baseUnit: 'KovanETH' as TTicker,
+    baseAsset: generateAssetUUID(42),
     chainId: 42,
     isCustom: false,
     color: '#adc101',
@@ -79,8 +83,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://kovan.etherscan.io'
     }),
-    tokens: [],
-    contracts: require('./contracts/kovan.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/kovan.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -94,7 +99,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Rinkeby: {
     id: 'Rinkeby',
     name: 'Rinkeby',
-    unit: 'RinkebyETH' as TTicker,
+    baseUnit: 'RinkebyETH' as TTicker,
+    baseAsset: generateAssetUUID(4),
     chainId: 4,
     isCustom: false,
     color: '#adc101',
@@ -102,8 +108,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://rinkeby.etherscan.io'
     }),
-    tokens: [],
-    contracts: require('./contracts/rinkeby.json'),
+    assets: [],
+    contracts: [], // require('./contracts/rinkeby.json'),
+    nodes: [],
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -117,7 +124,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Goerli: {
     id: 'Goerli',
     name: 'Goerli',
-    unit: 'GoerliETH' as TTicker,
+    baseUnit: 'GoerliETH' as TTicker,
+    baseAsset: generateAssetUUID(5),
     chainId: 5,
     isCustom: false,
     color: '#adc101',
@@ -125,8 +133,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://goerli.etherscan.io/'
     }),
-    tokens: [],
-    contracts: require('./contracts/goerli.json'),
+    assets: [],
+    contracts: [],
+    nodes: [],
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
@@ -140,7 +149,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ETC: {
     id: 'ETC',
     name: 'Ethereum Classic',
-    unit: 'ETC' as TTicker,
+    baseUnit: 'ETC' as TTicker,
+    baseAsset: generateAssetUUID(61),
     chainId: 61,
     isCustom: false,
     color: '#669073',
@@ -149,8 +159,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://blockscout.com/etc/mainnet',
       addressPath: 'address'
     }),
-    tokens: [],
-    contracts: require('./contracts/etc.json'),
+    assets: [],
+    contracts: [], // require('./contracts/etc.json'),
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETC_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.ETC_LEDGER,
@@ -167,7 +178,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   UBQ: {
     id: 'UBQ',
     name: 'Ubiq',
-    unit: 'UBQ' as TTicker,
+    baseUnit: 'UBQ' as TTicker,
+    baseAsset: generateAssetUUID(8),
     chainId: 8,
     isCustom: false,
     color: '#b37aff',
@@ -175,8 +187,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Ubiqscan',
       origin: 'https://ubiqscan.io'
     }),
-    tokens: [],
-    contracts: require('./contracts/ubq.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/ubq.json'),
     dPaths: {
       [WalletId.TREZOR]: DPaths.UBQ_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.UBQ_DEFAULT,
@@ -193,7 +206,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   EXP: {
     id: 'EXP',
     name: 'Expanse',
-    unit: 'EXP' as TTicker,
+    baseUnit: 'EXP' as TTicker,
+    baseAsset: generateAssetUUID(2),
     chainId: 2,
     isCustom: false,
     color: '#673ab7',
@@ -201,8 +215,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Gander',
       origin: 'https://www.gander.tech'
     }),
-    tokens: [],
-    contracts: require('./contracts/exp.json'),
+    assets: [],
+    contracts: [], // require('./contracts/exp.json'),
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.EXP_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EXP_DEFAULT,
@@ -219,7 +234,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   POA: {
     id: 'POA',
     name: 'POA',
-    unit: 'POA' as TTicker,
+    baseUnit: 'POA' as TTicker,
+    baseAsset: generateAssetUUID(99),
     chainId: 99,
     isCustom: false,
     color: '#6d2eae',
@@ -229,8 +245,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.POA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
@@ -247,7 +264,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   TOMO: {
     id: 'TOMO',
     name: 'TomoChain',
-    unit: 'TOMO' as TTicker,
+    baseUnit: 'TOMO' as TTicker,
+    baseAsset: generateAssetUUID(88),
     chainId: 88,
     isCustom: false,
     color: '#6a488d',
@@ -255,8 +273,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Tomochain Explorer',
       origin: 'https://scan.tomochain.com'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.TOMO_DEFAULT,
@@ -273,7 +292,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
-    unit: 'MUSIC' as TTicker,
+    baseUnit: 'MUSIC' as TTicker,
+    baseAsset: generateAssetUUID(7762959),
     chainId: 7762959,
     isCustom: false,
     color: '#ffbb00',
@@ -282,8 +302,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://explorer.musicoin.org',
       addressPath: 'account'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.MUSIC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MUSIC_DEFAULT,
@@ -301,7 +322,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   EGEM: {
     id: 'EGEM',
     name: 'EtherGem',
-    unit: 'EGEM' as TTicker,
+    baseUnit: 'EGEM' as TTicker,
+    baseAsset: generateAssetUUID(1987),
     chainId: 1987,
     isCustom: false,
     color: '#D0F7FF',
@@ -309,8 +331,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'EtherGem Explorer',
       origin: 'https://explorer.egem.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.EGEM_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EGEM_DEFAULT,
@@ -328,7 +351,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   CLO: {
     id: 'CLO',
     name: 'Callisto',
-    unit: 'CLO' as TTicker,
+    baseUnit: 'CLO' as TTicker,
+    baseAsset: generateAssetUUID(820),
     chainId: 820,
     isCustom: false,
     color: '#00b04a',
@@ -336,8 +360,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Callisto Explorer',
       origin: 'https://explorer.callisto.network'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.CLO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.CLO_DEFAULT,
@@ -355,7 +380,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   RSK: {
     id: 'RSK',
     name: 'RSK',
-    unit: 'RBTC' as TTicker,
+    baseUnit: 'RBTC' as TTicker,
+    baseAsset: generateAssetUUID(30),
     chainId: 30,
     color: '#58A052',
     isCustom: false,
@@ -363,8 +389,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Explorer',
       origin: 'https://explorer.rsk.co'
     }),
-    tokens: [],
-    contracts: require('./contracts/rsk.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/rsk.json'),
     isTestnet: false,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_MAINNET,
@@ -377,15 +404,15 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.06,
       max: 1.5,
       initial: 0.06
-    },
+    }
     //unsupportedTabs: [TAB.ENS],
-    hideEquivalentValues: true
   },
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
     name: 'RSK Testnet',
-    unit: 'RBTC' as TTicker,
+    baseUnit: 'RBTC' as TTicker,
+    baseAsset: generateAssetUUID(31),
     chainId: 31,
     color: '#58A052',
     isCustom: false,
@@ -393,8 +420,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'RSK Testnet Explorer',
       origin: 'https://explorer.testnet.rsk.co'
     }),
-    tokens: [],
-    contracts: require('./contracts/rsk_testnet.json'),
+    assets: [],
+    nodes: [],
+    contracts: [], // require('./contracts/rsk_testnet.json'),
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_TESTNET,
@@ -408,13 +436,13 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 1.5,
       initial: 0.06
     }
-    //unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
     id: 'GO',
     name: 'GO',
-    unit: 'GO' as TTicker,
+    baseUnit: 'GO' as TTicker,
+    baseAsset: generateAssetUUID(60),
     chainId: 60,
     isCustom: false,
     color: '#00b04a',
@@ -422,8 +450,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'GoChain Explorer',
       origin: 'https://explorer.gochain.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.GO_DEFAULT,
@@ -441,7 +470,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   GO_TESTNET: {
     id: 'GO_TESTNET',
     name: 'GO Testnet',
-    unit: 'GO' as TTicker,
+    baseUnit: 'GO' as TTicker,
+    baseAsset: generateAssetUUID(31337),
     chainId: 31337,
     isCustom: false,
     color: '#00b04a',
@@ -449,8 +479,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'GoChain Testnet Explorer',
       origin: 'https://testnet-explorer.gochain.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
@@ -466,7 +497,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ESN: {
     id: 'ESN',
     name: 'EthersocialNetwork',
-    unit: 'ESN' as TTicker,
+    baseUnit: 'ESN' as TTicker,
+    baseAsset: generateAssetUUID(31102),
     chainId: 31102,
     isCustom: false,
     color: '#7a56ad',
@@ -474,8 +506,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'ESN Explorer',
       origin: 'https://ethersocial.net'
     }),
-    tokens: [],
-    contracts: require('./contracts/esn.json'),
+    assets: [],
+    contracts: [], // require('./contracts/esn.json'),
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ESN_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ESN_DEFAULT,
@@ -492,7 +525,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   AQUA: {
     id: 'AQUA',
     name: 'Aquachain',
-    unit: 'AQUA' as TTicker,
+    baseUnit: 'AQUA' as TTicker,
+    baseAsset: generateAssetUUID(61717561),
     chainId: 61717561,
     isCustom: false,
     color: '#00ffff',
@@ -500,8 +534,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'AQUA Explorer',
       origin: 'https://blockscout.aqua.signal2noi.se'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
@@ -518,7 +553,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   AKA: {
     id: 'AKA',
     name: 'Akroma',
-    unit: 'AKA' as TTicker,
+    baseUnit: 'AKA' as TTicker,
+    baseAsset: generateAssetUUID(200625),
     chainId: 200625,
     isCustom: false,
     color: '#aa0087',
@@ -526,8 +562,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Akroma Explorer',
       origin: 'https://explorer.akroma.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.AKA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.AKA_DEFAULT,
@@ -544,7 +581,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   PIRL: {
     id: 'PIRL',
     name: 'Pirl',
-    unit: 'PIRL' as TTicker,
+    baseUnit: 'PIRL' as TTicker,
+    baseAsset: generateAssetUUID(3125659152),
     chainId: 3125659152,
     isCustom: false,
     color: '#a2d729',
@@ -552,8 +590,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Pirl Poseidon Explorer',
       origin: 'https://devexplorer.pirl.io'
     }),
-    tokens: [],
-    contracts: require('./contracts/pirl.json'),
+    assets: [],
+    contracts: [], // require('./contracts/pirl.json'),
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.PIRL_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.PIRL_DEFAULT,
@@ -570,7 +609,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ATH: {
     id: 'ATH',
     name: 'Atheios',
-    unit: 'ATH' as TTicker,
+    baseUnit: 'ATH' as TTicker,
+    baseAsset: generateAssetUUID(1620),
     chainId: 1620,
     isCustom: false,
     color: '#0093c5',
@@ -578,8 +618,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Atheios Explorer',
       origin: 'https://explorer.atheios.com'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ATH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ATH_DEFAULT,
@@ -596,7 +637,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ETHO: {
     id: 'ETHO',
     name: 'Ether-1',
-    unit: 'ETHO' as TTicker,
+    baseUnit: 'ETHO' as TTicker,
+    baseAsset: generateAssetUUID(1313114),
     chainId: 1313114,
     isCustom: false,
     color: '#7a1336',
@@ -604,8 +646,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Ether-1 Explorer',
       origin: 'https://explorer.ether1.org'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETHO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETHO_DEFAULT,
@@ -622,7 +665,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   MIX: {
     id: 'MIX',
     name: 'Mix',
-    unit: 'MIX' as TTicker,
+    baseUnit: 'MIX' as TTicker,
+    baseAsset: generateAssetUUID(76),
     chainId: 76,
     isCustom: false,
     color: '#e59b2b',
@@ -630,8 +674,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'MIX Blockchain Explorer',
       origin: 'https://blocks.mix-blockchain.org'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.MIX_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MIX_DEFAULT,
@@ -648,7 +693,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   REOSC: {
     id: 'REOSC',
     name: 'REOSC',
-    unit: 'REOSC' as TTicker,
+    baseUnit: 'REOSC' as TTicker,
+    baseAsset: generateAssetUUID(2894),
     chainId: 2894,
     isCustom: false,
     color: '#1500db',
@@ -656,8 +702,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'REOSC Explorer',
       origin: 'https://explorer.reosc.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.REOSC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.REOSC_DEFAULT,
@@ -674,7 +721,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ARTIS_SIGMA1: {
     id: 'ARTIS_SIGMA1',
     name: 'ARTIS sigma1',
-    unit: 'ATS' as TTicker,
+    baseUnit: 'ATS' as TTicker,
+    baseAsset: generateAssetUUID(246529),
     chainId: 246529,
     isCustom: false,
     color: '#238006',
@@ -684,8 +732,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     isTestnet: false,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_SIGMA1,
@@ -703,7 +752,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ARTIS_TAU1: {
     id: 'ARTIS_TAU1',
     name: 'ARTIS tau1',
-    unit: 'ATS' as TTicker,
+    baseUnit: 'ATS' as TTicker,
+    baseAsset: generateAssetUUID(246785),
     chainId: 246785,
     isCustom: false,
     color: '#238006',
@@ -713,8 +763,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_TAU1,
@@ -732,7 +783,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   THUNDERCORE: {
     id: 'THUNDERCORE',
     name: 'ThunderCore',
-    unit: 'TT' as TTicker,
+    baseUnit: 'TT' as TTicker,
+    baseAsset: generateAssetUUID(108),
     chainId: 108,
     isCustom: false,
     color: '#ffc000',
@@ -740,8 +792,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'ThunderScan',
       origin: 'https://scan.thundercore.com'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.THUNDERCORE_DEFAULT,
       [WalletId.LEDGER_NANO_S_NEW]: DPaths.THUNDERCORE_DEFAULT,
@@ -756,7 +809,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   WEB: {
     id: 'WEB',
     name: 'Webchain',
-    unit: 'WEB' as TTicker,
+    baseUnit: 'WEB' as TTicker,
+    baseAsset: generateAssetUUID(24484),
     chainId: 24484,
     isCustom: false,
     color: '#0092ee',
@@ -764,8 +818,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Webchain Explorer',
       origin: 'https://explorer.webchain.network'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       default: DPaths.WEB_DEFAULT
     },
@@ -778,7 +833,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   METADIUM: {
     id: 'METADIUM',
     name: 'Metadium',
-    unit: 'META' as TTicker,
+    baseUnit: 'META' as TTicker,
+    baseAsset: generateAssetUUID(11),
     chainId: 11,
     isCustom: false,
     color: '#ffc000',
@@ -786,8 +842,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Metadium Explorer',
       origin: 'https://explorer.metadium.com/'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
@@ -802,7 +859,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   DEXON: {
     id: 'DEXON',
     name: 'DEXON Network',
-    unit: 'DXN' as TTicker,
+    baseUnit: 'DXN' as TTicker,
+    baseAsset: generateAssetUUID(237),
     chainId: 237,
     isCustom: false,
     color: '#954a97',
@@ -811,8 +869,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://dexonscan.app',
       txPath: 'transaction'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.DEXON_DEFAULT,
       [WalletId.LEDGER_NANO_S_NEW]: DPaths.DEXON_DEFAULT,
@@ -827,7 +886,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ETI: {
     id: 'ETI',
     name: 'Etherinc',
-    unit: 'ETI' as TTicker,
+    baseUnit: 'ETI' as TTicker,
+    baseAsset: generateAssetUUID(101),
     chainId: 101,
     isCustom: false,
     color: '#3560bf',
@@ -835,8 +895,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherinc Explorer',
       origin: 'https://explorer.einc.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETI_DEFAULT,
       [WalletId.TREZOR_NEW]: DPaths.ETI_DEFAULT,
@@ -851,7 +912,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ASK: {
     id: 'ASK',
     name: 'Permission',
-    unit: 'ASK' as TTicker,
+    baseUnit: 'ASK' as TTicker,
+    baseAsset: generateAssetUUID(222),
     chainId: 222,
     isCustom: false,
     color: '#000',
@@ -862,8 +924,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'wallets',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ASK_TREZOR,
       [WalletId.TREZOR_NEW]: DPaths.ASK_TREZOR,
@@ -879,7 +942,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   AUX: {
     id: 'AUX',
     name: 'Auxilium',
-    unit: 'AUX' as TTicker,
+    baseUnit: 'AUX' as TTicker,
+    baseAsset: generateAssetUUID(28945486),
     chainId: 28945486,
     isCustom: false,
     color: '#85dc35',
@@ -887,8 +951,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Auxilium Explore',
       origin: 'https://explore.auxilium.global/'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       default: DPaths.AUX_DEFAULT
     },
@@ -901,7 +966,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   ERE: {
     id: 'ERE',
     name: 'EtherCore',
-    unit: 'ERE' as TTicker,
+    baseUnit: 'ERE' as TTicker,
+    baseAsset: generateAssetUUID(466),
     chainId: 466,
     isCustom: false,
     color: '#3a6ea7',
@@ -909,8 +975,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'EtherCore Explorer',
       origin: 'https://explorer.ethercore.io'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ERE_DEFAULT,
       [WalletId.TREZOR_NEW]: DPaths.ERE_DEFAULT,
@@ -925,7 +992,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   VOLTA: {
     id: 'VOLTA',
     name: 'Volta',
-    unit: 'VT' as TTicker,
+    baseUnit: 'VT' as TTicker,
+    baseAsset: generateAssetUUID(73799),
     chainId: 73799,
     isCustom: false,
     color: '#6d2eae',
@@ -935,8 +1003,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.VOLTA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.VOLTA_DEFAULT,
@@ -954,7 +1023,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   EnergyWebChain: {
     id: 'EnergyWebChain',
     name: 'EWC',
-    unit: 'EWT' as TTicker,
+    baseUnit: 'EWT' as TTicker,
+    baseAsset: generateAssetUUID(246),
     chainId: 246,
     isCustom: false,
     color: '#6d2eae',
@@ -964,8 +1034,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.EWC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EWC_DEFAULT,
@@ -982,7 +1053,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   HARDLYDIFFICULT: {
     id: 'HARDLYDIFFICULT',
     name: 'HardlyDifficult',
-    unit: 'HD' as TTicker,
+    baseUnit: 'HD' as TTicker,
+    baseAsset: generateAssetUUID(666),
     chainId: 666,
     isCustom: false,
     color: '#282457',
@@ -992,8 +1064,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       addressPath: 'address',
       blockPath: 'blocks'
     }),
-    tokens: [],
+    assets: [],
     contracts: [],
+    nodes: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,

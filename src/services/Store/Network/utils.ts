@@ -1,4 +1,4 @@
-import { ExtendedContact, Network, NodeOptions, NodeType } from '@types';
+import { ExtendedContact, Network, NetworkId, NodeOptions, NodeType } from '@types';
 
 export abstract class NetworkUtils {
   public static createWeb3Node = (): NodeOptions => ({
@@ -32,7 +32,7 @@ export abstract class NetworkUtils {
     return network.nodes[0];
   };
 
-  public static makeNodeName = (network: string, name: string) =>
+  public static makeNodeName = (network: NetworkId, name: string) =>
     `${network.toLowerCase()}_${name.replace(/ /g, '_')}`;
 
   public static getDistinctNetworks(

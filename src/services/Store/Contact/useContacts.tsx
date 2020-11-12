@@ -39,8 +39,8 @@ export interface IAddressBookContext {
 
 function useContacts() {
   const { addressBook } = useContext(DataContext);
-  const dispatch = useDispatch();
   const { getContractByAddress } = useContracts();
+  const dispatch = useDispatch();
 
   const [contactRestore, setContactRestore] = useState<{
     [name: string]: ExtendedContact | undefined;

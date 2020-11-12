@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import pipe from 'ramda/src/pipe';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext, useSettings } from '@services/Store';
+import { IDataContext, useSettings } from '@services/Store';
+import { useAppStore } from '@store';
 import { translateRaw } from '@translations';
-import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
+import { decrypt, encrypt, hashPassword, withHook } from '@utils';
+import { pipe } from '@vendor';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -34,7 +35,10 @@ const onDemandLockCountDownDuration = 5;
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<
-  RouteComponentProps & IDataContext & ReturnType<typeof useSettings>,
+  RouteComponentProps &
+    IDataContext &
+    ReturnType<typeof useSettings> &
+    ReturnType<typeof useAppStore>,
   State
 > {
   public state: State = {
@@ -81,10 +85,11 @@ class ScreenLockProvider extends Component<
     if (
       this.state.shouldAutoLock &&
       this.props.password &&
-      !(this.props.encryptedDbState && this.props.encryptedDbState.data)
+      !(this.props.vault && this.props.vault.data)
     ) {
-      const encryptedData = encrypt(this.props.exportState(), this.props.password).toString();
-      this.props.setEncryptedCache(encryptedData);
+      const persistedState = await this.props.exportState().then(JSON.stringify);
+      const encryptedData = encrypt(persistedState, this.props.password).toString();
+      this.props.setVault(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
@@ -92,20 +97,21 @@ class ScreenLockProvider extends Component<
   }
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState, importState } = this.props;
+    const { destroyVault, vault } = this.props;
+    if (!vault || !vault.data) return false;
+
     try {
-      if (!encryptedDbState) {
-        return false;
-      }
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      const importResult = importState(decryptedData);
-      if (!importResult) {
-        return false;
+      const decryptedData = decrypt(vault.data as string, passwordHash);
+      // @todo: Redux restore decrypt faculty
+      // const importResult = importState(decryptedData);
+      // if (!importResult) {
+      //   return false;
+      // }
+      if (decryptedData) {
+        destroyVault();
       }
-
-      destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
       this.setState({ locked: false }, () => {
@@ -122,8 +128,8 @@ class ScreenLockProvider extends Component<
 
   // Wipes encrypted data and unlocks
   public resetEncrypted = async () => {
-    const { destroyEncryptedCache } = this.props;
-    destroyEncryptedCache();
+    const { destroyVault } = this.props;
+    destroyVault();
     this.setState({ locked: false }, () => {
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
     });
@@ -131,8 +137,8 @@ class ScreenLockProvider extends Component<
 
   // Wipes both DBs in case of forgotten pw
   public resetAll = async () => {
-    const { destroyEncryptedCache, resetAppDb } = this.props;
-    destroyEncryptedCache();
+    const { destroyVault, resetAppDb } = this.props;
+    destroyVault();
     resetAppDb();
     this.setState({ locked: false }, () => {
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
@@ -142,9 +148,9 @@ class ScreenLockProvider extends Component<
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    const { encryptedDbState } = this.props;
+    const { vault } = this.props;
 
-    if (encryptedDbState && encryptedDbState.data) {
+    if (vault && vault.data) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -170,7 +176,7 @@ class ScreenLockProvider extends Component<
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
-    if (lockingOnDemand && this.props.getUnlockPassword()) {
+    if (lockingOnDemand && this.props.password) {
       this.handleCountdownEnded();
       return;
     }
@@ -208,10 +214,10 @@ class ScreenLockProvider extends Component<
   };
 
   public handleCountdownEnded = () => {
-    /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
-      If user has not setup the password yet, just navigate to "/screen-lock/new. */
-    const { getUnlockPassword } = this.props;
-    const password = getUnlockPassword();
+    // Check if user has already set up the password.
+    // If so encrypt the cache and navigate to "/screen-lock/locked".
+    // Otherwise navigate to "/screen-lock/new.
+    const password = this.props.password;
     clearInterval(countDownTimer);
     if (password) {
       this.setState({ locking: false, locked: true });
@@ -266,8 +272,4 @@ class ScreenLockProvider extends Component<
   }
 }
 
-export default pipe(
-  withRouter,
-  withContext(DataContext),
-  withHook(useSettings)
-)(ScreenLockProvider);
+export default pipe(withRouter, withHook(useSettings), withHook(useAppStore))(ScreenLockProvider);

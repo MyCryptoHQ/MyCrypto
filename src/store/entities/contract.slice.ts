@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { CONTRACTS } from '@database';
 import { ExtendedContract, LSKeys, TUuid } from '@types';
 
-export const initialState = {} as Record<string, ExtendedContract>;
+export const initialState = CONTRACTS || {};
 
 const slice = createSlice({
   name: LSKeys.CONTRACTS,
@@ -13,7 +14,8 @@ const slice = createSlice({
       state[uuid] = action.payload;
     },
     destroy(state, action: PayloadAction<TUuid>) {
-      delete state[action.payload];
+      const uuid = action.payload;
+      delete state[uuid];
     },
     updateMany(state, action: PayloadAction<ExtendedContract[]>) {
       action.payload.forEach((contract) => {

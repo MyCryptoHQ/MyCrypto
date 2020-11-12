@@ -3,12 +3,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { actionWithPayload, getUseDispatchMock, renderHook } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fLocalStorage, fRates, fSettings } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fRates, fSettings } from '@fixtures';
 import { store } from '@store';
 import { ISettings } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
-import useSettings, { isValidImport } from './useSettings';
+import useSettings from './useSettings';
 
 const renderUseAccounts = ({ settings = {} as ISettings } = {}) => {
   const wrapper: React.FC = ({ children }) => (
@@ -99,26 +99,4 @@ describe('useSettings', () => {
   //     })
   //   );
   // });
-});
-
-describe('isValidImport()', () => {
-  it('isValidImport() succeeds under normal circumstances', () => {
-    const isValid = isValidImport(JSON.stringify(fLocalStorage), JSON.stringify(fLocalStorage));
-    expect(isValid).toBe(true);
-  });
-
-  it('isValidImport() fails with mismatching versions', () => {
-    const isValid = () =>
-      isValidImport(
-        JSON.stringify({ ...fLocalStorage, version: '0' }),
-        JSON.stringify(fLocalStorage)
-      );
-    expect(isValid()).toBe(false);
-  });
-
-  it('isValidImport() fails with missing keys', () => {
-    const { accounts, ...lsWithoutAccounts } = fLocalStorage;
-    const isValid = isValidImport(JSON.stringify(lsWithoutAccounts), JSON.stringify(fLocalStorage));
-    expect(isValid).toBe(false);
-  });
 });

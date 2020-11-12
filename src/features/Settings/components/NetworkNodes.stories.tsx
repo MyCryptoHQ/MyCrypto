@@ -2,7 +2,7 @@ import React from 'react';
 
 import { storiesOf } from '@storybook/react';
 
-import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { NETWORKS } from '@database';
 import { Network as INetwork, NetworkId } from '@types';
 
 import AppProviders from '../../../AppProviders';
@@ -12,16 +12,7 @@ const emptyNetworks: INetwork[] = [];
 
 const ethereumId: NetworkId = 'Ethereum';
 const ropstenId: NetworkId = 'Ropsten';
-const someNetworks: INetwork[] = ([
-  {
-    ...NETWORKS_CONFIG[ethereumId],
-    nodes: NODES_CONFIG[ethereumId]
-  },
-  {
-    ...NETWORKS_CONFIG[ropstenId],
-    nodes: NODES_CONFIG[ropstenId]
-  }
-] as unknown) as INetwork[];
+const someNetworks: INetwork[] = [NETWORKS[ethereumId], NETWORKS[ropstenId]];
 
 const toggleFlipped = () => undefined;
 const toggleNetworkCreation = () => undefined;

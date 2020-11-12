@@ -57,3 +57,8 @@ export { default as unionWith } from 'ramda/src/unionWith';
 export { default as uniq } from 'ramda/src/uniq';
 export { default as without } from 'ramda/src/without';
 export { default as symmetricDifference } from 'ramda/src/symmetricDifference';
+export { default as lensPath } from 'ramda/src/lensPath';
+export { default as chain } from 'ramda/src/chain';
+export { default as head } from 'ramda/src/head';
+export { default as complement } from 'ramda/src/complement';
+export { default as dissoc } from 'ramda/src/dissoc';

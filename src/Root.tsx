@@ -4,10 +4,11 @@ import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { DevToolsManager } from '@features';
-import { store } from '@store';
+import { persistor, store } from '@store';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 
@@ -29,18 +30,20 @@ const RootClass = () => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AppProviders>
-            <FullHeight>
-              <DevToolsManager />
-              <FullScreen id="ModalContainer">
-                <AppRoutes />
-              </FullScreen>
-            </FullHeight>
-          </AppProviders>
-        </Router>
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <AppProviders>
+              <FullHeight>
+                <DevToolsManager />
+                <FullScreen id="ModalContainer">
+                  <AppRoutes />
+                </FullScreen>
+              </FullHeight>
+            </AppProviders>
+          </Router>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 };

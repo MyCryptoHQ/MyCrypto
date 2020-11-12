@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 
+// initialState goes api
 export const initialState = {} as Record<string, ExtendedAsset>;
 
 const slice = createSlice({

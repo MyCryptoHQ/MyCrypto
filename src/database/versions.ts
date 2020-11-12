@@ -4,8 +4,16 @@ import { formatDate } from '@utils';
 import { noOp } from '@utils/noOp';
 
 import { SCHEMA_BASE } from './data';
-import { DBConfig } from './types';
 import { migrate } from './v1.0.0';
+
+export interface DBConfig {
+  version: string;
+  main: string;
+  vault: string;
+  defaultValues?: LocalStorage;
+  schema: TObject;
+  migrate?(prev: LocalStorage, curr: LocalStorage): LocalStorage;
+}
 
 export const dbVersions = {
   'v1.0.0': {

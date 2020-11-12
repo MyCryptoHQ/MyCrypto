@@ -45,7 +45,7 @@ export interface ABIItem {
 export interface InteractWithContractState {
   network: Network;
   contractAddress: string;
-  contract: Contract | undefined;
+  contract: Omit<Contract, 'uuid'> | undefined;
   contracts: Contract[];
   abi: string;
   customContractName: string;

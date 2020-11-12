@@ -1,4 +1,4 @@
-import { ExtendedContract } from '@types';
+import { ExtendedContract, NetworkId } from '@types';
 
 import { initialState, default as slice } from './contract.slice';
 
@@ -15,7 +15,7 @@ describe('ContractSlice', () => {
 
   it('destroy(): deletes an entity by uuid', () => {
     const entity = { uuid: 'todestroy' } as ExtendedContract;
-    const state = { [entity.uuid]: entity };
+    const state = { [entity.uuid]: entity } as Record<NetworkId, ExtendedContract>;
     const actual = reducer(state, destroy(entity.uuid));
     const expected = {};
     expect(actual).toEqual(expected);

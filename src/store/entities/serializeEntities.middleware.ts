@@ -2,8 +2,9 @@ import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
 import { map } from '@vendor';
 
-import { default as actionSlice } from './account.slice';
-import { serializeAccount } from './helpers';
+import { createNotification } from '../notifications.slice';
+import { serializeAccount, serializeNotification } from './helpers';
+import { createAccount, updateAccount, updateAccounts } from './index';
 
 /**
  * 2020-11-02: BN and bignumber objects are not serializable so the @reduxjs/toolkit
@@ -14,16 +15,25 @@ import { serializeAccount } from './helpers';
 export const serializeEntitiesMiddleware: Middleware<TObject, any, Dispatch<Action>> = (_) => (
   next
 ) => (action) => {
+  console.log('Action type', action.type);
   switch (action.type) {
-    case actionSlice.actions.create.type:
-    case actionSlice.actions.update.type:
+    /** Transform bigish values to string */
+    case createAccount.type:
+    case updateAccount.type:
       next({ type: action.type, payload: serializeAccount(action.payload) });
       break;
     // Payload is an array of accounts
-    case actionSlice.actions.updateMany.type:
+    case updateAccounts.type:
       next({
         type: action.type,
         payload: map(serializeAccount, action.payload)
+      });
+      break;
+    /** Transform date formats to string */
+    case createNotification.type:
+      next({
+        type: action.type,
+        payload: serializeNotification(action.payload)
       });
       break;
     default:
