@@ -7,5 +7,4 @@ export { useToasts } from './Toasts';
 export { ErrorProvider, ErrorContext } from './ErrorHandling';
 export { default as RepTokenMigration } from './RepTokenMigration';
 export { Dashboard } from './Dashboard';
-export { MigrateLS } from './MigrateLS';
 export { default as GolemTokenMigration } from './GolemTokenMigration';
