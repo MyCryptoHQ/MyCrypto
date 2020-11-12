@@ -44,6 +44,13 @@ jobs:
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
       - uses: actions/checkout@v2
+        if: github.event_name != 'repository_dispatch'
+
+      - uses: actions/checkout@v2
+        if: github.event_name == 'repository_dispatch'
+        with:
+          ref: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
+
       - name: Retrieve node version from .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat package.json | grep '\"node\":' | sed 's/^ *//;s/ *$//;s/\"node\":\ \"//;s/\",//')"
         id: nvm
