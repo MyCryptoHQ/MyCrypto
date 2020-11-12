@@ -973,6 +973,7 @@
     "MYC_WINTER_BONUS_ACTION_BODY_2": "Validate your MyCrypto Membership via Twitter to receive 3 bonus #MyCryptoWinter entries (aka three extra chances to win one of the prize packs)!",
     "MYC_WINTER_BONUS_ACTION_BUTTON": "Verify on Twitter",
     "MYC_WINTER_BONUS_TWEET": "Verifying my @MyCrypto Membership account $address for 3 bonus #MyCryptoWinter entries! winter.mycrypto.com",
-    "TRANSACTIONS_MULTI": "Transaction $current of $total"
+    "TRANSACTIONS_MULTI": "Transaction $current of $total",
+    "ASSET_PRICE": "Asset Price"
   }
 }

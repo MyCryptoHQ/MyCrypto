@@ -75,12 +75,13 @@ export default function MultiTxReceipt({
 
       {transactions.map((transaction, idx) => {
         const { asset, baseAsset, amount } = transactionsConfigs[idx];
-        const { gasPrice, gasLimit, data, nonce, value } = transaction.txRaw;
+        const { gasPrice, gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
           transaction.txReceipt && transaction.txReceipt.gasUsed
             ? transaction.txReceipt.gasUsed.toString()
             : gasLimit;
 
+        const status = transaction.status;
         const timestamp = transaction.minedAt || 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
@@ -156,6 +157,9 @@ export default function MultiTxReceipt({
                 rawTransaction={transaction.txRaw}
                 fiat={fiat}
                 baseAssetRate={baseAssetRate}
+                timestamp={timestamp}
+                status={status}
+                recipient={to}
               />
             </div>
           </div>

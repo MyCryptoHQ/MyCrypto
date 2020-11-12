@@ -201,7 +201,8 @@ export const ConfirmTransactionUI = ({
     receiverAddress,
     nonce,
     data,
-    baseAsset
+    baseAsset,
+    rawTransaction
   } = txConfig;
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
@@ -389,6 +390,8 @@ export const ConfirmTransactionUI = ({
         signedTransaction={signedTx}
         fiat={fiat}
         baseAssetRate={baseAssetRate}
+        rawTransaction={rawTransaction}
+        recipient={rawTransaction.to}
       />
       {txType === ITxType.DEFIZAP && (
         <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>

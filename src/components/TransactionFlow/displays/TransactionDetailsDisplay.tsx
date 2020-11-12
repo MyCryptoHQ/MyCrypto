@@ -5,10 +5,11 @@ import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock } from '@components';
+import EthAddress from '@components/EthAddress';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, Fiat, ITxObject } from '@types';
+import { Asset, Fiat, ITxObject, ITxStatus, TAddress } from '@types';
 import {
   baseToConvertedUnit,
   calculateGasUsedPercentage,
@@ -19,6 +20,7 @@ import {
 } from '@utils';
 
 import { PendingTransaction } from '../PendingLoader';
+import { TxReceiptStatusBadge } from '../TxReceiptStatusBadge';
 import { ISender } from '../types';
 
 import './TransactionDetailsDisplay.scss';
@@ -39,6 +41,9 @@ interface Props {
   sender: ISender;
   fiat: Fiat;
   baseAssetRate: number | undefined;
+  status?: ITxStatus;
+  timestamp?: number;
+  recipient: TAddress;
 }
 
 const SeeMoreDetailsButton = styled(Button)`
@@ -62,7 +67,10 @@ function TransactionDetailsDisplay({
   signedTransaction,
   sender,
   fiat,
-  baseAssetRate
+  baseAssetRate,
+  status,
+  timestamp,
+  recipient
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -103,6 +111,42 @@ function TransactionDetailsDisplay({
         </div>
         {showDetails && (
           <div className="TransactionDetails-content">
+            {status && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{translateRaw('TX_STATUS')}:</div>
+                <div className="TransactionDetails-row-column">
+                  {status == ITxStatus.PENDING ? (
+                    <PendingTransaction />
+                  ) : (
+                    <TxReceiptStatusBadge status={status} />
+                  )}
+                </div>
+              </div>
+            )}
+            {timestamp && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
+                <div className="TransactionDetails-row-column">
+                  {timestamp !== 0 ? (
+                    new Date(Math.floor(timestamp * 1000)).toLocaleString()
+                  ) : (
+                    <PendingTransaction />
+                  )}
+                </div>
+              </div>
+            )}
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('X_SENDER')}:</div>
+              <div className="TransactionDetails-row-column">
+                <EthAddress address={sender.address} truncate={true} disableTooltip={true} />
+              </div>
+            </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
+              <div className="TransactionDetails-row-column">
+                <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+              </div>
+            </div>
             {sender.accountBalance && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
@@ -170,6 +214,12 @@ function TransactionDetailsDisplay({
                 ) : (
                   <PendingTransaction />
                 )}
+              </div>
+            </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('ASSET_PRICE')}:</div>
+              <div className="TransactionDetails-row-column">
+                {`${fiat.symbol}${baseAssetRate}/${baseAsset.ticker}`}
               </div>
             </div>
             <div className="TransactionDetails-row">

@@ -440,6 +440,9 @@ export const TxReceiptUI = ({
           rawTransaction={txConfig.rawTransaction}
           fiat={fiat}
           baseAssetRate={baseAssetRate}
+          status={txStatus}
+          timestamp={timestamp}
+          recipient={rawTransaction.to}
         />
       </div>
       {completeButtonText && !(txStatus === ITxStatus.PENDING) && (
