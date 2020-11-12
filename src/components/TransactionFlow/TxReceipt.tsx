@@ -320,6 +320,8 @@ export const TxReceiptUI = ({
     }
   }, [displayTxReceipt, txConfig.asset]);
 
+  // VERY IMPORTANT CHANGE HERE
+
   return (
     <div className="TransactionReceipt">
       {protectTxEnabled && !web3Wallet && (
