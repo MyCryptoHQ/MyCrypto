@@ -12,7 +12,7 @@ const SPendingTransaction = styled.div`
 
 export const PendingTransaction: FC = () => {
   return (
-    <SPendingTransaction>
+    <SPendingTransaction data-testid="pending-spinner">
       <Spinner color="brand" mr={'25px'} />
       <span>
         <b>{translateRaw('PENDING')}</b>

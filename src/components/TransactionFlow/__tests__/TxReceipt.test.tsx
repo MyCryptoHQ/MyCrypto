@@ -85,7 +85,7 @@ describe('TxReceipt', () => {
       txStatus: ITxStatus.PENDING,
       displayTxReceipt: undefined
     });
-    expect(getAllByTestId('PENDING')).toBeDefined();
+    expect(getAllByTestId('pending-spinner')).toBeDefined();
   });
 
   test('it displays PTX info', async () => {
