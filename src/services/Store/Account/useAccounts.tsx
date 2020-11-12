@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 import property from 'lodash/property';
 import unionBy from 'lodash/unionBy';
 
-import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import {
   createAccount,
   destroyAccount,
@@ -25,7 +25,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, useAnalytics } from '@utils';
+import { isSameAddress } from '@utils';
 import { eqBy, isEmpty, prop, unionWith } from '@vendor';
 
 import { getAllTokensBalancesOfAccount } from '../BalanceService';

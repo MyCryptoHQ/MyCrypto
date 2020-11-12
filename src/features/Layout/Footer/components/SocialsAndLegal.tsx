@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 
 import { DisclaimerModal, NewTabLink } from '@components';
 import { socialMediaLinks, VERSION } from '@config';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import { translateRaw } from '@translations';
 import './SocialsAndLegal.scss';
-import { useAnalytics } from '@utils';
 
 const SocialMediaLink = ({ link, text, icon }: { link: string; text: string; icon?: string }) => {
   const trackSocial = useAnalytics({

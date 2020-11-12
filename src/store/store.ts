@@ -26,7 +26,6 @@ const AppPersistConfig = {
   key: 'Storage',
   keyPrefix: 'MYC:',
   storage,
-  debug: true,
   blacklist: ['networks', 'assets', 'vault']
 };
 

@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import { DataContext } from '@services/Store';
 import { createNotification, updateNotification, useDispatch } from '@store';
 import { ExtendedNotification } from '@types';
-import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
+import { generateUUID, getTimeDifference, notUndefined } from '@utils';
 
 import { notificationsConfigs } from './constants';
 

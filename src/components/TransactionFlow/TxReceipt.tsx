@@ -28,7 +28,7 @@ import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectT
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { SwapDisplayData } from '@features/SwapAssets/types';
-import { fetchGasPriceEstimates, useRates } from '@services';
+import { fetchGasPriceEstimates, makeFinishedTxReceipt, useRates } from '@services';
 import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
@@ -54,7 +54,6 @@ import {
 } from '@types';
 import { buildTxUrl, convertToFiat, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
-import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
 
 import { FromToAccount, SwapFromToDiagram, TransactionDetailsDisplay } from './displays';

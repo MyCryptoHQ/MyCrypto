@@ -36,7 +36,7 @@ describe('Downloader', () => {
   });
 
   it('renders its children who replace the default button', () => {
-    getComponent({ data: dummyState, onClick: () => <button>Hello</button> });
+    getComponent({ data: dummyState }, () => <button>Hello</button>);
     expect(screen.getByText(/hello/i)).toBeInTheDocument();
     expect(screen.queryByText(/download/i)).not.toBeInTheDocument();
   });

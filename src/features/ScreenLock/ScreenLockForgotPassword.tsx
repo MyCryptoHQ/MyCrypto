@@ -7,9 +7,8 @@ import styled from 'styled-components';
 import mainImage from '@assets/images/icn-forgot-password.svg';
 import { ExtendedContentPanel } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import translate, { translateRaw } from '@translations';
-import { useAnalytics } from '@utils';
 
 import { ScreenLockContext } from './ScreenLockProvider';
 

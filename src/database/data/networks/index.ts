@@ -16,3 +16,5 @@ export const addNodesToNetworks = (
   });
   return mapObjIndexed(addNodes, networks);
 };
+
+export const NETWORKS = addNodesToNetworks(NETWORKS_CONFIG, NODES_CONFIG);

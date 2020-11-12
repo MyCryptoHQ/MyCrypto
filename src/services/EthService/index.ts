@@ -6,7 +6,9 @@ export {
   decodeTransfer,
   decodeApproval,
   RepV2Token,
-  AntMigrator
+  AntMigrator,
+  AaveMigrator,
+  UnlockToken
 } from './contracts';
 export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
@@ -41,3 +43,4 @@ export {
 export { ProviderHandler, getDPath, getDPaths } from './network';
 export { getResolvedENSAddress, isValidENSName } from './ens';
 export * from './utils';
+export { formatApproveTx } from './erc20';

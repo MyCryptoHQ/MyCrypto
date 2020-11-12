@@ -20,12 +20,9 @@ export const serializeAccount: (a: IAccount | StoreAccount) => IAccount | StoreA
 );
 
 export const serializeNotification: (n: ExtendedNotification) => ExtendedNotification = (n) => {
-  console.log('pre:serialized', n);
-  const hello = pipe(
+  return pipe(
     over(dateDisplayedLens, toString),
     over(dateDismissedLens, toString),
     over(firstDashboardVisitDateLens, toString)
   )(n);
-  console.log('serialized', hello);
-  return hello;
 };

@@ -46,24 +46,21 @@ import {
   TAddress
 } from '@types';
 import {
+  bigify,
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther,
   fromTokenBase,
   gasPriceToBase,
-  toWei
-} from '@utils';
-
-import { bigify } from './bigify';
-import { hexToNumber } from './formatters';
-import {
+  getDecimalFromEtherUnit,
+  hexToNumber,
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
-  inputNonceToHex
-} from './makeTransaction';
-import { getDecimalFromEtherUnit } from './units';
-import { isTransactionDataEmpty } from './validators';
+  inputNonceToHex,
+  isTransactionDataEmpty,
+  toWei
+} from '@utils';
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;

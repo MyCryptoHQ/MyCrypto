@@ -13,11 +13,12 @@ import {
   useAccounts,
   useAssets,
   useFeatureFlags,
-  useNetworks
+  useNetworks,
+  withProtectTxProvider
 } from '@services';
 import { translateRaw } from '@translations';
 import { IFormikFields, ISignedTx, ITxConfig, ITxReceipt, TxQueryTypes } from '@types';
-import { getParam, isWeb3Wallet, withProtectTxProvider } from '@utils';
+import { getParam, isWeb3Wallet } from '@utils';
 import { isEmpty } from '@vendor';
 
 import {

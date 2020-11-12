@@ -1,7 +1,6 @@
 import { SETTINGS_FILENAME } from '@config';
 import { LocalStorage } from '@types';
-import { formatDate } from '@utils';
-import { noOp } from '@utils/noOp';
+import { formatDate, noOp } from '@utils';
 
 import { SCHEMA_BASE } from './data';
 import { migrate } from './v1.0.0';

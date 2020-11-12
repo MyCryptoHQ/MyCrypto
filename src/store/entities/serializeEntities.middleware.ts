@@ -15,7 +15,6 @@ import { createAccount, updateAccount, updateAccounts } from './index';
 export const serializeEntitiesMiddleware: Middleware<TObject, any, Dispatch<Action>> = (_) => (
   next
 ) => (action) => {
-  console.log('Action type', action.type);
   switch (action.type) {
     /** Transform bigish values to string */
     case createAccount.type:

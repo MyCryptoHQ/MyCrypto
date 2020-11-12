@@ -8,9 +8,9 @@ import styled from 'styled-components';
 import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
 import { ExtendedContentPanel } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
-import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { ANALYTICS_CATEGORIES, GithubService, useAnalytics } from '@services/ApiService';
 import translate from '@translations';
-import { getFeaturedOS, openLink, useAnalytics } from '@utils';
+import { getFeaturedOS, openLink } from '@utils';
 
 import { AppDownloadItem } from './types';
 

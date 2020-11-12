@@ -6,9 +6,8 @@ import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
 import { ExtendedContentPanel, InputField } from '@components';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import translate, { translateRaw } from '@translations';
-import { useAnalytics } from '@utils';
 
 import { ScreenLockContext } from './ScreenLockProvider';
 

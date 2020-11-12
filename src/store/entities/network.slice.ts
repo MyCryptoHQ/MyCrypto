@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { NETWORKS } from '@database';
+import { NETWORKS } from '@database/data';
 import { LSKeys, Network } from '@types';
 
 export const initialState = NETWORKS;

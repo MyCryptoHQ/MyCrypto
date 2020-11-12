@@ -2,9 +2,8 @@ import React from 'react';
 
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { useAssets, useRates, useSettings } from '@services';
+import { makeTxItem, useAssets, useRates, useSettings } from '@services';
 import { ITokenMigrationConfig, StoreAccount, TxParcel } from '@types';
-import { makeTxItem } from '@utils/transaction';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
@@ -38,9 +37,7 @@ export default function TokenMigrationReceipt({
 
   const fiat = getFiat(settings);
   const lastTxConfig =
-    flowConfig.txConstructionConfigs[
-    flowConfig.txConstructionConfigs.length - 1
-  ];
+    flowConfig.txConstructionConfigs[flowConfig.txConstructionConfigs.length - 1];
   return (
     <MultiTxReceipt
       txType={lastTxConfig.txType}

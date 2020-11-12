@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from '@services/ApiService';
 
 interface AnalyticCallbackProps {
   category?: ANALYTICS_CATEGORIES;

@@ -17,7 +17,7 @@ import {
   MembershipState,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
-import { ENSService, isEthereumAccount } from '@services';
+import { ENSService, isEthereumAccount, makeFinishedTxReceipt } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -51,14 +51,17 @@ import {
   isSameAddress,
   multiplyBNFloats,
   sortByLabel,
-  useAnalytics,
   useInterval,
   weiToFloat
 } from '@utils';
-import { makeFinishedTxReceipt } from '@utils/transaction';
 import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';
+import {
+  ANALYTICS_CATEGORIES,
+  MyCryptoApiService,
+  UniswapService,
+  useAnalytics
+} from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import {
   getAssetByTicker,

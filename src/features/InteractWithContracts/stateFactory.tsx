@@ -9,6 +9,7 @@ import {
   getNetworkById,
   getResolvedENSAddress,
   isValidETHAddress,
+  makePendingTxReceipt,
   ProviderHandler,
   useAccounts,
   useContracts,
@@ -28,7 +29,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import { isSameAddress, TUseStateReducerFactory } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';

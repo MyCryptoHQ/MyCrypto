@@ -3,12 +3,12 @@ import React, { FC, useCallback, useState } from 'react';
 import { InlineMessage, NewTabLink } from '@components';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services';
 import { NetworkUtils, useNetworks, useSettings } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
 import { FormData, Network, WalletId } from '@types';
-import { hasWeb3Provider, useAnalytics, useScreenSize } from '@utils';
+import { hasWeb3Provider, useScreenSize } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 
 import './Web3Provider.scss';

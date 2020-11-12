@@ -1,7 +1,7 @@
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
-import { RepV2Token } from '@services/EthService';
+import { formatApproveTx, RepV2Token } from '@services/EthService';
 import { ITokenMigrationFormFull, ITxData, ITxObject, ITxToAddress } from '@types';
-import { formatApproveTx, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { repTokenMigrationConfig } from './config';
 

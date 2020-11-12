@@ -2,9 +2,8 @@ import React from 'react';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { useAssets, useRates, useSettings } from '@services';
+import { makeTxItem, useAssets, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
-import { makeTxItem } from '@utils/transaction';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';

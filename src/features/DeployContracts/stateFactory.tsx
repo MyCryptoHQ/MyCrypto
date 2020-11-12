@@ -6,10 +6,10 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
-import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
+import { getGasEstimate, makePendingTxReceipt, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
-import { makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import { TUseStateReducerFactory } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 
 import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';

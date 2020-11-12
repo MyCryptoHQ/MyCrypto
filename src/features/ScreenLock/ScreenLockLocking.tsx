@@ -3,10 +3,10 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import { useSettings } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import { formatTimeDuration, useAnalytics } from '@utils';
+import { formatTimeDuration } from '@utils';
 
 const MainWrapper = styled.div`
   display: flex;

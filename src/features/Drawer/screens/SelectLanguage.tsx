@@ -3,9 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { LANGUAGES } from '@config';
-import { ANALYTICS_CATEGORIES, useSettings } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics, useSettings } from '@services';
 import { translateRaw } from '@translations';
-import { useAnalytics } from '@utils';
 
 const LanguagesList = styled.ul`
   flex-grow: 1;

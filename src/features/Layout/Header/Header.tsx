@@ -15,10 +15,11 @@ import {
 } from '@config';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { ANALYTICS_CATEGORIES, useFeatureFlags, useSettings } from '@services';
+import { useFeatureFlags, useSettings } from '@services';
+import { ANALYTICS_CATEGORIES, useAnalytics } from '@services/ApiService';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import translate from '@translations';
-import { openLink, useAnalytics } from '@utils';
+import { openLink } from '@utils';
 
 import { getLinks } from './constants';
 

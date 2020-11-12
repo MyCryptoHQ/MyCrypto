@@ -1,7 +1,7 @@
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
-import { AaveMigrator } from '@services/EthService/contracts';
+import { AaveMigrator, formatApproveTx } from '@services/EthService';
 import { ITokenMigrationFormFull, ITxData, ITxObject, ITxToAddress } from '@types';
-import { formatApproveTx, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { MIGRATION_CONTRACT } from './config';
 

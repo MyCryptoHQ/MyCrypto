@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CONTRACTS } from '@database';
+import { CONTRACTS } from '@database/data';
 import { ExtendedContract, LSKeys, TUuid } from '@types';
 
 export const initialState = CONTRACTS || {};
