@@ -16,10 +16,14 @@ const Ethereum: Network = {
   },
   dPaths: {
     TREZOR: {
-      label: 'Trezor (ETH)',
+      label: 'TREZOR (ETH)',
       value: "m/44'/60'/0'/0"
     },
     LEDGER_NANO_S: {
+      label: 'Ledger (ETH)',
+      value: "m/44'/60'/0'"
+    },
+    LEDGER_NANO_S_NEW: {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"
     },
@@ -32,27 +36,50 @@ const Ethereum: Network = {
   assets: ['356a192b-7913-504c-9457-4d18c28d46e6', REPV1UUID, REPV2UUID] as TUuid[],
   baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
   baseUnit: 'ETH' as TTicker,
+  autoNode: 'ethereum_mycrypto',
+  selectedNode: 'ethereum_mycrypto',
   nodes: [
     {
-      name: 'eth_mycrypto',
+      name: 'ethereum_mycrypto',
       type: NodeType.RPC,
       service: 'MyCrypto',
       url: 'https://api.mycryptoapi.com/eth',
       isCustom: false
     },
     {
-      name: 'eth_ethscan',
+      name: 'ethereum_ethscan',
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://api.etherscan.io/api',
       isCustom: false
+    },
+    {
+      isCustom: false,
+      name: 'ethereum_infura',
+      service: 'Infura',
+      type: NodeType.INFURA,
+      url: 'https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a'
+    },
+    {
+      isCustom: false,
+      name: 'ethereum_pocket',
+      service: 'Pocket',
+      type: NodeType.POCKET,
+      url: 'https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e'
     }
   ],
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://etherscan.io'
   }),
-  selectedNode: 'eth_mycrypto'
+  tokenExplorer: {
+    addressPath: 'address',
+    blockPath: 'block',
+    name: 'EthPlorer',
+    origin: 'https://ethplorer.io',
+    txPath: 'tx'
+  },
+  shouldEstimateGasPrice: true
 };
 
 const Ropsten: Network = {
@@ -98,10 +125,12 @@ const Ropsten: Network = {
       name: 'ropsten_infura',
       type: NodeType.INFURA,
       service: 'Infura',
-      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286',
+      url: 'https://ropsten.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a',
       isCustom: false
     }
   ],
+  autoNode: 'ropsten_infura',
+  selectedNode: 'ropsten_infura',
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://ropsten.etherscan.io'

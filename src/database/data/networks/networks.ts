@@ -24,6 +24,7 @@ export const NETWORKS_CONFIG: Record<NetworkId, Network> = {
     baseAsset: generateAssetUUID(1),
     chainId: 1,
     isCustom: false,
+    isTestnet: false,
     color: '#007896',
     blockExplorer: makeExplorer({
       name: 'Etherscan',
