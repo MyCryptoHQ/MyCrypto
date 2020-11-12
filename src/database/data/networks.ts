@@ -39,6 +39,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
       [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ETH_DEFAULT
     },
@@ -62,6 +63,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ETH_TESTNET
     },
     gasPriceSettings: GAS_PRICE_TESTNET
@@ -83,6 +86,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ETH_TESTNET
     },
     gasPriceSettings: GAS_PRICE_DEFAULT
@@ -104,6 +109,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ETH_TESTNET
     },
     gasPriceSettings: GAS_PRICE_TESTNET
@@ -125,6 +132,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ETH_TESTNET
     },
     gasPriceSettings: GAS_PRICE_TESTNET
@@ -146,6 +155,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETC_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.ETC_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETC_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETC_LEDGER,
       default: DPaths.ETC_LEDGER
     },
     gasPriceSettings: {
@@ -170,6 +181,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.UBQ_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.UBQ_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.UBQ_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.UBQ_DEFAULT,
       default: DPaths.UBQ_DEFAULT
     },
     gasPriceSettings: {
@@ -194,6 +207,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.EXP_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EXP_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.EXP_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.EXP_DEFAULT,
       default: DPaths.EXP_DEFAULT
     },
     gasPriceSettings: {
@@ -220,6 +235,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.POA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.POA_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.POA_DEFAULT
     },
     gasPriceSettings: {
@@ -242,9 +259,10 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
       [WalletId.TREZOR]: DPaths.ETH_TREZOR,
       [WalletId.LEDGER_NANO_S]: DPaths.TOMO_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.TOMO_DEFAULT,
       default: DPaths.TOMO_DEFAULT
     },
     gasPriceSettings: {
@@ -270,6 +288,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.MUSIC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MUSIC_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.MUSIC_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.MUSIC_DEFAULT,
       default: DPaths.MUSIC_DEFAULT
     },
     gasPriceSettings: {
@@ -295,6 +315,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.EGEM_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EGEM_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.EGEM_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.EGEM_DEFAULT,
       default: DPaths.EGEM_DEFAULT
     },
     gasPriceSettings: {
@@ -320,6 +342,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.CLO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.CLO_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.CLO_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.CLO_DEFAULT,
       default: DPaths.CLO_DEFAULT
     },
     gasPriceSettings: {
@@ -346,6 +370,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_MAINNET,
       [WalletId.LEDGER_NANO_S]: DPaths.RSK_MAINNET,
+      [WalletId.TREZOR_NEW]: DPaths.RSK_MAINNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.RSK_MAINNET,
       default: DPaths.RSK_MAINNET
     },
     gasPriceSettings: {
@@ -374,6 +400,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.RSK_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.RSK_TESTNET,
+      [WalletId.TREZOR_NEW]: DPaths.RSK_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.RSK_TESTNET,
       default: DPaths.RSK_TESTNET
     },
     gasPriceSettings: {
@@ -400,6 +428,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.GO_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.GO_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.GO_DEFAULT,
       default: DPaths.GO_DEFAULT
     },
     gasPriceSettings: {
@@ -425,6 +455,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: DPaths.GO_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.GO_DEFAULT,
       default: DPaths.GO_DEFAULT
     },
     gasPriceSettings: {
@@ -449,6 +480,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ESN_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ESN_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ESN_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ESN_DEFAULT,
       default: DPaths.ESN_DEFAULT
     },
     gasPriceSettings: {
@@ -473,6 +506,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_DEFAULT,
       default: DPaths.ETH_DEFAULT
     },
     gasPriceSettings: {
@@ -497,6 +532,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.AKA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.AKA_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.AKA_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.AKA_DEFAULT,
       default: DPaths.AKA_DEFAULT
     },
     gasPriceSettings: {
@@ -521,6 +558,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.PIRL_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.PIRL_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.PIRL_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.PIRL_DEFAULT,
       default: DPaths.PIRL_DEFAULT
     },
     gasPriceSettings: {
@@ -545,6 +584,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ATH_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ATH_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ATH_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ATH_DEFAULT,
       default: DPaths.ATH_DEFAULT
     },
     gasPriceSettings: {
@@ -569,6 +610,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETHO_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.ETHO_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ETHO_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETHO_DEFAULT,
       default: DPaths.ETHO_DEFAULT
     },
     gasPriceSettings: {
@@ -593,6 +636,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.MIX_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.MIX_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.MIX_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.MIX_DEFAULT,
       default: DPaths.MIX_DEFAULT
     },
     gasPriceSettings: {
@@ -617,6 +662,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.REOSC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.REOSC_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.REOSC_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.REOSC_DEFAULT,
       default: DPaths.REOSC_DEFAULT
     },
     gasPriceSettings: {
@@ -644,6 +691,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_SIGMA1,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ARTIS_SIGMA1,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ARTIS_SIGMA1
     },
     gasPriceSettings: {
@@ -671,6 +720,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ARTIS_TAU1,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ARTIS_TAU1,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.ARTIS_TAU1
     },
     gasPriceSettings: {
@@ -694,6 +745,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.THUNDERCORE_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.THUNDERCORE_DEFAULT,
       default: DPaths.THUNDERCORE_DEFAULT
     },
     gasPriceSettings: {
@@ -739,6 +791,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
       default: DPaths.METADIUM_DEFAULT
     },
     gasPriceSettings: {
@@ -763,6 +816,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.DEXON_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.DEXON_DEFAULT,
       default: DPaths.DEXON_DEFAULT
     },
     gasPriceSettings: {
@@ -786,6 +840,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETI_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ETI_DEFAULT,
       default: DPaths.ETI_DEFAULT
     },
     gasPriceSettings: {
@@ -812,6 +867,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ASK_TREZOR,
+      [WalletId.TREZOR_NEW]: DPaths.ASK_TREZOR,
       default: DPaths.ASK_DEFAULT
     },
     gasPriceSettings: {
@@ -858,6 +914,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     contracts: [],
     dPaths: {
       [WalletId.TREZOR]: DPaths.ERE_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.ERE_DEFAULT,
       default: DPaths.ERE_DEFAULT
     },
     gasPriceSettings: {
@@ -884,6 +941,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.VOLTA_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.VOLTA_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.VOLTA_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.VOLTA_DEFAULT,
       default: DPaths.VOLTA_DEFAULT
     },
     gasPriceSettings: {
@@ -911,6 +970,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.EWC_DEFAULT,
       [WalletId.LEDGER_NANO_S]: DPaths.EWC_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.EWC_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.EWC_DEFAULT,
       default: DPaths.EWC_DEFAULT
     },
     gasPriceSettings: {
@@ -937,6 +998,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DPaths.ETH_TESTNET,
       [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_TESTNET,
       default: DPaths.ETH_TESTNET
     },
     gasPriceSettings: {
