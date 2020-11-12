@@ -17,8 +17,8 @@ jobs:
         id: generate_token
         uses: MyCryptoHQ/github-app-token@v1
         with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
+          app_id: ${{ secrets.WORKFLOW_APP_ID }}
+          private_key: ${{ secrets.WORKFLOW_PRIVATE_KEY }}
 
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v1
