@@ -4,7 +4,6 @@ import { Button, Network } from '@mycrypto/ui';
 import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
-
 import { CopyableCodeBlock } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { COLORS } from '@theme';
@@ -19,7 +18,7 @@ import {
   weiToFloat
 } from '@utils';
 
-
+import { PendingTransaction } from '../PendingLoader';
 import { ISender } from '../types';
 
 import './TransactionDetailsDisplay.scss';
@@ -135,7 +134,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('CONFIRMATIONS')}:</div>
               <div className="TransactionDetails-row-column">
-                {confirmations ? `${confirmations}` : translate('UNKNOWN')}
+                {confirmations ? `${confirmations}` : <PendingTransaction />}
               </div>
             </div>
             <div className="TransactionDetails-row">
@@ -145,9 +144,11 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
               <div className="TransactionDetails-row-column">
-                {gasUsed
-                  ? `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
-                  : translate('UNKNOWN')}
+                {gasUsed ? (
+                  `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
+                ) : (
+                  <PendingTransaction />
+                )}
               </div>
             </div>
             {baseAsset && (
@@ -164,9 +165,11 @@ function TransactionDetailsDisplay({
                 {translateRaw('TRANSACTION_FEE')}:
               </div>
               <div className="TransactionDetails-row-column">
-                {actualTxFeeBase
-                  ? `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
-                  : translate('UNKNOWN')}
+                {actualTxFeeBase ? (
+                  `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
+                ) : (
+                  <PendingTransaction />
+                )}
               </div>
             </div>
             <div className="TransactionDetails-row">
@@ -186,10 +189,10 @@ function TransactionDetailsDisplay({
                   <CopyableCodeBlock>{data}</CopyableCodeBlock>
                 </div>
               ) : (
-                  <div className="TransactionDetails-row-data-empty">
-                    {translate('TRANS_DATA_NONE')}
-                  </div>
-                )}
+                <div className="TransactionDetails-row-data-empty">
+                  {translate('TRANS_DATA_NONE')}
+                </div>
+              )}
             </div>
             {rawTransaction && (
               <>

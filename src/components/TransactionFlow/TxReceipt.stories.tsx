@@ -49,7 +49,7 @@ export const transactionReceiptPending = wrapInProvider(
     <TxReceiptUI
       settings={fSettings}
       txStatus={ITxStatus.PENDING}
-      timestamp={timestamp}
+      timestamp={0}
       resetFlow={resetFlow}
       assetRate={assetRate}
       senderContact={senderContact}

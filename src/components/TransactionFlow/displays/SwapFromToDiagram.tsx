@@ -22,26 +22,26 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin: 18px 0;
+  background: #f8f8f8;
 `;
 
 const AssetWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin: 0 15px;
   width: 148px;
-  height: 9em;
+  height: 4em;
   text-align: center;
   & > :first-child {
-    margin-bottom: 14px;
+    margin-right: 5px;
   }
 `;
 
 const Arrow = styled.img`
-  width: 54px;
-  height: 38px;
-  margin-bottom: 25px;
+  width: 30px;
+  height: 21px;
 `;
 
 export default function SwapFromToDiagram(props: Props) {
@@ -49,10 +49,10 @@ export default function SwapFromToDiagram(props: Props) {
   return (
     <Wrapper>
       <AssetWrapper>
-        <AssetIcon uuid={fromUUID} size="72px" />
+        <AssetIcon uuid={fromUUID} size="24px" />
         <Currency
           bold={true}
-          fontSize={FONT_SIZE.LG}
+          fontSize={FONT_SIZE.SM}
           amount={fromAmount}
           uuid={fromUUID}
           ticker={fromSymbol}
@@ -61,10 +61,10 @@ export default function SwapFromToDiagram(props: Props) {
       </AssetWrapper>
       <Arrow src={arrowIcon} />
       <AssetWrapper>
-        <AssetIcon uuid={toUUID} size="72px" />
+        <AssetIcon uuid={toUUID} size="24px" />
         <Currency
           bold={true}
-          fontSize={FONT_SIZE.LG}
+          fontSize={FONT_SIZE.SM}
           amount={toAmount}
           uuid={toUUID}
           ticker={toSymbol}

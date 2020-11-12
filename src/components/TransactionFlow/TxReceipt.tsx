@@ -11,6 +11,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Body, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
@@ -51,6 +52,7 @@ import {
   constructSenderFromTxConfig,
   isContractInteraction
 } from './helpers';
+import { PendingTransaction } from './PendingLoader';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
@@ -379,32 +381,32 @@ export const TxReceiptUI = ({
 
       <div className="TransactionReceipt-details-row">
         <div className="TransactionReceipt-details-row-column">
-          <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
+          <SubHeading color={COLORS.BLUE_GREY}>
             {translate('TIMESTAMP')}
             {': '}
-            <span style={{ fontWeight: 'normal' }}>
-              {timestamp !== 0 ? (
+            <Body as="span" fontWeight="normal">
+              {timestamp !== 0 && (
                 <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
                   {localTimestamp}
                 </Tooltip>
-              ) : (
-                translate('UNKNOWN')
               )}
-            </span>
-          </Body>
+            </Body>
+          </SubHeading>
         </div>
         <div className="TransactionReceipt-details-row-column">
-          <TxReceiptStatusBadge status={displayTxReceipt ? txStatus : ITxStatus.PENDING} />
+          {displayTxReceipt && <TxReceiptStatusBadge status={txStatus} />}
+
+          {!displayTxReceipt && <PendingTransaction />}
         </div>
       </div>
 
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
-            <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
+            <SubHeading color={COLORS.BLUE_GREY}>
               {translate('TRANSACTION_ID')}
               {': '}
-              <span style={{ fontWeight: 'normal' }}>
+              <Body as="span" color={COLORS.BLUE_GREY}>
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
                   <LinkOut
                     inline={true}
@@ -415,9 +417,11 @@ export const TxReceiptUI = ({
                     link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
                   />
                 )}
-                {!displayTxReceipt && translate('UNKNOWN')}
-              </span>
-            </Body>
+              </Body>
+            </SubHeading>
+          </div>
+          <div className="TransactionReceipt-details-row-column">
+            {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
 
