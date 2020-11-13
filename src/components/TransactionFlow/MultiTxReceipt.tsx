@@ -74,7 +74,6 @@ export default function MultiTxReceipt({
       {customComponent && customComponent()}
 
       {transactions.map((transaction, idx) => {
-        console.log(transaction.status);
         const { asset, baseAsset, amount } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
