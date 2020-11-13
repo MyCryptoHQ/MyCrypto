@@ -9,18 +9,15 @@ export enum NodeType {
 }
 
 export interface NodeConfig {
+  isCustom?: boolean;
   name: string;
   type: NodeType;
   service: string;
   url: string;
-}
-
-interface NodeBase extends NodeConfig {
-  isCustom?: boolean;
   hidden?: boolean;
 }
 
-export interface CustomNodeConfig extends NodeBase {
+export interface CustomNodeConfig extends NodeConfig {
   isCustom: true;
   type: NodeType.MYC_CUSTOM;
   auth?: {
@@ -29,7 +26,7 @@ export interface CustomNodeConfig extends NodeBase {
   };
 }
 
-export interface StaticNodeConfig extends NodeBase {
+export interface StaticNodeConfig extends NodeConfig {
   isCustom: false;
   type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.POCKET | NodeType.RPC | NodeType.WEB3;
 }

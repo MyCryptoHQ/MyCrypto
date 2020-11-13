@@ -3,7 +3,14 @@ import { useContext } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 
-import { createNetwork, updateNetwork as updateNetworkStore, useDispatch } from '@store';
+import {
+  addNode,
+  createNetwork,
+  deleteNode as deleteNodeStore,
+  updateNetwork as updateNetworkStore,
+  updateNode as updateNodeStore,
+  useDispatch
+} from '@store';
 import { Network, NetworkId, NodeOptions } from '@types';
 
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
@@ -61,7 +68,7 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToAdd.id, n);
+    dispatch(addNode({ node, networkId: n.id }));
     EthersJS.updateEthersInstance(n);
   };
 
@@ -79,7 +86,7 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToEdit.id, networkUpdate);
+    dispatch(updateNodeStore({ node, networkId: networkToEdit.id, nodeId: nodeName }));
     EthersJS.updateEthersInstance(networkUpdate);
   };
   const deleteNode = (nodeName: string, network: Network | NetworkId) => {
@@ -110,8 +117,7 @@ function useNetworks() {
       nodes: newNodes,
       selectedNode: newSelectedNode
     };
-
-    updateNetwork(networkToEdit.id, networkUpdate);
+    dispatch(deleteNodeStore({ nodeId: nodeName, networkId: networkToEdit.id }));
     EthersJS.updateEthersInstance(networkUpdate);
   };
   const setNetworkSelectedNode = (networkId: NetworkId, selectedNode: string) => {

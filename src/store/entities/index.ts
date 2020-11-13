@@ -37,7 +37,10 @@ export const {
 export const {
   create: createNetwork,
   update: updateNetwork,
-  updateMany: updateNetworks
+  updateMany: updateNetworks,
+  addNode,
+  updateNode,
+  deleteNode
 } = networkSlice.actions;
 
 export { serializeEntitiesMiddleware } from './serializeEntities.middleware';

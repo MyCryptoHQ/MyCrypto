@@ -63,9 +63,8 @@ describe('useNetworks', () => {
     result.current.addNodeToNetwork(customNodeConfig, fNetwork.id);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        ...fNetwork,
-        nodes: [...fNetwork.nodes, customNodeConfig],
-        selectedNode: customNodeConfig.name
+        networkId: fNetwork.id,
+        node: customNodeConfig
       })
     );
   });
@@ -76,9 +75,9 @@ describe('useNetworks', () => {
     result.current.updateNode(customNodeConfig, fNetworks[0].id, fNetworks[0].nodes[0].name);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        ...fNetworks[0],
-        nodes: [fNetworks[0].nodes[1], customNodeConfig],
-        selectedNode: customNodeConfig.name
+        networkId: fNetworks[0].id,
+        node: customNodeConfig,
+        nodeId: fNetworks[0].nodes[0].name
       })
     );
   });
@@ -89,9 +88,8 @@ describe('useNetworks', () => {
     result.current.deleteNode(fNetworks[0].nodes[0].name, fNetworks[0].id);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        ...fNetworks[0],
-        nodes: [fNetworks[0].nodes[1]],
-        selectedNode: fNetworks[0].nodes[1].name
+        networkId: fNetworks[0].id,
+        nodeId: fNetworks[0].nodes[0].name
       })
     );
   });

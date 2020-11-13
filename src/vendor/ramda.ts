@@ -62,3 +62,5 @@ export { default as chain } from 'ramda/src/chain';
 export { default as head } from 'ramda/src/head';
 export { default as complement } from 'ramda/src/complement';
 export { default as dissoc } from 'ramda/src/dissoc';
+export { default as reject } from 'ramda/src/reject';
+export { default as find } from 'ramda/src/find';

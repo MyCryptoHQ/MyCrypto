@@ -9,6 +9,11 @@ describe('ContractSlice', () => {
   it('has a valid initialState', () => {
     const actual = reducer(undefined, { type: 'dummyAction' });
     expect(Object.keys(actual)).toEqual([
+      /**
+       * List of contract uuids. Since the uuid is deterministic (address + network.chainId)
+       * we can safely assert agains them. The assertion tells us that the json contracts are
+       * correctly loaded, parsed, have a generated uuid, and placed set into an object.
+       */
       'c9e4c2a2-4d24-5187-9c8c-9bf5e1d7a3a4',
       'e7be0236-b57f-586c-99d0-6289aa505cec',
       'ee08ddc5-a599-5475-b4e0-b6aa81ff977c',
@@ -61,6 +66,7 @@ describe('ContractSlice', () => {
       'ad4a648c-0883-5471-b842-867488d380d8',
       '1a39c840-b2fa-5f48-873f-63d7ae7e69e4',
       '76623d8b-9d8e-5c99-b916-156c55d1dc00',
+      '5b81cdf5-1f9b-549b-b2f5-6899167ddaff',
       '90138b6b-5d07-5435-9425-f574a164b1c4',
       '03e0f6d6-7f5f-5cfc-8b29-e07d09b41add',
       'd8488fa2-1430-583a-b2ae-3aa04ac2d7a6',
