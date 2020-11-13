@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, InputField, NetworkSelector } from '@components';
+import { Button, DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
 import { CustomAssetService, isValidAddress } from '@services';
@@ -47,6 +46,7 @@ export function AddToken(props: Props) {
   const [addressError, setAddressError] = useState('');
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { createAssetWithID } = useAssets();
   const { getNetworkById } = useNetworks();
@@ -82,6 +82,7 @@ export function AddToken(props: Props) {
     if (!validateForm()) {
       return;
     }
+    setIsSubmitting(true);
     const { coinGeckoId } = await CustomAssetService.instance.fetchCoingeckoID(
       address as TAddress,
       networkId
@@ -105,6 +106,7 @@ export function AddToken(props: Props) {
     createAssetWithID(newAsset, uuid);
     scanTokens(newAsset);
     setShowAddToken(false);
+    setIsSubmitting(false);
   };
 
   const handleCancelClick = () => {
@@ -156,7 +158,9 @@ export function AddToken(props: Props) {
         <Button onClick={handleCancelClick} secondary={true}>
           {translateRaw('CANCEL_ACTION')}
         </Button>
-        <Button onClick={handleAddTokenClick}>{translateRaw('ADD_TOKEN')}</Button>
+        <Button onClick={handleAddTokenClick} loading={isSubmitting}>
+          {translateRaw('ADD_TOKEN')}
+        </Button>
       </ActionsWrapper>
     </DashboardPanel>
   );
