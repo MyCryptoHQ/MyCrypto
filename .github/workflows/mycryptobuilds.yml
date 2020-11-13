@@ -18,7 +18,7 @@ on:
 
 jobs:
   myc-build:
-    name: MyCryptoBuilds build
+    name: MyCryptoBuilds Build
     runs-on: ubuntu-latest
 
     steps:
