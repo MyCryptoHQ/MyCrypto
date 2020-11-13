@@ -26,7 +26,7 @@ const AppPersistConfig = {
   key: 'Storage',
   keyPrefix: 'MYC:',
   storage,
-  blacklist: ['networks', 'assets', 'vault']
+  blacklist: ['networks', 'assets', 'contracts', 'vault']
 };
 
 export const exportState = () => getStoredState(AppPersistConfig).then((s) => s as LocalStorage);
