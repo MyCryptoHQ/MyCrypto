@@ -81,7 +81,7 @@ jobs:
 
       - name: S3 Sync - Storybook Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         with:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
         env:
