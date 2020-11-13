@@ -155,7 +155,7 @@ export function AddToken(props: Props) {
         type="number"
       />
       <ActionsWrapper>
-        <Button onClick={handleCancelClick} secondary={true}>
+        <Button onClick={handleCancelClick} secondary={true} disabled={isSubmitting}>
           {translateRaw('CANCEL_ACTION')}
         </Button>
         <Button onClick={handleAddTokenClick} loading={isSubmitting}>
