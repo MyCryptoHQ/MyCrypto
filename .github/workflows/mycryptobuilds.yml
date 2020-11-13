@@ -17,7 +17,8 @@ on:
     types: [ok-to-test-command]
 
 jobs:
-  build:
+  myc-build:
+    name: MyCryptoBuilds build
     runs-on: ubuntu-latest
 
     steps:
