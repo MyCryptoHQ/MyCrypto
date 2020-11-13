@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 
 import sendIcon from '@assets/images/icn-send.svg';
-import { Body, LinkOut, TimeElapsed } from '@components';
+import { Body, LinkOut, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useRates, useSettings } from '@services';
 import { COLORS } from '@theme';
@@ -22,7 +22,7 @@ import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
 import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
-import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
+import { PendingTransaction } from './PendingLoader';
 import { TxReceiptTotals } from './TxReceiptTotals';
 
 interface PendingBtnAction {
@@ -74,6 +74,7 @@ export default function MultiTxReceipt({
       {customComponent && customComponent()}
 
       {transactions.map((transaction, idx) => {
+        console.log(transaction.status);
         const { asset, baseAsset, amount } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
@@ -104,17 +105,19 @@ export default function MultiTxReceipt({
               </div>
               <div className="TransactionReceipt-row-column">
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <TxReceiptStatusBadge status={transaction.status} />
+                  {status !== ITxStatus.PENDING ? status : <PendingTransaction />}
                 </div>
-                <div>
-                  <LinkOut
-                    text={transaction.txHash as string}
-                    truncate={truncate}
-                    link={txUrl}
-                    showIcon={false}
-                    fontColor={COLORS.BLUE_SKY}
-                  />
-                </div>
+                {transaction.txHash && (
+                  <div>
+                    <LinkOut
+                      text={transaction.txHash as string}
+                      truncate={truncate}
+                      link={txUrl}
+                      showIcon={false}
+                      fontColor={COLORS.BLUE_SKY}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="TransactionReceipt-divider" />
@@ -131,20 +134,25 @@ export default function MultiTxReceipt({
             />
             <div className="TransactionReceipt-details">
               <div className="TransactionReceipt-details-row">
-                <Body fontWeight="bold" color={COLORS.BLUE_GREY}>
-                  {translate('TIMESTAMP')}
-                  {': '}
-                  <span style={{ fontWeight: 'normal' }}>
-                    {timestamp !== 0 ? (
-                      <div>
-                        <TimeElapsed value={timestamp} />
-                        <br /> {localTimestamp}
-                      </div>
-                    ) : (
-                      translate('UNKNOWN')
-                    )}
-                  </span>
-                </Body>
+                <div className="TransactionReceipt-details-row-column">
+                  <SubHeading color={COLORS.BLUE_GREY} m="0">
+                    {translate('TIMESTAMP')}
+                    {': '}
+                    <Body as="span" fontWeight="normal">
+                      <span style={{ fontWeight: 'normal' }}>
+                        {timestamp !== 0 && (
+                          <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
+                            {localTimestamp}
+                          </Tooltip>
+                        )}
+                      </span>
+                    </Body>
+                  </SubHeading>
+                </div>
+
+                <div className="TransactionReceipt-details-row-column">
+                  {timestamp === 0 && <PendingTransaction />}
+                </div>
               </div>
               <TransactionDetailsDisplay
                 baseAsset={baseAsset}

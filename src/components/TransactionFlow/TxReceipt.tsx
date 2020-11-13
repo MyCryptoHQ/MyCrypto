@@ -381,7 +381,7 @@ export const TxReceiptUI = ({
 
       <div className="TransactionReceipt-details-row">
         <div className="TransactionReceipt-details-row-column">
-          <SubHeading color={COLORS.BLUE_GREY}>
+          <SubHeading color={COLORS.BLUE_GREY} m="0">
             {translate('TIMESTAMP')}
             {': '}
             <Body as="span" fontWeight="normal">
@@ -403,7 +403,7 @@ export const TxReceiptUI = ({
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
-            <SubHeading color={COLORS.BLUE_GREY}>
+            <SubHeading color={COLORS.BLUE_GREY} m="0">
               {translate('TRANSACTION_ID')}
               {': '}
               <Body as="span" color={COLORS.BLUE_GREY}>

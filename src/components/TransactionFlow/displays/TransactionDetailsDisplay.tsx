@@ -123,7 +123,7 @@ function TransactionDetailsDisplay({
                 </div>
               </div>
             )}
-            {timestamp && (
+            {timestamp !== undefined && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
                 <div className="TransactionDetails-row-column">
