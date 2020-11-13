@@ -56,8 +56,8 @@ jobs:
       - name: CodeCov
         uses: codecov/codecov-action@v1
 
-  standalone:
-    name: standalone
+  standalone-build:
+    name: Standalone Build
     runs-on: ubuntu-latest
 
     steps:

@@ -17,7 +17,8 @@ on:
     types: [ok-to-test-command]
 
 jobs:
-  build:
+  storybook-build:
+    name: Storybook Build
     runs-on: ubuntu-latest
 
     steps:
@@ -70,9 +71,18 @@ jobs:
           DEST_DIR: 'storybook/${GITHUB_SHA}'
           SOURCE_DIR: 'storybook-static'
 
+      - name: S3 Sync - Storybook SHA - repository_dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${{ github.event.client_payload.pull_request.head.sha }}'
+          SOURCE_DIR: 'storybook-static'
+
       - name: S3 Sync - Storybook Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         with:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
         env:
@@ -88,13 +98,31 @@ jobs:
           DEST_DIR: 'storybook/${{ github.head_ref }}'
           SOURCE_DIR: 'storybook-static'
 
-      - name: S3 Sync - Storybook - PR Number
+      - name: S3 Sync - Storybook Branch - repository_dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/${{ github.event.client_payload.pull_request.head.ref }}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook - PR Number - pull_request
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'
         with:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
         env:
           DEST_DIR: 'storybook/pr/${PR_NUMBER}'
+          SOURCE_DIR: 'storybook-static'
+
+      - name: S3 Sync - Storybook - PR Number - repository_dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'storybook/pr/${{ github.event.client_payload.pull_request.number }}'
           SOURCE_DIR: 'storybook-static'
 
       - name: Update PR status

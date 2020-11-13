@@ -17,7 +17,8 @@ on:
     types: [ok-to-test-command]
 
 jobs:
-  build:
+  myc-build:
+    name: MyCryptoBuilds Build
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +30,7 @@ jobs:
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/master' && github.event_name == 'pull_request'
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
           echo $E2E_BASE_URL
@@ -37,9 +38,17 @@ jobs:
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/master/# )
+          echo $E2E_BASE_URL
+          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+
+        # Define url as env var to be used by TestCafe.
+      - name: Set E2E_BASE_URL
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${{ github.event.client_payload.pull_request.number }}/# )
           echo $E2E_BASE_URL
           echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
 
@@ -85,6 +94,15 @@ jobs:
           DEST_DIR: ${GITHUB_REF##*/}
           SOURCE_DIR: 'dist/web'
 
+      - name: S3 Sync - Downloadable Branch - repository_dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: ${{ github.event.client_payload.pull_request.head.ref }}
+          SOURCE_DIR: 'dist/web'
+
       - name: S3 Sync - Downloadable Branch - pull_request
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'pull_request'
@@ -111,6 +129,15 @@ jobs:
         env:
           DEST_DIR: ${{ github.event.pull_request.head.sha }}
           SOURCE_DIR: 'dist/web'
+
+      - name: S3 Sync - SHA Repository Dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --exclude '.git/*'
+        env:
+          DEST_DIR: ${{ github.event.client_payload.pull_request.head.sha }}
+          SOURCE_DIR: 'dist/web'
       ####
       - name: S3 Sync - Downloadable - PR Number
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -119,6 +146,15 @@ jobs:
           args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
         env:
           DEST_DIR: 'pr/${PR_NUMBER}'
+          SOURCE_DIR: 'dist/web'
+
+      - name: S3 Sync - Downloadable - PR Number - Repository Dispatch
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        if: github.event_name == 'repository_dispatch'
+        with:
+          args: --acl public-read --cache-control max-age=0 --follow-symlinks --delete --exclude '.git/*'
+        env:
+          DEST_DIR: 'pr/${{ github.event.client_payload.pull_request.number }}'
           SOURCE_DIR: 'dist/web'
 
       - name: Mycrypto-bot trigger
