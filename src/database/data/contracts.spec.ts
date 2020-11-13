@@ -11,10 +11,6 @@ describe('Contracts JSON', () => {
     const networkObj = NETWORKS_CONFIG[network as NetworkId];
     contracts.forEach((contract: any) => {
       it(`${network} - ${contract.name} contains a valid addresses`, () => {
-        // Mist's multisig is a factory-generated standard contract,
-        // so it's okay that it doesn't have an address.
-        // the user inputs it to interact with their mist multisig
-        if (contract.name === "Mist's Multisig Contract") return;
         expect(isValidAddress(contract.address, networkObj.chainId)).toBeTruthy();
       });
 
