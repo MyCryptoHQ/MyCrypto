@@ -19,6 +19,10 @@ const Ethereum: Network = {
       label: 'TREZOR (ETH)',
       value: "m/44'/60'/0'/0"
     },
+    TREZOR_NEW: {
+      label: 'TREZOR (ETH)',
+      value: "m/44'/60'/0'/0"
+    },
     LEDGER_NANO_S: {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"
@@ -102,6 +106,14 @@ const Ropsten: Network = {
     LEDGER_NANO_S: {
       label: 'Ledger (ETH)',
       value: "m/44'/60'/0'"
+    },
+    LEDGER_NANO_S_NEW: {
+      label: 'Ledger (ETH)',
+      value: "m/44'/60'/0'"
+    },
+    TREZOR_NEW: {
+      label: 'Testnet (ETH)',
+      value: "m/44'/1'/0'/0"
     },
     default: {
       label: 'Testnet (ETH)',
