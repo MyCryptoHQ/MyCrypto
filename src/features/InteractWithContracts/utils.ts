@@ -1,6 +1,15 @@
 import { parse } from 'query-string';
 
-export const getParsedQueryString = (queryString: string) => {
+import { NetworkId } from '@types';
+
+interface ParsedQueryString {
+  networkIdFromUrl: NetworkId;
+  addressFromUrl: string;
+  functionFromUrl: string;
+  inputsFromUrl: { name: string; value: string }[];
+}
+
+export const getParsedQueryString = (queryString: string): ParsedQueryString => {
   const {
     network: networkIdFromUrl,
     address: addressFromUrl,
@@ -15,10 +24,10 @@ export const getParsedQueryString = (queryString: string) => {
     value: i.includes(':') ? i.substr(i.indexOf(':') + 1, i.length) : ''
   }));
 
-  return {
+  return ({
     networkIdFromUrl,
     addressFromUrl,
     functionFromUrl,
     inputsFromUrl
-  };
+  } as unknown) as ParsedQueryString;
 };

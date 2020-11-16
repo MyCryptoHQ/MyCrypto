@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useReducer } from 'react';
 
 import { Input } from '@mycrypto/ui';
 import { isHexString } from 'ethers/utils';
-import queryString from 'query-string';
+import { parse } from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -49,7 +49,7 @@ const Wrapper = styled.div<{ fullPageLoading: boolean }>`
 `;
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
-  const qs = queryString.parse(location.search);
+  const qs = parse(location.search);
 
   const trackPageLoad = useAnalytics({
     category: ANALYTICS_CATEGORIES.TX_STATUS
@@ -60,9 +60,10 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { accounts } = useContext(StoreContext);
   const { txHistory } = useTxHistory();
 
-  const defaultTxHash = qs.hash ? qs.hash : '';
+  const qsNetwork = qs.network as NetworkId;
+  const defaultTxHash = qs.hash ? (qs.hash as string) : '';
   const defaultNetwork =
-    qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
+    qsNetwork && SUPPORTED_NETWORKS.includes(qsNetwork) ? qsNetwork : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);
 

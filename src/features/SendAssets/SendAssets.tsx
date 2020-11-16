@@ -41,7 +41,7 @@ function SendAssets({ location }: RouteComponentProps) {
 
   const query = parse(location.search);
   const res = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce(
-    (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
+    (obj, param) => ({ ...obj, [param]: getParam(query as { [key: string]: string }, param) }),
     {}
   );
 

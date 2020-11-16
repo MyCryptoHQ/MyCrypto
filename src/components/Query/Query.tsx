@@ -1,6 +1,6 @@
 import React from 'react';
 
-import queryString from 'query-string';
+import { parse as qsParse } from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { TxParam } from '@features/SendAssets/preFillTx';
@@ -9,8 +9,8 @@ import { getParam } from '@utils';
 
 const parse = (location: RouteComponentProps['location']): Query => {
   const searchStr = location.search;
-  const query = queryString.parse(searchStr);
-  return query;
+  const query = qsParse(searchStr);
+  return query as Query;
 };
 
 export interface IQueryResults {

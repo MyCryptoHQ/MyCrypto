@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Accordion } from '@mycrypto/ui';
-import queryString from 'query-string';
+import { parse } from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -107,8 +107,8 @@ const CardContainer = styled.div`
 // `;
 
 const ZapEducation = withRouter(({ history, location }) => {
-  const qs = queryString.parse(location.search);
-  const detectedZapId: IZapId = qs.key;
+  const qs = parse(location.search);
+  const detectedZapId = qs.key as IZapId;
   const [zapSelected, setZapSelected] = useState(
     qs.key ? ZAPS_CONFIG[detectedZapId] || ZAPS_CONFIG[defaultZapId] : ZAPS_CONFIG[defaultZapId]
   );
