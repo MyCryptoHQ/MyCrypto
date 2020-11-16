@@ -382,6 +382,8 @@ export const ConfirmTransactionUI = ({
       <TransactionDetailsDisplay
         baseAsset={baseAsset}
         asset={asset}
+        assetAmount={amount}
+        value={value}
         data={data}
         sender={sender}
         gasLimit={gasLimit}
@@ -390,6 +392,7 @@ export const ConfirmTransactionUI = ({
         signedTransaction={signedTx}
         fiat={fiat}
         baseAssetRate={baseAssetRate}
+        assetRate={assetRate}
         rawTransaction={rawTransaction}
         recipient={rawTransaction.to}
       />

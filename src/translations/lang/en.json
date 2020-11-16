@@ -974,6 +974,8 @@
     "MYC_WINTER_BONUS_ACTION_BUTTON": "Verify on Twitter",
     "MYC_WINTER_BONUS_TWEET": "Verifying my @MyCrypto Membership account $address for 3 bonus #MyCryptoWinter entries! winter.mycrypto.com",
     "TRANSACTIONS_MULTI": "Transaction $current of $total",
-    "ASSET_PRICE": "Asset Price"
+    "BASE_ASSET_PRICE": "Base Asset Price",
+    "ASSET_PRICE": "Asset Price",
+    "SEND_AMOUNT": "Send Amount"
   }
 }

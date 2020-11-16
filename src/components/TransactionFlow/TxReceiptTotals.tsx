@@ -42,8 +42,6 @@ export const TxReceiptTotals = ({
 
   const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
 
-  /** @todo solve showing both token and base asset total */
-
   return (
     <>
       <div className="TransactionReceipt-row">

@@ -14,8 +14,11 @@ import {
   baseToConvertedUnit,
   calculateGasUsedPercentage,
   convertToFiat,
+  fromWei,
   isTransactionDataEmpty,
   totalTxFeeToString,
+  toWei,
+  Wei,
   weiToFloat
 } from '@utils';
 
@@ -30,6 +33,8 @@ const { BLUE_BRIGHT } = COLORS;
 interface Props {
   baseAsset: Asset;
   asset: Asset;
+  assetAmount: string;
+  value: string;
   nonce: string;
   data: string;
   confirmations?: number;
@@ -41,6 +46,7 @@ interface Props {
   sender: ISender;
   fiat: Fiat;
   baseAssetRate: number | undefined;
+  assetRate: number | undefined;
   status?: ITxStatus;
   timestamp?: number;
   recipient: TAddress;
@@ -57,6 +63,8 @@ const SeeMoreDetailsButton = styled(Button)`
 function TransactionDetailsDisplay({
   baseAsset,
   asset,
+  assetAmount,
+  value,
   confirmations,
   gasUsed,
   nonce,
@@ -68,6 +76,7 @@ function TransactionDetailsDisplay({
   sender,
   fiat,
   baseAssetRate,
+  assetRate,
   status,
   timestamp,
   recipient
@@ -93,6 +102,14 @@ function TransactionDetailsDisplay({
     actualTxFeeBase && convertToFiat(parseFloat(actualTxFeeBase), baseAssetRate).toFixed(2);
 
   const maxTxFeeFiat = convertToFiat(parseFloat(maxTxFeeBase), baseAssetRate).toFixed(2);
+
+  const feeWei = toWei(actualTxFeeBase ? actualTxFeeBase : maxTxFeeBase, DEFAULT_ASSET_DECIMAL);
+
+  const valueWei = Wei(value);
+
+  const totalWei = feeWei.add(valueWei);
+
+  const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
 
   return (
     <>
@@ -147,6 +164,32 @@ function TransactionDetailsDisplay({
                 <EthAddress address={recipient} truncate={true} disableTooltip={true} />
               </div>
             </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('SEND_AMOUNT')}:</div>
+              <div className="TransactionDetails-row-column">{`${parseFloat(assetAmount).toFixed(
+                6
+              )} ${asset.ticker}`}</div>
+            </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">
+                {translateRaw('TRANSACTION_FEE')}:
+              </div>
+              <div className="TransactionDetails-row-column">
+                {`${actualTxFeeBase ? actualTxFeeBase : maxTxFeeBase} ${baseAsset.ticker}`}
+              </div>
+            </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">
+                {translateRaw('CONFIRM_TX_SENT')}:
+              </div>
+              <div className="TransactionDetails-row-column">
+                {asset.type === 'base'
+                  ? `${totalEtherFormatted} ${baseAsset.ticker}`
+                  : `${assetAmount} ${asset.ticker} + ${
+                      actualTxFeeBase ? actualTxFeeBase : maxTxFeeBase
+                    } ${baseAsset.ticker}`}
+              </div>
+            </div>
             {sender.accountBalance && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">
@@ -169,6 +212,22 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
+            {baseAsset.uuid !== asset.uuid && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">
+                  {translateRaw('BASE_ASSET_PRICE')}:
+                </div>
+                <div className="TransactionDetails-row-column">
+                  {`${fiat.symbol}${baseAssetRate}/${baseAsset.ticker}`}
+                </div>
+              </div>
+            )}
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('ASSET_PRICE')}:</div>
+              <div className="TransactionDetails-row-column">
+                {`${fiat.symbol}${assetRate}/${asset.ticker}`}
+              </div>
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
@@ -214,12 +273,6 @@ function TransactionDetailsDisplay({
                 ) : (
                   <PendingTransaction />
                 )}
-              </div>
-            </div>
-            <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">{translateRaw('ASSET_PRICE')}:</div>
-              <div className="TransactionDetails-row-column">
-                {`${fiat.symbol}${baseAssetRate}/${baseAsset.ticker}`}
               </div>
             </div>
             <div className="TransactionDetails-row">
