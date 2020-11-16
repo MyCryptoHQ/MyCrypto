@@ -943,6 +943,7 @@
     "ANT_TOKEN_MIGRATION_RECEIPT": "ANT Token Migration Receipt",
     "ANT_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your ANT tokens from v1 to v2, so this field cannot be modified.",
     "RECENT_TX_LIST_LABEL_ANT_MIGRATION": "Migrated ANT v1 to v2",
-    "NO_ACCOUNTS": "No Accounts"
+    "NO_ACCOUNTS": "No Accounts",
+    "CUSTOM_ASSET_API_ERR": "CustomAssetService has already been instantiated."
   }
 }

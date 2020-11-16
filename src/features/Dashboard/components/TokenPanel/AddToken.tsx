@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, InputField, NetworkSelector } from '@components';
+import { Button, DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
-import { isValidAddress } from '@services';
+import { CustomAssetService, isValidAddress } from '@services';
 import { useAssets, useNetworks } from '@services/Store';
 import { translateRaw } from '@translations';
-import { ExtendedAsset, NetworkId, TTicker } from '@types';
+import { ExtendedAsset, NetworkId, TAddress, TTicker } from '@types';
 import { generateAssetUUID } from '@utils';
 
 const ActionsWrapper = styled.div`
@@ -47,6 +46,7 @@ export function AddToken(props: Props) {
   const [addressError, setAddressError] = useState('');
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { createAssetWithID } = useAssets();
   const { getNetworkById } = useNetworks();
@@ -78,12 +78,17 @@ export function AddToken(props: Props) {
     return isValid;
   };
 
-  const handleAddTokenClick = () => {
+  const handleAddTokenClick = async () => {
     if (!validateForm()) {
       return;
     }
-
+    setIsSubmitting(true);
+    const { coinGeckoId } = await CustomAssetService.instance.fetchCoingeckoID(
+      address as TAddress,
+      networkId
+    );
     const uuid = generateAssetUUID(networkId, address);
+
     const newAsset: ExtendedAsset = {
       name: ticker,
       networkId,
@@ -92,12 +97,16 @@ export function AddToken(props: Props) {
       contractAddress: address,
       decimal: parseInt(decimals, 10),
       uuid,
-      isCustom: true
+      isCustom: true,
+      mappings: {
+        coinGeckoId
+      }
     };
 
     createAssetWithID(newAsset, uuid);
     scanTokens(newAsset);
     setShowAddToken(false);
+    setIsSubmitting(false);
   };
 
   const handleCancelClick = () => {
@@ -146,10 +155,12 @@ export function AddToken(props: Props) {
         type="number"
       />
       <ActionsWrapper>
-        <Button onClick={handleCancelClick} secondary={true}>
+        <Button onClick={handleCancelClick} disabled={isSubmitting}>
           {translateRaw('CANCEL_ACTION')}
         </Button>
-        <Button onClick={handleAddTokenClick}>{translateRaw('ADD_TOKEN')}</Button>
+        <Button onClick={handleAddTokenClick} loading={isSubmitting}>
+          {translateRaw('ADD_TOKEN')}
+        </Button>
       </ActionsWrapper>
     </DashboardPanel>
   );
