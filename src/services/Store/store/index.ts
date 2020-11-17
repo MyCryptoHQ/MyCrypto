@@ -1,7 +1,7 @@
 import { TypedUseSelectorHook, useDispatch, useSelector as useReduxSelector } from 'react-redux';
 
 import { AppState } from './reducer';
-import store from './store';
+import createStore from './store';
 
 /**
  * Type-safe version of the `react-redux` useSelector hook.
@@ -9,4 +9,4 @@ import store from './store';
 const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
 
 export { getAppState } from './reducer';
-export { useSelector, useDispatch, store };
+export { useSelector, useDispatch, createStore };
