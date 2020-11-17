@@ -15,11 +15,6 @@ export const makeTransaction = (t: ITxObject | string): UnsignedTransaction => {
   }
 
   return { ...t, nonce: parseInt(t.nonce) };
-  /**if (hasChainId(t)) {
-    return new TransactionRequest(t, { chain: t.chainId });
-  } else {
-    return new Tx(t);
-  }**/
 };
 
 /* region:start User Input to Hex */
