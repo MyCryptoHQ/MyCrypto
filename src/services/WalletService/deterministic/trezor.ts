@@ -1,9 +1,9 @@
-import { Transaction as EthTx, TxData } from 'ethereumjs-tx';
+import { hexlify, serializeTransaction, Signature, UnsignedTransaction } from 'ethers/utils';
 import mapValues from 'lodash/mapValues';
 import TrezorConnect from 'trezor-connect';
 
 import { translateRaw } from '@translations';
-import { getTransactionFields, padLeftEven, stripHexPrefixAndLower } from '@utils';
+import { padLeftEven, stripHexPrefix, stripHexPrefixAndLower } from '@utils';
 
 import { ChainCodeResponse, HardwareWallet } from './hardware';
 
@@ -31,11 +31,15 @@ export class TrezorWallet extends HardwareWallet {
     });
   }
 
-  public signRawTransaction(tx: EthTx): Promise<Buffer> {
+  public signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const { chainId, ...strTx } = getTransactionFields(tx);
+      const { chainId, nonce, ...rest } = tx;
+      if (!chainId || !nonce) {
+        return reject(Error('Missing chainId or nonce on tx'));
+      }
+      const formattedTx = { ...rest, nonce: hexlify(nonce) };
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
-      const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
+      const cleanedTx = mapValues(mapValues(formattedTx, stripHexPrefixAndLower), padLeftEven);
       TrezorConnect.ethereumSignTransaction({
         path: this.getPath(),
         transaction: {
@@ -60,15 +64,14 @@ export class TrezorWallet extends HardwareWallet {
 
         // @todo: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-        const txToSerialize: TxData = {
-          ...strTx,
+        const signature: Signature = {
           v: res.payload.v,
           r: res.payload.r,
           s: res.payload.s
         };
-        const eTx = new EthTx(txToSerialize, { chain: chainId });
-        const serializedTx = eTx.serialize();
-        resolve(serializedTx);
+
+        const serializedTx = serializeTransaction(tx, signature);
+        resolve(Buffer.from(stripHexPrefix(serializedTx), 'hex'));
       });
     });
   }

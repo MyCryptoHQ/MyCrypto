@@ -123,7 +123,6 @@ export {
 } from './units';
 export { padLeftEven } from './padLeftEven';
 export { normalize } from './normalize';
-export { getTransactionFields } from './getTransactionFields';
 export {
   hexNonceToViewable,
   makeTransaction,

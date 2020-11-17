@@ -36,7 +36,6 @@
     "classnames": "2.2.5",
     "date-fns": "2.16.1",
     "ethereumjs-abi": "0.6.8",
-    "ethereumjs-tx": "2.1.1",
     "ethereumjs-util": "6.0.0",
     "ethers": "4.0.44",
     "font-awesome": "4.7.0",
