@@ -1,12 +1,7 @@
-import { TypedUseSelectorHook, useDispatch, useSelector as useReduxSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { AppState } from './reducer';
-import createStore from './store';
-
-/**
- * Type-safe version of the `react-redux` useSelector hook.
- */
-const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
-
-export { getAppState } from './reducer';
-export { useSelector, useDispatch, createStore };
+export { default as createStore } from './store';
+export { getAppState, getPassword } from './reducer';
+export { initialState as initialLegacyState } from './legacy.reducer';
+export { useSelector, default as useAppState } from './useAppState';
+export { useDispatch };

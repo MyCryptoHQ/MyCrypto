@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { useAppState } from '@store';
 import pipe from 'ramda/src/pipe';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -264,5 +265,6 @@ class ScreenLockProvider extends Component<
 export default pipe(
   withRouter,
   withContext(DataContext),
-  withHook(useSettings)
+  withHook(useSettings),
+  withHook(useAppState)
 )(ScreenLockProvider);

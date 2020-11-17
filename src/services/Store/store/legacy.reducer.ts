@@ -33,7 +33,7 @@ export function init(initialState: DataStore) {
  * We redeclare it here to avoid circular dep issues and changing multiple imports.
  * Will be changed once we refactor to slices.
  */
-const initialState = {
+export const initialState = {
   version: 'v1.1.0',
   [LSKeys.ACCOUNTS]: [],
   [LSKeys.ADDRESS_BOOK]: Object.entries(defaultContacts).map(([k, v]) => ({
