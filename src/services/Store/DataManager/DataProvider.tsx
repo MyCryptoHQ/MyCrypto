@@ -1,4 +1,14 @@
-import React, { createContext, Dispatch, useCallback, useEffect, useMemo, useReducer } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState
+} from 'react';
+
+import { getAppState, useDispatch, useSelector } from '@store';
 
 import {
   addDevSeedToSchema,
@@ -15,10 +25,8 @@ import { DatabaseService } from './DatabaseService';
 import {
   ActionPayload,
   ActionT,
-  ActionV,
   ActionY,
   ActionZ,
-  appDataReducer,
   EncryptedDbActionPayload,
   encryptedDbReducer
 } from './reducer';
@@ -62,11 +70,19 @@ export const DataProvider: React.FC = ({ children }) => {
     currentEncryptedDBValues
   );
 
-  const [appState, dispatch]: [DataStore, Dispatch<ActionV>] = useReducer(
-    appDataReducer,
-    db, // Initial state
-    marshallState // method to run on initial state
-  );
+  const dispatch = useDispatch();
+  const reduxState = useSelector(getAppState);
+
+  /* Temp step to sync StoreProvider with new redux */
+  const [appState, setAppState] = useState(marshallState(db));
+  useEffect(() => {
+    setAppState(reduxState);
+  }, [reduxState]);
+
+  /* Temp step to sync redux state with localstorage */
+  useEffect(() => {
+    dispatch({ type: ActionT.RESET, payload: { data: marshallState(db) } });
+  }, []);
 
   const [encryptedDbState, dispatchEncryptedDb]: [
     EncryptedDataStore,
