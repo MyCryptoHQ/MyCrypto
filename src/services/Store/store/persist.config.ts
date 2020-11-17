@@ -10,8 +10,7 @@ const APP_PERSIST_CONFIG = {
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
-  blacklist: [],
-  throttle: 1000
+  blacklist: []
   // serialize    -> (s) => marshallState(s)
   // deserialize  -> (s) => deMarshallState(s.legacay)
 };
