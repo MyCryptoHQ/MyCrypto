@@ -49,14 +49,14 @@ export class LedgerWallet extends HardwareWallet {
   public async signRawTransaction(t: UnsignedTransaction): Promise<Buffer> {
     const { to, chainId } = t;
 
-    if (!to || !chainId) {
-      throw Error('Missing chainId or to on tx');
+    if (!chainId) {
+      throw Error('Missing chainId on tx');
     }
 
     try {
       const ethApp = await makeApp();
 
-      if (chainId === 1) {
+      if (chainId === 1 && to) {
         const tokenInfo = byContractAddress(to);
         if (tokenInfo) {
           await ethApp.provideERC20TokenInformation(tokenInfo);
