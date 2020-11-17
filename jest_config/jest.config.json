@@ -2,24 +2,9 @@
   "rootDir": "../",
   "verbose": true,
   "testRegex": "/*.*/?(.*).(spec|test).(jsx?|tsx?)$",
-  "moduleDirectories": [
-    "node_modules",
-    "src"
-  ],
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "worker.ts",
-    "worker.tsx"
-  ],
-  "modulePathIgnorePatterns": [
-    "<rootDir>/dist",
-    "<rootDir>/src/types",
-    "<rootDir>/src/assets"
-  ],
+  "moduleDirectories": ["node_modules", "src"],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
+  "modulePathIgnorePatterns": ["<rootDir>/dist", "<rootDir>/src/types", "<rootDir>/src/assets"],
   "moduleNameMapper": {
     "shared/(.*)": "<rootDir>/shared/$1",
     "test-utils": "<rootDir>/jest_config/test-utils",
@@ -27,10 +12,8 @@
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
     "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js",
-    "^@(.+)$": [
-      "<rootDir>/node_modules/$0",
-      "<rootDir>/src/$1"
-    ]
+    "^@store": "<rootDir>src/services/Store/store",
+    "^@(.+)$": ["<rootDir>/node_modules/$0", "<rootDir>/src/$1"]
   },
   "testPathIgnorePatterns": [
     "/node_modules/",
@@ -43,9 +26,7 @@
     "<rootDir>/jest_config/__mocks__/localStorage.ts",
     "jest-canvas-mock"
   ],
-  "setupFilesAfterEnv": [
-    "@testing-library/jest-dom/extend-expect"
-  ],
+  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
   "automock": false,
   "collectCoverageFrom": [
     "**/src/**/*.{js,jsx,ts,tsx}",
