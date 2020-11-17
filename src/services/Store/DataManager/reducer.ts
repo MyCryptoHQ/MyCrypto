@@ -3,6 +3,7 @@ import prop from 'ramda/src/prop';
 import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
 import unionWith from 'ramda/src/unionWith';
 
+import { getCurrentDBConfig } from '@database';
 import {
   DataStore,
   DataStoreEntry,
@@ -13,6 +14,8 @@ import {
   Network,
   TUuid
 } from '@types';
+
+import { marshallState } from './utils';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -54,7 +57,11 @@ export function init(initialState: DataStore) {
   return initialState;
 }
 
-export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
+const initialState = getCurrentDBConfig().defaultValues;
+export function appDataReducer(
+  state: DataStore = marshallState(initialState),
+  { type, payload }: ActionV
+) {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -115,7 +122,7 @@ export function appDataReducer(state: DataStore, { type, payload }: ActionV) {
       return init(data as DataStore);
     }
     default: {
-      throw new Error('[AppReducer]: missing action type');
+      return state;
     }
   }
 }

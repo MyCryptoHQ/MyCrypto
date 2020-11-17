@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { store } from '@store';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
@@ -12,7 +13,6 @@ import { USE_HASH_ROUTER } from '@utils';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
-import { store } from './store';
 
 const FullHeight = styled.div`
   display: flex;
