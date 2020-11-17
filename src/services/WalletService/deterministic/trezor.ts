@@ -33,11 +33,11 @@ export class TrezorWallet extends HardwareWallet {
 
   public signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const { chainId, ...rest } = tx;
-      if (!chainId) {
-        return reject(Error('Missing chainId on tx'));
+      const { chainId, nonce, ...rest } = tx;
+      if (!chainId || !nonce) {
+        return reject(Error('Missing chainId or nonce on tx'));
       }
-      const formattedTx = { ...rest, nonce: hexlify(rest.nonce!) };
+      const formattedTx = { ...rest, nonce: hexlify(nonce) };
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
       const cleanedTx = mapValues(mapValues(formattedTx, stripHexPrefixAndLower), padLeftEven);
       TrezorConnect.ethereumSignTransaction({

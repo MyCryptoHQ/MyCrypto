@@ -95,7 +95,6 @@ export class LedgerWallet extends HardwareWallet {
 
       return Buffer.from(stripHexPrefix(serializedTx), 'hex');
     } catch (err) {
-      console.error(err);
       throw Error(err + '. Check to make sure contract data is on');
     }
   }
