@@ -14,7 +14,7 @@ export const makeTransaction = (t: ITxObject | string): UnsignedTransaction => {
     return parseTransaction(t);
   }
 
-  return { ...t, nonce: parseInt(t.nonce, 10) };
+  return { ...t, nonce: new BigNumber(t.nonce, 10).toNumber() };
 };
 
 /* region:start User Input to Hex */
