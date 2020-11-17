@@ -5,11 +5,11 @@ import demoReducer from '@features/DevTools/slice';
 import { appDataReducer as legacyReducer } from '@services/Store/DataManager/reducer';
 import { DataStore } from '@types';
 
-import entitiesReducer from './entities';
+import accountReducer from './account.slice';
 
 const rootReducer = combineReducers({
   demo: demoReducer,
-  entities: entitiesReducer,
+  [accountReducer.name]: accountReducer.reducer,
   legacy: legacyReducer
 });
 
