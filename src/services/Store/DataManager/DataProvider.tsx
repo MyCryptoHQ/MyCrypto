@@ -8,7 +8,7 @@ import React, {
   useState
 } from 'react';
 
-import { getAppState, useDispatch, useSelector } from '@store';
+import { getAppState, initialLegacyState, useDispatch, useSelector } from '@store';
 
 import {
   addDevSeedToSchema,
@@ -37,7 +37,6 @@ interface EncryptedStorage {
   setEncryptedCache(ls: string): void;
   destroyEncryptedCache(): void;
   setUnlockPassword(pwd: string): void;
-  getUnlockPassword(): string;
 }
 export type IDataContext = DataCacheManager & EncryptedStorage;
 
@@ -59,68 +58,68 @@ export const DataProvider: React.FC = ({ children }) => {
   );
 
   const dispatch = useDispatch();
-  const reduxState = useSelector(getAppState);
+  const legacyState = useSelector(getAppState);
 
   /* Temp step to sync StoreProvider with new redux */
-  const [appState, setAppState] = useState(marshallState(db));
-  useEffect(() => {
-    setAppState(reduxState);
-  }, [reduxState]);
+  // const [appState, setAppState] = useState(marshallState(deMarshallState(initialLegacyState)));
+  // useEffect(() => {
+  //   setAppState(reduxState);
+  // }, [reduxState]);
 
-  /* Temp step to sync redux state with localstorage */
+  /* Temp step to sync redux state with initial data eg. contracts, networks, nodes etc. */
   useEffect(() => {
-    dispatch({ type: 'RESET', payload: { data: marshallState(db) } });
+    dispatch({
+      type: 'RESET',
+      payload: { data: marshallState(deMarshallState(initialLegacyState)) }
+    });
   }, []);
 
-  const resetAppDb = useCallback(
-    (newDb = defaultValues) => {
-      resetDb(newDb); // Reset the persistence layer
-      dispatch({
-        type: 'RESET',
-        payload: { data: marshallState(newDb) }
-      }); // Reset the Context
-    },
-    [defaultValues]
-  );
+  const resetAppDb = (newDb = deMarshallState(initialLegacyState)) => {
+    // resetDb(newDb); // Reset the persistence layer
+    dispatch({
+      type: 'RESET',
+      payload: { data: marshallState(newDb) }
+    }); // Reset the Context
+  };
 
   /*
    * Manage sync between appState an db
    */
-  const syncDb = (state: DataStore) => {
-    updateDb(deMarshallState(state));
-  };
+  // const syncDb = (state: DataStore) => {
+  //   updateDb(deMarshallState(state));
+  // };
 
   // observe password changes in appState
-  useEffect(() => syncDb(appState), [appState.password]);
+  // useEffect(() => syncDb(appState), [appState.password]);
 
   // By default we sync no more than once a 30 seconds
-  useThrottleFn(syncDb, 30000, [appState]);
+  // useThrottleFn(syncDb, 30000, [appState]);
   // In any case, we sync before the tab is closed
   // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
-  useEvent('visibilitychange', () => {
-    if (document.hidden) {
-      syncDb(appState);
-    }
-  });
+  // useEvent('visibilitychange', () => {
+  //   if (document.hidden) {
+  //     syncDb(appState);
+  //   }
+  // });
 
   // Workaround, since Safari does not trigger 'visibilitychange' event on page reload
   // Meaning all changes are lost, if db wasn't synced in 30sec window
-  useEvent('beforeunload', () => {
-    if (isSafari()) {
-      syncDb(appState);
-    }
-  });
+  // useEvent('beforeunload', () => {
+  //   if (isSafari()) {
+  //     syncDb(appState);
+  //   }
+  // });
 
   /*
    * Toggle seed data
    */
-  const addSeedData = useCallback(() => {
-    resetAppDb(addDevSeedToSchema(db));
-  }, [db]);
+  // const addSeedData = useCallback(() => {
+  //   resetAppDb(addDevSeedToSchema(db));
+  // }, [db]);
 
-  const removeSeedData = useCallback(() => {
-    resetAppDb(removeSeedDataFromSchema(db));
-  }, []);
+  // const removeSeedData = useCallback(() => {
+  //   resetAppDb(removeSeedDataFromSchema(db));
+  // }, []);
 
   /*
    *  Handle db encryption on ScreenLock
@@ -152,9 +151,6 @@ export const DataProvider: React.FC = ({ children }) => {
     });
   };
 
-  const getUnlockPassword = () => {
-    return db && db.password;
-  };
   const setUnlockPassword = (password: string) => {
     dispatch({
       type: 'ADD_ENTRY',
@@ -163,16 +159,15 @@ export const DataProvider: React.FC = ({ children }) => {
   };
 
   const stateContext: IDataContext = {
-    ...appState,
-    createActions: (key) => ActionFactory(key, dispatch, appState),
+    ...legacyState,
+    createActions: (key) => ActionFactory(key, dispatch, legacyState),
     resetAppDb,
     encryptedDbState,
-    removeSeedData,
-    addSeedData,
+    // removeSeedData,
+    // addSeedData,
     setEncryptedCache,
     destroyEncryptedCache,
-    setUnlockPassword,
-    getUnlockPassword
+    setUnlockPassword
   };
 
   return <DataContext.Provider value={stateContext}>{children}</DataContext.Provider>;

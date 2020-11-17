@@ -1,4 +1,4 @@
-import { Selector } from '@reduxjs/toolkit';
+import { createSelector, Selector } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
 import demoReducer from '@features/DevTools/slice';
@@ -15,6 +15,9 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
 export type AppState = ReturnType<typeof rootReducer>;
-export const getAppState: Selector<ReturnType<typeof rootReducer>, DataStore> = (state) =>
-  state.legacy;
+
+export const getAppState: Selector<AppState, DataStore> = (state) => state.legacy;
+
+export const getPassword = createSelector([getAppState], (s) => s.password);
