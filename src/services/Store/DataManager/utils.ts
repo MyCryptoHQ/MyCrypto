@@ -1,8 +1,8 @@
 import isEmpty from 'ramda/src/isEmpty';
 import { ValuesType } from 'utility-types';
 
-import { createDefaultValues } from '@database';
 import { NetworkConfig, NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { createDefaultValues } from '@database/generateDefaultValues';
 import {
   DataStore,
   ExtendedAsset,

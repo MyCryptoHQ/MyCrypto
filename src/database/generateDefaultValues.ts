@@ -21,7 +21,7 @@ import {
   NetworkLegacy,
   NodeOptions
 } from '@types';
-import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils';
+import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils/generateUUID';
 
 import { NetworkConfig, NETWORKS_CONFIG, NODES_CONFIG } from './data';
 import { add, toArray, toObject } from './helpers';

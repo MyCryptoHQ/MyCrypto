@@ -1,6 +1,3 @@
-// @todo Used for unsupportedTabs. update to unsupportedPaths
-// import { TAB } from 'components/Header/components/constants';
-
 import {
   DEFAULT_NETWORK,
   DEFAULT_NETWORK_TICKER,

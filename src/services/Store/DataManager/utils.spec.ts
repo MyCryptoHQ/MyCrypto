@@ -1,5 +1,5 @@
-import { createDefaultValues } from '@database';
 import { NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { createDefaultValues } from '@database/generateDefaultValues';
 import { customNodeConfig, fNetwork } from '@fixtures';
 import {
   ExtendedAsset,

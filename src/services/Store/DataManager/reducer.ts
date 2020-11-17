@@ -3,7 +3,8 @@ import prop from 'ramda/src/prop';
 import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
 import unionWith from 'ramda/src/unionWith';
 
-import { getCurrentDBConfig } from '@database';
+// import { getCurrentDBConfig } from '@database/versions';
+import { defaultContacts, defaultSettings } from '@database/data';
 import {
   DataStore,
   DataStoreEntry,
@@ -14,8 +15,6 @@ import {
   Network,
   TUuid
 } from '@types';
-
-import { marshallState } from './utils';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -57,11 +56,28 @@ export function init(initialState: DataStore) {
   return initialState;
 }
 
-const initialState = getCurrentDBConfig().defaultValues;
-export function appDataReducer(
-  state: DataStore = marshallState(initialState),
-  { type, payload }: ActionV
-) {
+/**
+ * @todo migrate to new store structure once redux-persist is in setup.
+ * The initial state is the equivalent of `marshallState(getCurrentDBConfig().defaultValues)`
+ * We redeclare it here to avoid circular dep issues and changing multiple imports.
+ * Will be changed once we refactor to slices.
+ */
+const initialState = {
+  version: 'v1.1.0',
+  [LSKeys.ACCOUNTS]: [],
+  [LSKeys.ADDRESS_BOOK]: Object.entries(defaultContacts).map(([k, v]) => ({
+    ...v,
+    uuid: k as TUuid
+  })),
+  [LSKeys.ASSETS]: [],
+  [LSKeys.CONTRACTS]: [],
+  [LSKeys.NETWORKS]: [],
+  [LSKeys.NOTIFICATIONS]: [],
+  [LSKeys.SETTINGS]: defaultSettings,
+  [LSKeys.PASSWORD]: '',
+  [LSKeys.USER_ACTIONS]: []
+};
+export function appDataReducer(state: DataStore = initialState, { type, payload }: ActionV) {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
