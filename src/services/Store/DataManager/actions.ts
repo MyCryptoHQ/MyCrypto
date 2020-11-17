@@ -1,5 +1,6 @@
 import { Dispatch } from 'react';
 
+import { ActionPayload, ActionT, ActionV } from '@store/legacy.reducer';
 import { SymmetricDifference } from 'utility-types';
 
 import {
@@ -15,7 +16,6 @@ import {
   TUuid
 } from '@types';
 
-import { ActionPayload, ActionT, ActionV } from './reducer';
 import { deMarshallState, marshallState } from './utils';
 
 type createPayload = (m: DSKeys) => <T>(v: T) => ActionPayload<T>;

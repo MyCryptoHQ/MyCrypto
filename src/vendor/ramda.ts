@@ -47,3 +47,6 @@ export { default as union } from 'ramda/src/union';
 export { default as pick } from 'ramda/src/pick';
 export { default as assoc } from 'ramda/src/assoc';
 export { default as descend } from 'ramda/src/descend';
+export { default as eqBy } from 'ramda/src/eqBy';
+export { default as symmetricDifferenceWith } from 'ramda/src/symmetricDifferenceWith';
+export { default as unionWith } from 'ramda/src/unionWith';
