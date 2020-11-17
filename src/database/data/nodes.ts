@@ -1,5 +1,5 @@
 import { INFURA_API_KEY, POCKET_API_KEY } from '@config';
-import { NetworkUtils } from '@services/Store/Network';
+import { NetworkUtils } from '@services/Store/Network/utils';
 import { NetworkId, NodeType, StaticNodeConfig } from '@types';
 
 export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
