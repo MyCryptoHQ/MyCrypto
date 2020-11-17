@@ -59,15 +59,10 @@ export const DataProvider: React.FC = ({ children }) => {
    */
   const currentDB = useMemo(() => getCurrentDBConfig(), []);
   const currentDBValues = useMemo(() => getData(), []);
-  const currentEncryptedDBValues = useMemo(() => getEncryptedData(), []);
   const { db, updateDb, resetDb, defaultValues } = DatabaseService(
     currentDB.main,
     currentDBValues,
     currentDB.defaultValues
-  );
-  const { db: encryptedDb, updateDb: setEncryptedDb } = DatabaseService(
-    currentDB.vault,
-    currentEncryptedDBValues
   );
 
   const dispatch = useDispatch();
@@ -83,11 +78,6 @@ export const DataProvider: React.FC = ({ children }) => {
   useEffect(() => {
     dispatch({ type: ActionT.RESET, payload: { data: marshallState(db) } });
   }, []);
-
-  const [encryptedDbState, dispatchEncryptedDb]: [
-    EncryptedDataStore,
-    Dispatch<ActionZ>
-  ] = useReducer(encryptedDbReducer, encryptedDb);
 
   const resetAppDb = useCallback(
     (newDb = defaultValues) => {
@@ -106,8 +96,6 @@ export const DataProvider: React.FC = ({ children }) => {
   const syncDb = (state: DataStore) => {
     updateDb(deMarshallState(state));
   };
-
-  useEffect(() => setEncryptedDb(encryptedDbState), [encryptedDbState]);
 
   // observe password changes in appState
   useEffect(() => syncDb(appState), [appState.password]);
@@ -144,6 +132,20 @@ export const DataProvider: React.FC = ({ children }) => {
   /*
    *  Handle db encryption on ScreenLock
    */
+  const currentEncryptedDBValues = useMemo(() => getEncryptedData(), []);
+
+  const { db: encryptedDb, updateDb: setEncryptedDb } = DatabaseService(
+    currentDB.vault,
+    currentEncryptedDBValues
+  );
+
+  const [encryptedDbState, dispatchEncryptedDb]: [
+    EncryptedDataStore,
+    Dispatch<ActionZ>
+  ] = useReducer(encryptedDbReducer, encryptedDb);
+
+  useEffect(() => setEncryptedDb(encryptedDbState), [encryptedDbState]);
+
   const setEncryptedCache = (data: string) => {
     dispatchEncryptedDb({
       type: ActionY.SET_DATA,
@@ -156,6 +158,7 @@ export const DataProvider: React.FC = ({ children }) => {
       payload: {} as EncryptedDbActionPayload<string>
     });
   };
+
   const getUnlockPassword = () => {
     return db && db.password;
   };
