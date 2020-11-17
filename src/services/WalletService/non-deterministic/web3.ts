@@ -1,8 +1,8 @@
 import { bufferToHex } from 'ethereumjs-util';
 
 import { Web3Node } from '@services/EthService';
-import { INode, ITxFromAddress } from '@types';
-import { getTransactionFields, makeTransaction } from '@utils';
+import { IHexStrWeb3Transaction, INode, ITxFromAddress } from '@types';
+import { makeTransaction } from '@utils';
 
 import { IFullWallet } from '../IWallet';
 
@@ -38,17 +38,17 @@ export default class Web3Wallet implements IFullWallet {
     return (nodeLib as Web3Node).signMessage(msgHex, this.address);
   }
 
+  // @todo: Doesn't seem to be used
   public async sendTransaction(
     serializedTransaction: string,
     nodeLib: Web3Node,
     networkConfig: any
   ): Promise<string> {
-    const transactionInstance = makeTransaction(serializedTransaction);
-    const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = getTransactionFields(
-      transactionInstance
+    const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = makeTransaction(
+      serializedTransaction
     );
     const from = this.address as ITxFromAddress;
-    const web3Tx = {
+    const web3Tx = ({
       from,
       to,
       value,
@@ -57,9 +57,9 @@ export default class Web3Wallet implements IFullWallet {
       data,
       nonce,
       chainId
-    };
+    } as unknown) as IHexStrWeb3Transaction;
 
-    if (!nodeLib) {
+    if (!nodeLib || !to) {
       throw new Error('');
     }
 

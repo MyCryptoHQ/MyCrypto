@@ -1,4 +1,4 @@
-import { Transaction as EthTx } from 'ethereumjs-tx';
+import { UnsignedTransaction } from 'ethers/utils';
 
 import { IFullWallet } from '../IWallet';
 import { DeterministicWallet } from './deterministic';
@@ -16,7 +16,7 @@ export abstract class HardwareWallet extends DeterministicWallet implements IFul
     throw new Error(`getChainCode is not implemented in ${this.constructor.name}`);
   }
 
-  public abstract signRawTransaction(t: EthTx): Promise<Buffer>;
+  public abstract signRawTransaction(t: UnsignedTransaction): Promise<Buffer>;
   public abstract signMessage(msg: string): Promise<string>;
   public abstract displayAddress(): Promise<boolean>;
   public abstract getWalletType(): string;

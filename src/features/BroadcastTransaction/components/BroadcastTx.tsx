@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
-import { Transaction as EthTx } from 'ethereumjs-tx';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
 import styled from 'styled-components';
@@ -9,7 +8,6 @@ import styled from 'styled-components';
 import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
-import { getTransactionFields } from '@utils';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -78,24 +76,28 @@ const NetworkSelectWrapper = styled.div`
   width: 100%;
 `;
 
-const getStringifiedTx = (tx: EthTx) => JSON.stringify(getTransactionFields(tx), null, 2);
+const getStringifiedTx = (tx: Transaction) => JSON.stringify(tx, null, 2);
 
 const makeTxFromSignedTx = (signedTransaction: string) => {
   try {
     const bufferTransaction = toBuffer(signedTransaction);
     const decoded: Transaction = parseTransaction(bufferTransaction);
-    const transaction = new EthTx(bufferTransaction, { chain: decoded.chainId });
-    return transaction;
+    return decoded;
   } catch (err) {
     console.debug(`[BroadcastTx] ${err}`);
     return undefined;
   }
 };
 
+// @todo
+const verifySignature = (_tx: Transaction) => {
+  return true;
+};
+
 interface Props {
   network: NetworkId;
   signedTx: ISignedTx;
-  transaction: EthTx | undefined;
+  transaction: Transaction | undefined;
   onComplete(signedTx: string): void;
   handleNetworkChanged(network: NetworkId): void;
 }
@@ -103,10 +105,12 @@ interface Props {
 const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Props) => {
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
-  const [transaction, setTransaction] = useState<EthTx | undefined>(makeTxFromSignedTx(signedTx));
+  const [transaction, setTransaction] = useState<Transaction | undefined>(
+    makeTxFromSignedTx(signedTx)
+  );
 
   const validateField = () => {
-    if ((transaction && transaction.verifySignature()) || !userInput) {
+    if ((transaction && verifySignature(transaction)) || !userInput) {
       setInputError('');
     } else {
       setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
@@ -139,7 +143,7 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
       </InputWrapper>
       {transaction ? (
         <React.Fragment>
-          {!transaction.getChainId() && (
+          {!transaction.chainId && (
             <NetworkSelectWrapper>
               <NetworkSelector network={network} onChange={handleNetworkChanged} />
               {!network && (
