@@ -25,7 +25,7 @@ jobs:
       - name: Set PR_NUMBER
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "::set-env name=PR_NUMBER::$PR_NUMBER"
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
@@ -33,7 +33,7 @@ jobs:
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${PR_NUMBER}/# )
           echo $E2E_BASE_URL
-          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+          echo "E2E_BASE_URL=$E2E_BASE_URL" >> $GITHUB_ENV
 
       # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
@@ -41,7 +41,7 @@ jobs:
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/master/# )
           echo $E2E_BASE_URL
-          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+          echo "E2E_BASE_URL=$E2E_BASE_URL" >> $GITHUB_ENV
 
         # Define url as env var to be used by TestCafe.
       - name: Set E2E_BASE_URL
@@ -49,7 +49,7 @@ jobs:
         run: |
           E2E_BASE_URL=$( echo https://mycryptobuilds.com/pr/${{ github.event.client_payload.pull_request.number }}/# )
           echo $E2E_BASE_URL
-          echo "::set-env name=E2E_BASE_URL::$E2E_BASE_URL"
+          echo "E2E_BASE_URL=$E2E_BASE_URL" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         if: github.event_name != 'repository_dispatch'

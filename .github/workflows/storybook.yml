@@ -25,7 +25,7 @@ jobs:
       - name: Set PR_NUMBER
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "::set-env name=PR_NUMBER::$PR_NUMBER"
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         if: github.event_name != 'repository_dispatch'
