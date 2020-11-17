@@ -27,4 +27,11 @@ const slice = createSlice({
   }
 });
 
+export const {
+  create: createAccount,
+  destroy: destroyAccount,
+  update: updateAccount,
+  reset: resetAccount
+} = slice.actions;
+
 export default slice;
