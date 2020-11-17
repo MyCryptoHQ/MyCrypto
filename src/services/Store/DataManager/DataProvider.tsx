@@ -50,12 +50,12 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Provide lj
    */
   const currentDB = useMemo(() => getCurrentDBConfig(), []);
-  const currentDBValues = useMemo(() => getData(), []);
-  const { db, updateDb, resetDb, defaultValues } = DatabaseService(
-    currentDB.main,
-    currentDBValues,
-    currentDB.defaultValues
-  );
+  // const currentDBValues = useMemo(() => getData(), []);
+  // const { db, updateDb, resetDb, defaultValues } = DatabaseService(
+  //   currentDB.main,
+  //   currentDBValues,
+  //   currentDB.defaultValues
+  // );
 
   const dispatch = useDispatch();
   const legacyState = useSelector(getAppState);

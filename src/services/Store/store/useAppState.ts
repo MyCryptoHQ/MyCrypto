@@ -8,6 +8,6 @@ export const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
 
 export default function useAppState() {
   return {
-    getUnlockPassword: useSelector(getPassword)
+    password: useSelector(getPassword)
   };
 }
