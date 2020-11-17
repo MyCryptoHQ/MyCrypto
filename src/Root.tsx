@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { store } from '@store';
+import { createStore } from '@store';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { DevToolsManager } from '@features';
@@ -24,23 +25,27 @@ const FullScreen = styled.div`
   max-height: 100vh;
 `;
 
+const { store, persistor } = createStore();
+
 const RootClass = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AppProviders>
-            <FullHeight>
-              <DevToolsManager />
-              <FullScreen id="ModalContainer">
-                <AppRoutes />
-              </FullScreen>
-            </FullHeight>
-          </AppProviders>
-        </Router>
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <AppProviders>
+              <FullHeight>
+                <DevToolsManager />
+                <FullScreen id="ModalContainer">
+                  <AppRoutes />
+                </FullScreen>
+              </FullHeight>
+            </AppProviders>
+          </Router>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 };
