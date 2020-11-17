@@ -1,20 +1,6 @@
-import eqBy from 'ramda/src/eqBy';
-import prop from 'ramda/src/prop';
-import symmetricDifferenceWith from 'ramda/src/symmetricDifferenceWith';
-import unionWith from 'ramda/src/unionWith';
-
-// import { getCurrentDBConfig } from '@database/versions';
 import { defaultContacts, defaultSettings } from '@database/data';
-import {
-  DataStore,
-  DataStoreEntry,
-  DataStoreItem,
-  DSKeys,
-  EncryptedDataStore,
-  LSKeys,
-  Network,
-  TUuid
-} from '@types';
+import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
+import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -36,21 +22,6 @@ export interface ActionV {
     | ActionPayload<DataStoreItem | DataStoreEntry | DataStore | string>
     | ActionPayload<TUuid>;
 }
-
-export enum ActionY {
-  CLEAR_DATA = 'CLEAR_DATA',
-  SET_DATA = 'SET_DATA'
-}
-
-export interface EncryptedDbActionPayload<T> {
-  data?: T;
-}
-
-export interface ActionZ {
-  type: keyof typeof ActionY;
-  payload: EncryptedDbActionPayload<string>;
-}
-
 // Handler to facilitate initial store state and reset.
 export function init(initialState: DataStore) {
   return initialState;
@@ -77,7 +48,8 @@ const initialState = {
   [LSKeys.PASSWORD]: '',
   [LSKeys.USER_ACTIONS]: []
 };
-export function appDataReducer(state: DataStore = initialState, { type, payload }: ActionV) {
+
+export default function legacyReducer(state: DataStore = initialState, { type, payload }: ActionV) {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -139,27 +111,6 @@ export function appDataReducer(state: DataStore = initialState, { type, payload 
     }
     default: {
       return state;
-    }
-  }
-}
-
-export function encryptedDbReducer(
-  state: EncryptedDataStore,
-  { type, payload }: ActionZ
-): EncryptedDataStore {
-  switch (type) {
-    case ActionY.SET_DATA: {
-      return {
-        ...state,
-        ...payload
-      };
-    }
-    case ActionY.CLEAR_DATA: {
-      return {};
-    }
-
-    default: {
-      throw new Error('[EncryptedDbReducer]: missing action type');
     }
   }
 }

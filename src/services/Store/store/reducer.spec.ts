@@ -1,10 +1,10 @@
 import { DSKeys, IAccount, LSKeys } from '@types';
 
-import { ActionT, ActionV, appDataReducer } from './reducer';
+import { ActionT, ActionV, default as legacyReducer } from './legacy.reducer';
 
-const dispatch = (action: ActionV) => (state: any) => appDataReducer(state, action);
+const dispatch = (action: ActionV) => (state: any) => legacyReducer(state, action);
 
-describe('AppStateReducer', () => {
+describe('legacyReducer()', () => {
   describe('ADD_ITEM', () => {
     it('can add an Item to an array', () => {
       const account = { address: '0x0', uuid: 'fakeUUID' } as IAccount;

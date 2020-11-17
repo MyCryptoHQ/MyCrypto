@@ -22,14 +22,7 @@ import { useEvent, useThrottleFn } from '@vendor';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
-import {
-  ActionPayload,
-  ActionT,
-  ActionY,
-  ActionZ,
-  EncryptedDbActionPayload,
-  encryptedDbReducer
-} from './reducer';
+import { ActionY, ActionZ, EncryptedDbActionPayload, encryptedDbReducer } from './encrypt.reducer';
 import { deMarshallState, marshallState } from './utils';
 
 export interface DataCacheManager extends DataStore {
@@ -76,15 +69,15 @@ export const DataProvider: React.FC = ({ children }) => {
 
   /* Temp step to sync redux state with localstorage */
   useEffect(() => {
-    dispatch({ type: ActionT.RESET, payload: { data: marshallState(db) } });
+    dispatch({ type: 'RESET', payload: { data: marshallState(db) } });
   }, []);
 
   const resetAppDb = useCallback(
     (newDb = defaultValues) => {
       resetDb(newDb); // Reset the persistence layer
       dispatch({
-        type: ActionT.RESET,
-        payload: { data: marshallState(newDb) } as ActionPayload<DataStore>
+        type: 'RESET',
+        payload: { data: marshallState(newDb) }
       }); // Reset the Context
     },
     [defaultValues]
@@ -164,7 +157,7 @@ export const DataProvider: React.FC = ({ children }) => {
   };
   const setUnlockPassword = (password: string) => {
     dispatch({
-      type: ActionT.ADD_ENTRY,
+      type: 'ADD_ENTRY',
       payload: { data: password, model: LSKeys.PASSWORD }
     });
   };
