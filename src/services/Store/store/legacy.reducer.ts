@@ -1,3 +1,5 @@
+import { Reducer } from '@reduxjs/toolkit';
+
 import { defaultContacts, defaultSettings } from '@database/data';
 import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
 import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
@@ -49,7 +51,7 @@ export const initialState = {
   [LSKeys.USER_ACTIONS]: []
 };
 
-export default function legacyReducer(state: DataStore = initialState, { type, payload }: ActionV) {
+const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -113,4 +115,5 @@ export default function legacyReducer(state: DataStore = initialState, { type, p
       return state;
     }
   }
-}
+};
+export default legacyReducer;

@@ -1,24 +1,10 @@
-import React, {
-  createContext,
-  Dispatch,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState
-} from 'react';
+import React, { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react';
 
 import { getAppState, initialLegacyState, useDispatch, useSelector } from '@store';
 
-import {
-  addDevSeedToSchema,
-  getCurrentDBConfig,
-  getData,
-  getEncryptedData,
-  removeSeedDataFromSchema
-} from '@database';
+import { getCurrentDBConfig, getEncryptedData } from '@database';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
-import { useEvent, useThrottleFn } from '@vendor';
+import { noOp } from '@utils';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
@@ -42,31 +28,16 @@ export type IDataContext = DataCacheManager & EncryptedStorage;
 
 export const DataContext = createContext({} as IDataContext);
 
-const isSafari = () => /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
 export const DataProvider: React.FC = ({ children }) => {
-  /*
-   *  Create the our master store, sync with persistance layer,
-   *  Provide lj
-   */
   const currentDB = useMemo(() => getCurrentDBConfig(), []);
-  // const currentDBValues = useMemo(() => getData(), []);
-  // const { db, updateDb, resetDb, defaultValues } = DatabaseService(
-  //   currentDB.main,
-  //   currentDBValues,
-  //   currentDB.defaultValues
-  // );
 
   const dispatch = useDispatch();
   const legacyState = useSelector(getAppState);
 
-  /* Temp step to sync StoreProvider with new redux */
-  // const [appState, setAppState] = useState(marshallState(deMarshallState(initialLegacyState)));
-  // useEffect(() => {
-  //   setAppState(reduxState);
-  // }, [reduxState]);
-
-  /* Temp step to sync redux state with initial data eg. contracts, networks, nodes etc. */
+  /*
+   *  Temp step to sync redux state with initial data eg. contracts, networks, nodes etc.
+   *  Should really be done inside each reducer slice.
+   **/
   useEffect(() => {
     dispatch({
       type: 'RESET',
@@ -81,45 +52,6 @@ export const DataProvider: React.FC = ({ children }) => {
       payload: { data: marshallState(newDb) }
     }); // Reset the Context
   };
-
-  /*
-   * Manage sync between appState an db
-   */
-  // const syncDb = (state: DataStore) => {
-  //   updateDb(deMarshallState(state));
-  // };
-
-  // observe password changes in appState
-  // useEffect(() => syncDb(appState), [appState.password]);
-
-  // By default we sync no more than once a 30 seconds
-  // useThrottleFn(syncDb, 30000, [appState]);
-  // In any case, we sync before the tab is closed
-  // https://developers.google.com/web/updates/2018/07/page-lifecycle-api
-  // useEvent('visibilitychange', () => {
-  //   if (document.hidden) {
-  //     syncDb(appState);
-  //   }
-  // });
-
-  // Workaround, since Safari does not trigger 'visibilitychange' event on page reload
-  // Meaning all changes are lost, if db wasn't synced in 30sec window
-  // useEvent('beforeunload', () => {
-  //   if (isSafari()) {
-  //     syncDb(appState);
-  //   }
-  // });
-
-  /*
-   * Toggle seed data
-   */
-  // const addSeedData = useCallback(() => {
-  //   resetAppDb(addDevSeedToSchema(db));
-  // }, [db]);
-
-  // const removeSeedData = useCallback(() => {
-  //   resetAppDb(removeSeedDataFromSchema(db));
-  // }, []);
 
   /*
    *  Handle db encryption on ScreenLock
@@ -163,8 +95,8 @@ export const DataProvider: React.FC = ({ children }) => {
     createActions: (key) => ActionFactory(key, dispatch, legacyState),
     resetAppDb,
     encryptedDbState,
-    // removeSeedData,
-    // addSeedData,
+    removeSeedData: noOp,
+    addSeedData: noOp,
     setEncryptedCache,
     destroyEncryptedCache,
     setUnlockPassword

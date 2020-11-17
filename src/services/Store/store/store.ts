@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import { IS_DEV } from '@utils';
 
-import { createPersistReducer, REDUX_PERSIST_ACTION_TYPES } from './persist.config';
+import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer from './reducer';
 import rootSaga from './sagas';
 
@@ -31,15 +31,6 @@ const createStore = () => {
     module.hot.accept('./reducer', () => {
       // https://github.com/rt2zz/redux-persist/blob/master/docs/hot-module-replacement.md
       import('./reducer').then(({ default: nextReducer }) => store.replaceReducer(nextReducer));
-    });
-
-    module.hot.accept('./legacy.reducer', () => {
-      import('./legacy.reducer').then(({ default: nextReducer }) =>
-        store.replaceReducer({
-          ...rootReducer,
-          legacy: createPersistReducer(nextReducer)
-        })
-      );
     });
   }
 
