@@ -167,7 +167,7 @@ class ScreenLockProvider extends Component<
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
-    if (lockingOnDemand && this.props.getUnlockPassword()) {
+    if (lockingOnDemand && this.props.password) {
       this.handleCountdownEnded();
       return;
     }
@@ -206,8 +206,8 @@ class ScreenLockProvider extends Component<
   public handleCountdownEnded = () => {
     /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
       If user has not setup the password yet, just navigate to "/screen-lock/new. */
-    const { getUnlockPassword } = this.props;
-    const password = getUnlockPassword();
+    const { password } = this.props;
+
     clearInterval(countDownTimer);
     if (password) {
       this.setState({ locking: false, locked: true });
