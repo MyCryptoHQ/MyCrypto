@@ -19,7 +19,7 @@ export const golemTokenMigrationConfig: ITokenMigrationConfig = {
     {
       txType: ITxType.GOLEM_TOKEN_MIGRATION,
       stepTitle: translateRaw('COMPLETE_GOLEM_TOKEN_MIGRATION'),
-      stepContent: translateRaw('GOLEM_TOKEN_MIGRATION_STEP2_TEXT'),
+      stepContent: translateRaw('GOLEM_TOKEN_MIGRATION_STEP1_TEXT'),
       actionBtnText: translateRaw('CONFIRM_TRANSACTION'),
       stepSvg: step2SVG,
       constructTxFn: createGolemMigrationTx
