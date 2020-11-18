@@ -67,3 +67,20 @@ export const swapTransactionReceipt = wrapInProvider(
     />
   </div>
 );
+
+export const tokenMigrationTransactionReceipt = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <MultiTxReceipt
+      txType={ITxType.REP_TOKEN_MIGRATION}
+      transactions={[fTxParcels[0], fTxParcels[0]]}
+      transactionsConfigs={transactionsConfigs}
+      steps={stepsContent}
+      account={fAccount}
+      network={fNetwork}
+      resetFlow={resetFlow}
+      onComplete={resetFlow}
+      baseAssetRate={baseAssetRate}
+      fiat={Fiats.USD}
+    />
+  </div>
+);
