@@ -5,6 +5,7 @@ import { getAppState, initialLegacyState, useDispatch, useSelector } from '@stor
 import { getCurrentDBConfig, getEncryptedData } from '@database';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
 import { noOp } from '@utils';
+import { isEmpty } from '@vendor';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
@@ -39,10 +40,15 @@ export const DataProvider: React.FC = ({ children }) => {
    *  Should really be done inside each reducer slice.
    **/
   useEffect(() => {
-    dispatch({
-      type: 'RESET',
-      payload: { data: marshallState(deMarshallState(initialLegacyState)) }
-    });
+    // @todo: Redux remove after setting networks and contracts initial state.
+    // simple hack to load them on the first visit. Once it is persisted in LS
+    // redux-persist will rehydrate the state with the correct values.
+    if (isEmpty(legacyState.networks)) {
+      dispatch({
+        type: 'RESET',
+        payload: { data: marshallState(deMarshallState(initialLegacyState)) }
+      });
+    }
   }, []);
 
   const resetAppDb = (newDb = deMarshallState(initialLegacyState)) => {
