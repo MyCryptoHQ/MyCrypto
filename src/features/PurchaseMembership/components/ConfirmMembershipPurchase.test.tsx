@@ -3,30 +3,23 @@ import React from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { stepsContent } from '@features/SwapAssets/config';
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
+import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
+import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
-import { bigify, noOp, truncate } from '@utils';
+import { translateRaw } from '@translations';
+import { noOp, truncate } from '@utils';
 
-import { SwapTransactionReceipt } from '.';
-import { LAST_CHANGED_AMOUNT } from '../types';
+import ConfirmMembershipPurchase from './ConfirmMembershipPurchase';
 
-const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
-  account: fAccount,
-  assetPair: {
-    fromAsset: fAssets[0],
-    toAsset: fRopDAI,
-    lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
-    fromAmount: bigify(1),
-    toAmount: bigify(100),
-    rate: bigify(0),
-    markup: bigify(0)
-  },
+const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
+  account: fAccounts[0],
   transactions: fTxParcels,
-  onSuccess: noOp
+  currentTxIdx: 0,
+  flowConfig: MEMBERSHIP_CONFIG.lifetime,
+  onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>) {
+function getComponent(props: React.ComponentProps<typeof ConfirmMembershipPurchase>) {
   return simpleRender(
     <Router>
       <DataContext.Provider
@@ -51,7 +44,7 @@ function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>
               } as any) as any
             }
           >
-            <SwapTransactionReceipt {...props} />
+            <ConfirmMembershipPurchase {...props} />
           </StoreContext.Provider>
         </RatesContext.Provider>
       </DataContext.Provider>
@@ -59,17 +52,10 @@ function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>
   );
 }
 
-describe('SwapTransactionReceipt', () => {
+describe('ConfirmMembershipPurchase', () => {
   test('it renders a single tx', async () => {
     const { getAllByText } = getComponent(defaultProps);
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
-  });
-
-  test('it renders multi tx', async () => {
-    const { getByText } = getComponent({
-      ...defaultProps,
-      transactions: [fTxParcels[0], fTxParcels[0]]
-    });
-    expect(getByText(stepsContent[0].title)).toBeDefined();
+    expect(getAllByText(translateRaw('MEMBERSHIP'))).toBeDefined();
   });
 });
