@@ -22,7 +22,6 @@ import {
   weiToFloat
 } from '@utils';
 
-import { PendingTransaction } from '../PendingLoader';
 import { TxReceiptStatusBadge } from '../TxReceiptStatusBadge';
 import { ISender } from '../types';
 
@@ -132,11 +131,7 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('TX_STATUS')}:</div>
                 <div className="TransactionDetails-row-column">
-                  {status == ITxStatus.PENDING ? (
-                    <PendingTransaction />
-                  ) : (
-                    <TxReceiptStatusBadge status={status} />
-                  )}
+                  <TxReceiptStatusBadge status={status} />
                 </div>
               </div>
             )}
@@ -144,11 +139,9 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
                 <div className="TransactionDetails-row-column">
-                  {timestamp !== 0 ? (
-                    new Date(Math.floor(timestamp * 1000)).toLocaleString()
-                  ) : (
-                    <PendingTransaction />
-                  )}
+                  {timestamp !== 0
+                    ? new Date(Math.floor(timestamp * 1000)).toLocaleString()
+                    : translate('PENDING_STATE')}
                 </div>
               </div>
             )}
@@ -237,7 +230,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('CONFIRMATIONS')}:</div>
               <div className="TransactionDetails-row-column">
-                {confirmations ? `${confirmations}` : <PendingTransaction />}
+                {confirmations ? `${confirmations}` : translate('PENDING_STATE')}
               </div>
             </div>
             <div className="TransactionDetails-row">
@@ -247,11 +240,9 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
               <div className="TransactionDetails-row-column">
-                {gasUsed ? (
-                  `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
-                ) : (
-                  <PendingTransaction />
-                )}
+                {gasUsed
+                  ? `${gasUsed.toString()} (${gasUsedPercentage?.toFixed(2)}%)`
+                  : translate('PENDING_STATE')}
               </div>
             </div>
             {baseAsset && (
@@ -268,11 +259,9 @@ function TransactionDetailsDisplay({
                 {translateRaw('TRANSACTION_FEE')}:
               </div>
               <div className="TransactionDetails-row-column">
-                {actualTxFeeBase ? (
-                  `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
-                ) : (
-                  <PendingTransaction />
-                )}
+                {actualTxFeeBase
+                  ? `${actualTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${actualTxFeeFiat})`
+                  : translate('PENDING_STATE')}
               </div>
             </div>
             <div className="TransactionDetails-row">

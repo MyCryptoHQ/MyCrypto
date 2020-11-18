@@ -976,6 +976,7 @@
     "TRANSACTIONS_MULTI": "Transaction $current of $total",
     "BASE_ASSET_PRICE": "Base Asset Price",
     "ASSET_PRICE": "Asset Price",
-    "SEND_AMOUNT": "Send Amount"
+    "SEND_AMOUNT": "Send Amount",
+    "PENDING_STATE": "(pending)"
   }
 }

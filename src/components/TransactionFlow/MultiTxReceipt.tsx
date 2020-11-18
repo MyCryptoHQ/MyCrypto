@@ -22,7 +22,7 @@ import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
 import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
-import { PendingTransaction } from './PendingLoader';
+import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 
 interface PendingBtnAction {
@@ -93,20 +93,16 @@ export default function MultiTxReceipt({
           <div key={idx}>
             <div className="TransactionReceipt-row">
               <div className="TransactionReceipt-row-column" style={{ display: 'flex' }}>
+                {/**  @todo ICON */}
                 <img src={sendIcon} alt="Sent" />
-                <div>
-                  {transaction.label}
-                  <Body>
-                    {translate('TRANSACTIONS_MULTI', {
-                      $current: idx + 1,
-                      $total: transactions.length
-                    })}
-                  </Body>
-                </div>
+                <div>{transaction.label}</div>
               </div>
               <div className="TransactionReceipt-row-column">
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  {status !== ITxStatus.PENDING ? status : <PendingTransaction />}
+                  {translate('TRANSACTIONS_MULTI', {
+                    $current: idx + 1,
+                    $total: transactions.length
+                  })}
                 </div>
                 {transaction.txHash && (
                   <div>
@@ -133,28 +129,28 @@ export default function MultiTxReceipt({
               gasUsed={gasUsed}
               value={value}
             />
-            <div className="TransactionReceipt-details">
-              <div className="TransactionReceipt-details-row">
-                <div className="TransactionReceipt-details-row-column">
-                  <SubHeading color={COLORS.BLUE_GREY} m="0">
-                    {translate('TIMESTAMP')}
-                    {': '}
-                    <Body as="span" fontWeight="normal">
-                      <span style={{ fontWeight: 'normal' }}>
-                        {timestamp !== 0 && (
-                          <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
-                            {localTimestamp}
-                          </Tooltip>
-                        )}
-                      </span>
-                    </Body>
-                  </SubHeading>
-                </div>
 
-                <div className="TransactionReceipt-details-row-column">
-                  {timestamp === 0 && <PendingTransaction />}
-                </div>
+            <div className="TransactionReceipt-details-row">
+              <div className="TransactionReceipt-details-row-column">
+                <SubHeading color={COLORS.BLUE_GREY} m="0">
+                  {translate('TIMESTAMP')}
+                  {': '}
+                  <Body as="span" fontWeight="normal">
+                    {timestamp !== 0 && (
+                      <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
+                        {localTimestamp}
+                      </Tooltip>
+                    )}
+                    {timestamp === 0 && translate('PENDING_STATE')}
+                  </Body>
+                </SubHeading>
               </div>
+
+              <div className="TransactionReceipt-details-row-column">
+                <TxReceiptStatusBadge status={status} />
+              </div>
+            </div>
+            <div className="TransactionReceipt-details">
               <TransactionDetailsDisplay
                 baseAsset={baseAsset}
                 asset={asset}

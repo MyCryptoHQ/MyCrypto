@@ -52,7 +52,6 @@ import {
   constructSenderFromTxConfig,
   isContractInteraction
 } from './helpers';
-import { PendingTransaction } from './PendingLoader';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
@@ -390,13 +389,12 @@ export const TxReceiptUI = ({
                   {localTimestamp}
                 </Tooltip>
               )}
+              {timestamp === 0 && translate('PENDING_STATE')}
             </Body>
           </SubHeading>
         </div>
         <div className="TransactionReceipt-details-row-column">
-          {displayTxReceipt && <TxReceiptStatusBadge status={txStatus} />}
-
-          {!displayTxReceipt && <PendingTransaction />}
+          <TxReceiptStatusBadge status={txStatus} />
         </div>
       </div>
 
@@ -406,7 +404,7 @@ export const TxReceiptUI = ({
             <SubHeading color={COLORS.BLUE_GREY} m="0">
               {translate('TRANSACTION_ID')}
               {': '}
-              <Body as="span" color={COLORS.BLUE_GREY}>
+              <Body as="span" color={COLORS.BLUE_GREY} fontWeight="normal">
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
                   <LinkOut
                     inline={true}
@@ -417,11 +415,9 @@ export const TxReceiptUI = ({
                     link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
                   />
                 )}
+                {!displayTxReceipt && translate('PENDING_STATE')}
               </Body>
             </SubHeading>
-          </div>
-          <div className="TransactionReceipt-details-row-column">
-            {!displayTxReceipt && <PendingTransaction />}
           </div>
         </div>
 
