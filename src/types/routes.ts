@@ -5,7 +5,7 @@ export interface IRoutePath {
 }
 
 export interface IAppRoute extends IRoutePath {
-  component: React.ReactNode;
+  component: any;
   enabled: boolean;
   exact?: boolean;
   seperateLayout?: boolean;
