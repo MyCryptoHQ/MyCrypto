@@ -6,7 +6,10 @@ import {
   bigNumberify,
   formatEther,
   hexlify,
-  parseTransaction
+  parseTransaction,
+  recoverAddress,
+  serializeTransaction,
+  Transaction
 } from 'ethers/utils';
 import { Optional } from 'utility-types';
 
@@ -64,6 +67,8 @@ import {
 } from './makeTransaction';
 import { getDecimalFromEtherUnit } from './units';
 import { isTransactionDataEmpty } from './validators';
+
+const N_DIV_2 = new BigNumber('0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0');
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
@@ -431,4 +436,22 @@ export const appendNonce = (network: Network, senderAddress: TAddress) => async 
     ...tx,
     nonce
   };
+};
+
+export const verifyTransaction = (transaction: Transaction): boolean => {
+  if (!transaction.r || !transaction.s || !transaction.v) {
+    return false;
+  }
+
+  if (new BigNumber(transaction.s).gt(N_DIV_2)) {
+    return false;
+  }
+
+  try {
+    const { r, s, v, from, ...unsignedTransaction } = transaction;
+    const serializedTransaction = serializeTransaction(unsignedTransaction, { r, s, v });
+    return !!recoverAddress(serializedTransaction, { r, s, v });
+  } catch (e) {
+    return false;
+  }
 };
