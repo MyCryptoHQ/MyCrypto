@@ -135,16 +135,14 @@ function TransactionDetailsDisplay({
                 </div>
               </div>
             )}
-            {timestamp !== undefined && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
-                <div className="TransactionDetails-row-column">
-                  {timestamp !== 0
-                    ? new Date(Math.floor(timestamp * 1000)).toLocaleString()
-                    : translate('PENDING_STATE')}
-                </div>
+            <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
+              <div className="TransactionDetails-row-column">
+                {timestamp !== 0 && timestamp !== undefined
+                  ? new Date(Math.floor(timestamp * 1000)).toLocaleString()
+                  : translate('PENDING_STATE')}
               </div>
-            )}
+            </div>
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">{translateRaw('X_SENDER')}:</div>
               <div className="TransactionDetails-row-column">
