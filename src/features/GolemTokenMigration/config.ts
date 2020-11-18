@@ -7,7 +7,7 @@ import { createGolemMigrationTx } from './helpers';
 
 export const golemTokenMigrationConfig: ITokenMigrationConfig = {
   title: translateRaw('GOLEM Token Migration'),
-  toContractAddress: '' as TAddress,
+  toContractAddress: '0x7DD9c5Cba05E151C895FDe1CF355C9A1D5DA6429' as TAddress,
   fromContractAddress: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d' as TAddress,
   fromAssetUuid: GOLEMV1UUID,
   toAssetUuid: GOLEMV2UUID,

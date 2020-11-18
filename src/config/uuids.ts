@@ -12,7 +12,7 @@ export const LENDUUID = '1c77b322-a88c-57cc-b956-78c2bc17c360' as TUuid;
 export const ANTv1UUID = '7f4d2f19-9a76-5930-b63b-ac9b0afe6201' as TUuid;
 
 export const GOLEMV1UUID = '59a6f871-34bb-5914-86cc-b5f1307bb3b9' as TUuid;
-export const GOLEMV2UUID = '' as TUuid;
+export const GOLEMV2UUID = '12470ffd-9ed1-5899-80b8-b1d30b1d1194' as TUuid;
 
 export const EMPTYUUID = '00000000-0000-0000-0000-000000000000';
 
