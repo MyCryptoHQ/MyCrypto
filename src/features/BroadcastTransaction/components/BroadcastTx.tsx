@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
+import { verifyTransaction } from '@utils/transaction';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -89,11 +90,6 @@ const makeTxFromSignedTx = (signedTransaction: string) => {
   }
 };
 
-// @todo
-const verifySignature = (_tx: Transaction) => {
-  return true;
-};
-
 interface Props {
   network: NetworkId;
   signedTx: ISignedTx;
@@ -110,7 +106,7 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
   );
 
   const validateField = () => {
-    if ((transaction && verifySignature(transaction)) || !userInput) {
+    if ((transaction && verifyTransaction(transaction)) || !userInput) {
       setInputError('');
     } else {
       setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
