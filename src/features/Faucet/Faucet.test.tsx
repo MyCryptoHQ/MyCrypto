@@ -64,6 +64,7 @@ describe('Faucet', () => {
             addressBook: [],
             contracts: [],
             settings: fSettings,
+            userActions: [],
             createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
           } as any
         }
