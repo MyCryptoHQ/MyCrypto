@@ -112,7 +112,7 @@ class ScreenLockProvider extends Component<
         this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
       });
       this.resetInactivityTimer();
-      document.title = translateRaw('PAGE_TITLE_PREPEND') + translateRaw('PAGE_TITLE_APPEND');
+      document.title = translateRaw('DEFAULT_PAGE_TITLE');
       return true;
     } catch (error) {
       console.error(error);
@@ -125,7 +125,7 @@ class ScreenLockProvider extends Component<
     const { destroyEncryptedCache } = this.props;
     destroyEncryptedCache();
     this.setState({ locked: false }, () => {
-      document.title = translateRaw('PAGE_TITLE_PREPEND') + translateRaw('PAGE_TITLE_APPEND');
+      document.title = translateRaw('DEFAULT_PAGE_TITLE');
     });
   };
 
@@ -135,7 +135,7 @@ class ScreenLockProvider extends Component<
     destroyEncryptedCache();
     resetAppDb();
     this.setState({ locked: false }, () => {
-      document.title = translateRaw('PAGE_TITLE_PREPEND') + translateRaw('PAGE_TITLE_APPEND');
+      document.title = translateRaw('DEFAULT_PAGE_TITLE');
       this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
@@ -204,7 +204,7 @@ class ScreenLockProvider extends Component<
     clearInterval(countDownTimer);
     this.resetInactivityTimer();
     this.setState({ locking: false });
-    document.title = translateRaw('PAGE_TITLE_PREPEND') + translateRaw('PAGE_TITLE_APPEND');
+    document.title = translateRaw('DEFAULT_PAGE_TITLE');
   };
 
   public handleCountdownEnded = () => {
@@ -218,7 +218,7 @@ class ScreenLockProvider extends Component<
       this.setPasswordAndInitiateEncryption(password, true);
     } else {
       this.setState({ locking: false, locked: false });
-      document.title = translateRaw('PAGE_TITLE_PREPEND') + translateRaw('PAGE_TITLE_APPEND');
+      document.title = translateRaw('DEFAULT_PAGE_TITLE');
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
     }
   };

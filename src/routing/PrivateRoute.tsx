@@ -20,7 +20,7 @@ interface PageTitleProps extends RouteComponentProps {
 const PageTitleRoute = ({ pageComponent: Component, title, ...props }: PageTitleProps) => {
   useEffectOnce(() => {
     document.title =
-      translateRaw('PAGE_TITLE_PREPEND') + title || translateRaw('PAGE_TITLE_APPEND');
+      translateRaw('PAGE_TITLE_PREPEND') + title || translateRaw('DEFAULT_PAGE_TITLE');
   });
   return <Component {...props} />;
 };

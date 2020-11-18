@@ -597,7 +597,7 @@
     "SCREEN_LOCK_NEW_HEADING": "Create Password to Lock Your Wallet",
     "SCREEN_LOCK_NEW_PASSWORD_LABEL": "Password (min 8 characters)",
     "PAGE_TITLE_PREPEND": "MyCrypto - ",
-    "PAGE_TITLE_APPEND": "Ethereum Wallet Manager",
+    "DEFAULT_PAGE_TITLE": "MyCrypto - Ethereum Wallet Manager",
     "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
     "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in",
     "SEE_MORE": "See More",
