@@ -254,8 +254,10 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
+  const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  const [fetchedNonce, setFetchedNonce] = useState(0);
 
   const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
 
@@ -289,8 +291,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-    (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
-    ({} as Asset)
+      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
+      ({} as Asset)
   );
 
   const {
@@ -397,10 +399,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
         translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
         async function (value) {
           const account = this.parent.account;
-          const network = this.parent.network;
           if (!isEmpty(account)) {
-            const nonce = await getNonce(network, account.address);
-            return Math.abs(value - nonce) < 10;
+            return Math.abs(value - fetchedNonce) < 10;
           }
           return true;
         }
@@ -503,9 +503,14 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
     ) {
       setIsEstimatingGasLimit(true);
       const finalTx = processFormForEstimateGas(values);
-      const gas = await getGasEstimate(values.network, finalTx);
-      setFieldValue('gasLimitField', hexToNumber(gas).toString());
-      setFieldTouched('amount');
+      try {
+        const gas = await getGasEstimate(values.network, finalTx);
+        setFieldValue('gasLimitField', hexToNumber(gas).toString());
+        setGasEstimationError(undefined);
+        setFieldTouched('amount');
+      } catch (err) {
+        setGasEstimationError(err.message);
+      }
       setIsEstimatingGasLimit(false);
     } else {
       return;
@@ -522,11 +527,11 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
         ? balance
         : baseToConvertedUnit(
-          new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
-            .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
-            .toString(),
-          DEFAULT_ASSET_DECIMAL
-        );
+            new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
+              .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
+              .toString(),
+            DEFAULT_ASSET_DECIMAL
+          );
       setFieldValue('amount', amount);
       handleGasEstimate();
     }
@@ -539,12 +544,13 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
     setIsEstimatingNonce(true);
     const nonce: number = await getNonce(values.network, account.address);
     setFieldValue('nonceField', nonce.toString());
+    setFetchedNonce(nonce);
     setIsEstimatingNonce(false);
   };
 
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
-  const isFormValid = checkFormValid(errors);
+  const isFormValid = checkFormValid(errors) && !gasEstimationError;
   const walletConfig = getWalletConfig(values.account.wallet);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
@@ -774,6 +780,11 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
       >
         {translate('ACTION_6')}
       </Button>
+      {gasEstimationError && (
+        <InlineMessage
+          value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: gasEstimationError })}
+        />
+      )}
       {protectTxFeatureFlag && (
         <ProtectTxShowError
           protectTxError={checkFormForProtectTxErrors(
