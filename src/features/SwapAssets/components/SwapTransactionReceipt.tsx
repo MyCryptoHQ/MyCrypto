@@ -5,6 +5,7 @@ import pick from 'ramda/src/pick';
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
+import { stepsContent } from '@features/PurchaseMembership/config';
 import { StoreContext, useAssets, useRates, useSettings } from '@services';
 import { translateRaw } from '@translations';
 import { ITxType, StoreAccount } from '@types';
@@ -81,6 +82,7 @@ export default function SwapTransactionReceipt({
       txType={ITxType.SWAP}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
+      steps={stepsContent}
       account={account}
       network={account.network}
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}

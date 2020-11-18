@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 
-import sendIcon from '@assets/images/icn-send.svg';
 import { Body, LinkOut, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useRates, useSettings } from '@services';
@@ -30,9 +29,15 @@ interface PendingBtnAction {
   action(cb: any): void;
 }
 
+export interface MultiTxReceiptStep {
+  title: string;
+  icon: string;
+}
+
 interface Props {
   transactions: TxParcel[];
   transactionsConfigs: ITxConfig[];
+  steps: MultiTxReceiptStep[];
   account: StoreAccount;
   network: Network;
   fiat: Fiat;
@@ -52,6 +57,7 @@ export default function MultiTxReceipt({
   completeButtonText,
   fiat,
   baseAssetRate,
+  steps,
   customComponent
 }: Omit<IStepComponentProps, 'txConfig' | 'txReceipt'> & Props) {
   const { settings } = useSettings();
@@ -74,6 +80,7 @@ export default function MultiTxReceipt({
       {customComponent && customComponent()}
 
       {transactions.map((transaction, idx) => {
+        const step = steps[idx];
         const { asset, baseAsset, amount } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
@@ -93,9 +100,8 @@ export default function MultiTxReceipt({
           <div key={idx}>
             <div className="TransactionReceipt-row">
               <div className="TransactionReceipt-row-column" style={{ display: 'flex' }}>
-                {/**  @todo ICON */}
-                <img src={sendIcon} alt="Sent" />
-                <div>{transaction.label}</div>
+                <img src={step.icon} alt={step.title} />
+                <div>{step.title}</div>
               </div>
               <div className="TransactionReceipt-row-column">
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

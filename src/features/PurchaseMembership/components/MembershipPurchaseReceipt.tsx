@@ -6,7 +6,7 @@ import { useAssets, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 import { makeTxItem } from '@utils/transaction';
 
-import { IMembershipConfig } from '../config';
+import { IMembershipConfig, stepsContent } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
 import MembershipReceiptBanner from './MembershipReceiptBanner';
 
@@ -54,6 +54,7 @@ export default function MembershipReceipt({
       txType={ITxType.PURCHASE_MEMBERSHIP}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
+      steps={stepsContent}
       account={account}
       network={account.network}
       resetFlow={onComplete}

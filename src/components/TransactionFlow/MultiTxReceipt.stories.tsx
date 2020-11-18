@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { DAIUUID, ETHUUID, Fiats } from '@config';
+import { stepsContent } from '@features/SwapAssets/config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import { fAccount, fNetwork, fSettings, fTxConfigs, fTxParcels } from '@fixtures';
 import { DataContext, IDataContext, RatesContext } from '@services';
@@ -46,6 +47,7 @@ export const swapTransactionReceipt = wrapInProvider(
       txType={ITxType.SWAP}
       transactions={fTxParcels}
       transactionsConfigs={transactionsConfigs}
+      steps={stepsContent}
       account={fAccount}
       network={fNetwork}
       resetFlow={resetFlow}

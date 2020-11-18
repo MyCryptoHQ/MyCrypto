@@ -1,5 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 
+import step2SVG from '@assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-send.svg';
 import lifetimeIcon from '@assets/images/membership/membership-lifetime.svg';
 import onemonthIcon from '@assets/images/membership/membership-onemonth.svg';
 import sixMonthsIcon from '@assets/images/membership/membership-sixmonths.svg';
@@ -136,6 +138,21 @@ export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
     today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
   );
 };
+
+export const stepsContent = [
+  {
+    title: translateRaw('APPROVE_MEMBERSHIP'),
+    icon: step1SVG,
+    content: translateRaw('MEMBERSHIP_STEP1_TEXT'),
+    buttonText: `${translateRaw('APPROVE_MEMBERSHIP')}`
+  },
+  {
+    title: translateRaw('COMPLETE_PURCHASE'),
+    icon: step2SVG,
+    content: translateRaw('MEMBERSHIP_STEP2_TEXT'),
+    buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`
+  }
+];
 
 export const accordionContent = [
   {
