@@ -1,7 +1,17 @@
 import React, { ReactNode } from 'react';
 
+import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { fAccount, fContacts, fERC20Web3TxConfigJSON, fSettings, fTxConfig } from '@fixtures';
+import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
+import { IMembershipId, MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
+import {
+  fAccount,
+  fAssets,
+  fContacts,
+  fERC20Web3TxConfigJSON,
+  fSettings,
+  fTxConfig
+} from '@fixtures';
 import { DataContext, IDataContext } from '@services';
 import { ExtendedContact, ITxType } from '@types';
 import { bigify, noOp } from '@utils';
@@ -20,7 +30,7 @@ export default { title: 'ConfirmTx' };
 
 const wrapInProvider = (component: ReactNode) => (
   <DataContext.Provider
-    value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
+    value={({ createActions: noOp, userActions: [], assets: fAssets } as unknown) as IDataContext}
   >
     {component}
   </DataContext.Provider>
@@ -72,6 +82,25 @@ export const confirmTransactionToken = wrapInProvider(
   </div>
 );
 
+const membershipSelected = MEMBERSHIP_CONFIG[IMembershipId.lifetime];
+
+export const confirmTransactionMembership = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <ConfirmTransactionUI
+      settings={fSettings}
+      assetRate={assetRate}
+      baseAssetRate={baseAssetRate}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      customComponent={() => <MembershipReceiptBanner membershipSelected={membershipSelected} />}
+      onComplete={onComplete}
+      txConfig={fERC20Web3TxConfigJSON}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      txType={ITxType.PURCHASE_MEMBERSHIP}
+    />
+  </div>
+);
+
 const defaultZap = IZapId.unipoolseth;
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
 
@@ -84,7 +113,7 @@ export const confirmTransactionZap = wrapInProvider(
       senderContact={senderContact}
       recipientContact={recipientContact}
       txType={ITxType.DEFIZAP}
-      zapSelected={zapSelected}
+      customComponent={() => <ZapReceiptBanner zapSelected={zapSelected} />}
       onComplete={onComplete}
       txConfig={fTxConfig}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}

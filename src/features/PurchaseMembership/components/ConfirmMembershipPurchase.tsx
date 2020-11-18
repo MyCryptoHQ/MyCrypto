@@ -5,6 +5,7 @@ import { ITxType, StoreAccount, TxParcel } from '@types';
 
 import { IMembershipConfig } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
+import MembershipReceiptBanner from './MembershipReceiptBanner';
 
 interface Props {
   flowConfig: IMembershipConfig;
@@ -28,7 +29,7 @@ export default function ConfirmMembershipPurchase(props: Props) {
       onComplete={onComplete}
       resetFlow={onComplete}
       txConfig={txConfig}
-      membershipSelected={flowConfig}
+      customComponent={() => <MembershipReceiptBanner membershipSelected={flowConfig} />}
       txType={ITxType.PURCHASE_MEMBERSHIP}
     />
   );

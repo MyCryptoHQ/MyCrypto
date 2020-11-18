@@ -9,9 +9,7 @@ import walletIcon from '@assets/images/icn-wallet.svg';
 import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
-import { ZapSelectedBanner } from '@features/DeFiZap';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
 import { useRates } from '@services';
 import { StoreContext, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -22,7 +20,7 @@ import { convertToFiat, fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from
 import { FromToAccount } from './displays';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import { constructSenderFromTxConfig } from './helpers';
+import { constructSenderFromTxConfig, isContractInteraction } from './helpers';
 import { ISender } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
@@ -114,13 +112,12 @@ const PTXHeader = Styled.p`
 
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
-  membershipSelected,
-  zapSelected,
   txConfig,
   onComplete,
   signedTx,
-  protectTxButton
-}: IStepComponentProps & { protectTxButton?(): JSX.Element }) {
+  protectTxButton,
+  customComponent
+}: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
   const { asset, baseAsset, receiverAddress, network, from } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
@@ -151,14 +148,13 @@ export default function ConfirmTransaction({
       senderContact={senderContact}
       sender={sender}
       txType={txType}
-      zapSelected={zapSelected}
-      membershipSelected={membershipSelected}
       txConfig={txConfig}
       recipientContact={recipientContact}
       onComplete={onComplete}
       signedTx={signedTx}
       ptxFee={ptxFee}
       protectTxButton={protectTxButton}
+      customComponent={customComponent}
     />
   );
 }
@@ -172,6 +168,7 @@ interface DataProps {
   sender: ISender;
   ptxFee?: IFeeAmount;
   protectTxButton?(): JSX.Element;
+  customComponent?(): JSX.Element;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -183,14 +180,13 @@ export const ConfirmTransactionUI = ({
   senderContact,
   sender,
   recipientContact,
-  zapSelected,
-  membershipSelected,
   txType,
   txConfig,
   onComplete,
   signedTx,
   ptxFee,
-  protectTxButton
+  protectTxButton,
+  customComponent
 }: UIProps) => {
   const {
     asset,
@@ -223,12 +219,10 @@ export const ConfirmTransactionUI = ({
 
   const fiat = getFiat(settings);
 
+  const isContractCall = data !== '0x' || (txType && isContractInteraction(txType));
+
   return (
     <ConfirmTransactionWrapper>
-      {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <MembershipSelectedBanner membershipSelected={membershipSelected} />
-      )}
       <FromToAccount
         networkId={sender.network.id}
         fromAccount={{
@@ -239,33 +233,22 @@ export const ConfirmTransactionUI = ({
           address: receiverAddress,
           addressBookEntry: recipientContact
         }}
-        displayToAddress={
-          txType !== ITxType.DEFIZAP &&
-          txType !== ITxType.PURCHASE_MEMBERSHIP &&
-          txType !== ITxType.DEPLOY_CONTRACT
-        }
+        displayToAddress={txType !== ITxType.DEPLOY_CONTRACT}
       />
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <RowWrapper>
-          <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
-        </RowWrapper>
+      {/* CONTRACT BOX */}
+
+      {isContractCall && (
+        <div className="TransactionReceipt-row">
+          <TxIntermediaryDisplay address={rawTransaction.to} contractName={asset.ticker} />
+        </div>
       )}
-      {assetType === 'erc20' &&
-        asset &&
-        asset.contractAddress &&
-        txType !== ITxType.PURCHASE_MEMBERSHIP && (
-          <RowWrapper>
-            <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
-          </RowWrapper>
-        )}
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <RowWrapper>
-          <TxIntermediaryDisplay
-            address={membershipSelected.contractAddress}
-            contractName={asset.ticker}
-          />
-        </RowWrapper>
-      )}
+
+      {/* CUSTOM FLOW CONTENT */}
+
+      {customComponent && customComponent()}
+
+      {customComponent && <div className="TransactionReceipt-divider" />}
+
       <RowWrapper>
         <ColumnWrapper>
           <img src={sendIcon} alt="Send" />
