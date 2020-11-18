@@ -201,6 +201,9 @@ const TxReceipt = ({
     txConfig.network.id
   );
 
+  // @todo Scan assets for contract addresses too?
+  const contract = getContactByAddressAndNetworkId(txConfig.rawTransaction.to, txConfig.network.id);
+
   const txType = displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD;
 
   const fiat = getFiat(settings);
@@ -213,6 +216,7 @@ const TxReceipt = ({
       senderContact={senderContact}
       sender={sender}
       recipientContact={recipientContact}
+      contractName={contract && contract.label}
       displayTxReceipt={displayTxReceipt}
       protectTxEnabled={ptxState && ptxState.enabled}
       fiat={fiat}
@@ -242,6 +246,7 @@ export interface TxReceiptDataProps {
   senderContact: ExtendedContact | undefined;
   sender: ISender;
   recipientContact: ExtendedContact | undefined;
+  contractName?: string;
   fiat: Fiat;
   protectTxEnabled?: boolean;
   assetRate: number | undefined;
@@ -262,6 +267,7 @@ export const TxReceiptUI = ({
   txStatus,
   timestamp,
   assetRate,
+  contractName,
   displayTxReceipt,
   setDisplayTxReceipt,
   customComponent,
@@ -356,7 +362,7 @@ export const TxReceiptUI = ({
 
       {isContractCall && (
         <div className="TransactionReceipt-row">
-          <TxIntermediaryDisplay address={rawTransaction.to} contractName={asset.ticker} />
+          <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
         </div>
       )}
 

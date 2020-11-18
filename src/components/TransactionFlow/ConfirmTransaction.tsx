@@ -118,7 +118,7 @@ export default function ConfirmTransaction({
   protectTxButton,
   customComponent
 }: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
-  const { asset, baseAsset, receiverAddress, network, from } = txConfig;
+  const { asset, baseAsset, receiverAddress, network, from, rawTransaction } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
@@ -140,6 +140,9 @@ export default function ConfirmTransaction({
   const assetRate = getAssetRate(asset);
   const baseAssetRate = getAssetRate(baseAsset);
 
+  // @todo Scan assets for contract addresses too?
+  const contract = getContactByAddressAndNetworkId(rawTransaction.to, network.id);
+
   return (
     <ConfirmTransactionUI
       settings={settings}
@@ -150,6 +153,7 @@ export default function ConfirmTransaction({
       txType={txType}
       txConfig={txConfig}
       recipientContact={recipientContact}
+      contractName={contract && contract.label}
       onComplete={onComplete}
       signedTx={signedTx}
       ptxFee={ptxFee}
@@ -166,6 +170,7 @@ interface DataProps {
   recipientContact?: ExtendedContact;
   senderContact?: ExtendedContact;
   sender: ISender;
+  contractName?: string;
   ptxFee?: IFeeAmount;
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
@@ -180,6 +185,7 @@ export const ConfirmTransactionUI = ({
   senderContact,
   sender,
   recipientContact,
+  contractName,
   txType,
   txConfig,
   onComplete,
@@ -239,7 +245,7 @@ export const ConfirmTransactionUI = ({
 
       {isContractCall && (
         <div className="TransactionReceipt-row">
-          <TxIntermediaryDisplay address={rawTransaction.to} contractName={asset.ticker} />
+          <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
         </div>
       )}
 

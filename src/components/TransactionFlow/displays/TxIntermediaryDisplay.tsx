@@ -8,7 +8,7 @@ import { translateRaw } from '@translations';
 
 interface Props {
   address: string;
-  contractName: string;
+  contractName?: string;
 }
 
 const Wrapper = styled.div`
@@ -55,7 +55,7 @@ function TxIntermediaryDisplay({ address, contractName }: Props) {
             <div>
               <IntermediaryDisplayLabel>
                 {translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
-                  $contractName: contractName
+                  $contractName: contractName || 'unknown'
                 })}
                 :
               </IntermediaryDisplayLabel>
