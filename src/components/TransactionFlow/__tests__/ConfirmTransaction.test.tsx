@@ -2,11 +2,10 @@ import React from 'react';
 
 import { fireEvent, simpleRender } from 'test-utils';
 
-import { ZAPS_CONFIG } from '@features/DeFiZap/config';
 import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
 import { DataContext } from '@services';
 import { translateRaw } from '@translations';
-import { ExtendedContact, ITxType } from '@types';
+import { ExtendedContact } from '@types';
 import { truncate } from '@utils';
 
 import { ConfirmTransactionUI } from '../ConfirmTransaction';
@@ -68,17 +67,6 @@ describe('ConfirmTransaction', () => {
     const btn = getByText(translateRaw('CONFIRM_AND_SEND'));
     fireEvent.click(btn);
     expect(defaultProps.onComplete).toHaveBeenCalledWith(null);
-  });
-
-  test('it displays DeFiZap info', async () => {
-    const zap = ZAPS_CONFIG.compounddai;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      zapSelected: zap,
-      txType: ITxType.DEFIZAP
-    });
-    expect(getByText(zap.title)).toBeDefined();
-    expect(getByText(zap.outlook, { exact: false })).toBeDefined();
   });
 
   test('it displays PTX button', async () => {
