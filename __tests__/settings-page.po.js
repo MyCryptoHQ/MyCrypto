@@ -1,8 +1,7 @@
 import { Selector, t } from 'testcafe';
 
 import BasePage from './base-page.po';
-import { ENV, NETWORK_NAME_FIXTURE, PAGES } from './fixtures';
-import { getTransValueByKey } from './translation-utils';
+import { PAGES } from './fixtures';
 
 export default class SettingsPage extends BasePage {
   async navigateToPage() {
@@ -11,23 +10,6 @@ export default class SettingsPage extends BasePage {
 
   async waitPageLoaded() {
     await this.waitForPage(PAGES.SETTINGS);
-  }
-
-  async addAccount() {
-    this.navigateTo(PAGES.ADD_ACCOUNT_MNEMONIC);
-    this.waitForPage(PAGES.ADD_ACCOUNT_MNEMONIC);
-
-    await t
-      .typeText(Selector('.Select-input').find('input'), NETWORK_NAME_FIXTURE)
-      .click(Selector('.Select-menu').find('span').withText(NETWORK_NAME_FIXTURE))
-      .click(Selector('button').withText(getTransValueByKey('ACTION_6')))
-      .typeText(
-        Selector(`input[placeholder="${getTransValueByKey('X_MNEMONIC')}"]`),
-        ENV.E2E_MNEMONIC_PASSPHRASE
-      )
-      .click(Selector('button').withText(getTransValueByKey('MNEMONIC_CHOOSE_ADDR')))
-      .click(Selector('table tbody tr:first-child td'))
-      .click(Selector('button').withText(getTransValueByKey('ACTION_6')));
   }
 
   async expectAccountTableToMatchCount(count) {
