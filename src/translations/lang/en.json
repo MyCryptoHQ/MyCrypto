@@ -946,8 +946,6 @@
     "NO_ACCOUNTS": "No Accounts",
     "CUSTOM_ASSET_API_ERR": "CustomAssetService has already been instantiated.",
     "GAS_LIMIT_ESTIMATION_ERROR_MESSAGE": "Something went wrong: $error. Make sure you've filled everything out correctly and try again. If this error persists, please visit our [Knowledge Base](https://support.mycrypto.com/troubleshooting/sending/gas-required-exceeds-allowance-or-always-failing-transaction) for further assistance.",
-    "LEDGER_NANO_S_NEW_HELP": "Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto)",
-    "LEDGER_NANO_S_NEW_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)",
     "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
     "GOLEM_TOKEN_MIGRATION_STEP2_TEXT": "Confirm the transaction below to conduct the Golem v1 to v2 migration. This will complete the migration.",
     "COMPLETE_GOLEM_TOKEN_MIGRATION": "Complete Golem Migration",
