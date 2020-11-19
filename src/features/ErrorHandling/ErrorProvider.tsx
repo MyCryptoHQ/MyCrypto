@@ -51,7 +51,7 @@ class ErrorProvider extends Component<RouteComponentProps> {
     console.error(error);
     if (!this.state.suppressErrors) {
       const path = Object.values(ROUTE_PATHS).find((p) => p.path === window.location.pathname);
-      this.props.history.replace(ROUTE_PATHS.HOME.path);
+      this.props.history.replace(ROUTE_PATHS.ROOT.path);
       this.setState({
         error: { error, path }
       });

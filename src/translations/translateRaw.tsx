@@ -119,7 +119,7 @@ export const Trans: FC<Props> = ({ id, variables }) => {
       }
     });
 
-    const nextTagMatch = '(?<=<)T\\d+?(?=/>)';
+    const nextTagMatch = new RegExp('<T\\d+/>');
 
     /**
      * Replaces all <T{id}> with actual components from variables, and creates a components list
@@ -131,14 +131,14 @@ export const Trans: FC<Props> = ({ id, variables }) => {
         return components;
       }
 
-      const nextMatch = rest.match(new RegExp(nextTagMatch));
+      const nextMatch = rest.match(nextTagMatch);
       if (nextMatch && nextMatch.length) {
-        const resolvedComponentIndex = nextMatch[0].replace('T', '');
+        const resolvedComponentIndex = nextMatch[0].replace('<T', '').replace('/>', '');
         const resolvedComponentIndexNumber = parseInt(resolvedComponentIndex, 10);
 
         const matchSplit = [
-          rest.substring(0, nextMatch.index! - 1),
-          rest.substring(nextMatch.index! + 3 + resolvedComponentIndex.length)
+          rest.substring(0, nextMatch.index!),
+          rest.substring(nextMatch.index! + 4 + resolvedComponentIndex.length)
         ];
 
         return resolveComponents(matchSplit[1], [
