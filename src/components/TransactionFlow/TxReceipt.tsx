@@ -16,7 +16,12 @@ import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { fetchGasPriceEstimates, useRates } from '@services';
+import {
+  fetchGasPriceEstimates,
+  getAssetByContractAndNetwork,
+  useAssets,
+  useRates
+} from '@services';
 import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
@@ -91,6 +96,7 @@ const TxReceipt = ({
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addTxToAccount } = useAccounts();
+  const { assets } = useAssets();
   const { accounts } = useContext(StoreContext);
   const { settings } = useSettings();
   const [txStatus, setTxStatus] = useState(
@@ -201,8 +207,20 @@ const TxReceipt = ({
     txConfig.network.id
   );
 
-  // @todo Scan assets for contract addresses too?
-  const contract = getContactByAddressAndNetworkId(txConfig.rawTransaction.to, txConfig.network.id);
+  const contractName = (() => {
+    const contact = getContactByAddressAndNetworkId(
+      txConfig.rawTransaction.to,
+      txConfig.network.id
+    );
+    if (contact) {
+      return contact.label;
+    }
+    const asset = getAssetByContractAndNetwork(
+      txConfig.rawTransaction.to,
+      txConfig.network
+    )(assets);
+    return asset && asset.name;
+  })();
 
   const txType = displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD;
 
@@ -216,7 +234,7 @@ const TxReceipt = ({
       senderContact={senderContact}
       sender={sender}
       recipientContact={recipientContact}
-      contractName={contract && contract.label}
+      contractName={contractName}
       displayTxReceipt={displayTxReceipt}
       protectTxEnabled={ptxState && ptxState.enabled}
       fiat={fiat}

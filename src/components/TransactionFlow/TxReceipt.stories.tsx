@@ -148,6 +148,7 @@ export const transactionReceiptMembership = wrapInProvider(
       senderContact={senderContact}
       recipientContact={recipientContact}
       sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      contractName={'MyCrypto Membership'}
       resetFlow={resetFlow}
       baseAssetRate={assetRate}
       fiat={Fiats.USD}

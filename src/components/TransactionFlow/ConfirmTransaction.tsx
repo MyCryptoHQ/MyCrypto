@@ -10,7 +10,7 @@ import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { useRates } from '@services';
+import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
 import { StoreContext, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -122,6 +122,7 @@ export default function ConfirmTransaction({
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
+  const { assets } = useAssets();
   const { accounts } = useContext(StoreContext);
   const { settings } = useSettings();
   const { state: ptxState } = useContext(ProtectTxContext);
@@ -140,8 +141,14 @@ export default function ConfirmTransaction({
   const assetRate = getAssetRate(asset);
   const baseAssetRate = getAssetRate(baseAsset);
 
-  // @todo Scan assets for contract addresses too?
-  const contract = getContactByAddressAndNetworkId(rawTransaction.to, network.id);
+  const contractName = (() => {
+    const contact = getContactByAddressAndNetworkId(rawTransaction.to, network.id);
+    if (contact) {
+      return contact.label;
+    }
+    const asset = getAssetByContractAndNetwork(rawTransaction.to, network)(assets);
+    return asset && asset.name;
+  })();
 
   return (
     <ConfirmTransactionUI
@@ -153,7 +160,7 @@ export default function ConfirmTransaction({
       txType={txType}
       txConfig={txConfig}
       recipientContact={recipientContact}
-      contractName={contract && contract.label}
+      contractName={contractName}
       onComplete={onComplete}
       signedTx={signedTx}
       ptxFee={ptxFee}

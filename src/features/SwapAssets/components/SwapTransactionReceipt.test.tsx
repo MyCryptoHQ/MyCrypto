@@ -6,6 +6,8 @@ import { simpleRender } from 'test-utils';
 import { stepsContent } from '@features/SwapAssets/config';
 import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
+import { translateRaw } from '@translations';
+import { TAddress } from '@types';
 import { bigify, noOp, truncate } from '@utils';
 
 import { SwapTransactionReceipt } from '.';
@@ -71,5 +73,25 @@ describe('SwapTransactionReceipt', () => {
       transactions: [fTxParcels[0], fTxParcels[0]]
     });
     expect(getByText(stepsContent[0].title)).toBeDefined();
+  });
+
+  test('it displays contract information', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      transactions: [
+        {
+          ...fTxParcels[0],
+          txRaw: { ...fTxParcels[0].txRaw, to: fRopDAI.contractAddress as TAddress }
+        }
+      ]
+    });
+    expect(
+      getByText(
+        translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
+          $contractName: fRopDAI.name
+        }),
+        { exact: false }
+      )
+    ).toBeDefined();
   });
 });
