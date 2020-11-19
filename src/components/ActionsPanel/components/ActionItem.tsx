@@ -20,7 +20,7 @@ const greenLightup = keyframes`
   }
 `;
 
-export const Action = styled.div<{ state?: string }>`
+const Action = styled.div<{ state?: string }>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
@@ -51,7 +51,7 @@ const IconContainer = styled.div`
   height: 28px;
 `;
 
-export const TitleContainer = styled.div`
+const TitleContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;

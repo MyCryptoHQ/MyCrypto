@@ -74,7 +74,7 @@ export const ActionPanel = () => {
           <DetailsHeading>
             <Icon width={20} type={currentAction.icon} />
             <HeadingText>{currentAction.heading}</HeadingText>
-            <Icon width={20} type="closed-eye" onClick={dismiss} />
+            <SIcon width={20} type="closed-eye" onClick={dismiss} />
           </DetailsHeading>
         ) : (
           <Text color="GREY" fontSize={0} mb={0}>

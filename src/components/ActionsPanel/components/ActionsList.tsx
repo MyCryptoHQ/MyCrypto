@@ -52,16 +52,16 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
     return false;
   };
 
-  const showedActions = filter((a: ActionTemplate) => !byState(a, ACTION_STATE.HIDDEN))(
+  const visibleActions = filter((a: ActionTemplate) => !byState(a, ACTION_STATE.HIDDEN))(
     actionTemplates
   );
 
   const sortedActions = pipe(
     filter((a: ActionTemplate) => !byState(a, ACTION_STATE.COMPLETED)),
     sortActions
-  )(showedActions);
+  )(visibleActions);
 
-  const actions = union(sortedActions, showedActions);
+  const actions = union(sortedActions, visibleActions);
 
   const hiddenActions = filter((a: ActionTemplate) => byState(a, ACTION_STATE.HIDDEN))(
     actionTemplates
