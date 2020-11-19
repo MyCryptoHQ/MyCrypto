@@ -36,6 +36,8 @@ import informational from '@assets/images/icn-info-blue.svg';
 import more from '@assets/images/icn-more.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
+import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
+import openedEye from '@assets/images/icn-show-eye.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import membership from '@assets/images/membership/membership-none.svg';
@@ -55,6 +57,8 @@ const svgIcons = {
   info,
   more,
   'info-small': infoSmall,
+  'opened-eye': openedEye,
+  'closed-eye': closedEye,
 
   /* Tooltips*/
   informational,

@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';
 
-import moreIcon from '@assets/images/icn-more.svg';
-import { AssetIcon, Currency, PoweredByText, Tooltip, Typography } from '@components';
+import { AssetIcon, Currency, Icon, PoweredByText, Tooltip, Typography } from '@components';
 import { EMPTYUUID } from '@config';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -132,7 +131,7 @@ const BreakDownHeadingWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const BreakDownMore = styled.img`
+const BreakDownMore = styled(Icon)`
   cursor: pointer;
   display: block;
 `;
@@ -239,9 +238,9 @@ export default function WalletBreakdownView({
   const label = allVisible
     ? translateRaw('WALLET_BREAKDOWN_ALL_ACCOUNTS')
     : translateRaw('WALLET_BREAKDOWN_SOME_WALLETS', {
-      $current: `${selected.length}`,
-      $total: `${accounts.length}`
-    });
+        $current: `${selected.length}`,
+        $total: `${accounts.length}`
+      });
 
   useEffect(() => {
     setShouldAnimate(true);
@@ -279,49 +278,49 @@ export default function WalletBreakdownView({
         {parseFloat(totalFiatValue) === 0 ? (
           <NoAssets />
         ) : (
-            <>
-              <BreakdownChart
-                balances={chartBalances}
-                selectedAssetIndex={selectedAssetIndex.chart}
-                handleMouseOver={handleMouseOver}
-                handleMouseLeave={handleMouseLeave}
-                setIsChartAnimating={setIsChartAnimating}
-                isChartAnimating={isChartAnimating}
-                shouldAnimate={shouldAnimate}
-                setShouldAnimate={setShouldAnimate}
-              />
-              {balance && (
-                <PanelFigures>
-                  <PanelFigure>
-                    <PanelFigureValue>
-                      <Typography bold={true} fontSize={'1.3rem'}>
-                        {balance.name}
-                      </Typography>
-                    </PanelFigureValue>
-                    <PanelFigureLabel>
-                      {selectedAssetPercentage}
-                      {translate('WALLET_BREAKDOWN_PERCENTAGE')}
-                    </PanelFigureLabel>
-                  </PanelFigure>
-                  <PanelFigure>
-                    <PanelFigureValue>
-                      <Currency
-                        amount={balance.fiatValue.toString()}
-                        symbol={fiat.symbol}
-                        ticker={fiat.ticker}
-                        decimals={2}
-                        bold={true}
-                        fontSize={'1.3rem'}
-                      />
-                    </PanelFigureValue>
-                    <PanelFigureLabel>
-                      {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
-                    </PanelFigureLabel>
-                  </PanelFigure>
-                </PanelFigures>
-              )}
-            </>
-          )}
+          <>
+            <BreakdownChart
+              balances={chartBalances}
+              selectedAssetIndex={selectedAssetIndex.chart}
+              handleMouseOver={handleMouseOver}
+              handleMouseLeave={handleMouseLeave}
+              setIsChartAnimating={setIsChartAnimating}
+              isChartAnimating={isChartAnimating}
+              shouldAnimate={shouldAnimate}
+              setShouldAnimate={setShouldAnimate}
+            />
+            {balance && (
+              <PanelFigures>
+                <PanelFigure>
+                  <PanelFigureValue>
+                    <Typography bold={true} fontSize={'1.3rem'}>
+                      {balance.name}
+                    </Typography>
+                  </PanelFigureValue>
+                  <PanelFigureLabel>
+                    {selectedAssetPercentage}
+                    {translate('WALLET_BREAKDOWN_PERCENTAGE')}
+                  </PanelFigureLabel>
+                </PanelFigure>
+                <PanelFigure>
+                  <PanelFigureValue>
+                    <Currency
+                      amount={balance.fiatValue.toString()}
+                      symbol={fiat.symbol}
+                      ticker={fiat.ticker}
+                      decimals={2}
+                      bold={true}
+                      fontSize={'1.3rem'}
+                    />
+                  </PanelFigureValue>
+                  <PanelFigureLabel>
+                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
+                  </PanelFigureLabel>
+                </PanelFigure>
+              </PanelFigures>
+            )}
+          </>
+        )}
         <PoweredBy>
           <PoweredByText provider="COINGECKO" />
         </PoweredBy>
@@ -331,7 +330,7 @@ export default function WalletBreakdownView({
       <BreakDownBalances>
         <BreakDownHeadingWrapper>
           <BreakDownHeading>{translate('WALLET_BREAKDOWN_BALANCES')}</BreakDownHeading>
-          <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
+          <BreakDownMore type="more" height="24px" alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
           {breakdownBalances.map(

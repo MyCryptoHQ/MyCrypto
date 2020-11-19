@@ -877,6 +877,7 @@
     "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider).",
     "ACTION_PANEL_HEADING": "Your Action Items",
     "ACTION_PANEL_COMPLETED_COUNT": "Completed $number / $total",
+    "ACTIONS_LIST_SHOW_HIDDEN": "Show Hidden",
     "MIGRATION_SUBHEAD": "$total account is ready to migrate",
     "MIGRATION_SUBHEAD_PLURAL": "$total accounts are ready to migrate",
     "UNI_CLAIM_SUBHEAD": "$total account is ready to claim",

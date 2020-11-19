@@ -8,7 +8,7 @@ import { useUserActions } from '@services';
 import { StoreContext, State as StoreContextState } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { ActionTemplate } from '@types';
+import { ACTION_STATE, ActionTemplate } from '@types';
 
 import { Text } from '../NewTypography';
 import { ActionDetails, ActionsList } from './components';
@@ -47,12 +47,18 @@ const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContex
 
 export const ActionPanel = () => {
   const storeContextState = useContext(StoreContext);
-  const { userActions } = useUserActions();
+  const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
 
   const relevantActions = useMemo(() => filterUserActions(actionTemplates, storeContextState), [
     storeContextState
   ]);
+
+  const dismiss = () => {
+    const userAction = findUserAction(currentAction!.name)!;
+    updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.HIDDEN });
+    setCurrentAction(undefined);
+  };
 
   return (
     <SDashboardPanel
@@ -68,6 +74,7 @@ export const ActionPanel = () => {
           <DetailsHeading>
             <Icon width={20} type={currentAction.icon} />
             <HeadingText>{currentAction.heading}</HeadingText>
+            <SIcon width={20} type="closed-eye" onClick={dismiss} />
           </DetailsHeading>
         ) : (
           <Text color="GREY" fontSize={0} mb={0}>
@@ -75,7 +82,13 @@ export const ActionPanel = () => {
               id="ACTION_PANEL_COMPLETED_COUNT"
               variables={{
                 $number: () => userActions.filter((a) => a.state === 'completed').length,
-                $total: () => relevantActions.length
+                $total: () =>
+                  relevantActions.filter((a: ActionTemplate) => {
+                    const userAction = findUserAction(a.name);
+                    if (!userAction) return true;
+                    else if (userAction && userAction.state !== ACTION_STATE.HIDDEN) return true;
+                    else return false;
+                  }).length
               }}
             />
           </Text>

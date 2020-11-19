@@ -36,7 +36,8 @@ export enum ACTION_STATE {
   DEFAULT = 'default',
   NEW = 'new',
   STARTED = 'started',
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
+  HIDDEN = 'hidden'
 }
 
 export interface ActionTemplate {

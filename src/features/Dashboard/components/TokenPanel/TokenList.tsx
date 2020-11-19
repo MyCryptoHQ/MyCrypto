@@ -3,8 +3,7 @@ import React from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import moreIcon from '@assets/images/icn-more.svg';
-import { AssetIcon, DashboardPanel, Spinner, Tooltip } from '@components';
+import { AssetIcon, DashboardPanel, Icon, Spinner, Tooltip } from '@components';
 import { FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { StoreAsset } from '@types';
@@ -48,7 +47,7 @@ const TokenValue = styled(Typography)`
   font-size: ${FONT_SIZE.BASE};
 `;
 
-const MoreIcon = styled.img`
+const MoreIcon = styled(Icon)`
   cursor: pointer;
 `;
 
@@ -124,7 +123,8 @@ export function TokenList(props: TokenListProps) {
               <TokenValueWrapper>
                 {showValue && <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>}
                 <MoreIcon
-                  src={moreIcon}
+                  type="more"
+                  height="24px"
                   alt="More"
                   onClick={() => {
                     setShowDetailsView(true);

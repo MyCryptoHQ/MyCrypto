@@ -6,7 +6,7 @@ import Icon from '@components/Icon';
 import { Text } from '@components/NewTypography';
 import { useUserActions } from '@services';
 import { COLORS, SPACING } from '@theme';
-import { ActionTemplate } from '@types';
+import { ACTION_STATE, ActionTemplate } from '@types';
 
 const greenLightup = keyframes`
   0% {
@@ -60,12 +60,14 @@ const TitleContainer = styled.div`
 
 export const ActionItem = ({
   actionTemplate,
-  onActionClick
+  onActionClick,
+  hidden = false
 }: {
   actionTemplate: ActionTemplate;
-  onActionClick: Dispatch<SetStateAction<ActionTemplate | undefined>>;
+  onActionClick?: Dispatch<SetStateAction<ActionTemplate | undefined>>;
+  hidden?: boolean;
 }) => {
-  const { findUserAction, createUserAction } = useUserActions();
+  const { findUserAction, createUserAction, updateUserAction } = useUserActions();
 
   const userAction = findUserAction(actionTemplate.name);
 
@@ -74,7 +76,10 @@ export const ActionItem = ({
   const SubHeading = actionTemplate.subHeading;
 
   return (
-    <Action state={userAction && userAction.state} onClick={() => onActionClick(actionTemplate)}>
+    <Action
+      state={userAction && userAction.state}
+      onClick={() => !hidden && onActionClick && onActionClick(actionTemplate)}
+    >
       <IconContainer>
         <Icon type={actionTemplate.icon} height="28px" />
       </IconContainer>
@@ -84,7 +89,15 @@ export const ActionItem = ({
         </Text>
         {SubHeading && <SubHeading {...actionTemplate.props} />}
       </TitleContainer>
-      <Icon type="more" />
+      <Icon
+        type={hidden ? 'opened-eye' : 'more'}
+        onClick={() =>
+          hidden &&
+          userAction &&
+          updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.NEW })
+        }
+        height={hidden ? '18px' : '24px'}
+      />
     </Action>
   );
 };
