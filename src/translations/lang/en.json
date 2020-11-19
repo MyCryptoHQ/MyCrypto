@@ -689,7 +689,6 @@
     "SWAP_INTRO": "To begin your swap process, we’ll first help you sell your ETH. We will walk you through the process below.",
     "SWAP_MARKUP_LABEL": "Markup ",
     "SWAP_MARKUP_TOOLTIP": "Markup determines how good of a deal you're getting, according to available liquidity.",
-    "SWAP_RATE": "Conversion Rate",
     "SWAP_RATE_LABEL": "Rate",
     "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol",
     "SWAP_RATE_TOOLTIP": "The total amount received may differ slightly from the displayed rate due to timing and fees associated with your transaction.",
