@@ -46,9 +46,6 @@ const ColumnWrapper = Styled.div<{ bold?: boolean }>`
   @media (min-width: ${SCREEN_XS}) {
     margin-bottom: 0;
   }
-  @media (min-width: ${SCREEN_XS}) {
-    font-size: 18px;
-  }
   img {
     width: auto;
     height: 25px;
@@ -299,7 +296,7 @@ export const ConfirmTransactionUI = ({
       </RowWrapper>
       <Divider />
       <RowWrapper>
-        <ColumnWrapper bold={true}>
+        <ColumnWrapper>
           <img src={walletIcon} alt="Total" />
           {translate('TOTAL')}
         </ColumnWrapper>
@@ -321,7 +318,6 @@ export const ConfirmTransactionUI = ({
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
                 assetValue={`${amount} ${asset.ticker}`}
-                bold={true}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
