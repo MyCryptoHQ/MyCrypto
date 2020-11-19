@@ -13,7 +13,7 @@ interface PrivateRouteProps extends IAppRoute {
 }
 
 interface PageTitleProps extends RouteComponentProps {
-  pageComponent: any;
+  pageComponent: React.ComponentType<any>;
   title?: string;
 }
 
