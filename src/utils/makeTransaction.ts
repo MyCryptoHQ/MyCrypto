@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
-import { bigNumberify, formatEther, parseTransaction, UnsignedTransaction } from 'ethers/utils';
+import { bigNumberify, formatEther, UnsignedTransaction } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';
@@ -9,12 +9,10 @@ import { bigify } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
-export const makeTransaction = (t: ITxObject | string): UnsignedTransaction => {
-  if (typeof t === 'string') {
-    return parseTransaction(t);
-  }
-
-  return { ...t, nonce: new BigNumber(t.nonce, 10).toNumber() };
+export const makeTransaction = (t: ITxObject): UnsignedTransaction => {
+  // Hardware wallets need `from` param excluded
+  const { from, ...tx } = t;
+  return { ...tx, nonce: new BigNumber(t.nonce, 10).toNumber() };
 };
 
 /* region:start User Input to Hex */
