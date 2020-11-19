@@ -112,7 +112,6 @@ class ScreenLockProvider extends Component<
         this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
       });
       this.resetInactivityTimer();
-      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
     } catch (error) {
       console.error(error);
@@ -124,9 +123,7 @@ class ScreenLockProvider extends Component<
   public resetEncrypted = async () => {
     const { destroyEncryptedCache } = this.props;
     destroyEncryptedCache();
-    this.setState({ locked: false }, () => {
-      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
-    });
+    this.setState({ locked: false });
   };
 
   // Wipes both DBs in case of forgotten pw
@@ -135,7 +132,6 @@ class ScreenLockProvider extends Component<
     destroyEncryptedCache();
     resetAppDb();
     this.setState({ locked: false }, () => {
-      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
@@ -204,7 +200,6 @@ class ScreenLockProvider extends Component<
     clearInterval(countDownTimer);
     this.resetInactivityTimer();
     this.setState({ locking: false });
-    document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
   };
 
   public handleCountdownEnded = () => {
@@ -218,7 +213,7 @@ class ScreenLockProvider extends Component<
       this.setPasswordAndInitiateEncryption(password, true);
     } else {
       this.setState({ locking: false, locked: false });
-      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
+      document.title = translateRaw('DEFAULT_PAGE_TITLE');
       this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
     }
   };
