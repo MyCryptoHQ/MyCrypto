@@ -37,7 +37,7 @@ test('Complete SendFlow', async (t) => {
 
   // Should show invalid speedup query params message
   const invalidSpeedUpQueryParamsMessage = Selector('.alert-info');
-  await t.expect(invalidSpeedUpQueryParamsMessage).ok();
+  await t.expect(invalidSpeedUpQueryParamsMessage.exists).ok();
 
   await t.click(ptxBtn);
 

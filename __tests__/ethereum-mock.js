@@ -11,7 +11,12 @@ export const _setupEthereumMock = ClientFunction((privateKey, chainId, rpcUrl) =
 });
 
 export const setupEthereumMock = async (privateKey, chainId) => {
-  await t.expect(ClientFunction(() => window.initialize)).ok({ timeout: FIXTURES_CONST.TIMEOUT });
+  await t
+    // Make sure to call the client function in order to assert against its return value:
+    // e.g "You passed a ClientFunction object to 't.expect()'.
+    // If you want to check the function's return value, use parentheses to call the function: fnName()."
+    .expect(ClientFunction(() => window.ethereum)())
+    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
   const rpcUrl = NETWORKS[chainId];
   await _setupEthereumMock(privateKey, chainId, rpcUrl);
 };
