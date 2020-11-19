@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface IRoutePath {
   name: string;
   title?: string;
@@ -5,7 +7,7 @@ export interface IRoutePath {
 }
 
 export interface IAppRoute extends IRoutePath {
-  component: any;
+  component: ReactNode;
   enabled: boolean;
   exact?: boolean;
   seperateLayout?: boolean;

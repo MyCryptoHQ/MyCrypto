@@ -17,12 +17,13 @@ interface PageTitleProps extends RouteComponentProps {
   title?: string;
 }
 
-const PageTitleRoute = ({ pageComponent: Component, title, ...props }: PageTitleProps) => {
+const PageTitleRoute = ({ pageComponent: Page, title, ...props }: PageTitleProps) => {
   useEffectOnce(() => {
-    document.title =
-      translateRaw('PAGE_TITLE_PREPEND') + title || translateRaw('DEFAULT_PAGE_TITLE');
+    document.title = title
+      ? translateRaw('PAGE_TITLE_PREPEND') + title
+      : translateRaw('DEFAULT_PAGE_TITLE');
   });
-  return <Component {...props} />;
+  return <Page {...props} />;
 };
 
 export const PrivateRoute = ({
