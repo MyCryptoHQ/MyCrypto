@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DAIUUID, ETHUUID } from '@config';
+import { fAccount } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify } from '@utils';
 
@@ -28,9 +29,19 @@ const assetPair = {
 };
 
 export const daiToEth = () => (
-  <ConfirmSwapMultiTx currentTxIdx={0} flowConfig={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx
+    currentTxIdx={0}
+    flowConfig={assetPair}
+    transactions={[]}
+    account={fAccount}
+  />
 );
 
 export const daiToEthStep2 = () => (
-  <ConfirmSwapMultiTx currentTxIdx={1} flowConfig={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx
+    currentTxIdx={1}
+    flowConfig={assetPair}
+    transactions={[]}
+    account={fAccount}
+  />
 );

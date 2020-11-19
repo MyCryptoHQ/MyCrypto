@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
-import { fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { bigify, noOp } from '@utils';
 
@@ -21,6 +21,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
     rate: bigify(0),
     markup: bigify(0)
   },
+  account: fAccount,
   onComplete: noOp,
   transactions: [fTxParcels[0], fTxParcels[0]],
   currentTxIdx: 0

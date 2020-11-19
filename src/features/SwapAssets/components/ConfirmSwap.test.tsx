@@ -3,7 +3,7 @@ import React from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { bigify, noOp, truncate } from '@utils';
 
@@ -12,7 +12,7 @@ import ConfirmSwap from './ConfirmSwap';
 
 const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
   account: fAccounts[0],
-  assetPair: {
+  flowConfig: {
     fromAsset: fAssets[0],
     toAsset: fRopDAI,
     lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
@@ -21,8 +21,9 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
     rate: bigify(0),
     markup: bigify(0)
   },
-  onClick: noOp,
-  isSubmitting: false
+  currentTxIdx: 0,
+  transactions: fTxParcels,
+  onComplete: noOp
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmSwap>) {

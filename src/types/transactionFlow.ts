@@ -176,5 +176,6 @@ export interface ITxMultiConfirmProps {
   currentTxIdx: number;
   transactions: TxParcel[];
   flowConfig: IFlowConfig;
+  account: StoreAccount;
   onComplete?(): void;
 }

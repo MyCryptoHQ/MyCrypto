@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import { DAIUUID, ETHUUID } from '@config';
-import { fAccounts } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import { fAccounts, fAssets, fTxParcels } from '@fixtures';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 
@@ -13,9 +13,19 @@ export default { title: 'ConfirmSwap' };
 
 const wrapInProvider = (component: ReactNode) => (
   <DataContext.Provider
-    value={({ createActions: noOp, userActions: [], addressBook: [] } as unknown) as IDataContext}
+    value={
+      ({
+        createActions: noOp,
+        userActions: [],
+        addressBook: [],
+        contracts: [],
+        settings: {}
+      } as unknown) as IDataContext
+    }
   >
-    {component}
+    <StoreContext.Provider value={{ assets: () => fAssets } as any}>
+      {component}
+    </StoreContext.Provider>
   </DataContext.Provider>
 );
 
@@ -38,5 +48,11 @@ const assetPair = {
 };
 
 export const ethToDai = wrapInProvider(
-  <ConfirmSwap account={fAccounts[0]} assetPair={assetPair} onClick={noOp} isSubmitting={false} />
+  <ConfirmSwap
+    account={fAccounts[0]}
+    flowConfig={assetPair}
+    onComplete={noOp}
+    transactions={fTxParcels}
+    currentTxIdx={0}
+  />
 );

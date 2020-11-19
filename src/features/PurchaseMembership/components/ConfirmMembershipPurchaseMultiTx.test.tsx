@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG, stepsContent } from '@features/PurchaseMembership/config';
-import { fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { noOp } from '@utils';
 
@@ -13,6 +13,7 @@ import ConfirmMembershipPurchase from './ConfirmMembershipPurchaseMultiTx';
 const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
   transactions: fTxParcels,
   currentTxIdx: 0,
+  account: fAccount,
   flowConfig: MEMBERSHIP_CONFIG.lifetime,
   onComplete: noOp
 };

@@ -126,7 +126,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         backBtnText: translateRaw('SWAP'),
         component: transactions.length > 1 ? ConfirmSwapMultiTx : ConfirmSwap,
         props: {
-          assetPair,
+          flowConfig: assetPair,
           account,
           isSubmitting,
           transactions,
