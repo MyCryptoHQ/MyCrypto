@@ -17,7 +17,7 @@ test('It contains a favicon tag', async (t) => {
   const favicon = Selector('head link[rel=icon]');
   const hasHref = await favicon.hasAttribute('href');
 
-  await t.expect(favicon).ok();
+  await t.expect(favicon.exists).ok();
   await t.expect(hasHref).ok();
 });
 

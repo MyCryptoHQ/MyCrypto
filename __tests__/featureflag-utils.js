@@ -1,27 +1,21 @@
 import { ClientFunction, t } from 'testcafe';
 
 import { FIXTURES_CONST } from './fixtures';
+import { waitForProperty } from './helpers';
 
 // Accesses functions available on window object that change state in FeatureFlagProvider
-const _setFeatureFlag = ClientFunction((key, value) => {
-  window.setFeatureFlag(key, value);
-});
-const _resetFeatureFlags = ClientFunction(() => {
-  window.resetFeatureFlags();
-});
-
 const setFeatureFlag = async (key, value) => {
-  await t
-    .expect(ClientFunction(() => window.setFeatureFlag))
-    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
-  await _setFeatureFlag(key, value);
+  await t.expect(waitForProperty('setFeatureFlag', FIXTURES_CONST.TIMEOUT)).ok();
+  await ClientFunction((key, value) => {
+    window.setFeatureFlag(key, value);
+  })(key, value);
 };
 
 const resetFeatureFlags = async () => {
-  await t
-    .expect(ClientFunction(() => window.resetFeatureFlags))
-    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
-  await _resetFeatureFlags();
+  await t.expect(waitForProperty('resetFeatureFlags', FIXTURES_CONST.TIMEOUT)).ok();
+  await ClientFunction(() => {
+    window.resetFeatureFlags();
+  });
 };
 
 export { setFeatureFlag, resetFeatureFlags };

@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const ENV = {
   // Should be set in order to use Mnemonic in AddAccount flow
-  E2E_MNEMONIC_PASSPHRASE: process.env.E2E_MNEMONIC_PASSPHRASE,
   E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
 
   // Defined in github/workflow to run against mycryptobuilds
@@ -32,8 +31,6 @@ const PAGES = {
   ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`,
   TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`
 };
-
-const NETWORK_NAME_FIXTURE = 'Ropsten';
 
 const FIXTURE_ETHEREUM = 'Ethereum';
 
@@ -164,7 +161,6 @@ export {
   ENV,
   FIXTURES_CONST,
   PAGES,
-  NETWORK_NAME_FIXTURE,
   FIXTURE_SEND_CONTACT,
   FIXTURE_SEND_ADDRESS,
   FIXTURE_SEND_AMOUNT,
