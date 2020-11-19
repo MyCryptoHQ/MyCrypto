@@ -58,7 +58,7 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
     asset,
     baseAsset,
     gasPrice: hexToString(gasPrice),
-    gasLimit,
+    gasLimit: hexToString(gasLimit),
     value: fromAmount,
     nonce,
     data,

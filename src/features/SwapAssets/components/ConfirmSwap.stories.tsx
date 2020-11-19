@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
 import { DAIUUID, ETHUUID } from '@config';
-import { fAccounts, fAssets, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
+import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 
@@ -16,15 +16,18 @@ const wrapInProvider = (component: ReactNode) => (
     value={
       ({
         createActions: noOp,
+        assets: fAssets,
         userActions: [],
         addressBook: [],
         contracts: [],
-        settings: {}
+        settings: fSettings
       } as unknown) as IDataContext
     }
   >
-    <StoreContext.Provider value={{ assets: () => fAssets } as any}>
-      {component}
+    <StoreContext.Provider value={{ accounts: fAccounts, assets: () => fAssets } as any}>
+      <RatesContext.Provider value={({ rates: {}, trackAsset: noOp } as unknown) as any}>
+        {component}
+      </RatesContext.Provider>
     </StoreContext.Provider>
   </DataContext.Provider>
 );

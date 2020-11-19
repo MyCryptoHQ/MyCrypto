@@ -24,7 +24,6 @@ export default function ConfirmSwap({
     makeSwapTxConfig(currentAssets)(tx.txRaw, account, fromAsset, fromAmount.toString())
   );
 
-  // @todo MISSING GAS LIMIT
   const txConfig = txConfigs[currentTxIdx];
 
   return (
