@@ -1,4 +1,4 @@
-import step2SVG from '@assets/images/icn-receive.svg';
+import step1SVG from '@assets/images/icn-receive.svg';
 import { GOLEMV1UUID, GOLEMV2UUID } from '@config';
 import { translateRaw } from '@translations';
 import { ITokenMigrationConfig, ITxType, TAddress } from '@types';
@@ -21,7 +21,7 @@ export const golemTokenMigrationConfig: ITokenMigrationConfig = {
       stepTitle: translateRaw('COMPLETE_GOLEM_TOKEN_MIGRATION'),
       stepContent: translateRaw('GOLEM_TOKEN_MIGRATION_STEP1_TEXT'),
       actionBtnText: translateRaw('CONFIRM_TRANSACTION'),
-      stepSvg: step2SVG,
+      stepSvg: step1SVG,
       constructTxFn: createGolemMigrationTx
     }
   ]
