@@ -100,6 +100,11 @@ export const getLinks = (featureFlags: IFeatureFlags) => {
           to: APP_ROUTES_OBJECT.ANT_TOKEN_MIGRATION.path,
           enabled: APP_ROUTES_OBJECT.ANT_TOKEN_MIGRATION.enabled,
           title: 'ANT Token Migration'
+        },
+        {
+          to: APP_ROUTES_OBJECT.GOLEM_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES_OBJECT.GOLEM_TOKEN_MIGRATION.enabled,
+          title: 'Golem Token Migration'
         }
       ]
     },

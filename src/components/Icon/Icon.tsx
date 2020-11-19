@@ -30,6 +30,7 @@ import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
+import golemLogo from '@assets/images/gol-logo.png';
 import check from '@assets/images/icn-check.svg';
 import experience from '@assets/images/icn-experience.svg';
 import informational from '@assets/images/icn-info-blue.svg';
@@ -105,7 +106,8 @@ const pngIcons = {
   /* Partner Icons */
   'uni-logo': uniLogo,
   'lend-logo': lendLogo,
-  'ant-logo': antLogo
+  'ant-logo': antLogo,
+  'gol-logo': golemLogo
 };
 
 const SInlineSVG = styled(InlineSVG)`

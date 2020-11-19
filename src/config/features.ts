@@ -39,6 +39,7 @@ export const FEATURE_FLAGS = {
   REP_TOKEN_MIGRATION: true,
   AAVE_TOKEN_MIGRATION: true,
   ANT_TOKEN_MIGRATION: true,
+  GOLEM_TOKEN_MIGRATION: true,
   CUSTOM_NETWORKS: IS_DEV,
   // This features requires a landing page, same root host to be running simultaneously.
   // While this can be expected in staging and in production we SHOULD not expect every developper

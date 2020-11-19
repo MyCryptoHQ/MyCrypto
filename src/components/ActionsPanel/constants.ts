@@ -5,6 +5,7 @@ import {
   ANTv1UUID,
   ETHUUID,
   EXT_URLS,
+  GOLEMV1UUID,
   LENDUUID,
   REPV1UUID,
   ROUTE_PATHS,
@@ -122,6 +123,23 @@ export const actionTemplates: ActionTemplate[] = [
     button: {
       content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
       to: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
+      external: false
+    },
+    category: ACTION_CATEGORIES.MIGRATION
+  },
+  {
+    name: ACTION_NAME.MIGRATE_GOL,
+    heading: translateRaw('MIGRATE_GOL_ACTION_HEADING'),
+    subHeading: MigrationSubHead,
+    icon: 'gol-logo',
+    body: [translate('MIGRATE_GOL_ACTION_BODY')],
+    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === GOLEMV1UUID),
+    priority: 30,
+    Component: MigrationTable,
+    props: { assetUuid: GOLEMV1UUID },
+    button: {
+      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+      to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
       external: false
     },
     category: ACTION_CATEGORIES.MIGRATION

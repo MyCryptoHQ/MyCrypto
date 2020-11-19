@@ -92,3 +92,12 @@ export const fDerivedRepMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
   gasPrice: '0x12a05f200' as ITxGasPrice,
   chainId: 1
 };
+
+export const fDerivedGolemMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
+  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as ITxFromAddress,
+  to: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d' as ITxToAddress,
+  value: '0x0' as ITxValue,
+  data: '0x454b06080000000000000000000000000000000000000000000000004563918244f40000' as ITxData,
+  gasPrice: '0x12a05f200' as ITxGasPrice,
+  chainId: 1
+};

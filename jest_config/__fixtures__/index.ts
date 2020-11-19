@@ -18,7 +18,8 @@ export {
   fFinishedERC20NonWeb3TxReceipt,
   fFinishedERC20Web3TxReceipt,
   fDerivedApprovalTx,
-  fDerivedRepMigrationTx
+  fDerivedRepMigrationTx,
+  fDerivedGolemMigrationTx
 } from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };

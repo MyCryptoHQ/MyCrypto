@@ -546,6 +546,7 @@
     "RECENT_TX_LIST_LABEL_SWAP": "Assets Swapped",
     "RECENT_TX_LIST_LABEL_TRANSFERRED": "$ticker Transferred",
     "RECENT_TX_LIST_LABEL_REP_MIGRATION": "Migrated REP v1 to v2",
+    "RECENT_TX_LIST_LABEL_GOLEM_MIGRATION": "Migrated GOLEM v1 to v2",
     "RECENT_TX_LIST_NO_TRANSACTIONS": "Your MyCrypto Transactions Will Appear Here!",
     "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can send ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
     "RENEW_MEMBERSHIP": "Renew Membership",
@@ -873,7 +874,6 @@
     "TX_QUERY_SPEED_UP_TOOLTIP": "This transaction will speed up a previously pending transaction with the same nonce. It does so by sending the same transaction but with a higher gas price.",
     "TX_QUERY_CANCEL_TOOLTIP": "This transaction aims to cancel a previously pending transaction. It does so by sending a 0.00 ETH transaction to yourself (with the same nonce as the previous transaction) with the purpose of being mined before the original transaction.",
     "SENDING_TO_TOKEN_ADDRESS": "You are sending to the $token contract. If you want to send $token to an address, change the Recipient to the address you want to send the $token to. If you send value to the $token contract itself, it will likely be irrecoverable.",
-    "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
     "DISABLED_NONCE": "Nonce can only be adjusted via $provider's interface. [Learn more](https://support.mycrypto.com/how-to/sending/how-to-change-nonce-external-provider).",
     "ACTION_PANEL_HEADING": "Your Action Items",
     "ACTION_PANEL_COMPLETED_COUNT": "Completed $number / $total",
@@ -946,6 +946,14 @@
     "RECENT_TX_LIST_LABEL_ANT_MIGRATION": "Migrated ANT v1 to v2",
     "NO_ACCOUNTS": "No Accounts",
     "CUSTOM_ASSET_API_ERR": "CustomAssetService has already been instantiated.",
-    "GAS_LIMIT_ESTIMATION_ERROR_MESSAGE": "Something went wrong: $error. Make sure you've filled everything out correctly and try again. If this error persists, please visit our [Knowledge Base](https://support.mycrypto.com/troubleshooting/sending/gas-required-exceeds-allowance-or-always-failing-transaction) for further assistance."
+    "GAS_LIMIT_ESTIMATION_ERROR_MESSAGE": "Something went wrong: $error. Make sure you've filled everything out correctly and try again. If this error persists, please visit our [Knowledge Base](https://support.mycrypto.com/troubleshooting/sending/gas-required-exceeds-allowance-or-always-failing-transaction) for further assistance.",
+    "POWERED_BY_FINDETH": "Powered by [FindETH](https://findeth.io)",
+    "MIGRATE_GOL_ACTION_HEADING": "Migrate your $GNT to $GLM",
+    "MIGRATE_GOL_ACTION_BODY": "One or more of your accounts holds $GNT tokens. Migrate them to $GLM now!",
+    "GOLEM_TOKEN_MIGRATION_STEP1_TEXT": "Confirm the transaction below to conduct the Golem v1 to v2 migration. This will complete the migration.",
+    "COMPLETE_GOLEM_TOKEN_MIGRATION": "Complete Golem Migration",
+    "GOLEM_TOKEN_MIGRATION": "Migrate Golem Tokens",
+    "GOLEM_TOKEN_MIGRATION_RECEIPT": "Golem Token Migration Receipt",
+    "GOLEM_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your Golem tokens from v1 to v2, so this field cannot be modified."
   }
 }
