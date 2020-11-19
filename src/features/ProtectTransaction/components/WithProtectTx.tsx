@@ -126,8 +126,8 @@ export function withProtectTx(
           {
             component: ProtectTxProtection,
             actions: {
-              handleProtectTxSubmit: async () => {
-                await handleTransactionReport();
+              handleProtectTxSubmit: async (payload: IFormikFields) => {
+                await handleTransactionReport(payload.address.value, payload.network);
                 goToNextStep();
               }
             }

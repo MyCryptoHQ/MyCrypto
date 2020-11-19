@@ -46,7 +46,7 @@ export interface ProtectTxContext {
   readonly protectTxFeatureFlag: boolean;
   state: ProtectTxState;
   updateFormValues(values: IFormikFields): void;
-  handleTransactionReport(receiverAddress?: string): Promise<void>;
+  handleTransactionReport(receiverAddress?: string, network?: Network): Promise<void>;
   goToNextStep(): void;
   goToInitialStepOrFetchReport(receiverAddress?: string, network?: Network): void;
   showHideProtectTx(showOrHide: boolean): void;
