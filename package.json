@@ -32,7 +32,6 @@
     "axios": "0.18.1",
     "bignumber.js": "9.0.0",
     "bn.js": "4.11.8",
-    "bootstrap-sass": "3.3.7",
     "classnames": "2.2.5",
     "date-fns": "2.16.1",
     "ethereumjs-abi": "0.6.8",

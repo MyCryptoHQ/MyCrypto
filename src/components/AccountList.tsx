@@ -53,7 +53,7 @@ const LabelWithWallet = styled.span`
 `;
 
 const WalletLabelContainer = styled.ul`
-  margin-bottom: 0;
+  margin: 0;
   padding: 0;
 
   & li {

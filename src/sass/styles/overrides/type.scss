@@ -97,9 +97,6 @@ a {
   &:focus {
     opacity: 1;
   }
-  &:focus {
-    @include tab-focus;
-  }
 }
 
 .point {
