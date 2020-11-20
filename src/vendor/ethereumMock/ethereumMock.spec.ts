@@ -93,7 +93,7 @@ describe('ethereumMock', () => {
       try {
         expect(data).toStrictEqual(
           expect.objectContaining({
-            result: null,
+            result: undefined,
             id: 1
           })
         );

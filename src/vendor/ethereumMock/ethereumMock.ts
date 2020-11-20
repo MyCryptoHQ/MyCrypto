@@ -29,6 +29,7 @@ export const ethereumMock = () => {
   const removeAllListeners = noOp;
 
   const getResult = async (method: string, params: any) => {
+    console.log(method, params);
     switch (method) {
       case 'eth_accounts':
         return [wallet.address];
@@ -42,8 +43,12 @@ export const ethereumMock = () => {
         });
         return result.hash;
       }
+      case 'eth_getTransactionCount': {
+        return '0x0';
+      }
+      default:
+        return undefined;
     }
-    return null;
   };
 
   const sendAsync = (

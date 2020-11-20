@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { createStore } from '@store';
+import { createStore, useDispatch } from '@store';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { REHYDRATE } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
@@ -26,13 +27,24 @@ const FullScreen = styled.div`
 `;
 
 const { store, persistor } = createStore();
+const E2EHelpers = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    window.rehydrate = () =>
+      dispatch({
+        type: REHYDRATE
+      });
+  }, []);
+  return <></>;
+};
 
 const RootClass = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      <E2EHelpers />
+      <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <Router>
             <AppProviders>

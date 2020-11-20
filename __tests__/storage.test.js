@@ -1,13 +1,8 @@
 import { getByText } from '@testing-library/testcafe';
 
 import AddAccountPage from './addaccount-page.po';
-import {
-  FIXTURE_LOCALSTORAGE_EMPTY,
-  FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
-  FIXTURE_MYC_STORAGE_KEY,
-  PAGES
-} from './fixtures';
-import { clearLocalStorage, setLocalStorage } from './localstorage-utils';
+import { PAGES } from './fixtures';
+import { withLS } from './roles';
 import SettingsPage from './settings-page.po';
 import { getTransValueByKey } from './translation-utils';
 
@@ -17,9 +12,6 @@ const settingsPage = new SettingsPage();
 fixture('Storage').page(PAGES.DASHBOARD);
 
 test('Should apply empty storage', async (t) => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_EMPTY);
-
   // localStorage is set after page load, so first navigation should happen
   await addAccountPage.navigateTo(PAGES.DASHBOARD);
   await addAccountPage.waitPageLoaded();
@@ -28,10 +20,10 @@ test('Should apply empty storage', async (t) => {
   await t.expect(title).ok();
 });
 
-test('Should apply storage with one account', async () => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
-  await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
-
+test.before(async (t) => {
+  await t.useRole(withLS);
+})('Should apply storage with one account', async (t) => {
+  await t.debug();
   await settingsPage.navigateToPage();
   await settingsPage.waitPageLoaded();
   await settingsPage.expectAccountTableToMatchCount(1);
