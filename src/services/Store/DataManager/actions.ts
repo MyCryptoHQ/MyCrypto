@@ -7,6 +7,7 @@ import {
   DataStoreEntry,
   DataStoreItem,
   DSKeys,
+  ExtendedAsset,
   ISettings,
   LocalStorage,
   LSKeys,
@@ -79,12 +80,16 @@ export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>, state:
     });
   };
 
-  const importStorage = (data: string) => {
+  const importStorage = (data: string) => (assets?: ExtendedAsset[]) => {
     const d = JSON.parse(data);
+    const newImport = {
+      ...d,
+      assets
+    };
     // @todo: perfom version and validity check.
     dispatch({
       type: ActionT.RESET,
-      payload: createPayload(model)(marshallState(d))
+      payload: createPayload(model)(marshallState(newImport))
     });
   };
 

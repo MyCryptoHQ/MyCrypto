@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import { IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
 
+import { useAssets } from '../Asset';
 import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {
@@ -45,6 +46,7 @@ const isValidImportFunc = (importedCache: string, localStorage: string) => {
 
 function useSettings() {
   const { createActions, settings } = useContext(DataContext);
+  const { assets } = useAssets();
   const model = createActions(LSKeys.SETTINGS);
 
   const language = settings.language || '';
@@ -57,7 +59,7 @@ function useSettings() {
     const ls = exportStorage();
     if (!isValidImportFunc(toImport, String(ls))) return false;
 
-    model.importStorage(toImport);
+    model.importStorage(toImport)(assets);
     return true;
   };
 

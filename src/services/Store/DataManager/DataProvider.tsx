@@ -75,10 +75,11 @@ export const DataProvider: React.FC = ({ children }) => {
 
   const resetAppDb = useCallback(
     (newDb = defaultValues) => {
-      resetDb(newDb); // Reset the persistence layer
+      const persistedNewDb = { ...newDb, assets: appState.assets };
+      resetDb(persistedNewDb); // Reset the persistence layer, but keep assets available due to improve data availability in-app
       dispatch({
         type: ActionT.RESET,
-        payload: { data: marshallState(newDb) } as ActionPayload<DataStore>
+        payload: { data: marshallState(persistedNewDb) } as ActionPayload<DataStore>
       }); // Reset the Context
     },
     [defaultValues]

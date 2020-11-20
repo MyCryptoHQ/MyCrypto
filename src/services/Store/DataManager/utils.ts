@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import isEmpty from 'ramda/src/isEmpty';
 import { ValuesType } from 'utility-types';
 
@@ -16,7 +17,6 @@ import {
   Network,
   NetworkId,
   NetworkNodes,
-  TAddress,
   TUuid
 } from '@types';
 import { makeExplorer } from '@utils';
@@ -51,10 +51,7 @@ export const mergeConfigWithLocalStorage = (
   const lsAssets = objToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[];
   lsContracts.forEach((c) => config[c.networkId] && config[c.networkId].contracts.push(c));
   lsAssets.forEach(
-    (a) =>
-      a.networkId &&
-      config[a.networkId] &&
-      config[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
+    (a) => a.networkId && config[a.networkId] && config[a.networkId].tokens.push(cloneDeep(a))
   );
 
   // add selected and custom nodes per network

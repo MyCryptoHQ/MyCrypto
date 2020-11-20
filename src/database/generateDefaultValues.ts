@@ -152,9 +152,13 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       decimal: a.decimal,
       ticker: a.ticker,
       networkId: id,
-      contractAddress: a.address,
+      contractAddress: a.contractAddress,
       type: 'erc20',
-      isCustom: a.isCustom
+      isCustom: a.isCustom,
+      mappings: a.mappings,
+      social: a.social,
+      whitepaper: a.whitepaper,
+      website: a.website
     });
 
     // From { ETH: { tokens: [ {<tokens>} ] }}

@@ -5,7 +5,7 @@ import { NETWORKS_CONFIG, SCHEMA_BASE } from './data';
 import { createDefaultValues } from './generateDefaultValues';
 
 const DAI = {
-  address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  contractAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
   ticker: 'DAI',
   decimal: 18,
   name: 'Dai Stablecoin v2.0',

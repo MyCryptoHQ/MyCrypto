@@ -1,7 +1,6 @@
 import { Omit, Overwrite, Subtract } from 'utility-types';
 
-import { TAddress } from './address';
-import { Asset, TTicker } from './asset';
+import { ExtendedAsset, TTicker } from './asset';
 import { BlockExplorer } from './blockExplorer';
 import { Contract } from './contract';
 import { DPathFormats } from './dPath';
@@ -10,11 +9,9 @@ import { NetworkId } from './networkId';
 import { NodeOptions } from './node';
 import { TUuid } from './uuid';
 
-type AssetPropsMissingInLegacy = Pick<Asset, 'networkId'> | Pick<Asset, 'contractAddress'>;
-interface AssetPropsInLegacy {
-  address: TAddress;
-}
-export type AssetLegacy = Subtract<Asset, AssetPropsMissingInLegacy> & AssetPropsInLegacy;
+type AssetPropsMissingInLegacy = Pick<ExtendedAsset, 'networkId'>;
+
+export type AssetLegacy = Subtract<ExtendedAsset, AssetPropsMissingInLegacy>;
 export type ContractLegacy = Omit<Contract, 'networkId'> & { uuid?: TUuid };
 
 export interface Network {
