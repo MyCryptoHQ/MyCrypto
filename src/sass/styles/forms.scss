@@ -18,21 +18,19 @@ legend {
   margin-bottom: $line-height-computed;
   font-size: ($font-size-base * 1.5);
   line-height: inherit;
-  color: $legend-color;
   border: 0;
-  border-bottom: 1px solid $legend-border-color;
 }
 
-input[type="search"] {
+input[type='search'] {
   box-sizing: border-box;
   -webkit-appearance: none;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: block;
 }
 
-input[type="range"] {
+input[type='range'] {
   display: block;
   width: 100%;
 }
@@ -40,12 +38,6 @@ input[type="range"] {
 select[multiple],
 select[size] {
   height: auto;
-}
-
-input[type="file"]:focus,
-input[type="radio"]:focus,
-input[type="checkbox"]:focus {
-  @include tab-focus;
 }
 
 // Labels
@@ -79,10 +71,10 @@ label {
   }
 }
 
-.radio input[type="radio"],
-.radio-inline input[type="radio"],
-.checkbox input[type="checkbox"],
-.checkbox-inline input[type="checkbox"] {
+.radio input[type='radio'],
+.radio-inline input[type='radio'],
+.checkbox input[type='checkbox'],
+.checkbox-inline input[type='checkbox'] {
   position: absolute;
   margin-left: -20px;
   margin-top: 4px \9;
@@ -105,11 +97,6 @@ input[readonly] {
   color: color(control-disabled-color);
   border-color: color(control-disabled-border);
   cursor: text !important;
-}
-
-.form-group {
-  display: block;
-  margin-bottom: $form-group-margin-bottom;
 }
 
 .help-block {

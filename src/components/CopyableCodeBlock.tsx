@@ -36,6 +36,12 @@ const CodeDisplay = styled('pre')`
     text-align: left;
     max-height: 320px;
     font-size: 14px;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    font-family: 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 `;
 
