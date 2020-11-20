@@ -43,10 +43,17 @@ export const DataProvider: React.FC = ({ children }) => {
     // @todo: Redux remove after setting networks and contracts initial state.
     // simple hack to load them on the first visit. Once it is persisted in LS
     // redux-persist will rehydrate the state with the correct values.
+    const initialState = marshallState(deMarshallState(initialLegacyState));
     if (isEmpty(legacyState.networks)) {
       dispatch({
-        type: 'RESET',
-        payload: { data: marshallState(deMarshallState(initialLegacyState)) }
+        type: 'ADD_ENTRY',
+        payload: { data: initialState.networks, model: LSKeys.NETWORKS }
+      });
+    }
+    if (isEmpty(legacyState.networks)) {
+      dispatch({
+        type: 'ADD_ENTRY',
+        payload: { data: initialState.contracts, model: LSKeys.CONTRACTS }
       });
     }
   }, []);
