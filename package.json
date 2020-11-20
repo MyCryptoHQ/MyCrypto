@@ -80,7 +80,7 @@
     "what-input": "5.2.6",
     "whatwg-fetch": "2.0.3",
     "ws": "7.2.0",
-    "yup": "0.27.0"
+    "yup": "0.28.2"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
