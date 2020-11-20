@@ -43,13 +43,13 @@ describe('useSettings', () => {
 
   it('importStorage()', () => {
     const mockExport = jest.fn().mockImplementation(() => fLocalStorage);
-    const mockImport = jest.fn();
+    const mockImport = jest.fn().mockImplementation(() => () => true);
     const { result } = renderUseAccounts({
       createActions: jest.fn(() => ({ exportStorage: mockExport, importStorage: mockImport })),
       settings: fSettings
     });
     const newLS = JSON.stringify({ ...fLocalStorage, settings: fSettings });
-    result.current.importStorage(newLS);
+    result.current.importStorage(newLS)();
     expect(mockImport).toHaveBeenCalledWith(newLS);
   });
 

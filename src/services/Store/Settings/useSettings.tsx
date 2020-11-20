@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 
-import { IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
+import { ExtendedAsset, IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
 
-import { useAssets } from '../Asset';
 import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {
@@ -27,7 +26,6 @@ const isValidImportFunc = (importedCache: string, localStorage: string) => {
   try {
     const parsedImport = JSON.parse(importedCache);
     const parsedLocalStorage = JSON.parse(localStorage);
-
     // @todo: Do migration instead of failing
     if (parsedImport.version !== parsedLocalStorage.version) {
       throw new Error(
@@ -46,7 +44,6 @@ const isValidImportFunc = (importedCache: string, localStorage: string) => {
 
 function useSettings() {
   const { createActions, settings } = useContext(DataContext);
-  const { assets } = useAssets();
   const model = createActions(LSKeys.SETTINGS);
 
   const language = settings.language || '';
@@ -55,7 +52,7 @@ function useSettings() {
 
   const exportStorage = () => JSON.stringify(model.exportStorage());
 
-  const importStorage = (toImport: string): boolean => {
+  const importStorage = (toImport: string) => (assets?: ExtendedAsset[]): boolean => {
     const ls = exportStorage();
     if (!isValidImportFunc(toImport, String(ls))) return false;
 
