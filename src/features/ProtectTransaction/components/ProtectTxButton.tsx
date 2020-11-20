@@ -75,11 +75,11 @@ const ButtonWrapper = styled.div<{ opened: boolean }>`
   }
 `;
 
-const SIcon = styled(Icon)<{ expanded: boolean }>`
+const SIcon = styled(Icon)<{ $expanded: boolean }>`
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
-    transform: rotate(${(p) => (p.expanded ? '-90deg' : '90deg')});
+    transform: rotate(${(p) => (p.$expanded ? '-90deg' : '90deg')});
   }
-  transform: rotate(${(p) => (p.expanded ? '180deg' : '0')});
+  transform: rotate(${(p) => (p.$expanded ? '180deg' : '0')});
   transition: all 0.3s;
 `;
 
@@ -135,7 +135,7 @@ export const ProtectTxButton: FC<Props> = ({
             </>
           )}
         </TextWrapper>
-        <SIcon type="expand-purple" expanded={protectTxShow} />
+        <SIcon type="expand-purple" $expanded={protectTxShow} />
       </ButtonWrapper>
       {!isMdScreen && protectTxShow && stepper()}
     </SButton>
