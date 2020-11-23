@@ -13,6 +13,8 @@ import info from '@assets/icons/actions/info.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
+import mycWinterMembership from '@assets/icons/myc-winter-membership.svg';
+import mycWinter from '@assets/icons/myc-winter.svg';
 import newsletter from '@assets/icons/newsletter.svg';
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
@@ -79,6 +81,8 @@ const svgIcons = {
   'telegram-icon': telegramIcon,
   swap,
   'twitter-icon': twitterIcon,
+  'myc-winter': mycWinter,
+  'myc-winter-membership': mycWinterMembership,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,

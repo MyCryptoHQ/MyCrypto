@@ -8,7 +8,9 @@ export {
   socialMediaLinks,
   DOWNLOAD_MYCRYPTO_LINK,
   SUBSCRIBE_NEWSLETTER_LINK,
-  UNISWAP_LINK
+  UNISWAP_LINK,
+  MYC_WINTER_LINK,
+  TWEET_LINK
 } from './links';
 export * from './dpaths';
 export * from './constants';

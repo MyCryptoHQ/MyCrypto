@@ -56,7 +56,7 @@ describe('ActionsDetails', () => {
       screen.getByText(new RegExp(translateRaw('UPDATE_LABEL_ACTION_BODY_2'), 'i'))
     ).toBeDefined();
     expect(
-      screen.getByText(new RegExp(defaultProps.actionTemplate.button.content, 'i'))
+      screen.getByText(new RegExp(defaultProps.actionTemplate.button.props!.content, 'i'))
     ).toBeDefined();
   });
 
@@ -68,7 +68,9 @@ describe('ActionsDetails', () => {
 
     getComponent(defaultProps, createActions);
 
-    const button = screen.getByText(new RegExp(defaultProps.actionTemplate.button.content, 'i'));
+    const button = screen.getByText(
+      new RegExp(defaultProps.actionTemplate.button.props!.content, 'i')
+    );
 
     fireEvent.click(button);
 

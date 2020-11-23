@@ -6,6 +6,8 @@ import {
   formatDuration,
   fromUnixTime,
   intervalToDuration,
+  isAfter,
+  isBefore,
   parseISO
 } from 'date-fns';
 
@@ -91,4 +93,12 @@ export const getDayDifference = (
   utc: boolean = false
 ): number => {
   return differenceInDays(getDate(b, utc), getDate(a, utc));
+};
+
+export const dateIsBetween = (
+  start: DateObject,
+  end: DateObject,
+  date: DateObject = new Date()
+) => {
+  return isAfter(getDate(date), getDate(start)) && isBefore(getDate(date), getDate(end));
 };
