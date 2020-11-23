@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
+import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAccount, fNotifications } from '@fixtures';
 import { DataContext, IDataContext } from '@services';
@@ -9,15 +10,14 @@ import { ExtendedNotification, LSKeys } from '@types';
 import { NotificationTemplates } from '.';
 import { useNotifications } from './useNotifications';
 
-const renderUseNotifications = ({
-  notifications = [] as ExtendedNotification[],
-  createActions = jest.fn()
-} = {}) => {
+const renderUseNotifications = ({ notifications = [] as ExtendedNotification[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ notifications, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider value={({ notifications } as unknown) as IDataContext}>
+        {' '}
+        {children}
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
   return renderHook(() => useNotifications(), { wrapper });
 };
@@ -28,97 +28,71 @@ describe('useNotifications', () => {
     expect(result.current.notifications).toEqual(fNotifications);
   });
 
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseNotifications({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.NOTIFICATIONS);
-  });
-
   it('current notification', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
-    const { result } = renderUseNotifications({
-      notifications: [notification],
-      createActions: jest.fn().mockImplementation(() => ({
-        update: jest.fn()
-      }))
-    });
+    const { result } = renderUseNotifications({ notifications: [notification] });
     expect(result.current.currentNotification).toBe(notification);
   });
 
   it('displayNotification calls model.createWithID', () => {
-    const mockCreate = jest.fn();
-    const { result } = renderUseNotifications({
-      notifications: [],
-      createActions: jest.fn().mockImplementation(() => ({
-        createWithID: mockCreate
-      }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNotifications({ notifications: [] });
     act(() =>
       result.current.displayNotification(NotificationTemplates.walletCreated, {
         address: fAccount.address
       })
     );
-    expect(mockCreate).toHaveBeenCalledWith(
-      {
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
         template: NotificationTemplates.walletCreated,
         templateData: { address: fAccount.address },
         dismissed: false,
         dateDismissed: undefined,
         dateDisplayed: expect.any(Date),
         uuid: expect.any(String)
-      },
-      expect.any(String)
+      })
     );
   });
 
   it('dismissNotification calls model.update', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
-    const mockUpdate = jest.fn();
-    const { result } = renderUseNotifications({
-      notifications: [notification],
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNotifications({ notifications: [notification] });
     act(() => result.current.dismissNotification(notification));
-    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
-      ...notification,
-      dateDismissed: expect.any(Date),
-      dismissed: true
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...notification,
+        dateDismissed: expect.any(Date),
+        dismissed: true
+      })
+    );
   });
 
   it('dismissCurrentNotification calls model.update', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
-    const mockUpdate = jest.fn();
-    const { result } = renderUseNotifications({
-      notifications: [notification],
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNotifications({ notifications: [notification] });
     act(() => result.current.dismissCurrentNotification());
-    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
-      ...notification,
-      dateDismissed: expect.any(Date),
-      dismissed: true
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...notification,
+        dateDismissed: expect.any(Date),
+        dismissed: true
+      })
+    );
   });
 
   it('trackNotificationViewed calls model.update', () => {
     const notification = { ...fNotifications[1], dismissed: false, dateDismissed: undefined };
-    const mockUpdate = jest.fn();
-    const { result } = renderUseNotifications({
-      notifications: [notification],
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNotifications({ notifications: [notification] });
     act(() => result.current.trackNotificationViewed());
-    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
-      ...notification,
-      viewed: true
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...notification,
+        viewed: true
+      })
+    );
   });
 
   it('trackNotificationViewed dismisses viewed notification that should only be viewed once', () => {
@@ -128,20 +102,17 @@ describe('useNotifications', () => {
       dateDismissed: undefined,
       viewed: true
     };
-    const mockUpdate = jest.fn();
-    const { result } = renderUseNotifications({
-      notifications: [notification],
-      createActions: jest.fn().mockImplementation(() => ({
-        update: mockUpdate
-      }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNotifications({ notifications: [notification] });
     // Will automatically dismiss notifications that should only be viewed once
     act(() => result.current.trackNotificationViewed());
-    expect(mockUpdate).toHaveBeenCalledWith(notification.uuid, {
-      ...notification,
-      dateDismissed: expect.any(Date),
-      dismissed: true,
-      viewed: true
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...notification,
+        dateDismissed: expect.any(Date),
+        dismissed: true,
+        viewed: true
+      })
+    );
   });
 });
