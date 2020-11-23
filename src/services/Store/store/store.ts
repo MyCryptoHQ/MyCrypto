@@ -7,6 +7,7 @@ import { IS_DEV } from '@utils';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer from './reducer';
 import rootSaga from './sagas';
+import { serializeLegacyMiddleware } from './serialize.middleware';
 
 const createStore = () => {
   const sagaMiddleware = createSagaMiddleware();
@@ -21,7 +22,9 @@ const createStore = () => {
           // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
           ignoredActions: [...REDUX_PERSIST_ACTION_TYPES]
         }
-      }).concat(sagaMiddleware)
+      })
+        .prepend(serializeLegacyMiddleware)
+        .concat(sagaMiddleware)
   });
   const persistor = persistStore(store);
 
