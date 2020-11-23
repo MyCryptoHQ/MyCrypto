@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
+import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,7 +8,14 @@ import { number, object } from 'yup';
 
 import questionToolTip from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
-import { AccountSelector, AssetSelector, ContentPanel, InlineMessage, QRCode } from '@components';
+import {
+  AccountSelector,
+  AssetSelector,
+  ContentPanel,
+  CopyableCodeBlock,
+  InlineMessage,
+  QRCode
+} from '@components';
 import { ROUTE_PATHS } from '@config';
 import { validateAmountField } from '@features/SendAssets/components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
@@ -42,12 +49,6 @@ const SLabel = styled.label`
 
 const Fieldset = styled.fieldset`
   margin-bottom: 15px;
-`;
-
-const FieldsetBox = styled.div`
-  padding: 12px 0;
-  background: #f6f8fa;
-  text-align: center;
 `;
 
 const AssetFields = styled.div`
@@ -114,6 +115,8 @@ export function RequestAssets({ history }: RouteComponentProps) {
     filteredAssets.find((a) => a.type === 'base')?.uuid
   );
   const selectedAsset = filteredAssets.find((asset) => asset.uuid === chosenAssetUuid);
+
+  useEffect(() => setAssetUuid(filteredAssets.find((a) => a.type === 'base')?.uuid), [networkId]);
 
   const FormSchema = object().shape({
     amount: number()
@@ -201,7 +204,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetSelector
-                      selectedAsset={field.value}
+                      selectedAsset={selectedAsset ? selectedAsset : null}
                       assets={filteredAssets}
                       showAssetName={true}
                       searchable={true}
@@ -252,28 +255,19 @@ export function RequestAssets({ history }: RouteComponentProps) {
                 </Fieldset>
                 <Fieldset>
                   <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
-                  <FieldsetBox>
-                    <Copyable
-                      text={
-                        isAssetToken(selectedAsset.type) &&
-                        selectedAsset.contractAddress &&
-                        selectedAsset.decimal
-                          ? buildEIP681TokenRequest(
-                              recipientAddress.address,
-                              selectedAsset.contractAddress,
-                              network.chainId,
-                              amount,
-                              selectedAsset.decimal
-                            )
-                          : buildEIP681EtherRequest(
-                              recipientAddress.address,
-                              network.chainId,
-                              amount
-                            )
-                      }
-                      isCopyable={true}
-                    />
-                  </FieldsetBox>
+                  <CopyableCodeBlock>
+                    {isAssetToken(selectedAsset.type) &&
+                    selectedAsset.contractAddress &&
+                    selectedAsset.decimal
+                      ? buildEIP681TokenRequest(
+                          recipientAddress.address,
+                          selectedAsset.contractAddress,
+                          network.chainId,
+                          amount,
+                          selectedAsset.decimal
+                        )
+                      : buildEIP681EtherRequest(recipientAddress.address, network.chainId, amount)}
+                  </CopyableCodeBlock>
                 </Fieldset>
               </>
             )}
