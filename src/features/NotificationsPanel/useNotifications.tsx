@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 
+import { createNotification, updateNotification, useDispatch } from '@store';
+
 import { ANALYTICS_CATEGORIES } from '@services';
 import { DataContext } from '@services/Store';
-import { ExtendedNotification, LSKeys } from '@types';
+import { ExtendedNotification } from '@types';
 import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
 
 import { notificationsConfigs } from './constants';
@@ -45,9 +47,10 @@ function isValidNotification(n: ExtendedNotification) {
 }
 
 export function useNotifications() {
-  const { notifications, createActions } = useContext(DataContext);
+  const { notifications } = useContext(DataContext);
   const currentNotification = getCurrent(notifications);
-  const Notification = createActions(LSKeys.NOTIFICATIONS);
+  const dispatch = useDispatch();
+
   const trackNotificationDisplayed = useAnalytics({
     category: ANALYTICS_CATEGORIES.NOTIFICATION
   });
@@ -85,19 +88,21 @@ export function useNotifications() {
         notification.dateDismissed = existingNotification.dateDismissed;
       }
 
-      Notification.update(existingNotification.uuid, notification);
+      dispatch(updateNotification(notification));
     } else {
-      Notification.createWithID(notification, notification.uuid);
+      dispatch(createNotification(notification));
     }
   };
 
   const dismissNotification = (notif?: ExtendedNotification) => {
     if (notUndefined(notif)) {
-      Notification.update(notif.uuid, {
-        ...notif,
-        dismissed: true,
-        dateDismissed: new Date()
-      });
+      dispatch(
+        updateNotification({
+          ...notif,
+          dismissed: true,
+          dateDismissed: new Date()
+        })
+      );
     }
   };
 
@@ -117,19 +122,23 @@ export function useNotifications() {
         if (config.showOneTime && !n.dismissed && n.viewed) {
           dismissNotification(n);
         } else if (isValidNotification(n)) {
-          Notification.update(n.uuid, {
-            ...n,
-            dismissed: false,
-            dateDisplayed: new Date()
-          });
+          dispatch(
+            updateNotification({
+              ...n,
+              dismissed: false,
+              dateDisplayed: new Date()
+            })
+          );
         }
       });
 
       if (!currentNotification.viewed) {
-        Notification.update(currentNotification.uuid, {
-          ...currentNotification,
-          viewed: true
-        });
+        dispatch(
+          updateNotification({
+            ...currentNotification,
+            viewed: true
+          })
+        );
       }
     }
   };

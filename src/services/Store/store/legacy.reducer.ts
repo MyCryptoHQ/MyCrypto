@@ -4,6 +4,8 @@ import { defaultContacts, defaultSettings } from '@database/data';
 import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
 import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
 
+import notificationSlice, { createNotification, updateNotification } from './notification.slice';
+
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
   DELETE_ITEM = 'DELETE_ITEM',
@@ -51,7 +53,8 @@ export const initialState = {
   [LSKeys.USER_ACTIONS]: []
 };
 
-const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, { type, payload }) => {
+const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, action) => {
+  const { type, payload } = action;
   switch (type) {
     case ActionT.ADD_ITEM: {
       const { model, data } = payload;
@@ -111,6 +114,20 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, { type
       const { data } = payload;
       return init(data as DataStore);
     }
+
+    /**
+     * Delegate notification handling to appropriate slice.
+     * We place it in legacy reducer instead of combine reducer to respect
+     * legacy state shape.
+     * @todo: Redux. Place in individual slice once reducer migration begins.
+     */
+    // case createNotification.type:
+    // case updateNotification.type: {
+    //   return {
+    //     ...state,
+    //     [LSKeys.NOTIFICATIONS]: notificationSlice.reducer(state.notifications, action)
+    //   };
+    // }
     default: {
       return state;
     }

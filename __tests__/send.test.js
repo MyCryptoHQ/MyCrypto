@@ -20,6 +20,7 @@ test('Complete SendFlow', async (t) => {
 
   await sendAssetsPage.navigateToPage(invalidQueryParams);
   await sendAssetsPage.waitPageLoaded(invalidQueryParams);
+  await t.wait(10000);
 
   /* Should have and support PTX */
   await setFeatureFlag('PROTECT_TX', true);
