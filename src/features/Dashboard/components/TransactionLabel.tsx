@@ -30,7 +30,7 @@ const txStatusConfig: ITxStatusConfig = {
 export default function TransactionLabel({ image, label, stage, date }: Props) {
   const config = txStatusConfig[stage];
   return (
-    <Box variant="verticalCenter">
+    <Box variant="horizontalAlign">
       {image}
       <div>
         <Body as="span">{label}</Body>
