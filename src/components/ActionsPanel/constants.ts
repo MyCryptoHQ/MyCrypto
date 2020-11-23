@@ -166,14 +166,17 @@ export const actionTemplates: ActionTemplate[] = [
     subHeading: MigrationSubHead,
     icon: 'gol-logo',
     body: [translate('MIGRATE_GOL_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === GOLEMV1UUID),
+    filter: ({ assets }: ActionFilters) => assets().some((a) => a.uuid === GOLEMV1UUID),
     priority: 30,
     Component: MigrationTable,
     props: { assetUuid: GOLEMV1UUID },
     button: {
-      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MIGRATION
   },
