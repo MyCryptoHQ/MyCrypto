@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { createStore } from '@store';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '@theme';
@@ -9,5 +11,7 @@ import { theme } from '@theme';
   Ref: https://testing-library.com/docs/react-testing-library/setup
 */
 export const ProvidersWrapper = ({ children }: { children: React.ReactNode }) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <Provider store={createStore().store}>
+    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  </Provider>
 );
