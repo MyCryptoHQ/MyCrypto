@@ -88,4 +88,4 @@ export {
   Text,
   TextProps
 } from './NewTypography';
-export { ActionPanel, TweetButtonProps, ActionButtonProps } from './ActionsPanel';
+export { ActionPanel, TweetButtonProps, ActionButtonProps, ActionButton } from './ActionsPanel';

@@ -1,5 +1,5 @@
 import repIcon from '@assets/images/rep-logo.svg';
-import { ActionButton } from '@components/ActionsPanel/components';
+import { ActionButton } from '@components';
 import {
   ACTION_CATEGORIES,
   ACTION_NAME,
