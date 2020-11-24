@@ -8,10 +8,8 @@ import { getFiat } from '@config/fiats';
 import { getNetworkById, StoreContext, useSettings } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { Social, StoreAsset } from '@types';
-import { weiToFloat } from '@utils';
-
-const etherscanUrl = ' https://etherscan.io';
+import { Social, StoreAsset, TAddress } from '@types';
+import { buildTokenUrl, weiToFloat } from '@utils';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -138,9 +136,7 @@ export function TokenDetails(props: Props) {
   const { settings } = useSettings();
   const network = getNetworkById(networkId, networks);
 
-  const contractUrl = `${
-    network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
-  }/token/${currentToken.contractAddress}`;
+  const contractUrl = buildTokenUrl(network.blockExplorer, contractAddress as TAddress);
 
   // Find available supported social links
   const filteredSocial = social || {};

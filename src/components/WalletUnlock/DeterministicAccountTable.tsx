@@ -20,7 +20,7 @@ import { DWAccountDisplay, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
-import { fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+import { buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
 
 interface DeterministicTableProps {
   isComplete: boolean;
@@ -363,13 +363,7 @@ const DeterministicTable = ({
               </MobileColumn>
               <LinkContainer>
                 <Tooltip tooltip={'View on Etherscan'}>
-                  <LinkOut
-                    link={
-                      network.blockExplorer
-                        ? network.blockExplorer.addressUrl(account.address)
-                        : `https://ethplorer.io/address/${account.address}`
-                    }
-                  />
+                  <LinkOut link={buildAddressUrl(network.blockExplorer, account.address)} />
                 </Tooltip>
               </LinkContainer>
             </Row>

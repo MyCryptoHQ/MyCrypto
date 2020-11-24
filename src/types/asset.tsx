@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { Brand } from 'utility-types';
 
-import { AssetSocial, NetworkId, TUuid } from '@types';
+import { AssetSocial, NetworkId, TAddress, TUuid } from '@types';
 
 export type TTicker = Brand<string, 'Ticker'>;
 export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;
@@ -28,7 +28,7 @@ export interface Asset {
   readonly networkId: NetworkId;
   readonly ticker: TTicker; // The 3 letter curency code to identify an asset.
   readonly type: TAssetType;
-  readonly contractAddress?: string;
+  readonly contractAddress?: TAddress | string;
   readonly decimal?: number;
   readonly isCustom?: boolean;
 }

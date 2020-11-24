@@ -52,7 +52,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { convertToFiat, isWeb3Wallet, truncate } from '@utils';
+import { buildTxUrl, convertToFiat, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
@@ -435,7 +435,7 @@ export const TxReceiptUI = ({
               <LinkOut
                 text={displayTxReceipt.hash}
                 truncate={truncate}
-                link={txConfig.network.blockExplorer.txUrl(displayTxReceipt.hash)}
+                link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
               />
             )}
             {!displayTxReceipt && <PendingTransaction />}
