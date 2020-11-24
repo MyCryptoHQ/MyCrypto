@@ -1,8 +1,9 @@
 import { getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 
+import { setupEthereumMock } from './ethereum-mock';
 import { setFeatureFlag } from './featureflag-utils';
-import { FIXTURE_SEND_AMOUNT, FIXTURE_SEND_CONTACT, FIXTURES_CONST, PAGES } from './fixtures';
+import { ENV, FIXTURE_SEND_AMOUNT, FIXTURE_SEND_CONTACT, FIXTURES_CONST, PAGES } from './fixtures';
 import { web3Account } from './roles';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
@@ -13,13 +14,14 @@ fixture('Send')
   .beforeEach(async (t) => {
     await t.useRole(web3Account);
   })
-  .page(PAGES.SEND);
+  .page(PAGES.DASHBOARD);
 
 test('Complete SendFlow', async (t) => {
-  const invalidQueryParams = '?type=speedup&chainId=1';
+  await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 5);
 
-  await sendAssetsPage.navigateToPage(invalidQueryParams);
-  await sendAssetsPage.waitPageLoaded(invalidQueryParams);
+  await t.click(getByText(findByTKey('SEND_ASSETS')));
+
+  await sendAssetsPage.waitForPage(PAGES.SEND);
   await t.wait(10000);
 
   /* Should have and support PTX */
@@ -27,10 +29,6 @@ test('Complete SendFlow', async (t) => {
 
   const ptxBtn = getByText(findByTKey('PROTECTED_TX_GET_TX_PROTECTION'));
   await t.expect(ptxBtn).ok();
-
-  // Should show invalid speedup query params message
-  const invalidSpeedUpQueryParamsMessage = Selector('.alert-info');
-  await t.expect(invalidSpeedUpQueryParamsMessage.exists).ok();
 
   await t.click(ptxBtn);
 
@@ -51,7 +49,6 @@ test('Complete SendFlow', async (t) => {
 
   // Has continued to next step with sign button
   const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
-  t.debug();
   await t.expect(signBtn).ok();
 
   // Expect to reach confirm tx
@@ -80,4 +77,15 @@ test('Valid transaction query params are correctly parsed and loaded into send f
   // Expect to reach confirm tx and correctly interpret amount field for erc20 tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE'))).ok();
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
+});
+
+test('Shows warning for invalid query params', async (t) => {
+  const invalidQueryParams = '?type=speedup&chainId=1';
+
+  await sendAssetsPage.navigateToPage(invalidQueryParams);
+  await sendAssetsPage.waitPageLoaded(invalidQueryParams);
+
+  // Should show invalid speedup query params message
+  const invalidSpeedUpQueryParamsMessage = Selector('.alert-info');
+  await t.expect(invalidSpeedUpQueryParamsMessage.exists).ok();
 });
