@@ -32,7 +32,7 @@ interface CollapsedGroups {
 }
 
 interface Flippable {
-  isFlipped?: boolean;
+  $isFlipped?: boolean;
 }
 
 interface Props extends CollapsibleTableData {
@@ -117,7 +117,7 @@ GroupHeading.defaultProps = {
 const GroupHeadingCaret = styled(Icon)<Flippable>`
   margin-left: 0.5em;
   ${(props) =>
-    props.isFlipped &&
+    props.$isFlipped &&
     `
     svg {
       transform: rotateX(180deg)
@@ -176,7 +176,7 @@ export class CollapsibleTable extends Component<Props, State> {
           // The element being iterated on is a group heading.
           <GroupHeading key={index} onClick={this.toggleCollapseGroup.bind(this, cardData)}>
             {cardData}
-            <GroupHeadingCaret icon="navDownCaret" isFlipped={collapsedGroups[cardData]} />
+            <GroupHeadingCaret icon="navDownCaret" $isFlipped={collapsedGroups[cardData]} />
           </GroupHeading>
         ) : (
           // The element being iterated on is table data.
