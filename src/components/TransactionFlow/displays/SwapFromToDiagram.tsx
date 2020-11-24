@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import arrowIcon from '@assets/images/arrow-right.svg';
 import { AssetIcon, Currency } from '@components';
-import { FONT_SIZE } from '@theme';
+import { FONT_SIZE, SPACING } from '@theme';
 import { TTicker, TUuid } from '@types';
 
 interface Props {
@@ -35,7 +35,7 @@ const AssetWrapper = styled.div`
   height: 4em;
   text-align: center;
   & > :first-child {
-    margin-right: 5px;
+    margin-right: ${SPACING.XS};
   }
 `;
 

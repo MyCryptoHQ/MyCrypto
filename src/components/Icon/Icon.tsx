@@ -108,6 +108,7 @@ const svgIcons = {
   twitter,
   check,
 
+  /* Status badge icons */
   'status-badge-success': statusBadgeSuccess,
   'status-badge-pending': statusBadgePending,
   'status-badge-declined': statusBadgeDeclined
