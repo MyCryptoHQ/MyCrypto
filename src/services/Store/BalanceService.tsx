@@ -185,8 +185,11 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     [
       ...ethScanCompatibleAccounts.map(getAccountAssetsBalancesWithEthScan),
       ...jsonRPCAccounts.map(getAccountAssetsBalancesWithJsonRPC)
-    ].map((p) => p.catch((e) => console.debug(e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
-  );
+    ].map((p) => p.catch((e) => console.debug(e)))
+    // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
+    // When you fetch balances of account with 0 balance, updatedAccounts returns an array of 1 undefined elem `[ undefined ]`
+    // filter before continuing.
+  ).then((res) => res.filter(Boolean));
 
   const filterZeroBN = (n: TBN) => n.isZero();
 
@@ -200,6 +203,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
         )) ||
       []
   }));
+  debugger;
 
   return filteredUpdatedAccounts;
 };

@@ -64,7 +64,16 @@ const APP_PERSIST_CONFIG = {
   storage,
   blacklist: [],
   stateReconciler: autoMergeLevel2,
-  transforms: [transform]
+  transforms: [transform],
+  deserialize: (slice) => {
+    if (typeof slice === 'string') {
+      if (slice === 'v1.1.0' || slice === '') return slice;
+      return JSON.parse(slice);
+    } else {
+      return slice;
+    }
+  },
+  debug: true
 };
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
