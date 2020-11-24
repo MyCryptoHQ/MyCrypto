@@ -5,7 +5,7 @@ import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils
 
 import { fAccount, fNotifications } from '@fixtures';
 import { DataContext, IDataContext } from '@services';
-import { ExtendedNotification, LSKeys } from '@types';
+import { ExtendedNotification } from '@types';
 
 import { NotificationTemplates } from '.';
 import { useNotifications } from './useNotifications';
@@ -14,7 +14,6 @@ const renderUseNotifications = ({ notifications = [] as ExtendedNotification[] }
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
       <DataContext.Provider value={({ notifications } as unknown) as IDataContext}>
-        {' '}
         {children}
       </DataContext.Provider>
     </ProvidersWrapper>

@@ -3,13 +3,22 @@ import { IAccount } from '@types';
 import { initialState, default as slice } from './account.slice';
 
 const reducer = slice.reducer;
-const { create, destroy, update, updateMany, reset } = slice.actions;
+const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
 
 describe('AccountSlice', () => {
   it('create(): adds an entity by uuid', () => {
     const entity = { uuid: 'random' } as IAccount;
     const actual = reducer(initialState, create(entity));
     const expected = [entity];
+    expect(actual).toEqual(expected);
+  });
+
+  it('createMany(): adds multiple entities by uuid', () => {
+    const a1 = { uuid: 'first' } as IAccount;
+    const a2 = { uuid: 'second' } as IAccount;
+    const a3 = { uuid: 'third' } as IAccount;
+    const actual = reducer([a1], createMany([a2, a3]));
+    const expected = [a1, a2, a3];
     expect(actual).toEqual(expected);
   });
 

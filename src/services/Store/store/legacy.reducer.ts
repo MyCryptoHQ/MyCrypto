@@ -4,6 +4,13 @@ import { defaultContacts, defaultSettings } from '@database/data';
 import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
 import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
 
+import accountSlice, {
+  createAccount,
+  createAccounts,
+  destroyAccount,
+  updateAccount,
+  updateAccounts
+} from './account.slice';
 import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 
 export enum ActionT {
@@ -121,6 +128,17 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, action
      * legacy state shape.
      * @todo: Redux. Place in individual slice once reducer migration begins.
      */
+    case createAccount.type:
+    case createAccounts.type:
+    case updateAccount.type:
+    case updateAccounts.type:
+    case destroyAccount.type: {
+      return {
+        ...state,
+        [LSKeys.ACCOUNTS]: accountSlice.reducer(state.accounts, action)
+      };
+    }
+
     // case createNotification.type:
     // case updateNotification.type: {
     //   return {
