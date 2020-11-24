@@ -3,7 +3,6 @@ import {
   DEFAULT_NETWORK_TICKER,
   DPathsList as DPaths,
   ETHPLORER_URL,
-  ETHTokenExplorer,
   GAS_PRICE_DEFAULT,
   GAS_PRICE_TESTNET
 } from '@config';
@@ -27,10 +26,10 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Etherscan',
       origin: 'https://etherscan.io'
     }),
-    tokenExplorer: {
-      name: ETHPLORER_URL,
-      address: ETHTokenExplorer
-    },
+    tokenExplorer: makeExplorer({
+      name: 'Ethplorer',
+      origin: ETHPLORER_URL
+    }),
     tokens: [],
     contracts: require('./contracts/eth.json'),
     dPaths: {

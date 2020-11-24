@@ -1,3 +1,4 @@
+import { ETHPLORER_URL } from '@config';
 import { ExplorerConfig, ITxHash, TAddress } from '@types';
 
 /**
@@ -10,7 +11,7 @@ export function makeExplorer(config: ExplorerConfig): ExplorerConfig {
     // @ts-expect-error TS2783: `spread always overrites`
     // @todo: Redux. review use of makeExplorer with custom nodes to remove this
     // comment.
-    origin: 'https://ethplorer.io',
+    origin: ETHPLORER_URL,
     txPath: 'tx',
     tokenPath: 'token',
     addressPath: 'address',
