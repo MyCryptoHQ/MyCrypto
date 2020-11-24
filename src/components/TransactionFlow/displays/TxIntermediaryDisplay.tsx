@@ -55,7 +55,7 @@ function TxIntermediaryDisplay({ address, contractName }: Props) {
             <div>
               <IntermediaryDisplayLabel>
                 {translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
-                  $contractName: contractName || 'unknown'
+                  $contractName: contractName || translateRaw('UNKNOWN').toLowerCase()
                 })}
                 :
               </IntermediaryDisplayLabel>
