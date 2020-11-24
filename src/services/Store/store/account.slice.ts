@@ -14,6 +14,11 @@ const slice = createSlice({
     create(state, action: PayloadAction<IAccount>) {
       state.push(action.payload);
     },
+    createMany(state, action: PayloadAction<IAccount[]>) {
+      action.payload.forEach((a) => {
+        state.push(a);
+      });
+    },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);
       state.splice(idx, 1);
@@ -37,6 +42,7 @@ const slice = createSlice({
 
 export const {
   create: createAccount,
+  createMany: createAccounts,
   destroy: destroyAccount,
   update: updateAccount,
   updateMany: updateAccounts,

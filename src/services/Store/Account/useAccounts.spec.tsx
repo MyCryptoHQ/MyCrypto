@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { waitFor } from 'test-utils';
+import { actionWithPayload, mockUseDispatch, ProvidersWrapper, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fRopDAI, fSettings, fTxReceipt } from '@fixtures';
-import { IAccount, LSKeys, TUuid } from '@types';
+import { IAccount, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useAccounts from './useAccounts';
@@ -30,14 +30,13 @@ jest.mock('@mycrypto/eth-scan', () => {
   };
 });
 
-const renderUseAccounts = ({ accounts = [] as IAccount[], createActions = jest.fn() } = {}) => {
+const renderUseAccounts = ({ accounts = [] as IAccount[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider
-      value={({ accounts, settings: fSettings, createActions } as any) as IDataContext}
-    >
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider value={({ accounts, settings: fSettings } as any) as IDataContext}>
+        {children}
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
   return renderHook(() => useAccounts(), { wrapper });
 };
@@ -48,82 +47,63 @@ describe('useAccounts', () => {
     expect(result.current.accounts).toEqual(fAccounts);
   });
 
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseAccounts({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.ACCOUNTS);
-  });
-
   it('createAccountWithID() calls model.createWithId', () => {
-    const mockCreate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: [],
-      createActions: jest.fn(() => ({ createWithID: mockCreate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: [] });
     result.current.createAccountWithID('uuid' as TUuid, fAccounts[0]);
-    expect(mockCreate).toHaveBeenCalledWith({ ...fAccounts[0], uuid: 'uuid' }, 'uuid');
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload({ ...fAccounts[0], uuid: 'uuid' }));
   });
 
   it('createMultipleAccountsWithIDs() calls model.updateAll with multiple accounts', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: [],
-      createActions: jest.fn(() => ({ updateAll: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: [] });
     result.current.createMultipleAccountsWithIDs(fAccounts);
-    expect(mockUpdate).toHaveBeenCalledWith(fAccounts);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts));
   });
 
   it('deleteAccount() calls model.destroy', () => {
-    const mockDestroy = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ destroy: mockDestroy }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.deleteAccount(fAccounts[0]);
-    expect(mockDestroy).toHaveBeenCalledWith(fAccounts[0]);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts[0].uuid));
   });
 
   it('updateAccount() calls model.update', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ update: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.updateAccount(fAccounts[0].uuid, fAccounts[0]);
-    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, fAccounts[0]);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts[0]));
   });
 
   it('addTxToAccount() updates account with tx', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ update: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.addTxToAccount(fAccounts[0], fTxReceipt);
-    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
-      ...fAccounts[0],
-      transactions: [fTxReceipt]
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...fAccounts[0],
+        transactions: [fTxReceipt]
+      })
+    );
   });
 
   it('removeTxFromAccount() updates account to remove tx', () => {
-    const mockUpdate = jest.fn();
+    const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({
-      accounts: [{ ...fAccounts[0], transactions: [fTxReceipt] }],
-      createActions: jest.fn(() => ({ update: mockUpdate }))
+      accounts: [{ ...fAccounts[0], transactions: [fTxReceipt] }]
     });
     result.current.removeTxFromAccount(fAccounts[0], fTxReceipt);
-    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
-      ...fAccounts[0],
-      transactions: []
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...fAccounts[0],
+        transactions: []
+      })
+    );
   });
 
   it('getAccountByAddressAndNetworkName() updates account with tx', () => {
     const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn()
+      accounts: fAccounts
     });
     const account = result.current.getAccountByAddressAndNetworkName(
       fAccounts[0].address,
@@ -133,70 +113,64 @@ describe('useAccounts', () => {
   });
 
   it('updateAccountAssets()', async () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ update: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.updateAccountAssets(fAccounts[1], fAssets);
     await waitFor(() =>
-      expect(mockUpdate).toHaveBeenCalledWith(fAccounts[1].uuid, {
-        ...fAccounts[1],
-        assets: [
-          expect.objectContaining({
-            uuid: fRopDAI.uuid,
-            balance: '1018631879600000000'
-          }),
-          ...fAccounts[1].assets
-        ]
-      })
-    );
-  });
-
-  it('updateAllAccountsAssets()', async () => {
-    const mockUpdate = jest.fn();
-    const accounts = [fAccounts[1], { ...fAccounts[2], assets: [] }];
-    const { result } = renderUseAccounts({
-      accounts,
-      createActions: jest.fn(() => ({ updateAll: mockUpdate }))
-    });
-    result.current.updateAllAccountsAssets(accounts, fAssets);
-    await waitFor(() =>
-      expect(mockUpdate).toHaveBeenCalledWith(
-        accounts.map((a) => ({
-          ...a,
+      expect(mockDispatch).toHaveBeenCalledWith(
+        actionWithPayload({
+          ...fAccounts[1],
           assets: [
             expect.objectContaining({
               uuid: fRopDAI.uuid,
               balance: '1018631879600000000'
             }),
-            ...a.assets
+            ...fAccounts[1].assets
           ]
-        }))
+        })
+      )
+    );
+  });
+
+  it('updateAllAccountsAssets()', async () => {
+    const mockDispatch = mockUseDispatch();
+    const accounts = [fAccounts[1], { ...fAccounts[2], assets: [] }];
+    const { result } = renderUseAccounts({ accounts });
+    result.current.updateAllAccountsAssets(accounts, fAssets);
+    await waitFor(() =>
+      expect(mockDispatch).toHaveBeenCalledWith(
+        actionWithPayload(
+          accounts.map((a) => ({
+            ...a,
+            assets: [
+              expect.objectContaining({
+                uuid: fRopDAI.uuid,
+                balance: '1018631879600000000'
+              }),
+              ...a.assets
+            ]
+          }))
+        )
       )
     );
   });
 
   it('updateAccounts() calls updateAll with merged list', async () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ updateAll: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.updateAccounts(fAccounts.slice(0, 3));
-    await waitFor(() => expect(mockUpdate).toHaveBeenCalledWith(fAccounts));
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts)));
   });
 
   it('toggleAccountPrivacy() updates account with isPrivate', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      accounts: fAccounts,
-      createActions: jest.fn(() => ({ update: mockUpdate }))
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.toggleAccountPrivacy(fAccounts[0].uuid);
-    expect(mockUpdate).toHaveBeenCalledWith(fAccounts[0].uuid, {
-      ...fAccounts[0],
-      isPrivate: true
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...fAccounts[0],
+        isPrivate: true
+      })
+    );
   });
 });

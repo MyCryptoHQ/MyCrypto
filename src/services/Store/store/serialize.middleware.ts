@@ -1,9 +1,9 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-// import { map } from '@vendor';
+import { map } from '@vendor';
 
-// import { createAccount, updateAccount, updateAccounts } from './account.slice';
-import { serializeNotification } from './helpers';
+import { createAccount, createAccounts, updateAccount, updateAccounts } from './account.slice';
+import { serializeAccount, serializeNotification } from './helpers';
 import { createNotification, updateNotification } from './notification.slice';
 
 /**
@@ -17,17 +17,18 @@ export const serializeLegacyMiddleware: Middleware<TObject, any, Dispatch<Action
 ) => (action) => {
   switch (action.type) {
     /** Transform bigish values to string */
-    // case createAccount.type:
-    // case updateAccount.type:
-    //   next({ type: action.type, payload: serializeAccount(action.payload) });
-    //   break;
-    // // Payload is an array of accounts
-    // case updateAccounts.type:
-    //   next({
-    //     type: action.type,
-    //     payload: map(serializeAccount, action.payload)
-    //   });
-    //   break;
+    case createAccount.type:
+    case updateAccount.type:
+      next({ type: action.type, payload: serializeAccount(action.payload) });
+      break;
+    // Payload is an array of accounts
+    case createAccounts.type:
+    case updateAccounts.type:
+      next({
+        type: action.type,
+        payload: map(serializeAccount, action.payload)
+      });
+      break;
     /** Transform date formats to string */
     case createNotification.type:
     case updateNotification.type:
