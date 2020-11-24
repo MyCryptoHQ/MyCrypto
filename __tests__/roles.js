@@ -23,17 +23,18 @@ export const web3Account = Role(
 
 const setupPersistance = async () => {
   await setLocalStorage(FIXTURE_MYC_STORAGE_KEY, FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
+  await t.wait(5000);
   await t.expect(waitForProperty((w) => w.rehydrate)).ok();
   await ClientFunction(() => {
     window.rehydrate();
   })();
-  await t.wait(3000);
 };
 
 export const withLS = Role(
   PAGES.ADD_ACCOUNT,
   async (t) => {
     await setupPersistance();
+    await t.wait(5000);
     await t.navigateTo(PAGES.DASHBOARD).expect(getCurrentLocation()).eql(PAGES.DASHBOARD);
   },
   { preserveUrl: true }

@@ -203,7 +203,6 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
         )) ||
       []
   }));
-  debugger;
 
   return filteredUpdatedAccounts;
 };

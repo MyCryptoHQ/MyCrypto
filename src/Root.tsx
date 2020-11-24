@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
-import { createStore, useDispatch } from '@store';
+import { APP_PERSIST_CONFIG, createStore, useDispatch } from '@store';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
-import { REHYDRATE } from 'redux-persist';
+import { getStoredState, REHYDRATE } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
@@ -31,8 +31,12 @@ const E2EHelpers = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     window.rehydrate = () =>
-      dispatch({
-        type: REHYDRATE
+      getStoredState(APP_PERSIST_CONFIG).then((ls) => {
+        console.log('In Rehydrate', ls, ls.legacy.accounts);
+        dispatch({
+          type: REHYDRATE,
+          payload: ls
+        });
       });
   }, []);
   return <></>;
