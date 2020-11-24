@@ -142,12 +142,13 @@ export default function MultiTxReceipt({
                   {translate('TIMESTAMP')}
                   {': '}
                   <Body as="span" fontWeight="normal">
-                    {timestamp !== 0 && (
+                    {timestamp !== 0 ? (
                       <Tooltip display="inline" tooltip={<TimeElapsed value={timestamp} />}>
                         {localTimestamp}
                       </Tooltip>
+                    ) : (
+                      translate('PENDING_STATE')
                     )}
-                    {timestamp === 0 && translate('PENDING_STATE')}
                   </Body>
                 </SubHeading>
               </div>
