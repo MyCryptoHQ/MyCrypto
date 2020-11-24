@@ -31,7 +31,6 @@ export const ethereumMock = () => {
   const removeAllListeners = noOp;
 
   const getResult = async (method: string, params: any) => {
-    console.log(method, params);
     switch (method) {
       case 'eth_accounts':
         return [wallet.address];

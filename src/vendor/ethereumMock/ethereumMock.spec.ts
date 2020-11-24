@@ -12,7 +12,9 @@ jest.mock('ethers', () => ({
   })),
   ethers: {
     providers: {
-      JsonRpcProvider: jest.fn()
+      JsonRpcProvider: jest.fn().mockImplementation(() => ({
+        send: jest.fn()
+      }))
     }
   }
 }));
