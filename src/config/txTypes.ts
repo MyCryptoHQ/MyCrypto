@@ -1,0 +1,15 @@
+import { ITxType } from '@types';
+
+export const TOKEN_MIGRATIONS = [
+  ITxType.REP_TOKEN_MIGRATION,
+  ITxType.AAVE_TOKEN_MIGRATION,
+  ITxType.ANT_TOKEN_MIGRATION
+];
+
+export const CONTRACT_INTERACTION_TYPES = [
+  ITxType.SWAP,
+  ITxType.DEFIZAP,
+  ITxType.PURCHASE_MEMBERSHIP,
+  ITxType.CONTRACT_INTERACT,
+  ...TOKEN_MIGRATIONS
+];

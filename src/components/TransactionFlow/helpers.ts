@@ -5,9 +5,9 @@ import { Brand, ValuesType } from 'utility-types';
 
 import { WALLET_STEPS } from '@components';
 import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
+import { CONTRACT_INTERACTION_TYPES } from '@config';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
-import { isTokenMigration } from '@services/Store/helpers';
 import {
   IFlowConfig,
   ISimpleTxFormFull,
@@ -138,18 +138,11 @@ export const constructSenderFromTxConfig = (
 export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: number) =>
   Math.max(fastGasPrice, parseFloat(bigNumGasPriceToViewableGwei(txConfig.gasPrice)) * 1.101);
 
-const CONTRACT_INTERACTION_TYPES = [
-  ITxType.SWAP,
-  ITxType.DEFIZAP,
-  ITxType.PURCHASE_MEMBERSHIP,
-  ITxType.CONTRACT_INTERACT
-];
-
 export const isContractInteraction = (data: string, type?: ITxType) => {
   if (data !== '0x') {
     return true;
   } else if (type) {
-    return CONTRACT_INTERACTION_TYPES.includes(type) || isTokenMigration(type);
+    return CONTRACT_INTERACTION_TYPES.includes(type);
   }
   return false;
 };
