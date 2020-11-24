@@ -22,7 +22,6 @@ test('Complete SendFlow', async (t) => {
   await t.click(getByText(findByTKey('SEND_ASSETS')));
 
   await sendAssetsPage.waitForPage(PAGES.SEND);
-  await t.wait(10000);
 
   /* Should have and support PTX */
   await setFeatureFlag('PROTECT_TX', true);
