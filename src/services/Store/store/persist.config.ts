@@ -58,7 +58,7 @@ const deserialize = (slice: ValuesType<LocalStorage>, key: string) => {
 
 const transform = createTransform(serialize, deserialize);
 
-const APP_PERSIST_CONFIG = {
+export const APP_PERSIST_CONFIG = {
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
