@@ -1,10 +1,11 @@
 import React from 'react';
 
-import feeIcon from '@assets/images/icn-fee.svg';
-import sendIcon from '@assets/images/icn-send.svg';
-import sentIcon from '@assets/images/icn-sent.svg';
+import styled from 'styled-components';
+
 import { Amount, AssetIcon } from '@components';
+import { default as Icon } from '@components/Icon';
 import { getFiat } from '@config/fiats';
+import { SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings } from '@types';
 import { convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
@@ -20,6 +21,13 @@ interface Props {
   assetRate?: number;
   baseAssetRate?: number;
 }
+
+const SIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+`;
 
 export const TxReceiptTotals = ({
   asset,
@@ -46,7 +54,7 @@ export const TxReceiptTotals = ({
     <>
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <img src={sendIcon} alt="Sent" />
+          <SIcon type="tx-send" alt="Sent" />
           {translate('CONFIRM_TX_SENT')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
@@ -64,7 +72,7 @@ export const TxReceiptTotals = ({
 
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
+          <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <AssetIcon uuid={asset.uuid} size={'24px'} />
@@ -83,7 +91,7 @@ export const TxReceiptTotals = ({
 
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <img src={sentIcon} alt="Sent" />
+          <SIcon type="tx-sent" alt="Sent" />
           {translate('TOTAL')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">

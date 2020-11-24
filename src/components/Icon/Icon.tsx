@@ -35,10 +35,14 @@ import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import check from '@assets/images/icn-check.svg';
 import experience from '@assets/images/icn-experience.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
 import informational from '@assets/images/icn-info-blue.svg';
 import more from '@assets/images/icn-more.svg';
+import platformUsed from '@assets/images/icn-platform-used.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
 import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
 import openedEye from '@assets/images/icn-show-eye.svg';
 import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
@@ -108,10 +112,14 @@ const svgIcons = {
   twitter,
   check,
 
-  /* Status badge icons */
+  /* TX Receipt */
   'status-badge-success': statusBadgeSuccess,
   'status-badge-pending': statusBadgePending,
-  'status-badge-declined': statusBadgeDeclined
+  'status-badge-declined': statusBadgeDeclined,
+  'zapper-platform': platformUsed,
+  'tx-fee': feeIcon,
+  'tx-send': sendIcon,
+  'tx-sent': sentIcon
 };
 
 const pngIcons = {
