@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
@@ -9,22 +10,26 @@ import rootReducer from './reducer';
 import rootSaga from './sagas';
 import { serializeLegacyMiddleware } from './serialize.middleware';
 
-const createStore = () => {
+export default function createStore() {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
+    middleware: (getDefaultMiddleware) => [
+      serializeLegacyMiddleware,
+      ...getDefaultMiddleware({
         thunk: false, // MYC uses sagas
         serializableCheck: {
           // ignore redux-persist actions during serialize check.
           // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
           ignoredActions: [...REDUX_PERSIST_ACTION_TYPES]
         }
-      })
-        .prepend(serializeLegacyMiddleware)
-        .concat(sagaMiddleware)
+      }),
+      sagaMiddleware,
+      // Logger MUST be last in chain.
+      // https://github.com/LogRocket/redux-logger#usage
+      ...(IS_DEV ? [createLogger({ collapsed: true })] : [])
+    ]
   });
   const persistor = persistStore(store);
 
@@ -43,6 +48,4 @@ const createStore = () => {
     store,
     persistor
   };
-};
-
-export default createStore;
+}
