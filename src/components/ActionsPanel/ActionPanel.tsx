@@ -9,8 +9,8 @@ import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
-//import { dateIsBetween } from '@utils';
-import { pipe } from '@vendor';
+import { dateIsBetween } from '@utils';
+import { filter, pipe } from '@vendor';
 
 import { Text } from '../NewTypography';
 import { ActionDetails, ActionsList } from './components';
@@ -64,8 +64,8 @@ export const ActionPanel = () => {
             ensOwnershipRecords,
             accounts,
             isMyCryptoMember
-          })
-        // filter((a: ActionTemplate) => (a.time ? dateIsBetween(a.time.start, a.time.end) : true))
+          }),
+        filter((a: ActionTemplate) => (a.time ? dateIsBetween(a.time.start, a.time.end) : true))
       )(actionTemplates),
     [assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember]
   );
