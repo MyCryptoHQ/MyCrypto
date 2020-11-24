@@ -25,8 +25,8 @@ import { BalanceMap, getBaseAssetBalances } from '@services/Store/BalanceService
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { DPath, Network, TTicker } from '@types';
-import { fromWei } from '@utils';
+import { DPath, Network, TAddress, TTicker } from '@types';
+import { buildAddressUrl, fromWei } from '@utils';
 
 import { Table } from '../Table';
 
@@ -109,13 +109,12 @@ const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolea
   tbody {
     tr {
       cursor: pointer;
-
       /* Highlight selected row */
       ${({ selected, page }) =>
         Math.trunc(selected / WALLETS_PER_PAGE) === page &&
         `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
-      background: ${BLUE_LIGHTEST};
-    }`};
+            background: ${BLUE_LIGHTEST};
+          };`};
 
       /* On hover don't highlight selected row */
       :not(:nth-child(${({ selected, page }) =>
@@ -342,21 +341,11 @@ export function DeterministicWalletsClass({
   const renderWalletRow = (
     wallet: DeterministicWalletData,
     // tslint:disable-next-line: no-shadowed-variable
-    network: Network | undefined,
+    network: Network,
     // tslint:disable-next-line: no-shadowed-variable
     ticker: TTicker
   ) => {
     const addrBook = getLabelByAddressAndNetwork(wallet.address.toLowerCase(), contacts, network);
-    let blockExplorer;
-    if (network && !network.isCustom && network.blockExplorer) {
-      blockExplorer = network.blockExplorer;
-    } else {
-      blockExplorer = {
-        addressUrl: (address: string) => {
-          return `https://ethplorer.io/address/${address}`;
-        }
-      };
-    }
 
     return [
       <div key="wallet-row-0">{wallet.index + 1}</div>,
@@ -373,7 +362,10 @@ export function DeterministicWalletsClass({
           `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
-      <LinkOut key="wallet-row-3" link={blockExplorer.addressUrl(wallet.address)} />
+      <LinkOut
+        key="wallet-row-3"
+        link={buildAddressUrl(network.blockExplorer, wallet.address as TAddress)}
+      />
     ];
   };
 
@@ -436,7 +428,7 @@ export function DeterministicWalletsClass({
         selected={selectedAddressIndex}
         page={page}
         head={['#', translateRaw('ADDRESS'), ticker, translateRaw('ACTION_5')]}
-        body={wallets.map((wallet) => renderWalletRow(wallet, network, ticker))}
+        body={wallets.map((wallet) => renderWalletRow(wallet, network!, ticker))}
         config={{
           handleRowClicked: selectAddress
         }}

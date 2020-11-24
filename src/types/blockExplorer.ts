@@ -1,7 +1,8 @@
-export interface BlockExplorer {
+export interface ExplorerConfig {
   name: string;
   origin: string;
-  txUrl(txHash: string): string;
-  addressUrl(address: string): string;
-  blockUrl(blockNum: string | number): string;
+  txPath?: string;
+  addressPath?: string;
+  blockPath?: string;
+  tokenPath?: string;
 }

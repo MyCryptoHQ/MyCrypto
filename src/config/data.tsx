@@ -2,7 +2,6 @@ import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import translate from '@translations';
 import { TURL } from '@types';
-import { makeExplorer } from '@utils/makeExplorer'; // leads to circular dependency if importing from base utils dir
 
 import packageJson from '../../package.json';
 
@@ -20,12 +19,12 @@ export const ANNOUNCEMENT_MESSAGE = (
 
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
-export const ethPlorer = 'https://ethplorer.io';
+export const ETHPLORER_URL = 'https://ethplorer.io';
 
 export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
-export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
+export const ETHTokenExplorer = (address: string): string => `${ETHPLORER_URL}/address/${address}`;
 
 export const donationAddressMap = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',

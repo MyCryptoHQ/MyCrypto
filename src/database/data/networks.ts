@@ -2,7 +2,7 @@ import {
   DEFAULT_NETWORK,
   DEFAULT_NETWORK_TICKER,
   DPathsList as DPaths,
-  ethPlorer,
+  ETHPLORER_URL,
   ETHTokenExplorer,
   GAS_PRICE_DEFAULT,
   GAS_PRICE_TESTNET
@@ -28,7 +28,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       origin: 'https://etherscan.io'
     }),
     tokenExplorer: {
-      name: ethPlorer,
+      name: ETHPLORER_URL,
       address: ETHTokenExplorer
     },
     tokens: [],

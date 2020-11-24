@@ -97,7 +97,7 @@ export { Tab } from './tab';
 export { ISignedMessage } from './signing';
 export { IStory } from './story';
 export { FormData, IAccountAdditionData } from './formData';
-export { BlockExplorer } from './blockExplorer';
+export { ExplorerConfig } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';
 export { BannerType } from './banner';
 export { ToastConfig, ToastType, ToastConfigsProps } from './toast';

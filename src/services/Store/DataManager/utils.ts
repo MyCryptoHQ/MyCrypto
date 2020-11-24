@@ -19,7 +19,6 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { makeExplorer } from '@utils/makeExplorer';
 import { merge } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
@@ -82,12 +81,7 @@ export function marshallState(ls: LocalStorage): DataStore {
     [LSKeys.ADDRESS_BOOK]: objToExtendedArray(ls[LSKeys.ADDRESS_BOOK]) as ExtendedContact[],
     [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
     [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
-    [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]).map(
-      ({ blockExplorer, ...rest }) => ({
-        ...rest,
-        blockExplorer: blockExplorer ? makeExplorer(blockExplorer) : blockExplorer
-      })
-    ),
+    [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]),
     [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],

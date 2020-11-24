@@ -10,6 +10,7 @@ import { Checkbox, DashboardPanel, InputField, LinkOut, NetworkSelector } from '
 import {
   DEFAULT_NETWORK,
   DPathsList as DPaths,
+  ETHPLORER_URL,
   EXT_URLS,
   GITHUB_RELEASE_NOTES_URL,
   LETS_ENCRYPT_URL
@@ -29,7 +30,7 @@ import {
   TUuid,
   WalletId
 } from '@types';
-import { generateAssetUUID } from '@utils';
+import { generateAssetUUID, makeExplorer } from '@utils';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};
@@ -318,7 +319,11 @@ export default function AddOrEditNetworkNode({
                   },
                   shouldEstimateGasPrice: false,
                   color: undefined,
-                  selectedNode: node.name
+                  selectedNode: node.name,
+                  blockExplorer: makeExplorer({
+                    name: networkName!,
+                    origin: ETHPLORER_URL
+                  })
                 };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
             await provider.getCurrentBlock();

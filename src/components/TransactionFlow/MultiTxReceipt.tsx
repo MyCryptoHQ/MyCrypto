@@ -22,7 +22,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigify, bigNumGasLimitToViewable, truncate } from '@utils';
+import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
 
 import Typography from '../Typography';
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
@@ -134,10 +134,7 @@ export default function MultiTxReceipt({
         const timestamp = transaction.minedAt || 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
-        const txUrl =
-          network && network.blockExplorer
-            ? network.blockExplorer.txUrl(transaction.txHash as string)
-            : '';
+        const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);
 
         return (
           <div key={idx} className="TransactionReceipt-details">

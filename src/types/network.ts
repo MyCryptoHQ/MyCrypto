@@ -2,7 +2,7 @@ import { Omit, Subtract } from 'utility-types';
 
 import { TAddress } from './address';
 import { Asset, TTicker } from './asset';
-import { BlockExplorer } from './blockExplorer';
+import { ExplorerConfig } from './blockExplorer';
 import { Contract } from './contract';
 import { DPathFormats } from './dPath';
 import { GasPrice } from './gas';
@@ -26,7 +26,7 @@ export interface Network {
   isCustom: boolean;
   isTestnet?: boolean;
   color: string | undefined;
-  blockExplorer?: BlockExplorer;
+  blockExplorer: ExplorerConfig;
   tokenExplorer?: {
     name: string;
     address(address: string): string;
