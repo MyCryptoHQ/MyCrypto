@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 
-import { ConfirmTransaction } from '@components';
-import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
+import { ConfirmTransaction, SwapFromToDiagram } from '@components';
 import { StoreContext } from '@services';
 import { ITxMultiConfirmProps, ITxType } from '@types';
 

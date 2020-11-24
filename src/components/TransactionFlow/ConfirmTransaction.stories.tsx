@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
+import { ZapReceiptBanner } from '@features/DeFiZap';
 import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
-import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
+import { MembershipReceiptBanner } from '@features/PurchaseMembership';
 import { IMembershipId, MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import {
   fAccount,

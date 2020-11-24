@@ -4,8 +4,7 @@ import { Button, Network } from '@mycrypto/ui';
 import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
-import { CopyableCodeBlock } from '@components';
-import EthAddress from '@components/EthAddress';
+import { CopyableCodeBlock, EthAddress } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
