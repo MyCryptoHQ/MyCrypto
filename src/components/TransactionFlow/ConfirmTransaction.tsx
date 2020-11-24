@@ -229,7 +229,7 @@ export const ConfirmTransactionUI = ({
 
   const fiat = getFiat(settings);
 
-  const isContractCall = data !== '0x' || (txType && isContractInteraction(txType));
+  const isContractCall = isContractInteraction(data, txType);
 
   return (
     <ConfirmTransactionWrapper>

@@ -342,7 +342,7 @@ export const TxReceiptUI = ({
     }
   }, [displayTxReceipt]);
 
-  const isContractCall = data !== '0x' || (txType && isContractInteraction(txType));
+  const isContractCall = isContractInteraction(data, txType);
 
   return (
     <div className="TransactionReceipt">

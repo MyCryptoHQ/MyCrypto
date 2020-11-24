@@ -145,5 +145,11 @@ const CONTRACT_INTERACTION_TYPES = [
   ITxType.CONTRACT_INTERACT
 ];
 
-export const isContractInteraction = (type: ITxType) =>
-  CONTRACT_INTERACTION_TYPES.includes(type) || isTokenMigration(type);
+export const isContractInteraction = (data: string, type?: ITxType) => {
+  if (data !== '0x') {
+    return true;
+  } else if (type) {
+    return CONTRACT_INTERACTION_TYPES.includes(type) || isTokenMigration(type);
+  }
+  return false;
+};
