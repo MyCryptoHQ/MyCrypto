@@ -353,8 +353,8 @@ export const actionTemplates: ActionTemplate[] = [
     icon: 'myc-winter',
     heading: translateRaw('MYC_WINTER_START_ACTION_HEADING'),
     body: [
-      translateRaw('MYC_WINTER_START_ACTION_BODY_1'),
-      translateRaw('MYC_WINTER_START_ACTION_BODY_2')
+      translate('MYC_WINTER_START_ACTION_BODY_1'),
+      translate('MYC_WINTER_START_ACTION_BODY_2')
     ],
     priority: 0,
     time: {
@@ -380,10 +380,7 @@ export const actionTemplates: ActionTemplate[] = [
     props: {
       content: translateRaw('MYC_WINTER_MID_ACTION_SUBHEAD')
     },
-    body: [
-      translateRaw('MYC_WINTER_MID_ACTION_BODY_1'),
-      translateRaw('MYC_WINTER_MID_ACTION_BODY_2')
-    ],
+    body: [translate('MYC_WINTER_MID_ACTION_BODY_1'), translate('MYC_WINTER_MID_ACTION_BODY_2')],
     priority: 0,
     time: {
       start: new Date('2020-12-12'),
@@ -404,10 +401,7 @@ export const actionTemplates: ActionTemplate[] = [
     name: ACTION_NAME.MYC_WINTER_END,
     icon: 'myc-winter',
     heading: translateRaw('MYC_WINTER_END_ACTION_HEADING'),
-    body: [
-      translateRaw('MYC_WINTER_END_ACTION_BODY_1'),
-      translateRaw('MYC_WINTER_END_ACTION_BODY_2')
-    ],
+    body: [translate('MYC_WINTER_END_ACTION_BODY_1'), translate('MYC_WINTER_END_ACTION_BODY_2')],
     priority: 0,
     time: {
       start: new Date('2020-12-20'),
@@ -433,8 +427,8 @@ export const actionTemplates: ActionTemplate[] = [
       content: translateRaw('MYC_WINTER_BONUS_ACTION_SUBHEAD')
     },
     body: [
-      translateRaw('MYC_WINTER_BONUS_ACTION_BODY_1'),
-      translateRaw('MYC_WINTER_BONUS_ACTION_BODY_2')
+      translate('MYC_WINTER_BONUS_ACTION_BODY_1'),
+      translate('MYC_WINTER_BONUS_ACTION_BODY_2')
     ],
     priority: 0,
     filter: ({ isMyCryptoMember }: ActionFilters) => isMyCryptoMember,
