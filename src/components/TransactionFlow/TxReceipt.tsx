@@ -386,9 +386,12 @@ export const TxReceiptUI = ({
 
       {/* CUSTOM FLOW CONTENT */}
 
-      {customComponent && customComponent()}
-
-      {customComponent && <div className="TransactionReceipt-divider" />}
+      {customComponent && (
+        <>
+          {customComponent()}
+          <div className="TransactionReceipt-divider" />
+        </>
+      )}
 
       <TxReceiptTotals
         asset={mainAsset()}

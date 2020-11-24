@@ -255,9 +255,12 @@ export const ConfirmTransactionUI = ({
 
       {/* CUSTOM FLOW CONTENT */}
 
-      {customComponent && customComponent()}
-
-      {customComponent && <div className="TransactionReceipt-divider" />}
+      {customComponent && (
+        <>
+          {customComponent()}
+          <div className="TransactionReceipt-divider" />
+        </>
+      )}
 
       <RowWrapper>
         <ColumnWrapper>

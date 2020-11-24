@@ -36,12 +36,10 @@ export default function TokenMigrationReceipt({
 
   const baseAssetRate = getAssetRate(baseAsset);
 
-  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map(
-    (txConstructionConfig) => ({
-      title: txConstructionConfig.stepTitle,
-      icon: txConstructionConfig.stepSvg
-    })
-  );
+  const steps = flowConfig.txConstructionConfigs.map((txConstructionConfig) => ({
+    title: txConstructionConfig.stepTitle,
+    icon: txConstructionConfig.stepSvg
+  }));
 
   const fiat = getFiat(settings);
   const lastTxConfig =
