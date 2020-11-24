@@ -56,3 +56,4 @@ export { default as over } from 'ramda/src/over';
 export { default as toString } from 'ramda/src/toString';
 export { default as reject } from 'ramda/src/reject';
 export { default as findIndex } from 'ramda/src/findIndex';
+export { default as remove } from 'ramda/src/remove';

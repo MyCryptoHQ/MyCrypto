@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IAccount, LSKeys, TUuid } from '@types';
+import { findIndex, propEq } from '@vendor';
 
-export const initialState = {} as Record<string, IAccount>;
+export const initialState = [] as IAccount[];
 
 const sliceName = LSKeys.ACCOUNTS;
 
@@ -11,15 +12,22 @@ const slice = createSlice({
   initialState,
   reducers: {
     create(state, action: PayloadAction<IAccount>) {
-      const { uuid } = action.payload;
-      state[uuid] = action.payload;
+      state.push(action.payload);
     },
     destroy(state, action: PayloadAction<TUuid>) {
-      delete state[action.payload];
+      const idx = findIndex(propEq('uuid', action.payload), state);
+      state.splice(idx, 1);
     },
     update(state, action: PayloadAction<IAccount>) {
-      const { uuid } = action.payload;
-      state[uuid] = action.payload;
+      const idx = findIndex(propEq('uuid', action.payload.uuid), state);
+      state[idx] = action.payload;
+    },
+    updateMany(state, action: PayloadAction<IAccount[]>) {
+      const accounts = action.payload;
+      accounts.forEach((account) => {
+        const idx = findIndex(propEq('uuid', account.uuid), state);
+        state[idx] = account;
+      });
     },
     reset() {
       return initialState;
@@ -31,6 +39,7 @@ export const {
   create: createAccount,
   destroy: destroyAccount,
   update: updateAccount,
+  updateMany: updateAccounts,
   reset: resetAccount
 } = slice.actions;
 
