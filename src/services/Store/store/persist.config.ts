@@ -10,12 +10,13 @@ import {
   REGISTER,
   REHYDRATE,
   StateReconciler,
+  Transform,
   TransformInbound,
   TransformOutbound
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
-import { ValuesType } from 'utility-types';
+import { OmitByValue, ValuesType } from 'utility-types';
 
 import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { flatten, indexBy, pipe, prop, values } from '@vendor';
@@ -42,8 +43,10 @@ const fromReduxStore: TransformInbound<
     case LSKeys.ASSETS:
     case LSKeys.NOTIFICATIONS:
     case LSKeys.USER_ACTIONS:
+      // @ts-expect-error: switch fails as a type guard
       return arrayToObj('uuid')(slice);
     case LSKeys.NETWORKS: {
+      // @ts-expect-error: switch fails as a type guard
       return arrayToObj('id')(slice);
     }
     case LSKeys.SETTINGS:
@@ -59,9 +62,9 @@ const fromReduxStore: TransformInbound<
  * @param key
  */
 const fromPersistenceLayer: TransformOutbound<
-  ValuesType<LocalStorage>,
   ValuesType<DataStore>,
-  DataStore
+  ValuesType<DataStore>,
+  LocalStorage
 > = (slice, key) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
@@ -79,7 +82,13 @@ const fromPersistenceLayer: TransformOutbound<
   }
 };
 
-const transform = createTransform(fromReduxStore, fromPersistenceLayer);
+// @ts-expect-error:  Type 'string' is not assignable to type 'Pick<LocalStorage, LSKeys | "version"> !??
+const transform: Transform<
+  OmitByValue<LocalStorage, number>,
+  ValuesType<DataStore>,
+  DataStore,
+  LocalStorage
+> = createTransform(fromReduxStore, fromPersistenceLayer);
 
 /**
  * Custom State Reconciler.
@@ -124,6 +133,7 @@ const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   blacklist: [],
   stateReconciler: customReconciler,
   transforms: [transform],
+  // @ts-expect-error: deserialize is redux-persist internal
   deserialize: customDeserializer,
   debug: true
 };
