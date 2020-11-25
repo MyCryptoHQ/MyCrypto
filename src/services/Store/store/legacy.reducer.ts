@@ -18,7 +18,7 @@ import networkSlice, {
   updateNetwork,
   updateNetworks
 } from './network.slice';
-import notificationSlice, { createNotification, updateNotification } from './notification.slice';
+// import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
