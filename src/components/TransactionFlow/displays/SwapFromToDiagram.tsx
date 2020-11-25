@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import arrowIcon from '@assets/images/arrow-right.svg';
-import { AssetIcon, Currency } from '@components';
+import { AssetIcon, Currency, Icon } from '@components';
 import { FONT_SIZE, SPACING } from '@theme';
 import { TTicker, TUuid } from '@types';
 
@@ -39,11 +38,6 @@ const AssetWrapper = styled.div`
   }
 `;
 
-const Arrow = styled.img`
-  width: 30px;
-  height: 21px;
-`;
-
 export default function SwapFromToDiagram(props: Props) {
   const { fromSymbol, toSymbol, fromUUID, toUUID, fromAmount, toAmount } = props;
   return (
@@ -59,7 +53,7 @@ export default function SwapFromToDiagram(props: Props) {
           decimals={6}
         />
       </AssetWrapper>
-      <Arrow src={arrowIcon} />
+      <Icon type="arrow-right" width="30px" height="21px" />
       <AssetWrapper>
         <AssetIcon uuid={toUUID} size="24px" />
         <Currency
