@@ -55,6 +55,15 @@ describe('useContract', () => {
     expect(received).toEqual(expected);
   });
 
+  it('getContractsByNetwork(): return all contracts for a given network', () => {
+    const { result } = renderUseContract({
+      contracts: fContracts
+    });
+
+    expect(result.current.getContractsByNetwork('Rinkeby')).toHaveLength(2);
+    expect(result.current.getContractsByNetwork('Ethereum')).toHaveLength(27);
+  });
+
   it('getContractByAddress(): can find a contract by address', () => {
     const { result } = renderUseContract({
       contracts: slice(0, 9, fContracts)

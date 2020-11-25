@@ -1,4 +1,4 @@
-import { Asset, AssetLegacy, LocalStorage, LSKeys } from '@types';
+import { AssetLegacy, LocalStorage, LSKeys } from '@types';
 import { toArray } from '@utils';
 
 import { NETWORKS_CONFIG, SCHEMA_BASE } from './data';
@@ -50,32 +50,6 @@ describe('Schema', () => {
     it('adds Nodes to each Network', () => {
       const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.nodes);
       expect(nodes).toHaveLength(44);
-    });
-
-    it('adds BaseAssets to Networks', () => {
-      const networkBaseAssets = toArray(defaultData[LSKeys.NETWORKS]).map(
-        ({ baseAsset }) => baseAsset
-      );
-      const networkAssets = toArray(defaultData[LSKeys.NETWORKS]).flatMap(({ assets }) => assets);
-
-      networkBaseAssets.forEach((baseAsset) => {
-        const match = networkAssets.findIndex((aUuid) => aUuid === baseAsset);
-        expect(match).toBeGreaterThanOrEqual(0);
-      });
-    });
-
-    it('adds Tokens to Networks', () => {
-      const allAssets: Record<any, Asset> = defaultData[LSKeys.ASSETS];
-      const tokens = toArray(allAssets)
-        .filter(({ type }) => type === 'erc20')
-        .filter(Boolean);
-      const networkAssets = toArray(defaultData[LSKeys.NETWORKS])
-        .flatMap(({ assets }) => assets)
-        .filter((uuid) => allAssets[uuid].type === 'erc20')
-        .filter(Boolean); // Not all networks have assets!
-
-      expect(networkAssets.length).toBeGreaterThan(0);
-      expect(networkAssets).toHaveLength(tokens.length);
     });
   });
 

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { DataContext } from '@services/Store';
-import { Contract, ExtendedContract, LSKeys, TAddress, TUuid } from '@types';
+import { Contract, ExtendedContract, LSKeys, NetworkId, TAddress, TUuid } from '@types';
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
@@ -31,12 +31,16 @@ function useContracts() {
   const getContractByAddress = (address: TAddress) =>
     contracts.find((x: ExtendedContract) => isSameAddress(x.address, address));
 
+  const getContractsByNetwork = (networkId: NetworkId) =>
+    contracts.filter((c) => c.networkId === networkId);
+
   return {
     contracts,
     createContract,
     deleteContract,
     getContractsByIds,
-    getContractByAddress
+    getContractByAddress,
+    getContractsByNetwork
   };
 }
 

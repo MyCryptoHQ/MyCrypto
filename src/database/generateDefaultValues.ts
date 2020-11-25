@@ -169,25 +169,6 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
   }
 );
 
-const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
-  // Since we added baseAsset and tokens to Assets this will return both.
-  const findNetworkAssets = (nId: NetworkId): Asset[] =>
-    toArray(store.assets).filter((a) => a.networkId === nId);
-
-  const getAssetUuid = (n: Network) =>
-    findNetworkAssets(n.id)
-      .filter(Boolean)
-      .map((a) => a.uuid);
-
-  return mapObjIndexed(
-    (n: Network) => ({
-      ...n,
-      assets: [...n.assets, ...getAssetUuid(n)]
-    }),
-    store.networks
-  );
-});
-
 /* Define flow order */
 const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
   addNetworks(networkConfig),
@@ -195,8 +176,7 @@ const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
   addContractsToNetworks(),
   addBaseAssetsToAssets(),
   addFiatsToAssets(toArray(Fiats)),
-  addTokensToAssets(networkConfig),
-  updateNetworkAssets()
+  addTokensToAssets(networkConfig)
 ];
 
 /* Handler to trigger the flow according the environment */
