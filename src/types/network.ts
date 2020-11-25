@@ -31,7 +31,6 @@ export interface Network {
     name: string;
     address(address: string): string;
   };
-
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
