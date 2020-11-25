@@ -29,7 +29,7 @@ const arrayToObj = (key) => (arr) => arr.reduce((acc, curr) => ({ ...acc, [curr[
  * @param slice
  * @param key
  */
-const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
+const beforePersist = (slice: ValuesType<DataStore>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
@@ -38,10 +38,9 @@ const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
     case LSKeys.NOTIFICATIONS:
     case LSKeys.USER_ACTIONS:
       return arrayToObj('uuid')(slice);
-    // case LSKeys.NETWORKS: {
-    //   console.log('Network postSerialize', slice, key);
-    //   return arrayToObj('id')(slice);
-    // }
+    case LSKeys.NETWORKS: {
+      return arrayToObj('id')(slice);
+    }
     case LSKeys.SETTINGS:
     case LSKeys.PASSWORD:
     default:
@@ -53,7 +52,7 @@ const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
  * @param slice
  * @param key
  */
-const postDeserialize = (slice: ValuesType<LocalStorage>, key: string) => {
+const beforeRehydrate = (slice: ValuesType<LocalStorage>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
@@ -70,7 +69,7 @@ const postDeserialize = (slice: ValuesType<LocalStorage>, key: string) => {
   }
 };
 
-const transform = createTransform(postSerialize, postDeserialize);
+const transform = createTransform(beforePersist, beforeRehydrate);
 
 const APP_PERSIST_CONFIG = {
   key: 'Storage',
