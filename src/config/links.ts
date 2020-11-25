@@ -139,6 +139,10 @@ export const partnerLinks: Link[] = [
 
 export const UNISWAP_LINK = 'https://app.uniswap.org/';
 
+export const MYC_WINTER_LINK = 'https://winter.mycrypto.com';
+
+export const TWEET_LINK = 'https://twitter.com/intent/tweet?text=';
+
 function createNavLinksFromExternalLinks(links: IExtUrl[]) {
   return links.reduce((acc, link) => {
     acc[link.name] = link;

@@ -1,6 +1,7 @@
-import { addDays, addHours, addMinutes, addSeconds, fromUnixTime } from 'date-fns';
+import { addDays, addHours, addMinutes, addSeconds, fromUnixTime, subDays } from 'date-fns';
 
 import {
+  dateIsBetween,
   formatDate,
   formatDateTime,
   formatTimeDifference,
@@ -63,5 +64,42 @@ describe('getDayDifference', () => {
     expect(getDayDifference(date, date, true)).toBe(0);
     expect(getDayDifference(addDays(date, -1), date, true)).toBe(1);
     expect(getDayDifference(addDays(date, -10), date, true)).toBe(10);
+  });
+});
+
+describe('dateIsBetween', () => {
+  it('return true if a date is in the interval', () => {
+    expect(
+      dateIsBetween(
+        new Date('2000-12-16T03:24:00'),
+        new Date('2000-12-18T03:24:00'),
+        new Date('2000-12-17T03:24:00')
+      )
+    ).toBeTruthy();
+  });
+
+  it('return false if a date is before the interval', () => {
+    expect(
+      dateIsBetween(
+        new Date('2000-12-18T03:24:00'),
+        new Date('2000-12-20T03:24:00'),
+        new Date('2000-12-17T03:24:00')
+      )
+    ).toBeFalsy();
+  });
+
+  it('return false if a date is after the interval', () => {
+    expect(
+      dateIsBetween(
+        new Date('2000-09-18T03:24:00'),
+        new Date('2000-11-20T03:24:00'),
+        new Date('2000-12-17T03:24:00')
+      )
+    ).toBeFalsy();
+  });
+
+  it('get actual date if the date to compare is not passed', () => {
+    const date = new Date();
+    expect(dateIsBetween(subDays(date, 1), addDays(date, 1))).toBeTruthy();
   });
 });

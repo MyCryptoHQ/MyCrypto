@@ -1,8 +1,11 @@
 import { ReactNode } from 'react';
 
-import { TIcon } from '@components';
-import { State as StoreContextState } from '@services/Store/StoreProvider';
+import { ActionButtonProps, TIcon, TweetButtonProps } from '@components';
+import { UniClaimResult } from '@services';
 
+import { StoreAccount } from './account';
+import { StoreAsset } from './asset';
+import { DomainNameRecord } from './ens';
 import { TUuid } from './uuid';
 
 export enum ACTION_NAME {
@@ -21,7 +24,11 @@ export enum ACTION_NAME {
   SWAP = 'swap',
   TWITTER = 'twitter',
   MIGRATE_LEND = 'migrate_lend',
-  MIGRATE_GOL = 'migrate_gol'
+  MIGRATE_GOL = 'migrate_gol',
+  MYC_WINTER_START = 'myc_winter_start',
+  MYC_WINTER_MID = 'myc_winter_mid',
+  MYC_WINTER_END = 'myc_winter_end',
+  MYC_WINTER_BONUS = 'myc_winter_bonus'
 }
 
 export enum ACTION_CATEGORIES {
@@ -41,6 +48,14 @@ export enum ACTION_STATE {
   HIDDEN = 'hidden'
 }
 
+export interface ActionFilters {
+  assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  uniClaims: UniClaimResult[];
+  ensOwnershipRecords: DomainNameRecord[];
+  accounts: StoreAccount[];
+  isMyCryptoMember: boolean;
+}
+
 export interface ActionTemplate {
   name: ACTION_NAME;
   icon: TIcon;
@@ -50,12 +65,14 @@ export interface ActionTemplate {
   priority: number;
   Component?(props: Record<string, any>): JSX.Element;
   props?: Record<string, unknown>;
-  filter?(state: StoreContextState): boolean;
+  filter?(filters: ActionFilters): boolean;
+  time?: {
+    start: Date;
+    end: Date;
+  };
   button: {
-    content: string;
-    to: string;
-    shouldComplete?: boolean;
-    external: boolean;
+    component(props: ActionButtonProps | TweetButtonProps): JSX.Element;
+    props?: Omit<ActionButtonProps, 'userAction'>;
   };
   category: ACTION_CATEGORIES;
 }

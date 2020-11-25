@@ -31,6 +31,7 @@ export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
   CLAIMED = 'CLAIMED'
 }
+
 export interface UniClaimResult {
   address: TAddress;
   state: ClaimState;

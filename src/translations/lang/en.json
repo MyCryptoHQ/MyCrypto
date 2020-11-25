@@ -955,6 +955,25 @@
     "COMPLETE_GOLEM_TOKEN_MIGRATION": "Complete Golem Migration",
     "GOLEM_TOKEN_MIGRATION": "Migrate Golem Tokens",
     "GOLEM_TOKEN_MIGRATION_RECEIPT": "Golem Token Migration Receipt",
-    "GOLEM_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your Golem tokens from v1 to v2, so this field cannot be modified."
+    "GOLEM_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP": "This tool is intended to migrate all of your Golem tokens from v1 to v2, so this field cannot be modified.",
+    "MYC_WINTER_START_ACTION_HEADING": "[Limited Time] Start your MyCryptoWinter adventure",
+    "MYC_WINTER_START_ACTION_BODY_1": "[MyCryptoWinter](https://winter.mycrypto.com) is back! Throughout the month of December, we'll be sharing some of the best practices and tips to help you stay safe in the world of cryptocurrency.",
+    "MYC_WINTER_START_ACTION_BODY_2": "Share the tips throughout the month to win prize packs that include hardware wallets, tokens, and physical swag from us and our partners.",
+    "MYC_WINTER_START_ACTION_BUTTON": "Start The Adventure",
+    "MYC_WINTER_MID_ACTION_HEADING": "[Limited Time] Share a MyCryptoWinter tip",
+    "MYC_WINTER_MID_ACTION_SUBHEAD": "Enter to win prizes!",
+    "MYC_WINTER_MID_ACTION_BODY_1": "Have you been keeping up with MyCryptoWinter? The calendar is almost halfway done! Go peruse some of the available tips and share your favorites.",
+    "MYC_WINTER_MID_ACTION_BODY_2": "If you share, you'll be entered to win hundreds of dollars worth of prizes!",
+    "MYC_WINTER_MID_ACTION_BUTTON": "Share a Tip",
+    "MYC_WINTER_END_ACTION_HEADING": "[Limited Time] Enter before time runs out",
+    "MYC_WINTER_END_ACTION_BODY_1": "MyCryptoWinter is ending in just a few days, which means you only have a few days left to enter to win!",
+    "MYC_WINTER_END_ACTION_BODY_2": "Go through the MyCryptoWinter calendar.",
+    "MYC_WINTER_END_ACTION_BUTTON": "Enter to Win",
+    "MYC_WINTER_BONUS_ACTION_HEADING": "[Limited] Redeem your extra MyCryptoWinter entries",
+    "MYC_WINTER_BONUS_ACTION_SUBHEAD": "Your MyCrypto Membership is yielding rewards!",
+    "MYC_WINTER_BONUS_ACTION_BODY_1": "Since you have a MyCrypto Membership, we're giving you some extra love during the holidays.",
+    "MYC_WINTER_BONUS_ACTION_BODY_2": "Validate your MyCrypto Membership via Twitter to receive 3 bonus #MyCryptoWinter entries (aka three extra chances to win one of the prize packs)!",
+    "MYC_WINTER_BONUS_ACTION_BUTTON": "Verify on Twitter",
+    "MYC_WINTER_BONUS_TWEET": "Verifying my @MyCrypto Membership account $address for 3 bonus #MyCryptoWinter entries! winter.mycrypto.com"
   }
 }

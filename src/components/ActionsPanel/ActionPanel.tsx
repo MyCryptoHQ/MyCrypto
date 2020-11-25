@@ -5,10 +5,12 @@ import styled from 'styled-components';
 import { DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
-import { StoreContext, State as StoreContextState } from '@services/Store/StoreProvider';
+import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { ACTION_STATE, ActionTemplate } from '@types';
+import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
+import { dateIsBetween } from '@utils';
+import { filter, pipe } from '@vendor';
 
 import { Text } from '../NewTypography';
 import { ActionDetails, ActionsList } from './components';
@@ -38,21 +40,35 @@ const HeadingText = styled.span`
   width: 250px;
 `;
 
-const filterUserActions = (actionTemplates: ActionTemplate[], state: StoreContextState) =>
+const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFilters) =>
   actionTemplates.filter((action) => {
     const filter = action.filter;
     if (!filter) return true;
-    return filter(state);
+    return filter(filters);
   });
 
 export const ActionPanel = () => {
-  const storeContextState = useContext(StoreContext);
+  const { assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember } = useContext(
+    StoreContext
+  );
   const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
 
-  const relevantActions = useMemo(() => filterUserActions(actionTemplates, storeContextState), [
-    storeContextState
-  ]);
+  const relevantActions = useMemo(
+    () =>
+      pipe(
+        (a: ActionTemplate[]) =>
+          filterUserActions(a, {
+            assets,
+            uniClaims,
+            ensOwnershipRecords,
+            accounts,
+            isMyCryptoMember
+          }),
+        filter((a: ActionTemplate) => (a.time ? dateIsBetween(a.time.start, a.time.end) : true))
+      )(actionTemplates),
+    [assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember]
+  );
 
   const dismiss = () => {
     const userAction = findUserAction(currentAction!.name)!;

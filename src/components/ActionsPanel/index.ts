@@ -1,2 +1,2 @@
 export { ActionPanel } from './ActionPanel';
-export { ActionTable } from './components';
+export { ActionTable, TweetButtonProps, ActionButtonProps, ActionButton } from './components';

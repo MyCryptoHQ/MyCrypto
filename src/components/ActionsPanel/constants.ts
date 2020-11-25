@@ -7,6 +7,7 @@ import {
   EXT_URLS,
   GOLEMV1UUID,
   LENDUUID,
+  MYC_WINTER_LINK,
   REPV1UUID,
   ROUTE_PATHS,
   socialMediaLinks,
@@ -14,33 +15,50 @@ import {
   UNISWAP_LINK
 } from '@config';
 import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
-import { State as StoreContextState } from '@services/Store/StoreProvider';
 import translate, { translateRaw } from '@translations';
-import { ACTION_CATEGORIES, ACTION_NAME, ActionTemplate } from '@types';
+import { ACTION_CATEGORIES, ACTION_NAME, ActionFilters, ActionTemplate } from '@types';
 import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@utils';
 
-import { MigrationSubHead, MigrationTable, UniClaimSubHead, UniClaimTable } from './components';
+import {
+  ActionButton,
+  ActionButtonProps,
+  GeneralSubHead,
+  MigrationSubHead,
+  MigrationTable,
+  TweetButton,
+  UniClaimSubHead,
+  UniClaimTable
+} from './components';
 
 interface IHwWalletElement {
   icon: TIcon;
-  button: { to: string; content: string; external: boolean };
+  button: {
+    component(props: ActionButtonProps): JSX.Element;
+    props: Omit<ActionButtonProps, 'userAction'>;
+  };
 }
 
 const HwWalletElements: IHwWalletElement[] = [
   {
     icon: 'ledger-icon',
     button: {
-      to: EXT_URLS.LEDGER_REFERRAL.url,
-      content: translateRaw('BUY_HW_ACTION_BUTTON'),
-      external: true
+      component: ActionButton,
+      props: {
+        to: EXT_URLS.LEDGER_REFERRAL.url,
+        content: translateRaw('BUY_HW_ACTION_BUTTON'),
+        external: true
+      }
     }
   },
   {
     icon: 'trezor-icon',
     button: {
-      to: EXT_URLS.TREZOR_REFERRAL.url,
-      content: translateRaw('BUY_HW_ACTION_BUTTON'),
-      external: true
+      component: ActionButton,
+      props: {
+        to: EXT_URLS.TREZOR_REFERRAL.url,
+        content: translateRaw('BUY_HW_ACTION_BUTTON'),
+        external: true
+      }
     }
   }
 ];
@@ -53,9 +71,12 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('UPDATE_LABEL_ACTION_BODY_1'), translate('UPDATE_LABEL_ACTION_BODY_2')],
     priority: 0,
     button: {
-      content: translateRaw('UPDATE_LABEL_ACTION_BUTTON'),
-      to: ROUTE_PATHS.SETTINGS.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('UPDATE_LABEL_ACTION_BUTTON'),
+        to: ROUTE_PATHS.SETTINGS.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
@@ -65,14 +86,17 @@ export const actionTemplates: ActionTemplate[] = [
     subHeading: MigrationSubHead,
     icon: 'rep-logo',
     body: [translate('MIGRATE_REP_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === REPV1UUID),
+    filter: ({ assets }: ActionFilters) => assets().some((a) => a.uuid === REPV1UUID),
     priority: 30,
     Component: MigrationTable,
     props: { assetUuid: REPV1UUID },
     button: {
-      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MIGRATION
   },
@@ -82,14 +106,17 @@ export const actionTemplates: ActionTemplate[] = [
     icon: 'uni-logo',
     subHeading: UniClaimSubHead,
     body: [translate('CLAIM_UNI_ACTION_BODY')],
-    filter: (state: StoreContextState) =>
-      state.uniClaims.some((c) => c.state === ClaimState.UNCLAIMED),
+    filter: ({ uniClaims }: ActionFilters) =>
+      uniClaims.some((c) => c.state === ClaimState.UNCLAIMED),
     priority: 30,
     Component: UniClaimTable,
     button: {
-      content: translateRaw('CLAIM_UNI_ACTION_BUTTON'),
-      to: UNISWAP_LINK,
-      external: true
+      component: ActionButton,
+      props: {
+        content: translateRaw('CLAIM_UNI_ACTION_BUTTON'),
+        to: UNISWAP_LINK,
+        external: true
+      }
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
@@ -99,14 +126,17 @@ export const actionTemplates: ActionTemplate[] = [
     icon: 'lend-logo',
     subHeading: MigrationSubHead,
     body: [translate('MIGRATE_LEND_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === LENDUUID),
+    filter: ({ assets }: ActionFilters) => assets().some((a) => a.uuid === LENDUUID),
     priority: 10,
     Component: MigrationTable,
     props: { assetUuid: LENDUUID },
     button: {
-      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
@@ -116,14 +146,17 @@ export const actionTemplates: ActionTemplate[] = [
     subHeading: MigrationSubHead,
     icon: 'ant-logo',
     body: [translate('MIGRATE_ANT_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === ANTv1UUID),
+    filter: ({ assets }: ActionFilters) => assets().some((a) => a.uuid === ANTv1UUID),
     priority: 30,
     Component: MigrationTable,
     props: { assetUuid: ANTv1UUID },
     button: {
-      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MIGRATION
   },
@@ -133,14 +166,17 @@ export const actionTemplates: ActionTemplate[] = [
     subHeading: MigrationSubHead,
     icon: 'gol-logo',
     body: [translate('MIGRATE_GOL_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.assets().some((a) => a.uuid === GOLEMV1UUID),
+    filter: ({ assets }: ActionFilters) => assets().some((a) => a.uuid === GOLEMV1UUID),
     priority: 30,
     Component: MigrationTable,
     props: { assetUuid: GOLEMV1UUID },
     button: {
-      content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MIGRATION
   },
@@ -148,16 +184,19 @@ export const actionTemplates: ActionTemplate[] = [
     name: ACTION_NAME.RENEW_ENS,
     heading: translateRaw('RENEW_ENS_ACTION_HEADING'),
     icon: 'ensLogo',
-    filter: (state: StoreContextState) =>
-      state.ensOwnershipRecords.some((r) =>
+    filter: ({ ensOwnershipRecords }: ActionFilters) =>
+      ensOwnershipRecords.some((r) =>
         isBefore(new Date(r.expiryDate), add(new Date(), { days: 60 }))
       ),
     body: [translate('RENEW_ENS_ACTION_BODY')],
     priority: 30,
     button: {
-      content: translateRaw('RENEW_ENS_ACTION_BUTTON'),
-      to: ROUTE_PATHS.ENS.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('RENEW_ENS_ACTION_BUTTON'),
+        to: ROUTE_PATHS.ENS.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
@@ -167,7 +206,7 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('BUY_HW_ACTION_BODY')],
     // get randomly logo and link between trezor and ledger
     ...randomElementFromArray(HwWalletElements),
-    filter: (state: StoreContextState) => !state.accounts.some((c) => isHardwareWallet(c.wallet)),
+    filter: ({ accounts }: ActionFilters) => !accounts.some((c) => isHardwareWallet(c.wallet)),
     priority: 30,
     category: ACTION_CATEGORIES.SECURITY
   },
@@ -176,12 +215,15 @@ export const actionTemplates: ActionTemplate[] = [
     heading: translateRaw('MYC_MEMBERSHIP_ACTION_HEADING'),
     icon: 'membership',
     body: [translate('MYC_MEMBERSHIP_ACTION_BODY')],
-    filter: (state: StoreContextState) => !state.isMyCryptoMember,
+    filter: ({ isMyCryptoMember }: ActionFilters) => !isMyCryptoMember,
     priority: 0,
     button: {
-      content: translateRaw('MYC_MEMBERSHIP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.MYC_MEMBERSHIP.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('MYC_MEMBERSHIP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.MYC_MEMBERSHIP.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.SELF_LOVE
   },
@@ -190,12 +232,15 @@ export const actionTemplates: ActionTemplate[] = [
     heading: translateRaw('ADD_ACCOUNT_ACTION_HEADING'),
     icon: 'experience',
     body: [translate('ADD_ACCOUNT_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.accounts.length < 3,
+    filter: ({ accounts }: ActionFilters) => accounts.length < 3,
     priority: 0,
     button: {
-      content: translateRaw('ADD_ACCOUNT_ACTION_BUTTON'),
-      to: ROUTE_PATHS.ADD_ACCOUNT.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('ADD_ACCOUNT_ACTION_BUTTON'),
+        to: ROUTE_PATHS.ADD_ACCOUNT.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
@@ -204,12 +249,15 @@ export const actionTemplates: ActionTemplate[] = [
     heading: translateRaw('BACKUP_ACTION_HEADING'),
     icon: 'experience',
     body: [translate('BACKUP_ACTION_BODY')],
-    filter: (state: StoreContextState) => state.accounts.length >= 3,
+    filter: ({ accounts }: ActionFilters) => accounts.length >= 3,
     priority: 0,
     button: {
-      content: translateRaw('BACKUP_ACTION_BUTTON'),
-      to: ROUTE_PATHS.SETTINGS_EXPORT.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('BACKUP_ACTION_BUTTON'),
+        to: ROUTE_PATHS.SETTINGS_EXPORT.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
@@ -220,10 +268,13 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('FEEDBACK_ACTION_BODY_1'), translate('FEEDBACK_ACTION_BODY_2')],
     priority: 0,
     button: {
-      content: translateRaw('FEEDBACK_ACTION_BUTTON'),
-      shouldComplete: true,
-      to: formatSupportEmail(translateRaw('FEEDBACK_ACTION_MAIL_SUBJECT')),
-      external: true
+      component: ActionButton,
+      props: {
+        content: translateRaw('FEEDBACK_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: formatSupportEmail(translateRaw('FEEDBACK_ACTION_MAIL_SUBJECT')),
+        external: true
+      }
     },
     category: ACTION_CATEGORIES.OTHER
   },
@@ -234,10 +285,13 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('NEWSLETTER_ACTION_BODY')],
     priority: 0,
     button: {
-      content: translateRaw('NEWSLETTER_ACTION_BUTTON'),
-      shouldComplete: true,
-      to: SUBSCRIBE_NEWSLETTER_LINK,
-      external: true
+      component: ActionButton,
+      props: {
+        content: translateRaw('NEWSLETTER_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: SUBSCRIBE_NEWSLETTER_LINK,
+        external: true
+      }
     },
     category: ACTION_CATEGORIES.OTHER
   },
@@ -248,10 +302,13 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('TELEGRAM_ACTION_BODY')],
     priority: 0,
     button: {
-      content: translateRaw('TELEGRAM_ACTION_BUTTON'),
-      shouldComplete: true,
-      to: socialMediaLinks.find((i) => i.text === 'telegram')!.link,
-      external: true
+      component: ActionButton,
+      props: {
+        content: translateRaw('TELEGRAM_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: socialMediaLinks.find((i) => i.text === 'telegram')!.link,
+        external: true
+      }
     },
     category: ACTION_CATEGORIES.OTHER
   },
@@ -260,15 +317,17 @@ export const actionTemplates: ActionTemplate[] = [
     heading: translateRaw('SWAP_ACTION_HEADING'),
     icon: 'swap',
     body: [translate('SWAP_ACTION_BODY')],
-    filter: (state: StoreContextState) =>
-      state.assets().some((a) => a.uuid === ETHUUID) &&
-      state.assets().some((a) => a.uuid !== ETHUUID),
+    filter: ({ assets }: ActionFilters) =>
+      assets().some((a) => a.uuid === ETHUUID) && assets().some((a) => a.uuid !== ETHUUID),
     priority: 0,
     button: {
-      content: translateRaw('SWAP_ACTION_BUTTON'),
-      shouldComplete: true,
-      to: ROUTE_PATHS.SWAP.path,
-      external: false
+      component: ActionButton,
+      props: {
+        content: translateRaw('SWAP_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: ROUTE_PATHS.SWAP.path,
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.OTHER
   },
@@ -279,11 +338,107 @@ export const actionTemplates: ActionTemplate[] = [
     body: [translate('TWITTER_ACTION_BODY')],
     priority: 0,
     button: {
-      content: translateRaw('TWITTER_ACTION_BUTTON'),
-      shouldComplete: true,
-      to: socialMediaLinks.find((i) => i.text === 'twitter')!.link,
-      external: true
+      component: ActionButton,
+      props: {
+        content: translateRaw('TWITTER_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: socialMediaLinks.find((i) => i.text === 'twitter')!.link,
+        external: true
+      }
     },
     category: ACTION_CATEGORIES.OTHER
+  },
+  {
+    name: ACTION_NAME.MYC_WINTER_START,
+    icon: 'myc-winter',
+    heading: translateRaw('MYC_WINTER_START_ACTION_HEADING'),
+    body: [
+      translate('MYC_WINTER_START_ACTION_BODY_1'),
+      translate('MYC_WINTER_START_ACTION_BODY_2')
+    ],
+    priority: 0,
+    time: {
+      start: new Date('2020-12-01'),
+      end: new Date('2020-12-12')
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('MYC_WINTER_START_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: MYC_WINTER_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: ACTION_NAME.MYC_WINTER_MID,
+    icon: 'myc-winter',
+    heading: translateRaw('MYC_WINTER_MID_ACTION_HEADING'),
+    subHeading: GeneralSubHead,
+    props: {
+      content: translateRaw('MYC_WINTER_MID_ACTION_SUBHEAD')
+    },
+    body: [translate('MYC_WINTER_MID_ACTION_BODY_1'), translate('MYC_WINTER_MID_ACTION_BODY_2')],
+    priority: 0,
+    time: {
+      start: new Date('2020-12-12'),
+      end: new Date('2020-12-20')
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('MYC_WINTER_MID_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: MYC_WINTER_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: ACTION_NAME.MYC_WINTER_END,
+    icon: 'myc-winter',
+    heading: translateRaw('MYC_WINTER_END_ACTION_HEADING'),
+    body: [translate('MYC_WINTER_END_ACTION_BODY_1'), translate('MYC_WINTER_END_ACTION_BODY_2')],
+    priority: 0,
+    time: {
+      start: new Date('2020-12-20'),
+      end: new Date('2021-01-01')
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('MYC_WINTER_END_ACTION_BUTTON'),
+        shouldComplete: true,
+        to: MYC_WINTER_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: ACTION_NAME.MYC_WINTER_BONUS,
+    icon: 'myc-winter-membership',
+    heading: translateRaw('MYC_WINTER_BONUS_ACTION_HEADING'),
+    subHeading: GeneralSubHead,
+    props: {
+      content: translateRaw('MYC_WINTER_BONUS_ACTION_SUBHEAD')
+    },
+    body: [
+      translate('MYC_WINTER_BONUS_ACTION_BODY_1'),
+      translate('MYC_WINTER_BONUS_ACTION_BODY_2')
+    ],
+    priority: 0,
+    filter: ({ isMyCryptoMember }: ActionFilters) => isMyCryptoMember,
+    time: {
+      start: new Date('2020-12-01'),
+      end: new Date('2021-01-01')
+    },
+    button: {
+      component: TweetButton
+    },
+    category: ACTION_CATEGORIES.SELF_LOVE
   }
 ];

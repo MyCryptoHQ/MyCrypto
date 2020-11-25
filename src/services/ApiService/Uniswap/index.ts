@@ -1,1 +1,1 @@
-export { default as UniswapService } from './Uniswap';
+export { default as UniswapService, UniClaimResult } from './Uniswap';

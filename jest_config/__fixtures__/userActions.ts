@@ -1,4 +1,5 @@
 import repIcon from '@assets/images/rep-logo.svg';
+import { ActionButton } from '@components';
 import {
   ACTION_CATEGORIES,
   ACTION_NAME,
@@ -16,9 +17,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MYC_EXPERIENCE
   },
@@ -29,9 +33,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.MIGRATION
   },
@@ -42,9 +49,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.SECURITY
   },
@@ -55,9 +65,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.SELF_LOVE
   },
@@ -68,9 +81,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
   },
@@ -81,9 +97,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 0,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.SECURITY
   },
@@ -94,9 +113,12 @@ export const fActionTemplates: ActionTemplate[] = [
     body: ['dummy action body', 'another one'],
     priority: 10,
     button: {
-      content: 'the rabit hole',
-      to: '/settings',
-      external: false
+      component: ActionButton,
+      props: {
+        content: 'the rabit hole',
+        to: '/settings',
+        external: false
+      }
     },
     category: ACTION_CATEGORIES.SELF_LOVE
   }
