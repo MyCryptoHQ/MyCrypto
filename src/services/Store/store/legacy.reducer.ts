@@ -1,6 +1,5 @@
 import { Reducer } from '@reduxjs/toolkit';
 
-import { defaultContacts, defaultSettings } from '@database/data';
 import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
 import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
 
@@ -11,6 +10,14 @@ import accountSlice, {
   updateAccount,
   updateAccounts
 } from './account.slice';
+import { initialLegacyState } from './legacy.initialState';
+import networkSlice, {
+  createNetwork,
+  createNetworks,
+  destroyNetwork,
+  updateNetwork,
+  updateNetworks
+} from './network.slice';
 import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 
 export enum ActionT {
@@ -38,29 +45,7 @@ export function init(initialState: DataStore) {
   return initialState;
 }
 
-/**
- * @todo migrate to new store structure once redux-persist is in setup.
- * The initial state is the equivalent of `marshallState(getCurrentDBConfig().defaultValues)`
- * We redeclare it here to avoid circular dep issues and changing multiple imports.
- * Will be changed once we refactor to slices.
- */
-export const initialState = {
-  version: 'v1.1.0',
-  [LSKeys.ACCOUNTS]: [],
-  [LSKeys.ADDRESS_BOOK]: Object.entries(defaultContacts).map(([k, v]) => ({
-    ...v,
-    uuid: k as TUuid
-  })),
-  [LSKeys.ASSETS]: [],
-  [LSKeys.CONTRACTS]: [],
-  [LSKeys.NETWORKS]: [],
-  [LSKeys.NOTIFICATIONS]: [],
-  [LSKeys.SETTINGS]: defaultSettings,
-  [LSKeys.PASSWORD]: '',
-  [LSKeys.USER_ACTIONS]: []
-};
-
-const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, action) => {
+const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, action) => {
   const { type, payload } = action;
   switch (type) {
     case ActionT.ADD_ITEM: {
@@ -128,6 +113,16 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialState, action
      * legacy state shape.
      * @todo: Redux. Place in individual slice once reducer migration begins.
      */
+    case createNetwork.type:
+    case createNetworks.type:
+    case updateNetwork.type:
+    case updateNetworks.type:
+    case destroyNetwork.type: {
+      return {
+        ...state,
+        [LSKeys.NETWORKS]: networkSlice.reducer(state.networks, action)
+      };
+    }
     case createAccount.type:
     case createAccounts.type:
     case updateAccount.type:

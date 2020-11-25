@@ -2,6 +2,7 @@ import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { bigNumberify, parseEther } from 'ethers/utils';
+import { ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
@@ -24,26 +25,27 @@ import useTxHistory from './useTxHistory';
 
 const renderUseTxHistory = ({
   apiTransactions = [] as ITxHistoryApiResponse[],
-  accounts = fAccounts,
-  createActions = jest.fn()
+  accounts = fAccounts
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider
-      value={
-        ({
-          addressBook: fContacts,
-          contracts: fContracts,
-          networks: fNetworks,
-          assets: fAssets,
-          createActions
-        } as any) as IDataContext
-      }
-    >
-      <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
-        {' '}
-        {children}
-      </StoreContext.Provider>
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider
+        value={
+          ({
+            addressBook: fContacts,
+            contracts: fContracts,
+            networks: fNetworks,
+            assets: fAssets,
+            createActions: jest.fn()
+          } as any) as IDataContext
+        }
+      >
+        <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
+          {' '}
+          {children}
+        </StoreContext.Provider>
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
   return renderHook(() => useTxHistory(), { wrapper });
 };
