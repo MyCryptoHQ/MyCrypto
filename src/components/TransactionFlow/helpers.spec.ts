@@ -5,10 +5,14 @@ import {
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fDerivedApprovalTx, fDerivedRepMigrationTx, fTxConfig } from '@fixtures';
 import { translateRaw } from '@translations';
-import { ITxGasLimit, ITxNonce, ITxObject, ITxStatus } from '@types';
+import { ITxGasLimit, ITxNonce, ITxObject, ITxStatus, ITxType } from '@types';
 import { generateUUID, noOp } from '@utils';
 
-import { calculateReplacementGasPrice, createSignConfirmAndReceiptSteps } from './helpers';
+import {
+  calculateReplacementGasPrice,
+  createSignConfirmAndReceiptSteps,
+  isContractInteraction
+} from './helpers';
 
 describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price with high enough fast gas price', () => {
@@ -67,5 +71,39 @@ describe('createSignConfirmAndReceiptSteps', () => {
     const receiptTxLabel = translateRaw('REP_TOKEN_MIGRATION_RECEIPT');
     const labels = [multiTxLabel, '', multiTxLabel, '', receiptTxLabel];
     expect(steps.map(({ label }) => label)).toStrictEqual(labels);
+  });
+});
+
+describe('isContractInteraction', () => {
+  it('returns true for interactions with data', () => {
+    expect(
+      isContractInteraction(
+        '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      )
+    ).toBe(true);
+  });
+
+  it('returns false for interactions without data', () => {
+    expect(isContractInteraction('0x')).toBe(false);
+  });
+
+  it('returns true for token migrations (based on type)', () => {
+    expect(isContractInteraction('0x', ITxType.REP_TOKEN_MIGRATION)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.ANT_TOKEN_MIGRATION)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.AAVE_TOKEN_MIGRATION)).toBe(true);
+  });
+
+  it('returns true for other contract interactions (based on type)', () => {
+    expect(isContractInteraction('0x', ITxType.SWAP)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.DEFIZAP)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.PURCHASE_MEMBERSHIP)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.CONTRACT_INTERACT)).toBe(true);
+    expect(isContractInteraction('0x', ITxType.APPROVAL)).toBe(true);
+  });
+
+  it('returns false for non contract interactions (based on type)', () => {
+    expect(isContractInteraction('0x', ITxType.UNKNOWN)).toBe(false);
+    expect(isContractInteraction('0x', ITxType.STANDARD)).toBe(false);
+    expect(isContractInteraction('0x', ITxType.DEPLOY_CONTRACT)).toBe(false);
   });
 });

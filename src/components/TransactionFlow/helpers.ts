@@ -139,10 +139,8 @@ export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: 
   Math.max(fastGasPrice, parseFloat(bigNumGasPriceToViewableGwei(txConfig.gasPrice)) * 1.101);
 
 export const isContractInteraction = (data: string, type?: ITxType) => {
-  if (data !== '0x') {
-    return true;
-  } else if (type) {
+  if (type) {
     return CONTRACT_INTERACTION_TYPES.includes(type);
   }
-  return false;
+  return data !== '0x';
 };
