@@ -305,7 +305,6 @@ export default function AddOrEditNetworkNode({
                   baseUnit: baseUnit as TTicker,
                   baseAsset: generateAssetUUID(chainId!),
                   isCustom: true,
-                  contracts: [],
                   nodes: [node],
                   dPaths: {
                     [WalletId.TREZOR]: DPaths.ETH_DEFAULT,

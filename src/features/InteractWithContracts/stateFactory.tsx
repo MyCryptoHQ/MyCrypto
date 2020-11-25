@@ -65,8 +65,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   state,
   setState
 }) => {
-  const { getContractsByIds, createContract, deleteContract } = useContracts();
-  const { networks, updateNetwork } = useNetworks();
+  const { getContractsByNetwork, createContract, deleteContract } = useContracts();
+  const { networks } = useNetworks();
   const { addTxToAccount } = useAccounts();
 
   const handleNetworkSelected = (networkId: NetworkId) => {
@@ -84,8 +84,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
   const updateNetworkContractOptions = () => {
     // Get contracts for selected network
-    const contractIds = state.network.contracts;
-    const networkContracts = getContractsByIds(contractIds);
+    const networkContracts = getContractsByNetwork(state.network.id);
 
     const contracts = networkContracts.map((x) => Object.assign({}, x, { label: x.name }));
 
@@ -226,20 +225,12 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       networkId: state.network.id,
       isCustom: true
     });
-    // @todo updating networks with new contract should really be the responsability
-    // of the hook
-    const network = Object.assign({}, state.network);
-    network.contracts.unshift(contract.uuid);
-    updateNetwork(network.id, network);
     updateNetworkContractOptions();
     handleContractSelected(contract);
   };
 
   const handleDeleteContract = (contractUuid: TUuid) => {
     deleteContract(contractUuid);
-    const network = state.network;
-    network.contracts = network.contracts.filter((item) => item !== contractUuid);
-    updateNetwork(network.id, network);
     updateNetworkContractOptions();
     handleContractSelected(customContract);
   };

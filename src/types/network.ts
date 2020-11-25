@@ -1,4 +1,4 @@
-import { Omit, Overwrite, Subtract } from 'utility-types';
+import { Omit, Subtract } from 'utility-types';
 
 import { TAddress } from './address';
 import { Asset, TTicker } from './asset';
@@ -31,7 +31,7 @@ export interface Network {
     name: string;
     address(address: string): string;
   };
-  contracts: TUuid[];
+
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
@@ -48,6 +48,7 @@ interface NetworkPropsMissingInLegacy {
 
 interface NetworkUnusedLegacyProps {
   tokens: AssetLegacy[];
+  contracts: ContractLegacy[];
   isTestnet?: boolean;
   unsupportedTabs?: any[];
   hideEquivalentValues?: boolean;
@@ -55,10 +56,7 @@ interface NetworkUnusedLegacyProps {
   nodes?: NodeOptions[];
 }
 
-export type NetworkLegacy = Subtract<
-  Overwrite<Network, { contracts: ContractLegacy[] }>,
-  NetworkPropsMissingInLegacy
-> &
+export type NetworkLegacy = Subtract<Network, NetworkPropsMissingInLegacy> &
   NetworkUnusedLegacyProps;
 
 export interface NetworkNodes {

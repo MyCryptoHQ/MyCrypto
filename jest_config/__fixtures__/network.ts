@@ -27,7 +27,6 @@ const Ethereum: Network = {
       value: "m/44'/60'/0'/0"
     }
   },
-  contracts: [],
   baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
   baseUnit: 'ETH' as TTicker,
   nodes: [
@@ -77,7 +76,6 @@ const Ropsten: Network = {
       value: "m/44'/1'/0'/0"
     }
   },
-  contracts: [],
   baseAsset: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
   baseUnit: 'RopstenETH' as TTicker,
   nodes: [
