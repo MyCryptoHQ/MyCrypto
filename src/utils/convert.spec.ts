@@ -234,7 +234,7 @@ describe('it Remove / Add commission from amount', () => {
     return amountBN.times(rateBN).toNumber();
   };
   it('remove commission from decimal amount', () => {
-    const expected = 196;
+    const expected = 198.5;
     const amount = 200;
     const converted = withCommission({
       amount: convertToBN(amount),
@@ -258,7 +258,7 @@ describe('it Remove / Add commission from amount', () => {
     expect(converted).toEqual(expected);
   });
   it('remove commission from float amount', () => {
-    const expected = 469.64604658515145;
+    const expected = 475.63642983241107;
     const amount = 479.2306597807668;
     const converted = withCommission({
       amount: convertToBN(amount),
