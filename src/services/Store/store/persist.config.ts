@@ -1,4 +1,5 @@
 import { Reducer } from '@reduxjs/toolkit';
+import { indexBy } from 'ramda';
 import {
   createTransform,
   FLUSH,
@@ -14,6 +15,7 @@ import storage from 'redux-persist/lib/storage';
 import { ValuesType } from 'utility-types';
 
 import { DataStore, LocalStorage, LSKeys } from '@types';
+import { flatten, groupBy, pipe, prop, values } from '@vendor';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
@@ -22,6 +24,11 @@ export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PUR
 // ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
 const arrayToObj = (key) => (arr) => arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
 
+/**
+ * Called right before state is persisted.
+ * @param slice
+ * @param key
+ */
 const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
@@ -41,6 +48,11 @@ const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
       return slice;
   }
 };
+/**
+ * Called right before state is rehydrated
+ * @param slice
+ * @param key
+ */
 const postDeserialize = (slice: ValuesType<LocalStorage>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
@@ -65,7 +77,18 @@ const APP_PERSIST_CONFIG = {
   keyPrefix: 'MYC_',
   storage,
   blacklist: [],
-  stateReconciler: autoMergeLevel2,
+  stateReconciler: (inboundState, originalState, ...rest) => {
+    const mergeNetworks = pipe(indexBy(prop('id')), values, flatten);
+    const mergeContracts = pipe(indexBy(prop('uuid')), values, flatten);
+
+    const mergedInboundState = {
+      ...inboundState,
+      [LSKeys.CONTRACTS]: mergeContracts([...inboundState.contracts, ...originalState.contracts]),
+      [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
+    };
+
+    return autoMergeLevel2(mergedInboundState, originalState, ...rest);
+  },
   transforms: [transform],
   deserialize: (slice) => {
     if (typeof slice === 'string') {

@@ -210,6 +210,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       // before the async requests completes.
       // @todo: extract into seperate hook e.g. react-use
       // https://www.robinwieruch.de/react-hooks-fetch-data
+      if (isVoid(networks)) return;
       let isMounted = true;
       getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
         // Avoid the state change if the balances are identical.
@@ -224,7 +225,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     60000,
     true,
-    [currentAccounts]
+    [currentAccounts, networks]
   );
 
   // Utility method to scan and populate memberships list
