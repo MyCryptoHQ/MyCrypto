@@ -1,14 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
+import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { number, object } from 'yup';
 
 import questionToolTip from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
-import { AccountSelector, AssetSelector, ContentPanel, QRCode } from '@components';
+import {
+  AccountSelector,
+  AssetSelector,
+  ContentPanel,
+  CopyableCodeBlock,
+  InlineMessage,
+  QRCode
+} from '@components';
 import { ROUTE_PATHS } from '@config';
+import { validateAmountField } from '@features/SendAssets/components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount } from '@types';
@@ -22,7 +31,6 @@ import {
   sanitizeDecimalSeparator,
   sortByTicker
 } from '@utils';
-
 
 const isAssetToken = (tokenType: string) => {
   return tokenType !== 'base';
@@ -41,12 +49,6 @@ const SLabel = styled.label`
 
 const Fieldset = styled.fieldset`
   margin-bottom: 15px;
-`;
-
-const FieldsetBox = styled.div`
-  padding: 12px 0;
-  background: #f6f8fa;
-  text-align: center;
 `;
 
 const AssetFields = styled.div`
@@ -101,22 +103,28 @@ const CodeHeading = styled(Heading)`
   margin-top: 8px;
 `;
 
-const ErrorMessage = styled.span`
-  color: red;
-  margin-top: 15px;
-  display: block;
-`;
-
 export function RequestAssets({ history }: RouteComponentProps) {
   const { accounts, defaultAccount, networks } = useContext(StoreContext);
   const { assets } = useAssets();
-  const [networkId, setNetworkId] = useState(accounts[0].networkId);
+  const [networkId, setNetworkId] = useState(defaultAccount.networkId);
   const network = getNetworkById(networkId, networks);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
 
-  const [chosenAssetName, setAssetName] = useState(filteredAssets[0].name);
-  const selectedAsset = filteredAssets.find((asset) => asset.name === chosenAssetName);
+  const [chosenAssetUuid, setAssetUuid] = useState(
+    filteredAssets.find((a) => a.type === 'base')?.uuid
+  );
+  const selectedAsset = filteredAssets.find((asset) => asset.uuid === chosenAssetUuid);
+
+  useEffect(() => setAssetUuid(filteredAssets.find((a) => a.type === 'base')?.uuid), [networkId]);
+
+  const FormSchema = object().shape({
+    amount: number()
+      .min(0, translateRaw('ERROR_0'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('ERROR_0'))
+      .test(validateAmountField())
+  });
 
   const initialValues = {
     amount: '',
@@ -145,8 +153,12 @@ export function RequestAssets({ history }: RouteComponentProps) {
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
     >
-      <Formik initialValues={initialValues} onSubmit={noOp}>
-        {({ values: { amount, recipientAddress }, errors }: FormikProps<typeof initialValues>) => (
+      <Formik initialValues={initialValues} onSubmit={noOp} validationSchema={FormSchema}>
+        {({
+          values: { amount, recipientAddress },
+          errors,
+          touched
+        }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
               <SLabel htmlFor="recipientAddress">{translate('X_RECIPIENT')}</SLabel>
@@ -175,30 +187,31 @@ export function RequestAssets({ history }: RouteComponentProps) {
                     <FullWidthInput
                       data-lpignore="true"
                       value={field.value}
-                      onChange={({ target: { value } }) =>
-                        form.setFieldValue(field.name, sanitizeDecimalSeparator(value))
-                      }
+                      onChange={({ target: { value } }) => {
+                        form.setFieldTouched(field.name, true, true);
+                        form.setFieldValue(field.name, sanitizeDecimalSeparator(value));
+                      }}
                       placeholder="0.00"
                       inputMode="decimal"
                     />
                   )}
                 </Field>
               </Amount>
-              {errors.amount && <ErrorMessage>{errors.amount}</ErrorMessage>}
+              {errors.amount && touched.amount && <InlineMessage>{errors.amount}</InlineMessage>}
               <Asset>
                 <SLabel htmlFor="asset">{translate('X_ASSET')}</SLabel>
                 <Field
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetSelector
-                      selectedAsset={field.value}
+                      selectedAsset={selectedAsset ? selectedAsset : null}
                       assets={filteredAssets}
                       showAssetName={true}
                       searchable={true}
                       onSelect={(option) => {
                         form.setFieldValue(field.name, option);
-                        if (option.name) {
-                          setAssetName(option.name);
+                        if (option.uuid) {
+                          setAssetUuid(option.uuid);
                         }
                       }}
                     />
@@ -222,48 +235,39 @@ export function RequestAssets({ history }: RouteComponentProps) {
                     <QRCode
                       data={
                         isAssetToken(selectedAsset.type) &&
-                          selectedAsset.contractAddress &&
-                          selectedAsset.decimal
+                        selectedAsset.contractAddress &&
+                        selectedAsset.decimal
                           ? buildEIP681TokenRequest(
-                            recipientAddress.address,
-                            selectedAsset.contractAddress,
-                            network.chainId,
-                            amount,
-                            selectedAsset.decimal
-                          )
+                              recipientAddress.address,
+                              selectedAsset.contractAddress,
+                              network.chainId,
+                              amount,
+                              selectedAsset.decimal
+                            )
                           : buildEIP681EtherRequest(
-                            recipientAddress.address,
-                            network.chainId,
-                            amount
-                          )
+                              recipientAddress.address,
+                              network.chainId,
+                              amount
+                            )
                       }
                     />
                   </QRDisplay>
                 </Fieldset>
                 <Fieldset>
                   <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
-                  <FieldsetBox>
-                    <Copyable
-                      text={
-                        isAssetToken(selectedAsset.type) &&
-                          selectedAsset.contractAddress &&
+                  <CopyableCodeBlock>
+                    {isAssetToken(selectedAsset.type) &&
+                    selectedAsset.contractAddress &&
+                    selectedAsset.decimal
+                      ? buildEIP681TokenRequest(
+                          recipientAddress.address,
+                          selectedAsset.contractAddress,
+                          network.chainId,
+                          amount,
                           selectedAsset.decimal
-                          ? buildEIP681TokenRequest(
-                            recipientAddress.address,
-                            selectedAsset.contractAddress,
-                            network.chainId,
-                            amount,
-                            selectedAsset.decimal
-                          )
-                          : buildEIP681EtherRequest(
-                            recipientAddress.address,
-                            network.chainId,
-                            amount
-                          )
-                      }
-                      isCopyable={true}
-                    />
-                  </FieldsetBox>
+                        )
+                      : buildEIP681EtherRequest(recipientAddress.address, network.chainId, amount)}
+                  </CopyableCodeBlock>
                 </Fieldset>
               </>
             )}
