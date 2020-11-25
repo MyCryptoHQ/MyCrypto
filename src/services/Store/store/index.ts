@@ -13,4 +13,3 @@ export {
   updateAccount,
   updateAccounts
 } from './account.slice';
-export { APP_PERSIST_CONFIG } from './persist.config';

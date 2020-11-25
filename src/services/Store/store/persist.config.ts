@@ -22,7 +22,7 @@ export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PUR
 // ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
 const arrayToObj = (key) => (arr) => arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
 
-const serialize = (slice: ValuesType<DataStore>, key: string) => {
+const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
@@ -39,7 +39,7 @@ const serialize = (slice: ValuesType<DataStore>, key: string) => {
       return slice;
   }
 };
-const deserialize = (slice: ValuesType<LocalStorage>, key: string) => {
+const postDeserialize = (slice: ValuesType<LocalStorage>, key: string) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
@@ -56,9 +56,9 @@ const deserialize = (slice: ValuesType<LocalStorage>, key: string) => {
   }
 };
 
-const transform = createTransform(serialize, deserialize);
+const transform = createTransform(postSerialize, postDeserialize);
 
-export const APP_PERSIST_CONFIG = {
+const APP_PERSIST_CONFIG = {
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
