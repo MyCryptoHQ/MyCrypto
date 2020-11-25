@@ -4,6 +4,7 @@ import {
   FLUSH,
   PAUSE,
   PERSIST,
+  PersistConfig,
   persistReducer,
   PURGE,
   REGISTER,
@@ -25,10 +26,11 @@ const arrayToObj = (key: string | TUuid | NetworkId) => (arr: any[]) => indexBy(
 
 /**
  * Called right before state is persisted.
+ * inbound: transform state coming from redux on its way to being serialized and stored
  * @param slice
  * @param key
  */
-const beforePersist: TransformInbound<
+const fromReduxStore: TransformInbound<
   ValuesType<DataStore>,
   ValuesType<LocalStorage>,
   LocalStorage
@@ -51,11 +53,12 @@ const beforePersist: TransformInbound<
   }
 };
 /**
- * Called right before state is rehydrated
+ * Called right before state is rehydrated.
+ * outbound: transform state coming from storage, on its way to be rehydrated into redux
  * @param slice
  * @param key
  */
-const beforeRehydrate: TransformOutbound<
+const fromPersistenceLayer: TransformOutbound<
   ValuesType<LocalStorage>,
   ValuesType<DataStore>,
   DataStore
@@ -76,7 +79,7 @@ const beforeRehydrate: TransformOutbound<
   }
 };
 
-const transform = createTransform(beforePersist, beforeRehydrate);
+const transform = createTransform(fromReduxStore, fromPersistenceLayer);
 
 /**
  * Custom State Reconciler.
@@ -114,7 +117,7 @@ const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   }
 };
 
-const APP_PERSIST_CONFIG = {
+const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,

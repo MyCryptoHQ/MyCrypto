@@ -39,7 +39,7 @@ export interface LocalStorage {
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
   readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
-  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, Contact>;
+  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, ExtendedContact>;
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
   readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
