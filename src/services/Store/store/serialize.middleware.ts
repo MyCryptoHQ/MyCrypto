@@ -18,28 +18,28 @@ export const serializeLegacyMiddleware: Middleware<TObject, any, Dispatch<Action
   switch (action.type) {
     /** Transform bigish values to string */
     case createAccount.type:
-    case updateAccount.type:
+    case updateAccount.type: {
       next({ type: action.type, payload: serializeAccount(action.payload) });
       break;
+    }
     // Payload is an array of accounts
     case createAccounts.type:
-    case updateAccounts.type:
+    case updateAccounts.type: {
       next({
         type: action.type,
         payload: map(serializeAccount, action.payload)
       });
       break;
+    }
     /** Transform date formats to string */
     case createNotification.type:
-    case updateNotification.type:
-      {
-        console.log(action.payload);
-        next({
-          type: action.type,
-          payload: serializeNotification(action.payload)
-        });
-      }
+    case updateNotification.type: {
+      next({
+        type: action.type,
+        payload: serializeNotification(action.payload)
+      });
       break;
+    }
     default:
       next(action);
   }

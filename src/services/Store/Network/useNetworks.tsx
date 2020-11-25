@@ -14,7 +14,7 @@ import { NetworkUtils } from './utils';
 export interface INetworkContext {
   networks: Network[];
   addNetwork(item: Network): void;
-  updateNetwork(id: NetworkId, item: Network): void;
+  updateNetwork(item: Network): void;
   getNetworkById(networkId: NetworkId): Network;
   getNetworkByChainId(chainId: number): Network | undefined;
   getNetworkNodes(networkId: NetworkId): NodeOptions[];
@@ -30,7 +30,7 @@ function useNetworks() {
   const dispatch = useDispatch();
 
   const addNetwork = (network: Network) => dispatch(createNetwork(network));
-  const updateNetwork = (id: NetworkId, item: Network) => dispatch(updateNetworkRedux(item));
+  const updateNetwork = (item: Network) => dispatch(updateNetworkRedux(item));
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
     if (foundNetwork) {
@@ -61,7 +61,7 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToAdd.id, n);
+    updateNetwork(n);
     EthersJS.updateEthersInstance(n);
   };
 
@@ -79,7 +79,7 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToEdit.id, networkUpdate);
+    updateNetwork(networkUpdate);
     EthersJS.updateEthersInstance(networkUpdate);
   };
   const deleteNode = (nodeName: string, network: Network | NetworkId) => {
@@ -111,7 +111,7 @@ function useNetworks() {
       selectedNode: newSelectedNode
     };
 
-    updateNetwork(networkToEdit.id, networkUpdate);
+    updateNetwork(networkUpdate);
     EthersJS.updateEthersInstance(networkUpdate);
   };
   const setNetworkSelectedNode = (networkId: NetworkId, selectedNode: string) => {
@@ -123,7 +123,7 @@ function useNetworks() {
 
     const network = { ...foundNetwork, selectedNode };
 
-    updateNetwork(networkId, network);
+    updateNetwork(network);
     EthersJS.updateEthersInstance(network);
   };
   const isNodeNameAvailable = (
