@@ -28,10 +28,10 @@ const arrayToObj = (key: string | TUuid | NetworkId) => (arr: any[]) => indexBy(
  * @param slice
  * @param key
  */
-const beforePersist: TransformOutbound<
+const beforePersist: TransformInbound<
   ValuesType<DataStore>,
   ValuesType<LocalStorage>,
-  DataStore
+  LocalStorage
 > = (slice, key) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
@@ -55,7 +55,7 @@ const beforePersist: TransformOutbound<
  * @param slice
  * @param key
  */
-const beforeRehydrate: TransformInbound<
+const beforeRehydrate: TransformOutbound<
   ValuesType<LocalStorage>,
   ValuesType<DataStore>,
   DataStore
