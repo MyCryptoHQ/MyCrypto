@@ -3,13 +3,11 @@ import { getByText } from '@testing-library/testcafe';
 import AddAccountPage from './addaccount-page.po';
 import DashboardPage from './dashboard-page.po';
 import {
-  FIXTURE_MYC_STORAGE_KEY,
   FIXTURE_VIEW_ONLY_ADDRESS,
   FIXTURE_VIEW_ONLY_TOKENS,
   FIXTURE_WEB3_ADDRESS,
   PAGES
 } from './fixtures';
-import { clearLocalStorage } from './localstorage-utils';
 import { findByTKey } from './translation-utils';
 
 const addAccountPage = new AddAccountPage();
@@ -27,7 +25,6 @@ test('Should show wallet add UI', async (t) => {
 
 // Add Account - View Only
 test('Should be able to add a view only address', async () => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await addAccountPage.addViewOnly();
   await dashboardPage.waitPageLoaded();
 
@@ -39,7 +36,6 @@ test('Should be able to add a view only address', async () => {
 
 // Add Account - Web3
 test('Should be able to add a web3 address', async () => {
-  await clearLocalStorage(FIXTURE_MYC_STORAGE_KEY);
   await addAccountPage.addWeb3();
   await dashboardPage.waitPageLoaded();
 
