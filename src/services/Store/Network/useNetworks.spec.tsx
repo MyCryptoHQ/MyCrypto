@@ -36,7 +36,7 @@ describe('useNetworks', () => {
   it('updateNetwork() calls model.update', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNetworks({ networks: [] });
-    result.current.updateNetwork(fNetworks[0].id, fNetworks[0]);
+    result.current.updateNetwork(fNetworks[0]);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fNetworks[0]));
   });
 

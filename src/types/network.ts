@@ -28,8 +28,6 @@ export interface Network {
   color: string | undefined;
   blockExplorer: ExplorerConfig;
   tokenExplorer?: ExplorerConfig;
-  assets: TUuid[];
-  contracts: TUuid[];
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;

@@ -1,5 +1,4 @@
 import { Reducer } from '@reduxjs/toolkit';
-import { indexBy } from 'ramda';
 import {
   createTransform,
   FLUSH,
@@ -14,15 +13,13 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { ValuesType } from 'utility-types';
 
-import { DataStore, LocalStorage, LSKeys } from '@types';
-import { flatten, groupBy, pipe, prop, values } from '@vendor';
+import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
+import { flatten, indexBy, pipe, prop, values } from '@vendor';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
-// type ArrayToObj = <K extends string | number>(
-//   k: K
-// ) => <V extends any[]>(arr: V) => Record<K, ValuesType<V>>;
-const arrayToObj = (key) => (arr) => arr.reduce((acc, curr) => ({ ...acc, [curr[key]]: curr }), {});
+const arrayToObj = (key: string | TUuid | NetworkId) => (arr: string | any[]) =>
+  indexBy(prop(key), arr);
 
 /**
  * Called right before state is persisted.
@@ -71,32 +68,42 @@ const beforeRehydrate = (slice: ValuesType<LocalStorage>, key: string) => {
 
 const transform = createTransform(beforePersist, beforeRehydrate);
 
+const customReconciler: typeof autoMergeLevel2 = (
+  inboundState,
+  originalState,
+  reducedState,
+  config
+) => {
+  // Merge 2 arrays by creating an object and converting back to array.
+  const mergeNetworks = pipe(arrayToObj('id'), values, flatten);
+  const mergeContracts = pipe(arrayToObj('uuid'), values, flatten);
+
+  const mergedInboundState = {
+    ...inboundState,
+    [LSKeys.CONTRACTS]: mergeContracts([...inboundState.contracts, ...originalState.contracts]),
+    [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
+  };
+
+  return autoMergeLevel2(mergedInboundState, originalState, reducedState, config);
+};
+
+const customDeserializer = (slice) => {
+  if (typeof slice === 'string') {
+    if (slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '') return slice;
+    return JSON.parse(slice);
+  } else {
+    return slice;
+  }
+};
+
 const APP_PERSIST_CONFIG = {
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
   blacklist: [],
-  stateReconciler: (inboundState, originalState, ...rest) => {
-    const mergeNetworks = pipe(indexBy(prop('id')), values, flatten);
-    const mergeContracts = pipe(indexBy(prop('uuid')), values, flatten);
-
-    const mergedInboundState = {
-      ...inboundState,
-      [LSKeys.CONTRACTS]: mergeContracts([...inboundState.contracts, ...originalState.contracts]),
-      [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
-    };
-
-    return autoMergeLevel2(mergedInboundState, originalState, ...rest);
-  },
+  stateReconciler: customReconciler,
   transforms: [transform],
-  deserialize: (slice) => {
-    if (typeof slice === 'string') {
-      if (slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '') return slice;
-      return JSON.parse(slice);
-    } else {
-      return slice;
-    }
-  },
+  deserialize: customDeserializer,
   debug: true
 };
 
