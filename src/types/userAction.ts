@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ActionButtonProps, TIcon, TweetButtonProps } from '@components';
-import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
+import { UniClaimResult } from '@services';
 
 import { StoreAccount } from './account';
 import { StoreAsset } from './asset';
