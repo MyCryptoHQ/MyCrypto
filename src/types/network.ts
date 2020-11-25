@@ -31,7 +31,6 @@ export interface Network {
     name: string;
     address(address: string): string;
   };
-  assets: TUuid[];
   contracts: TUuid[];
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
@@ -43,7 +42,6 @@ export interface Network {
 
 interface NetworkPropsMissingInLegacy {
   nodes: NodeOptions[];
-  assets: string[];
   baseAsset: TUuid;
   baseUnit: TTicker;
 }
