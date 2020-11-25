@@ -7,7 +7,10 @@ import {
   persistReducer,
   PURGE,
   REGISTER,
-  REHYDRATE
+  REHYDRATE,
+  StateReconciler,
+  TransformInbound,
+  TransformOutbound
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
@@ -18,15 +21,18 @@ import { flatten, indexBy, pipe, prop, values } from '@vendor';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
-const arrayToObj = (key: string | TUuid | NetworkId) => (arr: string | any[]) =>
-  indexBy(prop(key), arr);
+const arrayToObj = (key: string | TUuid | NetworkId) => (arr: any[]) => indexBy(prop(key), arr);
 
 /**
  * Called right before state is persisted.
  * @param slice
  * @param key
  */
-const beforePersist = (slice: ValuesType<DataStore>, key: string) => {
+const beforePersist: TransformOutbound<
+  ValuesType<DataStore>,
+  ValuesType<LocalStorage>,
+  DataStore
+> = (slice, key) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
@@ -49,15 +55,19 @@ const beforePersist = (slice: ValuesType<DataStore>, key: string) => {
  * @param slice
  * @param key
  */
-const beforeRehydrate = (slice: ValuesType<LocalStorage>, key: string) => {
+const beforeRehydrate: TransformInbound<
+  ValuesType<LocalStorage>,
+  ValuesType<DataStore>,
+  DataStore
+> = (slice, key) => {
   switch (key) {
     case LSKeys.ACCOUNTS:
     case LSKeys.ADDRESS_BOOK:
-    case LSKeys.NETWORKS:
     case LSKeys.CONTRACTS:
     case LSKeys.ASSETS:
     case LSKeys.NOTIFICATIONS:
     case LSKeys.USER_ACTIONS:
+    case LSKeys.NETWORKS:
       return Object.values(slice);
     case LSKeys.SETTINGS:
     case LSKeys.PASSWORD:
@@ -68,12 +78,16 @@ const beforeRehydrate = (slice: ValuesType<LocalStorage>, key: string) => {
 
 const transform = createTransform(beforePersist, beforeRehydrate);
 
-const customReconciler: typeof autoMergeLevel2 = (
-  inboundState,
-  originalState,
-  reducedState,
-  config
-) => {
+/**
+ * Custom State Reconciler.
+ * inboundState is already passed through beforeRehydrate so it is a valid
+ * DataStore
+ * @param inboundState
+ * @param originalState
+ * @param reducedState
+ * @param config
+ */
+const customReconciler: StateReconciler<DataStore> = (inboundState, originalState, ...rest) => {
   // Merge 2 arrays by creating an object and converting back to array.
   const mergeNetworks = pipe(arrayToObj('id'), values, flatten);
   const mergeContracts = pipe(arrayToObj('uuid'), values, flatten);
@@ -84,10 +98,14 @@ const customReconciler: typeof autoMergeLevel2 = (
     [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
   };
 
-  return autoMergeLevel2(mergedInboundState, originalState, reducedState, config);
+  return autoMergeLevel2(mergedInboundState, originalState, ...rest);
 };
 
-const customDeserializer = (slice) => {
+/**
+ * Called when retrieving data from persisted state and before `beforeRehydrate`
+ * @param slice
+ */
+const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   if (typeof slice === 'string') {
     if (slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '') return slice;
     return JSON.parse(slice);
@@ -108,4 +126,4 @@ const APP_PERSIST_CONFIG = {
 };
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
-  persistReducer<DataStore>(APP_PERSIST_CONFIG, reducer);
+  persistReducer(APP_PERSIST_CONFIG, reducer);
