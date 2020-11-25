@@ -5,12 +5,10 @@ import { getAppState, initialLegacyState, useDispatch, useSelector } from '@stor
 import { getCurrentDBConfig, getEncryptedData } from '@database';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
 import { noOp } from '@utils';
-import { isEmpty } from '@vendor';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
 import { ActionY, ActionZ, EncryptedDbActionPayload, encryptedDbReducer } from './encrypt.reducer';
-import { deMarshallState, marshallState } from './utils';
 
 export interface DataCacheManager extends DataStore {
   createActions(k: DSKeys): ReturnType<typeof ActionFactory>;
@@ -35,34 +33,11 @@ export const DataProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const legacyState = useSelector(getAppState);
 
-  /*
-   *  Temp step to sync redux state with initial data eg. contracts, networks, nodes etc.
-   *  Should really be done inside each reducer slice.
-   **/
-  useEffect(() => {
-    // @todo: Redux remove after setting networks and contracts initial state.
-    // simple hack to load them on the first visit. Once it is persisted in LS
-    // redux-persist will rehydrate the state with the correct values.
-    const initialState = marshallState(deMarshallState(initialLegacyState));
-    if (isEmpty(legacyState.networks)) {
-      dispatch({
-        type: 'ADD_ENTRY',
-        payload: { data: initialState.networks, model: LSKeys.NETWORKS }
-      });
-    }
-    if (isEmpty(legacyState.networks)) {
-      dispatch({
-        type: 'ADD_ENTRY',
-        payload: { data: initialState.contracts, model: LSKeys.CONTRACTS }
-      });
-    }
-  }, []);
-
-  const resetAppDb = (newDb = deMarshallState(initialLegacyState)) => {
+  const resetAppDb = (newDb = initialLegacyState) => {
     // resetDb(newDb); // Reset the persistence layer
     dispatch({
       type: 'RESET',
-      payload: { data: marshallState(newDb) }
+      payload: { data: newDb }
     }); // Reset the Context
   };
 

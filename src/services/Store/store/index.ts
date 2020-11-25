@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
 export { getAppState, getPassword } from './reducer';
-export { initialState as initialLegacyState } from './legacy.reducer';
+export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
 export { createNotification, updateNotification } from './notification.slice';
@@ -13,3 +13,10 @@ export {
   updateAccount,
   updateAccounts
 } from './account.slice';
+export {
+  createNetworks,
+  createNetwork,
+  destroyNetwork,
+  updateNetwork,
+  updateNetworks
+} from './network.slice';

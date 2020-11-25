@@ -31,8 +31,10 @@ const postSerialize = (slice: ValuesType<DataStore>, key: string) => {
     case LSKeys.NOTIFICATIONS:
     case LSKeys.USER_ACTIONS:
       return arrayToObj('uuid')(slice);
-    case LSKeys.NETWORKS:
-      return arrayToObj('id')(slice);
+    // case LSKeys.NETWORKS: {
+    //   console.log('Network postSerialize', slice, key);
+    //   return arrayToObj('id')(slice);
+    // }
     case LSKeys.SETTINGS:
     case LSKeys.PASSWORD:
     default:
