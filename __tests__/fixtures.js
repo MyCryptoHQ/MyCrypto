@@ -53,7 +53,6 @@ const FIXTURE_WEB3_ADDRESS = '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3 ';
 const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
 
 const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
-  _persist: { version: -1, rehydrated: false },
   version: 'v1.0.0',
   accounts: {
     '1782c060-8bc0-55d6-8078-ff255b4aae90': {
