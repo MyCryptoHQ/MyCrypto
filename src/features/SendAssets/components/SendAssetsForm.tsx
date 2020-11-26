@@ -643,7 +643,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
             }
             fiatAsset={{
               fiat: getFiat(settings).ticker,
-              rate: (getAssetRate(baseAsset || undefined) || 0).toString(),
+              rate: (getAssetRate(baseAsset) || 0).toString(),
               symbol: getFiat(settings).symbol
             }}
           />
@@ -658,8 +658,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
         )}
         {getTxFeeValidation(
           values.amount,
-          getAssetRateInCurrency(baseAsset || undefined, Fiats.USD.ticker) || 0,
-          getAssetRateInCurrency(baseAsset || undefined, getFiat(settings).ticker) || 0,
+          getAssetRateInCurrency(baseAsset, Fiats.USD.ticker) || 0,
+          getAssetRateInCurrency(baseAsset, getFiat(settings).ticker) || 0,
           isERC20Asset(values.asset),
           values.gasLimitField.toString(),
           values.advancedTransaction
