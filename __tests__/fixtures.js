@@ -68,7 +68,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
           networkId: 'Goerli',
           type: 'base',
           isCustom: false,
-          uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
+          uuid: 'ac3478d6-9a3c-51fa-a2e6-0f5c3696165a',
           balance: { _hex: '0x3e73362871420000' },
           mtime: 1581530607024
         }
