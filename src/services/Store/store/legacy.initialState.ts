@@ -1,10 +1,10 @@
-import { defaultContacts, defaultSettings } from '@database/data';
+import { defaultContacts, defaultSettings, getCurrentDBConfig } from '@database';
 import { LSKeys, TUuid } from '@types';
 
 import { deMarshallState, marshallState } from '../DataManager/utils';
 
 export const emptyState = {
-  version: 'v1.1.0',
+  version: getCurrentDBConfig().version,
   [LSKeys.ACCOUNTS]: [],
   [LSKeys.ADDRESS_BOOK]: Object.entries(defaultContacts).map(([k, v]) => ({
     ...v,
