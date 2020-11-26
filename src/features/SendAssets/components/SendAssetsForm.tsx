@@ -40,6 +40,7 @@ import {
   isBurnAddress,
   isValidETHAddress,
   isValidPositiveNumber,
+  TxFeeResponseType,
   validateTxFee
 } from '@services/EthService/validators';
 import {
@@ -107,33 +108,25 @@ const NoMarginCheckbox = styled(Checkbox)`
   margin-bottom: 0;
 `;
 
-const getTxFeeValidation = (
-  amount: string,
-  assetRateUSD: number,
-  assetRateFiat: number,
-  isERC20: boolean,
-  gasLimit: string,
-  gasPrice: string,
-  fiat: Fiat,
-  ethAssetRate?: number
-) => {
-  const { type, amount: $amount, fee: $fee } = validateTxFee(
-    amount,
-    assetRateUSD,
-    assetRateFiat,
-    isERC20,
-    gasLimit,
-    gasPrice,
-    ethAssetRate
-  );
+const getTxFeeValidation = ({
+  amount = '0',
+  fiat,
+  fee,
+  type
+}: {
+  fiat: Fiat;
+  amount?: string;
+  fee?: string;
+  type: TxFeeResponseType;
+}) => {
   switch (type) {
     case 'Warning':
       return (
         <InlineMessage
           type={InlineMessageType.WARNING}
           value={translateRaw('WARNING_TRANSACTION_FEE', {
-            $amount: `${fiat.symbol}${$amount}`,
-            $fee: `${fiat.symbol}${$fee}`
+            $amount: `${fiat.symbol}${amount}`,
+            $fee: `${fiat.symbol}${fee}`
           })}
         />
       );
@@ -141,14 +134,14 @@ const getTxFeeValidation = (
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `${fiat.symbol}${$fee}` })}
+          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `${fiat.symbol}${fee}` })}
         />
       );
     case 'Error-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${$fee}` })}
+          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${fee}` })}
         />
       );
     case 'Error-Very-High-Tx-Fee':
@@ -156,7 +149,7 @@ const getTxFeeValidation = (
         <InlineMessage
           type={InlineMessageType.ERROR}
           value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
-            $fee: `${fiat.symbol}${$fee}`
+            $fee: `${fiat.symbol}${fee}`
           })}
         />
       );
@@ -554,6 +547,16 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   const walletConfig = getWalletConfig(values.account.wallet);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
+  const { type, amount, fee } = validateTxFee(
+    values.amount,
+    getAssetRateInCurrency(baseAsset, Fiats.USD.ticker),
+    getAssetRateInCurrency(baseAsset, getFiat(settings).ticker),
+    isERC20Asset(values.asset),
+    values.gasLimitField.toString(),
+    values.advancedTransaction ? values.gasPriceField.toString() : values.gasPriceSlider.toString(),
+    getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
+  );
+
   return (
     <div className="SendAssetsForm">
       <QueryWarning />
@@ -656,18 +659,12 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
             onChange={(g) => setFieldValue('gasPriceSlider', g)}
           />
         )}
-        {getTxFeeValidation(
-          values.amount,
-          getAssetRateInCurrency(baseAsset, Fiats.USD.ticker) || 0,
-          getAssetRateInCurrency(baseAsset, getFiat(settings).ticker) || 0,
-          isERC20Asset(values.asset),
-          values.gasLimitField.toString(),
-          values.advancedTransaction
-            ? values.gasPriceField.toString()
-            : values.gasPriceSlider.toString(),
-          getFiat(settings),
-          getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
-        )}
+        {getTxFeeValidation({
+          type,
+          amount,
+          fee,
+          fiat: getFiat(settings)
+        })}
       </fieldset>
       {/* Advanced Options */}
       <div className="SendAssetsForm-advancedOptions">
