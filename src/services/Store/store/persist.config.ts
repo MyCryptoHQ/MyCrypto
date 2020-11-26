@@ -102,11 +102,12 @@ const transform: Transform<
 const customReconciler: StateReconciler<DataStore> = (inboundState, originalState, ...rest) => {
   // Merge 2 arrays by creating an object and converting back to array.
   const mergeNetworks = pipe(arrayToObj('id'), values, flatten);
-  const mergeContracts = pipe(arrayToObj('uuid'), values, flatten);
+  const mergeByUuid = pipe(arrayToObj('uuid'), values, flatten);
 
   const mergedInboundState = {
     ...inboundState,
-    [LSKeys.CONTRACTS]: mergeContracts([...inboundState.contracts, ...originalState.contracts]),
+    [LSKeys.ASSETS]: mergeByUuid([...inboundState.assets, ...originalState.assets]),
+    [LSKeys.CONTRACTS]: mergeByUuid([...inboundState.contracts, ...originalState.contracts]),
     [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
   };
 
