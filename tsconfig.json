@@ -13,7 +13,7 @@
       "@fixtures": ["../jest_config/__fixtures__"],
       "@assets/*": ["assets/*"],
       "@store": ["services/Store/store"],
-      "@store*": ["services/Store/store/*"],
+      "@store/*": ["services/Store/store/*"],
       "@*": ["./*"]
     },
     "lib": ["esnext", "dom"],
