@@ -61,7 +61,8 @@ test('Complete SendFlow', async (t) => {
   // Expect to reach Tx Receipt
   await t
     .expect(Selector('.TransactionReceipt-back').exists)
-    .ok({ timeout: FIXTURES_CONST.TIMEOUT });
+    // We are waiting for the Goerli node to respond. Increase timeout incase of network failures
+    .ok({ timeout: FIXTURES_CONST.TIMEOUT * 2 });
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT)).ok();
 });
