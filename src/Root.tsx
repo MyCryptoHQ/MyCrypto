@@ -8,6 +8,7 @@ import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
+import { AppLoading } from '@components';
 import { DevToolsManager } from '@features';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
@@ -27,24 +28,29 @@ const FullScreen = styled.div`
 
 const { store, persistor } = createStore();
 
-const RootClass = () => {
+const RootComponent = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppProviders>
+          <FullHeight>
+            <DevToolsManager />
+            <FullScreen id="ModalContainer">
+              <AppRoutes />
+            </FullScreen>
+          </FullHeight>
+        </AppProviders>
+      </Router>
+    </ThemeProvider>
+  );
+};
 
+const RootClass = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <Router>
-            <AppProviders>
-              <FullHeight>
-                <DevToolsManager />
-                <FullScreen id="ModalContainer">
-                  <AppRoutes />
-                </FullScreen>
-              </FullHeight>
-            </AppProviders>
-          </Router>
-        </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        {(isHydrated: boolean) => (isHydrated ? <RootComponent /> : <AppLoading />)}
       </PersistGate>
     </Provider>
   );
