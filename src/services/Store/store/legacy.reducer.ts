@@ -1,6 +1,6 @@
 import { Reducer } from '@reduxjs/toolkit';
 
-import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, Network, TUuid } from '@types';
+import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, TUuid } from '@types';
 import { eqBy, prop, symmetricDifferenceWith, unionWith } from '@vendor';
 
 import accountSlice, {
@@ -68,7 +68,7 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
     }
     case ActionT.DELETE_ITEM: {
       const { model, data } = payload;
-      if (model === LSKeys.SETTINGS || model === LSKeys.NETWORKS) {
+      if (model === LSKeys.SETTINGS) {
         throw new Error(`[AppReducer: cannot call DELETE_ITEM for ${model}`);
       }
 
@@ -91,17 +91,6 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
         [model]: unionWith(predicate, [data], state[model] as any)
       };
     }
-    case ActionT.UPDATE_NETWORK: {
-      const { data } = payload;
-      const predicate = eqBy(prop('id'));
-      const networks = state.networks;
-      return {
-        ...state,
-        // Find network in array by id and replace.
-        [LSKeys.NETWORKS]: unionWith(predicate, [data as Network], networks)
-      };
-    }
-
     case ActionT.ADD_ENTRY: {
       const { model, data } = payload;
       return {

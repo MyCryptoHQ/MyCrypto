@@ -116,6 +116,8 @@ const customReconciler: StateReconciler<DataStore> = (inboundState, originalStat
 
 /**
  * Called when retrieving data from persisted state and before `beforeRehydrate`
+ * Allows migration between legacy state objects and redux-persist schema which
+ * stringifies the persisted layer.
  * @param slice
  */
 const customDeserializer = (slice: ValuesType<LocalStorage>) => {
