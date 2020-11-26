@@ -6,6 +6,7 @@ import { ANALYTICS_CATEGORIES } from '@services';
 import { DataContext } from '@services/Store';
 import { ExtendedNotification } from '@types';
 import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
+import { last } from '@vendor';
 
 import { notificationsConfigs } from './constants';
 
@@ -29,7 +30,7 @@ function getCurrent(notifications: ExtendedNotification[]) {
           : true)
       );
     });
-  return visible[visible.length - 1];
+  return last(visible);
 }
 
 function isValidNotification(n: ExtendedNotification) {
@@ -48,6 +49,7 @@ function isValidNotification(n: ExtendedNotification) {
 
 export function useNotifications() {
   const { notifications } = useContext(DataContext);
+
   const currentNotification = getCurrent(notifications);
   const dispatch = useDispatch();
 
