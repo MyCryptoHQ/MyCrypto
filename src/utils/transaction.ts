@@ -159,10 +159,7 @@ export const makeTxConfigFromSignedTx = (
 ): ITxConfig => {
   const decodedTx = decodeTransaction(signedTx);
   const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
-  const contractAsset = getAssetByContractAndNetwork(
-    decodedTx.to || undefined,
-    networkDetected
-  )(assets);
+  const contractAsset = getAssetByContractAndNetwork(decodedTx.to, networkDetected)(assets);
   const baseAsset = getBaseAssetByNetwork({
     network: networkDetected || ({} as Network),
     assets
@@ -201,7 +198,7 @@ export const makeTxConfigFromTxResponse = (
   network: Network,
   accounts: StoreAccount[]
 ): ITxConfig => {
-  const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, network)(assets);
+  const contractAsset = getAssetByContractAndNetwork(decodedTx.to, network)(assets);
   const baseAsset = getBaseAssetByNetwork({
     network,
     assets
@@ -249,7 +246,7 @@ export const makeTxConfigFromTxReceipt = (
   network: Network,
   accounts: StoreAccount[]
 ): ITxConfig => {
-  const contractAsset = getAssetByContractAndNetwork(txReceipt.to || undefined, network)(assets);
+  const contractAsset = getAssetByContractAndNetwork(txReceipt.to, network)(assets);
   const baseAsset = getBaseAssetByNetwork({
     network,
     assets
