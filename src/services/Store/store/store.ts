@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { updateAccounts } from '@store';
 import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
@@ -20,9 +21,14 @@ export default function createStore() {
       ...getDefaultMiddleware({
         thunk: false, // MYC uses sagas
         serializableCheck: {
-          // ignore redux-persist actions during serialize check.
-          // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
-          ignoredActions: [...REDUX_PERSIST_ACTION_TYPES]
+          ignoredActions: [
+            // ignore redux-persist actions during serialize check.
+            // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
+            ...REDUX_PERSIST_ACTION_TYPES,
+            // ignore updateAccounts to avoid errors for transaction gasPrice, gasLimit, value etc
+            // @todo: Redux solve once we have selectors to deserialize.
+            updateAccounts.type
+          ]
         }
       }),
       sagaMiddleware,
