@@ -1,24 +1,27 @@
 import { getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 
+import { injectLS } from './clientScripts';
 import { setupEthereumMock } from './ethereum-mock';
 import { setFeatureFlag } from './featureflag-utils';
-import { ENV, FIXTURE_SEND_AMOUNT, FIXTURE_SEND_CONTACT, FIXTURES_CONST, PAGES } from './fixtures';
-import { web3Account } from './roles';
+import {
+  ENV,
+  FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
+  FIXTURE_SEND_AMOUNT,
+  FIXTURE_SEND_CONTACT,
+  FIXTURES_CONST,
+  PAGES
+} from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
 
 const sendAssetsPage = new SendAssetsPage();
 
 fixture('Send')
-  .beforeEach(async (t) => {
-    await t.useRole(web3Account);
-  })
+  .clientScripts({ content: injectLS(FIXTURE_LOCALSTORAGE_WITH_ONE_ACC) })
   .page(PAGES.DASHBOARD);
 
 test('Complete SendFlow', async (t) => {
-  await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 5);
-
   await t.click(getByText(findByTKey('SEND_ASSETS')));
 
   await sendAssetsPage.waitForPage(PAGES.SEND);
@@ -41,6 +44,8 @@ test('Complete SendFlow', async (t) => {
   // Close the PTX modal and reset flag.
   await t.click(Selector('.close-icon'));
   await setFeatureFlag('PROTECT_TX', false);
+
+  await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 5);
 
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
