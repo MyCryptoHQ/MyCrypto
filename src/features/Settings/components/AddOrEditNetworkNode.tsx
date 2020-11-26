@@ -27,7 +27,6 @@ import {
   NodeOptions,
   NodeType,
   TTicker,
-  TUuid,
   WalletId
 } from '@types';
 import { generateAssetUUID, makeExplorer } from '@utils';
@@ -156,7 +155,7 @@ interface Props {
   isAddingCustomNetwork: boolean;
   onComplete(): void;
   addNetwork(network: Network): void;
-  addAsset(asset: ExtendedAsset, id: TUuid): void;
+  addAsset(asset: ExtendedAsset): void;
   addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
   isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
   getNetworkById(networkId: NetworkId): Network;
@@ -337,7 +336,7 @@ export default function AddOrEditNetworkNode({
                 networkId: network.id,
                 isCustom: true
               };
-              addAsset(baseAsset, network.baseAsset);
+              addAsset(baseAsset);
               addNetwork(network);
             } else if (editNode) {
               updateNode(node, selectedNetworkId, editNode.name);

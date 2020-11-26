@@ -10,6 +10,13 @@ import accountSlice, {
   updateAccount,
   updateAccounts
 } from './account.slice';
+import assetSlice, {
+  createAsset,
+  createAssets,
+  destroyAsset,
+  updateAsset,
+  updateAssets
+} from './asset.slice';
 import { initialLegacyState } from './legacy.initialState';
 import networkSlice, {
   createNetwork,
@@ -131,6 +138,16 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
       return {
         ...state,
         [LSKeys.ACCOUNTS]: accountSlice.reducer(state.accounts, action)
+      };
+    }
+    case createAsset.type:
+    case createAssets.type:
+    case updateAsset.type:
+    case updateAssets.type:
+    case destroyAsset.type: {
+      return {
+        ...state,
+        [LSKeys.ASSETS]: assetSlice.reducer(state.assets, action)
       };
     }
 

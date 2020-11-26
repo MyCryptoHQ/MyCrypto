@@ -136,7 +136,7 @@ function RenderNetworkNodes() {
     updateNode,
     deleteNode
   } = useNetworks();
-  const { createAssetWithID } = useAssets();
+  const { createAsset } = useAssets();
   const { contacts } = useContacts();
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
@@ -162,7 +162,7 @@ function RenderNetworkNodes() {
               updateNode={updateNode}
               deleteNode={deleteNode}
               addNetwork={addNetwork}
-              addAsset={createAssetWithID}
+              addAsset={createAsset}
               isAddingCustomNetwork={isAddingNetwork}
             />
           </>
