@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 
+import { createAsset as createAssetRedux, updateAssets, useDispatch } from '@store';
+
 import { EXCLUDED_ASSETS } from '@config';
-import { ExtendedAsset, LSKeys, TUuid } from '@types';
+import { ExtendedAsset, TUuid } from '@types';
 import { map, mergeLeft, pickBy, pipe, reduce, toPairs } from '@vendor';
 
 import { DataContext } from '../DataManager';
@@ -9,17 +11,16 @@ import { getAssetByUUID as getAssetByUUIDFunc } from './helpers';
 
 export interface IAssetContext {
   assets: ExtendedAsset[];
-  createAssetWithID(assetData: ExtendedAsset, id: TUuid): void;
+  createAsset(assetData: ExtendedAsset, id: TUuid): void;
   getAssetByUUID(uuid: TUuid): ExtendedAsset | undefined;
   addAssetsFromAPI(newAssets: Record<TUuid, ExtendedAsset>): void;
 }
 
 function useAssets() {
-  const { createActions, assets } = useContext(DataContext);
-  const model = createActions(LSKeys.ASSETS);
+  const { assets } = useContext(DataContext);
+  const dispatch = useDispatch();
 
-  const createAssetWithID = (assetData: ExtendedAsset, id: TUuid) =>
-    model.createWithID(assetData, id);
+  const createAsset = (asset: ExtendedAsset) => dispatch(createAssetRedux(asset));
 
   const getAssetByUUID = (uuid: TUuid) => getAssetByUUIDFunc(assets)(uuid);
 
@@ -39,10 +40,10 @@ function useAssets() {
       toPairs, // Equivalent of Object.entries -> [k, v]
       map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset)) // We Need to add the uuid key to the api asset.
     );
-    model.updateAll(mergeAssets(assets));
+    dispatch(updateAssets(mergeAssets(assets)));
   };
 
-  return { assets, createAssetWithID, getAssetByUUID, addAssetsFromAPI };
+  return { assets, createAsset, getAssetByUUID, addAssetsFromAPI };
 }
 
 export default useAssets;

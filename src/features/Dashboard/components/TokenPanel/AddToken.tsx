@@ -48,7 +48,7 @@ export function AddToken(props: Props) {
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { createAssetWithID } = useAssets();
+  const { createAsset } = useAssets();
   const { getNetworkById } = useNetworks();
 
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
@@ -103,7 +103,7 @@ export function AddToken(props: Props) {
       }
     };
 
-    createAssetWithID(newAsset, uuid);
+    createAsset(newAsset);
     scanTokens(newAsset);
     setShowAddToken(false);
     setIsSubmitting(false);
