@@ -1,6 +1,7 @@
 import { SETTINGS_FILENAME } from '@config';
-import { getCurrentDBConfig, getExportFileName } from '@database';
 import { formatDate } from '@utils';
+
+import { getCurrentDBConfig, getExportFileName } from './versions';
 
 describe('getExportFileName', () => {
   const dbConfig = getCurrentDBConfig();
