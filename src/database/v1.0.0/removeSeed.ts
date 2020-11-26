@@ -12,7 +12,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress } from '@utils';
+import { isSameAddress } from '@utils/isSameAddress';
 
 import { add, toArray, toObject } from '../helpers';
 import { DevAccount, devAccounts, devContacts } from '../seed';
