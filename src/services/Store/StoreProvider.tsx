@@ -472,7 +472,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) =>
       updateAccountAssets(account, asset ? [...assets, asset] : assets),
     scanTokens: async (asset?: ExtendedAsset) => {
-      updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
+      await updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
     },
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));
