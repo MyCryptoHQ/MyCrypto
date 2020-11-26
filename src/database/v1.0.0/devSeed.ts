@@ -9,7 +9,7 @@ import {
   NetworkId,
   TUuid
 } from '@types';
-import { generateUUID } from '@utils';
+import { generateUUID } from '@utils/generateUUID';
 import { concat, keys, map, mergeRight, pipe, reduce } from '@vendor';
 
 import { add, toArray, toObject, withUuid } from '../helpers';
