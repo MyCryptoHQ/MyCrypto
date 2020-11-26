@@ -52,35 +52,6 @@ const FIXTURE_WEB3_ADDRESS = '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3 ';
 
 const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
 
-const FIXTURE_LOCALSTORAGE_EMPTY = {
-  version: 'v1.0.0',
-  accounts: {},
-  addressBook: {
-    'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {
-      label: 'MyCrypto Tip Jar',
-      address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-      notes: 'Toss us a coin!',
-      network: 'Ethereum',
-      uuid: 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
-    }
-  },
-  assets: {},
-  contracts: {},
-  networks: {},
-  notifications: {},
-  settings: {
-    fiatCurrency: 'USD',
-    darkMode: false,
-    dashboardAccounts: [],
-    inactivityTimer: 1800000,
-    rates: {},
-    language: 'en'
-  },
-  password: '',
-  networkNodes: { Ethereum: { selectedNode: 'web3' }, Ropsten: { selectedNode: 'web3' } },
-  mtime: 1581530607024
-};
-
 const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
   _persist: { version: -1, rehydrated: false },
   version: 'v1.0.0',
@@ -165,7 +136,6 @@ export {
   FIXTURE_SEND_CONTACT,
   FIXTURE_SEND_ADDRESS,
   FIXTURE_SEND_AMOUNT,
-  FIXTURE_LOCALSTORAGE_EMPTY,
   FIXTURE_LOCALSTORAGE_WITH_ONE_ACC,
   FIXTURE_MYC_STORAGE_KEY,
   FIXTURE_ETHEREUM,
