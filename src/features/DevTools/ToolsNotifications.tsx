@@ -14,55 +14,49 @@ const ToolWrapper = styled.div`
 
 const ToolsNotifications = () => {
   const { displayNotification } = useNotifications();
+  const handleClick: typeof displayNotification = (name, props?) => {
+    displayNotification(name, props);
+  };
+
   return (
     <ToolWrapper>
       <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.walletCreated, {
+        onClick={() =>
+          handleClick(NotificationTemplates.walletCreated, {
             address: 'N3WAddre3ssCreated'
-          });
-        }}
+          })
+        }
       >
         New Wallet Created
-      </button>{' '}
+      </button>
       <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.walletAdded, {
+        onClick={() =>
+          handleClick(NotificationTemplates.walletAdded, {
             address: 'N3WAddr3ssAdd3d'
-          });
-        }}
+          })
+        }
       >
         New Wallet Added
-      </button>{' '}
-      <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.saveSettings);
-        }}
-      >
-        Save Settings
-      </button>{' '}
-      <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.getHardwareWallet);
-        }}
-      >
+      </button>
+      <button onClick={() => handleClick(NotificationTemplates.saveSettings)}>Save Settings</button>{' '}
+      <button onClick={() => handleClick(NotificationTemplates.getHardwareWallet)}>
         Get Hardware Wallet
       </button>
       <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.onboardingPleaseUnderstand, {
+        onClick={() =>
+          handleClick(NotificationTemplates.onboardingPleaseUnderstand, {
             previousNotificationClosedDate: new Date()
-          });
-        }}
+          })
+        }
       >
         Onboarding Please Understand
       </button>
       <button
-        onClick={() => {
-          displayNotification(NotificationTemplates.onboardingResponsible, {
+        onClick={() =>
+          handleClick(NotificationTemplates.onboardingResponsible, {
             firstDashboardVisitDate: new Date()
-          });
-        }}
+          })
+        }
       >
         Onboarding Responsible
       </button>
