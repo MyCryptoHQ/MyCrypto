@@ -52,6 +52,6 @@ describe('useAssets', () => {
     }, {} as Record<any, Asset>);
     result.current.addAssetsFromAPI(assets);
 
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(expect.arrayContaining(fAssets)));
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(assets));
   });
 });
