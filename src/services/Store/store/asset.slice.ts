@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { EXCLUDED_ASSETS } from '@config';
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
-import { findIndex, propEq } from '@vendor';
+import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 
@@ -35,6 +36,20 @@ const slice = createSlice({
         state[idx] = asset;
       });
     },
+    addFromAPI(state, action: PayloadAction<Record<string, ExtendedAsset>>) {
+      const currentAssets = state.reduce(
+        (acc, a: ExtendedAsset) => ({ ...acc, [a.uuid]: a }),
+        {} as Record<string, ExtendedAsset>
+      );
+      const mergeAssets = pipe(
+        (assets: Record<TUuid, ExtendedAsset>) => mergeRight(currentAssets, assets),
+        toPairs,
+        // Asset API returns certain assets we don't want to show in the UI (as their balance is infinity)
+        filter(([uuid, _]) => !EXCLUDED_ASSETS.includes(uuid)),
+        map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset))
+      );
+      return mergeAssets(action.payload);
+    },
     reset() {
       return initialState;
     }
@@ -47,6 +62,7 @@ export const {
   destroy: destroyAsset,
   update: updateAsset,
   updateMany: updateAssets,
+  addFromAPI: addAssetsFromAPI,
   reset: resetAsset
 } = slice.actions;
 

@@ -20,4 +20,11 @@ export {
   updateNetwork,
   updateNetworks
 } from './network.slice';
-export { createAssets, createAsset, destroyAsset, updateAsset, updateAssets } from './asset.slice';
+export {
+  createAssets,
+  createAsset,
+  destroyAsset,
+  updateAsset,
+  updateAssets,
+  addAssetsFromAPI
+} from './asset.slice';
