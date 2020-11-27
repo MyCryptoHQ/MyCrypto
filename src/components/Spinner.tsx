@@ -37,7 +37,14 @@ export const Spinner = ({
   color?: keyof typeof COLORS;
 } & SpaceProps) => {
   return (
-    <Svg viewBox="0 0 50 50" aria-busy="true" color={COLORS[color]} $size={size} {...props}>
+    <Svg
+      data-testid="spinner"
+      viewBox="0 0 50 50"
+      aria-busy="true"
+      color={COLORS[color]}
+      $size={size}
+      {...props}
+    >
       <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5" />
     </Svg>
   );

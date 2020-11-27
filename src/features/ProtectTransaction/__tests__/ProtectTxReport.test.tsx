@@ -16,8 +16,8 @@ const renderComponent = (report: PTXReport) => {
 /* Test components */
 describe('ProtectTxReport', () => {
   test('Can render loading state', () => {
-    const { container } = renderComponent(loadingReport);
-    expect(container.getElementsByClassName('loading')[0]).toBeInTheDocument();
+    const { getByTestId } = renderComponent(loadingReport);
+    expect(getByTestId('spinner')).toBeInTheDocument();
   });
 
   test('Can render unknown state', () => {
