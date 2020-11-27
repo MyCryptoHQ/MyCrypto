@@ -47,28 +47,28 @@ describe('useAccounts', () => {
     expect(result.current.accounts).toEqual(fAccounts);
   });
 
-  it('createAccountWithID() calls model.createWithId', () => {
+  it('createAccountWithID() calls create', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: [] });
     result.current.createAccountWithID('uuid' as TUuid, fAccounts[0]);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload({ ...fAccounts[0], uuid: 'uuid' }));
   });
 
-  it('createMultipleAccountsWithIDs() calls model.updateAll with multiple accounts', () => {
+  it('createMultipleAccountsWithIDs() calls updateAll with multiple accounts', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: [] });
     result.current.createMultipleAccountsWithIDs(fAccounts);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts));
   });
 
-  it('deleteAccount() calls model.destroy', () => {
+  it('deleteAccount() calls destroy', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.deleteAccount(fAccounts[0]);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts[0].uuid));
   });
 
-  it('updateAccount() calls model.update', () => {
+  it('updateAccount() calls update', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: fAccounts });
     result.current.updateAccount(fAccounts[0].uuid, fAccounts[0]);

@@ -26,14 +26,14 @@ describe('useNetworks', () => {
     expect(result.current.networks).toEqual([fNetwork]);
   });
 
-  it('addNetwork() calls model.create', () => {
+  it('addNetwork() calls create', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNetworks({ networks: [] });
     result.current.addNetwork(fNetworks[0]);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fNetworks[0]));
   });
 
-  it('updateNetwork() calls model.update', () => {
+  it('updateNetwork() calls update', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNetworks({ networks: [] });
     result.current.updateNetwork(fNetworks[0]);
