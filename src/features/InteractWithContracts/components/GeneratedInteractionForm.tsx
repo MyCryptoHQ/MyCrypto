@@ -292,7 +292,7 @@ export default function GeneratedInteractionForm({
                 })}
               </div>
             )}
-            <SpinnerWrapper>{isLoading && <Spinner size="x2" />}</SpinnerWrapper>
+            <SpinnerWrapper>{isLoading && <Spinner size={2} />}</SpinnerWrapper>
             {error && <InlineMessage>{error}</InlineMessage>}
             <ActionWrapper>
               {isRead && inputs.length > 0 && (

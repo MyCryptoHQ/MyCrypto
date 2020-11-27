@@ -110,7 +110,7 @@ export function TokenList(props: TokenListProps) {
     >
       {isScanning ? (
         <SpinnerWrapper>
-          <Spinner size="x3" />
+          <Spinner size={3} />
         </SpinnerWrapper>
       ) : (
         <TokenListWrapper>

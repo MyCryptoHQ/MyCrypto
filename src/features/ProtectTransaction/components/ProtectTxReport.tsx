@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext } from 'react';
 
 import styled from 'styled-components';
 
-import { EthAddress, LinkOut, PoweredByText, VerticalStepper } from '@components';
+import { EthAddress, LinkOut, PoweredByText, Spinner, VerticalStepper } from '@components';
 import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
@@ -159,7 +159,7 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
         {labels ? (
           <VerticalStepper currentStep={-1} size="lg" color={COLORS.PURPLE} steps={steps} />
         ) : (
-          <div className="loading" />
+          <Spinner color="brand" />
         )}
       </div>
       {labels && (

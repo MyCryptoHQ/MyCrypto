@@ -34,7 +34,7 @@ export const EnsTable = ({
           <NoDomains />
         ) : (
           <SpinnerContainer>
-            <Spinner size={'x3'} />
+            <Spinner size={3} />
           </SpinnerContainer>
         ))}
       {records.length !== 0 && <MyDomains domainOwnershipRecords={records} />}
