@@ -27,13 +27,13 @@ describe('useNotifications', () => {
     expect(result.current.notifications).toEqual(fNotifications);
   });
 
-  it('current notification', () => {
+  it('defines current notification', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
     const { result } = renderUseNotifications({ notifications: [notification] });
     expect(result.current.currentNotification).toBe(notification);
   });
 
-  it('displayNotification calls model.createWithID', () => {
+  it('displayNotification() dispatchs create action', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [] });
     act(() =>
@@ -53,7 +53,7 @@ describe('useNotifications', () => {
     );
   });
 
-  it('dismissNotification calls model.update', () => {
+  it('dismissNotification() dispatchs update action', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [notification] });
@@ -67,7 +67,7 @@ describe('useNotifications', () => {
     );
   });
 
-  it('dismissCurrentNotification calls model.update', () => {
+  it('dismissCurrentNotification() dispatchs update action', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [notification] });
@@ -81,7 +81,7 @@ describe('useNotifications', () => {
     );
   });
 
-  it('trackNotificationViewed calls model.update', () => {
+  it('trackNotificationViewed() dispatch update action', () => {
     const notification = { ...fNotifications[1], dismissed: false, dateDismissed: undefined };
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [notification] });
