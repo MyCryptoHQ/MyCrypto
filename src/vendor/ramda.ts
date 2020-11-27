@@ -58,3 +58,5 @@ export { default as reject } from 'ramda/src/reject';
 export { default as findIndex } from 'ramda/src/findIndex';
 export { default as remove } from 'ramda/src/remove';
 export { default as indexBy } from 'ramda/src/indexBy';
+export { default as tap } from 'ramda/src/tap';
+export { default as partialRight } from 'ramda/src/partialRight';

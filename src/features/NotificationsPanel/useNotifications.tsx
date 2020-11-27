@@ -6,7 +6,7 @@ import { ANALYTICS_CATEGORIES } from '@services';
 import { DataContext } from '@services/Store';
 import { ExtendedNotification } from '@types';
 import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
-import { last } from '@vendor';
+import { filter, last, pipe, sort } from '@vendor';
 
 import { notificationsConfigs } from './constants';
 
@@ -18,19 +18,20 @@ export interface ProviderState {
 }
 
 function getCurrent(notifications: ExtendedNotification[]) {
-  const visible = notifications
-    .sort((a, b) => {
-      return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
-    })
-    .filter((x) => {
-      return (
-        !x.dismissed &&
-        (notificationsConfigs[x.template].condition
-          ? notificationsConfigs[x.template].condition!(x)
-          : true)
-      );
-    });
-  return last(visible);
+  const latest = (a: ExtendedNotification, b: ExtendedNotification) => {
+    return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
+  };
+
+  const canDisplay = (n: ExtendedNotification): boolean => {
+    return (
+      !n.dismissed &&
+      (notificationsConfigs[n.template].condition
+        ? notificationsConfigs[n.template].condition!(n)
+        : true)
+    );
+  };
+
+  return pipe(sort(latest), filter(canDisplay), last)(notifications) as ExtendedNotification;
 }
 
 function isValidNotification(n: ExtendedNotification) {

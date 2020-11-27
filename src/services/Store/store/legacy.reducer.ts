@@ -26,7 +26,7 @@ import networkSlice, {
   updateNetwork,
   updateNetworks
 } from './network.slice';
-// import notificationSlice, { createNotification, updateNotification } from './notification.slice';
+import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -142,13 +142,13 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
       };
     }
 
-    // case createNotification.type:
-    // case updateNotification.type: {
-    //   return {
-    //     ...state,
-    //     [LSKeys.NOTIFICATIONS]: notificationSlice.reducer(state.notifications, action)
-    //   };
-    // }
+    case createNotification.type:
+    case updateNotification.type: {
+      return {
+        ...state,
+        [LSKeys.NOTIFICATIONS]: notificationSlice.reducer(state.notifications, action)
+      };
+    }
     default: {
       return state;
     }
