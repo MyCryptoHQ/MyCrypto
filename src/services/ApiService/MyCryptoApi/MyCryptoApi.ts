@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { MYC_API } from '@config';
 import { ExtendedAsset, TUuid } from '@types';
+import { mapObjIndexed } from '@vendor';
 
 import { default as ApiService } from '../ApiService';
 
@@ -24,8 +25,8 @@ export default class MyCryptoApiService {
 
   public getAssets = async (): Promise<Record<TUuid, ExtendedAsset>> => {
     try {
-      const { data } = await this.service.get('assets.json');
-      return data;
+      const { data } = await this.service.get<Record<TUuid, ExtendedAsset>>('assets.json');
+      return mapObjIndexed((asset) => ({ ...asset, isCustom: false }), data);
     } catch (e) {
       console.debug('[MyCryptoApiService]: Fetching assets failed: ', e);
       return {};
