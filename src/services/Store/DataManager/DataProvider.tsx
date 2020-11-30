@@ -30,6 +30,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const legacyState = useSelector(getAppState);
 
+  // @todo: Redux create action for reset once legacy.reducer is replaced.
   const resetAppDb = (newDb = initialLegacyState) => {
     dispatch({
       type: 'RESET',
