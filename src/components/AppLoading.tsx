@@ -7,7 +7,7 @@ import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme/co
 import { translateRaw } from '@translations';
 
 const DashboardPanelLoading = styled(DashboardPanel)`
-  overflow: none;
+  width: 100%;
   min-height: 40rem;
   @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
     max-width: ${BREAK_POINTS.SCREEN_LG};
