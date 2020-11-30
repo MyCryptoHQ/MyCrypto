@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { devContacts } from '@database/seed';
 import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { fAccount, fSettings, fTxConfig } from '@fixtures';
+import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
 import { ExtendedContact, ITxType } from '@types';
 import { bigify, noOp } from '@utils';
 
@@ -12,8 +11,8 @@ import { constructSenderFromTxConfig } from './helpers';
 // Define props
 const assetRate = 1.34;
 const baseAssetRate = 1.54;
-const senderContact = Object.values(devContacts)[0] as ExtendedContact;
-const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
+const senderContact = Object.values(fContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 const onComplete = noOp;
 
 export default { title: 'ConfirmTx' };

@@ -1,8 +1,4 @@
-import { TUuid } from '@types';
-
 import { FlowTransducer, GenObject } from './types';
-
-export const withUuid = <T extends TObject>(fn: () => TUuid) => (x: T): T => ({ ...x, uuid: fn() });
 
 export const toArray = (object: any): any[] => Object.values(object);
 

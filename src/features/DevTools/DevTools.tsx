@@ -61,14 +61,11 @@ const Wrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const DBTools = () => {
-  const { resetAppDb, addSeedData, removeSeedData } = useContext(DataContext);
+  const { resetAppDb } = useContext(DataContext);
   return (
     <div style={{ marginBottom: '1em' }}>
       You can choose to
-      <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values. or you
-      can <SLink onClick={() => addSeedData()}>add seed accounts</SLink> to your existing DB, or
-      revert the process by <SLink onClick={() => removeSeedData()}>removing</SLink> the dev
-      accounts.
+      <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values.
     </div>
   );
 };

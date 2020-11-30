@@ -2,8 +2,7 @@ import React from 'react';
 
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
-import { contacts as seedContacts } from '@database/seed/contacts';
-import { fNetwork } from '@fixtures';
+import { fContacts, fNetwork } from '@fixtures';
 import { DataContext } from '@services/Store';
 import { Contact, ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
@@ -61,7 +60,7 @@ function getComponent(
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mockMappedContacts: ExtendedContact[] = Object.entries(seedContacts).map(([key, value]) => ({
+const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([key, value]) => ({
   ...value,
   uuid: key as TUuid
 }));

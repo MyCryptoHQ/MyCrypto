@@ -3,7 +3,7 @@ import React from 'react';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { contacts as seedContacts } from '@database/seed/contacts';
+import { fContacts } from '@fixtures';
 import { DataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TAddress, TUuid } from '@types';
@@ -19,7 +19,7 @@ const defaultProps: Props = {
   updateContact: noOp
 };
 
-const mockMappedContacts: ExtendedContact[] = Object.entries(seedContacts).map(([key, value]) => ({
+const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([key, value]) => ({
   ...value,
   uuid: key as TUuid
 }));

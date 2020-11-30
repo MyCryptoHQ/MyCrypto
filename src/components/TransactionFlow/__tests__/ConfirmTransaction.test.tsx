@@ -2,9 +2,8 @@ import React from 'react';
 
 import { fireEvent, simpleRender } from 'test-utils';
 
-import { devContacts } from '@database/seed';
 import { ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { fAccount, fSettings, fTxConfig } from '@fixtures';
+import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
 import { DataContext } from '@services';
 import { translateRaw } from '@translations';
 import { ExtendedContact, ITxType } from '@types';
@@ -13,8 +12,8 @@ import { truncate } from '@utils';
 import { ConfirmTransactionUI } from '../ConfirmTransaction';
 import { constructSenderFromTxConfig } from '../helpers';
 
-const senderContact = Object.values(devContacts)[0] as ExtendedContact;
-const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
+const senderContact = Object.values(fContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 
 const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
   settings: fSettings,
