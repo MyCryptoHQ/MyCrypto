@@ -60,3 +60,4 @@ export { default as remove } from 'ramda/src/remove';
 export { default as indexBy } from 'ramda/src/indexBy';
 export { default as tap } from 'ramda/src/tap';
 export { default as partialRight } from 'ramda/src/partialRight';
+export { default as chain } from 'ramda/src/chain';

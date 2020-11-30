@@ -1,11 +1,3 @@
-import chain from 'ramda/src/chain';
-import filter from 'ramda/src/filter';
-import map from 'ramda/src/map';
-import mapObjIndexed from 'ramda/src/mapObjIndexed';
-import mergeRight from 'ramda/src/mergeRight';
-import pipe from 'ramda/src/pipe';
-import reduce from 'ramda/src/reduce';
-
 import { DEFAULT_ASSET_DECIMAL, Fiats } from '@config';
 import {
   Asset,
@@ -22,13 +14,14 @@ import {
   NodeOptions
 } from '@types';
 import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils/generateUUID';
+import { chain, filter, map, mapObjIndexed, mergeRight, pipe, reduce } from '@vendor';
 
 import { NetworkConfig, NETWORKS_CONFIG, NODES_CONFIG } from './data';
 import { add, toArray, toObject } from './helpers';
-import { SeedData, StoreAction } from './types';
+import { StoreAction } from './types';
 
 /* Transducers */
-const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
+const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
     // add custom nodes from local storage

@@ -122,7 +122,7 @@
     "@types/modernizr": "3.5.3",
     "@types/qrcode": "0.8.0",
     "@types/query-string": "5.1.0",
-    "@types/ramda": "0.27.18",
+    "@types/ramda": "0.27.32",
     "@types/rc-slider": "8.6.5",
     "@types/rc-steps": "3.5.0",
     "@types/react": "16.9.17",

@@ -5,7 +5,7 @@ import { DevAccount } from './seed';
 
 /* Types */
 type DevData = Asset[] | DevAccount[] | Record<string | TUuid, Contact>;
-export type SeedData = typeof NETWORKS_CONFIG | Fiat[] | DevData;
+type SeedData = typeof NETWORKS_CONFIG | Fiat[] | DevData;
 type StoreProp = Record<NetworkId, Network> | any;
 export type StoreAction = (store: LocalStorage) => LocalStorage;
 type FlowReducer = (data?: SeedData, store?: LocalStorage) => StoreProp;
