@@ -6,6 +6,7 @@ export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
 export { createNotification, updateNotification } from './notification.slice';
+export { setPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,

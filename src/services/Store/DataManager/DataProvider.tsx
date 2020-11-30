@@ -1,9 +1,9 @@
 import React, { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react';
 
-import { getAppState, initialLegacyState, useDispatch, useSelector } from '@store';
+import { getAppState, initialLegacyState, setPassword, useDispatch, useSelector } from '@store';
 
 import { getCurrentDBConfig, getEncryptedData } from '@database';
-import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
+import { DataStore, DSKeys, EncryptedDataStore } from '@types';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
@@ -67,11 +67,8 @@ export const DataProvider: React.FC = ({ children }) => {
     });
   };
 
-  const setUnlockPassword = (password: string) => {
-    dispatch({
-      type: 'ADD_ENTRY',
-      payload: { data: password, model: LSKeys.PASSWORD }
-    });
+  const setUnlockPassword = (pwd: string) => {
+    dispatch(setPassword(pwd));
   };
 
   const stateContext: IDataContext = {
