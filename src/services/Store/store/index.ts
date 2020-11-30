@@ -14,6 +14,7 @@ export {
   updateAccount,
   updateAccounts
 } from './account.slice';
+export { createContact, destroyContact, updateContact } from './contact.slice';
 export {
   createNetworks,
   createNetwork,

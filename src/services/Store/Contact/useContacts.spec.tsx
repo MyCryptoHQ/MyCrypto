@@ -3,7 +3,7 @@ import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { fContacts } from '@fixtures';
-import { ExtendedContact, LSKeys, TAddress, TUuid } from '@types';
+import { ExtendedContact, LSKeys, TAddress } from '@types';
 import { omit } from '@vendor';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -42,16 +42,6 @@ describe('useContacts', () => {
     });
     result.current.createContact(fContacts[0]);
     expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining(omit(['uuid'], fContacts[0])));
-  });
-
-  it('createContactWithID() calls model.createWithId', () => {
-    const mockCreate = jest.fn();
-    const { result } = renderUseContacts({
-      contacts: [],
-      createActions: jest.fn(() => ({ createWithID: mockCreate }))
-    });
-    result.current.createContactWithID('uuid' as TUuid, fContacts[0]);
-    expect(mockCreate).toHaveBeenCalledWith(fContacts[0], 'uuid');
   });
 
   it('updateContact() calls model.update', () => {

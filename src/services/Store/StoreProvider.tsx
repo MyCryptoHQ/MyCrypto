@@ -24,7 +24,6 @@ import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@service
 import { translateRaw } from '@translations';
 import {
   Asset,
-  Contact,
   DomainNameRecord,
   ExtendedAsset,
   IAccount,
@@ -46,6 +45,7 @@ import {
 import {
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
+  generateUUID,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
@@ -529,11 +529,12 @@ export const StoreProvider: React.FC = ({ children }) => {
             label: newLabels[idx]
           });
         } else if (!existingContact) {
-          const newLabel: Contact = {
+          const newLabel = {
             label: newLabels[idx],
             address: rawAccount.address,
             notes: '',
-            network: rawAccount.networkId
+            network: rawAccount.networkId,
+            uuid: generateUUID()
           };
           createContact(newLabel);
         }
@@ -572,11 +573,12 @@ export const StoreProvider: React.FC = ({ children }) => {
           label: findNextUnusedDefaultLabel(account.wallet)(contacts)
         });
       } else {
-        const newLabel: Contact = {
+        const newLabel = {
           label: findNextUnusedDefaultLabel(account.wallet)(contacts),
           address: account.address,
           notes: '',
-          network: account.networkId
+          network: account.networkId,
+          uuid: generateUUID()
         };
         createContact(newLabel);
       }

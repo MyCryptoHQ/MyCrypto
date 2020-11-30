@@ -1,18 +1,18 @@
 import { useContext, useState } from 'react';
 
+import { destroyContact, useDispatch } from '@store';
 import isEmpty from 'lodash/isEmpty';
 
 import {
   Contact,
   ExtendedContact,
   IAccount,
-  LSKeys,
   NetworkId,
   StoreAccount,
   TAddress,
   TUuid
 } from '@types';
-import { generateUUID, isSameAddress } from '@utils';
+import { isSameAddress } from '@utils';
 
 import { useContracts } from '../Contract';
 import { DataContext } from '../DataManager';
@@ -34,13 +34,12 @@ export interface IAddressBookContext {
 }
 
 function useContacts() {
-  const { createActions, addressBook } = useContext(DataContext);
+  const { addressBook: contacts } = useContext(DataContext);
   const { getContractByAddress } = useContracts();
+  const dispatch = useDispatch();
   const [contactRestore, setContactRestore] = useState<{
     [name: string]: ExtendedContact | undefined;
   }>({});
-
-  const model = createActions(LSKeys.ADDRESS_BOOK);
 
   const getContactFromContracts = (address: string): ExtendedContact | undefined => {
     const contract = getContractByAddress(address as TAddress);
@@ -54,26 +53,27 @@ function useContacts() {
     return contact;
   };
 
-  const createContact = (item: Contact) => model.create({ ...item, uuid: generateUUID() });
+  const createContact = (item: ExtendedContact) => {
+    dispatch(createContact(item));
+  };
 
-  const createContactWithID = (uuid: TUuid, item: Contact) =>
-    model.createWithID({ uuid, ...item }, uuid);
-
-  const updateContact = (uuid: TUuid, item: ExtendedContact) => model.update(uuid, item);
+  const updateContact = (uuid: TUuid, item: ExtendedContact) => {
+    dispatch(updateContact(uuid, item));
+  };
 
   const deleteContact = (uuid: TUuid) => {
-    const addressBookToDelete = addressBook.find((a) => a.uuid === uuid);
-    if (isEmpty(addressBookToDelete)) {
-      throw new Error('Unable to delete account from address book! No account with id specified.');
+    const contactToDelete = contacts.find((a) => a.uuid === uuid);
+    if (isEmpty(contactToDelete) || !contactToDelete) {
+      throw new Error('Unable to delete contact from address book! No account with id specified.');
     }
 
-    setContactRestore((prevState) => ({ ...prevState, [uuid]: addressBookToDelete }));
-    model.destroy(addressBookToDelete!);
+    setContactRestore((prevState) => ({ ...prevState, [uuid]: contactToDelete }));
+    dispatch(destroyContact(contactToDelete.uuid));
   };
 
   const getContactByAddress = (address: TAddress) => {
     return (
-      addressBook.find((contact: ExtendedContact) =>
+      contacts.find((contact: ExtendedContact) =>
         isSameAddress(contact.address as TAddress, address)
       ) || getContactFromContracts(address)
     );
@@ -81,7 +81,7 @@ function useContacts() {
 
   const getContactByAddressAndNetworkId = (address: TAddress, networkId: NetworkId) => {
     return (
-      addressBook
+      contacts
         .filter((contact: ExtendedContact) => contact.network === networkId)
         .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ||
       getContactFromContracts(address)
@@ -102,15 +102,14 @@ function useContacts() {
     }
 
     const { uuid, ...rest } = contactRecord!;
-    createContactWithID(uuid, rest);
+    createContact({ ...rest, uuid });
     setContactRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
   };
 
   return {
-    contacts: addressBook,
+    contacts,
     contactRestore,
     createContact,
-    createContactWithID,
     updateContact,
     deleteContact,
     getContactByAddress,
