@@ -4,7 +4,7 @@ import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { Button, NewTabLink, RouterLink, Spinner } from '@components';
+import { Box, Button, Heading, NewTabLink, RouterLink, Spinner } from '@components';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
@@ -104,11 +104,11 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   } else {
     return (
-      <div className="Panel">
-        <div className="Panel-title">
+      <Box p="2.5em">
+        <Heading fontSize="32px" textAlign="center" fontWeight="bold">
           {translate('UNLOCK_WALLET')}{' '}
           {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
-        </div>
+        </Heading>
         <div className="LedgerPanel-description-content">
           <div className="LedgerPanel-description">
             {translate('LEDGER_TIP')}
@@ -147,7 +147,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
             />
           </div>
         </div>
-      </div>
+      </Box>
     );
   }
 };

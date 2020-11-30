@@ -4,7 +4,7 @@ import { Typography } from '@mycrypto/ui';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
-import { NewTabLink } from '@components';
+import { Box, Heading, NewTabLink } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
 import { ANALYTICS_CATEGORIES } from '@services';
 import translate from '@translations';
@@ -81,19 +81,19 @@ function Web3ProviderInstall() {
 
   const { isMobile } = useScreenSize();
   return (
-    <div className="Panel">
-      <div className="Panel-title">
+    <Box p="2.5em">
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', {
           $walletId: isMobile ? 'Web3 Provider' : 'Metamask'
         })}
-      </div>
+      </Heading>
       <div className="Panel-description">
         {translate(
           isMobile ? 'ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC' : 'ADD_ACCOUNT_WEB3_INSTALL_DESC'
         )}
       </div>
       <div className="Panel-content">{isMobile ? <InstallTrunk /> : <InstallMetaMask />}</div>
-    </div>
+    </Box>
   );
 }
 

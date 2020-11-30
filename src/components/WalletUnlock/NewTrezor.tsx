@@ -4,7 +4,7 @@ import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Button, RouterLink, Spinner } from '@components';
+import { Box, Button, Heading, RouterLink, Spinner } from '@components';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
@@ -85,11 +85,11 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   } else {
     return (
-      <div className="Panel">
-        <div className="Panel-title">
+      <Box p="2.5em">
+        <Heading fontSize="32px" textAlign="center" fontWeight="bold">
           {translate('UNLOCK_WALLET')}{' '}
           {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_TREZOR') })}
-        </div>
+        </Heading>
         <div className="TrezorDecrypt">
           <div className="TrezorDecrypt-description">
             {translate('TREZOR_TIP')}
@@ -130,7 +130,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
             {translate('HOWTO_TREZOR')}
           </div>
         </div>
-      </div>
+      </Box>
     );
   }
 };

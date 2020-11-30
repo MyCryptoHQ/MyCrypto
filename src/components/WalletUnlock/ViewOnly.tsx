@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
-import { Button, ContactLookupField } from '@components';
+import { Box, Button, ContactLookupField, Heading } from '@components';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
@@ -49,8 +49,10 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
   };
 
   return (
-    <div className="Panel">
-      <div className="Panel-title">{translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}</div>
+    <Box p="2.5em">
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+        {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
+      </Heading>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>
@@ -77,6 +79,6 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
           </FormWrapper>
         )}
       </Formik>
-    </div>
+    </Box>
   );
 }

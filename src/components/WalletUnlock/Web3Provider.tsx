@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { InlineMessage, NewTabLink } from '@components';
+import { Box, Heading, InlineMessage, NewTabLink } from '@components';
+import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { ANALYTICS_CATEGORIES } from '@services';
@@ -82,14 +83,16 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
   const transProps = { $walletId: web3ProviderSettings.name };
 
   return (
-    <div className="Panel">
-      <div className="Panel-title">
+    <Box p="2.5em">
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {isDefault
           ? translate('ADD_ACCOUNT_WEB3_TITLE_DEFAULT', transProps)
           : translate('ADD_ACCOUNT_WEB3_TITLE', transProps)}
-      </div>
-      <div className="Panel-description">{translate(`ADD_ACCOUNT_WEB3_DESC`)}</div>
-      <div className="Panel-content">
+      </Heading>
+      <Body textAlign="center" fontSize="2" paddingTop="16px">
+        {translate(`ADD_ACCOUNT_WEB3_DESC`)}
+      </Body>
+      <Box m="2em">
         <div className="Web3-img-container">
           <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>
             <img src={web3ProviderSettings.icon} />
@@ -109,7 +112,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
             <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
           </>
         )}
-      </div>
+      </Box>
       <div className="Web3-footer">
         <div>
           {isDefault
@@ -133,7 +136,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
           />
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 
