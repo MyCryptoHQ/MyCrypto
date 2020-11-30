@@ -74,18 +74,10 @@ describe('serializeNotification', () => {
 
   test('it transforms dates to strings', () => {
     const actual = serializeNotification(notification);
-    expect(actual.templateData!.firstDashboardVisitDate).toEqual(
-      'Fri Nov 27 2020 16:08:26 GMT+0100 (Central European Standard Time)'
-    );
-    expect(actual.templateData!.previousNotificationCloseDate).toEqual(
-      'Sat Nov 28 2020 16:08:26 GMT+0100 (Central European Standard Time)'
-    );
-    expect(actual.dateDismissed).toEqual(
-      'Wed Nov 25 2020 16:08:26 GMT+0100 (Central European Standard Time)'
-    );
-    expect(actual.dateDisplayed).toEqual(
-      'Thu Nov 26 2020 15:56:23 GMT+0100 (Central European Standard Time)'
-    );
+    expect(actual.templateData!.firstDashboardVisitDate).toEqual('2020-11-27T15:08:26.825Z');
+    expect(actual.templateData!.previousNotificationCloseDate).toEqual('2020-11-28T15:08:26.825Z');
+    expect(actual.dateDismissed).toEqual('2020-11-25T15:08:26.825Z');
+    expect(actual.dateDisplayed).toEqual('2020-11-26T14:56:23.136Z');
   });
 
   test('it handles undefined props', () => {

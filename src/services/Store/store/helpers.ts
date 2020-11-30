@@ -9,7 +9,7 @@ const assetLens = lensProp('assets');
 export const stringifyBalance = over(balanceLens, ifElse(isBigish, toString, identity));
 export const stringifyValue = over(txValueLens, toString);
 export const bigifyBalnce = over(balanceLens, bigify);
-export const stringifyDate = ifElse(isNil, identity, (d) => d.toString());
+export const stringifyDate = ifElse(isNil, identity, (d) => d.toISOString());
 
 export const serializeAccount: (a: IAccount | StoreAccount) => IAccount | StoreAccount = pipe(
   over(assetLens, map(stringifyBalance))
