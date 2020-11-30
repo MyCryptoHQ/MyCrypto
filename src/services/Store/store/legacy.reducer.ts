@@ -27,6 +27,7 @@ import networkSlice, {
   updateNetworks
 } from './network.slice';
 import notificationSlice, { createNotification, updateNotification } from './notification.slice';
+import passwordSlice, { setPassword } from './password.slice';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -147,6 +148,12 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
       return {
         ...state,
         [LSKeys.NOTIFICATIONS]: notificationSlice.reducer(state.notifications, action)
+      };
+    }
+    case setPassword.type: {
+      return {
+        ...state,
+        [LSKeys.PASSWORD]: passwordSlice.reducer(state.password, action)
       };
     }
     default: {
