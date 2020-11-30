@@ -4,7 +4,6 @@ import { getAppState, initialLegacyState, useDispatch, useSelector } from '@stor
 
 import { getCurrentDBConfig, getEncryptedData } from '@database';
 import { DataStore, DSKeys, EncryptedDataStore, LSKeys } from '@types';
-import { noOp } from '@utils';
 
 import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
@@ -13,8 +12,6 @@ import { ActionY, ActionZ, EncryptedDbActionPayload, encryptedDbReducer } from '
 export interface DataCacheManager extends DataStore {
   createActions(k: DSKeys): ReturnType<typeof ActionFactory>;
   resetAppDb(): void;
-  addSeedData(): void;
-  removeSeedData(): void;
 }
 
 interface EncryptedStorage {
@@ -82,8 +79,6 @@ export const DataProvider: React.FC = ({ children }) => {
     createActions: (key) => ActionFactory(key, dispatch, legacyState),
     resetAppDb,
     encryptedDbState,
-    removeSeedData: noOp,
-    addSeedData: noOp,
     setEncryptedCache,
     destroyEncryptedCache,
     setUnlockPassword

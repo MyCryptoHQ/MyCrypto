@@ -3,8 +3,7 @@ import React from 'react';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
-import { contacts } from '@database/seed/contacts';
-import { fContracts, fNetwork } from '@fixtures';
+import { fContacts, fContracts, fNetwork } from '@fixtures';
 import { DataContext } from '@services/Store';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
@@ -57,7 +56,7 @@ function getComponent(
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mockMappedContacts: ExtendedContact[] = Object.entries(contacts).map(([key, value]) => ({
+const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([key, value]) => ({
   ...value,
   uuid: key as TUuid
 }));
