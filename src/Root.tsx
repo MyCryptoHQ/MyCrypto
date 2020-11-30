@@ -8,7 +8,7 @@ import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { AppLoading } from '@components';
+import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
@@ -50,7 +50,15 @@ const RootClass = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        {(isHydrated: boolean) => (isHydrated ? <RootComponent /> : <AppLoading />)}
+        {(isHydrated: boolean) =>
+          isHydrated ? (
+            <RootComponent />
+          ) : (
+            <Box variant="verticalCenter">
+              <AppLoading />
+            </Box>
+          )
+        }
       </PersistGate>
     </Provider>
   );
