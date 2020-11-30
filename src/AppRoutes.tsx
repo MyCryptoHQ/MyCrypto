@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+import { AppLoading } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { Dashboard, DrawerProvider, PageNotFound, ScreenLockProvider } from '@features';
 import { Layout, LayoutConfig } from '@features/Layout';
@@ -15,8 +16,6 @@ import {
 import { useFeatureFlags } from '@services';
 import { COLORS, SPACING } from '@theme';
 import { ScrollToTop, useScreenSize } from '@utils';
-
-import { AppLoading } from './AppLoading';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -63,7 +62,13 @@ export const AppRoutes = () => {
         <DrawerProvider>
           <PageVisitsAnalytics>
             <DefaultHomeHandler>
-              <Suspense fallback={<AppLoading />}>
+              <Suspense
+                fallback={
+                  <Layout>
+                    <AppLoading />
+                  </Layout>
+                }
+              >
                 <Switch>
                   {/* To avoid fiddling with layout we provide a complete route to home */}
                   <LayoutWithLocation>

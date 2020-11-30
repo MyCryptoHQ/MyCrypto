@@ -2,33 +2,18 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { DashboardPanel } from '@components';
-import Layout from '@features/Layout/Layout';
+import { Box, DashboardPanel, Spinner } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme/constants';
 import { translateRaw } from '@translations';
 
 const DashboardPanelLoading = styled(DashboardPanel)`
-  min-height: 40rem;
   width: 100%;
+  min-height: 40rem;
   @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
     max-width: ${BREAK_POINTS.SCREEN_LG};
   }
   justify-content: center;
   color: ${COLORS.BLUE_GREY};
-`;
-
-const Loader = styled.div`
-  margin-top: -6rem;
-  padding-bottom: 6rem;
-  transform: scale(4.75);
-
-  &&::before {
-    border-width: 0.75px;
-  }
-
-  &&::after {
-    border-width: 0.75px;
-  }
 `;
 
 const LoadingText = styled.h6`
@@ -47,14 +32,14 @@ const LoadingSubText = styled.h6`
   text-align: center;
 `;
 
-export const AppLoading = () => {
-  return (
-    <Layout>
-      <DashboardPanelLoading>
-        <Loader className="loading" />
-        <LoadingText>{translateRaw('APP_LOADING')}</LoadingText>
-        <LoadingSubText>{translateRaw('APP_LOADING_SUBHEADER')}</LoadingSubText>
-      </DashboardPanelLoading>
-    </Layout>
-  );
-};
+const AppLoading = () => (
+  <DashboardPanelLoading>
+    <Box variant="verticalCenter" mb={'1em'}>
+      <Spinner color="brand" size={3} />
+    </Box>
+    <LoadingText>{translateRaw('APP_LOADING')}</LoadingText>
+    <LoadingSubText>{translateRaw('APP_LOADING_SUBHEADER')}</LoadingSubText>
+  </DashboardPanelLoading>
+);
+
+export default AppLoading;

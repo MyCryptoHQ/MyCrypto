@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button, Icon, PoweredByText, Tooltip, Typography } from '@components';
+import { Button, Icon, PoweredByText, Spinner, Tooltip, Typography } from '@components';
 import { DWAccountDisplay } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
@@ -61,11 +61,6 @@ const StatusWrapper = styled.div`
     text-align: center;
     margin-bottom: ${SPACING.BASE};
   }
-`;
-
-const Loader = styled.div`
-  padding-right: ${SPACING.BASE};
-  margin-right: ${SPACING.BASE};
 `;
 
 const IconWrapper = styled.div`
@@ -202,7 +197,7 @@ export default function DeterministicAccountList({
         )}
         {!isComplete && (
           <StatusWrapper>
-            <Loader className="loading" />
+            <Spinner color="brand" mr={SPACING.BASE} pr={SPACING.BASE} />
             <div>
               <Trans
                 id="DETERMINISTIC_SCANNING_STATUS_RUNNING"

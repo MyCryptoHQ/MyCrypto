@@ -1,20 +1,52 @@
 import React from 'react';
 
-import './Spinner.scss';
+import styled, { keyframes } from 'styled-components';
+import { space, SpaceProps } from 'styled-system';
 
-type Size = 'x1' | 'x2' | 'x3' | 'x4' | 'x5';
+const rotate = keyframes`
+   100% { transform: rotate(360deg)}
+`;
 
-interface SpinnerProps {
-  size?: Size;
-  light?: boolean;
-}
+const Svg = styled.svg<{ $size: number } & SpaceProps>`
+  ${space}
+  animation: ${rotate} 0.8s linear infinite;
 
-export const Spinner = ({ size = 'x1', light = false }: SpinnerProps) => {
-  const color = light ? 'Spinner-light' : 'Spinner-dark';
+  & > circle {
+    ${(p) => p.color && `stroke: ${p.color};`}
+    stroke-linecap: round;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+  }
+
+  ${(p) => p.$size && `width: ${p.$size}em;`}
+  ${(p) => p.$size && `height: ${p.$size}em;`}
+`;
+
+const COLORS = {
+  light: '#fff',
+  default: '#7c9ec3',
+  brand: '#a086f7'
+};
+
+export const Spinner = ({
+  size = 1,
+  color = 'default',
+  ...props
+}: {
+  size?: number;
+  color?: keyof typeof COLORS;
+} & SpaceProps) => {
   return (
-    <svg className={`Spinner Spinner-${size} ${color}`} viewBox="0 0 50 50" aria-busy="true">
+    <Svg
+      data-testid="spinner"
+      viewBox="0 0 50 50"
+      aria-busy="true"
+      color={COLORS[color]}
+      $size={size}
+      {...props}
+    >
       <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5" />
-    </svg>
+    </Svg>
   );
 };
 

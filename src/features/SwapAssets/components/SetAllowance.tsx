@@ -37,7 +37,7 @@ export default function SetAllowance(props: Props) {
       <Component {...props} />
       {isSubmitting && (
         <Loader>
-          <Spinner size={'x2'} />{' '}
+          <Spinner size={2} />{' '}
           <LoaderText bold={true} fontSize="1.13em" value={translate('SWAP_SETTING_ALLOWANCE')} />
         </Loader>
       )}

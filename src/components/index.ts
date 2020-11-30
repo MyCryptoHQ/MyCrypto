@@ -89,3 +89,4 @@ export {
   TextProps
 } from './NewTypography';
 export { ActionPanel, TweetButtonProps, ActionButtonProps, ActionButton } from './ActionsPanel';
+export { default as AppLoading } from './AppLoading';

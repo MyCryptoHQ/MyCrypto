@@ -102,9 +102,6 @@ $m-anim-speed: 400ms;
     flex-direction: column;
     padding: $m-content-padding;
     overflow: auto;
-    > .Spinner {
-      margin: 2.5rem auto;
-    }
   }
 
   &-footer {

@@ -11,6 +11,7 @@ import {
   EthAddress,
   Icon,
   LinkOut,
+  Spinner,
   Tooltip,
   Typography
 } from '@components';
@@ -20,8 +21,6 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
 import { fromTokenBase, isSameAddress, useScreenSize } from '@utils';
-
-
 
 interface DeterministicTableProps {
   isComplete: boolean;
@@ -243,21 +242,6 @@ const NoAccountAction = styled.span`
   }
 `;
 
-const Loader = styled.div`
-  margin-top: calc(-6rem + 100px);
-  padding-bottom: 6rem;
-  margin-bottom: ${SPACING.BASE};
-  transform: scale(4.75);
-
-  &&::before {
-    border-width: 0.75px;
-  }
-
-  &&::after {
-    border-width: 0.75px;
-  }
-`;
-
 const DeterministicTable = ({
   isComplete,
   accounts,
@@ -321,100 +305,108 @@ const DeterministicTable = ({
             <Typography>{translate('DETERMINISTIC_CONTACT_US')}</Typography>
           </NoAccountContainer>
         ) : (
-            <NoAccountContainer>
-              <Loader className="loading" />
-              <Trans id="DETERMINISTIC_SCANNING" variables={{ $asset: () => asset.ticker }} />
-            </NoAccountContainer>
-          )
+          <NoAccountContainer>
+            <Spinner
+              color="brand"
+              size={3}
+              mr={SPACING.BASE}
+              pr={SPACING.BASE}
+              mb={SPACING.BASE}
+              pb={'6rem'}
+              mt={'calc(-6rem + 100px)'}
+            />
+            <Trans id="DETERMINISTIC_SCANNING" variables={{ $asset: () => asset.ticker }} />
+          </NoAccountContainer>
+        )
       ) : (
-          <Body>
-            {accounts.map((account: DWAccountDisplay, index) => (
-              <Row key={index} onClick={() => onSelect(account)} isSelected={isSelected(account)}>
-                <SelectedContainer isSelected={isSelected(account)}>
-                  <Icon type="check" />
-                </SelectedContainer>
-                <MobileColumn>
-                  <LabelContainer>
-                    <SIdenticon address={account.address} />
-                    <EditableAccountLabel
-                      addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
-                      address={account.address}
-                      networkId={network.id}
-                      createContact={createContact}
-                      updateContact={updateContact}
-                    />
-                  </LabelContainer>
-                  <AddressContainer>
-                    <EthAddress address={account.address} truncate={true} />
-                  </AddressContainer>
-                  <DPathContainer>
-                    <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
-                    <DPath>({account.pathItem.path})</DPath>
-                  </DPathContainer>
-                  <ValueContainer>
-                    <Typography>
-                      <Amount
-                        assetValue={
-                          account.balance
-                            ? parseFloat(
+        <Body>
+          {accounts.map((account: DWAccountDisplay, index) => (
+            <Row key={index} onClick={() => onSelect(account)} isSelected={isSelected(account)}>
+              <SelectedContainer isSelected={isSelected(account)}>
+                <Icon type="check" />
+              </SelectedContainer>
+              <MobileColumn>
+                <LabelContainer>
+                  <SIdenticon address={account.address} />
+                  <EditableAccountLabel
+                    addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
+                    address={account.address}
+                    networkId={network.id}
+                    createContact={createContact}
+                    updateContact={updateContact}
+                  />
+                </LabelContainer>
+                <AddressContainer>
+                  <EthAddress address={account.address} truncate={true} />
+                </AddressContainer>
+                <DPathContainer>
+                  <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
+                  <DPath>({account.pathItem.path})</DPath>
+                </DPathContainer>
+                <ValueContainer>
+                  <Typography>
+                    <Amount
+                      assetValue={
+                        account.balance
+                          ? parseFloat(
                               fromTokenBase(
                                 new BN(account.balance.toString()),
                                 asset.decimal
                               ).toString()
                             ).toFixed(4)
-                            : '0.0000'
-                        }
-                      />
-                    </Typography>
-                    <Typography>{asset.ticker}</Typography>
-                  </ValueContainer>
-                </MobileColumn>
-                <LinkContainer>
-                  <Tooltip tooltip={'View on Etherscan'}>
-                    <LinkOut
-                      link={
-                        network.blockExplorer
-                          ? network.blockExplorer.addressUrl(account.address)
-                          : `https://ethplorer.io/address/${account.address}`
+                          : '0.0000'
                       }
                     />
-                  </Tooltip>
-                </LinkContainer>
-              </Row>
-            ))}
-            <GenerateAddressButton
-              onClick={generateFreshAddress}
-              disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
-            >
-              <Icon type="add" />
+                  </Typography>
+                  <Typography>{asset.ticker}</Typography>
+                </ValueContainer>
+              </MobileColumn>
+              <LinkContainer>
+                <Tooltip tooltip={'View on Etherscan'}>
+                  <LinkOut
+                    link={
+                      network.blockExplorer
+                        ? network.blockExplorer.addressUrl(account.address)
+                        : `https://ethplorer.io/address/${account.address}`
+                    }
+                  />
+                </Tooltip>
+              </LinkContainer>
+            </Row>
+          ))}
+          <GenerateAddressButton
+            onClick={generateFreshAddress}
+            disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
+          >
+            <Icon type="add" />
 
-              {!isComplete ? (
-                <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
-                  <STypography>
-                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                  </STypography>
-                </Tooltip>
-              ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
-                <Tooltip
-                  tooltip={
-                    <Trans
-                      id="DETERMINISTIC_CANT_GENERATE_MORE"
-                      variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
-                    />
-                  }
-                >
-                  <STypography>
-                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                  </STypography>
-                </Tooltip>
-              ) : (
-                    <STypography>
-                      <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                    </STypography>
-                  )}
-            </GenerateAddressButton>
-          </Body>
-        )}
+            {!isComplete ? (
+              <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
+                <STypography>
+                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                </STypography>
+              </Tooltip>
+            ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
+              <Tooltip
+                tooltip={
+                  <Trans
+                    id="DETERMINISTIC_CANT_GENERATE_MORE"
+                    variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
+                  />
+                }
+              >
+                <STypography>
+                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                </STypography>
+              </Tooltip>
+            ) : (
+              <STypography>
+                <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+              </STypography>
+            )}
+          </GenerateAddressButton>
+        </Body>
+      )}
     </Table>
   );
 };
