@@ -19,11 +19,10 @@ import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
 import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
-import { flatten, indexBy, pipe, prop, values } from '@vendor';
+import { arrayToObj, IS_DEV } from '@utils';
+import { flatten, pipe, values } from '@vendor';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
-
-const arrayToObj = (key: string | TUuid | NetworkId) => (arr: any[]) => indexBy(prop(key), arr);
 
 /**
  * Called right before state is persisted.
@@ -42,12 +41,13 @@ const fromReduxStore: TransformInbound<
     case LSKeys.CONTRACTS:
     case LSKeys.ASSETS:
     case LSKeys.NOTIFICATIONS:
-    case LSKeys.USER_ACTIONS:
-      // @ts-expect-error: switch fails as a type guard
-      return arrayToObj('uuid')(slice);
+    case LSKeys.USER_ACTIONS: {
+      //@ts-expect-error: TS doesnt' respect swtich type-guard
+      return arrayToObj<TUuid>('uuid')(slice);
+    }
     case LSKeys.NETWORKS: {
-      // @ts-expect-error: switch fails as a type guard
-      return arrayToObj('id')(slice);
+      //@ts-expect-error: TS doesnt' respect swtich type-guard
+      return arrayToObj<NetworkId>('id')(slice);
     }
     case LSKeys.SETTINGS:
     case LSKeys.PASSWORD:
@@ -101,8 +101,8 @@ const transform: Transform<
  */
 const customReconciler: StateReconciler<DataStore> = (inboundState, originalState, ...rest) => {
   // Merge 2 arrays by creating an object and converting back to array.
-  const mergeNetworks = pipe(arrayToObj('id'), values, flatten);
-  const mergeByUuid = pipe(arrayToObj('uuid'), values, flatten);
+  const mergeNetworks = pipe(arrayToObj<NetworkId>('id'), values, flatten);
+  const mergeByUuid = pipe(arrayToObj<TUuid>('uuid'), values, flatten);
 
   const mergedInboundState = {
     ...inboundState,
@@ -138,7 +138,7 @@ const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   transforms: [transform],
   // @ts-expect-error: deserialize is redux-persist internal
   deserialize: customDeserializer,
-  debug: true
+  debug: IS_DEV
 };
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
