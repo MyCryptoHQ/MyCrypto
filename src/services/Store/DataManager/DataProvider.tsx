@@ -34,11 +34,10 @@ export const DataProvider: React.FC = ({ children }) => {
   const legacyState = useSelector(getAppState);
 
   const resetAppDb = (newDb = initialLegacyState) => {
-    // resetDb(newDb); // Reset the persistence layer
     dispatch({
       type: 'RESET',
       payload: { data: newDb }
-    }); // Reset the Context
+    });
   };
 
   /*
