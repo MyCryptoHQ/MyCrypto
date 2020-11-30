@@ -33,7 +33,7 @@ describe('useNotifications', () => {
     expect(result.current.currentNotification).toBe(notification);
   });
 
-  it('displayNotification() dispatchs create action', () => {
+  it('displayNotification() dispatches create action', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [] });
     act(() =>
@@ -53,7 +53,7 @@ describe('useNotifications', () => {
     );
   });
 
-  it('dismissNotification() dispatchs update action', () => {
+  it('dismissNotification() dispatches update action', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [notification] });
@@ -67,7 +67,7 @@ describe('useNotifications', () => {
     );
   });
 
-  it('dismissCurrentNotification() dispatchs update action', () => {
+  it('dismissCurrentNotification() dispatches update action', () => {
     const notification = { ...fNotifications[0], dismissed: false, dateDismissed: undefined };
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [notification] });
