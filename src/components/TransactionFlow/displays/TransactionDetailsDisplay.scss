@@ -8,10 +8,7 @@
       flex-direction: column;
       align-items: flex-start;
     }
-    &:nth-child(even) {
-      //should actually pull GREY_LIGHTEST from v2/theme
-      background: #f8f8f8;
-    }
+    border-bottom: 1px solid #e8eaed;
     & > div {
       padding: 7px 10px;
     }
