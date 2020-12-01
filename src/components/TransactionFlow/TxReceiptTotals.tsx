@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Amount, AssetIcon } from '@components';
 import { default as Icon } from '@components/Icon';
 import { getFiat } from '@config/fiats';
-import { SPACING } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings } from '@types';
 import { convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
@@ -60,6 +60,7 @@ export const TxReceiptTotals = ({
         <div className="TransactionReceipt-row-column rightAligned">
           <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
+            fiatColor={COLORS.BLUE_SKY}
             assetValue={`${parseFloat(assetAmount).toFixed(6)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -77,6 +78,7 @@ export const TxReceiptTotals = ({
         <div className="TransactionReceipt-row-column rightAligned">
           <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
+            fiatColor={COLORS.BLUE_SKY}
             assetValue={`${feeFormatted} ${baseAsset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -98,6 +100,7 @@ export const TxReceiptTotals = ({
           <AssetIcon uuid={asset.uuid} size={'24px'} />
           {asset.type === 'base' ? (
             <Amount
+              fiatColor={COLORS.BLUE_SKY}
               assetValue={`${totalEtherFormatted} ${asset.ticker}`}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -107,6 +110,7 @@ export const TxReceiptTotals = ({
             />
           ) : (
             <Amount
+              fiatColor={COLORS.BLUE_SKY}
               assetValue={`${assetAmount} ${asset.ticker}`}
               bold={true}
               baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}

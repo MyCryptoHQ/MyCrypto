@@ -272,6 +272,7 @@ export const ConfirmTransactionUI = ({
         <AmountWrapper>
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
+            fiatColor={COLORS.BLUE_SKY}
             assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -288,6 +289,7 @@ export const ConfirmTransactionUI = ({
         <AmountWrapper>
           <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
           <Amount
+            fiatColor={COLORS.BLUE_SKY}
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -308,6 +310,7 @@ export const ConfirmTransactionUI = ({
             <>
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
+                fiatColor={COLORS.BLUE_SKY}
                 assetValue={`${totalEtherEgress} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
@@ -320,6 +323,7 @@ export const ConfirmTransactionUI = ({
             <>
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
+                fiatColor={COLORS.BLUE_SKY}
                 assetValue={`${amount} ${asset.ticker}`}
                 baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
                 fiat={{
@@ -346,6 +350,7 @@ export const ConfirmTransactionUI = ({
             <AmountWrapper>
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
+                fiatColor={COLORS.BLUE_SKY}
                 assetValue={`${ptxFee.amount!.toFixed(6)} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,
@@ -363,6 +368,7 @@ export const ConfirmTransactionUI = ({
             <AmountWrapper>
               <AssetIcon uuid={asset.uuid} size={'25px'} />
               <Amount
+                fiatColor={COLORS.BLUE_SKY}
                 assetValue={`${ptxFee.fee!.toFixed(6)} ${asset.ticker}`}
                 fiat={{
                   symbol: getFiat(settings).symbol,

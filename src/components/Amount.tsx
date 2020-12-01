@@ -32,10 +32,10 @@ const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
       : ``};
 `;
 
-const SCurrency = styled(Currency)`
+const SCurrency = styled(Currency)<{ fiatColor: string }>`
   font-size: 0.9em;
   span {
-    color: ${COLORS.BLUE_GREY};
+    color: ${(props) => props.fiatColor};
   }
   @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
     font-size: 1em;
@@ -50,18 +50,31 @@ interface Props {
     ticker: TTicker;
   };
   baseAssetValue?: string;
+  fiatColor?: string;
   bold?: boolean;
 }
 
 // @todo:
 // - accept BN instead of string for asset and fiat and define default decimals
-export default function Amount({ assetValue, fiat, baseAssetValue, bold = false }: Props) {
+export default function Amount({
+  assetValue,
+  fiat,
+  baseAssetValue,
+  fiatColor = COLORS.BLUE_GREY,
+  bold = false
+}: Props) {
   return (
     <SAmount>
       <Asset bold={bold}>{assetValue}</Asset>
       {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
       {fiat && (
-        <SCurrency amount={fiat.amount} symbol={fiat.symbol} ticker={fiat.ticker} decimals={2} />
+        <SCurrency
+          amount={fiat.amount}
+          symbol={fiat.symbol}
+          ticker={fiat.ticker}
+          decimals={2}
+          fiatColor={fiatColor}
+        />
       )}
     </SAmount>
   );
