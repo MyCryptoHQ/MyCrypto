@@ -28,7 +28,12 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
+import {
+  generateDeterministicAddressUUID,
+  isSameAddress,
+  makePendingTxReceipt,
+  TUseStateReducerFactory
+} from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
@@ -216,14 +221,15 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (state.contracts.find((item) => item.name === state.customContractName)) {
       throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
-
+    const uuid = generateDeterministicAddressUUID(state.network.id, state.contractAddress);
     const contract: ExtendedContract = createContract({
       abi: state.abi,
       address: state.contractAddress as TAddress,
       name: state.customContractName,
       label: state.customContractName,
       networkId: state.network.id,
-      isCustom: true
+      isCustom: true,
+      uuid
     });
     updateNetworkContractOptions();
     handleContractSelected(contract);

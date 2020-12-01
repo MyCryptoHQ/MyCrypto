@@ -15,6 +15,7 @@ export {
   updateAccounts
 } from './account.slice';
 export { createContact, destroyContact, updateContact } from './contact.slice';
+export { createContract, destroyContract } from './contract.slice';
 export {
   createNetworks,
   createNetwork,

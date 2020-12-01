@@ -1,32 +1,31 @@
 import { useContext } from 'react';
 
+import { createContract as createAContract, destroyContract, useDispatch } from '@store';
+
 import { DataContext } from '@services/Store';
-import { Contract, ExtendedContract, LSKeys, NetworkId, TAddress, TUuid } from '@types';
-import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
+import { ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
+import { isSameAddress } from '@utils';
 
 function useContracts() {
-  const { contracts, createActions } = useContext(DataContext);
-  const model = createActions(LSKeys.CONTRACTS);
+  const { contracts } = useContext(DataContext);
+  const dispatch = useDispatch();
 
   /**
    * Save a valid contract. We rely on static typing to verify
    * params.
    * @param contract
    */
-  const createContract = (contract: Contract): ExtendedContract => {
-    const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
-    const contractWithUUID: ExtendedContract = { ...contract, uuid };
-    model.create(contractWithUUID);
-    return contractWithUUID;
+  const createContract = (contract: ExtendedContract): ExtendedContract => {
+    dispatch(createAContract(contract));
+    return contract;
   };
 
   const deleteContract = (uuid: TUuid) => {
-    model.destroy(contracts.find((a) => a.uuid === uuid) as ExtendedContract);
+    dispatch(destroyContract(uuid));
   };
 
-  const getContractsByIds = (uuids: TUuid[]) => {
-    return uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean);
-  };
+  const getContractsByIds = (uuids: TUuid[]) =>
+    uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean);
 
   const getContractByAddress = (address: TAddress) =>
     contracts.find((x: ExtendedContract) => isSameAddress(x.address, address));
