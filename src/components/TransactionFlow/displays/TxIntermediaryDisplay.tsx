@@ -3,7 +3,8 @@ import React from 'react';
 import { Copyable } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Tooltip } from '@components';
+import { Icon, Tooltip } from '@components';
+import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 
 interface Props {
@@ -15,6 +16,12 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  div > button {
+    font-size: 16px;
+  }
+  svg > path {
+    fill: ${COLORS.BLUE_SKY};
+  }
 `;
 
 const IntermediaryDisplay = styled('div')`
@@ -39,11 +46,9 @@ const IntermediaryDisplayLabel = styled('div')`
 `;
 
 const IntermediaryDisplayContract = styled(Copyable)`
-  font-size: 16px;
   align-items: center;
   display: flex;
   flex-direction: row;
-  color: #282d32;
 `;
 
 function TxIntermediaryDisplay({ address, contractName }: Props) {
@@ -62,6 +67,7 @@ function TxIntermediaryDisplay({ address, contractName }: Props) {
               <IntermediaryDisplayContract text={address} isCopyable={true} />
             </div>
             <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')} />
+            <Icon type="questionWhite" />
           </Wrapper>
         </IntermediaryDisplay>
       )}
