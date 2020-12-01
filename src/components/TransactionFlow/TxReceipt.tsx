@@ -421,7 +421,7 @@ export const TxReceiptUI = ({
           </SubHeading>
         </div>
         <Box display="flex" alignSelf="center" justifyContent="flex-end">
-          <TxReceiptStatusBadge status={txStatus} />
+          <TxReceiptStatusBadge display="flex" status={txStatus} />
         </Box>
       </div>
 

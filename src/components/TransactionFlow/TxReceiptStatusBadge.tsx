@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { DisplayProps } from 'styled-system';
+
 import { Box, Icon } from '@components';
 import { ITxStatus } from '@types';
 
-export const TxReceiptStatusBadge = ({ status }: { status: ITxStatus }) => {
+export const TxReceiptStatusBadge = ({ status, display }: { status: ITxStatus } & DisplayProps) => {
   const icon = (() => {
     switch (status) {
       case ITxStatus.SUCCESS:
@@ -17,7 +19,7 @@ export const TxReceiptStatusBadge = ({ status }: { status: ITxStatus }) => {
     }
   })();
   return (
-    <Box as="span" display="flex" data-testid={status}>
+    <Box as="span" display={display} data-testid={status}>
       <Icon width="90" height="20" type={icon} />
     </Box>
   );
