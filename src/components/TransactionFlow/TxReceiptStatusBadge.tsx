@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from '@components';
+import { Box, Icon } from '@components';
 import { ITxStatus } from '@types';
 
 export const TxReceiptStatusBadge = ({ status }: { status: ITxStatus }) => {
@@ -17,8 +17,8 @@ export const TxReceiptStatusBadge = ({ status }: { status: ITxStatus }) => {
     }
   })();
   return (
-    <span data-testid={status}>
+    <Box as="span" display="flex" data-testid={status}>
       <Icon width="90" height="20" type={icon} />
-    </span>
+    </Box>
   );
 };

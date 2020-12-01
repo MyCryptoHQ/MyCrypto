@@ -10,7 +10,7 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Body, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
 import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
@@ -420,16 +420,16 @@ export const TxReceiptUI = ({
             </Body>
           </SubHeading>
         </div>
-        <div className="TransactionReceipt-details-row-column">
+        <Box display="flex" alignSelf="center" justifyContent="flex-end">
           <TxReceiptStatusBadge status={txStatus} />
-        </div>
+        </Box>
       </div>
 
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
             <SubHeading color={COLORS.BLUE_GREY} m="0">
-              {translate('TRANSACTION_ID')}
+              {translate('TX_HASH')}
               {': '}
               <Body as="span" color={COLORS.BLUE_GREY} fontWeight="normal">
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (

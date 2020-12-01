@@ -82,10 +82,6 @@
       &-column {
         &:first-child {
           font-weight: bold;
-
-          @media (min-width: 500px) {
-            flex: 1;
-          }
         }
         &:nth-child(2) {
           flex: 2;
