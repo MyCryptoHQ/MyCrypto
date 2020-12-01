@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
+import { deleteMembership, fetchError, useDispatch, useSelector } from '@store';
 import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import property from 'lodash/property';
@@ -78,6 +79,7 @@ import {
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
+import { setMemberships } from './store';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -158,6 +160,8 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
+  const dispatch = useDispatch();
+  const memberships = useSelector((state) => state.memberships.record);
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
@@ -177,7 +181,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts, assets]
   );
 
-  const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
+  // const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
 
   const membershipExpirations = memberships
     ? flatten(
@@ -244,7 +248,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
     )
       .catch(() => {
-        setMemberships(undefined);
+        dispatch(fetchError());
       })
       .then(nestedToBigNumberJS)
       .then((expiries) => {
@@ -259,9 +263,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               }))
           }))
           .filter((m) => m.memberships.length > 0);
-        setMemberships(
-          unionBy(newMemberships, memberships ? memberships : [], property('address'))
-        );
+        dispatch(setMemberships(newMemberships));
       });
   };
 
@@ -480,7 +482,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       updateSettingsAccounts(
         settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
       );
-      setMemberships((prevState) => prevState?.filter((s) => s.address !== account.address));
+      dispatch(deleteMembership(account.address));
     },
     restoreDeletedAccount: (accountId) => {
       const account = accountRestore[accountId];

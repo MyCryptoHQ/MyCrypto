@@ -5,10 +5,12 @@ import demoReducer from '@features/DevTools/slice';
 import { DataStore } from '@types';
 
 import legacyReducer from './legacy.reducer';
+import membershipSlice from './membership.slice';
 import { createPersistReducer } from './persist.config';
 
 const rootReducer = combineReducers({
   demo: demoReducer,
+  [membershipSlice.name]: membershipSlice.reducer,
   legacy: createPersistReducer(legacyReducer)
 });
 

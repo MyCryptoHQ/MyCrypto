@@ -32,3 +32,4 @@ export {
   updateAssets,
   addAssetsFromAPI
 } from './asset.slice';
+export { setMemberships, setMembership, deleteMembership, fetchError } from './membership.slice';
