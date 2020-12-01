@@ -17,6 +17,7 @@ interface Props {
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,10 +44,10 @@ export default function SwapFromToDiagram(props: Props) {
   return (
     <Wrapper>
       <AssetWrapper>
-        <AssetIcon uuid={fromUUID} size="24px" />
+        <AssetIcon uuid={fromUUID} size="40px" />
         <Currency
           bold={true}
-          fontSize={FONT_SIZE.SM}
+          fontSize={FONT_SIZE.XS}
           amount={fromAmount}
           uuid={fromUUID}
           ticker={fromSymbol}
@@ -55,10 +56,10 @@ export default function SwapFromToDiagram(props: Props) {
       </AssetWrapper>
       <Icon type="arrow-right" width="30px" height="21px" />
       <AssetWrapper>
-        <AssetIcon uuid={toUUID} size="24px" />
+        <AssetIcon uuid={toUUID} size="40px" />
         <Currency
           bold={true}
-          fontSize={FONT_SIZE.SM}
+          fontSize={FONT_SIZE.XS}
           amount={toAmount}
           uuid={toUUID}
           ticker={toSymbol}

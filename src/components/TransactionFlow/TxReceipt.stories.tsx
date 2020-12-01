@@ -160,7 +160,7 @@ export const transactionReceiptMembership = wrapInProvider(
 
 const swapDisplay: SwapDisplayData = {
   fromAsset: fAssets[0],
-  toAsset: fAssets[1],
+  toAsset: fAssets[10],
   fromAmount: bigify('10'),
   toAmount: bigify('0.5')
 };
