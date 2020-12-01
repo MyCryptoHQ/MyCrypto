@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, screen, simpleRender } from 'test-utils';
+import {
+  actionWithPayload,
+  fireEvent,
+  mockUseDispatch,
+  ProvidersWrapper,
+  screen,
+  simpleRender
+} from 'test-utils';
 
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ACTION_STATE, ActionTemplate, ExtendedUserAction } from '@types';
@@ -15,25 +22,27 @@ function getComponent(
 ) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            userActions: [] as ExtendedUserAction[],
-            createActions
-          } as any) as IDataContext
-        }
-      >
-        <StoreContext.Provider
+      <ProvidersWrapper>
+        <DataContext.Provider
           value={
             ({
               userActions: [] as ExtendedUserAction[],
-              createUserAction: jest.fn()
-            } as any) as any
+              createActions
+            } as any) as IDataContext
           }
         >
-          <ActionItem {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
+          <StoreContext.Provider
+            value={
+              ({
+                userActions: [] as ExtendedUserAction[],
+                createUserAction: jest.fn()
+              } as any) as any
+            }
+          >
+            <ActionItem {...props} />
+          </StoreContext.Provider>
+        </DataContext.Provider>
+      </ProvidersWrapper>
     </MemoryRouter>
   );
 }
@@ -43,28 +52,27 @@ const onActionClick = jest.fn();
 const defaultProps = { actionTemplate: actionTemplates[0], onActionClick };
 
 describe('ActionsItem', () => {
-  const mockCreate = jest.fn();
-  const createActions = jest.fn().mockReturnValue({
-    create: mockCreate
-  });
+  const mockDispatch = mockUseDispatch();
   test('display action item', async () => {
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
     expect(screen.getByText(new RegExp(defaultProps.actionTemplate.heading, 'i'))).toBeDefined();
   });
 
   test('call createUserAction', async () => {
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
-    expect(mockCreate).toHaveBeenCalledWith({
-      name: defaultProps.actionTemplate.name,
-      state: ACTION_STATE.NEW,
-      uuid: expect.any(String)
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        name: defaultProps.actionTemplate.name,
+        state: ACTION_STATE.NEW,
+        uuid: expect.any(String)
+      })
+    );
   });
 
   test('actionItem click triggers onActionClick', async () => {
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
     const actionItem = screen.getByText(new RegExp(defaultProps.actionTemplate.heading, 'i'))
       .parentElement!.parentElement!;

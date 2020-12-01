@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, screen, simpleRender } from 'test-utils';
+import {
+  actionWithPayload,
+  fireEvent,
+  mockUseDispatch,
+  ProvidersWrapper,
+  screen,
+  simpleRender
+} from 'test-utils';
 
 import { fAssets, fUserActions } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
@@ -14,31 +21,33 @@ import { actionTemplates } from '../constants';
 function getComponent(props: { actionTemplate: ActionTemplate }, createActions = jest.fn()) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            userActions: fUserActions,
-            assets: fAssets,
-            createActions
-          } as any) as IDataContext
-        }
-      >
-        <StoreContext.Provider
+      <ProvidersWrapper>
+        <DataContext.Provider
           value={
             ({
-              userAssets: [],
-              accounts: [],
-              uniClaims: [],
-              assets: () => [fAssets[1]],
-              ensOwnershipRecords: [],
               userActions: fUserActions,
-              createUserAction: jest.fn()
-            } as any) as any
+              assets: fAssets,
+              createActions
+            } as any) as IDataContext
           }
         >
-          <ActionDetails {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
+          <StoreContext.Provider
+            value={
+              ({
+                userAssets: [],
+                accounts: [],
+                uniClaims: [],
+                assets: () => [fAssets[1]],
+                ensOwnershipRecords: [],
+                userActions: fUserActions,
+                createUserAction: jest.fn()
+              } as any) as any
+            }
+          >
+            <ActionDetails {...props} />
+          </StoreContext.Provider>
+        </DataContext.Provider>
+      </ProvidersWrapper>
     </MemoryRouter>
   );
 }
@@ -61,12 +70,9 @@ describe('ActionsDetails', () => {
   });
 
   test('button click triggers userAction state update', async () => {
-    const mockUpdate = jest.fn();
-    const createActions = jest.fn().mockReturnValue({
-      update: mockUpdate
-    });
+    const mockDispatch = mockUseDispatch();
 
-    getComponent(defaultProps, createActions);
+    getComponent(defaultProps);
 
     const button = screen.getByText(
       new RegExp(defaultProps.actionTemplate.button.props!.content, 'i')
@@ -74,9 +80,8 @@ describe('ActionsDetails', () => {
 
     fireEvent.click(button);
 
-    expect(mockUpdate).toHaveBeenCalledWith(fUserActions[0].uuid, {
-      ...fUserActions[0],
-      state: ACTION_STATE.STARTED
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({ ...fUserActions[0], state: ACTION_STATE.STARTED })
+    );
   });
 });
