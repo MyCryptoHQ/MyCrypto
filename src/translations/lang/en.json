@@ -355,6 +355,7 @@
     "TRY_OLD_INTERFACE": "Try the old interface",
     "MANAGE_MEMBERSHIP": "View Membership",
     "MAX_TX_FEE": "Max TX Fee",
+    "X_MEMBERSHIP": "Membership",
     "MEMBERSHIP": "MyCrypto Membership",
     "MEMBERSHIP_DROPDOWN_PLACEHOLDER": "Select membership plan",
     "MEMBERSHIP_ACCORDION_FIRST_CONTENT": "The MyCrypto Membership is a monthly subscription that gives you additional features and helps to support MyCrypto’s future developments.",

@@ -17,7 +17,7 @@ const MembershipReceiptBanner = ({ membershipSelected }: Props) => {
     <div className="TransactionReceipt-row">
       <div className="TransactionReceipt-row-column">
         <Icon src={membershipSelected.icon} />
-        {translate('MEMBERSHIP')}
+        {translate('X_MEMBERSHIP')}
       </div>
       <div className="TransactionReceipt-row-column rightAligned">
         {translateRaw('EXPIRES_ON')}
