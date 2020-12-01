@@ -119,7 +119,7 @@ function TransactionDetailsDisplay({
               color={BLUE_BRIGHT}
               onClick={() => setShowDetails(!showDetails)}
             >
-              {showDetails ? `- ${translateRaw('HIDE')}` : `+ ${translateRaw('SEE_MORE')}`}{' '}
+              {showDetails ? `${translateRaw('SEE_FEWER')}` : `${translateRaw('SEE_MORE')}`}{' '}
               {translate('ACTION_8')}
             </SeeMoreDetailsButton>
           </div>
