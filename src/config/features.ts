@@ -40,9 +40,5 @@ export const FEATURE_FLAGS = {
   AAVE_TOKEN_MIGRATION: true,
   ANT_TOKEN_MIGRATION: true,
   GOLEM_TOKEN_MIGRATION: true,
-  CUSTOM_NETWORKS: IS_DEV,
-  // This features requires a landing page, same root host to be running simultaneously.
-  // While this can be expected in staging and in production we SHOULD not expect every developper
-  // to run both projects while working. Deactivate feature in dev by default.
-  MIGRATE_LS: !IS_DEV
+  CUSTOM_NETWORKS: IS_DEV
 };
