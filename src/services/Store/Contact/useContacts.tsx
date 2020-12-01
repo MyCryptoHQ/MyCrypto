@@ -17,7 +17,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress } from '@utils';
+import { generateUUID, isSameAddress } from '@utils';
 
 import { useContracts } from '../Contract';
 import { DataContext } from '../DataManager';
@@ -27,7 +27,7 @@ export interface IAddressBookContext {
   addressBookRestore: { [name: string]: ExtendedContact | undefined };
   createContact(contact: Contact): void;
   createContactWithID(uuid: TUuid, contact: Contact): void;
-  updateContact(uuid: TUuid, contact: ExtendedContact): void;
+  updateContact(contact: ExtendedContact): void;
   deleteContact(uuid: TUuid): void;
   getContactByAddress(address: string): ExtendedContact | undefined;
   getContactByAddressAndNetworkId(
@@ -58,12 +58,12 @@ function useContacts() {
     return contact;
   };
 
-  const createContact = (item: ExtendedContact) => {
-    dispatch(createAContact(item));
+  const createContact = (item: Contact, uuid: TUuid = generateUUID()) => {
+    dispatch(createAContact({ ...item, uuid }));
   };
 
-  const updateContact = (uuid: TUuid, item: ExtendedContact) => {
-    dispatch(updateAContact({ ...item, uuid }));
+  const updateContact = (item: ExtendedContact) => {
+    dispatch(updateAContact(item));
   };
 
   const deleteContact = (uuid: TUuid) => {
@@ -107,7 +107,7 @@ function useContacts() {
     }
 
     const { uuid, ...rest } = contactRecord!;
-    createContact({ ...rest, uuid });
+    createContact(rest, uuid);
     setContactRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
   };
 

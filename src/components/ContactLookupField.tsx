@@ -2,7 +2,6 @@ import React from 'react';
 
 import { findNextRecipientLabel, useContacts } from '@services/Store';
 import { IReceiverAddress, Network, TAddress } from '@types';
-import { generateUUID } from '@utils';
 import { useEffectOnce } from '@vendor';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';
@@ -32,8 +31,7 @@ const ContactLookupField = ({
       address: inputString,
       label,
       notes: '',
-      network: network.id,
-      uuid: generateUUID()
+      network: network.id
     });
     return {
       display: label,
@@ -50,8 +48,7 @@ const ContactLookupField = ({
       address: resolvedAddress,
       label,
       notes: '',
-      network: network.id,
-      uuid: generateUUID()
+      network: network.id
     });
     return {
       display: label,

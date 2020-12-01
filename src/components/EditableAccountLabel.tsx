@@ -5,15 +5,7 @@ import styled from 'styled-components';
 import { useUserActions } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import {
-  ACTION_NAME,
-  ACTION_STATE,
-  Contact,
-  ExtendedContact,
-  NetworkId,
-  TAddress,
-  TUuid
-} from '@types';
+import { ACTION_NAME, ACTION_STATE, Contact, ExtendedContact, NetworkId, TAddress } from '@types';
 
 import EditableText from './EditableText';
 
@@ -22,7 +14,7 @@ export interface Props {
   address: TAddress;
   networkId: NetworkId;
   createContact(contact: Contact): void;
-  updateContact(uuid: TUuid, contact: ExtendedContact): void;
+  updateContact(contact: ExtendedContact): void;
 }
 
 const SWrapper = styled.span`
@@ -48,7 +40,7 @@ const EditableAccountLabel = ({
         truncate={true}
         saveValue={(value) => {
           if (addressBookEntry) {
-            updateContact(addressBookEntry.uuid, { ...addressBookEntry, label: value });
+            updateContact({ ...addressBookEntry, label: value });
             updateLabelAction &&
               updateUserAction(updateLabelAction.uuid, {
                 ...updateLabelAction,

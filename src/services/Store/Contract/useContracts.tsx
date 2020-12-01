@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import { createContract as createAContract, destroyContract, useDispatch } from '@store';
 
 import { DataContext } from '@services/Store';
-import { ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
-import { isSameAddress } from '@utils';
+import { Contract, ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
+import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
   const { contracts } = useContext(DataContext);
@@ -15,9 +15,10 @@ function useContracts() {
    * params.
    * @param contract
    */
-  const createContract = (contract: ExtendedContract): ExtendedContract => {
-    dispatch(createAContract(contract));
-    return contract;
+  const createContract = (contract: Contract): ExtendedContract => {
+    const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
+    dispatch(createAContract({ ...contract, uuid }));
+    return { ...contract, uuid };
   };
 
   const deleteContract = (uuid: TUuid) => {

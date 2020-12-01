@@ -524,7 +524,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       newRawAccounts.forEach((rawAccount, idx) => {
         const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
         if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
-          updateContact(existingContact.uuid, {
+          updateContact({
             ...existingContact,
             label: newLabels[idx]
           });
@@ -568,7 +568,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
       const existingContact = getContactByAddressAndNetworkId(account.address, networkId);
       if (existingContact) {
-        updateContact(existingContact.uuid, {
+        updateContact({
           ...existingContact,
           label: findNextUnusedDefaultLabel(account.wallet)(contacts)
         });

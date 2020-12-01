@@ -46,7 +46,7 @@ describe('useContacts', () => {
     const { result } = renderUseContacts({
       contacts: fContacts
     });
-    result.current.updateContact(fContacts[0].uuid, {
+    result.current.updateContact({
       ...fContacts[0],
       label: 'My new label'
     });

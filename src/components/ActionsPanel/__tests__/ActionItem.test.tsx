@@ -34,8 +34,7 @@ function getComponent(
           <StoreContext.Provider
             value={
               ({
-                userActions: [] as ExtendedUserAction[],
-                createUserAction: jest.fn()
+                userActions: [] as ExtendedUserAction[]
               } as any) as any
             }
           >
