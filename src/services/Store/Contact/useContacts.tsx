@@ -1,6 +1,11 @@
 import { useContext, useState } from 'react';
 
-import { destroyContact, useDispatch } from '@store';
+import {
+  createContact as createAContact,
+  destroyContact,
+  updateContact as updateAContact,
+  useDispatch
+} from '@store';
 import isEmpty from 'lodash/isEmpty';
 
 import {
@@ -54,11 +59,11 @@ function useContacts() {
   };
 
   const createContact = (item: ExtendedContact) => {
-    dispatch(createContact(item));
+    dispatch(createAContact(item));
   };
 
   const updateContact = (uuid: TUuid, item: ExtendedContact) => {
-    dispatch(updateContact(uuid, item));
+    dispatch(updateAContact({ ...item, uuid }));
   };
 
   const deleteContact = (uuid: TUuid) => {
