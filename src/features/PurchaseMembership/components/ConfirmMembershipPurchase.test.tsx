@@ -56,6 +56,6 @@ describe('ConfirmMembershipPurchase', () => {
   test('it renders a single tx', async () => {
     const { getAllByText } = getComponent(defaultProps);
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
-    expect(getAllByText(translateRaw('MEMBERSHIP'))).toBeDefined();
+    expect(getAllByText(translateRaw('X_MEMBERSHIP'))).toBeDefined();
   });
 });

@@ -61,7 +61,7 @@ describe('MembershipReceipt', () => {
   test('it renders a single tx receipt', async () => {
     const { getByText, getAllByText } = getComponent(defaultProps);
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
-    expect(getByText(translateRaw('MEMBERSHIP'))).toBeDefined();
+    expect(getByText(translateRaw('X_MEMBERSHIP'))).toBeDefined();
     expect(
       getByText(MEMBERSHIP_CONFIG[IMembershipId.lifetime].contractAddress, { exact: false })
     ).toBeDefined();
@@ -72,6 +72,6 @@ describe('MembershipReceipt', () => {
       ...defaultProps,
       transactions: [fTxParcels[0], fTxParcels[0]]
     });
-    expect(getByText(translateRaw('MEMBERSHIP'))).toBeDefined();
+    expect(getByText(translateRaw('X_MEMBERSHIP'))).toBeDefined();
   });
 });
