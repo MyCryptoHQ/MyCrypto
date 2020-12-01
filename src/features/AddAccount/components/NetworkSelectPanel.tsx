@@ -58,7 +58,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const validNetwork = networks.some((n) => n.id === network);
 
   return (
-    <Box p="2.5em" height="629px">
+    <Box p="2.5em" height="629px" position="relative">
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translate('ADD_ACCOUNT_NETWORK_TITLE')}
       </Heading>
