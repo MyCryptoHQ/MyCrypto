@@ -115,6 +115,10 @@ const affiliateLinks: IExtUrl[] = [
   {
     name: 'POOLTOGETHER_REFERRAL',
     url: 'https://app.pooltogether.com/?referrer=0x3186f968aaa3a670354e33a9ad679d98858dda5b' as TURL
+  },
+  {
+    name: 'MYCRYPTO_WINTER_REFERRAL',
+    url: 'https://winter.mycrypto.com/?utm_source=mycrypto&utm_medium=banner&utm_campaign=winter' as TURL
   }
 ];
 
