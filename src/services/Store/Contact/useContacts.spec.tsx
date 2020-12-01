@@ -37,7 +37,8 @@ describe('useContacts', () => {
     const { result } = renderUseContacts({
       contacts: fContacts
     });
-    result.current.createContact(fContacts[0]);
+    const { uuid, ...contact } = fContacts[0];
+    result.current.createContact(contact, uuid);
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0]));
   });
 
