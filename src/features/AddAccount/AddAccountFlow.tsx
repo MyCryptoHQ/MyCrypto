@@ -15,7 +15,6 @@ import { NotificationTemplates, useNotifications } from '../NotificationsPanel';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import { getStories } from './stories';
 import { FormDataActionType as ActionType } from './types';
-import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter((selected) => selected.name === storyName)[0];

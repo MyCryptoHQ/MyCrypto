@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { NewTabLink, Spinner } from '@components';
+import { Box, Heading, NewTabLink, Spinner } from '@components';
 import { EXT_URLS } from '@config';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
@@ -85,11 +85,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
       );
     } else {
       return (
-        <div className="Panel">
-          <div className="Panel-title">
+        <Box p="2.5em">
+          <Heading fontSize="32px" textAlign="center" fontWeight="bold">
             {translate('UNLOCK_WALLET')}{' '}
             {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
-          </div>
+          </Heading>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">
               {translate('LEDGER_TIP')}
@@ -117,7 +117,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
               {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
             </div>
           </div>
-        </div>
+        </Box>
       );
     }
   }

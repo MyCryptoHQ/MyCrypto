@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { NetworkSelector } from '@components';
+import { Body, Box, Heading, NetworkSelector } from '@components';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { useNetworks } from '@services/Store';
 import { SPACING } from '@theme';
@@ -58,9 +58,13 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const validNetwork = networks.some((n) => n.id === network);
 
   return (
-    <div className="Panel">
-      <div className="Panel-title">{translate('ADD_ACCOUNT_NETWORK_TITLE')}</div>
-      <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELECT')}</div>
+    <Box p="2.5em" height="629px" position="relative">
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+        {translate('ADD_ACCOUNT_NETWORK_TITLE')}
+      </Heading>
+      <Body textAlign="center" fontSize="2" paddingTop="16px">
+        {translate('ADD_ACCOUNT_NETWORK_SELECT')}
+      </Body>
       <NetworkForm>
         <NetworkSelector
           network={network}
@@ -74,7 +78,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
           {translate('ADD_ACCOUNT_NETWORK_ACTION')}
         </SButton>
       </ButtonWrapper>
-    </div>
+    </Box>
   );
 }
 
