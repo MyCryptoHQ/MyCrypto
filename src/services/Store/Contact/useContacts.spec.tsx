@@ -5,19 +5,15 @@ import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils
 
 import { fContacts } from '@fixtures';
 import { ExtendedContact, TAddress } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useContacts from './useContacts';
 
-const renderUseContacts = ({
-  contacts = [] as ExtendedContact[],
-  createActions = jest.fn()
-} = {}) => {
+const renderUseContacts = ({ contacts = [] as ExtendedContact[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider
-        value={({ addressBook: contacts, createActions } as any) as IDataContext}
-      >
+      <DataContext.Provider value={({ addressBook: contacts } as any) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>
@@ -38,8 +34,9 @@ describe('useContacts', () => {
       contacts: fContacts
     });
     const { uuid, ...contact } = fContacts[0];
-    result.current.createContact(contact, uuid);
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0]));
+    result.current.createContact(contact);
+    const newUuid = generateDeterministicAddressUUID(contact.network, contact.address);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload({ ...contact, uuid: newUuid }));
   });
 
   it('updateContact() calls dispatch', () => {

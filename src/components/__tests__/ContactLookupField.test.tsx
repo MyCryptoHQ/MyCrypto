@@ -1,10 +1,18 @@
 import React from 'react';
 
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import {
+  actionWithPayload,
+  fireEvent,
+  mockUseDispatch,
+  ProvidersWrapper,
+  simpleRender,
+  waitFor
+} from 'test-utils';
 
 import { fContacts, fNetwork } from '@fixtures';
 import { DataContext } from '@services/Store';
 import { Contact, ExtendedContact, IReceiverAddress, TUuid } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
 
 import ContactLookupField from '../ContactLookupField';
 
@@ -40,22 +48,23 @@ function getComponent(
   };
 
   return simpleRender(
-    <DataContext.Provider
-      value={
-        ({
-          assets: [{ uuid: fNetwork.baseAsset }],
-          addressBook: contacts,
-          contracts: [],
-          createActions: jest.fn(() => ({ create: (c: ExtendedContact) => contacts.push(c) }))
-        } as unknown) as any
-      }
-    >
-      <ContactLookupField
-        {...props}
-        value={output.data.address}
-        setFieldValue={(_, value) => setFormValue(value)}
-      />
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider
+        value={
+          ({
+            assets: [{ uuid: fNetwork.baseAsset }],
+            addressBook: contacts,
+            contracts: []
+          } as unknown) as any
+        }
+      >
+        <ContactLookupField
+          {...props}
+          value={output.data.address}
+          setFieldValue={(_, value) => setFormValue(value)}
+        />
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
 }
 
@@ -78,6 +87,7 @@ describe('ContactLookupField', () => {
   });
 
   test('it adds unknown address to contact book and select it after blur', async () => {
+    const mockDispatch = mockUseDispatch();
     const address = mockMappedContacts[0].address;
     const contacts: ExtendedContact[] = [];
     const output = { data: { ...initialFormikValues } };
@@ -86,13 +96,20 @@ describe('ContactLookupField', () => {
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: address } });
     fireEvent.blur(input!);
-
-    expect(contacts).toHaveLength(1);
-    expect(output.data.address.value).toBe(address);
-    expect(output.data.address.display).toBe(contacts[0].label);
+    const uuid = generateDeterministicAddressUUID('Ropsten', address);
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        address,
+        label: 'Recipient 1',
+        network: 'Ropsten',
+        notes: '',
+        uuid
+      })
+    );
   });
 
   test('it adds unknown ens to contact book and select it by keypress enter', async () => {
+    const mockDispatch = mockUseDispatch();
     const contacts: ExtendedContact[] = [];
     const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
@@ -102,10 +119,16 @@ describe('ContactLookupField', () => {
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: ens } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
-
-    expect(contacts).toHaveLength(1);
-    expect(output.data.address.value).toBe(address);
-    expect(output.data.address.display).toBe(ens.split('.')[0]);
+    const uuid = generateDeterministicAddressUUID('Ropsten', address);
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        address,
+        label: 'eth',
+        network: 'Ropsten',
+        notes: '',
+        uuid
+      })
+    );
   });
 
   test('it select unresolved input and not add it into contacts book', async () => {

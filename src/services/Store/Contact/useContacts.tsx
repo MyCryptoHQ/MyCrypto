@@ -17,7 +17,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { generateUUID, isSameAddress } from '@utils';
+import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 import { useContracts } from '../Contract';
 import { DataContext } from '../DataManager';
@@ -58,7 +58,8 @@ function useContacts() {
     return contact;
   };
 
-  const createContact = (item: Contact, uuid: TUuid = generateUUID()) => {
+  const createContact = (item: Contact) => {
+    const uuid = generateDeterministicAddressUUID(item.network, item.address);
     dispatch(createAContact({ ...item, uuid }));
   };
 
@@ -107,7 +108,7 @@ function useContacts() {
     }
 
     const { uuid, ...rest } = contactRecord!;
-    createContact(rest, uuid);
+    createContact(rest);
     setContactRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
   };
 
