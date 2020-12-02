@@ -5,11 +5,11 @@ import pick from 'ramda/src/pick';
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
+import { makeTxItem } from '@helpers';
+import { TxParcel } from '@hooks';
 import { StoreContext, useAssets, useRates, useSettings } from '@services';
 import { translateRaw } from '@translations';
 import { ITxType, StoreAccount } from '@types';
-import { TxParcel } from '@utils';
-import { makeTxItem } from '@utils/transaction';
 
 import { stepsContent } from '../config';
 import { makeSwapTxConfig } from '../helpers';

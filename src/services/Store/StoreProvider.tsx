@@ -17,6 +17,7 @@ import {
   MembershipState,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
+import { makeFinishedTxReceipt } from '@helpers';
 import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
@@ -55,7 +56,6 @@ import {
   useInterval,
   weiToFloat
 } from '@utils';
-import { makeFinishedTxReceipt } from '@utils/transaction';
 import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
 import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';

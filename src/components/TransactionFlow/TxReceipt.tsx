@@ -16,6 +16,7 @@ import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { makeFinishedTxReceipt } from '@helpers';
 import {
   fetchGasPriceEstimates,
   getAssetByContractAndNetwork,
@@ -47,7 +48,6 @@ import {
 } from '@types';
 import { buildTxUrl, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
-import { makeFinishedTxReceipt } from '@utils/transaction';
 import { path } from '@vendor';
 
 import { FromToAccount, TransactionDetailsDisplay } from './displays';

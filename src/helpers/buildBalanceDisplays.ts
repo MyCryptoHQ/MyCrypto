@@ -2,8 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import { translateRaw } from '@translations';
 import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
-
-import { convertToFiatFromAsset, weiToFloat } from './convert';
+import { convertToFiatFromAsset, weiToFloat } from '@utils';
 
 const buildAccountDisplayBalances = (
   accounts: StoreAccount[],

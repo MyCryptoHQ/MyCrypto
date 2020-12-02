@@ -1,3 +1,4 @@
+import { makePendingTxReceipt } from '@helpers';
 import { useAccounts } from '@services';
 import { ProviderHandler } from '@services/EthService';
 import {
@@ -9,12 +10,7 @@ import {
   TAddress,
   TStepAction
 } from '@types';
-import {
-  hexWeiToString,
-  isWeb3Wallet,
-  makePendingTxReceipt,
-  TUseStateReducerFactory
-} from '@utils';
+import { hexWeiToString, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';

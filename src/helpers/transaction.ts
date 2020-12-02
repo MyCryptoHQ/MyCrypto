@@ -49,24 +49,23 @@ import {
   TAddress
 } from '@types';
 import {
+  bigify,
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther,
   fromTokenBase,
   gasPriceToBase,
+  getDecimalFromEtherUnit,
+  hexToNumber,
+  isTransactionDataEmpty,
   toWei
 } from '@utils';
-
-import { bigify } from './bigify';
-import { hexToNumber } from './formatters';
 import {
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
   inputNonceToHex
-} from './makeTransaction';
-import { getDecimalFromEtherUnit } from './units';
-import { isTransactionDataEmpty } from './validators';
+} from '@utils/makeTransaction';
 
 const N_DIV_2 = new BigNumber('0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0');
 

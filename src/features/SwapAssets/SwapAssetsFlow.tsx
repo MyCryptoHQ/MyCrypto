@@ -4,10 +4,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
+import { useTxMulti } from '@hooks';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
-import { bigify, useStateReducer, useTxMulti } from '@utils';
+import { bigify, useStateReducer } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
 
 import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';

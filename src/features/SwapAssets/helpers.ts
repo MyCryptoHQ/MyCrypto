@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { WALLET_STEPS } from '@components';
+import { appendGasPrice, appendSender } from '@helpers';
 import { DexService, getAssetByTicker, getAssetByUUID } from '@services';
 import {
   IHexStrTransaction,
@@ -16,7 +17,7 @@ import {
   StoreAccount,
   StoreAsset
 } from '@types';
-import { appendGasPrice, appendSender, hexToString, weiToFloat } from '@utils';
+import { hexToString, weiToFloat } from '@utils';
 
 import { IAssetPair, LAST_CHANGED_AMOUNT } from './types';
 
