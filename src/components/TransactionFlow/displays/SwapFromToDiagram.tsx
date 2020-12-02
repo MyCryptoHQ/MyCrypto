@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { AssetIcon, Currency, Icon } from '@components';
-import { FONT_SIZE, SPACING } from '@theme';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { TTicker, TUuid } from '@types';
 
 interface Props {
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin: 18px 0;
-  background: #f8f8f8;
+  background: ${COLORS.GREY_LIGHTEST};
 `;
 
 const AssetWrapper = styled.div`
