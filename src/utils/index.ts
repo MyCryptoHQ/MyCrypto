@@ -1,3 +1,7 @@
+/**
+ * Utility functions used throughout the App.
+ * Should only import dependencies, config, or types.
+ */
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {

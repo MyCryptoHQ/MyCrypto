@@ -1,3 +1,7 @@
+/**
+ * Helper functions used in components.
+ * @todo: replace by moving into relevant services or selectors.
+ */
 export { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';
 export {
   makePendingTxReceipt,
