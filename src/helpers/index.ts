@@ -16,3 +16,4 @@ export {
   makeTxItem,
   verifyTransaction
 } from './transaction';
+export { formatApproveTx } from './erc20';
