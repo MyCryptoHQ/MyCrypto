@@ -87,7 +87,7 @@ describe('TxStatus', () => {
   });
 
   test('When information is given in form fetching is done correctly', async () => {
-    const { getByText, container } = renderComponent();
+    const { getByText, getAllByText, container } = renderComponent();
     const selector = translateRaw('TX_STATUS');
     expect(getByText(selector)).toBeInTheDocument();
     await selectEvent.openMenu(screen.getByLabelText('Network'));
@@ -96,13 +96,15 @@ describe('TxStatus', () => {
       target: { value: TX_HASH }
     });
     fireEvent.click(container.querySelector('button')!);
-    await waitFor(() => expect(getByText(fAssets[1].ticker, { exact: false })).toBeInTheDocument());
+    await waitFor(() => expect(getAllByText(fAssets[1].ticker, { exact: false })).toHaveLength(3));
   });
 
   test('When information given in query string handles fetching correctly', async () => {
-    const { getByText } = renderComponent(`/tx-status?hash=${TX_HASH}&network=Ropsten`);
+    const { getByText, getAllByText } = renderComponent(
+      `/tx-status?hash=${TX_HASH}&network=Ropsten`
+    );
     const selector = translateRaw('TX_STATUS');
     expect(getByText(selector)).toBeInTheDocument();
-    await waitFor(() => expect(getByText(fAssets[1].ticker, { exact: false })).toBeInTheDocument());
+    await waitFor(() => expect(getAllByText(fAssets[1].ticker, { exact: false })).toHaveLength(3));
   });
 });

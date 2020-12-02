@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
+import { fAccount, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
 import { DataContext, StoreContext } from '@services/Store';
 import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
@@ -14,6 +14,7 @@ import ConfirmTokenMigration from '../components/TokenMigrationMultiTx';
 const defaultProps: ITxMultiConfirmProps = {
   flowConfig: repTokenMigrationConfig,
   currentTxIdx: 0,
+  account: fAccount,
   transactions: fTokenMigrationTxs(),
   onComplete: jest.fn()
 };

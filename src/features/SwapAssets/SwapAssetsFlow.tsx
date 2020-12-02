@@ -6,7 +6,7 @@ import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
-import { ITxHash, ITxSigned, TxParcel } from '@types';
+import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
 import { bigify, useStateReducer, useTxMulti } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
 
@@ -126,7 +126,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         backBtnText: translateRaw('SWAP'),
         component: transactions.length > 1 ? ConfirmSwapMultiTx : ConfirmSwap,
         props: {
-          assetPair,
+          flowConfig: assetPair,
           account,
           isSubmitting,
           transactions,
@@ -174,7 +174,13 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
 
   useEffect(() => {
     if (!canYield) return;
-    goToNextStep();
+    // Make sure to prepare single tx before showing to user
+    if (transactions.length === 1 && transactions[0].status === ITxStatus.PREPARING) {
+      prepareTx(transactions[0].txRaw);
+    } else {
+      // Go to next step after preparing tx for MTX
+      goToNextStep();
+    }
     stopYield();
   }, [canYield]);
 

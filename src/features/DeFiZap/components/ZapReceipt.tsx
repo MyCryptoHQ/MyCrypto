@@ -5,6 +5,7 @@ import { translateRaw } from '@translations';
 import { ITxConfig, ITxReceipt } from '@types';
 
 import { IZapConfig } from '../config';
+import { ZapReceiptBanner } from './ZapReceiptBanner';
 
 interface Props {
   txReceipt: ITxReceipt;
@@ -25,7 +26,7 @@ export default function ZapReceipt({
     <TxReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
-      zapSelected={zapSelected}
+      customComponent={() => <ZapReceiptBanner zapSelected={zapSelected} />}
       completeButtonText={translateRaw('INTERACT_ANOTHER')}
       resetFlow={resetFlow}
       onComplete={onComplete}

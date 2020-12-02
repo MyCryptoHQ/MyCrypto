@@ -58,11 +58,11 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
     asset,
     baseAsset,
     gasPrice: hexToString(gasPrice),
-    gasLimit,
+    gasLimit: hexToString(gasLimit),
     value: fromAmount,
     nonce,
     data,
-    rawTransaction: Object.assign({}, transaction, { chainId: network.chainId, to: address })
+    rawTransaction: Object.assign({}, transaction, { chainId: network.chainId })
   };
 
   return txConfig;

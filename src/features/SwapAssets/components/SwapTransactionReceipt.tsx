@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import pick from 'ramda/src/pick';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
+import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
 import { StoreContext, useAssets, useRates, useSettings } from '@services';
 import { translateRaw } from '@translations';
@@ -10,6 +11,7 @@ import { ITxType, StoreAccount } from '@types';
 import { TxParcel } from '@utils';
 import { makeTxItem } from '@utils/transaction';
 
+import { stepsContent } from '../config';
 import { makeSwapTxConfig } from '../helpers';
 import { IAssetPair, SwapDisplayData } from '../types';
 
@@ -55,6 +57,17 @@ export default function SwapTransactionReceipt({
 
   const fiat = getFiat(settings);
 
+  const customComponent = () => (
+    <SwapFromToDiagram
+      fromSymbol={swapDisplay.fromAsset.ticker}
+      toSymbol={swapDisplay.toAsset.ticker}
+      fromAmount={swapDisplay.fromAmount.toString()}
+      toAmount={swapDisplay.toAmount.toString()}
+      fromUUID={swapDisplay.fromAsset.uuid}
+      toUUID={swapDisplay.toAsset.uuid}
+    />
+  );
+
   return txReceipts.length === 1 ? (
     <TxReceipt
       txReceipt={txItems[0].txReceipt}
@@ -62,19 +75,20 @@ export default function SwapTransactionReceipt({
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      swapDisplay={swapDisplay}
+      customComponent={customComponent}
     />
   ) : (
     <MultiTxReceipt
       txType={ITxType.SWAP}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
+      steps={stepsContent}
       account={account}
       network={account.network}
       completeButtonText={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
-      swapDisplay={swapDisplay}
+      customComponent={customComponent}
       fiat={fiat}
       baseAssetRate={baseAssetRate}
     />

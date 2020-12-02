@@ -28,6 +28,7 @@ import twitterIcon from '@assets/icons/twitter.svg';
 import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import antLogo from '@assets/images/ant-logo.png';
+import arrowRight from '@assets/images/arrow-right.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
@@ -35,12 +36,19 @@ import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import check from '@assets/images/icn-check.svg';
 import experience from '@assets/images/icn-experience.svg';
+import feeIcon from '@assets/images/icn-fee.svg';
 import informational from '@assets/images/icn-info-blue.svg';
 import more from '@assets/images/icn-more.svg';
+import platformUsed from '@assets/images/icn-platform-used.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
+import sendIcon from '@assets/images/icn-send.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
 import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
 import openedEye from '@assets/images/icn-show-eye.svg';
+import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
+import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
+import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import membership from '@assets/images/membership/membership-none.svg';
@@ -62,6 +70,7 @@ const svgIcons = {
   'info-small': infoSmall,
   'opened-eye': openedEye,
   'closed-eye': closedEye,
+  'arrow-right': arrowRight,
 
   /* Tooltips*/
   informational,
@@ -103,7 +112,16 @@ const svgIcons = {
   slack,
   telegram,
   twitter,
-  check
+  check,
+
+  /* TX Receipt */
+  'status-badge-success': statusBadgeSuccess,
+  'status-badge-pending': statusBadgePending,
+  'status-badge-declined': statusBadgeDeclined,
+  'zapper-platform': platformUsed,
+  'tx-fee': feeIcon,
+  'tx-send': sendIcon,
+  'tx-sent': sentIcon
 };
 
 const pngIcons = {

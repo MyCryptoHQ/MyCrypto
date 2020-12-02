@@ -6,8 +6,9 @@ import { useAssets, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 import { makeTxItem } from '@utils/transaction';
 
-import { IMembershipConfig } from '../config';
+import { IMembershipConfig, stepsContent } from '../config';
 import { makePurchaseMembershipTxConfig } from '../helpers';
+import MembershipReceiptBanner from './MembershipReceiptBanner';
 
 export interface IMembershipPurchaseReceiptProps {
   account: StoreAccount;
@@ -38,26 +39,29 @@ export default function MembershipReceipt({
 
   const fiat = getFiat(settings);
 
+  const customComponent = () => <MembershipReceiptBanner membershipSelected={flowConfig} />;
+
   return txItems.length === 1 ? (
     <TxReceipt
       txReceipt={txItems.map(({ txReceipt }) => txReceipt)[0]}
       txConfig={txItems.map(({ txConfig }) => txConfig)[0]}
-      membershipSelected={flowConfig}
+      customComponent={customComponent}
       resetFlow={onComplete}
       onComplete={onComplete}
     />
   ) : (
     <MultiTxReceipt
       txType={ITxType.PURCHASE_MEMBERSHIP}
-      membershipSelected={flowConfig}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
+      steps={stepsContent}
       account={account}
       network={account.network}
       resetFlow={onComplete}
       onComplete={onComplete}
       fiat={fiat}
       baseAssetRate={baseAssetRate}
+      customComponent={customComponent}
     />
   );
 }

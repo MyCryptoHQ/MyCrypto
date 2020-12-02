@@ -1,4 +1,4 @@
-import { getAllByText, getByText } from '@testing-library/testcafe';
+import { getAllByTestId, getAllByText, getByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 
 import { resetFeatureFlags, setFeatureFlag } from './featureflag-utils';
@@ -23,7 +23,7 @@ test('Can fetch status of a successful TX', async (t) => {
 
   await t.expect(Selector('button').withText(getTransValueByKey('FETCH')).exists).eql(false);
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
-  await t.expect(getAllByText(getTransValueByKey('SUCCESS'))).ok();
+  await t.expect(getAllByTestId('SUCCESS')).ok();
 
   await resetFeatureFlags();
 });

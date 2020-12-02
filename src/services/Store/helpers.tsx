@@ -1,5 +1,6 @@
 import { bigNumberify } from 'ethers/utils';
 
+import { TOKEN_MIGRATIONS } from '@config';
 import { translateRaw } from '@translations';
 import {
   Asset,
@@ -67,11 +68,5 @@ export const isNotExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: Store
 
 export const isExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: StoreAsset): boolean =>
   (excludedAssetUuids || []).includes(asset.uuid);
-
-const TOKEN_MIGRATIONS = [
-  ITxType.REP_TOKEN_MIGRATION,
-  ITxType.AAVE_TOKEN_MIGRATION,
-  ITxType.ANT_TOKEN_MIGRATION
-];
 
 export const isTokenMigration = (type: ITxType) => TOKEN_MIGRATIONS.includes(type);

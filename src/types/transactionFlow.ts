@@ -1,6 +1,5 @@
 import { Brand } from 'utility-types';
 
-import { IZapConfig } from '@features/DeFiZap/config';
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
 import { IAssetPair } from '@features/SwapAssets/types';
 import {
@@ -89,8 +88,6 @@ export interface IStepComponentProps extends IDefaultStepComponentProps {
   signedTx?: string;
   txType?: ITxType;
   txQueryType?: TxQueryTypes;
-  zapSelected?: IZapConfig;
-  membershipSelected?: IMembershipConfig;
   children?: never;
 }
 
@@ -99,8 +96,6 @@ export interface ITxReceiptStepProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txQueryType?: TxQueryTypes;
-  zapSelected?: IZapConfig;
-  membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -181,5 +176,6 @@ export interface ITxMultiConfirmProps {
   currentTxIdx: number;
   transactions: TxParcel[];
   flowConfig: IFlowConfig;
+  account: StoreAccount;
   onComplete?(): void;
 }

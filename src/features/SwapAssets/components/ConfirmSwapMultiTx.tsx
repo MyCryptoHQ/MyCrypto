@@ -2,13 +2,12 @@ import React from 'react';
 
 import path from 'ramda/src/path';
 
-import step2SVG from '@assets/images/icn-receive.svg';
-import step1SVG from '@assets/images/icn-send.svg';
 import { Typography, VerticalStepper } from '@components';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { translateRaw } from '@translations';
 import { ITxMultiConfirmProps, ITxStatus } from '@types';
 
+import { stepsContent } from '../config';
 import { IAssetPair } from '../types';
 
 export default function ConfirmSwapMultiTx({
@@ -23,8 +22,7 @@ export default function ConfirmSwapMultiTx({
   const broadcasting = status.findIndex((s) => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
-    title: translateRaw('APPROVE_SWAP'),
-    icon: step1SVG,
+    ...stepsContent[0],
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.ticker }),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
@@ -32,8 +30,7 @@ export default function ConfirmSwapMultiTx({
   };
 
   const transferTx = {
-    title: translateRaw('COMPLETE_SWAP'),
-    icon: step2SVG,
+    ...stepsContent[1],
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
