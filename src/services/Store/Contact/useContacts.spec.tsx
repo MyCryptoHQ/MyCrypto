@@ -1,23 +1,23 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
+import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fContacts } from '@fixtures';
-import { ExtendedContact, LSKeys, TAddress, TUuid } from '@types';
-import { omit } from '@vendor';
+import { ExtendedContact, TAddress } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useContacts from './useContacts';
 
-const renderUseContacts = ({
-  contacts = [] as ExtendedContact[],
-  createActions = jest.fn()
-} = {}) => {
+const renderUseContacts = ({ contacts = [] as ExtendedContact[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ addressBook: contacts, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider value={({ addressBook: contacts } as any) as IDataContext}>
+        {' '}
+        {children}
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
   return renderHook(() => useContacts(), { wrapper });
 };
@@ -28,72 +28,53 @@ describe('useContacts', () => {
     expect(result.current.contacts).toEqual(fContacts);
   });
 
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseContacts({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.ADDRESS_BOOK);
+  it('createContact() calls dispatch', () => {
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseContacts({
+      contacts: fContacts
+    });
+    const { uuid, ...contact } = fContacts[0];
+    result.current.createContact(contact);
+    const newUuid = generateDeterministicAddressUUID(contact.network, contact.address);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload({ ...contact, uuid: newUuid }));
   });
 
-  it('createContact() calls model.create', () => {
-    const mockCreate = jest.fn();
+  it('updateContact() calls dispatch', () => {
+    const mockDispatch = mockUseDispatch();
     const { result } = renderUseContacts({
-      contacts: [],
-      createActions: jest.fn(() => ({ create: mockCreate }))
+      contacts: fContacts
     });
-    result.current.createContact(fContacts[0]);
-    expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining(omit(['uuid'], fContacts[0])));
-  });
-
-  it('createContactWithID() calls model.createWithId', () => {
-    const mockCreate = jest.fn();
-    const { result } = renderUseContacts({
-      contacts: [],
-      createActions: jest.fn(() => ({ createWithID: mockCreate }))
-    });
-    result.current.createContactWithID('uuid' as TUuid, fContacts[0]);
-    expect(mockCreate).toHaveBeenCalledWith(fContacts[0], 'uuid');
-  });
-
-  it('updateContact() calls model.update', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn(() => ({ update: mockUpdate }))
-    });
-    result.current.updateContact(fContacts[0].uuid, {
+    result.current.updateContact({
       ...fContacts[0],
       label: 'My new label'
     });
-    expect(mockUpdate).toHaveBeenCalledWith(fContacts[0].uuid, {
-      ...fContacts[0],
-      label: 'My new label'
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload({
+        ...fContacts[0],
+        label: 'My new label'
+      })
+    );
   });
 
-  it('deleteContact() calls model.destroy', () => {
-    const mockDestroy = jest.fn();
+  it('deleteContact() calls dispatch', () => {
+    const mockDispatch = mockUseDispatch();
     const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn(() => ({ destroy: mockDestroy }))
+      contacts: fContacts
     });
-    act(() => {
-      result.current.deleteContact(fContacts[0].uuid);
-    });
-    expect(mockDestroy).toHaveBeenCalledWith(fContacts[0]);
+    result.current.deleteContact(fContacts[0].uuid);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0].uuid));
   });
 
   it('getContactByAddress()', () => {
     const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn()
+      contacts: fContacts
     });
     expect(result.current.getContactByAddress(fContacts[0].address as TAddress)).toBe(fContacts[0]);
   });
 
   it('getContactByAddressAndNetworkId()', () => {
     const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn()
+      contacts: fContacts
     });
     expect(
       result.current.getContactByAddressAndNetworkId(
@@ -105,8 +86,7 @@ describe('useContacts', () => {
 
   it('getAccountLabel()', () => {
     const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn()
+      contacts: fContacts
     });
     expect(
       result.current.getAccountLabel({
@@ -116,20 +96,18 @@ describe('useContacts', () => {
     ).toBe(fContacts[1].label);
   });
 
-  it('restoreDeletedContact() calls model.createWithID', () => {
-    const mockCreate = jest.fn();
-    const mockDestroy = jest.fn();
+  it('restoreDeletedContact() calls dispatch', () => {
+    const mockDispatch = mockUseDispatch();
     const { result } = renderUseContacts({
-      contacts: fContacts,
-      createActions: jest.fn(() => ({ createWithID: mockCreate, destroy: mockDestroy }))
+      contacts: fContacts
     });
     act(() => {
       result.current.deleteContact(fContacts[0].uuid);
     });
-    expect(mockDestroy).toHaveBeenCalledWith(fContacts[0]);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0].uuid));
     act(() => {
       result.current.restoreDeletedContact(fContacts[0].uuid);
     });
-    expect(mockCreate).toHaveBeenCalledWith(fContacts[0], fContacts[0].uuid);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0].uuid));
   });
 });

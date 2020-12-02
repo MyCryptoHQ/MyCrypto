@@ -18,14 +18,14 @@ import {
 import IconArrow from '@components/IconArrow';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { ExtendedContact, Contact as IContact, TUuid } from '@types';
+import { ExtendedContact, TUuid } from '@types';
 
 interface Props {
   contacts: ExtendedContact[];
   contactRestore: { [name: string]: ExtendedContact | undefined };
   toggleFlipped(): void;
   deleteContact(uuid: string): void;
-  updateContact(uuid: string, addressBooksData: IContact): void;
+  updateContact(addressBooksData: ExtendedContact): void;
   restoreDeletedContact(id: TUuid): void;
 }
 
@@ -246,7 +246,7 @@ export default function AddressBook({
           <SEditableText
             truncate={true}
             value={label}
-            saveValue={(value) => updateContact(uuid, { address, label: value, network, notes })}
+            saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
           />
         </Label>,
         <EthAddress key={1} address={address} truncate={true} isCopyable={true} />,
@@ -257,7 +257,7 @@ export default function AddressBook({
           key={3}
           truncate={true}
           value={notes}
-          saveValue={(value) => updateContact(uuid, { address, label, network, notes: value })}
+          saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
         />,
         <DeleteButton key={4} onClick={() => setDeletingIndex(index)} icon="exit" />
       ]

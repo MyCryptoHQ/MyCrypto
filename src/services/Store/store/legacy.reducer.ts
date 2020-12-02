@@ -18,6 +18,8 @@ import assetSlice, {
   updateAsset,
   updateAssets
 } from './asset.slice';
+import contactSlice, { createContact, destroyContact, updateContact } from './contact.slice';
+import contractSlice, { createContract, destroyContract } from './contract.slice';
 import { initialLegacyState } from './legacy.initialState';
 import networkSlice, {
   createNetwork,
@@ -28,6 +30,11 @@ import networkSlice, {
 } from './network.slice';
 import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 import passwordSlice, { setPassword } from './password.slice';
+import userActionSlice, {
+  createUserAction,
+  destroyUserAction,
+  updateUserAction
+} from './userAction.slice';
 
 export enum ActionT {
   ADD_ITEM = 'ADD_ITEM',
@@ -140,6 +147,32 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
       return {
         ...state,
         [LSKeys.ASSETS]: assetSlice.reducer(state.assets, action)
+      };
+    }
+
+    case createContact.type:
+    case updateContact.type:
+    case destroyContact.type: {
+      return {
+        ...state,
+        [LSKeys.ADDRESS_BOOK]: contactSlice.reducer(state.addressBook, action)
+      };
+    }
+
+    case createUserAction.type:
+    case updateUserAction.type:
+    case destroyUserAction.type: {
+      return {
+        ...state,
+        [LSKeys.USER_ACTIONS]: userActionSlice.reducer(state.userActions, action)
+      };
+    }
+
+    case createContract.type:
+    case destroyContract.type: {
+      return {
+        ...state,
+        [LSKeys.CONTRACTS]: contractSlice.reducer(state.contracts, action)
       };
     }
 

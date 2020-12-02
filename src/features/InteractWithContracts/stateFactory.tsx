@@ -216,7 +216,6 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     if (state.contracts.find((item) => item.name === state.customContractName)) {
       throw new Error(translateRaw('INTERACT_SAVE_ERROR_NAME_EXISTS'));
     }
-
     const contract: ExtendedContract = createContract({
       abi: state.abi,
       address: state.contractAddress as TAddress,
