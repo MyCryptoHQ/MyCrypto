@@ -8,6 +8,7 @@ interface CheckboxProps {
   label?: string;
   checked: boolean;
   icon?: any;
+  marginLeft?: string;
   className?: string;
   onChange(): void;
 }
@@ -120,7 +121,8 @@ export default function Checkbox({
   label,
   checked,
   onChange,
-  icon
+  icon,
+  marginLeft = '15px'
 }: CheckboxProps) {
   return (
     <SContainer className={className} onClick={onChange}>
@@ -134,7 +136,7 @@ export default function Checkbox({
         />
         <span data-for="custom-checkbox" />
       </SLabel>
-      <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '15px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', marginLeft }}>
         {icon && <SIconContainer>{icon()}</SIconContainer>}
         {label && (
           <SLabelContainer>
