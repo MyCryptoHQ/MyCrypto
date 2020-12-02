@@ -6,7 +6,6 @@
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
   "modulePathIgnorePatterns": ["<rootDir>/dist", "<rootDir>/src/types", "<rootDir>/src/assets"],
   "moduleNameMapper": {
-    "shared/(.*)": "<rootDir>/shared/$1",
     "test-utils": "<rootDir>/jest_config/test-utils",
     "fixtures": "<rootDir>/jest_config/__fixtures__",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest_config/__mocks__/fileMock.ts",

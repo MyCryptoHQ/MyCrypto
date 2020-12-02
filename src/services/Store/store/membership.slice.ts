@@ -1,5 +1,5 @@
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BigNumber from 'bignumber.js';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
@@ -9,10 +9,11 @@ import {
   MEMBERSHIP_CONTRACTS,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
-import { ProviderHandler } from '@services/EthService';
-import { StoreAccount, TAddress, WalletId } from '@types';
+import { ProviderHandler } from '@services/EthService/network/providerHandler';
+import { Network, StoreAccount, TAddress, WalletId } from '@types';
 
 import { nestedToBigNumberJS } from '../BalanceService';
+import { AppState } from './reducer';
 
 export const initialState = {
   record: [] as MembershipStatus[],
@@ -23,7 +24,6 @@ const slice = createSlice({
   name: 'memberships',
   initialState,
   reducers: {
-    fetchMemberships() {},
     setMemberships(state, action: PayloadAction<MembershipStatus[]>) {
       const addresses = new Set(action.payload.map((item) => item.address));
       state.record = [
@@ -44,11 +44,15 @@ const slice = createSlice({
   }
 });
 
+export const fetchMemberships = createAction<StoreAccount[] | undefined>(
+  `${slice.name}/fetchMemberships`
+);
+
 export function* rootSaga() {
-  yield all([takeLatest(slice.actions.fetchMemberships.name, fetchMembershipsSaga)]);
+  yield all([takeLatest(fetchMemberships.type, fetchMembershipsSaga)]);
 }
 
-export function* fetchMembershipsSaga({ payload }: PayloadAction<StoreAccount[]>) {
+export function* fetchMembershipsSaga({ payload }: PayloadAction<StoreAccount[] | undefined>) {
   const accounts: StoreAccount[] = yield select((state: AppState) => state.legacy.accounts);
   const relevantAccounts = (payload ?? accounts)
     .filter((account) => account.networkId === DEFAULT_NETWORK)
@@ -56,10 +60,11 @@ export function* fetchMembershipsSaga({ payload }: PayloadAction<StoreAccount[]>
 
   const networks: Network[] = yield select((state: AppState) => state.legacy.networks);
   const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
-  if (!network || relevantAccounts.length === 0) return;
+  // if (!network || relevantAccounts.length === 0) return;
 
   const provider = new ProviderHandler(network);
 
+  console.log('call getUnlockTimestamps');
   try {
     const timestamps = yield call(
       getUnlockTimestamps,
@@ -69,6 +74,7 @@ export function* fetchMembershipsSaga({ payload }: PayloadAction<StoreAccount[]>
         contracts: Object.values(MEMBERSHIP_CONFIG).map((membership) => membership.contractAddress)
       }
     );
+    console.log(timestamps);
     const expiries = nestedToBigNumberJS(timestamps);
 
     const newMemberships = Object.keys(expiries)
@@ -83,6 +89,7 @@ export function* fetchMembershipsSaga({ payload }: PayloadAction<StoreAccount[]>
       }))
       .filter((m) => m.memberships.length > 0);
 
+    //console.log(newMemberships);
     yield put(slice.actions.setMemberships(newMemberships));
   } catch {
     yield put(slice.actions.fetchError());

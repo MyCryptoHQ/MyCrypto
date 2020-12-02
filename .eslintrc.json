@@ -43,6 +43,14 @@
         "ignoreDeclarationSort": true,
         "allowSeparatedGroups": true
       }
+    ],
+    // Configure Jest to recognise react-saga-test-plan assertions
+    // https://github.com/jfairbank/redux-saga-test-plan/issues/329
+    "jest/expect-expect": [
+      "error",
+      {
+        "assertFunctionNames": ["expect", "expectSaga", "testSaga"]
+      }
     ]
   },
   "overrides": [

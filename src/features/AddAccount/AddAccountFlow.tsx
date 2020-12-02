@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 
+import { fetchMemberships, useDispatch } from '@store';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -41,15 +42,10 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
     - AddAccountFormProvider handles the form state and is accessed by each story.
 */
 const AddAccountFlow = withRouter(({ history, match }) => {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
-  const {
-    scanAccountTokens,
-    scanTokens,
-    scanForMemberships,
-    addMultipleAccounts,
-    accounts
-  } = useContext(StoreContext);
+  const { scanAccountTokens, scanTokens, addMultipleAccounts, accounts } = useContext(StoreContext);
   const { displayNotification } = useNotifications();
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
@@ -99,12 +95,12 @@ const AddAccountFlow = withRouter(({ history, match }) => {
                 address: newAccounts[0].address
               });
               scanAccountTokens(newAccounts[0]);
-              scanForMemberships([newAccounts[0]]);
+              dispatch(fetchMemberships([newAccounts[0]]));
             }
           : () => {
               displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
               scanTokens();
-              scanForMemberships([...newAccounts]);
+              dispatch(fetchMemberships([...newAccounts]));
             };
       handleAddition();
       history.push(ROUTE_PATHS.DASHBOARD.path);
