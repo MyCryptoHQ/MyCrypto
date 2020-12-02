@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { CRYPTOSCAMDB, EXT_URLS, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { translateRaw } from '@translations';
 import './Linkset.scss';
-import useAnalytics from '@utils/useAnalytics';
 
 const LINK_COLUMNS = [
   {

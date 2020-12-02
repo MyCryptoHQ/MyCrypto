@@ -2,10 +2,11 @@ import { useContext } from 'react';
 
 import { createNotification, updateNotification, useDispatch } from '@store';
 
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { DataContext } from '@services/Store';
 import { ExtendedNotification } from '@types';
-import { generateUUID, getTimeDifference, notUndefined, useAnalytics } from '@utils';
+import { generateUUID, getTimeDifference, notUndefined } from '@utils';
 import { filter, last, pipe, sort } from '@vendor';
 
 import { notificationsConfigs } from './constants';

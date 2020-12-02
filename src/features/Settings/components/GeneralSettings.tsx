@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 import { DashboardPanel, SubHeading, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISettings, TFiatTicker } from '@types';
-import { useAnalytics } from '@utils';
 
 const Divider = styled.div`
   height: 2px;

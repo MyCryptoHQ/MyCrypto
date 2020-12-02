@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { useAnalytics } from '@hooks';
 import {
   ANALYTICS_CATEGORIES,
   StoreContext,
@@ -17,7 +18,7 @@ import {
 } from '@services';
 import { translateRaw } from '@translations';
 import { NetworkId } from '@types';
-import { isVoid, noOp, useAnalytics } from '@utils';
+import { isVoid, noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 
 import { fetchTxStatus, makeTx } from './helpers';

@@ -69,7 +69,6 @@ export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';
 export * from './encryption';
-export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
 export { isSameAddress } from './isSameAddress';
 export { default as isFiatTicker } from './isFiatTicker';

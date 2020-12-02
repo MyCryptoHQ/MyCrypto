@@ -3,9 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS } from '@theme';
-import { useAnalytics } from '@utils';
 
 import { ads } from './constants';
 

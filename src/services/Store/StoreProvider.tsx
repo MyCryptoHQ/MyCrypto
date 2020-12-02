@@ -18,6 +18,7 @@ import {
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
+import { useAnalytics } from '@hooks';
 import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
@@ -52,7 +53,6 @@ import {
   isSameAddress,
   multiplyBNFloats,
   sortByLabel,
-  useAnalytics,
   useInterval,
   weiToFloat
 } from '@utils';

@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useState } from 'react';
 
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { subscribeToMailingList } from '@services/ApiService';
 import translate, { translateRaw } from '@translations';
-import { useAnalytics } from '@utils';
 
 const Subscribe: FC = () => {
   const [emailValue, setEmailValue] = useState('');
