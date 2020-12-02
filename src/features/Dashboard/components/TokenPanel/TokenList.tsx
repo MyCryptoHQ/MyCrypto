@@ -3,9 +3,19 @@ import React from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AssetIcon, DashboardPanel, Icon, Spinner, Tooltip } from '@components';
-import { FONT_SIZE, SPACING } from '@theme';
-import { translateRaw } from '@translations';
+import {
+  AssetIcon,
+  Body,
+  DashboardPanel,
+  Heading,
+  Icon,
+  RouterLink,
+  Spinner,
+  Tooltip
+} from '@components';
+import { ROUTE_PATHS } from '@config';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
 import { StoreAsset } from '@types';
 import { convertToFiatFromAsset } from '@utils';
 
@@ -114,26 +124,48 @@ export function TokenList(props: TokenListProps) {
         </SpinnerWrapper>
       ) : (
         <TokenListWrapper>
-          {sortedTokens.map((token) => (
-            <Token key={token.uuid}>
-              <Asset>
-                <AssetIcon uuid={token.uuid} size={'26px'} />
-                <AssetName>{token.name}</AssetName>
-              </Asset>
-              <TokenValueWrapper>
-                {showValue && <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>}
-                <MoreIcon
-                  type="more"
-                  height="24px"
-                  alt="More"
-                  onClick={() => {
-                    setShowDetailsView(true);
-                    setCurrentToken(token);
+          {sortedTokens.length > 0 ? (
+            sortedTokens.map((token) => (
+              <Token key={token.uuid}>
+                <Asset>
+                  <AssetIcon uuid={token.uuid} size={'26px'} />
+                  <AssetName>{token.name}</AssetName>
+                </Asset>
+                <TokenValueWrapper>
+                  {showValue && (
+                    <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>
+                  )}
+                  <MoreIcon
+                    type="more"
+                    height="24px"
+                    alt="More"
+                    onClick={() => {
+                      setShowDetailsView(true);
+                      setCurrentToken(token);
+                    }}
+                  />
+                </TokenValueWrapper>
+              </Token>
+            ))
+          ) : (
+            <>
+              <Heading color={COLORS.BLUE_GREY} textAlign="center" fontWeight="bold">
+                {translate('NO_TOKENS_HEADER')}
+              </Heading>
+              <Body color={COLORS.BLUE_GREY} textAlign="center">
+                <Trans
+                  id="NO_TOKENS_CONTENT"
+                  variables={{
+                    $link: () => (
+                      <RouterLink to={ROUTE_PATHS.SWAP.path}>
+                        {translateRaw('GET_SOME_HERE')}
+                      </RouterLink>
+                    )
                   }}
                 />
-              </TokenValueWrapper>
-            </Token>
-          ))}
+              </Body>
+            </>
+          )}
         </TokenListWrapper>
       )}
     </TokenDashboardPanel>

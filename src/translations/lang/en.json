@@ -977,6 +977,9 @@
     "BASE_ASSET_PRICE": "Base Asset Price",
     "ASSET_PRICE": "Asset Price",
     "SEND_AMOUNT": "Send Amount",
-    "PENDING_STATE": "(pending)"
+    "PENDING_STATE": "(pending)",
+    "NO_TOKENS_HEADER": "No Tokens Found",
+    "NO_TOKENS_CONTENT": "It looks like you don't have any tokens in your selected wallets. $link",
+    "GET_SOME_HERE": "Get some here!"
   }
 }
