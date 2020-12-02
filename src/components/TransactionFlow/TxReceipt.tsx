@@ -436,7 +436,7 @@ export const TxReceiptUI = ({
                   <LinkOut
                     inline={true}
                     fontColor={COLORS.BLUE_GREY}
-                    fontSize="14px"
+                    fontSize="16px"
                     text={displayTxReceipt.hash}
                     truncate={truncate}
                     link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
