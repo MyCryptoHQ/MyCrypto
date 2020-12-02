@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { ProvidersWrapper } from 'test-utils';
+
 import { Fiats } from '@config';
 import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
@@ -37,11 +39,13 @@ const handleTxSpeedUpRedirect = noOp;
 export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider
-    value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
-  >
-    {component}
-  </DataContext.Provider>
+  <ProvidersWrapper>
+    <DataContext.Provider
+      value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
+    >
+      {component}
+    </DataContext.Provider>
+  </ProvidersWrapper>
 );
 
 export const transactionReceiptPending = wrapInProvider(

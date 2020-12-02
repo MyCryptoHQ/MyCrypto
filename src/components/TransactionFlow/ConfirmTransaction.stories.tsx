@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { ProvidersWrapper } from 'test-utils';
+
 import { ZapReceiptBanner } from '@features/DeFiZap';
 import { IZapConfig, IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
 import { MembershipReceiptBanner } from '@features/PurchaseMembership';
@@ -29,11 +31,13 @@ const onComplete = noOp;
 export default { title: 'ConfirmTx' };
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider
-    value={({ createActions: noOp, userActions: [], assets: fAssets } as unknown) as IDataContext}
-  >
-    {component}
-  </DataContext.Provider>
+  <ProvidersWrapper>
+    <DataContext.Provider
+      value={({ createActions: noOp, userActions: [], assets: fAssets } as unknown) as IDataContext}
+    >
+      {component}
+    </DataContext.Provider>
+  </ProvidersWrapper>
 );
 
 export const confirmTransaction = wrapInProvider(
