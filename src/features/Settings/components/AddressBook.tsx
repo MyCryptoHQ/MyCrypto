@@ -241,7 +241,11 @@ export default function AddressBook({
     overlayRows: overlayRowsFlat,
     body: displayAddressBook.map(
       ({ uuid, address, label, network, notes }: ExtendedContact, index) => [
-        <Label key={0}>
+        // Eslint requires a key because it identifies a jsx element in an array.
+        // CollapsibleTable uses an array for mobile display
+        // When displayed as a row, the primary row key is provided by AbstractTable
+        /* eslint-disable react/jsx-key */
+        <Label>
           <SIdenticon address={address} />
           <SEditableText
             truncate={true}
@@ -249,17 +253,15 @@ export default function AddressBook({
             saveValue={(value) => updateContact(uuid, { address, label: value, network, notes })}
           />
         </Label>,
-        <EthAddress key={1} address={address} truncate={true} isCopyable={true} />,
-        <Network key={2} color="#a682ff">
-          {network}
-        </Network>,
+        <EthAddress address={address} truncate={true} isCopyable={true} />,
+        <Network color="#a682ff">{network}</Network>,
         <EditableText
-          key={3}
           truncate={true}
           value={notes}
           saveValue={(value) => updateContact(uuid, { address, label, network, notes: value })}
         />,
-        <DeleteButton key={4} onClick={() => setDeletingIndex(index)} icon="exit" />
+        <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
+        /* eslint-enable react/jsx-key */
       ]
     ),
     config: {
