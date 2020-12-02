@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Button, Icon, Identicon } from '@mycrypto/ui';
+import { Button, Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import {
   DashboardPanel,
@@ -73,6 +73,14 @@ const SEditableText = styled(EditableText)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: inherit;
   }
+`;
+
+const HeaderAlignment = styled.div`
+  ${(props: { align?: string }) => css`
+    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+      text-align: ${props.align || 'inherit'};
+    }
+  `};
 `;
 
 type ISortTypes = 'label' | 'label-reverse' | 'address' | 'address-reverse';
@@ -183,12 +191,13 @@ export default function AddressBook({
 
   const addressBookTable = {
     head: [
-      translateRaw('ADDRESSBOOK_FAVORITE'),
       convertColumnToClickable('ADDRESSBOOK_LABEL'),
       convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
-      translateRaw('ADDRESSBOOK_REMOVE')
+      <HeaderAlignment key={'ADDRESSBOOK_REMOVE'} align="center">
+        {translateRaw('ADDRESSBOOK_REMOVE')}
+      </HeaderAlignment>
     ],
     overlay: (rowIndex: number): JSX.Element => {
       if (!overlayRows) return <></>;
@@ -232,8 +241,7 @@ export default function AddressBook({
     overlayRows: overlayRowsFlat,
     body: displayAddressBook.map(
       ({ uuid, address, label, network, notes }: ExtendedContact, index) => [
-        <Icon key={0} icon="star" />,
-        <Label key={1}>
+        <Label key={0}>
           <SIdenticon address={address} />
           <SEditableText
             truncate={true}
@@ -241,17 +249,17 @@ export default function AddressBook({
             saveValue={(value) => updateContact(uuid, { address, label: value, network, notes })}
           />
         </Label>,
-        <EthAddress key={2} address={address} truncate={true} isCopyable={true} />,
-        <Network key={3} color="#a682ff">
+        <EthAddress key={1} address={address} truncate={true} isCopyable={true} />,
+        <Network key={2} color="#a682ff">
           {network}
         </Network>,
         <EditableText
-          key={4}
+          key={3}
           truncate={true}
           value={notes}
           saveValue={(value) => updateContact(uuid, { address, label, network, notes: value })}
         />,
-        <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
+        <DeleteButton key={4} onClick={() => setDeletingIndex(index)} icon="exit" />
       ]
     ),
     config: {

@@ -547,6 +547,7 @@ const BuildAccountTable = (
           <PrivacyCheckBox
             key={index}
             name={'Private'}
+            marginLeft="0"
             checked={account.isPrivate || false}
             onChange={() => toggleAccountPrivacy(account.uuid)}
           />
