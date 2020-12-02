@@ -127,14 +127,14 @@ function TransactionDetailsDisplay({
         {showDetails && (
           <div className="TransactionDetails-content">
             {status && (
-              <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">{translateRaw('TX_STATUS')}:</div>
                 <div className="TransactionDetails-row-column">
                   <TxReceiptStatusBadge status={status} />
                 </div>
               </div>
             )}
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('TIMESTAMP')}:</div>
               <div className="TransactionDetails-row-column">
                 {timestamp !== 0 && timestamp !== undefined
@@ -142,25 +142,25 @@ function TransactionDetailsDisplay({
                   : translate('PENDING_STATE')}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('X_SENDER')}:</div>
               <div className="TransactionDetails-row-column">
                 <EthAddress address={sender.address} truncate={true} disableTooltip={true} />
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
               <div className="TransactionDetails-row-column">
                 <EthAddress address={recipient} truncate={true} disableTooltip={true} />
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('SEND_AMOUNT')}:</div>
               <div className="TransactionDetails-row-column">{`${parseFloat(assetAmount).toFixed(
                 6
               )} ${asset.ticker}`}</div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">
                 {translateRaw('TRANSACTION_FEE')}:
               </div>
@@ -168,7 +168,7 @@ function TransactionDetailsDisplay({
                 {`${actualTxFeeBase ? actualTxFeeBase : maxTxFeeBase} ${baseAsset.ticker}`}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">
                 {translateRaw('CONFIRM_TX_SENT')}:
               </div>
@@ -181,7 +181,7 @@ function TransactionDetailsDisplay({
               </div>
             </div>
             {sender.accountBalance && (
-              <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">
                   {translateRaw('ACCOUNT_BALANCE_WITH_TICKER', { $ticker: baseAsset.ticker })}
                 </div>
@@ -192,7 +192,7 @@ function TransactionDetailsDisplay({
               </div>
             )}
             {asset.type === 'erc20' && (
-              <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">
                   {translateRaw('ACCOUNT_BALANCE_WITH_TICKER', { $ticker: asset.ticker })}
                 </div>
@@ -203,7 +203,7 @@ function TransactionDetailsDisplay({
               </div>
             )}
             {baseAsset.uuid !== asset.uuid && (
-              <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">
                   {translateRaw('BASE_ASSET_PRICE')}:
                 </div>
@@ -212,29 +212,29 @@ function TransactionDetailsDisplay({
                 </div>
               </div>
             )}
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row  border">
               <div className="TransactionDetails-row-column">{translateRaw('ASSET_PRICE')}:</div>
               <div className="TransactionDetails-row-column">
                 {`${fiat.symbol}${assetRate}/${asset.ticker}`}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
                 <Network color={networkColor || 'blue'}>{networkName}</Network>
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('CONFIRMATIONS')}:</div>
               <div className="TransactionDetails-row-column">
                 {confirmations ? `${confirmations}` : translate('PENDING_STATE')}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
               <div className="TransactionDetails-row-column">
                 {gasUsed
@@ -243,7 +243,7 @@ function TransactionDetailsDisplay({
               </div>
             </div>
             {baseAsset && (
-              <div className="TransactionDetails-row">
+              <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
                 <div className="TransactionDetails-row-column">{`
                   ${baseToConvertedUnit(gasPrice, 9)} gwei
@@ -251,7 +251,7 @@ function TransactionDetailsDisplay({
                 `}</div>
               </div>
             )}
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">
                 {translateRaw('TRANSACTION_FEE')}:
               </div>
@@ -261,17 +261,21 @@ function TransactionDetailsDisplay({
                   : translate('PENDING_STATE')}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('MAX_TX_FEE')}:</div>
               <div className="TransactionDetails-row-column">
                 {`${maxTxFeeBase} ${baseAsset.ticker} (${fiat.symbol}${maxTxFeeFiat})`}
               </div>
             </div>
-            <div className="TransactionDetails-row">
+            <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
-            <div className={`TransactionDetails-row ${!isTransactionDataEmpty(data) && `stacked`}`}>
+            <div
+              className={`TransactionDetails-row border ${
+                !isTransactionDataEmpty(data) && `stacked`
+              }`}
+            >
               <div className="TransactionDetails-row-column">{translateRaw('DATA')}:</div>
               {!isTransactionDataEmpty(data) ? (
                 <div className="TransactionDetails-row-data">
@@ -285,7 +289,7 @@ function TransactionDetailsDisplay({
             </div>
             {rawTransaction && (
               <>
-                <div className="TransactionDetails-row stacked">
+                <div className="TransactionDetails-row border stacked">
                   <div className="TransactionDetails-row-column">
                     {translateRaw('RAW_TRANSACTION')}:
                   </div>
@@ -297,7 +301,7 @@ function TransactionDetailsDisplay({
             )}
             {signedTransaction && (
               <>
-                <div className="TransactionDetails-row stacked">
+                <div className="TransactionDetails-row border stacked">
                   <div className="TransactionDetails-row-column">
                     {translateRaw('SIGNED_TRANSACTION')}:
                   </div>

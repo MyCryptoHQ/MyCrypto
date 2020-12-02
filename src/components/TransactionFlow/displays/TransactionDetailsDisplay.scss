@@ -8,7 +8,14 @@
       flex-direction: column;
       align-items: flex-start;
     }
-    border-bottom: 1px solid #e8eaed;
+    &.border {
+      border-bottom: 1px solid #e8eaed;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    &:last-child {
+      border: 0;
+    }
     & > div {
       padding: 7px 10px;
     }
