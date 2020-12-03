@@ -155,6 +155,7 @@ interface Props {
   isAddingCustomNetwork: boolean;
   onComplete(): void;
   addNetwork(network: Network): void;
+  deleteNetwork(networkId: NetworkId): void;
   addAsset(asset: ExtendedAsset): void;
   addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
   isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
@@ -169,6 +170,7 @@ export default function AddOrEditNetworkNode({
   onComplete,
   addNodeToNetwork,
   addNetwork,
+  deleteNetwork,
   addAsset,
   isNodeNameAvailable,
   getNetworkById,
@@ -204,7 +206,13 @@ export default function AddOrEditNetworkNode({
     (e) => {
       e.preventDefault();
 
-      deleteNode(editNode!.name, networkId);
+      const network = getNetworkById(networkId);
+
+      if (network.isCustom && network.nodes.length === 1) {
+        deleteNetwork(networkId);
+      } else {
+        deleteNode(editNode!.name, networkId);
+      }
       onComplete();
     },
     [deleteNode, onComplete]

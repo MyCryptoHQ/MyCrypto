@@ -9,37 +9,32 @@ import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { customNodeConfig } from '@fixtures';
 import { theme } from '@theme';
 import { Network, NetworkId } from '@types';
+import { noOp } from '@utils';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 
 const networkId = DEFAULT_NETWORK;
-const addNode = undefined;
-const onComplete = () => undefined;
-const addNodeToNetwork = () => undefined;
 const isNodeNameAvailable = () => true;
 const getNetworkById = (id: NetworkId) =>
   (({
     ...NETWORKS_CONFIG[id],
     nodes: NODES_CONFIG[id]
   } as unknown) as Network);
-const updateNode = () => undefined;
-const deleteNode = () => undefined;
-const addNetwork = () => undefined;
-const addAsset = () => undefined;
 
 const addNetworkNode = () => (
   <div className="sb-container" style={{ maxWidth: '800px' }}>
     <AddOrEditNetworkNode
       networkId={networkId}
-      editNode={addNode}
-      onComplete={onComplete}
-      addNodeToNetwork={addNodeToNetwork}
+      editNode={undefined}
+      onComplete={noOp}
+      addNodeToNetwork={noOp}
       isNodeNameAvailable={isNodeNameAvailable}
       getNetworkById={getNetworkById}
-      updateNode={updateNode}
-      deleteNode={deleteNode}
-      addNetwork={addNetwork}
-      addAsset={addAsset}
+      updateNode={noOp}
+      deleteNode={noOp}
+      addNetwork={noOp}
+      deleteNetwork={noOp}
+      addAsset={noOp}
       isAddingCustomNetwork={false}
     />
   </div>
@@ -50,14 +45,15 @@ const editNetworkNode = () => (
     <AddOrEditNetworkNode
       networkId={networkId}
       editNode={customNodeConfig}
-      onComplete={onComplete}
-      addNodeToNetwork={addNodeToNetwork}
+      onComplete={noOp}
+      addNodeToNetwork={noOp}
       isNodeNameAvailable={isNodeNameAvailable}
       getNetworkById={getNetworkById}
-      updateNode={updateNode}
-      deleteNode={deleteNode}
-      addNetwork={addNetwork}
-      addAsset={addAsset}
+      updateNode={noOp}
+      deleteNode={noOp}
+      addNetwork={noOp}
+      deleteNetwork={noOp}
+      addAsset={noOp}
       isAddingCustomNetwork={false}
     />
   </div>

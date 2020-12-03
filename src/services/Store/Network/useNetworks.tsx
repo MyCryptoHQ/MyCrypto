@@ -1,6 +1,11 @@
 import { useContext } from 'react';
 
-import { createNetwork, updateNetwork as updateNetworkRedux, useDispatch } from '@store';
+import {
+  createNetwork,
+  destroyNetwork as deleteNetworkRedux,
+  updateNetwork as updateNetworkRedux,
+  useDispatch
+} from '@store';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 
@@ -15,6 +20,7 @@ export interface INetworkContext {
   networks: Network[];
   addNetwork(item: Network): void;
   updateNetwork(item: Network): void;
+  deleteNetwork(networkId: NetworkId): void;
   getNetworkById(networkId: NetworkId): Network;
   getNetworkByChainId(chainId: number): Network | undefined;
   getNetworkNodes(networkId: NetworkId): NodeOptions[];
@@ -31,6 +37,7 @@ function useNetworks() {
 
   const addNetwork = (network: Network) => dispatch(createNetwork(network));
   const updateNetwork = (item: Network) => dispatch(updateNetworkRedux(item));
+  const deleteNetwork = (id: NetworkId) => dispatch(deleteNetworkRedux(id));
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
     if (foundNetwork) {
@@ -149,6 +156,7 @@ function useNetworks() {
     networks,
     addNetwork,
     updateNetwork,
+    deleteNetwork,
     getNetworkById,
     getNetworkByChainId,
     getNetworkNodes,

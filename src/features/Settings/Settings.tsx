@@ -129,6 +129,7 @@ function RenderAddressPanel() {
 function RenderNetworkNodes() {
   const {
     addNetwork,
+    deleteNetwork,
     networks: allNetworks,
     addNodeToNetwork,
     isNodeNameAvailable,
@@ -162,6 +163,7 @@ function RenderNetworkNodes() {
               updateNode={updateNode}
               deleteNode={deleteNode}
               addNetwork={addNetwork}
+              deleteNetwork={deleteNetwork}
               addAsset={createAsset}
               isAddingCustomNetwork={isAddingNetwork}
             />
