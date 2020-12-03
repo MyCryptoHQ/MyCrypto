@@ -552,6 +552,7 @@ export default function AddOrEditNetworkNode({
                         type="button"
                         onClick={onDeleteNodeClick}
                         disabled={!canDeleteNode}
+                        data-testid="deleteButton"
                       >
                         {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
                       </DeleteButton>
