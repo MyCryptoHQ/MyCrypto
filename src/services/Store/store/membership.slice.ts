@@ -1,18 +1,10 @@
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import BigNumber from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import {
-  MEMBERSHIP_CONTRACTS,
-  MEMBERSHIP_CONTRACTS_ADDRESSES,
-  MembershipStatus
-} from '@features/PurchaseMembership/config';
-import { ProviderHandler } from '@services/EthService/network/providerHandler';
+import { MembershipStatus } from '@features/PurchaseMembership/config';
+import { MembershipApi } from '@services/ApiService';
 import { Network, StoreAccount, TAddress } from '@types';
-import { map, pipe } from '@vendor';
 
-import { convertBNToBigNumberJS } from '../BalanceService';
 import { getWalletAccountsOnDefaultNetwork } from './account.slice';
 import { getDefaultNetwork } from './network.slice';
 
@@ -61,15 +53,11 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<StoreAccount[
   const network: Network = yield select(getDefaultNetwork);
 
   const relevantAccounts = (payload ?? accounts).map((a) => a.address);
-  const provider = new ProviderHandler(network);
 
   try {
-    const timestamps = yield call(getUnlockTimestamps, provider, relevantAccounts, {
-      contracts: MEMBERSHIP_CONTRACTS_ADDRESSES
-    });
-    const newMemberships = format(timestamps);
-    yield put(slice.actions.setMemberships(newMemberships));
-  } catch {
+    const memberships = yield call(MembershipApi.getMemberships, relevantAccounts, network);
+    yield put(slice.actions.setMemberships(memberships));
+  } catch (err) {
     yield put(slice.actions.fetchError());
   }
 }
@@ -77,23 +65,3 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<StoreAccount[
 export const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
 
 export default slice;
-
-/**
- * Helpers
- */
-export const format = (timestamps) => {
-  const res = pipe(map(map(convertBNToBigNumberJS)));
-  const expiries = res(timestamps);
-
-  return Object.keys(expiries)
-    .map((address: TAddress) => ({
-      address,
-      memberships: Object.keys(expiries[address])
-        .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
-        .map((contract) => ({
-          type: MEMBERSHIP_CONTRACTS[contract],
-          expiry: expiries[address][contract]
-        }))
-    }))
-    .filter((m) => m.memberships.length > 0);
-};

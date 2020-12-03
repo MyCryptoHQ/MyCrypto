@@ -1,19 +1,15 @@
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { expectSaga } from 'redux-saga-test-plan';
-// eslint-disable-next-line import/no-namespace
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { call } from 'redux-saga-test-plan/matchers';
+import { throwError } from 'redux-saga-test-plan/providers';
 
+import { DEFAULT_NETWORK } from '@config';
 import { IMembershipId, MembershipStatus } from '@features/PurchaseMembership/config';
-import { accountWithMembership, fNetworks, membershipApiResponse } from '@fixtures';
-import { StoreAccount, TAddress } from '@types';
+import { accountWithMembership, fNetworks } from '@fixtures';
+import { MembershipApi } from '@services/ApiService';
+import { StoreAccount, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import slice, {
-  fetchMemberships,
-  fetchMembershipsSaga,
-  format,
-  initialState
-} from './membership.slice';
+import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
 
 const reducer = slice.reducer;
 const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
@@ -79,6 +75,7 @@ describe('MembershipsSlice', () => {
 });
 
 describe('fetchMembershipsSaga()', () => {
+  expectSaga.DEFAULT_TIMEOUT = 100;
   const res = [
     {
       address: accountWithMembership,
@@ -90,7 +87,7 @@ describe('fetchMembershipsSaga()', () => {
   ];
 
   const accounts = [
-    { address: accountWithMembership },
+    { address: accountWithMembership, networkId: DEFAULT_NETWORK, wallet: WalletId.LEDGER_NANO_S },
     { address: '0xfeac75a09662396283f4bb50f0a9249576a81866' }
   ] as StoreAccount[];
 
@@ -98,16 +95,11 @@ describe('fetchMembershipsSaga()', () => {
     legacy: { accounts, networks: fNetworks }
   };
 
-  it('formats timestamps', () => {
-    const actual = format(membershipApiResponse);
-    expect(actual).toEqual(res);
-  });
-
-  it('calls setMemberships on success', () => {
+  it('can fetch memberships from provided accounts', () => {
     return (
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
-        .provide([[matchers.call.fn(getUnlockTimestamps), membershipApiResponse]])
+        .provide([[call.fn(MembershipApi.getMemberships), res]])
         .put(setMemberships(res))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
@@ -116,12 +108,22 @@ describe('fetchMembershipsSaga()', () => {
     );
   });
 
-  it('calls fetchError on error', () => {
+  it('can fetch memberships from state', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
-      .provide([matchers.call.fn(getUnlockTimestamps), {}])
-      .dispatch(fetchMemberships(accounts))
+      .provide([[call.fn(MembershipApi.getMemberships), res]])
+      .put(setMemberships(res))
+      .dispatch(fetchMemberships())
+      .silentRun();
+  });
+
+  it('can sets error if the call fails', () => {
+    const error = new Error('error');
+    return expectSaga(fetchMembershipsSaga)
+      .withState(initialState)
+      .provide([[call.fn(MembershipApi.getMemberships), throwError(error)]])
       .put(fetchError())
+      .dispatch(fetchMemberships())
       .silentRun();
   });
 });
