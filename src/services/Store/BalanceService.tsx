@@ -32,14 +32,6 @@ export const toBigNumberJS = (balances: EthScanBalanceMap): BalanceMap => {
   );
 };
 
-export const nestedToBigNumberJS = (
-  balances: EthScanBalanceMap<EthScanBalanceMap>
-): BalanceMap<BalanceMap> => {
-  return Object.fromEntries(
-    Object.keys(balances).map((key) => [key, toBigNumberJS(balances[key])])
-  );
-};
-
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
   BalanceMap,
   BalanceMap

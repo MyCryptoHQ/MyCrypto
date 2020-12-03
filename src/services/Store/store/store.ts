@@ -6,7 +6,6 @@ import createSagaMiddleware from 'redux-saga';
 
 import { IS_DEV } from '@utils';
 
-import { rootSaga as membershipSaga } from './membership.slice';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer from './reducer';
 import rootSaga from './sagas';
@@ -50,7 +49,6 @@ export default function createStore() {
   }
 
   sagaMiddleware.run(rootSaga);
-  sagaMiddleware.run(membershipSaga);
 
   return {
     store,

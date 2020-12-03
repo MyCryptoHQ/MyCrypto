@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IAccount, LSKeys, TUuid } from '@types';
-import { findIndex, propEq } from '@vendor';
+import { DEFAULT_NETWORK } from '@config';
+import { DataStore, IAccount, LSKeys, TUuid, WalletId } from '@types';
+import { filter, findIndex, pipe, propEq, reject } from '@vendor';
 
 export const initialState = [] as IAccount[];
 
@@ -50,3 +51,14 @@ export const {
 } = slice.actions;
 
 export default slice;
+
+/**
+ * Selectors
+ */
+const getAppState = (state): DataStore => state.legacy;
+export const getAccounts = createSelector([getAppState], (s) => s[slice.name]);
+
+export const getWalletAccountsOnDefaultNetwork = createSelector(
+  getAccounts,
+  pipe(reject(propEq('wallet', WalletId.VIEW_ONLY)), filter(propEq('networkId', DEFAULT_NETWORK)))
+);
