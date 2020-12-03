@@ -17050,7 +17050,7 @@ redux-persist@6.0.0:
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"
   integrity sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==
 
-redux-saga-test-plan@^4.0.1:
+redux-saga-test-plan@4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-4.0.1.tgz#7f2182e83a1e3414ad2e8706256e761f9a0665c4"
   integrity sha512-UBtb6l8ETKfE/sHZisTIa60t/CdDH7o8epobW6JEFkOqp9hXNgicBdMxWl97i1144eZun8OudbMsL2nvrdnoWA==
