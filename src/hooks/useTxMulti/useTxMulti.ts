@@ -2,9 +2,9 @@ import { useContext, useEffect } from 'react';
 
 import { useReducer } from 'reinspect';
 
+import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@helpers';
 import { StoreContext, useAccounts, useAssets } from '@services';
 import { ITxObject, ITxStatus, ITxType } from '@types';
-import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@utils';
 import { identity, lensIndex, view } from '@vendor';
 
 import { init, initWith, prepareTx, reset, sendTx, stopYield } from './actions';

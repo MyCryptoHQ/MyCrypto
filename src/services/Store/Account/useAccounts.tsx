@@ -16,6 +16,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
 
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
   Asset,
@@ -30,7 +31,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, useAnalytics } from '@utils';
+import { isSameAddress } from '@utils';
 
 import { getAllTokensBalancesOfAccount } from '../BalanceService';
 import { DataContext } from '../DataManager';

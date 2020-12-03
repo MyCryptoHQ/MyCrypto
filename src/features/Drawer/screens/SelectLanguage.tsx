@@ -2,9 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES, useSettings } from '@services';
 import { languages, translateRaw } from '@translations';
-import { useAnalytics } from '@utils';
 
 const LanguagesList = styled.ul`
   flex-grow: 1;

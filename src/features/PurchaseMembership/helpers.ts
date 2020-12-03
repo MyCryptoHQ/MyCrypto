@@ -1,17 +1,11 @@
 import { ethers } from 'ethers';
 
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
+import { formatApproveTx } from '@helpers';
 import { getAssetByUUID } from '@services';
 import { UnlockToken } from '@services/EthService/contracts';
 import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } from '@types';
-import {
-  formatApproveTx,
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex,
-  inputValueToHex,
-  toWei
-} from '@utils';
+import { hexToString, hexWeiToString, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig } from './config';

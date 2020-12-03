@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
+import { useTxMulti } from '@hooks';
 import { translateRaw } from '@translations';
 import { ITxConfig, ITxReceipt, ITxStatus, ITxType } from '@types';
-import { useStateReducer, useTxMulti } from '@utils';
+import { useStateReducer } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';

@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
+import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
@@ -24,10 +25,8 @@ import {
 } from '@types';
 import {
   Address,
-  deriveTxRecipientsAndAmount,
   fromTokenBase,
   generateAssetUUID,
-  guessERC20Type,
   handleValues,
   hexNonceToViewable,
   hexToString,
@@ -39,7 +38,6 @@ import {
   TokenValue,
   toWei
 } from '@utils';
-import { ERCType } from '@utils/transaction';
 import { isEmpty } from '@vendor';
 
 import { TTxQueryParam, TxParam } from './preFillTx';
@@ -165,8 +163,8 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
   const asset = isERC20
     ? assets.find(
-      ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-    ) || generateGenericErc20(to, i.chainId, network.id)
+        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
+      ) || generateGenericErc20(to, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,

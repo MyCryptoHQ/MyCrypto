@@ -14,6 +14,7 @@ interface IFormatApproveTxInputs {
   hexGasPrice: ITxGasPrice;
 }
 
+// @todo: merge with `formatApproveTx` in ApiService/Dex ?
 export const formatApproveTx = ({
   contractAddress,
   baseTokenAmount,

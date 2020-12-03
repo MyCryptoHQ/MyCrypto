@@ -3,6 +3,7 @@ import React, { useEffect, useReducer } from 'react';
 import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
+import { useTxMulti } from '@hooks';
 import { translateRaw } from '@translations';
 import {
   ITokenMigrationConfig,
@@ -10,7 +11,6 @@ import {
   ITxStatus,
   TokenMigrationState
 } from '@types';
-import { useTxMulti } from '@utils';
 
 import ConfirmTokenMigration from './components/TokenMigrationConfirm';
 import TokenMigrationForm from './components/TokenMigrationForm';
@@ -63,7 +63,8 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
       multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
       isSubmitting,
       receiptComponent: TokenMigrationReceipt,
-      multiTxComponent: transactions.length > 1 ? ConfirmTokenMigrationMultiTx : ConfirmTokenMigration,
+      multiTxComponent:
+        transactions.length > 1 ? ConfirmTokenMigrationMultiTx : ConfirmTokenMigration,
       sendTx,
       prepareTx
     })

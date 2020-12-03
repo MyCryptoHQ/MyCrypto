@@ -6,9 +6,9 @@ import { parseTransaction, Transaction } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
+import { verifyTransaction } from '@helpers';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
-import { verifyTransaction } from '@utils/transaction';
 
 const ContentWrapper = styled.div`
   display: flex;

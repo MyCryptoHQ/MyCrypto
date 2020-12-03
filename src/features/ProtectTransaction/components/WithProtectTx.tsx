@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ContentPanel } from '@components';
 import { PROTECTED_TX_FEE_ADDRESS } from '@config';
 import { processFormDataToTx } from '@features/SendAssets/helpers';
+import { useTxMulti } from '@hooks';
 import { useFeatureFlags } from '@services';
 import { BREAK_POINTS } from '@theme';
 import {
@@ -18,7 +19,7 @@ import {
   ITxSigned,
   ITxToAddress
 } from '@types';
-import { isWeb3Wallet, useScreenSize, useTxMulti } from '@utils';
+import { isWeb3Wallet, useScreenSize } from '@utils';
 
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxButton } from './ProtectTxButton';

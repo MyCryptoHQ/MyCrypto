@@ -9,6 +9,7 @@ import MobileNavBar from '@components/MobileNavBar';
 import { DEFAULT_NETWORK } from '@config';
 import { getFiat } from '@config/fiats';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useFeatureFlags, useRates } from '@services';
 import {
   NetworkUtils,
@@ -22,7 +23,6 @@ import { isExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
 import { Balance, CustomNodeConfig, NetworkId } from '@types';
-import { buildBalances, buildTotalFiatValue } from '@utils';
 
 import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
 import AddressBookPanel from './components/AddressBook';

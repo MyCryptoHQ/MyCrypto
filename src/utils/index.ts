@@ -1,3 +1,7 @@
+/**
+ * Utility functions used throughout the App.
+ * Should only import dependencies, config, or types.
+ */
 export { notUndefined, isTxSigned, isTxHash } from './typeGuards';
 export * from './validators';
 export {
@@ -53,20 +57,6 @@ export {
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export {
-  makePendingTxReceipt,
-  makeTxConfigFromSignedTx,
-  makeTxConfigFromTxReceipt,
-  makeTxConfigFromTxResponse,
-  makeFinishedTxReceipt,
-  makeUnknownTxReceipt,
-  guessERC20Type,
-  deriveTxRecipientsAndAmount,
-  appendNonce,
-  appendGasLimit,
-  appendGasPrice,
-  appendSender
-} from './transaction';
-export {
   formatErrorEmail,
   formatSupportEmail,
   formatEmailMarkdown,
@@ -78,16 +68,13 @@ export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
 export { bigify, isBigish } from './bigify';
-export { useTxMulti, TxParcel } from './useTxMulti';
 export { withProtectTxProvider } from './withProtectTxProvider';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';
 export * from './encryption';
-export { default as useAnalytics } from './useAnalytics';
 export { openLink } from './openLink';
 export { isSameAddress } from './isSameAddress';
-export { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';
 export { default as isFiatTicker } from './isFiatTicker';
 export { sortByLabel, sortByTicker } from './sort';
 export { isVoid } from './isVoid';
@@ -143,7 +130,6 @@ export {
   bigNumValueToViewableEther
 } from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
-export { formatApproveTx } from './erc20';
 export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';

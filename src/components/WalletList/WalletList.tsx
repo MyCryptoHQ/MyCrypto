@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IStory, WalletId } from '@types';
-import { getWeb3Config, useAnalytics } from '@utils';
+import { getWeb3Config } from '@utils';
 
 import { WalletButton } from './WalletButton';
 

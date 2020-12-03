@@ -5,13 +5,13 @@ import styled from 'styled-components';
 
 import { Tooltip } from '@components';
 import { getFiat } from '@config/fiats';
+import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useRates } from '@services';
 import { StoreContext, useSettings } from '@services/Store';
 import { isNotExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Balance, TUuid } from '@types';
-import { buildBalances, buildTotalFiatValue } from '@utils';
 
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';

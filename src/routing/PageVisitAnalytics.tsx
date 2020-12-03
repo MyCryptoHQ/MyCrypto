@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withRouter } from 'react-router-dom';
 
-import { useAnalytics } from '@utils';
+import { useAnalytics } from '@hooks';
 
 let previousURL: string | undefined;
 export const PageVisitsAnalytics = withRouter(({ history, children }) => {

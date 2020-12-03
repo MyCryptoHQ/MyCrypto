@@ -5,10 +5,10 @@ import styled, { css } from 'styled-components';
 
 import { AssetIcon, Currency, Icon, PoweredByText, Tooltip, Typography } from '@components';
 import { EMPTYUUID } from '@config';
+import { buildTotalFiatValue } from '@helpers';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Balance, TTicker, TUuid } from '@types';
-import { buildTotalFiatValue } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
 import { calculateShownIndex } from './helpers';

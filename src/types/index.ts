@@ -104,7 +104,7 @@ export { ToastConfig, ToastType, ToastConfigsProps } from './toast';
 export { InlineMessageType } from './inlineMessages';
 export { ErrorObject } from './errorObject';
 export { TAction, TStateGetter } from './action';
-export { TxParcel } from '@utils/useTxMulti/types'; // Specific re-export to avoid Circular deps
+export { TxParcel } from '@hooks/useTxMulti/types'; // Specific re-export to avoid Circular deps
 export { TURL } from './url';
 export { TBN } from './bigNumber';
 export { Balance, BalanceAccount, BalanceDetailsTableProps } from './balanceDisplays';

@@ -3,7 +3,8 @@ import { renderHook } from '@testing-library/react-hooks';
 import mockAxios from 'jest-mock-axios';
 
 import { ANALYTICS_CATEGORIES } from '@services';
-import { useAnalytics } from '@utils/index';
+
+import { default as useAnalytics } from './useAnalytics';
 
 const categoryFixture = ANALYTICS_CATEGORIES.ROOT;
 const actionNameFixture = 'Testing action name';

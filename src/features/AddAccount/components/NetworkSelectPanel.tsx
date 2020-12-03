@@ -4,12 +4,12 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Body, Box, Heading, NetworkSelector } from '@components';
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { useNetworks } from '@services/Store';
 import { SPACING } from '@theme';
 import translate from '@translations';
 import { FormData, NetworkId } from '@types';
-import { useAnalytics } from '@utils';
 
 import { FormDataActionType as ActionType } from '../types';
 

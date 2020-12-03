@@ -5,10 +5,11 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { ExtendedContentPanel, WalletList } from '@components';
 import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
+import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 import { StoreContext } from '@services/Store';
 import { IStory, StoreAccount, WalletId } from '@types';
-import { isSameAddress, useAnalytics } from '@utils';
+import { isSameAddress } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
 import { NotificationTemplates, useNotifications } from '../NotificationsPanel';

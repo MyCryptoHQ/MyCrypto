@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { CREATION_ADDRESS } from '@config';
+import { makePendingTxReceipt } from '@helpers';
 import {
   EtherscanService,
   getGasEstimate,
@@ -28,8 +29,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, makePendingTxReceipt, TUseStateReducerFactory } from '@utils';
-import { isWeb3Wallet } from '@utils/web3';
+import { isSameAddress, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
 import {
