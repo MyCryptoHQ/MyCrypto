@@ -1,5 +1,4 @@
 import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import BigNumber from 'bignumber.js';
 import { PromiseType } from 'utility-types';
 
 import {
@@ -8,19 +7,24 @@ import {
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { ProviderHandler } from '@services/EthService/';
-import { convertBNToBigNumberJS } from '@services/Store/BalanceService';
 import { Network, TAddress } from '@types';
-import { map, pipe } from '@vendor';
+import { bigify } from '@utils';
+import { mapObjIndexed, pipe, toString } from '@vendor';
 
 export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlockTimestamps>>) => {
-  const res = pipe(map(map(convertBNToBigNumberJS)));
-  const expiries = res(timestamps);
+  // We receive timestamps in the form of hex values.
+  // Convert to Bigies so we can determine their expiry date.
+  // @todo: prefer date-fns for time comparaisons.
+  const expiries = pipe(
+    mapObjIndexed(mapObjIndexed(toString)),
+    mapObjIndexed(mapObjIndexed(bigify))
+  )(timestamps);
 
   return Object.keys(expiries)
     .map((address: TAddress) => ({
       address,
       memberships: Object.keys(expiries[address])
-        .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
+        .filter((contract) => expiries[address][contract].isGreaterThan(bigify(0)))
         .map((contract) => ({
           type: MEMBERSHIP_CONTRACTS[contract],
           expiry: expiries[address][contract]
@@ -30,7 +34,7 @@ export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlo
 };
 
 const MembershipApi = {
-  async getMemberships(addresses: TAddress[] = [], network: Network): Promise<MembershipStatus[]> {
+  getMemberships(addresses: TAddress[] = [], network: Network): Promise<MembershipStatus[]> {
     const provider = new ProviderHandler(network);
     return getUnlockTimestamps(provider, addresses, {
       contracts: MEMBERSHIP_CONTRACTS_ADDRESSES

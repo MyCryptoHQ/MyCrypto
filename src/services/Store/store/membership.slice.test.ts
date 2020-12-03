@@ -3,7 +3,7 @@ import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { DEFAULT_NETWORK } from '@config';
-import { IMembershipId, MembershipStatus } from '@features/PurchaseMembership/config';
+import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { accountWithMembership, fNetworks } from '@fixtures';
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
@@ -42,7 +42,7 @@ describe('MembershipsSlice', () => {
     const m2 = { address: 'random2' } as MembershipStatus;
     const actual = reducer(
       { ...initialState, record: [m1] },
-      setMemberships([{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2])
+      setMemberships([{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2] as MembershipStatus[])
     );
     const expected = {
       ...initialState,
@@ -80,10 +80,10 @@ describe('fetchMembershipsSaga()', () => {
     {
       address: accountWithMembership,
       memberships: [
-        { expiry: bigify('1590743978'), type: 'onemonth' as IMembershipId },
-        { expiry: bigify('1609372800'), type: 'lifetime' as IMembershipId }
+        { expiry: bigify('1590743978'), type: 'onemonth' },
+        { expiry: bigify('1609372800'), type: 'lifetime' }
       ]
-    }
+    } as MembershipStatus
   ];
 
   const accounts = [

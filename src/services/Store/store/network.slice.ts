@@ -1,10 +1,11 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DEFAULT_NETWORK } from '@config';
-import { DataStore, LSKeys, Network, NetworkId } from '@types';
+import { LSKeys, Network, NetworkId } from '@types';
 import { find, findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
+import { getAppState } from './selectors';
 
 const sliceName = LSKeys.NETWORKS;
 export const initialState = initialLegacyState[sliceName];
@@ -57,6 +58,5 @@ export default slice;
  * Selectors
  */
 
-const getAppState = (state): DataStore => state.legacy;
 export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
 export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));

@@ -3,7 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { MembershipApi } from '@services/ApiService';
-import { Network, StoreAccount, TAddress } from '@types';
+import { IAccount, Network, StoreAccount, TAddress } from '@types';
 
 import { getWalletAccountsOnDefaultNetwork } from './account.slice';
 import { getDefaultNetwork } from './network.slice';
@@ -37,7 +37,7 @@ const slice = createSlice({
   }
 });
 
-export const fetchMemberships = createAction<StoreAccount[] | undefined>(
+export const fetchMemberships = createAction<IAccount[] | undefined>(
   `${slice.name}/fetchMemberships`
 );
 
@@ -48,7 +48,7 @@ export function* fetchMembershipsSaga() {
   yield takeLatest(fetchMemberships.type, fetchMembershipsWorker);
 }
 
-export function* fetchMembershipsWorker({ payload }: PayloadAction<StoreAccount[] | undefined>) {
+export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | undefined>) {
   const accounts: StoreAccount[] = yield select(getWalletAccountsOnDefaultNetwork);
   const network: Network = yield select(getDefaultNetwork);
 
