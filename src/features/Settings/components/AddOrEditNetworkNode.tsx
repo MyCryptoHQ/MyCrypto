@@ -1,12 +1,19 @@
 import React, { useCallback, useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
+import { Tooltip, Button as UIButton } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
 import { boolean, lazy, object, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { Checkbox, DashboardPanel, InputField, LinkOut, NetworkSelector } from '@components';
+import {
+  Button,
+  Checkbox,
+  DashboardPanel,
+  InputField,
+  LinkOut,
+  NetworkSelector
+} from '@components';
 import {
   DEFAULT_NETWORK,
   DPathsList as DPaths,
@@ -15,8 +22,9 @@ import {
   GITHUB_RELEASE_NOTES_URL,
   LETS_ENCRYPT_URL
 } from '@config';
+import { useAccounts, useAssets, useContacts, useContracts } from '@services';
 import { ProviderHandler } from '@services/EthService/network';
-import { NetworkUtils } from '@services/Store/Network';
+import { NetworkUtils, useNetworks } from '@services/Store/Network';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans, translateRaw } from '@translations';
 import {
@@ -24,7 +32,6 @@ import {
   ExtendedAsset,
   Network,
   NetworkId,
-  NodeOptions,
   NodeType,
   TTicker,
   WalletId
@@ -35,7 +42,7 @@ const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};
 `;
 
-const BackButton = styled(Button)`
+const BackButton = styled(UIButton)`
   margin-right: ${SPACING.BASE};
 `;
 
@@ -119,11 +126,17 @@ const SError = styled.div`
   color: ${COLORS.PASTEL_RED};
 `;
 
-const DeleteButton = styled(Button)`
-  background-color: ${COLORS.PASTEL_RED};
+const DeleteButton = styled(Button)<{ disabled: boolean }>`
+  ${(props) =>
+    !props.disabled &&
+    `
+    background-color: ${COLORS.PASTEL_RED};
+
+    
   :hover {
     background-color: ${COLORS.ERROR_RED};
   }
+  `}
 `;
 
 const ReferralLink = styled.div`
@@ -154,30 +167,27 @@ interface Props {
   editNode: CustomNodeConfig | undefined;
   isAddingCustomNetwork: boolean;
   onComplete(): void;
-  addNetwork(network: Network): void;
-  deleteNetwork(networkId: NetworkId): void;
-  addAsset(asset: ExtendedAsset): void;
-  addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
-  isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
-  getNetworkById(networkId: NetworkId): Network;
-  updateNode(node: NodeOptions, network: Network | NetworkId, nodeName: string): void;
-  deleteNode(nodeName: string, network: Network | NetworkId): void;
 }
 
 export default function AddOrEditNetworkNode({
   networkId,
   isAddingCustomNetwork,
   onComplete,
-  addNodeToNetwork,
-  addNetwork,
-  deleteNetwork,
-  addAsset,
-  isNodeNameAvailable,
-  getNetworkById,
-  editNode,
-  updateNode,
-  deleteNode
+  editNode
 }: Props) {
+  const {
+    addNetwork,
+    deleteNetwork,
+    addNodeToNetwork,
+    isNodeNameAvailable,
+    getNetworkById,
+    updateNode,
+    deleteNode
+  } = useNetworks();
+  const { createAsset } = useAssets();
+  const { accounts } = useAccounts();
+  const { contacts } = useContacts();
+  const { contracts } = useContracts();
   const [isConnectionError, setIsConnectionError] = useState(false);
   const [editMode] = useState(!!editNode);
   const initialState = useCallback((): NetworkNodeFields => {
@@ -202,21 +212,18 @@ export default function AddOrEditNetworkNode({
     };
   }, []);
 
-  const onDeleteNodeClick = useCallback(
-    (e) => {
-      e.preventDefault();
+  const onDeleteNodeClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
 
-      const network = getNetworkById(networkId);
+    const network = getNetworkById(networkId);
 
-      if (network.isCustom && network.nodes.length === 1) {
-        deleteNetwork(networkId);
-      } else {
-        deleteNode(editNode!.name, networkId);
-      }
-      onComplete();
-    },
-    [deleteNode, onComplete]
-  );
+    if (network.isCustom && network.nodes.length === 1) {
+      deleteNetwork(networkId);
+    } else {
+      deleteNode(editNode!.name, networkId);
+    }
+    onComplete();
+  };
 
   const Schema = lazy((values: NetworkNodeFields) =>
     object().shape({
@@ -236,6 +243,20 @@ export default function AddOrEditNetworkNode({
       })
     })
   );
+
+  const canDeleteNode =
+    editMode &&
+    (() => {
+      const network = getNetworkById(networkId);
+      if (network.isCustom && network.nodes.length === 1) {
+        return (
+          !accounts.some((a) => a.networkId === networkId) &&
+          !contacts.some((c) => c.network === networkId) &&
+          !contracts.some((c) => c.networkId === networkId)
+        );
+      }
+      return true;
+    })();
 
   return (
     <AddToNetworkNodePanel
@@ -344,7 +365,7 @@ export default function AddOrEditNetworkNode({
                 networkId: network.id,
                 isCustom: true
               };
-              addAsset(baseAsset);
+              createAsset(baseAsset);
               addNetwork(network);
             } else if (editNode) {
               updateNode(node, selectedNetworkId, editNode.name);
@@ -526,9 +547,15 @@ export default function AddOrEditNetworkNode({
                     {translateRaw('CUSTOM_NODE_SAVE_NODE')}
                   </Button>
                   {editMode && (
-                    <DeleteButton type="button" onClick={onDeleteNodeClick}>
-                      {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
-                    </DeleteButton>
+                    <Tooltip tooltip={translateRaw('DELETE_NETWORK_TOOLTIP')}>
+                      <DeleteButton
+                        type="button"
+                        onClick={onDeleteNodeClick}
+                        disabled={!canDeleteNode}
+                      >
+                        {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
+                      </DeleteButton>
+                    </Tooltip>
                   )}
                 </NetworkNodeFieldsButtons>
               </Column>

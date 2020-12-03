@@ -980,6 +980,7 @@
     "PENDING_STATE": "(pending)",
     "NO_TOKENS_HEADER": "No Tokens Found",
     "NO_TOKENS_CONTENT": "It looks like you don't have any tokens in your selected wallets. $link",
-    "GET_SOME_HERE": "Get some here!"
+    "GET_SOME_HERE": "Get some here!",
+    "DELETE_NETWORK_TOOLTIP": "Please delete your accounts and contacts using the network before deleting the network"
   }
 }

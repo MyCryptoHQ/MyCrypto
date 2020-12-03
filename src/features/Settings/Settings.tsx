@@ -11,14 +11,7 @@ import { getFiat } from '@config/fiats';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useFeatureFlags, useRates } from '@services';
-import {
-  NetworkUtils,
-  StoreContext,
-  useAssets,
-  useContacts,
-  useNetworks,
-  useSettings
-} from '@services/Store';
+import { NetworkUtils, StoreContext, useContacts, useNetworks, useSettings } from '@services/Store';
 import { isExcludedAsset } from '@services/Store/helpers';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
@@ -127,17 +120,7 @@ function RenderAddressPanel() {
 }
 
 function RenderNetworkNodes() {
-  const {
-    addNetwork,
-    deleteNetwork,
-    networks: allNetworks,
-    addNodeToNetwork,
-    isNodeNameAvailable,
-    getNetworkById,
-    updateNode,
-    deleteNode
-  } = useNetworks();
-  const { createAsset } = useAssets();
+  const { networks: allNetworks, getNetworkById } = useNetworks();
   const { contacts } = useContacts();
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
@@ -157,14 +140,6 @@ function RenderNetworkNodes() {
               networkId={networkId}
               editNode={editNode}
               onComplete={toggleFlipped}
-              addNodeToNetwork={addNodeToNetwork}
-              isNodeNameAvailable={isNodeNameAvailable}
-              getNetworkById={getNetworkById}
-              updateNode={updateNode}
-              deleteNode={deleteNode}
-              addNetwork={addNetwork}
-              deleteNetwork={deleteNetwork}
-              addAsset={createAsset}
               isAddingCustomNetwork={isAddingNetwork}
             />
           </>
@@ -180,6 +155,7 @@ function RenderNetworkNodes() {
             }}
             toggleNetworkCreation={() => {
               setAddingNetwork(true);
+              setEditNode(undefined);
               toggleFlipped();
             }}
           />
