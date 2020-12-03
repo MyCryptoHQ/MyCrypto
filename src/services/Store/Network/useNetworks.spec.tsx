@@ -40,6 +40,13 @@ describe('useNetworks', () => {
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fNetworks[0]));
   });
 
+  it('deleteNetwork() calls destroy', () => {
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseNetworks({ networks: fNetworks });
+    result.current.deleteNetwork('Ropsten');
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload('Ropsten'));
+  });
+
   it('getNetworkById() finds network with id', () => {
     const { result } = renderUseNetworks({ networks: fNetworks });
     expect(result.current.getNetworkById(fNetworks[0].id)).toBe(fNetworks[0]);
