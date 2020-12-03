@@ -2,13 +2,18 @@ import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
 import { expectSaga } from 'redux-saga-test-plan';
 // eslint-disable-next-line import/no-namespace
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { select } from 'redux-saga/effects';
 
-import { MembershipStatus } from '@features/PurchaseMembership/config';
-import { fNetworks } from '@fixtures';
+import { IMembershipId, MembershipStatus } from '@features/PurchaseMembership/config';
+import { accountWithMembership, fNetworks, membershipApiResponse } from '@fixtures';
 import { StoreAccount, TAddress } from '@types';
+import { bigify } from '@utils';
 
-import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
+import slice, {
+  fetchMemberships,
+  fetchMembershipsSaga,
+  format,
+  initialState
+} from './membership.slice';
 
 const reducer = slice.reducer;
 const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
@@ -73,94 +78,50 @@ describe('MembershipsSlice', () => {
   });
 });
 
-describe('membershipRootSaga()', () => {
-  // eslint-disable-next-line jest/expect-expect
-  it('calls setMemberships on success', () => {
-    const res = [
-      {
-        address: '0x82d69476357a03415e92b5780c89e5e9e972ce75' as TAddress,
-        memberships: [
-          {
-            type: 'onemonth',
-            expiry: {
-              _hex: '0x5ed0d3aa',
-              _isBigNumber: true
-            }
-          },
-          {
-            type: 'lifetime',
-            expiry: {
-              _hex: '0x5fed1480',
-              _isBigNumber: true
-            }
-          }
-        ]
-      }
-    ];
+describe('fetchMembershipsSaga()', () => {
+  const res = [
+    {
+      address: accountWithMembership,
+      memberships: [
+        { expiry: bigify('1590743978'), type: 'onemonth' as IMembershipId },
+        { expiry: bigify('1609372800'), type: 'lifetime' as IMembershipId }
+      ]
+    }
+  ];
 
-    const apiRes = {
-      '0x82d69476357a03415e92b5780c89e5e9e972ce75': {
-        '0x6cA105D2AF7095B1BCEeb6A2113D168ddDCD57cf': {
-          _hex: '0x5ed0d3aa',
-          _isBigNumber: true
-        },
-        '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0xee2B7864d8bc731389562F820148e372F57571D8': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0x098D8b363933D742476DDd594c4A5a5F1a62326a': {
-          _hex: '0x5fed1480',
-          _isBigNumber: true
-        }
-      },
-      '0xfeac75a09662396283f4bb50f0a9249576a81866': {
-        '0x6cA105D2AF7095B1BCEeb6A2113D168ddDCD57cf': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0xee2B7864d8bc731389562F820148e372F57571D8': {
-          _hex: '0x00',
-          _isBigNumber: true
-        },
-        '0x098D8b363933D742476DDd594c4A5a5F1a62326a': {
-          _hex: '0x00',
-          _isBigNumber: true
-        }
-      }
-    };
+  const accounts = [
+    { address: accountWithMembership },
+    { address: '0xfeac75a09662396283f4bb50f0a9249576a81866' }
+  ] as StoreAccount[];
 
-    const accounts = [
-      { address: '0x82d69476357a03415e92b5780c89e5e9e972ce75' } as StoreAccount,
-      { address: '0xfeac75a09662396283f4bb50f0a9249576a81866' } as StoreAccount
-    ];
+  const initialState = {
+    legacy: { accounts, networks: fNetworks }
+  };
 
-    return expectSaga(fetchMembershipsSaga, fetchMemberships(accounts))
-      .withState({ legacy: { accounts, networks: fNetworks } })
-      .provide([[matchers.call.fn(getUnlockTimestamps), apiRes]])
-      .put(setMemberships(res))
-      .run();
+  it('formats timestamps', () => {
+    const actual = format(membershipApiResponse);
+    expect(actual).toEqual(res);
   });
 
-  // it('calls fetchError on error', () => {
-  //   return expectSaga(fetchMemberships)
-  //     .provide([matchers.call.fn(getUnlockTimestamps), {}])
-  //     .put(fetchError())
-  //     .run();
-  // });
+  it('calls setMemberships on success', () => {
+    return (
+      expectSaga(fetchMembershipsSaga)
+        .withState(initialState)
+        .provide([[matchers.call.fn(getUnlockTimestamps), membershipApiResponse]])
+        .put(setMemberships(res))
+        .dispatch(fetchMemberships(accounts))
+        // We test a `takeLatest` saga so we expect a timeout.
+        // use `silentRun` to silence the warning.
+        .silentRun()
+    );
+  });
+
+  it('calls fetchError on error', () => {
+    return expectSaga(fetchMembershipsSaga)
+      .withState(initialState)
+      .provide([matchers.call.fn(getUnlockTimestamps), {}])
+      .dispatch(fetchMemberships(accounts))
+      .put(fetchError())
+      .silentRun();
+  });
 });
