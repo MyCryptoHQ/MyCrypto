@@ -43,14 +43,6 @@
         "ignoreDeclarationSort": true,
         "allowSeparatedGroups": true
       }
-    ],
-    // Configure Jest to recognise react-saga-test-plan assertions
-    // https://github.com/jfairbank/redux-saga-test-plan/issues/329
-    "jest/expect-expect": [
-      "error",
-      {
-        "assertFunctionNames": ["expect", "expectSaga", "testSaga"]
-      }
     ]
   },
   "overrides": [
@@ -98,7 +90,15 @@
         "react/display-name": "off",
         "react/no-unescaped-entities": "off",
         "react/prop-types": "off",
-        "react-hooks/exhaustive-deps": "off"
+        "react-hooks/exhaustive-deps": "off",
+        // Configure Jest to recognise react-saga-test-plan assertions
+        // https://github.com/jfairbank/redux-saga-test-plan/issues/329
+        "jest/expect-expect": [
+          "error",
+          {
+            "assertFunctionNames": ["expect", "expectSaga", "testSaga"]
+          }
+        ]
       },
       "settings": {
         "react": {
