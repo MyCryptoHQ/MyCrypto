@@ -219,58 +219,66 @@ export function RequestAssets({ history }: RouteComponentProps) {
                 />
               </Asset>
             </AssetFields>
-            {!errors.amount && selectedAsset && recipientAddress.address && network && (
-              <>
-                <Divider />
-                <CodeHeader>
-                  <CodeHeading as="h3">{translateRaw('REQUEST_FORM_CODE_HEADER')}</CodeHeading>
-                  <Tooltip tooltip={translate('REQUEST_FORM_TOOLTIP')}>
-                    <img className="Tool-tip-img" src={questionToolTip} />
-                  </Tooltip>
-                </CodeHeader>
+            {!errors.amount &&
+              selectedAsset &&
+              recipientAddress.address &&
+              network &&
+              amount.length > 0 && (
+                <>
+                  <Divider />
+                  <CodeHeader>
+                    <CodeHeading as="h3">{translateRaw('REQUEST_FORM_CODE_HEADER')}</CodeHeading>
+                    <Tooltip tooltip={translate('REQUEST_FORM_TOOLTIP')}>
+                      <img className="Tool-tip-img" src={questionToolTip} />
+                    </Tooltip>
+                  </CodeHeader>
 
-                <Fieldset>
-                  <SLabel>{translate('REQUEST_QR_CODE')}</SLabel>
-                  <QRDisplay>
-                    <QRCode
-                      data={
-                        isAssetToken(selectedAsset.type) &&
-                        selectedAsset.contractAddress &&
-                        selectedAsset.decimal
-                          ? buildEIP681TokenRequest(
-                              recipientAddress.address,
-                              selectedAsset.contractAddress,
-                              network.chainId,
-                              amount,
-                              selectedAsset.decimal
-                            )
-                          : buildEIP681EtherRequest(
-                              recipientAddress.address,
-                              network.chainId,
-                              amount
-                            )
-                      }
-                    />
-                  </QRDisplay>
-                </Fieldset>
-                <Fieldset>
-                  <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
-                  <CopyableCodeBlock>
-                    {isAssetToken(selectedAsset.type) &&
-                    selectedAsset.contractAddress &&
-                    selectedAsset.decimal
-                      ? buildEIP681TokenRequest(
-                          recipientAddress.address,
-                          selectedAsset.contractAddress,
-                          network.chainId,
-                          amount,
+                  <Fieldset>
+                    <SLabel>{translate('REQUEST_QR_CODE')}</SLabel>
+                    <QRDisplay>
+                      <QRCode
+                        data={
+                          isAssetToken(selectedAsset.type) &&
+                          selectedAsset.contractAddress &&
                           selectedAsset.decimal
-                        )
-                      : buildEIP681EtherRequest(recipientAddress.address, network.chainId, amount)}
-                  </CopyableCodeBlock>
-                </Fieldset>
-              </>
-            )}
+                            ? buildEIP681TokenRequest(
+                                recipientAddress.address,
+                                selectedAsset.contractAddress,
+                                network.chainId,
+                                amount,
+                                selectedAsset.decimal
+                              )
+                            : buildEIP681EtherRequest(
+                                recipientAddress.address,
+                                network.chainId,
+                                amount
+                              )
+                        }
+                      />
+                    </QRDisplay>
+                  </Fieldset>
+                  <Fieldset>
+                    <SLabel>{translate('REQUEST_PAYMENT_CODE')}</SLabel>
+                    <CopyableCodeBlock>
+                      {isAssetToken(selectedAsset.type) &&
+                      selectedAsset.contractAddress &&
+                      selectedAsset.decimal
+                        ? buildEIP681TokenRequest(
+                            recipientAddress.address,
+                            selectedAsset.contractAddress,
+                            network.chainId,
+                            amount,
+                            selectedAsset.decimal
+                          )
+                        : buildEIP681EtherRequest(
+                            recipientAddress.address,
+                            network.chainId,
+                            amount
+                          )}
+                    </CopyableCodeBlock>
+                  </Fieldset>
+                </>
+              )}
           </Form>
         )}
       </Formik>
