@@ -11,12 +11,15 @@ import {
 } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, NetworkUtils, StoreProvider } from '@services';
+import { DataContext, NetworkUtils, ProviderHandler, StoreProvider } from '@services';
 import { translateRaw } from '@translations';
 import { NodeType } from '@types';
 import { noOp } from '@utils';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
+
+// Mock getCurrentBlock
+ProviderHandler.prototype.getCurrentBlock = jest.fn().mockResolvedValue(11386255);
 
 const defaultProps: React.ComponentProps<typeof AddOrEditNetworkNode> = {
   networkId: 'Ethereum',
