@@ -132,6 +132,10 @@ export const MEMBERSHIP_CONTRACTS = Object.fromEntries(
   ])
 );
 
+export const MEMBERSHIP_CONTRACTS_ADDRESSES = Object.values(MEMBERSHIP_CONFIG).map(
+  (membership) => membership.contractAddress
+);
+
 export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
   const today = new Date();
   return new Date(

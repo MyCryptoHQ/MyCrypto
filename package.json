@@ -182,6 +182,7 @@
     "react-inlinesvg": "2.0",
     "react-select-event": "4.1.4",
     "react-test-renderer": "16.12.0",
+    "redux-saga-test-plan": "4.0.1",
     "reinspect": "1.1.0",
     "sass": "1.26.10",
     "sass-loader": "10.0.2",

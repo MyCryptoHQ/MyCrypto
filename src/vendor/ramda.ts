@@ -61,3 +61,5 @@ export { default as indexBy } from 'ramda/src/indexBy';
 export { default as tap } from 'ramda/src/tap';
 export { default as partialRight } from 'ramda/src/partialRight';
 export { default as chain } from 'ramda/src/chain';
+export { default as not } from 'ramda/src/not';
+export { default as find } from 'ramda/src/find';

@@ -23,3 +23,4 @@ export { UniswapService, UniClaimResult } from './Uniswap';
 export * from './constants';
 export { ENSService } from './Ens';
 export { CustomAssetService } from './CustomAsset';
+export { default as MembershipApi } from './MembershipApi';
