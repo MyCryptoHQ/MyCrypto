@@ -100,7 +100,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
           : () => {
               displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
               scanTokens();
-              dispatch(fetchMemberships([...newAccounts]));
+              dispatch(fetchMemberships(newAccounts));
             };
       handleAddition();
       history.push(ROUTE_PATHS.DASHBOARD.path);
