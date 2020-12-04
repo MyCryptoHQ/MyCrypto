@@ -11,13 +11,7 @@ import { translateRaw } from '@translations';
 
 import { DashboardZapCTA } from '../DeFiZap';
 import { NotificationsPanel } from '../NotificationsPanel';
-import {
-  ActionTile,
-  MembershipPanel,
-  RecentTransactionList,
-  TokenPanel,
-  WalletBreakdown
-} from './components';
+import { ActionTile, RecentTransactionList, TokenPanel, WalletBreakdown } from './components';
 import { actions } from './constants';
 import { filterDashboardActions } from './helpers';
 
@@ -57,11 +51,11 @@ export default function Dashboard() {
           <div className="Dashboard-mobile-walletBreakdown">
             <WalletBreakdown />
           </div>
-          {featureFlags.MYC_MEMBERSHIP && (
+          {/* {featureFlags.MYC_MEMBERSHIP && (
             <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
               <MembershipPanel />
             </div>
-          )}
+          )} */}
           <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
             <TokenPanel />
           </div>
@@ -100,11 +94,11 @@ export default function Dashboard() {
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>
-            {featureFlags.MYC_MEMBERSHIP && (
+            {/* {featureFlags.MYC_MEMBERSHIP && (
               <div className="Dashboard-desktop-top-left-token">
                 <MembershipPanel />
               </div>
-            )}
+            )} */}
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>

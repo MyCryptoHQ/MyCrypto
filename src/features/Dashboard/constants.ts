@@ -1,5 +1,4 @@
 import buyIcon from '@assets/images/icn-buy.svg';
-import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
 import { ROUTE_PATHS } from '@config';
