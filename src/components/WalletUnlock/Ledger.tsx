@@ -111,7 +111,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
         </Heading>
         <div className="LedgerPanel-description-content">
           <div className="LedgerPanel-description">
-            {translate('LEDGER_TIP')}
+            {translate('LEDGER_TIP', { $network: network.id })}
             <div className="LedgerPanel-image">
               <img src={ledgerIcon} />
             </div>
