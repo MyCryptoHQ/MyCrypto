@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import {
   createNetwork,
   destroyNetwork as deleteNetworkRedux,
+  deleteNodeOrNetwork as deleteNodeOrNetworkRedux,
   updateNetwork as updateNetworkRedux,
   useDispatch
 } from '@store';
@@ -37,6 +38,8 @@ function useNetworks() {
 
   const addNetwork = (network: Network) => dispatch(createNetwork(network));
   const updateNetwork = (item: Network) => dispatch(updateNetworkRedux(item));
+  const deleteNodeOrNetwork = (network: NetworkId, nodeName: string) =>
+    dispatch(deleteNodeOrNetworkRedux({ network, nodeName }));
   const deleteNetwork = (id: NetworkId) => dispatch(deleteNetworkRedux(id));
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
@@ -157,6 +160,7 @@ function useNetworks() {
     addNetwork,
     updateNetwork,
     deleteNetwork,
+    deleteNodeOrNetwork,
     getNetworkById,
     getNetworkByChainId,
     getNetworkNodes,

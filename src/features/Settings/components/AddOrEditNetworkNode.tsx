@@ -177,12 +177,11 @@ export default function AddOrEditNetworkNode({
 }: Props) {
   const {
     addNetwork,
-    deleteNetwork,
     addNodeToNetwork,
     isNodeNameAvailable,
     getNetworkById,
     updateNode,
-    deleteNode
+    deleteNodeOrNetwork
   } = useNetworks();
   const { createAsset } = useAssets();
   const { accounts } = useAccounts();
@@ -215,13 +214,8 @@ export default function AddOrEditNetworkNode({
   const onDeleteNodeClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    const network = getNetworkById(networkId);
+    deleteNodeOrNetwork(networkId, editNode!.name);
 
-    if (network.isCustom && network.nodes.length === 1) {
-      deleteNetwork(networkId);
-    } else {
-      deleteNode(editNode!.name, networkId);
-    }
     onComplete();
   };
 

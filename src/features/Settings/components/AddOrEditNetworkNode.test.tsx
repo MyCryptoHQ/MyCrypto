@@ -133,11 +133,7 @@ describe('Settings', () => {
 
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload({
-          ...fNetworks[0],
-          nodes: fNetworks[0].nodes.slice(1),
-          selectedNode: fNetworks[0].nodes[1].name
-        })
+        actionWithPayload({ network: fNetworks[0].id, nodeName: fNetworks[0].nodes[0].name })
       )
     );
   });
@@ -162,6 +158,10 @@ describe('Settings', () => {
 
     fireEvent.click(deleteButton);
 
-    await waitFor(() => expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fNetwork.id)));
+    await waitFor(() =>
+      expect(mockDispatch).toHaveBeenCalledWith(
+        actionWithPayload({ network: fNetwork.id, nodeName: fNetwork.nodes[0].name })
+      )
+    );
   });
 });

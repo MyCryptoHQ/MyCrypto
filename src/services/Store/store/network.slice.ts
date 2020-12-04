@@ -1,6 +1,8 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { DEFAULT_NETWORK } from '@config';
+import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { LSKeys, Network, NetworkId } from '@types';
 import { find, findIndex, propEq } from '@vendor';
 
@@ -43,6 +45,14 @@ const slice = createSlice({
   }
 });
 
+export const deleteNode = createAction<{ network: NetworkId; nodeName: string }>(
+  `${slice.name}/deleteNode`
+);
+
+export const deleteNodeOrNetwork = createAction<{ network: NetworkId; nodeName: string }>(
+  `${slice.name}/deleteNodeOrNetwork`
+);
+
 export const {
   create: createNetwork,
   createMany: createNetworks,
@@ -60,3 +70,62 @@ export default slice;
 
 export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
 export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));
+
+/**
+ * Sagas
+ */
+export function* networkSaga() {
+  yield all([
+    takeLatest(deleteNode.type, deleteNodeWorker),
+    takeLatest(deleteNodeOrNetwork.type, deleteNodeOrNetworkWorker)
+  ]);
+}
+
+export function* deleteNodeWorker({
+  payload
+}: PayloadAction<{ network: NetworkId; nodeName: string }>) {
+  const { network: networkId, nodeName } = payload;
+  const networks: Network[] = yield select(getNetworks);
+
+  const network = networks.find((n) => n.id === networkId)!;
+
+  const { nodes } = network;
+
+  const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
+
+  const newSelectedNode = (() => {
+    if (
+      network.selectedNode === nodeName &&
+      (network.selectedNode === network.autoNode || network.autoNode === undefined)
+    ) {
+      return newNodes[0]?.name;
+    } else if (network.selectedNode === nodeName) {
+      return network.autoNode;
+    }
+    return network.selectedNode;
+  })();
+
+  const networkUpdate = {
+    ...network,
+    nodes: newNodes,
+    selectedNode: newSelectedNode
+  };
+
+  yield put(slice.actions.update(networkUpdate));
+  yield call(EthersJS.updateEthersInstance, networkUpdate);
+}
+
+export function* deleteNodeOrNetworkWorker({
+  payload
+}: PayloadAction<{ network: NetworkId; nodeName: string }>) {
+  const { network: networkId, nodeName } = payload;
+  const networks: Network[] = yield select(getNetworks);
+
+  const network = networks.find((n) => n.id === networkId)!;
+
+  if (network.isCustom && network.nodes.length === 1) {
+    yield put(slice.actions.destroy(networkId));
+  } else {
+    yield put(deleteNode({ nodeName, network: networkId }));
+  }
+}
