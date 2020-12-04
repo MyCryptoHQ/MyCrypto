@@ -39,3 +39,16 @@ export {
   deleteMembership,
   fetchError
 } from './membership.slice';
+export {
+  resetFavoritesTo,
+  addFavorites,
+  addFavorite,
+  addExcludedAsset,
+  removeExcludedAsset,
+  setLanguage,
+  setFiat,
+  setRates,
+  getRates,
+  getInactivityTimer,
+  setInacticityTimer
+} from './settings.slice';

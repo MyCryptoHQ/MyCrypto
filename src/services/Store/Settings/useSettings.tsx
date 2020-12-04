@@ -1,5 +1,17 @@
 import { useContext } from 'react';
 
+import {
+  addExcludedAsset,
+  addFavorite,
+  addFavorites,
+  removeExcludedAsset,
+  resetFavoritesTo,
+  setFiat,
+  setLanguage,
+  setRates,
+  useDispatch
+} from '@store';
+
 import { IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';
@@ -45,6 +57,7 @@ const isValidImportFunc = (importedCache: string, localStorage: string) => {
 
 function useSettings() {
   const { createActions, settings } = useContext(DataContext);
+  const dispatch = useDispatch();
   const model = createActions(LSKeys.SETTINGS);
 
   const language = settings.language || '';
@@ -61,52 +74,42 @@ function useSettings() {
     return true;
   };
 
-  const addAccountToFavorites = (account: TUuid): void => {
-    updateSettings({
-      ...settings,
-      dashboardAccounts: [...settings.dashboardAccounts, account]
-    });
+  // Solved
+  const addAccountToFavorites = (account: TUuid) => {
+    dispatch(addFavorite(account));
   };
 
-  const addMultipleAccountsToFavorites = (accounts: TUuid[]): void => {
-    updateSettings({
-      ...settings,
-      dashboardAccounts: [...settings.dashboardAccounts, ...accounts]
-    });
+  const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
+    dispatch(addFavorites(accounts));
+  };
+
+  const updateSettingsAccounts = (accounts: TUuid[]) => {
+    dispatch(resetFavoritesTo(accounts));
+  };
+
+  const updateLanguageSelection = (lang: string) => {
+    dispatch(setLanguage(lang));
+  };
+
+  const updateFiatCurrency = (fiat: TFiatTicker) => {
+    dispatch(setFiat(fiat));
   };
 
   const addAssetToExclusionList = (assetUuid: TUuid): void => {
-    updateSettings({
-      ...settings,
-      excludedAssets: [...(settings.excludedAssets || []), assetUuid]
-    });
+    dispatch(addExcludedAsset(assetUuid));
   };
 
   const removeAssetfromExclusionList = (assetUuid: TUuid): void => {
-    updateSettings({
-      ...settings,
-      excludedAssets: (settings.excludedAssets || []).filter((uuid) => uuid !== assetUuid)
-    });
-  };
-
-  const updateSettingsAccounts = (accounts: TUuid[]): void => {
-    updateSettings({ ...settings, dashboardAccounts: accounts });
-  };
-
-  const updateSettingsNode = (nodeId: string) => {
-    updateSettings({ ...settings, node: nodeId });
+    dispatch(removeExcludedAsset(assetUuid));
   };
 
   const updateSettingsRates = (rates: IRates) => {
-    updateSettings({ ...settings, rates });
+    dispatch(setRates(rates));
   };
 
-  const updateLanguageSelection = (languageToChangeTo: string) => {
-    updateSettings({ ...settings, language: languageToChangeTo });
-  };
-
-  const updateFiatCurrency = (newFiatSelection: TFiatTicker) => {
-    updateSettings({ ...settings, fiatCurrency: newFiatSelection });
+  // Todo
+  const updateSettingsNode = (nodeId: string) => {
+    updateSettings({ ...settings, node: nodeId });
   };
 
   const isValidImport = (toValidate: string) => isValidImportFunc(toValidate, exportStorage());
