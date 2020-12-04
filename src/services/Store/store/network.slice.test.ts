@@ -1,7 +1,16 @@
+import { expectSaga } from 'redux-saga-test-plan';
+
+import { fNetworks } from '@fixtures';
 import { Network } from '@types';
 import { isEmpty } from '@vendor';
 
-import { initialState, default as slice } from './network.slice';
+import {
+  deleteNode,
+  deleteNodeOrNetworkWorker,
+  deleteNodeWorker,
+  initialState,
+  default as slice
+} from './network.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
@@ -67,5 +76,72 @@ describe('NetworkSlice', () => {
     const state = [entity];
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+});
+
+describe('deleteNodeWorker()', () => {
+  expectSaga.DEFAULT_TIMEOUT = 100;
+
+  const nodes = [...fNetworks[0].nodes, { name: 'MyNode' }];
+
+  const initialState = {
+    legacy: { networks: [{ ...fNetworks[0], nodes }] }
+  };
+
+  it('can delete nodes from network', () => {
+    return expectSaga(deleteNodeWorker, deleteNode({ network: 'Ethereum', nodeName: 'MyNode' }))
+      .withState(initialState)
+      .put(update(fNetworks[0]))
+      .silentRun();
+  });
+
+  it('can delete nodes from network which are currently selected', () => {
+    return expectSaga(
+      deleteNodeWorker,
+      deleteNode({ network: 'Ethereum', nodeName: 'eth_mycrypto' })
+    )
+      .withState({
+        legacy: { networks: [{ ...fNetworks[0] }] }
+      })
+      .put(
+        update({
+          ...fNetworks[0],
+          nodes: [fNetworks[0].nodes[1]],
+          selectedNode: 'eth_ethscan'
+        })
+      )
+      .silentRun();
+  });
+});
+
+describe('deleteNodeOrNetworkWorker()', () => {
+  expectSaga.DEFAULT_TIMEOUT = 100;
+
+  const initialState = {
+    legacy: { networks: [{ ...fNetworks[0], isCustom: true, nodes: [{ name: 'MyNode' }] }] }
+  };
+
+  it('can delete network if only one node', () => {
+    return expectSaga(
+      deleteNodeOrNetworkWorker,
+      deleteNode({ network: 'Ethereum', nodeName: 'MyNode' })
+    )
+      .withState(initialState)
+      .put(destroy(fNetworks[0].id))
+      .silentRun();
+  });
+
+  it('can delete node if multiple nodes', () => {
+    return expectSaga(
+      deleteNodeOrNetworkWorker,
+      deleteNode({ network: 'Ethereum', nodeName: 'MyNode' })
+    )
+      .withState({
+        legacy: {
+          networks: [{ ...fNetworks[0], nodes: [...fNetworks[0].nodes, { name: 'MyNode' }] }]
+        }
+      })
+      .put(deleteNode({ network: fNetworks[0].id, nodeName: 'MyNode' }))
+      .silentRun();
   });
 });
