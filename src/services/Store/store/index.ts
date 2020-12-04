@@ -23,7 +23,8 @@ export {
   destroyNetwork,
   updateNetwork,
   updateNetworks,
-  deleteNodeOrNetwork
+  deleteNodeOrNetwork,
+  deleteNode
 } from './network.slice';
 export {
   createAssets,

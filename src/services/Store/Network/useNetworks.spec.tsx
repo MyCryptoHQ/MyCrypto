@@ -88,15 +88,14 @@ describe('useNetworks', () => {
     );
   });
 
-  it('deleteNode() deletes node from network', () => {
+  it('deleteNode() dispatches deleteNode', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNetworks({ networks: fNetworks });
     result.current.deleteNode(fNetworks[0].nodes[0].name, fNetworks[0].id);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        ...fNetworks[0],
-        nodes: [fNetworks[0].nodes[1]],
-        selectedNode: fNetworks[0].nodes[1].name
+        network: fNetworks[0].id,
+        nodeName: fNetworks[0].nodes[0].name
       })
     );
   });

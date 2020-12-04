@@ -4,6 +4,7 @@ import {
   createNetwork,
   destroyNetwork as deleteNetworkRedux,
   deleteNodeOrNetwork as deleteNodeOrNetworkRedux,
+  deleteNode as deleteNodeRedux,
   updateNetwork as updateNetworkRedux,
   useDispatch
 } from '@store';
@@ -92,38 +93,8 @@ function useNetworks() {
     updateNetwork(networkUpdate);
     EthersJS.updateEthersInstance(networkUpdate);
   };
-  const deleteNode = (nodeName: string, network: Network | NetworkId) => {
-    let networkToEdit: Network = network as Network;
-    if (isString(network)) {
-      networkToEdit = getNetworkById(network);
-    }
-
-    const { nodes } = networkToEdit;
-
-    const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
-
-    const newSelectedNode = (() => {
-      if (
-        networkToEdit.selectedNode === nodeName &&
-        (networkToEdit.selectedNode === networkToEdit.autoNode ||
-          networkToEdit.autoNode === undefined)
-      ) {
-        return newNodes[0]?.name;
-      } else if (networkToEdit.selectedNode === nodeName) {
-        return networkToEdit.autoNode;
-      }
-      return networkToEdit.selectedNode;
-    })();
-
-    const networkUpdate = {
-      ...networkToEdit,
-      nodes: newNodes,
-      selectedNode: newSelectedNode
-    };
-
-    updateNetwork(networkUpdate);
-    EthersJS.updateEthersInstance(networkUpdate);
-  };
+  const deleteNode = (nodeName: string, network: NetworkId) =>
+    dispatch(deleteNodeRedux({ network, nodeName }));
   const setNetworkSelectedNode = (networkId: NetworkId, selectedNode: string) => {
     const foundNetwork = networks.find((n: Network) => n.id === networkId);
 
