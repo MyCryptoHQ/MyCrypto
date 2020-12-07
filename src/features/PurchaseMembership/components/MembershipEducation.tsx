@@ -187,9 +187,14 @@ const MembershipEducation = withRouter(({ history }) => {
         </ListContainer>
         <Title>{translate('WHAT_IT_COST')}</Title>
         <PlanContainer>
-          {Object.keys(MEMBERSHIP_CONFIG).map((key) => (
-            <MembershipPlanCard key={key} plan={MEMBERSHIP_CONFIG[key as IMembershipId]} />
-          ))}
+          {Object.values(MEMBERSHIP_CONFIG)
+            .filter(({ disabled }) => !disabled)
+            .map((membershipConfig) => (
+              <MembershipPlanCard
+                key={membershipConfig.key}
+                plan={MEMBERSHIP_CONFIG[membershipConfig.key as IMembershipId]}
+              />
+            ))}
         </PlanContainer>
         <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
         <Disclaimer>{translate('MEMBERSHIP_NOTE')}</Disclaimer>
