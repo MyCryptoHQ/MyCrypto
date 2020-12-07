@@ -10,9 +10,6 @@ import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
 import { Faucet } from './Faucet';
-import { possibleSolution } from './helpers';
-
-//jest.mock('../../services/ApiService/Faucet', () => jest.fn())
 
 FaucetService.requestChallenge = jest.fn(() =>
   Promise.resolve({
@@ -81,27 +78,6 @@ describe('Faucet', () => {
   const renderComponent = (pathToLoad?: string) => {
     return simpleRender(component(pathToLoad));
   };
-
-  describe('Captcha solution regex', () => {
-    test('AbC0 should be a valid solution', () => {
-      expect(possibleSolution('AbC0')).toBe(true);
-    });
-    test('AbC01 should not be a valid solution', () => {
-      expect(possibleSolution('AbC01')).toBe(false);
-    });
-  });
-
-  /*describe('makeTxConfig', () => {
-    test('makeTxConfig', () => {
-      
-    });
-  });
-
-  describe('makeTxReceipt', () => {
-    test('makeTxConfig', () => {
-      
-    });
-  });*/
 
   beforeEach(() => jest.clearAllMocks());
 

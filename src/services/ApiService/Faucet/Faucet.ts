@@ -9,23 +9,23 @@ import {
   FaucetSolvedChallengeResponse
 } from './types';
 
-export default abstract class CryptoScamDBService {
+export default abstract class FaucetService {
   public static requestChallenge = async (network: string, address: string) => {
-    const { data } = await CryptoScamDBService.service
+    const { data } = await FaucetService.service
       .get<FaucetErrorResponse | FaucetChallengeResponse>(`/challenge/${network}/${address}`)
       .catch();
     return data;
   };
 
   public static solveChallenge = async (id: string, solution: string) => {
-    const { data } = await CryptoScamDBService.service
+    const { data } = await FaucetService.service
       .get<FaucetErrorResponse | FaucetSolvedChallengeResponse>(`/solve/${id}/${solution}`)
       .catch();
     return data;
   };
 
   public static regenerateChallenge = async (id: string) => {
-    const { data } = await CryptoScamDBService.service
+    const { data } = await FaucetService.service
       .get<FaucetErrorResponse | FaucetChallengeResponse>(`/regenerate/${id}`)
       .catch();
     return data;
