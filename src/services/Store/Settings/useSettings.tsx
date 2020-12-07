@@ -72,7 +72,6 @@ function useSettings() {
     return true;
   };
 
-  // Solved
   const addAccountToFavorites = (account: TUuid) => {
     dispatch(addFavorite(account));
   };
