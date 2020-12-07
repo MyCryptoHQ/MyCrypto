@@ -70,6 +70,8 @@ export default slice;
 
 export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
 export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));
+export const getNetwork = (network: NetworkId) =>
+  createSelector(getNetworks, find(propEq('id', network)));
 
 /**
  * Sagas
@@ -85,9 +87,7 @@ export function* deleteNodeWorker({
   payload
 }: PayloadAction<{ network: NetworkId; nodeName: string }>) {
   const { network: networkId, nodeName } = payload;
-  const networks: Network[] = yield select(getNetworks);
-
-  const network = networks.find((n) => n.id === networkId)!;
+  const network: Network = yield select(getNetwork(networkId));
 
   const { nodes } = network;
 
