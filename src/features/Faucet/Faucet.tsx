@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
@@ -16,15 +16,15 @@ import {
   TxReceipt
 } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
-import { FaucetService } from '@services/ApiService/Faucet';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
-import { noOp } from '@utils';
+import { noOp, useStateReducer } from '@utils';
 
 import { Error as ErrorComponent } from './components';
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
+import FaucetFactory from './stateFactory';
 
 // Legacy
 
@@ -90,81 +90,25 @@ const SubmitCaptchaButton = styled(Button)`
   margin-top: ${SPACING.MD};
 `;
 
+const initialFaucetState = () => ({
+  step: 0,
+  loading: false
+});
+
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
 
 export function Faucet() {
-  const [step, setStep] = useState(0);
-  const [challenge, setChallenge] = useState({} as any);
-  const [solution, setSolution] = useState('');
-  const [txResult, setTxResult] = useState({} as any);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  const { faucetState, reset, setSolution, requestFunds, finalizeRequestFunds } = useStateReducer(
+    FaucetFactory,
+    initialFaucetState
+  );
 
   const { accounts } = useContext(StoreContext);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount
-  };
-
-  const reset = () => {
-    setChallenge({});
-    setSolution('');
-    setTxResult({});
-    setError('');
-    setStep(0);
-  };
-
-  const requestFunds = (recipientAddress: StoreAccount) => {
-    const network = recipientAddress.network.name.toLowerCase();
-    const address = recipientAddress.address;
-    FaucetService.requestChallenge(network, address)
-      .then((result) => {
-        if (!result.success) {
-          throw new Error(result.message);
-        } else {
-          setChallenge(result.result);
-          setStep(1);
-        }
-      })
-      .catch((e) => {
-        setError(e.message);
-      });
-  };
-
-  const finalizeRequestFunds = (solutionInput: string) => {
-    setLoading(true);
-    FaucetService.solveChallenge(challenge.id, solutionInput)
-      .then((result) => {
-        if (!result.success) {
-          throw new Error(result.message);
-        } else {
-          setLoading(false);
-          setTxResult(result.result);
-          setStep(2);
-        }
-      })
-      .catch((e) => {
-        if (e.message === 'INVALID_SOLUTION') {
-          FaucetService.regenerateChallenge(challenge.id)
-            .then((result) => {
-              if (!result.success) {
-                throw new Error(result.message);
-              } else {
-                setSolution('');
-                setChallenge(result.result);
-                setError(e.message);
-                setLoading(false);
-              }
-            })
-            .catch((err) => {
-              setError(err.message);
-            });
-        } else {
-          setLoading(false);
-          setError(e.message);
-        }
-      });
   };
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
@@ -231,43 +175,46 @@ export function Faucet() {
           <img className="Tool-tip-img" src={questionToolTip} />
         </Tooltip>
       </CodeHeader>
-      {'challenge' in challenge && (
+      {faucetState.challenge && (
         <div style={{ width: '100%', marginBottom: '20px' }}>
-          <img style={{ width: '100%' }} src={`data:image/png;base64,${challenge.challenge}`} />
+          <img
+            style={{ width: '100%' }}
+            src={`data:image/png;base64,${faucetState.challenge.challenge}`}
+          />
         </div>
       )}
       <Input
-        value={solution}
+        value={faucetState.solution}
         name="captcha"
         placeholder={translateRaw('FAUCET_ENTER_RESPONSE')}
         onChange={(e) => {
           setSolution(e.target.value);
         }}
       />
-      {error && error === 'INVALID_SOLUTION' && (
+      {faucetState.error && faucetState.error === 'INVALID_SOLUTION' && (
         <IncorrectResponse type={InlineMessageType.ERROR}>
           Incorrect captcha response. Please try again.
         </IncorrectResponse>
       )}
       <SubmitCaptchaButton
         name="submitCaptcha"
-        onClick={() => finalizeRequestFunds(solution)}
-        disabled={loading || !possibleSolution(solution)}
+        onClick={() => finalizeRequestFunds(faucetState.solution)}
+        disabled={faucetState.loading || !possibleSolution(faucetState.solution)}
       >
         Submit
       </SubmitCaptchaButton>
     </>,
     <>
-      {'hash' in txResult && (
+      {faucetState.txResult && (
         <TxReceipt
           txConfig={makeTxConfig(
-            txResult,
+            faucetState.txResult,
             networks,
             assets,
             getContactByAddressAndNetworkId,
             createContact
           )}
-          txReceipt={makeTxReceipt(txResult, networks, assets)}
+          txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
           onComplete={() => reset()}
           resetFlow={() => reset()}
         />
@@ -280,10 +227,14 @@ export function Faucet() {
       heading={translateRaw('FAUCET')}
       icon={receiveIcon}
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
-      stepper={{ current: step + 1, total: steps.length }}
+      stepper={{ current: faucetState.step + 1, total: steps.length }}
       width="750px"
     >
-      {error && error !== 'INVALID_SOLUTION' ? <ErrorComponent type={error} /> : steps[step]}
+      {faucetState.error && faucetState.error !== 'INVALID_SOLUTION' ? (
+        <ErrorComponent type={faucetState.error} />
+      ) : (
+        steps[faucetState.step]
+      )}
     </ExtendedContentPanel>
   );
 }

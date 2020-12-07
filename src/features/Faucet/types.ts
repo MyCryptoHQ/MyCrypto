@@ -12,3 +12,15 @@ export interface ITxFaucetResult {
   to: TAddress;
   value: string;
 }
+
+export interface FaucetState {
+  step: number;
+  challenge?: {
+    id: string;
+    challenge: string;
+  };
+  solution?: string;
+  txResult?: ITxFaucetResult;
+  error?: string;
+  loading: boolean;
+}
