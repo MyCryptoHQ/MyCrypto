@@ -247,8 +247,8 @@ export default function AddressBook({
         const color =
           networkData && 'color' in networkData && networkData.color
             ? networkData.color
-            : '#a682ff';
-          return [
+            : COLORS.LIGHT_PURPLE;
+        return [
           // Eslint requires a key because it identifies a jsx element in an array.
           // CollapsibleTable uses an array for mobile display
           // When displayed as a row, the primary row key is provided by AbstractTable
