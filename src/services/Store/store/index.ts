@@ -24,7 +24,8 @@ export {
   updateNetwork,
   updateNetworks,
   deleteNodeOrNetwork,
-  deleteNode
+  deleteNode,
+  canDeleteNode
 } from './network.slice';
 export {
   createAssets,

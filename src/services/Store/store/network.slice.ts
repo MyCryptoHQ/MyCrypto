@@ -97,6 +97,19 @@ export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
 export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));
 export const getNetwork = (network: NetworkId) =>
   createSelector(getNetworks, find(propEq('id', network)));
+export const canDeleteNode = (networkId: NetworkId) =>
+  createSelector([getAppState], (state) => {
+    const network = state.networks.find((n) => n.id === networkId)!;
+
+    if (network.isCustom && network.nodes.length === 1) {
+      return (
+        !state.accounts.some((a) => a.networkId === networkId) &&
+        !state.addressBook.some((c) => c.network === networkId) &&
+        !state.contracts.some((c) => c.networkId === networkId)
+      );
+    }
+    return true;
+  });
 
 /**
  * Sagas

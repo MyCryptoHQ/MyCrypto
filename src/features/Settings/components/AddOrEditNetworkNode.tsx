@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { Tooltip, Button as UIButton } from '@mycrypto/ui';
+import { canDeleteNode as canDeleteNodeSelector, useSelector } from '@store';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
 import { boolean, lazy, object, string } from 'yup';
@@ -22,7 +23,7 @@ import {
   GITHUB_RELEASE_NOTES_URL,
   LETS_ENCRYPT_URL
 } from '@config';
-import { useAccounts, useAssets, useContacts, useContracts } from '@services';
+import { useAssets } from '@services';
 import { ProviderHandler } from '@services/EthService/network';
 import { NetworkUtils, useNetworks } from '@services/Store/Network';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
@@ -184,11 +185,9 @@ export default function AddOrEditNetworkNode({
     deleteNodeOrNetwork
   } = useNetworks();
   const { createAsset } = useAssets();
-  const { accounts } = useAccounts();
-  const { contacts } = useContacts();
-  const { contracts } = useContracts();
   const [isConnectionError, setIsConnectionError] = useState(false);
   const [editMode] = useState(!!editNode);
+  const canDeleteNode = useSelector(canDeleteNodeSelector(networkId)) && editMode;
   const initialState = useCallback((): NetworkNodeFields => {
     if (editNode) {
       return {
@@ -237,20 +236,6 @@ export default function AddOrEditNetworkNode({
       })
     })
   );
-
-  const canDeleteNode =
-    editMode &&
-    (() => {
-      const network = getNetworkById(networkId);
-      if (network.isCustom && network.nodes.length === 1) {
-        return (
-          !accounts.some((a) => a.networkId === networkId) &&
-          !contacts.some((c) => c.network === networkId) &&
-          !contracts.some((c) => c.networkId === networkId)
-        );
-      }
-      return true;
-    })();
 
   return (
     <AddToNetworkNodePanel
