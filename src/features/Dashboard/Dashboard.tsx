@@ -129,9 +129,9 @@ export default function Dashboard() {
                 dashboard={true}
               />
             </div>
+            {!isMyCryptoMember && <BannerAd />}
           </div>
         </div>
-        {!isMyCryptoMember && <BannerAd />}
         <div className="Dashboard-desktop-bottom">
           <RecentTransactionList
             accountsList={currentAccounts}

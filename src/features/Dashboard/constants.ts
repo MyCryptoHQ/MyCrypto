@@ -1,5 +1,4 @@
 import buyIcon from '@assets/images/icn-buy.svg';
-import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
 import { ROUTE_PATHS } from '@config';
@@ -19,12 +18,6 @@ export const actions: Action[] = [
     title: translateRaw('DASHBOARD_ACTIONS_SWAP_ASSETS_TITLE'),
     link: ROUTE_PATHS.SWAP.path,
     description: translateRaw('DASHBOARD_ACTIONS_SWAP_ASSETS_SUBTITLE')
-  },
-  {
-    icon: receiveIcon,
-    title: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE'),
-    link: ROUTE_PATHS.REQUEST_ASSETS.path,
-    description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE')
   },
   {
     icon: buyIcon,

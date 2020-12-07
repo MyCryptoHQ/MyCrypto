@@ -208,8 +208,6 @@
     "DASHBOARD_ACCOUNT_SELECT_TOOLTIP": "Use this Account Selector to display the balance of a single account, or the combined balances of any accounts you have added.",
     "DASHBOARD_ACTIONS_BUY_SUBTITLE": "Hassle-free cryptocurrency, delivered directly to your account",
     "DASHBOARD_ACTIONS_BUY_TITLE": "Buy Crypto Assets",
-    "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Share your address or request a specific payment amount",
-    "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
     "DASHBOARD_ACTIONS_SEND_ASSETS_SUBTITLE": "Send your assets from your account to another account",
     "DASHBOARD_ACTIONS_SEND_ASSETS_TITLE": "Send Assets",
     "DASHBOARD_ACTIONS_SWAP_ASSETS_SUBTITLE": "Exchange instantly without leaving MyCrypto",
