@@ -45,19 +45,19 @@ describe('Settings', () => {
   it('renders', async () => {
     const { getAllByText } = getComponent();
 
-    expect(getAllByText('Accounts').length > 0).toBeTruthy();
+    getAllByText('Accounts').forEach((n) => expect(n).toBeInTheDocument());
   });
 
   it('has accounts', async () => {
     const { getAllByText } = getComponent();
 
-    expect(getAllByText(fAccounts[0].label).length > 0).toBeTruthy();
+    getAllByText(fAccounts[0].label).forEach((n) => expect(n).toBeInTheDocument());
   });
 
   it('has networks', async () => {
     const { getAllByText } = getComponent();
 
-    expect(getAllByText(fNetworks[0].name).length > 0).toBeTruthy();
+    getAllByText(fNetworks[0].name).forEach((n) => expect(n).toBeInTheDocument());
   });
 
   it('has general settings', async () => {
