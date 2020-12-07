@@ -1,6 +1,7 @@
 import { expectSaga } from 'redux-saga-test-plan';
 
 import { fNetworks } from '@fixtures';
+import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { Network } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -92,10 +93,16 @@ describe('deleteNodeWorker()', () => {
     return expectSaga(deleteNodeWorker, deleteNode({ network: 'Ethereum', nodeName: 'MyNode' }))
       .withState(initialState)
       .put(update(fNetworks[0]))
+      .call(EthersJS.updateEthersInstance, fNetworks[0])
       .silentRun();
   });
 
   it('can delete nodes from network which are currently selected', () => {
+    const res = {
+      ...fNetworks[0],
+      nodes: [fNetworks[0].nodes[1]],
+      selectedNode: 'eth_ethscan'
+    };
     return expectSaga(
       deleteNodeWorker,
       deleteNode({ network: 'Ethereum', nodeName: 'eth_mycrypto' })
@@ -103,13 +110,8 @@ describe('deleteNodeWorker()', () => {
       .withState({
         legacy: { networks: [{ ...fNetworks[0] }] }
       })
-      .put(
-        update({
-          ...fNetworks[0],
-          nodes: [fNetworks[0].nodes[1]],
-          selectedNode: 'eth_ethscan'
-        })
-      )
+      .put(update(res))
+      .call(EthersJS.updateEthersInstance, res)
       .silentRun();
   });
 });
