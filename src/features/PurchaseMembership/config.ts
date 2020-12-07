@@ -4,8 +4,8 @@ import step2SVG from '@assets/images/icn-receive.svg';
 import step1SVG from '@assets/images/icn-send.svg';
 import lifetimeIcon from '@assets/images/membership/membership-lifetime.svg';
 import onemonthIcon from '@assets/images/membership/membership-onemonth.svg';
-import sixMonthsIcon from '@assets/images/membership/membership-sixmonths.svg';
-import threemonthsIcon from '@assets/images/membership/membership-threemonths.svg';
+//import sixMonthsIcon from '@assets/images/membership/membership-sixmonths.svg';
+//import threemonthsIcon from '@assets/images/membership/membership-threemonths.svg';
 import twelveMonthsIcon from '@assets/images/membership/membership-twelvemonths.svg';
 import { DAIUUID, ETHUUID } from '@config';
 import translate, { translateRaw } from '@translations';
@@ -47,8 +47,8 @@ export interface MembershipExpiry {
 
 export enum IMembershipId {
   onemonth = 'onemonth',
-  threemonths = 'threemonths',
-  sixmonths = 'sixmonths',
+  //threemonths = 'threemonths',
+  //sixmonths = 'sixmonths',
   twelvemonths = 'twelvemonths',
   lifetime = 'lifetime'
 }
@@ -69,31 +69,31 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     discountNotice: ''
   },
 
-  threemonths: {
-    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '3' }),
-    key: IMembershipId.threemonths,
-    contractAddress: '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125',
-    description: '',
-    icon: threemonthsIcon,
-    price: '10.5',
-    discount: '10',
-    assetUUID: DAIUUID,
-    durationInDays: 90,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '10%' })
-  },
+  // threemonths: {
+  //   title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '3' }),
+  //   key: IMembershipId.threemonths,
+  //   contractAddress: '0xfe58C642A3F703e7Dc1060B3eE02ED4619046125',
+  //   description: '',
+  //   icon: threemonthsIcon,
+  //   price: '10.5',
+  //   discount: '10',
+  //   assetUUID: DAIUUID,
+  //   durationInDays: 90,
+  //   discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '10%' })
+  // },
 
-  sixmonths: {
-    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '6' }),
-    key: IMembershipId.sixmonths,
-    contractAddress: '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329',
-    description: '',
-    icon: sixMonthsIcon,
-    price: '18',
-    discount: '20',
-    assetUUID: DAIUUID,
-    durationInDays: 180,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '20%' })
-  },
+  // sixmonths: {
+  //   title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '6' }),
+  //   key: IMembershipId.sixmonths,
+  //   contractAddress: '0x7a84f1074B5929cBB7bd08Fb450CF9Fb22bf5329',
+  //   description: '',
+  //   icon: sixMonthsIcon,
+  //   price: '18',
+  //   discount: '20',
+  //   assetUUID: DAIUUID,
+  //   durationInDays: 180,
+  //   discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '20%' })
+  // },
 
   twelvemonths: {
     title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '12' }),
@@ -114,7 +114,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x098D8b363933D742476DDd594c4A5a5F1a62326a',
     description: '',
     icon: lifetimeIcon,
-    price: '5',
+    price: '2',
     assetUUID: ETHUUID,
     durationInDays: 36500,
     discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC')

@@ -135,7 +135,7 @@ export const transactionReceiptDeFiZap = wrapInProvider(
   </div>
 );
 
-const membershipSelected = MEMBERSHIP_CONFIG[IMembershipId.threemonths];
+const membershipSelected = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
 
 export const transactionReceiptMembership = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>
