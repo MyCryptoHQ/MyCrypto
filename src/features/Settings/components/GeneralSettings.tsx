@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { getFiat, getInactivityTimer, setFiat, setInacticityTimer } from '@store';
-import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -12,8 +13,7 @@ import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISettings, TFiatTicker } from '@types';
-import { pipe } from '@vendor';
+import { TFiatTicker } from '@types';
 
 const Divider = styled.div`
   height: 2px;
@@ -57,11 +57,6 @@ const SelectContainer = styled.div`
   }
 `;
 
-interface SettingsProps {
-  globalSettings: ISettings;
-  updateGlobalSettings(settings: ISettings): void;
-}
-
 const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_MINUTE', { $value: '1' }), value: '60000' },
   { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '3' }), value: '180000' },
@@ -76,14 +71,7 @@ const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
-const GeneralSettings: FC<SettingsProps> = ({
-  inactivityTimer,
-  fiatCurrency,
-  setInactivityTimer,
-  setFiat,
-  globalSettings,
-  updateGlobalSettings
-}) => {
+const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
   const trackSetInacticityTimer = useAnalytics({
     category: ANALYTICS_CATEGORIES.SETTINGS
   });
@@ -160,14 +148,21 @@ const GeneralSettings: FC<SettingsProps> = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  inactivityTime: getInactivityTimer(state),
+const mapStateToProps = (state: AppState) => ({
+  inactivityTimer: getInactivityTimer(state),
   fiatCurrency: getFiat(state)
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setInactivityTime: pipe(setInacticityTimer, dispatch),
-  setFiat: pipe(setFiat, dispatch)
-});
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      setInactivityTimer,
+      setFiat
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeneralSettings);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(GeneralSettings);

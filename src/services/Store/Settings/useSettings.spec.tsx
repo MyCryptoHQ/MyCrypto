@@ -1,20 +1,22 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
+import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { Fiats } from '@config';
 import { fAccount, fAccounts, fAssets, fLocalStorage, fRates, fSettings } from '@fixtures';
-import { ISettings, LSKeys } from '@types';
+import { ISettings } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
 import useSettings from './useSettings';
 
 const renderUseAccounts = ({ settings = {} as ISettings, createActions = jest.fn() } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ settings, createActions } as any) as IDataContext}>
-      {' '}
-      {children}
-    </DataContext.Provider>
+    <ProvidersWrapper>
+      <DataContext.Provider value={({ settings, createActions } as any) as IDataContext}>
+        {children}
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
   return renderHook(() => useSettings(), { wrapper });
 };
@@ -24,12 +26,6 @@ describe('useSettings', () => {
     const { result } = renderUseAccounts({ settings: fSettings });
     expect(result.current.settings).toEqual(fSettings);
     expect(result.current.language).toBe(fSettings.language);
-  });
-
-  it('uses a valid data model', () => {
-    const createActions = jest.fn();
-    renderUseAccounts({ createActions });
-    expect(createActions).toHaveBeenCalledWith(LSKeys.SETTINGS);
   });
 
   it('exportStorage()', () => {
@@ -54,125 +50,63 @@ describe('useSettings', () => {
   });
 
   it('addAccountToFavorites() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     result.current.addAccountToFavorites(fAccount.uuid);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: [...fSettings.dashboardAccounts, fAccount.uuid]
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccount.uuid));
   });
 
   it('addMultipleAccountsToFavorites() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const uuids = fAccounts.map((a) => a.uuid);
     result.current.addMultipleAccountsToFavorites(uuids);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: [...fSettings.dashboardAccounts, ...uuids]
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(uuids));
   });
 
   it('addAssetToExclusionList() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     result.current.addAssetToExclusionList(fAssets[0].uuid);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      excludedAssets: [...fSettings.excludedAssets, fAssets[0].uuid]
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAssets[0].uuid));
   });
 
   it('removeAssetfromExclusionList() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     result.current.removeAssetfromExclusionList(fSettings.excludedAssets[0]);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      excludedAssets: []
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fSettings.excludedAssets[0]));
   });
 
   it('updateSettingsAccounts() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const uuids = fAccounts.map((a) => a.uuid);
     result.current.updateSettingsAccounts(uuids);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      dashboardAccounts: uuids
-    });
-  });
-
-  it('updateSettingsNode() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
-    const node = 'mynode';
-    result.current.updateSettingsNode(node);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      node
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(uuids));
   });
 
   it('updateSettingsRates() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     result.current.updateSettingsRates(fRates);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      rates: fRates
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fRates));
   });
 
   it('updateLanguageSelection() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const language = 'da';
     result.current.updateLanguageSelection(language);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      language
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(language));
   });
 
   it('updateFiatCurrency() should call updateAll', () => {
-    const mockUpdate = jest.fn();
-    const { result } = renderUseAccounts({
-      createActions: jest.fn(() => ({ updateAll: mockUpdate })),
-      settings: fSettings
-    });
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ settings: fSettings });
     const fiat = Fiats.EUR.ticker;
     result.current.updateFiatCurrency(fiat);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      ...fSettings,
-      fiatCurrency: fiat
-    });
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fiat));
   });
 
   it('isValidImport() succeeds under normal circumstances', () => {

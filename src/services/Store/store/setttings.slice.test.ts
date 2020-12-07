@@ -1,6 +1,9 @@
+import { AnyAction } from 'redux';
+
 import { fRates } from '@fixtures';
 import { TFiatTicker, TUuid } from '@types';
 
+import { AppState, DATA_STATE_KEY } from './reducer';
 import {
   addExcludedAsset,
   addFavorite,
@@ -15,19 +18,27 @@ import {
   removeExcludedAsset,
   resetFavoritesTo,
   setFiat,
-  setInacticityTimer,
+  setInactivityTimer,
   setLanguage,
   setRates,
   default as slice
 } from './settings.slice';
 
-const reducer = slice.reducer;
+const withAppState = (sliceState: typeof initialState) => {
+  return ({
+    [DATA_STATE_KEY]: { [slice.name]: sliceState }
+  } as unknown) as AppState;
+};
+
+const reducer = (sliceState: ReturnType<typeof slice.reducer> | undefined, action: AnyAction) => {
+  return withAppState(slice.reducer(sliceState, action));
+};
 
 describe('settingsSlice', () => {
   it('has an initial state', () => {
     const actual = reducer(undefined, { type: null });
     const expected = initialState;
-    expect(actual).toEqual(expected);
+    expect(actual).toEqual(withAppState(expected));
   });
 
   it('addFavorite(): adds an account uuid to favorites', () => {
@@ -75,7 +86,7 @@ describe('settingsSlice', () => {
 
   it('setInactivityTimer(): sets time', () => {
     const time = 2700000;
-    const actual = reducer(initialState, setInacticityTimer(time));
+    const actual = reducer(initialState, setInactivityTimer(time));
     expect(getInactivityTimer(actual)).toEqual(time);
   });
 

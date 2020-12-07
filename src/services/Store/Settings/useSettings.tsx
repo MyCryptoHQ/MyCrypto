@@ -23,9 +23,7 @@ export interface ISettingsContext {
   addMultipleAccountsToFavorites(uuids: TUuid[]): void;
   addAssetToExclusionList(uuid: TUuid): void;
   removeAssetfromExclusionList(uuid: TUuid): void;
-  updateSettings(settings: ISettings): void;
   updateSettingsAccounts(accounts: TUuid[]): void;
-  updateSettingsNode(nodeId: string): void;
   exportStorage(): string;
   importStorage(importedCache: string): boolean;
   updateSettingsRates(rates: IRates): void;
@@ -62,7 +60,7 @@ function useSettings() {
 
   const language = settings.language || '';
 
-  const updateSettings = (settings: ISettings) => model.updateAll(settings);
+  const isValidImport = (toValidate: string) => isValidImportFunc(toValidate, exportStorage());
 
   const exportStorage = () => JSON.stringify(model.exportStorage());
 
@@ -107,13 +105,6 @@ function useSettings() {
     dispatch(setRates(rates));
   };
 
-  // Todo
-  const updateSettingsNode = (nodeId: string) => {
-    updateSettings({ ...settings, node: nodeId });
-  };
-
-  const isValidImport = (toValidate: string) => isValidImportFunc(toValidate, exportStorage());
-
   return {
     settings,
     language,
@@ -121,9 +112,7 @@ function useSettings() {
     addMultipleAccountsToFavorites,
     addAssetToExclusionList,
     removeAssetfromExclusionList,
-    updateSettings,
     updateSettingsAccounts,
-    updateSettingsNode,
     exportStorage,
     importStorage,
     updateSettingsRates,

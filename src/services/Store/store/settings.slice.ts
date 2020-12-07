@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IRates, LSKeys, TFiatTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
+import { getAppState } from './selectors';
 
 const sliceName = LSKeys.SETTINGS;
 export const initialState = initialLegacyState[sliceName];
@@ -37,7 +38,7 @@ const slice = createSlice({
     setRates(state, action: PayloadAction<IRates>) {
       state.rates = action.payload;
     },
-    setInacticityTimer(state, action: PayloadAction<number>) {
+    setInactivityTimer(state, action: PayloadAction<number>) {
       state.inactivityTimer = action.payload;
     }
   }
@@ -52,7 +53,7 @@ export const {
   addExcludedAsset,
   removeExcludedAsset,
   setRates,
-  setInacticityTimer
+  setInactivityTimer
 } = slice.actions;
 
 export default slice;
@@ -60,13 +61,13 @@ export default slice;
 /**
  * Selectors
  */
-
-export const getFavorites = (s) => s.dashboardAccounts;
-export const getLanguage = (s) => s.language;
-export const getFiat = (s) => s.fiatCurrency;
-export const getExcludedAssets = (s) => s.excludedAssets;
-export const getRates = (s) => s.rates;
-export const getInactivityTimer = (s) => s.inactivityTimer;
+export const getSettings = createSelector(getAppState, (s) => s[slice.name]);
+export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccounts);
+export const getLanguage = createSelector(getSettings, (s) => s.language);
+export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
+export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
+export const getRates = createSelector(getSettings, (s) => s.rates);
+export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 
 /**
  * Sagas
