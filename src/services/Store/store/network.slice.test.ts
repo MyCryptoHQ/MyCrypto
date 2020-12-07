@@ -72,7 +72,7 @@ describe('NetworkSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('deleteNodeReducer(): deletes node', () => {
+  it('deleteNode(): deletes node', () => {
     const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_mycrypto' };
     const state = [fNetworks[0]];
     const expected = [

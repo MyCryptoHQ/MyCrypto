@@ -40,13 +40,10 @@ const slice = createSlice({
       });
     },
     deleteNode(state, action: PayloadAction<{ network: NetworkId; nodeName: string }>) {
-      console.log('deleteNode');
       const { network: networkId, nodeName } = action.payload;
       const idx = findIndex(propEq('id', networkId), state);
 
       const network = state[idx];
-
-      console.log('deleteNode', network);
 
       const { nodes } = network;
 
