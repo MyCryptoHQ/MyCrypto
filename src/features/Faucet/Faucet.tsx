@@ -193,7 +193,7 @@ export function Faucet() {
       />
       {faucetState.error && faucetState.error === 'INVALID_SOLUTION' && (
         <IncorrectResponse type={InlineMessageType.ERROR}>
-          Incorrect captcha response. Please try again.
+          {translateRaw('CAPTCHA_INCORRECT_RESPONSE')}
         </IncorrectResponse>
       )}
       <SubmitCaptchaButton
@@ -201,7 +201,7 @@ export function Faucet() {
         onClick={() => finalizeRequestFunds(faucetState.solution)}
         disabled={faucetState.loading || !possibleSolution(faucetState.solution)}
       >
-        Submit
+        {translateRaw('CAPTCHA_SUBMIT')}
       </SubmitCaptchaButton>
     </>,
     <>
@@ -217,6 +217,7 @@ export function Faucet() {
           txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
           onComplete={() => reset()}
           resetFlow={() => reset()}
+          customComponent={() => <p>{translate('FAUCET_SUCCESS')}</p>}
         />
       )}
     </>
