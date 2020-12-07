@@ -39,15 +39,42 @@ const slice = createSlice({
         state[idx] = network;
       });
     },
+    deleteNode(state, action: PayloadAction<{ network: NetworkId; nodeName: string }>) {
+      console.log('deleteNode');
+      const { network: networkId, nodeName } = action.payload;
+      const idx = findIndex(propEq('id', networkId), state);
+
+      const network = state[idx];
+
+      console.log('deleteNode', network);
+
+      const { nodes } = network;
+
+      const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
+
+      const newSelectedNode = (() => {
+        if (
+          network.selectedNode === nodeName &&
+          (network.selectedNode === network.autoNode || network.autoNode === undefined)
+        ) {
+          return newNodes[0]?.name;
+        } else if (network.selectedNode === nodeName) {
+          return network.autoNode;
+        }
+        return network.selectedNode;
+      })();
+
+      state[idx] = {
+        ...network,
+        nodes: newNodes,
+        selectedNode: newSelectedNode
+      };
+    },
     reset() {
       return initialState;
     }
   }
 });
-
-export const deleteNode = createAction<{ network: NetworkId; nodeName: string }>(
-  `${slice.name}/deleteNode`
-);
 
 export const deleteNodeOrNetwork = createAction<{ network: NetworkId; nodeName: string }>(
   `${slice.name}/deleteNodeOrNetwork`
@@ -59,7 +86,8 @@ export const {
   destroy: destroyNetwork,
   update: updateNetwork,
   updateMany: updateNetworks,
-  reset: resetNetwork
+  reset: resetNetwork,
+  deleteNode
 } = slice.actions;
 
 export default slice;
@@ -86,42 +114,18 @@ export function* networkSaga() {
 export function* deleteNodeWorker({
   payload
 }: PayloadAction<{ network: NetworkId; nodeName: string }>) {
-  const { network: networkId, nodeName } = payload;
+  const { network: networkId } = payload;
+
   const network: Network = yield select(getNetwork(networkId));
 
-  const { nodes } = network;
-
-  const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
-
-  const newSelectedNode = (() => {
-    if (
-      network.selectedNode === nodeName &&
-      (network.selectedNode === network.autoNode || network.autoNode === undefined)
-    ) {
-      return newNodes[0]?.name;
-    } else if (network.selectedNode === nodeName) {
-      return network.autoNode;
-    }
-    return network.selectedNode;
-  })();
-
-  const networkUpdate = {
-    ...network,
-    nodes: newNodes,
-    selectedNode: newSelectedNode
-  };
-
-  yield put(slice.actions.update(networkUpdate));
-  yield call(EthersJS.updateEthersInstance, networkUpdate);
+  yield call(EthersJS.updateEthersInstance, network);
 }
 
 export function* deleteNodeOrNetworkWorker({
   payload
 }: PayloadAction<{ network: NetworkId; nodeName: string }>) {
   const { network: networkId, nodeName } = payload;
-  const networks: Network[] = yield select(getNetworks);
-
-  const network = networks.find((n) => n.id === networkId)!;
+  const network: Network = yield select(getNetwork(networkId));
 
   if (network.isCustom && network.nodes.length === 1) {
     yield put(slice.actions.destroy(networkId));

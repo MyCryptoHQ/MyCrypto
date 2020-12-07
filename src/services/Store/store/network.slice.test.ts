@@ -2,7 +2,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 
 import { fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
-import { Network } from '@types';
+import { Network, NetworkId } from '@types';
 import { isEmpty } from '@vendor';
 
 import {
@@ -72,6 +72,16 @@ describe('NetworkSlice', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('deleteNodeReducer(): deletes node', () => {
+    const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_mycrypto' };
+    const state = [fNetworks[0]];
+    const expected = [
+      { ...fNetworks[0], nodes: [fNetworks[0].nodes[1]], selectedNode: 'eth_ethscan' }
+    ];
+    const actual = reducer(state, deleteNode(payload));
+    expect(actual).toEqual(expected);
+  });
+
   it('reset(): can reset', () => {
     const entity = { id: 'Rinkeby', name: 'Rink' } as Network;
     const state = [entity];
@@ -83,35 +93,15 @@ describe('NetworkSlice', () => {
 describe('deleteNodeWorker()', () => {
   expectSaga.DEFAULT_TIMEOUT = 100;
 
-  const nodes = [...fNetworks[0].nodes, { name: 'MyNode' }];
-
   const initialState = {
-    legacy: { networks: [{ ...fNetworks[0], nodes }] }
+    legacy: { networks: fNetworks }
   };
 
-  it('can delete nodes from network', () => {
-    return expectSaga(deleteNodeWorker, deleteNode({ network: 'Ethereum', nodeName: 'MyNode' }))
+  it('calls updateEthersInstance with latest network', () => {
+    const payload = { network: 'Ethereum' as NetworkId, nodeName: 'MyNode' };
+    return expectSaga(deleteNodeWorker, deleteNode(payload))
       .withState(initialState)
-      .put(update(fNetworks[0]))
       .call(EthersJS.updateEthersInstance, fNetworks[0])
-      .silentRun();
-  });
-
-  it('can delete nodes from network which are currently selected', () => {
-    const res = {
-      ...fNetworks[0],
-      nodes: [fNetworks[0].nodes[1]],
-      selectedNode: 'eth_ethscan'
-    };
-    return expectSaga(
-      deleteNodeWorker,
-      deleteNode({ network: 'Ethereum', nodeName: 'eth_mycrypto' })
-    )
-      .withState({
-        legacy: { networks: [{ ...fNetworks[0] }] }
-      })
-      .put(update(res))
-      .call(EthersJS.updateEthersInstance, res)
       .silentRun();
   });
 });
