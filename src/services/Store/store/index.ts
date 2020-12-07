@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { getAppState, getPassword } from './reducer';
+export { getAppState, AppState, getPassword } from './reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
@@ -39,3 +39,17 @@ export {
   deleteMembership,
   fetchError
 } from './membership.slice';
+export {
+  resetFavoritesTo,
+  addFavorites,
+  addFavorite,
+  addExcludedAsset,
+  removeExcludedAsset,
+  setLanguage,
+  getFiat,
+  setFiat,
+  setRates,
+  getRates,
+  getInactivityTimer,
+  setInactivityTimer
+} from './settings.slice';

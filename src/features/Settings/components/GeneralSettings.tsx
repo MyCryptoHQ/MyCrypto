@@ -1,6 +1,9 @@
-import React, { FC, useCallback } from 'react';
+import React from 'react';
 
 import { Button } from '@mycrypto/ui';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,7 +13,7 @@ import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISettings, TFiatTicker } from '@types';
+import { TFiatTicker } from '@types';
 
 const Divider = styled.div`
   height: 2px;
@@ -54,11 +57,6 @@ const SelectContainer = styled.div`
   }
 `;
 
-interface SettingsProps {
-  globalSettings: ISettings;
-  updateGlobalSettings(settings: ISettings): void;
-}
-
 const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_MINUTE', { $value: '1' }), value: '60000' },
   { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '3' }), value: '180000' },
@@ -73,36 +71,27 @@ const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
-const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettings }) => {
+const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
   const trackSetInacticityTimer = useAnalytics({
     category: ANALYTICS_CATEGORIES.SETTINGS
   });
 
-  const changeTimer = useCallback(
-    (event: React.FormEvent<HTMLSelectElement>) => {
-      const target = event.target as HTMLSelectElement;
-      updateGlobalSettings({ ...globalSettings, inactivityTimer: Number(target.value) });
+  const changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
+    const target = event.target as HTMLSelectElement;
+    setInactivityTimer(Number(target.value));
 
-      const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
-      if (selectedTimer) {
-        trackSetInacticityTimer({
-          actionName: `User set inactivity timer to ${selectedTimer.name}`
-        });
-      }
-    },
-    [trackSetInacticityTimer, globalSettings, updateGlobalSettings]
-  );
-
-  const changeCurrencySelection = useCallback(
-    (event: React.FormEvent<HTMLSelectElement>) => {
-      const target = event.target as HTMLSelectElement;
-      updateGlobalSettings({
-        ...globalSettings,
-        fiatCurrency: target.value as TFiatTicker
+    const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
+    if (selectedTimer) {
+      trackSetInacticityTimer({
+        actionName: `User set inactivity timer to ${selectedTimer.name}`
       });
-    },
-    [globalSettings, updateGlobalSettings]
-  );
+    }
+  };
+
+  const changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
+    const target = event.target as HTMLSelectElement;
+    setFiat(target.value as TFiatTicker);
+  };
 
   return (
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
@@ -128,7 +117,7 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
-            <select onChange={changeTimer} value={String(globalSettings.inactivityTimer)}>
+            <select onChange={changeTimer} value={String(inactivityTimer)}>
               {timerOptions.map((option) => (
                 <option value={option.value} key={option.value}>
                   {option.name}
@@ -145,7 +134,7 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
-            <select onChange={changeCurrencySelection} value={String(globalSettings.fiatCurrency)}>
+            <select onChange={changeCurrencySelection} value={String(fiatCurrency)}>
               {Object.keys(Fiats).map((option) => (
                 <option value={option} key={option}>
                   {option}
@@ -159,4 +148,21 @@ const GeneralSettings: FC<SettingsProps> = ({ globalSettings, updateGlobalSettin
   );
 };
 
-export default GeneralSettings;
+const mapStateToProps = (state: AppState) => ({
+  inactivityTimer: getInactivityTimer(state),
+  fiatCurrency: getFiat(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      setInactivityTimer,
+      setFiat
+    },
+    dispatch
+  );
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(GeneralSettings);

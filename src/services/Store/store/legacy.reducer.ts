@@ -30,6 +30,17 @@ import networkSlice, {
 } from './network.slice';
 import notificationSlice, { createNotification, updateNotification } from './notification.slice';
 import passwordSlice, { setPassword } from './password.slice';
+import settingsSlice, {
+  addExcludedAsset,
+  addFavorite,
+  addFavorites,
+  removeExcludedAsset,
+  resetFavoritesTo,
+  setFiat,
+  setInactivityTimer,
+  setLanguage,
+  setRates
+} from './settings.slice';
 import userActionSlice, {
   createUserAction,
   destroyUserAction,
@@ -118,6 +129,20 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
      * legacy state shape.
      * @todo: Redux. Place in individual slice once reducer migration begins.
      */
+    case addFavorite.type:
+    case addFavorites.type:
+    case resetFavoritesTo.type:
+    case setLanguage.type:
+    case setFiat.type:
+    case addExcludedAsset.type:
+    case removeExcludedAsset.type:
+    case setRates.type:
+    case setInactivityTimer.type: {
+      return {
+        ...state,
+        [LSKeys.SETTINGS]: settingsSlice.reducer(state.settings, action)
+      };
+    }
     case createNetwork.type:
     case createNetworks.type:
     case updateNetwork.type:

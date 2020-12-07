@@ -188,10 +188,9 @@ function RenderNetworkNodes() {
 }
 
 function RenderGeneralSettingsPanel() {
-  const { updateSettings, settings } = useSettings();
   return (
     <>
-      <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />
+      <GeneralSettings />
       <DangerZone />
     </>
   );
