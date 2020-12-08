@@ -33,7 +33,8 @@ export {
   destroyAsset,
   updateAsset,
   updateAssets,
-  addAssetsFromAPI
+  addAssetsFromAPI,
+  fetchAssets
 } from './asset.slice';
 export {
   fetchMemberships,

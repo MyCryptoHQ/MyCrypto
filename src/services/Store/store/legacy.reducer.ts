@@ -15,6 +15,7 @@ import assetSlice, {
   createAsset,
   createAssets,
   destroyAsset,
+  fetchAssets,
   updateAsset,
   updateAssets
 } from './asset.slice';
@@ -170,7 +171,8 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
     case updateAsset.type:
     case updateAssets.type:
     case destroyAsset.type:
-    case addAssetsFromAPI.type: {
+    case addAssetsFromAPI.type:
+    case fetchAssets.type: {
       return {
         ...state,
         [LSKeys.ASSETS]: assetSlice.reducer(state.assets, action)

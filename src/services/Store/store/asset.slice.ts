@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { EXCLUDED_ASSETS } from '@config';
+import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
@@ -56,6 +58,8 @@ const slice = createSlice({
   }
 });
 
+export const fetchAssets = createAction(`${slice.name}/fetchAssets`);
+
 export const {
   create: createAsset,
   createMany: createAssets,
@@ -67,3 +71,16 @@ export const {
 } = slice.actions;
 
 export default slice;
+
+/**
+ * Sagas
+ */
+export function* assetSaga() {
+  yield all([takeLatest(fetchAssets.type, fetchAssetsWorker)]);
+}
+
+export function* fetchAssetsWorker() {
+  const fetchedAssets = yield call(MyCryptoApiService.instance.getAssets);
+
+  yield put(slice.actions.addFromAPI(fetchedAssets));
+}
