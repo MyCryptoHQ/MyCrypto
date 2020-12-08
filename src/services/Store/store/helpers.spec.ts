@@ -1,7 +1,7 @@
-import { fAccount, fAccounts } from '@fixtures';
-import { StoreAsset, TUuid } from '@types';
+import { fAccount, fAccounts, fNetworks } from '@fixtures';
+import { NodeOptions, StoreAsset, TUuid } from '@types';
 
-import { serializeAccount, serializeNotification } from './helpers';
+import { mergeNetworks, serializeAccount, serializeNotification } from './helpers';
 
 describe('serializeAccount()', () => {
   const serializedAccountAssets = {
@@ -83,5 +83,34 @@ describe('serializeNotification', () => {
   test('it handles undefined props', () => {
     const actual = serializeNotification({ ...notification, dateDismissed: undefined });
     expect(actual.dateDismissed).toBeUndefined();
+  });
+});
+
+describe('mergeNetworks', () => {
+  test('it correctly merges when no custom nodes are present', () => {
+    const actual = mergeNetworks(fNetworks, fNetworks);
+    expect(actual).toEqual(fNetworks);
+  });
+
+  test('it correctly merges when custom nodes are present', () => {
+    const nodeName = 'MyNode';
+    const nodes = [...fNetworks[0].nodes, { name: nodeName } as NodeOptions];
+    const actual = mergeNetworks(
+      [{ ...fNetworks[0], nodes, selectedNode: nodeName, autoNode: nodeName }, fNetworks[1]],
+      fNetworks
+    );
+    expect(actual).toEqual([
+      { ...fNetworks[0], nodes, selectedNode: nodeName, autoNode: nodeName },
+      fNetworks[1]
+    ]);
+  });
+
+  test('it supports merging with new networks in initial state', () => {
+    const nodeName = 'eth_ethscan';
+    const actual = mergeNetworks(
+      [],
+      [{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]
+    );
+    expect(actual).toEqual([{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]);
   });
 });
