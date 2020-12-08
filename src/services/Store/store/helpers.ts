@@ -1,7 +1,9 @@
-import { ExtendedNotification, IAccount, StoreAccount } from '@types';
+import { ExtendedNotification, IAccount, Network, StoreAccount, TUuid } from '@types';
 import { bigify, isBigish } from '@utils/bigify';
+import { arrayToObj } from '@utils/toObject';
 import {
   either,
+  flatten,
   identity,
   ifElse,
   isNil,
@@ -10,7 +12,8 @@ import {
   map,
   over,
   pipe,
-  toString
+  toString,
+  values
 } from '@vendor';
 
 const balanceLens = lensProp('balance');
@@ -43,3 +46,21 @@ export const serializeNotification: (n: ExtendedNotification) => ExtendedNotific
     over(lensPath(['templateData', 'previousNotificationCloseDate']), stringifyDate)
   )(n);
 };
+
+const mergeByName = pipe(arrayToObj<TUuid>('name'), values, flatten);
+export const mergeNetworks = (inbound: Network[], original: Network[]) =>
+  original
+    .map((o) => {
+      const existing = inbound.find((i) => i.id === o.id);
+      const existingNodes = existing ? existing.nodes : [];
+      const selectedNode = existing ? existing.selectedNode : o.selectedNode;
+      const autoNode = existing ? existing.autoNode : o.autoNode;
+
+      return {
+        ...o,
+        nodes: mergeByName([...o.nodes, ...existingNodes]),
+        selectedNode,
+        autoNode
+      } as Network;
+    })
+    .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));

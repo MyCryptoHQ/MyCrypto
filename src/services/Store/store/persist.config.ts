@@ -22,6 +22,8 @@ import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
 import { flatten, pipe, values } from '@vendor';
 
+import { mergeNetworks } from './helpers';
+
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
 /**
@@ -101,14 +103,13 @@ const transform: Transform<
  */
 const customReconciler: StateReconciler<DataStore> = (inboundState, originalState, ...rest) => {
   // Merge 2 arrays by creating an object and converting back to array.
-  const mergeNetworks = pipe(arrayToObj<NetworkId>('id'), values, flatten);
   const mergeByUuid = pipe(arrayToObj<TUuid>('uuid'), values, flatten);
 
   const mergedInboundState = {
     ...inboundState,
     [LSKeys.ASSETS]: mergeByUuid([...inboundState.assets, ...originalState.assets]),
     [LSKeys.CONTRACTS]: mergeByUuid([...inboundState.contracts, ...originalState.contracts]),
-    [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
+    [LSKeys.NETWORKS]: mergeNetworks(inboundState.networks, originalState.networks)
   };
 
   return autoMergeLevel2(mergedInboundState, originalState, ...rest);
