@@ -1,3 +1,1 @@
-import { Faucet } from './Faucet';
-
-export default Faucet;
+export { default } from './Faucet';

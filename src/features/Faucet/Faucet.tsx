@@ -97,7 +97,7 @@ const initialFaucetState = () => ({
 
 const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
 
-export function Faucet() {
+export default function Faucet() {
   const history = useHistory();
 
   const { faucetState, reset, setSolution, requestFunds, finalizeRequestFunds } = useStateReducer(

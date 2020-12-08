@@ -9,7 +9,7 @@ import { DataContext, RatesContext, StoreContext } from '@services';
 import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
-import { Faucet } from './Faucet';
+import Faucet from './Faucet';
 
 FaucetService.requestChallenge = jest.fn(() =>
   Promise.resolve({
