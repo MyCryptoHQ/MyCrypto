@@ -18,7 +18,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
-import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
+import { DataStore, LocalStorage, LSKeys, Network, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
 import { flatten, pipe, values } from '@vendor';
 
@@ -101,14 +101,30 @@ const transform: Transform<
  */
 const customReconciler: StateReconciler<DataStore> = (inboundState, originalState, ...rest) => {
   // Merge 2 arrays by creating an object and converting back to array.
-  const mergeNetworks = pipe(arrayToObj<NetworkId>('id'), values, flatten);
+  const mergeByName = pipe(arrayToObj<TUuid>('name'), values, flatten);
+  const mergeNetworks = (inbound: Network[], original: Network[]) =>
+    original
+      .map((o) => {
+        const existing = inbound.find((i) => i.id === o.id);
+        const existingNodes = existing ? existing.nodes : [];
+        const selectedNode = existing ? existing.selectedNode : o.selectedNode;
+        const autoNode = existing ? existing.autoNode : o.autoNode;
+
+        return {
+          ...o,
+          nodes: mergeByName([...o.nodes, ...existingNodes]),
+          selectedNode,
+          autoNode
+        } as Network;
+      })
+      .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));
   const mergeByUuid = pipe(arrayToObj<TUuid>('uuid'), values, flatten);
 
   const mergedInboundState = {
     ...inboundState,
     [LSKeys.ASSETS]: mergeByUuid([...inboundState.assets, ...originalState.assets]),
     [LSKeys.CONTRACTS]: mergeByUuid([...inboundState.contracts, ...originalState.contracts]),
-    [LSKeys.NETWORKS]: mergeNetworks([...inboundState.networks, ...originalState.networks])
+    [LSKeys.NETWORKS]: mergeNetworks(inboundState.networks, originalState.networks)
   };
 
   return autoMergeLevel2(mergedInboundState, originalState, ...rest);
