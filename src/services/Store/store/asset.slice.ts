@@ -7,6 +7,7 @@ import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
+import { ActionT } from './legacy.reducer';
 
 const sliceName = LSKeys.ASSETS;
 export const initialState = initialLegacyState[sliceName];
@@ -76,7 +77,11 @@ export default slice;
  * Sagas
  */
 export function* assetSaga() {
-  yield all([takeLatest(fetchAssets.type, fetchAssetsWorker)]);
+  yield all([
+    takeLatest(fetchAssets.type, fetchAssetsWorker),
+    // Trigger fetching assets on RESET, is dispatched when resetting and importing new settings
+    takeLatest(ActionT.RESET, fetchAssetsWorker)
+  ]);
 }
 
 export function* fetchAssetsWorker() {
