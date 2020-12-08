@@ -82,6 +82,35 @@ describe('NetworkSlice', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('deleteNode(): deletes node and sets selected node to autoNode', () => {
+    const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_ethscan' };
+    const state = [{ ...fNetworks[0], selectedNode: 'eth_ethscan', autoNode: 'eth_mycrypto' }];
+    const expected = [
+      {
+        ...fNetworks[0],
+        nodes: [fNetworks[0].nodes[0]],
+        selectedNode: 'eth_mycrypto',
+        autoNode: 'eth_mycrypto'
+      }
+    ];
+    const actual = reducer(state, deleteNode(payload));
+    expect(actual).toEqual(expected);
+  });
+
+  it('deleteNode(): deletes node and doesnt change selected node when not needed', () => {
+    const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_mycrypto' };
+    const state = [{ ...fNetworks[0], selectedNode: 'eth_ethscan' }];
+    const expected = [
+      {
+        ...fNetworks[0],
+        nodes: [fNetworks[0].nodes[1]],
+        selectedNode: 'eth_ethscan'
+      }
+    ];
+    const actual = reducer(state, deleteNode(payload));
+    expect(actual).toEqual(expected);
+  });
+
   it('reset(): can reset', () => {
     const entity = { id: 'Rinkeby', name: 'Rink' } as Network;
     const state = [entity];
