@@ -1,63 +1,53 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { storiesOf } from '@storybook/react';
-import AppProviders from 'AppProviders';
 import { ThemeProvider } from 'styled-components';
+import { ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import { customNodeConfig } from '@fixtures';
+import { customNodeConfig, fNetworks, fSettings } from '@fixtures';
+import { DataContext, IDataContext } from '@services';
 import { theme } from '@theme';
-import { Network, NetworkId } from '@types';
+import { noOp } from '@utils';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 
 const networkId = DEFAULT_NETWORK;
-const addNode = undefined;
-const onComplete = () => undefined;
-const addNodeToNetwork = () => undefined;
-const isNodeNameAvailable = () => true;
-const getNetworkById = (id: NetworkId) =>
-  (({
-    ...NETWORKS_CONFIG[id],
-    nodes: NODES_CONFIG[id]
-  } as unknown) as Network);
-const updateNode = () => undefined;
-const deleteNode = () => undefined;
-const addNetwork = () => undefined;
-const addAsset = () => undefined;
 
-const addNetworkNode = () => (
+const wrapInProvider = (component: ReactNode) => (
+  <ProvidersWrapper>
+    <DataContext.Provider
+      value={
+        ({
+          createActions: noOp,
+          userActions: [],
+          networks: fNetworks,
+          settings: fSettings
+        } as unknown) as IDataContext
+      }
+    >
+      {component}
+    </DataContext.Provider>
+  </ProvidersWrapper>
+);
+
+const addNetworkNode = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '800px' }}>
     <AddOrEditNetworkNode
       networkId={networkId}
-      editNode={addNode}
-      onComplete={onComplete}
-      addNodeToNetwork={addNodeToNetwork}
-      isNodeNameAvailable={isNodeNameAvailable}
-      getNetworkById={getNetworkById}
-      updateNode={updateNode}
-      deleteNode={deleteNode}
-      addNetwork={addNetwork}
-      addAsset={addAsset}
+      editNode={undefined}
+      onComplete={noOp}
       isAddingCustomNetwork={false}
     />
   </div>
 );
 
-const editNetworkNode = () => (
+const editNetworkNode = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '800px' }}>
     <AddOrEditNetworkNode
       networkId={networkId}
       editNode={customNodeConfig}
-      onComplete={onComplete}
-      addNodeToNetwork={addNodeToNetwork}
-      isNodeNameAvailable={isNodeNameAvailable}
-      getNetworkById={getNetworkById}
-      updateNode={updateNode}
-      deleteNode={deleteNode}
-      addNetwork={addNetwork}
-      addAsset={addAsset}
+      onComplete={noOp}
       isAddingCustomNetwork={false}
     />
   </div>
@@ -65,15 +55,14 @@ const editNetworkNode = () => (
 
 storiesOf('NetworkNodeForm', module)
   .addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
-  .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
-  .add('Add node', () => addNetworkNode(), {
+  .add('Add node', () => addNetworkNode, {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
     }
   })
-  .add('Edit node', () => editNetworkNode(), {
+  .add('Edit node', () => editNetworkNode, {
     design: {
       type: 'figma',
       url:

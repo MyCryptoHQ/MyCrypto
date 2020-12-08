@@ -24,6 +24,7 @@ import { initialLegacyState } from './legacy.initialState';
 import networkSlice, {
   createNetwork,
   createNetworks,
+  deleteNode,
   destroyNetwork,
   updateNetwork,
   updateNetworks
@@ -147,7 +148,8 @@ const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, 
     case createNetworks.type:
     case updateNetwork.type:
     case updateNetworks.type:
-    case destroyNetwork.type: {
+    case destroyNetwork.type:
+    case deleteNode.type: {
       return {
         ...state,
         [LSKeys.NETWORKS]: networkSlice.reducer(state.networks, action)
