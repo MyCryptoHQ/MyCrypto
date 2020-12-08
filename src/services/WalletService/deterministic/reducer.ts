@@ -24,7 +24,7 @@ export enum DWActionTypes {
 // @todo convert to FSA compatible action type
 export type DWAction = Overwrite<
   TAction<ValuesType<typeof DWActionTypes>, any>,
-  { error?: { code: TDWActionError } }
+  { error?: { code: TDWActionError; msg?: any } }
 >;
 
 export const initialState: DeterministicWalletState = {
@@ -57,6 +57,7 @@ const DeterministicWalletReducer = (
     }
     case DWActionTypes.CONNECTION_FAILURE: {
       const { code } = error!;
+      console.debug('[HW]: errors:', error);
       return {
         ...state,
         errors: [code],

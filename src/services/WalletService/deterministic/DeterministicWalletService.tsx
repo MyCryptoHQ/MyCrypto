@@ -26,7 +26,7 @@ interface EventHandlers {
   handleEnqueueAccounts(accounts: DWAccountDisplay[]): void;
   handleAccountsError(error: string): void;
   handleAccountsSuccess(): void;
-  handleReject(): void;
+  handleReject(err?: string): void;
   handleComplete(): void;
 }
 
@@ -60,8 +60,8 @@ export const DeterministicWalletService = ({
       .then(() => {
         handleInit(wallet, asset);
       })
-      .catch(() => {
-        handleReject();
+      .catch((err) => {
+        handleReject(err);
       });
     handleInitRequest();
   };
