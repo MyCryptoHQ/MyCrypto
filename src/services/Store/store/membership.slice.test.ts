@@ -1,6 +1,6 @@
-import { expectSaga } from 'redux-saga-test-plan';
 import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
+import { expectSaga } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
@@ -75,7 +75,6 @@ describe('MembershipsSlice', () => {
 });
 
 describe('fetchMembershipsSaga()', () => {
-  expectSaga.DEFAULT_TIMEOUT = 100;
   const res = [
     {
       address: accountWithMembership,

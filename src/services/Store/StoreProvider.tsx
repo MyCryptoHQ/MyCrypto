@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import { deleteMembership, fetchMemberships, useDispatch, useSelector } from '@store';
+import { deleteMembership, fetchAssets, fetchMemberships, useDispatch, useSelector } from '@store';
 import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import flatten from 'ramda/src/flatten';
@@ -51,7 +51,7 @@ import {
 } from '@utils';
 import { isEmpty as isVoid, useEffectOnce } from '@vendor';
 
-import { ANALYTICS_CATEGORIES, MyCryptoApiService, UniswapService } from '../ApiService';
+import { ANALYTICS_CATEGORIES, UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import {
   getAssetByTicker,
@@ -146,7 +146,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     createAccountWithID,
     createMultipleAccountsWithIDs
   } = useAccounts();
-  const { assets, addAssetsFromAPI } = useAssets();
+  const { assets } = useAssets();
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
@@ -239,7 +239,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   // fetch assets from api
   useEffectOnce(() => {
-    MyCryptoApiService.instance.getAssets().then(addAssetsFromAPI);
+    dispatch(fetchAssets());
   });
 
   // A change to pending txs is detected

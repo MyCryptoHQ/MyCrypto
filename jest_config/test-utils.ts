@@ -3,6 +3,7 @@
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
+import { expectSaga } from 'redux-saga-test-plan';
 
 import { TAction } from '@types';
 import { noOp } from '@utils';
@@ -35,6 +36,8 @@ export const mockUseDispatch = () => {
 
 export const actionWithPayload = (payload: any) => expect.objectContaining({ payload });
 
+expectSaga.DEFAULT_TIMEOUT = 100;
+
 // wrapper option : Wrap renders with our providers so components can consume it
 export const simpleRender = (ui: React.ReactElement, options?: any) =>
   render(ui, { wrapper: ProvidersWrapper, ...options });
@@ -47,3 +50,4 @@ export const createStore = <S>(reducer: (state: S, action: TAction<any, any>) =>
 // re-export everything
 export * from '@testing-library/react';
 export { ProvidersWrapper };
+export * from 'redux-saga-test-plan';
