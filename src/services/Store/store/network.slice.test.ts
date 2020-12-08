@@ -1,17 +1,19 @@
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { fNetworks } from '@fixtures';
+import { fAccount, fAccounts, fContacts, fContracts, fNetwork, fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { Network, NetworkId } from '@types';
 import { isEmpty } from '@vendor';
 
 import {
+  canDeleteNode,
   deleteNode,
   deleteNodeOrNetworkWorker,
   deleteNodeWorker,
   initialState,
   default as slice
 } from './network.slice';
+import { AppState } from './reducer';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
@@ -116,6 +118,46 @@ describe('NetworkSlice', () => {
     const state = [entity];
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+
+  it('canDeleteNode(): returns false when you shouldnt be able to delete the network/node', () => {
+    const networkId = 'MyNetwork' as NetworkId;
+    const network = {
+      id: networkId,
+      name: 'MyNetwork',
+      isCustom: true,
+      nodes: [fNetwork.nodes[0]]
+    } as Network;
+    const state = ({
+      legacy: {
+        networks: [network],
+        accounts: [{ ...fAccount, networkId }],
+        addressBook: [{ network: networkId }],
+        contracts: [{ networkId }]
+      }
+    } as unknown) as AppState;
+    const actual = canDeleteNode(networkId)(state);
+    expect(actual).toEqual(false);
+  });
+
+  it('canDeleteNode(): returns true when you should be able to delete', () => {
+    const networkId = 'MyNetwork' as NetworkId;
+    const network = {
+      id: networkId,
+      name: 'MyNetwork',
+      isCustom: true,
+      nodes: [fNetwork.nodes[0]]
+    } as Network;
+    const state = ({
+      legacy: {
+        networks: [network],
+        accounts: fAccounts,
+        addressBook: fContacts,
+        contracts: fContracts
+      }
+    } as unknown) as AppState;
+    const actual = canDeleteNode(networkId)(state);
+    expect(actual).toEqual(true);
   });
 });
 
