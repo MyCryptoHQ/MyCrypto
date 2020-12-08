@@ -1,6 +1,12 @@
-import { ExtendedAsset } from '@types';
+import { expectSaga } from 'redux-saga-test-plan';
+import { call } from 'redux-saga-test-plan/matchers';
 
-import { initialState, default as slice } from './asset.slice';
+import { fAssets } from '@fixtures';
+import { MyCryptoApiService } from '@services';
+import { ExtendedAsset } from '@types';
+import { arrayToObj } from '@utils';
+
+import { addAssetsFromAPI, fetchAssetsWorker, initialState, default as slice } from './asset.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
@@ -65,5 +71,18 @@ describe('AccountSlice', () => {
     const state = [entity];
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+});
+
+describe('fetchAssetsWorker()', () => {
+  expectSaga.DEFAULT_TIMEOUT = 100;
+
+  it('calls getAssets and puts result', () => {
+    const assets = arrayToObj('uuid')(fAssets);
+    return expectSaga(fetchAssetsWorker)
+      .provide([[call.fn(MyCryptoApiService.instance.getAssets), assets]])
+      .call(MyCryptoApiService.instance.getAssets)
+      .put(addAssetsFromAPI(assets))
+      .silentRun();
   });
 });
