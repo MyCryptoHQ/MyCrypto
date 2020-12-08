@@ -1,5 +1,5 @@
-import { expectSaga } from 'redux-saga-test-plan';
 import { call } from 'redux-saga-test-plan/matchers';
+import { expectSaga } from 'test-utils';
 
 import { fAssets } from '@fixtures';
 import { MyCryptoApiService } from '@services';
@@ -75,8 +75,6 @@ describe('AccountSlice', () => {
 });
 
 describe('fetchAssetsWorker()', () => {
-  expectSaga.DEFAULT_TIMEOUT = 100;
-
   it('calls getAssets and puts result', () => {
     const assets = arrayToObj('uuid')(fAssets);
     return expectSaga(fetchAssetsWorker)
