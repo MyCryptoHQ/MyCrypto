@@ -3,10 +3,10 @@ import { BigNumber } from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { Asset, AssetBalanceObject, StoreAccount, TAddress } from '@types';
-import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
+import { generateAssetUUID, generateDeterministicAddressUUID, isSameAddress } from '@utils';
 import { eqBy, identity, prop, unionWith } from '@vendor';
 
-import { getAllTokensBalancesOfAccounts } from '../BalanceService';
+import { getAllTokensBalancesOfAccounts, getBaseAssetBalances } from '../BalanceService';
 import { getAccounts, updateAccountAssets } from './account.slice';
 import { getAssets } from './asset.slice';
 import { AppState } from './reducer';
@@ -49,13 +49,17 @@ export function* scanTokensSaga() {
 }
 
 const getTokens = async (accounts: StoreAccount[], assets: Asset[]) => {
+  const network = accounts[0].network;
   const balanceMap = await getAllTokensBalancesOfAccounts(accounts, assets);
+  const baseAssetBalanceMap = await getBaseAssetBalances(
+    accounts.map((a) => a.address),
+    network
+  );
   return Object.entries(balanceMap).reduce((acc, [address, assetBalances]) => {
     const positiveAssetBalances = Object.entries(assetBalances).filter(
       ([, value]) => !value.isZero()
     );
 
-    const network = accounts[0].network;
     const uuid = generateDeterministicAddressUUID(network.id, address);
 
     const existingAccount = accounts.find((x) => x.uuid === uuid);
@@ -81,6 +85,16 @@ const getTokens = async (accounts: StoreAccount[], assets: Asset[]) => {
       },
       []
     );
+
+    // Update base asset balance too
+    const baseAssetBalance = baseAssetBalanceMap[address];
+    if (baseAssetBalance) {
+      newAssets.push({
+        uuid: generateAssetUUID(network.chainId),
+        balance: baseAssetBalance.toString(10),
+        mtime: Date.now()
+      });
+    }
 
     const unionedAssets = unionWith(eqBy(prop('uuid')), newAssets, existingAccount.assets);
     return { ...acc, [uuid]: unionedAssets };

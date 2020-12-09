@@ -219,7 +219,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     60000,
     true,
-    [currentAccounts, networks]
+    [networks]
   );
 
   useAnalytics({
