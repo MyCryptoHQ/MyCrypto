@@ -19,7 +19,12 @@ const svgs = {
   'wallet-breakdown-balances': {
     viewBox: '0 0 260 205',
     svg: (
-      <path d="M 0 0 h 112 v 26 H 0 z M 0 79 h 112 v 26 H 0 z M 0 158 h 112 v 26 H 0 z M 197 0 h 63 v 26 h -63 z M 197 79 h 63 v 26 h -63 z M 197 158 h 63 v 26 h -63 z M 0 34 h 55 v 13 H 0 z M 0 113 h 55 v 13 H 0 z M 0 192 h 55 v 13 H 0 z" />
+      <>
+        <path d="M 197 0 h 63 v 26 h -63 z M 197 79 h 63 v 26 h -63 z M 197 158 h 63 v 26 h -63 z M 38 0 h 112 v 26 H 38 z M 38 34 h 55 v 13 H 38 z M 38 79 h 112 v 26 H 38 z M 38 113 h 55 v 13 H 38 z M 38 158 h 112 v 26 H 38 z M 38 192 h 55 v 13 H 38 z" />
+        <circle cx="15" cy="24" r="15" />
+        <circle cx="15" cy="103" r="15" />
+        <circle cx="15" cy="182" r="15" />
+      </>
     )
   },
   'wallet-breakdown-totals': {
