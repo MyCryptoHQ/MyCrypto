@@ -51,10 +51,13 @@ const useDeterministicWallet = (
           type: DWActionTypes.CONNECTION_SUCCESS,
           payload: { session, asset }
         }),
-      handleReject: () =>
+      handleReject: (err: string) =>
         dispatch({
           type: DWActionTypes.CONNECTION_FAILURE,
-          error: { code: DeterministicWalletReducer.errorCodes.SESSION_CONNECTION_FAILED }
+          error: {
+            code: DeterministicWalletReducer.errorCodes.SESSION_CONNECTION_FAILED,
+            message: err
+          }
         }),
       handleAccountsSuccess: () =>
         dispatch({
@@ -72,10 +75,10 @@ const useDeterministicWallet = (
           payload: { accounts, asset }
         });
       },
-      handleAccountsError: () =>
+      handleAccountsError: (err: string) =>
         dispatch({
           type: DWActionTypes.GET_ADDRESSES_FAILURE,
-          error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED }
+          error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED, message: err }
         }),
       handleComplete: () =>
         dispatch({

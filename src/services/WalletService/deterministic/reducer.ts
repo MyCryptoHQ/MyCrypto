@@ -3,7 +3,7 @@ import { Overwrite, ValuesType } from 'utility-types';
 import { TAction } from '@types';
 import { isSameAddress } from '@utils';
 
-import { DeterministicWalletState, TDWActionError } from './types';
+import { DeterministicWalletState } from './types';
 
 export enum DWActionTypes {
   CONNECTION_REQUEST = 'CONNECTION_REQUEST',
@@ -24,7 +24,7 @@ export enum DWActionTypes {
 // @todo convert to FSA compatible action type
 export type DWAction = Overwrite<
   TAction<ValuesType<typeof DWActionTypes>, any>,
-  { error?: { code: TDWActionError; msg?: any } }
+  { error?: { code: string; message: string } }
 >;
 
 export const initialState: DeterministicWalletState = {
@@ -40,7 +40,7 @@ export const initialState: DeterministicWalletState = {
   queuedAccounts: [],
   finishedAccounts: [],
   customDPaths: [],
-  errors: []
+  error: undefined
 };
 
 const DeterministicWalletReducer = (
@@ -52,15 +52,17 @@ const DeterministicWalletReducer = (
       return {
         ...state,
         isConnecting: true,
-        errors: initialState.errors
+        error: initialState.error
       };
     }
     case DWActionTypes.CONNECTION_FAILURE: {
-      const { code } = error!;
-      console.debug('[HW]: errors:', error);
+      const { code, message } = error!;
       return {
         ...state,
-        errors: [code],
+        error: {
+          code,
+          message
+        },
         isConnecting: false,
         promptConnectionRetry: true
       };
@@ -71,7 +73,7 @@ const DeterministicWalletReducer = (
         ...state,
         isConnected: true,
         isConnecting: false,
-        errors: initialState.errors,
+        error: initialState.error,
         asset,
         session
       };
@@ -87,7 +89,7 @@ const DeterministicWalletReducer = (
       return {
         ...state,
         isGettingAccounts: false,
-        errors: initialState.errors
+        error: initialState.error
       };
     }
     case DWActionTypes.ENQUEUE_ADDRESSES: {
@@ -112,12 +114,12 @@ const DeterministicWalletReducer = (
       };
     }
     case DWActionTypes.GET_ADDRESSES_FAILURE: {
-      const { code } = error!;
+      const { code, message } = error!;
       return {
         ...state,
         completed: true,
         isGettingAccounts: false,
-        errors: [code]
+        error: { code, message }
       };
     }
     case DWActionTypes.UPDATE_ASSET: {

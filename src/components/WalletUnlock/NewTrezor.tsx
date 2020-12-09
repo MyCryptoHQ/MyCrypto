@@ -97,10 +97,9 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
               <img src={ConnectTrezor} />
             </div>
           </div>
-          {/* <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
-            {error || '-'}
-          </div> */}
-
+          {state.error && (
+            <div className={`TrezorDecrypt-error alert alert-danger`}>{state.error.message}</div>
+          )}
           {state.isConnecting ? (
             <div className="TrezorDecrypt-loading">
               <Spinner /> {translate('WALLET_UNLOCKING')}
