@@ -1,12 +1,11 @@
 import React from 'react';
 
 import InlineSVG from 'react-inlinesvg';
-import styled from 'styled-components';
 
 import add from '@assets/icons/actions/add.svg';
 import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
-import expandPurple from '@assets/icons/actions/expand-purple.svg';
+import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
@@ -15,6 +14,28 @@ import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
 import mycWinterMembership from '@assets/icons/myc-winter-membership.svg';
 import mycWinter from '@assets/icons/myc-winter.svg';
+import navAddAccount from '@assets/icons/navigation/add-account.svg';
+import navAssets from '@assets/icons/navigation/assets.svg';
+import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
+import navBroadcastTransaction from '@assets/icons/navigation/broadcast-transaction.svg';
+import navBuy from '@assets/icons/navigation/buy.svg';
+import navCoinbase from '@assets/icons/navigation/coinbase.svg';
+import navDeployContracts from '@assets/icons/navigation/deploy-contracts.svg';
+import navEthereum from '@assets/icons/navigation/ethereum.svg';
+import navHome from '@assets/icons/navigation/home.svg';
+import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
+import navLedger from '@assets/icons/navigation/ledger.svg';
+import navQuiknode from '@assets/icons/navigation/quiknode.svg';
+import navReceive from '@assets/icons/navigation/receive.svg';
+import navSend from '@assets/icons/navigation/send.svg';
+import navSettings from '@assets/icons/navigation/settings.svg';
+import navSignMessage from '@assets/icons/navigation/sign-message.svg';
+import navSupportUs from '@assets/icons/navigation/support-us.svg';
+import navSwap from '@assets/icons/navigation/swap.svg';
+import navTools from '@assets/icons/navigation/tools.svg';
+import navTrezor from '@assets/icons/navigation/trezor.svg';
+import navUnstoppable from '@assets/icons/navigation/unstoppable.svg';
+import navVerifyMessage from '@assets/icons/navigation/verify-message.svg';
 import newsletter from '@assets/icons/newsletter.svg';
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
@@ -62,11 +83,11 @@ const svgIcons = {
   /* Action icons */
   back,
   expand,
-  'expand-purple': expandPurple,
+  caret: caret,
   add,
-  confirm,
   info,
   more,
+  confirm,
   'info-small': infoSmall,
   'opened-eye': openedEye,
   'closed-eye': closedEye,
@@ -121,7 +142,31 @@ const svgIcons = {
   'zapper-platform': platformUsed,
   'tx-fee': feeIcon,
   'tx-send': sendIcon,
-  'tx-sent': sentIcon
+  'tx-sent': sentIcon,
+
+  /* Navigation */
+  'nav-home': navHome,
+  'nav-send': navSend,
+  'nav-swap': navSwap,
+  'nav-assets': navAssets,
+  'nav-receive': navReceive,
+  'nav-buy': navBuy,
+  'nav-add-account': navAddAccount,
+  'nav-tools': navTools,
+  'nav-sign-message': navSignMessage,
+  'nav-verify-message': navVerifyMessage,
+  'nav-interact-with-contracts': navInteractWithContracts,
+  'nav-deploy-contracts': navDeployContracts,
+  'nav-broadcast-transaction': navBroadcastTransaction,
+  'nav-support-us': navSupportUs,
+  'nav-ledger': navLedger,
+  'nav-trezor': navTrezor,
+  'nav-quiknode': navQuiknode,
+  'nav-coinbase': navCoinbase,
+  'nav-unstoppable': navUnstoppable,
+  'nav-settings': navSettings,
+  'nav-ethereum': navEthereum,
+  'nav-bitcoin': navBitcoin
 };
 
 const pngIcons = {
@@ -132,14 +177,6 @@ const pngIcons = {
   'gol-logo': golemLogo
 };
 
-const SInlineSVG = styled(InlineSVG)`
-  &&& svg {
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    color: ${(props) => props.color};
-  }
-`;
-
 type SvgIcons = keyof typeof svgIcons;
 type PngIcons = keyof typeof pngIcons;
 export type TIcon = SvgIcons | PngIcons;
@@ -149,11 +186,11 @@ interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
   color?: string;
 }
 
-const Icon: React.FunctionComponent<Props> = ({ type, ...props }) => {
+const Icon: React.FunctionComponent<Props> = ({ type, color, ...props }) => {
   return (
     <>
       {svgIcons[type as SvgIcons] && (
-        <SInlineSVG src={svgIcons[type as SvgIcons]} color="red" {...props} />
+        <InlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />
       )}
       {pngIcons[type as PngIcons] && <img src={pngIcons[type as PngIcons]} {...props} />}
     </>

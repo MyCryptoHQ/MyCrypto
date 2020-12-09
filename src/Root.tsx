@@ -54,7 +54,7 @@ const RootClass = () => {
           isHydrated ? (
             <RootComponent />
           ) : (
-            <Box variant="verticalCenter">
+            <Box variant="rowCenter">
               <AppLoading />
             </Box>
           )

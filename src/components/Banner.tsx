@@ -27,8 +27,7 @@ interface BannerTypographyProps {
 const Container = styled.div`
   background-color: ${(p: { config: Config }) => p.config.bgColor || 'transparent'};
   color: ${(p) => p.config.color || 'inherit'};
-  padding: 5px 10px;
-  padding-right: 30px;
+  padding: 5px 25px;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
