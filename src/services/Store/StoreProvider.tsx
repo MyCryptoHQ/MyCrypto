@@ -96,6 +96,7 @@ export interface State {
   readonly uniClaims: UniClaimResult[];
   readonly ensOwnershipRecords: DomainNameRecord[];
   readonly isEnsFetched: boolean;
+  readonly isScanning: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -369,6 +370,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     })();
   }, [accounts.length]);
 
+  const [isScanning, setIsScanning] = useState(false);
+
   const state: State = {
     accounts,
     networks,
@@ -383,6 +386,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
+    isScanning,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },
@@ -424,10 +428,23 @@ export const StoreProvider: React.FC = ({ children }) => {
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
     },
-    scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) =>
-      updateAccountAssets(account, asset ? [...assets, asset] : assets),
+    scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) => {
+      setIsScanning(true);
+      try {
+        await updateAccountAssets(account, asset ? [...assets, asset] : assets);
+      } catch (err) {
+        console.error(err);
+      }
+      setIsScanning(false);
+    },
     scanTokens: async (asset?: ExtendedAsset) => {
-      await updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
+      setIsScanning(true);
+      try {
+        await updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
+      } catch (err) {
+        console.error(err);
+      }
+      setIsScanning(false);
     },
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));

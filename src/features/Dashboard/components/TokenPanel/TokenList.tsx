@@ -10,7 +10,7 @@ import {
   Heading,
   Icon,
   RouterLink,
-  Spinner,
+  SkeletonLoader,
   Tooltip
 } from '@components';
 import { ROUTE_PATHS } from '@config';
@@ -67,13 +67,6 @@ const StyledButton = styled(Button)`
   margin-left: 8px;
 `;
 
-const SpinnerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 0;
-`;
-
 const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
   height: 95vh;
@@ -121,9 +114,9 @@ export function TokenList(props: TokenListProps) {
       padChildren={false}
     >
       {isScanning ? (
-        <SpinnerWrapper>
-          <Spinner size={3} />
-        </SpinnerWrapper>
+        <TokenListWrapper>
+          <SkeletonLoader type="token-list" />
+        </TokenListWrapper>
       ) : (
         <TokenListWrapper>
           {sortedTokens.length > 0 ? (

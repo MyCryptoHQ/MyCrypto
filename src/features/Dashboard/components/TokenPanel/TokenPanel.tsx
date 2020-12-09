@@ -9,13 +9,12 @@ import { TokenDetails } from './TokenDetails';
 import { TokenList } from './TokenList';
 
 export function TokenPanel() {
-  const { totals, currentAccounts, scanTokens } = useContext(StoreContext);
+  const { totals, currentAccounts, scanTokens, isScanning } = useContext(StoreContext);
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
   const [showDetailsView, setShowDetailsView] = useState(false);
   const [showAddToken, setShowAddToken] = useState(false);
   const [currentToken, setCurrentToken] = useState<StoreAsset>();
-  const [isScanning, setIsScanning] = useState(false);
   const allTokens = totals(currentAccounts)
     .reduce((acc, a) => {
       if (a.contractAddress) {
@@ -26,13 +25,7 @@ export function TokenPanel() {
     .filter(isNotExcludedAsset(settings.excludedAssets));
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
-    try {
-      setIsScanning(true);
-      await scanTokens(asset);
-      setIsScanning(false);
-    } catch (e) {
-      setIsScanning(false);
-    }
+    await scanTokens(asset);
   };
 
   return showDetailsView && currentToken ? (

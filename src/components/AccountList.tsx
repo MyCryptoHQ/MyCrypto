@@ -13,6 +13,7 @@ import {
   Network,
   RouterLink,
   RowDeleteOverlay,
+  SkeletonLoader,
   UndoDeleteOverlay
 } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
@@ -352,7 +353,7 @@ const BuildAccountTable = (
 ) => {
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
-  const { totalFiat } = useContext(StoreContext);
+  const { totalFiat, isScanning } = useContext(StoreContext);
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { contacts, createContact, updateContact } = useContacts();
@@ -532,13 +533,17 @@ const BuildAccountTable = (
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
-        <CurrencyContainer
-          key={index}
-          amount={total.toString()}
-          symbol={getFiat(settings).symbol}
-          ticker={getFiat(settings).ticker}
-          decimals={2}
-        />
+        isScanning ? (
+          <SkeletonLoader type="account-list-value" />
+        ) : (
+          <CurrencyContainer
+            key={index}
+            amount={total.toString()}
+            symbol={getFiat(settings).symbol}
+            ticker={getFiat(settings).ticker}
+            decimals={2}
+          />
+        )
       ];
 
       if (privacyCheckboxEnabled) {
