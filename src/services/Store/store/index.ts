@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { getAppState, AppState, getPassword } from './reducer';
+export { importState, exportState, getAppState, AppState, getPassword } from './reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };

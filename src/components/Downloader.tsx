@@ -26,7 +26,13 @@ const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
   };
 
   return (
-    <Link fullWidth={true} href={blob} download={fileName} onClick={handleDownload}>
+    <Link
+      data-testid="export-json-link"
+      fullWidth={true}
+      href={blob}
+      download={fileName}
+      onClick={handleDownload}
+    >
       {children}
       {!children && (
         <Button color={COLORS.WHITE} fullwidth={true}>

@@ -1,8 +1,10 @@
-import { createSelector, Selector } from '@reduxjs/toolkit';
+import { createAction, createSelector, Selector } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
 import demoReducer from '@features/DevTools/slice';
+import { deMarshallState } from '@services/Store/DataManager';
 import { DataStore } from '@types';
+import { pipe } from '@vendor';
 
 import legacyReducer from './legacy.reducer';
 import membershipSlice from './membership.slice';
@@ -20,6 +22,15 @@ export default rootReducer;
 
 export type AppState = ReturnType<typeof rootReducer>;
 
-export const getAppState: Selector<AppState, DataStore> = (state) => state[DATA_STATE_KEY];
+/**
+ * Selectors
+ */
 
+export const getAppState: Selector<AppState, DataStore> = (state) => state[DATA_STATE_KEY];
 export const getPassword = createSelector([getAppState], (s) => s.password);
+
+/**
+ * AppState
+ */
+export const importState = createAction<AppState>('app/import');
+export const exportState = createSelector(getAppState, pipe(deMarshallState, JSON.stringify));

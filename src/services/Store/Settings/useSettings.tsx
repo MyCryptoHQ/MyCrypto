@@ -4,12 +4,15 @@ import {
   addExcludedAsset,
   addFavorite,
   addFavorites,
+  exportState,
+  importState,
   removeExcludedAsset,
   resetFavoritesTo,
   setFiat,
   setLanguage,
   setRates,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 
 import { IRates, ISettings, LSKeys, TFiatTicker, TUuid } from '@types';
@@ -57,15 +60,13 @@ function useSettings() {
   const { createActions, settings } = useContext(DataContext);
   const dispatch = useDispatch();
   const model = createActions(LSKeys.SETTINGS);
-
+  const appState = useSelector(exportState);
   const language = settings.language || '';
 
-  const isValidImport = (toValidate: string) => isValidImportFunc(toValidate, exportStorage());
-
-  const exportStorage = () => JSON.stringify(model.exportStorage());
+  const isValidImport = (toValidate: string) => isValidImportFunc(toValidate, appState);
 
   const importStorage = (toImport: string): boolean => {
-    const ls = exportStorage();
+    const ls = appState;
     if (!isValidImportFunc(toImport, String(ls))) return false;
 
     model.importStorage(toImport);
@@ -112,8 +113,8 @@ function useSettings() {
     addAssetToExclusionList,
     removeAssetfromExclusionList,
     updateSettingsAccounts,
-    exportStorage,
-    importStorage,
+    exportStorage: exportState,
+    importStorage: importState,
     updateSettingsRates,
     updateLanguageSelection,
     updateFiatCurrency,

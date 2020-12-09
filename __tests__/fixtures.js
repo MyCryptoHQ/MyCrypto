@@ -22,6 +22,7 @@ const FIXTURES_CONST = {
 const PAGES = {
   DASHBOARD: `${FIXTURES_CONST.BASE_URL}/dashboard`,
   SETTINGS: `${FIXTURES_CONST.BASE_URL}/settings`,
+  SETTINGS_EXPORT: `${FIXTURES_CONST.BASE_URL}/settings/export`,
   ADD_ACCOUNT_MNEMONIC: `${FIXTURES_CONST.BASE_URL}/add-account/mnemonic_phrase`,
   ADD_ACCOUNT_VIEWONLY: `${FIXTURES_CONST.BASE_URL}/add-account/view_only`,
   ADD_ACCOUNT_PRIVATE_KEY: `${FIXTURES_CONST.BASE_URL}/add-account/private_key`,
@@ -119,13 +120,15 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     fiatCurrency: 'USD',
     darkMode: false,
     dashboardAccounts: ['256b782e-52bc-51f9-a357-602501e59700'],
+    excludedAssets: [],
     inactivityTimer: 1800000,
     rates: {},
     language: 'en'
   },
   password: '',
-  networkNodes: { Ethereum: { selectedNode: 'web3' }, Ropsten: { selectedNode: 'web3' } },
-  mtime: 1581530607024
+  networkNodes: {},
+  userActions: {},
+  mtime: 1607526708529
 };
 
 export {
