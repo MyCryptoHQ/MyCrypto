@@ -8,11 +8,7 @@ import {
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import BigNumber from 'bignumber.js';
-import property from 'lodash/property';
-import unionBy from 'lodash/unionBy';
 import eqBy from 'ramda/src/eqBy';
-import isEmpty from 'ramda/src/isEmpty';
 import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
 
@@ -20,7 +16,6 @@ import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
   Asset,
-  AssetBalanceObject,
   IAccount,
   IRawAccount,
   ITxReceipt,
@@ -28,12 +23,9 @@ import {
   ITxType,
   NetworkId,
   StoreAccount,
-  TAddress,
   TUuid
 } from '@types';
-import { isSameAddress } from '@utils';
 
-import { getAllTokensBalancesOfAccount } from '../BalanceService';
 import { DataContext } from '../DataManager';
 import { useSettings } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
@@ -102,89 +94,6 @@ function useAccounts() {
 
   const getAccountByAddressAndNetworkName = getAccountByAddressAndNetworkNameFunc(accounts);
 
-  const updateAccountAssets = async (storeAccount: StoreAccount, assets: Asset[]) => {
-    // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
-    return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
-      const positiveAssetBalances = Object.entries(assetBalances).filter(
-        ([, value]) => !value.isZero()
-      );
-
-      const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
-
-      if (existingAccount) {
-        const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-          (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-            const tempAsset = assets.find((x) =>
-              x.contractAddress
-                ? isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
-                : false
-            );
-            return [
-              ...tempAssets,
-              ...(tempAsset
-                ? [
-                    {
-                      uuid: tempAsset.uuid,
-                      balance: balance.toString(10),
-                      mtime: Date.now()
-                    }
-                  ]
-                : [])
-            ];
-          },
-          []
-        );
-
-        const unionedAssets = unionBy(newAssets, existingAccount.assets, property('uuid'));
-        updateAccount(existingAccount.uuid, { ...existingAccount, assets: unionedAssets });
-      }
-    });
-  };
-
-  const updateAllAccountsAssets = (storeAccounts: StoreAccount[], assets: Asset[]) =>
-    Promise.all(
-      storeAccounts.map(async (storeAccount) => {
-        // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
-        return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
-          const positiveAssetBalances = Object.entries(assetBalances).filter(
-            ([, value]) => !value.isZero()
-          );
-
-          const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
-          if (!existingAccount) return {} as IAccount; // no existing account found
-
-          const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-            (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-              const tempAsset = assets.find((x) =>
-                isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
-              );
-              return [
-                ...tempAssets,
-                ...(tempAsset
-                  ? [
-                      {
-                        uuid: tempAsset.uuid,
-                        balance: balance.toString(10),
-                        mtime: Date.now()
-                      }
-                    ]
-                  : [])
-              ];
-            },
-            []
-          );
-
-          const unionedAssets = unionBy(newAssets, existingAccount.assets, property('uuid'));
-          return { ...existingAccount, assets: unionedAssets };
-        });
-      })
-    )
-      .then((data) => data.filter((accountItem) => !isEmpty(accountItem)))
-      .then((updatedAccounts) => dispatch(updateAccountsRedux(updatedAccounts)))
-      .catch((err) => {
-        console.debug('[AccountProvider]: Scan Tokens Error:', err);
-      });
-
   const updateAccounts = (toUpdate: IAccount[]) => {
     const newAccounts = unionWith(eqBy(prop('uuid')), toUpdate, accounts).filter(Boolean);
     dispatch(updateAccountsRedux(newAccounts));
@@ -208,8 +117,6 @@ function useAccounts() {
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
-    updateAccountAssets,
-    updateAllAccountsAssets,
     updateAccounts,
     toggleAccountPrivacy
   };

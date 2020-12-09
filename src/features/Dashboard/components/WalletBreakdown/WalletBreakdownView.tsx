@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { isScanning as isScanningSelector, useSelector } from '@store';
 import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';
 
@@ -14,7 +15,6 @@ import {
 } from '@components';
 import { EMPTYUUID } from '@config';
 import { buildTotalFiatValue } from '@helpers';
-import { StoreContext } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Balance, TTicker, TUuid } from '@types';
@@ -225,7 +225,7 @@ export default function WalletBreakdownView({
   accounts,
   selected
 }: BalancesDetailProps) {
-  const { isScanning } = useContext(StoreContext);
+  const isScanning = useSelector(isScanningSelector);
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);

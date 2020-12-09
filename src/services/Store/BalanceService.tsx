@@ -4,6 +4,7 @@ import {
   getEtherBalances,
   getTokenBalances as getTokenBalancesFromEthScan,
   getTokensBalance,
+  getTokensBalances,
   ProviderLike,
   toBalanceMap
 } from '@mycrypto/eth-scan';
@@ -29,6 +30,14 @@ export const convertBNToBigNumberJS = (bn: EthScanBN): BN => {
 export const toBigNumberJS = (balances: EthScanBalanceMap): BalanceMap => {
   return Object.fromEntries(
     Object.keys(balances).map((key) => [key, convertBNToBigNumberJS(balances[key])])
+  );
+};
+
+export const nestedToBigNumberJS = (
+  balances: EthScanBalanceMap<EthScanBalanceMap>
+): BalanceMap<BalanceMap> => {
+  return Object.fromEntries(
+    Object.keys(balances).map((key) => [key, toBigNumberJS(balances[key])])
   );
 };
 
@@ -100,6 +109,20 @@ const tokenBalanceFetchWrapper = async (
     return tokenBalanceMap;
   } catch {
     return {} as EthScanBalanceMap<EthScanBN>;
+  }
+};
+
+const tokenBalanceMultiFetchWrapper = async (
+  provider: ProviderLike,
+  addresses: string[],
+  contractList: string[],
+  options: any
+): Promise<EthScanBalanceMap<EthScanBalanceMap<EthScanBN>>> => {
+  try {
+    const tokenBalanceMap = await getTokensBalances(provider, addresses, contractList, options);
+    return tokenBalanceMap;
+  } catch {
+    return {} as EthScanBalanceMap<EthScanBalanceMap<EthScanBN>>;
   }
 };
 
@@ -199,15 +222,21 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
   return filteredUpdatedAccounts;
 };
 
-export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
-  const provider = new ProviderHandler(account.network);
-  const assetsInNetwork = assets.filter((x) => x.networkId === account.network.id);
+export const getAllTokensBalancesOfAccounts = async (accounts: StoreAccount[], assets: Asset[]) => {
+  const network = accounts[0].network;
+  const provider = new ProviderHandler(network);
+  const assetsInNetwork = assets.filter((x) => x.networkId === network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
   try {
-    return tokenBalanceFetchWrapper(provider, account.address, assetAddresses, {
-      batchSize: ETH_SCAN_BATCH_SIZE
-    }).then(toBigNumberJS);
+    return tokenBalanceMultiFetchWrapper(
+      provider,
+      accounts.map((a) => a.address),
+      assetAddresses,
+      {
+        batchSize: ETH_SCAN_BATCH_SIZE
+      }
+    ).then(nestedToBigNumberJS);
   } catch (err) {
     throw new Error(err);
   }

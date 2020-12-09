@@ -6,7 +6,15 @@ import { assetSaga } from './asset.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
 import { importSaga } from './reducer';
+import { scanTokensSaga } from './tokenScanning.slice';
 
 export default function* rootSaga() {
-  yield all([watchIncrement(), fetchMembershipsSaga(), networkSaga(), assetSaga(), importSaga()]);
+  yield all([
+    watchIncrement(),
+    fetchMembershipsSaga(),
+    networkSaga(),
+    assetSaga(),
+    importSaga(),
+    scanTokensSaga()
+  ]);
 }

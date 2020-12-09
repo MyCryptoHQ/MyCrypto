@@ -1,6 +1,13 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import { deleteMembership, fetchAssets, fetchMemberships, useDispatch, useSelector } from '@store';
+import {
+  deleteMembership,
+  fetchAssets,
+  fetchMemberships,
+  scanTokens,
+  useDispatch,
+  useSelector
+} from '@store';
 import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import flatten from 'ramda/src/flatten';
@@ -20,7 +27,6 @@ import { translateRaw } from '@translations';
 import {
   Asset,
   DomainNameRecord,
-  ExtendedAsset,
   IAccount,
   IAccountAdditionData,
   IPendingTxReceipt,
@@ -96,7 +102,6 @@ export interface State {
   readonly uniClaims: UniClaimResult[];
   readonly ensOwnershipRecords: DomainNameRecord[];
   readonly isEnsFetched: boolean;
-  readonly isScanning: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
@@ -107,8 +112,6 @@ export interface State {
   ): (getAssetRate: (asset: Asset) => number | undefined) => number;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
-  scanAccountTokens(account: StoreAccount, asset?: ExtendedAsset): Promise<void>;
-  scanTokens(asset?: ExtendedAsset): Promise<void>;
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
   addMultipleAccounts(
@@ -140,8 +143,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
-    updateAccountAssets,
-    updateAllAccountsAssets,
     updateAccounts,
     deleteAccount,
     createAccountWithID,
@@ -304,7 +305,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               finishedTxReceipt.txType === ITxType.DEFIZAP ||
               isTokenMigration(finishedTxReceipt.txType)
             ) {
-              state.scanAccountTokens(storeAccount);
+              dispatch(scanTokens({ accounts: [storeAccount] }));
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
               dispatch(fetchMemberships([storeAccount]));
             }
@@ -370,8 +371,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     })();
   }, [accounts.length]);
 
-  const [isScanning, setIsScanning] = useState(false);
-
   const state: State = {
     accounts,
     networks,
@@ -386,7 +385,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
-    isScanning,
     get defaultAccount() {
       return sortByLabel(state.accounts)[0];
     },
@@ -427,24 +425,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
-    },
-    scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) => {
-      setIsScanning(true);
-      try {
-        await updateAccountAssets(account, asset ? [...assets, asset] : assets);
-      } catch (err) {
-        console.error(err);
-      }
-      setIsScanning(false);
-    },
-    scanTokens: async (asset?: ExtendedAsset) => {
-      setIsScanning(true);
-      try {
-        await updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
-      } catch (err) {
-        console.error(err);
-      }
-      setIsScanning(false);
     },
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));

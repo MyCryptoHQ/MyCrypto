@@ -1,4 +1,4 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { EXCLUDED_ASSETS } from '@config';
@@ -8,6 +8,7 @@ import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vend
 
 import { initialLegacyState } from './legacy.initialState';
 import { ActionT } from './legacy.reducer';
+import { getAppState } from './selectors';
 
 const sliceName = LSKeys.ASSETS;
 export const initialState = initialLegacyState[sliceName];
@@ -72,6 +73,12 @@ export const {
 } = slice.actions;
 
 export default slice;
+
+/**
+ * Selectors
+ */
+
+export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
 
 /**
  * Sagas

@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
 
+import { isScanning as isScanningSelector, scanTokens, useDispatch, useSelector } from '@store';
+
 import { StoreContext, useRates, useSettings } from '@services';
 import { isNotExcludedAsset } from '@services/Store/helpers';
 import { ExtendedAsset, StoreAsset } from '@types';
@@ -9,7 +11,9 @@ import { TokenDetails } from './TokenDetails';
 import { TokenList } from './TokenList';
 
 export function TokenPanel() {
-  const { totals, currentAccounts, scanTokens, isScanning } = useContext(StoreContext);
+  const { totals, currentAccounts } = useContext(StoreContext);
+  const isScanning = useSelector(isScanningSelector);
+  const dispatch = useDispatch();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
   const [showDetailsView, setShowDetailsView] = useState(false);
@@ -25,7 +29,7 @@ export function TokenPanel() {
     .filter(isNotExcludedAsset(settings.excludedAssets));
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
-    await scanTokens(asset);
+    dispatch(scanTokens({ assets: asset ? [asset] : undefined }));
   };
 
   return showDetailsView && currentToken ? (

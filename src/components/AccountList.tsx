@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
+import { isScanning as isScanningSelector, useSelector } from '@store';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -353,7 +354,8 @@ const BuildAccountTable = (
 ) => {
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
-  const { totalFiat, isScanning } = useContext(StoreContext);
+  const { totalFiat } = useContext(StoreContext);
+  const isScanning = useSelector(isScanningSelector);
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { contacts, createContact, updateContact } = useContacts();
