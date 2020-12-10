@@ -4,7 +4,7 @@ import { AppState } from './reducer';
 
 interface State {
   success: boolean;
-  error?: string;
+  error?: string | Error;
 }
 
 const initialState: State = {
@@ -18,7 +18,7 @@ const importSlice = createSlice({
     success(state) {
       state.success = true;
     },
-    error(state, action: PayloadAction<string>) {
+    error(state, action: PayloadAction<State['error']>) {
       state.error = action.payload;
     }
   }

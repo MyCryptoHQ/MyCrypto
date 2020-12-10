@@ -5,6 +5,7 @@ import { APP_STATE, fLocalStorage } from '@fixtures';
 import { marshallState } from '@services/Store/DataManager/utils';
 import { omit } from '@vendor';
 
+import importSlice from './import.slice';
 import { ActionT } from './legacy.reducer';
 import { exportState, importSaga, importState } from './reducer';
 
@@ -20,6 +21,16 @@ describe('Import - Export', () => {
     return expectSaga(importSaga)
       .withState({ legacy: APP_STATE })
       .put({ type: ActionT.RESET, payload: { data: marshallState(fLocalStorage) } })
+      .dispatch(importState(importable))
+      .silentRun();
+  });
+
+  it('importSaga(): sets error state on failure', () => {
+    const errorMessage = new Error('Invalid import file');
+    const importable = JSON.stringify({ foo: 'made to fail' });
+    return expectSaga(importSaga)
+      .withState({ legacy: APP_STATE })
+      .put(importSlice.actions.error(errorMessage))
       .dispatch(importState(importable))
       .silentRun();
   });
