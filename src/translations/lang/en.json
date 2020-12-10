@@ -979,6 +979,8 @@
     "NO_TOKENS_HEADER": "No Tokens Found",
     "NO_TOKENS_CONTENT": "It looks like you don't have any tokens in your selected wallets. $link",
     "GET_SOME_HERE": "Get some here!",
-    "DELETE_NETWORK_TOOLTIP": "Please delete your accounts and contacts using the network before deleting the network"
+    "DELETE_NETWORK_TOOLTIP": "Please delete your accounts and contacts using the network before deleting the network",
+    "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Share your address or request a specific payment amount",
+    "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets"
   }
 }

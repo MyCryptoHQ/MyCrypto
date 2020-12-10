@@ -32,12 +32,10 @@ const SIcon = styled(Icon)`
 `;
 
 const HeadingText = styled.span`
-  margin: 0;
   font-size: ${FONT_SIZE.XL};
   font-weight: bold;
   color: ${COLORS.BLUE_DARK_SLATE};
-  margin-left: ${SPACING.BASE};
-  width: 250px;
+  margin: 0 ${SPACING.BASE};
 `;
 
 const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFilters) =>
