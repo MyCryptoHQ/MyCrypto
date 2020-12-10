@@ -68,8 +68,7 @@ const renderUseTxMulti = () => {
             accounts: fAccounts,
             networks: fNetworks,
             assets: fAssets,
-            settings: fSettings,
-            createActions: jest.fn()
+            settings: fSettings
           } as any) as IDataContext
         }
       >

@@ -9,10 +9,10 @@ import { Asset, ExtendedAsset } from '@types';
 import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';
 
-const renderUseAssets = ({ assets = [] as ExtendedAsset[], createActions = jest.fn() } = {}) => {
+const renderUseAssets = ({ assets = [] as ExtendedAsset[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ assets, createActions } as any) as IDataContext}>
+      <DataContext.Provider value={({ assets } as unknown) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>

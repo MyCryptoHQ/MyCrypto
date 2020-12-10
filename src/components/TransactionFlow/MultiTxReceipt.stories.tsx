@@ -30,9 +30,7 @@ const transactionsConfigs: ITxConfig[] = fTxConfigs;
 const baseAssetRate = 250;
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider
-    value={({ createActions: noOp, settings: fSettings } as unknown) as IDataContext}
-  >
+  <DataContext.Provider value={({ settings: fSettings } as unknown) as IDataContext}>
     <RatesContext.Provider value={({ rates: {}, trackAsset: noOp } as unknown) as any}>
       {component}
     </RatesContext.Provider>

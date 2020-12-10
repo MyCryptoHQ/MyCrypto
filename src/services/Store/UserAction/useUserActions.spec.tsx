@@ -9,13 +9,10 @@ import { ACTION_NAME, ACTION_STATE, ExtendedUserAction } from '@types';
 import { DataContext, IDataContext } from '../DataManager';
 import useUserActions from './useUserActions';
 
-const renderUseUserActions = ({
-  userActions = [] as ExtendedUserAction[],
-  createActions = jest.fn()
-} = {}) => {
+const renderUseUserActions = ({ userActions = [] as ExtendedUserAction[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ userActions, createActions } as any) as IDataContext}>
+      <DataContext.Provider value={({ userActions } as unknown) as IDataContext}>
         {' '}
         {children}
       </DataContext.Provider>

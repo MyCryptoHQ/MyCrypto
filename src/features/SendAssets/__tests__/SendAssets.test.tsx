@@ -6,7 +6,7 @@ import { simpleRender } from 'test-utils';
 import SendAssets from '@features/SendAssets/SendAssets';
 import { fAssets, fSettings } from '@fixtures';
 import { FeatureFlagProvider, RatesContext } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
@@ -25,12 +25,11 @@ describe('SendAssetsFlow', () => {
     <MemoryRouter initialEntries={path ? [path] : undefined}>
       <DataContext.Provider
         value={
-          {
+          ({
             addressBook: [],
             settings: fSettings,
-            assets: fAssets,
-            createActions: jest.fn()
-          } as any
+            assets: fAssets
+          } as unknown) as IDataContext
         }
       >
         <FeatureFlagProvider>

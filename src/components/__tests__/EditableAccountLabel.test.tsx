@@ -4,7 +4,7 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { fContacts } from '@fixtures';
-import { DataContext } from '@services/Store';
+import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TAddress, TUuid } from '@types';
 import { noOp } from '@utils';
@@ -31,9 +31,8 @@ function getComponent(contacts: ExtendedContact[], props: Props) {
         ({
           addressBook: contacts,
           contracts: [],
-          createActions: jest.fn(),
           userActions: []
-        } as unknown) as any
+        } as unknown) as IDataContext
       }
     >
       <EditableAccountLabel

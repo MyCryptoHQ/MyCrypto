@@ -16,19 +16,15 @@ import { ACTION_STATE, ActionTemplate, ExtendedUserAction } from '@types';
 import { ActionItem } from '../components/ActionItem';
 import { actionTemplates } from '../constants';
 
-function getComponent(
-  props: { actionTemplate: ActionTemplate; onActionClick(): void },
-  createActions = jest.fn()
-) {
+function getComponent(props: { actionTemplate: ActionTemplate; onActionClick(): void }) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <ProvidersWrapper>
         <DataContext.Provider
           value={
             ({
-              userActions: [] as ExtendedUserAction[],
-              createActions
-            } as any) as IDataContext
+              userActions: [] as ExtendedUserAction[]
+            } as unknown) as IDataContext
           }
         >
           <StoreContext.Provider

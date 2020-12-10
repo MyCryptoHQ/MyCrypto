@@ -4,7 +4,7 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import GeneralLookupField from '@components/GeneralLookupField';
 import { fContacts, fNetwork } from '@fixtures';
-import { DataContext } from '@services';
+import { DataContext, IDataContext } from '@services';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
@@ -48,9 +48,8 @@ function getComponent(
     <DataContext.Provider
       value={
         ({
-          assets: [{ uuid: fNetwork.baseAsset }],
-          createActions: jest.fn()
-        } as unknown) as any
+          assets: [{ uuid: fNetwork.baseAsset }]
+        } as unknown) as IDataContext
       }
     >
       <GeneralLookupField

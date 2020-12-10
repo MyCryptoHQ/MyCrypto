@@ -11,7 +11,7 @@ import {
 } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, NetworkUtils, ProviderHandler, StoreProvider } from '@services';
+import { DataContext, IDataContext, NetworkUtils, ProviderHandler, StoreProvider } from '@services';
 import { translateRaw } from '@translations';
 import { NodeType } from '@types';
 import { noOp } from '@utils';
@@ -39,16 +39,15 @@ function getComponent(
       <MemoryRouter>
         <DataContext.Provider
           value={
-            {
+            ({
               addressBook: contacts,
               accounts,
               assets: fAssets,
               contracts: [],
               networks,
-              createActions: jest.fn(),
               userActions: [],
               settings: fSettings
-            } as any
+            } as unknown) as IDataContext
           }
         >
           <StoreProvider>

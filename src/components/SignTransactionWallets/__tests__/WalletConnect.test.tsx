@@ -3,7 +3,7 @@ import React from 'react';
 import { simpleRender, waitFor } from 'test-utils';
 
 import { fAccount, fNetwork, fTransaction } from '@fixtures';
-import { DataContext } from '@services';
+import { DataContext, IDataContext } from '@services';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
 
@@ -16,7 +16,7 @@ const defaultProps = {
 
 const getComponent = ({ ...props }: typeof defaultProps) =>
   simpleRender(
-    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
+    <DataContext.Provider value={({ networks: [fNetwork] } as unknown) as IDataContext}>
       <WalletConnectComponent {...props} />
     </DataContext.Provider>
   );

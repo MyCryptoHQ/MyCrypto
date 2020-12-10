@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
-import { DataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { ITxType } from '@types';
 import { noOp, truncate } from '@utils';
 
@@ -29,15 +29,14 @@ function getComponent(props: React.ComponentProps<typeof ZapReceipt>) {
     <Router>
       <DataContext.Provider
         value={
-          {
+          ({
             assets: fAssets,
             accounts: fAccounts,
             addressBook: [],
             contracts: [],
-            createActions: jest.fn(),
             userActions: [],
             settings: fSettings
-          } as any
+          } as unknown) as IDataContext
         }
       >
         <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>

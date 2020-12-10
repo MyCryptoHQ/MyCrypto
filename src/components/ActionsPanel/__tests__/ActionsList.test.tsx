@@ -15,11 +15,8 @@ function getComponent(props: Props) {
     <DataContext.Provider
       value={
         ({
-          userActions: [] as ExtendedUserAction[],
-          createActions: jest.fn().mockReturnValue({
-            create: jest.fn()
-          })
-        } as any) as IDataContext
+          userActions: [] as ExtendedUserAction[]
+        } as unknown) as IDataContext
       }
     >
       <StoreContext.Provider

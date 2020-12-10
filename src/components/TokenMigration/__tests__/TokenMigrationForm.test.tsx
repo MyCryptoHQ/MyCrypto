@@ -6,7 +6,7 @@ import { simpleRender } from 'test-utils';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
@@ -34,9 +34,8 @@ function getComponent(props: TokenMigrationProps) {
           ({
             assets: [{ uuid: fNetwork.baseAsset }],
             settings: fSettings,
-            networks: [fNetwork],
-            createActions: jest.fn()
-          } as unknown) as any
+            networks: [fNetwork]
+          } as unknown) as IDataContext
         }
       >
         <FeatureFlagProvider>

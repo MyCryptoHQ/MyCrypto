@@ -4,7 +4,7 @@ import { simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
 import { fNetwork, fTxConfig } from '@fixtures';
-import { DataContext } from '@services';
+import { DataContext, IDataContext } from '@services';
 import { WalletId } from '@types';
 
 // eslint-disable-next-line jest/no-mocks-import
@@ -18,7 +18,7 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 
 const getComponent = () => {
   return simpleRender(
-    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
+    <DataContext.Provider value={({ networks: [fNetwork] } as unknown) as IDataContext}>
       <SignTransaction {...defaultProps} />
     </DataContext.Provider>
   );

@@ -15,9 +15,7 @@ const defaultProps: Props = {
 
 function getComponent(props = defaultProps) {
   return simpleRender(
-    <DataContext.Provider
-      value={({ createActions: jest.fn(), networks: fNetworks } as unknown) as IDataContext}
-    >
+    <DataContext.Provider value={({ networks: fNetworks } as unknown) as IDataContext}>
       <form role="form">
         <NetworkSelector {...props} />
       </form>

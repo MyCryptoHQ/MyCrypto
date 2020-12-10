@@ -7,7 +7,7 @@ import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
 
@@ -22,9 +22,8 @@ describe('TokenMigrationStepper', () => {
           ({
             assets: fAssets,
             settings: fSettings,
-            networks: fNetworks,
-            createActions: jest.fn()
-          } as unknown) as any
+            networks: fNetworks
+          } as unknown) as IDataContext
         }
       >
         <FeatureFlagProvider>

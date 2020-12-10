@@ -40,9 +40,7 @@ export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
-    <DataContext.Provider
-      value={({ createActions: noOp, userActions: [] } as unknown) as IDataContext}
-    >
+    <DataContext.Provider value={({ userActions: [] } as unknown) as IDataContext}>
       {component}
     </DataContext.Provider>
   </ProvidersWrapper>

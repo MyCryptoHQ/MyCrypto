@@ -4,7 +4,7 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
 import { fContacts, fContracts, fNetwork } from '@fixtures';
-import { DataContext } from '@services/Store';
+import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
@@ -41,9 +41,8 @@ function getComponent(
     <DataContext.Provider
       value={
         ({
-          assets: [{ uuid: fNetwork.baseAsset }],
-          createActions: jest.fn()
-        } as unknown) as any
+          assets: [{ uuid: fNetwork.baseAsset }]
+        } as unknown) as IDataContext
       }
     >
       <ContractLookupField

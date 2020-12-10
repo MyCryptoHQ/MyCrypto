@@ -7,7 +7,7 @@ import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider, RatesContext } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationConfirm';
@@ -35,9 +35,8 @@ function getComponent(props: ITxMultiConfirmProps) {
             assets: [{ uuid: fNetwork.baseAsset }],
             settings: fSettings,
             networks: [fNetwork],
-            userActions: [],
-            createActions: jest.fn()
-          } as unknown) as any
+            userActions: []
+          } as unknown) as IDataContext
         }
       >
         <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>

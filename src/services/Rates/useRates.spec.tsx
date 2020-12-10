@@ -17,9 +17,7 @@ const renderUseRates = ({
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider
-        value={({ settings: fSettings, createActions: jest.fn() } as any) as IDataContext}
-      >
+      <DataContext.Provider value={({ settings: fSettings } as unknown) as IDataContext}>
         <RatesContext.Provider value={{ rates, reserveRateMapping, trackAsset } as any}>
           {' '}
           {children}

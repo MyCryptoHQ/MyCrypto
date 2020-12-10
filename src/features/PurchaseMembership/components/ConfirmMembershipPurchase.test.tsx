@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { noOp, truncate } from '@utils';
 
@@ -24,15 +24,14 @@ function getComponent(props: React.ComponentProps<typeof ConfirmMembershipPurcha
     <Router>
       <DataContext.Provider
         value={
-          {
+          ({
             assets: fAssets,
             accounts: fAccounts,
             addressBook: [],
             contracts: [],
-            createActions: jest.fn(),
             userActions: [],
             settings: fSettings
-          } as any
+          } as unknown) as IDataContext
         }
       >
         <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>

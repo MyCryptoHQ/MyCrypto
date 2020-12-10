@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { bigify, noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -31,15 +31,14 @@ function getComponent(props: React.ComponentProps<typeof ConfirmSwap>) {
     <Router>
       <DataContext.Provider
         value={
-          {
+          ({
             assets: fAssets,
             accounts: fAccounts,
             addressBook: [],
             contracts: [],
-            createActions: jest.fn(),
             userActions: [],
             settings: fSettings
-          } as any
+          } as unknown) as IDataContext
         }
       >
         <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>

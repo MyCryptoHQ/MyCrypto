@@ -6,7 +6,7 @@ import { fireEvent, simpleRender } from 'test-utils';
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
 import { fNetworks } from '@fixtures';
-import { DataContext } from '@services/Store';
+import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
@@ -28,11 +28,10 @@ describe('AddAccountFlow', () => {
     <MemoryRouter initialEntries={path ? [path] : undefined}>
       <DataContext.Provider
         value={
-          {
+          ({
             networks: fNetworks,
-            notifications: [],
-            createActions: jest.fn()
-          } as any
+            notifications: []
+          } as unknown) as IDataContext
         }
       >
         <Switch>

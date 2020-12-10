@@ -27,9 +27,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
 
 function getComponent(props: React.ComponentProps<typeof ConfirmTransactionUI>) {
   return simpleRender(
-    <DataContext.Provider
-      value={{ addressBook: [], contracts: [], createActions: jest.fn(), userActions: [] } as any}
-    >
+    <DataContext.Provider value={{ addressBook: [], contracts: [], userActions: [] } as any}>
       <ConfirmTransactionUI {...props} />
     </DataContext.Provider>
   );
