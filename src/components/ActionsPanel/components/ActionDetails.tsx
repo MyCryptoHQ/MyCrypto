@@ -9,9 +9,16 @@ import { SPACING } from '@theme';
 import { ActionTemplate } from '@types';
 
 const SBox = styled(Box)`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   & > * {
     margin-bottom: ${SPACING.BASE};
   }
+`;
+
+const SBody = styled(Body)`
+  text-align: center;
 `;
 
 export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTemplate }) => {
@@ -32,7 +39,7 @@ export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTempla
       justifyContent="space-between"
     >
       <SBox>
-        {actionTemplate.body && actionTemplate.body.map((item, i) => <Body key={i}>{item}</Body>)}
+        {actionTemplate.body && actionTemplate.body.map((item, i) => <SBody key={i}>{item}</SBody>)}
         {Component && <Component {...actionTemplate.props} />}
       </SBox>
       <Box mb={SPACING.BASE}>
