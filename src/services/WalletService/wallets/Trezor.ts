@@ -18,7 +18,12 @@ export default class Trezor extends HardwareWallet {
     this.cache = {};
 
     // Fetch a random address to ensure the connection works
-    await this.getAddress(DPathsList.ETH_DEFAULT, 50);
+    try {
+      await this.getAddress(DPathsList.ETH_DEFAULT, 50);
+    } catch (err) {
+      console.debug('[Trezor]: Error connecting to device');
+      throw err;
+    }
   }
 
   public async prefetch(paths: DPath[]): Promise<{ [key: string]: KeyInfo }> {
