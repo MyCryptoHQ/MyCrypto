@@ -24,6 +24,7 @@ const MobileNav = () => {
             return (
               <NavTray
                 tray={item}
+                key={i}
                 content={item.items.map(
                   (item, i) =>
                     item.type === 'internal' && (

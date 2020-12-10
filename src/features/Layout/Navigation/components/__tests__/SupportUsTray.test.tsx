@@ -31,21 +31,33 @@ describe('SupportUsTray', () => {
 
   test('Donate ETH button copy donate addresses to clipboard', async () => {
     getComponent();
-    const EthereumBtn = screen.getByText(new RegExp(translateRaw('NAVIGATION_ETHEREUM'), 'i'))
+    const ethereumBtn = screen.getByText(new RegExp(translateRaw('NAVIGATION_ETHEREUM'), 'i'))
       .parentElement!;
 
-    fireEvent.click(EthereumBtn);
+    fireEvent.click(ethereumBtn);
 
     expect(document.execCommand).toHaveBeenCalledWith('copy');
   });
 
   test('Donate BTC button copy donate addresses to clipboard', async () => {
     getComponent();
-    const BitcoinBtn = screen.getByText(new RegExp(translateRaw('NAVIGATION_BITCOIN'), 'i'))
+    const bitcoinBtn = screen.getByText(new RegExp(translateRaw('NAVIGATION_BITCOIN'), 'i'))
       .parentElement!;
 
-    fireEvent.click(BitcoinBtn);
+    fireEvent.click(bitcoinBtn);
 
     expect(document.execCommand).toHaveBeenCalledWith('copy');
+  });
+
+  test('Donate buttons show message on click', async () => {
+    getComponent();
+    const ethereumBtn = screen.getByText(new RegExp(translateRaw('NAVIGATION_ETHEREUM'), 'i'))
+      .parentElement!;
+
+    fireEvent.click(ethereumBtn);
+
+    expect(
+      screen.getByText(new RegExp(translateRaw('NEW_FOOTER_TEXT_2'), 'i'))
+    ).toBeInTheDocument();
   });
 });

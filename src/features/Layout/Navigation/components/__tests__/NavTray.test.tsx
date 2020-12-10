@@ -29,12 +29,12 @@ function getComponent() {
 describe('NavTray', () => {
   test('renders the tray on mouseEnter and hides it on mouseLeave', async () => {
     getComponent();
-    const TrayBtn = screen.getByText(new RegExp(defaultProps.tray.title, 'i')).parentElement!;
+    const trayBtn = screen.getByText(new RegExp(defaultProps.tray.title, 'i')).parentElement!;
 
-    fireEvent.mouseEnter(TrayBtn);
+    fireEvent.mouseEnter(trayBtn);
     expect(screen.getByText(new RegExp(defaultProps.content, 'i'))).toBeInTheDocument();
 
-    fireEvent.mouseLeave(TrayBtn);
+    fireEvent.mouseLeave(trayBtn);
     expect(screen.queryByText(new RegExp(defaultProps.content, 'i'))).not.toBeInTheDocument();
   });
 });
