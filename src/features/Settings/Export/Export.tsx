@@ -41,7 +41,7 @@ export function Export(props: RouteComponentProps) {
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
         <Downloader
-          data={appState}
+          data={JSON.stringify(appState)}
           onClick={() =>
             backupAction &&
             updateUserAction(backupAction.uuid, { ...backupAction, state: ACTION_STATE.COMPLETED })

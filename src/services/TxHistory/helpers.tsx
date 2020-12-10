@@ -1,8 +1,8 @@
 import { bigNumberify, parseEther } from 'ethers/utils';
 
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { Asset, ITxReceipt, Network, StoreAccount } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
 

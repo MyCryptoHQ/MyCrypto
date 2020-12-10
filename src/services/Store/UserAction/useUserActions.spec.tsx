@@ -45,7 +45,7 @@ describe('useUserActions', () => {
     );
   });
 
-  it('updateUserAction() calls model.update', () => {
+  it('updateUserAction() dispatches action', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseUserActions({
       userActions: fUserActions

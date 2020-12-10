@@ -73,3 +73,4 @@ export { default as fApproveERC20TxResponse } from './approveErc20TxResponse.jso
 
 export { fUserActions, fActionTemplates } from './userActions';
 export { membershipApiResponse, accountWithMembership } from './membership';
+export { default as APP_STATE } from './appState';

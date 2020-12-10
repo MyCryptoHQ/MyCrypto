@@ -23,6 +23,7 @@ const PAGES = {
   DASHBOARD: `${FIXTURES_CONST.BASE_URL}/dashboard`,
   SETTINGS: `${FIXTURES_CONST.BASE_URL}/settings`,
   SETTINGS_EXPORT: `${FIXTURES_CONST.BASE_URL}/settings/export`,
+  SETTINGS_IMPORT: `${FIXTURES_CONST.BASE_URL}/settings/import`,
   ADD_ACCOUNT_MNEMONIC: `${FIXTURES_CONST.BASE_URL}/add-account/mnemonic_phrase`,
   ADD_ACCOUNT_VIEWONLY: `${FIXTURES_CONST.BASE_URL}/add-account/view_only`,
   ADD_ACCOUNT_PRIVATE_KEY: `${FIXTURES_CONST.BASE_URL}/add-account/private_key`,

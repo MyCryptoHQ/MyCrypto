@@ -7,6 +7,7 @@ import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { IStepperPath } from '@components/GeneralStepper/types';
 import { MANDATORY_TRANSACTION_QUERY_PARAMS, ROUTE_PATHS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { withProtectTxProvider } from '@helpers';
 import {
   ProviderHandler,
   StoreContext,
@@ -17,7 +18,7 @@ import {
 } from '@services';
 import { translateRaw } from '@translations';
 import { IFormikFields, ISignedTx, ITxConfig, ITxReceipt, TxQueryTypes } from '@types';
-import { getParam, isWeb3Wallet, withProtectTxProvider } from '@utils';
+import { getParam, isWeb3Wallet } from '@utils';
 import { isEmpty } from '@vendor';
 
 import {

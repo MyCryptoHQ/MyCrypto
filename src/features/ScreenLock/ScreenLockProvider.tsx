@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
-import { useAppState } from '@store';
-import pipe from 'ramda/src/pipe';
+import { AppState, importSuccess, useAppState } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext, ISettingsContext, useSettings } from '@services/Store';
+import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
+import { pipe } from '@vendor';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -35,7 +36,7 @@ const onDemandLockCountDownDuration = 5;
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<
-  RouteComponentProps & IDataContext & ISettingsContext,
+  RouteComponentProps & IDataContext & Props & ReturnType<typeof useAppState>,
   State
 > {
   public state: State = {
@@ -84,11 +85,23 @@ class ScreenLockProvider extends Component<
       this.props.password &&
       !(this.props.encryptedDbState && this.props.encryptedDbState.data)
     ) {
-      const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
+      const encryptedData = encrypt(
+        JSON.stringify(this.props.exportState),
+        this.props.password
+      ).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
+    }
+
+    // Reset the vault if it exists and we are importing a new config
+    if (
+      this.props.importSuccess &&
+      this.props.encryptedDbState &&
+      this.props.encryptedDbState.data
+    ) {
+      this.resetEncrypted();
     }
   }
 
@@ -262,9 +275,15 @@ class ScreenLockProvider extends Component<
   }
 }
 
+const mapStateToProps = (state: AppState) => ({
+  importSuccess: importSuccess(state)
+});
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
 export default pipe(
   withRouter,
   withContext(DataContext),
-  withHook(useSettings),
-  withHook(useAppState)
+  withHook(useAppState),
+  connector
 )(ScreenLockProvider);

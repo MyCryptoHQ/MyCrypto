@@ -1,12 +1,13 @@
-import { ExtendedNotification, IAccount, Network, StoreAccount, TUuid } from '@types';
-import { bigify, isBigish } from '@utils/bigify';
-import { arrayToObj } from '@utils/toObject';
+import { ExtendedNotification, IAccount, LocalStorage, Network, StoreAccount, TUuid } from '@types';
+import { arrayToObj, bigify, isBigish } from '@utils';
 import {
+  difference,
   either,
   flatten,
   identity,
   ifElse,
   isNil,
+  keys,
   lensPath,
   lensProp,
   map,
@@ -64,3 +65,16 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
       } as Network;
     })
     .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));
+
+/**
+ * Compare json to import with our persist state
+ */
+export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
+  if (toImport.version !== store.version) {
+    return false;
+  } else {
+    // Check that all the keys in the store exist in the file to import
+    const diff = difference(keys(store), keys(toImport));
+    return diff.length === 0;
+  }
+};

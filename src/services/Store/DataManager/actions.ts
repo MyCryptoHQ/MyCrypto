@@ -3,23 +3,12 @@ import { Dispatch } from 'react';
 import { ActionPayload, ActionT, ActionV } from '@store/legacy.reducer';
 import { SymmetricDifference } from 'utility-types';
 
-import {
-  DataStore,
-  DataStoreEntry,
-  DataStoreItem,
-  DSKeys,
-  ISettings,
-  LocalStorage,
-  Network,
-  TUuid
-} from '@types';
-
-import { deMarshallState, marshallState } from './utils';
+import { DataStoreEntry, DataStoreItem, DSKeys, ISettings, Network, TUuid } from '@types';
 
 type createPayload = (m: DSKeys) => <T>(v: T) => ActionPayload<T>;
 const createPayload: createPayload = (model) => (v) => ({ model, data: v });
 
-export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>, state: DataStore) {
+export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>) {
   const generatePayload = createPayload(model);
 
   const create = (item: DataStoreItem): void => {
@@ -63,28 +52,11 @@ export function ActionFactory(model: DSKeys, dispatch: Dispatch<ActionV>, state:
     });
   };
 
-  const importStorage = (data: string) => {
-    const d = JSON.parse(data);
-    // @todo: perfom version and validity check.
-    dispatch({
-      type: ActionT.RESET,
-      payload: createPayload(model)(marshallState(d))
-    });
-  };
-
-  // DataContext state is our Single source of truth,
-  // so we use it for our exporting.
-  const exportStorage = (): Omit<LocalStorage, 'mtime'> => {
-    return deMarshallState(state);
-  };
-
   return {
     create,
     createWithID,
     update,
     updateAll,
-    destroy,
-    exportStorage,
-    importStorage
+    destroy
   };
 }

@@ -15,8 +15,8 @@ const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
-    const settingsBlob = makeBlob('text/json;charset=UTF-8', data);
-    setBlob(settingsBlob);
+    const dataBlob = makeBlob('text/json;charset=UTF-8', data);
+    setBlob(dataBlob);
     setFileName(getExportFileName(getCurrentDBConfig(), new Date()));
   }, [data]);
 

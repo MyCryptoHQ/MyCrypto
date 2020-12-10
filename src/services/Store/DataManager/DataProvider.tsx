@@ -74,7 +74,7 @@ export const DataProvider: React.FC = ({ children }) => {
 
   const stateContext: IDataContext = {
     ...legacyState,
-    createActions: (key) => ActionFactory(key, dispatch, legacyState),
+    createActions: (key) => ActionFactory(key, dispatch),
     resetAppDb,
     encryptedDbState,
     setEncryptedCache,
