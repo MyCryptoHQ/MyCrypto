@@ -222,21 +222,19 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
   return filteredUpdatedAccounts;
 };
 
-export const getAllTokensBalancesOfAccounts = async (accounts: StoreAccount[], assets: Asset[]) => {
-  const network = accounts[0].network;
+export const getAllTokensBalancesOfAccounts = async (
+  network: Network,
+  addresses: string[],
+  assets: Asset[]
+) => {
   const provider = new ProviderHandler(network);
   const assetsInNetwork = assets.filter((x) => x.networkId === network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
   try {
-    return tokenBalanceMultiFetchWrapper(
-      provider,
-      accounts.map((a) => a.address),
-      assetAddresses,
-      {
-        batchSize: ETH_SCAN_BATCH_SIZE
-      }
-    ).then(nestedToBigNumberJS);
+    return tokenBalanceMultiFetchWrapper(provider, addresses, assetAddresses, {
+      batchSize: ETH_SCAN_BATCH_SIZE
+    }).then(nestedToBigNumberJS);
   } catch (err) {
     throw new Error(err);
   }
