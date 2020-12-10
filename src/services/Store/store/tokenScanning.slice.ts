@@ -50,7 +50,7 @@ export function* scanTokensSaga() {
   yield takeLatest(scanTokens.type, scanTokensWorker);
 }
 
-const getTokens = async (networks: Network[], accounts: StoreAccount[], assets: Asset[]) => {
+export const getTokens = async (networks: Network[], accounts: StoreAccount[], assets: Asset[]) => {
   return mapAsync(networks, async (network) => {
     const addresses = accounts.filter((a) => a.networkId === network.id).map((a) => a.address);
     if (addresses.length === 0) {

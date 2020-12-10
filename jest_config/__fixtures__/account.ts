@@ -41,7 +41,7 @@ export const fAccounts: StoreAccount[] = [
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
+    uuid: '15d5e8f3-c595-5206-b5f3-86c180eb7119' as TUuid,
     network: fNetworks[0],
     label: 'WalletConnect Account 1'
   },
