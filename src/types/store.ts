@@ -1,5 +1,3 @@
-import { $ElementType, SymmetricDifference, ValuesType } from 'utility-types';
-
 import {
   Asset,
   ExtendedAsset,
@@ -44,9 +42,6 @@ export interface LocalStorage {
   readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
 }
-
-export type DSKeys = Exclude<LSKeys, LSKeys.NETWORK_NODES>;
-
 export interface DataStore {
   readonly version: string;
   readonly [LSKeys.ACCOUNTS]: IAccount[];
@@ -63,9 +58,3 @@ export interface DataStore {
 export interface EncryptedDataStore {
   readonly data?: string;
 }
-
-export type DataStoreEntry = ValuesType<Omit<DataStore, 'version' | 'password'>>;
-
-export type DataStoreItem =
-  | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>
-  | ISettings;

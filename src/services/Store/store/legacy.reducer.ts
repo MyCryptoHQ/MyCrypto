@@ -1,6 +1,6 @@
-import { Reducer } from '@reduxjs/toolkit';
+import { PayloadAction, Reducer } from '@reduxjs/toolkit';
 
-import { DataStore, DataStoreEntry, DataStoreItem, DSKeys, LSKeys, TUuid } from '@types';
+import { DataStore, LSKeys } from '@types';
 
 import accountSlice, {
   createAccount,
@@ -52,23 +52,15 @@ export enum ActionT {
   RESET = 'RESET'
 }
 
-export interface ActionPayload<T> {
-  model: DSKeys;
-  data: T;
-}
-
-export interface ActionV {
-  type: keyof typeof ActionT;
-  payload:
-    | ActionPayload<DataStoreItem | DataStoreEntry | DataStore | string>
-    | ActionPayload<TUuid>;
-}
 // Handler to facilitate initial store state and reset.
 export function init(initialState: DataStore) {
   return initialState;
 }
 
-const legacyReducer: Reducer<DataStore, ActionV> = (state = initialLegacyState, action) => {
+const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
+  state = initialLegacyState,
+  action
+) => {
   const { type, payload } = action;
   switch (type) {
     case ActionT.RESET: {
