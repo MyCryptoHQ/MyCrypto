@@ -17,7 +17,7 @@ import { ActionDetails, ActionsList } from './components';
 import { actionTemplates } from './constants';
 
 const SDashboardPanel = styled(DashboardPanel)`
-  min-height: 384px;
+  min-height: 280px;
 `;
 
 const DetailsHeading = styled.div`

@@ -75,7 +75,9 @@ const SpinnerWrapper = styled.div`
 `;
 
 const TokenDashboardPanel = styled(DashboardPanel)`
-  max-height: 500px;
+  max-height: 740px;
+  height: 95vh;
+  min-height: 430px;
 `;
 
 interface TokenListProps {

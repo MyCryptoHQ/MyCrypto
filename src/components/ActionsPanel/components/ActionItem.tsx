@@ -24,7 +24,7 @@ const Action = styled.div<{ state?: string }>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
-  min-height: 80px;
+  min-height: 60px;
   padding: 0 ${SPACING.BASE};
   cursor: pointer;
   ${(p) =>
