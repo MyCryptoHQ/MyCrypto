@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, exportState, importState, importSuccess } from '@store';
+import { AppState, exportState, importState } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -16,6 +16,9 @@ import { default as ScreenLockLocking } from './ScreenLockLocking';
 interface State {
   locking: boolean;
   locked: boolean;
+  decryptSuccess: boolean;
+  decryptError?: Error;
+  toImport?: string;
   shouldAutoLock: boolean;
   lockingOnDemand: boolean;
   timeLeft: number;
@@ -40,6 +43,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   public state: State = {
     locking: false,
     locked: false,
+    decryptSuccess: false,
     shouldAutoLock: false,
     lockingOnDemand: false,
     timeLeft: defaultCountDownDuration,
@@ -93,59 +97,44 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
       this.setState({ shouldAutoLock: false });
     }
 
-    // Reset the vault if it exists and we are importing a new config
-    if (
-      this.props.importSuccess &&
-      this.props.encryptedDbState &&
-      this.props.encryptedDbState.data
-    ) {
+    // After decrypt with valid password, reset db and
+    if (this.state.decryptSuccess && this.state.toImport) {
+      this.props.importState(this.state.toImport);
       this.resetEncrypted();
     }
   }
 
-  public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState, importState } = this.props;
+  public decryptWithPassword = (password: string): void => {
+    const { encryptedDbState } = this.props;
+    if (!encryptedDbState || !encryptedDbState.data) return;
     try {
-      if (!encryptedDbState) {
-        return false;
-      }
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      const importResult = importState(decryptedData);
-      if (!importResult) {
-        return false;
+      if (decryptedData) {
+        this.setState({ decryptSuccess: true, toImport: decryptedData });
       }
-
-      destroyEncryptedCache();
-
-      // Navigate to the dashboard and reset inactivity timer
-      this.setState({ locked: false }, () => {
-        this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
-      });
-      this.resetInactivityTimer();
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
+      this.setState({ decryptError: error });
     }
   };
 
   // Wipes encrypted data and unlocks
   public resetEncrypted = async () => {
-    const { destroyEncryptedCache } = this.props;
+    const { history, destroyEncryptedCache } = this.props;
     destroyEncryptedCache();
-    this.setState({ locked: false });
+    this.setState({ locked: false, decryptSuccess: false }, () => {
+      this.resetInactivityTimer();
+      history.replace(ROUTE_PATHS.DASHBOARD.path);
+    });
   };
 
   // Wipes both DBs in case of forgotten pw
   public resetAll = async () => {
-    const { destroyEncryptedCache, resetAppDb } = this.props;
-    destroyEncryptedCache();
+    const { resetAppDb } = this.props;
     resetAppDb();
-    this.setState({ locked: false }, () => {
-      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
-    });
+    this.resetEncrypted();
   };
 
   public componentDidMount() {
@@ -274,7 +263,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 }
 
 const mapStateToProps = (state: AppState) => ({
-  importSuccess: importSuccess(state),
   exportState: exportState(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
