@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
-import { AppState, importSuccess, useAppState } from '@store';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, exportState, importState, importSuccess } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
 import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
-import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
+import { decrypt, encrypt, hashPassword, withContext } from '@utils';
 import { pipe } from '@vendor';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
@@ -35,10 +36,7 @@ const onDemandLockCountDownDuration = 5;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<
-  RouteComponentProps & IDataContext & Props & ReturnType<typeof useAppState>,
-  State
-> {
+class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & Props, State> {
   public state: State = {
     locking: false,
     locked: false,
@@ -106,7 +104,7 @@ class ScreenLockProvider extends Component<
   }
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
+    const { destroyEncryptedCache, encryptedDbState, importState } = this.props;
     try {
       if (!encryptedDbState) {
         return false;
@@ -114,7 +112,7 @@ class ScreenLockProvider extends Component<
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      const importResult = importStorage(decryptedData);
+      const importResult = importState(decryptedData);
       if (!importResult) {
         return false;
       }
@@ -276,14 +274,13 @@ class ScreenLockProvider extends Component<
 }
 
 const mapStateToProps = (state: AppState) => ({
-  importSuccess: importSuccess(state)
+  importSuccess: importSuccess(state),
+  exportState: exportState(state)
 });
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ importState }, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-export default pipe(
-  withRouter,
-  withContext(DataContext),
-  withHook(useAppState),
-  connector
-)(ScreenLockProvider);
+export default pipe(withRouter, withContext(DataContext), connector)(ScreenLockProvider);

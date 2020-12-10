@@ -6,7 +6,6 @@ import { select, takeLatest } from 'redux-saga/effects';
 import demoReducer from '@features/DevTools/slice';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { DataStore } from '@types';
-import { log } from '@utils';
 
 import { canImport } from './helpers';
 import importSlice from './import.slice';
@@ -54,7 +53,6 @@ function* importWorker({ payload }: PayloadAction<string>) {
     yield put({ type: ActionT.RESET, payload: { data: marshallState(json) } });
     yield put(importSlice.actions.success());
   } catch (err) {
-    log('Import failed', err);
     yield put(importSlice.actions.error(err));
   }
 }
