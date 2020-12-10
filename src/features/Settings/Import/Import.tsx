@@ -71,7 +71,7 @@ export class Import extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState) => ({
   importSuccess: importSuccess(state),
-  importFailure: importError(state)
+  importFailure: !!importError(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>

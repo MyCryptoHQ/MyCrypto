@@ -25,6 +25,6 @@ const importSlice = createSlice({
 });
 
 export const importSuccess = (state: AppState) => state[importSlice.name].success;
-export const importError = (state: AppState) => state[importSlice.name].success;
+export const importError = (state: AppState) => state[importSlice.name].error;
 
 export default importSlice;
