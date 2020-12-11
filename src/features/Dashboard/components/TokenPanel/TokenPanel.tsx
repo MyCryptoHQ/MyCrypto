@@ -29,7 +29,7 @@ export function TokenPanel() {
     .filter(isNotExcludedAsset(settings.excludedAssets));
 
   const handleScanTokens = async (asset?: ExtendedAsset) => {
-    dispatch(scanTokens({ assets: asset ? [asset] : undefined }));
+    dispatch(scanTokens({ assets: asset && [asset] }));
   };
 
   return showDetailsView && currentToken ? (

@@ -140,8 +140,9 @@ const BreakdownChart = React.memo(
     }));
     return (
       <MainWrapper>
-        {isScanning && <SkeletonLoader type="wallet-chart" width={400} height={350} />}
-        {!isScanning && (
+        {isScanning ? (
+          <SkeletonLoader type="wallet-chart" width={400} height={350} />
+        ) : (
           <PieChart
             width={400}
             height={350}
