@@ -9,7 +9,6 @@ import threemonthsIcon from '@assets/images/membership/membership-threemonths.sv
 import twelveMonthsIcon from '@assets/images/membership/membership-twelvemonths.svg';
 import { DAIUUID, ETHUUID } from '@config';
 import translate, { translateRaw } from '@translations';
-import { TAddress } from '@types';
 
 export interface IMembershipConfig {
   title: string;
@@ -36,7 +35,7 @@ export enum MembershipState {
 }
 
 export interface MembershipStatus {
-  address: TAddress;
+  address: string;
   memberships: MembershipExpiry[];
 }
 

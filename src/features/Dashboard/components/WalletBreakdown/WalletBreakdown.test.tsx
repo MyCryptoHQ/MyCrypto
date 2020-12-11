@@ -1,17 +1,36 @@
 import React from 'react';
 
+import { AppState } from '@store';
 import { MemoryRouter } from 'react-router-dom';
+import { DeepPartial } from 'redux';
 import { ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fContacts, fNetworks, fRates, fSettings } from '@fixtures';
+import {
+  fAccounts,
+  fAssets,
+  fContacts,
+  fNetworks,
+  fRates,
+  fSettings,
+  fStoreAssets
+} from '@fixtures';
 import { DataContext, RatesContext, StoreProvider } from '@services';
 import { translateRaw } from '@translations';
+import { ISettings, StoreAccount } from '@types';
 
 import { WalletBreakdown } from './WalletBreakdown';
 
-function getComponent({ settings = fSettings, accounts = fAccounts }) {
+function getComponent({
+  settings = fSettings,
+  accounts = fAccounts,
+  initialState
+}: {
+  settings?: ISettings;
+  accounts?: StoreAccount[];
+  initialState?: DeepPartial<AppState>;
+}) {
   return simpleRender(
-    <ProvidersWrapper>
+    <ProvidersWrapper initialState={initialState}>
       <MemoryRouter>
         <DataContext.Provider
           value={
@@ -42,7 +61,9 @@ function getComponent({ settings = fSettings, accounts = fAccounts }) {
 
 describe('WalletBreakdown', () => {
   it('can render', async () => {
-    const { getByText, getAllByText, container } = getComponent({});
+    const { getByText, getAllByText, container } = getComponent({
+      accounts: [{ ...fAccounts[0], assets: [...fAccounts[0].assets, ...fStoreAssets] }]
+    });
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_TITLE'))).toBeInTheDocument();
 
@@ -73,9 +94,10 @@ describe('WalletBreakdown', () => {
   });
 
   it('can render loading state', async () => {
-    const { getByTestId } = getComponent({});
+    const { getAllByTestId } = getComponent({
+      initialState: { tokenScanning: { scanning: true } }
+    });
 
-    // @todo Set isScanning selector?
-    expect(getByTestId('skeleton-loader')).toBeInTheDocument();
+    getAllByTestId('skeleton-loader').forEach((l) => expect(l).toBeInTheDocument());
   });
 });
