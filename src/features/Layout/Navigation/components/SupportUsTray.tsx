@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
 import CopyToClipboard from 'react-copy-to-clipboard';
-import styled from 'styled-components';
 
 import { Box, Icon, Text } from '@components';
 import { donationAddressMap } from '@config';
@@ -13,10 +12,6 @@ import { TTrayItem } from '@types';
 import { useTimeoutFn } from '@vendor';
 
 import { ExternalLink } from './ExternalLink';
-
-const SText = styled(Text)`
-  text-transform: uppercase;
-`;
 
 export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   const [displayingMessage, setDisplayingMessage] = useState(false);
@@ -45,9 +40,9 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   return (
     <>
       <Box width="100%">
-        <SText fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
+        <Text textTransform="uppercase" fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
           {translateRaw('NAVIGATION_DONATE')}
-        </SText>
+        </Text>
         <Box variant="rowAlign" justifyContent="space-between" width="100%" mb={SPACING.SM}>
           <CopyToClipboard
             text={donationAddressMap.ETH}
@@ -104,9 +99,9 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
             </>
           )}
         </Box>
-        <SText fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
+        <Text textTransform="uppercase" fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
           {translateRaw('NAVIGATION_PARTNERS')}
-        </SText>
+        </Text>
         {items.map((item, i) => item.type === 'external' && <ExternalLink key={i} item={item} />)}
       </Box>
     </>
