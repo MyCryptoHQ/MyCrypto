@@ -1,15 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import styled from 'styled-components';
-
 import { Box } from '@components';
 
-const SBox = styled(Box)`
-  transition: width 600ms ease;
-`;
-
 export const Tray = ({ children }: { children: ReactNode }) => (
-  <SBox
+  <Box
     display="flex"
     backgroundColor={{ _: 'BG_GRAY', sm: 'WHITE' }}
     position="absolute"
@@ -26,5 +20,5 @@ export const Tray = ({ children }: { children: ReactNode }) => (
     width={{ _: '100vw', sm: '250px' }}
   >
     {children}
-  </SBox>
+  </Box>
 );
