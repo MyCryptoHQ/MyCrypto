@@ -21,7 +21,10 @@ const slice = createSlice({
   name: 'tokenScanning',
   initialState,
   reducers: {
-    scanTokens(state, _action: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] }>) {
+    scanTokens(
+      state,
+      _action: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] } | undefined>
+    ) {
       state.scanning = true;
     },
     finishTokenScan(state) {
@@ -107,8 +110,8 @@ export const getTokens = async (networks: Network[], accounts: StoreAccount[], a
 
 export function* scanTokensWorker({
   payload
-}: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] }>) {
-  const { accounts: requestedAccounts, assets: requestedAssets } = payload;
+}: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] } | undefined>) {
+  const { accounts: requestedAccounts, assets: requestedAssets } = payload || {};
 
   const networks = yield select(getNetworks);
   const allAssets = yield select(getAssets);
