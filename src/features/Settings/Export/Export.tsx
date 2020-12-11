@@ -4,10 +4,8 @@ import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, ContentPanel, Downloader, RouterLink } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { ContentPanel, Downloader } from '@components';
 import { useSettings, useUserActions } from '@services/Store';
-import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE } from '@types';
 
@@ -41,11 +39,6 @@ export function Export(props: RouteComponentProps) {
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay>{data}</CacheDisplay>
-        <RouterLink fullwidth={true} to={ROUTE_PATHS.SETTINGS.path}>
-          <Button color={COLORS.WHITE} fullwidth={true}>
-            {translate('SETTINGS_EXPORT_LEAVE')}
-          </Button>
-        </RouterLink>
         <Downloader
           data={data}
           onClick={() =>
