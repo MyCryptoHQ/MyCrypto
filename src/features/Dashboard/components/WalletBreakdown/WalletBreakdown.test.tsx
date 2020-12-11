@@ -9,7 +9,7 @@ import { translateRaw } from '@translations';
 
 import { WalletBreakdown } from './WalletBreakdown';
 
-function getComponent() {
+function getComponent({ settings = fSettings, accounts = fAccounts }) {
   return simpleRender(
     <ProvidersWrapper>
       <MemoryRouter>
@@ -17,13 +17,13 @@ function getComponent() {
           value={
             {
               addressBook: fContacts,
-              accounts: fAccounts,
+              accounts,
               assets: fAssets,
               contracts: [],
               networks: fNetworks,
               createActions: jest.fn(),
               userActions: [],
-              settings: fSettings
+              settings
             } as any
           }
         >
@@ -42,7 +42,7 @@ function getComponent() {
 
 describe('WalletBreakdown', () => {
   it('can render', async () => {
-    const { getByText, getAllByText, container } = getComponent();
+    const { getByText, getAllByText, container } = getComponent({});
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_TITLE'))).toBeInTheDocument();
 
@@ -60,5 +60,22 @@ describe('WalletBreakdown', () => {
     getAllByText('$767.14').forEach((s) => expect(s).toBeInTheDocument());
   });
 
-  // @todo Test skeleton loading
+  it('can render no assets state', async () => {
+    const { getByText } = getComponent({ accounts: [{ ...fAccounts[0], assets: [] }] });
+
+    expect(getByText(translateRaw('WALLET_BREAKDOWN_NO_ASSETS'))).toBeInTheDocument();
+  });
+
+  it('can render empty state', async () => {
+    const { getByText } = getComponent({ settings: { ...fSettings, dashboardAccounts: [] } });
+
+    expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
+  });
+
+  it('can render loading state', async () => {
+    const { getByTestId } = getComponent({});
+
+    // @todo Set isScanning selector?
+    expect(getByTestId('skeleton-loader')).toBeInTheDocument();
+  });
 });

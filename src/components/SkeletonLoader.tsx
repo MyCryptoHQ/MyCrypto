@@ -43,7 +43,9 @@ const svgs = {
         <circle cx="13" cy="13" r="13" />
         <circle cx="13" cy="71" r="13" />
         <circle cx="13" cy="129" r="13" />
-        <path d="M 42 0 h 112 v 26 H 42 z M 42 58 h 112 v 26 H 42 z M 42 116 h 112 v 26 H 42 z" />
+        <rect x="42" width="200" height="26" />
+        <rect x="42" y="58" width="200" height="26" />
+        <rect x="42" y="116" width="200" height="26" />
       </>
     )
   },
@@ -73,6 +75,7 @@ export const SkeletonLoader = ({ type, width, height }: Props) => {
       viewBox={viewBox}
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
+      data-testid="skeleton-loader"
     >
       {svg}
     </ContentLoader>
