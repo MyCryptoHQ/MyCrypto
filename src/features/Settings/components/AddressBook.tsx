@@ -244,10 +244,7 @@ export default function AddressBook({
     body: displayAddressBook.map(
       ({ uuid, address, label, network, notes }: ExtendedContact, index) => {
         const networkData = getNetworkById(network);
-        const color =
-          networkData && 'color' in networkData && networkData.color
-            ? networkData.color
-            : COLORS.LIGHT_PURPLE;
+        const color = networkData && networkData.color ? networkData.color : COLORS.LIGHT_PURPLE;
         return [
           // Eslint requires a key because it identifies a jsx element in an array.
           // CollapsibleTable uses an array for mobile display

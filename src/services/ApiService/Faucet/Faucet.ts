@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 
+import { FAUCET_API } from '@config';
 import { ApiService } from '@services/ApiService';
 
-import { FAUCET_API_URL } from './constants';
 import {
   FaucetChallengeResponse,
   FaucetErrorResponse,
@@ -32,7 +32,7 @@ export default abstract class FaucetService {
   };
 
   private static service: AxiosInstance = ApiService.generateInstance({
-    baseURL: FAUCET_API_URL,
+    baseURL: FAUCET_API,
     timeout: 5000
   });
 }
