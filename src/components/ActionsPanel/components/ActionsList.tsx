@@ -18,7 +18,7 @@ interface ActionsListProps {
 }
 
 const ActionsContainer = styled.div`
-  height: 400px;
+  height: 240px;
   overflow-y: scroll;
 `;
 

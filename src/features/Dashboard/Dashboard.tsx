@@ -108,9 +108,6 @@ export default function Dashboard() {
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>
-            <div className="Dashboard-desktop-top-left-tokens">
-              <ActionPanel />
-            </div>
           </div>
           <div className="Dashboard-desktop-top-right">
             <div>
@@ -129,9 +126,12 @@ export default function Dashboard() {
                 dashboard={true}
               />
             </div>
-            {!isMyCryptoMember && <BannerAd />}
+            <div>
+              <ActionPanel />
+            </div>
           </div>
         </div>
+        {!isMyCryptoMember && <BannerAd />}
         <div className="Dashboard-desktop-bottom">
           <RecentTransactionList
             accountsList={currentAccounts}
