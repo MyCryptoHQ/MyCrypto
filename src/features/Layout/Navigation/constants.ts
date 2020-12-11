@@ -3,8 +3,6 @@ import { IAppRoutes } from '@routing/routes';
 import { translateRaw } from '@translations';
 import { INavTray, IRouteLink } from '@types';
 
-//const APP_ROUTES_OBJECT = getAppRoutesObject(featureFlags);
-
 export const desktopLinks = (APP_ROUTES: IAppRoutes) => {
   const Links: IRouteLink[] = [
     {
