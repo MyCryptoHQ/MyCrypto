@@ -16,7 +16,7 @@ function getFilePath(fileName) {
 }
 
 async function waitForFile(path) {
-  while (!(await existsSync(path))) await setTimeout(() => {}, FIXTURES_CONST.TIMEOUT);
+  while (!existsSync(path)) await setTimeout(() => {}, FIXTURES_CONST.TIMEOUT);
 }
 
 async function waitForFileWithTimeout(path, ms) {
