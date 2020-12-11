@@ -9,7 +9,7 @@ import { ANALYTICS_CATEGORIES } from '@services';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
-import { useTimeoutFn } from '@vendor';
+import { useEffectOnce, useTimeoutFn } from '@vendor';
 
 import { ExternalLink } from './ExternalLink';
 
@@ -19,6 +19,8 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
     category: ANALYTICS_CATEGORIES.FOOTER
   });
   const [isReady, clear, set] = useTimeoutFn(() => setDisplayingMessage(false), 3000);
+
+  useEffectOnce(() => clear());
 
   const displayMessage = useCallback(() => {
     if (isReady() === false) clear();
