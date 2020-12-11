@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import { ANALYTICS_CATEGORIES } from '@services';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
+import { useTimeoutFn } from '@vendor';
 
 import { ExternalLink } from './ExternalLink';
 
@@ -18,41 +19,27 @@ const SText = styled(Text)`
 `;
 
 export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
-  const [displayingMessage, setDisplayMassage] = useState(false);
-  const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const trackDoncation = useAnalytics({
+  const [displayingMessage, setDisplayingMessage] = useState(false);
+  const trackDonation = useAnalytics({
     category: ANALYTICS_CATEGORIES.FOOTER
   });
-
-  const clearTimeoutId = useCallback(() => {
-    if (timeoutId.current) {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = null;
-    }
-  }, [timeoutId]);
-
-  useEffect(() => {
-    return () => {
-      clearTimeoutId();
-    };
-  }, [clearTimeoutId]);
+  const [isReady, clear, set] = useTimeoutFn(() => setDisplayingMessage(false), 3000);
 
   const displayMessage = useCallback(() => {
-    setDisplayMassage(true);
-    clearTimeoutId();
-
-    timeoutId.current = setTimeout(() => {
-      setDisplayMassage(false);
-    }, 3000);
-  }, [setDisplayMassage]);
+    if (isReady() === false) clear();
+    else {
+      setDisplayingMessage(true);
+      set();
+    }
+  }, [setDisplayingMessage]);
 
   const trackDonationClicked = useCallback(
     (title: string) => {
-      trackDoncation({
+      trackDonation({
         actionName: `Donate ${title} clicked`
       });
     },
-    [trackDoncation]
+    [trackDonation]
   );
 
   return (

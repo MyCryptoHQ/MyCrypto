@@ -35,7 +35,7 @@ export default function TransactionLabel({ image, label, stage, date }: Props) {
       <div>
         <Body as="span">{label}</Body>
         <div>
-          <Body as="span" color={config.color || 'transparent'} capitalize={true}>
+          <Body as="span" color={config.color || 'transparent'} textTransform="capitalize">
             {stage}{' '}
           </Body>
           <Body as="span">{`${date ? ` - ${formatDateTime(date)}` : ''}`}</Body>

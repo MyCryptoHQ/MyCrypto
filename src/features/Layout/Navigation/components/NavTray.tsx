@@ -8,14 +8,6 @@ import { INavTray } from '@types';
 
 import { Tray } from './Tray';
 
-const SBox = styled(Box)`
-  cursor: pointer;
-`;
-
-const SText = styled(Text)`
-  text-transform: uppercase;
-`;
-
 const SIcon = styled(Icon)`
   position: absolute;
   top: 20px;
@@ -30,7 +22,8 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
 
   const handleHover = () => setIsOpen(!isOpen);
   return (
-    <SBox
+    <Box
+      style={{ cursor: 'pointer' }}
       variant="columnCenter"
       width="100%"
       height={{ sm: 'auto' }}
@@ -41,7 +34,8 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
     >
       <SIcon type="caret" color={COLORS.BLUE_GREY} height="9px" />
       <Icon type={tray.icon} height="24px" color="WHITE" />
-      <SText
+      <Text
+        textTransform="uppercase"
         fontSize="10px"
         fontWeight={700}
         margin={0}
@@ -51,8 +45,8 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
         textAlign="center"
       >
         {tray.title}
-      </SText>
+      </Text>
       {isOpen && <Tray>{content}</Tray>}
-    </SBox>
+    </Box>
   );
 };
