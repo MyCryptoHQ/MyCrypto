@@ -1,9 +1,11 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import { Banner } from '@components';
 import { DrawerContext, ErrorContext } from '@features';
+import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import translate from '@translations';
@@ -125,6 +127,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const { isMobile } = useScreenSize();
+  const { pathname } = useLocation();
 
   const [topHeight, setTopHeight] = useState(0);
 
@@ -146,10 +149,16 @@ export default function Layout({ config = {}, className = '', children }: Props)
     return () => resizeObserver.disconnect();
   }, [topRef.current]);
 
+  const APP_ROUTES = getAppRoutesObject(featureFlags);
+
   return (
     <>
-      {featureFlags.NEW_NAVIGATION && isMobile && <MobileNav />}
-      {featureFlags.NEW_NAVIGATION && !isMobile && <DesktopNav />}
+      {featureFlags.NEW_NAVIGATION && isMobile && (
+        <MobileNav appRoutes={APP_ROUTES} current={pathname} />
+      )}
+      {featureFlags.NEW_NAVIGATION && !isMobile && (
+        <DesktopNav appRoutes={APP_ROUTES} current={pathname} />
+      )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
         <STop>
           {shouldShowError() && error && (

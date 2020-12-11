@@ -15,7 +15,7 @@ const defaultProps = {
     enabled: true,
     icon: 'nav-home'
   } as IRouteLink,
-  actual: false
+  current: false
 };
 
 function getComponent() {

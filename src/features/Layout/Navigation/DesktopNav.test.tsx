@@ -3,17 +3,18 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { screen, simpleRender } from 'test-utils';
 
-import { FeatureFlagProvider } from '@services';
+import { FEATURE_FLAGS } from '@config';
+import { getAppRoutesObject } from '@routing';
 import { translateRaw } from '@translations';
 
 import DesktopNav from './DesktopNav';
 
+const APP_ROUTES = getAppRoutesObject(FEATURE_FLAGS);
+
 function getComponent() {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <FeatureFlagProvider>
-        <DesktopNav />
-      </FeatureFlagProvider>
+      <DesktopNav appRoutes={APP_ROUTES} current={'/'} />
     </MemoryRouter>
   );
 }

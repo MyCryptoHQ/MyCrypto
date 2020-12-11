@@ -31,21 +31,21 @@ const SBox = styled(Box)`
   transition: all 300ms;
 `;
 
-export const NavLink = ({ link, actual }: { link: IRouteLink; actual: boolean }) => (
+export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean }) => (
   <SLink to={link.to}>
     <SBox
       variant="columnCenter"
-      backgroundColor={actual ? 'BG_GRAY' : 'transparent'}
-      borderLeft={{ sm: `3px solid ${actual ? COLORS.BLUE_SKY : 'transparent'}` }}
-      borderBottom={{ _: `3px solid ${actual ? COLORS.BLUE_SKY : 'transparent'}`, sm: 'none' }}
+      backgroundColor={current ? 'BG_GRAY' : 'transparent'}
+      borderLeft={{ sm: `3px solid ${current ? COLORS.BLUE_SKY : 'transparent'}` }}
+      borderBottom={{ _: `3px solid ${current ? COLORS.BLUE_SKY : 'transparent'}`, sm: 'none' }}
       width="100%"
       height="100%"
       pr={{ sm: '3px' }}
       py={{ _: '0', sm: '12px' }}
       pt={{ _: '3px', sm: '12px' }}
     >
-      <Icon type={link.icon} height="24px" color={actual ? 'GREYISH_BROWN' : 'WHITE'} />
-      <Text variant="navItem" color={actual ? 'GREYISH_BROWN' : 'WHITE'}>
+      <Icon type={link.icon} height="24px" color={current ? 'GREYISH_BROWN' : 'WHITE'} />
+      <Text variant="navItem" color={current ? 'GREYISH_BROWN' : 'WHITE'}>
         {link.title}
       </Text>
     </SBox>

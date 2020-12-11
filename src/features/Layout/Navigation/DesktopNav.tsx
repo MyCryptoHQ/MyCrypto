@@ -1,31 +1,23 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import { Box, Icon } from '@components';
-import { getAppRoutesObject } from '@routing';
-import { useFeatureFlags } from '@services';
 import { COLORS } from '@theme';
+import { INavigationProps } from '@types';
 
 import { Navbar, NavLink, NavTray, SupportUsTray, TrayItem } from './components';
 import { desktopLinks, settingsLinks, supportUsTray, toolsTray } from './constants';
 
-const DesktopNav = () => {
-  const { pathname } = useLocation();
-  const { featureFlags } = useFeatureFlags();
-
-  const APP_ROUTES = getAppRoutesObject(featureFlags);
-
-  const links = desktopLinks(APP_ROUTES);
-  const tools = toolsTray(APP_ROUTES);
-  const settings = settingsLinks(APP_ROUTES);
+const DesktopNav = ({ appRoutes, current }: INavigationProps) => {
+  const links = desktopLinks(appRoutes);
+  const tools = toolsTray(appRoutes);
+  const settings = settingsLinks(appRoutes);
   return (
     <Navbar>
       <Box my="16px">
         <Icon type="logo-mycrypto" width="38px" />
       </Box>
       {links.map((link, i) => (
-        <NavLink key={i} link={link} actual={pathname === link.to} />
+        <NavLink key={i} link={link} current={current === link.to} />
       ))}
       <Box
         variant="columnAlign"
@@ -40,13 +32,13 @@ const DesktopNav = () => {
           content={tools.items.map(
             (item, i) =>
               item.type === 'internal' && (
-                <TrayItem item={item} key={i} actual={pathname === item.to} />
+                <TrayItem item={item} key={i} current={current === item.to} />
               )
           )}
         />
         <NavTray tray={supportUsTray} content={<SupportUsTray items={supportUsTray.items} />} />
       </Box>
-      <NavLink link={settings} actual={pathname === settings.to} />
+      <NavLink link={settings} current={current === settings.to} />
     </Navbar>
   );
 };

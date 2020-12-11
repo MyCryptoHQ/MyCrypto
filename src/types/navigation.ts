@@ -1,6 +1,12 @@
 import { TIcon } from '@components';
+import { IAppRoutes } from '@routing/routes';
 
 import { TURL } from './url';
+
+export interface INavigationProps {
+  appRoutes: IAppRoutes;
+  current: string;
+}
 
 export interface IRouteLink {
   type: 'internal';
