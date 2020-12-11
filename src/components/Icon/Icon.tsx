@@ -83,7 +83,7 @@ const svgIcons = {
   /* Action icons */
   back,
   expand,
-  caret: caret,
+  caret,
   add,
   info,
   more,
