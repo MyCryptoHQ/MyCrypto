@@ -3,7 +3,7 @@ import React from 'react';
 import { AppState } from '@store';
 import { MemoryRouter } from 'react-router-dom';
 import { DeepPartial } from 'redux';
-import { ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import {
   fAccounts,
@@ -91,6 +91,27 @@ describe('WalletBreakdown', () => {
     const { getByText } = getComponent({ settings: { ...fSettings, dashboardAccounts: [] } });
 
     expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
+  });
+
+  it('can switch to details view', async () => {
+    const { getByText, getAllByText } = getComponent({});
+
+    const detailsButton = getByText(translateRaw('WALLET_BREAKDOWN_MORE'));
+
+    expect(detailsButton).toBeInTheDocument();
+
+    fireEvent.click(detailsButton);
+
+    // Renders asset names
+    fAccounts[0].assets.forEach((a) =>
+      getAllByText(a.name).forEach((t) => expect(t).toBeInTheDocument())
+    );
+
+    // Renders total fiat value
+    getAllByText('$767.14').forEach((s) => expect(s).toBeInTheDocument());
+
+    // Render account columns
+    getAllByText('1 Account').forEach((s) => expect(s).toBeInTheDocument());
   });
 
   it('can render loading state', async () => {

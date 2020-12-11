@@ -398,7 +398,7 @@ export default function WalletBreakdownView({
                   </BreakDownBalanceAssetInfo>
                   <Tooltip
                     tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-                      $exchangeRate: parseFloat(exchangeRate || '0').toFixed(3),
+                      $exchangeRate: parseFloat(exchangeRate).toFixed(3),
                       $fiatTicker: fiat.ticker,
                       $cryptoTicker: ticker
                     })}
