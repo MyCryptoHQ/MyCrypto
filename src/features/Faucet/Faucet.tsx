@@ -221,6 +221,8 @@ export default function Faucet() {
           txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
           onComplete={() => reset()}
           resetFlow={() => reset()}
+          queryStringsDisabled={true}
+          customBroadcastText={translateRaw('FAUCET_SUCCESS')}
           customComponent={() => (
             <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
           )}

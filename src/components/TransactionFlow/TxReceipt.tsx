@@ -76,6 +76,8 @@ interface Props {
   pendingButton?: PendingBtnAction;
   disableDynamicTxReceiptDisplay?: boolean;
   disableAddTxToAccount?: boolean;
+  queryStringsDisabled?: boolean;
+  customBroadcastText?: string;
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
 }
@@ -93,11 +95,13 @@ const TxReceipt = ({
   txQueryType,
   completeButton,
   customComponent,
+  customBroadcastText,
   disableDynamicTxReceiptDisplay,
   disableAddTxToAccount,
   history,
   resetFlow,
-  protectTxButton
+  protectTxButton,
+  queryStringsDisabled
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
@@ -258,6 +262,8 @@ const TxReceipt = ({
       txReceipt={txReceipt}
       customComponent={customComponent}
       completeButton={completeButton}
+      queryStringsDisabled={queryStringsDisabled}
+      customBroadcastText={customBroadcastText}
       txQueryType={txQueryType}
       setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
@@ -283,6 +289,8 @@ export interface TxReceiptDataProps {
   contractName?: string;
   fiat: Fiat;
   protectTxEnabled?: boolean;
+  queryStringsDisabled?: boolean;
+  customBroadcastText?: string;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
   handleTxCancelRedirect(): void;
@@ -306,6 +314,7 @@ export const TxReceiptUI = ({
   displayTxReceipt,
   setDisplayTxReceipt,
   customComponent,
+  customBroadcastText,
   senderContact,
   sender,
   baseAssetRate,
@@ -317,6 +326,7 @@ export const TxReceiptUI = ({
   handleTxCancelRedirect,
   handleTxSpeedUpRedirect,
   protectTxEnabled = false,
+  queryStringsDisabled = false,
   protectTxButton
 }: UIProps) => {
   const {
@@ -372,11 +382,11 @@ export const TxReceiptUI = ({
           }}
         />
       )}
-      {txStatus === ITxStatus.PENDING && txType !== ITxType.FAUCET && (
+      {txStatus === ITxStatus.PENDING && (
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-desc">
             {protectTxEnabled && !web3Wallet && <SSpacer />}
-            {translate('TRANSACTION_BROADCASTED_DESC')}
+            {customBroadcastText || translate('TRANSACTION_BROADCASTED_DESC')}
           </div>
         </div>
       )}
@@ -501,7 +511,7 @@ export const TxReceiptUI = ({
       )}
       {txStatus === ITxStatus.PENDING &&
         txQueryType !== TxQueryTypes.SPEEDUP &&
-        txType !== ITxType.FAUCET &&
+        !queryStringsDisabled &&
         txConfig && (
           <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
             <Button
@@ -515,7 +525,7 @@ export const TxReceiptUI = ({
         )}
       {txStatus === ITxStatus.PENDING &&
         txQueryType !== TxQueryTypes.CANCEL &&
-        txType !== ITxType.FAUCET &&
+        !queryStringsDisabled &&
         txConfig && (
           <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
             <Button

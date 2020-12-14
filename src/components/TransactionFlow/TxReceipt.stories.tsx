@@ -210,6 +210,7 @@ export const transactionReceiptFaucet = wrapInProvider(
       txReceipt={fTxReceipt}
       txConfig={fTxConfig}
       txType={ITxType.FAUCET}
+      customBroadcastText={translateRaw('FAUCET_SUCCESS')}
       completeButton={() => (
         <NewTabLink
           href={generateTweet(
@@ -228,7 +229,8 @@ export const transactionReceiptFaucet = wrapInProvider(
         <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
       )}
       timestamp={timestamp}
-      txStatus={txStatus}
+      queryStringsDisabled={true}
+      txStatus={ITxStatus.PENDING}
       assetRate={assetRate}
       displayTxReceipt={fERC20Web3TxReceipt}
       senderContact={senderContact}
