@@ -1,5 +1,5 @@
 import { HD_WALLETS } from '@config';
-import { getAssetByUUID } from '@services/Store';
+import { getAssetByUUID } from '@services/Store/Asset';
 import { Asset, DPathFormat, Network, NetworkId, WalletId } from '@types';
 
 const isHDWallet = (w: string): w is DPathFormat => {

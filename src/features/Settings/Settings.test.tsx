@@ -5,7 +5,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetworks, fSettings } from '@fixtures';
-import { DataContext, FeatureFlagProvider, RatesContext, StoreProvider } from '@services';
+import {
+  DataContext,
+  FeatureFlagProvider,
+  IDataContext,
+  RatesContext,
+  StoreProvider
+} from '@services';
 import { translateRaw } from '@translations';
 
 import Settings from './Settings';
@@ -16,16 +22,15 @@ function getComponent() {
       <MemoryRouter>
         <DataContext.Provider
           value={
-            {
+            ({
               addressBook: fContacts,
               accounts: fAccounts,
               assets: fAssets,
               contracts: [],
               networks: fNetworks,
-              createActions: jest.fn(),
               userActions: [],
               settings: fSettings
-            } as any
+            } as unknown) as IDataContext
           }
         >
           <StoreProvider>

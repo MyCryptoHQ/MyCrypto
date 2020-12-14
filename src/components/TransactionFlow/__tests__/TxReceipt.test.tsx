@@ -5,7 +5,7 @@ import { fireEvent, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
 import { fAccount, fContacts, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
-import { DataContext } from '@services';
+import { DataContext, IDataContext } from '@services';
 import { translateRaw } from '@translations';
 import { ExtendedContact, ITxStatus } from '@types';
 import { noOp, truncate } from '@utils';
@@ -37,7 +37,7 @@ function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(
     <Router>
       <DataContext.Provider
-        value={{ addressBook: [], contracts: [], createActions: jest.fn(), userActions: [] } as any}
+        value={({ addressBook: [], contracts: [], userActions: [] } as unknown) as IDataContext}
       >
         <TxReceiptUI {...props} />
       </DataContext.Provider>

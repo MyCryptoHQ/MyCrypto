@@ -10,14 +10,10 @@ import { innerJoin, map, pipe, prop, slice, sort } from '@vendor';
 import { DataContext, IDataContext } from '../DataManager';
 import useContracts from './useContracts';
 
-const renderUseContract = ({
-  contracts = [] as ExtendedContract[],
-  createActions = jest.fn()
-} = {}) => {
+const renderUseContract = ({ contracts = [] as ExtendedContract[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ contracts, createActions } as any) as IDataContext}>
-        {' '}
+      <DataContext.Provider value={({ contracts } as any) as IDataContext}>
         {children}
       </DataContext.Provider>
     </ProvidersWrapper>

@@ -18,9 +18,8 @@ function getComponent(props: Props) {
       value={
         ({
           accounts: fAccounts,
-          assets: fAssets,
-          createActions: jest.fn()
-        } as any) as IDataContext
+          assets: fAssets
+        } as unknown) as IDataContext
       }
     >
       <StoreContext.Provider

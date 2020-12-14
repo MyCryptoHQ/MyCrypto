@@ -2,7 +2,7 @@ import { hexlify } from 'ethers/utils';
 import { ValuesType } from 'utility-types';
 
 import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@helpers';
-import { getBaseAssetByNetwork } from '@services';
+import { getBaseAssetByNetwork } from '@services/Store/Network';
 import {
   Asset,
   ISignedTx,

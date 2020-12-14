@@ -19,7 +19,6 @@ const wrapInProvider = (component: ReactNode) => (
     <DataContext.Provider
       value={
         ({
-          createActions: noOp,
           userActions: [],
           networks: fNetworks,
           settings: fSettings

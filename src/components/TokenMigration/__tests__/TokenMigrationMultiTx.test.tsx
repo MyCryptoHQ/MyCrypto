@@ -6,7 +6,7 @@ import { simpleRender } from 'test-utils';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { FeatureFlagProvider } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationMultiTx';
@@ -27,9 +27,8 @@ function getComponent(props: ITxMultiConfirmProps) {
           ({
             assets: [{ uuid: fNetwork.baseAsset }],
             settings: fSettings,
-            networks: [fNetwork],
-            createActions: jest.fn()
-          } as unknown) as any
+            networks: [fNetwork]
+          } as unknown) as IDataContext
         }
       >
         <FeatureFlagProvider>

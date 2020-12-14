@@ -21,3 +21,4 @@ export {
   verifyTransaction
 } from './transaction';
 export { formatApproveTx } from './erc20';
+export { withProtectTxProvider } from './withProtectTxProvider';

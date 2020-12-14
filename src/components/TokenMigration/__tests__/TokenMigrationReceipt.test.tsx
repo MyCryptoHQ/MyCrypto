@@ -7,7 +7,7 @@ import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { RatesContext } from '@services';
-import { DataContext, StoreContext } from '@services/Store';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import TokenMigrationReceipt, {
@@ -30,9 +30,8 @@ function getComponent(props: TokenMigrationReceiptProps) {
           ({
             assets: fAssets,
             settings: fSettings,
-            networks: [fNetwork],
-            createActions: jest.fn()
-          } as unknown) as any
+            networks: [fNetwork]
+          } as unknown) as IDataContext
         }
       >
         <RatesContext.Provider

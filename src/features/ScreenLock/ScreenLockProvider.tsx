@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 
-import { useAppState } from '@store';
-import pipe from 'ramda/src/pipe';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, exportState, importState } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext, ISettingsContext, useSettings } from '@services/Store';
+import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
-import { decrypt, encrypt, hashPassword, withContext, withHook } from '@utils';
+import { decrypt, encrypt, hashPassword, withContext } from '@utils';
+import { pipe } from '@vendor';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
 interface State {
   locking: boolean;
   locked: boolean;
+  decryptSuccess: boolean;
+  decryptError?: Error;
+  toImport?: string;
   shouldAutoLock: boolean;
   lockingOnDemand: boolean;
   timeLeft: number;
@@ -34,13 +39,11 @@ const onDemandLockCountDownDuration = 5;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<
-  RouteComponentProps & IDataContext & ISettingsContext,
-  State
-> {
+class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & Props, State> {
   public state: State = {
     locking: false,
     locked: false,
+    decryptSuccess: false,
     shouldAutoLock: false,
     lockingOnDemand: false,
     timeLeft: defaultCountDownDuration,
@@ -84,57 +87,54 @@ class ScreenLockProvider extends Component<
       this.props.password &&
       !(this.props.encryptedDbState && this.props.encryptedDbState.data)
     ) {
-      const encryptedData = encrypt(this.props.exportStorage(), this.props.password).toString();
+      const encryptedData = encrypt(
+        JSON.stringify(this.props.exportState),
+        this.props.password
+      ).toString();
       this.props.setEncryptedCache(encryptedData);
       this.props.resetAppDb();
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
     }
+
+    // After decrypt with valid password, reset db and
+    if (this.state.decryptSuccess && this.state.toImport) {
+      this.props.importState(this.state.toImport);
+      this.resetEncrypted();
+    }
   }
 
-  public decryptWithPassword = async (password: string): Promise<boolean> => {
-    const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
+  public decryptWithPassword = (password: string): void => {
+    const { encryptedDbState } = this.props;
+    if (!encryptedDbState || !encryptedDbState.data) return;
     try {
-      if (!encryptedDbState) {
-        return false;
-      }
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      const importResult = importStorage(decryptedData);
-      if (!importResult) {
-        return false;
+      if (decryptedData) {
+        this.setState({ decryptSuccess: true, toImport: decryptedData });
       }
-
-      destroyEncryptedCache();
-
-      // Navigate to the dashboard and reset inactivity timer
-      this.setState({ locked: false }, () => {
-        this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
-      });
-      this.resetInactivityTimer();
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
+      this.setState({ decryptError: error });
     }
   };
 
   // Wipes encrypted data and unlocks
   public resetEncrypted = async () => {
-    const { destroyEncryptedCache } = this.props;
+    const { history, destroyEncryptedCache } = this.props;
     destroyEncryptedCache();
-    this.setState({ locked: false });
+    this.setState({ locked: false, decryptSuccess: false }, () => {
+      this.resetInactivityTimer();
+      history.replace(ROUTE_PATHS.DASHBOARD.path);
+    });
   };
 
   // Wipes both DBs in case of forgotten pw
   public resetAll = async () => {
-    const { destroyEncryptedCache, resetAppDb } = this.props;
-    destroyEncryptedCache();
+    const { resetAppDb } = this.props;
     resetAppDb();
-    this.setState({ locked: false }, () => {
-      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
-    });
+    this.resetEncrypted();
   };
 
   public componentDidMount() {
@@ -262,9 +262,13 @@ class ScreenLockProvider extends Component<
   }
 }
 
-export default pipe(
-  withRouter,
-  withContext(DataContext),
-  withHook(useSettings),
-  withHook(useAppState)
-)(ScreenLockProvider);
+const mapStateToProps = (state: AppState) => ({
+  exportState: exportState(state)
+});
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ importState }, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default pipe(withRouter, withContext(DataContext), connector)(ScreenLockProvider);

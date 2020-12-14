@@ -27,32 +27,38 @@ const ImportBoxContainer = styled.div<ImportBoxContainerProps>`
 `;
 
 interface ImportProps {
-  importCache(importedCache: string): boolean;
+  importState(importedCache: string): void;
+  importSuccess: boolean;
+  importFailure: boolean;
   onNext(): void;
 }
 
 export default class ImportBox extends React.Component<ImportProps> {
-  public state = { badImport: false, dragging: false };
+  public state = { dragging: false };
 
-  public submit = (importedCache: string) => {
-    const importSuccess = this.props.importCache(importedCache);
-    if (!importSuccess) {
-      this.setState({ badImport: true });
-    } else {
-      this.props.onNext();
+  public async componentDidUpdate() {
+    const { importSuccess, onNext } = this.props;
+    if (importSuccess) {
+      onNext();
     }
+  }
+
+  public submit = (toImport: string) => {
+    const { importState } = this.props;
+    importState(toImport);
   };
 
   public render() {
-    const { badImport, dragging } = this.state;
+    const { dragging } = this.state;
+    const { importFailure } = this.props;
     return (
       <ImportBoxContainer
         onDrop={this.handleFileSelection}
-        onDragEnter={() => this.setState({ dragging: true })}
+        onDragOver={() => this.setState({ dragging: true })}
         onDragLeave={() => this.setState({ dragging: false })}
         dragging={dragging}
       >
-        {badImport ? (
+        {importFailure ? (
           <InlineMessage>{translate('SETTINGS_IMPORT_INVALID')}</InlineMessage>
         ) : (
           translate('SETTINGS_IMPORT_COPY')
@@ -61,7 +67,12 @@ export default class ImportBox extends React.Component<ImportProps> {
         <br />
         <FilePicker htmlFor="upload">
           {translate('SETTINGS_IMPORT_BUTTON')}
-          <FilePickerInput id="upload" type="file" onChange={this.handleFileSelection} />
+          <FilePickerInput
+            data-testid="upload-input"
+            id="upload"
+            type="file"
+            onChange={this.handleFileSelection}
+          />
         </FilePicker>{' '}
         {translate('SETTINGS_IMPORT_PASTE')}
         <br />

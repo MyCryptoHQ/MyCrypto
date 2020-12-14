@@ -32,9 +32,7 @@ export default { title: 'ConfirmTx' };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
-    <DataContext.Provider
-      value={({ createActions: noOp, userActions: [], assets: fAssets } as unknown) as IDataContext}
-    >
+    <DataContext.Provider value={({ userActions: [], assets: fAssets } as unknown) as IDataContext}>
       {component}
     </DataContext.Provider>
   </ProvidersWrapper>

@@ -35,9 +35,8 @@ const renderUseTxHistory = ({
             addressBook: fContacts,
             contracts: fContracts,
             networks: fNetworks,
-            assets: fAssets,
-            createActions: jest.fn()
-          } as any) as IDataContext
+            assets: fAssets
+          } as unknown) as IDataContext
         }
       >
         <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>

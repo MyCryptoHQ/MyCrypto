@@ -1,16 +1,15 @@
 import React, { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react';
 
 import { getAppState, initialLegacyState, setPassword, useDispatch, useSelector } from '@store';
+import { ActionT } from '@store/legacy.reducer';
 
 import { getCurrentDBConfig, getEncryptedData } from '@database';
-import { DataStore, DSKeys, EncryptedDataStore } from '@types';
+import { DataStore, EncryptedDataStore } from '@types';
 
-import { ActionFactory } from './actions';
 import { DatabaseService } from './DatabaseService';
 import { ActionY, ActionZ, EncryptedDbActionPayload, encryptedDbReducer } from './encrypt.reducer';
 
 export interface DataCacheManager extends DataStore {
-  createActions(k: DSKeys): ReturnType<typeof ActionFactory>;
   resetAppDb(): void;
 }
 
@@ -33,7 +32,7 @@ export const DataProvider: React.FC = ({ children }) => {
   // @todo: Redux create action for reset once legacy.reducer is replaced.
   const resetAppDb = (newDb = initialLegacyState) => {
     dispatch({
-      type: 'RESET',
+      type: ActionT.RESET,
       payload: { data: newDb }
     });
   };
@@ -74,7 +73,6 @@ export const DataProvider: React.FC = ({ children }) => {
 
   const stateContext: IDataContext = {
     ...legacyState,
-    createActions: (key) => ActionFactory(key, dispatch, legacyState),
     resetAppDb,
     encryptedDbState,
     setEncryptedCache,

@@ -1,4 +1,4 @@
-import { expectSaga } from 'redux-saga-test-plan';
+import { expectSaga } from 'test-utils';
 
 import { fAccount, fAccounts, fContacts, fContracts, fNetwork, fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
@@ -162,8 +162,6 @@ describe('NetworkSlice', () => {
 });
 
 describe('deleteNodeWorker()', () => {
-  expectSaga.DEFAULT_TIMEOUT = 100;
-
   const initialState = {
     legacy: { networks: fNetworks }
   };
@@ -178,8 +176,6 @@ describe('deleteNodeWorker()', () => {
 });
 
 describe('deleteNodeOrNetworkWorker()', () => {
-  expectSaga.DEFAULT_TIMEOUT = 100;
-
   const initialState = {
     legacy: { networks: [{ ...fNetworks[0], isCustom: true, nodes: [{ name: 'MyNode' }] }] }
   };

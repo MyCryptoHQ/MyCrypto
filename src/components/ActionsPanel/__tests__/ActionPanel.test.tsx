@@ -19,11 +19,8 @@ function getComponent() {
             userActions: [
               { name: 'update_label', state: 'new' } as ExtendedUserAction
             ] as ExtendedUserAction[],
-            assets: fAssets,
-            createActions: jest.fn().mockReturnValue({
-              create: jest.fn()
-            })
-          } as any) as IDataContext
+            assets: fAssets
+          } as unknown) as IDataContext
         }
       >
         <StoreContext.Provider

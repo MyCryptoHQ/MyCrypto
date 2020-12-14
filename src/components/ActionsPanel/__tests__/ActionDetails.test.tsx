@@ -18,7 +18,7 @@ import { ACTION_STATE, ActionTemplate } from '@types';
 import { ActionDetails } from '../components/ActionDetails';
 import { actionTemplates } from '../constants';
 
-function getComponent(props: { actionTemplate: ActionTemplate }, createActions = jest.fn()) {
+function getComponent(props: { actionTemplate: ActionTemplate }) {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
       <ProvidersWrapper>
@@ -26,9 +26,8 @@ function getComponent(props: { actionTemplate: ActionTemplate }, createActions =
           value={
             ({
               userActions: fUserActions,
-              assets: fAssets,
-              createActions
-            } as any) as IDataContext
+              assets: fAssets
+            } as unknown) as IDataContext
           }
         >
           <StoreContext.Provider

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
+import { AppState, getInactivityTimer } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { useSettings } from '@services/Store';
 import translate, { translateRaw } from '@translations';
 import { formatTimeDuration } from '@utils';
 
@@ -68,13 +69,13 @@ interface LockScreenProps {
   onCancelLockCountdown(): void;
 }
 
-export default function ScreenLockLocking({
+function ScreenLockLocking({
   timeLeft,
   onScreenLockClicked,
   onCancelLockCountdown,
-  lockingOnDemand
-}: LockScreenProps) {
-  const { settings } = useSettings();
+  lockingOnDemand,
+  inactivityTimer
+}: LockScreenProps & Props) {
   const trackScreenLock = useAnalytics({
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK
   });
@@ -103,9 +104,7 @@ export default function ScreenLockLocking({
               ? 'SCREEN_LOCK_LOCKING_ON_DEMAND_DESCRIPTION'
               : 'SCREEN_LOCK_LOCKING_DESCRIPTION',
             {
-              $inactive_time: formatTimeDuration(
-                Math.floor((Date.now() - settings.inactivityTimer) / 1000)
-              )
+              $inactive_time: formatTimeDuration(Math.floor((Date.now() - inactivityTimer) / 1000))
             }
           )}{' '}
           <b>
@@ -124,3 +123,12 @@ export default function ScreenLockLocking({
     </MainWrapper>
   );
 }
+
+const mapStateToProps = (state: AppState) => ({
+  inactivityTimer: getInactivityTimer(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(ScreenLockLocking);

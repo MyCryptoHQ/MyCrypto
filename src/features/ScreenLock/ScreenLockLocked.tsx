@@ -1,11 +1,12 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
 import { ExtendedContentPanel, InputField } from '@components';
+import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import translate, { translateRaw } from '@translations';
@@ -43,7 +44,9 @@ const BottomActions = styled.div`
   line-height: 2.5;
 `;
 
-const ScreenLockLocked: FC<RouteComponentProps> = () => {
+const ScreenLockLocked: React.FC = () => {
+  const { decryptWithPassword, decryptError } = useContext(ScreenLockContext);
+
   const [state, setState] = useState<{
     password: string;
     passwordError: string;
@@ -51,73 +54,60 @@ const ScreenLockLocked: FC<RouteComponentProps> = () => {
     password: '',
     passwordError: ''
   });
+
+  useEffect(() => {
+    if (decryptError) {
+      setState({ password: '', passwordError: translateRaw('SCREEN_LOCK_LOCKED_WRONG_PASSWORD') });
+    }
+  }, [decryptError]);
+
   const trackScreenLock = useAnalytics({
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK,
     actionName: 'Why do we recommend link clicked'
   });
 
-  const onPasswordChanged = useCallback(
-    (event) => {
-      setState({ password: event.target.value, passwordError: '' });
-    },
-    [setState]
-  );
-
-  const handleUnlockWalletClick = useCallback(
-    async (decryptWithPassword: any, e: any) => {
-      e.preventDefault();
-      const response = await decryptWithPassword(state.password);
-      if (response === false) {
-        setState((prevState) => ({
-          ...prevState,
-          passwordError: translateRaw('SCREEN_LOCK_LOCKED_WRONG_PASSWORD')
-        }));
-      }
-    },
-    [state, setState]
-  );
+  const handleUnlockWalletClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    decryptWithPassword(state.password);
+  };
 
   return (
-    <ScreenLockContext.Consumer>
-      {({ decryptWithPassword }) => (
-        <ExtendedContentPanel
-          heading={translateRaw('SCREEN_LOCK_LOCKED_HEADING')}
-          description={translateRaw('SCREEN_LOCK_LOCKED_DESCRIPTION')}
-          image={mainImage}
-          showImageOnTop={true}
-          centered={true}
-          className=""
-        >
-          <ContentWrapper>
-            <FormWrapper onSubmit={(e) => handleUnlockWalletClick(decryptWithPassword, e)}>
-              <InputField
-                label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
-                value={state.password}
-                onChange={onPasswordChanged}
-                inputError={state.passwordError}
-                type={'password'}
-              />
-              <PrimaryButton type="submit">{translate('SCREEN_LOCK_LOCKED_UNLOCK')}</PrimaryButton>
-            </FormWrapper>
-            <BottomActions>
-              <div>
-                {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
-                <Link to="/screen-lock/forgot-password">
-                  {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
-                </Link>
-              </div>
-              <div>
-                {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                <Link onClick={() => trackScreenLock()} to="/dashboard">
-                  {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-                </Link>
-              </div>
-            </BottomActions>
-          </ContentWrapper>
-        </ExtendedContentPanel>
-      )}
-    </ScreenLockContext.Consumer>
+    <ExtendedContentPanel
+      heading={translateRaw('SCREEN_LOCK_LOCKED_HEADING')}
+      description={translateRaw('SCREEN_LOCK_LOCKED_DESCRIPTION')}
+      image={mainImage}
+      showImageOnTop={true}
+      centered={true}
+      className=""
+    >
+      <ContentWrapper>
+        <FormWrapper onSubmit={handleUnlockWalletClick}>
+          <InputField
+            label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
+            value={state.password}
+            onChange={(e) => setState({ password: e.target.value, passwordError: '' })}
+            inputError={state.passwordError}
+            type={'password'}
+          />
+          <PrimaryButton type="submit">{translate('SCREEN_LOCK_LOCKED_UNLOCK')}</PrimaryButton>
+        </FormWrapper>
+        <BottomActions>
+          <div>
+            {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
+            <Link to={ROUTE_PATHS.SCREEN_LOCK_FORGOT.path}>
+              {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
+            </Link>
+          </div>
+          <div>
+            {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+            <Link onClick={() => trackScreenLock()} to={ROUTE_PATHS.DASHBOARD.path}>
+              {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+            </Link>
+          </div>
+        </BottomActions>
+      </ContentWrapper>
+    </ExtendedContentPanel>
   );
 };
 
-export default withRouter(ScreenLockLocked);
+export default ScreenLockLocked;

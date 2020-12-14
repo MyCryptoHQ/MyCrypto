@@ -1,7 +1,8 @@
-import { fAccount, fAccounts, fNetworks } from '@fixtures';
+import { fAccount, fAccounts, fLocalStorage, fNetworks } from '@fixtures';
+import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { NodeOptions, StoreAsset, TUuid } from '@types';
 
-import { mergeNetworks, serializeAccount, serializeNotification } from './helpers';
+import { canImport, mergeNetworks, serializeAccount, serializeNotification } from './helpers';
 
 describe('serializeAccount()', () => {
   const serializedAccountAssets = {
@@ -112,5 +113,24 @@ describe('mergeNetworks', () => {
       [{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]
     );
     expect(actual).toEqual([{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]);
+  });
+});
+
+describe('canImport()', () => {
+  const persistable = deMarshallState(marshallState(fLocalStorage));
+  it('returns true with valid import file', () => {
+    const actual = canImport(fLocalStorage, persistable);
+    expect(actual).toBe(true);
+  });
+
+  it('returns false with mismatching versions', () => {
+    const validate = () => canImport({ ...fLocalStorage, version: 'v0.0' }, persistable);
+    expect(validate()).toBe(false);
+  });
+
+  it('returns false with missing keys', () => {
+    const { accounts, ...lsWithoutAccounts } = fLocalStorage;
+    const actual = canImport(lsWithoutAccounts, persistable);
+    expect(actual).toBe(false);
   });
 });
