@@ -1,4 +1,7 @@
-import { fAssets, fNetworks } from '@fixtures';
+import { bigNumberify } from 'ethers/utils';
+
+import { fAccount, fAssets, fNetworks } from '@fixtures';
+import { ITxStatus, ITxType } from '@types';
 
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import { ITxFaucetResult } from './types';
@@ -12,7 +15,7 @@ const exampleTXResult = {
   hash: '0x5049c0847681402db2c303847f2f66ac7f3a6caf63119b676374d5781b8d11e9',
   network: 'ropsten',
   nonce: 39,
-  to: '0x0000000000000000000000000000000000000000',
+  to: fAccount.address,
   value: '1'
 } as ITxFaucetResult;
 
@@ -29,7 +32,7 @@ describe('Faucet helpers', () => {
   describe('makeTxConfig', () => {
     const getContactByAddressAndNetworkId = jest.fn();
     const createContact = jest.fn();
-    test('matches snapshot', async () => {
+    test('returns expected value', async () => {
       expect(
         makeTxConfig(
           exampleTXResult,
@@ -38,7 +41,30 @@ describe('Faucet helpers', () => {
           getContactByAddressAndNetworkId,
           createContact
         )
-      ).toMatchSnapshot();
+      ).toEqual({
+        amount: '0.000000000000000001',
+        asset: fAssets[1],
+        baseAsset: fAssets[1],
+        data: '0x',
+        from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
+        gasLimit: '21000',
+        gasPrice: '1000000000',
+        network: fNetworks[1],
+        nonce: '39',
+        rawTransaction: {
+          chainId: 3,
+          data: '0x',
+          from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
+          gasLimit: '21000',
+          gasPrice: '1000000000',
+          nonce: '39',
+          to: fAccount.address,
+          value: '1'
+        },
+        receiverAddress: fAccount.address,
+        senderAccount: undefined,
+        value: '1'
+      });
     });
 
     test('createContact was called', () => {
@@ -53,8 +79,23 @@ describe('Faucet helpers', () => {
   });
 
   describe('makeTxReceipt', () => {
-    test('matches snapshot', async () => {
-      expect(makeTxReceipt(exampleTXResult, fNetworks, fAssets)).toMatchSnapshot();
+    test('returns expected value', async () => {
+      expect(makeTxReceipt(exampleTXResult, fNetworks, fAssets)).toEqual({
+        amount: '0.000000000000000001',
+        asset: fAssets[1],
+        baseAsset: fAssets[1],
+        data: '0x',
+        from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
+        gasLimit: bigNumberify(21000),
+        gasPrice: bigNumberify(1000000000),
+        hash: '0x5049c0847681402db2c303847f2f66ac7f3a6caf63119b676374d5781b8d11e9',
+        nonce: '39',
+        receiverAddress: fAccount.address,
+        status: ITxStatus.PENDING,
+        to: fAccount.address,
+        txType: ITxType.FAUCET,
+        value: bigNumberify('1')
+      });
     });
   });
 });
