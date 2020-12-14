@@ -1,6 +1,6 @@
 import { bigNumberify, formatEther } from 'ethers/utils';
 
-import { getBaseAssetByNetwork } from '@services';
+import { getBaseAssetByNetwork } from '@services/Store';
 import {
   Asset,
   Contact,
