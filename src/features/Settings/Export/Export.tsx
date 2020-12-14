@@ -29,7 +29,7 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps) {
   const { history } = props;
   const onBack = history.goBack;
-  const appState = useSelector(exportState);
+  const appState = JSON.stringify(useSelector(exportState));
 
   const { updateUserAction, findUserAction } = useUserActions();
 
@@ -41,7 +41,7 @@ export function Export(props: RouteComponentProps) {
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
         <Downloader
-          data={JSON.stringify(appState)}
+          data={appState}
           onClick={() =>
             backupAction &&
             updateUserAction(backupAction.uuid, { ...backupAction, state: ACTION_STATE.COMPLETED })
