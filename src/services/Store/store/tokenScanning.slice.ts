@@ -3,7 +3,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BigNumber } from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { Asset, AssetBalanceObject, Network, StoreAccount, TAddress } from '@types';
+import { Asset, AssetBalanceObject, IAccount, Network, TAddress } from '@types';
 import { generateAssetUUID, generateDeterministicAddressUUID, isSameAddress } from '@utils';
 import { mapAsync } from '@utils/asyncFilter';
 import { eqBy, identity, mergeAll, prop, unionWith } from '@vendor';
@@ -24,7 +24,7 @@ const slice = createSlice({
   reducers: {
     scanTokens(
       state,
-      _action: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] } | undefined>
+      _action: PayloadAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>
     ) {
       state.scanning = true;
     },
@@ -54,7 +54,7 @@ export function* scanTokensSaga() {
   yield takeLatest(scanTokens.type, scanTokensWorker);
 }
 
-const fetchBalances = async (networks: Network[], accounts: StoreAccount[], assets: Asset[]) => {
+const fetchBalances = async (networks: Network[], accounts: IAccount[], assets: Asset[]) => {
   return mapAsync(networks, async (network) => {
     const addresses = accounts.filter((a) => a.networkId === network.id).map((a) => a.address);
     if (addresses.length === 0) {
@@ -72,7 +72,7 @@ interface FetchBalancesResult {
   baseAssetBalances: BalanceMap<BigNumber>;
 }
 
-const formatBalances = (assets: Asset[], accounts: StoreAccount[]) => ({
+const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
   network,
   tokenBalances,
   baseAssetBalances
@@ -122,11 +122,7 @@ const formatBalances = (assets: Asset[], accounts: StoreAccount[]) => ({
     return { ...acc, [uuid]: unionedAssets };
   }, {});
 
-export const getBalances = async (
-  networks: Network[],
-  accounts: StoreAccount[],
-  assets: Asset[]
-) => {
+export const getBalances = async (networks: Network[], accounts: IAccount[], assets: Asset[]) => {
   const balances = await fetchBalances(networks, accounts, assets);
   const formatter = formatBalances(assets, accounts);
   const formatted = balances.filter((b) => b !== null).map(formatter);
@@ -135,15 +131,13 @@ export const getBalances = async (
 
 export function* scanTokensWorker({
   payload
-}: PayloadAction<{ accounts?: StoreAccount[]; assets?: Asset[] } | undefined>) {
+}: PayloadAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>) {
   const { accounts: requestedAccounts, assets: requestedAssets } = payload || {};
 
   const networks = yield select(getNetworks);
   const allAssets = yield select(getAssets);
 
-  const accounts: StoreAccount[] = requestedAccounts
-    ? requestedAccounts
-    : yield select(getAccounts);
+  const accounts: IAccount[] = requestedAccounts ? requestedAccounts : yield select(getAccounts);
   const assets = requestedAssets ? [...allAssets, ...requestedAssets] : allAssets;
 
   try {
