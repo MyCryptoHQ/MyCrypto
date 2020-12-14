@@ -57,6 +57,7 @@ import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import check from '@assets/images/icn-check.svg';
 import experience from '@assets/images/icn-experience.svg';
+import faucetIcon from '@assets/images/icn-faucet.svg';
 import feeIcon from '@assets/images/icn-fee.svg';
 import informational from '@assets/images/icn-info-blue.svg';
 import more from '@assets/images/icn-more.svg';
@@ -94,6 +95,7 @@ const svgIcons = {
   'opened-eye': openedEye,
   'closed-eye': closedEye,
   'arrow-right': arrowRight,
+  'faucet-icon': faucetIcon,
 
   /* Tooltips*/
   informational,

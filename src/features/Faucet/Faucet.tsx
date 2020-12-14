@@ -16,7 +16,13 @@ import {
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
-import { getKBHelpArticle, KB_HELP_ARTICLE, MYCRYPTO_FAUCET_LINK, ROUTE_PATHS } from '@config';
+import {
+  FAUCET_NETWORKS,
+  getKBHelpArticle,
+  KB_HELP_ARTICLE,
+  MYCRYPTO_FAUCET_LINK,
+  ROUTE_PATHS
+} from '@config';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -96,8 +102,6 @@ const initialFaucetState = () => ({
   loading: false
 });
 
-const faucetNetworks = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
-
 export default function Faucet() {
   const history = useHistory();
 
@@ -112,7 +116,7 @@ export default function Faucet() {
     recipientAddress: {} as StoreAccount
   };
 
-  const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
+  const validAccounts = accounts.filter((account) => FAUCET_NETWORKS.includes(account.network.id));
 
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();

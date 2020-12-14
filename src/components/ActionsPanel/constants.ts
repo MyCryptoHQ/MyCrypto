@@ -5,6 +5,7 @@ import {
   ANTv1UUID,
   ETHUUID,
   EXT_URLS,
+  FAUCET_NETWORKS,
   GOLEMV1UUID,
   LENDUUID,
   MYC_WINTER_LINK,
@@ -440,5 +441,28 @@ export const actionTemplates: ActionTemplate[] = [
       component: TweetButton
     },
     category: ACTION_CATEGORIES.SELF_LOVE
+  },
+  {
+    name: ACTION_NAME.TESTNET_FAUCET,
+    heading: translateRaw('FAUCET_ACTION_HEADING'),
+    icon: 'faucet-icon',
+    body: [translate('FAUCET_ACTION_BODY')],
+    filter: ({ accounts }: ActionFilters) =>
+      accounts.some(
+        (a) =>
+          Object.values(FAUCET_NETWORKS).includes(a.networkId) &&
+          a.assets.some((asset) => asset.type === 'base' && asset.balance.lt(1))
+      ),
+    priority: 0,
+    props: { assetUuid: REPV1UUID },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('FAUCET_ACTION_BUTTON'),
+        to: ROUTE_PATHS.FAUCET.path,
+        external: false
+      }
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
   }
 ];
