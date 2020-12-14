@@ -60,9 +60,11 @@ import experience from '@assets/images/icn-experience.svg';
 import feeIcon from '@assets/images/icn-fee.svg';
 import informational from '@assets/images/icn-info-blue.svg';
 import more from '@assets/images/icn-more.svg';
+import networkIcon from '@assets/images/icn-network.svg';
 import platformUsed from '@assets/images/icn-platform-used.svg';
 import questionWhite from '@assets/images/icn-question-white.svg';
 import questionBlack from '@assets/images/icn-question.svg';
+import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import sentIcon from '@assets/images/icn-sent.svg';
 import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
@@ -143,6 +145,8 @@ const svgIcons = {
   'tx-fee': feeIcon,
   'tx-send': sendIcon,
   'tx-sent': sentIcon,
+  'tx-receive': receiveIcon,
+  'tx-network': networkIcon,
 
   /* Navigation */
   'nav-home': navHome,

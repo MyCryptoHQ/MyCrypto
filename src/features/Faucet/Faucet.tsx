@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
@@ -15,11 +15,12 @@ import {
   NewTabLink,
   TxReceipt
 } from '@components';
+import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { IAccount as IIAccount, InlineMessageType, StoreAccount } from '@types';
+import { IAccount as IIAccount, InlineMessageType, Network, StoreAccount } from '@types';
 import { noOp, useStateReducer } from '@utils';
 
 import { Error as ErrorComponent } from './components';
@@ -113,9 +114,11 @@ export default function Faucet() {
 
   const validAccounts = accounts.filter((account) => faucetNetworks.includes(account.network.name));
 
-  const { networks } = useNetworks();
+  const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId, createContact } = useContacts();
+
+  const [network, setNetwork] = useState<Network | undefined>(undefined);
 
   const steps = [
     <Formik
@@ -136,6 +139,7 @@ export default function Faucet() {
                   accounts={validAccounts}
                   onSelect={(option: IIAccount) => {
                     form.setFieldValue(field.name, option);
+                    setNetwork(getNetworkById(option.networkId));
                   }}
                 />
               )}
@@ -217,7 +221,9 @@ export default function Faucet() {
           txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
           onComplete={() => reset()}
           resetFlow={() => reset()}
-          customComponent={() => <p>{translate('FAUCET_SUCCESS')}</p>}
+          customComponent={() => (
+            <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
+          )}
         />
       )}
     </>

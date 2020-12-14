@@ -14,6 +14,7 @@ import {
   fContacts,
   fERC20NonWeb3TxConfigJSON,
   fERC20Web3TxReceipt,
+  fNetworks,
   fSettings,
   fTxConfig,
   fTxReceipt
@@ -22,7 +23,7 @@ import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, ITxStatus, ITxType } from '@types';
 import { bigify, noOp } from '@utils';
 
-import { SwapFromToDiagram } from './displays';
+import { FaucetReceiptBanner, SwapFromToDiagram } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
 import { TxReceiptUI } from './TxReceipt';
 
@@ -40,7 +41,7 @@ export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
-    <DataContext.Provider value={({ userActions: [] } as unknown) as IDataContext}>
+    <DataContext.Provider value={({ userActions: [], assets: fAssets } as unknown) as IDataContext}>
       {component}
     </DataContext.Provider>
   </ProvidersWrapper>
@@ -183,6 +184,32 @@ export const transactionReceiptSwap = wrapInProvider(
           fromUUID={swapDisplay.fromAsset.uuid}
           toUUID={swapDisplay.toAsset.uuid}
         />
+      )}
+      timestamp={timestamp}
+      txStatus={txStatus}
+      assetRate={assetRate}
+      displayTxReceipt={fERC20Web3TxReceipt}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      resetFlow={resetFlow}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
+
+export const transactionReceiptFaucet = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txReceipt={fTxReceipt}
+      txConfig={fTxConfig}
+      txType={ITxType.FAUCET}
+      customComponent={() => (
+        <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
       )}
       timestamp={timestamp}
       txStatus={txStatus}

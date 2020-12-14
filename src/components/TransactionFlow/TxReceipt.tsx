@@ -428,7 +428,6 @@ export const TxReceiptUI = ({
         gasPrice={gasPrice}
         gasUsed={gasAmount()}
         value={txConfig.value}
-        received={txType === ITxType.FAUCET}
       />
 
       <div className="TransactionReceipt-details-row">
@@ -544,19 +543,11 @@ export const TxReceiptUI = ({
             </Button>
           </Tooltip>
         )}
-      {txType === ITxType.FAUCET ? (
-        <Link to={ROUTE_PATHS.DASHBOARD.path}>
-          <Button secondary={true} className="TransactionReceipt-back">
-            {translate('FAUCET_CLOSE')}
-          </Button>
-        </Link>
-      ) : (
-        <Link to={ROUTE_PATHS.DASHBOARD.path}>
-          <Button className="TransactionReceipt-back">
-            {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
-          </Button>
-        </Link>
-      )}
+      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+        <Button className="TransactionReceipt-back">
+          {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
+        </Button>
+      </Link>
       {txType === ITxType.DEFIZAP && <PoweredByText provider="ZAPPER" />}
     </div>
   );
