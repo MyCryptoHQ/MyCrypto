@@ -3,7 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { MembershipApi } from '@services/ApiService';
-import { IAccount, Network, StoreAccount } from '@types';
+import { IAccount, Network, StoreAccount, TAddress } from '@types';
 
 import { getWalletAccountsOnDefaultNetwork } from './account.slice';
 import { getDefaultNetwork } from './network.slice';
@@ -27,7 +27,7 @@ const slice = createSlice({
     setMembership(state, action: PayloadAction<MembershipStatus>) {
       state.record.push(action.payload);
     },
-    deleteMembership(state, action: PayloadAction<string>) {
+    deleteMembership(state, action: PayloadAction<TAddress>) {
       const idx = state.record.findIndex((item) => item.address === action.payload);
       state.record.splice(idx, 1);
     },
