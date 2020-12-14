@@ -6,7 +6,12 @@ import { TUuid } from '@types';
 import { bigify as mockBigify } from '@utils';
 
 import { updateAccountAssets } from './account.slice';
-import { getTokens, initialState, scanTokensWorker, default as slice } from './tokenScanning.slice';
+import {
+  getBalances,
+  initialState,
+  scanTokensWorker,
+  default as slice
+} from './tokenScanning.slice';
 
 const reducer = slice.reducer;
 const { scanTokens, finishTokenScan } = slice.actions;
@@ -67,7 +72,7 @@ describe('scanTokensWorker()', () => {
     };
     return expectSaga(scanTokensWorker, scanTokens({}))
       .withState({ legacy: { networks: fNetworks, assets: fAssets, accounts: fAccounts } })
-      .call(getTokens, fNetworks, fAccounts, fAssets)
+      .call(getBalances, fNetworks, fAccounts, fAssets)
       .put(updateAccountAssets(result))
       .put(finishTokenScan())
       .silentRun();

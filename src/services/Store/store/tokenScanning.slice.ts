@@ -1,3 +1,4 @@
+import { BalanceMap } from '@mycrypto/eth-scan';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BigNumber } from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
@@ -53,59 +54,83 @@ export function* scanTokensSaga() {
   yield takeLatest(scanTokens.type, scanTokensWorker);
 }
 
-export const getTokens = async (networks: Network[], accounts: StoreAccount[], assets: Asset[]) => {
+const fetchBalances = async (networks: Network[], accounts: StoreAccount[], assets: Asset[]) => {
   return mapAsync(networks, async (network) => {
     const addresses = accounts.filter((a) => a.networkId === network.id).map((a) => a.address);
     if (addresses.length === 0) {
-      return {};
+      return null;
     }
-    const balanceMap = await getAllTokensBalancesOfAccounts(network, addresses, assets);
-    const baseAssetBalanceMap = await getBaseAssetBalances(addresses, network);
-    return Object.entries(balanceMap).reduce((acc, [address, assetBalances]) => {
-      const positiveAssetBalances = Object.entries(assetBalances).filter(
-        ([, value]) => !value.isZero()
-      );
+    const tokenBalances = await getAllTokensBalancesOfAccounts(network, addresses, assets);
+    const baseAssetBalances = await getBaseAssetBalances(addresses, network);
+    return { network, tokenBalances, baseAssetBalances };
+  });
+};
 
-      const uuid = generateDeterministicAddressUUID(network.id, address);
+interface FetchBalancesResult {
+  network: Network;
+  tokenBalances: BalanceMap<BalanceMap<BigNumber>>;
+  baseAssetBalances: BalanceMap<BigNumber>;
+}
 
-      const existingAccount = accounts.find((x) => x.uuid === uuid);
-      if (!existingAccount) return { ...acc };
+const formatBalances = (assets: Asset[], accounts: StoreAccount[]) => ({
+  network,
+  tokenBalances,
+  baseAssetBalances
+}: FetchBalancesResult) =>
+  Object.entries(tokenBalances).reduce((acc, [address, assetBalances]) => {
+    const positiveAssetBalances = Object.entries(assetBalances).filter(
+      ([, value]) => !value.isZero()
+    );
 
-      const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-        (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-          const tempAsset = assets.find((x) =>
-            isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
-          );
-          return [
-            ...tempAssets,
-            ...(tempAsset
-              ? [
-                  {
-                    uuid: tempAsset.uuid,
-                    balance: balance.toString(10),
-                    mtime: Date.now()
-                  }
-                ]
-              : [])
-          ];
-        },
-        []
-      );
+    const uuid = generateDeterministicAddressUUID(network.id, address);
 
-      // Update base asset balance too
-      const baseAssetBalance = baseAssetBalanceMap[address];
-      if (baseAssetBalance) {
-        newAssets.push({
-          uuid: generateAssetUUID(network.chainId),
-          balance: baseAssetBalance.toString(10),
-          mtime: Date.now()
-        });
-      }
+    const existingAccount = accounts.find((x) => x.uuid === uuid);
+    if (!existingAccount) return { ...acc };
 
-      const unionedAssets = unionWith(eqBy(prop('uuid')), newAssets, existingAccount.assets);
-      return { ...acc, [uuid]: unionedAssets };
-    }, {});
-  }).then(mergeAll);
+    const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
+      (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
+        const tempAsset = assets.find((x) =>
+          isSameAddress(x.contractAddress as TAddress, contractAddress as TAddress)
+        );
+        return [
+          ...tempAssets,
+          ...(tempAsset
+            ? [
+                {
+                  uuid: tempAsset.uuid,
+                  balance: balance.toString(10),
+                  mtime: Date.now()
+                }
+              ]
+            : [])
+        ];
+      },
+      []
+    );
+
+    // Update base asset balance too
+    const baseAssetBalance = baseAssetBalances[address];
+    if (baseAssetBalance) {
+      newAssets.push({
+        uuid: generateAssetUUID(network.chainId),
+        balance: baseAssetBalance.toString(10),
+        mtime: Date.now()
+      });
+    }
+
+    const unionedAssets = unionWith(eqBy(prop('uuid')), newAssets, existingAccount.assets);
+    return { ...acc, [uuid]: unionedAssets };
+  }, {});
+
+export const getBalances = async (
+  networks: Network[],
+  accounts: StoreAccount[],
+  assets: Asset[]
+) => {
+  const balances = await fetchBalances(networks, accounts, assets);
+  const formatter = formatBalances(assets, accounts);
+  const formatted = balances.filter((b) => b !== null).map(formatter);
+  return mergeAll(formatted);
 };
 
 export function* scanTokensWorker({
@@ -122,7 +147,7 @@ export function* scanTokensWorker({
   const assets = requestedAssets ? [...allAssets, ...requestedAssets] : allAssets;
 
   try {
-    const newAssets = yield call(getTokens, networks, accounts, assets);
+    const newAssets = yield call(getBalances, networks, accounts, assets);
 
     yield put(updateAccountAssets(newAssets));
 
