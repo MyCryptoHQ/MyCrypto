@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { ProvidersWrapper } from 'test-utils';
 
-import { Fiats } from '@config';
+import { Button, NewTabLink } from '@components';
+import { Fiats, MYCRYPTO_FAUCET_LINK } from '@config';
 import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
@@ -20,8 +21,9 @@ import {
   fTxReceipt
 } from '@fixtures';
 import { DataContext, IDataContext } from '@services/Store';
+import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ITxStatus, ITxType } from '@types';
-import { bigify, noOp } from '@utils';
+import { bigify, generateTweet, noOp } from '@utils';
 
 import { FaucetReceiptBanner, SwapFromToDiagram } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
@@ -208,6 +210,20 @@ export const transactionReceiptFaucet = wrapInProvider(
       txReceipt={fTxReceipt}
       txConfig={fTxConfig}
       txType={ITxType.FAUCET}
+      completeButton={() => (
+        <NewTabLink
+          href={generateTweet(
+            translateRaw('FAUCET_TWEET', {
+              $faucet_url: MYCRYPTO_FAUCET_LINK
+            })
+          )}
+        >
+          <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
+            <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
+            <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
+          </Button>
+        </NewTabLink>
+      )}
       customComponent={() => (
         <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
       )}

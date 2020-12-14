@@ -97,7 +97,7 @@ export interface ITxReceiptStepProps {
   signedTx?: string;
   txQueryType?: TxQueryTypes;
   children?: never;
-  completeButtonText?: string;
+  completeButton?: string | (() => JSX.Element);
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
   resetFlow(): void;
 }

@@ -71,7 +71,7 @@ export default function SwapTransactionReceipt({
     <TxReceipt
       txReceipt={txItems[0].txReceipt}
       txConfig={txItems[0].txConfig}
-      completeButtonText={translateRaw('SWAP_START_ANOTHER')}
+      completeButton={translateRaw('SWAP_START_ANOTHER')}
       resetFlow={onSuccess}
       onComplete={onSuccess}
       customComponent={customComponent}

@@ -27,7 +27,7 @@ export default function ZapReceipt({
       txReceipt={txReceipt}
       txConfig={txConfig}
       customComponent={() => <ZapReceiptBanner zapSelected={zapSelected} />}
-      completeButtonText={translateRaw('INTERACT_ANOTHER')}
+      completeButton={translateRaw('INTERACT_ANOTHER')}
       resetFlow={resetFlow}
       onComplete={onComplete}
     />

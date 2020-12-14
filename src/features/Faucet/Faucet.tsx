@@ -16,12 +16,12 @@ import {
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
-import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE, MYCRYPTO_FAUCET_LINK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, Network, StoreAccount } from '@types';
-import { noOp, useStateReducer } from '@utils';
+import { generateTweet, noOp, useStateReducer } from '@utils';
 
 import { Error as ErrorComponent } from './components';
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
@@ -223,6 +223,20 @@ export default function Faucet() {
           resetFlow={() => reset()}
           customComponent={() => (
             <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
+          )}
+          completeButton={() => (
+            <NewTabLink
+              href={generateTweet(
+                translateRaw('FAUCET_TWEET', {
+                  $faucet_url: MYCRYPTO_FAUCET_LINK
+                })
+              )}
+            >
+              <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
+                <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
+                <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
+              </Button>
+            </NewTabLink>
           )}
         />
       )}

@@ -314,7 +314,6 @@
     "FAILED": "Failed",
     "FAUCET": "Faucet",
     "FAUCET_API_FAILURE": "An API error occured. Please try again later.",
-    "FAUCET_CLOSE": "Close",
     "FAUCET_DESCRIPTION": "Are you a developer? Using this faucet, you can request a small amount of testnet ETH for an account on one of the supported testnets: Ropsten, Rinkeby, Kovan, and Goerli.",
     "FAUCET_ENTER_RESPONSE": "Enter Response",
     "FAUCET_ERROR": "If this issue keeps occurring, please [email us]($link) so we can help you and fix it.",

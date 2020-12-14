@@ -10,18 +10,9 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {
-  Body,
-  Box,
-  Button,
-  LinkOut,
-  NewTabLink,
-  PoweredByText,
-  TimeElapsed,
-  Tooltip
-} from '@components';
+import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
 import { SubHeading } from '@components/NewTypography';
-import { getWalletConfig, MYCRYPTO_FAUCET_LINK, ROUTE_PATHS } from '@config';
+import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -100,7 +91,7 @@ const TxReceipt = ({
   txReceipt,
   txConfig,
   txQueryType,
-  completeButtonText,
+  completeButton,
   customComponent,
   disableDynamicTxReceiptDisplay,
   disableAddTxToAccount,
@@ -266,7 +257,7 @@ const TxReceipt = ({
       txConfig={txConfig}
       txReceipt={txReceipt}
       customComponent={customComponent}
-      completeButtonText={completeButtonText}
+      completeButton={completeButton}
       txQueryType={txQueryType}
       setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
@@ -297,6 +288,7 @@ export interface TxReceiptDataProps {
   handleTxCancelRedirect(): void;
   handleTxSpeedUpRedirect(): void;
   resetFlow(): void;
+  completeButton?: string | (() => JSX.Element);
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
 }
@@ -320,7 +312,7 @@ export const TxReceiptUI = ({
   fiat,
   recipientContact,
   resetFlow,
-  completeButtonText,
+  completeButton,
   txQueryType,
   handleTxCancelRedirect,
   handleTxSpeedUpRedirect,
@@ -496,24 +488,16 @@ export const TxReceiptUI = ({
           recipient={rawTransaction.to}
         />
       </div>
-      {txType === ITxType.FAUCET && (
-        <NewTabLink
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-            translateRaw('FAUCET_TWEET', {
-              $faucet_url: MYCRYPTO_FAUCET_LINK
-            })
-          )}`}
-        >
-          <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
-            <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
-            <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
-          </Button>
-        </NewTabLink>
-      )}
-      {completeButtonText && !(txStatus === ITxStatus.PENDING) && (
-        <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
-          {completeButtonText}
-        </Button>
+      {completeButton && !(txStatus === ITxStatus.PENDING) && (
+        <>
+          {typeof completeButton === 'string' ? (
+            <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+              {completeButton}
+            </Button>
+          ) : (
+            completeButton()
+          )}
+        </>
       )}
       {txStatus === ITxStatus.PENDING &&
         txQueryType !== TxQueryTypes.SPEEDUP &&
