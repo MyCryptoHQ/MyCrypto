@@ -10,7 +10,7 @@ const settingsPage = new SettingsPage();
 
 fixture('Settings/Import').page(PAGES.SETTINGS);
 
-test('Can export AppState to file', async (t) => {
+test('Can import AppState from file', async (t) => {
   await settingsPage.waitPageLoaded();
 
   const getCurrentLocationUrl = ClientFunction(() => window.location.href);
