@@ -22,7 +22,8 @@ export enum KB_HELP_ARTICLE {
   STAYING_SAFE = 'staying-safe',
   BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
   MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
-  HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper'
+  HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper',
+  WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether'
 }
 
 export enum HELP_ARTICLE {

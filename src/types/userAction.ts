@@ -28,7 +28,8 @@ export enum ACTION_NAME {
   MYC_WINTER_START = 'myc_winter_start',
   MYC_WINTER_MID = 'myc_winter_mid',
   MYC_WINTER_END = 'myc_winter_end',
-  MYC_WINTER_BONUS = 'myc_winter_bonus'
+  MYC_WINTER_BONUS = 'myc_winter_bonus',
+  TESTNET_FAUCET = 'testnet_faucet'
 }
 
 export enum ACTION_CATEGORIES {

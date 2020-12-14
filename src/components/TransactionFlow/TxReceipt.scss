@@ -94,6 +94,23 @@
     width: 100%;
     margin-bottom: 15px;
   }
+  &-tweet {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    div, span {
+      width: 100%;
+    }
+  }
+  &-tweet-icon {
+    display: inline-block;
+    font-size: 20px;
+    float: left;
+  }
+  &-tweet-text {
+    flex: 1;
+  }
   &-back {
     width: 100%;
     margin-bottom: 25px;

@@ -112,6 +112,13 @@ const TxTypeConfig: ITxTypeConfig = {
   [ITxHistoryType.DEPLOY_CONTRACT]: {
     label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_DEPLOY'),
     icon: contractDeploy
+  },
+  [ITxHistoryType.FAUCET]: {
+    label: (asset: Asset) =>
+      translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
+        $ticker: asset.ticker || translateRaw('UNKNOWN')
+      }),
+    icon: inbound
   }
 };
 

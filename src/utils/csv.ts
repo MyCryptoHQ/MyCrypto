@@ -13,8 +13,8 @@ export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
     asset:
       (account.balance
         ? parseFloat(
-          fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
-        ).toFixed(4)
+            fromTokenBase(new BN(account.balance.toString()), asset.decimal).toString()
+          ).toFixed(4)
         : '0.0000') + asset.ticker
   }));
 

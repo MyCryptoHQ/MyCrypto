@@ -17,7 +17,7 @@ export default function InteractionReceipt(props: Props) {
     <TxReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
-      completeButtonText={translateRaw('INTERACT_ANOTHER')}
+      completeButton={translateRaw('INTERACT_ANOTHER')}
       resetFlow={goToFirstStep}
       onComplete={goToFirstStep}
     />

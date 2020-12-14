@@ -70,7 +70,6 @@ export const TxReceiptTotals = ({
           />
         </div>
       </div>
-
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}

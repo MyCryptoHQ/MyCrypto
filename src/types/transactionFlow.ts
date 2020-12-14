@@ -97,7 +97,7 @@ export interface ITxReceiptStepProps {
   signedTx?: string;
   txQueryType?: TxQueryTypes;
   children?: never;
-  completeButtonText?: string;
+  completeButton?: string | (() => JSX.Element);
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
   resetFlow(): void;
 }
@@ -145,7 +145,8 @@ export enum ITxType {
   REP_TOKEN_MIGRATION = 'REP_TOKEN_MIGRATION',
   AAVE_TOKEN_MIGRATION = 'AAVE_TOKEN_MIGRATION',
   ANT_TOKEN_MIGRATION = 'ANT_TOKEN_MIGRATION',
-  GOLEM_TOKEN_MIGRATION = 'GOLEM_TOKEN_MIGRATION'
+  GOLEM_TOKEN_MIGRATION = 'GOLEM_TOKEN_MIGRATION',
+  FAUCET = 'FAUCET'
 }
 
 export interface ISimpleTxForm {

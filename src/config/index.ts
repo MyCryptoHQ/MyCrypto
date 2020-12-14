@@ -10,7 +10,8 @@ export {
   SUBSCRIBE_NEWSLETTER_LINK,
   UNISWAP_LINK,
   MYC_WINTER_LINK,
-  TWEET_LINK
+  TWEET_LINK,
+  MYCRYPTO_FAUCET_LINK
 } from './links';
 export * from './dpaths';
 export * from './constants';

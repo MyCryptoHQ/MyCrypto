@@ -16,11 +16,11 @@ const ExampleButtonFinalComponent = ({
   onComplete,
   onCompleteText,
   resetFlow,
-  completeButtonText
+  completeButton
 }: any) => (
   <>
     <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
-    <button onClick={() => resetFlow()}>{completeButtonText}</button>
+    <button onClick={() => resetFlow()}>{completeButton}</button>
   </>
 );
 

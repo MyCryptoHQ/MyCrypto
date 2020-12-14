@@ -1,7 +1,7 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
 import translate from '@translations';
-import { TURL } from '@types';
+import { NetworkId, TURL } from '@types';
 
 import packageJson from '../../package.json';
 
@@ -68,3 +68,5 @@ export enum Theme {
 }
 
 export type ThemeType = 'dark' | 'light';
+
+export const FAUCET_NETWORKS: NetworkId[] = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];

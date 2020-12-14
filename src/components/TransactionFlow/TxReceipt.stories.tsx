@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { ProvidersWrapper } from 'test-utils';
 
-import { Fiats } from '@config';
+import { Button, NewTabLink } from '@components';
+import { Fiats, MYCRYPTO_FAUCET_LINK } from '@config';
 import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
@@ -14,15 +15,17 @@ import {
   fContacts,
   fERC20NonWeb3TxConfigJSON,
   fERC20Web3TxReceipt,
+  fNetworks,
   fSettings,
   fTxConfig,
   fTxReceipt
 } from '@fixtures';
 import { DataContext, IDataContext } from '@services/Store';
+import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ITxStatus, ITxType } from '@types';
-import { bigify, noOp } from '@utils';
+import { bigify, generateTweet, noOp } from '@utils';
 
-import { SwapFromToDiagram } from './displays';
+import { FaucetReceiptBanner, SwapFromToDiagram } from './displays';
 import { constructSenderFromTxConfig } from './helpers';
 import { TxReceiptUI } from './TxReceipt';
 
@@ -40,7 +43,7 @@ export default { title: 'TxReceipt' };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
-    <DataContext.Provider value={({ userActions: [] } as unknown) as IDataContext}>
+    <DataContext.Provider value={({ userActions: [], assets: fAssets } as unknown) as IDataContext}>
       {component}
     </DataContext.Provider>
   </ProvidersWrapper>
@@ -186,6 +189,48 @@ export const transactionReceiptSwap = wrapInProvider(
       )}
       timestamp={timestamp}
       txStatus={txStatus}
+      assetRate={assetRate}
+      displayTxReceipt={fERC20Web3TxReceipt}
+      senderContact={senderContact}
+      recipientContact={recipientContact}
+      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+      resetFlow={resetFlow}
+      baseAssetRate={assetRate}
+      fiat={Fiats.USD}
+      handleTxCancelRedirect={handleTxCancelRedirect}
+      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+    />
+  </div>
+);
+
+export const transactionReceiptFaucet = wrapInProvider(
+  <div className="sb-container" style={{ maxWidth: '620px' }}>
+    <TxReceiptUI
+      settings={fSettings}
+      txReceipt={fTxReceipt}
+      txConfig={fTxConfig}
+      txType={ITxType.FAUCET}
+      customBroadcastText={translateRaw('FAUCET_SUCCESS')}
+      completeButton={() => (
+        <NewTabLink
+          href={generateTweet(
+            translateRaw('FAUCET_TWEET', {
+              $faucet_url: MYCRYPTO_FAUCET_LINK
+            })
+          )}
+        >
+          <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
+            <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
+            <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
+          </Button>
+        </NewTabLink>
+      )}
+      customComponent={() => (
+        <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
+      )}
+      timestamp={timestamp}
+      queryStringsDisabled={true}
+      txStatus={ITxStatus.PENDING}
       assetRate={assetRate}
       displayTxReceipt={fERC20Web3TxReceipt}
       senderContact={senderContact}

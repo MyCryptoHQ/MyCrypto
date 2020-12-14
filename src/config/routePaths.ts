@@ -160,6 +160,11 @@ const PATHS: IRoutePath[] = [
     name: 'GOLEM_TOKEN_MIGRATION',
     title: 'GOLEM Token Migration',
     path: '/migrate/golem'
+  },
+  {
+    name: 'FAUCET',
+    title: translateRaw('FAUCET'),
+    path: '/faucet'
   }
 ];
 

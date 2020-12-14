@@ -28,7 +28,13 @@ import {
   getTransactionReceiptFromHash,
   ProviderHandler
 } from '@services/EthService';
-import { StoreContext, useAccounts, useContacts, useSettings } from '@services/Store';
+import {
+  getStoreAccount,
+  StoreContext,
+  useAccounts,
+  useContacts,
+  useSettings
+} from '@services/Store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -70,6 +76,8 @@ interface Props {
   pendingButton?: PendingBtnAction;
   disableDynamicTxReceiptDisplay?: boolean;
   disableAddTxToAccount?: boolean;
+  queryStringsDisabled?: boolean;
+  customBroadcastText?: string;
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
 }
@@ -85,13 +93,15 @@ const TxReceipt = ({
   txReceipt,
   txConfig,
   txQueryType,
-  completeButtonText,
+  completeButton,
   customComponent,
+  customBroadcastText,
   disableDynamicTxReceiptDisplay,
   disableAddTxToAccount,
   history,
   resetFlow,
-  protectTxButton
+  protectTxButton,
+  queryStringsDisabled
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
@@ -152,7 +162,17 @@ const TxReceipt = ({
       const provider = new ProviderHandler(txConfig.network);
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
-          if (sender.account && !disableAddTxToAccount) {
+          if (txReceipt && txReceipt.txType === ITxType.FAUCET) {
+            const recipientAccount = getStoreAccount(accounts)(txReceipt.to, txConfig.network.id);
+            if (recipientAccount) {
+              addTxToAccount(recipientAccount, {
+                ...displayTxReceipt,
+                blockNumber: blockNumber || 0,
+                timestamp: transactionTimestamp || 0,
+                status: txStatus
+              });
+            }
+          } else if (sender.account && !disableAddTxToAccount) {
             addTxToAccount(sender.account, {
               ...displayTxReceipt,
               blockNumber: blockNumber || 0,
@@ -241,7 +261,9 @@ const TxReceipt = ({
       txConfig={txConfig}
       txReceipt={txReceipt}
       customComponent={customComponent}
-      completeButtonText={completeButtonText}
+      completeButton={completeButton}
+      queryStringsDisabled={queryStringsDisabled}
+      customBroadcastText={customBroadcastText}
       txQueryType={txQueryType}
       setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
@@ -267,11 +289,14 @@ export interface TxReceiptDataProps {
   contractName?: string;
   fiat: Fiat;
   protectTxEnabled?: boolean;
+  queryStringsDisabled?: boolean;
+  customBroadcastText?: string;
   assetRate: number | undefined;
   baseAssetRate: number | undefined;
   handleTxCancelRedirect(): void;
   handleTxSpeedUpRedirect(): void;
   resetFlow(): void;
+  completeButton?: string | (() => JSX.Element);
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
 }
@@ -289,17 +314,19 @@ export const TxReceiptUI = ({
   displayTxReceipt,
   setDisplayTxReceipt,
   customComponent,
+  customBroadcastText,
   senderContact,
   sender,
   baseAssetRate,
   fiat,
   recipientContact,
   resetFlow,
-  completeButtonText,
+  completeButton,
   txQueryType,
   handleTxCancelRedirect,
   handleTxSpeedUpRedirect,
   protectTxEnabled = false,
+  queryStringsDisabled = false,
   protectTxButton
 }: UIProps) => {
   const {
@@ -359,7 +386,7 @@ export const TxReceiptUI = ({
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-desc">
             {protectTxEnabled && !web3Wallet && <SSpacer />}
-            {translate('TRANSACTION_BROADCASTED_DESC')}
+            {customBroadcastText || translate('TRANSACTION_BROADCASTED_DESC')}
           </div>
         </div>
       )}
@@ -471,33 +498,45 @@ export const TxReceiptUI = ({
           recipient={rawTransaction.to}
         />
       </div>
-      {completeButtonText && !(txStatus === ITxStatus.PENDING) && (
-        <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
-          {completeButtonText}
-        </Button>
+      {completeButton && !(txStatus === ITxStatus.PENDING) && (
+        <>
+          {typeof completeButton === 'string' ? (
+            <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+              {completeButton}
+            </Button>
+          ) : (
+            completeButton()
+          )}
+        </>
       )}
-      {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.SPEEDUP && txConfig && (
-        <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
-          <Button
-            className="TransactionReceipt-another"
-            onClick={handleTxSpeedUpRedirect}
-            disabled={!supportsResubmit}
-          >
-            {translateRaw('SPEED_UP_TX_BTN')}
-          </Button>
-        </Tooltip>
-      )}
-      {txStatus === ITxStatus.PENDING && txQueryType !== TxQueryTypes.CANCEL && txConfig && (
-        <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
-          <Button
-            className="TransactionReceipt-another"
-            onClick={handleTxCancelRedirect}
-            disabled={!supportsResubmit}
-          >
-            {translateRaw('CANCEL_TX_BTN')}
-          </Button>
-        </Tooltip>
-      )}
+      {txStatus === ITxStatus.PENDING &&
+        txQueryType !== TxQueryTypes.SPEEDUP &&
+        !queryStringsDisabled &&
+        txConfig && (
+          <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
+            <Button
+              className="TransactionReceipt-another"
+              onClick={handleTxSpeedUpRedirect}
+              disabled={!supportsResubmit}
+            >
+              {translateRaw('SPEED_UP_TX_BTN')}
+            </Button>
+          </Tooltip>
+        )}
+      {txStatus === ITxStatus.PENDING &&
+        txQueryType !== TxQueryTypes.CANCEL &&
+        !queryStringsDisabled &&
+        txConfig && (
+          <Tooltip display="block" tooltip={translateRaw('SPEED_UP_TOOLTIP')}>
+            <Button
+              className="TransactionReceipt-another"
+              onClick={handleTxCancelRedirect}
+              disabled={!supportsResubmit}
+            >
+              {translateRaw('CANCEL_TX_BTN')}
+            </Button>
+          </Tooltip>
+        )}
       <Link to={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}

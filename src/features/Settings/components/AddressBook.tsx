@@ -16,6 +16,7 @@ import {
   UndoDeleteOverlay
 } from '@components';
 import IconArrow from '@components/IconArrow';
+import { useNetworks } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TUuid } from '@types';
@@ -132,6 +133,7 @@ export default function AddressBook({
   updateContact,
   restoreDeletedContact
 }: Props) {
+  const { getNetworkById } = useNetworks();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const [deletingIndex, setDeletingIndex] = useState<number>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
@@ -240,29 +242,33 @@ export default function AddressBook({
     },
     overlayRows: overlayRowsFlat,
     body: displayAddressBook.map(
-      ({ uuid, address, label, network, notes }: ExtendedContact, index) => [
-        // Eslint requires a key because it identifies a jsx element in an array.
-        // CollapsibleTable uses an array for mobile display
-        // When displayed as a row, the primary row key is provided by AbstractTable
-        /* eslint-disable react/jsx-key */
-        <Label>
-          <SIdenticon address={address} />
-          <SEditableText
+      ({ uuid, address, label, network, notes }: ExtendedContact, index) => {
+        const networkData = getNetworkById(network);
+        const color = networkData && networkData.color ? networkData.color : COLORS.LIGHT_PURPLE;
+        return [
+          // Eslint requires a key because it identifies a jsx element in an array.
+          // CollapsibleTable uses an array for mobile display
+          // When displayed as a row, the primary row key is provided by AbstractTable
+          /* eslint-disable react/jsx-key */
+          <Label>
+            <SIdenticon address={address} />
+            <SEditableText
+              truncate={true}
+              value={label}
+              saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
+            />
+          </Label>,
+          <EthAddress address={address} truncate={true} isCopyable={true} />,
+          <Network color={color}>{network}</Network>,
+          <EditableText
             truncate={true}
-            value={label}
+            value={notes}
             saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
-          />
-        </Label>,
-        <EthAddress address={address} truncate={true} isCopyable={true} />,
-        <Network color="#a682ff">{network}</Network>,
-        <EditableText
-          truncate={true}
-          value={notes}
-          saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
-        />,
-        <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
-        /* eslint-enable react/jsx-key */
-      ]
+          />,
+          <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
+          /* eslint-enable react/jsx-key */
+        ];
+      }
     ),
     config: {
       primaryColumn: translateRaw('ADDRESSBOOK_LABEL'),

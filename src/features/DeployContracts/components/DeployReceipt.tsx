@@ -17,7 +17,7 @@ export default function DeployReceipt(props: Props) {
     <TxReceipt
       txReceipt={txReceipt}
       txConfig={txConfig}
-      completeButtonText={translateRaw('DEPLOY_ANOTHER')}
+      completeButton={translateRaw('DEPLOY_ANOTHER')}
       resetFlow={goToFirstStep}
       onComplete={goToFirstStep}
     />
