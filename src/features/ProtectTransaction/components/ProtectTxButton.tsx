@@ -135,7 +135,7 @@ export const ProtectTxButton: FC<Props> = ({
             </>
           )}
         </TextWrapper>
-        <SIcon type="expand-purple" $expanded={protectTxShow} />
+        <SIcon type="caret" color={COLORS.PURPLE} height="11px" $expanded={protectTxShow} />
       </ButtonWrapper>
       {!isMdScreen && protectTxShow && stepper()}
     </SButton>

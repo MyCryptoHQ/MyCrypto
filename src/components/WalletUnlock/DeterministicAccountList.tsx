@@ -166,7 +166,7 @@ export default function DeterministicAccountList({
         {isComplete && !!accountsToUse.length && (
           <StatusWrapper>
             <IconWrapper>
-              <Icon type="confirm" />
+              <Icon type="confirm" width="20px" />
             </IconWrapper>
             <Typography>
               <Trans

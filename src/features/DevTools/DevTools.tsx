@@ -26,7 +26,7 @@ const SCheckbox = styled(Checkbox)`
 const SToggle = styled.button`
   position: fixed;
   bottom: 1.25em;
-  left: 1.25em;
+  right: 1.25em;
 
   width: 50px;
   height: 50px;
@@ -42,7 +42,7 @@ const SToggle = styled.button`
 const Wrapper = styled.div<{ isActive: boolean }>`
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   z-index: 1000;
   max-width: 450px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),

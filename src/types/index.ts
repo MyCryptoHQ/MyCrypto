@@ -134,3 +134,4 @@ export {
 export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens';
 export { IAaveMigrator } from './aaveMigrator';
 export { IGolemMigration } from './golemV2Migration';
+export { IRouteLink, IExternalLink, TTrayItem, INavTray, INavigationProps } from './navigation';

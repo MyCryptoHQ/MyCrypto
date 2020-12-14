@@ -63,8 +63,15 @@ const theme = Object.assign({}, light, {
 
     BG_GRAY: '#f6f8fa'
   },
-  fontSizes: ['12px', '16px', '18px', '24px', '40px'],
-  lineHeights: ['16px', '24px', '30px', '32px', '48px']
+  fontSizes: ['12px', '16px', '18px', '24px', '40px', '10px'],
+  lineHeights: ['16px', '24px', '30px', '32px', '48px'],
+  shadows: {
+    desktop: '0px 3px 6px rgba(0, 0, 0, 0.07);',
+    mobile: '0px -3px 10px rgba(133, 133, 133, 0.14);'
+  },
+  borders: {
+    navItem: '3px solid'
+  }
 });
 
 const TEXT_VARIANTS = {
@@ -102,6 +109,13 @@ const TEXT_VARIANTS = {
     color: 'GREY_DARK',
     letterSpacing: '0.1em',
     fontWeight: '900'
+  },
+  navItem: {
+    fontSize: 5,
+    fontWeight: 700,
+    margin: 0,
+    marginTop: '5px',
+    textTransform: 'uppercase'
   }
 };
 
@@ -111,17 +125,38 @@ export const textVariants = variant({
   variants: TEXT_VARIANTS
 });
 
-const FLEX_VARIANTS = {
-  horizontalAlign: {
+const FLEX_RECIPES = {
+  align: {
     height: '100%',
-    display: 'flex',
     alignItems: 'center'
   },
-  verticalCenter: {
+  center: {
     height: '100%',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  }
+};
+
+const FLEX_VARIANTS = {
+  rowAlign: {
+    display: 'flex',
+    flexDirection: 'row',
+    ...FLEX_RECIPES.align
+  },
+  rowCenter: {
+    display: 'flex',
+    flexDirection: 'row',
+    ...FLEX_RECIPES.center
+  },
+  columnAlign: {
+    display: 'flex',
+    flexDirection: 'column',
+    ...FLEX_RECIPES.align
+  },
+  columnCenter: {
+    display: 'flex',
+    flexDirection: 'column',
+    ...FLEX_RECIPES.center
   }
 };
 

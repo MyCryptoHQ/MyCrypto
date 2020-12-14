@@ -34,7 +34,7 @@ const LoadingSubText = styled.h6`
 
 const AppLoading = () => (
   <DashboardPanelLoading>
-    <Box variant="verticalCenter" mb={'1em'}>
+    <Box variant="rowCenter" mb={'1em'}>
       <Spinner color="brand" size={3} />
     </Box>
     <LoadingText>{translateRaw('APP_LOADING')}</LoadingText>

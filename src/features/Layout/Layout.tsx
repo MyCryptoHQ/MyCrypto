@@ -1,15 +1,20 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
-import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 import { Banner } from '@components';
 import { DrawerContext, ErrorContext } from '@features';
+import { getAppRoutesObject } from '@routing';
+import { useFeatureFlags } from '@services';
 import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import translate from '@translations';
 import { BannerType } from '@types';
+import { useScreenSize } from '@utils';
 
 import Footer from './Footer';
 import Header from './Header';
+import { DesktopNav, MobileNav } from './Navigation';
 
 export interface LayoutConfig {
   centered?: boolean;
@@ -27,7 +32,17 @@ interface Props {
 
 // Homepage 'home' creates an unidentified overflow on the x axis.
 // We use layout to disable it here.
-const SMain = styled('main')`
+const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
+  ${(p) =>
+    p.newNav &&
+    css`
+      @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+        margin-left: 64px;
+      }
+      @media only screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+        margin-bottom: 57px;
+      }
+    `}
   overflow-x: hidden;
   min-width: 350px;
   background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
@@ -61,7 +76,6 @@ const SContainer = styled.div`
     padding: ${(p) =>
       `${p.paddingV ? p.paddingV : SPACING.BASE} ${p.fluid || p.fullW ? 0 : MIN_CONTENT_PADDING}`};
   }
-
   ${({ centered }: LayoutConfig) =>
     centered &&
     `
@@ -77,6 +91,9 @@ const SContainer = styled.div`
 `;
 
 const BannerWrapper = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 25px;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
     top: 77px;
@@ -86,6 +103,7 @@ const BannerWrapper = styled.div`
 
 const SBanner = styled(Banner)`
   background-color: ${COLORS.LIGHT_PURPLE};
+  border-radius: 16px;
 `;
 
 const CenteredBannerText = styled.div`
@@ -105,8 +123,11 @@ const announcementMessage = ANNOUNCEMENT_MSG();
 
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
+  const { featureFlags } = useFeatureFlags();
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
+  const { isMobile } = useScreenSize();
+  const { pathname } = useLocation();
 
   const [topHeight, setTopHeight] = useState(0);
 
@@ -128,32 +149,44 @@ export default function Layout({ config = {}, className = '', children }: Props)
     return () => resizeObserver.disconnect();
   }, [topRef.current]);
 
-  return (
-    <SMain className={className} bgColor={bgColor}>
-      <STop>
-        {shouldShowError() && error && (
-          <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
-        )}
+  const APP_ROUTES = getAppRoutesObject(featureFlags);
 
-        <Header
-          drawerVisible={visible}
-          toggleDrawerVisible={toggleVisible}
-          setDrawerScreen={setScreen}
-        />
-      </STop>
-      <BannerWrapper ref={topRef}>
-        <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
-      </BannerWrapper>
-      <SContainer
-        centered={centered}
-        fluid={fluid}
-        fullW={fullW}
-        paddingV={paddingV}
-        marginTop={topHeight}
-      >
-        {children}
-      </SContainer>
-      <Footer />
-    </SMain>
+  return (
+    <>
+      {featureFlags.NEW_NAVIGATION && isMobile && (
+        <MobileNav appRoutes={APP_ROUTES} current={pathname} />
+      )}
+      {featureFlags.NEW_NAVIGATION && !isMobile && (
+        <DesktopNav appRoutes={APP_ROUTES} current={pathname} />
+      )}
+      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
+        <STop>
+          {shouldShowError() && error && (
+            <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
+          )}
+
+          {featureFlags.OLD_NAVIGATION && (
+            <Header
+              drawerVisible={visible}
+              toggleDrawerVisible={toggleVisible}
+              setDrawerScreen={setScreen}
+            />
+          )}
+        </STop>
+        <BannerWrapper ref={topRef}>
+          <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+        </BannerWrapper>
+        <SContainer
+          centered={centered}
+          fluid={fluid}
+          fullW={fullW}
+          paddingV={paddingV}
+          marginTop={topHeight}
+        >
+          {children}
+        </SContainer>
+        {featureFlags.OLD_NAVIGATION && <Footer />}
+      </SMain>
+    </>
   );
 }
