@@ -7,9 +7,9 @@ import demoReducer from '@features/DevTools/slice';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { DataStore } from '@types';
 
+import databaseReducer, { dbReset } from './database.reducer';
 import { canImport } from './helpers';
 import importSlice from './import.slice';
-import legacyReducer, { dbReset } from './legacy.reducer';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
 import tokenScanningSlice from './tokenScanning.slice';
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
-  [DATA_STATE_KEY]: createPersistReducer(legacyReducer)
+  [DATA_STATE_KEY]: createPersistReducer(databaseReducer)
 });
 
 export default rootReducer;

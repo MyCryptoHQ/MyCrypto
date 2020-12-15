@@ -6,8 +6,8 @@ import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
+import { dbReset } from './database.reducer';
 import { initialLegacyState } from './legacy.initialState';
-import { dbReset } from './legacy.reducer';
 import { getAppState } from './selectors';
 
 const sliceName = LSKeys.ASSETS;

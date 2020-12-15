@@ -13,7 +13,7 @@ import passwordSlice from './password.slice';
 import settingsSlice from './settings.slice';
 import userActionSlice from './userAction.slice';
 
-const dbReducer = combineReducers({
+const dbCombinedReducers = combineReducers({
   version: () => initialLegacyState.version,
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
@@ -37,7 +37,7 @@ const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
       return action.payload;
     }
     default: {
-      return dbReducer(state, action);
+      return dbCombinedReducers(state, action);
     }
   }
 };
