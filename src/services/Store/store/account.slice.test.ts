@@ -1,9 +1,11 @@
-import { IAccount } from '@types';
+import { ETHUUID, REPV2UUID } from '@config';
+import { fAccounts } from '@fixtures';
+import { IAccount, TUuid } from '@types';
 
 import { initialState, default as slice } from './account.slice';
 
 const reducer = slice.reducer;
-const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
+const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
 
 describe('AccountSlice', () => {
   it('create(): adds an entity by uuid', () => {
@@ -51,6 +53,28 @@ describe('AccountSlice', () => {
     ];
     const actual = reducer(state, updateMany(modifiedEntities));
     const expected = [...modifiedEntities, a3];
+    expect(actual).toEqual(expected);
+  });
+
+  it('updateAssets(): updates assets of accounts', () => {
+    const state = [fAccounts[0], fAccounts[1]];
+    const assetBalances = [
+      {
+        uuid: REPV2UUID,
+        balance: '1000000000000000000',
+        mtime: 1607602775360
+      },
+      {
+        uuid: ETHUUID as TUuid,
+        balance: '2000000000000000000',
+        mtime: 1607602775360
+      }
+    ];
+    const payload = {
+      [fAccounts[0].uuid]: assetBalances
+    };
+    const actual = reducer(state, updateAssets(payload));
+    const expected = [{ ...fAccounts[0], assets: assetBalances }, fAccounts[1]];
     expect(actual).toEqual(expected);
   });
 

@@ -1,6 +1,13 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import { deleteMembership, fetchAssets, fetchMemberships, useDispatch, useSelector } from '@store';
+import {
+  deleteMembership,
+  fetchAssets,
+  fetchMemberships,
+  scanTokens,
+  useDispatch,
+  useSelector
+} from '@store';
 import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import flatten from 'ramda/src/flatten';
@@ -20,7 +27,6 @@ import { translateRaw } from '@translations';
 import {
   Asset,
   DomainNameRecord,
-  ExtendedAsset,
   IAccount,
   IAccountAdditionData,
   IPendingTxReceipt,
@@ -106,8 +112,6 @@ export interface State {
   ): (getAssetRate: (asset: Asset) => number | undefined) => number;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
-  scanAccountTokens(account: StoreAccount, asset?: ExtendedAsset): Promise<void>;
-  scanTokens(asset?: ExtendedAsset): Promise<void>;
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
   addMultipleAccounts(
@@ -139,8 +143,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
-    updateAccountAssets,
-    updateAllAccountsAssets,
     updateAccounts,
     deleteAccount,
     createAccountWithID,
@@ -217,7 +219,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     60000,
     true,
-    [currentAccounts, networks]
+    [networks]
   );
 
   useAnalytics({
@@ -303,7 +305,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               finishedTxReceipt.txType === ITxType.DEFIZAP ||
               isTokenMigration(finishedTxReceipt.txType)
             ) {
-              state.scanAccountTokens(storeAccount);
+              dispatch(scanTokens({ accounts: [storeAccount] }));
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
               dispatch(fetchMemberships([storeAccount]));
             }
@@ -423,11 +425,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
-    },
-    scanAccountTokens: async (account: StoreAccount, asset?: ExtendedAsset) =>
-      updateAccountAssets(account, asset ? [...assets, asset] : assets),
-    scanTokens: async (asset?: ExtendedAsset) => {
-      await updateAllAccountsAssets(accounts, asset ? [...assets, asset] : assets);
     },
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));

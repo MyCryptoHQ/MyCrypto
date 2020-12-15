@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockUseDispatch, ProvidersWrapper, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fRopDAI, fSettings, fTxReceipt } from '@fixtures';
+import { fAccounts, fSettings, fTxReceipt } from '@fixtures';
 import { IAccount, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -110,49 +110,6 @@ describe('useAccounts', () => {
       fAccounts[0].networkId
     );
     expect(account).toBe(fAccounts[0]);
-  });
-
-  it('updateAccountAssets()', async () => {
-    const mockDispatch = mockUseDispatch();
-    const { result } = renderUseAccounts({ accounts: fAccounts });
-    result.current.updateAccountAssets(fAccounts[1], fAssets);
-    await waitFor(() =>
-      expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload({
-          ...fAccounts[1],
-          assets: [
-            expect.objectContaining({
-              uuid: fRopDAI.uuid,
-              balance: '1018631879600000000'
-            }),
-            ...fAccounts[1].assets
-          ]
-        })
-      )
-    );
-  });
-
-  it('updateAllAccountsAssets()', async () => {
-    const mockDispatch = mockUseDispatch();
-    const accounts = [fAccounts[1], { ...fAccounts[2], assets: [] }];
-    const { result } = renderUseAccounts({ accounts });
-    result.current.updateAllAccountsAssets(accounts, fAssets);
-    await waitFor(() =>
-      expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload(
-          accounts.map((a) => ({
-            ...a,
-            assets: [
-              expect.objectContaining({
-                uuid: fRopDAI.uuid,
-                balance: '1018631879600000000'
-              }),
-              ...a.assets
-            ]
-          }))
-        )
-      )
-    );
   });
 
   it('updateAccounts() calls updateAll with merged list', async () => {

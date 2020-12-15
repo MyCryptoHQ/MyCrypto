@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DEFAULT_NETWORK } from '@config';
-import { IAccount, LSKeys, TUuid, WalletId } from '@types';
+import { AssetBalanceObject, IAccount, LSKeys, TUuid, WalletId } from '@types';
 import { filter, findIndex, pipe, propEq, reject } from '@vendor';
 
 import { getAppState } from './selectors';
@@ -37,6 +37,13 @@ const slice = createSlice({
         state[idx] = account;
       });
     },
+    updateAssets(state, action: PayloadAction<Record<string, AssetBalanceObject[]>>) {
+      const accounts = action.payload;
+      Object.entries(accounts).forEach(([uuid, assets]) => {
+        const idx = findIndex(propEq('uuid', uuid), state);
+        state[idx].assets = assets;
+      });
+    },
     reset() {
       return initialState;
     }
@@ -49,7 +56,8 @@ export const {
   destroy: destroyAccount,
   update: updateAccount,
   updateMany: updateAccounts,
-  reset: resetAccount
+  reset: resetAccount,
+  updateAssets: updateAccountAssets
 } = slice.actions;
 
 export default slice;

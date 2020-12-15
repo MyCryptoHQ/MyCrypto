@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
+import { isScanning as isScanningSelector, useSelector } from '@store';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -13,6 +14,7 @@ import {
   Network,
   RouterLink,
   RowDeleteOverlay,
+  SkeletonLoader,
   UndoDeleteOverlay
 } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
@@ -353,6 +355,7 @@ const BuildAccountTable = (
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
+  const isScanning = useSelector(isScanningSelector);
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { contacts, createContact, updateContact } = useContacts();
@@ -532,13 +535,17 @@ const BuildAccountTable = (
         <Network key={index} color={account.network.color || COLORS.LIGHT_PURPLE}>
           {account.networkId}
         </Network>,
-        <CurrencyContainer
-          key={index}
-          amount={total.toString()}
-          symbol={getFiat(settings).symbol}
-          ticker={getFiat(settings).ticker}
-          decimals={2}
-        />
+        isScanning ? (
+          <SkeletonLoader type="account-list-value" />
+        ) : (
+          <CurrencyContainer
+            key={index}
+            amount={total.toString()}
+            symbol={getFiat(settings).symbol}
+            ticker={getFiat(settings).ticker}
+            decimals={2}
+          />
+        )
       ];
 
       if (privacyCheckboxEnabled) {

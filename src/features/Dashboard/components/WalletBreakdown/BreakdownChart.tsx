@@ -5,6 +5,7 @@ import equals from 'ramda/src/equals';
 import { Cell, Pie, PieChart, PieLabelRenderProps, Sector } from 'recharts';
 import styled from 'styled-components';
 
+import { SkeletonLoader } from '@components';
 import { Balance } from '@types';
 
 import { SMALLEST_CHART_SHARE_SUPPORTED } from './WalletBreakdownView';
@@ -22,6 +23,7 @@ interface BreakdownChartProps {
   balances: Balance[];
   selectedAssetIndex: number;
   isChartAnimating: boolean;
+  isScanning: boolean;
   shouldAnimate: boolean;
   handleMouseOver(index: number): void;
   handleMouseLeave(index: number): void;
@@ -127,6 +129,7 @@ const BreakdownChart = React.memo(
     handleMouseOver,
     handleMouseLeave,
     setIsChartAnimating,
+    isScanning,
     shouldAnimate,
     setShouldAnimate
   }: BreakdownChartProps) => {
@@ -137,38 +140,42 @@ const BreakdownChart = React.memo(
     }));
     return (
       <MainWrapper>
-        <PieChart
-          width={400}
-          height={350}
-          onMouseLeave={() => handleMouseLeave(-1)}
-          onMouseEnter={() => handleMouseLeave(-1)}
-        >
-          <Pie
-            isAnimationActive={shouldAnimate}
-            activeIndex={selectedAssetIndex}
-            activeShape={ActiveSection}
-            data={displayBalances}
-            cx={200}
-            cy={200}
-            innerRadius={0}
-            outerRadius={110}
-            label={(p) => CustomLabel(p as CustomLabelProps, selectedAssetIndex, handleMouseOver)}
-            labelLine={false}
-            dataKey="fiatValue"
-            onMouseEnter={(_: any, index: number) => handleMouseOver(index)}
+        {isScanning ? (
+          <SkeletonLoader type="wallet-chart" width={400} height={350} />
+        ) : (
+          <PieChart
+            width={400}
+            height={350}
             onMouseLeave={() => handleMouseLeave(-1)}
-            animationDuration={800}
-            onAnimationStart={() => setIsChartAnimating(true)}
-            onAnimationEnd={() => {
-              setShouldAnimate(false);
-              setIsChartAnimating(false);
-            }}
+            onMouseEnter={() => handleMouseLeave(-1)}
           >
-            {balances.map((entry, index) => (
-              <Cell fill={COLORS[index]} stroke={COLORS[index]} key={entry.name} />
-            ))}
-          </Pie>
-        </PieChart>
+            <Pie
+              isAnimationActive={shouldAnimate}
+              activeIndex={selectedAssetIndex}
+              activeShape={ActiveSection}
+              data={displayBalances}
+              cx={200}
+              cy={200}
+              innerRadius={0}
+              outerRadius={110}
+              label={(p) => CustomLabel(p as CustomLabelProps, selectedAssetIndex, handleMouseOver)}
+              labelLine={false}
+              dataKey="fiatValue"
+              onMouseEnter={(_: any, index: number) => handleMouseOver(index)}
+              onMouseLeave={() => handleMouseLeave(-1)}
+              animationDuration={800}
+              onAnimationStart={() => setIsChartAnimating(true)}
+              onAnimationEnd={() => {
+                setShouldAnimate(false);
+                setIsChartAnimating(false);
+              }}
+            >
+              {balances.map((entry, index) => (
+                <Cell fill={COLORS[index]} stroke={COLORS[index]} key={entry.name} />
+              ))}
+            </Pie>
+          </PieChart>
+        )}
       </MainWrapper>
     );
   },
