@@ -13,7 +13,7 @@ import {
   initialState,
   default as slice
 } from './network.slice';
-import { AppState } from './reducer';
+import { AppState } from './root.reducer';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;

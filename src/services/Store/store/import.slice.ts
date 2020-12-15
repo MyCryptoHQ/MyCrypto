@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppState } from './reducer';
+import { AppState } from './root.reducer';
 
 interface State {
   success: boolean;

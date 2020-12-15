@@ -1,5 +1,5 @@
 import { DataStore } from '@types';
 
-import { AppState } from './reducer';
+import { AppState } from './root.reducer';
 
 export const getAppState = (state: AppState): DataStore => state.legacy;

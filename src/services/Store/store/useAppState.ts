@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useSelector as useReduxSelector } from 'react-redux';
 
-import { AppState, getPassword } from './reducer';
+import { AppState, getPassword } from './root.reducer';
 /**
  * Type-safe version of the `react-redux` useSelector hook.
  */

@@ -7,7 +7,7 @@ import { omit } from '@vendor';
 
 import importSlice from './import.slice';
 import { dbReset } from './legacy.reducer';
-import { exportState, importSaga, importState } from './reducer';
+import { exportState, importSaga, importState } from './root.reducer';
 
 describe('Import - Export', () => {
   it('exportState(): returns the persistable state as a deMarshalled string', () => {

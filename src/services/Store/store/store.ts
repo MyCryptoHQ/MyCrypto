@@ -7,7 +7,7 @@ import createSagaMiddleware from 'redux-saga';
 import { IS_DEV } from '@utils';
 
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
-import rootReducer, { AppState } from './reducer';
+import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';
 import { serializeLegacyMiddleware } from './serialize.middleware';
 
@@ -45,7 +45,9 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
   if (module.hot && IS_DEV) {
     module.hot.accept('./reducer', () => {
       // https://github.com/rt2zz/redux-persist/blob/master/docs/hot-module-replacement.md
-      import('./reducer').then(({ default: nextReducer }) => store.replaceReducer(nextReducer));
+      import('./root.reducer').then(({ default: nextReducer }) =>
+        store.replaceReducer(nextReducer)
+      );
     });
   }
 

@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { fRates } from '@fixtures';
 import { TFiatTicker, TUuid } from '@types';
 
-import { AppState, DATA_STATE_KEY } from './reducer';
+import { AppState, DATA_STATE_KEY } from './root.reducer';
 import {
   addExcludedAsset,
   addFavorite,
