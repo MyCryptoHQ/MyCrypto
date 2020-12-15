@@ -15,8 +15,8 @@ export const FEATURE_FLAGS = {
   TX_HISTORY: 'core',
   MYC_MEMBERSHIP: 'core',
   DOWNLOAD_DESKTOP_APP: 'core',
-  OLD_NAVIGATION: !IS_DEV,
-  NEW_NAVIGATION: IS_DEV,
+  OLD_NAVIGATION: false, //@todo: toggle back before merging
+  NEW_NAVIGATION: true, //@todo: toggle back before merging
 
   /* Manage Assets */
   ADD_ACCOUNT: 'core',
