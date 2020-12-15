@@ -4,8 +4,12 @@ import { BigNumber } from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { Asset, AssetBalanceObject, IAccount, Network, TAddress } from '@types';
-import { generateAssetUUID, generateDeterministicAddressUUID, isSameAddress } from '@utils';
-import { mapAsync } from '@utils/asyncFilter';
+import {
+  generateAssetUUID,
+  generateDeterministicAddressUUID,
+  isSameAddress,
+  mapAsync
+} from '@utils';
 import { eqBy, identity, mergeAll, prop, unionWith } from '@vendor';
 
 import { getAllTokensBalancesOfAccounts, getBaseAssetBalances } from '../BalanceService';

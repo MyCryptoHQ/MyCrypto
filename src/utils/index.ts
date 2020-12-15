@@ -133,3 +133,4 @@ export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';
 export { default as log } from './log';
+export { mapAsync, filterAsync } from './asyncFilter';
