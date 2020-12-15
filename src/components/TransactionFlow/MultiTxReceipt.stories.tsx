@@ -4,7 +4,8 @@ import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { stepsContent } from '@features/SwapAssets/config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import { fAccount, fNetwork, fSettings, fTxConfigs, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext } from '@services';
+import { RatesContext } from '@services';
+import { DataContext, IDataContext } from '@services/Store';
 import { ISwapAsset, ITxConfig, ITxType, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 
