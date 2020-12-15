@@ -231,11 +231,7 @@ export const getAllTokensBalancesOfAccounts = async (
   const assetsInNetwork = assets.filter((x) => x.networkId === network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
-  try {
-    return tokenBalanceMultiFetchWrapper(provider, addresses, assetAddresses, {
-      batchSize: ETH_SCAN_BATCH_SIZE
-    }).then(nestedToBigNumberJS);
-  } catch (err) {
-    throw new Error(err);
-  }
+  return tokenBalanceMultiFetchWrapper(provider, addresses, assetAddresses, {
+    batchSize: ETH_SCAN_BATCH_SIZE
+  }).then(nestedToBigNumberJS);
 };
