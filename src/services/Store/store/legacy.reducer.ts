@@ -13,10 +13,6 @@ import passwordSlice from './password.slice';
 import settingsSlice from './settings.slice';
 import userActionSlice from './userAction.slice';
 
-// Handler to facilitate initial store state and reset.
-export function init(initialState: DataStore) {
-  return initialState;
-}
 const dbReducer = combineReducers({
   version: () => initialLegacyState.version,
   [accountSlice.name]: accountSlice.reducer,
@@ -38,7 +34,7 @@ const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
 ) => {
   switch (action.type) {
     case dbReset.type: {
-      return init(action.payload as DataStore);
+      return action.payload;
     }
     default: {
       return dbReducer(state, action);
