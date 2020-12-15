@@ -22,9 +22,14 @@ import navBuy from '@assets/icons/navigation/buy.svg';
 import navCoinbase from '@assets/icons/navigation/coinbase.svg';
 import navDeployContracts from '@assets/icons/navigation/deploy-contracts.svg';
 import navEthereum from '@assets/icons/navigation/ethereum.svg';
+import navHelp from '@assets/icons/navigation/help.svg';
 import navHome from '@assets/icons/navigation/home.svg';
 import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
 import navLedger from '@assets/icons/navigation/ledger.svg';
+import navLock from '@assets/icons/navigation/lock.svg';
+import navMembership from '@assets/icons/navigation/membership.svg';
+import navMenu from '@assets/icons/navigation/menu.svg';
+import navNew from '@assets/icons/navigation/new.svg';
 import navQuiknode from '@assets/icons/navigation/quiknode.svg';
 import navReceive from '@assets/icons/navigation/receive.svg';
 import navSend from '@assets/icons/navigation/send.svg';
@@ -172,7 +177,12 @@ const svgIcons = {
   'nav-unstoppable': navUnstoppable,
   'nav-settings': navSettings,
   'nav-ethereum': navEthereum,
-  'nav-bitcoin': navBitcoin
+  'nav-bitcoin': navBitcoin,
+  'nav-lock': navLock,
+  'nav-membership': navMembership,
+  'nav-help': navHelp,
+  'nav-new': navNew,
+  'nav-menu': navMenu
 };
 
 const pngIcons = {

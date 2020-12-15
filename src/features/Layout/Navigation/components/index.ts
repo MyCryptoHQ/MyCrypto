@@ -5,3 +5,4 @@ export { TrayItem } from './TrayItem';
 export { NavTray } from './NavTray';
 export { ExternalLink } from './ExternalLink';
 export { SupportUsTray } from './SupportUsTray';
+export { TopItem } from './TopItem';

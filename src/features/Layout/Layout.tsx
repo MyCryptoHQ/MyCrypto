@@ -14,7 +14,7 @@ import { useScreenSize } from '@utils';
 
 import Footer from './Footer';
 import Header from './Header';
-import { DesktopNav, MobileNav } from './Navigation';
+import { DesktopNav, MobileNav, TopNav } from './Navigation';
 
 export interface LayoutConfig {
   centered?: boolean;
@@ -56,8 +56,6 @@ const STop = styled.div`
     background: ${COLORS.GREY_LIGHTER};
     position: fixed;
     top: 0;
-    width: 100%;
-    height: 77px;
     z-index: 11;
   }
 `;
@@ -90,14 +88,19 @@ const SContainer = styled.div`
     `}
 `;
 
-const BannerWrapper = styled.div`
+const BannerWrapper = styled.div<{ newNav: boolean }>`
   max-width: 1000px;
   margin: 0 auto;
   margin-top: 25px;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
-    top: 77px;
+    top: ${(p) => (p.newNav ? '15px' : '77px')};
     left: 0;
+    ${(p) =>
+      p.newNav &&
+      css`
+        margin: 0 15px;
+      `}
   }
 `;
 
@@ -173,7 +176,8 @@ export default function Layout({ config = {}, className = '', children }: Props)
             />
           )}
         </STop>
-        <BannerWrapper ref={topRef}>
+        {featureFlags.NEW_NAVIGATION && <TopNav current={pathname} isMobile={isMobile} />}
+        <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
           <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
         </BannerWrapper>
         <SContainer
@@ -181,7 +185,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
           fluid={fluid}
           fullW={fullW}
           paddingV={paddingV}
-          marginTop={topHeight}
+          marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
         >
           {children}
         </SContainer>
