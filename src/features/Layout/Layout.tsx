@@ -51,12 +51,18 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
   flex-direction: column;
 `;
 
-const STop = styled.div`
+const STop = styled.div<{ newNav: boolean }>`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     background: ${COLORS.GREY_LIGHTER};
     position: fixed;
     top: 0;
     z-index: 11;
+    ${(p) =>
+      !p.newNav &&
+      css`
+        width: 100%;
+        height: 77px;
+      `}
   }
 `;
 
@@ -163,7 +169,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
         <DesktopNav appRoutes={APP_ROUTES} current={pathname} />
       )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
-        <STop>
+        <STop newNav={featureFlags.NEW_NAVIGATION}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
