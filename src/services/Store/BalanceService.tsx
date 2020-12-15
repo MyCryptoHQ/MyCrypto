@@ -15,7 +15,8 @@ import partition from 'lodash/partition';
 import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
 import { ProviderHandler } from '@services/EthService';
 import { Asset, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress, TBN } from '@types';
-import { mapAsync } from '@utils/asyncFilter';
+import { mapAsync } from '@utils';
+import { mapObjIndexed } from '@vendor';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
 
@@ -28,17 +29,13 @@ export const convertBNToBigNumberJS = (bn: EthScanBN): BN => {
 };
 
 export const toBigNumberJS = (balances: EthScanBalanceMap): BalanceMap => {
-  return Object.fromEntries(
-    Object.keys(balances).map((key) => [key, convertBNToBigNumberJS(balances[key])])
-  );
+  return mapObjIndexed(convertBNToBigNumberJS, balances);
 };
 
 export const nestedToBigNumberJS = (
   balances: EthScanBalanceMap<EthScanBalanceMap>
 ): BalanceMap<BalanceMap> => {
-  return Object.fromEntries(
-    Object.keys(balances).map((key) => [key, toBigNumberJS(balances[key])])
-  );
+  return mapObjIndexed(toBigNumberJS, balances);
 };
 
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
