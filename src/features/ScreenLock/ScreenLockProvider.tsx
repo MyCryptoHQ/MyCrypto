@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, exportState, importState } from '@store';
+import { AppState, clearEncryptedData, decrypt, encrypt, exportState, importState } from '@store';
+import { getEncryptedData, isEncrypted } from '@store/vault.slice';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
 import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
-import { decrypt, encrypt, hashPassword, withContext } from '@utils';
+import { hashPassword, withContext } from '@utils';
 import { pipe } from '@vendor';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
@@ -16,7 +17,6 @@ import { default as ScreenLockLocking } from './ScreenLockLocking';
 interface State {
   locking: boolean;
   locked: boolean;
-  decryptSuccess: boolean;
   decryptError?: Error;
   toImport?: string;
   shouldAutoLock: boolean;
@@ -43,7 +43,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   public state: State = {
     locking: false,
     locked: false,
-    decryptSuccess: false,
     shouldAutoLock: false,
     lockingOnDemand: false,
     timeLeft: defaultCountDownDuration,
@@ -87,33 +86,24 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
       this.props.password &&
       !(this.props.encryptedDbState && this.props.encryptedDbState.data)
     ) {
-      const encryptedData = encrypt(
-        JSON.stringify(this.props.exportState),
-        this.props.password
-      ).toString();
-      this.props.setEncryptedCache(encryptedData);
-      this.props.resetAppDb();
+      this.props.encrypt(this.props.password);
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
     }
 
     // After decrypt with valid password, reset db and
-    if (this.state.decryptSuccess && this.state.toImport) {
-      this.props.importState(this.state.toImport);
-      this.resetEncrypted();
+    if (!this.props.isEncrypted && this.state.locked) {
+      this.redirectOut();
     }
   }
 
   public decryptWithPassword = (password: string): void => {
-    const { encryptedDbState } = this.props;
-    if (!encryptedDbState || !encryptedDbState.data) return;
+    const { isEncrypted } = this.props;
+    if (!isEncrypted) return;
     try {
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
-      const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
-      if (decryptedData) {
-        this.setState({ decryptSuccess: true, toImport: decryptedData });
-      }
+      this.props.decrypt(passwordHash);
     } catch (error) {
       console.error(error);
       this.setState({ decryptError: error });
@@ -122,11 +112,15 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 
   // Wipes encrypted data and unlocks
   public resetEncrypted = async () => {
-    const { history, destroyEncryptedCache } = this.props;
-    destroyEncryptedCache();
-    this.setState({ locked: false, decryptSuccess: false }, () => {
+    const { clearEncryptedData } = this.props;
+    clearEncryptedData();
+    this.redirectOut();
+  };
+
+  public redirectOut = () => {
+    this.setState({ locked: false }, () => {
       this.resetInactivityTimer();
-      history.replace(ROUTE_PATHS.DASHBOARD.path);
+      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
 
@@ -263,10 +257,12 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 }
 
 const mapStateToProps = (state: AppState) => ({
-  exportState: exportState(state)
+  exportState: exportState(state),
+  isEncrypted: isEncrypted(state),
+  getEncryptedData: getEncryptedData(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
-  bindActionCreators({ importState }, dispatch);
+  bindActionCreators({ importState, clearEncryptedData, encrypt, decrypt }, dispatch);
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;

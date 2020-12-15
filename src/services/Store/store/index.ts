@@ -59,3 +59,4 @@ export {
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
+export { encrypt, decrypt, setEncryptedData, clearEncryptedData } from './vault.slice';
