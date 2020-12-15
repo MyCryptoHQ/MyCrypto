@@ -9,12 +9,13 @@ import { updateAccountAssets } from './account.slice';
 import {
   getBalances,
   initialState,
+  scanTokens,
   scanTokensWorker,
   default as slice
 } from './tokenScanning.slice';
 
 const reducer = slice.reducer;
-const { scanTokens, finishTokenScan } = slice.actions;
+const { startTokenScan, finishTokenScan } = slice.actions;
 
 describe('Token Scanning Slice', () => {
   it('has an initial state', () => {
@@ -23,8 +24,8 @@ describe('Token Scanning Slice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('scanTokens(): sets scanning state to true', () => {
-    const actual = reducer(initialState, scanTokens);
+  it('startTokenScan(): sets scanning state to true', () => {
+    const actual = reducer(initialState, startTokenScan);
     const expected = { scanning: true };
     expect(actual).toEqual(expected);
   });
@@ -72,6 +73,7 @@ describe('scanTokensWorker()', () => {
     };
     return expectSaga(scanTokensWorker, scanTokens({}))
       .withState({ legacy: { networks: fNetworks, assets: fAssets, accounts: fAccounts } })
+      .put(startTokenScan())
       .call(getBalances, fNetworks, fAccounts, fAssets)
       .put(updateAccountAssets(result))
       .put(finishTokenScan())

@@ -1,5 +1,5 @@
 import { BalanceMap } from '@mycrypto/eth-scan';
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BigNumber } from 'bignumber.js';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
@@ -22,10 +22,7 @@ const slice = createSlice({
   name: 'tokenScanning',
   initialState,
   reducers: {
-    scanTokens(
-      state,
-      _action: PayloadAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>
-    ) {
+    startTokenScan(state) {
       state.scanning = true;
     },
     finishTokenScan(state) {
@@ -34,7 +31,11 @@ const slice = createSlice({
   }
 });
 
-export const { scanTokens, finishTokenScan } = slice.actions;
+export const scanTokens = createAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>(
+  `${slice.name}/scanTokens`
+);
+
+export const { startTokenScan, finishTokenScan } = slice.actions;
 
 export default slice;
 
@@ -133,6 +134,8 @@ export function* scanTokensWorker({
   payload
 }: PayloadAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>) {
   const { accounts: requestedAccounts, assets: requestedAssets } = payload || {};
+
+  yield put(startTokenScan());
 
   const networks = yield select(getNetworks);
   const allAssets = yield select(getAssets);
