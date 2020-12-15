@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { DAIUUID, ETHUUID } from '@config';
 import { fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { RatesContext } from '@services';
+import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 

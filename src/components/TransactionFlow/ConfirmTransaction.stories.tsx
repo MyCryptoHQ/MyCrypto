@@ -14,7 +14,7 @@ import {
   fSettings,
   fTxConfig
 } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, ITxType } from '@types';
 import { bigify, noOp } from '@utils';
 

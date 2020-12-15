@@ -6,7 +6,7 @@ import { ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { customNodeConfig, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import { DataContext, IDataContext } from '@services/Store';
 import { theme } from '@theme';
 import { noOp } from '@utils';
 
