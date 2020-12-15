@@ -11,14 +11,16 @@ import { canImport } from './helpers';
 import importSlice from './import.slice';
 import legacyReducer, { ActionT } from './legacy.reducer';
 import membershipSlice from './membership.slice';
-import { createPersistReducer } from './persist.config';
+import { createPersistReducer, createVaultReducer } from './persist.config';
 import tokenScanningSlice from './tokenScanning.slice';
+import vaultSlice from './vault.slice';
 
 export const DATA_STATE_KEY = 'legacy';
 
 const rootReducer = combineReducers({
   demo: demoReducer,
   [importSlice.name]: importSlice.reducer,
+  [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
   [DATA_STATE_KEY]: createPersistReducer(legacyReducer)
