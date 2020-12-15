@@ -1,0 +1,30 @@
+import React from 'react';
+
+import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
+import { DEFAULT_NETWORK } from '@config';
+import { fAccounts } from '@fixtures';
+import { translateRaw } from '@translations';
+import { WalletId } from '@types';
+
+import { SignTxHardwareUI } from './Hardware';
+
+export default { title: 'SignTransaction' };
+
+const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
+  walletIcon: ledgerIcon,
+  signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
+    $network: DEFAULT_NETWORK
+  }),
+  helpCopy: 'LEDGER_HELP',
+  referralCopy: 'LEDGER_REFERRAL',
+  senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
+  isTxSignatureRequestDenied: true
+};
+
+export const HardwareWalletUI = () => {
+  return (
+    <div className="sb-container" style={{ maxWidth: '800px' }}>
+      <SignTxHardwareUI {...initialProps} />
+    </div>
+  );
+};

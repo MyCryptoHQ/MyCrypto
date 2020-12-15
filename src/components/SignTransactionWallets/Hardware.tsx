@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import styled from 'styled-components';
+
 import { InlineMessage } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
@@ -7,12 +9,55 @@ import translate, { translateRaw } from '@translations';
 import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
 import { makeTransaction, useInterval } from '@utils';
 
-import './Hardware.scss';
-
 export interface IDestructuredDPath {
   dpath: string;
   index: number;
 }
+
+const SReferral = styled.div`
+  text-align: center;
+  font-size: 16px;
+`;
+const SHelp = styled.div`
+  margin-top: 1em;
+  text-align: center;
+  font-size: 16px;
+`;
+
+const SFooter = styled.div`
+  width: 100%;
+`;
+
+const SDescription = styled.div`
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 1em;
+`;
+
+const SImgContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 3em;
+`;
+
+const STitle = styled.div`
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+`;
+
+const SInstructions = styled.div`
+  padding-top: 2em;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+`;
+
+const ErrorMessageContainer = styled.div`
+  margin: 2em;
+`;
 
 export const splitDPath = (fullDPath: string): IDestructuredDPath => {
   /*
@@ -117,28 +162,57 @@ export default function HardwareSignTransaction({
   })();
 
   return (
-    <>
-      <div className="SignTransactionHardware-title">
-        {translate('SIGN_TX_TITLE', {
-          $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
-        })}
-      </div>
-      <div className="SignTransactionHardware-instructions">{signerDescription}</div>
-      <div className="SignTransactionHardware-content">
-        <div className="SignTransactionHardware-img">
-          <img src={walletIcon} />
-        </div>
-        <div className="SignTransactionHardware-description">
-          {translateRaw('SIGN_TX_EXPLANATION')}
-          {isTxSignatureRequestDenied && (
-            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
-          )}
-        </div>
-        <div className="SignTransactionHardware-footer">
-          <div className="SignTransactionHardware-help">{translate(helpCopy)}</div>
-          <div className="SignTransactionHardware-referal">{translate(referralCopy)}</div>
-        </div>
-      </div>
-    </>
+    <SignTxHardwareUI
+      walletIcon={walletIcon}
+      signerDescription={signerDescription}
+      isTxSignatureRequestDenied={isTxSignatureRequestDenied}
+      helpCopy={helpCopy}
+      referralCopy={referralCopy}
+      senderAccount={senderAccount}
+    />
   );
 }
+
+interface UIProps {
+  walletIcon: any;
+  signerDescription: string;
+  isTxSignatureRequestDenied: boolean;
+  helpCopy: string;
+  referralCopy: string;
+  senderAccount: IAccount;
+}
+
+export const SignTxHardwareUI = ({
+  walletIcon,
+  signerDescription,
+  isTxSignatureRequestDenied,
+  helpCopy,
+  referralCopy,
+  senderAccount
+}: UIProps) => (
+  <>
+    <STitle>
+      {translate('SIGN_TX_TITLE', {
+        $walletName: WALLETS_CONFIG[senderAccount.wallet].name
+      })}
+    </STitle>
+    <SInstructions>{signerDescription}</SInstructions>
+    <div>
+      <SImgContainer>
+        <img src={walletIcon} />
+      </SImgContainer>
+      <SDescription>
+        {isTxSignatureRequestDenied && (
+          <ErrorMessageContainer>
+            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
+          </ErrorMessageContainer>
+        )}
+        {translateRaw('SIGN_TX_EXPLANATION')}
+      </SDescription>
+      <SFooter>
+        <SHelp>{translate(helpCopy)}</SHelp>
+        <SReferral>{translate(referralCopy)}</SReferral>
+      </SFooter>
+    </div>
+  </>
+);
