@@ -428,7 +428,7 @@ export default function WalletBreakdownView({
           ) : (
             <BreakDownBalanceTotal>
               <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
-              <div>
+              <div data-testid="walletbreakdown-total">
                 <Currency
                   amount={totalFiatValue.toString()}
                   symbol={fiat.symbol}

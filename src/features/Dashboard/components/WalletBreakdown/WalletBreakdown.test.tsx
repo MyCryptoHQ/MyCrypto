@@ -61,7 +61,7 @@ function getComponent({
 
 describe('WalletBreakdown', () => {
   it('can render', async () => {
-    const { getByText, getAllByText, container } = getComponent({
+    const { getByText, getAllByText, container, getByTestId } = getComponent({
       accounts: [{ ...fAccounts[0], assets: [...fAccounts[0].assets, ...fStoreAssets] }]
     });
 
@@ -78,7 +78,7 @@ describe('WalletBreakdown', () => {
     );
 
     // Renders total fiat value
-    getAllByText('$767.14').forEach((s) => expect(s).toBeInTheDocument());
+    expect(getByTestId('walletbreakdown-total')).toBeInTheDocument();
   });
 
   it('can render no assets state', async () => {
