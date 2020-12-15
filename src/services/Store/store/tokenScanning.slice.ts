@@ -77,7 +77,7 @@ interface FetchBalancesResult {
   baseAssetBalances: BalanceMap<BigNumber>;
 }
 
-const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
+export const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
   network,
   tokenBalances,
   baseAssetBalances
