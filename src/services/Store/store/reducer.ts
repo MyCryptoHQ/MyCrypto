@@ -9,7 +9,7 @@ import { DataStore } from '@types';
 
 import { canImport } from './helpers';
 import importSlice from './import.slice';
-import legacyReducer, { ActionT } from './legacy.reducer';
+import legacyReducer, { dbReset } from './legacy.reducer';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
 import tokenScanningSlice from './tokenScanning.slice';
@@ -54,7 +54,7 @@ function* importWorker({ payload }: PayloadAction<string>) {
     if (!canImport(json, persistable)) {
       throw new Error('Invalid import file');
     }
-    yield put({ type: ActionT.RESET, payload: { data: marshallState(json) } });
+    yield put(dbReset(marshallState(json)));
     yield put(importSlice.actions.success());
   } catch (err) {
     yield put(importSlice.actions.error(err));

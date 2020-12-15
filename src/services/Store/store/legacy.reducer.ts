@@ -1,4 +1,4 @@
-import { combineReducers, PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { combineReducers, createAction, PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 import { DataStore } from '@types';
 
@@ -13,15 +13,11 @@ import passwordSlice from './password.slice';
 import settingsSlice from './settings.slice';
 import userActionSlice from './userAction.slice';
 
-export enum ActionT {
-  RESET = 'RESET'
-}
-
 // Handler to facilitate initial store state and reset.
 export function init(initialState: DataStore) {
   return initialState;
 }
-const databaseReducer = combineReducers({
+const dbReducer = combineReducers({
   version: () => initialLegacyState.version,
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
@@ -34,18 +30,18 @@ const databaseReducer = combineReducers({
   [passwordSlice.name]: passwordSlice.reducer
 });
 
+export const dbReset = createAction<DataStore>('app/Reset');
+
 const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
   state = initialLegacyState,
   action
 ) => {
-  const { type, payload } = action;
-  switch (type) {
-    case ActionT.RESET: {
-      const { data } = payload;
-      return init(data as DataStore);
+  switch (action.type) {
+    case dbReset.type: {
+      return init(action.payload as DataStore);
     }
     default: {
-      return databaseReducer(state, action);
+      return dbReducer(state, action);
     }
   }
 };

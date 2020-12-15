@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 
 import { getAppState, initialLegacyState, setPassword, useDispatch, useSelector } from '@store';
-import { ActionT } from '@store/legacy.reducer';
+import { dbReset } from '@store/legacy.reducer';
 
 import { DataStore } from '@types';
 
@@ -22,10 +22,7 @@ export const DataProvider: React.FC = ({ children }) => {
 
   // @todo: Redux create action for reset once legacy.reducer is replaced.
   const resetAppDb = (newDb = initialLegacyState) => {
-    dispatch({
-      type: ActionT.RESET,
-      payload: { data: newDb }
-    });
+    dispatch(dbReset(newDb));
   };
   const setUnlockPassword = (pwd: string) => {
     dispatch(setPassword(pwd));

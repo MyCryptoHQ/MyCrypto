@@ -6,7 +6,7 @@ import { marshallState } from '@services/Store/DataManager/utils';
 import { omit } from '@vendor';
 
 import importSlice from './import.slice';
-import { ActionT } from './legacy.reducer';
+import { dbReset } from './legacy.reducer';
 import { exportState, importSaga, importState } from './reducer';
 
 describe('Import - Export', () => {
@@ -20,7 +20,7 @@ describe('Import - Export', () => {
     const importable = JSON.stringify(fLocalStorage);
     return expectSaga(importSaga)
       .withState({ legacy: APP_STATE })
-      .put({ type: ActionT.RESET, payload: { data: marshallState(fLocalStorage) } })
+      .put(dbReset(marshallState(fLocalStorage)))
       .dispatch(importState(importable))
       .silentRun();
   });
