@@ -1,4 +1,4 @@
-import { IS_DEV, IS_STAGING } from '@utils/environment';
+import { IS_DEV } from '@utils/environment';
 
 export type IFeatureFlags = typeof FEATURE_FLAGS;
 
