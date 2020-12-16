@@ -1,6 +1,6 @@
 import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
@@ -90,9 +90,7 @@ describe('fetchMembershipsSaga()', () => {
     { address: '0xfeac75a09662396283f4bb50f0a9249576a81866' }
   ] as StoreAccount[];
 
-  const initialState = {
-    legacy: { accounts, networks: fNetworks }
-  };
+  const initialState = mockAppState({ accounts, networks: fNetworks });
 
   it('can fetch memberships from provided accounts', () => {
     return (

@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
+import { mockAppState } from 'test-utils';
 
 import { fRates } from '@fixtures';
 import { TFiatTicker, TUuid } from '@types';
 
-import databaseSlice from './database.slice';
-import { AppState } from './root.reducer';
 import {
   addExcludedAsset,
   addFavorite,
@@ -25,21 +24,15 @@ import {
   default as slice
 } from './settings.slice';
 
-const withAppState = (sliceState: typeof initialState) => {
-  return ({
-    [databaseSlice.name]: { [slice.name]: sliceState }
-  } as unknown) as AppState;
-};
-
 const reducer = (sliceState: ReturnType<typeof slice.reducer> | undefined, action: AnyAction) => {
-  return withAppState(slice.reducer(sliceState, action));
+  return mockAppState({ [slice.name]: slice.reducer(sliceState, action) });
 };
 
 describe('settingsSlice', () => {
   it('has an initial state', () => {
     const actual = reducer(undefined, { type: null });
     const expected = initialState;
-    expect(actual).toEqual(withAppState(expected));
+    expect(actual).toEqual(mockAppState({ [slice.name]: expected }));
   });
 
   it('addFavorite(): adds an account uuid to favorites', () => {

@@ -1,11 +1,13 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
+import { AppState, databaseSlice } from '@store';
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { TAction } from '@types';
+import { APP_STATE } from '@fixtures';
+import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 
 import { ProvidersWrapper } from './providersWrapper';
@@ -51,3 +53,19 @@ export const createStore = <S>(reducer: (state: S, action: TAction<any, any>) =>
 export * from '@testing-library/react';
 export { ProvidersWrapper };
 export * from 'redux-saga-test-plan';
+
+/**
+ * Provides a mock state. Can mock the entire DataStore of a specific key.
+ */
+
+export function mockAppState(sliceState?: Partial<DataStore>): AppState {
+  if (sliceState) {
+    return ({
+      [databaseSlice.name]: sliceState
+    } as unknown) as AppState;
+  } else {
+    return ({
+      [databaseSlice.name]: APP_STATE
+    } as unknown) as AppState;
+  }
+}

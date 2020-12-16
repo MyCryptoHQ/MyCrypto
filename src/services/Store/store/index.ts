@@ -67,3 +67,4 @@ export {
   getDecryptionError
 } from './vault.slice';
 export { getAppState } from './selectors';
+export { default as databaseSlice } from './database.slice';
