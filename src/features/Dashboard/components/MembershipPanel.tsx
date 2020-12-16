@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import expiredIcon from '@assets/images/membership/membership-expired.svg';
 import defaultIcon from '@assets/images/membership/membership-none.svg';
 import { Button, DashboardPanel, Link, Typography } from '@components';
+import { TButtonColorScheme } from '@components/Button';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 import { AppState, getMemberships, getMembershipState, membershipExpiryDate } from '@store';
@@ -108,7 +109,9 @@ function MembershipPanel({
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
               <Link href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_INFO)} rel="noreferrer">
-                <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+                <SButton colorScheme={TButtonColorScheme.inverted}>
+                  {translateRaw('REQUEST_REWARDS')}
+                </SButton>
               </Link>
             </>
           )}

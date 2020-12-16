@@ -16,6 +16,7 @@ import {
   RouterLink,
   TxReceipt
 } from '@components';
+import { TButtonColorScheme } from '@components/Button';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
 import {
   FAUCET_NETWORKS,
@@ -249,7 +250,11 @@ export default function Faucet() {
                 })
               )}
             >
-              <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
+              <Button
+                colorScheme={TButtonColorScheme.inverted}
+                fullwidth={true}
+                className="TransactionReceipt-tweet"
+              >
                 <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
                 <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
               </Button>

@@ -8,18 +8,24 @@ import { COLORS, SPACING } from '@theme';
 import Spinner from './Spinner';
 import Typography from './Typography';
 
+export enum TButtonColorScheme {
+  'default',
+  'inverted',
+  'warning'
+}
+
 interface ButtonProps {
   children: React.ReactNode | string;
   fullwidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  inverted?: boolean;
+  colorScheme?: TButtonColorScheme;
 }
 
 interface StyledButtonProps {
   fullwidth?: boolean;
   disabled?: boolean;
-  inverted?: boolean;
+  colorScheme?: TButtonColorScheme;
   // Since using 'loading' causes warnings from React
   _loading?: boolean;
 }
@@ -49,7 +55,7 @@ const SButton = styled(Button)<StyledButtonProps>`
   }
 
   ${(props) =>
-    !props.inverted &&
+    props.colorScheme === TButtonColorScheme.default &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT};
 
@@ -59,7 +65,7 @@ const SButton = styled(Button)<StyledButtonProps>`
   `}
 
   ${(props) =>
-    props.inverted &&
+    props.colorScheme === TButtonColorScheme.inverted &&
     `
       background-color: ${COLORS.WHITE};
 
@@ -78,6 +84,34 @@ const SButton = styled(Button)<StyledButtonProps>`
 
       &:hover {
         background-color: ${COLORS.BLUE_LIGHT_DARKISH};
+      }
+      &:focus {
+        div > span {
+          color: ${COLORS.WHITE};
+        }
+      }
+  `}
+
+  ${(props) =>
+    props.colorScheme === TButtonColorScheme.warning &&
+    `
+      background-color: ${COLORS.WHITE};
+
+      div > span {
+        color: ${COLORS.WARNING_ORANGE};
+      }
+
+      &:hover {
+        div > span {
+          color: ${COLORS.WHITE};
+        }
+      }
+
+      border: 2px solid ${COLORS.WARNING_ORANGE};
+      border-radius: 3px;
+
+      &:hover {
+        background-color: ${COLORS.WARNING_ORANGE};
       }
       &:focus {
         div > span {

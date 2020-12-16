@@ -4,6 +4,7 @@ import { formatEther } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { Button, RouterLink, Tooltip } from '@components';
+import { TButtonColorScheme } from '@components/Button';
 import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -208,7 +209,9 @@ const TooltipWrapper = styled.div`
 `;
 
 const WithdrawButton = () => (
-  <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+  <ZapCardButton colorScheme={TButtonColorScheme.inverted}>
+    {translateRaw('WITHDRAW')}
+  </ZapCardButton>
 );
 
 interface Props {
@@ -300,12 +303,16 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
+            <ZapCardButton colorScheme={TButtonColorScheme.inverted}>
+              {translateRaw('ZAP_CARD_CTA')}
+            </ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton colorScheme={TButtonColorScheme.inverted}>
+                {translateRaw('ADD')}
+              </ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
               {config.withdrawTooltip ? (

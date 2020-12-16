@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
+import { TButtonColorScheme } from '@components/Button';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import {
@@ -163,7 +164,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               disableDynamicTxReceiptDisplay={true}
               disableAddTxToAccount={true}
             />
-            <Button onClick={clearForm} fullwidth={true} inverted={true}>
+            <Button onClick={clearForm} fullwidth={true} colorScheme={TButtonColorScheme.inverted}>
               {translateRaw('TX_STATUS_GO_BACK')}
             </Button>
           </>

@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode, toggleDemoMode } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Button, { TButtonColorScheme } from '@components/Button';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
@@ -82,14 +86,21 @@ const Info = styled.div<InfoProps>`
   }
 `;
 
-interface Props {
+interface WalletListProps {
   wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
   calculateMargin?(index: number): string;
 }
 
-export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
+const WalletList = ({
+  wallets,
+  onSelect,
+  showHeader,
+  calculateMargin,
+  toggleDemoMode,
+  isDemoMode
+}: Props) => {
   const trackSelectWallet = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT
   });
@@ -144,7 +155,33 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
             {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
           </Link>
         </Info>
+        <Link to={ROUTE_PATHS.DASHBOARD.path}>
+          <Button
+            colorScheme={TButtonColorScheme.warning}
+            disabled={isDemoMode}
+            onClick={() => toggleDemoMode(true)}
+          >
+            View Demo Mode
+          </Button>
+        </Link>
       </InfoWrapper>
     </div>
   );
 };
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      toggleDemoMode
+    },
+    dispatch
+  );
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type Props = ConnectedProps<typeof connector> & WalletListProps;
+
+export default connector(WalletList);

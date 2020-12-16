@@ -184,7 +184,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const topRef = useRef<any>(null);
-
   useLayoutEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
@@ -213,7 +212,12 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
       {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
-      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION} isDemoMode={isDemoMode}>
+      <SMain
+        className={className}
+        bgColor={bgColor}
+        newNav={featureFlags.NEW_NAVIGATION}
+        isDemoMode={isDemoMode}
+      >
         {isDemoMode && (
           <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
             <DemoBanner>
