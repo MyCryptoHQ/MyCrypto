@@ -72,11 +72,14 @@ export function* encryptionWorker({ payload: password }: PayloadAction<string>) 
 export function* decryptionWorker({ payload: passwordHash }: PayloadAction<string>) {
   const encryptedData = yield select(getEncryptedData);
   // Decrypt the data and store it to the MyCryptoCache
-  const decryptedData = yield call(decryptData, encryptedData, passwordHash);
-  if (isValidJSON(decryptedData)) {
+  try {
+    const decryptedData = yield call(decryptData, encryptedData, passwordHash);
+    if (!isValidJSON(decryptedData)) {
+      throw Error();
+    }
     yield put(clearEncryptedData());
     yield put(importState(decryptedData));
-  } else {
+  } catch {
     yield put(decryptError());
   }
 }
