@@ -1,4 +1,4 @@
-import { createAction, createReducer, createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { put } from 'redux-saga-test-plan/matchers';
 import { select, takeLatest } from 'redux-saga/effects';
@@ -30,13 +30,19 @@ const reducers = combineReducers({
  */
 export const appReset = createAction<DataStore>('app/Reset');
 
-const rootReducer = createReducer(reducers(undefined, { type: '' }), (builder) =>
-  builder
-    .addCase(appReset, (state, action) => {
-      state.database = { ...action.payload, _persist: state.database._persist };
-    })
-    .addDefaultCase((s, a) => reducers(s, a))
-);
+const rootReducer = (state = reducers(undefined, { type: '' }), action: AnyAction) => {
+  switch (action.type) {
+    case appReset.type: {
+      return {
+        ...state,
+        [databaseSlice.name]: { ...action.payload, _persist: state.database._persist }
+      };
+    }
+    default: {
+      return reducers(state, action);
+    }
+  }
+};
 
 export default rootReducer;
 
