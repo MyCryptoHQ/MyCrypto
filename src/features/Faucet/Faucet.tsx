@@ -13,6 +13,7 @@ import {
   ExtendedContentPanel,
   InlineMessage,
   NewTabLink,
+  RouterLink,
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
@@ -25,7 +26,7 @@ import {
 } from '@config';
 import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
 import { COLORS, SPACING } from '@theme';
-import translate, { translateRaw } from '@translations';
+import translate, { Trans, translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, Network, StoreAccount } from '@types';
 import { generateTweet, noOp, useStateReducer } from '@utils';
 
@@ -151,10 +152,21 @@ export default function Faucet() {
           </Fieldset>
           {validAccounts.length === 0 && (
             <NoTestnetAccounts type={InlineMessageType.ERROR}>
-              {translate('FAUCET_NO_ACCOUNTS', {
-                $link_add_account: ROUTE_PATHS.ADD_ACCOUNT.path,
-                $link_create_account: ROUTE_PATHS.CREATE_WALLET.path
-              })}
+              <Trans
+                id="FAUCET_NO_ACCOUNTS"
+                variables={{
+                  $link_add_account: () => (
+                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                      {translateRaw('FAUCET_ADD_ACCOUNT_LINK')}
+                    </RouterLink>
+                  ),
+                  $link_create_account: () => (
+                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                      {translateRaw('FAUCET_CREATE_ACCOUNT_LINK')}
+                    </RouterLink>
+                  )
+                }}
+              />
             </NoTestnetAccounts>
           )}
           <RequestButton
