@@ -28,7 +28,7 @@ const dbCombinedReducers = combineReducers({
 
 export const dbReset = createAction<DataStore>('app/Reset');
 
-const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
+const databaseReducer: Reducer<DataStore, PayloadAction<any>> = (
   state = initialLegacyState,
   action
 ) => {
@@ -42,4 +42,9 @@ const legacyReducer: Reducer<DataStore, PayloadAction<any>> = (
   }
 };
 
-export default legacyReducer;
+const slice = {
+  reducer: databaseReducer,
+  name: 'database'
+};
+
+export default slice;

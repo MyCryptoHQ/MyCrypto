@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { importState, exportState, getAppState, AppState, getPassword } from './root.reducer';
+export { importState, exportState, AppState, getPassword } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
@@ -66,3 +66,4 @@ export {
   clearEncryptedData,
   getDecryptionError
 } from './vault.slice';
+export { getAppState } from './selectors';

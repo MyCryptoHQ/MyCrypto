@@ -3,7 +3,8 @@ import { AnyAction } from 'redux';
 import { fRates } from '@fixtures';
 import { TFiatTicker, TUuid } from '@types';
 
-import { AppState, DATA_STATE_KEY } from './root.reducer';
+import databaseReducer from './database.reducer';
+import { AppState } from './root.reducer';
 import {
   addExcludedAsset,
   addFavorite,
@@ -26,7 +27,7 @@ import {
 
 const withAppState = (sliceState: typeof initialState) => {
   return ({
-    [DATA_STATE_KEY]: { [slice.name]: sliceState }
+    [databaseReducer.name]: { [slice.name]: sliceState }
   } as unknown) as AppState;
 };
 

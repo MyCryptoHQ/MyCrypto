@@ -1,21 +1,19 @@
-import { createAction, createSelector, PayloadAction, Selector } from '@reduxjs/toolkit';
+import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { put } from 'redux-saga-test-plan/matchers';
 import { select, takeLatest } from 'redux-saga/effects';
 
 import demoReducer from '@features/DevTools/slice';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
-import { DataStore } from '@types';
 
-import databaseReducer, { dbReset } from './database.reducer';
+import databaseSlice, { dbReset } from './database.reducer';
 import { canImport } from './helpers';
 import importSlice from './import.slice';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
+import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
 import vaultSlice from './vault.slice';
-
-export const DATA_STATE_KEY = 'legacy';
 
 const rootReducer = combineReducers({
   demo: demoReducer,
@@ -23,7 +21,7 @@ const rootReducer = combineReducers({
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
-  [DATA_STATE_KEY]: createPersistReducer(databaseReducer)
+  [databaseSlice.name as 'database']: createPersistReducer(databaseSlice.reducer)
 });
 
 export default rootReducer;
@@ -33,7 +31,6 @@ export type AppState = ReturnType<typeof rootReducer>;
 /**
  * Selectors
  */
-export const getAppState: Selector<AppState, DataStore> = (state) => state[DATA_STATE_KEY];
 export const getPassword = createSelector([getAppState], (s) => s.password);
 
 /**

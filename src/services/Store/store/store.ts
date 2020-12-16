@@ -43,7 +43,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
   // Activate HMR for store reducer
   // https://redux-toolkit.js.org/tutorials/advanced-tutorial#store-setup-and-hmr
   if (module.hot && IS_DEV) {
-    module.hot.accept('./reducer', () => {
+    module.hot.accept('./root.reducer', () => {
       // https://github.com/rt2zz/redux-persist/blob/master/docs/hot-module-replacement.md
       import('./root.reducer').then(({ default: nextReducer }) =>
         store.replaceReducer(nextReducer)
