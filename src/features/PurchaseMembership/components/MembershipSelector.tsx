@@ -43,7 +43,9 @@ export interface MembershipSelectorProps {
 }
 
 export default function MembershipSelector({ name, value, onSelect }: MembershipSelectorProps) {
-  const options: IMembershipConfig[] = Object.values(MEMBERSHIP_CONFIG);
+  const options: IMembershipConfig[] = Object.values(MEMBERSHIP_CONFIG).filter(
+    ({ disabled }) => !disabled
+  );
 
   return (
     <Selector<IMembershipConfig>

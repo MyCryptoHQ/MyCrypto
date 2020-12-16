@@ -22,6 +22,7 @@ export interface IMembershipConfig {
   assetUUID: string;
   durationInDays: number;
   discountNotice: string;
+  disabled?: boolean;
 }
 
 export type IMembershipConfigObject = {
@@ -77,9 +78,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: threemonthsIcon,
     price: '10.5',
     discount: '10',
+    disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 90,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '10%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~12.5%' })
   },
 
   sixmonths: {
@@ -90,9 +92,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     icon: sixMonthsIcon,
     price: '18',
     discount: '20',
+    disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 180,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '20%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~25%' })
   },
 
   twelvemonths: {
@@ -105,7 +108,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     discount: '40',
     assetUUID: DAIUUID,
     durationInDays: 366,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '40%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' })
   },
 
   lifetime: {
@@ -114,7 +117,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x098D8b363933D742476DDd594c4A5a5F1a62326a',
     description: '',
     icon: lifetimeIcon,
-    price: '5',
+    price: '2',
     assetUUID: ETHUUID,
     durationInDays: 36500,
     discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC')

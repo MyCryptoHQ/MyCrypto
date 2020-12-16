@@ -35,6 +35,7 @@ describe('MembershipSelector', () => {
 
     // Ensure each plan is displayed in the list.
     Object.values(MEMBERSHIP_CONFIG)
+      .filter(({ disabled }) => !disabled)
       .map((p) => p.title)
       .forEach((t) => expect(getByText(t)).toBeInTheDocument());
   });
