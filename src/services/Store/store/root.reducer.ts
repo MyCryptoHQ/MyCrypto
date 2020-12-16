@@ -6,7 +6,7 @@ import { select, takeLatest } from 'redux-saga/effects';
 import demoReducer from '@features/DevTools/slice';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 
-import databaseSlice, { dbReset } from './database.reducer';
+import databaseSlice, { dbReset } from './database.slice';
 import { canImport } from './helpers';
 import importSlice from './import.slice';
 import membershipSlice from './membership.slice';

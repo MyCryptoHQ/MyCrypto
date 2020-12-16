@@ -5,7 +5,7 @@ import { APP_STATE, fLocalStorage } from '@fixtures';
 import { marshallState } from '@services/Store/DataManager/utils';
 import { omit } from '@vendor';
 
-import { dbReset } from './database.reducer';
+import { dbReset } from './database.slice';
 import importSlice from './import.slice';
 import { exportState, importSaga, importState } from './root.reducer';
 

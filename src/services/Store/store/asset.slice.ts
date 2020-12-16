@@ -6,7 +6,7 @@ import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
-import { dbReset } from './database.reducer';
+import { dbReset } from './database.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
 

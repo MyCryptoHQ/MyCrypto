@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 
 import { getAppState, initialLegacyState, setPassword, useDispatch, useSelector } from '@store';
-import { dbReset } from '@store/database.reducer';
+import { dbReset } from '@store/database.slice';
 
 import { DataStore } from '@types';
 
