@@ -1051,6 +1051,7 @@
     "NAVIGATION_MIGRATE_LEND": "Migrate LEND",
     "NAVIGATION_FAUCET": "Use Testnet Faucet",
     "BROADCAST_TX_RAW_TOOLTIP": "This is the decoded values of your signed transaction input.",
-    "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now"
+    "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now.",
+    "DEMO_BUTTON_TEXT": "View Demo Mode"
   }
 }

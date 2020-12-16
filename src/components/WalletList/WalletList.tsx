@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, getIsDemoMode, toggleDemoMode } from '@store';
+import { AppState, getIsDemoMode, importState } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Button, { TButtonColorScheme } from '@components/Button';
-import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
@@ -86,6 +86,11 @@ const Info = styled.div<InfoProps>`
   }
 `;
 
+const SDemoButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 interface WalletListProps {
   wallets: IStory[];
   showHeader?: boolean;
@@ -98,13 +103,12 @@ const WalletList = ({
   onSelect,
   showHeader,
   calculateMargin,
-  toggleDemoMode,
-  isDemoMode
+  isDemoMode,
+  importState
 }: Props) => {
   const trackSelectWallet = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT
   });
-
   const selectWallet = (name: WalletId) => {
     trackSelectWallet({
       actionName: `${name} clicked`
@@ -155,15 +159,17 @@ const WalletList = ({
             {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
           </Link>
         </Info>
-        <Link to={ROUTE_PATHS.DASHBOARD.path}>
-          <Button
-            colorScheme={TButtonColorScheme.warning}
-            disabled={isDemoMode}
-            onClick={() => toggleDemoMode(true)}
-          >
-            View Demo Mode
-          </Button>
-        </Link>
+        <SDemoButtonContainer>
+          <Link to={ROUTE_PATHS.DASHBOARD.path}>
+            <Button
+              colorScheme={TButtonColorScheme.warning}
+              disabled={isDemoMode}
+              onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
+            >
+              {translateRaw('DEMO_BUTTON_TEXT')}
+            </Button>
+          </Link>
+        </SDemoButtonContainer>
       </InfoWrapper>
     </div>
   );
@@ -176,7 +182,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
-      toggleDemoMode
+      importState: importState
     },
     dispatch
   );
