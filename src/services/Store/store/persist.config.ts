@@ -148,6 +148,7 @@ export const createPersistReducer = (reducer: Reducer<DataStore>) =>
 const VAULT_PERSIST_CONFIG: PersistConfig<EncryptedDataStore> = {
   key: 'Vault',
   keyPrefix: 'MYC_',
+  blacklist: ['error'],
   storage,
   // @ts-expect-error: deserialize is redux-persist internal
   deserialize: customDeserializer,
