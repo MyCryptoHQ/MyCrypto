@@ -6,8 +6,8 @@ import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
-import { dbReset } from './database.slice';
 import { initialLegacyState } from './legacy.initialState';
+import { appReset } from './root.reducer';
 import { getAppState } from './selectors';
 
 const sliceName = LSKeys.ASSETS;
@@ -86,8 +86,8 @@ export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
 export function* assetSaga() {
   yield all([
     takeLatest(fetchAssets.type, fetchAssetsWorker),
-    // Trigger fetching assets on dbReset, is dispatched when resetting and importing new settings
-    takeLatest(dbReset.type, fetchAssetsWorker)
+    // Trigger fetching assets on appReset, is dispatched when resetting and importing new settings
+    takeLatest(appReset.type, fetchAssetsWorker)
   ]);
 }
 

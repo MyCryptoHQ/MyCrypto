@@ -4,9 +4,8 @@ import { fLocalStorage } from '@fixtures';
 import { marshallState } from '@services/Store/DataManager/utils';
 import { omit } from '@vendor';
 
-import { dbReset } from './database.slice';
 import importSlice from './import.slice';
-import { exportState, importSaga, importState } from './root.reducer';
+import { appReset, exportState, importSaga, importState } from './root.reducer';
 
 describe('Import - Export', () => {
   it('exportState(): returns the persistable state as a deMarshalled string', () => {
@@ -19,7 +18,7 @@ describe('Import - Export', () => {
     const importable = JSON.stringify(fLocalStorage);
     return expectSaga(importSaga)
       .withState(mockAppState())
-      .put(dbReset(marshallState(fLocalStorage)))
+      .put(appReset(marshallState(fLocalStorage)))
       .dispatch(importState(importable))
       .silentRun();
   });

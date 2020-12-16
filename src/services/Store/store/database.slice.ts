@@ -1,6 +1,4 @@
-import { combineReducers, createAction, PayloadAction, Reducer } from '@reduxjs/toolkit';
-
-import { DataStore } from '@types';
+import { combineReducers } from '@reduxjs/toolkit';
 
 import accountSlice from './account.slice';
 import assetSlice from './asset.slice';
@@ -26,24 +24,8 @@ const dbCombinedReducers = combineReducers({
   [passwordSlice.name]: passwordSlice.reducer
 });
 
-export const dbReset = createAction<DataStore>('app/Reset');
-
-const databaseReducer: Reducer<DataStore, PayloadAction<any>> = (
-  state = initialLegacyState,
-  action
-) => {
-  switch (action.type) {
-    case dbReset.type: {
-      return action.payload;
-    }
-    default: {
-      return dbCombinedReducers(state, action);
-    }
-  }
-};
-
 const slice = {
-  reducer: databaseReducer,
+  reducer: dbCombinedReducers,
   name: 'database'
 };
 

@@ -41,7 +41,9 @@ export {
   setMemberships,
   setMembership,
   deleteMembership,
-  fetchError
+  fetchError,
+  isMyCryptoMember,
+  getMembershipState
 } from './membership.slice';
 export {
   resetFavoritesTo,
@@ -68,3 +70,5 @@ export {
 } from './vault.slice';
 export { getAppState } from './selectors';
 export { default as databaseSlice } from './database.slice';
+export { appReset } from './root.reducer';
+export { getMemberships, membershipExpiryDate } from './membership.slice';

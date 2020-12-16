@@ -16,15 +16,15 @@ export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlo
   // Convert to Bigies so we can determine their expiry date.
   // @todo: prefer date-fns for time comparaisons.
   const expiries = pipe(
-    mapObjIndexed(mapObjIndexed(toString)),
-    mapObjIndexed(mapObjIndexed(bigify))
+    mapObjIndexed(mapObjIndexed(bigify)),
+    mapObjIndexed(mapObjIndexed(toString))
   )(timestamps);
 
   return Object.keys(expiries)
     .map((address: TAddress) => ({
       address,
       memberships: Object.keys(expiries[address])
-        .filter((contract) => expiries[address][contract].isGreaterThan(bigify(0)))
+        .filter((contract) => expiries[address][contract] !== '0')
         .map((contract) => ({
           type: MEMBERSHIP_CONTRACTS[contract],
           expiry: expiries[address][contract]

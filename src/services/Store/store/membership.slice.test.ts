@@ -7,7 +7,6 @@ import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { accountWithMembership, fNetworks } from '@fixtures';
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
-import { bigify } from '@utils';
 
 import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
 
@@ -79,8 +78,8 @@ describe('fetchMembershipsSaga()', () => {
     {
       address: accountWithMembership,
       memberships: [
-        { expiry: bigify('1590743978'), type: 'onemonth' },
-        { expiry: bigify('1609372800'), type: 'lifetime' }
+        { expiry: '1590743978', type: 'onemonth' },
+        { expiry: '1609372800', type: 'lifetime' }
       ]
     } as MembershipStatus
   ];

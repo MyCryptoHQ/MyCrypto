@@ -1,5 +1,3 @@
-import { BigNumber } from 'bignumber.js';
-
 import step2SVG from '@assets/images/icn-receive.svg';
 import step1SVG from '@assets/images/icn-send.svg';
 import lifetimeIcon from '@assets/images/membership/membership-lifetime.svg';
@@ -43,7 +41,7 @@ export interface MembershipStatus {
 
 export interface MembershipExpiry {
   type: IMembershipId;
-  expiry: BigNumber;
+  expiry: string;
 }
 
 export enum IMembershipId {

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 
+import { membershipExpiryDate, useSelector } from '@store';
 import flatten from 'ramda/src/flatten';
 import uniq from 'ramda/src/uniq';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -66,8 +67,8 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
 
 type Props = RouteComponentProps;
 function MembershipPanel({ history }: Props) {
-  const { membershipState, memberships, membershipExpirations } = useContext(StoreContext);
-
+  const { membershipState, memberships } = useContext(StoreContext);
+  const expiryDate = useSelector(membershipExpiryDate);
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
   const allMemberships = memberships ? uniq(flatten(memberships.map((m) => m.memberships))) : [];
@@ -100,11 +101,7 @@ function MembershipPanel({ history }: Props) {
             <>
               <ExpiryWrapper>
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
-                <Typography as="div">
-                  {new Date(
-                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
-                  ).toLocaleDateString()}
-                </Typography>
+                <Typography as="div">{new Date(expiryDate).toLocaleDateString()}</Typography>
               </ExpiryWrapper>
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
@@ -126,11 +123,7 @@ function MembershipPanel({ history }: Props) {
             <>
               <ExpiryWrapper>
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>
-                <Typography as="div">
-                  {new Date(
-                    Math.max(...membershipExpirations.map((e) => e.toNumber())) * 1000
-                  ).toLocaleDateString()}
-                </Typography>
+                <Typography as="div">{new Date(expiryDate).toLocaleDateString()}</Typography>
               </ExpiryWrapper>
               <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('RENEW_MEMBERSHIP')}

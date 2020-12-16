@@ -1,12 +1,13 @@
-import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createReducer, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { put } from 'redux-saga-test-plan/matchers';
 import { select, takeLatest } from 'redux-saga/effects';
 
 import demoReducer from '@features/DevTools/slice';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
+import { DataStore } from '@types';
 
-import databaseSlice, { dbReset } from './database.slice';
+import databaseSlice from './database.slice';
 import { canImport } from './helpers';
 import importSlice from './import.slice';
 import membershipSlice from './membership.slice';
@@ -15,7 +16,7 @@ import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
 import vaultSlice from './vault.slice';
 
-const rootReducer = combineReducers({
+const reducers = combineReducers({
   demo: demoReducer,
   [importSlice.name]: importSlice.reducer,
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
@@ -23,6 +24,19 @@ const rootReducer = combineReducers({
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
   [databaseSlice.name as 'database']: createPersistReducer(databaseSlice.reducer)
 });
+
+/**
+ * Actions
+ */
+export const appReset = createAction<DataStore>('app/Reset');
+
+const rootReducer = createReducer(reducers(undefined, { type: '' }), (builder) =>
+  builder
+    .addCase(appReset, (state, action) => {
+      state.database = { ...action.payload, _persist: state.database._persist };
+    })
+    .addDefaultCase((s, a) => reducers(s, a))
+);
 
 export default rootReducer;
 
@@ -51,7 +65,7 @@ function* importWorker({ payload }: PayloadAction<string>) {
     if (!canImport(json, persistable)) {
       throw new Error('Invalid import file');
     }
-    yield put(dbReset(marshallState(json)));
+    yield put(appReset(marshallState(json)));
     yield put(importSlice.actions.success());
   } catch (err) {
     yield put(importSlice.actions.error(err));
