@@ -81,18 +81,12 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
     //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
     //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
-    if (
-      this.state.shouldAutoLock &&
-      this.props.password &&
-      !(this.props.encryptedDbState && this.props.encryptedDbState.data)
-    ) {
+    if (this.state.shouldAutoLock && this.props.password && !this.props.isEncrypted) {
       this.props.encrypt(this.props.password);
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
-    }
-
-    // After decrypt with valid password, reset db and
-    if (!this.props.isEncrypted && this.state.locked) {
+    } else if (!this.props.isEncrypted && this.state.locked) {
+      // After decrypt with valid password, reset db and
       this.redirectOut();
     }
   }
