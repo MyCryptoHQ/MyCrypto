@@ -1,6 +1,6 @@
 import { DataStore } from '@types';
 
-import databaseSlice from './database.slice';
+import persistanceSlice from './persistance.slice';
 import { AppState } from './root.reducer';
 
-export const getAppState = (s: AppState): DataStore => s[databaseSlice.name as 'database'];
+export const getAppState = (s: AppState): DataStore => s[persistanceSlice.name as 'database'];

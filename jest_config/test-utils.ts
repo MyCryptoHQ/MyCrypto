@@ -1,6 +1,6 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
-import { AppState, databaseSlice } from '@store';
+import { AppState, persistanceSlice } from '@store';
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
@@ -61,11 +61,11 @@ export * from 'redux-saga-test-plan';
 export function mockAppState(sliceState?: Partial<DataStore>): AppState {
   if (sliceState) {
     return ({
-      [databaseSlice.name]: sliceState
+      [persistanceSlice.name]: sliceState
     } as unknown) as AppState;
   } else {
     return ({
-      [databaseSlice.name]: APP_STATE
+      [persistanceSlice.name]: APP_STATE
     } as unknown) as AppState;
   }
 }

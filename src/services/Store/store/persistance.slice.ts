@@ -11,7 +11,7 @@ import passwordSlice from './password.slice';
 import settingsSlice from './settings.slice';
 import userActionSlice from './userAction.slice';
 
-const dbCombinedReducers = combineReducers({
+const persistanceReducer = combineReducers({
   version: () => initialLegacyState.version,
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
@@ -25,7 +25,7 @@ const dbCombinedReducers = combineReducers({
 });
 
 const slice = {
-  reducer: dbCombinedReducers,
+  reducer: persistanceReducer,
   name: 'database'
 };
 
