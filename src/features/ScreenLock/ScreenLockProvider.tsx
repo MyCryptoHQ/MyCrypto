@@ -127,9 +127,9 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    const { encryptedDbState } = this.props;
+    const { isEncrypted } = this.props;
 
-    if (encryptedDbState && encryptedDbState.data) {
+    if (isEncrypted) {
       this.lockScreen();
     }
     this.trackInactivity();
