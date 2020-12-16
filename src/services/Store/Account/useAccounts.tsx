@@ -10,6 +10,8 @@ import {
   createAccount,
   createAccounts,
   destroyAccount,
+  resetAndCreateAccount,
+  resetAndCreateManyAccounts,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
@@ -32,7 +34,7 @@ import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameF
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(uuid: TUuid, accountData: IRawAccount): void;
+  createAccountWithID(uuid: TUuid, accountData: IRawAccount, isDemoMode?: boolean): void;
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
@@ -54,14 +56,19 @@ function useAccounts() {
     actionName: 'Tx Made'
   });
 
-  const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
-    addAccountToFavorites(uuid);
-    dispatch(createAccount({ ...item, uuid }));
+  const createAccountWithID = (uuid: TUuid, item: IRawAccount, isDemoMode?: boolean) => {
+    addAccountToFavorites(uuid, isDemoMode);
+    dispatch(
+      isDemoMode ? resetAndCreateAccount({ ...item, uuid }) : createAccount({ ...item, uuid })
+    );
   };
 
-  const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
-    addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
-    dispatch(createAccounts(newAccounts));
+  const createMultipleAccountsWithIDs = (newAccounts: IAccount[], isDemoMode?: boolean) => {
+    addMultipleAccountsToFavorites(
+      newAccounts.map(({ uuid }) => uuid),
+      isDemoMode
+    );
+    dispatch(isDemoMode ? resetAndCreateManyAccounts(newAccounts) : createAccounts(newAccounts));
   };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));

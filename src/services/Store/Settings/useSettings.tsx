@@ -35,12 +35,16 @@ function useSettings() {
   const dispatch = useDispatch();
   const language = settings.language || '';
 
-  const addAccountToFavorites = (account: TUuid) => {
-    dispatch(addFavorite(account));
+  const addAccountToFavorites = (account: TUuid, isDemoMode?: boolean) => {
+    // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding account
+    isDemoMode && toggleDemo(false);
+    dispatch(isDemoMode ? resetFavoritesTo([account]) : addFavorite(account));
   };
 
-  const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
-    dispatch(addFavorites(accounts));
+  const addMultipleAccountsToFavorites = (accounts: TUuid[], isDemoMode?: boolean) => {
+    // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding accounts
+    isDemoMode && toggleDemo(false);
+    dispatch(isDemoMode ? resetFavoritesTo(accounts) : addFavorites(accounts));
   };
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {

@@ -461,7 +461,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           createContact(newLabel);
         }
       });
-      createMultipleAccountsWithIDs(newRawAccounts);
+      createMultipleAccountsWithIDs(newRawAccounts, settings.isDemoMode); // todo - does this need a selector?
       return newRawAccounts;
     },
     getAssetByTicker: getAssetByTicker(assets),

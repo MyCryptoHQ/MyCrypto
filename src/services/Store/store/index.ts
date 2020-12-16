@@ -10,6 +10,8 @@ export { setPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
+  resetAndCreateAccount,
+  resetAndCreateManyAccounts,
   destroyAccount,
   updateAccount,
   updateAccounts

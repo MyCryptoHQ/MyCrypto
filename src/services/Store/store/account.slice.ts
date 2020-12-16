@@ -22,6 +22,16 @@ const slice = createSlice({
         state.push(a);
       });
     },
+    resetAndCreate(_, action: PayloadAction<IAccount>) {
+      return [action.payload];
+    },
+    resetAndCreateMany(_, action: PayloadAction<IAccount[]>) {
+      const newState = [] as IAccount[];
+      action.payload.forEach((a) => {
+        newState.push(a);
+      });
+      return newState;
+    },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);
       state.splice(idx, 1);
@@ -53,6 +63,8 @@ const slice = createSlice({
 export const {
   create: createAccount,
   createMany: createAccounts,
+  resetAndCreate: resetAndCreateAccount,
+  resetAndCreateMany: resetAndCreateManyAccounts,
   destroy: destroyAccount,
   update: updateAccount,
   updateMany: updateAccounts,
