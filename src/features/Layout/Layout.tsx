@@ -1,14 +1,26 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import { Banner } from '@components';
+import { ROUTE_PATHS } from '@config';
 import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
-import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
-import translate from '@translations';
+import {
+  BREAK_POINTS,
+  COLORS,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  MAX_CONTENT_WIDTH,
+  MIN_CONTENT_PADDING,
+  SPACING
+} from '@theme';
+import translate, { translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
 
@@ -24,7 +36,7 @@ export interface LayoutConfig {
   bgColor?: string;
   paddingV?: string;
 }
-interface Props {
+interface LayoutProps {
   config?: LayoutConfig;
   className?: string;
   children: any;
@@ -32,7 +44,7 @@ interface Props {
 
 // Homepage 'home' creates an unidentified overflow on the x axis.
 // We use layout to disable it here.
-const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
+const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: boolean }>`
   ${(p) =>
     p.newNav &&
     css`
@@ -43,6 +55,16 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
         margin-bottom: 57px;
       }
     `}
+  ${({ isDemoMode }) =>
+    isDemoMode &&
+    `
+    border: 8px solid ${COLORS.WARNING_ORANGE};
+    box-sizing: border-box;
+
+    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+      border: ${SPACING.XS} solid ${COLORS.WARNING_ORANGE};
+    }
+  `}
   overflow-x: hidden;
   min-width: 350px;
   background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
@@ -124,13 +146,33 @@ const CenteredBannerText = styled.div`
   }
 `;
 
+const DemoBanner = styled.div`
+  position: absolute;
+  background: ${COLORS.WARNING_ORANGE};
+  & p {
+    font-weight: bold;
+    font-size: ${FONT_SIZE.MD};
+    margin: ${LINE_HEIGHT.XXS} ${LINE_HEIGHT.BASE} ${LINE_HEIGHT.BASE} ${LINE_HEIGHT.XXS};
+    line-height: ${LINE_HEIGHT.XL};
+    color: ${COLORS.WHITE};
+    align-items: center;
+    text-align: center;
+
+    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+      line-height: ${LINE_HEIGHT.SM};
+      font-size: ${FONT_SIZE.SM};
+      margin: ${SPACING.NONE} ${SPACING.XS} ${SPACING.XS} ${SPACING.NONE};
+    }
+  }
+`;
+
 export const ANNOUNCEMENT_MSG = () => (
   <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
 );
 
 const announcementMessage = ANNOUNCEMENT_MSG();
 
-export default function Layout({ config = {}, className = '', children }: Props) {
+const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { featureFlags } = useFeatureFlags();
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
@@ -160,7 +202,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   }, [topRef.current]);
 
   const APP_ROUTES = getAppRoutesObject(featureFlags);
-
   return (
     <>
       {featureFlags.NEW_NAVIGATION && isMobile && (
@@ -172,7 +213,14 @@ export default function Layout({ config = {}, className = '', children }: Props)
       {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
-      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
+      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION} isDemoMode={isDemoMode}>
+        {isDemoMode && (
+          <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+            <DemoBanner>
+              <p>{translateRaw('DEMO_BANNER')}</p>
+            </DemoBanner>
+          </Link>
+        )}
         <STop newNav={featureFlags.NEW_NAVIGATION}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
@@ -215,4 +263,15 @@ export default function Layout({ config = {}, className = '', children }: Props)
       </SMain>
     </>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & LayoutProps;
+
+export default connector(Layout);

@@ -57,7 +57,9 @@ export {
   setRates,
   getRates,
   getInactivityTimer,
-  setInactivityTimer
+  setInactivityTimer,
+  toggleDemoMode,
+  getIsDemoMode
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';

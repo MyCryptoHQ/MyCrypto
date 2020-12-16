@@ -63,6 +63,7 @@ export const FONT_SIZE = {
 };
 
 export const LINE_HEIGHT = {
+  XXS: '8px',
   XS: '12px',
   SM: '14px',
   BASE: '16px',

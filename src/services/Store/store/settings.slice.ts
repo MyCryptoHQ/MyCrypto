@@ -40,6 +40,9 @@ const slice = createSlice({
     },
     setInactivityTimer(state, action: PayloadAction<number>) {
       state.inactivityTimer = action.payload;
+    },
+    toggleDemoMode(state, action: PayloadAction<boolean>) {
+      state.isDemoMode = action.payload;
     }
   }
 });
@@ -53,7 +56,8 @@ export const {
   addExcludedAsset,
   removeExcludedAsset,
   setRates,
-  setInactivityTimer
+  setInactivityTimer,
+  toggleDemoMode
 } = slice.actions;
 
 export default slice;
@@ -68,7 +72,7 @@ export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
 export const getRates = createSelector(getSettings, (s) => s.rates);
 export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
-
+export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
 /**
  * Sagas
  */

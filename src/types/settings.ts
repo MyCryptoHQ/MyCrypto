@@ -11,4 +11,5 @@ export interface ISettings {
   node?: string;
   rates: IRates;
   language: string; // @todo: Change to enum
+  isDemoMode: boolean;
 }

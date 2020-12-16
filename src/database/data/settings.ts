@@ -7,5 +7,6 @@ export const defaultSettings = {
   excludedAssets: [],
   inactivityTimer: 1800000,
   rates: {},
-  language: 'en'
+  language: 'en',
+  isDemoMode: false
 };

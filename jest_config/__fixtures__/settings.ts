@@ -12,5 +12,6 @@ export const fSettings: ISettings = {
       eur: 179.88
     }
   },
-  language: 'en'
+  language: 'en',
+  isDemoMode: false
 };

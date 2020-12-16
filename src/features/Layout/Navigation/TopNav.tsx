@@ -31,7 +31,7 @@ export const TopNav = ({
       justifyContent="flex-end"
       ml={SPACING.BASE}
       mb={SPACING.BASE}
-      mt={SPACING.MD}
+      mt={SPACING.LG}
       mr={SPACING.XS}
     >
       {isMobile && (

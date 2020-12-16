@@ -12,6 +12,7 @@ import {
   getFavorites,
   getFiat,
   getInactivityTimer,
+  getIsDemoMode,
   getLanguage,
   getRates,
   initialState,
@@ -21,7 +22,8 @@ import {
   setInactivityTimer,
   setLanguage,
   setRates,
-  default as slice
+  default as slice,
+  toggleDemoMode
 } from './settings.slice';
 
 const reducer = (sliceState: ReturnType<typeof slice.reducer> | undefined, action: AnyAction) => {
@@ -99,5 +101,11 @@ describe('settingsSlice', () => {
     );
     const expected = ['uuid1', 'uuid3'];
     expect(getExcludedAssets(actual)).toEqual(expected);
+  });
+
+  it('toggleDemomode(), toggles demo mode in settings', () => {
+    const actual = reducer({ ...initialState, isDemoMode: false }, toggleDemoMode(true));
+    const expected = true;
+    expect(getIsDemoMode(actual)).toEqual(expected);
   });
 });
