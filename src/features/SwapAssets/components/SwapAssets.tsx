@@ -40,6 +40,7 @@ interface Props {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
+  txError: Error | undefined;
   initialToAmount: string;
   exchangeRate: string;
   markup: string;
@@ -69,6 +70,7 @@ export default function SwapAssets(props: Props) {
     isCalculatingToAmount,
     fromAmountError,
     toAmountError,
+    txError,
     onSuccess,
     isSubmitting,
     handleFromAssetSelected,
@@ -255,6 +257,11 @@ export default function SwapAssets(props: Props) {
       >
         {translate('ACTION_6')}
       </StyledButton>
+      {txError && (
+        <InlineMessage>
+          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: txError.message })}
+        </InlineMessage>
+      )}
     </Box>
   );
 }

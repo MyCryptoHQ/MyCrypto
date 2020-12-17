@@ -80,7 +80,8 @@ export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMu
     case ActionTypes.PREPARE_TX_FAILURE: {
       return {
         ...state,
-        ...(error && { error: payload })
+        ...(error && { error: payload }),
+        isSubmitting: false
       };
     }
     case ActionTypes.SEND_TX_SUCCESS: {
