@@ -20,7 +20,7 @@
         "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
         "pathGroups": [
           {
-            "pattern": "@{assets,components,config,database,fixtures,features,helpers,hooks,routing,sass,services,theme,translations,types,utils,vendor,workers}{**,**/**}",
+            "pattern": "@{assets,components,config,database,fixtures,features,helpers,hooks,routing,sass,services,store,theme,translations,types,utils,vendor,workers}{**,**/**}",
             "group": "internal"
           },
           {
