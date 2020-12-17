@@ -2,9 +2,10 @@ import { translateRaw } from '@translations';
 
 import { ErrorWithId, LedgerError, U2FError } from './types';
 
-const isU2FError = (err: LedgerError): err is U2FError => !!err && !!(err as U2FError).metaData;
-const isStringError = (err: LedgerError): err is string => typeof err === 'string';
-const isErrorWithId = (err: LedgerError): err is ErrorWithId =>
+export const isU2FError = (err: LedgerError): err is U2FError =>
+  !!err && !!(err as U2FError).metaData;
+export const isStringError = (err: LedgerError): err is string => typeof err === 'string';
+export const isErrorWithId = (err: LedgerError): err is ErrorWithId =>
   Object.prototype.hasOwnProperty.call(err, 'id') &&
   Object.prototype.hasOwnProperty.call(err, 'message');
 
