@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
-import { COLORS, monospace } from '@theme';
+import { COLORS, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 
@@ -88,6 +88,11 @@ const WriteFormWrapper = styled.div`
   flex-direction: column;
   width: 100%;
 `;
+
+const ErrorMessage = styled(InlineMessage)`
+  padding-top: ${SPACING.XS};
+`;
+
 interface Props {
   abi: ABIItem[];
   account: StoreAccount;
@@ -331,9 +336,9 @@ export default function GeneratedInteractionForm({
             </ActionWrapper>
             <SpinnerWrapper>{isLoading && <Spinner size={2} />}</SpinnerWrapper>
             {error && (
-              <InlineMessage>
+              <ErrorMessage>
                 {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
-              </InlineMessage>
+              </ErrorMessage>
             )}
           </>
         )}
