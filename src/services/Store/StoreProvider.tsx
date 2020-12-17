@@ -66,7 +66,7 @@ import {
   useAssets
 } from './Asset';
 import { getAccountsAssetsBalances } from './BalanceService';
-import { findNextUnusedDefaultLabel, useContacts } from './Contact';
+import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import {
   getPendingTransactionsFromAccounts,
@@ -119,12 +119,6 @@ export interface State {
     walletId: WalletId | undefined,
     accounts: IAccountAdditionData[]
   ): IAccount[] | undefined;
-  addAccount(
-    networkId: NetworkId,
-    address: string,
-    accountType: WalletId | undefined,
-    dPath: string
-  ): IRawAccount | undefined;
   getAssetByTicker(ticker: TTicker): Asset | undefined;
   getAccount(a: IRawAccount): StoreAccount | undefined;
   getDeFiAssetReserveAssets(
@@ -493,50 +487,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       });
       createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
-    },
-    addAccount: (
-      networkId: NetworkId,
-      address: TAddress,
-      accountType: WalletId | undefined,
-      dPath: string
-    ) => {
-      const network: Network | undefined = getNetworkById(networkId, networks);
-      if (!network || !address || !!getAccountByAddressAndNetworkName(address, networkId)) return;
-
-      const walletType =
-        accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
-      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-      const accountUUID = generateDeterministicAddressUUID(networkId, address);
-      const account: IRawAccount = {
-        address,
-        networkId,
-        wallet: walletType,
-        dPath,
-        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
-        transactions: [],
-        favorite: false,
-        mtime: 0
-      };
-
-      const existingContact = getContactByAddressAndNetworkId(account.address, networkId);
-      if (existingContact) {
-        updateContact({
-          ...existingContact,
-          label: findNextUnusedDefaultLabel(account.wallet)(contacts)
-        });
-      } else {
-        const newLabel = {
-          label: findNextUnusedDefaultLabel(account.wallet)(contacts),
-          address: account.address,
-          notes: '',
-          network: account.networkId,
-          uuid: generateUUID()
-        };
-        createContact(newLabel);
-      }
-      createAccountWithID(accountUUID, account);
-
-      return account;
     },
     getAssetByTicker: getAssetByTicker(assets),
     getAccount: ({ address, networkId }) =>

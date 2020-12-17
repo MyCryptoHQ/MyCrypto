@@ -47,9 +47,6 @@ const getUnusedLabel = (contacts: Contact[], generateLabel: (index: number) => s
   return unusedLabel;
 };
 
-export const findNextUnusedDefaultLabel = (wallet: WalletId) => (contacts: Contact[]): string =>
-  getUnusedLabel(contacts, (index) => `${getWalletConfig(wallet).name} Account ${index}`);
-
 export const findMultipleNextUnusedDefaultLabels = (wallet: WalletId, numOfLabels: number) => (
   contacts: Contact[]
 ): string[] => {
