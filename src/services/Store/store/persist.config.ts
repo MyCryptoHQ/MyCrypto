@@ -18,7 +18,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
-import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
+import { DataStore, EncryptedDataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
 import { flatten, pipe, values } from '@vendor';
 
@@ -144,3 +144,16 @@ const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
   persistReducer(APP_PERSIST_CONFIG, reducer);
+
+const VAULT_PERSIST_CONFIG: PersistConfig<EncryptedDataStore> = {
+  key: 'Vault',
+  keyPrefix: 'MYC_',
+  blacklist: ['error'],
+  storage,
+  // @ts-expect-error: deserialize is redux-persist internal
+  deserialize: customDeserializer,
+  debug: IS_DEV
+};
+
+export const createVaultReducer = (reducer: Reducer) =>
+  persistReducer(VAULT_PERSIST_CONFIG, reducer);

@@ -57,4 +57,5 @@ export interface DataStore {
 
 export interface EncryptedDataStore {
   readonly data?: string;
+  readonly error?: boolean;
 }

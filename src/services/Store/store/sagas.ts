@@ -7,6 +7,7 @@ import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
 import { importSaga } from './reducer';
 import { scanTokensSaga } from './tokenScanning.slice';
+import { vaultSaga } from './vault.slice';
 
 export default function* rootSaga() {
   yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
     networkSaga(),
     assetSaga(),
     importSaga(),
-    scanTokensSaga()
+    scanTokensSaga(),
+    vaultSaga()
   ]);
 }
