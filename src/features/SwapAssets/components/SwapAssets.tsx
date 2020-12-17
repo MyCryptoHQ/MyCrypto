@@ -1,5 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
@@ -8,6 +11,7 @@ import {
   Body,
   Box,
   Button,
+  DemoGatewayBanner,
   InlineMessage,
   InputField,
   Tooltip
@@ -29,7 +33,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-interface Props {
+interface ISwapProps {
   account: StoreAccount;
   fromAmount: string;
   toAmount: string;
@@ -58,7 +62,7 @@ interface Props {
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
-export default function SwapAssets(props: Props) {
+export const SwapAssets = (props: Props) => {
   const {
     account,
     fromAmount,
@@ -81,7 +85,8 @@ export default function SwapAssets(props: Props) {
     handleToAmountChanged,
     handleAccountSelected,
     exchangeRate,
-    markup
+    markup,
+    isDemoMode
   } = props;
 
   const { accounts, userAssets } = useContext(StoreContext);
@@ -150,6 +155,7 @@ export default function SwapAssets(props: Props) {
 
   return (
     <Box mt="20px" mb="1em">
+      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
       <Box display="flex">
         <Box mr="1em" flex="1">
           <InputField
@@ -245,6 +251,7 @@ export default function SwapAssets(props: Props) {
       <StyledButton
         onClick={onSuccess}
         disabled={
+          isDemoMode ||
           !account ||
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
@@ -264,4 +271,15 @@ export default function SwapAssets(props: Props) {
       )}
     </Box>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & ISwapProps;
+
+export default connector(SwapAssets);

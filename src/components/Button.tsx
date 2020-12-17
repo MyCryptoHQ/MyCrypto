@@ -55,11 +55,17 @@ const SButton = styled(Button)<StyledButtonProps>`
   }
 
   ${(props) =>
+    props.disabled &&
+    `
+      cursor: default;
+    `}
+
+  ${(props) =>
     props.colorScheme === TButtonColorScheme.default &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT};
 
-      :hover {
+      &:hover {
         background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
       }
   `}
@@ -67,27 +73,27 @@ const SButton = styled(Button)<StyledButtonProps>`
   ${(props) =>
     props.colorScheme === TButtonColorScheme.inverted &&
     `
-      background-color: ${COLORS.WHITE};
+      background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
 
       div > span {
-        color: ${COLORS.BLUE_LIGHT_DARKISH};
+        color:  ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
       }
 
       &:hover {
         div > span {
-          color: ${COLORS.WHITE};
+          color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
         }
       }
 
-      border: 2px solid ${COLORS.BLUE_LIGHT_DARKISH};
+      border: 2px solid ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
       border-radius: 3px;
 
       &:hover {
-        background-color: ${COLORS.BLUE_LIGHT_DARKISH};
+        background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
       }
       &:focus {
         div > span {
-          color: ${COLORS.WHITE};
+          color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
         }
       }
   `}
@@ -95,10 +101,10 @@ const SButton = styled(Button)<StyledButtonProps>`
   ${(props) =>
     props.colorScheme === TButtonColorScheme.warning &&
     `
-      background-color: ${COLORS.WHITE};
+      background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
 
       div > span {
-        color: ${COLORS.WARNING_ORANGE};
+        color: ${props.disabled ? COLORS.WHITE : COLORS.WARNING_ORANGE};
       }
 
       &:hover {
@@ -107,11 +113,11 @@ const SButton = styled(Button)<StyledButtonProps>`
         }
       }
 
-      border: 2px solid ${COLORS.WARNING_ORANGE};
+      border: 2px solid ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WARNING_ORANGE};
       border-radius: 3px;
 
       &:hover {
-        background-color: ${COLORS.WARNING_ORANGE};
+        background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WARNING_ORANGE};
       }
       &:focus {
         div > span {
@@ -128,9 +134,15 @@ const SButton = styled(Button)<StyledButtonProps>`
     `}
 `;
 
-function StyledButton({ children, disabled, loading, ...props }: Props) {
+function StyledButton({
+  children,
+  disabled,
+  loading,
+  colorScheme = TButtonColorScheme.default,
+  ...props
+}: Props) {
   return (
-    <SButton disabled={disabled || loading} _loading={loading} {...props}>
+    <SButton disabled={disabled || loading} _loading={loading} colorScheme={colorScheme} {...props}>
       <Wrapper>
         {loading && (
           <LoadingSpinnerWrapper>

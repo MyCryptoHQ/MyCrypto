@@ -1,7 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode } from '@store';
 import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 
@@ -10,6 +13,7 @@ import {
   AmountInput,
   Box,
   Button,
+  DemoGatewayBanner,
   InlineMessage,
   Label,
   Tooltip
@@ -49,6 +53,7 @@ interface UIProps {
   isSubmitting: boolean;
   error?: Error;
   tokenMigrationConfig: ITokenMigrationConfig;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -64,6 +69,7 @@ const TokenMigrationForm = ({
   tokenMigrationConfig,
   isSubmitting,
   error,
+  isDemoMode,
   onComplete
 }: TokenMigrationProps) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
@@ -85,6 +91,7 @@ const TokenMigrationForm = ({
       error={error}
       tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
+      isDemoMode={isDemoMode}
     />
   );
 };
@@ -97,7 +104,8 @@ export const TokenMigrationFormUI = ({
   storeDefaultAccount,
   defaultAsset,
   tokenMigrationConfig,
-  onComplete
+  onComplete,
+  isDemoMode
 }: UIProps) => {
   const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
     account: storeDefaultAcc,
@@ -167,6 +175,7 @@ export const TokenMigrationFormUI = ({
 
   return (
     <>
+      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
       <Box mb={SPACING.LG}>
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector
@@ -210,7 +219,7 @@ export const TokenMigrationFormUI = ({
             });
           }
         }}
-        disabled={!isFormValid}
+        disabled={!isFormValid || isDemoMode}
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
@@ -221,4 +230,13 @@ export const TokenMigrationFormUI = ({
   );
 };
 
-export default TokenMigrationForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & TokenMigrationProps;
+
+export default connector(TokenMigrationForm);

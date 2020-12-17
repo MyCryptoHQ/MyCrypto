@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode } from '@store';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
   AccountSelector,
   Button,
+  DemoGatewayBanner,
   GasSelector,
   InlineMessage,
   InputField,
@@ -15,7 +19,6 @@ import {
   Typography
 } from '@components';
 import { StoreContext } from '@services';
-import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
 import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
@@ -62,7 +65,7 @@ const CustomLabel = styled(Typography)`
 const formatGasPrice = (gasPrice: string) =>
   gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
 
-interface Props {
+interface DeployProps {
   networkId: NetworkId;
   byteCode: string;
   account: StoreAccount;
@@ -74,7 +77,7 @@ interface Props {
   handleByteCodeChanged(byteCode: string): void;
 }
 
-export default function Deploy(props: Props) {
+export const Deploy = (props: Props) => {
   const {
     networkId,
     byteCode,
@@ -84,7 +87,8 @@ export default function Deploy(props: Props) {
     handleDeploySubmit,
     handleAccountSelected,
     handleGasSelectorChange,
-    handleByteCodeChanged
+    handleByteCodeChanged,
+    isDemoMode
   } = props;
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
@@ -133,6 +137,7 @@ export default function Deploy(props: Props) {
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
       <NetworkSelectorWrapper>
         <NetworkSelector
           network={networkId}
@@ -186,10 +191,21 @@ export default function Deploy(props: Props) {
       )}
 
       <ButtonWrapper>
-        <Button color={COLORS.WHITE} onClick={deploySubmit}>
+        <Button disabled={isDemoMode} onClick={deploySubmit}>
           {translateRaw('NAV_DEPLOYCONTRACT')}
         </Button>
       </ButtonWrapper>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & DeployProps;
+
+export default connector(Deploy);

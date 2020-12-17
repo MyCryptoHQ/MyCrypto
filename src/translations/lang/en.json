@@ -1052,6 +1052,7 @@
     "NAVIGATION_FAUCET": "Use Testnet Faucet",
     "BROADCAST_TX_RAW_TOOLTIP": "This is the decoded values of your signed transaction input.",
     "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now.",
-    "DEMO_BUTTON_TEXT": "View Demo Mode"
+    "DEMO_BUTTON_TEXT": "View Demo Mode",
+    "DEMO_GATEWAY_BANNER": "You are currently in DEMO MODE. You can play around with this form to get a feel for the website, but you won't be able to proceed past this step. Please add an account to exit demo mode."
   }
 }
