@@ -64,3 +64,4 @@ export { default as chain } from 'ramda/src/chain';
 export { default as not } from 'ramda/src/not';
 export { default as find } from 'ramda/src/find';
 export { default as mergeAll } from 'ramda/src/mergeAll';
+export { default as uniq } from 'ramda/src/uniq';

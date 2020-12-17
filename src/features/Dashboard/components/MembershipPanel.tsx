@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { membershipExpiryDate, useSelector } from '@store';
-import flatten from 'ramda/src/flatten';
-import uniq from 'ramda/src/uniq';
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,9 +9,10 @@ import defaultIcon from '@assets/images/membership/membership-none.svg';
 import { Button, DashboardPanel, Link, Typography } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
-import { StoreContext } from '@services';
+import { AppState, getMemberships, getMembershipState, membershipExpiryDate } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
+import { flatten, uniq } from '@vendor';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
@@ -65,10 +64,12 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
   ${(props) => !props.isMemberOrExpired && 'opacity: 0.25;'}
 `;
 
-type Props = RouteComponentProps;
-function MembershipPanel({ history }: Props) {
-  const { membershipState, memberships } = useContext(StoreContext);
-  const expiryDate = useSelector(membershipExpiryDate);
+function MembershipPanel({
+  history,
+  memberships,
+  membershipState,
+  expiryDate
+}: Props & RouteComponentProps) {
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
   const allMemberships = memberships ? uniq(flatten(memberships.map((m) => m.memberships))) : [];
@@ -144,4 +145,12 @@ function MembershipPanel({ history }: Props) {
   );
 }
 
-export default withRouter(MembershipPanel);
+const mapStateToProps = (state: AppState) => ({
+  memberships: getMemberships(state),
+  membershipState: getMembershipState(state),
+  expiryDate: membershipExpiryDate(state)
+});
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default withRouter(connector(MembershipPanel));
