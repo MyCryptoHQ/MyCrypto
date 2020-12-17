@@ -71,9 +71,9 @@ export function* encryptionWorker({ payload: password }: PayloadAction<string>) 
 
 export function* decryptionWorker({ payload: passwordHash }: PayloadAction<string>) {
   const encryptedData = yield select(getEncryptedData);
-  // Decrypt the data and store it to the MyCryptoCache
   try {
     const decryptedData = yield call(decryptData, encryptedData, passwordHash);
+    // We dont care about the error as we show a invalid password error if the decrypted data isnt valid json.
     if (!isValidJSON(decryptedData)) {
       throw Error();
     }
