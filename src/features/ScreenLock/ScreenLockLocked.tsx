@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { getDecryptionError, useSelector } from '@store';
+import { AppState, getDecryptionError } from '@store';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -45,8 +46,7 @@ const BottomActions = styled.div`
   line-height: 2.5;
 `;
 
-const ScreenLockLocked: React.FC = () => {
-  const decryptErrorRedux = useSelector(getDecryptionError);
+const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
   const { decryptWithPassword, decryptError: decryptErrorContext } = useContext(ScreenLockContext);
   const decryptError = decryptErrorContext || decryptErrorRedux;
 
@@ -113,4 +113,11 @@ const ScreenLockLocked: React.FC = () => {
   );
 };
 
-export default ScreenLockLocked;
+const mapStateToProps = (state: AppState) => ({
+  getDecryptionError: getDecryptionError(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(ScreenLockLocked);
