@@ -58,7 +58,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
 
   const [assetPair, setAssetPair] = useState({});
   const { state, initWith, prepareTx, sendTx, reset, stopYield } = useTxMulti();
-  const { canYield, isSubmitting, transactions } = state;
+  const { canYield, isSubmitting, transactions, error: txError } = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -92,6 +92,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         isCalculatingToAmount,
         fromAmountError,
         toAmountError,
+        txError,
         initialToAmount,
         exchangeRate,
         markup,
