@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
 import { COLORS, monospace } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 
 import {
@@ -115,7 +115,7 @@ export default function GeneratedInteractionForm({
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
-  const [error, setError] = useState(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
   const [isFormFilledFromURL, setIsFormFilledFromURL] = useState(false);
   const functions = getFunctionsFromABI(abi);
@@ -292,8 +292,6 @@ export default function GeneratedInteractionForm({
                 })}
               </div>
             )}
-            <SpinnerWrapper>{isLoading && <Spinner size={2} />}</SpinnerWrapper>
-            {error && <InlineMessage>{error}</InlineMessage>}
             <ActionWrapper>
               {isRead && inputs.length > 0 && (
                 <ActionButton color={WHITE} onClick={() => submitFormRead(currentFunction)}>
@@ -331,6 +329,12 @@ export default function GeneratedInteractionForm({
                 </WriteFormWrapper>
               )}
             </ActionWrapper>
+            <SpinnerWrapper>{isLoading && <Spinner size={2} />}</SpinnerWrapper>
+            {error && (
+              <InlineMessage>
+                {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+              </InlineMessage>
+            )}
           </>
         )}
       </FormFieldsWrapper>
