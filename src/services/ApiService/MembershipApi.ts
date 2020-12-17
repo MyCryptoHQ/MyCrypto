@@ -7,9 +7,11 @@ import {
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { ProviderHandler } from '@services/EthService/';
-import { Network, TAddress } from '@types';
+import { Bigish, Network, TAddress } from '@types';
 import { bigify } from '@utils';
-import { mapObjIndexed, pipe, toString } from '@vendor';
+import { mapObjIndexed, pickBy, pipe, toString } from '@vendor';
+
+const isSafeInt = (bn: Bigish) => bn.isLessThanOrEqualTo(bigify(Number.MAX_SAFE_INTEGER));
 
 export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlockTimestamps>>) => {
   // We receive timestamps in the form of hex values.
@@ -17,6 +19,7 @@ export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlo
   // @todo: prefer date-fns for time comparaisons.
   const expiries = pipe(
     mapObjIndexed(mapObjIndexed(bigify)),
+    mapObjIndexed(pickBy(isSafeInt)),
     mapObjIndexed(mapObjIndexed(toString))
   )(timestamps);
 

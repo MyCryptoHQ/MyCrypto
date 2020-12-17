@@ -62,7 +62,7 @@ export const getMembershipState = createSelector(
     } else {
       if (
         expirations.some((expirationTime) =>
-          isAfter(fromUnixTime(parseInt(expirationTime)), Date.now())
+          isAfter(fromUnixTime(parseInt(expirationTime, 10)), Date.now())
         )
       ) {
         return MembershipState.MEMBER;

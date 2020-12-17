@@ -4,7 +4,7 @@ import { fAccounts, fAssets, fNetworks } from '@fixtures';
 import { decrypt as decryptData, encrypt as encryptData, hashPassword } from '@utils';
 
 import { marshallState } from '../DataManager/utils';
-import { importState } from './reducer';
+import { importState } from './root.reducer';
 import {
   decrypt,
   decryptError,
