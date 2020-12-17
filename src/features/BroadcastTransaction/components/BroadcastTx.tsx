@@ -54,7 +54,6 @@ const CodeBlockWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  max-width: 510px;
   overflow-x: auto;
 `;
 
