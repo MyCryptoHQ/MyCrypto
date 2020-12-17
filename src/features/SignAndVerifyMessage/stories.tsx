@@ -14,7 +14,7 @@ export const getStories = (): IStory[] => [
     steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
-    name: WalletId.LEDGER_NANO_S,
+    name: WalletId.LEDGER_NANO_S_NEW,
     steps: [LedgerNanoSDecrypt]
   },
   {

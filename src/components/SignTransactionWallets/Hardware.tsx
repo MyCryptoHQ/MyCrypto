@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { InlineMessage } from '@components';
+import { Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
@@ -72,7 +72,7 @@ export const splitDPath = (fullDPath: string): IDestructuredDPath => {
 };
 
 export interface IProps {
-  walletIcon: any;
+  walletIconType: TIcon;
   signerDescription: string;
   senderAccount: IAccount;
   rawTransaction: ITxObject;
@@ -80,7 +80,7 @@ export interface IProps {
 }
 
 export default function HardwareSignTransaction({
-  walletIcon,
+  walletIconType,
   signerDescription,
   senderAccount,
   rawTransaction,
@@ -163,7 +163,7 @@ export default function HardwareSignTransaction({
 
   return (
     <SignTxHardwareUI
-      walletIcon={walletIcon}
+      walletIconType={walletIconType}
       signerDescription={signerDescription}
       isTxSignatureRequestDenied={isTxSignatureRequestDenied}
       helpCopy={helpCopy}
@@ -174,7 +174,7 @@ export default function HardwareSignTransaction({
 }
 
 interface UIProps {
-  walletIcon: any;
+  walletIconType: TIcon;
   signerDescription: string;
   isTxSignatureRequestDenied: boolean;
   helpCopy: string;
@@ -183,7 +183,7 @@ interface UIProps {
 }
 
 export const SignTxHardwareUI = ({
-  walletIcon,
+  walletIconType,
   signerDescription,
   isTxSignatureRequestDenied,
   helpCopy,
@@ -199,7 +199,7 @@ export const SignTxHardwareUI = ({
     <SInstructions>{signerDescription}</SInstructions>
     <div>
       <SImgContainer>
-        <img src={walletIcon} />
+        <Icon type={walletIconType} />
       </SImgContainer>
       <SDescription>
         {isTxSignatureRequestDenied && (

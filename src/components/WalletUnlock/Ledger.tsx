@@ -4,8 +4,16 @@ import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 import styled from 'styled-components';
 
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { Box, Button, Heading, InlineMessage, NewTabLink, RouterLink, Spinner } from '@components';
+import {
+  Box,
+  Button,
+  Heading,
+  Icon,
+  InlineMessage,
+  NewTabLink,
+  RouterLink,
+  Spinner
+} from '@components';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
@@ -186,7 +194,7 @@ export const LedgerUnlockUI = ({ network, state, handleNullConnect }: LedgerUIPr
         <LedgerDescription>
           {translate('LEDGER_TIP', { $network: network.id })}
           <LedgerImageContainer>
-            <img src={ledgerIcon} />
+            <Icon type={'ledger-icon-lg'} />
           </LedgerImageContainer>
           {state.error && (
             <ErrorMessageContainer>

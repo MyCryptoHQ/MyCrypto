@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
@@ -11,7 +10,7 @@ import { SignTxHardwareUI } from './Hardware';
 export default { title: 'SignTransaction' };
 
 const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
-  walletIcon: ledgerIcon,
+  walletIconType: 'ledger-icon-lg',
   signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
     $network: DEFAULT_NETWORK
   }),
