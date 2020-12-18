@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, getIsDemoMode, importState } from '@store';
+import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -104,6 +104,7 @@ const WalletList = ({
   showHeader,
   calculateMargin,
   isDemoMode,
+  accounts,
   importState
 }: Props) => {
   const trackSelectWallet = useAnalytics({
@@ -159,24 +160,27 @@ const WalletList = ({
             {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
           </Link>
         </Info>
-        <SDemoButtonContainer>
-          <Link to={ROUTE_PATHS.DASHBOARD.path}>
-            <Button
-              colorScheme={TButtonColorScheme.warning}
-              disabled={isDemoMode}
-              onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
-            >
-              {translateRaw('DEMO_BUTTON_TEXT')}
-            </Button>
-          </Link>
-        </SDemoButtonContainer>
+        {accounts.length === 0 && (
+          <SDemoButtonContainer>
+            <Link to={ROUTE_PATHS.DASHBOARD.path}>
+              <Button
+                colorScheme={TButtonColorScheme.warning}
+                disabled={isDemoMode}
+                onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
+              >
+                {translateRaw('DEMO_BUTTON_TEXT')}
+              </Button>
+            </Link>
+          </SDemoButtonContainer>
+        )}
       </InfoWrapper>
     </div>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
+  isDemoMode: getIsDemoMode(state),
+  accounts: getAccounts(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>

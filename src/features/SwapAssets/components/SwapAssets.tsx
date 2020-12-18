@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -277,9 +276,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & ISwapProps;
 
 export default connector(SwapAssets);

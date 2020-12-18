@@ -6,10 +6,10 @@ import {
   addFavorites,
   removeExcludedAsset,
   resetFavoritesTo,
+  setDemoMode,
   setFiat,
   setLanguage,
   setRates,
-  toggleDemoMode,
   useDispatch
 } from '@store';
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
@@ -27,7 +27,7 @@ export interface ISettingsContext {
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
   updateFiatCurrency(fiatTicker: TFiatTicker): void;
-  toggleDemoMode(isDemoMode: boolean): void;
+  setDemoMode(isDemoMode: boolean): void;
 }
 
 function useSettings() {
@@ -37,13 +37,13 @@ function useSettings() {
 
   const addAccountToFavorites = (account: TUuid, isDemoMode?: boolean) => {
     // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding account
-    isDemoMode && toggleDemo(false);
+    isDemoMode && setDemo(false);
     dispatch(isDemoMode ? resetFavoritesTo([account]) : addFavorite(account));
   };
 
   const addMultipleAccountsToFavorites = (accounts: TUuid[], isDemoMode?: boolean) => {
     // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding accounts
-    isDemoMode && toggleDemo(false);
+    isDemoMode && setDemo(false);
     dispatch(isDemoMode ? resetFavoritesTo(accounts) : addFavorites(accounts));
   };
 
@@ -71,8 +71,8 @@ function useSettings() {
     dispatch(setRates(rates));
   };
 
-  const toggleDemo = (isDemoMode: boolean) => {
-    dispatch(toggleDemoMode(isDemoMode));
+  const setDemo = (isDemoMode: boolean) => {
+    dispatch(setDemoMode(isDemoMode));
   };
 
   return {
@@ -86,7 +86,7 @@ function useSettings() {
     updateSettingsRates,
     updateLanguageSelection,
     updateFiatCurrency,
-    toggleDemo
+    setDemo
   };
 }
 

@@ -1,9 +1,12 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode, importState } from '@store';
 import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
 import uniqBy from 'ramda/src/uniqBy';
+import { connect, ConnectedProps } from 'react-redux';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
@@ -78,6 +81,7 @@ import {
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
+import { getAccounts } from '@store/account.slice';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -131,9 +135,8 @@ export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
-export const StoreProvider: React.FC = ({ children }) => {
+export const StoreProvider = ({ children, isDemoMode, accounts: rawAccounts }: Props) => {
   const {
-    accounts: rawAccounts,
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
@@ -461,7 +464,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           createContact(newLabel);
         }
       });
-      createMultipleAccountsWithIDs(newRawAccounts, settings.isDemoMode); // todo - does this need a selector?
+      createMultipleAccountsWithIDs(newRawAccounts, isDemoMode); // todo - does this need a selector?
       return newRawAccounts;
     },
     getAssetByTicker: getAssetByTicker(assets),
@@ -482,3 +485,21 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
 };
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state),
+  accounts: getAccounts(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      importState: importState
+    },
+    dispatch
+  );
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type Props = ConnectedProps<typeof connector> & React.PropsWithChildren<any>;
+
+export default connector(StoreProvider);

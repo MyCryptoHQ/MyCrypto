@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
@@ -267,9 +266,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & MembershipProps;
 
 export default connector(MembershipForm);

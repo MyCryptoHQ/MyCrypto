@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { parseEther } from 'ethers/utils';
 import { Field, FieldProps, Form, Formik } from 'formik';
@@ -219,9 +218,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & ZapProps;
 
 export default connector(ZapForm);

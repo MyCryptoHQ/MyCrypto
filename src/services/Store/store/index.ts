@@ -14,7 +14,8 @@ export {
   resetAndCreateManyAccounts,
   destroyAccount,
   updateAccount,
-  updateAccounts
+  updateAccounts,
+  getAccounts
 } from './account.slice';
 export { createContact, destroyContact, updateContact } from './contact.slice';
 export { createUserAction, destroyUserAction, updateUserAction } from './userAction.slice';
@@ -60,7 +61,7 @@ export {
   getRates,
   getInactivityTimer,
   setInactivityTimer,
-  toggleDemoMode,
+  setDemoMode,
   getIsDemoMode
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';

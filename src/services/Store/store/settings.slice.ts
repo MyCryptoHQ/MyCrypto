@@ -41,7 +41,7 @@ const slice = createSlice({
     setInactivityTimer(state, action: PayloadAction<number>) {
       state.inactivityTimer = action.payload;
     },
-    toggleDemoMode(state, action: PayloadAction<boolean>) {
+    setDemoMode(state, action: PayloadAction<boolean>) {
       state.isDemoMode = action.payload;
     }
   }
@@ -57,7 +57,7 @@ export const {
   removeExcludedAsset,
   setRates,
   setInactivityTimer,
-  toggleDemoMode
+  setDemoMode
 } = slice.actions;
 
 export default slice;

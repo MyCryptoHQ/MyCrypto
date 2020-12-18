@@ -1,6 +1,5 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -273,9 +272,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & LayoutProps;
 
 export default connector(Layout);

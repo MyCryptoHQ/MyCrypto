@@ -18,12 +18,12 @@ import {
   initialState,
   removeExcludedAsset,
   resetFavoritesTo,
+  setDemoMode,
   setFiat,
   setInactivityTimer,
   setLanguage,
   setRates,
-  default as slice,
-  toggleDemoMode
+  default as slice
 } from './settings.slice';
 
 const reducer = (sliceState: ReturnType<typeof slice.reducer> | undefined, action: AnyAction) => {
@@ -103,8 +103,8 @@ describe('settingsSlice', () => {
     expect(getExcludedAssets(actual)).toEqual(expected);
   });
 
-  it('toggleDemomode(), toggles demo mode in settings', () => {
-    const actual = reducer({ ...initialState, isDemoMode: false }, toggleDemoMode(true));
+  it('setDemomode(), toggles demo mode in settings', () => {
+    const actual = reducer({ ...initialState, isDemoMode: false }, setDemoMode(true));
     const expected = true;
     expect(getIsDemoMode(actual)).toEqual(expected);
   });

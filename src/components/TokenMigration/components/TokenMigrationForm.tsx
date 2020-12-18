@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
@@ -234,9 +233,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & TokenMigrationProps;
 
 export default connector(TokenMigrationForm);

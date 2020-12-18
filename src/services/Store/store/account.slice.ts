@@ -26,11 +26,7 @@ const slice = createSlice({
       return [action.payload];
     },
     resetAndCreateMany(_, action: PayloadAction<IAccount[]>) {
-      const newState = [] as IAccount[];
-      action.payload.forEach((a) => {
-        newState.push(a);
-      });
-      return newState;
+      return action.payload;
     },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { AppState, getIsDemoMode } from '@store';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
@@ -216,9 +215,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 type Props = ConnectedProps<typeof connector> & SignProps;
 
 export default connector(withWalletConnect(SignMessage));
