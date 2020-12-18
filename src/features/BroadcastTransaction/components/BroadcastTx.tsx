@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Identicon } from '@mycrypto/ui';
-import { AppState } from '@store';
-import { getNetwork } from '@store/network.slice';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
 import { connect, ConnectedProps } from 'react-redux';
@@ -11,6 +9,8 @@ import styled from 'styled-components';
 import { Button, CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
 import { verifyTransaction } from '@helpers';
 import { getGasEstimate } from '@services';
+import { AppState } from '@store';
+import { getNetwork } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, ITxObject, Network, NetworkId } from '@types';
 
