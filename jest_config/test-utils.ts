@@ -5,12 +5,16 @@ import { render } from '@testing-library/react';
 import * as ReactRedux from 'react-redux';
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { APP_STATE } from '@fixtures';
+import { SCHEMA_BASE } from '@database/data/schema';
+import { marshallState } from '@services/Store/DataManager/utils';
 import { AppState, persistanceSlice } from '@store';
 import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 
 import { ProvidersWrapper } from './providersWrapper';
+
+// Workaround due to circular dependency issues
+const APP_STATE = marshallState(SCHEMA_BASE);
 
 // Mock features used by react-slider
 window.matchMedia =

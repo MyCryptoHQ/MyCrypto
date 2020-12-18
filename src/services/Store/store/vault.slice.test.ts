@@ -1,4 +1,4 @@
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccounts, fAssets, fNetworks } from '@fixtures';
 import { decrypt as decryptData, encrypt as encryptData, hashPassword } from '@utils';
@@ -51,7 +51,7 @@ Date.now = jest.fn(() => 1608048741382);
 describe('encryptionWorker()', () => {
   it('encrypts existing state and resets app state', () => {
     return expectSaga(encryptionWorker, encrypt(hashedPassword))
-      .withState({ legacy: marshallState(JSON.parse(decryptedData)) })
+      .withState(mockAppState(marshallState(JSON.parse(decryptedData))))
       .call(encryptData, decryptedData, hashedPassword)
       .put(setEncryptedData(encryptedData))
       .silentRun();
@@ -62,7 +62,6 @@ describe('decryptionWorker()', () => {
   it('decrypts existing state and imports', () => {
     return expectSaga(decryptionWorker, decrypt(hashedPassword))
       .withState({
-        legacy: { networks: fNetworks, assets: fAssets, accounts: fAccounts },
         vault: {
           data: encryptedData
         }
@@ -76,7 +75,7 @@ describe('decryptionWorker()', () => {
   it('goes into error state if password is wrong', () => {
     return expectSaga(decryptionWorker, decrypt(wrongPassword))
       .withState({
-        legacy: { networks: fNetworks, assets: fAssets, accounts: fAccounts },
+        ...mockAppState({ networks: fNetworks, assets: fAssets, accounts: fAccounts }),
         vault: {
           data: encryptedData
         }
