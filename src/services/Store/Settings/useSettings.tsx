@@ -11,7 +11,6 @@ import {
   setRates,
   useDispatch
 } from '@store';
-
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';

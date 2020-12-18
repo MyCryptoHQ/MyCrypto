@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 
 import { Panel } from '@mycrypto/ui';
-import { useDispatch, useSelector } from '@store';
 import styled from 'styled-components';
 
 import { Checkbox, Link } from '@components';
 import { IFeatureFlags } from '@config';
 import { useDevTools, useFeatureFlags } from '@services';
 import { DataContext } from '@services/Store';
+import { useDispatch, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 

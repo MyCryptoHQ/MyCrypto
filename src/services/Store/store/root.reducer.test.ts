@@ -1,26 +1,24 @@
-import { AppState } from '@store';
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
-import { APP_STATE, fLocalStorage } from '@fixtures';
+import { fLocalStorage } from '@fixtures';
 import { marshallState } from '@services/Store/DataManager/utils';
 import { omit } from '@vendor';
 
 import importSlice from './import.slice';
-import { ActionT } from './legacy.reducer';
-import { exportState, importSaga, importState } from './reducer';
+import { appReset, exportState, importSaga, importState } from './root.reducer';
 
 describe('Import - Export', () => {
   it('exportState(): returns the persistable state as a deMarshalled string', () => {
     const expected = fLocalStorage;
-    const actual = exportState(({ legacy: APP_STATE } as unknown) as AppState);
+    const actual = exportState(mockAppState());
     expect(omit(['mtime'], actual)).toEqual(omit(['mtime'], expected));
   });
 
   it('importSaga(): updates the app state with the provided data', () => {
     const importable = JSON.stringify(fLocalStorage);
     return expectSaga(importSaga)
-      .withState({ legacy: APP_STATE })
-      .put({ type: ActionT.RESET, payload: { data: marshallState(fLocalStorage) } })
+      .withState(mockAppState())
+      .put(appReset(marshallState(fLocalStorage)))
       .dispatch(importState(importable))
       .silentRun();
   });
@@ -29,7 +27,7 @@ describe('Import - Export', () => {
     const errorMessage = new Error('Invalid import file');
     const importable = JSON.stringify({ foo: 'made to fail' });
     return expectSaga(importSaga)
-      .withState({ legacy: APP_STATE })
+      .withState(mockAppState())
       .put(importSlice.actions.error(errorMessage))
       .dispatch(importState(importable))
       .silentRun();

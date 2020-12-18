@@ -1,4 +1,4 @@
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
 import { fAccounts, fAssets, fNetworks } from '@fixtures';
@@ -73,7 +73,7 @@ describe('scanTokensWorker()', () => {
       ]
     };
     return expectSaga(scanTokensWorker, scanTokens({}))
-      .withState({ legacy: { networks: fNetworks, assets: fAssets, accounts: fAccounts } })
+      .withState(mockAppState({ networks: fNetworks, assets: fAssets, accounts: fAccounts }))
       .put(startTokenScan())
       .call(getBalances, fNetworks, fAccounts, fAssets)
       .put(updateAccountAssets(result))

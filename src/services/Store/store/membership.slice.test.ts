@@ -1,13 +1,12 @@
 import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { accountWithMembership, fNetworks } from '@fixtures';
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
-import { bigify } from '@utils';
 
 import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
 
@@ -79,8 +78,8 @@ describe('fetchMembershipsSaga()', () => {
     {
       address: accountWithMembership,
       memberships: [
-        { expiry: bigify('1590743978'), type: 'onemonth' },
-        { expiry: bigify('1609372800'), type: 'lifetime' }
+        { expiry: '1590743978', type: 'onemonth' },
+        { expiry: '1609372800', type: 'lifetime' }
       ]
     } as MembershipStatus
   ];
@@ -90,9 +89,7 @@ describe('fetchMembershipsSaga()', () => {
     { address: '0xfeac75a09662396283f4bb50f0a9249576a81866' }
   ] as StoreAccount[];
 
-  const initialState = {
-    legacy: { accounts, networks: fNetworks }
-  };
+  const initialState = mockAppState({ accounts, networks: fNetworks });
 
   it('can fetch memberships from provided accounts', () => {
     return (

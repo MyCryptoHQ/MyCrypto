@@ -1,8 +1,8 @@
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccount, fAccounts, fContacts, fContracts, fNetwork, fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
-import { Network, NetworkId } from '@types';
+import { ExtendedContact, ExtendedContract, Network, NetworkId, NodeOptions } from '@types';
 import { isEmpty } from '@vendor';
 
 import {
@@ -13,7 +13,6 @@ import {
   initialState,
   default as slice
 } from './network.slice';
-import { AppState } from './reducer';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
@@ -128,14 +127,13 @@ describe('NetworkSlice', () => {
       isCustom: true,
       nodes: [fNetwork.nodes[0]]
     } as Network;
-    const state = ({
-      legacy: {
-        networks: [network],
-        accounts: [{ ...fAccount, networkId }],
-        addressBook: [{ network: networkId }],
-        contracts: [{ networkId }]
-      }
-    } as unknown) as AppState;
+    const state = mockAppState({
+      networks: [network],
+      accounts: [{ ...fAccount, networkId }],
+      addressBook: [{ network: networkId } as ExtendedContact],
+      contracts: [{ networkId } as ExtendedContract]
+    });
+
     const actual = canDeleteNode(networkId)(state);
     expect(actual).toEqual(false);
   });
@@ -148,23 +146,20 @@ describe('NetworkSlice', () => {
       isCustom: true,
       nodes: [fNetwork.nodes[0]]
     } as Network;
-    const state = ({
-      legacy: {
-        networks: [network],
-        accounts: fAccounts,
-        addressBook: fContacts,
-        contracts: fContracts
-      }
-    } as unknown) as AppState;
+    const state = mockAppState({
+      networks: [network],
+      accounts: fAccounts,
+      addressBook: fContacts,
+      contracts: fContracts
+    });
+
     const actual = canDeleteNode(networkId)(state);
     expect(actual).toEqual(true);
   });
 });
 
 describe('deleteNodeWorker()', () => {
-  const initialState = {
-    legacy: { networks: fNetworks }
-  };
+  const initialState = mockAppState({ networks: fNetworks });
 
   it('calls updateEthersInstance with latest network', () => {
     const payload = { network: 'Ethereum' as NetworkId, nodeName: 'MyNode' };
@@ -176,9 +171,9 @@ describe('deleteNodeWorker()', () => {
 });
 
 describe('deleteNodeOrNetworkWorker()', () => {
-  const initialState = {
-    legacy: { networks: [{ ...fNetworks[0], isCustom: true, nodes: [{ name: 'MyNode' }] }] }
-  };
+  const initialState = mockAppState({
+    networks: [{ ...fNetworks[0], isCustom: true, nodes: [{ name: 'MyNode' } as NodeOptions] }]
+  });
 
   it('can delete network if only one node', () => {
     return expectSaga(
@@ -195,11 +190,16 @@ describe('deleteNodeOrNetworkWorker()', () => {
       deleteNodeOrNetworkWorker,
       deleteNode({ network: 'Ethereum', nodeName: 'MyNode' })
     )
-      .withState({
-        legacy: {
-          networks: [{ ...fNetworks[0], nodes: [...fNetworks[0].nodes, { name: 'MyNode' }] }]
-        }
-      })
+      .withState(
+        mockAppState({
+          networks: [
+            {
+              ...fNetworks[0],
+              nodes: [...fNetworks[0].nodes, { name: 'MyNode' } as NodeOptions]
+            }
+          ]
+        })
+      )
       .put(deleteNode({ network: fNetworks[0].id, nodeName: 'MyNode' }))
       .silentRun();
   });

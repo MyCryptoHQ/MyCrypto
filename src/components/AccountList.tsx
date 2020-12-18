@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
-import { isScanning as isScanningSelector, useSelector } from '@store';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -27,6 +26,7 @@ import {
   useContacts,
   useSettings
 } from '@services/Store';
+import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';

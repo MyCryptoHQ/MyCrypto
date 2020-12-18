@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { DeepPartial } from '@reduxjs/toolkit';
-import { AppState, createStore } from '@store';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
+import { AppState, createStore } from '@store';
 import { theme } from '@theme';
 
 /*

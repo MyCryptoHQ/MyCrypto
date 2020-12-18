@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { createStore } from '@store';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
@@ -10,6 +9,7 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
+import { createStore } from '@store';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 

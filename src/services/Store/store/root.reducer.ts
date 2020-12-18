@@ -1,4 +1,4 @@
-import { createAction, createSelector, PayloadAction, Selector } from '@reduxjs/toolkit';
+import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { put } from 'redux-saga-test-plan/matchers';
 import { select, takeLatest } from 'redux-saga/effects';
@@ -9,22 +9,40 @@ import { DataStore } from '@types';
 
 import { canImport } from './helpers';
 import importSlice from './import.slice';
-import legacyReducer, { ActionT } from './legacy.reducer';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
+import persistanceSlice from './persistance.slice';
+import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
 import vaultSlice from './vault.slice';
 
-export const DATA_STATE_KEY = 'legacy';
-
-const rootReducer = combineReducers({
+const reducers = combineReducers({
   demo: demoReducer,
   [importSlice.name]: importSlice.reducer,
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
-  [DATA_STATE_KEY]: createPersistReducer(legacyReducer)
+  [persistanceSlice.name as 'database']: createPersistReducer(persistanceSlice.reducer)
 });
+
+/**
+ * Actions
+ */
+export const appReset = createAction<DataStore>('app/Reset');
+
+const rootReducer = (state = reducers(undefined, { type: '' }), action: AnyAction) => {
+  switch (action.type) {
+    case appReset.type: {
+      return {
+        ...state,
+        [persistanceSlice.name]: { ...action.payload, _persist: state.database._persist }
+      };
+    }
+    default: {
+      return reducers(state, action);
+    }
+  }
+};
 
 export default rootReducer;
 
@@ -33,7 +51,6 @@ export type AppState = ReturnType<typeof rootReducer>;
 /**
  * Selectors
  */
-export const getAppState: Selector<AppState, DataStore> = (state) => state[DATA_STATE_KEY];
 export const getPassword = createSelector([getAppState], (s) => s.password);
 
 /**
@@ -54,7 +71,7 @@ function* importWorker({ payload }: PayloadAction<string>) {
     if (!canImport(json, persistable)) {
       throw new Error('Invalid import file');
     }
-    yield put({ type: ActionT.RESET, payload: { data: marshallState(json) } });
+    yield put(appReset(marshallState(json)));
     yield put(importSlice.actions.success());
   } catch (err) {
     yield put(importSlice.actions.error(err));

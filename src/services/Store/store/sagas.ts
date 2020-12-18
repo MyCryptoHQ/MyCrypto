@@ -5,7 +5,7 @@ import { watchIncrement } from '@features/DevTools/slice';
 import { assetSaga } from './asset.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
-import { importSaga } from './reducer';
+import { importSaga } from './root.reducer';
 import { scanTokensSaga } from './tokenScanning.slice';
 import { vaultSaga } from './vault.slice';
 

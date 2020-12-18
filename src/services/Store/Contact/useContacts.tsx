@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 
+import isEmpty from 'lodash/isEmpty';
+
 import {
   createContact as createAContact,
   destroyContact,
   updateContact as updateAContact,
   useDispatch
 } from '@store';
-import isEmpty from 'lodash/isEmpty';
-
 import {
   Contact,
   ExtendedContact,

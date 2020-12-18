@@ -1,5 +1,8 @@
 import { useContext } from 'react';
 
+import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
+
 import {
   createNetwork,
   destroyNetwork as deleteNetworkRedux,
@@ -8,9 +11,6 @@ import {
   updateNetwork as updateNetworkRedux,
   useDispatch
 } from '@store';
-import isEmpty from 'lodash/isEmpty';
-import isString from 'lodash/isString';
-
 import { Network, NetworkId, NodeOptions } from '@types';
 
 import { EthersJS } from '../../EthService/network/ethersJsProvider';

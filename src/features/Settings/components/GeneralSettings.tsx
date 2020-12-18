@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import { DashboardPanel, SubHeading, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { TFiatTicker } from '@types';

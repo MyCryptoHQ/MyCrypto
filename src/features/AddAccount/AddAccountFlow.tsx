@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 
-import { fetchMemberships, scanTokens, useDispatch } from '@store';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -9,6 +8,7 @@ import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
 import { StoreContext } from '@services/Store';
+import { fetchMemberships, scanTokens, useDispatch } from '@store';
 import { IStory, StoreAccount, WalletId } from '@types';
 import { isSameAddress } from '@utils';
 import { useUpdateEffect } from '@vendor';

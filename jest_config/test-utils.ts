@@ -5,10 +5,16 @@ import { render } from '@testing-library/react';
 import * as ReactRedux from 'react-redux';
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { TAction } from '@types';
+import { SCHEMA_BASE } from '@database/data/schema';
+import { marshallState } from '@services/Store/DataManager/utils';
+import { AppState, persistanceSlice } from '@store';
+import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 
 import { ProvidersWrapper } from './providersWrapper';
+
+// Workaround due to circular dependency issues
+const APP_STATE = marshallState(SCHEMA_BASE);
 
 // Mock features used by react-slider
 window.matchMedia =
@@ -51,3 +57,19 @@ export const createStore = <S>(reducer: (state: S, action: TAction<any, any>) =>
 export * from '@testing-library/react';
 export { ProvidersWrapper };
 export * from 'redux-saga-test-plan';
+
+/**
+ * Provides a mock state. Can mock the entire DataStore of a specific key.
+ */
+
+export function mockAppState(sliceState?: Partial<DataStore>): AppState {
+  if (sliceState) {
+    return ({
+      [persistanceSlice.name]: sliceState
+    } as unknown) as AppState;
+  } else {
+    return ({
+      [persistanceSlice.name]: APP_STATE
+    } as unknown) as AppState;
+  }
+}

@@ -5,8 +5,7 @@ import { EncryptedDataStore } from '@types';
 import { decrypt as decryptData, encrypt as encryptData, isValidJSON } from '@utils';
 
 import { initialLegacyState } from './legacy.initialState';
-import { ActionT } from './legacy.reducer';
-import { AppState, exportState, importState } from './reducer';
+import { appReset, AppState, exportState, importState } from './root.reducer';
 
 export const initialState: EncryptedDataStore = {
   data: undefined,
@@ -66,7 +65,7 @@ export function* encryptionWorker({ payload: password }: PayloadAction<string>) 
   const encryptedData = yield call(encryptData, JSON.stringify(state), password);
 
   yield put(setEncryptedData(encryptedData.toString()));
-  yield put({ type: ActionT.RESET, payload: { data: initialLegacyState } });
+  yield put(appReset(initialLegacyState));
 }
 
 export function* decryptionWorker({ payload: passwordHash }: PayloadAction<string>) {

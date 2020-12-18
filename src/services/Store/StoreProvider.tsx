@@ -1,16 +1,6 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import {
-  deleteMembership,
-  fetchAssets,
-  fetchMemberships,
-  scanTokens,
-  useDispatch,
-  useSelector
-} from '@store';
-import { BigNumber } from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
-import flatten from 'ramda/src/flatten';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
 import uniqBy from 'ramda/src/uniqBy';
@@ -23,6 +13,17 @@ import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import {
+  deleteMembership,
+  fetchAssets,
+  fetchMemberships,
+  getMemberships,
+  getMembershipState,
+  isMyCryptoMember,
+  scanTokens,
+  useDispatch,
+  useSelector
+} from '@store';
 import { translateRaw } from '@translations';
 import {
   Asset,
@@ -94,7 +95,6 @@ export interface State {
   readonly isMyCryptoMember: boolean;
   readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
-  readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
@@ -147,7 +147,8 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
   const dispatch = useDispatch();
-  const memberships = useSelector((state) => state.memberships.record);
+  const memberships = useSelector(getMemberships);
+  const membershipState = useSelector(getMembershipState);
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
@@ -166,30 +167,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
     [rawAccounts, settings.dashboardAccounts, assets]
   );
-
-  const membershipExpirations = memberships
-    ? flatten(
-        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-      )
-    : [];
-
-  const membershipState = (() => {
-    if (!memberships) {
-      return MembershipState.ERROR;
-    } else if (Object.values(memberships).length === 0) {
-      return MembershipState.NOTMEMBER;
-    } else {
-      const currentTime = new BigNumber(Math.round(Date.now() / 1000));
-      if (
-        membershipExpirations.some((expirationTime) => expirationTime.isGreaterThan(currentTime))
-      ) {
-        return MembershipState.MEMBER;
-      } else {
-        return MembershipState.EXPIRED;
-      }
-    }
-  })();
-  const isMyCryptoMember = membershipState === MembershipState.MEMBER;
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -368,10 +345,9 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isMyCryptoMember,
+    isMyCryptoMember: useSelector(isMyCryptoMember),
     membershipState,
     memberships,
-    membershipExpirations,
     currentAccounts,
     accountRestore,
     coinGeckoAssetManifest,

@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 
-import { createContract as createAContract, destroyContract, useDispatch } from '@store';
-
 import { DataContext } from '@services/Store';
+import { createContract as createAContract, destroyContract, useDispatch } from '@store';
 import { Contract, ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 

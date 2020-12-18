@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { importState, exportState, getAppState, AppState, getPassword } from './reducer';
+export { importState, exportState, AppState, getPassword } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
@@ -41,7 +41,9 @@ export {
   setMemberships,
   setMembership,
   deleteMembership,
-  fetchError
+  fetchError,
+  isMyCryptoMember,
+  getMembershipState
 } from './membership.slice';
 export {
   resetFavoritesTo,
@@ -64,5 +66,11 @@ export {
   decrypt,
   setEncryptedData,
   clearEncryptedData,
-  getDecryptionError
+  getDecryptionError,
+  getEncryptedData,
+  isEncrypted
 } from './vault.slice';
+export { getAppState } from './selectors';
+export { default as persistanceSlice } from './persistance.slice';
+export { appReset } from './root.reducer';
+export { getMemberships, membershipExpiryDate } from './membership.slice';

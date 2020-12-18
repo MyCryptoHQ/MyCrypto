@@ -1,12 +1,15 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fromUnixTime, isAfter, max } from 'date-fns';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { MembershipStatus } from '@features/PurchaseMembership/config';
+import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
 import { MembershipApi } from '@services/ApiService';
 import { IAccount, Network, StoreAccount, TAddress } from '@types';
+import { flatten } from '@vendor';
 
 import { getWalletAccountsOnDefaultNetwork } from './account.slice';
 import { getDefaultNetwork } from './network.slice';
+import { AppState } from './root.reducer';
 
 export const initialState = {
   record: [] as MembershipStatus[],
@@ -41,6 +44,41 @@ export const fetchMemberships = createAction<IAccount[] | undefined>(
   `${slice.name}/fetchMemberships`
 );
 
+/**
+ * Selectors
+ */
+export const getMemberships = (s: AppState) => s.memberships.record;
+const getMembershipExpirations = createSelector(getMemberships, (memberships) =>
+  flatten(Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry)))
+);
+
+export const getMembershipState = createSelector(
+  [getMemberships, getMembershipExpirations],
+  (memberships, expirations) => {
+    if (!memberships) {
+      return MembershipState.ERROR;
+    } else if (Object.values(memberships).length === 0) {
+      return MembershipState.NOTMEMBER;
+    } else {
+      if (
+        expirations.some((expirationTime) =>
+          isAfter(fromUnixTime(parseInt(expirationTime, 10)), Date.now())
+        )
+      ) {
+        return MembershipState.MEMBER;
+      } else {
+        return MembershipState.EXPIRED;
+      }
+    }
+  }
+);
+export const isMyCryptoMember = createSelector(
+  [getMembershipState],
+  (status) => status === MembershipState.MEMBER
+);
+export const membershipExpiryDate = createSelector(getMembershipExpirations, (expirations) => {
+  return max(expirations.map((e) => new Date(e)));
+});
 /**
  * Sagas
  */

@@ -16,7 +16,7 @@ import { getAllTokensBalancesOfAccounts, getBaseAssetBalances } from '../Balance
 import { getAccounts, updateAccountAssets } from './account.slice';
 import { getAssets } from './asset.slice';
 import { getNetworks } from './network.slice';
-import { AppState } from './reducer';
+import { AppState } from './root.reducer';
 
 export const initialState = {
   scanning: false

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Typography } from '@mycrypto/ui';
-import { exportState, useSelector } from '@store';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel, Downloader } from '@components';
 import { useUserActions } from '@services/Store';
+import { exportState, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE } from '@types';
 

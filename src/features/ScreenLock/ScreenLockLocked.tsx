@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { AppState, getDecryptionError } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import { ExtendedContentPanel, InputField } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
 
 import { ScreenLockContext } from './ScreenLockProvider';
