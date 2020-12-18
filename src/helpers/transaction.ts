@@ -164,8 +164,12 @@ export const makeTxConfigFromSignedTx = (
     assets
   });
 
+  const rawTransaction = oldTxConfig.rawTransaction
+    ? oldTxConfig.rawTransaction
+    : ((decodedTx as unknown) as ITxObject);
+
   const txConfig = {
-    rawTransaction: oldTxConfig.rawTransaction,
+    rawTransaction,
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
       : decodedTx.to) as TAddress,
