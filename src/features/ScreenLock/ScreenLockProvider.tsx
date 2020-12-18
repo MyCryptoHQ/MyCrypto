@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, clearEncryptedData, decrypt, encrypt, exportState, importState } from '@store';
-import { getEncryptedData, isEncrypted } from '@store/vault.slice';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
 import { DataContext, IDataContext } from '@services/Store';
+import {
+  AppState,
+  clearEncryptedData,
+  decrypt,
+  encrypt,
+  exportState,
+  getEncryptedData,
+  importState,
+  isEncrypted
+} from '@store';
 import { translateRaw } from '@translations';
 import { hashPassword, withContext } from '@utils';
 import { pipe } from '@vendor';

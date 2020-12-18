@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { AppState, getInactivityTimer } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService';
+import { AppState, getInactivityTimer } from '@store';
 import translate, { translateRaw } from '@translations';
 import { formatTimeDuration } from '@utils';
 

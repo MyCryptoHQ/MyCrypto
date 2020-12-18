@@ -66,7 +66,9 @@ export {
   decrypt,
   setEncryptedData,
   clearEncryptedData,
-  getDecryptionError
+  getDecryptionError,
+  getEncryptedData,
+  isEncrypted
 } from './vault.slice';
 export { getAppState } from './selectors';
 export { default as persistanceSlice } from './persistance.slice';

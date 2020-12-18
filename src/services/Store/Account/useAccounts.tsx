@@ -1,5 +1,11 @@
 import { useContext } from 'react';
 
+import eqBy from 'ramda/src/eqBy';
+import prop from 'ramda/src/prop';
+import unionWith from 'ramda/src/unionWith';
+
+import { useAnalytics } from '@hooks';
+import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
   createAccount,
   createAccounts,
@@ -8,12 +14,6 @@ import {
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import eqBy from 'ramda/src/eqBy';
-import prop from 'ramda/src/prop';
-import unionWith from 'ramda/src/unionWith';
-
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
   Asset,
   IAccount,

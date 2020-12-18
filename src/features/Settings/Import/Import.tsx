@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, importError, importState, importSuccess } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
+import { AppState, importError, importState, importSuccess } from '@store';
 import { translateRaw } from '@translations';
 
 import { ImportBox, ImportSuccess } from './components';

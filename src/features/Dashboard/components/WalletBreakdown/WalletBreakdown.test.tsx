@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { AppState } from '@store';
 import { MemoryRouter } from 'react-router-dom';
 import { DeepPartial } from 'redux';
 import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
@@ -15,6 +14,7 @@ import {
   fStoreAssets
 } from '@fixtures';
 import { DataContext, RatesContext, StoreProvider } from '@services';
+import { AppState } from '@store';
 import { translateRaw } from '@translations';
 import { ISettings, StoreAccount } from '@types';
 

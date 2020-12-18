@@ -5,7 +5,6 @@ import {
   createAsset as createAssetRedux,
   useDispatch
 } from '@store';
-
 import { ExtendedAsset, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';

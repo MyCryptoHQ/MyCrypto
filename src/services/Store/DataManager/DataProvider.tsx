@@ -8,7 +8,6 @@ import {
   useDispatch,
   useSelector
 } from '@store';
-
 import { DataStore } from '@types';
 
 export interface DataCacheManager extends DataStore {

@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
 import { Tooltip, Button as UIButton } from '@mycrypto/ui';
-import { canDeleteNode as canDeleteNodeSelector, useSelector } from '@store';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
 import { boolean, lazy, object, string } from 'yup';
@@ -26,6 +25,7 @@ import {
 import { useAssets } from '@services';
 import { ProviderHandler } from '@services/EthService/network';
 import { NetworkUtils, useNetworks } from '@services/Store/Network';
+import { canDeleteNode as canDeleteNodeSelector, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans, translateRaw } from '@translations';
 import {

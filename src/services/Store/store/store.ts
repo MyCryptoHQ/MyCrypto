@@ -1,9 +1,9 @@
 import { configureStore, DeepPartial } from '@reduxjs/toolkit';
-import { updateAccounts } from '@store';
 import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
+import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';

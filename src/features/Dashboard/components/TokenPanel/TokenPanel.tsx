@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
 
-import { isScanning as isScanningSelector, scanTokens, useDispatch, useSelector } from '@store';
-
 import { StoreContext, useRates, useSettings } from '@services';
 import { isNotExcludedAsset } from '@services/Store/helpers';
+import { isScanning as isScanningSelector, scanTokens, useDispatch, useSelector } from '@store';
 import { ExtendedAsset, StoreAsset } from '@types';
 
 import { AddToken } from './AddToken';

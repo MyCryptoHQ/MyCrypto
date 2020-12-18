@@ -1,12 +1,12 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
-import { AppState, persistanceSlice } from '@store';
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
 import { expectSaga } from 'redux-saga-test-plan';
 
 import { APP_STATE } from '@fixtures';
+import { AppState, persistanceSlice } from '@store';
 import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 

@@ -1,16 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import {
-  deleteMembership,
-  fetchAssets,
-  fetchMemberships,
-  getMemberships,
-  getMembershipState,
-  isMyCryptoMember,
-  scanTokens,
-  useDispatch,
-  useSelector
-} from '@store';
 import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
@@ -24,6 +13,17 @@ import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import {
+  deleteMembership,
+  fetchAssets,
+  fetchMemberships,
+  getMemberships,
+  getMembershipState,
+  isMyCryptoMember,
+  scanTokens,
+  useDispatch,
+  useSelector
+} from '@store';
 import { translateRaw } from '@translations';
 import {
   Asset,

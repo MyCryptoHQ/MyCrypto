@@ -6,7 +6,6 @@ import {
   updateUserAction as updateAUserAction,
   useDispatch
 } from '@store';
-
 import {
   ACTION_NAME,
   ACTION_STATE,
