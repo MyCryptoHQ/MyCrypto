@@ -11,10 +11,12 @@ import DesktopNav from './DesktopNav';
 
 const APP_ROUTES = getAppRoutesObject(FEATURE_FLAGS);
 
+const clickMock = jest.fn();
+
 function getComponent() {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <DesktopNav appRoutes={APP_ROUTES} current={'/'} />
+      <DesktopNav appRoutes={APP_ROUTES} current={'/'} openTray={clickMock} />
     </MemoryRouter>
   );
 }

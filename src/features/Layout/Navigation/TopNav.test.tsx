@@ -7,10 +7,12 @@ import { translateRaw } from '@translations';
 
 import { TopNav } from './TopNav';
 
+const clickMock = jest.fn();
+
 function getComponent() {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <TopNav isMobile={false} current={'/'} />
+      <TopNav isMobile={false} current={'/'} openTray={clickMock} isTrayOpen={false} />
     </MemoryRouter>
   );
 }

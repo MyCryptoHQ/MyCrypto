@@ -42,10 +42,20 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   return (
     <>
       <Box width="100%">
-        <Text textTransform="uppercase" fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
+        <Text
+          textTransform="uppercase"
+          fontSize={{ _: '14px', sm: '12px' }}
+          fontWeight={700}
+          color={{ _: 'GREYISH_BROWN', sm: 'BLUE_DARK_SLATE' }}
+        >
           {translateRaw('NAVIGATION_DONATE')}
         </Text>
-        <Box variant="rowAlign" justifyContent="space-between" width="100%" mb={SPACING.SM}>
+        <Box
+          variant="rowAlign"
+          justifyContent="space-between"
+          width={{ _: '215px', sm: '100%' }}
+          mb={SPACING.SM}
+        >
           <CopyToClipboard
             text={donationAddressMap.ETH}
             onCopy={() => {
@@ -101,7 +111,12 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
             </>
           )}
         </Box>
-        <Text textTransform="uppercase" fontSize="12px" fontWeight={700} color="BLUE_DARK_SLATE">
+        <Text
+          textTransform="uppercase"
+          fontSize={{ _: '14px', sm: '12px' }}
+          fontWeight={700}
+          color={{ _: 'GREYISH_BROWN', sm: 'BLUE_DARK_SLATE' }}
+        >
           {translateRaw('NAVIGATION_PARTNERS')}
         </Text>
         {items.map((item, i) => item.type === 'external' && <ExternalLink key={i} item={item} />)}
