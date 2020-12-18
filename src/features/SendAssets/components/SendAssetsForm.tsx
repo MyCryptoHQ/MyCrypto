@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { Button as Btn } from '@mycrypto/ui';
-import { AppState, getIsDemoMode } from '@store';
 import BN from 'bn.js';
 import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
@@ -56,6 +55,7 @@ import {
   useAssets,
   useSettings
 } from '@services/Store';
+import { AppState, getIsDemoMode } from '@store';
 import translate, { translateRaw } from '@translations';
 import {
   Asset,

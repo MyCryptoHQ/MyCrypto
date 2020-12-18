@@ -1,6 +1,5 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
@@ -10,6 +9,7 @@ import { ROUTE_PATHS } from '@config';
 import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
+import { AppState, getIsDemoMode } from '@store';
 import {
   BREAK_POINTS,
   COLORS,

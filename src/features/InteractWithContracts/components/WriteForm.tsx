@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
@@ -8,6 +7,7 @@ import styled from 'styled-components';
 
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
 import { StoreContext } from '@services';
+import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';

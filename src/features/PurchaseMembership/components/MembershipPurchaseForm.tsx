@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import { connect, ConnectedProps } from 'react-redux';
@@ -21,6 +20,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';

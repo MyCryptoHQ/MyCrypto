@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
 import { connect, ConnectedProps } from 'react-redux';
@@ -23,6 +22,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {

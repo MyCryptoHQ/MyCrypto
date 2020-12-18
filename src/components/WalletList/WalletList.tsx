@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,6 +9,7 @@ import Button, { TButtonColorScheme } from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IStory, WalletId } from '@types';

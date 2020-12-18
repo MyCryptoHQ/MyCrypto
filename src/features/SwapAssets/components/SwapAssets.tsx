@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
@@ -17,6 +16,7 @@ import {
 } from '@components';
 import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import { StoreContext } from '@services/Store';
+import { AppState, getIsDemoMode } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISwapAsset, StoreAccount } from '@types';

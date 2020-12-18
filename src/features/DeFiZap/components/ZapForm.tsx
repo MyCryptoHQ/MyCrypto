@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import { parseEther } from 'ethers/utils';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
@@ -24,6 +23,7 @@ import { getAccountBalance, useAssets } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { useNetworks } from '@services/Store/Network';
 import { StoreContext } from '@services/Store/StoreProvider';
+import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';

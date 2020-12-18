@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { AppState, getIsDemoMode, importState } from '@store';
 import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
@@ -17,9 +15,11 @@ import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/Hist
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import {
+  AppState,
   deleteMembership,
   fetchAssets,
   fetchMemberships,
+  getIsDemoMode,
   getMemberships,
   getMembershipState,
   isMyCryptoMember,
@@ -81,7 +81,6 @@ import {
 } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
-import { getAccounts } from '@store/account.slice';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -135,8 +134,9 @@ export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
-export const StoreProvider = ({ children, isDemoMode, accounts: rawAccounts }: Props) => {
+export const StoreProvider = ({ children, isDemoMode }: Props) => {
   const {
+    accounts: rawAccounts,
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
@@ -487,18 +487,10 @@ export const StoreProvider = ({ children, isDemoMode, accounts: rawAccounts }: P
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state),
-  accounts: getAccounts(state)
+  isDemoMode: getIsDemoMode(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
-  bindActionCreators(
-    {
-      importState: importState
-    },
-    dispatch
-  );
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, {});
 
 type Props = ConnectedProps<typeof connector> & React.PropsWithChildren<any>;
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
-import { AppState, getIsDemoMode } from '@store';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@c
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { setupWeb3Node } from '@services/EthService';
 import { IFullWallet, IUseWalletConnect, withWalletConnect } from '@services/WalletService';
+import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, INode, ISignedMessage, WalletId } from '@types';

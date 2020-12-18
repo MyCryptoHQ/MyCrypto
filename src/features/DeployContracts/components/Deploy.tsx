@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { AppState, getIsDemoMode } from '@store';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
@@ -18,6 +17,7 @@ import {
   Typography
 } from '@components';
 import { StoreContext } from '@services';
+import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
 import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
