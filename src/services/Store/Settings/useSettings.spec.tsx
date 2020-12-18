@@ -32,7 +32,7 @@ describe('useSettings', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseSettings({ settings: fSettings });
     result.current.addAccountToFavorites(fAccount.uuid);
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccount.uuid));
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload([fAccount.uuid]));
   });
 
   it('addMultipleAccountsToFavorites() should call updateAll', () => {

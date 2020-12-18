@@ -15,7 +15,8 @@ export {
   destroyAccount,
   updateAccount,
   updateAccounts,
-  getAccounts
+  getAccounts,
+  addAccounts
 } from './account.slice';
 export { createContact, destroyContact, updateContact } from './contact.slice';
 export { createUserAction, destroyUserAction, updateUserAction } from './userAction.slice';
@@ -62,7 +63,8 @@ export {
   getInactivityTimer,
   setInactivityTimer,
   setDemoMode,
-  getIsDemoMode
+  getIsDemoMode,
+  addAccountsToFavorites
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';

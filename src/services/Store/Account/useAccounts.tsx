@@ -7,12 +7,12 @@ import unionWith from 'ramda/src/unionWith';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
+  addAccounts,
   destroyAccount,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import { addAccounts } from '@store/account.slice';
 import {
   Asset,
   IAccount,
