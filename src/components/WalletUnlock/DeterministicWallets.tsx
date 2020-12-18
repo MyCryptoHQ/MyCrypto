@@ -18,7 +18,6 @@ import {
   Spinner,
   Typography
 } from '@components';
-import { TButtonColorScheme } from '@components/Button';
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
@@ -441,7 +440,7 @@ export function DeterministicWalletsClass({
           <img src={nextIcon} onClick={nextPage} />
         </Nav>
         <ButtonsGroup>
-          <CancelButton onClick={onCancel} colorScheme={TButtonColorScheme.inverted}>
+          <CancelButton onClick={onCancel} colorScheme={'inverted'}>
             {translate('CANCEL_ACTION')}
           </CancelButton>
           <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>

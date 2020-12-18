@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react';
 import { ProvidersWrapper } from 'test-utils';
 
 import { Button, NewTabLink } from '@components';
-import { TButtonColorScheme } from '@components/Button';
 import { Fiats, MYCRYPTO_FAUCET_LINK } from '@config';
 import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
@@ -220,11 +219,7 @@ export const transactionReceiptFaucet = wrapInProvider(
             })
           )}
         >
-          <Button
-            colorScheme={TButtonColorScheme.inverted}
-            fullwidth={true}
-            className="TransactionReceipt-tweet"
-          >
+          <Button colorScheme={'inverted'} fullwidth={true} className="TransactionReceipt-tweet">
             <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
             <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
           </Button>

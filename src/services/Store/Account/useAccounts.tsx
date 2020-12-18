@@ -7,15 +7,12 @@ import unionWith from 'ramda/src/unionWith';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
-  createAccount,
-  createAccounts,
   destroyAccount,
-  resetAndCreateAccount,
-  resetAndCreateManyAccounts,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
+import { addAccounts } from '@store/account.slice';
 import {
   Asset,
   IAccount,
@@ -29,7 +26,6 @@ import {
 } from '@types';
 
 import { DataContext } from '../DataManager';
-import { useSettings } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
@@ -48,7 +44,6 @@ export interface IAccountContext {
 
 function useAccounts() {
   const { accounts } = useContext(DataContext);
-  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
 
   const dispatch = useDispatch();
   const trackTxHistory = useAnalytics({
@@ -56,19 +51,12 @@ function useAccounts() {
     actionName: 'Tx Made'
   });
 
-  const createAccountWithID = (uuid: TUuid, item: IRawAccount, isDemoMode?: boolean) => {
-    addAccountToFavorites(uuid, isDemoMode);
-    dispatch(
-      isDemoMode ? resetAndCreateAccount({ ...item, uuid }) : createAccount({ ...item, uuid })
-    );
+  const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
+    dispatch(addAccounts([{ ...item, uuid }]));
   };
 
-  const createMultipleAccountsWithIDs = (newAccounts: IAccount[], isDemoMode?: boolean) => {
-    addMultipleAccountsToFavorites(
-      newAccounts.map(({ uuid }) => uuid),
-      isDemoMode
-    );
-    dispatch(isDemoMode ? resetAndCreateManyAccounts(newAccounts) : createAccounts(newAccounts));
+  const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
+    dispatch(addAccounts(newAccounts));
   };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));

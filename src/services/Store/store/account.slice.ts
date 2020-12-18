@@ -1,10 +1,12 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { DEFAULT_NETWORK } from '@config';
 import { AssetBalanceObject, IAccount, LSKeys, TUuid, WalletId } from '@types';
 import { filter, findIndex, pipe, propEq, reject } from '@vendor';
 
 import { getAppState } from './selectors';
+import { addAccountsToFavorites, getIsDemoMode } from './settings.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -79,3 +81,26 @@ export const getWalletAccountsOnDefaultNetwork = createSelector(
   getAccounts,
   pipe(reject(propEq('wallet', WalletId.VIEW_ONLY)), filter(propEq('networkId', DEFAULT_NETWORK)))
 );
+
+/**
+ * Actions
+ */
+export const addAccounts = createAction<IAccount[]>(`${slice.name}/addAccounts`);
+
+/**
+ * Sagas
+ */
+export function* accountsSaga() {
+  yield takeLatest(addAccounts.type, handleAddAccounts);
+}
+
+export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
+  const isDemoMode = yield select(getIsDemoMode);
+  if (isDemoMode) {
+    yield put(slice.actions.resetAndCreateMany(payload));
+    yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+  } else {
+    yield put(slice.actions.createMany(payload));
+    yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+  }
+}

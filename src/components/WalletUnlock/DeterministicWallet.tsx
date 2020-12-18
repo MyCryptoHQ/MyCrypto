@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { object, string } from 'yup';
 
 import { AssetSelector, Button, Input, Typography } from '@components';
-import { TButtonColorScheme } from '@components/Button';
 import Icon from '@components/Icon';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
@@ -269,7 +268,7 @@ const DeterministicWallet = ({
             handleAssetUpdate(option);
           }}
         />
-        <Button onClick={() => setDpathAddView(true)} colorScheme={TButtonColorScheme.inverted}>
+        <Button onClick={() => setDpathAddView(true)} colorScheme={'inverted'}>
           <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
         </Button>
       </Parameters>

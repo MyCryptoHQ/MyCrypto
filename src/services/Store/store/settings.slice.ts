@@ -1,4 +1,5 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { IRates, LSKeys, TFiatTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
@@ -73,6 +74,25 @@ export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAs
 export const getRates = createSelector(getSettings, (s) => s.rates);
 export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
+
+/**
+ * Actions
+ */
+export const addAccountsToFavorites = createAction<TUuid[]>(`${slice.name}/addAccountsToFavorites`);
+
 /**
  * Sagas
  */
+export function* settingsSaga() {
+  yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
+}
+
+export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]>) {
+  const isDemoMode = yield select(getIsDemoMode);
+  if (isDemoMode) {
+    yield put(slice.actions.setDemoMode(false));
+    yield put(slice.actions.resetFavoritesTo(payload));
+  } else {
+    yield put(slice.actions.addFavorites(payload));
+  }
+}

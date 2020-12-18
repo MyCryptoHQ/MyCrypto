@@ -8,11 +8,9 @@ import { COLORS, SPACING } from '@theme';
 import Spinner from './Spinner';
 import Typography from './Typography';
 
-export enum TButtonColorScheme {
-  'default',
-  'inverted',
-  'warning'
-}
+const ButtonColorSchemes = { default: 'default', inverted: 'inverted', warning: 'warning' };
+
+type TButtonColorScheme = keyof typeof ButtonColorSchemes;
 
 interface ButtonProps {
   children: React.ReactNode | string;
@@ -61,7 +59,7 @@ const SButton = styled(Button)<StyledButtonProps>`
     `}
 
   ${(props) =>
-    props.colorScheme === TButtonColorScheme.default &&
+    props.colorScheme === 'default' &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT};
 
@@ -71,7 +69,7 @@ const SButton = styled(Button)<StyledButtonProps>`
   `}
 
   ${(props) =>
-    props.colorScheme === TButtonColorScheme.inverted &&
+    props.colorScheme === 'inverted' &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
 
@@ -99,7 +97,7 @@ const SButton = styled(Button)<StyledButtonProps>`
   `}
 
   ${(props) =>
-    props.colorScheme === TButtonColorScheme.warning &&
+    props.colorScheme === 'warning' &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
 
@@ -134,13 +132,7 @@ const SButton = styled(Button)<StyledButtonProps>`
     `}
 `;
 
-function StyledButton({
-  children,
-  disabled,
-  loading,
-  colorScheme = TButtonColorScheme.default,
-  ...props
-}: Props) {
+function StyledButton({ children, disabled, loading, colorScheme = 'default', ...props }: Props) {
   return (
     <SButton disabled={disabled || loading} _loading={loading} colorScheme={colorScheme} {...props}>
       <Wrapper>

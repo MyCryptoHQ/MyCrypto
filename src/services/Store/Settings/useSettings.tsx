@@ -2,8 +2,6 @@ import { useContext } from 'react';
 
 import {
   addExcludedAsset,
-  addFavorite,
-  addFavorites,
   removeExcludedAsset,
   resetFavoritesTo,
   setDemoMode,
@@ -12,6 +10,7 @@ import {
   setRates,
   useDispatch
 } from '@store';
+import { addAccountsToFavorites } from '@store/settings.slice';
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';
@@ -35,16 +34,12 @@ function useSettings() {
   const dispatch = useDispatch();
   const language = settings.language || '';
 
-  const addAccountToFavorites = (account: TUuid, isDemoMode?: boolean) => {
-    // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding account
-    isDemoMode && setDemo(false);
-    dispatch(isDemoMode ? resetFavoritesTo([account]) : addFavorite(account));
+  const addAccountToFavorites = (account: TUuid) => {
+    dispatch(addAccountsToFavorites([account]));
   };
 
-  const addMultipleAccountsToFavorites = (accounts: TUuid[], isDemoMode?: boolean) => {
-    // Handles favorite accounts reset & demo mode toggle if demo mode was turned on when adding accounts
-    isDemoMode && setDemo(false);
-    dispatch(isDemoMode ? resetFavoritesTo(accounts) : addFavorites(accounts));
+  const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
+    dispatch(addAccountsToFavorites(accounts));
   };
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {

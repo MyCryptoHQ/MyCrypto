@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
 import uniqBy from 'ramda/src/uniqBy';
-import { connect, ConnectedProps } from 'react-redux';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
@@ -15,11 +14,9 @@ import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/Hist
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import {
-  AppState,
   deleteMembership,
   fetchAssets,
   fetchMemberships,
-  getIsDemoMode,
   getMemberships,
   getMembershipState,
   isMyCryptoMember,
@@ -134,7 +131,7 @@ export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
-export const StoreProvider = ({ children, isDemoMode }: Props) => {
+export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts: rawAccounts,
     addTxToAccount,
@@ -464,7 +461,7 @@ export const StoreProvider = ({ children, isDemoMode }: Props) => {
           createContact(newLabel);
         }
       });
-      createMultipleAccountsWithIDs(newRawAccounts, isDemoMode); // todo - does this need a selector?
+      createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
     },
     getAssetByTicker: getAssetByTicker(assets),
@@ -486,12 +483,4 @@ export const StoreProvider = ({ children, isDemoMode }: Props) => {
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
 };
 
-const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
-});
-
-const connector = connect(mapStateToProps, {});
-
-type Props = ConnectedProps<typeof connector> & React.PropsWithChildren<any>;
-
-export default connector(StoreProvider);
+export default StoreProvider;

@@ -5,7 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Button, { TButtonColorScheme } from '@components/Button';
+import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
@@ -164,7 +164,7 @@ const WalletList = ({
           <SDemoButtonContainer>
             <Link to={ROUTE_PATHS.DASHBOARD.path}>
               <Button
-                colorScheme={TButtonColorScheme.warning}
+                colorScheme={'warning'}
                 disabled={isDemoMode}
                 onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
               >
