@@ -33,7 +33,7 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(broadcastTxState),
+      props: (({ txConfig, error }) => ({ txConfig, error }))(broadcastTxState),
       actions: (_: any, cb: any) => handleConfirmClick(cb)
     },
     {

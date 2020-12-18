@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import BN from 'bn.js';
 import Styled from 'styled-components';
@@ -8,6 +8,7 @@ import sendIcon from '@assets/images/icn-send.svg';
 import walletIcon from '@assets/images/icn-wallet.svg';
 import { Amount, AssetIcon, Button, PoweredByText } from '@components';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
+import { InlineMessage } from '@components/InlineMessage';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
@@ -112,6 +113,7 @@ export default function ConfirmTransaction({
   txConfig,
   onComplete,
   signedTx,
+  error,
   protectTxButton,
   customComponent
 }: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
@@ -163,6 +165,7 @@ export default function ConfirmTransaction({
       ptxFee={ptxFee}
       protectTxButton={protectTxButton}
       customComponent={customComponent}
+      error={error}
     />
   );
 }
@@ -195,6 +198,7 @@ export const ConfirmTransactionUI = ({
   onComplete,
   signedTx,
   ptxFee,
+  error,
   protectTxButton,
   customComponent
 }: UIProps) => {
@@ -215,6 +219,10 @@ export const ConfirmTransactionUI = ({
     setIsBroadcastingTx(true);
     onComplete(null);
   };
+
+  useEffect(() => {
+    error && setIsBroadcastingTx(false);
+  }, [error]);
 
   const assetType = asset.type;
 
@@ -410,6 +418,7 @@ export const ConfirmTransactionUI = ({
       >
         {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
+      {error && <InlineMessage>{error}</InlineMessage>}
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
           <PoweredByText provider="ZAPPER" />

@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Identicon } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
+import { AppState } from '@store';
+import { getNetwork } from '@store/network.slice';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
+import { Button, CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
 import { verifyTransaction } from '@helpers';
+import { getGasEstimate } from '@services';
 import translate, { translateRaw } from '@translations';
-import { ISignedTx, NetworkId } from '@types';
+import { ISignedTx, ITxObject, Network, NetworkId } from '@types';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -38,12 +42,6 @@ const InputWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-`;
-
-const PlaceholderButton = styled(Button)`
-  opacity: 0.4;
-  margin-top: 20px;
-  cursor: default;
 `;
 
 const SendButton = styled(Button)`
@@ -97,20 +95,43 @@ interface Props {
   handleNetworkChanged(network: NetworkId): void;
 }
 
-const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Props) => {
+const BroadcastTx = ({
+  signedTx,
+  network: networkId,
+  getNetwork,
+  onComplete,
+  handleNetworkChanged
+}: Props & ConnectedProps<typeof connector>) => {
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
+  const [isEstimatingGas, setEstimatingGas] = useState(false);
   const [transaction, setTransaction] = useState<Transaction | undefined>(
     makeTxFromSignedTx(signedTx)
   );
 
-  const validateField = () => {
-    if ((transaction && verifyTransaction(transaction)) || !userInput) {
+  const validateGas = async () => {
+    setEstimatingGas(true);
+    try {
+      const network = getNetwork(networkId) as Network;
+      const gas = await getGasEstimate(network, (transaction! as unknown) as ITxObject);
+      if (!gas) {
+        throw Error();
+      }
+    } catch (err) {
+      setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
+    } finally {
+      setEstimatingGas(false);
+    }
+  };
+
+  useEffect(() => {
+    if (transaction && verifyTransaction(transaction)) {
       setInputError('');
+      validateGas();
     } else {
       setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
     }
-  };
+  }, [transaction]);
 
   const handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
@@ -119,6 +140,8 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
     setInputError('');
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
+
+  const isValid = transaction !== undefined && inputError.length === 0 && !isEstimatingGas;
 
   return (
     <ContentWrapper>
@@ -131,17 +154,16 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           height={'250px'}
           placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
           onChange={handleChange}
-          onBlur={validateField}
-          inputError={!transaction ? inputError : ''}
+          inputError={userInput.length > 0 ? inputError : ''}
         />
         {transaction && <IdenticonIcon address={userInput} />}
       </InputWrapper>
-      {transaction ? (
+      {isValid && transaction && (
         <React.Fragment>
           {!transaction.chainId && (
             <NetworkSelectWrapper>
-              <NetworkSelector network={network} onChange={handleNetworkChanged} />
-              {!network && (
+              <NetworkSelector network={networkId} onChange={handleNetworkChanged} />
+              {!networkId && (
                 <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
               )}
             </NetworkSelectWrapper>
@@ -150,15 +172,19 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           <CodeBlockWrapper>
             <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
           </CodeBlockWrapper>
-          <SendButton onClick={() => onComplete(userInput.trim())}>
-            {translateRaw('SEND_TRANS')}
-          </SendButton>
         </React.Fragment>
-      ) : (
-        <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
       )}
+      <SendButton disabled={!isValid} onClick={() => onComplete(userInput.trim())}>
+        {translateRaw('SEND_TRANS')}
+      </SendButton>
     </ContentWrapper>
   );
 };
 
-export default BroadcastTx;
+const mapStateToProps = (state: AppState) => ({
+  getNetwork: (n: NetworkId) => getNetwork(n)(state)
+});
+
+const connector = connect(mapStateToProps);
+
+export default connector(BroadcastTx);

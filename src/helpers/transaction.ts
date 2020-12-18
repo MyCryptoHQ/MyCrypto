@@ -448,7 +448,7 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   }
 
   try {
-    const { r, s, v, from, ...unsignedTransaction } = transaction;
+    const { r, s, v, from, hash, ...unsignedTransaction } = transaction;
     const serializedTransaction = serializeTransaction(unsignedTransaction, { r, s, v });
     return !!recoverAddress(serializedTransaction, { r, s, v });
   } catch (e) {
