@@ -28,6 +28,7 @@ import {
   ETH_TREZOR,
   ETI_DEFAULT,
   EXP_DEFAULT,
+  XDC_DEFAULT,
   GO_DEFAULT,
   METADIUM_DEFAULT,
   MIX_DEFAULT,
@@ -433,6 +434,57 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     unsupportedTabs: [TAB.ENS]
   },
 
+  XDC: {
+    id: 'XDC',
+    name: 'XDC',
+    unit: 'XDC',
+    chainId: 50,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'XDCScan Explorer',
+      origin: 'https://explorer.xinfin.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: XDC_DEFAULT,
+      [SecureWalletName.SAFE_T]: XDC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: XDC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: XDC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
+    }
+  },
+
+  XDC_TESTNET: {
+    id: 'XDC_TESTNET',
+    name: 'XDC Apothem',
+    unit: 'XDC',
+    chainId: 51,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'XDC Apothem Explorer',
+      origin: 'https://explorer.Apothem.network'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: XDC_DEFAULT,
+      [SecureWalletName.SAFE_T]: XDC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: XDC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
+    }
+  },
   GO: {
     id: 'GO',
     name: 'GO',

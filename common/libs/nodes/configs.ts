@@ -155,7 +155,22 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://clo-geth.0xinfra.com/'
     }
   ],
-
+  XDC: [
+    {
+      name: makeNodeName('XDC', 'xdc_mainnet'),
+      type: 'rpc',
+      service: 'XinFin.Network',
+      url: 'https://rpc.XinFin.Network/'
+    }
+  ],
+  XDC_TESTNET: [
+    {
+      name: makeNodeName('XDC', 'xdc_testnet'),
+      type: 'rpc',
+      service: 'Apoethm.Network',
+      url: 'https://rpc.apothem.Network/'
+    }
+  ],
   DEXON: [
     {
       name: makeNodeName('DEXON', 'dexon'),

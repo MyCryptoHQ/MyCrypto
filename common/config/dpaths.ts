@@ -43,6 +43,11 @@ export const EXP_DEFAULT: DPath = {
   value: "m/44'/40'/0'/0"
 };
 
+export const XDC_DEFAULT: DPath = {
+  label: 'Default (XDC)',
+  value: "m/44'/550'/0'/0"
+};
+
 export const UBQ_DEFAULT: DPath = {
   label: 'Default (UBQ)',
   value: "m/44'/108'/0'/0"
@@ -202,6 +207,7 @@ export const DPaths: DPath[] = [
   ETC_SAFE_T,
   ETH_TESTNET,
   EXP_DEFAULT,
+  XDC_DEFAULT,
   UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,

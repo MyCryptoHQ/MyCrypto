@@ -22,6 +22,8 @@ type StaticNetworkIds =
   | 'EXP'
   | 'GO'
   | 'GO_TESTNET'
+  | 'XDC'
+  | 'XDC_TESTNET'
   | 'METADIUM'
   | 'MIX'
   | 'MUSIC'
