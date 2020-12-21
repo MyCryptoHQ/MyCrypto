@@ -15,11 +15,10 @@ import {
   Tooltip
 } from '@components';
 import { verifyTransaction } from '@helpers';
-import { getGasEstimate } from '@services';
 import { AppState } from '@store';
 import { getNetwork } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
-import { ISignedTx, ITxObject, Network, NetworkId } from '@types';
+import { ISignedTx, NetworkId } from '@types';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -98,36 +97,18 @@ interface Props {
 const BroadcastTx = ({
   signedTx,
   network: networkId,
-  getNetwork,
   onComplete,
   handleNetworkChanged
 }: Props & ConnectedProps<typeof connector>) => {
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
-  const [isEstimatingGas, setEstimatingGas] = useState(false);
   const [transaction, setTransaction] = useState<Transaction | undefined>(
     makeTxFromSignedTx(signedTx)
   );
 
-  const validateGas = async () => {
-    setEstimatingGas(true);
-    try {
-      const network = getNetwork(networkId) as Network;
-      const gas = await getGasEstimate(network, (transaction! as unknown) as ITxObject);
-      if (!gas) {
-        throw Error();
-      }
-    } catch (err) {
-      setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
-    } finally {
-      setEstimatingGas(false);
-    }
-  };
-
   useEffect(() => {
     if (transaction && verifyTransaction(transaction)) {
       setInputError('');
-      validateGas();
     } else {
       setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
     }
@@ -141,7 +122,7 @@ const BroadcastTx = ({
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
 
-  const isValid = transaction !== undefined && inputError.length === 0 && !isEstimatingGas;
+  const isValid = transaction !== undefined && inputError.length === 0;
 
   return (
     <ContentWrapper>
