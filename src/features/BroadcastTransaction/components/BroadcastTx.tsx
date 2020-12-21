@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import { Identicon } from '@mycrypto/ui';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { Button, CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
+import {
+  Button,
+  CodeBlock,
+  InlineMessage,
+  InputField,
+  Label,
+  NetworkSelector,
+  Tooltip
+} from '@components';
 import { verifyTransaction } from '@helpers';
 import { getGasEstimate } from '@services';
 import { AppState } from '@store';
@@ -18,6 +25,9 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  label {
+    align-self: flex-start;
+  }
 `;
 
 const Description = styled.p`
@@ -55,18 +65,8 @@ const CodeBlockWrapper = styled.div`
   overflow-x: auto;
 `;
 
-const IdenticonIcon = styled(Identicon)`
-  margin-left: 12px;
-  margin-top: 8px;
-
-  img {
-    width: 48px;
-    height: 48px;
-    max-width: none;
-  }
-`;
-
-const StyledLabel = styled.label`
+const StyledLabel = styled(Label)`
+  align-self: flex-start;
   margin-top: 8px;
 `;
 
@@ -156,7 +156,6 @@ const BroadcastTx = ({
           onChange={handleChange}
           inputError={userInput.length > 0 ? inputError : ''}
         />
-        {transaction && <IdenticonIcon address={userInput} />}
       </InputWrapper>
       {isValid && transaction && (
         <React.Fragment>
@@ -168,7 +167,10 @@ const BroadcastTx = ({
               )}
             </NetworkSelectWrapper>
           )}
-          <StyledLabel>{translate('SEND_RAW')}</StyledLabel>
+          <StyledLabel>
+            {translate('SEND_RAW')}
+            <Tooltip tooltip={translateRaw('BROADCAST_TX_RAW_TOOLTIP')} />
+          </StyledLabel>
           <CodeBlockWrapper>
             <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
           </CodeBlockWrapper>
