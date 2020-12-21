@@ -47,7 +47,7 @@ function Tooltip({
   return (
     <Override verticalAlign={verticalAlign} display={display} {...props}>
       <UITooltip tooltip={tooltip}>
-        {children ? children : <Icon type={type} size="1em" />}
+        {children ? children : <Icon type={type} width="1em" />}
       </UITooltip>
     </Override>
   );
