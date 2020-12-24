@@ -30,7 +30,7 @@
     "@walletconnect/browser": "1.0.0",
     "aes-js": "3.1.1",
     "apollo-boost": "0.4.7",
-    "axios": "0.18.1",
+    "axios": "0.21.1",
     "bignumber.js": "9.0.0",
     "bn.js": "4.11.8",
     "classnames": "2.2.5",
