@@ -4753,13 +4753,6 @@
     "uuid": "3d10c6ef-249c-525a-8725-d7e7b7495948"
   },
   {
-    "address": "0xa74476443119A942dE498590Fe1f2454d7D4aC0d",
-    "symbol": "GNT",
-    "decimal": 18,
-    "name": "Golem",
-    "uuid": "59a6f871-34bb-5914-86cc-b5f1307bb3b9"
-  },
-  {
     "address": "0x6EC8a24CaBdc339A06a172F8223ea557055aDAa5",
     "symbol": "GNX",
     "decimal": 9,
