@@ -953,7 +953,7 @@
     "MIGRATE_ANT_ACTION_HEADING": "Migrate your $ANT to V2",
     "MIGRATE_ANT_ACTION_BODY": "One or more of your accounts hold ANTv1 tokens. Migrate them to v2 now!",
     "ANT_TOKEN_MIGRATION_STEP1_TEXT": "Before migrating your v1 ANT to v2 ANT, you must approve the migrator contract which will allow for migration.",
-    "ANT_TOKEN_MIGRATION_STEP2_TEXT": "After the REP v2 contract has been approved, confirm the transaction below to conduct the actual migration. This will complete the migration.",
+    "ANT_TOKEN_MIGRATION_STEP2_TEXT": "After the migrator contract has been approved, confirm the transaction below to conduct the actual migration. This will complete the migration.",
     "APPROVE_ANT_TOKEN_MIGRATION": "Approve Migrator Contract",
     "COMPLETE_ANT_TOKEN_MIGRATION": "Complete ANT Migration",
     "ANT_TOKEN_MIGRATION": "Migrate ANT Tokens",
