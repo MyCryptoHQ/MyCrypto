@@ -104,6 +104,10 @@ const GolemTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
 );
 
+const PortfolioValueGraph = lazy(() =>
+  import(/* webpackChunkName: "PortfolioValueGraph" */ '@features/PortfolioValueGraph')
+);
+
 export interface IAppRoutes {
   [K: string]: IAppRoute;
 }
@@ -369,6 +373,15 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     requireAccounts: true,
     enabled: isTruthy(featureFlags.FAUCET),
     component: Faucet
+  },
+  {
+    name: ROUTE_PATHS.PORTFOLIO_GRAPH.name,
+    title: ROUTE_PATHS.PORTFOLIO_GRAPH.title,
+    path: ROUTE_PATHS.PORTFOLIO_GRAPH.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: true,
+    component: PortfolioValueGraph
   }
 ];
 

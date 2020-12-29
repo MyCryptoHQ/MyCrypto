@@ -165,6 +165,11 @@ const PATHS: IRoutePath[] = [
     name: 'FAUCET',
     title: translateRaw('FAUCET'),
     path: '/faucet'
+  },
+  {
+    name: 'PORTFOLIO_GRAPH',
+    title: 'Portfolio Graph',
+    path: '/portfolio'
   }
 ];
 
