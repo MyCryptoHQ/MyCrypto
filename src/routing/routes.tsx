@@ -369,6 +369,15 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     requireAccounts: true,
     enabled: isTruthy(featureFlags.FAUCET),
     component: Faucet
+  },
+  {
+    name: ROUTE_PATHS.TOKEN_ALLOWANCES.name,
+    title: ROUTE_PATHS.TOKEN_ALLOWANCES.title,
+    path: ROUTE_PATHS.TOKEN_ALLOWANCES.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: isTruthy(featureFlags.TOKEN_ALLOWANCES),
+    component: Faucet
   }
 ];
 

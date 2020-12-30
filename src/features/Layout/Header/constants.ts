@@ -110,6 +110,11 @@ export const getLinks = (featureFlags: IFeatureFlags) => {
           to: APP_ROUTES_OBJECT.FAUCET.path,
           enabled: APP_ROUTES_OBJECT.FAUCET.enabled,
           title: 'Faucet'
+        },
+        {
+          to: APP_ROUTES_OBJECT.SIGN_MESSAGE.path,
+          enabled: true,
+          title: 'Token Allowances'
         }
       ]
     },

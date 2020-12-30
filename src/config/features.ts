@@ -43,5 +43,6 @@ export const FEATURE_FLAGS = {
   ANT_TOKEN_MIGRATION: true,
   GOLEM_TOKEN_MIGRATION: true,
   CUSTOM_NETWORKS: IS_DEV,
-  FAUCET: true
+  FAUCET: true,
+  TOKEN_ALLOWANCES: true
 };
