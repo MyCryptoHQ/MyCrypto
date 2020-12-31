@@ -104,6 +104,10 @@ const GolemTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
 );
 
+const TokenAllowances = lazy(() =>
+  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenAllowances')
+);
+
 export interface IAppRoutes {
   [K: string]: IAppRoute;
 }
@@ -377,7 +381,7 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     exact: true,
     requireAccounts: true,
     enabled: isTruthy(featureFlags.TOKEN_ALLOWANCES),
-    component: Faucet
+    component: TokenAllowances
   }
 ];
 
