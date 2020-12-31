@@ -10,7 +10,7 @@ import { BigNumber, formatEther } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20, RPCRequests } from '@services/EthService';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj, ITokenApprovalLogs } from '@types';
 import { baseToConvertedUnit } from '@utils';
 
 import { EthersJS } from './ethersJsProvider';
@@ -157,5 +157,24 @@ export class ProviderHandler {
       }
       return clientInjectCb(ProviderHandler.fetchSingleProvider(this.network));
     }
+  }
+
+  public getTokenApprovals(
+    tokenAddress: string,
+    ownerAddress: string,
+  ): Promise<Array<ITokenApprovalLogs>> {
+    return this.injectClient((client) =>
+      client
+        .getLogs({
+          fromBlock: "earliest",
+          toBlock: "latest",
+          address: tokenAddress,
+          topics: [
+            "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925", // keccak('Approval(address,address,uint256)'),
+            `0x000000000000000000000000${ownerAddress.substring(2)}` // the token holder address
+          ]
+        })
+        .then((data) => data)
+    );
   }
 }
