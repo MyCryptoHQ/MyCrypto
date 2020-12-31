@@ -1,4 +1,12 @@
-import { ITxData, ITxGasLimit, ITxGasPrice, ITxHash, TAddress, ExtendedAsset, Network } from '@types';
+import {
+  ExtendedAsset,
+  ITxData,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxHash,
+  Network,
+  TAddress
+} from '@types';
 
 export interface ITxTokenAllowanceRevokeResult {
   chainId: number;
@@ -21,20 +29,20 @@ export interface TokenAllowancesState {
 }
 
 export interface MyTokensProps {
-  address: string,
+  address: string;
   assets: ExtendedAsset[];
-  network: Network
+  network: Network | undefined;
 }
 
 export interface IAssetTableBody {
-  ticker: string,
-  name: string,
-  contractAddress: string
+  ticker: string;
+  name: string;
+  contractAddress: string;
 }
 
 export interface IFormattedLogEntry {
-  tokenContract: string,
-  decimals: number,
-  spender: string,
-  allowance: string
+  tokenContract: string;
+  decimals: number;
+  spender: string;
+  allowance: string;
 }
