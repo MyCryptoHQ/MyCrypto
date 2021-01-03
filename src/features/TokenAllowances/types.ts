@@ -45,4 +45,5 @@ export interface IFormattedLogEntry {
   decimals: number;
   spender: string;
   allowance: string;
+  blockNumber: number;
 }
