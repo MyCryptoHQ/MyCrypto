@@ -2178,10 +2178,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.1.2.tgz#53bb0d5bddd53dc0f389c10e6635ce1a25d73e45"
-  integrity sha512-fysgL4OJoay1ZySFnoCQdnbRoMnqPb/h87IK/7FZ0BMMw1fBMZN9YfJG5h+xHSwvFAD4FdXspqimqhq9+51fVg==
+"@mycrypto/eth-scan@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.2.0.tgz#4c27cfb704884a50ccd49e15b140844ad57818f1"
+  integrity sha512-6x8G8nwjd8eJW9IBOXCHkc0ZkI41ETQE69fcv9vJyUNT0VQuqjb36dOebauhe1rsznl0mlADjDwCFF66efxKgw==
   dependencies:
     "@findeth/abi" "^0.3.1"
     isomorphic-unfetch "^3.1.0"
