@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
+import { Button } from '@mycrypto/ui';
+import { bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { FixedSizeCollapsibleTable } from '@components';
+import { Contracts } from '@database';
 import { ProviderHandler } from '@services';
 import { BREAK_POINTS, breakpointToNumber } from '@theme';
 import { translateRaw } from '@translations';
 import { Network } from '@types';
-import { hexWeiToString } from '@utils';
-import { Contracts } from '@database';
+import { weiToFloat } from '@utils';
+
 
 import { IFormattedLogEntry, MyTokensProps } from './types';
 
@@ -18,6 +21,21 @@ const RowAlignment = styled.div`
 const NoSpenders = styled.span`
   text-decoration: italic;
   color: #d4d4d4;
+`;
+
+const AllowanceListContainer = styled.div`
+  width: 100%;
+  display: inherit;
+`;
+const AllowanceListItem = styled.div`
+  display: block;
+  width: 100%;
+  padding: 0.5em 0;
+`;
+const DeleteButton = styled(Button)`
+  display: inline-block;
+  padding: 0.5em;
+  margin: 0 0 0 0.5em;
 `;
 
 const getApprovalEvents = async (contractAddress: string, address: string, network: Network) => {
@@ -57,9 +75,9 @@ export default function MyTokens({ address, assets, network }: MyTokensProps) {
             blockNumber: log.blockNumber
           };
 
-          setTokenAllowances((tokenAllowances: IFormattedLogEntry) => [
-            formattedLog,
-            ...tokenAllowances
+          setTokenAllowances((tokenAllowances: IFormattedLogEntry[]) => [
+            ...tokenAllowances,
+            formattedLog
           ]);
         });
       })
@@ -68,27 +86,28 @@ export default function MyTokens({ address, assets, network }: MyTokensProps) {
 
   const formatAllowance = (allowance: string, decimals: number) => {
     // @todo - get the totalSupply of the contract also
-    if (allowance === [`0x`, `f`.repeat(64)].join("")) {
+    if (allowance === [`0x`, `f`.repeat(64)].join('')) {
       return `Unlimited`;
     }
 
-    return `${allowance}/${decimals} - ${(hexWeiToString(allowance))}`;
+    return weiToFloat(bigNumberify(allowance), decimals).toFixed(0);
   };
 
   const formatAddress = (address: string) => {
     const addr = `0x` + address.substr(address.length - 40);
 
-    const namedContract = Contracts.Ethereum.filter((contract) => contract.address.toLowerCase() === address.toLowerCase())
+    const namedContract = Contracts.Ethereum.filter(
+      (contract) => contract.address.toLowerCase() === address.toLowerCase()
+    );
     if (namedContract.length > 0) {
       //@todo - make this link out to the block explorer?
-      return namedContract[0].name
+      return namedContract[0].name;
     }
 
     return addr;
   };
 
   const formatAllowanceRecords = (contractAddress: string) => {
-
     const contractSpecificEvents = tokenAllowances.filter(
       (ev: IFormattedLogEntry) => ev.tokenContract === contractAddress
     );
@@ -98,21 +117,30 @@ export default function MyTokens({ address, assets, network }: MyTokensProps) {
     }
 
     // Sort by blocknumber desc
-    contractSpecificEvents.sort((a: IFormattedLogEntry, b: IFormattedLogEntry) => a.blockNumber < b.blockNumber ? 1 : -1)
+    contractSpecificEvents.sort((a: IFormattedLogEntry, b: IFormattedLogEntry) =>
+      a.blockNumber < b.blockNumber ? 1 : -1
+    );
     // Return only the most recent log entry per 1 spender address
-    const uniqueSpenders = [...new Map(contractSpecificEvents.map((logEvent: IFormattedLogEntry) => [logEvent.spender, logEvent])).values()];
+    const uniqueSpenders = [
+      ...new Map(
+        contractSpecificEvents.map((logEvent: IFormattedLogEntry) => [logEvent.spender, logEvent])
+      ).values()
+    ];
 
     return (
-      <ul>
+      <AllowanceListContainer>
         {uniqueSpenders.map((ev: IFormattedLogEntry, index: number) => {
           const { spender, allowance, decimals } = ev;
           return (
-            <li key={index}>
+            <AllowanceListItem key={index}>
               {formatAddress(spender)} can spend {formatAllowance(allowance, decimals)} tokens
-            </li>
+              <DeleteButton key={index} onClick={() => console.log(index)}>
+                Revoke
+              </DeleteButton>
+            </AllowanceListItem>
           );
         })}
-      </ul>
+      </AllowanceListContainer>
     );
   };
 
@@ -137,9 +165,12 @@ export default function MyTokens({ address, assets, network }: MyTokensProps) {
   };
 
   return (
-    <FixedSizeCollapsibleTable
-      breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
-      {...tokenTable}
-    />
+    <>
+      <p>Viewing token allowances for address {address}</p>
+      <FixedSizeCollapsibleTable
+        breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
+        {...tokenTable}
+      />
+    </>
   );
 }
