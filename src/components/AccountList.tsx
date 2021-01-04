@@ -339,6 +339,9 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
+export const screenIsMobileSized = (): boolean =>
+  window.matchMedia(`(max-width: ${breakpointToNumber(BREAK_POINTS.SCREEN_XS)}px)`).matches;
+
 const BuildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
@@ -391,11 +394,14 @@ const BuildAccountTable = (
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) => (
-    <div key={id} onClick={() => updateSortingState(id)}>
-      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-    </div>
-  );
+  const convertColumnToClickable = (id: IColumnValues) =>
+    screenIsMobileSized() ? (
+      translateRaw(id)
+    ) : (
+      <div key={id} onClick={() => updateSortingState(id)}>
+        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+      </div>
+    );
 
   const columns = [
     convertColumnToClickable('ACCOUNT_LIST_LABEL'),
@@ -407,7 +413,9 @@ const BuildAccountTable = (
       onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
     >
       {translateRaw('ACCOUNT_LIST_VALUE')}
-      <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
+      {!screenIsMobileSized() && (
+        <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
+      )}
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>

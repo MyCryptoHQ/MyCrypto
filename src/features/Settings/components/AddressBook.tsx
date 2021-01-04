@@ -17,7 +17,7 @@ import {
 } from '@components';
 import IconArrow from '@components/IconArrow';
 import { useNetworks } from '@services';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TUuid } from '@types';
 
@@ -125,6 +125,9 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
+export const screenIsMobileSized = (): boolean =>
+  window.matchMedia(`(max-width: ${breakpointToNumber(BREAK_POINTS.SCREEN_XS)}px)`).matches;
+
 export default function AddressBook({
   contacts,
   contactRestore,
@@ -185,11 +188,14 @@ export default function AddressBook({
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) => (
-    <div key={id} onClick={() => updateSortingState(id)}>
-      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-    </div>
-  );
+  const convertColumnToClickable = (id: IColumnValues) =>
+    screenIsMobileSized() ? (
+      translateRaw(id)
+    ) : (
+      <div key={id} onClick={() => updateSortingState(id)}>
+        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+      </div>
+    );
 
   const addressBookTable = {
     head: [
