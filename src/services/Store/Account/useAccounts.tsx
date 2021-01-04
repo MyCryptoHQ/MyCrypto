@@ -30,7 +30,7 @@ import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameF
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(uuid: TUuid, accountData: IRawAccount, isDemoMode?: boolean): void;
+  createAccountWithID(uuid: TUuid, accountData: IRawAccount): void;
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
