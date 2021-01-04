@@ -154,7 +154,7 @@ export const SwapAssets = (props: Props) => {
 
   return (
     <Box mt="20px" mb="1em">
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       <Box display="flex">
         <Box mr="1em" flex="1">
           <InputField

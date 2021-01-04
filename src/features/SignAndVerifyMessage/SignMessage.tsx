@@ -159,7 +159,7 @@ function SignMessage(props: Props) {
 
   return (
     <Content>
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       {walletName ? (
         <>
           <BackButton marginBottom={!!wallet} basic={true} onClick={resetWalletSelectionAndForm}>

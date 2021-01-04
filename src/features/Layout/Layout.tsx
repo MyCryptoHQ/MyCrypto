@@ -10,19 +10,12 @@ import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
 import { AppState, getIsDemoMode } from '@store';
-import {
-  BREAK_POINTS,
-  COLORS,
-  FONT_SIZE,
-  LINE_HEIGHT,
-  MAX_CONTENT_WIDTH,
-  MIN_CONTENT_PADDING,
-  SPACING
-} from '@theme';
+import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
 
+import { DemoBanner } from './Banners';
 import Footer from './Footer';
 import Header from './Header';
 import { DesktopNav, ExtrasTray, MobileNav, TopNav } from './Navigation';
@@ -141,26 +134,6 @@ const CenteredBannerText = styled.div`
   & a {
     &:hover {
       font-weight: normal;
-    }
-  }
-`;
-
-const DemoBanner = styled.div`
-  position: absolute;
-  background: ${COLORS.WARNING_ORANGE};
-  & p {
-    font-weight: bold;
-    font-size: ${FONT_SIZE.MD};
-    margin: ${LINE_HEIGHT.XXS} ${LINE_HEIGHT.BASE} ${LINE_HEIGHT.BASE} ${LINE_HEIGHT.XXS};
-    line-height: ${LINE_HEIGHT.XL};
-    color: ${COLORS.WHITE};
-    align-items: center;
-    text-align: center;
-
-    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-      line-height: ${LINE_HEIGHT.SM};
-      font-size: ${FONT_SIZE.SM};
-      margin: ${SPACING.NONE} ${SPACING.XS} ${SPACING.XS} ${SPACING.NONE};
     }
   }
 `;

@@ -119,7 +119,7 @@ export const MembershipFormUI = ({
 
   return (
     <div>
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       <Formik
         enableReinitialize={true}
         initialValues={initialFormikValues}

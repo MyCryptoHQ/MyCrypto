@@ -174,7 +174,7 @@ export const TokenMigrationFormUI = ({
 
   return (
     <>
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       <Box mb={SPACING.LG}>
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector

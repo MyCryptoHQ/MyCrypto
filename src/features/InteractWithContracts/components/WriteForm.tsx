@@ -84,7 +84,7 @@ export const WriteForm = (props: Props) => {
 
   return (
     <WriteActionWrapper>
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       <CustomLabel>{translateRaw('ACCOUNT')}</CustomLabel>
       <AccountSelectorWrapper>
         <AccountSelector

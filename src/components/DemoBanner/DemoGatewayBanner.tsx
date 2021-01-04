@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Banner } from '@components';
 import { SPACING } from '@theme';
+import { translateRaw } from '@translations';
 import { BannerType } from '@types';
 
 const SBanner = styled(Banner)`
@@ -13,6 +14,6 @@ const SBanner = styled(Banner)`
   font-size: 16px;
 `;
 
-export const DemoGatewayBanner = ({ copy }: { copy: string }) => (
-  <SBanner value={copy} type={BannerType.NOTIFICATION} />
+export const DemoGatewayBanner = () => (
+  <SBanner value={translateRaw('DEMO_GATEWAY_BANNER')} type={BannerType.NOTIFICATION} />
 );

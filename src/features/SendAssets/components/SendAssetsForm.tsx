@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
-import { Button as Btn } from '@mycrypto/ui';
+import { Button as UIBtn } from '@mycrypto/ui';
 import BN from 'bn.js';
 import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
@@ -102,7 +102,7 @@ import {
   validateNonceField
 } from './validators';
 
-export const AdvancedOptionsButton = styled(Btn)`
+export const AdvancedOptionsButton = styled(UIBtn)`
   width: 100%;
   color: #1eb8e7;
   text-align: center;
@@ -564,7 +564,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   return (
     <div className="SendAssetsForm">
       <QueryWarning />
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       {/* Asset */}
       <fieldset className="SendAssetsForm-fieldset">
         <label htmlFor="asset" className="input-group-header">

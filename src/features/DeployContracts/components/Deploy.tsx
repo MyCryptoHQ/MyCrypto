@@ -136,7 +136,7 @@ export const Deploy = (props: Props) => {
 
   return (
     <div>
-      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
+      {isDemoMode && <DemoGatewayBanner />}
       <NetworkSelectorWrapper>
         <NetworkSelector
           network={networkId}

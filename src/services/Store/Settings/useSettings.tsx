@@ -1,16 +1,15 @@
 import { useContext } from 'react';
 
 import {
+  addAccountsToFavorites,
   addExcludedAsset,
   removeExcludedAsset,
   resetFavoritesTo,
-  setDemoMode,
   setFiat,
   setLanguage,
   setRates,
   useDispatch
 } from '@store';
-import { addAccountsToFavorites } from '@store/settings.slice';
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';
@@ -66,10 +65,6 @@ function useSettings() {
     dispatch(setRates(rates));
   };
 
-  const setDemo = (isDemoMode: boolean) => {
-    dispatch(setDemoMode(isDemoMode));
-  };
-
   return {
     settings,
     language,
@@ -80,8 +75,7 @@ function useSettings() {
     updateSettingsAccounts,
     updateSettingsRates,
     updateLanguageSelection,
-    updateFiatCurrency,
-    setDemo
+    updateFiatCurrency
   };
 }
 
