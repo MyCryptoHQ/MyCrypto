@@ -418,7 +418,11 @@ export const ConfirmTransactionUI = ({
       >
         {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
-      {error && <InlineMessage>{error}</InlineMessage>}
+      {error && (
+        <InlineMessage>
+          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+        </InlineMessage>
+      )}
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
           <PoweredByText provider="ZAPPER" />
