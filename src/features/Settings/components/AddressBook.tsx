@@ -17,7 +17,7 @@ import {
 } from '@components';
 import IconArrow from '@components/IconArrow';
 import { useNetworks } from '@services';
-import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TUuid } from '@types';
 
@@ -125,8 +125,9 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
+const breakpoint = 450;
 export const screenIsMobileSized = (): boolean =>
-  window.matchMedia(`(max-width: ${breakpointToNumber(BREAK_POINTS.SCREEN_XS)}px)`).matches;
+  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
 
 export default function AddressBook({
   contacts,
@@ -290,7 +291,11 @@ export default function AddressBook({
         </>
       }
     >
-      <FixedSizeCollapsibleTable breakpoint={450} maxHeight={'450px'} {...addressBookTable} />
+      <FixedSizeCollapsibleTable
+        breakpoint={breakpoint}
+        maxHeight={'450px'}
+        {...addressBookTable}
+      />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
           {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
