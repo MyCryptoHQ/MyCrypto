@@ -79,12 +79,15 @@ const Trezor: WalletLib = {
       chainId
     );
 
-    const signedTx = new Transaction({
-      ...strTx,
-      v: addHexPrefix(new BN(res.v).toString(16)),
-      r: addHexPrefix(res.r.toString()),
-      s: addHexPrefix(res.s)
-    });
+    const signedTx = new Transaction(
+      {
+        ...strTx,
+        v: addHexPrefix(new BN(res.v).toString(16)),
+        r: addHexPrefix(res.r.toString()),
+        s: addHexPrefix(res.s)
+      },
+      { chain: chainId }
+    );
     return {
       signedTransaction: signedTx.serialize().toString('hex')
     };

@@ -33,7 +33,7 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
         transaction: txFields,
         path: this.getPath()
       });
-      return new Transaction(res.signedTransaction).serialize();
+      return new Transaction(res.signedTransaction, { chain: t.getChainId() }).serialize();
     }
 
     public async signMessage(msg: string): Promise<string> {
