@@ -30,7 +30,7 @@ import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
-import { truncate } from '@utils';
+import { truncate, useScreenSize } from '@utils';
 
 import Checkbox from './Checkbox';
 import { default as Currency } from './Currency';
@@ -352,6 +352,7 @@ const BuildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
+  const { isXsScreen } = useScreenSize();
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
@@ -391,11 +392,14 @@ const BuildAccountTable = (
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) => (
-    <div key={id} onClick={() => updateSortingState(id)}>
-      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-    </div>
-  );
+  const convertColumnToClickable = (id: IColumnValues) =>
+    isXsScreen ? (
+      translateRaw(id)
+    ) : (
+      <div key={id} onClick={() => updateSortingState(id)}>
+        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+      </div>
+    );
 
   const columns = [
     convertColumnToClickable('ACCOUNT_LIST_LABEL'),
@@ -407,7 +411,7 @@ const BuildAccountTable = (
       onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
     >
       {translateRaw('ACCOUNT_LIST_VALUE')}
-      <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />
+      {!isXsScreen && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>

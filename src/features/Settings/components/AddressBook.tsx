@@ -125,6 +125,10 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
+const breakpoint = 450;
+export const screenIsMobileSized = (): boolean =>
+  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+
 export default function AddressBook({
   contacts,
   contactRestore,
@@ -185,11 +189,14 @@ export default function AddressBook({
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) => (
-    <div key={id} onClick={() => updateSortingState(id)}>
-      {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-    </div>
-  );
+  const convertColumnToClickable = (id: IColumnValues) =>
+    screenIsMobileSized() ? (
+      translateRaw(id)
+    ) : (
+      <div key={id} onClick={() => updateSortingState(id)}>
+        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+      </div>
+    );
 
   const addressBookTable = {
     head: [
@@ -284,7 +291,11 @@ export default function AddressBook({
         </>
       }
     >
-      <FixedSizeCollapsibleTable breakpoint={450} maxHeight={'450px'} {...addressBookTable} />
+      <FixedSizeCollapsibleTable
+        breakpoint={breakpoint}
+        maxHeight={'450px'}
+        {...addressBookTable}
+      />
       <BottomRow>
         <AddAccountButton onClick={toggleFlipped} basic={true}>
           {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
