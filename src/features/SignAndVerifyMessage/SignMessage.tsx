@@ -215,7 +215,7 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state)
 });
 
-const connector = connect(mapStateToProps, {});
+const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector> & SignProps;
 
 export default connector(withWalletConnect(SignMessage));
