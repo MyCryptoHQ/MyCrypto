@@ -1,7 +1,9 @@
 import React from 'react';
 
+import AppProviders from '@AppProviders';
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
+import { ProvidersWrapper } from 'test-utils';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { Network, NetworkId, WalletId } from '@types';
@@ -46,7 +48,13 @@ const ProtectTxStep2 = () => (
 );
 
 storiesOf('Features/ProtectTransaction', module)
-  .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
+  .addDecorator((story) => (
+    <ProvidersWrapper>
+      <AppProviders>
+        <ProtectTxProvider>{story()}</ProtectTxProvider>
+      </AppProviders>
+    </ProvidersWrapper>
+  ))
   .add('Step 2', () => ProtectTxStep2(), {
     design: {
       type: 'figma',

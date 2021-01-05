@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Form, Formik } from 'formik';
+import { ProvidersWrapper } from 'test-utils';
 
 import { fNetwork } from '@fixtures';
 import { IReceiverAddress } from '@types';
@@ -33,13 +34,15 @@ export default { title: 'Molecules/GeneralLookupField', component: GeneralLookup
 export const defaultState = () => {
   return (
     <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>
-      <Formik initialValues={initialFormikValues} onSubmit={() => undefined}>
-        {({ values }) => (
-          <Form>
-            <GeneralLookupField {...customProps} value={values.address} />
-          </Form>
-        )}
-      </Formik>
+      <ProvidersWrapper>
+        <Formik initialValues={initialFormikValues} onSubmit={() => undefined}>
+          {({ values }) => (
+            <Form>
+              <GeneralLookupField {...customProps} value={values.address} />
+            </Form>
+          )}
+        </Formik>
+      </ProvidersWrapper>
     </div>
   );
 };

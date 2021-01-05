@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
+import { ProvidersWrapper } from 'test-utils';
 
 import { loadingReport, scamReport, unknownReport, verifiedReport } from '@fixtures';
 import { noOp } from '@utils';
@@ -10,11 +11,13 @@ import { PTXReport } from '../types';
 import { ProtectTxReportUI } from './ProtectTxReport';
 
 const ProtectTxStep3 = (report: PTXReport) => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxReportUI report={report} onHide={noOp} isWeb3={false} />
-    </Panel>
-  </div>
+  <ProvidersWrapper>
+    <div style={{ maxWidth: '375px', position: 'relative' }}>
+      <Panel>
+        <ProtectTxReportUI report={report} onHide={noOp} isWeb3={false} />
+      </Panel>
+    </div>
+  </ProvidersWrapper>
 );
 
 storiesOf('Features/ProtectTransaction/Report', module)

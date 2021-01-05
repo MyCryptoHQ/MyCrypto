@@ -22,8 +22,8 @@ import {
   GITHUB_RELEASE_NOTES_URL,
   LETS_ENCRYPT_URL
 } from '@config';
-import { useAssets } from '@services';
 import { ProviderHandler } from '@services/EthService/network';
+import { useAssets } from '@services/Store/Asset';
 import { NetworkUtils, useNetworks } from '@services/Store/Network';
 import { canDeleteNode as canDeleteNodeSelector, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';

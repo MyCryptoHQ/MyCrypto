@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { storiesOf } from '@storybook/react';
+import { ProvidersWrapper } from 'test-utils';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
 import { Network as INetwork, NetworkId } from '@types';
@@ -47,7 +48,11 @@ const someNetworkNode = () => (
 );
 
 storiesOf('Molecules/Selectors/NetworkNodes', module)
-  .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
+  .addDecorator((story) => (
+    <ProvidersWrapper>
+      <AppProviders>{story()}</AppProviders>
+    </ProvidersWrapper>
+  ))
   .add('Empty', () => networkNodesEmpty(), {
     design: {
       type: 'figma',

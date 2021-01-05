@@ -1,6 +1,8 @@
 import React from 'react';
 
+import AppProviders from '@AppProviders';
 import { storiesOf } from '@storybook/react';
+import { ProvidersWrapper } from 'test-utils';
 
 import { noOp } from '@utils';
 
@@ -14,7 +16,13 @@ const AbortTransaction = () => (
 );
 
 storiesOf('Features/ProtectTransaction/Abort', module)
-  .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
+  .addDecorator((story) => (
+    <ProvidersWrapper>
+      <AppProviders>
+        <ProtectTxProvider>{story()}</ProtectTxProvider>
+      </AppProviders>
+    </ProvidersWrapper>
+  ))
   .add('Abort transaction', () => AbortTransaction(), {
     design: {
       type: 'figma',

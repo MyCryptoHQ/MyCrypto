@@ -1,7 +1,9 @@
 import React from 'react';
 
+import AppProviders from '@AppProviders';
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
+import { ProvidersWrapper } from 'test-utils';
 
 import { Fiats } from '@config';
 import { COLORS } from '@theme';
@@ -56,6 +58,11 @@ const ProtectTxStep1Mobile = () => (
   </>
 );
 storiesOf('Features/ProtectTransaction', module)
+  .addDecorator((story) => (
+    <ProvidersWrapper>
+      <AppProviders>{story()}</AppProviders>
+    </ProvidersWrapper>
+  ))
   .add('Step 1', () => ProtectTxStep1(), {
     design: {
       type: 'figma',
