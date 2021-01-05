@@ -31,6 +31,7 @@ export default class Contract {
 
   constructor(abi: any, outputMappings: ContractOutputMappings = {}) {
     this.assignABIFuncs(abi, outputMappings);
+    this.abi = abi;
   }
 
   private assignABIFuncs = (abi: any, outputMappings: ContractOutputMappings) => {
