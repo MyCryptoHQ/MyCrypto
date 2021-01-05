@@ -1,4 +1,3 @@
-import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 import {
   BalanceMap as EthScanBalanceMap,
   getEtherBalances,
@@ -24,12 +23,12 @@ const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
 };
 
-export const bigifyBalanceMap = (balances: EthScanBalanceMap): BalanceMap => {
+export const bigifyBalanceMap = (balances: EthScanBalanceMap<bigint>): BalanceMap => {
   return mapObjIndexed(bigify, balances);
 };
 
 export const bigifyNestedBalanceMap = (
-  balances: EthScanBalanceMap<EthScanBalanceMap>
+  balances: EthScanBalanceMap<EthScanBalanceMap<bigint>>
 ): BalanceMap<BalanceMap> => {
   return mapObjIndexed(bigifyBalanceMap, balances);
 };
@@ -82,12 +81,11 @@ const etherBalanceFetchWrapper = async (
   provider: ProviderLike,
   address: string,
   options: any
-): Promise<EthScanBalanceMap<EthScanBN>> => {
+): Promise<BalanceMap<bigint>> => {
   try {
-    const balanceMap = await getEtherBalances(provider, [address], options);
-    return balanceMap;
+    return getEtherBalances(provider, [address], options);
   } catch {
-    return {} as EthScanBalanceMap<EthScanBN>;
+    return {};
   }
 };
 
@@ -96,18 +94,17 @@ const tokenBalanceFetchWrapper = async (
   address: string,
   contractList: string[],
   options: any
-): Promise<EthScanBalanceMap<EthScanBN>> => {
+): Promise<BalanceMap<bigint>> => {
   try {
-    const tokenBalanceMap = await getTokensBalance(provider, address, contractList, options);
-    return tokenBalanceMap;
+    return getTokensBalance(provider, address, contractList, options);
   } catch {
-    return {} as EthScanBalanceMap<EthScanBN>;
+    return {};
   }
 };
 
 export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
   if (!network) {
-    return ([] as unknown) as Promise<BalanceMap>;
+    return {};
   }
   const provider = ProviderHandler.fetchProvider(network);
   if (ETHSCAN_NETWORKS.includes(network.id)) {
@@ -126,7 +123,7 @@ export const getTokenAssetBalances = async (
   asset: ExtendedAsset
 ) => {
   if (!network) {
-    return ([] as unknown) as Promise<BalanceMap>;
+    return {};
   }
   const provider = ProviderHandler.fetchProvider(network);
   return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress!)
@@ -140,7 +137,7 @@ const getTokenBalances = (
   tokens: StoreAsset[]
 ): Promise<BalanceMap> => {
   return tokens
-    .reduce<Promise<EthScanBalanceMap>>(async (balances, token) => {
+    .reduce<Promise<BalanceMap<bigint>>>(async (balances, token) => {
       return {
         ...balances,
         [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
@@ -186,7 +183,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 
   const filterZeroBN = (n: TBN) => n.isZero();
 
-  const filteredUpdatedAccounts = updatedAccounts.map((updatedAccount) => ({
+  return updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
     assets:
       (updatedAccount &&
@@ -196,8 +193,6 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
         )) ||
       []
   }));
-
-  return filteredUpdatedAccounts;
 };
 
 export const getAllTokensBalancesOfAccounts = async (
