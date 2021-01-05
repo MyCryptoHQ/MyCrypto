@@ -49,7 +49,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     const network = this.props.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
     }
 
     if (window.location.protocol !== 'https:') {
@@ -93,11 +93,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             <div className="LedgerPanel-description">
               {translate('LEDGER_TIP')}
               <div className="LedgerPanel-image">
-                <Icon type={'ledger-icon-lg'} />
+                <Icon type="ledger-icon-lg" />
               </div>
-              {/* <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-                {error || '-'}
-              </div> */}
               {isLoading ? (
                 <div className="LedgerPanel-loading">
                   <Spinner /> {translate('WALLET_UNLOCKING')}

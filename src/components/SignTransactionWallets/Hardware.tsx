@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Icon, InlineMessage, TIcon } from '@components';
+import { Icon, InlineMessage, Text, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
+import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
 import { makeTransaction, useInterval } from '@utils';
@@ -14,45 +15,14 @@ export interface IDestructuredDPath {
   index: number;
 }
 
-const SReferral = styled.div`
-  text-align: center;
-  font-size: 16px;
-`;
-const SHelp = styled.div`
-  margin-top: 1em;
-  text-align: center;
-  font-size: 16px;
-`;
-
 const SFooter = styled.div`
   width: 100%;
-`;
-
-const SDescription = styled.div`
-  font-size: 18px;
-  line-height: 1.5;
-  text-align: center;
-  margin-bottom: 1em;
 `;
 
 const SImgContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 3em;
-`;
-
-const STitle = styled.div`
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 40px;
-`;
-
-const SInstructions = styled.div`
-  padding-top: 2em;
-  font-size: 18px;
-  line-height: 1.5;
-  text-align: center;
 `;
 
 const ErrorMessageContainer = styled.div`
@@ -191,27 +161,31 @@ export const SignTxHardwareUI = ({
   senderAccount
 }: UIProps) => (
   <>
-    <STitle>
+    <Text textAlign="center" fontWeight="bold" marginTop={SPACING.LG} fontSize={FONT_SIZE.XXL}>
       {translate('SIGN_TX_TITLE', {
         $walletName: WALLETS_CONFIG[senderAccount.wallet].name
       })}
-    </STitle>
-    <SInstructions>{signerDescription}</SInstructions>
+    </Text>
+    <Text fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
+      {signerDescription}
+    </Text>
     <div>
       <SImgContainer>
         <Icon type={walletIconType} />
       </SImgContainer>
-      <SDescription>
+      <Text textAlign="center">
         {isTxSignatureRequestDenied && (
           <ErrorMessageContainer>
             <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
           </ErrorMessageContainer>
         )}
         {translateRaw('SIGN_TX_EXPLANATION')}
-      </SDescription>
+      </Text>
       <SFooter>
-        <SHelp>{translate(helpCopy)}</SHelp>
-        <SReferral>{translate(referralCopy)}</SReferral>
+        <Text textAlign="center" marginTop={SPACING.MD}>
+          {translate(helpCopy)}
+        </Text>
+        <Text textAlign="center">{translate(referralCopy)}</Text>
       </SFooter>
     </div>
   </>

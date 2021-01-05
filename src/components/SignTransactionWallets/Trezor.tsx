@@ -13,7 +13,7 @@ export default function SignTransactionTrezor({
   return (
     <HardwareSignTransaction
       signerDescription={translateRaw('SIGN_TX_TREZOR_DESCRIPTION')}
-      walletIconType={'trezor-icon-lg'}
+      walletIconType="trezor-icon-lg"
       senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       onSuccess={onSuccess}
