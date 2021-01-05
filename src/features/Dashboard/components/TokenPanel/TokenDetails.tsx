@@ -204,7 +204,7 @@ export function TokenDetails(props: Props) {
               <>
                 {website && (
                   <a href={website} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="website" />
+                    <ResourceIcon type="website" color="none" />
                   </a>
                 )}
                 {whitepaper && (
