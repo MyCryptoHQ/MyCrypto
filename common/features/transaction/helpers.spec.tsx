@@ -7,7 +7,7 @@ import { toTokenBase, Wei } from 'libs/units';
 import configuredStore from 'features/store';
 import * as derivedSelectors from 'features/selectors';
 import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
+import { isNetworkUnit } from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsSelectors } from './fields';
@@ -58,7 +58,7 @@ describe('transaction: Helpers', () => {
       });
     });
 
-    describe('getWalletAndTransaction*', () => {
+    /*describe('getWalletAndTransaction*', () => {
       const partialTx: any = {
         gasPrice: 'gasPrice',
         _chainId: '_chainId'
@@ -67,7 +67,7 @@ describe('transaction: Helpers', () => {
         data2: 'data2'
       };
       const networkConfig = {
-        chainId: 'chainId'
+        chainId: 1
       };
 
       const gens: any = {};
@@ -96,7 +96,7 @@ describe('transaction: Helpers', () => {
       it('should be done', () => {
         expect(gens.gen.next().done).toEqual(true);
       });
-    });
+    });*/
 
     describe('handleFailedTransaction*', () => {
       const err = new Error('Message');

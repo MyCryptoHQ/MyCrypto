@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 import { translateRaw } from 'translations';
@@ -26,14 +26,14 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
       super(address, dPath, index);
     }
 
-    public async signRawTransaction(t: EthTx): Promise<Buffer> {
+    public async signRawTransaction(t: Transaction): Promise<Buffer> {
       const txFields = getTransactionFields(t);
       const res = await EnclaveAPI.signTransaction({
         walletType,
         transaction: txFields,
         path: this.getPath()
       });
-      return new EthTx(res.signedTransaction).serialize();
+      return new Transaction(res.signedTransaction).serialize();
     }
 
     public async signMessage(msg: string): Promise<string> {

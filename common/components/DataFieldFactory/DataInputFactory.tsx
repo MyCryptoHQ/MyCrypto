@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isHexString } from 'ethereumjs-util';
+import { isHexString } from 'ethjs-util';
 
 import { AppState } from 'features/reducers';
 import { transactionFieldsSelectors } from 'features/transaction';
@@ -8,7 +8,7 @@ import { CallBackProps } from 'components/DataFieldFactory';
 import { Query } from 'components/renderCbs';
 
 interface OwnProps {
-  withProps(props: CallBackProps): React.ReactElement<any> | null;
+  withProps(props: CallBackProps): React.ReactElement | null;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 interface StateProps {

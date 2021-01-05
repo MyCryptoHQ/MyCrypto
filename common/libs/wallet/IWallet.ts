@@ -1,4 +1,4 @@
-import Tx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
@@ -15,7 +15,7 @@ export interface IReadOnlyWallet extends IBaseWallet {
 
 export interface IFullWallet extends IBaseWallet {
   isReadOnly?: false;
-  signRawTransaction(tx: Tx): Promise<Buffer> | Buffer;
+  signRawTransaction(tx: Transaction): Promise<Buffer> | Buffer;
   signMessage(msg: string, nodeLib: Web3Node | INode): Promise<string> | string;
 }
 

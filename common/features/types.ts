@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import { Address, Wei, TokenValue } from 'libs/units';
 import { AppState } from './reducers';
@@ -14,7 +14,7 @@ export interface ICurrentTo {
 }
 
 export interface IGetTransaction {
-  transaction: EthTx;
+  transaction: Transaction;
   isFullTransaction: boolean; //if the user has filled all the fields
 }
 

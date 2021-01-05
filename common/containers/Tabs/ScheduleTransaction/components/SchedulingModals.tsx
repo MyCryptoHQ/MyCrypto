@@ -8,7 +8,7 @@ import { getAwaitingMiningURL } from 'libs/scheduling';
 import { Spinner, Modal } from 'components/ui';
 import { ETHTxExplorer, ETHAddressExplorer } from 'config';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import EthereumJSTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import {
   transactionSignActions,
   transactionSignSelectors,
@@ -65,7 +65,7 @@ class SchedulingModalsClass extends Component<Props, State> {
 
     setSendingTokenApproveTransaction(true);
 
-    const tx = new EthereumJSTx(scheduledTokensApproveTransaction);
+    const tx = new Transaction(scheduledTokensApproveTransaction);
 
     signTransactionRequested(tx);
     setScheduledTransactionHash({

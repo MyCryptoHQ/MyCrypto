@@ -1,4 +1,4 @@
-import Tx from 'ethereumjs-tx';
+import { Transaction, TxData } from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { translateRaw } from 'translations';
@@ -10,10 +10,11 @@ import { TransactionFieldValues } from 'features/types';
 import { ITransaction, IHexStrTransaction } from '../typings';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
-const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
+const computeIndexingHash = (tx: Buffer, chainId?: number) =>
+  bufferToHex(makeTransaction(tx, chainId).hash(false));
 
 // Get useable fields from an EthTx object.
-const getTransactionFields = (t: Tx): IHexStrTransaction => {
+const getTransactionFields = (t: Transaction): IHexStrTransaction => {
   // For some crazy reason, toJSON spits out an array, not keyed values.
   const { data, gasLimit, gasPrice, to, nonce, value } = t;
   const chainId = t.getChainId();
@@ -39,7 +40,7 @@ const getTransactionFee = (gasPrice: string, gasLimit: string) => {
  * @description Return the minimum amount of ether needed
  * @param t
  */
-const enoughBalanceViaTx = (t: Tx | ITransaction, accountBalance: Wei) =>
+const enoughBalanceViaTx = (t: Transaction | ITransaction, accountBalance: Wei) =>
   makeTransaction(t)
     .getUpfrontCost()
     .lte(accountBalance);
@@ -77,13 +78,14 @@ const validAddress = (t: ITransaction) => {
 
 const makeTransaction = (
   t:
-    | Partial<Tx>
+    | Partial<Transaction>
     | Partial<ITransaction>
     | Partial<IHexStrTransaction>
     | Buffer
     | string
-    | TransactionFieldValues
-) => new Tx(t);
+    | TransactionFieldValues,
+  chainId?: number
+) => new Transaction(t as TxData, { chain: chainId });
 
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IFullWallet) => {

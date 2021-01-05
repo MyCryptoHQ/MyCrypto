@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import EthTx, { TxObj } from 'ethereumjs-tx';
+import { Transaction, TxData } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import mapValues from 'lodash/mapValues';
 
@@ -32,7 +32,7 @@ export class SafeTWallet extends HardwareWallet {
     });
   }
 
-  public signRawTransaction(tx: EthTx): Promise<Buffer> {
+  public signRawTransaction(tx: Transaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
@@ -56,13 +56,13 @@ export class SafeTWallet extends HardwareWallet {
 
           // TODO: Explain what's going on here? Add tests? Adapted from:
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-          const txToSerialize: TxObj = {
+          const txToSerialize: TxData = {
             ...strTx,
             v: addHexPrefix(new BN(result.v).toString(16)),
             r: addHexPrefix(result.r.toString()),
             s: addHexPrefix(result.s)
           };
-          const eTx = new EthTx(txToSerialize);
+          const eTx = new Transaction(txToSerialize);
           const serializedTx = eTx.serialize();
           resolve(serializedTx);
         }

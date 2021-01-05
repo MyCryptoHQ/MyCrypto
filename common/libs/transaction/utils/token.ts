@@ -1,10 +1,10 @@
 import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { TokenValue, Address } from 'libs/units';
 import { ITransaction } from '../typings';
-import Tx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import ERC20 from 'libs/erc20';
 
-const enoughTokensViaTx = (t: ITransaction | Tx, tokenBalance: TokenValue | null) => {
+const enoughTokensViaTx = (t: ITransaction | Transaction, tokenBalance: TokenValue | null) => {
   if (!tokenBalance) {
     return true;
   }

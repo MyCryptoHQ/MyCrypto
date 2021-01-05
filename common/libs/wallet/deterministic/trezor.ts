@@ -1,4 +1,4 @@
-import EthTx, { TxObj } from 'ethereumjs-tx';
+import { Transaction, TxData } from 'ethereumjs-tx';
 import mapValues from 'lodash/mapValues';
 
 import { translateRaw } from 'translations';
@@ -32,7 +32,7 @@ export class TrezorWallet extends HardwareWallet {
     });
   }
 
-  public signRawTransaction(tx: EthTx): Promise<Buffer> {
+  public signRawTransaction(tx: Transaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
@@ -61,13 +61,13 @@ export class TrezorWallet extends HardwareWallet {
 
         // TODO: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-        const txToSerialize: TxObj = {
+        const txToSerialize: TxData = {
           ...strTx,
           v: res.payload.v,
           r: res.payload.r,
           s: res.payload.s
         };
-        const eTx = new EthTx(txToSerialize);
+        const eTx = new Transaction(txToSerialize);
         const serializedTx = eTx.serialize();
         resolve(serializedTx);
       });

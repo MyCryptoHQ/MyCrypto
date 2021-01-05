@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
@@ -23,7 +23,7 @@ export interface TransactionSignState {
 
 export interface SignTransactionRequestedAction {
   type: TransactionSignActions.SIGN_TRANSACTION_REQUESTED;
-  payload: EthTx;
+  payload: Transaction;
 }
 
 export interface SignLocalTransactionSucceededAction {

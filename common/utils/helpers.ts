@@ -1,6 +1,6 @@
 import qs from 'query-string';
 import has from 'lodash/has';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import { BlockExplorerConfig } from 'types/network';
 
 interface IObjectValue {
@@ -49,11 +49,11 @@ export function isPositiveInteger(n: number) {
 export const getValues = (...args: any[]) =>
   args.reduce((acc, currArg) => [...acc, ...Object.values(currArg)], []);
 
-export function transactionToRLP(tx: EthTx): string {
+export function transactionToRLP(tx: Transaction): string {
   const { v, r, s } = tx;
 
   // Poor man's serialize without signature.
-  tx.v = Buffer.from([tx._chainId]);
+  tx.v = Buffer.from([tx.getChainId()]);
   tx.r = Buffer.from([0]);
   tx.s = Buffer.from([0]);
 
@@ -67,14 +67,14 @@ export function transactionToRLP(tx: EthTx): string {
   return rlp;
 }
 
-export function signTransactionWithSignature(tx: EthTx, signature: string): Buffer {
+export function signTransactionWithSignature(tx: Transaction, signature: string): Buffer {
   const sigBuf = Buffer.from(signature.substr(2), 'hex');
 
   // Mimicking the way tx.sign() works
   let v = sigBuf[64] + 27;
 
-  if (tx._chainId > 0) {
-    v += tx._chainId * 2 + 8;
+  if (tx.getChainId() > 0) {
+    v += tx.getChainId() * 2 + 8;
   }
 
   tx.r = sigBuf.slice(0, 32);

@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import { INode } from 'libs/nodes';
 import { hexEncodeData } from 'libs/nodes/rpc/utils';
@@ -14,6 +14,7 @@ import { transactionBroadcastTypes, transactionTypes } from 'features/transactio
 import * as networkActions from '../transaction/network/actions';
 import * as types from './types';
 import * as actions from './actions';
+import { getNetworkChainId } from '../config/selectors';
 
 export function* fetchTxData(action: types.FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
@@ -62,7 +63,8 @@ export function* saveBroadcastedTx(
     res.type === transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED &&
     res.payload.indexingHash === txIdx
   ) {
-    const tx = new EthTx(txBuffer);
+    const chainId: number = yield select(getNetworkChainId);
+    const tx = new Transaction(txBuffer, { chain: chainId });
     const savableTx: SavedTransaction = yield call(
       getSaveableTransaction,
       tx,
@@ -73,9 +75,9 @@ export function* saveBroadcastedTx(
 }
 
 // Given a serialized transaction, return a transaction we could save in LS
-export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
+export function* getSaveableTransaction(tx: Transaction, hash: string): SagaIterator {
   const fields = getTransactionFields(tx);
-  const nonceHex: string = tx.toJSON()[0];
+  const nonceHex: string = (tx.toJSON(false) as string[])[0];
   const nonce: number = parseInt(nonceHex, 16);
   let from: string = '';
   let chainId: number = 0;

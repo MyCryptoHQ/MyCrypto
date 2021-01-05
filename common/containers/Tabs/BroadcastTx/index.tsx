@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import translate from 'translations';
 import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
@@ -96,7 +96,7 @@ class BroadcastTx extends Component<Props> {
     this.setState({ userInput: value });
     try {
       const bufferTransaction = toBuffer(value);
-      const tx = new EthTx(bufferTransaction);
+      const tx = new Transaction(bufferTransaction);
       if (!tx.verifySignature()) {
         throw Error();
       }

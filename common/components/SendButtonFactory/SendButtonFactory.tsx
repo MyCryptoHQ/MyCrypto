@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
@@ -23,7 +23,7 @@ export interface CallbackProps {
 interface StateProps {
   walletType: walletSelectors.IWalletType;
   serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
-  transaction: EthTx;
+  transaction: Transaction;
   isFullTransaction: boolean;
   networkRequestPending: boolean;
   validGasPrice: boolean;

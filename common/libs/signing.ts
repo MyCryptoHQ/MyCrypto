@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import {
   addHexPrefix,
   ecrecover,
@@ -11,7 +11,7 @@ import {
 
 import { stripHexPrefixAndLower } from 'libs/formatters';
 
-export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
+export function signRawTxWithPrivKey(privKey: Buffer, t: Transaction): Buffer {
   t.sign(privKey);
   return t.serialize();
 }

@@ -1,13 +1,13 @@
 import { SagaIterator } from 'redux-saga';
 import { apply, put, select, take, call, takeEvery } from 'redux-saga/effects';
-import Tx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 
 import { computeIndexingHash } from 'libs/transaction';
 import { IFullWallet } from 'libs/wallet';
 import { StaticNetworkConfig } from 'types/network';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import * as derivedSelectors from 'features/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkChainId, getNetworkConfig } from 'features/config/selectors';
 import { paritySignerTypes, paritySignerActions } from 'features/paritySigner';
 import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
@@ -20,7 +20,7 @@ import { scheduleSelectors } from 'features/schedule';
 //#region Signing
 export interface IFullWalletAndTransaction {
   wallet: IFullWallet;
-  tx: Tx;
+  tx: Transaction;
 }
 
 export const signTransactionWrapper = (
@@ -35,6 +35,7 @@ export const signTransactionWrapper = (
       yield call(getFromSaga);
       yield call(func, IWalletAndTx);
     } catch (err) {
+      console.error(err);
       yield call(handleFailedTransaction, err);
     }
   };
@@ -55,11 +56,9 @@ export function* getWalletAndTransaction(
   // get the chainId
   const { chainId }: StaticNetworkConfig = yield select(getNetworkConfig);
 
-  // get the rest of the transaction parameters
-  partialTx._chainId = chainId;
   return {
     wallet,
-    tx: partialTx
+    tx: new Transaction(partialTx.toJSON(true), { chain: chainId })
   };
 }
 
@@ -92,7 +91,8 @@ export function* signLocalTransactionHandler({
   wallet
 }: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
-  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
+  const chainId: number = yield select(getNetworkChainId);
+  const indexingHash: string = yield call(computeIndexingHash, signedTransaction, chainId);
   yield put(
     actions.signLocalTransactionSucceeded({
       signedTransaction,
@@ -106,7 +106,8 @@ const signLocalTransaction = signTransactionWrapper(signLocalTransactionHandler)
 
 export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
-  const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
+  const chainId: number = yield select(getNetworkChainId);
+  const indexingHash: string = yield call(computeIndexingHash, serializedTransaction, chainId);
 
   yield put(
     actions.signWeb3TransactionSucceeded({
@@ -131,7 +132,8 @@ export function* signParitySignerTransactionHandler({
     paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE
   );
   const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
-  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
+  const chainId: number = yield select(getNetworkChainId);
+  const indexingHash: string = yield call(computeIndexingHash, signedTransaction, chainId);
 
   yield put(
     actions.signLocalTransactionSucceeded({

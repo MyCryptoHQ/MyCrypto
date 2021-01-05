@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { apply, select, call, put, takeEvery } from 'redux-saga/effects';
+import { apply, call, put, select, takeEvery } from 'redux-saga/effects';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { computeIndexingHash } from 'libs/transaction';
@@ -97,7 +97,8 @@ export function* getSerializedTxAndIndexingHash({
   }
 
   // grab the hash without the signature, we're going to index by this
-  const indexingHash = yield call(computeIndexingHash, serializedTransaction);
+  const chainId: number = yield select(configSelectors.getNetworkChainId);
+  const indexingHash = yield call(computeIndexingHash, serializedTransaction, chainId);
 
   return { serializedTransaction, indexingHash };
 }

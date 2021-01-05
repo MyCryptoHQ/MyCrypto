@@ -10,7 +10,7 @@ import {
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import * as helpers from './helpers';
-import { TxObj } from 'ethereumjs-tx';
+import { TxData } from 'ethereumjs-tx';
 
 //#region Fields
 export const getScheduleState = (state: AppState) => state.schedule;
@@ -54,7 +54,7 @@ export const getScheduledTransactionAddress = (state: AppState): string =>
 export const getScheduledTokenTransferSymbol = (state: AppState): string =>
   getScheduleState(state).scheduledTokenTransferSymbol.value;
 
-export const getScheduledTokensApproveTransaction = (state: AppState): TxObj | undefined =>
+export const getScheduledTokensApproveTransaction = (state: AppState): TxData | undefined =>
   getScheduleState(state).scheduledTokensApproveTransaction;
 
 export const getSendingTokenApproveTransaction = (state: AppState): boolean =>

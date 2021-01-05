@@ -1,5 +1,5 @@
-import EthTx from 'ethereumjs-tx';
 import BN from 'bn.js';
+import { Transaction } from 'ethereumjs-tx';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
@@ -423,7 +423,7 @@ describe('transaction: Reducers', () => {
     it('should handle SIGN_TRANSACTION_REQUESTED', () => {
       const signTxRequestedAction: transactionSignTypes.SignTransactionRequestedAction = {
         type: transactionSignTypes.TransactionSignActions.SIGN_TRANSACTION_REQUESTED,
-        payload: {} as EthTx
+        payload: {} as Transaction
       };
       expect(transactionSignReducer.signReducer(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual(
         {

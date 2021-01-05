@@ -1,6 +1,6 @@
 import { Wei } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
-import { TxObj } from 'ethereumjs-tx';
+import { TxData } from 'ethereumjs-tx';
 
 export interface ScheduleState {
   schedulingToggle: SetSchedulingToggleAction['payload'];
@@ -258,7 +258,7 @@ export interface SetScheduledTokenTransferSymbolAction {
 //#region Scheduled Tokens Approve Transaction
 export interface SetScheduledTokensApproveTransactionAction {
   type: ScheduleActions.SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET;
-  payload: TxObj | undefined;
+  payload: TxData | undefined;
 }
 //#endregion
 

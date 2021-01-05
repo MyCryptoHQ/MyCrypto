@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import { DeviceList, Session } from 'trezor.js';
 import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import { WalletLib } from 'shared/enclave/types';
 import { padLeftEven } from 'libs/values';
 import { stripHexPrefixAndLower } from 'libs/formatters';
@@ -79,7 +79,7 @@ const Trezor: WalletLib = {
       chainId
     );
 
-    const signedTx = new EthTx({
+    const signedTx = new Transaction({
       ...strTx,
       v: addHexPrefix(new BN(res.v).toString(16)),
       r: addHexPrefix(res.r.toString()),

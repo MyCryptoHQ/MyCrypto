@@ -1,6 +1,6 @@
 import erc20 from 'libs/erc20';
 import BN from 'bn.js';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { Address, Wei, TokenValue, Nonce, getDecimalFromEtherUnit } from 'libs/units';
@@ -335,7 +335,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     transactionOptions.nonce = Nonce(nonce.raw);
   }
 
-  const schedulingTransaction: EthTx = makeTransaction(transactionOptions);
+  const schedulingTransaction: Transaction = makeTransaction(transactionOptions);
 
   return {
     transaction: schedulingTransaction,
@@ -516,9 +516,10 @@ export function getCurrentToAddressMessage(state: AppState): AddressMessage | un
 export const getUnit = (state: AppState) => {
   const serializedTransaction = getSerializedTransaction(state);
   const contractInteraction = transactionMetaSelectors.isContractInteraction(state);
+  const { chainId } = configSelectors.getNetworkConfig(state);
   // attempt to get the to address from the transaction
   if (serializedTransaction && !contractInteraction) {
-    const transactionInstance = new EthTx(serializedTransaction);
+    const transactionInstance = new Transaction(serializedTransaction, { chain: chainId });
     const { to } = transactionInstance;
     if (to) {
       // see if any tokens match
@@ -556,6 +557,7 @@ export const getParamsFromSerializedTx = (
   state: AppState
 ): transactionSignTypes.SerializedTxParams => {
   const tx = getSerializedTransaction(state);
+  const { chainId } = configSelectors.getNetworkConfig(state);
   const isEther = isEtherTransaction(state);
   const decimal = transactionMetaSelectors.getDecimal(state);
   const isSchedulingEnabled = scheduleSelectors.isSchedulingEnabled(state);
@@ -563,7 +565,7 @@ export const getParamsFromSerializedTx = (
   if (!tx) {
     throw Error('Serialized transaction not found');
   }
-  const fields = getTransactionFields(makeTransaction(tx));
+  const fields = getTransactionFields(makeTransaction(tx, chainId));
   const { value, data, gasLimit, gasPrice, to } = fields;
   let currentValue = isEther ? Wei(value) : TokenValue(erc20.transfer.decodeInput(data)._value);
   let currentTo = isEther ? Address(to) : Address(erc20.transfer.decodeInput(data)._to);
@@ -588,7 +590,7 @@ export const getTransaction = (state: AppState): IGetTransaction => {
   const transactionFields = transactionFieldsSelectors.getFields(state);
   const unit = getUnit(state);
   const reducedValues = reduceToValues(transactionFields);
-  const transaction: EthTx = makeTransaction(reducedValues);
+  const transaction: Transaction = makeTransaction(reducedValues);
   const dataExists = transactionSelectors.getDataExists(state);
   const validGasCost = getValidGasCost(state);
   const isFullTransaction = isFullTx(
@@ -612,9 +614,9 @@ export const nonStandardTransaction = (state: AppState): boolean => {
 };
 
 export const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: boolean) => {
-  const serialzedTransaction = getSerializedTransaction(state);
+  const serializedTransaction = getSerializedTransaction(state);
   const { transaction, isFullTransaction } = getTransaction(state);
-  if (!isFullTransaction || !serialzedTransaction) {
+  if (!isFullTransaction || !serializedTransaction) {
     return false;
   }
   const t1 = getTransactionFields(transaction);
@@ -626,7 +628,7 @@ export const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySi
   const { chainId } = networkConfig;
   t1.chainId = chainId;
 
-  const t2 = getTransactionFields(makeTransaction(serialzedTransaction));
+  const t2 = getTransactionFields(makeTransaction(serializedTransaction, chainId));
   const checkValidity = (tx: IHexStrTransaction) =>
     Object.keys(tx).reduce(
       (match, currField: keyof IHexStrTransaction) => match && t1[currField] === t2[currField],
@@ -636,19 +638,20 @@ export const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySi
   const transactionsMatch = checkValidity(t1) && checkValidity(t2);
   // if its signed then verify the signature too
   return transactionsMatch && isLocallySigned
-    ? makeTransaction(serialzedTransaction).verifySignature()
+    ? makeTransaction(serializedTransaction, chainId).verifySignature()
     : true;
 };
 
 export const getFrom = (state: AppState) => {
   const serializedTransaction = getSerializedTransaction(state);
+  const { chainId } = configSelectors.getNetworkConfig(state);
 
   // attempt to get the from address from the transaction
   if (serializedTransaction) {
-    const transactionInstance = new EthTx(serializedTransaction);
+    const transactionInstance = new Transaction(serializedTransaction, { chain: chainId });
 
     try {
-      const from = transactionInstance.from;
+      const from = transactionInstance.getSenderAddress();
       if (from) {
         const toChecksumAddress = configSelectors.getChecksumAddressFn(state);
         return toChecksumAddress(from.toString('hex'));

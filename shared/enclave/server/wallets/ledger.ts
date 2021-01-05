@@ -1,4 +1,4 @@
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import LedgerTransport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';
@@ -44,7 +44,7 @@ const Ledger: WalletLib = {
 
   async signTransaction(tx, path) {
     const app = await getEthApp();
-    const ethTx = new EthTx({
+    const ethTx = new Transaction({
       ...tx,
       v: Buffer.from([tx.chainId]),
       r: toBuffer(0),
@@ -59,7 +59,7 @@ const Ledger: WalletLib = {
     }
 
     const rsv = await app.signTransaction(path, ethTx.serialize().toString('hex'));
-    const signedTx = new EthTx({
+    const signedTx = new Transaction({
       ...tx,
       r: addHexPrefix(rsv.r),
       s: addHexPrefix(rsv.s),

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EthTx from 'ethereumjs-tx';
+import { Transaction } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import translate from 'translations';
@@ -24,7 +24,7 @@ export interface CallbackProps {
 }
 
 interface StateProps {
-  transaction: EthTx;
+  transaction: Transaction;
   walletType: walletSelectors.IWalletType;
   serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
   networkRequestPending: boolean;
