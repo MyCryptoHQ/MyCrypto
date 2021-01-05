@@ -1,11 +1,12 @@
 import React from 'react';
 
-import AppProviders from '@AppProviders';
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
+import { DPathsList } from '@config';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { FeatureFlagProvider } from '@services';
 import { Network, NetworkId, WalletId } from '@types';
 import { noOp } from '@utils';
 
@@ -21,7 +22,8 @@ const network: Network = {
 const account = {
   address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
   networkId: 'Ropsten',
-  wallet: WalletId.LEDGER_NANO_S
+  wallet: WalletId.LEDGER_NANO_S,
+  dPath: DPathsList.ETH_DEFAULT.value
 };
 
 const sampleTxConfig = {
@@ -35,30 +37,28 @@ const sampleTxConfig = {
 };
 
 const ProtectTxStep2 = () => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxSign
-        handleProtectTxConfirmAndSend={noOp}
-        txConfig={sampleTxConfig as any}
-        network={network}
-        account={account as any}
-      />
-    </Panel>
-  </div>
+  <ProvidersWrapper>
+    <FeatureFlagProvider>
+      <ProtectTxProvider>
+        <div style={{ maxWidth: '375px', position: 'relative' }}>
+          <Panel>
+            <ProtectTxSign
+              handleProtectTxConfirmAndSend={noOp}
+              txConfig={sampleTxConfig as any}
+              network={network}
+              account={account as any}
+            />
+          </Panel>
+        </div>
+      </ProtectTxProvider>
+    </FeatureFlagProvider>
+  </ProvidersWrapper>
 );
 
-storiesOf('Features/ProtectTransaction', module)
-  .addDecorator((story) => (
-    <ProvidersWrapper>
-      <AppProviders>
-        <ProtectTxProvider>{story()}</ProtectTxProvider>
-      </AppProviders>
-    </ProvidersWrapper>
-  ))
-  .add('Step 2', () => ProtectTxStep2(), {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
-    }
-  });
+storiesOf('Features/ProtectTransaction', module).add('Step 2', () => ProtectTxStep2(), {
+  design: {
+    type: 'figma',
+    url:
+      'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+  }
+});

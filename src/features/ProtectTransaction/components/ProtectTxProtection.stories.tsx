@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import AppProviders from '@AppProviders';
 import { Panel } from '@mycrypto/ui';
 import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
@@ -23,46 +22,47 @@ const defaultProps: UIProps = {
   onProtect: noOp
 };
 
-const ProtectTxStep1 = () => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxProtectionUI {...defaultProps} web3Wallet={{ isWeb3Wallet: false, name: null }} />
-    </Panel>
-  </div>
-);
+const wrapInProvider = (component: ReactNode) => <ProvidersWrapper>{component}</ProvidersWrapper>;
 
-const ProtectTxStep1Web3 = () => (
-  <div style={{ maxWidth: '375px', position: 'relative' }}>
-    <Panel>
-      <ProtectTxProtectionUI {...defaultProps} />
-    </Panel>
-  </div>
-);
-const ProtectTxStep1Mobile = () => (
-  <>
-    <div
-      style={{
-        width: '700px',
-        position: 'relative',
-        backgroundColor: COLORS.BLACK,
-        display: 'flex',
-        justifyContent: 'center'
-      }}
-    >
-      <div style={{ maxWidth: '375px', position: 'relative' }}>
-        <Panel>
-          <ProtectTxProtectionUI {...defaultProps} />
-        </Panel>
-      </div>
+const ProtectTxStep1 = () =>
+  wrapInProvider(
+    <div style={{ maxWidth: '375px', position: 'relative' }}>
+      <Panel>
+        <ProtectTxProtectionUI {...defaultProps} web3Wallet={{ isWeb3Wallet: false, name: null }} />
+      </Panel>
     </div>
-  </>
-);
+  );
+
+const ProtectTxStep1Web3 = () =>
+  wrapInProvider(
+    <div style={{ maxWidth: '375px', position: 'relative' }}>
+      <Panel>
+        <ProtectTxProtectionUI {...defaultProps} />
+      </Panel>
+    </div>
+  );
+
+const ProtectTxStep1Mobile = () =>
+  wrapInProvider(
+    <>
+      <div
+        style={{
+          width: '700px',
+          position: 'relative',
+          backgroundColor: COLORS.BLACK,
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
+        <div style={{ maxWidth: '375px', position: 'relative' }}>
+          <Panel>
+            <ProtectTxProtectionUI {...defaultProps} />
+          </Panel>
+        </div>
+      </div>
+    </>
+  );
 storiesOf('Features/ProtectTransaction', module)
-  .addDecorator((story) => (
-    <ProvidersWrapper>
-      <AppProviders>{story()}</AppProviders>
-    </ProvidersWrapper>
-  ))
   .add('Step 1', () => ProtectTxStep1(), {
     design: {
       type: 'figma',

@@ -4,9 +4,10 @@ import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
+import { FeatureFlagProvider } from '@services';
+import { DataProvider } from '@services/Store';
 import { Network as INetwork, NetworkId } from '@types';
 
-import AppProviders from '../../../AppProviders';
 import NetworkNodes from './NetworkNodes';
 
 const emptyNetworks: INetwork[] = [];
@@ -50,7 +51,9 @@ const someNetworkNode = () => (
 storiesOf('Molecules/Selectors/NetworkNodes', module)
   .addDecorator((story) => (
     <ProvidersWrapper>
-      <AppProviders>{story()}</AppProviders>
+      <FeatureFlagProvider>
+        <DataProvider>{story()}</DataProvider>
+      </FeatureFlagProvider>
     </ProvidersWrapper>
   ))
   .add('Empty', () => networkNodesEmpty(), {

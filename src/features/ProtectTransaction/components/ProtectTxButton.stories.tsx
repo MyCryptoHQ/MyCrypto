@@ -1,6 +1,5 @@
 import React from 'react';
 
-import AppProviders from '@AppProviders';
 import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
@@ -15,22 +14,19 @@ const ProtectTransactionButton = () => (
 );
 
 const ProtectTransactionButtonProtected = () => (
-  <div style={{ maxWidth: '500px', position: 'relative' }}>
-    <ProtectTxButton
-      reviewReport={true}
-      onClick={noOp}
-      protectTxShow={false}
-      stepper={() => <></>}
-    />
-  </div>
+  <ProvidersWrapper>
+    <div style={{ maxWidth: '500px', position: 'relative' }}>
+      <ProtectTxButton
+        reviewReport={true}
+        onClick={noOp}
+        protectTxShow={false}
+        stepper={() => <></>}
+      />
+    </div>
+  </ProvidersWrapper>
 );
 
 storiesOf('Features/ProtectTransaction/Button', module)
-  .addDecorator((story) => (
-    <ProvidersWrapper>
-      <AppProviders>{story()}</AppProviders>
-    </ProvidersWrapper>
-  ))
   .add('Protect transaction button', () => ProtectTransactionButton(), {
     design: {
       type: 'figma',
