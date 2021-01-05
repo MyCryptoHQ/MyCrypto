@@ -2,8 +2,6 @@ import coinbaseDesktop from '@assets/images/banners/Coinbase_Desktop.png';
 import coinbaseMobile from '@assets/images/banners/Coinbase_Mobile.png';
 import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.png';
 import ledgerMobile from '@assets/images/banners/Ledger_Mobile.png';
-import mycryptoWinterDesktop from '@assets/images/banners/MycryptoWinter_Desktop.png';
-import mycryptoWinterMobile from '@assets/images/banners/MycryptoWinter_Mobile.png';
 import PooltogetherDesktop from '@assets/images/banners/Pooltogether_Desktop.png';
 import PooltogetherMobile from '@assets/images/banners/Pooltogether_Mobile.png';
 import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.png';
@@ -50,11 +48,5 @@ export const ads = [
     srcDesktop: PooltogetherDesktop,
     srcMobile: PooltogetherMobile,
     url: EXT_URLS.POOLTOGETHER_REFERRAL.url
-  },
-  {
-    name: 'MyCryptoWinter',
-    srcDesktop: mycryptoWinterDesktop,
-    srcMobile: mycryptoWinterMobile,
-    url: EXT_URLS.MYCRYPTO_WINTER_REFERRAL.url
   }
 ];
