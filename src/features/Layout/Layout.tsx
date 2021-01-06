@@ -54,18 +54,22 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
         margin-bottom: 57px;
       }
     `}
-  ${({ isDemoMode }) =>
-    isDemoMode &&
-    `
-    border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
-    box-sizing: border-box;
-  `}
+
   overflow-x: hidden;
   min-width: 350px;
   background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
   min-height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const DemoLayoutWrapper = styled.div<{ isDemoMode?: boolean }>`
+  ${({ isDemoMode }) =>
+    isDemoMode &&
+    `
+  border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
+  box-sizing: border-box;
+  `}
 `;
 
 const STop = styled.div<{ newNav: boolean }>`
@@ -187,26 +191,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
       {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
-      <SMain
-        className={className}
-        bgColor={bgColor}
-        newNav={featureFlags.NEW_NAVIGATION}
-        isDemoMode={isDemoMode}
-      >
-        {isDemoMode && (
-          <DemoBanner>
-            <Trans
-              id="DEMO_BANNER"
-              variables={{
-                $link: () => (
-                  <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-                    {translateRaw('DEMO_BANNER_LINK_TEXT')}
-                  </RouterLink>
-                )
-              }}
-            />
-          </DemoBanner>
-        )}
+      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
         <STop newNav={featureFlags.NEW_NAVIGATION}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
@@ -234,17 +219,32 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
         {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
           <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
         ) : (
-          <SContainer
-            centered={centered}
-            fluid={fluid}
-            fullW={fullW}
-            paddingV={paddingV}
-            marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
-          >
-            {children}
-          </SContainer>
+          <DemoLayoutWrapper isDemoMode={isDemoMode}>
+            {isDemoMode && (
+              <DemoBanner>
+                <Trans
+                  id="DEMO_BANNER"
+                  variables={{
+                    $link: () => (
+                      <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                        {translateRaw('DEMO_BANNER_LINK_TEXT')}
+                      </RouterLink>
+                    )
+                  }}
+                />
+              </DemoBanner>
+            )}
+            <SContainer
+              centered={centered}
+              fluid={fluid}
+              fullW={fullW}
+              paddingV={paddingV}
+              marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
+            >
+              {children}
+            </SContainer>
+          </DemoLayoutWrapper>
         )}
-
         {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
