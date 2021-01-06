@@ -68,25 +68,8 @@ export class LedgerWallet extends HardwareWallet {
         stripHexPrefix(serializeTransaction(t))
       );
 
-      let v = result.v;
-      if (chainId > 0) {
-        // EIP155 support. check/recalc signature v value.
-        // Please see https://github.com/LedgerHQ/blue-app-eth/commit/8260268b0214810872dabd154b476f5bb859aac0
-        // currently, ledger returns only 1-byte truncated signatur_v
-        const rv = parseInt(v, 16);
-        let cv = chainId * 2 + 35; // calculated signature v, without signature bit.
-        /* tslint:disable no-bitwise */
-        if (rv !== cv && (rv & cv) !== rv) {
-          // (rv !== cv) : for v is truncated byte case
-          // (rv & cv): make cv to truncated byte
-          // (rv & cv) !== rv: signature v bit needed
-          cv += 1; // add signature v bit.
-        }
-        v = cv.toString(16);
-      }
-
       const signature: Signature = {
-        v: parseInt(v, 16),
+        v: parseInt(result.v, 16),
         r: addHexPrefix(result.r),
         s: addHexPrefix(result.s)
       };
