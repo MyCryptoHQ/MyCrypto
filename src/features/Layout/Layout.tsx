@@ -1,17 +1,24 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { Banner } from '@components';
+import { Banner, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
 import { AppState, getIsDemoMode } from '@store';
-import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
-import translate, { translateRaw } from '@translations';
+import {
+  BREAK_POINTS,
+  COLORS,
+  LINE_HEIGHT,
+  MAX_CONTENT_WIDTH,
+  MIN_CONTENT_PADDING,
+  SPACING
+} from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
 
@@ -50,12 +57,8 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
   ${({ isDemoMode }) =>
     isDemoMode &&
     `
-    border: 8px solid ${COLORS.WARNING_ORANGE};
+    border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
     box-sizing: border-box;
-
-    @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-      border: ${SPACING.XS} solid ${COLORS.WARNING_ORANGE};
-    }
   `}
   overflow-x: hidden;
   min-width: 350px;
@@ -191,11 +194,18 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
         isDemoMode={isDemoMode}
       >
         {isDemoMode && (
-          <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-            <DemoBanner>
-              <p>{translateRaw('DEMO_BANNER')}</p>
-            </DemoBanner>
-          </Link>
+          <DemoBanner>
+            <Trans
+              id="DEMO_BANNER"
+              variables={{
+                $link: () => (
+                  <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    {translateRaw('DEMO_BANNER_LINK_TEXT')}
+                  </RouterLink>
+                )
+              }}
+            />
+          </DemoBanner>
         )}
         <STop newNav={featureFlags.NEW_NAVIGATION}>
           {shouldShowError() && error && (
