@@ -138,9 +138,9 @@ const BroadcastTx = ({
           inputError={userInput.length > 0 ? inputError : ''}
         />
       </InputWrapper>
-      {isValid && transaction && (
+      {isValid && (
         <React.Fragment>
-          {!transaction.chainId && (
+          {!transaction!.chainId && (
             <NetworkSelectWrapper>
               <NetworkSelector network={networkId} onChange={handleNetworkChanged} />
               {!networkId && (
@@ -153,7 +153,7 @@ const BroadcastTx = ({
             <Tooltip tooltip={translateRaw('BROADCAST_TX_RAW_TOOLTIP')} />
           </StyledLabel>
           <CodeBlockWrapper>
-            <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
+            <CodeBlock>{getStringifiedTx(transaction!)}</CodeBlock>
           </CodeBlockWrapper>
         </React.Fragment>
       )}

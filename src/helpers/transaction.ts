@@ -148,6 +148,16 @@ const decodeTransaction = (signedTx: Arrayish) => {
   };
 };
 
+const buildRawTxFromSigned = (signedTx: Arrayish): ITxObject => {
+  const decodedTx = parseTransaction(signedTx);
+  return ({
+    ...decodedTx,
+    value: decodedTx.value.toHexString() as ITxValue,
+    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
+    gasPrice: decodedTx.gasPrice.toHexString() as ITxGasPrice
+  } as unknown) as ITxObject;
+};
+
 // needs testing
 export const makeTxConfigFromSignedTx = (
   signedTx: Arrayish,
@@ -166,7 +176,7 @@ export const makeTxConfigFromSignedTx = (
 
   const rawTransaction = oldTxConfig.rawTransaction
     ? oldTxConfig.rawTransaction
-    : ((decodedTx as unknown) as ITxObject);
+    : buildRawTxFromSigned(signedTx);
 
   const txConfig = {
     rawTransaction,
