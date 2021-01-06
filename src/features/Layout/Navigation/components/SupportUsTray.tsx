@@ -5,7 +5,6 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { Box, Icon, Text } from '@components';
 import { donationAddressMap } from '@config';
 import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
@@ -15,9 +14,7 @@ import { ExternalLink } from './ExternalLink';
 
 export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   const [displayingMessage, setDisplayingMessage] = useState(false);
-  const trackDonation = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
+  const { track } = useAnalytics();
   const [isReady, clear, set] = useTimeoutFn(() => setDisplayingMessage(false), 3000);
 
   useEffectOnce(() => clear());
@@ -30,14 +27,12 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
     }
   }, [setDisplayingMessage]);
 
-  const trackDonationClicked = useCallback(
-    (title: string) => {
-      trackDonation({
-        actionName: `Donate ${title} clicked`
-      });
-    },
-    [trackDonation]
-  );
+  const trackDonationClicked = (title: string) => {
+    track({
+      name: 'Donate clicked',
+      params: { asset: title }
+    });
+  };
 
   return (
     <>

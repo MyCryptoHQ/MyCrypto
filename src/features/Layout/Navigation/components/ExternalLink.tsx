@@ -21,7 +21,7 @@ export const ExternalLink = ({ item }: { item: IExternalLink }) => {
 
   const handleClick = () => {
     openLink(item.link);
-    track({ name: `Link clicked`, params: { url: item.link } });
+    track({ name: 'Link clicked', params: { url: item.link } });
   };
 
   return (
