@@ -12,7 +12,7 @@
   "dependencies": {
     "@hot-loader/react-dom": "16.8.6",
     "@ledgerhq/hw-app-eth": "5.38.0",
-    "@ledgerhq/hw-transport-node-hid-noevents": "5.23.0",
+    "@ledgerhq/hw-transport-node-hid-noevents": "5.38.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@ledgerhq/hw-transport-webusb": "4.56.0",
     "@mycrypto/eth-scan": "https://github.com/MyCryptoHQ/eth-scan.git#6fac6550624b126adfdf4407ca65145f54d03e9c",
