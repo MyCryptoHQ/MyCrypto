@@ -64,7 +64,7 @@ interface Props {
   onChange?(): void;
 }
 export const Switch = ({ greyable, onChange, labelLeft, labelRight, checked }: Props) => (
-  <Box variant="verticalCenter">
+  <Box variant="rowCenter">
     <LabelText as="label" htmlFor="toggle">
       {labelLeft}
     </LabelText>
