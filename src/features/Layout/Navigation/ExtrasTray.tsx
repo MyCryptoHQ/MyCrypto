@@ -20,18 +20,17 @@ const SIcon = styled(Icon)`
 export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTray(): void }) => {
   return (
     <Box
-      zIndex={999}
+      zIndex={998}
       display="flex"
       flexDirection="column"
       backgroundColor="BG_GRAY"
       borderRadius="default"
-      position="fixed"
+      position={{ _: 'absolute', sm: 'fixed' }}
       width={{ _: '100vw', sm: '375px' }}
       bottom={0}
       left={{ _: 0, sm: '65px' }}
       height={{ _: '100vh', sm: 'auto' }}
       boxShadow={{ sm: '3px 3px 20px rgba(0, 0, 0, 0.15);' }}
-      overflowY={{ _: 'scroll', sm: 'auto' }}
     >
       <Box
         backgroundColor="BLUE_DARK_SLATE"

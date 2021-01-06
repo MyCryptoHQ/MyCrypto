@@ -174,7 +174,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
           openTray={() => setIsOpen(!isOpen)}
         />
       )}
-      {featureFlags.NEW_NAVIGATION && isOpen && (
+      {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
       <SMain
@@ -207,15 +207,20 @@ export default function Layout({ config = {}, className = '', children }: Props)
         <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
           <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
         </BannerWrapper>
-        <SContainer
-          centered={centered}
-          fluid={fluid}
-          fullW={fullW}
-          paddingV={paddingV}
-          marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
-        >
-          {children}
-        </SContainer>
+        {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
+          <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+        ) : (
+          <SContainer
+            centered={centered}
+            fluid={fluid}
+            fullW={fullW}
+            paddingV={paddingV}
+            marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
+          >
+            {children}
+          </SContainer>
+        )}
+
         {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
