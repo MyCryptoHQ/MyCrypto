@@ -157,36 +157,31 @@ export const supportUsTray: INavTray = {
       type: 'external',
       title: translateRaw('NAVIGATION_GET_A_LEDGER'),
       link: EXT_URLS.LEDGER_REFERRAL.url,
-      icon: 'nav-ledger',
-      analyticsEvent: 'Ledger Wallet'
+      icon: 'nav-ledger'
     },
     {
       type: 'external',
       title: translateRaw('NAVIGATION_GET_A_TREZOR'),
       link: EXT_URLS.TREZOR_REFERRAL.url,
-      icon: 'nav-trezor',
-      analyticsEvent: 'TREZOR'
+      icon: 'nav-trezor'
     },
     {
       type: 'external',
       title: translateRaw('NAVIGATION_GET_QUIKNODE'),
       link: EXT_URLS.QUIKNODE_REFERRAL.url,
-      icon: 'nav-quiknode',
-      analyticsEvent: 'Quiknode'
+      icon: 'nav-quiknode'
     },
     {
       type: 'external',
       title: translateRaw('NAVIGATION_BUY_ETH'),
       link: EXT_URLS.COINBASE_REFERRAL.url,
-      icon: 'nav-coinbase',
-      analyticsEvent: 'Coinbase'
+      icon: 'nav-coinbase'
     },
     {
       type: 'external',
       title: translateRaw('NAVIGATION_UNSTOPPABLE'),
       link: EXT_URLS.UNSTOPPABLEDOMAINS_REFERRAL.url,
-      icon: 'nav-unstoppable',
-      analyticsEvent: 'UnstoppableDomains'
+      icon: 'nav-unstoppable'
     }
   ]
 };
