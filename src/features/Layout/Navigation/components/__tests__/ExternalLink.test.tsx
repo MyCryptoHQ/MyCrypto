@@ -2,6 +2,7 @@ import React from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
+import { FeatureFlagProvider } from '@services';
 import { IExternalLink, TURL } from '@types';
 
 import { ExternalLink } from '../ExternalLink';
@@ -18,7 +19,7 @@ const defaultProps = {
 };
 
 function getComponent() {
-  return simpleRender(<ExternalLink {...defaultProps} />);
+  return simpleRender(<ExternalLink {...defaultProps} />, { wrapper: FeatureFlagProvider });
 }
 
 describe('ExternalLink', () => {

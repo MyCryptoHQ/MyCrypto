@@ -2,6 +2,7 @@ import React from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
+import { FeatureFlagProvider } from '@services';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
 
@@ -19,7 +20,7 @@ const defaultProps = {
 };
 
 function getComponent() {
-  return simpleRender(<SupportUsTray {...defaultProps} />);
+  return simpleRender(<SupportUsTray {...defaultProps} />, { wrapper: FeatureFlagProvider });
 }
 
 describe('SupportUsTray', () => {

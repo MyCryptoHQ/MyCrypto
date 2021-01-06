@@ -5,7 +5,7 @@ import { filter, head, pipe, whereEq } from '@vendor';
 const PATHS: IRoutePath[] = [
   {
     name: 'ROOT',
-    title: translateRaw('ROOT'),
+    title: translateRaw('NAVIGATION_HOME'),
     path: '/'
   },
   {
