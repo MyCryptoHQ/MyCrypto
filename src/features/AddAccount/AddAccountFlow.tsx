@@ -5,6 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { ExtendedContentPanel, WalletList } from '@components';
 import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
+import { StoreContext } from '@services';
 import { fetchMemberships, scanTokens, useDispatch } from '@store';
 import { IStory, StoreAccount, WalletId } from '@types';
 import { isSameAddress } from '@utils';
