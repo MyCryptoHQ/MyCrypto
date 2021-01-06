@@ -86,7 +86,7 @@ export class LedgerWallet extends HardwareWallet {
       }
 
       const signature: Signature = {
-        v: parseInt(v),
+        v: parseInt(v, 16),
         r: addHexPrefix(result.r),
         s: addHexPrefix(result.s)
       };
