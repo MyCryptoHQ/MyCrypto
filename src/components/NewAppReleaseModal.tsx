@@ -8,7 +8,6 @@ import closeIcon from '@assets/images/icn-close.svg';
 import updateImportantIcon from '@assets/images/icn-important-update.svg';
 import updateIcon from '@assets/images/icn-update.svg';
 import { VERSION as currentVersion, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
-import { useAnalytics } from '@hooks';
 import { GithubService } from '@services/ApiService';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
