@@ -87,7 +87,7 @@ const makeTxFromSignedTx = (signedTransaction: string) => {
 };
 
 interface Props {
-  network: NetworkId;
+  networkId: NetworkId;
   signedTx: ISignedTx;
   transaction: Transaction | undefined;
   onComplete(signedTx: string): void;
@@ -96,7 +96,7 @@ interface Props {
 
 const BroadcastTx = ({
   signedTx,
-  network: networkId,
+  networkId,
   onComplete,
   handleNetworkChanged
 }: Props & ConnectedProps<typeof connector>) => {

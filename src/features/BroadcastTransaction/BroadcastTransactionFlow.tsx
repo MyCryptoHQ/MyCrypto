@@ -23,9 +23,9 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('BROADCAST_TX_TITLE'),
       component: BroadcastTx,
-      props: (({ signedTx, network }) => ({
+      props: (({ signedTx, network: networkId }) => ({
         signedTx,
-        network,
+        networkId,
         handleNetworkChanged
       }))(broadcastTxState),
       actions: (signedTx: ISignedTx, cb: any) => handleSendClicked(signedTx, cb)
