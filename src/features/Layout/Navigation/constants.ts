@@ -92,6 +92,55 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         to: APP_ROUTES.BROADCAST_TX.path,
         enabled: APP_ROUTES.BROADCAST_TX.enabled,
         icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.ENS.path,
+        enabled: APP_ROUTES.ENS.enabled,
+        title: 'ENS',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.TX_STATUS.path,
+        enabled: APP_ROUTES.TX_STATUS.enabled,
+        title: 'TX Status',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
+        title: 'REP Token Migration',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+        title: 'LEND Token Migration',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+        title: 'ANT Token Migration',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
+        title: 'Golem Token Migration',
+        icon: 'nav-broadcast-transaction'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.FAUCET.path,
+        enabled: APP_ROUTES.FAUCET.enabled,
+        title: 'Faucet',
+        icon: 'nav-broadcast-transaction'
       }
     ]
   };
@@ -244,6 +293,55 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           title: translateRaw('NAVIGATION_BROADCAST_TRANSACTION'),
           to: APP_ROUTES.BROADCAST_TX.path,
           enabled: APP_ROUTES.BROADCAST_TX.enabled,
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.ENS.path,
+          enabled: APP_ROUTES.ENS.enabled,
+          title: 'ENS',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.TX_STATUS.path,
+          enabled: APP_ROUTES.TX_STATUS.enabled,
+          title: 'TX Status',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
+          title: 'REP Token Migration',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+          title: 'LEND Token Migration',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+          title: 'ANT Token Migration',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
+          title: 'Golem Token Migration',
+          icon: 'nav-broadcast-transaction'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.FAUCET.path,
+          enabled: APP_ROUTES.FAUCET.enabled,
+          title: 'Faucet',
           icon: 'nav-broadcast-transaction'
         }
       ]

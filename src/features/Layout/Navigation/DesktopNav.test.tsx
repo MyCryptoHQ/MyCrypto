@@ -16,7 +16,7 @@ const clickMock = jest.fn();
 function getComponent() {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <DesktopNav appRoutes={APP_ROUTES} current={'/'} openTray={clickMock} />
+      <DesktopNav isTrayOpen={false} appRoutes={APP_ROUTES} current={'/'} openTray={clickMock} />
     </MemoryRouter>
   );
 }
