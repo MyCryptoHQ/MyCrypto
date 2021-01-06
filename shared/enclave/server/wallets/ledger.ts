@@ -44,14 +44,17 @@ const Ledger: WalletLib = {
 
   async signTransaction(tx, path) {
     const app = await getEthApp();
-    const ethTx = new Transaction({
-      ...tx,
-      v: Buffer.from([tx.chainId]),
-      r: toBuffer(0),
-      s: toBuffer(0)
-    });
+    const ethTx = new Transaction(
+      {
+        ...tx,
+        v: toBuffer(tx.chainId),
+        r: toBuffer(0),
+        s: toBuffer(0)
+      },
+      { hardfork: 'tangerineWhistle' }
+    );
 
-    if (ethTx.getChainId() === 1) {
+    if (tx.chainId === 1) {
       const tokenInfo = byContractAddress(ethTx.to.toString('hex'));
       if (tokenInfo) {
         await app.provideERC20TokenInformation(tokenInfo);
@@ -68,6 +71,7 @@ const Ledger: WalletLib = {
       },
       { chain: tx.chainId }
     );
+
     return {
       signedTransaction: signedTx.serialize().toString('hex')
     };

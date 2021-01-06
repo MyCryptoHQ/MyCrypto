@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.8.6",
-    "@ledgerhq/hw-app-eth": "4.48.0",
+    "@ledgerhq/hw-app-eth": "5.38.0",
     "@ledgerhq/hw-transport-node-hid-noevents": "5.23.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@ledgerhq/hw-transport-webusb": "4.56.0",

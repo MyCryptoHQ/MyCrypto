@@ -89,7 +89,7 @@ const makeTransaction = (
 
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IFullWallet) => {
-  const tx = makeTransaction(t);
+  const tx = makeTransaction(t, t.chainId);
   const signedTx = await w.signRawTransaction(tx); //returns a serialized, signed tx
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway
 };
