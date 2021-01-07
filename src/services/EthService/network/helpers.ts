@@ -70,9 +70,9 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     .filter((n) => (n.type === NodeType.WEB3 && hasWeb3Provider()) || n.type !== NodeType.WEB3)
     .filter((n) => !n.disableByDefault || n.name === selectedNode);
   if (!isEmpty(selectedNode)) {
-    const sNode = nodes.find((n) => n.name === selectedNode);
+    const sNode = sortedNodes.find((n) => n.name === selectedNode);
     if (sNode) {
-      const restNodes = nodes.filter((n) => n.name !== selectedNode);
+      const restNodes = sortedNodes.filter((n) => n.name !== selectedNode);
       sortedNodes = [sNode, ...restNodes];
     }
   }
