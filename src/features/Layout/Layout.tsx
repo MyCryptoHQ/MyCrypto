@@ -64,11 +64,13 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
 `;
 
 const DemoLayoutWrapper = styled.div<{ isDemoMode?: boolean }>`
+  display: flex;
+  flex-direction: column;
   ${({ isDemoMode }) =>
     isDemoMode &&
     `
-  border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
-  box-sizing: border-box;
+    border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
+    box-sizing: border-box;
   `}
 `;
 
