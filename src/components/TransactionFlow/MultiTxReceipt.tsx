@@ -162,18 +162,20 @@ export default function MultiTxReceipt({
                 baseAsset={baseAsset}
                 asset={asset}
                 assetAmount={amount}
-                value={value}
+                confirmations={transaction.txReceipt && transaction.txReceipt.confirmations}
+                gasUsed={transaction.txReceipt && transaction.txReceipt.gasUsed}
                 data={data}
                 sender={account}
                 gasLimit={bigNumGasLimitToViewable(bigify(gasLimit))}
                 gasPrice={bigify(gasPrice).toString()}
                 nonce={nonce}
                 rawTransaction={transaction.txRaw}
+                value={value}
                 fiat={fiat}
                 baseAssetRate={baseAssetRate}
                 assetRate={assetRate}
-                timestamp={timestamp}
                 status={status}
+                timestamp={timestamp}
                 recipient={to}
               />
             </div>
