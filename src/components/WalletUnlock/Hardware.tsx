@@ -1,0 +1,156 @@
+import React from 'react';
+
+import styled from 'styled-components';
+
+import {
+  Box,
+  Button,
+  Heading,
+  Icon,
+  InlineMessage,
+  RouterLink,
+  Spinner,
+  Text,
+  TIcon
+} from '@components';
+import { EXT_URLS } from '@config';
+import { DeterministicWalletState } from '@services';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
+import { InlineMessageType, Network, WalletId } from '@types';
+
+interface HWConfig {
+  walletTypeTransKey: string;
+  oldInterfaceRoute: string;
+
+  unlockTipTransKey: string;
+
+  scanTransKey: string;
+  referralTransKey: string;
+  referralURL: string;
+  iconId: TIcon;
+}
+
+type THardwareConfigs = {
+  [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW]: HWConfig;
+};
+
+const HardwareImageContainer = styled.div`
+  vertical-align: center;
+  margin: 2em;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin: 0.3em;
+    padding: 0.5em;
+  }
+`;
+
+const ErrorMessageContainer = styled.div`
+  margin: 2em;
+`;
+
+const HardwareFooter = styled.div`
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-bottom: ${SPACING.BASE};
+  }
+`;
+
+const HardwareConnectBtn = styled(Button)`
+  margin-bottom: 2em;
+  width: 420px;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 345px;
+    margin-bottom: 0em;
+  }
+`;
+
+export interface HardwareUIProps {
+  network: Network;
+  state: DeterministicWalletState;
+  walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
+
+  handleNullConnect(): void;
+}
+
+const hardwareConfigs: THardwareConfigs = {
+  [WalletId.LEDGER_NANO_S_NEW]: {
+    walletTypeTransKey: 'X_LEDGER',
+    scanTransKey: 'ADD_LEDGER_SCAN',
+    referralTransKey: 'LEDGER_REFERRAL_2',
+    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
+    unlockTipTransKey: 'LEDGER_TIP',
+    oldInterfaceRoute: '/add-account/ledger',
+    iconId: 'ledger-icon-lg'
+  },
+  [WalletId.TREZOR_NEW]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    referralTransKey: 'ORDER_TREZOR',
+    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    unlockTipTransKey: 'TREZOR_TIP',
+    oldInterfaceRoute: '/add-account/trezor',
+    iconId: 'trezor-icon-lg'
+  }
+};
+
+const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: HardwareUIProps) => (
+  <Box p="2.5em">
+    <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+      {translate('UNLOCK_WALLET')}{' '}
+      {translateRaw('YOUR_WALLET_TYPE', {
+        $walletType: translateRaw(hardwareConfigs[walletId].walletTypeTransKey)
+      })}
+    </Heading>
+    <Box variant="columnCenter" minHeight="400px">
+      <Text
+        lineHeight="1.5"
+        letterSpacing="normal"
+        fontSize={FONT_SIZE.MD}
+        paddingTop={SPACING.BASE}
+        color={COLORS.GREY_DARKEST}
+        textAlign="center"
+      >
+        {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
+        <HardwareImageContainer>
+          <Icon type={hardwareConfigs[walletId].iconId} />
+        </HardwareImageContainer>
+        {state.error && (
+          <ErrorMessageContainer>
+            <InlineMessage
+              type={InlineMessageType.ERROR}
+              value={`${translateRaw('GENERIC_HARDWARE_ERROR')} ${state.error.message}`}
+            />
+          </ErrorMessageContainer>
+        )}
+        {state.isConnecting ? (
+          <div className="HardwarePanel-loading">
+            <Spinner /> {translate('WALLET_UNLOCKING')}
+          </div>
+        ) : (
+          <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={state.isConnecting}>
+            {translate(hardwareConfigs[walletId].scanTransKey)}
+          </HardwareConnectBtn>
+        )}
+      </Text>
+      <HardwareFooter>
+        {translate(hardwareConfigs[walletId].referralTransKey, {
+          $url: hardwareConfigs[walletId].referralURL
+        })}
+        <br />
+        <Trans
+          id="USE_OLD_INTERFACE"
+          variables={{
+            $link: () => (
+              <RouterLink to={hardwareConfigs[walletId].oldInterfaceRoute}>
+                {translateRaw('TRY_OLD_INTERFACE')}
+              </RouterLink>
+            )
+          }}
+        />
+      </HardwareFooter>
+    </Box>
+  </Box>
+);
+
+export default HardwareWalletUI;

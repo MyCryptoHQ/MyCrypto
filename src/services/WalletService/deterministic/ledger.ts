@@ -139,12 +139,14 @@ async function makeApp() {
   return new LedgerEth(transport);
 }
 
-const isU2FError = (err: LedgerError): err is U2FError => !!err && !!(err as U2FError).metaData;
-const isStringError = (err: LedgerError): err is string => typeof err === 'string';
-const isErrorWithId = (err: LedgerError): err is ErrorWithId =>
+export const isU2FError = (err: LedgerError): err is U2FError =>
+  !!err && !!(err as U2FError).metaData;
+export const isStringError = (err: LedgerError): err is string => typeof err === 'string';
+export const isErrorWithId = (err: LedgerError): err is ErrorWithId =>
   Object.prototype.hasOwnProperty.call(err, 'id') &&
   Object.prototype.hasOwnProperty.call(err, 'message');
-function ledgerErrToMessage(err: LedgerError) {
+
+export const ledgerErrToMessage = (err: LedgerError) => {
   // https://developers.yubico.com/U2F/Libraries/Client_error_codes.html
   if (isU2FError(err)) {
     // Timeout
@@ -177,4 +179,4 @@ function ledgerErrToMessage(err: LedgerError) {
 
   // Other
   return err.toString();
-}
+};

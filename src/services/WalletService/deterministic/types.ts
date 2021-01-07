@@ -6,7 +6,10 @@ import { DPath, DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { Wallet } from '..';
 import DeterministicWalletReducer from './reducer';
 
-export type TDWActionError = ValuesType<typeof DeterministicWalletReducer.errorCodes>;
+export interface TDWActionError {
+  code: ValuesType<typeof DeterministicWalletReducer.errorCodes>;
+  message: string;
+}
 
 export interface DWAccountDisplay {
   address: TAddress;
@@ -37,7 +40,7 @@ export interface DeterministicWalletState {
   session: Wallet | undefined;
   promptConnectionRetry: boolean;
   completed: boolean;
-  errors: TDWActionError[];
+  error?: TDWActionError;
 }
 
 export interface IUseDeterministicWallet {

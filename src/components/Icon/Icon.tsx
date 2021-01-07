@@ -74,10 +74,12 @@ import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import check from '@assets/images/icn-check.svg';
+import trezorLgIcon from '@assets/images/icn-connect-trezor-new.svg';
 import experience from '@assets/images/icn-experience.svg';
 import faucetIcon from '@assets/images/icn-faucet.svg';
 import feeIcon from '@assets/images/icn-fee.svg';
 import informational from '@assets/images/icn-info-blue.svg';
+import ledgerLgIcon from '@assets/images/icn-ledger-nano-large.svg';
 import more from '@assets/images/icn-more.svg';
 import networkIcon from '@assets/images/icn-network.svg';
 import platformUsed from '@assets/images/icn-platform-used.svg';
@@ -126,7 +128,9 @@ const svgIcons = {
   whitepaper,
   experience,
   'ledger-icon': ledgerIcon,
+  'ledger-icon-lg': ledgerLgIcon,
   'trezor-icon': trezorIcon,
+  'trezor-icon-lg': trezorLgIcon,
   membership,
   feedback,
   newsletter,

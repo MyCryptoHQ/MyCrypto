@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
 import { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
 
@@ -17,7 +16,7 @@ export default function SignTransactionLedger({
       signerDescription={translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
         $network: network.id
       })}
-      walletIcon={ledgerIcon}
+      walletIconType={'ledger-icon-lg'}
       senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       onSuccess={onSuccess}

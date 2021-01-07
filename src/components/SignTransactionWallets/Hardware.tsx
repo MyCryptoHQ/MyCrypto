@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from 'react';
 
-import { InlineMessage } from '@components';
+import styled from 'styled-components';
+
+import { Icon, InlineMessage, Text, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
+import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
 import { makeTransaction, useInterval } from '@utils';
-
-import './Hardware.scss';
 
 export interface IDestructuredDPath {
   dpath: string;
   index: number;
 }
+
+const SFooter = styled.div`
+  width: 100%;
+`;
+
+const SImgContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 3em;
+`;
+
+const ErrorMessageContainer = styled.div`
+  margin: 2em;
+`;
 
 export const splitDPath = (fullDPath: string): IDestructuredDPath => {
   /*
@@ -27,7 +42,7 @@ export const splitDPath = (fullDPath: string): IDestructuredDPath => {
 };
 
 export interface IProps {
-  walletIcon: any;
+  walletIconType: TIcon;
   signerDescription: string;
   senderAccount: IAccount;
   rawTransaction: ITxObject;
@@ -35,7 +50,7 @@ export interface IProps {
 }
 
 export default function HardwareSignTransaction({
-  walletIcon,
+  walletIconType,
   signerDescription,
   senderAccount,
   rawTransaction,
@@ -117,28 +132,61 @@ export default function HardwareSignTransaction({
   })();
 
   return (
-    <>
-      <div className="SignTransactionHardware-title">
-        {translate('SIGN_TX_TITLE', {
-          $walletName: WALLETS_CONFIG[senderAccount.wallet].name || 'Hardware Wallet'
-        })}
-      </div>
-      <div className="SignTransactionHardware-instructions">{signerDescription}</div>
-      <div className="SignTransactionHardware-content">
-        <div className="SignTransactionHardware-img">
-          <img src={walletIcon} />
-        </div>
-        <div className="SignTransactionHardware-description">
-          {translateRaw('SIGN_TX_EXPLANATION')}
-          {isTxSignatureRequestDenied && (
-            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
-          )}
-        </div>
-        <div className="SignTransactionHardware-footer">
-          <div className="SignTransactionHardware-help">{translate(helpCopy)}</div>
-          <div className="SignTransactionHardware-referal">{translate(referralCopy)}</div>
-        </div>
-      </div>
-    </>
+    <SignTxHardwareUI
+      walletIconType={walletIconType}
+      signerDescription={signerDescription}
+      isTxSignatureRequestDenied={isTxSignatureRequestDenied}
+      helpCopy={helpCopy}
+      referralCopy={referralCopy}
+      senderAccount={senderAccount}
+    />
   );
 }
+
+interface UIProps {
+  walletIconType: TIcon;
+  signerDescription: string;
+  isTxSignatureRequestDenied: boolean;
+  helpCopy: string;
+  referralCopy: string;
+  senderAccount: IAccount;
+}
+
+export const SignTxHardwareUI = ({
+  walletIconType,
+  signerDescription,
+  isTxSignatureRequestDenied,
+  helpCopy,
+  referralCopy,
+  senderAccount
+}: UIProps) => (
+  <>
+    <Text textAlign="center" fontWeight="bold" marginTop={SPACING.LG} fontSize={FONT_SIZE.XXL}>
+      {translate('SIGN_TX_TITLE', {
+        $walletName: WALLETS_CONFIG[senderAccount.wallet].name
+      })}
+    </Text>
+    <Text fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
+      {signerDescription}
+    </Text>
+    <div>
+      <SImgContainer>
+        <Icon type={walletIconType} />
+      </SImgContainer>
+      <Text textAlign="center">
+        {isTxSignatureRequestDenied && (
+          <ErrorMessageContainer>
+            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
+          </ErrorMessageContainer>
+        )}
+        {translateRaw('SIGN_TX_EXPLANATION')}
+      </Text>
+      <SFooter>
+        <Text textAlign="center" marginTop={SPACING.MD}>
+          {translate(helpCopy)}
+        </Text>
+        <Text textAlign="center">{translate(referralCopy)}</Text>
+      </SFooter>
+    </div>
+  </>
+);

@@ -6,16 +6,21 @@ import { DPath, WalletId } from '@types';
 
 import HardwareWallet, { KeyInfo } from '../HardwareWallet';
 import { getFullPath } from '../helpers';
+import { ledgerErrToMessage } from './helpers';
 
 export default abstract class Ledger extends HardwareWallet {
   protected abstract transport: Transport<any> | null = null;
   protected abstract app: EthereumApp | null = null;
 
   public async initialize(): Promise<void> {
-    await this.checkConnection();
+    try {
+      await this.checkConnection();
 
-    // Fetch a random address to ensure the connection works
-    await this.getAddress(DPathsList.ETH_LEDGER, 50);
+      // Fetch a random address to ensure the connection works
+      await this.getAddress(DPathsList.ETH_LEDGER, 50);
+    } catch (err) {
+      throw ledgerErrToMessage(err.message);
+    }
   }
 
   public getDPaths(): DPath[] {

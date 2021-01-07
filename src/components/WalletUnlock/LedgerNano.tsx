@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { Box, Heading, NewTabLink, Spinner } from '@components';
+import { Box, Heading, Icon, NewTabLink, Spinner } from '@components';
 import { EXT_URLS } from '@config';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
@@ -50,7 +49,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     const network = this.props.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
+      return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
     }
 
     if (window.location.protocol !== 'https:') {
@@ -94,11 +93,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             <div className="LedgerPanel-description">
               {translate('LEDGER_TIP')}
               <div className="LedgerPanel-image">
-                <img src={ledgerIcon} />
+                <Icon type="ledger-icon-lg" />
               </div>
-              {/* <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-                {error || '-'}
-              </div> */}
               {isLoading ? (
                 <div className="LedgerPanel-loading">
                   <Spinner /> {translate('WALLET_UNLOCKING')}

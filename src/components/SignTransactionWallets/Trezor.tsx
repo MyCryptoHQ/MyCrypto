@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
 
@@ -14,7 +13,7 @@ export default function SignTransactionTrezor({
   return (
     <HardwareSignTransaction
       signerDescription={translateRaw('SIGN_TX_TREZOR_DESCRIPTION')}
-      walletIcon={ConnectTrezor}
+      walletIconType="trezor-icon-lg"
       senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       onSuccess={onSuccess}

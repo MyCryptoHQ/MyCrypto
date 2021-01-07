@@ -8,9 +8,12 @@ describe('DeterministicWalletReducer', () => {
       const prevState = { errors: [], completed: false, isGettingAccounts: true };
       const state = dispatch({
         type: DWActionTypes.GET_ADDRESSES_FAILURE,
-        error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED }
+        error: {
+          code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED,
+          message: 'FAILED'
+        }
       })(prevState);
-      expect(state.errors).toContain(DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED);
+      expect(state.error!.code).toEqual(DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED);
       expect(state.completed).toBeTruthy();
       expect(state.isGettingAccounts).toBeFalsy();
     });
@@ -21,7 +24,7 @@ describe('DeterministicWalletReducer', () => {
       const state = dispatch({
         type: DWActionTypes.GET_ADDRESSES_SUCCESS
       })(prevState);
-      expect(state.errors).toHaveLength(0);
+      expect(state.error).toBeUndefined();
       expect(state.isGettingAccounts).toBeFalsy();
     });
   });

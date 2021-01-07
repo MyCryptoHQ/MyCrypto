@@ -3,13 +3,12 @@ import React, { useState } from 'react';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
-import ledgerIcon from '@assets/images/icn-ledger-nano-large.svg';
-import { Box, Button, Heading, NewTabLink, RouterLink, Spinner } from '@components';
+import { NewTabLink } from '@components';
+import HardwareWalletUI from '@components/WalletUnlock/Hardware';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
   DPathsList,
-  EXT_URLS,
   LEDGER_DERIVATION_PATHS
 } from '@config';
 import {
@@ -20,7 +19,7 @@ import {
   useDeterministicWallet,
   useNetworks
 } from '@services';
-import translate, { Trans, translateRaw } from '@translations';
+import { Trans, translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
 import DeterministicWallet from './DeterministicWallet';
@@ -69,7 +68,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   if (!network) {
     // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
+    return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
   }
 
   if (window.location.protocol !== 'https:') {
@@ -104,50 +103,12 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   } else {
     return (
-      <Box p="2.5em">
-        <Heading fontSize="32px" textAlign="center" fontWeight="bold">
-          {translate('UNLOCK_WALLET')}{' '}
-          {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
-        </Heading>
-        <div className="LedgerPanel-description-content">
-          <div className="LedgerPanel-description">
-            {translate('LEDGER_TIP', { $network: network.id })}
-            <div className="LedgerPanel-image">
-              <img src={ledgerIcon} />
-            </div>
-            {/* <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-							{error || '-'}
-						</div> */}
-            {state.isConnecting ? (
-              <div className="LedgerPanel-loading">
-                <Spinner /> {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              <Button
-                className="LedgerPanel-description-button"
-                onClick={() => handleNullConnect()}
-                disabled={state.isConnecting}
-              >
-                {translate('ADD_LEDGER_SCAN')}
-              </Button>
-            )}
-          </div>
-          <div className="LedgerPanel-footer">
-            {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
-            <br />
-            <Trans
-              id="USE_OLD_INTERFACE"
-              variables={{
-                $link: () => (
-                  <RouterLink to="/add-account/ledger_nano_s">
-                    {translateRaw('TRY_OLD_INTERFACE')}
-                  </RouterLink>
-                )
-              }}
-            />
-          </div>
-        </div>
-      </Box>
+      <HardwareWalletUI
+        network={network}
+        state={state}
+        handleNullConnect={handleNullConnect}
+        walletId={WalletId.LEDGER_NANO_S_NEW}
+      />
     );
   }
 };

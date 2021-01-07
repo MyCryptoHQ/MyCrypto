@@ -3,13 +3,10 @@ import React, { useState } from 'react';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
-import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Box, Button, Heading, RouterLink, Spinner } from '@components';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
   DPathsList,
-  EXT_URLS,
   TREZOR_DERIVATION_PATHS
 } from '@config';
 import {
@@ -19,12 +16,12 @@ import {
   useDeterministicWallet,
   useNetworks
 } from '@services';
-import translate, { Trans, translateRaw } from '@translations';
+import { translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
 import DeterministicWallet from './DeterministicWallet';
+import HardwareWalletUI from './Hardware';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import './NewTrezor.scss';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -65,7 +62,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   if (!network) {
     // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} network={network} />;
+    return <UnsupportedNetwork walletType={translateRaw('X_TREZOR')} network={network} />;
   }
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
@@ -85,52 +82,12 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   } else {
     return (
-      <Box p="2.5em">
-        <Heading fontSize="32px" textAlign="center" fontWeight="bold">
-          {translate('UNLOCK_WALLET')}{' '}
-          {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_TREZOR') })}
-        </Heading>
-        <div className="TrezorDecrypt">
-          <div className="TrezorDecrypt-description">
-            {translate('TREZOR_TIP')}
-            <div className="TrezorDecrypt-img">
-              <img src={ConnectTrezor} />
-            </div>
-          </div>
-          {/* <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
-            {error || '-'}
-          </div> */}
-
-          {state.isConnecting ? (
-            <div className="TrezorDecrypt-loading">
-              <Spinner /> {translate('WALLET_UNLOCKING')}
-            </div>
-          ) : (
-            <Button
-              className="TrezorDecrypt-button"
-              onClick={() => handleNullConnect()}
-              disabled={state.isConnecting}
-            >
-              {translate('ADD_TREZOR_SCAN')}
-            </Button>
-          )}
-          <div className="TrezorDecrypt-footer">
-            {translate('ORDER_TREZOR', { $url: EXT_URLS.TREZOR_REFERRAL.url })} <br />
-            <Trans
-              id="USE_OLD_INTERFACE"
-              variables={{
-                $link: () => (
-                  <RouterLink to="/add-account/trezor">
-                    {translateRaw('TRY_OLD_INTERFACE')}
-                  </RouterLink>
-                )
-              }}
-            />
-            <br />
-            {translate('HOWTO_TREZOR')}
-          </div>
-        </div>
-      </Box>
+      <HardwareWalletUI
+        network={network}
+        state={state}
+        handleNullConnect={handleNullConnect}
+        walletId={WalletId.TREZOR_NEW}
+      />
     );
   }
 };
