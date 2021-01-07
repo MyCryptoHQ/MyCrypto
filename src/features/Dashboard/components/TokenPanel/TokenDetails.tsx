@@ -139,14 +139,9 @@ export function TokenDetails(props: Props) {
   const contractUrl = buildTokenUrl(network.blockExplorer, contractAddress as TAddress);
 
   // Find available supported social links
-  const filteredSocial = social || {};
-  Object.keys(filteredSocial).forEach(
-    (key: Social) =>
-      (!filteredSocial[key] ||
-        !Object.prototype.hasOwnProperty.call(supportedSocialNetworks, key)) &&
-      delete filteredSocial[key]
+  const filteredSocial = Object.keys(social || {}).filter((key: Social) =>
+    Object.prototype.hasOwnProperty.call(supportedSocialNetworks, key)
   );
-  const filteredSocialArray = Object.keys(filteredSocial);
 
   return (
     <DashboardPanel
@@ -196,7 +191,7 @@ export function TokenDetails(props: Props) {
           <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={ticker} />
         </Section>
       </TwoColumnsWrapper>
-      {Object.keys(filteredSocial).length > 0 && (
+      {filteredSocial.length > 0 && (
         <Section>
           <InfoPiece
             title={translateRaw('RESOURCES')}
@@ -204,7 +199,7 @@ export function TokenDetails(props: Props) {
               <>
                 {website && (
                   <a href={website} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="website" />
+                    <ResourceIcon type="website" color="none" />
                   </a>
                 )}
                 {whitepaper && (
@@ -213,7 +208,7 @@ export function TokenDetails(props: Props) {
                   </a>
                 )}
                 {social &&
-                  filteredSocialArray.map((s: Social) => {
+                  filteredSocial.map((s: Social) => {
                     return (
                       <a key={s} href={social[s]} target="_blank" rel="noreferrer">
                         <SocialIcon alt={s} type={supportedSocialNetworks[s]} />
