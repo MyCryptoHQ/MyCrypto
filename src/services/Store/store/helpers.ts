@@ -1,9 +1,15 @@
-import { ExtendedNotification, IAccount, LocalStorage, Network, StoreAccount, TUuid } from '@types';
-import { arrayToObj, bigify, isBigish } from '@utils';
+import {
+  ExtendedNotification,
+  IAccount,
+  LocalStorage,
+  Network,
+  NodeOptions,
+  StoreAccount
+} from '@types';
+import { bigify, isBigish } from '@utils';
 import {
   difference,
   either,
-  flatten,
   identity,
   ifElse,
   isNil,
@@ -11,10 +17,10 @@ import {
   lensPath,
   lensProp,
   map,
+  mergeRight,
   over,
   pipe,
-  toString,
-  values
+  toString
 } from '@vendor';
 
 const balanceLens = lensProp('balance');
@@ -48,7 +54,14 @@ export const serializeNotification: (n: ExtendedNotification) => ExtendedNotific
   )(n);
 };
 
-const mergeByName = pipe(arrayToObj<TUuid>('name'), values, flatten);
+const mergeNodes = (inbound: NodeOptions[], original: NodeOptions[]) =>
+  original
+    .map((o) => {
+      const existing = inbound.find((i) => i.name === o.name);
+      return mergeRight(o, existing || {});
+    })
+    .concat(inbound.filter((i) => !original.find((o) => o.name === i.name)));
+
 export const mergeNetworks = (inbound: Network[], original: Network[]) =>
   original
     .map((o) => {
@@ -59,7 +72,7 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
 
       return {
         ...o,
-        nodes: mergeByName([...o.nodes, ...existingNodes]),
+        nodes: mergeNodes(o.nodes, existingNodes),
         selectedNode,
         autoNode
       } as Network;

@@ -114,6 +114,13 @@ describe('mergeNetworks', () => {
     );
     expect(actual).toEqual([{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]);
   });
+
+  test('it correctly merges when static info has changed', () => {
+    const [first, ...rest] = fNetworks[0].nodes;
+    const nodes = [{ ...first, disableByDefault: true }, ...rest];
+    const actual = mergeNetworks([fNetworks[0]], [{ ...fNetworks[0], nodes }]);
+    expect(actual).toEqual([{ ...fNetworks[0], nodes }]);
+  });
 });
 
 describe('canImport()', () => {

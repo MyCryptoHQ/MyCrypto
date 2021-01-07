@@ -26,7 +26,8 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('ETH', 'pocket'),
       type: NodeType.POCKET,
       service: 'Pocket',
-      url: `https://eth-mainnet.gateway.pokt.network/v1/lb/${POCKET_API_KEY}`
+      url: `https://eth-mainnet.gateway.pokt.network/v1/lb/${POCKET_API_KEY}`,
+      disableByDefault: true
     }
   ],
 
