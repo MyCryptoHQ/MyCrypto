@@ -28,19 +28,6 @@ const getNetworkByLowercaseId = (id: string, networks: Network[] = []): Network 
   return networks.find((network: Network) => network.id === capitalizedNetworkId) as Network;
 };
 
-const getFaucetContact = (
-  txResult: ITxFaucetResult,
-  networks: Network[],
-  getContactByAddressAndNetworkId: (
-    address: TAddress,
-    networkId: NetworkId
-  ) => ExtendedContact | undefined
-): ExtendedContact => {
-  const network = getNetworkByLowercaseId(txResult.network, networks);
-  // Guaranteed to work as Faucet address is in STATIC_CONTACTS
-  return getContactByAddressAndNetworkId(txResult.from, network.id)!;
-};
-
 export const makeTxConfig = (
   txResult: ITxFaucetResult,
   networks: Network[],
@@ -56,11 +43,12 @@ export const makeTxConfig = (
     assets
   })!;
 
-  const senderContact = getFaucetContact(txResult, networks, getContactByAddressAndNetworkId);
+  // Guaranteed to work as Faucet address is in STATIC_CONTACTS
+  const senderContact = getContactByAddressAndNetworkId(txResult.from, network.id)!;
 
   /*
    * ITxConfig.senderAccount uses type StoreAccount, but in this case the user is the recipient and the faucet is the sender.
-   * getFaucetContact() returns ExtendedContact, which is the closest we can get.
+   * getContactByAddressAndNetworkId() returns ExtendedContact, which is the closest we can get.
    * The result is casted to make it compatible with ITxConfig.
    */
   return {
