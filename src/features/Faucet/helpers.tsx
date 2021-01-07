@@ -3,7 +3,6 @@ import { bigNumberify, formatEther } from 'ethers/utils';
 import { getBaseAssetByNetwork } from '@services/Store';
 import {
   Asset,
-  Contact,
   ExtendedAsset,
   ExtendedContact,
   ITxConfig,
@@ -14,6 +13,7 @@ import {
   ITxValue,
   Network,
   NetworkId,
+  StoreAccount,
   TAddress
 } from '@types';
 
@@ -28,33 +28,6 @@ const getNetworkByLowercaseId = (id: string, networks: Network[] = []): Network 
   return networks.find((network: Network) => network.id === capitalizedNetworkId) as Network;
 };
 
-const getFaucetContact = (
-  txResult: ITxFaucetResult,
-  networks: Network[],
-  getContactByAddressAndNetworkId: (
-    address: TAddress,
-    networkId: NetworkId
-  ) => ExtendedContact | undefined,
-  createContact: (item: Contact) => void
-): ExtendedContact => {
-  const network = getNetworkByLowercaseId(txResult.network, networks);
-  const existingContact = getContactByAddressAndNetworkId(txResult.from, network.id);
-
-  if (existingContact) {
-    return existingContact;
-  } else {
-    createContact({
-      address: txResult.from,
-      label: 'MyCrypto Faucet',
-      network: network.id,
-      notes: ''
-    });
-
-    const newContact: ExtendedContact = getContactByAddressAndNetworkId(txResult.from, network.id)!;
-    return newContact;
-  }
-};
-
 export const makeTxConfig = (
   txResult: ITxFaucetResult,
   networks: Network[],
@@ -62,8 +35,7 @@ export const makeTxConfig = (
   getContactByAddressAndNetworkId: (
     address: TAddress,
     networkId: NetworkId
-  ) => ExtendedContact | undefined,
-  createContact: (item: Contact) => void
+  ) => ExtendedContact | undefined
 ): ITxConfig => {
   const network = getNetworkByLowercaseId(txResult.network, networks);
   const baseAsset: Asset = getBaseAssetByNetwork({
@@ -71,18 +43,14 @@ export const makeTxConfig = (
     assets
   })!;
 
+  // Guaranteed to work as Faucet address is in STATIC_CONTACTS
+  const senderContact = getContactByAddressAndNetworkId(txResult.from, network.id)!;
+
   /*
    * ITxConfig.senderAccount uses type StoreAccount, but in this case the user is the recipient and the faucet is the sender.
-   * getFaucetContact() returns ExtendedContact, which is the closest we can get.
-   * The result is casted to `any` to make it compatible with ITxConfig.
+   * getContactByAddressAndNetworkId() returns ExtendedContact, which is the closest we can get.
+   * The result is casted to make it compatible with ITxConfig.
    */
-  const senderContact: any = getFaucetContact(
-    txResult,
-    networks,
-    getContactByAddressAndNetworkId,
-    createContact
-  );
-
   return {
     rawTransaction: {
       to: txResult.to,
@@ -96,7 +64,7 @@ export const makeTxConfig = (
     },
     amount: formatEther(txResult.value),
     receiverAddress: txResult.to,
-    senderAccount: senderContact,
+    senderAccount: (senderContact as unknown) as StoreAccount,
     from: txResult.from,
     asset: baseAsset,
     baseAsset,

@@ -47,3 +47,4 @@ export {
   MANDATORY_TRANSACTION_QUERY_PARAMS
 } from './queryParams';
 export * from './txTypes';
+export { STATIC_CONTACTS } from './staticContacts';
