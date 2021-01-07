@@ -19,26 +19,39 @@ import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
 import navBroadcastTransaction from '@assets/icons/navigation/broadcast-transaction.svg';
 import navBuy from '@assets/icons/navigation/buy.svg';
+import navClose from '@assets/icons/navigation/close.svg';
 import navCoinbase from '@assets/icons/navigation/coinbase.svg';
 import navDeployContracts from '@assets/icons/navigation/deploy-contracts.svg';
+import navDesktop from '@assets/icons/navigation/desktop.svg';
+import navDiscord from '@assets/icons/navigation/discord.svg';
 import navEthereum from '@assets/icons/navigation/ethereum.svg';
+import navFacebook from '@assets/icons/navigation/facebook.svg';
+import navGithub from '@assets/icons/navigation/github.svg';
 import navHelp from '@assets/icons/navigation/help.svg';
 import navHome from '@assets/icons/navigation/home.svg';
 import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
 import navLedger from '@assets/icons/navigation/ledger.svg';
+import navLinkedin from '@assets/icons/navigation/linkedin.svg';
 import navLock from '@assets/icons/navigation/lock.svg';
+import navMedium from '@assets/icons/navigation/medium.svg';
 import navMembership from '@assets/icons/navigation/membership.svg';
 import navMenu from '@assets/icons/navigation/menu.svg';
 import navNew from '@assets/icons/navigation/new.svg';
+import navNewTab from '@assets/icons/navigation/newTab.svg';
+import navPress from '@assets/icons/navigation/press.svg';
+import navPrivacy from '@assets/icons/navigation/privacy.svg';
 import navQuiknode from '@assets/icons/navigation/quiknode.svg';
 import navReceive from '@assets/icons/navigation/receive.svg';
+import navReddit from '@assets/icons/navigation/reddit.svg';
 import navSend from '@assets/icons/navigation/send.svg';
 import navSettings from '@assets/icons/navigation/settings.svg';
 import navSignMessage from '@assets/icons/navigation/sign-message.svg';
 import navSupportUs from '@assets/icons/navigation/support-us.svg';
 import navSwap from '@assets/icons/navigation/swap.svg';
+import navTeam from '@assets/icons/navigation/team.svg';
 import navTools from '@assets/icons/navigation/tools.svg';
 import navTrezor from '@assets/icons/navigation/trezor.svg';
+import navTwitter from '@assets/icons/navigation/twitter.svg';
 import navUnstoppable from '@assets/icons/navigation/unstoppable.svg';
 import navVerifyMessage from '@assets/icons/navigation/verify-message.svg';
 import newsletter from '@assets/icons/newsletter.svg';
@@ -182,7 +195,20 @@ const svgIcons = {
   'nav-membership': navMembership,
   'nav-help': navHelp,
   'nav-new': navNew,
-  'nav-menu': navMenu
+  'nav-menu': navMenu,
+  'nav-close': navClose,
+  'nav-twitter': navTwitter,
+  'nav-facebook': navFacebook,
+  'nav-medium': navMedium,
+  'nav-linkedin': navLinkedin,
+  'nav-github': navGithub,
+  'nav-reddit': navReddit,
+  'nav-discord': navDiscord,
+  'nav-team': navTeam,
+  'nav-press': navPress,
+  'nav-privacy': navPrivacy,
+  'nav-new-tab': navNewTab,
+  'nav-desktop': navDesktop
 };
 
 const pngIcons = {

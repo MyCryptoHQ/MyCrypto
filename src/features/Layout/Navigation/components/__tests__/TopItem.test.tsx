@@ -14,7 +14,8 @@ const defaultProps = {
   icon: 'nav-new' as TIcon,
   title: 'NAVIGATION_NEW',
   current: false,
-  onClick: mockOnClick
+  onClick: mockOnClick,
+  color: 'black'
 };
 
 function getComponent() {

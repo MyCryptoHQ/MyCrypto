@@ -71,6 +71,9 @@ const theme = Object.assign({}, light, {
   },
   borders: {
     navItem: '3px solid'
+  },
+  radii: {
+    default: '3px'
   }
 });
 
@@ -127,11 +130,9 @@ export const textVariants = variant({
 
 const FLEX_RECIPES = {
   align: {
-    height: '100%',
     alignItems: 'center'
   },
   center: {
-    height: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   }

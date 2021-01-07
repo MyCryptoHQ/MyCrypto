@@ -6,14 +6,14 @@ export const Navbar = ({ children }: { children: ReactNode }) => {
   return (
     <Box
       position="fixed"
-      zIndex={999}
+      zIndex={{ _: 997, sm: 999 }}
       backgroundColor="BLUE_DARK_SLATE"
       width={{ _: '100vw', sm: '64px' }}
       height={{ _: '57px', sm: '100vh' }}
       bottom={{ _: 0, sm: 'auto' }}
       top={{ sm: 0 }}
     >
-      <Box variant="rowAlign" flexDirection={{ sm: 'column' }}>
+      <Box variant="rowAlign" flexDirection={{ sm: 'column' }} height="100%">
         {children}
       </Box>
     </Box>

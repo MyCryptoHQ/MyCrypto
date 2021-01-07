@@ -6,3 +6,5 @@ export { NavTray } from './NavTray';
 export { ExternalLink } from './ExternalLink';
 export { SupportUsTray } from './SupportUsTray';
 export { TopItem } from './TopItem';
+export { Subscribe } from './Subscribe';
+export { LinkSet } from './LinkSet';

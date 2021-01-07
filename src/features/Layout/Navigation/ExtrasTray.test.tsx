@@ -5,21 +5,21 @@ import { screen, simpleRender } from 'test-utils';
 
 import { translateRaw } from '@translations';
 
-import { TopNav } from './TopNav';
-
-const clickMock = jest.fn();
+import { ExtrasTray } from './ExtrasTray';
 
 function getComponent() {
   return simpleRender(
     <MemoryRouter initialEntries={undefined}>
-      <TopNav isMobile={false} current={'/'} openTray={clickMock} isTrayOpen={false} />
+      <ExtrasTray isMobile={false} closeTray={jest.fn()} />
     </MemoryRouter>
   );
 }
 
-describe('TopNav', () => {
-  test('renders the TopNav', async () => {
+describe('ExtrasTray', () => {
+  test('renders ExtrasTray', async () => {
     getComponent();
-    expect(screen.getByText(new RegExp(translateRaw('NAVIGATION_NEW'), 'i'))).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(translateRaw('NAVIGATION_EXTRAS'), 'i'))
+    ).toBeInTheDocument();
   });
 });

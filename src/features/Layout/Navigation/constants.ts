@@ -1,4 +1,4 @@
-import { EXT_URLS } from '@config';
+import { CRYPTOSCAMDB, EXT_URLS } from '@config';
 import { IAppRoutes } from '@routing/routes';
 import { translateRaw } from '@translations';
 import { INavTray, IRouteLink } from '@types';
@@ -93,6 +93,56 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         enabled: APP_ROUTES.BROADCAST_TX.enabled,
         icon: 'nav-broadcast-transaction'
       }
+      // @todo: Turn on when we get icons for those items
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.ENS.path,
+      //   enabled: APP_ROUTES.ENS.enabled,
+      //   title: 'ENS',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.TX_STATUS.path,
+      //   enabled: APP_ROUTES.TX_STATUS.enabled,
+      //   title: 'TX Status',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
+      //   enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
+      //   title: 'REP Token Migration',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+      //   enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+      //   title: 'LEND Token Migration',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+      //   enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+      //   title: 'ANT Token Migration',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
+      //   enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
+      //   title: 'Golem Token Migration',
+      //   icon: 'nav-broadcast-transaction'
+      // },
+      // {
+      //   type: 'internal',
+      //   to: APP_ROUTES.FAUCET.path,
+      //   enabled: APP_ROUTES.FAUCET.enabled,
+      //   title: 'Faucet',
+      //   icon: 'nav-broadcast-transaction'
+      // }
     ]
   };
   return Links;
@@ -246,6 +296,56 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           enabled: APP_ROUTES.BROADCAST_TX.enabled,
           icon: 'nav-broadcast-transaction'
         }
+        // @todo: Turn on when we get icons for those items
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.ENS.path,
+        //   enabled: APP_ROUTES.ENS.enabled,
+        //   title: 'ENS',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.TX_STATUS.path,
+        //   enabled: APP_ROUTES.TX_STATUS.enabled,
+        //   title: 'TX Status',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
+        //   enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
+        //   title: 'REP Token Migration',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+        //   enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+        //   title: 'LEND Token Migration',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+        //   enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+        //   title: 'ANT Token Migration',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
+        //   enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
+        //   title: 'Golem Token Migration',
+        //   icon: 'nav-broadcast-transaction'
+        // },
+        // {
+        //   type: 'internal',
+        //   to: APP_ROUTES.FAUCET.path,
+        //   enabled: APP_ROUTES.FAUCET.enabled,
+        //   title: 'Faucet',
+        //   icon: 'nav-broadcast-transaction'
+        // }
       ]
     },
     {
@@ -258,3 +358,86 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
   ];
   return Links;
 };
+
+export const socialLinks = [
+  {
+    link: 'https://twitter.com/mycrypto',
+    analytics_event: 'Twitter',
+    icon: 'nav-twitter'
+  },
+  {
+    link: 'https://www.facebook.com/mycryptoHQ/',
+    analytics_event: 'Facebook',
+    icon: 'nav-facebook'
+  },
+  {
+    link: 'https://medium.com/@mycrypto',
+    analytics_event: 'Medium',
+    icon: 'nav-medium'
+  },
+  {
+    link: 'https://www.linkedin.com/company/mycrypto',
+    analytics_event: 'Linkedin',
+    icon: 'nav-linkedin'
+  },
+  {
+    link: 'https://github.com/MyCryptoHQ',
+    analytics_event: 'Github',
+    icon: 'nav-github'
+  },
+  {
+    link: 'https://www.reddit.com/r/mycrypto/',
+    analytics_event: 'Reddit',
+    icon: 'nav-reddit'
+  },
+  {
+    link: 'https://discord.gg/VSaTXEA',
+    analytics_event: 'Discord',
+    icon: 'nav-discord'
+  }
+];
+
+export const MYCLinks = [
+  {
+    title: translateRaw('NEW_FOOTER_TEXT_8'),
+    link: 'https://about.mycrypto.com/',
+    icon: 'nav-team',
+    analytics_event: 'Our Team'
+  },
+  {
+    title: translateRaw('NEW_FOOTER_TEXT_9'),
+    link: 'mailto://press@mycrypto.com',
+    icon: 'nav-press',
+    analytics_event: 'Press'
+  },
+  {
+    title: translateRaw('NEW_FOOTER_TEXT_10'),
+    link: 'https://about.mycrypto.com/privacy/',
+    icon: 'nav-privacy',
+    analytics_event: 'Privacy Policy'
+  }
+];
+
+export const productsLinks = [
+  {
+    title: 'EtherAddressLookup',
+    link:
+      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
+    analytics_event: 'EtherAddressLookup'
+  },
+  {
+    title: 'CryptoScamDB',
+    link: CRYPTOSCAMDB,
+    analytics_event: 'CryptoScamDB'
+  },
+  {
+    title: 'MoneroVision',
+    link: 'https://monerovision.com/',
+    analytics_event: 'MoneroVision'
+  },
+  {
+    title: 'FindETH',
+    link: 'https://findeth.io',
+    analytics_event: 'FindETH'
+  }
+];

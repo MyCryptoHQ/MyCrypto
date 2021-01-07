@@ -5,14 +5,26 @@ import { useHistory } from 'react-router-dom';
 import { Box } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { ScreenLockContext } from '@features/ScreenLock';
-import { SPACING } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import { openLink } from '@utils';
 
 import { TopItem } from './components';
 
-export const TopNav = ({ current, isMobile }: { current: string; isMobile: boolean }) => {
+export const TopNav = ({
+  current,
+  isMobile,
+  isTrayOpen,
+  openTray
+}: {
+  current: string;
+  isMobile: boolean;
+  isTrayOpen: boolean;
+  openTray(): void;
+}) => {
   const { locked, startLockCountdown } = useContext(ScreenLockContext);
   const { push } = useHistory();
+
+  const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
   return (
     <Box
       variant="rowAlign"
@@ -22,26 +34,43 @@ export const TopNav = ({ current, isMobile }: { current: string; isMobile: boole
       mt={SPACING.MD}
       mr={SPACING.XS}
     >
-      {isMobile && <TopItem title="NAVIGATION_MENU" icon="nav-menu" left={true} />}
+      {isMobile && (
+        <TopItem
+          title="NAVIGATION_MENU"
+          icon="nav-menu"
+          left={true}
+          color={color}
+          current={isTrayOpen}
+          onClick={openTray}
+        />
+      )}
       <TopItem
         title="NAVIGATION_LOCK"
         icon="nav-lock"
         onClick={() => startLockCountdown(true)}
         current={locked}
+        color={color}
       />
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"
         onClick={() => push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}
         current={current === ROUTE_PATHS.MYC_MEMBERSHIP.path}
+        color={color}
       />
       <TopItem
         title="NAVIGATION_HELP"
         icon="nav-help"
         onClick={() => openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME))}
+        color={color}
       />
       {!isMobile && (
-        <TopItem title="NAVIGATION_NEW" icon="nav-new" onClick={() => openLink(LATEST_NEWS_URL)} />
+        <TopItem
+          color={color}
+          title="NAVIGATION_NEW"
+          icon="nav-new"
+          onClick={() => openLink(LATEST_NEWS_URL)}
+        />
       )}
     </Box>
   );

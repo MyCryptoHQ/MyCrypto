@@ -1032,6 +1032,14 @@
     "NAVIGATION_JOIN": "Join",
     "NAVIGATION_HELP": "Help",
     "NAVIGATION_NEW": "New",
-    "NAVIGATION_MENU": "Menu"
+    "NAVIGATION_MENU": "Menu",
+    "EMAIL_NOT_VALID": "Please provide a valid email",
+    "YOUR_EMAIL": "Your email",
+    "NAVIGATION_GET_SOCIAL": "Get Social",
+    "NAVIGATION_MORE_MYC": "More from MyCrypto",
+    "NAVIGATION_OTHER_PRODUCTS": "Other Products",
+    "NAVIGATION_SUBSCRIBE_TO_MYC": "Subscribe to MyCrypto",
+    "NAVIGATION_EXTRAS": "Extras",
+    "NAVIGATION_DOWNLOAD_APPS": "Download Apps"
   }
 }

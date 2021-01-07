@@ -14,7 +14,7 @@ import { useScreenSize } from '@utils';
 
 import Footer from './Footer';
 import Header from './Header';
-import { DesktopNav, MobileNav, TopNav } from './Navigation';
+import { DesktopNav, ExtrasTray, MobileNav, TopNav } from './Navigation';
 
 export interface LayoutConfig {
   centered?: boolean;
@@ -139,6 +139,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const { pathname } = useLocation();
 
   const [topHeight, setTopHeight] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const topRef = useRef<any>(null);
 
@@ -166,7 +167,10 @@ export default function Layout({ config = {}, className = '', children }: Props)
         <MobileNav appRoutes={APP_ROUTES} current={pathname} />
       )}
       {featureFlags.NEW_NAVIGATION && !isMobile && (
-        <DesktopNav appRoutes={APP_ROUTES} current={pathname} />
+        <DesktopNav appRoutes={APP_ROUTES} current={pathname} openTray={() => setIsOpen(!isOpen)} />
+      )}
+      {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
+        <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
         <STop newNav={featureFlags.NEW_NAVIGATION}>
@@ -182,19 +186,31 @@ export default function Layout({ config = {}, className = '', children }: Props)
             />
           )}
         </STop>
-        {featureFlags.NEW_NAVIGATION && <TopNav current={pathname} isMobile={isMobile} />}
+        {featureFlags.NEW_NAVIGATION && (
+          <TopNav
+            current={pathname}
+            isMobile={isMobile}
+            isTrayOpen={isOpen}
+            openTray={() => setIsOpen(!isOpen)}
+          />
+        )}
         <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
           <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
         </BannerWrapper>
-        <SContainer
-          centered={centered}
-          fluid={fluid}
-          fullW={fullW}
-          paddingV={paddingV}
-          marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
-        >
-          {children}
-        </SContainer>
+        {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
+          <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+        ) : (
+          <SContainer
+            centered={centered}
+            fluid={fluid}
+            fullW={fullW}
+            paddingV={paddingV}
+            marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
+          >
+            {children}
+          </SContainer>
+        )}
+
         {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
