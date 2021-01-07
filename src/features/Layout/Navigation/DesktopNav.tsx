@@ -18,7 +18,7 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
   const settings = settingsLinks(appRoutes);
   return (
     <Navbar>
-      <Box my="16px">
+      <Box my="16px" ml="3px">
         <Icon type="logo-mycrypto" width="38px" />
       </Box>
       {links.map((link, i) => (
