@@ -13,6 +13,7 @@ import {
   ITxValue,
   Network,
   NetworkId,
+  StoreAccount,
   TAddress
 } from '@types';
 
@@ -55,13 +56,13 @@ export const makeTxConfig = (
     assets
   })!;
 
+  const senderContact = getFaucetContact(txResult, networks, getContactByAddressAndNetworkId);
+
   /*
    * ITxConfig.senderAccount uses type StoreAccount, but in this case the user is the recipient and the faucet is the sender.
    * getFaucetContact() returns ExtendedContact, which is the closest we can get.
-   * The result is casted to `any` to make it compatible with ITxConfig.
+   * The result is casted to make it compatible with ITxConfig.
    */
-  const senderContact: any = getFaucetContact(txResult, networks, getContactByAddressAndNetworkId);
-
   return {
     rawTransaction: {
       to: txResult.to,
@@ -75,7 +76,7 @@ export const makeTxConfig = (
     },
     amount: formatEther(txResult.value),
     receiverAddress: txResult.to,
-    senderAccount: senderContact,
+    senderAccount: (senderContact as unknown) as StoreAccount,
     from: txResult.from,
     asset: baseAsset,
     baseAsset,
