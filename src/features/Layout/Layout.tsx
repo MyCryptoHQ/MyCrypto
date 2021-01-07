@@ -207,17 +207,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
             />
           )}
         </STop>
-        {featureFlags.NEW_NAVIGATION && (
-          <TopNav
-            current={pathname}
-            isMobile={isMobile}
-            isTrayOpen={isOpen}
-            openTray={() => setIsOpen(!isOpen)}
-          />
-        )}
-        <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
-          <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
-        </BannerWrapper>
         {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
           <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
         ) : (
@@ -236,6 +225,18 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                 />
               </DemoBanner>
             )}
+            {featureFlags.NEW_NAVIGATION && (
+              <TopNav
+                current={pathname}
+                isDemoMode={isDemoMode}
+                isMobile={isMobile}
+                isTrayOpen={isOpen}
+                openTray={() => setIsOpen(!isOpen)}
+              />
+            )}
+            <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
+              <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+            </BannerWrapper>
             <SContainer
               centered={centered}
               fluid={fluid}
@@ -245,9 +246,9 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
             >
               {children}
             </SContainer>
+            {featureFlags.OLD_NAVIGATION && <Footer />}
           </DemoLayoutWrapper>
         )}
-        {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
   );

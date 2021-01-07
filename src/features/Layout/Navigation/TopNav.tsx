@@ -14,11 +14,13 @@ export const TopNav = ({
   current,
   isMobile,
   isTrayOpen,
+  isDemoMode,
   openTray
 }: {
   current: string;
   isMobile: boolean;
   isTrayOpen: boolean;
+  isDemoMode: boolean;
   openTray(): void;
 }) => {
   const { locked, startLockCountdown } = useContext(ScreenLockContext);
@@ -31,7 +33,7 @@ export const TopNav = ({
       justifyContent="flex-end"
       ml={SPACING.BASE}
       mb={SPACING.BASE}
-      mt={SPACING.LG}
+      mt={isDemoMode ? SPACING.XL : SPACING.LG}
       mr={SPACING.XS}
     >
       {isMobile && (
