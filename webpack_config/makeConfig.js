@@ -6,7 +6,7 @@ const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const WebappWebpackPlugin = require('webapp-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 // const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
@@ -205,9 +205,9 @@ module.exports = function(opts = {}) {
       new MiniCSSExtractPlugin({
         filename: `[name].[contenthash:8].css`
       }),
-      new WebappWebpackPlugin({
+      new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
-        cacheDirectory: false, // Cache makes builds nondeterministic
+        cache: false, // Cache makes builds nondeterministic
         inject: true,
         prefix: 'common/assets/meta-[hash]',
         favicons: {
