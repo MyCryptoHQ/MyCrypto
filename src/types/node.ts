@@ -22,6 +22,7 @@ interface NodeBase {
   service: string;
   url: string;
   hidden?: boolean;
+  disableByDefault?: boolean;
 }
 
 export interface CustomNodeConfig extends NodeBase {

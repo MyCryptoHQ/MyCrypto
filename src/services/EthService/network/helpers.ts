@@ -5,6 +5,7 @@ import equals from 'ramda/src/equals';
 
 import { ETHERSCAN_API_KEY, INFURA_API_KEY } from '@config';
 import { DPath, DPathFormat, Network, NetworkId, NodeOptions, NodeType } from '@types';
+import { hasWeb3Provider } from '@utils';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEthersNetworkish = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli' | number;
@@ -63,11 +64,15 @@ export const createCustomNodeProvider = (network: Network): BaseProvider => {
 export const createFallbackNetworkProviders = (network: Network): FallbackProvider => {
   const { id, nodes, selectedNode, chainId } = network;
 
-  let sortedNodes = nodes;
+  // Filter out WEB3 nodes if not present
+  // Filter out nodes disabled by default if needed
+  let sortedNodes = nodes
+    .filter((n) => (n.type === NodeType.WEB3 && hasWeb3Provider()) || n.type !== NodeType.WEB3)
+    .filter((n) => !n.disableByDefault || n.name === selectedNode);
   if (!isEmpty(selectedNode)) {
-    const sNode = nodes.find((n) => n.name === selectedNode);
+    const sNode = sortedNodes.find((n) => n.name === selectedNode);
     if (sNode) {
-      const restNodes = nodes.filter((n) => n.name !== selectedNode);
+      const restNodes = sortedNodes.filter((n) => n.name !== selectedNode);
       sortedNodes = [sNode, ...restNodes];
     }
   }
