@@ -10,15 +10,14 @@ import { desktopLinks, settingsLinks, supportUsTray, toolsTray } from './constan
 
 interface IDesktopNav extends INavigationProps {
   openTray(): void;
-  isTrayOpen: boolean;
 }
 
-const DesktopNav = ({ appRoutes, current, openTray, isTrayOpen }: IDesktopNav) => {
+const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
   const links = desktopLinks(appRoutes);
   const tools = toolsTray(appRoutes);
   const settings = settingsLinks(appRoutes);
   return (
-    <Navbar onClick={() => isTrayOpen && openTray()}>
+    <Navbar>
       <Box my="16px">
         <Icon type="logo-mycrypto" width="38px" />
       </Box>

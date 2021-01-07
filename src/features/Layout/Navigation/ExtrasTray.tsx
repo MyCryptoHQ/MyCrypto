@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { Box, Icon, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { useClickAway } from '@vendor';
 
 import { LinkSet, Subscribe } from './components';
 
@@ -18,6 +19,10 @@ const SIcon = styled(Icon)`
 `;
 
 export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTray(): void }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useClickAway(ref, closeTray);
+
   return (
     <Box
       zIndex={998}
@@ -31,6 +36,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
       left={{ _: 0, sm: '65px' }}
       height={{ _: '100vh', sm: 'auto' }}
       boxShadow={{ sm: '3px 3px 20px rgba(0, 0, 0, 0.15);' }}
+      ref={ref}
     >
       <Box
         backgroundColor="BLUE_DARK_SLATE"

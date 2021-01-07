@@ -167,22 +167,12 @@ export default function Layout({ config = {}, className = '', children }: Props)
         <MobileNav appRoutes={APP_ROUTES} current={pathname} />
       )}
       {featureFlags.NEW_NAVIGATION && !isMobile && (
-        <DesktopNav
-          isTrayOpen={isOpen}
-          appRoutes={APP_ROUTES}
-          current={pathname}
-          openTray={() => setIsOpen(!isOpen)}
-        />
+        <DesktopNav appRoutes={APP_ROUTES} current={pathname} openTray={() => setIsOpen(!isOpen)} />
       )}
       {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
-      <SMain
-        className={className}
-        bgColor={bgColor}
-        newNav={featureFlags.NEW_NAVIGATION}
-        onClick={() => isOpen && setIsOpen(false)}
-      >
+      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
         <STop newNav={featureFlags.NEW_NAVIGATION}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
