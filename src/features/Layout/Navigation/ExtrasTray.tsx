@@ -21,7 +21,7 @@ const SIcon = styled(Icon)`
 export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTray(): void }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  useClickAway(ref, closeTray);
+  useClickAway(ref, () => !isMobile && closeTray());
 
   return (
     <Box
@@ -32,9 +32,10 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
       borderRadius="default"
       position={{ _: 'absolute', sm: 'fixed' }}
       width={{ _: '100vw', sm: '375px' }}
-      bottom={0}
+      top={{ _: 0, sm: 'unset' }}
+      bottom={{ sm: 0 }}
       left={{ _: 0, sm: '65px' }}
-      height={{ _: '100vh', sm: 'auto' }}
+      height={{ sm: 'auto' }}
       boxShadow={{ sm: '3px 3px 20px rgba(0, 0, 0, 0.15);' }}
       ref={ref}
     >
