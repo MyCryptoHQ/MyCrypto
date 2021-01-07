@@ -3,7 +3,6 @@ import { bigNumberify, formatEther } from 'ethers/utils';
 import { getBaseAssetByNetwork } from '@services/Store';
 import {
   Asset,
-  Contact,
   ExtendedAsset,
   ExtendedContact,
   ITxConfig,
@@ -34,25 +33,11 @@ const getFaucetContact = (
   getContactByAddressAndNetworkId: (
     address: TAddress,
     networkId: NetworkId
-  ) => ExtendedContact | undefined,
-  createContact: (item: Contact) => void
+  ) => ExtendedContact | undefined
 ): ExtendedContact => {
   const network = getNetworkByLowercaseId(txResult.network, networks);
-  const existingContact = getContactByAddressAndNetworkId(txResult.from, network.id);
-
-  if (existingContact) {
-    return existingContact;
-  } else {
-    createContact({
-      address: txResult.from,
-      label: 'MyCrypto Faucet',
-      network: network.id,
-      notes: ''
-    });
-
-    const newContact: ExtendedContact = getContactByAddressAndNetworkId(txResult.from, network.id)!;
-    return newContact;
-  }
+  // Guaranteed to work as Faucet address is in STATIC_CONTACTS
+  return getContactByAddressAndNetworkId(txResult.from, network.id)!;
 };
 
 export const makeTxConfig = (
@@ -62,8 +47,7 @@ export const makeTxConfig = (
   getContactByAddressAndNetworkId: (
     address: TAddress,
     networkId: NetworkId
-  ) => ExtendedContact | undefined,
-  createContact: (item: Contact) => void
+  ) => ExtendedContact | undefined
 ): ITxConfig => {
   const network = getNetworkByLowercaseId(txResult.network, networks);
   const baseAsset: Asset = getBaseAssetByNetwork({
@@ -76,12 +60,7 @@ export const makeTxConfig = (
    * getFaucetContact() returns ExtendedContact, which is the closest we can get.
    * The result is casted to `any` to make it compatible with ITxConfig.
    */
-  const senderContact: any = getFaucetContact(
-    txResult,
-    networks,
-    getContactByAddressAndNetworkId,
-    createContact
-  );
+  const senderContact: any = getFaucetContact(txResult, networks, getContactByAddressAndNetworkId);
 
   return {
     rawTransaction: {

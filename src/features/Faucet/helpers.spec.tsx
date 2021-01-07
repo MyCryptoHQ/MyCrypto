@@ -31,16 +31,9 @@ describe('Faucet helpers', () => {
 
   describe('makeTxConfig', () => {
     const getContactByAddressAndNetworkId = jest.fn();
-    const createContact = jest.fn();
     test('returns expected value', async () => {
       expect(
-        makeTxConfig(
-          exampleTXResult,
-          fNetworks,
-          fAssets,
-          getContactByAddressAndNetworkId,
-          createContact
-        )
+        makeTxConfig(exampleTXResult, fNetworks, fAssets, getContactByAddressAndNetworkId)
       ).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -64,16 +57,6 @@ describe('Faucet helpers', () => {
         receiverAddress: fAccount.address,
         senderAccount: undefined,
         value: '1'
-      });
-    });
-
-    test('createContact was called', () => {
-      expect(createContact).toHaveBeenCalledTimes(1);
-      expect(createContact).toHaveBeenCalledWith({
-        address: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-        label: 'MyCrypto Faucet',
-        network: 'Ropsten',
-        notes: ''
       });
     });
   });

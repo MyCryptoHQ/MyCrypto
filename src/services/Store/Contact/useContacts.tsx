@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 
+import { STATIC_CONTACTS } from '@config';
 import {
   createContact as createAContact,
   destroyContact,
@@ -79,7 +80,7 @@ function useContacts() {
 
   const getContactByAddress = (address: TAddress) => {
     return (
-      contacts.find((contact: ExtendedContact) =>
+      [...contacts, ...STATIC_CONTACTS].find((contact: ExtendedContact) =>
         isSameAddress(contact.address as TAddress, address)
       ) || getContactFromContracts(address)
     );
@@ -87,7 +88,7 @@ function useContacts() {
 
   const getContactByAddressAndNetworkId = (address: TAddress, networkId: NetworkId) => {
     return (
-      contacts
+      [...contacts, ...STATIC_CONTACTS]
         .filter((contact: ExtendedContact) => contact.network === networkId)
         .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ||
       getContactFromContracts(address)

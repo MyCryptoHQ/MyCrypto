@@ -121,7 +121,7 @@ export default function Faucet() {
 
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
-  const { getContactByAddressAndNetworkId, createContact } = useContacts();
+  const { getContactByAddressAndNetworkId } = useContacts();
 
   const [network, setNetwork] = useState<Network | undefined>(undefined);
 
@@ -231,8 +231,7 @@ export default function Faucet() {
             faucetState.txResult,
             networks,
             assets,
-            getContactByAddressAndNetworkId,
-            createContact
+            getContactByAddressAndNetworkId
           )}
           txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
           onComplete={() => reset()}
