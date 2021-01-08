@@ -372,7 +372,7 @@ const DeterministicTable = ({
             onClick={generateFreshAddress}
             disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
           >
-            <Icon type="add" color="none" />
+            <Icon type="add" color="none" width="32px" />
 
             {!isComplete ? (
               <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
