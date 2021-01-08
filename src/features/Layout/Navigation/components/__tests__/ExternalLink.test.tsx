@@ -12,8 +12,7 @@ const defaultProps = {
     type: 'external',
     title: 'Test',
     link: 'https://example.com' as TURL,
-    icon: 'nav-home',
-    analyticsEvent: 'Test'
+    icon: 'nav-home'
   } as IExternalLink,
   actual: false
 };

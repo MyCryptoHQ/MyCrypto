@@ -6,4 +6,9 @@ export const ANALYTICS_API_URL = IS_DEV ? 'http://localhost:5555' : 'https://sta
 export const ANALYTICS_WRITE_KEY = process.env.SEGMENT_WRITE_KEY || '';
 
 // Analytic Events
-export type TAnalyticEvents = 'App Load' | 'Add Account' | 'Link clicked' | 'Donate clicked';
+export type TAnalyticEvents =
+  | 'App Load'
+  | 'Add Account'
+  | 'Link clicked'
+  | 'Donate clicked'
+  | 'Newsletter subscription';

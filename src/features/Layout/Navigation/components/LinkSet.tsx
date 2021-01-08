@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { Box, Icon, Text, TIcon } from '@components';
 import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TURL } from '@types';
@@ -70,14 +69,13 @@ const ProductLink = ({ title, onClick }: { title: string; link: string; onClick(
 );
 
 export const LinkSet = ({ isMobile }: { isMobile: boolean }) => {
-  const trackLinkClicked = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
+  const { track } = useAnalytics();
 
-  const handleClick = (item: { analytics_event: string; link: string }) => {
-    trackLinkClicked({ actionName: `${item.analytics_event} link clicked` });
+  const handleClick = (item: { link: string }) => {
     openLink(item.link as TURL);
+    track({ name: 'Link clicked', params: { url: item.link } });
   };
+
   return (
     <Box px={SPACING.SM} py={SPACING.BASE}>
       <Text
