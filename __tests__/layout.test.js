@@ -19,10 +19,10 @@ test
     await setFeatureFlag('NEW_NAVIGATION', false);
     await setFeatureFlag('OLD_NAVIGATION', true);
 
-    const banner = Selector('main').child(1);
-    const layoutMargin = Selector('main').child(2).getStyleProperty('margin-top');
+    const demoLayoutWrapper = Selector('main').child(1);
+    const banner = demoLayoutWrapper.child(0);
+    const layoutMargin = await demoLayoutWrapper.child(1).getStyleProperty('margin-top');
     const bannerHeight = await banner.offsetHeight;
-
     await t.expect(layoutMargin).eql(`${bannerHeight}px`);
   }
 );
