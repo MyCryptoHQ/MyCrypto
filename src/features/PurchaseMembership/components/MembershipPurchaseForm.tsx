@@ -24,6 +24,7 @@ import MembershipSelector from './MembershipSelector';
 
 interface Props extends MembershipPurchaseState {
   isSubmitting: boolean;
+  error?: Error;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -32,6 +33,7 @@ interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
   isSubmitting: boolean;
+  error?: Error;
   onComplete(fields: any): void;
 }
 
@@ -56,7 +58,7 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
+const MembershipForm = ({ isSubmitting, error, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
@@ -65,6 +67,7 @@ const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   return (
     <MembershipFormUI
       isSubmitting={isSubmitting}
+      error={error}
       network={network}
       relevantAccounts={relevantAccounts}
       onComplete={onComplete}
@@ -74,6 +77,7 @@ const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
 
 export const MembershipFormUI = ({
   isSubmitting,
+  error,
   network,
   relevantAccounts,
   onComplete
@@ -233,6 +237,11 @@ export const MembershipFormUI = ({
               >
                 {translateRaw('BUY_MEMBERSHIP')}
               </FormFieldSubmitButton>
+              {error && (
+                <InlineMessage
+                  value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+                />
+              )}
             </Form>
           );
         }}

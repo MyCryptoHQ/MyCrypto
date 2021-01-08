@@ -31,7 +31,7 @@ const PurchaseMembershipStepper = () => {
   );
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
-  const { canYield, isSubmitting, transactions } = state;
+  const { canYield, isSubmitting, transactions, error } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
 
   const steps: IStepperPath[] = [
@@ -41,7 +41,8 @@ const PurchaseMembershipStepper = () => {
       props: {
         account,
         membershipSelected,
-        isSubmitting
+        isSubmitting,
+        error
       },
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
