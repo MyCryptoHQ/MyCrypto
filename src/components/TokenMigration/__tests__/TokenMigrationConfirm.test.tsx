@@ -6,7 +6,7 @@ import { simpleRender } from 'test-utils';
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { FeatureFlagProvider, RatesContext } from '@services';
+import { RatesContext } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
@@ -40,21 +40,19 @@ function getComponent(props: ITxMultiConfirmProps) {
         }
       >
         <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <FeatureFlagProvider>
-            <StoreContext.Provider
-              value={
-                ({
-                  userAssets: [],
-                  accounts: [],
-                  defaultAccount: { assets: [] },
-                  getAccount: jest.fn(),
-                  networks: [{ nodes: [] }]
-                } as unknown) as any
-              }
-            >
-              <ConfirmTokenMigration {...((props as unknown) as any)} />
-            </StoreContext.Provider>
-          </FeatureFlagProvider>
+          <StoreContext.Provider
+            value={
+              ({
+                userAssets: [],
+                accounts: [],
+                defaultAccount: { assets: [] },
+                getAccount: jest.fn(),
+                networks: [{ nodes: [] }]
+              } as unknown) as any
+            }
+          >
+            <ConfirmTokenMigration {...((props as unknown) as any)} />
+          </StoreContext.Provider>
         </RatesContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>

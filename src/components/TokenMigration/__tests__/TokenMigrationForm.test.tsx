@@ -5,7 +5,6 @@ import { simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
-import { FeatureFlagProvider } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
@@ -38,21 +37,19 @@ function getComponent(props: TokenMigrationProps) {
           } as unknown) as IDataContext
         }
       >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                getDefaultAccount: () => ({ assets: [] }),
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <TokenMigrationForm {...((props as unknown) as any)} />
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: [],
+              defaultAccount: { assets: [] },
+              getAccount: jest.fn(),
+              networks: [{ nodes: [] }]
+            } as unknown) as any
+          }
+        >
+          <TokenMigrationForm {...((props as unknown) as any)} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

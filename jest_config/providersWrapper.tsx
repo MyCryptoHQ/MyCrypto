@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import { FeatureFlagProvider } from '@services';
 import { AppState, createStore } from '@store';
 import { theme } from '@theme';
 
@@ -21,7 +22,9 @@ export const ProvidersWrapper = ({
 }) => (
   <Router>
     <Provider store={createStore(initialState).store}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <FeatureFlagProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </FeatureFlagProvider>
     </Provider>
   </Router>
 );

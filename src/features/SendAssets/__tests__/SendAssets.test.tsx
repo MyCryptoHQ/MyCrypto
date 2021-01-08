@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
 import { fAssets, fSettings } from '@fixtures';
-import { FeatureFlagProvider, RatesContext } from '@services';
+import { RatesContext } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { WalletId } from '@types';
 
@@ -32,23 +32,21 @@ describe('SendAssetsFlow', () => {
           } as unknown) as IDataContext
         }
       >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
-              <SendAssets />
-            </RatesContext.Provider>
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: [],
+              defaultAccount: { assets: [], wallet: WalletId.WEB3 },
+              getAccount: jest.fn(),
+              networks: [{ nodes: [] }]
+            } as unknown) as any
+          }
+        >
+          <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
+            <SendAssets />
+          </RatesContext.Provider>
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

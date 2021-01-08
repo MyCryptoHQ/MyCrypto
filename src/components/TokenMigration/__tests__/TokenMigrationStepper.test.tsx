@@ -6,7 +6,6 @@ import { simpleRender } from 'test-utils';
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
-import { FeatureFlagProvider } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
@@ -26,22 +25,20 @@ describe('TokenMigrationStepper', () => {
           } as unknown) as IDataContext
         }
       >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [fAccounts[0]],
-                getDefaultAccount: () => fAccounts[0],
-                getAccount: jest.fn(),
-                networks: fNetworks,
-                getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
-              } as unknown) as any
-            }
-          >
-            <TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: [fAccounts[0]],
+              defaultAccount: fAccounts[0],
+              getAccount: jest.fn(),
+              networks: fNetworks,
+              getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
+            } as unknown) as any
+          }
+        >
+          <TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

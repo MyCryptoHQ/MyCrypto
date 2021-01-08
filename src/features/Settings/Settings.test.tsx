@@ -5,13 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetworks, fSettings } from '@fixtures';
-import {
-  DataContext,
-  FeatureFlagProvider,
-  IDataContext,
-  RatesContext,
-  StoreProvider
-} from '@services';
+import { DataContext, IDataContext, RatesContext, StoreProvider } from '@services';
 import { translateRaw } from '@translations';
 
 import Settings from './Settings';
@@ -35,9 +29,7 @@ function getComponent() {
         >
           <StoreProvider>
             <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-              <FeatureFlagProvider>
-                <Settings />
-              </FeatureFlagProvider>
+              <Settings />
             </RatesContext.Provider>
           </StoreProvider>
         </DataContext.Provider>
