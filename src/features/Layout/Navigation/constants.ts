@@ -406,7 +406,7 @@ export const MYCLinks = [
   },
   {
     title: translateRaw('NEW_FOOTER_TEXT_9'),
-    link: 'mailto://press@mycrypto.com',
+    link: 'mailto:press@mycrypto.com',
     icon: 'nav-press',
     analytics_event: 'Press'
   },
