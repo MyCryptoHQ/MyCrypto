@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 
 import { watchIncrement } from '@features/DevTools/slice';
+import { analyticsSaga } from '@services/Analytics';
 
 import { accountsSaga } from './account.slice';
 import { assetSaga } from './asset.slice';
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     assetSaga(),
     importSaga(),
     scanTokensSaga(),
-    vaultSaga()
+    vaultSaga(),
+    analyticsSaga()
   ]);
 }

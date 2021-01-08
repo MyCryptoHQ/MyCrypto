@@ -1,5 +1,4 @@
 export { default as ApiService } from './ApiService';
-export { AnalyticsService } from './Analytics';
 export { subscribeToMailingList } from './emails';
 export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './Gas';
 export { DeFiReserveMapService } from './DeFiReserveMap';
