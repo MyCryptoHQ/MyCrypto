@@ -23,6 +23,7 @@ const slice = createSlice({
 });
 
 export default slice;
+export const { setProductAnalyticsAuthorisation } = slice.actions;
 
 /**
  * Selectors

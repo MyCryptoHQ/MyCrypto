@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { DashboardPanel, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
+import { canTrackProductAnalytics, setProductAnalyticsAuthorisation } from '@services/Analytics';
 import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -69,11 +70,16 @@ const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
-const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
-  const [isAnalyticsActive, setIsAnalyticsActive] = useState(true);
+const GeneralSettings = ({
+  inactivityTimer,
+  fiatCurrency,
+  setInactivityTimer,
+  setFiat,
+  canTrackProductAnalytics,
+  setProductAnalyticsAuthorisation
+}: Props) => {
   const toggleAnalytics = () => {
-    console.log('toggle called to ', !isAnalyticsActive);
-    setIsAnalyticsActive(!isAnalyticsActive);
+    setProductAnalyticsAuthorisation(!canTrackProductAnalytics);
   };
 
   const changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -145,7 +151,7 @@ const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, se
         <SettingsControl>
           <Switch
             greyable={true}
-            checked={isAnalyticsActive}
+            checked={canTrackProductAnalytics}
             onChange={toggleAnalytics}
             labelLeft="OFF"
             labelRight="ON"
@@ -158,14 +164,16 @@ const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, se
 
 const mapStateToProps = (state: AppState) => ({
   inactivityTimer: getInactivityTimer(state),
-  fiatCurrency: getFiat(state)
+  fiatCurrency: getFiat(state),
+  canTrackProductAnalytics: canTrackProductAnalytics(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       setInactivityTimer,
-      setFiat
+      setFiat,
+      setProductAnalyticsAuthorisation
     },
     dispatch
   );
