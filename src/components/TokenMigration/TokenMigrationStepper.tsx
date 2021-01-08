@@ -26,7 +26,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
   const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
-  const { canYield, isSubmitting, transactions } = state;
+  const { canYield, isSubmitting, transactions, error } = state;
   const { account, amount }: TokenMigrationState = reducerState;
 
   const steps: IStepperPath[] = [
@@ -36,7 +36,8 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
       props: {
         tokenMigrationConfig,
         account,
-        isSubmitting
+        isSubmitting,
+        error
       },
       actions: (formData: ITokenMigrationFormFull) => {
         initWith(
