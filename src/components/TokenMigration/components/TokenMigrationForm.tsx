@@ -35,6 +35,7 @@ import { isFormValid as checkFormValid, noOp } from '@utils';
 
 export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
+  error?: Error;
   tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
@@ -46,6 +47,7 @@ interface UIProps {
   storeDefaultAccount: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
+  error?: Error;
   tokenMigrationConfig: ITokenMigrationConfig;
   onComplete(fields: any): void;
 }
@@ -61,6 +63,7 @@ const FormFieldSubmitButton = styled(Button)`
 const TokenMigrationForm = ({
   tokenMigrationConfig,
   isSubmitting,
+  error,
   onComplete
 }: TokenMigrationProps) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
@@ -79,6 +82,7 @@ const TokenMigrationForm = ({
       relevantAccounts={relevantAccounts}
       storeDefaultAccount={defaultAccount || defaultStoreAccount}
       defaultAsset={defaultAsset}
+      error={error}
       tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
     />
@@ -87,6 +91,7 @@ const TokenMigrationForm = ({
 
 export const TokenMigrationFormUI = ({
   isSubmitting,
+  error,
   network,
   relevantAccounts,
   storeDefaultAccount,
@@ -209,6 +214,9 @@ export const TokenMigrationFormUI = ({
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
+      {error && (
+        <InlineMessage value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })} />
+      )}
     </>
   );
 };
