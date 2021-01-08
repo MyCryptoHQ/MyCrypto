@@ -1,9 +1,10 @@
 import { bigNumberify, parseEther } from 'ethers/utils';
 
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { deriveTxFields, guessERC20Type } from '@helpers';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
-import { Asset, ITxReceipt, Network, StoreAccount } from '@types';
+import { Asset, ITxReceipt, ITxType, Network, StoreAccount } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
 
 export const makeTxReceipt = (
@@ -15,17 +16,28 @@ export const makeTxReceipt = (
   const baseAsset = getBaseAssetByNetwork({
     network,
     assets
-  });
+  })!;
 
   const value = fromWei(Wei(bigNumberify(tx.value).toString()), 'ether');
-  // @todo: Handle erc20 transfer array
+
+  // Use this for now to improve quality of receipts
+  // @todo: Use erc20 transfer array
+  const ercType = guessERC20Type(tx.data);
+  const { amount, asset } = deriveTxFields(
+    ercType,
+    tx.data,
+    tx.to,
+    tx.value,
+    baseAsset,
+    contractAsset
+  );
 
   return {
     ...tx,
-    asset: contractAsset || baseAsset!,
+    asset,
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
-    amount: value,
+    amount,
     data: tx.data,
     gasPrice: bigNumberify(tx.gasPrice),
     gasLimit: bigNumberify(tx.gasLimit),
@@ -42,6 +54,9 @@ export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceip
   return filteredApiTxs.concat(accountTxs);
 };
 
+// Mapping from TX API types to our current types
+const TYPE_MAPPING = { ERC_20_APPROVE: ITxType.APPROVAL } as { [key: string]: ITxHistoryType };
+
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
   const fromAccount =
     tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
@@ -54,6 +69,11 @@ export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxH
     tx.txType === ITxHistoryType.STANDARD ||
     tx.txType === ITxHistoryType.UNKNOWN ||
     !Object.values(ITxHistoryType).some((t) => t === tx.txType);
+
+  const mapping = Object.keys(TYPE_MAPPING).find((t) => t === tx.txType);
+  if (isInvalidTxHistoryType && mapping) {
+    return TYPE_MAPPING[mapping];
+  }
 
   if (isInvalidTxHistoryType && toAccount && fromAccount) {
     return ITxHistoryType.TRANSFER;
