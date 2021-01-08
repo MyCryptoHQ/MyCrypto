@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 
 export const DemoBanner = styled.div`
-  position: absolute;
   background: ${COLORS.WARNING_ORANGE};
   font-weight: bold;
   font-size: ${FONT_SIZE.MD};

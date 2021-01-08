@@ -14,26 +14,25 @@ export const TopNav = ({
   current,
   isMobile,
   isTrayOpen,
-  isDemoMode,
   openTray
 }: {
   current: string;
   isMobile: boolean;
   isTrayOpen: boolean;
-  isDemoMode: boolean;
   openTray(): void;
 }) => {
   const { locked, startLockCountdown } = useContext(ScreenLockContext);
   const { push } = useHistory();
 
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
+
   return (
     <Box
       variant="rowAlign"
       justifyContent="flex-end"
       ml={SPACING.BASE}
       mb={SPACING.BASE}
-      mt={isDemoMode ? SPACING.XL : SPACING.LG}
+      mt={SPACING.MD}
       mr={SPACING.XS}
     >
       {isMobile && (

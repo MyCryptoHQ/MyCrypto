@@ -66,6 +66,7 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
 const DemoLayoutWrapper = styled.div<{ isDemoMode?: boolean }>`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   ${({ isDemoMode }) =>
     isDemoMode &&
     `
@@ -228,7 +229,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
             {featureFlags.NEW_NAVIGATION && (
               <TopNav
                 current={pathname}
-                isDemoMode={isDemoMode}
                 isMobile={isMobile}
                 isTrayOpen={isOpen}
                 openTray={() => setIsOpen(!isOpen)}

@@ -70,7 +70,7 @@ const TokenMigrationForm = ({
   error,
   isDemoMode,
   onComplete
-}: TokenMigrationProps) => {
+}: Props) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
