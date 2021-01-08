@@ -77,7 +77,7 @@ export const isMyCryptoMember = createSelector(
   (status) => status === MembershipState.MEMBER
 );
 export const membershipExpiryDate = createSelector(getMembershipExpirations, (expirations) => {
-  return max(expirations.map((e) => new Date(e)));
+  return max(expirations.map((e) => fromUnixTime(parseInt(e, 10))));
 });
 /**
  * Sagas
