@@ -1,13 +1,10 @@
-import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 import { BigNumber as BigNumberish } from 'ethers/utils';
 
 export type Bigish = BigNumber;
 
-export const bigify = (
-  v: BigNumber.Value | BigNumber | BigNumberish | EthScanBN | bigint
-): BigNumber => {
+export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | bigint): BigNumber => {
   if (BigNumberish.isBigNumber(v)) {
     return new BigNumber(v.toString());
   } else if (typeof v === 'object' && '_hex' in v) {

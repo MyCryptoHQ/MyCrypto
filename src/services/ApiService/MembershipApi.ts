@@ -1,5 +1,4 @@
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import { PromiseType } from 'utility-types';
+import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
 import {
   MEMBERSHIP_CONTRACTS,
@@ -13,10 +12,10 @@ import { mapObjIndexed, pickBy, pipe, toString } from '@vendor';
 
 const isSafeInt = (bn: Bigish) => bn.isLessThanOrEqualTo(bigify(Number.MAX_SAFE_INTEGER));
 
-export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlockTimestamps>>) => {
+export const formatResponse = (timestamps: TimestampMap) => {
   // We receive timestamps in the form of hex values.
   // Convert to Bigies so we can determine their expiry date.
-  // @todo: prefer date-fns for time comparaisons.
+  // @todo: prefer date-fns for time comparisons.
   const expiries = pipe(
     mapObjIndexed(mapObjIndexed(bigify)),
     mapObjIndexed(pickBy(isSafeInt)),
