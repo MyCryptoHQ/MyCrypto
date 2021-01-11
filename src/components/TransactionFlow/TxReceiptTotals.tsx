@@ -75,7 +75,7 @@ export const TxReceiptTotals = ({
           <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
+          <AssetIcon uuid={baseAsset.uuid} size={'24px'} />
           <Amount
             fiatColor={COLORS.BLUE_SKY}
             assetValue={`${feeFormatted} ${baseAsset.ticker}`}
