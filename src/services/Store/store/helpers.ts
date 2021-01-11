@@ -1,4 +1,5 @@
 import {
+  ExtendedAsset,
   ExtendedNotification,
   IAccount,
   LocalStorage,
@@ -78,6 +79,14 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
       } as Network;
     })
     .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));
+
+export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[]) =>
+  original
+    .map((o) => {
+      const existing = inbound.find((i) => i.uuid === o.uuid);
+      return mergeRight(o, existing || {});
+    })
+    .concat(inbound.filter((i) => !original.find((o) => o.uuid === i.uuid)));
 
 /**
  * Compare json to import with our persist state
