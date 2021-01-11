@@ -1054,6 +1054,7 @@
     "DEMO_BANNER": "Viewing in DEMO MODE. Play around in this test environment and $link of your own to get started.",
     "DEMO_BANNER_LINK_TEXT": "add an account",
     "DEMO_BUTTON_TEXT": "View Demo Mode",
-    "DEMO_GATEWAY_BANNER": "You are currently in DEMO MODE. To continue with sending a transaction, please $link to exit demo mode."
+    "DEMO_GATEWAY_BANNER": "You are currently in DEMO MODE. To continue with sending a transaction, please $link to exit demo mode.",
+    "EDIT": "Edit"
   }
 }

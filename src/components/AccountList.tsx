@@ -211,13 +211,13 @@ export default function AccountList(props: AccountListProps) {
         </>
       }
       headingRight={
-        <Box variant="rowAlign" justifyContent="space-between" width="120px">
+        <Box variant="rowAlign">
           {dashboard && (
-            <RouterLink to={ROUTE_PATHS.SETTINGS.path}>
+            <RouterLink to={ROUTE_PATHS.SETTINGS.path} style={{ marginRight: SPACING.MD }}>
               <Box variant="rowAlign">
                 <Icon type="edit" />
                 <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-                  Edit
+                  {translateRaw('EDIT')}
                 </Text>
               </Box>
             </RouterLink>
@@ -226,7 +226,7 @@ export default function AccountList(props: AccountListProps) {
             <Box variant="rowAlign">
               <Icon type="add-bold" width="16px" />
               <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-                Add
+                {translateRaw('ADD')}
               </Text>
             </Box>
           </RouterLink>
