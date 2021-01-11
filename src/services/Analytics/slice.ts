@@ -1,5 +1,5 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { call, takeEvery } from 'redux-saga/effects';
+import { call, select, takeEvery } from 'redux-saga/effects';
 
 import { AppState } from '@store';
 
@@ -29,10 +29,9 @@ export const { setProductAnalyticsAuthorisation } = slice.actions;
  * Selectors
  */
 const getAnalytics = (s: AppState) => s[slice.name];
-export const canTrackProductAnalytics = createSelector(
-  getAnalytics,
-  (s) => s.canTrackProductAnalytics
-);
+export const canTrackProductAnalytics = createSelector([getAnalytics], (s) => {
+  return s.canTrackProductAnalytics;
+});
 
 /**
  * Actions
@@ -45,6 +44,9 @@ export const trackEvent = createAction<TrackParams>(`${slice.name}/trackEvent`);
 export function* analyticsSaga() {
   yield takeEvery(trackEvent.type, trackEventWorker);
 }
-function* trackEventWorker({ payload }: PayloadAction<TrackParams>) {
-  yield call(AnalyticsService.track, payload);
+export function* trackEventWorker({ payload }: PayloadAction<TrackParams>) {
+  const canTrack = yield select(canTrackProductAnalytics);
+  if (canTrack) {
+    yield call(AnalyticsService.track, payload);
+  }
 }

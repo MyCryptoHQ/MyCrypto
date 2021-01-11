@@ -2,7 +2,13 @@ import { call } from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'test-utils';
 
 import { default as AnalyticsService, TrackParams } from './Analytics';
-import { analyticsSaga, initialState, default as slice, trackEvent } from './slice';
+import {
+  analyticsSaga,
+  initialState,
+  default as slice,
+  trackEvent,
+  trackEventWorker
+} from './slice';
 
 const reducer = slice.reducer;
 
@@ -30,8 +36,20 @@ describe('AnalyticsSaga', () => {
   it('calls AnalyticsService on dispatch', () => {
     const params: TrackParams = { name: 'Add Account' };
     expectSaga(analyticsSaga)
+      .withState({ [slice.name]: initialState })
       .provide([[call.fn(AnalyticsService.track), params]])
       .dispatch(trackEvent(params))
       .silentRun();
+  });
+  it('respects user tracking preferences', () => {
+    const params: TrackParams = { name: 'Add Account' };
+    return expectSaga(trackEventWorker, trackEvent(params))
+      .withState({ [slice.name]: { canTrackProductAnalytics: false } })
+      .run()
+      .then(({ effects }) => {
+        expect(effects.select).toHaveLength(1);
+        expect(effects.call).toBeUndefined();
+        expect(effects.put).toBeUndefined();
+      });
   });
 });
