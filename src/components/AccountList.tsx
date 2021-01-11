@@ -215,7 +215,7 @@ export default function AccountList(props: AccountListProps) {
           {dashboard && (
             <RouterLink to={ROUTE_PATHS.SETTINGS.path} style={{ marginRight: SPACING.MD }}>
               <Box variant="rowAlign">
-                <Icon type="edit" />
+                <Icon type="edit" width="16px" />
                 <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
                   {translateRaw('EDIT')}
                 </Text>

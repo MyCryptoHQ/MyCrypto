@@ -16,7 +16,6 @@
     "ACCOUNT_LIST_REMOVE": "Remove",
     "ACCOUNT_LIST_REMOVE_OVERLAY_TEXT": "Are you sure you want to remove the “$label” account with address: “$address”?",
     "ACCOUNT_LIST_TABLE_ACCOUNTS": "Accounts",
-    "ACCOUNT_LIST_TABLE_ADD_ACCOUNT": "Add Account",
     "ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT": "Removed $walletId account with label “$label”.",
     "ACCOUNT_LIST_VALUE": "Value",
     "ACCOUNT_LOOKUP_SELECTION_PLACEHOLDER": "Enter an Address or Contact",
