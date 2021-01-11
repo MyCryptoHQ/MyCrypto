@@ -13,7 +13,7 @@ export interface IRouteLink {
   title: string;
   to: string;
   enabled: boolean;
-  icon?: TIcon;
+  icon: TIcon;
 }
 
 export interface IExternalLink {

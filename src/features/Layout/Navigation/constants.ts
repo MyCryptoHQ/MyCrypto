@@ -93,48 +93,54 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         enabled: APP_ROUTES.BROADCAST_TX.enabled,
         icon: 'nav-broadcast-transaction'
       },
-      //@todo: Turn on when we get icons for those items
-      {
-        type: 'internal',
-        to: APP_ROUTES.ENS.path,
-        enabled: APP_ROUTES.ENS.enabled,
-        title: 'ENS'
-      },
       {
         type: 'internal',
         to: APP_ROUTES.TX_STATUS.path,
         enabled: APP_ROUTES.TX_STATUS.enabled,
-        title: 'TX Status'
+        title: translateRaw('NAVIGATION_TX_STATUS'),
+        icon: 'nav-tx-status'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.ENS.path,
+        enabled: APP_ROUTES.ENS.enabled,
+        title: translateRaw('NAVIGATION_ENS'),
+        icon: 'nav-ens'
       },
       {
         type: 'internal',
         to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
         enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-        title: 'REP Token Migration'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
-        title: 'LEND Token Migration'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
-        title: 'ANT Token Migration'
+        title: translateRaw('NAVIGATION_MIGRATE_REP'),
+        icon: 'nav-migrate-rep'
       },
       {
         type: 'internal',
         to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
         enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
-        title: 'Golem Token Migration'
+        title: translateRaw('NAVIGATION_MIGRATE_GNT'),
+        icon: 'nav-migrate-gnt'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+        title: translateRaw('NAVIGATION_MIGRATE_ANT'),
+        icon: 'nav-migrate-ant'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+        title: translateRaw('NAVIGATION_MIGRATE_LEND'),
+        icon: 'nav-migrate-lend'
       },
       {
         type: 'internal',
         to: APP_ROUTES.FAUCET.path,
         enabled: APP_ROUTES.FAUCET.enabled,
-        title: 'Faucet'
+        title: translateRaw('NAVIGATION_FAUCET'),
+        icon: 'nav-faucet'
       }
     ]
   };
@@ -289,48 +295,54 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           enabled: APP_ROUTES.BROADCAST_TX.enabled,
           icon: 'nav-broadcast-transaction'
         },
-        //@todo: Turn on when we get icons for those items
-        {
-          type: 'internal',
-          to: APP_ROUTES.ENS.path,
-          enabled: APP_ROUTES.ENS.enabled,
-          title: 'ENS'
-        },
         {
           type: 'internal',
           to: APP_ROUTES.TX_STATUS.path,
           enabled: APP_ROUTES.TX_STATUS.enabled,
-          title: 'TX Status'
+          title: translateRaw('NAVIGATION_TX_STATUS'),
+          icon: 'nav-tx-status'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.ENS.path,
+          enabled: APP_ROUTES.ENS.enabled,
+          title: translateRaw('NAVIGATION_ENS'),
+          icon: 'nav-ens'
         },
         {
           type: 'internal',
           to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
           enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-          title: 'REP Token Migration'
-        },
-        {
-          type: 'internal',
-          to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
-          title: 'LEND Token Migration'
-        },
-        {
-          type: 'internal',
-          to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
-          title: 'ANT Token Migration'
+          title: translateRaw('NAVIGATION_MIGRATE_REP'),
+          icon: 'nav-migrate-rep'
         },
         {
           type: 'internal',
           to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
           enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
-          title: 'Golem Token Migration'
+          title: translateRaw('NAVIGATION_MIGRATE_GNT'),
+          icon: 'nav-migrate-gnt'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
+          title: translateRaw('NAVIGATION_MIGRATE_ANT'),
+          icon: 'nav-migrate-ant'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
+          title: translateRaw('NAVIGATION_MIGRATE_LEND'),
+          icon: 'nav-migrate-lend'
         },
         {
           type: 'internal',
           to: APP_ROUTES.FAUCET.path,
           enabled: APP_ROUTES.FAUCET.enabled,
-          title: 'Faucet'
+          title: translateRaw('NAVIGATION_FAUCET'),
+          icon: 'nav-faucet'
         }
       ]
     },

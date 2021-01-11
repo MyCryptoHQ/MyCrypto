@@ -1042,6 +1042,13 @@
     "NAVIGATION_SUBSCRIBE_TO_MYC": "Subscribe to MyCrypto",
     "NAVIGATION_EXTRAS": "Extras",
     "NAVIGATION_DOWNLOAD_APPS": "Download Apps",
-    "LOW_GAS_PRICE_WARNING": "This seems like a very low gas price. Are you sure you know what you are doing?"
+    "LOW_GAS_PRICE_WARNING": "This seems like a very low gas price. Are you sure you know what you are doing?",
+    "NAVIGATION_ENS": "Manage ENS",
+    "NAVIGATION_TX_STATUS": "Check Transaction Status",
+    "NAVIGATION_MIGRATE_REP": "Migrate REP",
+    "NAVIGATION_MIGRATE_GNT": "Migrate GOLEM",
+    "NAVIGATION_MIGRATE_ANT": "Migrate ANT",
+    "NAVIGATION_MIGRATE_LEND": "Migrate LEND",
+    "NAVIGATION_FAUCET": "Use Testnet Faucet"
   }
 }

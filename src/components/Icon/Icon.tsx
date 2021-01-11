@@ -24,8 +24,10 @@ import navCoinbase from '@assets/icons/navigation/coinbase.svg';
 import navDeployContracts from '@assets/icons/navigation/deploy-contracts.svg';
 import navDesktop from '@assets/icons/navigation/desktop.svg';
 import navDiscord from '@assets/icons/navigation/discord.svg';
+import navEns from '@assets/icons/navigation/ens.svg';
 import navEthereum from '@assets/icons/navigation/ethereum.svg';
 import navFacebook from '@assets/icons/navigation/facebook.svg';
+import navFaucet from '@assets/icons/navigation/faucet.svg';
 import navGithub from '@assets/icons/navigation/github.svg';
 import navHelp from '@assets/icons/navigation/help.svg';
 import navHome from '@assets/icons/navigation/home.svg';
@@ -36,6 +38,10 @@ import navLock from '@assets/icons/navigation/lock.svg';
 import navMedium from '@assets/icons/navigation/medium.svg';
 import navMembership from '@assets/icons/navigation/membership.svg';
 import navMenu from '@assets/icons/navigation/menu.svg';
+import navMigrateAnt from '@assets/icons/navigation/migrate-ant.svg';
+import navMigrateGnt from '@assets/icons/navigation/migrate-gnt.svg';
+import navMigrateLend from '@assets/icons/navigation/migrate-lend.svg';
+import navMigrateRep from '@assets/icons/navigation/migrate-rep.svg';
 import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
 import navPress from '@assets/icons/navigation/press.svg';
@@ -52,6 +58,7 @@ import navTeam from '@assets/icons/navigation/team.svg';
 import navTools from '@assets/icons/navigation/tools.svg';
 import navTrezor from '@assets/icons/navigation/trezor.svg';
 import navTwitter from '@assets/icons/navigation/twitter.svg';
+import navTxStatus from '@assets/icons/navigation/tx-status.svg';
 import navUnstoppable from '@assets/icons/navigation/unstoppable.svg';
 import navVerifyMessage from '@assets/icons/navigation/verify-message.svg';
 import newsletter from '@assets/icons/newsletter.svg';
@@ -212,7 +219,14 @@ const svgIcons = {
   'nav-press': navPress,
   'nav-privacy': navPrivacy,
   'nav-new-tab': navNewTab,
-  'nav-desktop': navDesktop
+  'nav-desktop': navDesktop,
+  'nav-ens': navEns,
+  'nav-tx-status': navTxStatus,
+  'nav-migrate-rep': navMigrateRep,
+  'nav-migrate-gnt': navMigrateGnt,
+  'nav-migrate-ant': navMigrateAnt,
+  'nav-migrate-lend': navMigrateLend,
+  'nav-faucet': navFaucet
 };
 
 const pngIcons = {
