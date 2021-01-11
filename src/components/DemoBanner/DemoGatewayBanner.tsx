@@ -24,7 +24,7 @@ const BannerText = (
     variables={{
       $link: () => (
         <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-          {translateRaw('DEMO_BANNER_LINK_TEXT')}.
+          {translateRaw('DEMO_BANNER_LINK_TEXT')}
         </RouterLink>
       )
     }}
