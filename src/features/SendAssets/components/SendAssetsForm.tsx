@@ -375,7 +375,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
       .typeError(translateRaw('ERROR_8'))
       .test(validateGasLimitField()),
     gasPriceField: number()
-      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
+      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
       .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('GASPRICE_ERROR'))

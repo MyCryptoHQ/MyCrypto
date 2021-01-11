@@ -1041,6 +1041,7 @@
     "NAVIGATION_OTHER_PRODUCTS": "Other Products",
     "NAVIGATION_SUBSCRIBE_TO_MYC": "Subscribe to MyCrypto",
     "NAVIGATION_EXTRAS": "Extras",
-    "NAVIGATION_DOWNLOAD_APPS": "Download Apps"
+    "NAVIGATION_DOWNLOAD_APPS": "Download Apps",
+    "LOW_GAS_PRICE_WARNING": "This seems like a very low gas price. Are you sure you know what you are doing?"
   }
 }
