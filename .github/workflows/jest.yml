@@ -18,7 +18,7 @@ jobs:
       - name: Specify node version
         uses: actions/setup-node@v1
         with:
-          node-version: '10.22.0'
+          node-version: 14
 
       - name: Cache depedendencies
         id: cache
