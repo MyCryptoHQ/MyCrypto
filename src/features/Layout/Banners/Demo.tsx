@@ -15,7 +15,7 @@ export const DemoBanner = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     line-height: ${LINE_HEIGHT.LG};
     font-size: ${FONT_SIZE.SM};
-    padding: ${SPACING.NONE} ${SPACING.XS} ${SPACING.XS} ${SPACING.NONE};
+    padding: ${SPACING.NONE} ${SPACING.NONE} ${SPACING.XS} ${SPACING.NONE};
   }
   & a {
     color: ${COLORS.WHITE};
