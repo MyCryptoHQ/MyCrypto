@@ -22,7 +22,7 @@ import { DataStore, EncryptedDataStore, LocalStorage, LSKeys, NetworkId, TUuid }
 import { arrayToObj, IS_DEV } from '@utils';
 import { flatten, pipe, values } from '@vendor';
 
-import { mergeNetworks } from './helpers';
+import { mergeAssets, mergeNetworks } from './helpers';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
@@ -107,7 +107,7 @@ const customReconciler: StateReconciler<DataStore> = (inboundState, originalStat
 
   const mergedInboundState = {
     ...inboundState,
-    [LSKeys.ASSETS]: mergeByUuid([...inboundState.assets, ...originalState.assets]),
+    [LSKeys.ASSETS]: mergeAssets(inboundState.assets, originalState.assets),
     [LSKeys.CONTRACTS]: mergeByUuid([...inboundState.contracts, ...originalState.contracts]),
     [LSKeys.NETWORKS]: mergeNetworks(inboundState.networks, originalState.networks)
   };

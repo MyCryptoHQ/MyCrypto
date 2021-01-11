@@ -1,8 +1,14 @@
-import { fAccount, fAccounts, fLocalStorage, fNetworks } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks } from '@fixtures';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { NodeOptions, StoreAsset, TUuid } from '@types';
 
-import { canImport, mergeNetworks, serializeAccount, serializeNotification } from './helpers';
+import {
+  canImport,
+  mergeAssets,
+  mergeNetworks,
+  serializeAccount,
+  serializeNotification
+} from './helpers';
 
 describe('serializeAccount()', () => {
   const serializedAccountAssets = {
@@ -120,6 +126,20 @@ describe('mergeNetworks', () => {
     const nodes = [{ ...first, disableByDefault: true }, ...rest];
     const actual = mergeNetworks([fNetworks[0]], [{ ...fNetworks[0], nodes }]);
     expect(actual).toEqual([{ ...fNetworks[0], nodes }]);
+  });
+});
+
+describe('mergeAssets', () => {
+  it('correctly does basic merging', () => {
+    const actual = mergeAssets([fAssets[0]], [fAssets[1]]);
+    expect(actual).toEqual(expect.arrayContaining([fAssets[0], fAssets[1]]));
+  });
+
+  it('merges to include extra mapping information', () => {
+    const detailedAsset = { ...fAssets[0], mappings: { coinGeckoId: 'ethereum' } };
+    const actual = mergeAssets([detailedAsset], fAssets);
+    const [, ...rest] = fAssets;
+    expect(actual).toEqual([detailedAsset, ...rest]);
   });
 });
 
