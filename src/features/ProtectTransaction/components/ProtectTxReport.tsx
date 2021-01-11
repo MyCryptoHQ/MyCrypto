@@ -186,16 +186,19 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
           <p className="footer-text">
             {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}
             {!isWeb3 && (
-              <Trans
-                id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
-                variables={{
-                  $20seconds: () => (
-                    <span className="highlighted">
-                      {translateRaw('PROTECTED_TX_REPORT_20_SEC')}
-                    </span>
-                  )
-                }}
-              />
+              <>
+                {' '}
+                <Trans
+                  id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
+                  variables={{
+                    $20seconds: () => (
+                      <span className="highlighted">
+                        {translateRaw('PROTECTED_TX_REPORT_20_SEC')}
+                      </span>
+                    )
+                  }}
+                />
+              </>
             )}
           </p>
         </>
