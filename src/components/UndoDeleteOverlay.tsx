@@ -80,7 +80,7 @@ const UndoDeleteOverlay: FC<Props> = ({ overlayText, restoreAccount, address }) 
       <OverlayText>{overlayText}</OverlayText>
     </ContentOverlay>
     <OverlayButtons>
-      <Button inverted={true} onClick={restoreAccount}>
+      <Button colorScheme={'inverted'} onClick={restoreAccount}>
         Undo
       </Button>
     </OverlayButtons>

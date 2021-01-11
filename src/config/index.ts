@@ -1,4 +1,5 @@
 export * from './data';
+export { DEMO_SETTINGS } from './demo';
 export * from './donations';
 export * from './addressMessages';
 export {

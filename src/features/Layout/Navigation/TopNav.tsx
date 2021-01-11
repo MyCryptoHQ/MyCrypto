@@ -25,6 +25,7 @@ export const TopNav = ({
   const { push } = useHistory();
 
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
+
   return (
     <Box
       variant="rowAlign"

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 
@@ -10,6 +11,7 @@ import {
   AmountInput,
   Box,
   Button,
+  DemoGatewayBanner,
   InlineMessage,
   Label,
   Tooltip
@@ -20,6 +22,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -49,6 +52,7 @@ interface UIProps {
   isSubmitting: boolean;
   error?: Error;
   tokenMigrationConfig: ITokenMigrationConfig;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -64,8 +68,9 @@ const TokenMigrationForm = ({
   tokenMigrationConfig,
   isSubmitting,
   error,
+  isDemoMode,
   onComplete
-}: TokenMigrationProps) => {
+}: Props) => {
   const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
@@ -85,6 +90,7 @@ const TokenMigrationForm = ({
       error={error}
       tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
+      isDemoMode={isDemoMode}
     />
   );
 };
@@ -97,7 +103,8 @@ export const TokenMigrationFormUI = ({
   storeDefaultAccount,
   defaultAsset,
   tokenMigrationConfig,
-  onComplete
+  onComplete,
+  isDemoMode
 }: UIProps) => {
   const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
     account: storeDefaultAcc,
@@ -167,6 +174,7 @@ export const TokenMigrationFormUI = ({
 
   return (
     <>
+      {isDemoMode && <DemoGatewayBanner />}
       <Box mb={SPACING.LG}>
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector
@@ -210,7 +218,7 @@ export const TokenMigrationFormUI = ({
             });
           }
         }}
-        disabled={!isFormValid}
+        disabled={!isFormValid || isDemoMode}
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
@@ -221,4 +229,11 @@ export const TokenMigrationFormUI = ({
   );
 };
 
-export default TokenMigrationForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & TokenMigrationProps;
+
+export default connector(TokenMigrationForm);

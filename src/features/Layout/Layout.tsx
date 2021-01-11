@@ -1,17 +1,28 @@
 import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { Banner } from '@components';
+import { Banner, RouterLink } from '@components';
+import { ROUTE_PATHS } from '@config';
 import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
-import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
-import translate from '@translations';
+import { AppState, getIsDemoMode } from '@store';
+import {
+  BREAK_POINTS,
+  COLORS,
+  LINE_HEIGHT,
+  MAX_CONTENT_WIDTH,
+  MIN_CONTENT_PADDING,
+  SPACING
+} from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
 
+import { DemoBanner } from './Banners';
 import Footer from './Footer';
 import Header from './Header';
 import { DesktopNav, ExtrasTray, MobileNav, TopNav } from './Navigation';
@@ -24,7 +35,7 @@ export interface LayoutConfig {
   bgColor?: string;
   paddingV?: string;
 }
-interface Props {
+interface LayoutProps {
   config?: LayoutConfig;
   className?: string;
   children: any;
@@ -32,7 +43,7 @@ interface Props {
 
 // Homepage 'home' creates an unidentified overflow on the x axis.
 // We use layout to disable it here.
-const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
+const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: boolean }>`
   ${(p) =>
     p.newNav &&
     css`
@@ -43,12 +54,25 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
         margin-bottom: 57px;
       }
     `}
+
   overflow-x: hidden;
   min-width: 350px;
   background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
   min-height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const DemoLayoutWrapper = styled.div<{ isDemoMode?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  ${({ isDemoMode }) =>
+    isDemoMode &&
+    `
+    border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
+    box-sizing: border-box;
+  `}
 `;
 
 const STop = styled.div<{ newNav: boolean }>`
@@ -130,7 +154,7 @@ export const ANNOUNCEMENT_MSG = () => (
 
 const announcementMessage = ANNOUNCEMENT_MSG();
 
-export default function Layout({ config = {}, className = '', children }: Props) {
+const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { featureFlags } = useFeatureFlags();
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
@@ -142,7 +166,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const topRef = useRef<any>(null);
-
   useLayoutEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
@@ -160,7 +183,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   }, [topRef.current]);
 
   const APP_ROUTES = getAppRoutesObject(featureFlags);
-
   return (
     <>
       {featureFlags.NEW_NAVIGATION && isMobile && (
@@ -173,7 +195,7 @@ export default function Layout({ config = {}, className = '', children }: Props)
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
-        <STop newNav={featureFlags.NEW_NAVIGATION}>
+        <STop newNav={featureFlags.NEW_NAVIGATION} ref={topRef}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
@@ -186,33 +208,67 @@ export default function Layout({ config = {}, className = '', children }: Props)
             />
           )}
         </STop>
-        {featureFlags.NEW_NAVIGATION && (
-          <TopNav
-            current={pathname}
-            isMobile={isMobile}
-            isTrayOpen={isOpen}
-            openTray={() => setIsOpen(!isOpen)}
-          />
-        )}
-        <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
-          <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
-        </BannerWrapper>
         {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
-          <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+          <>
+            <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+            {featureFlags.NEW_NAVIGATION && (
+              <TopNav
+                current={pathname}
+                isMobile={isMobile}
+                isTrayOpen={isOpen}
+                openTray={() => setIsOpen(!isOpen)}
+              />
+            )}
+          </>
         ) : (
-          <SContainer
-            centered={centered}
-            fluid={fluid}
-            fullW={fullW}
-            paddingV={paddingV}
-            marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
-          >
-            {children}
-          </SContainer>
+          <DemoLayoutWrapper isDemoMode={isDemoMode}>
+            {isDemoMode && (
+              <DemoBanner>
+                <Trans
+                  id="DEMO_BANNER"
+                  variables={{
+                    $link: () => (
+                      <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                        {translateRaw('DEMO_BANNER_LINK_TEXT')}
+                      </RouterLink>
+                    )
+                  }}
+                />
+              </DemoBanner>
+            )}
+            {featureFlags.NEW_NAVIGATION && (
+              <TopNav
+                current={pathname}
+                isMobile={isMobile}
+                isTrayOpen={isOpen}
+                openTray={() => setIsOpen(!isOpen)}
+              />
+            )}
+            <BannerWrapper newNav={featureFlags.NEW_NAVIGATION}>
+              <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
+            </BannerWrapper>
+            <SContainer
+              centered={centered}
+              fluid={fluid}
+              fullW={fullW}
+              paddingV={paddingV}
+              marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
+            >
+              {children}
+            </SContainer>
+            {featureFlags.OLD_NAVIGATION && <Footer />}
+          </DemoLayoutWrapper>
         )}
-
-        {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & LayoutProps;
+
+export default connector(Layout);

@@ -268,7 +268,7 @@ const DeterministicWallet = ({
             handleAssetUpdate(option);
           }}
         />
-        <Button onClick={() => setDpathAddView(true)} inverted={true}>
+        <Button onClick={() => setDpathAddView(true)} colorScheme={'inverted'}>
           <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
         </Button>
       </Parameters>

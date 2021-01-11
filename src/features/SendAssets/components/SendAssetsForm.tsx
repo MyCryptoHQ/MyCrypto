@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
+import { Button as UIBtn } from '@mycrypto/ui';
 import BN from 'bn.js';
 import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { ValuesType } from 'utility-types';
 import { number, object, string } from 'yup';
@@ -14,8 +15,10 @@ import {
   AccountSelector,
   AmountInput,
   AssetSelector,
+  Button,
   Checkbox,
   ContactLookupField,
+  DemoGatewayBanner,
   InlineMessage,
   Tooltip,
   WhenQueryExists
@@ -52,6 +55,7 @@ import {
   useAssets,
   useSettings
 } from '@services/Store';
+import { AppState, getIsDemoMode } from '@store';
 import translate, { translateRaw } from '@translations';
 import {
   Asset,
@@ -98,7 +102,7 @@ import {
   validateNonceField
 } from './validators';
 
-export const AdvancedOptionsButton = styled(Button)`
+export const AdvancedOptionsButton = styled(UIBtn)`
   width: 100%;
   color: #1eb8e7;
   text-align: center;
@@ -235,7 +239,7 @@ interface ISendFormProps extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
+const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: Props) => {
   const {
     accounts,
     userAssets,
@@ -560,6 +564,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   return (
     <div className="SendAssetsForm">
       <QueryWarning />
+      {isDemoMode && <DemoGatewayBanner />}
       {/* Asset */}
       <fieldset className="SendAssetsForm-fieldset">
         <label htmlFor="asset" className="input-group-header">
@@ -772,7 +777,9 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
             onComplete(values);
           }
         }}
-        disabled={isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid}
+        disabled={
+          isDemoMode || isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid
+        }
         className="SendAssetsForm-next"
       >
         {translate('ACTION_6')}
@@ -796,4 +803,11 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
   );
 };
 
-export default SendAssetsForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & ISendFormProps;
+
+export default connector(SendAssetsForm);

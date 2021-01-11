@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { Button, CodeBlock, InputField, WalletList } from '@components';
+import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { setupWeb3Node } from '@services/EthService';
 import { IFullWallet, IUseWalletConnect, withWalletConnect } from '@services/WalletService';
+import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, INode, ISignedMessage, WalletId } from '@types';
@@ -81,7 +83,7 @@ enum SignStatus {
   SIGNED
 }
 
-interface Props {
+interface SignProps {
   useWalletConnectProps: IUseWalletConnect;
   setShowSubtitle(show: boolean): void;
 }
@@ -94,7 +96,7 @@ function SignMessage(props: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const { setShowSubtitle, useWalletConnectProps } = props;
+  const { setShowSubtitle, useWalletConnectProps, isDemoMode } = props;
 
   const handleSignMessage = async () => {
     setSignStatus(SignStatus.SIGNING);
@@ -157,6 +159,7 @@ function SignMessage(props: Props) {
 
   return (
     <Content>
+      {isDemoMode && <DemoGatewayBanner />}
       {walletName ? (
         <>
           <BackButton marginBottom={!!wallet} basic={true} onClick={resetWalletSelectionAndForm}>
@@ -188,7 +191,7 @@ function SignMessage(props: Props) {
             inputError={error}
           />
           <SignButton
-            disabled={!message}
+            disabled={!message || isDemoMode}
             onClick={handleSignMessage}
             loading={signStatus === SignStatus.SIGNING}
           >
@@ -208,4 +211,11 @@ function SignMessage(props: Props) {
   );
 }
 
-export default withWalletConnect(SignMessage);
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & SignProps;
+
+export default connector(withWalletConnect(SignMessage));

@@ -1,11 +1,15 @@
 import React from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { getWalletConfig, ROUTE_PATHS } from '@config';
+import Button from '@components/Button';
+import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IStory, WalletId } from '@types';
@@ -82,18 +86,30 @@ const Info = styled.div<InfoProps>`
   }
 `;
 
-interface Props {
+const SDemoButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+interface WalletListProps {
   wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
   calculateMargin?(index: number): string;
 }
 
-export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: Props) => {
+const WalletList = ({
+  wallets,
+  onSelect,
+  showHeader,
+  calculateMargin,
+  isDemoMode,
+  accounts,
+  importState
+}: Props) => {
   const trackSelectWallet = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT
   });
-
   const selectWallet = (name: WalletId) => {
     trackSelectWallet({
       actionName: `${name} clicked`
@@ -144,7 +160,38 @@ export const WalletList = ({ wallets, onSelect, showHeader, calculateMargin }: P
             {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
           </Link>
         </Info>
+        {accounts.length === 0 && (
+          <SDemoButtonContainer>
+            <Link to={ROUTE_PATHS.DASHBOARD.path}>
+              <Button
+                colorScheme={'warning'}
+                disabled={isDemoMode}
+                onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
+              >
+                {translateRaw('DEMO_BUTTON_TEXT')}
+              </Button>
+            </Link>
+          </SDemoButtonContainer>
+        )}
       </InfoWrapper>
     </div>
   );
 };
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state),
+  accounts: getAccounts(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      importState: importState
+    },
+    dispatch
+  );
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type Props = ConnectedProps<typeof connector> & WalletListProps;
+
+export default connector(WalletList);

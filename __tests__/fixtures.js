@@ -124,7 +124,8 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     excludedAssets: [],
     inactivityTimer: 1800000,
     rates: {},
-    language: 'en'
+    language: 'en',
+    isDemoMode: false
   },
   password: '',
   networkNodes: {},

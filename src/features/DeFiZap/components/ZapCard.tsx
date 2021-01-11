@@ -208,7 +208,7 @@ const TooltipWrapper = styled.div`
 `;
 
 const WithdrawButton = () => (
-  <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
+  <ZapCardButton colorScheme={'inverted'}>{translateRaw('WITHDRAW')}</ZapCardButton>
 );
 
 interface Props {
@@ -300,12 +300,12 @@ const ZapCard = ({ config }: Props) => {
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
           <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
+            <ZapCardButton colorScheme={'inverted'}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
           </RouterLink>
         ) : (
           <>
             <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
+              <ZapCardButton colorScheme={'inverted'}>{translateRaw('ADD')}</ZapCardButton>
             </RouterLink>
             <a target="_blank" href={config.link} rel="noreferrer">
               {config.withdrawTooltip ? (

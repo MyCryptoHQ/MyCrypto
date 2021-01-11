@@ -7,8 +7,7 @@ import unionWith from 'ramda/src/unionWith';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
-  createAccount,
-  createAccounts,
+  addAccounts,
   destroyAccount,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
@@ -27,7 +26,6 @@ import {
 } from '@types';
 
 import { DataContext } from '../DataManager';
-import { useSettings } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
@@ -46,7 +44,6 @@ export interface IAccountContext {
 
 function useAccounts() {
   const { accounts } = useContext(DataContext);
-  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
 
   const dispatch = useDispatch();
   const trackTxHistory = useAnalytics({
@@ -55,13 +52,11 @@ function useAccounts() {
   });
 
   const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
-    addAccountToFavorites(uuid);
-    dispatch(createAccount({ ...item, uuid }));
+    dispatch(addAccounts([{ ...item, uuid }]));
   };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
-    addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
-    dispatch(createAccounts(newAccounts));
+    dispatch(addAccounts(newAccounts));
   };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));

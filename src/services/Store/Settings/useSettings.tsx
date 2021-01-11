@@ -1,9 +1,8 @@
 import { useContext } from 'react';
 
 import {
+  addAccountsToFavorites,
   addExcludedAsset,
-  addFavorite,
-  addFavorites,
   removeExcludedAsset,
   resetFavoritesTo,
   setFiat,
@@ -26,6 +25,7 @@ export interface ISettingsContext {
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
   updateFiatCurrency(fiatTicker: TFiatTicker): void;
+  setDemoMode(isDemoMode: boolean): void;
 }
 
 function useSettings() {
@@ -34,11 +34,11 @@ function useSettings() {
   const language = settings.language || '';
 
   const addAccountToFavorites = (account: TUuid) => {
-    dispatch(addFavorite(account));
+    dispatch(addAccountsToFavorites([account]));
   };
 
   const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
-    dispatch(addFavorites(accounts));
+    dispatch(addAccountsToFavorites(accounts));
   };
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {

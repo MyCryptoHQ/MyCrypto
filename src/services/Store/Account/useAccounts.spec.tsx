@@ -49,7 +49,9 @@ describe('useAccounts', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: [] });
     result.current.createAccountWithID('uuid' as TUuid, fAccounts[0]);
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload({ ...fAccounts[0], uuid: 'uuid' }));
+    expect(mockDispatch).toHaveBeenCalledWith(
+      actionWithPayload([{ ...fAccounts[0], uuid: 'uuid' }])
+    );
   });
 
   it('createMultipleAccountsWithIDs() calls updateAll with multiple accounts', () => {

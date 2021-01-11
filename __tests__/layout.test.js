@@ -11,18 +11,27 @@ fixture('Layout').page(PAGES.DASHBOARD);
 test
   .before(async (t) => await t.resizeWindowToFitDevice('iphonexr', { portraitOrientation: true }))
   .after(async (t) => await t.maximizeWindow())(
-  'Should add top margin to layout that equals to header height',
+  'Should correctly order banner and scontainer components in new nav.',
   async (t) => {
     await addAccountPage.waitPageLoaded();
 
     // This test is meant to be ran against the old nav
-    await setFeatureFlag('NEW_NAVIGATION', false);
-    await setFeatureFlag('OLD_NAVIGATION', true);
+    await setFeatureFlag('NEW_NAVIGATION', true);
+    await setFeatureFlag('OLD_NAVIGATION', false);
 
-    const banner = Selector('main').child(1);
-    const layoutMargin = Selector('main').child(2).getStyleProperty('margin-top');
-    const bannerHeight = await banner.offsetHeight;
+    const demoLayoutWrapper = Selector('main').child(1);
+    const bannerWrapperClassNames = (await demoLayoutWrapper.child(1).classNames).reduce(
+      (classNamesString, className) => classNamesString + className,
+      ''
+    );
 
-    await t.expect(layoutMargin).eql(`${bannerHeight}px`);
+    await t.expect(bannerWrapperClassNames).contains(`BannerWrapper`);
+
+    const sContainerClassNames = (await demoLayoutWrapper.child(2).classNames).reduce(
+      (classNamesString, className) => classNamesString + className,
+      ''
+    );
+
+    await t.expect(sContainerClassNames).contains(`SContainer`);
   }
 );

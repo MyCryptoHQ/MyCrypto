@@ -12,11 +12,13 @@ import {
   getFavorites,
   getFiat,
   getInactivityTimer,
+  getIsDemoMode,
   getLanguage,
   getRates,
   initialState,
   removeExcludedAsset,
   resetFavoritesTo,
+  setDemoMode,
   setFiat,
   setInactivityTimer,
   setLanguage,
@@ -99,5 +101,11 @@ describe('settingsSlice', () => {
     );
     const expected = ['uuid1', 'uuid3'];
     expect(getExcludedAssets(actual)).toEqual(expected);
+  });
+
+  it('setDemomode(), toggles demo mode in settings', () => {
+    const actual = reducer({ ...initialState, isDemoMode: false }, setDemoMode(true));
+    const expected = true;
+    expect(getIsDemoMode(actual)).toEqual(expected);
   });
 });

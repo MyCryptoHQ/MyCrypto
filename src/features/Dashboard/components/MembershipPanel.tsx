@@ -108,7 +108,7 @@ function MembershipPanel({
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
               <Link href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_INFO)} rel="noreferrer">
-                <SButton inverted={true}>{translateRaw('REQUEST_REWARDS')}</SButton>
+                <SButton colorScheme={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
               </Link>
             </>
           )}

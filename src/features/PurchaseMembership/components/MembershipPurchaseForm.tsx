@@ -2,10 +2,17 @@ import React, { useContext, useEffect } from 'react';
 
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 
-import { AccountSelector, AmountInput, Button, InlineMessage } from '@components';
+import {
+  AccountSelector,
+  AmountInput,
+  Button,
+  DemoGatewayBanner,
+  InlineMessage
+} from '@components';
 import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
@@ -13,6 +20,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
@@ -22,7 +30,7 @@ import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import MembershipSelector from './MembershipSelector';
 
-interface Props extends MembershipPurchaseState {
+interface MembershipProps extends MembershipPurchaseState {
   isSubmitting: boolean;
   error?: Error;
   onComplete(fields: any): void;
@@ -34,6 +42,7 @@ interface UIProps {
   relevantAccounts: StoreAccount[];
   isSubmitting: boolean;
   error?: Error;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -58,7 +67,7 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const MembershipForm = ({ isSubmitting, error, onComplete }: Props) => {
+const MembershipForm = ({ isSubmitting, error, isDemoMode, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
@@ -70,6 +79,7 @@ const MembershipForm = ({ isSubmitting, error, onComplete }: Props) => {
       error={error}
       network={network}
       relevantAccounts={relevantAccounts}
+      isDemoMode={isDemoMode}
       onComplete={onComplete}
     />
   );
@@ -80,6 +90,7 @@ export const MembershipFormUI = ({
   error,
   network,
   relevantAccounts,
+  isDemoMode,
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useAssets();
@@ -108,6 +119,7 @@ export const MembershipFormUI = ({
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner />}
       <Formik
         enableReinitialize={true}
         initialValues={initialFormikValues}
@@ -225,7 +237,7 @@ export const MembershipFormUI = ({
               </FormFieldItem>
               <FormFieldSubmitButton
                 type="submit"
-                disabled={!isValid || !selectedAccount}
+                disabled={isDemoMode || !isValid || !selectedAccount}
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
@@ -250,4 +262,11 @@ export const MembershipFormUI = ({
   );
 };
 
-export default MembershipForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & MembershipProps;
+
+export default connector(MembershipForm);

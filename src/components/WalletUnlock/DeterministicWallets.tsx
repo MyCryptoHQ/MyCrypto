@@ -440,7 +440,7 @@ export function DeterministicWalletsClass({
           <img src={nextIcon} onClick={nextPage} />
         </Nav>
         <ButtonsGroup>
-          <CancelButton onClick={onCancel} inverted={true}>
+          <CancelButton onClick={onCancel} colorScheme={'inverted'}>
             {translate('CANCEL_ACTION')}
           </CancelButton>
           <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>

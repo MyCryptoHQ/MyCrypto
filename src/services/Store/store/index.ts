@@ -10,9 +10,13 @@ export { setPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
+  resetAndCreateAccount,
+  resetAndCreateManyAccounts,
   destroyAccount,
   updateAccount,
-  updateAccounts
+  updateAccounts,
+  getAccounts,
+  addAccounts
 } from './account.slice';
 export { createContact, destroyContact, updateContact } from './contact.slice';
 export { createUserAction, destroyUserAction, updateUserAction } from './userAction.slice';
@@ -57,7 +61,10 @@ export {
   setRates,
   getRates,
   getInactivityTimer,
-  setInactivityTimer
+  setInactivityTimer,
+  setDemoMode,
+  getIsDemoMode,
+  addAccountsToFavorites
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
