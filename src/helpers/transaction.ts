@@ -148,6 +148,16 @@ const decodeTransaction = (signedTx: Arrayish) => {
   };
 };
 
+const buildRawTxFromSigned = (signedTx: Arrayish): ITxObject => {
+  const decodedTx = parseTransaction(signedTx);
+  return ({
+    ...decodedTx,
+    value: decodedTx.value.toHexString() as ITxValue,
+    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
+    gasPrice: decodedTx.gasPrice.toHexString() as ITxGasPrice
+  } as unknown) as ITxObject;
+};
+
 // needs testing
 export const makeTxConfigFromSignedTx = (
   signedTx: Arrayish,
@@ -164,8 +174,12 @@ export const makeTxConfigFromSignedTx = (
     assets
   });
 
+  const rawTransaction = oldTxConfig.rawTransaction
+    ? oldTxConfig.rawTransaction
+    : buildRawTxFromSigned(signedTx);
+
   const txConfig = {
-    rawTransaction: oldTxConfig.rawTransaction,
+    rawTransaction,
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
       : decodedTx.to) as TAddress,
@@ -444,7 +458,7 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   }
 
   try {
-    const { r, s, v, from, ...unsignedTransaction } = transaction;
+    const { r, s, v, from, hash, ...unsignedTransaction } = transaction;
     const serializedTransaction = serializeTransaction(unsignedTransaction, { r, s, v });
     return !!recoverAddress(serializedTransaction, { r, s, v });
   } catch (e) {

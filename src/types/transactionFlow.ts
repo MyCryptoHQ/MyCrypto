@@ -88,6 +88,7 @@ export interface IStepComponentProps extends IDefaultStepComponentProps {
   signedTx?: string;
   txType?: ITxType;
   txQueryType?: TxQueryTypes;
+  error?: string;
   children?: never;
 }
 

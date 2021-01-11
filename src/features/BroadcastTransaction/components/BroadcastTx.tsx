@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Identicon } from '@mycrypto/ui';
 import { toBuffer } from 'ethereumjs-util';
 import { parseTransaction, Transaction } from 'ethers/utils';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { CodeBlock, InlineMessage, InputField, NetworkSelector } from '@components';
+import {
+  Button,
+  CodeBlock,
+  InlineMessage,
+  InputField,
+  Label,
+  NetworkSelector,
+  Tooltip
+} from '@components';
 import { verifyTransaction } from '@helpers';
+import { AppState } from '@store';
+import { getNetwork } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
 
@@ -14,6 +24,9 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  label {
+    align-self: flex-start;
+  }
 `;
 
 const Description = styled.p`
@@ -40,12 +53,6 @@ const InputWrapper = styled.div`
   align-items: center;
 `;
 
-const PlaceholderButton = styled(Button)`
-  opacity: 0.4;
-  margin-top: 20px;
-  cursor: default;
-`;
-
 const SendButton = styled(Button)`
   width: 100%;
 `;
@@ -54,22 +61,11 @@ const CodeBlockWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  max-width: 510px;
   overflow-x: auto;
 `;
 
-const IdenticonIcon = styled(Identicon)`
-  margin-left: 12px;
-  margin-top: 8px;
-
-  img {
-    width: 48px;
-    height: 48px;
-    max-width: none;
-  }
-`;
-
-const StyledLabel = styled.label`
+const StyledLabel = styled(Label)`
+  align-self: flex-start;
   margin-top: 8px;
 `;
 
@@ -91,27 +87,32 @@ const makeTxFromSignedTx = (signedTransaction: string) => {
 };
 
 interface Props {
-  network: NetworkId;
+  networkId: NetworkId;
   signedTx: ISignedTx;
   transaction: Transaction | undefined;
   onComplete(signedTx: string): void;
   handleNetworkChanged(network: NetworkId): void;
 }
 
-const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Props) => {
+const BroadcastTx = ({
+  signedTx,
+  networkId,
+  onComplete,
+  handleNetworkChanged
+}: Props & ConnectedProps<typeof connector>) => {
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
   const [transaction, setTransaction] = useState<Transaction | undefined>(
     makeTxFromSignedTx(signedTx)
   );
 
-  const validateField = () => {
-    if ((transaction && verifyTransaction(transaction)) || !userInput) {
+  useEffect(() => {
+    if (transaction && verifyTransaction(transaction)) {
       setInputError('');
     } else {
       setInputError(translateRaw('BROADCAST_TX_INPUT_ERROR'));
     }
-  };
+  }, [transaction]);
 
   const handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
@@ -120,6 +121,8 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
     setInputError('');
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
+
+  const isValid = transaction !== undefined && inputError.length === 0;
 
   return (
     <ContentWrapper>
@@ -132,34 +135,39 @@ const BroadcastTx = ({ signedTx, network, onComplete, handleNetworkChanged }: Pr
           height={'250px'}
           placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
           onChange={handleChange}
-          onBlur={validateField}
-          inputError={!transaction ? inputError : ''}
+          inputError={userInput.length > 0 ? inputError : ''}
         />
-        {transaction && <IdenticonIcon address={userInput} />}
       </InputWrapper>
-      {transaction ? (
+      {isValid && (
         <React.Fragment>
-          {!transaction.chainId && (
+          {!transaction!.chainId && (
             <NetworkSelectWrapper>
-              <NetworkSelector network={network} onChange={handleNetworkChanged} />
-              {!network && (
+              <NetworkSelector network={networkId} onChange={handleNetworkChanged} />
+              {!networkId && (
                 <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
               )}
             </NetworkSelectWrapper>
           )}
-          <StyledLabel>{translate('SEND_RAW')}</StyledLabel>
+          <StyledLabel>
+            {translate('SEND_RAW')}
+            <Tooltip tooltip={translateRaw('BROADCAST_TX_RAW_TOOLTIP')} />
+          </StyledLabel>
           <CodeBlockWrapper>
-            <CodeBlock>{getStringifiedTx(transaction)}</CodeBlock>
+            <CodeBlock>{getStringifiedTx(transaction!)}</CodeBlock>
           </CodeBlockWrapper>
-          <SendButton onClick={() => onComplete(userInput.trim())}>
-            {translateRaw('SEND_TRANS')}
-          </SendButton>
         </React.Fragment>
-      ) : (
-        <PlaceholderButton>{translateRaw('SEND_TRANS')}</PlaceholderButton>
       )}
+      <SendButton disabled={!isValid} onClick={() => onComplete(userInput.trim())}>
+        {translateRaw('SEND_TRANS')}
+      </SendButton>
     </ContentWrapper>
   );
 };
 
-export default BroadcastTx;
+const mapStateToProps = (state: AppState) => ({
+  getNetwork: (n: NetworkId) => getNetwork(n)(state)
+});
+
+const connector = connect(mapStateToProps);
+
+export default connector(BroadcastTx);
