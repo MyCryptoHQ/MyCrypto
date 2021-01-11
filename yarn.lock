@@ -5910,10 +5910,10 @@ electron-updater@4.0.0:
     semver "^5.6.0"
     source-map-support "^0.5.9"
 
-electron@9.3.1:
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.1.tgz#e301932c5c0537d8c9a8850d216d3ba454dbf55c"
-  integrity sha512-DScrhqBT4a54KfdF0EoipALpHmdQTn3m7SSCtbpTcEcG+UDUiXad2cOfW6DHeVH7N+CVDKDG12q2PhVJjXkFAA==
+electron@10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-10.2.0.tgz#4b00f0907b28aca4b93661bb53ce9a4f8ad32201"
+  integrity sha512-GBUyq8dwUqXPkCTkoID+eZ5Pm9GFlLUd2eSoGe8UOaHeW68SgCf5t75/uGHraQ1OIz/0qniyH5M4ebWEHGppyQ==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
@@ -11126,10 +11126,10 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-abi@^2.7.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.18.0.tgz#1f5486cfd7d38bd4f5392fa44a4ad4d9a0dffbf4"
-  integrity sha512-yi05ZoiuNNEbyT/xXfSySZE+yVnQW6fxPZuFbLyS1s6b5Kw3HzV2PHOM4XR+nsjzkHxByK+2Wg+yCQbe35l8dw==
+node-abi@2.19.3, node-abi@^2.19.3, node-abi@^2.7.0:
+  version "2.19.3"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.19.3.tgz#252f5dcab12dad1b5503b2d27eddd4733930282d"
+  integrity sha512-9xZrlyfvKhWme2EXFKQhZRp1yNWT/uI1luYPr3sFl+H4keYY4xR+1jO7mvTTijIsHf1M+QDe9uWuKeEpLInIlg==
   dependencies:
     semver "^5.4.1"
 
@@ -11138,7 +11138,7 @@ node-addon-api@^2.0.0:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
   integrity sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==
 
-node-addon-api@^3.0.0, node-addon-api@^3.0.2:
+node-addon-api@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.1.0.tgz#98b21931557466c6729e51cb77cd39c965f42239"
   integrity sha512-flmrDNB06LIl5lywUz7YlNGZH/5p0M7W28k8hzd9Lshtdh1wshD2Y+U4h9LD6KObOy1f+fEVdgprPrEymjM5uw==
@@ -11184,13 +11184,14 @@ node-gyp@^3.8.0:
     tar "^2.0.0"
     which "1"
 
-node-hid@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-2.1.1.tgz#f83c8aa0bb4e6758b5f7383542477da93f67359d"
-  integrity sha512-Skzhqow7hyLZU93eIPthM9yjot9lszg9xrKxESleEs05V2NcbUptZc5HFqzjOkSmL0sFlZFr3kmvaYebx06wrw==
+node-hid@1.3.2, node-hid@2.1.1:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.3.2.tgz#094a3ed8b8282cc2dc27f93839e97a81174586cc"
+  integrity sha512-dRFRpCAoZvMSVN+GYjtbA7D86GPBEAvyv262CV60NF18s/KgtKAGSqHUm677KZtf2rUvBkbccp9QhCXy/0gBmg==
   dependencies:
     bindings "^1.5.0"
-    node-addon-api "^3.0.2"
+    nan "^2.14.0"
+    node-abi "^2.19.3"
     prebuild-install "^6.0.0"
 
 node-int64@^0.4.0:
