@@ -45,6 +45,7 @@ export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean 
       pt={{ _: '3px', sm: '12px' }}
     >
       <Icon type={link.icon} height="24px" color={current ? COLORS.GREYISH_BROWN : COLORS.WHITE} />
+
       <Text variant="navItem" color={current ? 'GREYISH_BROWN' : 'WHITE'}>
         {link.title}
       </Text>
