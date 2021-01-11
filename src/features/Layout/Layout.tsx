@@ -195,7 +195,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
         <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
       )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
-        <STop newNav={featureFlags.NEW_NAVIGATION}>
+        <STop newNav={featureFlags.NEW_NAVIGATION} ref={topRef}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
@@ -209,7 +209,17 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
           )}
         </STop>
         {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
-          <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+          <>
+            <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+            {featureFlags.NEW_NAVIGATION && (
+              <TopNav
+                current={pathname}
+                isMobile={isMobile}
+                isTrayOpen={isOpen}
+                openTray={() => setIsOpen(!isOpen)}
+              />
+            )}
+          </>
         ) : (
           <DemoLayoutWrapper isDemoMode={isDemoMode}>
             {isDemoMode && (
@@ -234,7 +244,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                 openTray={() => setIsOpen(!isOpen)}
               />
             )}
-            <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
+            <BannerWrapper newNav={featureFlags.NEW_NAVIGATION}>
               <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
             </BannerWrapper>
             <SContainer
