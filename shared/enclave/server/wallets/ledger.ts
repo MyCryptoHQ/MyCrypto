@@ -1,7 +1,7 @@
 import { Transaction } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import LedgerTransport from '@ledgerhq/hw-transport';
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';
+import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-singleton';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
 import { WalletLib } from 'shared/enclave/types';
@@ -12,7 +12,7 @@ let transport: LedgerTransport<string> | null;
 async function getEthApp() {
   try {
     if (!transport) {
-      transport = await TransportNodeHid.create();
+      transport = await TransportNodeHid.create(5000);
       transport.on('disconnect', () => (transport = null));
     }
     return new LedgerEth(transport);

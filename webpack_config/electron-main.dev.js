@@ -51,7 +51,8 @@ const electronMainConfig = {
   ],
   externals: {
     'node-hid': 'commonjs node-hid',
-    usb: 'commonjs usb'
+    usb: 'commonjs usb',
+    '@ledgerhq/hw-transport-node-hid-singleton': 'commonjs @ledgerhq/hw-transport-node-hid-singleton'
   },
   node: {
     __dirname: false,
