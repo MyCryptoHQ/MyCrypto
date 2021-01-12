@@ -3,8 +3,10 @@ import React from 'react';
 import InlineSVG from 'react-inlinesvg';
 
 import add from '@assets/icons/actions/add.svg';
+import addBold from '@assets/icons/actions/add_bold.svg';
 import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
+import edit from '@assets/icons/actions/edit.svg';
 import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
@@ -113,11 +115,13 @@ const svgIcons = {
   /* Action icons */
   back,
   expand,
+  edit,
   caret,
   add,
   info,
   more,
   confirm,
+  'add-bold': addBold,
   'info-small': infoSmall,
   'opened-eye': openedEye,
   'closed-eye': closedEye,

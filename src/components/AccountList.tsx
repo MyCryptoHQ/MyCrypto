@@ -7,13 +7,16 @@ import styled, { css } from 'styled-components';
 
 import informationalSVG from '@assets/images/icn-info-blue.svg';
 import {
+  Box,
   EditableAccountLabel,
   EthAddress,
   FixedSizeCollapsibleTable,
+  Icon,
   Network,
   RouterLink,
   RowDeleteOverlay,
   SkeletonLoader,
+  Text,
   UndoDeleteOverlay
 } from '@components';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
@@ -148,27 +151,6 @@ const DeleteButton = styled(Button)`
   width: 100%;
 `;
 
-const AccountListFooterWrapper = styled.div`
-  & * {
-    color: ${COLORS.BLUE_BRIGHT};
-  }
-  & img {
-    height: 1.1em;
-    margin-right: 0.5em;
-  }
-`;
-
-const AddAccountButton = styled(Button)`
-  color: ${COLORS.BLUE_BRIGHT};
-  padding: ${SPACING.BASE};
-  opacity: 1;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
-
 const PrivateColumnLabel = styled.div`
   display: inline-block;
 `;
@@ -220,21 +202,6 @@ export default function AccountList(props: AccountListProps) {
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
   };
 
-  // Verify if AccountList is used in Dashboard to display Settings button
-  const actionLink = dashboard ? ROUTE_PATHS.SETTINGS.path : undefined;
-
-  const Footer = () => {
-    return (
-      <AccountListFooterWrapper>
-        <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
-          <AddAccountButton basic={true}>{`+ ${translateRaw(
-            'ACCOUNT_LIST_TABLE_ADD_ACCOUNT'
-          )}`}</AddAccountButton>
-        </RouterLink>
-      </AccountListFooterWrapper>
-    );
-  };
-
   return (
     <DashboardPanel
       heading={
@@ -243,9 +210,29 @@ export default function AccountList(props: AccountListProps) {
           <Tooltip tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
         </>
       }
-      actionLink={actionLink}
+      headingRight={
+        <Box variant="rowAlign">
+          {dashboard && (
+            <RouterLink to={ROUTE_PATHS.SETTINGS.path} style={{ marginRight: SPACING.MD }}>
+              <Box variant="rowAlign">
+                <Icon type="edit" width="16px" />
+                <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                  {translateRaw('EDIT')}
+                </Text>
+              </Box>
+            </RouterLink>
+          )}
+          <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+            <Box variant="rowAlign">
+              <Icon type="add-bold" width="16px" />
+              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                {translateRaw('ADD')}
+              </Text>
+            </Box>
+          </RouterLink>
+        </Box>
+      }
       className={`AccountList ${className}`}
-      footer={<Footer />}
       data-testid="account-list"
     >
       <FixedSizeCollapsibleTable
