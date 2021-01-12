@@ -9,7 +9,7 @@ import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import { ErrorObject, FormData, IReceiverAddress, WalletId } from '@types';
+import { ErrorObject, FormData, IReceiverAddress, TAddress, WalletId } from '@types';
 import { isFormValid, toChecksumAddressByChainId } from '@utils';
 
 const FormWrapper = styled(Form)`
@@ -25,7 +25,7 @@ interface Props {
   onUnlock(param: any): void;
 }
 
-const WalletService = WalletFactory(WalletId.VIEW_ONLY);
+const WalletService = WalletFactory[WalletId.VIEW_ONLY];
 
 interface FormValues {
   address: IReceiverAddress;
@@ -45,7 +45,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
 
   const onSubmit = (fields: FormValues) => {
     if (equals(fields, initialFormikValues)) return;
-    onUnlock(WalletService.init(toChecksumAddressByChainId(fields.address.value, network.chainId)));
+    onUnlock(
+      WalletService.init({
+        address: toChecksumAddressByChainId(fields.address.value, network.chainId) as TAddress
+      })
+    );
   };
 
   return (

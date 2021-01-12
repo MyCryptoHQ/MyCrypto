@@ -70,7 +70,7 @@ const SContainer = styled.div`
   }
 `;
 
-const WalletService = WalletFactory(WalletId.WALLETCONNECT);
+const WalletService = WalletFactory[WalletId.WALLETCONNECT];
 const wikiLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
 
 export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnProps) {
@@ -78,7 +78,7 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
 
   useEffect(() => {
     if (!state.detectedAddress) return;
-    onUnlock(WalletService.init(state.detectedAddress, signMessage));
+    onUnlock(WalletService.init({ address: state.detectedAddress }, signMessage));
   }, [state.detectedAddress]);
 
   return (

@@ -1,45 +1,59 @@
-import { Network, TAddress, WalletId, WalletService } from '@types';
+import {
+  HardwareWalletInitArgs,
+  HardwareWalletService,
+  ViewOnlyWalletInitArgs,
+  WalletConnectWalletInitArgs,
+  WalletId,
+  WalletService,
+  Web3WalletInitArgs
+} from '@types';
 
 import { ChainCodeResponse, LedgerWallet, TrezorWallet } from './deterministic';
 import { AddressOnlyWallet } from './non-deterministic';
-import { IUseWalletConnect, WalletConnectWallet } from './walletconnect';
+import { WalletConnectWallet } from './walletconnect';
 import { unlockWeb3 } from './web3';
 
-export const WalletFactory = (walletId: WalletId): WalletService | any => {
-  switch (walletId) {
-    case WalletId.WEB3:
-    case WalletId.TRUST:
-      return {
-        init: (networks: Network[], onSuccess: (args: any) => any) => {
-          return unlockWeb3(onSuccess)(networks);
-        }
-      };
-    case WalletId.LEDGER_NANO_S_NEW:
-    case WalletId.LEDGER_NANO_S:
-      return {
-        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
-          LedgerWallet.getChainCode(dPath),
-        init: (address: TAddress, dPath: string, index: number) =>
-          new LedgerWallet(address, dPath, index)
-      };
-    case WalletId.TREZOR_NEW:
-    case WalletId.TREZOR:
-      return {
-        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
-          TrezorWallet.getChainCode(dPath),
-        init: (address: TAddress, dPath: string, index: number) =>
-          new TrezorWallet(address, dPath, index)
-      };
-    case WalletId.VIEW_ONLY:
-      return {
-        init: (address: TAddress) => new AddressOnlyWallet(address)
-      };
-    case WalletId.WALLETCONNECT:
-      return {
-        init: (address: TAddress, signMessageHandler: IUseWalletConnect['signMessage']) =>
-          new WalletConnectWallet(address, signMessageHandler)
-      };
-    default:
-      throw new Error('[WalletService]: Unknown WalletId');
-  }
+export const WalletFactory = {
+  [WalletId.WEB3]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
+  [WalletId.METAMASK]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
+  [WalletId.FRAME]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
+  [WalletId.COINBASE]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
+  [WalletId.TRUST]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
+  [WalletId.LEDGER_NANO_S_NEW]: {
+    getChainCode: (dPath: string): Promise<ChainCodeResponse> => LedgerWallet.getChainCode(dPath),
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new LedgerWallet(address, dPath, index)
+  } as HardwareWalletService,
+  [WalletId.LEDGER_NANO_S]: {
+    getChainCode: (dPath: string): Promise<ChainCodeResponse> => LedgerWallet.getChainCode(dPath),
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new LedgerWallet(address, dPath, index)
+  } as HardwareWalletService,
+  [WalletId.TREZOR_NEW]: {
+    getChainCode: (dPath: string): Promise<ChainCodeResponse> => TrezorWallet.getChainCode(dPath),
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(address, dPath, index)
+  } as HardwareWalletService,
+  [WalletId.TREZOR]: {
+    getChainCode: (dPath: string): Promise<ChainCodeResponse> => TrezorWallet.getChainCode(dPath),
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(address, dPath, index)
+  } as HardwareWalletService,
+  [WalletId.VIEW_ONLY]: {
+    init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
+  } as WalletService,
+  [WalletId.WALLETCONNECT]: {
+    init: ({ address, signMessageHandler }: WalletConnectWalletInitArgs) =>
+      new WalletConnectWallet(address, signMessageHandler)
+  } as WalletService
 };

@@ -4,10 +4,10 @@ import { Box, Button, Heading, InlineMessage, NewTabLink } from '@components';
 import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
-import { NetworkUtils, useNetworks } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
-import { FormData, Network, WalletId } from '@types';
+import { FormData, WalletId } from '@types';
 import { hasWeb3Provider, useScreenSize } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 
@@ -25,7 +25,7 @@ interface IWeb3UnlockError {
   error: boolean;
   message: string;
 }
-const WalletService = WalletFactory(WalletId.WEB3);
+const WalletService = WalletFactory[WalletId.WEB3];
 
 const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
@@ -40,17 +40,10 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
   const [web3Unlocked, setWeb3Unlocked] = useState<boolean | undefined>(undefined);
   const [web3UnlockError, setWeb3UnlockError] = useState<IWeb3UnlockError | undefined>(undefined);
   const unlockWallet = useCallback(async () => {
-    const handleUnlock = (network: Network) => {
-      if (!network.isCustom) {
-        addNodeToNetwork(NetworkUtils.createWeb3Node(), network);
-      }
-    };
-
     try {
-      const walletPayload: Web3Wallet[] | undefined = await WalletService.init(
-        networks,
-        handleUnlock
-      );
+      const walletPayload: Web3Wallet[] | undefined = await WalletService.init({
+        networks
+      });
       if (!walletPayload) {
         throw new Error('Failed to unlock web3 wallet');
       }

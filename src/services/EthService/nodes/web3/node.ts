@@ -99,21 +99,33 @@ export async function setupWeb3Node() {
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   const { ethereum } = window as any;
   if (ethereum) {
+    console.debug(`[setupWeb3Node]: found window.ethereum`);
     // Overwrite the legacy Web3 with the newer version.
+    console.debug(`[setupWeb3Node]: setting up window.web3`);
     if ((window as any).Web3) {
       (window as any).web3 = new (window as any).Web3(ethereum);
     }
+    console.debug(`[setupWeb3Node]: set up window.web3`);
     const web3Node = new Web3Node();
+    console.debug(`[setupWeb3Node]: web3Node: ${JSON.stringify(web3Node)}`);
+    console.debug(`[setupWeb3Node]: requesting permissions`);
     const permissions = await requestPermission(web3Node);
     if (permissions) {
+      console.debug(`[setupWeb3Node]: permissions found`);
       return await getChainIdAndLib();
+    } else {
+      console.debug(`[setupWeb3Node]: no permissions found`);
     }
+    console.debug(`[setupWeb3Node]: attempting to fallback to legacyConnect`);
     const legacyConnect = await requestLegacyConnect(ethereum);
     if (legacyConnect) {
+      console.debug(`[setupWeb3Node]: legacyConnect successful`);
       return await getChainIdAndLib();
     }
+    console.debug(`[setupWeb3Node]: legacyConnect not successful. returning permission denied.`);
     throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
+    console.debug(`[setupWeb3Node]: did not find window.ethereum`);
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;
 
@@ -131,7 +143,7 @@ const requestPermission = async (web3Node: Web3Node) => {
   try {
     return await web3Node.requestPermissions();
   } catch (e) {
-    console.debug('[requestPermission]: ', e);
+    console.debug('[requestPermission]: ERROR:', e);
     return;
   }
 };
@@ -141,7 +153,7 @@ const requestLegacyConnect = async (ethereum: any) => {
     await ethereum.enable();
     return true;
   } catch (e) {
-    console.debug('[requestLegacyConnect]: ', e);
+    console.debug('[requestLegacyConnect]: ERROR', e);
     return;
   }
 };

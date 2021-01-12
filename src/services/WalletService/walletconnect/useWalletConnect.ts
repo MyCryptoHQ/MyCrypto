@@ -103,7 +103,13 @@ export function useWalletConnect(): IUseWalletConnect {
     });
   };
 
-  const signMessage = async (msg: string, address: string): Promise<string> => {
+  const signMessage = async ({
+    msg,
+    address
+  }: {
+    msg: string;
+    address: TAddress;
+  }): Promise<string> => {
     dispatch({ type: WcReducer.actionTypes.SIGN_REQUEST });
     if (!state.detectedAddress || !state.detectedChainId || !service) {
       throw new Error(`[useWalletConnect]: cannot call signMessage before successful connection`);

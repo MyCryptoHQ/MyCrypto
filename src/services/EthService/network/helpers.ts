@@ -3,8 +3,7 @@ import {
   EtherscanProvider,
   FallbackProvider,
   InfuraProvider,
-  JsonRpcProvider,
-  Web3Provider
+  JsonRpcProvider
 } from '@ethersproject/providers';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
@@ -32,10 +31,6 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
   switch (type) {
     case NodeType.ETHERSCAN: {
       return new EtherscanProvider(networkish, ETHERSCAN_API_KEY);
-    }
-    case NodeType.WEB3: {
-      const ethereumProvider = (window as CustomWindow).ethereum;
-      return new Web3Provider(ethereumProvider, networkish);
     }
     case NodeType.INFURA:
       return new InfuraProvider(networkish, INFURA_API_KEY);

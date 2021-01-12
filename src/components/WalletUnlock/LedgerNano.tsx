@@ -7,7 +7,7 @@ import { EXT_URLS } from '@config';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, FormData, WalletId } from '@types';
+import { DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
@@ -30,7 +30,7 @@ interface State {
 
 type Props = OwnProps;
 
-const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
+const WalletService = WalletFactory[WalletId.LEDGER_NANO_S];
 
 class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
@@ -151,8 +151,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     this.reset();
   };
 
-  private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
+  private handleUnlock = (address: TAddress, index: number) => {
+    this.props.onUnlock(WalletService.init({ address, dPath: this.state.dPath.value, index }));
   };
 
   private handleNullConnect = (): void => {
