@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ContentPanel } from '@components';
 import { AppState, importError, importState, importSuccess } from '@store';
 import { translateRaw } from '@translations';
+import { goBack } from '@utils';
 
 import { ImportBox, ImportSuccess } from './components';
 
@@ -20,12 +21,13 @@ export class Import extends React.Component<Props> {
 
   public render() {
     const { history, importState, importSuccess, importFailure } = this.props;
+    const onBackFunc = () => goBack(history);
     const { step } = this.state;
     const steps = [
       {
         heading: translateRaw('SETTINGS_IMPORT_HEADING'),
         component: ImportBox,
-        backOption: history.goBack
+        backOption: onBackFunc
       },
       {
         heading: translateRaw('SETTINGS_IMPORT_SUCCESS_HEADING'),

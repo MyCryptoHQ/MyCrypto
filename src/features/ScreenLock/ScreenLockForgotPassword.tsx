@@ -10,6 +10,7 @@ import { ROUTE_PATHS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import translate, { translateRaw } from '@translations';
+import { goBack } from '@utils';
 
 import { ScreenLockContext } from './ScreenLockProvider';
 
@@ -48,10 +49,11 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
     category: ANALYTICS_CATEGORIES.SCREEN_LOCK
   });
   const { resetAll } = useContext(ScreenLockContext);
+  const onBack = () => goBack(history);
 
   return (
     <ExtendedContentPanel
-      onBack={history.goBack}
+      onBack={onBack}
       heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
       description={
         <Description>{translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}</Description>

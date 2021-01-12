@@ -11,7 +11,7 @@ import { DOWNLOAD_MYCRYPTO_LINK, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
 import translate from '@translations';
-import { getFeaturedOS, openLink } from '@utils';
+import { getFeaturedOS, goBack, openLink } from '@utils';
 
 import { AppDownloadItem } from './types';
 
@@ -168,9 +168,10 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
 
   const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
   const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
+  const onBack = () => goBack(history);
 
   return (
-    <ExtendedContentPanel onBack={history.goBack} className="">
+    <ExtendedContentPanel onBack={onBack}>
       <DownloadAppWrapper>
         <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
         <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
