@@ -6,7 +6,6 @@ import { AppLoading } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { Dashboard, DrawerProvider, PageNotFound, ScreenLockProvider } from '@features';
 import { Layout, LayoutConfig } from '@features/Layout';
-import { useAnalytics } from '@hooks';
 import {
   DefaultHomeHandler,
   getAppRoutes,
@@ -17,7 +16,6 @@ import {
 import { useFeatureFlags } from '@services';
 import { SPACING } from '@theme';
 import { ScrollToTop, useScreenSize } from '@utils';
-import { useEffectOnce } from '@vendor';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
   switch (path) {
@@ -54,13 +52,6 @@ const LayoutWithLocation = withRouter(({ location, children }) => {
 
 export const AppRoutes = () => {
   const { featureFlags } = useFeatureFlags();
-  const { initAnalytics, track } = useAnalytics();
-
-  // Trigger load event
-  useEffectOnce(() => {
-    initAnalytics();
-    track({ name: 'App Load' });
-  });
 
   return (
     <>

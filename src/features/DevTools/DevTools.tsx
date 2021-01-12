@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Checkbox, Link } from '@components';
 import { IFeatureFlags } from '@config';
-import { useAnalytics } from '@hooks';
 import { useDevTools, useFeatureFlags } from '@services';
 import { DataContext } from '@services/Store';
 import { useDispatch, useSelector } from '@store';
@@ -89,16 +88,7 @@ const SCheckbox = styled(Checkbox)`
 `;
 
 const FeatureFlags = () => {
-  const { featureFlags, setFeatureFlag, isFeatureActive } = useFeatureFlags();
-  const { track, initAnalytics } = useAnalytics();
-
-  // By definition, the app is already loaded when we toggle the feature
-  // flag so we make sure the load event is triggered when the flag is set.
-  useEffect(() => {
-    if (!isFeatureActive('ANALYTICS')) return; // @todo: clear the id if unset
-    initAnalytics();
-    track({ name: 'App Load' });
-  }, [featureFlags.ANALYTICS]);
+  const { featureFlags, setFeatureFlag } = useFeatureFlags();
 
   return (
     <div style={{ marginBottom: '1em' }}>

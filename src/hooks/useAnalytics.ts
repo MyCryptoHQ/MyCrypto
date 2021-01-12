@@ -1,25 +1,18 @@
-import { AnalyticsService, useFeatureFlags } from '@services';
-import { mapObjIndexed } from '@vendor';
+import { useFeatureFlags } from '@services';
+import { PageParams, trackEvent, trackPage, TrackParams } from '@services/Analytics';
+import { useDispatch } from '@store';
+import { noOp } from '@utils';
 
 const useAnalytics = () => {
-  /**
-   * 1. Determine if tracking is allowed by accessing Settings
-   * 2. Replace all calls with noOp if not.
-   * 3. Allow user to toggle activation.
-   */
-
-  const { track, trackPage, initAnalytics } = AnalyticsService;
+  const dispatch = useDispatch();
   const { isFeatureActive } = useFeatureFlags();
+  const isActive = isFeatureActive('ANALYTICS');
 
-  const doNothing = (_?: any) => Promise.resolve();
-
-  const API = {
-    track,
-    trackPage,
-    initAnalytics
+  // Replace all calls with noOp if feature is inactive
+  return {
+    track: isActive ? (payload: TrackParams) => dispatch(trackEvent(payload)) : noOp,
+    trackPage: isActive ? (payload: PageParams) => dispatch(trackPage(payload)) : noOp
   };
-
-  return isFeatureActive('ANALYTICS') ? { ...API } : mapObjIndexed(() => doNothing)(API);
 };
 
 export default useAnalytics;

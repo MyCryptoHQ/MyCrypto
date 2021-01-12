@@ -2,7 +2,7 @@ import { event, page, Providers, setConfig } from '@blockstack/stats';
 
 import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY, TAnalyticEvents } from './constants';
 
-interface PageParams {
+export interface PageParams {
   name: string;
   pathname?: string;
   title: string;
