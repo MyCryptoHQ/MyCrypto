@@ -149,7 +149,7 @@ const CenteredBannerText = styled.div`
 `;
 
 export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
+  <CenteredBannerText>{translate('LAUNCH_ANNOUNCEMENT')}</CenteredBannerText>
 );
 
 const announcementMessage = ANNOUNCEMENT_MSG();

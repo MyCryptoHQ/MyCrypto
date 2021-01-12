@@ -135,7 +135,7 @@
     "BALANCE_TOO_LOW_ERROR": "You are trying to send more $asset than you current have. Click “send max” if you want to send your entire available balance",
     "BALANCE_TOO_LOW_NO_RECOMMENDATION_ERROR": "You are trying to send more $asset than you current have.",
     "BECOME_MEMBER": "Become a Member",
-    "BETA_ANNOUNCEMENT": "We would love it if you could take a few seconds to [give your honest feedback](https://docs.google.com/forms/d/e/1FAIpQLSeMRfT4iEs4gjvRp194kW4ycKoGRYwwpayFTc_aDXnmTunc5g/viewform) on MyCrypto Beta. This is a beta site, so please practice safe sending.",
+    "LAUNCH_ANNOUNCEMENT": "Welcome to the new MyCrypto! Please enjoy, and be sure that you're always practicing safe sending.",
     "BROADCAST_TX": "Broadcast Transaction",
     "BROADCAST_TX_BROADCAST_ANOTHER": "Broadcast Another Transaction",
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'. You will have a chance to confirm the transaction parameters on the next page before sending.",
