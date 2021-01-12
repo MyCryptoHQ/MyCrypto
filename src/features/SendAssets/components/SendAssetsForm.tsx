@@ -797,7 +797,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             getAssetRate(values.asset),
             ptxState.isPTXFree
           )}
-          shown={!(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)}
+          shown={isFormValid}
         />
       )}
     </div>
