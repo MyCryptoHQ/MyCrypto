@@ -89,7 +89,7 @@ import {
   sortByLabel,
   toTokenBase
 } from '@utils';
-import { path } from '@vendor';
+import { path, useDebounce } from '@vendor';
 
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
@@ -442,9 +442,13 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     handleNonceEstimate(values.account);
   }, [values.account]);
 
-  useEffect(() => {
-    handleGasEstimate();
-  }, [values.account, values.address]);
+  useDebounce(
+    () => {
+      handleGasEstimate();
+    },
+    500,
+    [values.account, values.address, values.amount]
+  );
 
   useEffect(() => {
     const asset = values.asset;
@@ -504,7 +508,6 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         const gas = await getGasEstimate(values.network, finalTx);
         setFieldValue('gasLimitField', hexToNumber(gas).toString());
         setGasEstimationError(undefined);
-        setFieldTouched('amount');
       } catch (err) {
         setGasEstimationError(err.message);
       }
@@ -530,7 +533,6 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             DEFAULT_ASSET_DECIMAL
           );
       setFieldValue('amount', amount);
-      handleGasEstimate();
     }
   };
 
@@ -630,7 +632,6 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             value={values.amount}
             onBlur={() => {
               setFieldTouched('amount');
-              handleGasEstimate();
             }}
             placeholder={'0.00'}
           />
