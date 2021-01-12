@@ -9,6 +9,7 @@ import { useUserActions } from '@services/Store';
 import { exportState, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE } from '@types';
+import { goBack } from '@utils';
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
@@ -28,7 +29,7 @@ const CacheDisplay = styled.code`
 
 export function Export(props: RouteComponentProps) {
   const { history } = props;
-  const onBack = history.goBack;
+  const onBack = () => goBack(history);
   const appState = JSON.stringify(useSelector(exportState));
 
   const { updateUserAction, findUserAction } = useUserActions();

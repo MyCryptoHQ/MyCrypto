@@ -9,6 +9,7 @@ import { ExtendedContentPanel, InputField } from '@components';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
 import translate, { translateRaw } from '@translations';
+import { goBack } from '@utils';
 
 import { ScreenLockContext } from './ScreenLockProvider';
 
@@ -116,7 +117,7 @@ const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
     trackScreenLock({
       actionName: 'Back button clicked'
     });
-    history.goBack();
+    goBack(history);
   }, [history, trackScreenLock]);
 
   return (
