@@ -72,8 +72,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
   if (!isEmpty(selectedNode)) {
     const sNode = sortedNodes.find((n) => n.name === selectedNode);
     if (sNode) {
-      const restNodes = sortedNodes.filter((n) => n.name !== selectedNode);
-      sortedNodes = [sNode, ...restNodes];
+      sortedNodes = [sNode];
     }
   }
 

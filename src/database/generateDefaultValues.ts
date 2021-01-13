@@ -54,7 +54,6 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
       firstNode
         ? {
             // Extend network if nodes are defined
-            autoNode: firstNode.name, // Select first node as auto
             selectedNode: n.selectedNode || firstNode.name // Select first node as default
           }
         : {}

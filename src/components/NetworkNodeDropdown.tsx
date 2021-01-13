@@ -88,7 +88,7 @@ interface Props {
 const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const { networks, getNetworkById, setNetworkSelectedNode } = useNetworks();
   const [network, setNetwork] = useState(() => getNetworkById(networkId));
-  const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
+  const [_selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
 
   useEffect(() => {
     const newNetwork = getNetworkById(networkId);
@@ -109,18 +109,18 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
     [networkId, setNetworkSelectedNode]
   );
 
-  const { nodes, autoNode: autoNodeName } = network;
+  const { nodes } = network;
   const autoNode = {
-    ...NetworkUtils.getAutoNode(network),
     service: autoNodeLabel
   };
-  const { service, name: selectedNodeName } = selectedNode;
+  const selectedNode = _selectedNode || autoNode;
+  const { service } = selectedNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
     <Selector<NodeOptions & any>
       value={{
-        label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
+        label: service,
         value: selectedNode
       }}
       options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}

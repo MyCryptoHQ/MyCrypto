@@ -10,26 +10,13 @@ export abstract class NetworkUtils {
     hidden: true
   });
 
-  public static getSelectedNode = (network: Network): NodeOptions => {
+  public static getSelectedNode = (network: Network): NodeOptions | undefined => {
     if (network.selectedNode) {
       const selectedNode = network.nodes.find((n) => n.name === network.selectedNode);
-      if (selectedNode) {
-        return selectedNode;
-      }
+      return selectedNode;
     }
 
-    return NetworkUtils.getAutoNode(network);
-  };
-
-  public static getAutoNode = (network: Network): NodeOptions => {
-    if (network.autoNode) {
-      const autoNode = network.nodes.find((n) => n.name === network.autoNode);
-      if (autoNode) {
-        return autoNode;
-      }
-    }
-
-    return network.nodes[0];
+    return undefined;
   };
 
   public static makeNodeName = (network: string, name: string) =>
