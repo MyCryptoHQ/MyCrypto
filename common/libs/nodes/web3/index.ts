@@ -5,11 +5,13 @@ import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
-  isValidGetNetVersion
+  isValidGetNetVersion,
+  isValidRequestPermissions
 } from 'libs/validators';
 import RPCNode from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
+import { IExposedAccountsPermission, IWeb3Permission, Web3RequestPermissionsResult } from './types';
 
 const METAMASK_PERMISSION_DENIED_ERROR = translateRaw('METAMASK_PERMISSION_DENIED');
 
@@ -50,6 +52,21 @@ export default class Web3Node extends RPCNode {
       .then(isValidGetAccounts)
       .then(({ result }) => result);
   }
+
+  public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
+    return this.client
+      .callWeb3(this.requests.requestPermissions())
+      .then(isValidRequestPermissions)
+      .then(({ result }) => result);
+  }
+
+  public getApprovedAccounts(): Promise<string[] | undefined> {
+    return this.client
+      .callWeb3(this.requests.getPermissions())
+      .then(isValidRequestPermissions)
+      .then(({ result }) => result && result[0] && result[0].caveats)
+      .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
+  }
 }
 
 export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
@@ -78,21 +95,29 @@ export async function setupWeb3Node() {
   // Handle the following MetaMask breaking change:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   const { ethereum } = window as any;
-
   if (ethereum) {
     // Overwrite the legacy Web3 with the newer version.
-    (window as any).web3 = new (window as any).Web3(ethereum);
-
-    try {
-      // Request permission to access MetaMask accounts.
-      await ethereum.enable();
-
-      // Permission was granted; proceed.
-      return getChainIdAndLib();
-    } catch (e) {
-      // Permission was denied; handle appropriately.
-      throw new Error(METAMASK_PERMISSION_DENIED_ERROR);
+    if ((window as any).Web3) {
+      (window as any).web3 = new (window as any).Web3(ethereum);
     }
+    const web3Node = new Web3Node();
+
+    const detectedPermissions = await getPermissions(web3Node);
+    if (detectedPermissions) {
+      return await getChainIdAndLib();
+    }
+
+    const requestedPermissions = await requestPermission(web3Node);
+    if (requestedPermissions) {
+      return await getChainIdAndLib();
+    }
+
+    const legacyConnect = await requestLegacyConnect(ethereum);
+    if (legacyConnect) {
+      return await getChainIdAndLib();
+    }
+
+    throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;
@@ -139,3 +164,41 @@ export async function ensureWeb3NodeStillAvailable(): Promise<boolean> {
     return false;
   }
 }
+
+const requestPermission = async (web3Node: Web3Node) => {
+  try {
+    return await web3Node.requestPermissions();
+  } catch (e) {
+    console.debug('[requestPermission]: ', e);
+    return;
+  }
+};
+
+const getPermissions = async (web3Node: Web3Node) => {
+  try {
+    return await web3Node.getApprovedAccounts();
+  } catch (e) {
+    console.debug('[getPermissions]: ', e);
+    return;
+  }
+};
+
+const requestLegacyConnect = async (ethereum: any) => {
+  try {
+    await ethereum.enable();
+    return true;
+  } catch (e) {
+    console.debug('[requestLegacyConnect]: ', e);
+    return;
+  }
+};
+
+const deriveApprovedAccounts = (walletPermissions: IWeb3Permission[] | undefined) => {
+  if (!walletPermissions) {
+    return;
+  }
+  const exposedAccounts = walletPermissions.find(
+    (caveat: any) => caveat.name === 'exposedAccounts'
+  ) as IExposedAccountsPermission | undefined;
+  return exposedAccounts && exposedAccounts.value;
+};
