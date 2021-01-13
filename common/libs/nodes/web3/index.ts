@@ -10,6 +10,7 @@ import {
 import RPCNode from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
+import '@metamask/legacy-web3';
 
 const METAMASK_PERMISSION_DENIED_ERROR = translateRaw('METAMASK_PERMISSION_DENIED');
 
@@ -85,7 +86,7 @@ export async function setupWeb3Node() {
 
     try {
       // Request permission to access MetaMask accounts.
-      await ethereum.enable();
+      await ethereum.send('eth_requestAccounts');
 
       // Permission was granted; proceed.
       return getChainIdAndLib();
@@ -132,7 +133,7 @@ export async function ensureWeb3NodeStillAvailable(): Promise<boolean> {
       return true;
     }
 
-    await ethereum.enable();
+    await ethereum.send('eth_requestAccounts');
 
     return true;
   } catch (e) {
