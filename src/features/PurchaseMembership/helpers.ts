@@ -1,5 +1,3 @@
-import { ethers } from 'ethers';
-
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
 import { formatApproveTx } from '@helpers';
 import { getAssetByUUID } from '@services';
@@ -8,7 +6,7 @@ import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } f
 import { hexToString, hexWeiToString, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
-import { IMembershipConfig } from './config';
+import { IMembershipConfig, MEMBERSHIP_REFERRAL_ADDRESS } from './config';
 import { MembershipSimpleTxFormFull } from './types';
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> =>
@@ -28,7 +26,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
-    _referrer: ethers.constants.AddressZero,
+    _referrer: MEMBERSHIP_REFERRAL_ADDRESS,
     _data: []
   });
 

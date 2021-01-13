@@ -52,7 +52,7 @@ export enum IMembershipId {
   lifetime = 'lifetime'
 }
 
-export const MEMBERSHIP_PURCHASE_GAS_LIMIT = 1000000;
+export const MEMBERSHIP_REFERRAL_ADDRESS = '0xf0BC3CCEd3784f5d880B847afB5a631485aA629d'; // @todo change
 
 // Also update eth contracts when updating membership contract addresses
 export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
