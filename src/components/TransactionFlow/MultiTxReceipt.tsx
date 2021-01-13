@@ -168,7 +168,7 @@ export default function MultiTxReceipt({
                 sender={account}
                 gasLimit={bigNumGasLimitToViewable(bigify(gasLimit))}
                 gasPrice={bigify(gasPrice).toString()}
-                nonce={nonce}
+                nonce={bigify(nonce).toString()}
                 rawTransaction={transaction.txRaw}
                 value={value}
                 fiat={fiat}
