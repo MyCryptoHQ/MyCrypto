@@ -8,6 +8,7 @@ import {
   addExcludedAsset,
   addFavorite,
   addFavorites,
+  canTrackProductAnalytics,
   getExcludedAssets,
   getFavorites,
   getFiat,
@@ -111,14 +112,14 @@ describe('settingsSlice', () => {
   });
 
   it('setProductAnalyticsAuthorisation(): can set value to false', () => {
-    const actual = reducer(initialState, setProductAnalyticsAuthorisation(false));
-    const expected = { canTrackProductAnalytics: false };
-    expect(actual).toEqual(expected);
+    const value = false;
+    const actual = reducer(initialState, setProductAnalyticsAuthorisation(value));
+    expect(canTrackProductAnalytics(actual)).toEqual(value);
   });
 
   it('setProductAnalyticsAuthorisation(): can set value to true', () => {
-    const actual = reducer(initialState, setProductAnalyticsAuthorisation(true));
-    const expected = { canTrackProductAnalytics: true };
-    expect(actual).toEqual(expected);
+    const value = true;
+    const actual = reducer(initialState, setProductAnalyticsAuthorisation(value));
+    expect(canTrackProductAnalytics(actual)).toEqual(value);
   });
 });
