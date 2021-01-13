@@ -52,7 +52,7 @@ export enum IMembershipId {
   lifetime = 'lifetime'
 }
 
-export const MEMBERSHIP_REFERRAL_ADDRESS = '0xf0BC3CCEd3784f5d880B847afB5a631485aA629d'; // @todo change
+export const MEMBERSHIP_REFERRAL_ADDRESS = '0x4b41a3A1284AdB11510e9250fC9744B04167D6F2';
 
 // Also update eth contracts when updating membership contract addresses
 export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
