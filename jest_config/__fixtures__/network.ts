@@ -46,8 +46,7 @@ const Ethereum: Network = {
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://etherscan.io'
-  }),
-  selectedNode: 'eth_mycrypto'
+  })
 };
 
 const Ropsten: Network = {

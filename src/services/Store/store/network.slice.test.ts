@@ -75,7 +75,7 @@ describe('NetworkSlice', () => {
 
   it('deleteNode(): deletes node', () => {
     const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_mycrypto' };
-    const state = [fNetworks[0]];
+    const state = [{ ...fNetworks[0], selectedNode: payload.nodeName }];
     const expected = [
       { ...fNetworks[0], nodes: [fNetworks[0].nodes[1]], selectedNode: 'eth_ethscan' }
     ];
