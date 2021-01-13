@@ -22,6 +22,7 @@ import {
   setFiat,
   setInactivityTimer,
   setLanguage,
+  setProductAnalyticsAuthorisation,
   setRates,
   default as slice
 } from './settings.slice';
@@ -107,5 +108,17 @@ describe('settingsSlice', () => {
     const actual = reducer({ ...initialState, isDemoMode: false }, setDemoMode(true));
     const expected = true;
     expect(getIsDemoMode(actual)).toEqual(expected);
+  });
+
+  it('setProductAnalyticsAuthorisation(): can set value to false', () => {
+    const actual = reducer(initialState, setProductAnalyticsAuthorisation(false));
+    const expected = { canTrackProductAnalytics: false };
+    expect(actual).toEqual(expected);
+  });
+
+  it('setProductAnalyticsAuthorisation(): can set value to true', () => {
+    const actual = reducer(initialState, setProductAnalyticsAuthorisation(true));
+    const expected = { canTrackProductAnalytics: true };
+    expect(actual).toEqual(expected);
   });
 });

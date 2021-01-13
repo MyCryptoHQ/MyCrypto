@@ -12,4 +12,5 @@ export interface ISettings {
   rates: IRates;
   language: string; // @todo: Change to enum
   isDemoMode: boolean;
+  canTrackProductAnalytics: boolean;
 }

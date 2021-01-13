@@ -1,4 +1,4 @@
-import { event, page, Providers, setConfig } from '@blockstack/stats';
+import { event, getConfig, page, Providers, setConfig } from '@blockstack/stats';
 
 import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY, TAnalyticEvents } from './constants';
 
@@ -25,6 +25,18 @@ const initAnalytics = () => {
   });
 };
 
+/**
+ * Blockstack/stats sets an anonymous id on `setConfig`.
+ * If a user chooses to deactivate product analytics we ensure to clear
+ * the LS value as well.
+ */
+const clearAnonymousID = () => {
+  const LS_BSK_ID = '__bsk_ana_id__';
+  localStorage.removeItem(LS_BSK_ID);
+};
+
+const setAnonymousID = () => getConfig();
+
 const track = ({ name, params }: TrackParams) => {
   return event({ name, ...params });
 };
@@ -37,5 +49,7 @@ const trackPage = ({ name, title, pathname }: PageParams) => {
 export default {
   track,
   trackPage,
-  initAnalytics
+  initAnalytics,
+  clearAnonymousID,
+  setAnonymousID
 };

@@ -8,8 +8,15 @@ import styled from 'styled-components';
 
 import { DashboardPanel, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
-import { canTrackProductAnalytics, setProductAnalyticsAuthorisation } from '@services/Analytics';
-import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
+import {
+  AppState,
+  canTrackProductAnalytics,
+  getFiat,
+  getInactivityTimer,
+  setFiat,
+  setInactivityTimer,
+  setProductAnalyticsAuthorisation
+} from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { TFiatTicker } from '@types';

@@ -9,9 +9,11 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
-import { createStore } from '@store';
+import { trackInit } from '@services/Analytics';
+import { createStore, useDispatch } from '@store';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
+import { useEffectOnce } from '@vendor';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
@@ -29,6 +31,11 @@ const FullScreen = styled.div`
 const { store, persistor } = createStore();
 
 const RootComponent = () => {
+  const dispatch = useDispatch();
+  useEffectOnce(() => {
+    dispatch(trackInit());
+  });
+
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
   return (
     <ThemeProvider theme={theme}>
