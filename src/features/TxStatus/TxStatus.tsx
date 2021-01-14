@@ -49,6 +49,10 @@ const Wrapper = styled.div<{ fullPageLoading: boolean }>`
   min-height: 600px;
 `;
 
+const SButton = styled(Button)`
+  margin-top: 0;
+`;
+
 const TxStatus = ({ history, location }: RouteComponentProps) => {
   const qs = queryString.parse(location.search);
 
@@ -163,9 +167,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               disableDynamicTxReceiptDisplay={true}
               disableAddTxToAccount={true}
             />
-            <Button onClick={clearForm} fullwidth={true} colorScheme={'inverted'}>
+            <SButton onClick={clearForm} fullwidth={true} colorScheme={'inverted'}>
               {translateRaw('TX_STATUS_GO_BACK')}
-            </Button>
+            </SButton>
           </>
         )}
       </Wrapper>
