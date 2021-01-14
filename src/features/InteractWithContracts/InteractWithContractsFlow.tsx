@@ -9,10 +9,11 @@ import { getNetworkById, StoreContext, useNetworks } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { ISignedTx, ITxReceipt, Tab } from '@types';
-import { useStateReducer } from '@utils';
+import { sortByLabel, useStateReducer } from '@utils';
 
 import { Interact, InteractionReceipt } from './components';
 import InteractionConfirm from './components/InteractionConfirm';
+import { getAccountsInNetwork } from './helpers';
 import { InteractWithContractsFactory, interactWithContractsInitialState } from './stateFactory';
 import { ABIItem, InteractWithContractState } from './types';
 
@@ -49,8 +50,9 @@ const TabsWrapper = styled.div`
 
 const InteractWithContractsFlow = (props: RouteComponentProps) => {
   const [step, setStep] = useState(0);
-  const { defaultAccount } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
+  const defaultAccount = sortByLabel(getAccountsInNetwork(accounts, DEFAULT_NETWORK))[0];
   const initialState = {
     ...interactWithContractsInitialState,
     account: defaultAccount,
