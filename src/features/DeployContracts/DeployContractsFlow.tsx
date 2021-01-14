@@ -4,14 +4,15 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext } from '@services';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { IPendingTxReceipt, ISignedTx, Tab } from '@types';
-import { useStateReducer } from '@utils';
+import { sortByLabel, useStateReducer } from '@utils';
 
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
+import { getAccountsInNetwork } from './helpers';
 import { DeployContractsFactory, deployContractsInitialState } from './stateFactory';
 import { DeployContractsState } from './types';
 
@@ -48,7 +49,8 @@ const TabsWrapper = styled.div`
 
 const DeployContractsFlow = (props: RouteComponentProps) => {
   const [step, setStep] = useState(0);
-  const { defaultAccount } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
+  const defaultAccount = sortByLabel(getAccountsInNetwork(accounts, DEFAULT_NETWORK))[0];
   const {
     handleNetworkSelected,
     handleDeploySubmit,
