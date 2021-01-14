@@ -18,6 +18,7 @@ import { JsonRpcResponse } from './nodes/rpc/types';
 import { normalise } from './ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import { getValidTLDsForChain, ITLDCollection } from './ens/networkConfigs';
+import { Web3RequestPermissionsResponse } from './nodes/web3/types';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
@@ -317,7 +318,9 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Request_Permissions = 'Request_Permissions',
+  Get_Permissions = 'Get_Permissions'
 }
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
@@ -446,3 +449,13 @@ export function isValidAddressLabel(
 
   return result;
 }
+
+export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
+  isValidEthCall((response as unknown) as JsonRpcResponse, schema.RpcNode)(
+    API_NAME.Request_Permissions
+  ) as Web3RequestPermissionsResponse;
+
+export const isValidGetPermissions = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)(
+    API_NAME.Get_Permissions
+  ) as Web3RequestPermissionsResponse;
