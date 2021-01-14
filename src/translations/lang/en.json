@@ -568,6 +568,7 @@
     "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can send ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
     "RENEW_MEMBERSHIP": "Renew Membership",
     "REQUEST": "Request Assets",
+    "RECEIVE_ASSETS": "Receive Assets",
     "REQUEST_FORM_CODE_HEADER": "Your Request",
     "REQUEST_FORM_ERROR_AMOUNT": "Please enter a valid amount",
     "REQUEST_FORM_ERROR_TYPE": "Please enter a valid number",

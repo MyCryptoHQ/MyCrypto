@@ -120,8 +120,12 @@ const SContainer = styled.div`
 
 const BannerWrapper = styled.div<{ newNav: boolean }>`
   max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 25px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translate(calc(-50% + 34px));
+  }
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
     top: ${(p) => (p.newNav ? '15px' : '77px')};

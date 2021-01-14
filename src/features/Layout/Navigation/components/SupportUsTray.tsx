@@ -41,7 +41,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
 
   return (
     <>
-      <Box width="100%">
+      <Box width="100%" p="16px">
         <Text
           textTransform="uppercase"
           fontSize={{ _: '14px', sm: '12px' }}

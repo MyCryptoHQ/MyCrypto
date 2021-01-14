@@ -1,10 +1,21 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import { Box, Icon, Text } from '@components';
 import { useAnalytics } from '@hooks';
 import { ANALYTICS_CATEGORIES } from '@services';
+import { SPACING } from '@theme';
 import { IExternalLink } from '@types';
 import { openLink } from '@utils';
+
+const SBox = styled(Box)`
+  &:hover {
+    transform: scale(1.05);
+    transition: all 300ms;
+  }
+  transition: all 300ms;
+`;
 
 export const ExternalLink = ({ item }: { item: IExternalLink }) => {
   const trackLinkClicked = useAnalytics({
@@ -17,11 +28,11 @@ export const ExternalLink = ({ item }: { item: IExternalLink }) => {
   };
 
   return (
-    <Box variant="rowAlign" onClick={handleClick} my="10px">
+    <SBox variant="rowAlign" onClick={handleClick} my={SPACING.SM}>
       <Icon type={item.icon} width="20px" />
-      <Text ml="15px" color="BLUE_DARK_SLATE" fontSize="12px" mb={0}>
+      <Text ml="15px" color="BLUE_DARK_SLATE" mb={0}>
         {item.title}
       </Text>
-    </Box>
+    </SBox>
   );
 };

@@ -15,8 +15,6 @@ export const Tray = ({ children }: { children: ReactNode }) => (
       sm: 'desktop'
     }}
     borderRadius="3px"
-    px="16px"
-    py="8px"
     width={{ _: '100vw', sm: '250px' }}
   >
     {children}

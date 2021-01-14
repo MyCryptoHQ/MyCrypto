@@ -3,8 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import settingsIcon from '@assets/images/icn-settings.svg';
-import { AccountList, Desktop, Mobile } from '@components';
+import { AccountList, Desktop, Icon, Mobile } from '@components';
 import MobileNavBar from '@components/MobileNavBar';
 import { DEFAULT_NETWORK } from '@config';
 import { getFiat } from '@config/fiats';
@@ -13,7 +12,7 @@ import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useFeatureFlags, useRates } from '@services';
 import { NetworkUtils, StoreContext, useContacts, useNetworks, useSettings } from '@services/Store';
 import { isExcludedAsset } from '@services/Store/helpers';
-import { BREAK_POINTS } from '@theme';
+import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
 import { Balance, CustomNodeConfig, NetworkId } from '@types';
 
@@ -31,12 +30,6 @@ const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   margin-bottom: 24px;
   font-weight: bold;
   margin-top: 0;
-`;
-
-const SettingsHeadingIcon = styled.img`
-  margin-right: 24px;
-  margin-top: 2px;
-  width: 30px;
 `;
 
 const StyledLayout = styled.div`
@@ -220,7 +213,13 @@ export default function Settings() {
       </Mobile>
       <Desktop>
         <SettingsHeading as="h2">
-          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+          <Icon
+            style={{ marginRight: '24px', marginTop: '2px' }}
+            type="nav-settings"
+            width="30px"
+            color={COLORS.BLUE_BRIGHT}
+            alt="Settings"
+          />
           {translate('SETTINGS_HEADING')}
         </SettingsHeading>
         {RenderAccountPanel()}

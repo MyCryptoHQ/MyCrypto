@@ -55,7 +55,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
             <SIcon
               type="nav-close"
               width="16px"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', marginRight: '15px' }}
               onClick={closeTray}
             />
           </Box>
