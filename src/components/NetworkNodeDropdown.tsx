@@ -52,27 +52,23 @@ const AddIcon = styled.img`
 `;
 
 const newNode = 'NEW_NODE';
-const autoNodeLabel = translateRaw('AUTO_NODE');
 
 type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
   isEditEnabled: boolean;
 };
 
-const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
-  data = { value: {} },
-  selectOption
-}) => {
+const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, selectOption }) => {
   const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
 
-  if (data.label !== newNode) {
+  if (label !== newNode) {
     return (
-      <SContainerValue onClick={() => handleSelect(data.value)}>
-        <Typography value={data.label} />
+      <SContainerValue onClick={() => handleSelect(data)}>
+        <Typography value={label} />
       </SContainerValue>
     );
   } else {
     return (
-      <SContainerOption onClick={() => handleSelect(data.value)}>
+      <SContainerOption onClick={() => handleSelect(data)}>
         <AddIcon src={addIcon} />
         {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
       </SContainerOption>
@@ -103,28 +99,25 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
 
   const { nodes } = network;
   const autoNode = {
-    service: autoNodeLabel
+    service: translateRaw('AUTO_NODE')
   };
   const selectedNode = NetworkUtils.getSelectedNode(network) || autoNode;
-  const { service } = selectedNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
     <Selector<NodeOptions & any>
-      value={{
-        label: service,
-        value: selectedNode
-      }}
-      options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}
+      value={selectedNode}
+      options={displayNodes}
+      getOptionLabel={(n) => n.service}
       placeholder={'Auto'}
       searchable={true}
       onChange={(option) => onChange(option)}
       optionComponent={NetworkNodeOption}
       valueComponent={({ value }) => (
         <SContainerValue>
-          <Typography value={value.label} />
-          {isFunction(onEdit) && value.value.isCustom && (
-            <EditIcon onClick={() => onEdit(value.value)} src={editIcon} />
+          <Typography value={value.service} />
+          {isFunction(onEdit) && value.isCustom && (
+            <EditIcon onClick={() => onEdit(value)} src={editIcon} />
           )}
         </SContainerValue>
       )}
