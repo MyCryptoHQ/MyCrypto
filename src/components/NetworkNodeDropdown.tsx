@@ -62,13 +62,19 @@ const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, sele
 
   if (label !== newNode) {
     return (
-      <SContainerValue onClick={() => handleSelect(data)}>
+      <SContainerValue
+        data-testid={`node-selector-option-${data.service}`}
+        onClick={() => handleSelect(data)}
+      >
         <Typography value={label} />
       </SContainerValue>
     );
   } else {
     return (
-      <SContainerOption onClick={() => handleSelect(data)}>
+      <SContainerOption
+        data-testid="node-selector-option-custom"
+        onClick={() => handleSelect(data)}
+      >
         <AddIcon src={addIcon} />
         {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
       </SContainerOption>
