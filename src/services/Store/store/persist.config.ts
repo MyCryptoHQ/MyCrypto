@@ -135,11 +135,10 @@ const migrations = {
   2: (state: DataStore) => {
     return {
       ...state,
-      networks: state.networks.map((n) => ({
+      // @ts-expect-error Autonode is present on data to be migrated, want to remove it
+      networks: state.networks.map(({ autoNode, ...n }) => ({
         ...n,
-        autoNode: undefined,
-        // @ts-expect-error Autonode is present on data to be migrated
-        selectedNode: n.selectedNode === n.autoNode ? undefined : n.selectedNode
+        selectedNode: n.selectedNode === autoNode ? undefined : n.selectedNode
       }))
     };
   }
