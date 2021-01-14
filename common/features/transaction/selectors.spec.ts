@@ -368,7 +368,7 @@ describe('meta tests', () => {
   });
 
   it('should get the decimal for a token', () => {
-    expect(derivedSelectors.getDecimalFromUnit(state, 'UNI')).toEqual(0);
+    expect(derivedSelectors.getDecimalFromUnit(state, 'UNI')).toEqual(18);
   });
 
   it('should throw error if the token is not found', () => {

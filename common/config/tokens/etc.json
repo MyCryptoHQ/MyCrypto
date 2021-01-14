@@ -26,5 +26,12 @@
     "decimal": 5,
     "name": "UniversalCoin",
     "uuid": "01dbee9f-4e8d-5319-8cff-acbc39c00aa0"
+  },
+  {
+    "address": "0xd6dF0C579f2A65049a893fDaEC9fCE098CC19F87",
+    "symbol": "UVCX",
+    "decimal": 18,
+    "name": "UniversalCoin X",
+    "uuid": "41e00a96-f6ad-582a-81e0-99bb4238cbc2"
   }
 ]
