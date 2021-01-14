@@ -95,7 +95,7 @@ export const constructNetworkNodes = (networks: DataStore[LSKeys.NETWORKS]) => {
   const networkNodes = {} as LocalStorage[LSKeys.NETWORK_NODES];
   networks.forEach((n) => {
     const networkSetup: NetworkNodes = {};
-    if (n.autoNode !== n.selectedNode) {
+    if (n.selectedNode !== undefined) {
       networkSetup.selectedNode = n.selectedNode;
     }
     const customNodes = n.nodes.filter((node) => node.isCustom);

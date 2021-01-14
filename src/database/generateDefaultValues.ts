@@ -26,39 +26,27 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
     // add custom nodes from local storage
     const nodes: NodeOptions[] = [...(NODES_CONFIG[n.id] || []), ...(n.nodes || [])];
-    const [firstNode] = nodes;
 
-    return Object.assign(
-      {
-        // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
-        id: n.id,
-        name: n.name,
-        chainId: n.chainId,
-        isCustom: n.isCustom,
-        isTestnet: n.isTestnet,
-        color: n.color,
-        gasPriceSettings: n.gasPriceSettings,
-        shouldEstimateGasPrice: n.shouldEstimateGasPrice,
-        dPaths: {
-          ...n.dPaths,
-          default: n.dPaths.default // Set default dPath
-        },
-        blockExplorer: n.blockExplorer,
-        tokenExplorer: n.tokenExplorer,
-        contracts: [],
-        assets: [],
-        baseAsset: baseAssetUuid, // Set baseAssetUuid
-        baseUnit: n.unit,
-        nodes
+    return {
+      // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
+      id: n.id,
+      name: n.name,
+      chainId: n.chainId,
+      isCustom: n.isCustom,
+      isTestnet: n.isTestnet,
+      color: n.color,
+      gasPriceSettings: n.gasPriceSettings,
+      shouldEstimateGasPrice: n.shouldEstimateGasPrice,
+      dPaths: {
+        ...n.dPaths,
+        default: n.dPaths.default // Set default dPath
       },
-      firstNode
-        ? {
-            // Extend network if nodes are defined
-            autoNode: firstNode.name, // Select first node as auto
-            selectedNode: n.selectedNode || firstNode.name // Select first node as default
-          }
-        : {}
-    );
+      blockExplorer: n.blockExplorer,
+      tokenExplorer: n.tokenExplorer,
+      baseAsset: baseAssetUuid, // Set baseAssetUuid
+      baseUnit: n.unit,
+      nodes
+    };
   };
 
   return mapObjIndexed(formatNetwork, networks);

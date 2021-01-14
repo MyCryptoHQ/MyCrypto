@@ -50,13 +50,8 @@ const slice = createSlice({
       const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
 
       const newSelectedNode = (() => {
-        if (
-          network.selectedNode === nodeName &&
-          (network.selectedNode === network.autoNode || network.autoNode === undefined)
-        ) {
+        if (network.selectedNode === nodeName) {
           return newNodes[0]?.name;
-        } else if (network.selectedNode === nodeName) {
-          return network.autoNode;
         }
         return network.selectedNode;
       })();

@@ -103,22 +103,16 @@ describe('mergeNetworks', () => {
     const nodeName = 'MyNode';
     const nodes = [...fNetworks[0].nodes, { name: nodeName } as NodeOptions];
     const actual = mergeNetworks(
-      [{ ...fNetworks[0], nodes, selectedNode: nodeName, autoNode: nodeName }, fNetworks[1]],
+      [{ ...fNetworks[0], nodes, selectedNode: nodeName }, fNetworks[1]],
       fNetworks
     );
-    expect(actual).toEqual([
-      { ...fNetworks[0], nodes, selectedNode: nodeName, autoNode: nodeName },
-      fNetworks[1]
-    ]);
+    expect(actual).toEqual([{ ...fNetworks[0], nodes, selectedNode: nodeName }, fNetworks[1]]);
   });
 
   test('it supports merging with new networks in initial state', () => {
     const nodeName = 'eth_ethscan';
-    const actual = mergeNetworks(
-      [],
-      [{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]
-    );
-    expect(actual).toEqual([{ ...fNetworks[0], selectedNode: nodeName, autoNode: nodeName }]);
+    const actual = mergeNetworks([], [{ ...fNetworks[0], selectedNode: nodeName }]);
+    expect(actual).toEqual([{ ...fNetworks[0], selectedNode: nodeName }]);
   });
 
   test('it correctly merges when static info has changed', () => {

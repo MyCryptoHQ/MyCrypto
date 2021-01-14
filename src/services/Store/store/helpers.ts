@@ -69,13 +69,11 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
       const existing = inbound.find((i) => i.id === o.id);
       const existingNodes = existing ? existing.nodes : [];
       const selectedNode = existing ? existing.selectedNode : o.selectedNode;
-      const autoNode = existing ? existing.autoNode : o.autoNode;
 
       return {
         ...o,
         nodes: mergeNodes(o.nodes, existingNodes),
-        selectedNode,
-        autoNode
+        selectedNode
       } as Network;
     })
     .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));

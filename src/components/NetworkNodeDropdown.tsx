@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
@@ -52,27 +52,29 @@ const AddIcon = styled.img`
 `;
 
 const newNode = 'NEW_NODE';
-const autoNodeLabel = translateRaw('AUTO_NODE');
 
 type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
   isEditEnabled: boolean;
 };
 
-const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
-  data = { value: {} },
-  selectOption
-}) => {
+const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, selectOption }) => {
   const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
 
-  if (data.label !== newNode) {
+  if (label !== newNode) {
     return (
-      <SContainerValue onClick={() => handleSelect(data.value)}>
-        <Typography value={data.label} />
+      <SContainerValue
+        data-testid={`node-selector-option-${data.service}`}
+        onClick={() => handleSelect(data)}
+      >
+        <Typography value={label} />
       </SContainerValue>
     );
   } else {
     return (
-      <SContainerOption onClick={() => handleSelect(data.value)}>
+      <SContainerOption
+        data-testid="node-selector-option-custom"
+        onClick={() => handleSelect(data)}
+      >
         <AddIcon src={addIcon} />
         {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
       </SContainerOption>
@@ -86,22 +88,14 @@ interface Props {
 }
 
 const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
-  const { networks, getNetworkById, setNetworkSelectedNode } = useNetworks();
-  const [network, setNetwork] = useState(() => getNetworkById(networkId));
-  const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
-
-  useEffect(() => {
-    const newNetwork = getNetworkById(networkId);
-    setNetwork(newNetwork);
-    setSelectedNode(NetworkUtils.getSelectedNode(newNetwork));
-  }, [networkId, networks]);
+  const { getNetworkById, setNetworkSelectedNode } = useNetworks();
+  const network = getNetworkById(networkId);
 
   const onChange = useCallback(
     (node: NodeOptions) => {
       if (!isEmpty(node) && node.service !== newNode) {
         const { name } = node;
         setNetworkSelectedNode(networkId, name);
-        setSelectedNode(node);
       } else if (onEdit) {
         onEdit();
       }
@@ -109,30 +103,27 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
     [networkId, setNetworkSelectedNode]
   );
 
-  const { nodes, autoNode: autoNodeName } = network;
+  const { nodes } = network;
   const autoNode = {
-    ...NetworkUtils.getAutoNode(network),
-    service: autoNodeLabel
+    service: translateRaw('AUTO_NODE')
   };
-  const { service, name: selectedNodeName } = selectedNode;
+  const selectedNode = NetworkUtils.getSelectedNode(network) || autoNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
     <Selector<NodeOptions & any>
-      value={{
-        label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
-        value: selectedNode
-      }}
-      options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}
+      value={selectedNode}
+      options={displayNodes}
+      getOptionLabel={(n) => n.service}
       placeholder={'Auto'}
       searchable={true}
       onChange={(option) => onChange(option)}
       optionComponent={NetworkNodeOption}
       valueComponent={({ value }) => (
         <SContainerValue>
-          <Typography value={value.label} />
-          {isFunction(onEdit) && value.value.isCustom && value.label !== autoNodeLabel && (
-            <EditIcon onClick={() => onEdit(value.value)} src={editIcon} />
+          <Typography value={value.service} />
+          {isFunction(onEdit) && value.isCustom && (
+            <EditIcon onClick={() => onEdit(value)} src={editIcon} />
           )}
         </SContainerValue>
       )}

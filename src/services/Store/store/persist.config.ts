@@ -1,5 +1,6 @@
 import { Reducer } from '@reduxjs/toolkit';
 import {
+  createMigrate,
   createTransform,
   FLUSH,
   PAUSE,
@@ -130,7 +131,21 @@ const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   }
 };
 
+const migrations = {
+  2: (state: DataStore) => {
+    return {
+      ...state,
+      // @ts-expect-error Autonode is present on data to be migrated, want to remove it
+      networks: state.networks.map(({ autoNode, ...n }) => ({
+        ...n,
+        selectedNode: n.selectedNode === autoNode ? undefined : n.selectedNode
+      }))
+    };
+  }
+};
+
 const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
+  version: 2,
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
@@ -139,7 +154,9 @@ const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   transforms: [transform],
   // @ts-expect-error: deserialize is redux-persist internal
   deserialize: customDeserializer,
-  debug: IS_DEV
+  debug: IS_DEV,
+  // @ts-expect-error: bad type for migrations
+  migrate: createMigrate(migrations, { debug: IS_DEV })
 };
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
