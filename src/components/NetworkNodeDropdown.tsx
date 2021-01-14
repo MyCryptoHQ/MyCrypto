@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
@@ -86,22 +86,14 @@ interface Props {
 }
 
 const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
-  const { networks, getNetworkById, setNetworkSelectedNode } = useNetworks();
-  const [network, setNetwork] = useState(() => getNetworkById(networkId));
-  const [_selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
-
-  useEffect(() => {
-    const newNetwork = getNetworkById(networkId);
-    setNetwork(newNetwork);
-    setSelectedNode(NetworkUtils.getSelectedNode(newNetwork));
-  }, [networkId, networks]);
+  const { getNetworkById, setNetworkSelectedNode } = useNetworks();
+  const network = getNetworkById(networkId);
 
   const onChange = useCallback(
     (node: NodeOptions) => {
       if (!isEmpty(node) && node.service !== newNode) {
         const { name } = node;
         setNetworkSelectedNode(networkId, name);
-        setSelectedNode(node);
       } else if (onEdit) {
         onEdit();
       }
@@ -113,7 +105,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   const autoNode = {
     service: autoNodeLabel
   };
-  const selectedNode = _selectedNode || autoNode;
+  const selectedNode = NetworkUtils.getSelectedNode(network) || autoNode;
   const { service } = selectedNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
@@ -131,7 +123,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
       valueComponent={({ value }) => (
         <SContainerValue>
           <Typography value={value.label} />
-          {isFunction(onEdit) && value.value.isCustom && value.label !== autoNodeLabel && (
+          {isFunction(onEdit) && value.value.isCustom && (
             <EditIcon onClick={() => onEdit(value.value)} src={editIcon} />
           )}
         </SContainerValue>

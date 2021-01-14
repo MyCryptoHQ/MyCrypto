@@ -10,13 +10,9 @@ export abstract class NetworkUtils {
     hidden: true
   });
 
-  public static getSelectedNode = (network: Network): NodeOptions | undefined => {
-    if (network.selectedNode) {
-      const selectedNode = network.nodes.find((n) => n.name === network.selectedNode);
-      return selectedNode;
-    }
-
-    return undefined;
+  public static getSelectedNode = ({ nodes, selectedNode }: Network): NodeOptions | undefined => {
+    if (!selectedNode) return undefined;
+    return nodes.find((n) => n.name === selectedNode);
   };
 
   public static makeNodeName = (network: string, name: string) =>
