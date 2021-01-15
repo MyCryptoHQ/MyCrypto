@@ -6,13 +6,13 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
+import { getAccountsInNetwork } from '@helpers';
 import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
 
-import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';
 
 const WriteActionWrapper = styled.div`

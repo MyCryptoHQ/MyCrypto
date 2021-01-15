@@ -7,7 +7,7 @@ import uniqBy from 'ramda/src/uniqBy';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
-import { makeFinishedTxReceipt } from '@helpers';
+import { getAccountsInNetwork, makeFinishedTxReceipt } from '@helpers';
 import { useAnalytics } from '@hooks';
 import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
@@ -89,7 +89,6 @@ interface IAddAccount {
 }
 
 export interface State {
-  readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
@@ -104,6 +103,7 @@ export interface State {
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
+  getDefaultAccount(networkId?: NetworkId): StoreAccount;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -355,9 +355,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
-    get defaultAccount() {
-      return sortByLabel(state.accounts)[0];
-    },
     /**
      * Check if the user has already added an account to our persistence layer.
      */
@@ -374,6 +371,8 @@ export const StoreProvider: React.FC = ({ children }) => {
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
+    getDefaultAccount: (networkId?: NetworkId) =>
+      sortByLabel(getAccountsInNetwork(accounts, networkId || DEFAULT_NETWORK))[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>

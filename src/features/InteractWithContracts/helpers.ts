@@ -2,10 +2,9 @@ import { bufferToHex } from 'ethereumjs-util';
 import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 
-import { WALLET_STEPS } from '@components';
 import { getAssetByUUID } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
-import { ITxConfig, ITxObject, NetworkId, StoreAccount } from '@types';
+import { ITxConfig, ITxObject, StoreAccount } from '@types';
 import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
@@ -80,9 +79,6 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
     pAbi.filter((x) => x.type === ABIItemType.FUNCTION),
     (item) => item.name.toLowerCase()
   ).map((x) => Object.assign(x, { label: x.name }));
-
-export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
-  accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
 
 export const makeContractInteractionTxConfig = (
   rawTransaction: ITxObject,

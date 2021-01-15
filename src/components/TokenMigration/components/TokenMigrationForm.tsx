@@ -71,10 +71,11 @@ const TokenMigrationForm = ({
   isDemoMode,
   onComplete
 }: Props) => {
-  const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
+  const { accounts, getDefaultAccount: getDefaultStoreAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
+  const defaultStoreAccount = getDefaultStoreAccount();
   const relevantAccounts = accounts.filter(isEthereumAccount);
   const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
   const defaultAccount = accounts.find((a) =>

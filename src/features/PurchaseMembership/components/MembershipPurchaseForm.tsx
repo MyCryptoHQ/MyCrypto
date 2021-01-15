@@ -94,7 +94,8 @@ export const MembershipFormUI = ({
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useAssets();
-  const { defaultAccount } = useContext(StoreContext);
+  const { getDefaultAccount } = useContext(StoreContext);
+  const defaultAccount = getDefaultAccount();
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
   const initialFormikValues: MembershipSimpleTxFormFull = {

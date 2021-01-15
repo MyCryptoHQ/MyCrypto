@@ -73,7 +73,8 @@ const DeFiZapLogoContainer = styled.div`
 `;
 
 const ZapForm = ({ onComplete, zapSelected, isDemoMode }: Props) => {
-  const { accounts, defaultAccount } = useContext(StoreContext);
+  const { accounts, getDefaultAccount } = useContext(StoreContext);
+  const defaultAccount = getDefaultAccount();
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;

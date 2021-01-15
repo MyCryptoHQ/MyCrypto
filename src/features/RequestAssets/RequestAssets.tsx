@@ -104,7 +104,8 @@ const CodeHeading = styled(Heading)`
 `;
 
 export function RequestAssets({ history }: RouteComponentProps) {
-  const { accounts, defaultAccount, networks } = useContext(StoreContext);
+  const { accounts, getDefaultAccount, networks } = useContext(StoreContext);
+  const defaultAccount = getDefaultAccount();
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(defaultAccount.networkId);
   const network = getNetworkById(networkId, networks);

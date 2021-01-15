@@ -26,7 +26,8 @@ interface TStep {
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps) => {
-  const { defaultAccount } = useContext(StoreContext);
+  const { getDefaultAccount } = useContext(StoreContext);
+  const defaultAccount = getDefaultAccount();
   const {
     fetchSwapAssets,
     setSwapAssets,
