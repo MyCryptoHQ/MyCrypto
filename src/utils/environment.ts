@@ -1,8 +1,9 @@
 import { IS_DEV as isDev, IS_PROD as isProd, IS_STAGING as isStaging } from '../../environment';
 
+export { SEGMENT_WRITE_KEY } from '../../environment';
+
 export const IS_DEV: boolean = isDev;
 export const IS_PROD: boolean = isProd;
-
 export const IS_STAGING: boolean = isStaging;
 
 export const USE_HASH_ROUTER: boolean = IS_STAGING;

@@ -10,7 +10,8 @@ export {
   IS_DEV,
   IS_STAGING,
   IS_PROD,
-  USE_HASH_ROUTER
+  USE_HASH_ROUTER,
+  SEGMENT_WRITE_KEY
 } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
