@@ -6,7 +6,7 @@ import { TCurrencySymbol, TTicker, TUuid } from '@types';
 import { isFiatTicker } from '@utils';
 
 import AssetIcon from './AssetIcon';
-import { default as Typography } from './Typography';
+import { Body } from './NewTypography';
 
 const SContainer = styled('div')`
   display: inline-flex;
@@ -25,6 +25,7 @@ interface Props {
   icon?: boolean;
   bold?: boolean;
   fontSize?: string;
+  color?: string;
 }
 
 function Currency({
@@ -36,6 +37,7 @@ function Currency({
   icon = false,
   bold = false,
   fontSize,
+  color,
   ...props
 }: Props) {
   const format = (value: string, decimalPlaces: number) => {
@@ -53,10 +55,10 @@ function Currency({
           <AssetIcon size={'19px'} uuid={uuid} />
         </SAssetIconContainer>
       )}
-      <Typography bold={bold} fontSize={fontSize}>
+      <Body as="span" fontWeight={bold ? 'bold' : 'normal'} fontSize={fontSize} color={color}>
         {format(amount, decimals)}
         {!isFiatTicker(ticker) && ` ${symbol || ticker}`}
-      </Typography>
+      </Body>
     </SContainer>
   );
 }
