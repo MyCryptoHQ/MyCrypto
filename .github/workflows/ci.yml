@@ -8,8 +8,9 @@ on:
     branches:
       - master
 
+environment: staging
 env:
-  SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY_DEV }}
+  SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
 jobs:
   validate-and-test:
