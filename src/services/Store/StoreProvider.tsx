@@ -7,7 +7,7 @@ import uniqBy from 'ramda/src/uniqBy';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
-import { getAccountsInNetwork, makeFinishedTxReceipt } from '@helpers';
+import { makeFinishedTxReceipt } from '@helpers';
 import { useAnalytics } from '@hooks';
 import { ENSService, isEthereumAccount } from '@services';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
@@ -48,6 +48,7 @@ import {
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
+  getAccountsInNetwork,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,

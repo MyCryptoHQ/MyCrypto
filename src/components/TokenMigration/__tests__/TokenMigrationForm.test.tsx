@@ -44,7 +44,7 @@ function getComponent(props: TokenMigrationProps) {
               ({
                 userAssets: [],
                 accounts: [],
-                defaultAccount: { assets: [] },
+                getDefaultAccount: () => ({ assets: [] }),
                 getAccount: jest.fn(),
                 networks: [{ nodes: [] }]
               } as unknown) as any

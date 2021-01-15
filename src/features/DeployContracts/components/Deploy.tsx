@@ -16,12 +16,17 @@ import {
   NetworkSelector,
   Typography
 } from '@components';
-import { getAccountsInNetwork } from '@helpers';
 import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
-import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
+import {
+  baseToConvertedUnit,
+  getAccountsInNetwork,
+  hexToString,
+  hexWeiToString,
+  inputGasPriceToHex
+} from '@utils';
 
 import { constructGasCallProps } from '../helpers';
 
