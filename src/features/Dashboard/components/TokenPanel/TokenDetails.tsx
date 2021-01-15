@@ -167,6 +167,8 @@ export function TokenDetails(props: Props) {
             title={translateRaw('LATEST_PRICE')}
             value={
               <Currency
+                color={COLORS.GREY_DARKEST}
+                fontSize={FONT_SIZE.MD}
                 symbol={getFiat(settings).symbol}
                 ticker={getFiat(settings).ticker}
                 amount={rate.toString()}
