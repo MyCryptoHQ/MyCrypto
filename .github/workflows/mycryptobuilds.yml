@@ -18,6 +18,7 @@ on:
 
 jobs:
   myc-build:
+    environment: STAGING
     runs-on: ubuntu-latest
 
     steps:
@@ -83,7 +84,6 @@ jobs:
 
       - name: yarn build:staging
         run: yarn build:staging
-        environment: STAGING
         env:
           SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
