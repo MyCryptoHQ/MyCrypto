@@ -104,7 +104,7 @@ export interface State {
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
-  getDefaultAccount(networkId?: NetworkId): StoreAccount;
+  getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -372,8 +372,10 @@ export const StoreProvider: React.FC = ({ children }) => {
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
-    getDefaultAccount: (networkId?: NetworkId) =>
-      sortByLabel(getAccountsInNetwork(accounts, networkId || DEFAULT_NETWORK))[0],
+    getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
+      sortByLabel(
+        getAccountsInNetwork({ accounts, networkId: networkId || DEFAULT_NETWORK, includeViewOnly })
+      )[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>

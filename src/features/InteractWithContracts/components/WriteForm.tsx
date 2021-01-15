@@ -66,7 +66,7 @@ export const WriteForm = (props: Props) => {
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const { accounts } = useContext(StoreContext);
-  const filteredAccounts = getAccountsInNetwork(accounts, network.id);
+  const filteredAccounts = getAccountsInNetwork({ accounts, networkId: network.id });
 
   const handleGasPriceChange = (val: string) => {
     if (val.length) {

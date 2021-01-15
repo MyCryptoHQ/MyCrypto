@@ -270,7 +270,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   })();
 
   const getDefaultAccount = (asset?: Asset) => {
-    const storeDefaultAccount = getDefaultStoreAccount(asset?.networkId);
+    const storeDefaultAccount = getDefaultStoreAccount(false, asset?.networkId);
     if (asset !== undefined && !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)) {
       const accountsWithDefaultAsset = validAccounts.filter((account) =>
         account.assets.some((a) => a.uuid === asset.uuid)

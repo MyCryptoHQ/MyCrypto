@@ -78,7 +78,7 @@ export const BuyAssetsForm = () => {
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
-    account: getDefaultAccount(),
+    account: getDefaultAccount(true),
     asset: ethAsset
   };
 

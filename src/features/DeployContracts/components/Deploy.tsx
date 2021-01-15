@@ -100,7 +100,7 @@ export const Deploy = (props: Props) => {
   const { accounts } = useContext(StoreContext);
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
-  const filteredAccounts = getAccountsInNetwork(accounts, networkId);
+  const filteredAccounts = getAccountsInNetwork({ accounts, networkId });
 
   useEffect(() => {
     if (!account) return;
