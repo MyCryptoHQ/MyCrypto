@@ -1,6 +1,5 @@
 name: Storybook
 
-environment: staging
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
@@ -19,6 +18,7 @@ on:
     types: [ok-to-test-command]
 
 jobs:
+  environment: staging
   storybook-build:
     runs-on: ubuntu-latest
 
