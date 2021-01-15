@@ -83,10 +83,14 @@ jobs:
         run: yarn install
 
       - name: yarn build:staging
-        run: yarn build:staging
-        env:
-          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+        run: |
+          SEGMENT_WRITE_KEY=hello-world
+          echo HELLO $SEGMENT_WRITE_KEY
+          echo "SEGMENT_WRITE_KEY=$SEGMENT_WRITE_KEY" >> $GITHUB_ENV
+          yarn build:staging
 
+        # env:
+        #   SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'push'
