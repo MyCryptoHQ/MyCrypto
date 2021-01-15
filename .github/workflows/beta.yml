@@ -1,6 +1,5 @@
 name: Beta
 
-environment: production
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_BUILDS_APP }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_BETA }}
@@ -15,6 +14,7 @@ on:
 
 jobs:
   beta-build:
+    environment: production
     runs-on: ubuntu-latest
 
     steps:

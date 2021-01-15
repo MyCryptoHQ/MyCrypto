@@ -1,6 +1,5 @@
 name: MyCryptoBuilds
 
-environment: staging
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
@@ -20,6 +19,7 @@ on:
 
 jobs:
   myc-build:
+    environment: staging
     runs-on: ubuntu-latest
 
     steps:

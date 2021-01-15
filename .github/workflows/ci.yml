@@ -8,12 +8,12 @@ on:
     branches:
       - master
 
-environment: staging
 env:
   SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
 jobs:
   validate-and-test:
+    environment: staging
     name: Validate and Test
     runs-on: ${{ matrix.os }}
     strategy:
@@ -61,6 +61,7 @@ jobs:
         uses: codecov/codecov-action@v1
 
   standalone-build:
+    environment: staging
     name: Standalone Build
     runs-on: ubuntu-latest
 
