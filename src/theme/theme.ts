@@ -117,7 +117,7 @@ const TEXT_VARIANTS = {
     fontWeight: '900'
   },
   navItem: {
-    fontSize: 5,
+    fontSize: '1vh',
     fontWeight: 700,
     margin: 0,
     marginTop: '5px',

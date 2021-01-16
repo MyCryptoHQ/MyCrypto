@@ -27,23 +27,14 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
       variant="columnCenter"
       width="100%"
       height={{ sm: 'auto' }}
-      py={{ _: '3px', sm: '12px' }}
+      py={{ _: '3px', sm: '1.2vh' }}
       position={{ _: undefined, sm: 'relative' }}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
     >
-      <SIcon type="caret" color={COLORS.BLUE_GREY} height="9px" />
-      <Icon type={tray.icon} height="24px" color="WHITE" />
-      <Text
-        textTransform="uppercase"
-        fontSize="10px"
-        fontWeight={700}
-        margin={0}
-        mt="5px"
-        color="WHITE"
-        px="5px"
-        textAlign="center"
-      >
+      <SIcon type="caret" color={COLORS.BLUE_GREY} height="0.8vh" />
+      <Icon type={tray.icon} height="2.5vh" color="WHITE" />
+      <Text variant="navItem" color="WHITE">
         {tray.title}
       </Text>
       {isOpen && <Tray>{content}</Tray>}

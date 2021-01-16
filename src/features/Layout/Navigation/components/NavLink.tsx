@@ -41,10 +41,10 @@ export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean 
       width="100%"
       height="100%"
       pr={{ sm: '3px' }}
-      py={{ _: '0', sm: '12px' }}
-      pt={{ _: '3px', sm: '12px' }}
+      py={{ _: '0', sm: '1.2vh' }}
+      pt={{ _: '3px', sm: '1.2vh' }}
     >
-      <Icon type={link.icon} height="24px" color={current ? COLORS.GREYISH_BROWN : COLORS.WHITE} />
+      <Icon type={link.icon} height="2.5vh" color={current ? COLORS.GREYISH_BROWN : COLORS.WHITE} />
 
       <Text variant="navItem" color={current ? 'GREYISH_BROWN' : 'WHITE'}>
         {link.title}

@@ -34,8 +34,8 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
   const settings = settingsLinks(appRoutes);
   return (
     <Navbar>
-      <Box my="16px" ml="3px">
-        <Icon type="logo-mycrypto" width="38px" />
+      <Box my="1.6vh" ml="3px">
+        <Icon type="logo-mycrypto" width="4vh" />
       </Box>
       {links.map((link, i) => (
         <NavLink key={i} link={link} current={current === link.to} />
@@ -44,8 +44,8 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
         variant="columnAlign"
         borderY={`1px solid ${COLORS.GREY_DARK}`}
         width="100%"
-        my="20px"
-        py="20px"
+        my="2vh"
+        py="2vh"
         flex={1}
       >
         <NavTray
@@ -61,8 +61,8 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
       </Box>
       <NavLink link={settings} current={current === settings.to} />
       <SBox variant="columnCenter" width="100%" px="3px" py="12px" onClick={openTray}>
-        <Icon type="nav-menu" height="24px" color="WHITE" />
-        <Text variant="navItem" color="WHITE">
+        <Icon type="nav-menu" height="2.5vh" color="WHITE" />
+        <Text variant="navItem" color="WHITE" fontSize="1vh">
           {translateRaw('NAVIGATION_MENU')}
         </Text>
       </SBox>
