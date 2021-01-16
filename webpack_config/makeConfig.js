@@ -70,7 +70,7 @@ module.exports = function(opts = {}) {
   const sassLoader = {
     loader: 'sass-loader',
     options: {
-      data: `$is-electron: ${options.isElectronBuild};`
+      additionalData: `$is-electron: ${options.isElectronBuild};`
     }
   };
 
