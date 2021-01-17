@@ -35,7 +35,9 @@ jobs:
       - name: Install dependencies
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+        run: |
+          sudo apt-get install -y libudev-dev
+          yarn
 
   test:
     name: Test
