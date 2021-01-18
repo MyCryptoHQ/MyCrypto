@@ -78,4 +78,16 @@ yarn test
 yarn test:e2e
 ```
 
+To debug E2E tests in the browser
+
+```bash
+yarn test:e2e:dev
+```
+
+You can also run a single file
+
+```bash
+yarn test:e2e:dev __tests__/layout.test.js
+```
+
 Running e2e tests requires a `.env` file to be defined, with the appropriate environment variables set. See `.env.example` for an example.
