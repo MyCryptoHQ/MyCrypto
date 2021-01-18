@@ -54,6 +54,7 @@ const LabelWithWallet = styled.span`
   flex-direction: column;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: bold;
+    min-width: 190px;
   }
 `;
 
