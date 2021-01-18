@@ -2,6 +2,7 @@ import React from 'react';
 
 import { DeepPartial } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { AppState, createStore } from '@store';
@@ -18,7 +19,9 @@ export const ProvidersWrapper = ({
   children: React.ReactNode;
   initialState?: DeepPartial<AppState>;
 }) => (
-  <Provider store={createStore(initialState).store}>
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
-  </Provider>
+  <Router>
+    <Provider store={createStore(initialState).store}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </Provider>
+  </Router>
 );

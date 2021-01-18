@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
-import { simpleRender } from 'test-utils';
+import { ProvidersWrapper, simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
-import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { fAccounts, fAssets, fNetworks } from '@fixtures';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { noOp } from '@utils';
 
@@ -21,35 +20,27 @@ const defaultProps: React.ComponentProps<typeof MembershipPurchaseForm> = {
 
 function getComponent(props: React.ComponentProps<typeof MembershipPurchaseForm>) {
   return simpleRender(
-    <Router>
+    <ProvidersWrapper>
       <DataContext.Provider
         value={
           ({
             assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            networks: fNetworks,
-            settings: fSettings
+            networks: fNetworks
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts,
-                getDefaultAccount: () => fAccounts[0]
-              } as any) as any
-            }
-          >
-            <MembershipPurchaseForm {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              accounts: fAccounts,
+              getDefaultAccount: () => fAccounts[0]
+            } as any) as any
+          }
+        >
+          <MembershipPurchaseForm {...props} />
+        </StoreContext.Provider>
       </DataContext.Provider>
-    </Router>
+    </ProvidersWrapper>
   );
 }
 
