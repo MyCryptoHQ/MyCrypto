@@ -7,7 +7,6 @@ import styled, { css } from 'styled-components';
 import {
   Amount,
   Button,
-  Downloader,
   EditableAccountLabel,
   EthAddress,
   Icon,
@@ -22,6 +21,8 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
 import { buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+
+import { Downloader } from '../Downloader';
 
 interface DeterministicTableProps {
   isComplete: boolean;

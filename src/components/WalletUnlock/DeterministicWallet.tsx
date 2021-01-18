@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Button, Downloader, Input, Typography } from '@components';
+import { AssetSelector, Button, Input, Typography } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
@@ -19,6 +19,7 @@ import {
   useScreenSize
 } from '@utils';
 
+import { Downloader } from '../Downloader';
 import DeterministicAccountList from './DeterministicAccountList';
 
 const MnemonicWrapper = styled.div`

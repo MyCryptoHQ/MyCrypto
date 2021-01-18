@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
-import Downloader from './Downloader';
+import { Downloader } from './Downloader';
 
 const getComponent = (
   props: React.ComponentProps<typeof Downloader>,

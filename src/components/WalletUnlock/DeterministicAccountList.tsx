@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button, Downloader, Icon, PoweredByText, Spinner, Tooltip, Typography } from '@components';
+import { Button, Icon, PoweredByText, Spinner, Tooltip, Typography } from '@components';
 import { DWAccountDisplay } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
@@ -10,6 +10,7 @@ import { ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV, isSameAddress, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
+import { Downloader } from '../Downloader';
 import DeterministicTable from './DeterministicAccountTable';
 
 const DeterministicAccountListWrapper = styled.div`

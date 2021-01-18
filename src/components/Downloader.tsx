@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Button, Link } from '@components';
 import { COLORS } from '@theme';
 import translate from '@translations';
 import { makeBlob } from '@utils';
 
-const Downloader: React.FC<{
+import { default as Button } from './Button';
+import { default as Link } from './Link';
+
+export const Downloader: React.FC<{
   data: string | TObject;
   onClick?(): void;
   fileName: string;
@@ -36,5 +38,3 @@ const Downloader: React.FC<{
     </Link>
   );
 };
-
-export default Downloader;
