@@ -88,7 +88,7 @@ jobs:
       - name: yarn build:staging
         run: yarn build:staging
         env:
-          SEGMENT_WRITE_KEY: ${SEGMENT_WRITE_KEY}
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
