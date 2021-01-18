@@ -4,9 +4,10 @@ import { unparse } from 'papaparse';
 import { DWAccountDisplay } from '@services';
 import { Asset } from '@types';
 import { fromTokenBase } from '@utils';
+import { uniqBy } from '@vendor';
 
 export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
-  const infos = accounts.map((account) => ({
+  const infos = uniqBy((a) => a.address, accounts).map((account) => ({
     address: account.address,
     'dpath type': account.pathItem.baseDPath.label,
     dpath: account.pathItem.path,
