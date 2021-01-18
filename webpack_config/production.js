@@ -38,11 +38,9 @@ module.exports = merge.smart(common, {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({
-      TARGET_ENV: TargetEnv,
-      SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY, // Set by github secrets
-      ANALYTICS_API_URL: process.env.ANALYTICS_API_URL // Set by github secrets
-    }),
+    // The EnvironmentPlugin is shorthand for using the DefinePlugin on process.env keys.
+    // https://webpack.js.org/plugins/environment-plugin/
+    new webpack.EnvironmentPlugin(['TARGET_ENV', 'SEGMENT_WRITE_KEY', 'ANALYTICS_API_URL']),
 
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
