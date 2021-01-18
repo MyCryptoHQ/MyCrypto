@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel, Downloader } from '@components';
+import { getCurrentDBConfig, getExportFileName } from '@database';
 import { useUserActions } from '@services/Store';
 import { exportState, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
@@ -42,6 +43,7 @@ export function Export(props: RouteComponentProps) {
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
         <Downloader
+          fileName={getExportFileName(getCurrentDBConfig(), new Date())}
           data={appState}
           onClick={() =>
             backupAction &&

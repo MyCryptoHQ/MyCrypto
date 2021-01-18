@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Button, Input, Typography } from '@components';
+import { AssetSelector, Button, Downloader, Input, Typography } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
@@ -15,7 +15,6 @@ import {
   accountsToCSV,
   filterDropdownAssets,
   filterValidAssets,
-  makeBlob,
   sortByTicker,
   useScreenSize
 } from '@utils';
@@ -86,7 +85,7 @@ const SButton = styled(Button)`
   margin: ${SPACING.MD} 0;
 `;
 
-const SLink = styled.span`
+const SDownloader = styled(Downloader)`
   color: ${COLORS.BLUE_MYC};
   cursor: pointer;
   font-weight: bold;
@@ -177,8 +176,7 @@ const DeterministicWallet = ({
     }
   };
 
-  const handleDownload = () =>
-    window.open(makeBlob('text/csv', accountsToCSV(state.finishedAccounts, assetToUse)));
+  const csv = accountsToCSV(state.finishedAccounts, assetToUse);
 
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
@@ -241,9 +239,9 @@ const DeterministicWallet = ({
       </Formik>
       <Typography>
         <Trans id="DETERMINISTIC_SEE_SUMMARY" />{' '}
-        <SLink onClick={handleDownload}>
+        <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
           <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
-        </SLink>
+        </SDownloader>
         .
       </Typography>
     </MnemonicWrapper>
