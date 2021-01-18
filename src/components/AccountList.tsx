@@ -54,6 +54,7 @@ const LabelWithWallet = styled.span`
   flex-direction: column;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: bold;
+    min-width: 190px;
   }
 `;
 
@@ -402,7 +403,7 @@ const BuildAccountTable = (
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
+      <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_REMOVE'} align="center">
       {translateRaw('ACCOUNT_LIST_REMOVE')}
