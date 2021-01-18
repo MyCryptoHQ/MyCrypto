@@ -7,5 +7,6 @@
       "module": "@testing-library/dom/dist/@testing-library/dom.umd.js"
     }
   ],
-  "developmentMode": true
+  "developmentMode": true,
+  "color": true
 }
