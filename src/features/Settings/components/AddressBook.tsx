@@ -194,7 +194,7 @@ export default function AddressBook({
     screenIsMobileSized() ? (
       translateRaw(id)
     ) : (
-      <Box key={id} onClick={() => updateSortingState(id)} display="flex" alignItems="center">
+      <Box key={id} onClick={() => updateSortingState(id)} variant="rowAlign">
         {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
       </Box>
     );
