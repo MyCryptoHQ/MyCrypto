@@ -10,14 +10,7 @@ import React from 'react';
 
 import { render } from 'react-dom';
 
-import {
-  consoleAdvertisement,
-  getRootDomain,
-  IS_E2E,
-  IS_PROD,
-  IS_STAGING,
-  SEGMENT_WRITE_KEY
-} from '@utils';
+import { consoleAdvertisement, getRootDomain, IS_E2E, IS_PROD, IS_STAGING } from '@utils';
 import { ethereumMock } from '@vendor';
 
 import Root from './Root';
@@ -54,5 +47,3 @@ render(<Root />, document.getElementById('app'));
 if (IS_PROD || IS_STAGING) {
   consoleAdvertisement();
 }
-
-console.log('SEGMENT', SEGMENT_WRITE_KEY);
