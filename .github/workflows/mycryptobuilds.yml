@@ -5,8 +5,6 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_MYCRYPTOBUILDS }}
   AWS_REGION: 'us-east-2'
-  SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-  ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
 
 on:
   pull_request:
@@ -86,6 +84,9 @@ jobs:
 
       - name: yarn build:staging
         run: yarn build:staging
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
 
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
