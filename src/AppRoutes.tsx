@@ -14,7 +14,7 @@ import {
   PrivateRoute
 } from '@routing';
 import { useFeatureFlags } from '@services';
-import { COLORS, SPACING } from '@theme';
+import { SPACING } from '@theme';
 import { ScrollToTop, useScreenSize } from '@utils';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
@@ -23,8 +23,7 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
       return {
         centered: false,
         fluid: true,
-        fullW: true,
-        bgColor: COLORS.WHITE
+        fullW: true
       };
     case ROUTE_PATHS.DASHBOARD.path:
       return {
@@ -36,7 +35,6 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
         centered: true,
         fluid: true,
         fullW: true,
-        bgColor: COLORS.WHITE,
         paddingV: isMobile ? '0px' : SPACING.MD
       };
     default:

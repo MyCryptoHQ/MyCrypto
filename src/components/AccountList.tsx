@@ -402,7 +402,7 @@ const BuildAccountTable = (
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <Tooltip tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
+      <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_REMOVE'} align="center">
       {translateRaw('ACCOUNT_LIST_REMOVE')}

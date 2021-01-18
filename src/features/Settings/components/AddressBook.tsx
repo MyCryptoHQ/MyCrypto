@@ -6,6 +6,7 @@ import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
 
 import {
+  Box,
   DashboardPanel,
   EditableText,
   EthAddress,
@@ -193,9 +194,9 @@ export default function AddressBook({
     screenIsMobileSized() ? (
       translateRaw(id)
     ) : (
-      <div key={id} onClick={() => updateSortingState(id)}>
+      <Box key={id} onClick={() => updateSortingState(id)} display="flex" alignItems="center">
         {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-      </div>
+      </Box>
     );
 
   const addressBookTable = {
