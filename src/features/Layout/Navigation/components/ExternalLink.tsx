@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Box, Icon, Text } from '@components';
-import { useAnalytics } from '@hooks';
+import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { IExternalLink } from '@types';
 import { openLink } from '@utils';

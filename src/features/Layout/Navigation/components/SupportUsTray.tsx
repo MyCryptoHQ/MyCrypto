@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 
 import { Box, Icon, Text } from '@components';
 import { donationAddressMap } from '@config';
-import { useAnalytics } from '@hooks';
+import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';

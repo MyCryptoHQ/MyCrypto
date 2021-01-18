@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Box, Icon, Text, TIcon } from '@components';
-import { useAnalytics } from '@hooks';
+import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TURL } from '@types';

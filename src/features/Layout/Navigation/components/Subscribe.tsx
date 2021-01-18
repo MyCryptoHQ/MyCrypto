@@ -4,8 +4,8 @@ import { Formik } from 'formik';
 import { object, string } from 'yup';
 
 import { Body, Box, Button, Input, Text } from '@components';
-import { useAnalytics } from '@hooks';
 import { subscribeToMailingList } from '@services';
+import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 
