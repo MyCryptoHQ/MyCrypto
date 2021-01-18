@@ -208,7 +208,7 @@ export default function AccountList(props: AccountListProps) {
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
-          <Tooltip tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
+          <Tooltip width="16px" tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
         </>
       }
       headingRight={
