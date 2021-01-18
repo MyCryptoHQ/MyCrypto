@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
@@ -70,7 +71,12 @@ module.exports = merge.smart(common, {
 
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
-    new BundleAnalyzerPlugin({ openAnalyzer: false })
+    new BundleAnalyzerPlugin({ openAnalyzer: false }),
+
+    // Make .env variables available to react code.
+    new Dotenv({
+      safe: true // loads .env.example to sure all values are defined in .env
+    })
   ],
 
   performance: {

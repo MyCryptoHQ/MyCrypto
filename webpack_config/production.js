@@ -39,7 +39,9 @@ module.exports = merge.smart(common, {
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      TARGET_ENV: TargetEnv
+      TARGET_ENV: TargetEnv,
+      SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY, // Set by github secrets
+      ANALYTICS_API_URL: process.env.ANALYTICS_API_URL // Set by github secrets
     }),
 
     new MiniCSSExtractPlugin({

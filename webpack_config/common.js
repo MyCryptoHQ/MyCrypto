@@ -1,6 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -244,10 +243,7 @@ module.exports = {
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin(),
-
-    // Make .env variables available to react code
-    new Dotenv()
+    new LodashModuleReplacementPlugin()
   ],
 
   stats: {

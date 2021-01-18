@@ -90,7 +90,11 @@ You can also run a single file
 yarn test:e2e:dev __tests__/layout.test.js
 ```
 
-Running e2e tests requires a `.env` file to be defined, with the appropriate environment variables set. See `.env.example` for an example.
+## Environments
+
+In development we use a `.env` file to define required values. The list is defined in `.env.example`. These values are made available to the React code through the `dotenv` webpack plugin.
+In production, the values are set through Github secrets and made available to the React app through the `webpack.EnvironmentPlugin`.
+NB. Since TestCafe has access to the node, the values are available at `process.env` and do not need to be cloned.
 
 ## Product Analytics
 

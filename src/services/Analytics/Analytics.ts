@@ -1,6 +1,8 @@
 import { event, getConfig, page, Providers, setConfig } from '@blockstack/stats';
 
-import { ANALYTICS_API_URL, ANALYTICS_WRITE_KEY, TAnalyticEvents } from './constants';
+import { ANALYTICS_API_URL, SEGMENT_WRITE_KEY } from '@utils';
+
+import { TAnalyticEvents } from './constants';
 
 export interface PageParams {
   name: string;
@@ -19,7 +21,7 @@ const initAnalytics = () => {
     providers: [
       {
         name: Providers.Segment,
-        writeKey: ANALYTICS_WRITE_KEY
+        writeKey: SEGMENT_WRITE_KEY!
       }
     ]
   });

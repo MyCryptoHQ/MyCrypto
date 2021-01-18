@@ -11,7 +11,8 @@ export {
   IS_STAGING,
   IS_PROD,
   USE_HASH_ROUTER,
-  SEGMENT_WRITE_KEY
+  SEGMENT_WRITE_KEY,
+  ANALYTICS_API_URL
 } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
