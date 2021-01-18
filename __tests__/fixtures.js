@@ -1,9 +1,11 @@
+require('dotenv').config();
+
 const ENV = {
-  // Should be set in order to use Mnemonic in AddAccount flow
+  // Should be set in order to use PrivateKey in AddAccount flow
   E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
 
   // Defined in github/workflow to run against mycryptobuilds
-  E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
+  E2E_BASE_URL: process.env.E2E_BASE_URL
 };
 
 const ENV_KEYS = Object.keys(ENV);
