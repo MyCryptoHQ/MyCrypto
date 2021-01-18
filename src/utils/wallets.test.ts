@@ -2,20 +2,20 @@ import { fAccounts } from '@fixtures';
 import { TAddress, WalletId } from '@types';
 
 import {
-  getAccountsInNetwork,
+  getAccountsByNetwork,
   isHardwareWallet,
   isSenderAccountPresent,
   isViewOnlyWallet
 } from './wallets';
 
-describe('getAccountsInNetwork', () => {
+describe('getAccountsByNetwork', () => {
   it('filters correctly by default', () => {
-    expect(getAccountsInNetwork({ accounts: fAccounts, networkId: 'Ropsten' })).toHaveLength(3);
+    expect(getAccountsByNetwork({ accounts: fAccounts, networkId: 'Ropsten' })).toHaveLength(3);
   });
 
   it('includes view only when expected', () => {
     expect(
-      getAccountsInNetwork({ accounts: fAccounts, networkId: 'Ropsten', includeViewOnly: true })
+      getAccountsByNetwork({ accounts: fAccounts, networkId: 'Ropsten', includeViewOnly: true })
     ).toHaveLength(4);
   });
 });

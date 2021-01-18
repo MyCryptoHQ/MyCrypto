@@ -22,7 +22,7 @@ import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
 import {
   baseToConvertedUnit,
-  getAccountsInNetwork,
+  getAccountsByNetwork,
   hexToString,
   hexWeiToString,
   inputGasPriceToHex
@@ -100,7 +100,7 @@ export const Deploy = (props: Props) => {
   const { accounts } = useContext(StoreContext);
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
-  const filteredAccounts = getAccountsInNetwork({ accounts, networkId });
+  const filteredAccounts = getAccountsByNetwork({ accounts, networkId });
 
   useEffect(() => {
     if (!account) return;

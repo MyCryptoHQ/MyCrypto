@@ -1,7 +1,7 @@
 import { NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
 
-export const getAccountsInNetwork = ({
+export const getAccountsByNetwork = ({
   accounts,
   networkId,
   includeViewOnly = false

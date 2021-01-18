@@ -48,7 +48,7 @@ import {
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
-  getAccountsInNetwork,
+  getAccountsByNetwork,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
@@ -374,7 +374,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
       sortByLabel(
-        getAccountsInNetwork({ accounts, networkId: networkId || DEFAULT_NETWORK, includeViewOnly })
+        getAccountsByNetwork({ accounts, networkId: networkId || DEFAULT_NETWORK, includeViewOnly })
       )[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),

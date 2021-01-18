@@ -12,7 +12,7 @@ import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import {
   baseToConvertedUnit,
-  getAccountsInNetwork,
+  getAccountsByNetwork,
   hexToString,
   hexWeiToString,
   inputGasPriceToHex
@@ -66,7 +66,7 @@ export const WriteForm = (props: Props) => {
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const { accounts } = useContext(StoreContext);
-  const filteredAccounts = getAccountsInNetwork({ accounts, networkId: network.id });
+  const filteredAccounts = getAccountsByNetwork({ accounts, networkId: network.id });
 
   const handleGasPriceChange = (val: string) => {
     if (val.length) {
