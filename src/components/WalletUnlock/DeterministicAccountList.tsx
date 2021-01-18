@@ -7,9 +7,10 @@ import { DWAccountDisplay } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
-import { accountsToCSV, isSameAddress, makeBlob, useScreenSize } from '@utils';
+import { accountsToCSV, isSameAddress, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
+import { Downloader } from '../Downloader';
 import DeterministicTable from './DeterministicAccountTable';
 
 const DeterministicAccountListWrapper = styled.div`
@@ -70,6 +71,15 @@ const IconWrapper = styled.div`
 `;
 
 const SButton = styled.span`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
+`;
+
+const SDownloader = styled(Downloader)`
   color: ${COLORS.BLUE_MYC};
   cursor: pointer;
   font-weight: bold;
@@ -144,8 +154,7 @@ export default function DeterministicAccountList({
     );
   };
 
-  const handleDownload = () =>
-    window.open(makeBlob('text/csv', accountsToCSV(finishedAccounts, asset)));
+  const csv = accountsToCSV(finishedAccounts, asset);
   return (
     <DeterministicAccountListWrapper>
       <TableWrapper>
@@ -158,7 +167,7 @@ export default function DeterministicAccountList({
           asset={asset}
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
-          downloadCSV={handleDownload}
+          csv={csv}
           freshAddressIndex={freshAddressIndex}
         />
       </TableWrapper>
@@ -213,7 +222,10 @@ export default function DeterministicAccountList({
                       id="DETERMINISTIC_CSV"
                       variables={{ $total: () => finishedAccounts.length }}
                     />{' '}
-                    <SButton onClick={handleDownload}>here</SButton>.
+                    <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
+                      <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+                    </SDownloader>
+                    .
                   </>
                 }
               />

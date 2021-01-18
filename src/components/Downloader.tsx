@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Button, Link } from '@components';
-import { getCurrentDBConfig, getExportFileName } from '@database';
 import { COLORS } from '@theme';
 import translate from '@translations';
 import { makeBlob } from '@utils';
 
-const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
-  data,
-  onClick,
-  children
-}) => {
-  const [blob, setBlob] = useState('');
-  const [fileName, setFileName] = useState('');
+import { default as Button } from './Button';
+import { default as Link } from './Link';
 
-  useEffect(() => {
-    const dataBlob = makeBlob('text/json;charset=UTF-8', data);
-    setBlob(dataBlob);
-    setFileName(getExportFileName(getCurrentDBConfig(), new Date()));
-  }, [data]);
+export const Downloader: React.FC<{
+  data: string | TObject;
+  onClick?(): void;
+  fileName: string;
+  mime?: string;
+}> = ({ data, fileName, mime = 'text/json', onClick, children, ...props }) => {
+  const blob = makeBlob(`${mime};charset=UTF-8`, data);
 
   const handleDownload = () => {
     // Callback triggered after download
@@ -32,6 +27,7 @@ const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
       href={blob}
       download={fileName}
       onClick={handleDownload}
+      {...props}
     >
       {children}
       {!children && (
@@ -42,5 +38,3 @@ const Downloader: React.FC<{ data: string | TObject; onClick?(): void }> = ({
     </Link>
   );
 };
-
-export default Downloader;

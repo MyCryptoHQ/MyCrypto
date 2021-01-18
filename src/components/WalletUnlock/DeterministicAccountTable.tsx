@@ -22,6 +22,8 @@ import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
 import { buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
 
+import { Downloader } from '../Downloader';
+
 interface DeterministicTableProps {
   isComplete: boolean;
   accounts: DWAccountDisplay[];
@@ -32,10 +34,10 @@ interface DeterministicTableProps {
     derivationPath: string;
   }[];
   freshAddressIndex: number;
+  csv: string;
   generateFreshAddress(): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
-  downloadCSV(): void;
 }
 
 const Table = styled.div`
@@ -242,6 +244,15 @@ const NoAccountAction = styled.span`
   }
 `;
 
+const SDownloader = styled(Downloader)`
+  color: ${COLORS.BLUE_MYC};
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    color: ${COLORS.BLUE_LIGHT_DARKISH};
+  }
+`;
+
 const DeterministicTable = ({
   isComplete,
   accounts,
@@ -252,7 +263,7 @@ const DeterministicTable = ({
   onSelect,
   generateFreshAddress,
   handleUpdate,
-  downloadCSV
+  csv
 }: DeterministicTableProps) => {
   const { getContactByAddressAndNetworkId, updateContact, createContact } = useContacts();
   const { isMobile } = useScreenSize();
@@ -294,9 +305,9 @@ const DeterministicTable = ({
               <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
               <br />
               <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
-              <NoAccountAction onClick={downloadCSV}>
+              <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
                 <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
-              </NoAccountAction>
+              </SDownloader>
               .
             </Typography>
             <Button onClick={() => handleUpdate(asset)} fullwidth={isMobile}>
