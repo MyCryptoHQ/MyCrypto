@@ -45,7 +45,8 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
       tokenExplorer: n.tokenExplorer,
       baseAsset: baseAssetUuid, // Set baseAssetUuid
       baseUnit: n.unit,
-      nodes
+      nodes,
+      selectedNode: n.selectedNode
     };
   };
 
