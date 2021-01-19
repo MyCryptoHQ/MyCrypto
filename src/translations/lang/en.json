@@ -319,6 +319,7 @@
     "FAUCET_NO_ACCOUNTS": "It looks like you don't have any accounts for one of the supported testnets. In order to proceed, please go ahead and $link_add_account or $link_create_account.",
     "FAUCET_ADD_ACCOUNT_LINK": "add an existing account",
     "FAUCET_CREATE_ACCOUNT_LINK": "create a new one",
+    "FAUCET_LIMIT_REACHED": "Unfortunately, you have reached your daily limit. Please try again later.",
     "FAUCET_NOT_SURE": "Not sure what a faucet or testnet is?",
     "FAUCET_RUNNING_LOW": "Our faucet is currently running low on this network. Please try again later.",
     "FAUCET_SHARE": "Share on Twitter",
