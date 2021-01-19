@@ -361,7 +361,7 @@ const DeterministicTable = ({
                         account.balance
                           ? parseFloat(
                               fromTokenBase(
-                                new BN(account.balance.toString()),
+                                new BN(account.balance.toString(16), 16),
                                 asset.decimal
                               ).toString()
                             ).toFixed(4)
