@@ -9,6 +9,8 @@ import {
 } from '@services/EthService';
 import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
+import { Asset, IFormikFields } from '@types';
+import { bigify, gasStringsToMaxGasBN } from '@utils';
 
 export function validateGasPriceField(): TestOptions {
   return {
@@ -49,3 +51,23 @@ export function validateAmountField(): TestOptions {
     test: (value) => isValidPositiveNumber(value)
   };
 }
+
+export const canAffordTX = (
+  baseAsset: Asset,
+  {
+    account,
+    asset,
+    advancedTransaction,
+    gasPriceField,
+    gasPriceSlider,
+    gasLimitField,
+    amount
+  }: IFormikFields
+) => {
+  const gasPrice = advancedTransaction ? gasPriceField : gasPriceSlider;
+  const gasLimit = gasLimitField;
+  const gasTotal = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const total = asset.type === 'base' ? gasTotal.plus(bigify(amount)) : gasTotal;
+  const storeBaseAsset = account.assets.find((a) => a.uuid === baseAsset.uuid);
+  return storeBaseAsset ? total.lte(bigify(storeBaseAsset.balance)) : false;
+};
