@@ -134,7 +134,6 @@ export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';
-export { default as log } from './log';
 export { mapAsync, filterAsync } from './asyncFilter';
 export { isValidJSON } from './isValidJSON';
 export { goBack } from './navigation';
