@@ -1,6 +1,7 @@
 import { isHexPrefixed } from 'ethjs-util';
 import { TestOptions } from 'yup';
 
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import {
   gasLimitValidator,
   gasPriceValidator,
@@ -10,7 +11,7 @@ import {
 import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import { Asset, IFormikFields } from '@types';
-import { bigify, gasStringsToMaxGasBN } from '@utils';
+import { bigify, gasStringsToMaxGasBN, toWei } from '@utils';
 
 export function validateGasPriceField(): TestOptions {
   return {
@@ -67,7 +68,10 @@ export const canAffordTX = (
   const gasPrice = advancedTransaction ? gasPriceField : gasPriceSlider;
   const gasLimit = gasLimitField;
   const gasTotal = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
-  const total = asset.type === 'base' ? gasTotal.plus(bigify(amount)) : gasTotal;
+  const total =
+    asset.type === 'base'
+      ? gasTotal.plus(bigify(toWei(amount, baseAsset.decimal || DEFAULT_ASSET_DECIMAL).toString()))
+      : gasTotal;
   const storeBaseAsset = account.assets.find((a) => a.uuid === baseAsset.uuid);
   return storeBaseAsset ? total.lte(bigify(storeBaseAsset.balance)) : false;
 };
