@@ -6,7 +6,6 @@ import { TAnalyticEvents } from './constants';
 
 export interface PageParams {
   name: string;
-  pathname?: string;
   title: string;
 }
 
@@ -43,9 +42,10 @@ const track = ({ name, params }: TrackParams) => {
   return event({ name, ...params });
 };
 
-const trackPage = ({ name, title, pathname }: PageParams) => {
-  //@todo: remove any query params from url.
-  return page({ name, title, pathname });
+const trackPage = ({ name, title }: PageParams) => {
+  // @blockstack/stats/client already includes domain and path
+  // while omitting query values.
+  return page({ name, title });
 };
 
 export default {

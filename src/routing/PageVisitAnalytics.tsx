@@ -13,7 +13,6 @@ export const PageVisitsAnalytics = withRouter(({ history, location }) => {
     history.listen((to) => {
       if (to.pathname === location.pathname) return;
       const { name, title } = getRouteConfigByPath(to.pathname) || {};
-      // Include additional information. @blockstack/stats/client already handles the path for us.
       trackPage({ name, title });
     });
   });
