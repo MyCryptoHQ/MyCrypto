@@ -33,6 +33,8 @@ const getFailureMessage = (type: string) => {
       return <p>{translate('FAUCET_API_FAILURE')}</p>;
     case 'RUNNING_LOW':
       return <p>{translate('FAUCET_RUNNING_LOW')}</p>;
+    case 'DAILY_LIMIT_REACHED':
+      return <p>{translate('FAUCET_LIMIT_REACHED')}</p>;
     default:
       return <p>{translate('FAUCET_UNKNOWN_ERROR')}</p>;
   }
