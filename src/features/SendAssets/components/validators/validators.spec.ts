@@ -113,7 +113,7 @@ describe('canAffordTX', () => {
   it('returns false if user cant afford base asset tx', () => {
     expect(
       canAffordTX(fAssets[0], {
-        ...fERC20TxSendFormikFields,
+        ...fETHTxSendFormikFields,
         gasPriceSlider: '100000'
       })
     ).toEqual(false);
