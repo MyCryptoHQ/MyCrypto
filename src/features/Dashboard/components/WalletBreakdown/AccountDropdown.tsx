@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Icon, Identicon } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Checkbox } from '@components';
+import { Checkbox, Icon } from '@components';
 import { getLabelByAccount, useContacts } from '@services/Store';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IAccount, TUuid } from '@types';
 import { trimEllipsis, truncate, useOnClickOutside } from '@utils';
 
-const { BLUE_BRIGHT, BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
+const { BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
 
 interface AccountDropdownProps {
   className?: string;
@@ -75,16 +75,6 @@ const LabelRow = styled.span`
   display: flex;
   justify-content: space-between;
   min-width: 20px;
-`;
-
-const IconWrapper = styled(Icon)`
-  margin: 0;
-  margin-left: 6px;
-  font-size: 0.75rem;
-
-  svg {
-    color: ${BLUE_BRIGHT};
-  }
 `;
 
 const SCheckbox = styled(Checkbox)`
@@ -176,7 +166,7 @@ const AccountDropdown = ({
     <SDropdown ref={ref as SCref} role="button" onClick={toggleOpen} isOpen={isOpen} {...props}>
       <LabelRow>
         <span>{label}</span>
-        <IconWrapper icon="navDownCaret" />
+        <Icon type="down-caret" width="10px" />
       </LabelRow>
 
       {isOpen && (

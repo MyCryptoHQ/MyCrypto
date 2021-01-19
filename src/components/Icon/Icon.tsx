@@ -6,6 +6,7 @@ import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
 import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
+import downCaret from '@assets/icons/actions/down-caret.svg';
 import edit from '@assets/icons/actions/edit.svg';
 import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
@@ -129,6 +130,7 @@ const svgIcons = {
   'closed-eye': closedEye,
   'arrow-right': arrowRight,
   'faucet-icon': faucetIcon,
+  'down-caret': downCaret,
 
   /* Tooltips*/
   informational,
