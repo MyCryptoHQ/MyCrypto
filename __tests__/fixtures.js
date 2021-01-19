@@ -118,6 +118,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     }
   },
   settings: {
+    canTrackProductAnalytics: true,
     fiatCurrency: 'USD',
     darkMode: false,
     dashboardAccounts: ['256b782e-52bc-51f9-a357-602501e59700'],
