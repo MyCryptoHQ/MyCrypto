@@ -1,5 +1,20 @@
-import { StoreAccount, TAddress, WalletId } from '@types';
+import { NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
+
+export const getAccountsByNetwork = ({
+  accounts,
+  networkId,
+  includeViewOnly = false
+}: {
+  accounts: StoreAccount[];
+  networkId: NetworkId;
+  includeViewOnly?: boolean;
+}) =>
+  accounts.filter(
+    (acc) =>
+      acc.networkId === networkId &&
+      ((!includeViewOnly && !isViewOnlyWallet(acc.wallet)) || includeViewOnly)
+  );
 
 export const isViewOnlyWallet = (walletId: WalletId): boolean => walletId === WalletId.VIEW_ONLY;
 

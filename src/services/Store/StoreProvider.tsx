@@ -48,6 +48,7 @@ import {
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
+  getAccountsByNetwork,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
@@ -89,7 +90,6 @@ interface IAddAccount {
 }
 
 export interface State {
-  readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
@@ -104,6 +104,7 @@ export interface State {
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
+  getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -355,9 +356,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
-    get defaultAccount() {
-      return sortByLabel(state.accounts)[0];
-    },
     /**
      * Check if the user has already added an account to our persistence layer.
      */
@@ -374,6 +372,10 @@ export const StoreProvider: React.FC = ({ children }) => {
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
+    getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
+      sortByLabel(
+        getAccountsByNetwork({ accounts, networkId: networkId || DEFAULT_NETWORK, includeViewOnly })
+      )[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>

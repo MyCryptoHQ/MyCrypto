@@ -38,7 +38,7 @@ describe('SendAssetsFlow', () => {
               ({
                 userAssets: [],
                 accounts: [],
-                defaultAccount: { assets: [], wallet: WalletId.WEB3 },
+                getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
                 getAccount: jest.fn(),
                 networks: [{ nodes: [] }]
               } as unknown) as any

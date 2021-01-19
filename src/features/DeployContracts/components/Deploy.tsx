@@ -20,9 +20,15 @@ import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
-import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
+import {
+  baseToConvertedUnit,
+  getAccountsByNetwork,
+  hexToString,
+  hexWeiToString,
+  inputGasPriceToHex
+} from '@utils';
 
-import { constructGasCallProps, getAccountsInNetwork } from '../helpers';
+import { constructGasCallProps } from '../helpers';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -94,7 +100,7 @@ export const Deploy = (props: Props) => {
   const { accounts } = useContext(StoreContext);
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
-  const filteredAccounts = getAccountsInNetwork(accounts, networkId);
+  const filteredAccounts = getAccountsByNetwork({ accounts, networkId });
 
   useEffect(() => {
     if (!account) return;

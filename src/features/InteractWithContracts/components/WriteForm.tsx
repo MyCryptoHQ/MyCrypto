@@ -10,9 +10,14 @@ import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
-import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
+import {
+  baseToConvertedUnit,
+  getAccountsByNetwork,
+  hexToString,
+  hexWeiToString,
+  inputGasPriceToHex
+} from '@utils';
 
-import { getAccountsInNetwork } from '../helpers';
 import { ABIItem } from '../types';
 
 const WriteActionWrapper = styled.div`
@@ -61,7 +66,7 @@ export const WriteForm = (props: Props) => {
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const { accounts } = useContext(StoreContext);
-  const filteredAccounts = getAccountsInNetwork(accounts, network.id);
+  const filteredAccounts = getAccountsByNetwork({ accounts, networkId: network.id });
 
   const handleGasPriceChange = (val: string) => {
     if (val.length) {

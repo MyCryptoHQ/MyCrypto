@@ -32,7 +32,7 @@ describe('TokenMigrationStepper', () => {
               ({
                 userAssets: [],
                 accounts: [fAccounts[0]],
-                defaultAccount: fAccounts[0],
+                getDefaultAccount: () => fAccounts[0],
                 getAccount: jest.fn(),
                 networks: fNetworks,
                 getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
