@@ -13,6 +13,7 @@ import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
 import refresh from '@assets/icons/actions/refresh.svg';
+import logoMyCryptoTextBlue from '@assets/icons/brand/logo-text-blue.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
@@ -158,6 +159,7 @@ const svgIcons = {
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,
   'logo-mycrypto-text': logoMyCryptoText,
+  'logo-mycrypto-text-blue': logoMyCryptoTextBlue,
 
   /* Partner Icons */
   nansenLogo,

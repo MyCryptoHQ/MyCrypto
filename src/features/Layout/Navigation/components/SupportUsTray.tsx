@@ -41,10 +41,10 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
 
   return (
     <>
-      <Box width="100%">
+      <Box width="100%" p={{ _: 0, sm: '1.6vh' }} pb={{ _: SPACING.MD, sm: 0 }}>
         <Text
           textTransform="uppercase"
-          fontSize={{ _: '14px', sm: '12px' }}
+          fontSize={{ _: '14px', sm: '1.2vh' }}
           fontWeight={700}
           color={{ _: 'GREYISH_BROWN', sm: 'BLUE_DARK_SLATE' }}
         >
@@ -53,7 +53,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
         <Box
           variant="rowAlign"
           justifyContent="space-between"
-          width={{ _: '215px', sm: '100%' }}
+          width={{ _: '220px', sm: '100%' }}
           mb={SPACING.SM}
         >
           <CopyToClipboard
@@ -65,15 +65,15 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
           >
             <Box
               variant="rowCenter"
-              width="103px"
-              height="32px"
+              width={{ _: '105px', sm: '10.5vh' }}
+              height={{ _: '32px', sm: '3.2vh' }}
               backgroundColor="BLUE_MYC"
               color="WHITE"
               borderRadius="3px"
-              py="10px"
+              py={{ _: '10px', sm: '1vh' }}
             >
-              <Icon type="nav-ethereum" width="10px" />
-              <Text ml="10px" mb={0}>
+              <Icon type="nav-ethereum" width="1vh" />
+              <Text ml="1vh" mb={0} fontSize={{ _: '16px', sm: '1.6vh' }}>
                 {translateRaw('NAVIGATION_ETHEREUM')}
               </Text>
             </Box>
@@ -87,25 +87,31 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
           >
             <Box
               variant="rowCenter"
-              width="103px"
-              height="32px"
+              width={{ _: '105px', sm: '10.5vh' }}
+              height={{ _: '32px', sm: '3.2vh' }}
               backgroundColor="BLUE_MYC"
               color="WHITE"
               borderRadius="3px"
-              py="10px"
+              py={{ _: '10px', sm: '1vh' }}
             >
-              <Icon type="nav-bitcoin" width="10px" />
-              <Text ml="10px" mb={0}>
+              <Icon type="nav-bitcoin" width="1vh" />
+              <Text ml="1vh" mb={0} fontSize={{ _: '16px', sm: '1.6vh' }}>
                 {translateRaw('NAVIGATION_BITCOIN')}
               </Text>
             </Box>
           </CopyToClipboard>
         </Box>
-        <Box minHeight="25px" pb={SPACING.SM} variant="rowAlign">
+        <Box minHeight={{ _: '25px', sm: '2.5vh' }} pb={SPACING.SM} variant="rowAlign">
           {displayingMessage && (
             <>
-              <Icon type="confirm" width="10px" />
-              <Text fontSize={5} fontStyle="italic" mb={0} ml="5px" color="DARK_BLUE_SLATE">
+              <Icon type="confirm" width="1vh" />
+              <Text
+                fontSize={{ _: '10px', sm: '1vh' }}
+                fontStyle="italic"
+                mb={0}
+                ml="5px"
+                color="DARK_BLUE_SLATE"
+              >
                 {translateRaw('NEW_FOOTER_TEXT_2')}
               </Text>
             </>
@@ -113,7 +119,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
         </Box>
         <Text
           textTransform="uppercase"
-          fontSize={{ _: '14px', sm: '12px' }}
+          fontSize={{ _: '14px', sm: '1.2vh' }}
           fontWeight={700}
           color={{ _: 'GREYISH_BROWN', sm: 'BLUE_DARK_SLATE' }}
         >

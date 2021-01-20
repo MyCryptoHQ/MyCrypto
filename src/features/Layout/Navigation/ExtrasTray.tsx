@@ -34,7 +34,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
       width={{ _: '100vw', sm: '375px' }}
       top={{ _: 0, sm: 'unset' }}
       bottom={{ sm: 0 }}
-      left={{ _: 0, sm: '65px' }}
+      left={{ _: 0, sm: '6.8vh' }}
       height={{ sm: 'auto' }}
       boxShadow={{ sm: '3px 3px 20px rgba(0, 0, 0, 0.15);' }}
       ref={ref}
@@ -55,7 +55,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
             <SIcon
               type="nav-close"
               width="16px"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', marginRight: '15px' }}
               onClick={closeTray}
             />
           </Box>

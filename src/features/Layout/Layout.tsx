@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -21,6 +21,7 @@ import {
 import translate, { Trans, translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
+import { useTimeoutFn } from '@vendor';
 
 import { DemoBanner } from './Banners';
 import Footer from './Footer';
@@ -48,7 +49,7 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
     p.newNav &&
     css`
       @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-        margin-left: 64px;
+        margin-left: 6.5vh;
       }
       @media only screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
         margin-bottom: 57px;
@@ -120,8 +121,11 @@ const SContainer = styled.div`
 
 const BannerWrapper = styled.div<{ newNav: boolean }>`
   max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 25px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    position: absolute;
+    top: 35px;
+    left: 150px;
+  }
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: sticky;
     top: ${(p) => (p.newNav ? '15px' : '77px')};
@@ -165,7 +169,12 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
   const [topHeight, setTopHeight] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [isReady, clear, set] = useTimeoutFn(() => setIsOpen(!isOpen), 100);
+
   const topRef = useRef<any>(null);
+
+  useEffect(() => clear());
+
   useLayoutEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
@@ -189,10 +198,14 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
         <MobileNav appRoutes={APP_ROUTES} current={pathname} />
       )}
       {featureFlags.NEW_NAVIGATION && !isMobile && (
-        <DesktopNav appRoutes={APP_ROUTES} current={pathname} openTray={() => setIsOpen(!isOpen)} />
+        <DesktopNav
+          appRoutes={APP_ROUTES}
+          current={pathname}
+          openTray={() => isReady() !== false && set()}
+        />
       )}
       {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
-        <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+        <ExtrasTray isMobile={isMobile} closeTray={() => isReady() !== false && set()} />
       )}
       <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
         <STop newNav={featureFlags.NEW_NAVIGATION} ref={topRef}>

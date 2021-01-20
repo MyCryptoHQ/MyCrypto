@@ -149,7 +149,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
 
   return (
     <ContentPanel
-      heading={translateRaw('REQUEST')}
+      heading={translateRaw('RECEIVE_ASSETS')}
       icon={receiveIcon}
       onBack={() => history.push(ROUTE_PATHS.DASHBOARD.path)}
       mobileMaxWidth="100%;"
