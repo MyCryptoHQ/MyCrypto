@@ -44,7 +44,6 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
         variant="columnAlign"
         borderY={`1px solid ${COLORS.GREY_DARK}`}
         width="100%"
-        my="2vh"
         py="2vh"
         flex={1}
       >

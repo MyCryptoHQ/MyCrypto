@@ -7,7 +7,7 @@ export const Tray = ({ children }: { children: ReactNode }) => (
     display="flex"
     backgroundColor={{ _: 'BG_GRAY', sm: 'WHITE' }}
     position="absolute"
-    left={{ _: '0', sm: '65px' }}
+    left={{ _: '0', sm: '6.5vh' }}
     bottom={{ _: '57px', sm: 'auto' }}
     flexDirection="column"
     boxShadow={{
@@ -15,7 +15,7 @@ export const Tray = ({ children }: { children: ReactNode }) => (
       sm: 'desktop'
     }}
     borderRadius="3px"
-    width={{ _: '100vw', sm: '250px' }}
+    width={{ _: '100vw', sm: '25.5vh' }}
   >
     {children}
   </Box>

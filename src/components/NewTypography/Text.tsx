@@ -6,6 +6,8 @@ import {
   ColorStyleProps,
   fontStyle,
   FontStyleProps,
+  layout,
+  LayoutProps,
   lineHeight,
   LineHeightProps,
   size,
@@ -27,6 +29,7 @@ export type TextProps = SpaceProps &
   ColorProps &
   ColorStyleProps &
   TextStyleProps &
+  LayoutProps &
   TypographyProps & {
     variant?: TextVariants;
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
@@ -44,6 +47,7 @@ const Text: React.FC<TextProps> = styled.p<TextProps>`
   ${textStyle}
   ${lineHeight}
   ${typography}
+  ${layout}
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
 `;
 

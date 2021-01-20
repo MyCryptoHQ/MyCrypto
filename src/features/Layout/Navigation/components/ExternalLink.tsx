@@ -29,8 +29,8 @@ export const ExternalLink = ({ item }: { item: IExternalLink }) => {
 
   return (
     <SBox variant="rowAlign" onClick={handleClick} my={SPACING.SM}>
-      <Icon type={item.icon} width="20px" />
-      <Text ml="15px" color="BLUE_DARK_SLATE" mb={0}>
+      <Icon type={item.icon} width="2vh" />
+      <Text ml="1.5vh" color="BLUE_DARK_SLATE" mb={0} fontSize="1.6vh">
         {item.title}
       </Text>
     </SBox>

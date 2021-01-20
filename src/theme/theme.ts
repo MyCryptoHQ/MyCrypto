@@ -117,10 +117,11 @@ const TEXT_VARIANTS = {
     fontWeight: '900'
   },
   navItem: {
-    fontSize: '1vh',
+    fontSize: '1.1vh',
     fontWeight: 700,
     margin: 0,
     marginTop: '5px',
+    textAlign: 'center',
     textTransform: 'uppercase'
   }
 };
