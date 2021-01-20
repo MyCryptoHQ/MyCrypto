@@ -1,5 +1,6 @@
 import { isHexPrefixed } from 'ethjs-util';
 
+import { fAssets, fERC20TxSendFormikFields, fETHTxSendFormikFields } from '@fixtures';
 import {
   gasLimitValidator,
   gasPriceValidator,
@@ -7,6 +8,8 @@ import {
   isValidPositiveNumber,
   isValidPositiveOrZeroInteger
 } from '@services/EthService';
+
+import { canAffordTX } from '.';
 
 describe('gasPriceValidators', () => {
   const failCases = ['0.00001', '1a', 'a1', 'a', '0', '-0.1', '3001'];
@@ -99,5 +102,34 @@ describe('amountValidator', () => {
     passCases.forEach((passCase) => {
       expect(isValidPositiveNumber(passCase)).toEqual(true);
     });
+  });
+});
+
+describe('canAffordTX', () => {
+  it('returns true if user can afford base asset tx', () => {
+    expect(canAffordTX(fAssets[0], fETHTxSendFormikFields)).toEqual(true);
+  });
+
+  it('returns false if user cant afford base asset tx', () => {
+    expect(
+      canAffordTX(fAssets[0], {
+        ...fETHTxSendFormikFields,
+        gasPriceSlider: '100000'
+      })
+    ).toEqual(false);
+  });
+
+  it('returns true if user can afford ERC20 tx', () => {
+    expect(canAffordTX(fAssets[1], fERC20TxSendFormikFields)).toEqual(true);
+  });
+
+  it('returns false if user cant afford ERC20 tx', () => {
+    expect(
+      canAffordTX(fAssets[1], {
+        ...fERC20TxSendFormikFields,
+        gasLimitField: '85000',
+        gasPriceSlider: '100000'
+      })
+    ).toEqual(false);
   });
 });

@@ -95,6 +95,7 @@ import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
+  canAffordTX,
   validateAmountField,
   validateDataField,
   validateGasLimitField,
@@ -550,7 +551,10 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
 
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
-  const isFormValid = checkFormValid(errors) && !gasEstimationError;
+  const userCanAffordTX = canAffordTX(baseAsset, values);
+  const formHasErrors = !checkFormValid(errors);
+
+  const isFormValid = !formHasErrors && !gasEstimationError && userCanAffordTX;
   const walletConfig = getWalletConfig(values.account.wallet);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
@@ -790,6 +794,9 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         <InlineMessage
           value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: gasEstimationError })}
         />
+      )}
+      {!formHasErrors && !gasEstimationError && !userCanAffordTX && (
+        <InlineMessage value={translate('NOT_ENOUGH_GAS', { $baseAsset: baseAsset.ticker })} />
       )}
       {protectTxFeatureFlag && (
         <ProtectTxShowError
