@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { Box, Icon } from '@components';
+import { AnnouncementBanner, Box, Icon } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { ScreenLockContext } from '@features/ScreenLock';
 import { COLORS, SPACING } from '@theme';
@@ -46,7 +46,16 @@ export const TopNav = ({
         />
       )}
       {!isMobile && (
-        <Icon type="logo-mycrypto-text-blue" width="147px" style={{ marginRight: '35px' }} />
+        <>
+          <Box maxWidth="1000px" mr="auto" ml="65px">
+            <AnnouncementBanner />
+          </Box>
+          <Icon
+            type="logo-mycrypto-text-blue"
+            width="147px"
+            style={{ marginRight: '35px', marginLeft: '35px' }}
+          />
+        </>
       )}
       <TopItem
         title="NAVIGATION_LOCK"
