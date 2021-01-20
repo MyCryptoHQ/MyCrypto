@@ -1,6 +1,5 @@
 import {
   LedgerDecrypt,
-  TrezorDecrypt,
   TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
@@ -28,11 +27,6 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.LEDGER_NANO_S_NEW,
     steps: [NetworkSelectPanel, LedgerDecrypt]
-  },
-  {
-    name: WalletId.TREZOR,
-    steps: [NetworkSelectPanel, TrezorDecrypt],
-    hideFromWalletList: true
   },
   {
     name: WalletId.TREZOR_NEW,

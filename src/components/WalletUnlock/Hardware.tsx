@@ -2,26 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  InlineMessage,
-  RouterLink,
-  Spinner,
-  Text,
-  TIcon
-} from '@components';
+import { Box, Button, Heading, Icon, InlineMessage, Spinner, Text, TIcon } from '@components';
 import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import translate, { Trans, translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { InlineMessageType, Network, WalletId } from '@types';
 
 interface HWConfig {
   walletTypeTransKey: string;
-  oldInterfaceRoute: string;
 
   unlockTipTransKey: string;
 
@@ -80,7 +69,6 @@ const hardwareConfigs: THardwareConfigs = {
     referralTransKey: 'LEDGER_REFERRAL_2',
     referralURL: EXT_URLS.LEDGER_REFERRAL.url,
     unlockTipTransKey: 'LEDGER_TIP',
-    oldInterfaceRoute: '/add-account/ledger',
     iconId: 'ledger-icon-lg'
   },
   [WalletId.TREZOR_NEW]: {
@@ -89,7 +77,6 @@ const hardwareConfigs: THardwareConfigs = {
     referralTransKey: 'ORDER_TREZOR',
     referralURL: EXT_URLS.TREZOR_REFERRAL.url,
     unlockTipTransKey: 'TREZOR_TIP',
-    oldInterfaceRoute: '/add-account/trezor',
     iconId: 'trezor-icon-lg'
   }
 };
@@ -137,17 +124,6 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         {translate(hardwareConfigs[walletId].referralTransKey, {
           $url: hardwareConfigs[walletId].referralURL
         })}
-        <br />
-        <Trans
-          id="USE_OLD_INTERFACE"
-          variables={{
-            $link: () => (
-              <RouterLink to={hardwareConfigs[walletId].oldInterfaceRoute}>
-                {translateRaw('TRY_OLD_INTERFACE')}
-              </RouterLink>
-            )
-          }}
-        />
       </HardwareFooter>
     </Box>
   </Box>
