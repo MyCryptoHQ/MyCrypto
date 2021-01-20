@@ -21,7 +21,7 @@
     "@mycrypto/eth-scan": "3.2.1",
     "@mycrypto/ui": "0.24.1",
     "@mycrypto/unlock-scan": "1.0.2",
-    "@reduxjs/toolkit": "1.4.0",
+    "@reduxjs/toolkit": "1.5.0",
     "@types/papaparse": "5.0.6",
     "@types/redux-logger": "3.0.8",
     "@types/styled-system": "5.1.10",
