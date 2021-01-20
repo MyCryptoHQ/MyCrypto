@@ -370,8 +370,6 @@
     "LEDGER_WRONG_APP": "Incorrect network application selected on your Ledger device. Please select the application for the correct network.",
     "LOADING_ADDRESS": "Loading address...",
     "LOCK": "Lock",
-    "USE_OLD_INTERFACE": "Your wallet is not working ? $link",
-    "TRY_OLD_INTERFACE": "Try the old interface",
     "MANAGE_MEMBERSHIP": "View Membership",
     "MAX_TX_FEE": "Max TX Fee",
     "X_MEMBERSHIP": "Membership",
