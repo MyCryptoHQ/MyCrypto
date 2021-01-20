@@ -795,7 +795,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         />
       )}
       {!formHasErrors && !gasEstimationError && !userCanAffordTX && (
-        <InlineMessage value="Cant afford TX" />
+        <InlineMessage value={translate('NOT_ENOUGH_GAS', { $baseAsset: baseAsset.ticker })} />
       )}
       {protectTxFeatureFlag && (
         <ProtectTxShowError
