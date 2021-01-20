@@ -40,24 +40,24 @@ export const getProtectTxFee = (
     ? sendAssetsValues.gasPriceField
     : sendAssetsValues.gasPriceSlider;
 
-  const fixedHalfDollar = PROTECTED_TX_FIXED_FEE_AMOUNT / rate;
+  const fixedHalfDollar = bigify(PROTECTED_TX_FIXED_FEE_AMOUNT).dividedBy(rate);
 
-  let fixedFee = 0;
+  let fixedFee = bigify(0);
   try {
-    fixedFee = parseFloat((parseFloat(amount) * PROTECTED_TX_FEE_PERCENTAGE).toString());
+    fixedFee = bigify(amount).multipliedBy(PROTECTED_TX_FEE_PERCENTAGE);
   } catch (e) {
     console.error(e);
   }
 
-  const mainTransactionWei = parseFloat(
+  const mainTransactionWei = bigify(
     fromWei(Wei(totalTxFeeToWei(gasPrice, gasLimitField)), 'ether')
   );
 
   const protectedTransactionWei = gasStringsToMaxGasNumber(gasPrice, gasLimitField);
 
   return {
-    amount: bigify((fixedHalfDollar + fixedFee - mainTransactionWei).toString()),
-    fee: bigify(protectedTransactionWei.toString())
+    amount: fixedHalfDollar.plus(fixedFee).minus(mainTransactionWei),
+    fee: protectedTransactionWei
   };
 };
 
@@ -74,7 +74,10 @@ export const checkFormForProtectTxErrors = (
     return ProtectTxError.ETH_ONLY;
   }
 
-  if (!isPTXFree && (!rate || rate <= 0 || parseFloat(amount) < PROTECTED_TX_MIN_AMOUNT / rate)) {
+  if (
+    !isPTXFree &&
+    (!rate || rate <= 0 || bigify(amount).lt(bigify(PROTECTED_TX_MIN_AMOUNT).dividedBy(rate)))
+  ) {
     return ProtectTxError.LESS_THAN_MIN_AMOUNT;
   }
 
@@ -117,7 +120,7 @@ export const getLastTx = (
       const { tokenSymbol: ticker, value, timeStamp } = firstSentResult;
       return {
         ticker,
-        value: parseFloat(fromWei(Wei(value), 'ether')).toFixed(6),
+        value: bigify(fromWei(Wei(value), 'ether')).toFixed(6),
         timestamp: formatDate(parseInt(timeStamp, 10))
       };
     }
@@ -128,7 +131,7 @@ export const getLastTx = (
 export const getBalance = (balanceReport: GetBalanceResponse | null) => {
   if (balanceReport) {
     const { result } = balanceReport;
-    return parseFloat(fromWei(Wei(result), 'ether')).toFixed(6);
+    return bigify(fromWei(Wei(result), 'ether')).toFixed(6);
   }
   return null;
 };

@@ -26,7 +26,7 @@ export const convertToFiat = (
 };
 
 // Converts a decimal to an ethers.js BN
-export const convertToBN = (asset: number): BigNumber => {
+export const convertToBN = (asset: number | string): BigNumber => {
   const assetBN = parseEther(asset.toString());
   return assetBN;
 };
@@ -34,19 +34,22 @@ export const convertToBN = (asset: number): BigNumber => {
 // Multiply a floating-point BN by another floating-point BN
 export const multiplyBNFloats = (
   asset: number | string | BigNumberJs,
-  rate: number | string
+  rate: number | string | BigNumberJs
 ): BigNumber => {
   BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = bigify(asset);
-  const rateBN = new BigNumberJs(rate);
+  const rateBN = bigify(rate);
   return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
 };
 
 // Divide a floating-point BNs by another floating-point BN
-export const divideBNFloats = (asset: number | string, divisor: number | string): BigNumber => {
+export const divideBNFloats = (
+  asset: number | string | BigNumberJs,
+  divisor: number | string | BigNumberJs
+): BigNumber => {
   BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const divisorBN = new BigNumberJs(divisor);
+  const assetBN = bigify(asset);
+  const divisorBN = bigify(divisor);
   return bigNumberify(
     parseEther(trimBN(assetBN.dividedBy(divisorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
@@ -98,14 +101,17 @@ export const withCommission = ({
   amount: BigNumber;
   rate: number;
   subtract?: boolean;
-}): number => {
+}): BigNumberJs => {
   const commission = subtract ? (100 - rate) / 100 : (100 + rate) / 100;
   const outputBN = multiplyBNFloats(weiToFloat(amount), commission);
-  return parseFloat(trimBN(formatEther(outputBN)));
+  return bigify(trimBN(formatEther(outputBN)));
 };
 
-export const calculateMarkup = (exchangeRate: number, costBasis: number): string =>
-  (
-    (1 - parseFloat(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis).toString()), 10))) *
-    100
-  ).toString();
+export const calculateMarkup = (
+  exchangeRate: BigNumberJs | string,
+  costBasis: BigNumberJs | string
+): string =>
+  bigify(1)
+    .minus(bigify(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis).toString()), 10)))
+    .multipliedBy(100)
+    .toString();

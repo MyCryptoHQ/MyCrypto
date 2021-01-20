@@ -134,7 +134,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
       const commissionIncreasedAmount = trimBN(
         withCommission({
-          amount: convertToBN(Number(value)),
+          amount: convertToBN(value),
           rate: MYC_DEXAG_COMMISSION_RATE
         }).toString()
       );
@@ -156,8 +156,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         initialToAmount: commissionIncreasedAmount,
         exchangeRate: trimBN(formatEther(divideBNFloats(1, price).toString())),
         markup: calculateMarkup(
-          parseFloat(trimBN(formatEther(divideBNFloats(1, price).toString()))),
-          parseFloat(trimBN(formatEther(divideBNFloats(1, costBasis).toString())))
+          trimBN(formatEther(divideBNFloats(1, price).toString())),
+          trimBN(formatEther(divideBNFloats(1, costBasis).toString()))
         )
       }));
     } catch (e) {

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
+import { addHexPrefix } from 'ethereumjs-util';
 import { bigNumberify, formatEther, UnsignedTransaction } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
@@ -28,14 +28,13 @@ export const inputValueToHex = (valueEther: string): ITxValue =>
   hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL)) as ITxValue;
 
 export const inputNonceToHex = (nonce: string): ITxNonce =>
-  addHexPrefix(parseInt(nonce, 10).toString(16)) as ITxNonce;
+  addHexPrefix(bigify(nonce).toString(16)) as ITxNonce;
 /* region:end User Input to Hex */
 
 /* region:start Hex to User Viewable */
 export const hexNonceToViewable = (nonceHex: string): string => hexToString(nonceHex);
 
-export const hexToString = (hexValue: string): string =>
-  parseInt(stripHexPrefix(hexValue), 16).toString();
+export const hexToString = (hexValue: string): string => bigify(hexValue).toString();
 
 export const hexWeiToString = (hexWeiValue: string): string => Wei(hexWeiValue).toString();
 /* region:end Hex to User Viewable */
