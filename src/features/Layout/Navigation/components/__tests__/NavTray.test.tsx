@@ -37,6 +37,6 @@ describe('NavTray', () => {
     fireEvent.mouseLeave(trayBtn);
     setTimeout(() => {
       expect(screen.queryByText(new RegExp(defaultProps.content, 'i'))).not.toBeInTheDocument();
-    }, 501);
+    }, 300);
   });
 });
