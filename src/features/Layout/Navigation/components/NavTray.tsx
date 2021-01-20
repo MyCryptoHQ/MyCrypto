@@ -21,7 +21,7 @@ const SIcon = styled(Icon)`
 export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode }) => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const [isReady, clear, set] = useTimeoutFn(() => setOpen(false), 350);
+  const [isReady, clear, set] = useTimeoutFn(() => setOpen(false), 300);
 
   const handleOpen = () => {
     isReady() === false && clear();
