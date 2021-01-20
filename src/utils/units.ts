@@ -123,7 +123,7 @@ const gasPriceToBase = (price: string | number) =>
   toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
-  parseFloat(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
+  bigify(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
 
 const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
   new BN(parseInt(gasPriceEther, 10)).mul(new BN(parseInt(gasLimit, 10)));

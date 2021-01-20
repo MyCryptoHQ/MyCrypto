@@ -26,7 +26,7 @@ import { DeterministicWalletData, getDeterministicWallets } from '@services/Wall
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
-import { buildAddressUrl, fromWei } from '@utils';
+import { bigify, buildAddressUrl, fromWei } from '@utils';
 
 import { Table } from '../Table';
 
@@ -359,7 +359,7 @@ export function DeterministicWalletsClass({
         {!wallet.value ? (
           <Spinner />
         ) : (
-          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
+          `${bigify(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
       <LinkOut

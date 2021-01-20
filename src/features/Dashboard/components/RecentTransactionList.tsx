@@ -29,7 +29,7 @@ import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount } from '@types';
-import { convertToFiat, isSameAddress } from '@utils';
+import { bigify, convertToFiat, isSameAddress } from '@utils';
 
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
@@ -227,11 +227,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           ),
           <Amount
             key={3}
-            assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
+            assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
+              amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
             }}
           />,
           <RouterLink

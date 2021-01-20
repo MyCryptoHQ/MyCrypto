@@ -20,7 +20,7 @@ import { DWAccountDisplay, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
-import { buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+import { bigify, buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
 
 import { Downloader } from '../Downloader';
 
@@ -359,7 +359,7 @@ const DeterministicTable = ({
                     <Amount
                       assetValue={
                         account.balance
-                          ? parseFloat(
+                          ? bigify(
                               fromTokenBase(
                                 new BN(account.balance.toString(16), 16),
                                 asset.decimal

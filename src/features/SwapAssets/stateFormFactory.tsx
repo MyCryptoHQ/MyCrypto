@@ -10,6 +10,7 @@ import { DexAsset, DexService, getNetworkById, useNetworks } from '@services';
 import translate from '@translations';
 import { ISwapAsset, StoreAccount } from '@types';
 import {
+  bigify,
   calculateMarkup,
   convertToBN,
   divideBNFloats,
@@ -116,7 +117,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       return;
     }
 
-    if (parseFloat(value) <= 0) {
+    if (bigify(value).lte(0)) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
@@ -188,7 +189,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       return;
     }
 
-    if (parseFloat(value) <= 0) {
+    if (bigify(value).lte(0)) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,

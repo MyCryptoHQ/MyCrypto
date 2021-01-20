@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
+import BigNumber from 'bignumber.js';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -296,7 +297,7 @@ interface ITableFullAccountType {
   account: StoreAccount;
   index: number;
   label: string;
-  total: number;
+  total: BigNumber;
   addressCard: ExtendedContact;
 }
 
@@ -305,9 +306,11 @@ type TSortFunction = (a: ITableFullAccountType, b: ITableFullAccountType) => num
 const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   switch (sortKey) {
     case 'value':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => b.total - a.total;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) =>
+        b.total.gte(a.total) ? 1 : -1;
     case 'value-reverse':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => a.total - b.total;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) =>
+        a.total.gte(b.total) ? -1 : 1;
     case 'label':
       return (a: ITableFullAccountType, b: ITableFullAccountType) => a.label.localeCompare(b.label);
     case 'label-reverse':

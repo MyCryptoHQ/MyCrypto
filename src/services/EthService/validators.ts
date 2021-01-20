@@ -16,7 +16,7 @@ import {
 } from '@config';
 import { translateRaw } from '@translations';
 import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
-import { baseToConvertedUnit, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
+import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
 
 import { isValidENSName } from './ens/validators';
 
@@ -238,17 +238,13 @@ export const validateTxFee = (
     const txFeeFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txFee);
     return {
       type,
-      amount: parseFloat(
+      amount: bigify(
         baseToConvertedUnit(
           txAmountFiatLocalValue.toString(),
           DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL
         )
-      )
-        .toFixed(4)
-        .toString(),
-      fee: parseFloat(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL))
-        .toFixed(4)
-        .toString()
+      ).toFixed(4),
+      fee: bigify(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL)).toFixed(4)
     };
   };
   const isGreaterThanEthFraction = (ethFraction: number) => {

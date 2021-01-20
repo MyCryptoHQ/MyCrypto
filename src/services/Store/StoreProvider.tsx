@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
+import BigNumber from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
@@ -45,6 +46,7 @@ import {
   WalletId
 } from '@types';
 import {
+  bigify,
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
@@ -110,7 +112,7 @@ export interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getAssetRate: (asset: Asset) => number | undefined) => number;
+  ): (getAssetRate: (asset: Asset) => number | undefined) => BigNumber;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   deleteAccountFromCache(account: IAccount): void;
@@ -388,8 +390,8 @@ export const StoreProvider: React.FC = ({ children }) => {
       state
         .totals(selectedAccounts)
         .reduce(
-          (sum, asset) => (sum += parseFloat(convertToFiatFromAsset(asset, getAssetRate(asset)))),
-          0
+          (sum, asset) => sum.plus(bigify(convertToFiatFromAsset(asset, getAssetRate(asset)))),
+          bigify(0)
         ),
 
     assetTickers: (targetAssets = state.assets()) => [

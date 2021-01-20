@@ -8,7 +8,7 @@ import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { trimBN, weiToFloat } from '@utils';
+import { bigify, trimBN, weiToFloat } from '@utils';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -281,7 +281,7 @@ const ZapCard = ({ config }: Props) => {
                   {defiReserveBalances && defiReserveBalances.length > 0 ? (
                     defiReserveBalances.map((defiReserveAsset) => (
                       <div key={defiReserveAsset.uuid}>
-                        {`~ ${parseFloat(
+                        {`~ ${bigify(
                           trimBN(formatEther(defiReserveAsset.balance.toString()))
                         ).toFixed(4)} ${defiReserveAsset.ticker}`}
                       </div>

@@ -5,6 +5,7 @@ import { BigNumber, bigNumberify, formatEther, parseEther } from 'ethers/utils';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { StoreAsset } from '@types';
 
+import { bigify } from './bigify';
 import { fromTokenBase } from './units';
 
 export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): string => {
@@ -14,11 +15,14 @@ export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): str
   const rateBN = bigNumberify(Math.round(rate * rateDivisor));
 
   const convertedFloat = weiToFloat(asset.balance.mul(rateBN), asset.decimal);
-  return (convertedFloat / rateDivisor).toString();
+  return convertedFloat.dividedBy(rateDivisor).toString();
 };
 
-export const convertToFiat = (userViewableBalance: number, rate: number = 1): number => {
-  return userViewableBalance * rate;
+export const convertToFiat = (
+  userViewableBalance: BigNumberJs | string,
+  rate: number = 1
+): BigNumberJs => {
+  return bigify(userViewableBalance).multipliedBy(bigify(rate));
 };
 
 // Converts a decimal to an ethers.js BN
@@ -28,9 +32,12 @@ export const convertToBN = (asset: number): BigNumber => {
 };
 
 // Multiply a floating-point BN by another floating-point BN
-export const multiplyBNFloats = (asset: number | string, rate: number | string): BigNumber => {
+export const multiplyBNFloats = (
+  asset: number | string | BigNumberJs,
+  rate: number | string
+): BigNumber => {
   BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
+  const assetBN = bigify(asset);
   const rateBN = new BigNumberJs(rate);
   return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
 };
@@ -80,8 +87,8 @@ export const trimBN = (
 };
 
 // Note: This can in some cases remove useful decimals
-export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
-  parseFloat(fromTokenBase(new BN(wei.toString()), decimal));
+export const weiToFloat = (wei: BigNumber, decimal?: number): BigNumberJs =>
+  bigify(fromTokenBase(new BN(wei.toString()), decimal));
 
 export const withCommission = ({
   amount,

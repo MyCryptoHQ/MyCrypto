@@ -6,7 +6,7 @@ import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
 import { DataContext, IDataContext } from '@services';
 import { translateRaw } from '@translations';
 import { ExtendedContact } from '@types';
-import { truncate } from '@utils';
+import { bigify, truncate } from '@utils';
 
 import { ConfirmTransactionUI } from '../ConfirmTransaction';
 import { constructSenderFromTxConfig } from '../helpers';
@@ -59,7 +59,7 @@ describe('ConfirmTransaction', () => {
 
   test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
-    expect(getByText(parseFloat(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
+    expect(getByText(bigify(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
   });
 
   test('it calls onComplete when clicking next', async () => {
