@@ -1000,7 +1000,7 @@
     "GET_SOME_HERE": "Get some here!",
     "DELETE_NETWORK_TOOLTIP": "Please delete your accounts and contacts using the network before deleting the network",
     "DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE": "Share your address or request a specific payment amount",
-    "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Request Assets",
+    "DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE": "Receive Assets",
     "NAVIGATION_HOME": "Home",
     "NAVIGATION_SEND": "Send",
     "NAVIGATION_SWAP": "Swap",
