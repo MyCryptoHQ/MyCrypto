@@ -15,14 +15,18 @@ interface IDesktopNav extends INavigationProps {
 }
 
 const SBox = styled(Box)`
-  & * {
+  p {
     transition: all 300ms;
   }
   &:hover {
     background-color: ${COLORS.BG_GRAY};
-    * {
-      color: ${COLORS.GREYISH_BROWN};
+    transition: all 300ms;
+    svg {
       fill: ${COLORS.GREYISH_BROWN};
+    }
+    p {
+      color: ${COLORS.GREYISH_BROWN};
+      transition: all 300ms;
     }
   }
   transition: all 300ms;
