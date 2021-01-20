@@ -83,7 +83,6 @@ import {
   formatSupportEmail,
   fromTokenBase,
   gasStringsToMaxGasBN,
-  hexToNumber,
   isSameAddress,
   isVoid,
   sortByLabel,
@@ -217,7 +216,7 @@ const getInitialFormikValues = ({
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
-    gasLimitField: s.gasLimit && hexToNumber(s.gasLimit).toString(),
+    gasLimitField: bigify(s.gasLimit).toString(),
     gasPriceSlider: gasPriceInGwei,
     gasPriceField: gasPriceInGwei
   };
@@ -507,7 +506,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
       const finalTx = processFormForEstimateGas(values);
       try {
         const gas = await getGasEstimate(values.network, finalTx);
-        setFieldValue('gasLimitField', hexToNumber(gas).toString());
+        setFieldValue('gasLimitField', gas);
         setGasEstimationError(undefined);
       } catch (err) {
         setGasEstimationError(err.message);

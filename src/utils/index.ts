@@ -48,7 +48,6 @@ export {
 } from './queries';
 export { noOp } from './noOp';
 export {
-  hexToNumber,
   formatMnemonic,
   toChecksumAddressByChainId,
   buildEIP681EtherRequest,

@@ -13,11 +13,12 @@ import {
   isValidTransactionReceipt
 } from '@services/EthService';
 import { Asset, IHexStrTransaction, INode, TxObj } from '@types';
-import { hexToNumber, stripHexPrefix, TokenValue, Wei } from '@utils';
+import { stripHexPrefix, TokenValue, Wei } from '@utils';
 
 import { RPCClient } from './client';
 import { RPCRequests } from './requests';
 
+// @todo Clean up this unused code
 export default class RPCNode implements INode {
   public client: RPCClient;
   public requests: RPCRequests;
@@ -116,9 +117,9 @@ export default class RPCNode implements INode {
         value: Wei(result.value),
         gasPrice: Wei(result.gasPrice),
         gas: Wei(result.gas),
-        nonce: hexToNumber(result.nonce),
-        blockNumber: result.blockNumber ? hexToNumber(result.blockNumber) : null,
-        transactionIndex: result.transactionIndex ? hexToNumber(result.transactionIndex) : null
+        nonce: result.nonce,
+        blockNumber: result.blockNumber ? result.blockNumber : null,
+        transactionIndex: result.transactionIndex ? result.transactionIndex : null
       }));
   }
 
@@ -128,11 +129,11 @@ export default class RPCNode implements INode {
       .then(isValidTransactionReceipt)
       .then(({ result }) => ({
         ...result,
-        transactionIndex: hexToNumber(result.transactionIndex),
-        blockNumber: hexToNumber(result.blockNumber),
+        transactionIndex: result.transactionIndex,
+        blockNumber: result.blockNumber,
         cumulativeGasUsed: Wei(result.cumulativeGasUsed),
         gasUsed: Wei(result.gasUsed),
-        status: result.status ? hexToNumber(result.status) : null,
+        status: result.status ? result.status : null,
         root: result.root || null
       }));
   }

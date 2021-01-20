@@ -56,7 +56,6 @@ import {
   fromTokenBase,
   gasPriceToBase,
   getDecimalFromEtherUnit,
-  hexToNumber,
   isTransactionDataEmpty,
   toWei
 } from '@utils';
@@ -419,9 +418,9 @@ export const appendGasLimit = (network: Network) => async (
   }
   try {
     const gasLimit = await getGasEstimate(network, tx)
-      .then(hexToNumber)
-      .then((n: number) => Math.round(n * 1.2))
-      .then((n: number) => inputGasLimitToHex(n.toString()));
+      .then(bigify)
+      .then((n) => n.multipliedBy(1.2).integerValue(7))
+      .then((n) => inputGasLimitToHex(n.toString()));
 
     return {
       ...tx,

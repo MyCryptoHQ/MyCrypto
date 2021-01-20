@@ -10,7 +10,7 @@ import { fetchGasPriceEstimates, getGasEstimate, getNonce } from '@services';
 import { COLORS, monospace } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { StoreAccount } from '@types';
-import { hexToNumber, hexWeiToString, inputGasPriceToHex } from '@utils';
+import { hexWeiToString, inputGasPriceToHex } from '@utils';
 
 const { GREY_LIGHTER } = COLORS;
 
@@ -101,7 +101,7 @@ export default function GasSelector({
         chainId: network.chainId
       });
       const fetchedGasLimit = await getGasEstimate(network, txConfig);
-      setGasLimit(hexToNumber(fetchedGasLimit).toString());
+      setGasLimit(fetchedGasLimit);
     } catch (e) {
       console.debug(e);
     }
