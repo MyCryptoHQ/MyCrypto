@@ -33,7 +33,7 @@ export const TrayItem = ({ item, current }: { item: IRouteLink; current: boolean
         color="BLUE_DARK_SLATE"
         fontWeight={current ? 'bold' : 'normal'}
         mb={0}
-        fontSize="1.6vh"
+        fontSize={{ _: '16px', sm: '1.6vh' }}
       >
         {item.title}
       </Text>

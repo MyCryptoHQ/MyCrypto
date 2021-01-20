@@ -44,7 +44,7 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
     >
       <SIcon type="caret" color={COLORS.BLUE_GREY} height="0.8vh" />
       <Icon type={tray.icon} height="2.5vh" color="WHITE" />
-      <Text variant="navItem" color="WHITE">
+      <Text variant="navItem" fontSize={{ _: '10px', sm: '1.1vh' }} color="WHITE">
         {tray.title}
       </Text>
       {isOpen && <Tray>{content}</Tray>}

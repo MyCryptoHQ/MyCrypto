@@ -61,7 +61,7 @@ const DesktopNav = ({ appRoutes, current, openTray }: IDesktopNav) => {
       <NavLink link={settings} current={current === settings.to} />
       <SBox variant="columnCenter" width="100%" px="3px" py="12px" onClick={openTray}>
         <Icon type="nav-menu" height="2.5vh" color="WHITE" />
-        <Text variant="navItem" color="WHITE" fontSize="1vh">
+        <Text variant="navItem" fontSize={{ _: '10px', sm: '1.1vh' }} color="WHITE">
           {translateRaw('NAVIGATION_MENU')}
         </Text>
       </SBox>
