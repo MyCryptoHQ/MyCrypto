@@ -104,7 +104,10 @@ const TEXT_VARIANTS = {
   link: {
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
-    color: 'BLUE_BRIGHT'
+    color: 'BLUE_BRIGHT',
+    '&:hover': {
+      color: '#005166'
+    }
   },
   tableHeading: {
     textTransform: 'uppercase',

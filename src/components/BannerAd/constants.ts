@@ -1,15 +1,15 @@
-import coinbaseDesktop from '@assets/images/banners/Coinbase_Desktop.png';
-import coinbaseMobile from '@assets/images/banners/Coinbase_Mobile.png';
-import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.png';
-import ledgerMobile from '@assets/images/banners/Ledger_Mobile.png';
-import PooltogetherDesktop from '@assets/images/banners/Pooltogether_Desktop.png';
-import PooltogetherMobile from '@assets/images/banners/Pooltogether_Mobile.png';
-import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.png';
-import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.png';
-import trezorDesktop from '@assets/images/banners/Trezor_Desktop.png';
-import trezorMobile from '@assets/images/banners/Trezor_Mobile.png';
-import unstoppableDesktop from '@assets/images/banners/UnstoppableDomains_Desktop.png';
-import unstoppableMobile from '@assets/images/banners/UnstoppableDomains_Mobile.png';
+import coinbaseDesktop from '@assets/images/banners/Coinbase_Desktop.svg';
+import coinbaseMobile from '@assets/images/banners/Coinbase_Mobile.svg';
+import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.svg';
+import ledgerMobile from '@assets/images/banners/Ledger_Mobile.svg';
+import PooltogetherDesktop from '@assets/images/banners/Pooltogether_Desktop.svg';
+import PooltogetherMobile from '@assets/images/banners/Pooltogether_Mobile.svg';
+import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.svg';
+import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.svg';
+import trezorDesktop from '@assets/images/banners/Trezor_Desktop.svg';
+import trezorMobile from '@assets/images/banners/Trezor_Mobile.svg';
+import unstoppableDesktop from '@assets/images/banners/UnstoppableDomains_Desktop.svg';
+import unstoppableMobile from '@assets/images/banners/UnstoppableDomains_Mobile.svg';
 import { EXT_URLS } from '@config';
 
 export const ads = [

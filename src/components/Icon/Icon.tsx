@@ -6,11 +6,13 @@ import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
 import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
+import downCaret from '@assets/icons/actions/down-caret.svg';
 import edit from '@assets/icons/actions/edit.svg';
 import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
+import refresh from '@assets/icons/actions/refresh.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
@@ -121,12 +123,14 @@ const svgIcons = {
   info,
   more,
   confirm,
+  refresh,
   'add-bold': addBold,
   'info-small': infoSmall,
   'opened-eye': openedEye,
   'closed-eye': closedEye,
   'arrow-right': arrowRight,
   'faucet-icon': faucetIcon,
+  'down-caret': downCaret,
 
   /* Tooltips*/
   informational,

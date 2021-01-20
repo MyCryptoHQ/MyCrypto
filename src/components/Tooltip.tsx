@@ -36,18 +36,20 @@ function Tooltip({
   children,
   display = 'inline-flex',
   verticalAlign = 'middle',
+  width = '1em',
   ...props
 }: {
   tooltip: React.ReactNode;
   type?: ToolTipIcon;
   children?: React.ReactNode;
+  width?: string;
 } & SpaceProps &
   VerticalAlignProps &
   DisplayProps) {
   return (
     <Override verticalAlign={verticalAlign} display={display} {...props}>
       <UITooltip tooltip={tooltip}>
-        {children ? children : <Icon type={type} width="1em" />}
+        {children ? children : <Icon type={type} width={width} />}
       </UITooltip>
     </Override>
   );

@@ -1,18 +1,21 @@
 import React from 'react';
 
-import { Button, Typography } from '@mycrypto/ui';
+import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import {
   AssetIcon,
   Body,
+  Box,
   DashboardPanel,
   Heading,
   Icon,
   RouterLink,
   SkeletonLoader,
+  Text,
   Tooltip
 } from '@components';
+import { Link } from '@components/NewTypography';
 import { ROUTE_PATHS } from '@config';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
@@ -61,12 +64,6 @@ const MoreIcon = styled(Icon)`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
-  padding: 9px 16px;
-  font-size: ${FONT_SIZE.MD};
-  margin-left: 8px;
-`;
-
 const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
   height: 95vh;
@@ -98,18 +95,29 @@ export function TokenList(props: TokenListProps) {
     <TokenDashboardPanel
       heading={
         <>
-          {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
+          {translateRaw('TOKENS')}{' '}
+          <Tooltip width="16px" tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
         </>
       }
       headingRight={
-        <div style={{ minWidth: '170px', textAlign: 'right' }}>
-          <StyledButton onClick={() => handleScanTokens()}>
-            {translateRaw('SCAN_TOKENS_SHORT')}
-          </StyledButton>
-          <StyledButton onClick={() => setShowAddToken(true)}>
-            + {translateRaw('ADD_TOKEN_SHORT')}
-          </StyledButton>
-        </div>
+        <Box variant="rowAlign">
+          <Link>
+            <Box variant="rowAlign" marginRight={SPACING.MD} onClick={() => handleScanTokens()}>
+              <Icon type="refresh" width="16px" />
+              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                {translateRaw('SCAN_TOKENS_SHORT')}
+              </Text>
+            </Box>
+          </Link>
+          <Link>
+            <Box variant="rowAlign" onClick={() => setShowAddToken(true)}>
+              <Icon type="add-bold" width="16px" />
+              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                {translateRaw('ADD_TOKEN_SHORT')}
+              </Text>
+            </Box>
+          </Link>
+        </Box>
       }
       padChildren={false}
     >
