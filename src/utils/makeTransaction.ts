@@ -19,7 +19,7 @@ export const makeTransaction = (t: ITxObject): UnsignedTransaction => {
 export const inputGasPriceToHex = (
   gasPriceGwei: string
 ): ITxGasPrice /* Converts to wei from gwei */ =>
-  addHexPrefix(gasPriceToBase(parseFloat(gasPriceGwei)).toString(16)) as ITxGasPrice;
+  addHexPrefix(gasPriceToBase(gasPriceGwei).toString(16)) as ITxGasPrice;
 
 export const inputGasLimitToHex = (gasLimit: string): ITxGasLimit =>
   bigNumberify(gasLimit).toHexString() as ITxGasLimit;

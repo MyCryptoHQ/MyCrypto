@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
@@ -118,7 +119,8 @@ const calculateGasUsedPercentage = (gasLimit: string, gasUsed: string) => {
   return gasUsedBN.div(gasLimitBN).multipliedBy(bigify(100));
 };
 
-const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+const gasPriceToBase = (price: string | number) =>
+  toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
   parseFloat(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
@@ -127,11 +129,12 @@ const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
   new BN(parseInt(gasPriceEther, 10)).mul(new BN(parseInt(gasLimit, 10)));
 
 const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BN => {
-  return gasPriceToBase(parseFloat(gasPriceGwei)).mul(new BN(gasLimit));
+  return gasPriceToBase(gasPriceGwei).mul(new BN(gasLimit));
 };
 
-const gasStringsToMaxGasNumber = (gasPriceGwei: string, gasLimit: string): number => {
-  return parseFloat(
+// @todo Rename
+const gasStringsToMaxGasNumber = (gasPriceGwei: string, gasLimit: string): BigNumber => {
+  return bigify(
     baseToConvertedUnit(
       gasStringsToMaxGasBN(gasPriceGwei, gasLimit).toString(),
       DEFAULT_ASSET_DECIMAL

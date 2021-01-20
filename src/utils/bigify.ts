@@ -4,8 +4,8 @@ import { BigNumber as BigNumberish } from 'ethers/utils';
 
 export type Bigish = BigNumber;
 
-export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | bigint): BigNumber => {
-  if (BigNumberish.isBigNumber(v)) {
+export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | bigint | BN): BigNumber => {
+  if (BigNumberish.isBigNumber(v) || BN.isBN(v)) {
     return new BigNumber(v.toString());
   } else if (typeof v === 'object' && '_hex' in v) {
     return new BigNumber(v._hex);

@@ -195,7 +195,7 @@ export const makeTxConfigFromSignedTx = (
         ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
           oldTxConfig.senderAccount
         : oldTxConfig.senderAccount,
-    gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
+    gasPrice: gasPriceToBase(decodedTx.gasPrice).toString(),
     gasLimit: decodedTx.gasLimit,
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
