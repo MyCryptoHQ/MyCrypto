@@ -5,14 +5,14 @@ import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
 import { FeatureFlagProvider, useFeatureFlags } from '@services';
 import { trackInit } from '@services/Analytics';
 import { createStore, useDispatch } from '@store';
-import { theme } from '@theme';
+import { COLORS, theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 
 import AppProviders from './AppProviders';
@@ -26,6 +26,25 @@ const FullScreen = styled.div`
   flex: 1;
   max-width: 100vw;
   max-height: 100vh;
+`;
+
+const GlobalStyle = createGlobalStyle`
+::-webkit-scrollbar-track {
+  background-color: ${COLORS.GREY_ATHENS};
+  box-shadow: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  box-shadow: none;
+  background-color: ${COLORS.GREY_ATHENS};
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: none;
+  border-radius: 0;
+  background-color: ${COLORS.BLUE_DARK_SLATE};
+}
 `;
 
 const { store, persistor } = createStore();
@@ -43,6 +62,7 @@ const RootComponent = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <Router>
         <AppProviders>
           <FullHeight>

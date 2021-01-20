@@ -84,5 +84,5 @@ export const SPACING = {
   XXL: '100px'
 };
 
-export const MAX_CONTENT_WIDTH = '1200px';
+export const MAX_CONTENT_WIDTH = '1670px';
 export const MIN_CONTENT_PADDING = '15px';
