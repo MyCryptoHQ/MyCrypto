@@ -216,7 +216,7 @@ const getInitialFormikValues = ({
     nonceField: s.nonce,
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
-    gasLimitField: bigify(s.gasLimit).toString(),
+    gasLimitField: s.gasLimit && bigify(s.gasLimit).toString(),
     gasPriceSlider: gasPriceInGwei,
     gasPriceField: gasPriceInGwei
   };
