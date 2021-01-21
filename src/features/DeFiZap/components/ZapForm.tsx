@@ -5,6 +5,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 import { number, object } from 'yup';
 
 import {
@@ -42,7 +43,7 @@ interface UIProps {
   network: Network;
   zapSelected: IZapConfig;
   relevantAccounts: StoreAccount[];
-  defaultAccount: StoreAccount;
+  defaultAccount?: StoreAccount;
   isDemoMode: boolean;
   onComplete(fields: any): void;
 }
@@ -103,7 +104,7 @@ export const ZapFormUI = ({
   isDemoMode,
   onComplete
 }: UIProps) => {
-  const initialFormikValues: ISimpleTxFormFull = {
+  const initialFormikValues: Overwrite<ISimpleTxFormFull, { account?: StoreAccount }> = {
     account: defaultAccount,
     amount: '',
     asset: ethAsset,

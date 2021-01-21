@@ -72,6 +72,6 @@ export const canAffordTX = (
     asset.type === 'base'
       ? gasTotal.plus(bigify(toWei(amount, baseAsset.decimal || DEFAULT_ASSET_DECIMAL).toString()))
       : gasTotal;
-  const storeBaseAsset = account.assets.find((a) => a.uuid === baseAsset.uuid);
+  const storeBaseAsset = account.assets && account.assets.find((a) => a.uuid === baseAsset.uuid);
   return storeBaseAsset ? total.lte(bigify(storeBaseAsset.balance)) : false;
 };

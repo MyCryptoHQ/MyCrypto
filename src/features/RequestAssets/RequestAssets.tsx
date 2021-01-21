@@ -107,7 +107,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
   const { accounts, getDefaultAccount, networks } = useContext(StoreContext);
   const defaultAccount = getDefaultAccount(true);
   const { assets } = useAssets();
-  const [networkId, setNetworkId] = useState(defaultAccount.networkId);
+  const [networkId, setNetworkId] = useState(defaultAccount!.networkId);
   const network = getNetworkById(networkId, networks);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
@@ -130,7 +130,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
   const initialValues = {
     amount: '',
     asset: {},
-    recipientAddress: defaultAccount
+    recipientAddress: defaultAccount!
   };
 
   const validateAmount = (amount: any) => {

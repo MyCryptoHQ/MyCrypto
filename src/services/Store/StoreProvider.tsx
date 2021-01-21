@@ -103,7 +103,7 @@ export interface State {
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
-  getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount;
+  getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount | undefined;
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];

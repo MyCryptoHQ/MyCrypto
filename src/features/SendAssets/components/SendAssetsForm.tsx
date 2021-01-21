@@ -26,6 +26,7 @@ import {
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK,
   ETHUUID,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
@@ -203,7 +204,7 @@ const getInitialFormikValues = ({
   defaultNetwork
 }: {
   s: ITxConfig;
-  defaultAccount: StoreAccount;
+  defaultAccount: StoreAccount | undefined;
   defaultAsset: Asset | undefined;
   defaultNetwork: Network | undefined;
 }): IFormikFields => {
@@ -267,12 +268,16 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     } else if (userAssets.length > 0) {
       return userAssets[0];
     }
-    return undefined;
+    return EthAsset;
   })();
 
   const getDefaultAccount = (asset?: Asset) => {
     const storeDefaultAccount = getDefaultStoreAccount(false, asset?.networkId);
-    if (asset !== undefined && !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)) {
+    if (
+      storeDefaultAccount !== undefined &&
+      asset !== undefined &&
+      !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)
+    ) {
       const accountsWithDefaultAsset = validAccounts.filter((account) =>
         account.assets.some((a) => a.uuid === asset.uuid)
       );
@@ -282,8 +287,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     }
     return storeDefaultAccount;
   };
-  const getDefaultNetwork = (account: StoreAccount) =>
-    networks.find((n) => n.id === account.networkId);
+  const getDefaultNetwork = (account?: StoreAccount) =>
+    networks.find((n) => n.id === (account !== undefined ? account.networkId : DEFAULT_NETWORK));
 
   const defaultAccount = getDefaultAccount(defaultAsset);
   const defaultNetwork = getDefaultNetwork(defaultAccount);
@@ -555,7 +560,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   const formHasErrors = !checkFormValid(errors);
 
   const isFormValid = !formHasErrors && !gasEstimationError && userCanAffordTX;
-  const walletConfig = getWalletConfig(values.account.wallet);
+  const walletConfig = getWalletConfig(values.account.wallet || WalletId.WEB3);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
   const { type, amount, fee } = validateTxFee(

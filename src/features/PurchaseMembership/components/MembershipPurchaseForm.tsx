@@ -4,6 +4,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 import { number, object } from 'yup';
 
 import {
@@ -98,7 +99,7 @@ export const MembershipFormUI = ({
   const defaultAccount = getDefaultAccount();
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
-  const initialFormikValues: MembershipSimpleTxFormFull = {
+  const initialFormikValues: Overwrite<MembershipSimpleTxFormFull, { account?: StoreAccount }> = {
     membershipSelected: defaultMembership,
     account: defaultAccount,
     amount: defaultMembership.price,
