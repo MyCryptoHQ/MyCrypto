@@ -305,11 +305,9 @@ type TSortFunction = (a: ITableFullAccountType, b: ITableFullAccountType) => num
 const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   switch (sortKey) {
     case 'value':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) =>
-        b.total.gte(a.total) ? 1 : -1;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) => b.total.comparedTo(a.total);
     case 'value-reverse':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) =>
-        a.total.gte(b.total) ? -1 : 1;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) => a.total.comparedTo(b.total);
     case 'label':
       return (a: ITableFullAccountType, b: ITableFullAccountType) => a.label.localeCompare(b.label);
     case 'label-reverse':

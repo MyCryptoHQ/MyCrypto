@@ -53,7 +53,7 @@ export const buildBalances = (
   totals(accounts)
     .filter(assetFilter(settings.excludedAssets))
     .map(buildBalance(accounts, getAssetRate))
-    .sort((a, b) => (bigify(b.fiatValue).gte(a.fiatValue) ? 1 : -1));
+    .sort((a, b) => bigify(b.fiatValue).comparedTo(a.fiatValue));
 
 export const buildTotalFiatValue = (balances: Balance[]) =>
   balances
