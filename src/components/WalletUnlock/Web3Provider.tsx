@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { Box, Heading, InlineMessage, NewTabLink } from '@components';
+import { Box, Button, Heading, InlineMessage, NewTabLink } from '@components';
 import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
@@ -82,17 +82,17 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
       <Body textAlign="center" fontSize="2" paddingTop="16px">
         {translate(`ADD_ACCOUNT_WEB3_DESC`)}
       </Body>
-      <Box m="2em">
+      <Box m="2em" variant="columnCenter">
         <div className="Web3-img-container">
           <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>
             <img src={web3ProviderSettings.icon} />
           </div>
         </div>
-        <button className="btn btn-primary btn-lg btn-block" onClick={unlockWallet}>
+        <Button onClick={unlockWallet}>
           {isDefault
             ? translate('ADD_WEB3_DEFAULT', transProps)
             : translate('ADD_WEB3', transProps)}
-        </button>
+        </Button>
 
         {web3Unlocked === false && (
           <>
