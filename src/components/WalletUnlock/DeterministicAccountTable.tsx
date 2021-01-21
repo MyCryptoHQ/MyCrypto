@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Identicon } from '@mycrypto/ui';
-import BN from 'bn.js';
 import styled, { css } from 'styled-components';
 
 import {
@@ -359,12 +358,7 @@ const DeterministicTable = ({
                     <Amount
                       assetValue={
                         account.balance
-                          ? bigify(
-                              fromTokenBase(
-                                new BN(account.balance.toString(16), 16),
-                                asset.decimal
-                              ).toString()
-                            ).toFixed(4)
+                          ? bigify(fromTokenBase(account.balance, asset.decimal)).toFixed(4)
                           : '0.0000'
                       }
                     />

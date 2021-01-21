@@ -1,5 +1,4 @@
 import BigNumberJs from 'bignumber.js';
-import BN from 'bn.js';
 import { BigNumber, bigNumberify, formatEther, parseEther } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
@@ -87,7 +86,7 @@ export const trimBN = (
 
 // Note: This can in some cases remove useful decimals
 export const weiToFloat = (wei: BigNumber, decimal?: number): BigNumberJs =>
-  bigify(fromTokenBase(new BN(wei.toString()), decimal));
+  bigify(fromTokenBase(bigify(wei), decimal));
 
 export const withCommission = ({
   amount,

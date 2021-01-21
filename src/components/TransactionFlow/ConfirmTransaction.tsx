@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import BN from 'bn.js';
 import Styled from 'styled-components';
 
 import feeIcon from '@assets/images/icn-fee.svg';
@@ -226,13 +225,13 @@ export const ConfirmTransactionUI = ({
   const assetType = asset.type;
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = totalTxFeeToWei(gasPrice, gasLimit);
+  const transactionFeeWei = totalTxFeeToWei(gasPrice, gasLimit);
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
   // @todo: BN math, add amount + maxCost !In same symbol
-  const totalEtherEgress = bigify(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
+  const totalEtherEgress = bigify(fromWei(valueWei.plus(transactionFeeWei), 'ether')).toFixed(6);
 
   const fiat = getFiat(settings);
 

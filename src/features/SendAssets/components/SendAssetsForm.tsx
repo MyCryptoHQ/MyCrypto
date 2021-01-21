@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { Button as UIBtn } from '@mycrypto/ui';
-import BN from 'bn.js';
 import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
@@ -520,15 +519,15 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   const setAmountFieldToAssetMax = () => {
     const account = getAccount(values.account);
     if (values.asset && account && baseAsset) {
-      const accountBalance = getAccountBalance(account, values.asset).toString();
+      const accountBalance = getAccountBalance(account, values.asset);
       const isERC20 = isERC20Asset(values.asset);
-      const balance = fromTokenBase(new BN(accountBalance), values.asset.decimal);
+      const balance = fromTokenBase(bigify(accountBalance), values.asset.decimal);
       const gasPrice = values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider;
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
         ? balance
         : baseToConvertedUnit(
-            new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
-              .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
+            bigify(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
+              .minus(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
               .toString(),
             DEFAULT_ASSET_DECIMAL
           );

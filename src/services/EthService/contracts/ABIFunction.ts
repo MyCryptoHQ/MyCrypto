@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
@@ -104,7 +105,7 @@ export class AbiFunction {
     if (type === 'bytes') {
       return Buffer.from(stripHexPrefix(value), 'hex');
     }
-    return BN.isBN(value) ? value.toString() : value;
+    return BigNumber.isBigNumber(value) ? value.toString() : value;
   };
 
   private makeFuncParams = () =>

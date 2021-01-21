@@ -1,6 +1,6 @@
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
-import BN from 'bn.js';
 
+import { bigify } from './bigify';
 import { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 
 // 0x41 (65 in decimal)
@@ -10,13 +10,13 @@ import { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 // WRONG: ff (must be prefixed 0x)
 describe('hexEncodeQuantity', () => {
   it('convert dec to hex', () => {
-    expect(hexEncodeQuantity(new BN(65))).toEqual('0x41');
+    expect(hexEncodeQuantity(bigify(65))).toEqual('0x41');
   });
   it('should strip leading zeroes', () => {
-    expect(hexEncodeQuantity(new BN(1024))).toEqual('0x400');
+    expect(hexEncodeQuantity(bigify(1024))).toEqual('0x400');
   });
   it('should handle zeroes correctly', () => {
-    expect(hexEncodeQuantity(new BN(0))).toEqual('0x0');
+    expect(hexEncodeQuantity(bigify(0))).toEqual('0x0');
   });
 });
 

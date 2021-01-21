@@ -1,4 +1,4 @@
-import BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 
 import { DEFAULT_NETWORK_CHAINID } from '@config';
 import { ERC20 } from '@services';
@@ -7,7 +7,7 @@ import { inputValueToHex } from '@utils';
 
 interface IFormatApproveTxInputs {
   contractAddress: ITxToAddress;
-  baseTokenAmount: BN;
+  baseTokenAmount: BigNumber;
   fromAddress: ITxFromAddress;
   spenderAddress: TAddress;
   chainId: number;

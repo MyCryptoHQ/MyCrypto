@@ -106,7 +106,7 @@ function TransactionDetailsDisplay({
 
   const valueWei = Wei(value);
 
-  const totalWei = feeWei.add(valueWei);
+  const totalWei = feeWei.plus(valueWei);
 
   const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
 
