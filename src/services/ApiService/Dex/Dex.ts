@@ -4,7 +4,8 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import { DEX_BASE_URL, DEXAG_MYC_HANDLER_CONTRACT, DEXAG_MYC_TRADE_CONTRACT } from '@config';
 import { ERC20 } from '@services/EthService';
-import { ITxData, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
+import { Bigish, ITxData, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
+import { bigify } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -49,23 +50,23 @@ export default class DexService {
     from: TTicker,
     to: TTicker,
     fromAmount: string
-  ): Promise<{ costBasis: number; price: number }> => {
+  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
     const { costBasis, tokenPrices: price } = await this.getTokenPrice(from, to, fromAmount);
-    return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
+    return { costBasis: bigify(costBasis), price: bigify(price) };
   };
 
   public getTokenPriceTo = async (
     from: TTicker,
     to: TTicker,
     toAmount: string
-  ): Promise<{ costBasis: number; price: number }> => {
+  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
     const { costBasis, tokenPrices: price } = await this.getTokenPrice(
       from,
       to,
       undefined,
       toAmount
     );
-    return { costBasis: parseFloat(costBasis), price: parseFloat(price) };
+    return { costBasis: bigify(costBasis), price: bigify(price) };
   };
 
   public getOrderDetailsFrom = async (from: TTicker, to: TTicker, fromAmount: string) =>

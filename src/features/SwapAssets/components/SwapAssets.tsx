@@ -20,7 +20,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISwapAsset, StoreAccount } from '@types';
-import { trimBN } from '@utils';
+import { bigify, trimBN } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 
@@ -148,9 +148,9 @@ export const SwapAssets = (props: Props) => {
   }, [fromAsset, fromAmount]);
 
   const makeDisplayString = (amount: string) =>
-    parseFloat(trimBN(amount, 10)) <= 0.01
+    bigify(trimBN(amount, 10)).lte(bigify(0.01))
       ? '<0.01'
-      : `~ ${parseFloat(trimBN(amount, 10)).toFixed(2)}`;
+      : `~ ${bigify(trimBN(amount, 10)).toFixed(2)}`;
 
   return (
     <Box mt="20px" mb="1em">
@@ -222,7 +222,7 @@ export const SwapAssets = (props: Props) => {
               <Tooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />
             </Body>
             <Body
-              color={parseFloat(markup) >= MYC_DEXAG_MARKUP_THRESHOLD ? COLORS.RED : COLORS.GREEN}
+              color={bigify(markup).gte(MYC_DEXAG_MARKUP_THRESHOLD) ? COLORS.RED : COLORS.GREEN}
             >
               {`${makeDisplayString(markup.toString())}%`}
             </Body>

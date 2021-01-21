@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import BN from 'bn.js';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
@@ -26,7 +25,7 @@ import { DeterministicWalletData, getDeterministicWallets } from '@services/Wall
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
-import { buildAddressUrl, fromWei } from '@utils';
+import { bigify, buildAddressUrl, fromWei } from '@utils';
 
 import { Table } from '../Table';
 
@@ -272,10 +271,9 @@ export function DeterministicWalletsClass({
       return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
         const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
           const balance = balanceMapData[wallet.address] || 0;
-          const value = new BN(balance.toString());
           return {
             ...wallet,
-            value
+            value: balance
           };
         });
         setRequestingBalanceCheck(false);
@@ -359,7 +357,7 @@ export function DeterministicWalletsClass({
         {!wallet.value ? (
           <Spinner />
         ) : (
-          `${parseFloat(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
+          `${bigify(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
       <LinkOut

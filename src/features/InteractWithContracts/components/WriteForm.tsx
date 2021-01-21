@@ -80,11 +80,11 @@ export const WriteForm = (props: Props) => {
     gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
 
   const handleGasLimitChange = (val: string) => {
-    handleGasSelectorChange({ gasLimit: Number(val) });
+    handleGasSelectorChange({ gasLimit: val });
   };
 
   const handleNonceChange = (val: string) => {
-    handleGasSelectorChange({ nonce: Number(val) });
+    handleGasSelectorChange({ nonce: val });
   };
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Asset } from '@types';
-import { gasStringsToMaxGasNumber } from '@utils';
+import { bigify, gasStringsToMaxGasNumber } from '@utils';
 
 interface Props {
   baseAsset: Asset;
@@ -11,10 +11,10 @@ interface Props {
 }
 
 function TransactionFeeDisplay({ baseAsset, gasLimitToUse, gasPriceToUse, fiatAsset }: Props) {
-  const transactionFeeETH: number = gasStringsToMaxGasNumber(gasPriceToUse, gasLimitToUse);
+  const transactionFeeETH = gasStringsToMaxGasNumber(gasPriceToUse, gasLimitToUse);
   const baseAssetSymbol: string = baseAsset.ticker || 'ETH';
 
-  const fiatValue: string = (parseFloat(fiatAsset.rate) * transactionFeeETH).toFixed(4);
+  const fiatValue: string = bigify(fiatAsset.rate).multipliedBy(transactionFeeETH).toFixed(4);
 
   return (
     <React.Fragment>

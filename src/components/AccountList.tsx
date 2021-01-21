@@ -32,7 +32,7 @@ import {
 import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
+import { Bigish, ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
 import { truncate, useScreenSize } from '@utils';
 
 import Checkbox from './Checkbox';
@@ -296,7 +296,7 @@ interface ITableFullAccountType {
   account: StoreAccount;
   index: number;
   label: string;
-  total: number;
+  total: Bigish;
   addressCard: ExtendedContact;
 }
 
@@ -305,9 +305,9 @@ type TSortFunction = (a: ITableFullAccountType, b: ITableFullAccountType) => num
 const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   switch (sortKey) {
     case 'value':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => b.total - a.total;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) => b.total.comparedTo(a.total);
     case 'value-reverse':
-      return (a: ITableFullAccountType, b: ITableFullAccountType) => a.total - b.total;
+      return (a: ITableFullAccountType, b: ITableFullAccountType) => a.total.comparedTo(b.total);
     case 'label':
       return (a: ITableFullAccountType, b: ITableFullAccountType) => a.label.localeCompare(b.label);
     case 'label-reverse':

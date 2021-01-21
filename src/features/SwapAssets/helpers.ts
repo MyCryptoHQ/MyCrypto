@@ -99,7 +99,7 @@ export const getAccountsWithAssetBalance = (
     }
 
     const amount = weiToFloat(asset.balance, asset.decimal);
-    if (amount < Number(fromAmount)) {
+    if (amount.lt(fromAmount)) {
       return false;
     }
 

@@ -16,6 +16,7 @@ import { CenteredIconArrow } from '@components/IconArrow';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TTicker, TUuid } from '@types';
+import { bigify } from '@utils';
 
 const HeaderAlignment = styled.div<{ align?: string }>`
   display: inline-block;
@@ -102,12 +103,12 @@ const createBalancesDetailViewRow = (
             }))}
     </Label>,
     <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
-      <Currency amount={parseFloat(balance.amount).toFixed(6)} ticker={balance.ticker as TTicker} />
+      <Currency amount={bigify(balance.amount).toFixed(6)} ticker={balance.ticker as TTicker} />
     </RowAlignment>,
     <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
       <Tooltip
         tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-          $exchangeRate: parseFloat(balance.exchangeRate).toFixed(3),
+          $exchangeRate: bigify(balance.exchangeRate).toFixed(3),
           $fiatTicker: fiat.ticker,
           $cryptoTicker: balance.ticker
         })}
@@ -154,7 +155,7 @@ const createAccountRow = (
       </Tooltip>
     </Label>,
     <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
-      {`${parseFloat(balanceAccount.amount).toFixed(6)} ${balanceAccount.ticker}`}
+      {`${bigify(balanceAccount.amount).toFixed(6)} ${balanceAccount.ticker}`}
     </RowAlignment>,
     <RowAlignment key={index} align="right" data-value={balanceAccount.fiatValue}>
       <Currency

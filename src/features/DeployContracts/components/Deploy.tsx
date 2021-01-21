@@ -133,11 +133,11 @@ export const Deploy = (props: Props) => {
   };
 
   const handleGasLimitChange = (val: string) => {
-    handleGasSelectorChange({ gasLimit: Number(val) });
+    handleGasSelectorChange({ gasLimit: val });
   };
 
   const handleNonceChange = (val: string) => {
-    handleGasSelectorChange({ nonce: Number(val) });
+    handleGasSelectorChange({ nonce: val });
   };
 
   return (

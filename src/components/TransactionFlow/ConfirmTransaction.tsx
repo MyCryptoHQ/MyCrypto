@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import BN from 'bn.js';
 import Styled from 'styled-components';
 
 import feeIcon from '@assets/images/icn-fee.svg';
@@ -15,7 +14,7 @@ import { StoreContext, useContacts, useSettings } from '@services/Store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
-import { convertToFiat, fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@utils';
+import { bigify, convertToFiat, fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@utils';
 
 import { FromToAccount } from './displays';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -205,7 +204,6 @@ export const ConfirmTransactionUI = ({
     asset,
     gasPrice,
     gasLimit,
-    value,
     amount,
     receiverAddress,
     nonce,
@@ -226,13 +224,13 @@ export const ConfirmTransactionUI = ({
   const assetType = asset.type;
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = totalTxFeeToWei(gasPrice, gasLimit);
+  const transactionFeeWei = totalTxFeeToWei(gasPrice, gasLimit);
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
 
   /* Calculate total base asset amount */
-  const valueWei = Wei(value);
+  const valueWei = Wei(rawTransaction.value);
   // @todo: BN math, add amount + maxCost !In same symbol
-  const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
+  const totalEtherEgress = bigify(fromWei(valueWei.plus(transactionFeeWei), 'ether')).toFixed(6);
 
   const fiat = getFiat(settings);
 
@@ -280,11 +278,11 @@ export const ConfirmTransactionUI = ({
           <AssetIcon uuid={asset.uuid} size={'25px'} />
           <Amount
             fiatColor={COLORS.BLUE_SKY}
-            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            assetValue={`${bigify(amount).toFixed(6)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(amount), assetRate).toFixed(2)
+              amount: convertToFiat(bigify(amount), assetRate).toFixed(2)
             }}
           />
         </AmountWrapper>
@@ -301,7 +299,7 @@ export const ConfirmTransactionUI = ({
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(2)
+              amount: convertToFiat(maxTransactionFeeBase, baseAssetRate).toFixed(2)
             }}
           />
         </AmountWrapper>
@@ -322,7 +320,7 @@ export const ConfirmTransactionUI = ({
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)
+                  amount: convertToFiat(totalEtherEgress, assetRate).toFixed(2)
                 }}
               />
             </>
@@ -336,10 +334,9 @@ export const ConfirmTransactionUI = ({
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: (
-                    convertToFiat(parseFloat(amount), assetRate) +
-                    convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-                  ).toFixed(2)
+                  amount: convertToFiat(amount, assetRate)
+                    .plus(convertToFiat(totalEtherEgress, baseAssetRate))
+                    .toFixed(2)
                 }}
               />
             </>
@@ -362,7 +359,7 @@ export const ConfirmTransactionUI = ({
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(ptxFee.amount!.toNumber(), assetRate).toFixed(2)
+                  amount: convertToFiat(ptxFee.amount!, assetRate).toFixed(2)
                 }}
               />
             </AmountWrapper>
@@ -380,7 +377,7 @@ export const ConfirmTransactionUI = ({
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(ptxFee.fee!.toNumber(), assetRate).toFixed(2)
+                  amount: convertToFiat(ptxFee.fee!, assetRate).toFixed(2)
                 }}
               />
             </AmountWrapper>
@@ -391,7 +388,7 @@ export const ConfirmTransactionUI = ({
         baseAsset={baseAsset}
         asset={asset}
         assetAmount={amount}
-        value={value}
+        value={rawTransaction.value}
         data={data}
         sender={sender}
         gasLimit={gasLimit}

@@ -8,7 +8,7 @@ import { useAssets } from '@services';
 import { SPACING } from '@theme';
 import translate from '@translations';
 import { Network } from '@types';
-import { fromWei, Wei } from '@utils';
+import { bigify, fromWei, Wei } from '@utils';
 
 const SIcon = styled(Icon)`
   vertical-align: middle;
@@ -24,7 +24,7 @@ export const FaucetReceiptBanner = ({
 }) => {
   const { getAssetByUUID } = useAssets();
   const baseAsset = getAssetByUUID(network.baseAsset)!;
-  const formattedReceived = parseFloat(fromWei(Wei(received), 'ether')).toFixed(6);
+  const formattedReceived = bigify(fromWei(Wei(received), 'ether')).toFixed(6);
   return (
     <>
       <div className="TransactionReceipt-row">

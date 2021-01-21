@@ -52,7 +52,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { buildTxUrl, isWeb3Wallet, truncate } from '@utils';
+import { bigify, buildTxUrl, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
@@ -207,14 +207,20 @@ const TxReceipt = ({
   const handleTxSpeedUpRedirect = async () => {
     if (!txConfig) return;
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const query = constructSpeedUpTxQuery(txConfig, calculateReplacementGasPrice(txConfig, fast));
+    const query = constructSpeedUpTxQuery(
+      txConfig,
+      calculateReplacementGasPrice(txConfig, bigify(fast))
+    );
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 
   const handleTxCancelRedirect = async () => {
     if (!txConfig) return;
     const { fast } = await fetchGasPriceEstimates(txConfig.network);
-    const query = constructCancelTxQuery(txConfig, calculateReplacementGasPrice(txConfig, fast));
+    const query = constructCancelTxQuery(
+      txConfig,
+      calculateReplacementGasPrice(txConfig, bigify(fast))
+    );
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 

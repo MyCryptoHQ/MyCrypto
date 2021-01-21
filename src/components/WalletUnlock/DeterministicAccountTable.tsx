@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Identicon } from '@mycrypto/ui';
-import BN from 'bn.js';
 import styled, { css } from 'styled-components';
 
 import {
@@ -20,7 +19,7 @@ import { DWAccountDisplay, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { ExtendedAsset, Network, TAddress } from '@types';
-import { buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+import { bigify, buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
 
 import { Downloader } from '../Downloader';
 
@@ -359,12 +358,7 @@ const DeterministicTable = ({
                     <Amount
                       assetValue={
                         account.balance
-                          ? parseFloat(
-                              fromTokenBase(
-                                new BN(account.balance.toString(16), 16),
-                                asset.decimal
-                              ).toString()
-                            ).toFixed(4)
+                          ? bigify(fromTokenBase(account.balance, asset.decimal)).toFixed(4)
                           : '0.0000'
                       }
                     />

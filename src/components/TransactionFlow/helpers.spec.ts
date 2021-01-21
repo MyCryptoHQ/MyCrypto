@@ -6,7 +6,7 @@ import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fDerivedApprovalTx, fDerivedRepMigrationTx, fTxConfig } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ITxGasLimit, ITxNonce, ITxObject, ITxStatus, ITxType } from '@types';
-import { generateUUID, noOp } from '@utils';
+import { bigify, generateUUID, noOp } from '@utils';
 
 import {
   calculateReplacementGasPrice,
@@ -16,13 +16,13 @@ import {
 
 describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price with high enough fast gas price', () => {
-    const fastGasPrice = 500;
-    expect(calculateReplacementGasPrice(fTxConfig, fastGasPrice)).toBe(500);
+    const fastGasPrice = bigify(500);
+    expect(calculateReplacementGasPrice(fTxConfig, fastGasPrice)).toStrictEqual(bigify(500));
   });
 
   it('correctly determines tx gas price with too low fast gas price', () => {
-    const fastGasPrice = 1;
-    expect(calculateReplacementGasPrice(fTxConfig, fastGasPrice)).toBe(4.404);
+    const fastGasPrice = bigify(1);
+    expect(calculateReplacementGasPrice(fTxConfig, fastGasPrice)).toStrictEqual(bigify(4.404));
   });
 });
 

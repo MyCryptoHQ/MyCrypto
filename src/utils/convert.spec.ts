@@ -4,6 +4,7 @@ import { BigNumber, formatEther } from 'ethers/utils';
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from '@config';
 import { StoreAsset } from '@types';
 
+import { bigify } from './bigify';
 import {
   addBNFloats,
   calculateMarkup,
@@ -61,9 +62,8 @@ describe('convert()', () => {
 
 describe('it divides BigNumber decimal numbers together', () => {
   const convertTest = (amount: number, divisor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const divisorBN = new BigNumberJs(divisor);
+    const amountBN = bigify(amount);
+    const divisorBN = bigify(divisor);
 
     return trimBN(amountBN.dividedBy(divisorBN).toString());
   };
@@ -98,9 +98,8 @@ describe('it divides BigNumber decimal numbers together', () => {
 
 describe('it multiplies BigNumber decimal numbers together', () => {
   const convertTest = (amount: number, divisor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const divisorBN = new BigNumberJs(divisor);
+    const amountBN = bigify(amount);
+    const divisorBN = bigify(divisor);
 
     return trimBN(amountBN.times(divisorBN).toString());
   };
@@ -139,9 +138,8 @@ describe('it multiplies BigNumber decimal numbers together', () => {
 
 describe('it adds BigNumber floating point numbers together', () => {
   const convertTest = (amount: number, additor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const additorBN = new BigNumberJs(additor);
+    const amountBN = bigify(amount);
+    const additorBN = bigify(additor);
 
     return trimBN(BigNumberJs.sum(amountBN, additorBN).toString());
   };
@@ -180,9 +178,8 @@ describe('it adds BigNumber floating point numbers together', () => {
 
 describe('it subtracts BigNumber floating point numbers from each other', () => {
   const convertTest = (amount: number, subtractor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const subtractorBN = new BigNumberJs(subtractor);
+    const amountBN = bigify(amount);
+    const subtractorBN = bigify(subtractor);
 
     return trimBN(BigNumberJs.sum(amountBN, subtractorBN.negated()).toString());
   };
@@ -231,10 +228,10 @@ describe('it Remove / Add commission from amount', () => {
   }) => {
     const amountBN = new BigNumberJs(amount);
     const rateBN = new BigNumberJs((substract ? 100 - rate : 100 + rate) / 100);
-    return amountBN.times(rateBN).toNumber();
+    return bigify(trimBN(amountBN.times(rateBN).toString()));
   };
   it('remove commission from decimal amount', () => {
-    const expected = 198.5;
+    const expected = bigify(198.5);
     const amount = 200;
     const converted = withCommission({
       amount: convertToBN(amount),
@@ -250,16 +247,6 @@ describe('it Remove / Add commission from amount', () => {
       rate: MYC_DEXAG_COMMISSION_RATE,
       substract: true
     });
-    const converted = withCommission({
-      amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE,
-      subtract: true
-    });
-    expect(converted).toEqual(expected);
-  });
-  it('remove commission from float amount', () => {
-    const expected = 475.63642983241107;
-    const amount = 479.2306597807668;
     const converted = withCommission({
       amount: convertToBN(amount),
       rate: MYC_DEXAG_COMMISSION_RATE,
@@ -304,10 +291,10 @@ describe('it Remove / Add commission from amount', () => {
 
 describe('it calculates markup correctly', () => {
   it('calculates markup from costBasis and exchangeRate', () => {
-    const exchangeRate = 224.78743749068855;
-    const costBasis = 263.0915899;
+    const exchangeRate = bigify(224.78743749068855);
+    const costBasis = bigify(263.0915899);
 
-    const expected = '14.559246999999997';
+    const expected = '14.559247';
     const converted = calculateMarkup(exchangeRate, costBasis);
     expect(converted).toEqual(expected);
   });

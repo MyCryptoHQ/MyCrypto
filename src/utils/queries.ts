@@ -1,6 +1,6 @@
 import queryString from 'querystring';
 
-import { ITxConfig, TxQueryTypes } from '@types';
+import { Bigish, ITxConfig, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputGasPriceToHex } from '@utils';
 
 export function getParam(query: { [key: string]: string }, key: string) {
@@ -27,7 +27,7 @@ export const createQueryParamsDefaultObject = (txConfig: ITxConfig, type: TxQuer
   };
 };
 
-export const constructCancelTxQuery = (txConfig: ITxConfig, newGasPrice: number): string => {
+export const constructCancelTxQuery = (txConfig: ITxConfig, newGasPrice: Bigish): string => {
   const cancelTxQueryParams = createQueryParamsDefaultObject(txConfig, TxQueryTypes.CANCEL);
   return queryString.stringify({
     ...cancelTxQueryParams,
@@ -39,7 +39,7 @@ export const constructCancelTxQuery = (txConfig: ITxConfig, newGasPrice: number)
   });
 };
 
-export const constructSpeedUpTxQuery = (txConfig: ITxConfig, newGasPrice: number): string => {
+export const constructSpeedUpTxQuery = (txConfig: ITxConfig, newGasPrice: Bigish): string => {
   const unfinishedSpeedUpTxQueryParams = createQueryParamsDefaultObject(
     txConfig,
     TxQueryTypes.SPEEDUP

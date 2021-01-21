@@ -1,4 +1,5 @@
 import { ResolutionError } from '@unstoppabledomains/resolution';
+import BigNumber from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { bigNumberify } from 'ethers/utils';
 import { Validator } from 'jsonschema';
@@ -16,23 +17,22 @@ import {
 } from '@config';
 import { translateRaw } from '@translations';
 import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
-import { baseToConvertedUnit, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
+import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
 
 import { isValidENSName } from './ens/validators';
 
-export const isValidPositiveOrZeroInteger = (value: number | string) =>
+export const isValidPositiveOrZeroInteger = (value: BigNumber | number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
 
 export const isValidNonZeroInteger = (value: number | string) =>
   isValidPositiveOrZeroInteger(value) && isPositiveNonZeroNumber(value);
 
-export const isValidPositiveNumber = (value: number | string) =>
-  isFinite(Number(value)) && Number(value) >= 0;
+export const isValidPositiveNumber = (value: BigNumber | number | string) =>
+  bigify(value).isFinite() && bigify(value).gte(0);
 
-const isPositiveNonZeroNumber = (value: number | string) => Number(value) > 0;
+const isPositiveNonZeroNumber = (value: BigNumber | number | string) => bigify(value).gt(0);
 
-const isInteger = (value: number | string) =>
-  Number.isInteger(typeof value === 'string' ? Number(value) : value);
+const isInteger = (value: BigNumber | number | string) => bigify(value).isInteger();
 
 export function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
@@ -238,17 +238,13 @@ export const validateTxFee = (
     const txFeeFiatLocalValue = bigNumberify(getAssetRateLocal()).mul(txFee);
     return {
       type,
-      amount: parseFloat(
+      amount: bigify(
         baseToConvertedUnit(
           txAmountFiatLocalValue.toString(),
           DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL
         )
-      )
-        .toFixed(4)
-        .toString(),
-      fee: parseFloat(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL))
-        .toFixed(4)
-        .toString()
+      ).toFixed(4),
+      fee: bigify(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL)).toFixed(4)
     };
   };
   const isGreaterThanEthFraction = (ethFraction: number) => {
@@ -325,28 +321,28 @@ export const isTransactionFeeHigh = (
   );
 };
 
-export const gasLimitValidator = (gasLimit: number | string) => {
-  const gasLimitFloat = Number(gasLimit);
+export const gasLimitValidator = (gasLimit: BigNumber | string) => {
+  const gasLimitFloat = bigify(gasLimit);
   return (
     isValidPositiveOrZeroInteger(gasLimitFloat) &&
-    gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
-    gasLimitFloat <= GAS_LIMIT_UPPER_BOUND
+    gasLimitFloat.gte(GAS_LIMIT_LOWER_BOUND) &&
+    gasLimitFloat.lte(GAS_LIMIT_UPPER_BOUND)
   );
 };
 
-function getLength(num: number) {
-  return num.toString().length;
+function getLength(num: number | string | BigNumber | undefined) {
+  return num !== undefined ? num.toString().length : 0;
 }
 
-export const gasPriceValidator = (gasPrice: number | string): boolean => {
-  const gasPriceFloat: number = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
+export const gasPriceValidator = (gasPrice: BigNumber | string): boolean => {
+  const gasPriceFloat = bigify(gasPrice);
   const decimalLength: string = gasPriceFloat.toString().split('.')[1];
   return (
     isValidPositiveNumber(gasPriceFloat) &&
-    gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
-    gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND &&
+    gasPriceFloat.gte(GAS_PRICE_GWEI_LOWER_BOUND) &&
+    gasPriceFloat.lte(GAS_PRICE_GWEI_UPPER_BOUND) &&
     getLength(gasPriceFloat) <= 10 &&
-    getLength(Number(decimalLength)) <= 6
+    getLength(decimalLength) <= 6
   );
 };
 

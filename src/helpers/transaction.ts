@@ -56,7 +56,6 @@ import {
   fromTokenBase,
   gasPriceToBase,
   getDecimalFromEtherUnit,
-  hexToNumber,
   isTransactionDataEmpty,
   toWei
 } from '@utils';
@@ -195,7 +194,7 @@ export const makeTxConfigFromSignedTx = (
         ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
           oldTxConfig.senderAccount
         : oldTxConfig.senderAccount,
-    gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
+    gasPrice: gasPriceToBase(decodedTx.gasPrice).toString(),
     gasLimit: decodedTx.gasLimit,
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
@@ -419,9 +418,9 @@ export const appendGasLimit = (network: Network) => async (
   }
   try {
     const gasLimit = await getGasEstimate(network, tx)
-      .then(hexToNumber)
-      .then((n: number) => Math.round(n * 1.2))
-      .then((n: number) => inputGasLimitToHex(n.toString()));
+      .then(bigify)
+      .then((n) => n.multipliedBy(1.2).integerValue(7))
+      .then(inputGasLimitToHex);
 
     return {
       ...tx,

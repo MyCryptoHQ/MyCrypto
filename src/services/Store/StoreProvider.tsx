@@ -26,6 +26,7 @@ import {
 import { translateRaw } from '@translations';
 import {
   Asset,
+  Bigish,
   DomainNameRecord,
   IAccount,
   IAccountAdditionData,
@@ -44,6 +45,7 @@ import {
   WalletId
 } from '@types';
 import {
+  bigify,
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
@@ -109,7 +111,7 @@ export interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getAssetRate: (asset: Asset) => number | undefined) => number;
+  ): (getAssetRate: (asset: Asset) => number | undefined) => Bigish;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   deleteAccountFromCache(account: IAccount): void;
@@ -378,8 +380,8 @@ export const StoreProvider: React.FC = ({ children }) => {
       state
         .totals(selectedAccounts)
         .reduce(
-          (sum, asset) => (sum += parseFloat(convertToFiatFromAsset(asset, getAssetRate(asset)))),
-          0
+          (sum, asset) => sum.plus(bigify(convertToFiatFromAsset(asset, getAssetRate(asset)))),
+          bigify(0)
         ),
 
     assetTickers: (targetAssets = state.assets()) => [

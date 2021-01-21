@@ -8,7 +8,7 @@ import { getFiat } from '@config/fiats';
 import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings } from '@types';
-import { convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
+import { bigify, convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
 
 interface Props {
   asset: ExtendedAsset;
@@ -42,13 +42,13 @@ export const TxReceiptTotals = ({
 }: Props) => {
   const feeWei = totalTxFeeToWei(gasPrice, gasUsed);
 
-  const feeFormatted = parseFloat(fromWei(feeWei, 'ether')).toFixed(6);
+  const feeFormatted = bigify(fromWei(feeWei, 'ether')).toFixed(6);
 
   const valueWei = Wei(value);
 
-  const totalWei = feeWei.add(valueWei);
+  const totalWei = feeWei.plus(valueWei);
 
-  const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
+  const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
 
   return (
     <>
@@ -61,11 +61,11 @@ export const TxReceiptTotals = ({
           <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
             fiatColor={COLORS.BLUE_SKY}
-            assetValue={`${parseFloat(assetAmount).toFixed(6)} ${asset.ticker}`}
+            assetValue={`${bigify(assetAmount).toFixed(6)} ${asset.ticker}`}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(assetAmount), assetRate).toFixed(2)
+              amount: convertToFiat(assetAmount, assetRate).toFixed(2)
             }}
           />
         </div>
@@ -82,7 +82,7 @@ export const TxReceiptTotals = ({
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(feeFormatted), baseAssetRate).toFixed(2)
+              amount: convertToFiat(feeFormatted, baseAssetRate).toFixed(2)
             }}
           />
         </div>
@@ -104,7 +104,7 @@ export const TxReceiptTotals = ({
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: convertToFiat(parseFloat(totalEtherFormatted), assetRate).toFixed(2)
+                amount: convertToFiat(totalEtherFormatted, assetRate).toFixed(2)
               }}
             />
           ) : (
@@ -116,10 +116,9 @@ export const TxReceiptTotals = ({
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: (
-                  convertToFiat(parseFloat(assetAmount), assetRate) +
-                  convertToFiat(parseFloat(totalEtherFormatted), baseAssetRate)
-                ).toFixed(2)
+                amount: convertToFiat(assetAmount, assetRate)
+                  .plus(convertToFiat(totalEtherFormatted, baseAssetRate))
+                  .toFixed(2)
               }}
             />
           )}

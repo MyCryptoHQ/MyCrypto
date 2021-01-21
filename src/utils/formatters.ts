@@ -1,8 +1,6 @@
-import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 
-import { stripHexPrefix } from './stripHexPrefix';
 import { toTokenBase } from './units';
 
 export const buildEIP681EtherRequest = (
@@ -40,8 +38,4 @@ function getChecksumAddressFunction(chainId: number) {
 
 export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
-}
-
-export function hexToNumber(hex: string) {
-  return new BN(stripHexPrefix(hex)).toNumber();
 }
