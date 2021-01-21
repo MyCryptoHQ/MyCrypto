@@ -229,7 +229,7 @@ export const ConfirmTransactionUI = ({
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
 
   /* Calculate total base asset amount */
-  const valueWei = Wei(value);
+  const valueWei = Wei(rawTransaction.value);
   // @todo: BN math, add amount + maxCost !In same symbol
   const totalEtherEgress = bigify(fromWei(valueWei.plus(transactionFeeWei), 'ether')).toFixed(6);
 
