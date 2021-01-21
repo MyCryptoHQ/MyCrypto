@@ -15,9 +15,9 @@ describe('buildBalances', () => {
     const expected = [
       {
         accounts: [],
-        amount: '4.2e-17',
+        amount: '0.000000000000000042',
         exchangeRate: '1',
-        fiatValue: '4.2e-17',
+        fiatValue: '0.000000000000000042',
         id: 'RopstenETH-RopstenETH',
         name: 'RopstenETH',
         ticker: 'RopstenETH',
@@ -25,9 +25,9 @@ describe('buildBalances', () => {
       },
       {
         accounts: [],
-        amount: '2e-18',
+        amount: '0.000000000000000002',
         exchangeRate: '1',
-        fiatValue: '2e-18',
+        fiatValue: '0.000000000000000002',
         id: 'WrappedETH-WETH',
         name: 'WrappedETH',
         ticker: 'WETH',
@@ -35,9 +35,9 @@ describe('buildBalances', () => {
       },
       {
         accounts: [],
-        amount: '2e-18',
+        amount: '0.000000000000000002',
         exchangeRate: '1',
-        fiatValue: '2e-18',
+        fiatValue: '0.000000000000000002',
         id: 'Ether-ETH',
         name: 'Ether',
         ticker: 'ETH',
@@ -45,9 +45,9 @@ describe('buildBalances', () => {
       },
       {
         accounts: [],
-        amount: '2e-18',
+        amount: '0.000000000000000002',
         exchangeRate: '1',
-        fiatValue: '2e-18',
+        fiatValue: '0.000000000000000002',
         id: 'GoerliETH-GoerliETH',
         name: 'GoerliETH',
         ticker: 'GoerliETH',

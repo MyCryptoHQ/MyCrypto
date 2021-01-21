@@ -13,13 +13,13 @@ describe('getProtectTransactionFee', () => {
   };
   it('should calculate the PTX fee given form values', () => {
     const { fee, amount } = getProtectTxFee(formValues, rate);
-    expect(amount?.toString()).toBe('0.00200600798251993613');
+    expect(amount?.toString()).toBe('0.002006007982519936');
     expect(fee?.toString()).toBe('0.001512');
   });
 
   it('should use correct gas prices', () => {
     const { fee, amount } = getProtectTxFee({ ...formValues, advancedTransaction: true }, rate);
-    expect(amount?.toString()).toBe('0.00200600798361193613');
+    expect(amount?.toString()).toBe('0.002006007983611936');
     expect(fee?.toString()).toBe('0.00042');
   });
 

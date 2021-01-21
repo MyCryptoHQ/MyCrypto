@@ -62,9 +62,8 @@ describe('convert()', () => {
 
 describe('it divides BigNumber decimal numbers together', () => {
   const convertTest = (amount: number, divisor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const divisorBN = new BigNumberJs(divisor);
+    const amountBN = bigify(amount);
+    const divisorBN = bigify(divisor);
 
     return trimBN(amountBN.dividedBy(divisorBN).toString());
   };
@@ -99,9 +98,8 @@ describe('it divides BigNumber decimal numbers together', () => {
 
 describe('it multiplies BigNumber decimal numbers together', () => {
   const convertTest = (amount: number, divisor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const divisorBN = new BigNumberJs(divisor);
+    const amountBN = bigify(amount);
+    const divisorBN = bigify(divisor);
 
     return trimBN(amountBN.times(divisorBN).toString());
   };
@@ -140,9 +138,8 @@ describe('it multiplies BigNumber decimal numbers together', () => {
 
 describe('it adds BigNumber floating point numbers together', () => {
   const convertTest = (amount: number, additor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const additorBN = new BigNumberJs(additor);
+    const amountBN = bigify(amount);
+    const additorBN = bigify(additor);
 
     return trimBN(BigNumberJs.sum(amountBN, additorBN).toString());
   };
@@ -181,9 +178,8 @@ describe('it adds BigNumber floating point numbers together', () => {
 
 describe('it subtracts BigNumber floating point numbers from each other', () => {
   const convertTest = (amount: number, subtractor: number) => {
-    BigNumberJs.config({ DECIMAL_PLACES: 18 });
-    const amountBN = new BigNumberJs(amount);
-    const subtractorBN = new BigNumberJs(subtractor);
+    const amountBN = bigify(amount);
+    const subtractorBN = bigify(subtractor);
 
     return trimBN(BigNumberJs.sum(amountBN, subtractorBN.negated()).toString());
   };

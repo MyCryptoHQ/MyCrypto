@@ -2,9 +2,12 @@ import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 import { BigNumber as BigNumberish } from 'ethers/utils';
 
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+
 export type Bigish = BigNumber;
 
 export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | bigint | BN): BigNumber => {
+  BigNumber.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL, EXPONENTIAL_AT: 1e9 });
   if (BigNumberish.isBigNumber(v) || BN.isBN(v)) {
     return new BigNumber(v.toString());
   } else if (typeof v === 'object' && '_hex' in v) {

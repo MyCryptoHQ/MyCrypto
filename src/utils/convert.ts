@@ -36,7 +36,6 @@ export const multiplyBNFloats = (
   asset: number | string | BigNumberJs,
   rate: number | string | BigNumberJs
 ): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = bigify(asset);
   const rateBN = bigify(rate);
   return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
@@ -47,7 +46,6 @@ export const divideBNFloats = (
   asset: number | string | BigNumberJs,
   divisor: number | string | BigNumberJs
 ): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
   const assetBN = bigify(asset);
   const divisorBN = bigify(divisor);
   return bigNumberify(
@@ -60,9 +58,8 @@ export const subtractBNFloats = (
   asset: number | string,
   subtractor: number | string
 ): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const subtractorBN = new BigNumberJs(subtractor);
+  const assetBN = bigify(asset);
+  const subtractorBN = bigify(subtractor);
   return bigNumberify(
     parseEther(
       trimBN(BigNumberJs.sum(assetBN, subtractorBN.negated()).toFixed(DEFAULT_ASSET_DECIMAL))
@@ -72,9 +69,8 @@ export const subtractBNFloats = (
 
 // Add a floating-point BNs to another floating-point BN
 export const addBNFloats = (asset: number | string, additor: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const additorBN = new BigNumberJs(additor);
+  const assetBN = bigify(asset);
+  const additorBN = bigify(additor);
   return bigNumberify(
     parseEther(trimBN(BigNumberJs.sum(assetBN, additorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
