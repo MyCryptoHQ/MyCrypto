@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useNetworks, useTxHistory } from '@services';
+import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { NetworkId } from '@types';
 import { isVoid, noOp } from '@utils';
@@ -44,6 +45,12 @@ const Wrapper = styled.div<{ fullPageLoading: boolean }>`
 
 const SButton = styled(Button)`
   margin-top: 0;
+`;
+
+const SLabel = styled.label`
+  margin-top: ${SPACING.SM};
+  color: ${COLORS.GREY_DARKEST};
+  font-weight: normal;
 `;
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
@@ -116,7 +123,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               }
               filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
             />
-            <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
+            <SLabel htmlFor="txhash">{translateRaw('TX_HASH')}</SLabel>
             <Input
               name="txhash"
               value={txHash}
