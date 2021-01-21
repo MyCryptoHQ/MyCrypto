@@ -560,7 +560,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   const formHasErrors = !checkFormValid(errors);
 
   const isFormValid = !formHasErrors && !gasEstimationError && userCanAffordTX;
-  const walletConfig = getWalletConfig(values.account.wallet || WalletId.VIEW_ONLY);
+  const walletConfig = getWalletConfig(values.account.wallet || WalletId.WEB3);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
   const { type, amount, fee } = validateTxFee(
