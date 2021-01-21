@@ -8,7 +8,9 @@ interface RouterLinkProps {
 }
 
 const StyledRouterLink = styled(Link)<RouterLinkProps>`
-  color: ${COLORS.BLUE_SKY} !important;
+  &&&& {
+    color: ${COLORS.BLUE_SKY};
+  }
   ${(props) =>
     props.fullwidth === true &&
     css`

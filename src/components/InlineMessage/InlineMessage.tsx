@@ -38,7 +38,6 @@ const STypography = styled(Typography)<BannerTypographyProps>`
 
   a {
     color: ${(props) => props.color};
-    text-decoration: underline;
     font-weight: normal;
   }
 
