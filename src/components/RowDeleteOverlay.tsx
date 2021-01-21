@@ -52,12 +52,22 @@ const OverlayButtons = styled.div`
   }
 `;
 
-const RowDeleteOverlay = (props: any) => (
+const RowDeleteOverlay = ({
+  prompt,
+  deleteText,
+  deleteAction,
+  cancelAction
+}: {
+  prompt: string;
+  deleteText?: string;
+  deleteAction(): void;
+  cancelAction(): void;
+}) => (
   <TableOverlay>
-    <OverlayText>{props.prompt}</OverlayText>
+    <OverlayText>{prompt}</OverlayText>
     <OverlayButtons>
-      <Button onClick={props.deleteAction}>{translateRaw('ACTION_15')}</Button>
-      <Button secondary={true} onClick={props.cancelAction}>
+      <Button onClick={deleteAction}>{deleteText ? deleteText : translateRaw('ACTION_15')}</Button>
+      <Button secondary={true} onClick={cancelAction}>
         {translateRaw('CANCEL_ACTION')}
       </Button>
     </OverlayButtons>
