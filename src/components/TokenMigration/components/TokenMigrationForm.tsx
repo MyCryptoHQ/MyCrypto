@@ -4,6 +4,7 @@ import { bigNumberify, formatUnits } from 'ethers/utils';
 import { useFormik } from 'formik';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 import { number, object } from 'yup';
 
 import {
@@ -47,7 +48,7 @@ export interface TokenMigrationProps extends ISimpleTxFormFull {
 interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
-  storeDefaultAccount: StoreAccount;
+  storeDefaultAccount?: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
   error?: Error;
@@ -107,7 +108,9 @@ export const TokenMigrationFormUI = ({
   onComplete,
   isDemoMode
 }: UIProps) => {
-  const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
+  const getInitialFormikValues = (
+    storeDefaultAcc?: StoreAccount
+  ): Overwrite<ISimpleTxFormFull, { account?: StoreAccount }> => ({
     account: storeDefaultAcc,
     amount: '0',
     asset: defaultAsset,
@@ -180,7 +183,7 @@ export const TokenMigrationFormUI = ({
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector
           name={'account'}
-          value={values.account}
+          value={values.account || null}
           accounts={filteredAccounts}
           asset={values.asset}
           onSelect={(option: IAccount) => {
