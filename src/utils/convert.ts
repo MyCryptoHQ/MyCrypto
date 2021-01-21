@@ -107,6 +107,6 @@ export const calculateMarkup = (
   costBasis: BigNumberJs | string
 ): string =>
   bigify(1)
-    .minus(bigify(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis).toString()), 10)))
+    .minus(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis)), 10))
     .multipliedBy(100)
     .toString();

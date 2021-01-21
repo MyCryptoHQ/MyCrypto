@@ -132,7 +132,7 @@ export const fApproveErc20TxConfig = {
     data:
       '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
     from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-    gasLimit: '0x0249f0',
+    gasLimit: '0x249f0',
     gasPrice: '0x12a05f200',
     nonce: '0x1',
     to: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
@@ -168,7 +168,7 @@ export const fTokenMigrationTxConfig = {
     chainId: 1,
     data: '0x75d9aa1a',
     from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-    gasLimit: '0x0249f0',
+    gasLimit: '0x249f0',
     gasPrice: '0x12a05f200',
     nonce: '0x1',
     to: '0x221657776846890989a759BA2973e427DfF5C9bB',
