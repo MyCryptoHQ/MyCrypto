@@ -204,7 +204,6 @@ export const ConfirmTransactionUI = ({
     asset,
     gasPrice,
     gasLimit,
-    value,
     amount,
     receiverAddress,
     nonce,
@@ -389,7 +388,7 @@ export const ConfirmTransactionUI = ({
         baseAsset={baseAsset}
         asset={asset}
         assetAmount={amount}
-        value={value}
+        value={rawTransaction.value}
         data={data}
         sender={sender}
         gasLimit={gasLimit}
