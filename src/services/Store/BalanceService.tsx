@@ -13,7 +13,7 @@ import partition from 'lodash/partition';
 
 import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
 import { ProviderHandler } from '@services/EthService';
-import { Asset, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress, TBN } from '@types';
+import { Asset, Bigish, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress } from '@types';
 import { bigify, mapAsync } from '@utils';
 import { mapObjIndexed } from '@vendor';
 
@@ -181,7 +181,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     // filter before continuing.
   ).then((res) => res.filter(Boolean));
 
-  const filterZeroBN = (n: TBN) => n.isZero();
+  const filterZeroBN = (n: Bigish) => n.isZero();
 
   return updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
@@ -189,7 +189,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
       (updatedAccount &&
         updatedAccount.assets &&
         updatedAccount.assets.filter(
-          ({ balance, type }) => !filterZeroBN(balance) || type === 'base'
+          ({ balance, type }) => !filterZeroBN(bigify(balance)) || type === 'base'
         )) ||
       []
   }));
