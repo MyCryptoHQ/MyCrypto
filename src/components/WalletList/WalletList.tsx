@@ -7,8 +7,6 @@ import styled from 'styled-components';
 
 import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -107,15 +105,6 @@ const WalletList = ({
   accounts,
   importState
 }: Props) => {
-  const trackSelectWallet = useAnalytics({
-    category: ANALYTICS_CATEGORIES.ADD_ACCOUNT
-  });
-  const selectWallet = (name: WalletId) => {
-    trackSelectWallet({
-      actionName: `${name} clicked`
-    });
-    onSelect(name);
-  };
   return (
     <div>
       {showHeader && (
@@ -137,7 +126,7 @@ const WalletList = ({
                 icon={walletInfo.icon}
                 description={translateRaw(walletInfo.description)}
                 margin={calculateMargin && calculateMargin(index)}
-                onClick={() => selectWallet(wallet.name)}
+                onClick={() => onSelect(wallet.name)}
                 isDisabled={wallet.isDisabled}
               />
             );

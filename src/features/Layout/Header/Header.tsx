@@ -9,8 +9,7 @@ import LocalIcon from '@components/Icon';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES, useFeatureFlags, useSettings } from '@services';
+import { useFeatureFlags, useSettings } from '@services';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
 import translate, { languages } from '@translations';
 import { openLink } from '@utils';
@@ -284,9 +283,6 @@ type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useSettings();
   const { startLockCountdown } = useContext(ScreenLockContext);
-  const trackHeader = useAnalytics({
-    category: ANALYTICS_CATEGORIES.HEADER
-  });
 
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
@@ -331,16 +327,10 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
     });
 
   const openLatestNews = (): void => {
-    trackHeader({
-      actionName: 'Latest news clicked'
-    });
     openLink(LATEST_NEWS_URL);
   };
 
   const openHelpSupportPage = (): void => {
-    trackHeader({
-      actionName: 'Help & Support clicked'
-    });
     openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
   };
 

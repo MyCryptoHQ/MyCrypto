@@ -65,3 +65,5 @@ export { default as not } from 'ramda/src/not';
 export { default as find } from 'ramda/src/find';
 export { default as mergeAll } from 'ramda/src/mergeAll';
 export { default as uniq } from 'ramda/src/uniq';
+export { default as whereEq } from 'ramda/src/whereEq';
+export { default as head } from 'ramda/src/head';

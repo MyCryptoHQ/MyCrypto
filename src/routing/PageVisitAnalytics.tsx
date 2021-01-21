@@ -1,22 +1,21 @@
 import React from 'react';
 
 import { withRouter } from 'react-router-dom';
+import { useEffectOnce } from 'vendor';
 
-import { useAnalytics } from '@hooks';
+import { getRouteConfigByPath } from '@config';
+import { useAnalytics } from '@services/Analytics';
 
-let previousURL: string | undefined;
-export const PageVisitsAnalytics = withRouter(({ history, children }) => {
-  const trackPageVisit = useAnalytics({
-    trackPageViews: true
+export const PageVisitsAnalytics = withRouter(({ history, location }) => {
+  const { trackPage } = useAnalytics();
+
+  useEffectOnce(() => {
+    history.listen((to) => {
+      if (to.pathname === location.pathname) return;
+      const { name, title } = getRouteConfigByPath(to.pathname) || {};
+      trackPage({ name, title });
+    });
   });
 
-  history.listen(() => {
-    if (previousURL !== window.location.href) {
-      trackPageVisit({
-        actionName: window.location.href
-      });
-      previousURL = window.location.href;
-    }
-  });
-  return <React.Fragment>{children}</React.Fragment>;
+  return <React.Fragment></React.Fragment>;
 });

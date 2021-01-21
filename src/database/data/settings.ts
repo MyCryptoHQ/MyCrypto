@@ -8,5 +8,6 @@ export const defaultSettings = {
   inactivityTimer: 1800000,
   rates: {},
   language: 'en',
-  isDemoMode: false
+  isDemoMode: false,
+  canTrackProductAnalytics: true
 };

@@ -44,6 +44,9 @@ const slice = createSlice({
     },
     setDemoMode(state, action: PayloadAction<boolean>) {
       state.isDemoMode = action.payload;
+    },
+    setProductAnalyticsAuthorisation(state, action: PayloadAction<boolean>) {
+      state.canTrackProductAnalytics = action.payload;
     }
   }
 });
@@ -58,7 +61,8 @@ export const {
   removeExcludedAsset,
   setRates,
   setInactivityTimer,
-  setDemoMode
+  setDemoMode,
+  setProductAnalyticsAuthorisation
 } = slice.actions;
 
 export default slice;
@@ -74,7 +78,10 @@ export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAs
 export const getRates = createSelector(getSettings, (s) => s.rates);
 export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
-
+export const canTrackProductAnalytics = createSelector(
+  getSettings,
+  (s) => s.canTrackProductAnalytics
+);
 /**
  * Actions
  */

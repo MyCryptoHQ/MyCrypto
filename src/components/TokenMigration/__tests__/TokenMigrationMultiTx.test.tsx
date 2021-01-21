@@ -5,7 +5,6 @@ import { simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { FeatureFlagProvider } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
 
@@ -31,21 +30,19 @@ function getComponent(props: ITxMultiConfirmProps) {
           } as unknown) as IDataContext
         }
       >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <ConfirmTokenMigration {...((props as unknown) as any)} />
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: [],
+              defaultAccount: { assets: [] },
+              getAccount: jest.fn(),
+              networks: [{ nodes: [] }]
+            } as unknown) as any
+          }
+        >
+          <ConfirmTokenMigration {...((props as unknown) as any)} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

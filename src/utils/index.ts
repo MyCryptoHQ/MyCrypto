@@ -10,7 +10,9 @@ export {
   IS_DEV,
   IS_STAGING,
   IS_PROD,
-  USE_HASH_ROUTER
+  USE_HASH_ROUTER,
+  SEGMENT_WRITE_KEY,
+  ANALYTICS_API_URL
 } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
@@ -132,7 +134,6 @@ export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';
-export { default as log } from './log';
 export { mapAsync, filterAsync } from './asyncFilter';
 export { isValidJSON } from './isValidJSON';
 export { goBack } from './navigation';

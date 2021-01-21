@@ -19,10 +19,6 @@ const SLink = styled(Link)`
   font-weight: 600;
 `;
 
-const SCheckbox = styled(Checkbox)`
-  margin-bottom: 0;
-`;
-
 const SToggle = styled.button`
   position: fixed;
   bottom: 1.25em;
@@ -84,8 +80,16 @@ const ErrorTools = () => {
   );
 };
 
+const SCheckbox = styled(Checkbox)`
+  margin-bottom: 0;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.GREY_LIGHT};
+  }
+`;
+
 const FeatureFlags = () => {
   const { featureFlags, setFeatureFlag } = useFeatureFlags();
+
   return (
     <div style={{ marginBottom: '1em' }}>
       {Object.entries(featureFlags)

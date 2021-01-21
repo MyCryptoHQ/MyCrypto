@@ -64,7 +64,9 @@ export {
   setInactivityTimer,
   setDemoMode,
   getIsDemoMode,
-  addAccountsToFavorites
+  addAccountsToFavorites,
+  canTrackProductAnalytics,
+  setProductAnalyticsAuthorisation
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';

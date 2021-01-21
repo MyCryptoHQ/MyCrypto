@@ -4,8 +4,6 @@ import eqBy from 'ramda/src/eqBy';
 import prop from 'ramda/src/prop';
 import unionWith from 'ramda/src/unionWith';
 
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
   addAccounts,
   destroyAccount,
@@ -13,17 +11,7 @@ import {
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import {
-  Asset,
-  IAccount,
-  IRawAccount,
-  ITxReceipt,
-  ITxStatus,
-  ITxType,
-  NetworkId,
-  StoreAccount,
-  TUuid
-} from '@types';
+import { Asset, IAccount, IRawAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
 
 import { DataContext } from '../DataManager';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
@@ -46,10 +34,6 @@ function useAccounts() {
   const { accounts } = useContext(DataContext);
 
   const dispatch = useDispatch();
-  const trackTxHistory = useAnalytics({
-    category: ANALYTICS_CATEGORIES.TX_HISTORY,
-    actionName: 'Tx Made'
-  });
 
   const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
     dispatch(addAccounts([{ ...item, uuid }]));
@@ -64,14 +48,6 @@ function useAccounts() {
   const updateAccount = (_: TUuid, account: IAccount) => dispatch(updateAccountRedux(account));
 
   const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
-    if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
-      trackTxHistory({
-        eventParams: {
-          txType: (newTx && newTx.txType) || ITxType.UNKNOWN,
-          txStatus: newTx.status
-        }
-      });
-    }
     const newAccountData = {
       ...accountData,
       transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]

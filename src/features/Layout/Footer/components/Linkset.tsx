@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { CRYPTOSCAMDB, EXT_URLS, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { translateRaw } from '@translations';
 import './Linkset.scss';
 
@@ -12,28 +10,23 @@ const LINK_COLUMNS = [
     links: [
       {
         title: 'MyCrypto.com',
-        link: 'https://www.mycrypto.com/',
-        analytics_event: 'MyCrypto.com'
+        link: 'https://www.mycrypto.com/'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
-        link: getKBHelpArticle(KB_HELP_ARTICLE.HOME),
-        analytics_event: 'Help & Support'
+        link: getKBHelpArticle(KB_HELP_ARTICLE.HOME)
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_8'),
-        link: 'https://about.mycrypto.com/',
-        analytics_event: 'Our Team'
+        link: 'https://about.mycrypto.com/'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_9'),
-        link: 'mailto:press@mycrypto.com',
-        analytics_event: 'Press'
+        link: 'mailto:press@mycrypto.com'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_10'),
-        link: 'https://about.mycrypto.com/privacy/',
-        analytics_event: 'Privacy Policy'
+        link: 'https://about.mycrypto.com/privacy/'
       }
     ]
   },
@@ -42,28 +35,23 @@ const LINK_COLUMNS = [
     links: [
       {
         title: 'Get a Ledger',
-        link: EXT_URLS.LEDGER_REFERRAL.url,
-        analytics_event: 'Ledger Wallet'
+        link: EXT_URLS.LEDGER_REFERRAL.url
       },
       {
         title: 'Get a Trezor',
-        link: EXT_URLS.TREZOR_REFERRAL.url,
-        analytics_event: 'TREZOR'
+        link: EXT_URLS.TREZOR_REFERRAL.url
       },
       {
         title: 'Get Quiknode',
-        link: EXT_URLS.QUIKNODE_REFERRAL.url,
-        analytics_event: 'Quiknode'
+        link: EXT_URLS.QUIKNODE_REFERRAL.url
       },
       {
         title: 'Buy ETH on Coinbase',
-        link: EXT_URLS.COINBASE_REFERRAL.url,
-        analytics_event: 'Coinbase'
+        link: EXT_URLS.COINBASE_REFERRAL.url
       },
       {
         title: 'Unstoppable Domains',
-        link: EXT_URLS.UNSTOPPABLEDOMAINS_REFERRAL.url,
-        analytics_event: 'UnstoppableDomains'
+        link: EXT_URLS.UNSTOPPABLEDOMAINS_REFERRAL.url
       }
     ]
   },
@@ -73,49 +61,34 @@ const LINK_COLUMNS = [
       {
         title: 'EtherAddressLookup',
         link:
-          'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-        analytics_event: 'EtherAddressLookup'
+          'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn'
       },
       {
         title: 'CryptoScamDB',
-        link: CRYPTOSCAMDB,
-        analytics_event: 'CryptoScamDB'
+        link: CRYPTOSCAMDB
       },
       {
         title: 'MoneroVision',
-        link: 'https://monerovision.com/',
-        analytics_event: 'MoneroVision'
+        link: 'https://monerovision.com/'
       },
       {
         title: 'FindETH',
-        link: 'https://findeth.io',
-        analytics_event: 'FindETH'
+        link: 'https://findeth.io'
       }
     ]
   }
 ];
 
 export default function Linkset() {
-  const trackLinkClicked = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
-
   return (
     <section className="Footer-Linkset">
       {LINK_COLUMNS.map(({ heading, links }) => (
         <section key={heading} className="Linkset-column">
           <h2>{heading}</h2>
           <ul>
-            {links.map(({ title, link, analytics_event }) => (
+            {links.map(({ title, link }) => (
               <li key={title}>
-                <a
-                  href={link}
-                  onClick={() =>
-                    trackLinkClicked({ actionName: `${analytics_event} link clicked` })
-                  }
-                >
-                  {title}
-                </a>
+                <a href={link}>{title}</a>
               </li>
             ))}
           </ul>

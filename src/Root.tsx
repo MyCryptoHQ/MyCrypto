@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
@@ -9,7 +9,9 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
-import { createStore } from '@store';
+import { FeatureFlagProvider, useFeatureFlags } from '@services';
+import { trackInit } from '@services/Analytics';
+import { createStore, useDispatch } from '@store';
 import { theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 
@@ -29,6 +31,15 @@ const FullScreen = styled.div`
 const { store, persistor } = createStore();
 
 const RootComponent = () => {
+  const { isFeatureActive, featureFlags } = useFeatureFlags();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isFeatureActive('ANALYTICS')) {
+      dispatch(trackInit());
+    }
+  }, [featureFlags]);
+
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
   return (
     <ThemeProvider theme={theme}>
@@ -48,19 +59,21 @@ const RootComponent = () => {
 
 const RootClass = () => {
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        {(isHydrated: boolean) =>
-          isHydrated ? (
-            <RootComponent />
-          ) : (
-            <Box variant="rowCenter">
-              <AppLoading />
-            </Box>
-          )
-        }
-      </PersistGate>
-    </Provider>
+    <FeatureFlagProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          {(isHydrated: boolean) =>
+            isHydrated ? (
+              <RootComponent />
+            ) : (
+              <Box variant="rowCenter">
+                <AppLoading />
+              </Box>
+            )
+          }
+        </PersistGate>
+      </Provider>
+    </FeatureFlagProvider>
   );
 };
 

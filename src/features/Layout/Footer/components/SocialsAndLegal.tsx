@@ -2,52 +2,23 @@ import React, { Component } from 'react';
 
 import { DisclaimerModal, NewTabLink } from '@components';
 import { socialMediaLinks, VERSION } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { translateRaw } from '@translations';
 import './SocialsAndLegal.scss';
 
 const SocialMediaLink = ({ link, text, icon }: { link: string; text: string; icon?: string }) => {
-  const trackSocial = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
-
   if (icon) {
     return (
-      <NewTabLink
-        className="SocialMediaLink"
-        key={link}
-        href={link}
-        aria-label={text}
-        onClick={() => trackSocialIconClicked(text, trackSocial)}
-      >
+      <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
         <img src={icon} width="18px" height="18px" style={{ verticalAlign: 'top' }} />
       </NewTabLink>
     );
   }
 
   return (
-    <NewTabLink
-      className="SocialMediaLink"
-      key={link}
-      href={link}
-      aria-label={text}
-      onClick={() => trackSocialIconClicked(text, trackSocial)}
-    >
+    <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
       <i className={`sm-icon sm-logo-${text}`} />
     </NewTabLink>
   );
-};
-
-const trackSocialIconClicked = (
-  socialNetworkName: string,
-  trackSocial: ReturnType<typeof useAnalytics>
-): void => {
-  trackSocial({
-    actionName: `${socialNetworkName.charAt(0).toUpperCase()}${socialNetworkName.slice(
-      1
-    )} social icon clicked`
-  });
 };
 
 function Socials() {

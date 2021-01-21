@@ -1,16 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import { subscribeToMailingList } from '@services/ApiService';
 import translate, { translateRaw } from '@translations';
 
 const Subscribe: FC = () => {
   const [emailValue, setEmailValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const trackSubscribed = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
 
   const handleChange = useCallback(
     ({ target: { value: email } }: React.ChangeEvent<HTMLInputElement>) => setEmailValue(email),
@@ -20,12 +15,7 @@ const Subscribe: FC = () => {
   const subscribe = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
       subscribeToMailingList(emailValue).catch(() => setSubmitted(true));
-
-      trackSubscribed({
-        actionName: 'Subscribed to MyCrypto'
-      });
     },
     [emailValue, setSubmitted]
   );

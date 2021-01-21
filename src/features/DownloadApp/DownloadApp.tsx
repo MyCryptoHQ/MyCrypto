@@ -8,8 +8,7 @@ import styled from 'styled-components';
 import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
 import { ExtendedContentPanel } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES, GithubService } from '@services/ApiService';
+import { GithubService } from '@services/ApiService';
 import translate from '@translations';
 import { getFeaturedOS, goBack, openLink } from '@utils';
 
@@ -127,9 +126,6 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
       link: DEFAULT_LINK
     }
   ]);
-  const trackDownloadDesktop = useAnalytics({
-    category: ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP
-  });
 
   useEffect(() => {
     (async () => {
@@ -142,29 +138,16 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
         });
 
         setDownloadItems(downloadItemsTemp);
-
-        const trackItem =
-          downloadItemsTemp.find((x) => x.OS === featuredOS) || downloadItemsTemp[0];
-        trackDownloadDesktop({
-          actionName: `${trackItem.name} user lands on this component`
-        });
       } catch (e) {
         console.error(e);
       }
     })();
   }, [setDownloadItems]);
 
-  const openDownloadLink = useCallback(
-    (item: AppDownloadItem) => {
-      const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
-      openLink(item.link, target);
-
-      trackDownloadDesktop({
-        actionName: `${item.name} download button clicked`
-      });
-    },
-    [trackDownloadDesktop]
-  );
+  const openDownloadLink = useCallback((item: AppDownloadItem) => {
+    const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
+    openLink(item.link, target);
+  }, []);
 
   const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
   const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
@@ -197,16 +180,7 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
         </OptionGroup>
         <Footer>
           {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
-          <a
-            onClick={() =>
-              trackDownloadDesktop({
-                actionName: 'Learn more link clicked'
-              })
-            }
-            href={DOWNLOAD_MYCRYPTO_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={DOWNLOAD_MYCRYPTO_LINK} target="_blank" rel="noreferrer">
             {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
           </a>
         </Footer>

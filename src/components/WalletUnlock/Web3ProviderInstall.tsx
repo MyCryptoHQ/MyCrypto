@@ -6,8 +6,6 @@ import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
 import { Box, Heading, NewTabLink } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
 import translate from '@translations';
 import { useScreenSize } from '@utils';
 import './Web3ProviderInstall.scss';
@@ -74,12 +72,6 @@ function InstallMetaMask() {
 }
 
 function Web3ProviderInstall() {
-  useAnalytics({
-    category: ANALYTICS_CATEGORIES.ADD_WEB3_ACCOUNT,
-    actionName: 'No provider detected',
-    triggerOnMount: true
-  });
-
   const { isMobile } = useScreenSize();
   return (
     <Box p="2.5em">

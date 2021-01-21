@@ -1,11 +1,11 @@
 require('dotenv').config();
 
 const ENV = {
-  // Should be set in order to use Mnemonic in AddAccount flow
+  // Should be set in order to use PrivateKey in AddAccount flow
   E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
 
   // Defined in github/workflow to run against mycryptobuilds
-  E2E_BASE_URL: process.env.E2E_BASE_URL || 'https://localhost:3000'
+  E2E_BASE_URL: process.env.E2E_BASE_URL
 };
 
 const ENV_KEYS = Object.keys(ENV);
@@ -118,6 +118,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     }
   },
   settings: {
+    canTrackProductAnalytics: true,
     fiatCurrency: 'USD',
     darkMode: false,
     dashboardAccounts: ['256b782e-52bc-51f9-a357-602501e59700'],

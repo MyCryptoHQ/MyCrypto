@@ -3,8 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Box, Icon, Text } from '@components';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { IExternalLink } from '@types';
 import { openLink } from '@utils';
@@ -18,13 +17,11 @@ const SBox = styled(Box)`
 `;
 
 export const ExternalLink = ({ item }: { item: IExternalLink }) => {
-  const trackLinkClicked = useAnalytics({
-    category: ANALYTICS_CATEGORIES.FOOTER
-  });
+  const { track } = useAnalytics();
 
   const handleClick = () => {
     openLink(item.link);
-    trackLinkClicked({ actionName: `${item.analyticsEvent} link clicked` });
+    track({ name: 'Link clicked', params: { url: item.link } });
   };
 
   return (

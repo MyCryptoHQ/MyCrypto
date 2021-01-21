@@ -142,7 +142,7 @@ export const TokenMigrationFormUI = ({
   useEffect(() => {
     if (!values.account) return;
     const accountAssetAmt = values.account.assets.find(
-      (a) => a.uuid === tokenMigrationConfig.fromAssetUuid
+      (a: Asset) => a.uuid === tokenMigrationConfig.fromAssetUuid
     );
     if (!accountAssetAmt || !asset.decimal) {
       return;

@@ -13,5 +13,6 @@ export const fSettings: ISettings = {
     }
   },
   language: 'en',
-  isDemoMode: false
+  isDemoMode: false,
+  canTrackProductAnalytics: true
 };

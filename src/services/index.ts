@@ -1,3 +1,4 @@
+export * from './Analytics';
 export * from './ApiService';
 export * from './EthService';
 export * from './Store';

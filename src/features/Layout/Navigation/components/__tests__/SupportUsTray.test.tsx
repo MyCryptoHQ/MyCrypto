@@ -13,8 +13,7 @@ const defaultProps = {
       type: 'external',
       title: 'test',
       link: 'https://example.com',
-      icon: 'nav-ledger',
-      analyticsEvent: 'Ledger Wallet'
+      icon: 'nav-ledger'
     }
   ] as TTrayItem[]
 };

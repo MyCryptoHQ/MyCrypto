@@ -56,34 +56,33 @@ export const AppRoutes = () => {
   return (
     <>
       <ScrollToTop />
+      <PageVisitsAnalytics />
       <ScreenLockProvider>
         <DrawerProvider>
-          <PageVisitsAnalytics>
-            <DefaultHomeHandler>
-              <Suspense
-                fallback={
-                  <Layout>
-                    <AppLoading />
-                  </Layout>
-                }
-              >
-                <Switch>
-                  {/* To avoid fiddling with layout we provide a complete route to home */}
-                  <LayoutWithLocation>
-                    <Switch>
-                      <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
-                      {getAppRoutes(featureFlags)
-                        .filter((route) => !route.seperateLayout)
-                        .map((config, idx) => (
-                          <PrivateRoute key={idx} {...config} />
-                        ))}
-                      <Route component={PageNotFound} />
-                    </Switch>
-                  </LayoutWithLocation>
-                </Switch>
-              </Suspense>
-            </DefaultHomeHandler>
-          </PageVisitsAnalytics>
+          <DefaultHomeHandler>
+            <Suspense
+              fallback={
+                <Layout>
+                  <AppLoading />
+                </Layout>
+              }
+            >
+              <Switch>
+                {/* To avoid fiddling with layout we provide a complete route to home */}
+                <LayoutWithLocation>
+                  <Switch>
+                    <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
+                    {getAppRoutes(featureFlags)
+                      .filter((route) => !route.seperateLayout)
+                      .map((config, idx) => (
+                        <PrivateRoute key={idx} {...config} />
+                      ))}
+                    <Route component={PageNotFound} />
+                  </Switch>
+                </LayoutWithLocation>
+              </Switch>
+            </Suspense>
+          </DefaultHomeHandler>
           <LegacyRoutesHandler />
         </DrawerProvider>
       </ScreenLockProvider>

@@ -90,4 +90,22 @@ You can also run a single file
 yarn test:e2e:dev __tests__/layout.test.js
 ```
 
-Running e2e tests requires a `.env` file to be defined, with the appropriate environment variables set. See `.env.example` for an example.
+## Environments
+
+In development we use a `.env` file to define required values. The list is defined in `.env.example`. These values are made available to the React code through the `dotenv` webpack plugin.
+In production, the values are set through Github secrets and made available to the React app through the `webpack.EnvironmentPlugin`.
+NB. Since TestCafe has access to the node, the values are available at `process.env` and do not need to be cloned.
+
+## Product Analytics
+
+We use product analytics to help us understand how to improve our features.
+
+The collection of usage data requires the use of unique identifiers which are stored in the browsers local storage. The id is random and can be removed or reset in the Settings panel. This ensures that our product team can identify places to improve the product, while at the same time protecting the users anonymity.
+
+We strive to provide access to the Ethereum blockchain in the most secure way possible, we refuse any dynamic script injections and only rely on HTTPS calls to the API. The calls are formatted using the excellant [@blockstock/stats](https://github.com/MyCryptoHQ/stats) library.
+
+Finally, since User privacy is part of our core values, we also take special care to ensure that the data we send to thrid-party servers is purged from any information which may be de-anonymised such as:
+
+- Every analytics call is sent to a MYC hosted reverse-proxy, strip of the users ip address and browser fingerprint before being forwarded to the data-warehouse (in this case )
+
+- never sending an ETH address or Transaction hash to our analytics warehouse.

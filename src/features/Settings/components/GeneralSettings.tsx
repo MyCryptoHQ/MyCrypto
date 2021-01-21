@@ -6,11 +6,17 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { DashboardPanel, SubHeading, Tooltip } from '@components';
+import { DashboardPanel, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
-import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
+import {
+  AppState,
+  canTrackProductAnalytics,
+  getFiat,
+  getInactivityTimer,
+  setFiat,
+  setInactivityTimer,
+  setProductAnalyticsAuthorisation
+} from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { TFiatTicker } from '@types';
@@ -71,21 +77,21 @@ const timerOptions = [
   { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
 ];
 
-const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
-  const trackSetInacticityTimer = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SETTINGS
-  });
+const GeneralSettings = ({
+  inactivityTimer,
+  fiatCurrency,
+  setInactivityTimer,
+  setFiat,
+  canTrackProductAnalytics,
+  setProductAnalyticsAuthorisation
+}: Props) => {
+  const toggleAnalytics = () => {
+    setProductAnalyticsAuthorisation(!canTrackProductAnalytics);
+  };
 
   const changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
     const target = event.target as HTMLSelectElement;
     setInactivityTimer(Number(target.value));
-
-    const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
-    if (selectedTimer) {
-      trackSetInacticityTimer({
-        actionName: `User set inactivity timer to ${selectedTimer.name}`
-      });
-    }
   };
 
   const changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -144,20 +150,37 @@ const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, se
           </SelectContainer>
         </SettingsControl>
       </SettingsField>
+      <SettingsField>
+        <SubHeading fontWeight="initial">
+          {translate('SETTINGS_PRODUCT_ANALYTICS')}{' '}
+          <Tooltip tooltip={<span>{translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP')}</span>} />
+        </SubHeading>
+        <SettingsControl>
+          <Switch
+            greyable={true}
+            checked={canTrackProductAnalytics}
+            onChange={toggleAnalytics}
+            labelLeft="OFF"
+            labelRight="ON"
+          />
+        </SettingsControl>
+      </SettingsField>
     </DashboardPanel>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
   inactivityTimer: getInactivityTimer(state),
-  fiatCurrency: getFiat(state)
+  fiatCurrency: getFiat(state),
+  canTrackProductAnalytics: canTrackProductAnalytics(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       setInactivityTimer,
-      setFiat
+      setFiat,
+      setProductAnalyticsAuthorisation
     },
     dispatch
   );
