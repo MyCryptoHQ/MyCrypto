@@ -136,7 +136,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
           currentTxIdx: idx
         },
         actions: {
-          onClick: () => {
+          onComplete: () => {
             prepareTx(tx.txRaw);
           }
         }
