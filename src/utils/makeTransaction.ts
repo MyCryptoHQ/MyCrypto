@@ -21,8 +21,8 @@ export const inputGasPriceToHex = (
 ): ITxGasPrice /* Converts to wei from gwei */ =>
   addHexPrefix(gasPriceToBase(gasPriceGwei).toString(16)) as ITxGasPrice;
 
-export const inputGasLimitToHex = (gasLimit: string): ITxGasLimit =>
-  bigNumberify(gasLimit).toHexString() as ITxGasLimit;
+export const inputGasLimitToHex = (gasLimit: string | BigNumber): ITxGasLimit =>
+  addHexPrefix(bigify(gasLimit).toString(16)) as ITxGasLimit;
 
 export const inputValueToHex = (valueEther: string): ITxValue =>
   hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL)) as ITxValue;
