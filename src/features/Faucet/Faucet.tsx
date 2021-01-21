@@ -68,12 +68,6 @@ const LearnMoreArrow = styled(Icon)`
 
 const NoTestnetAccounts = styled(InlineMessage)`
   margin-bottom: ${SPACING.BASE};
-  a,
-  a:hover {
-    color: ${COLORS.BLUE_MYC};
-    text-decoration: none;
-    font-weight: bold;
-  }
 `;
 
 const IncorrectResponse = styled(InlineMessage)`
