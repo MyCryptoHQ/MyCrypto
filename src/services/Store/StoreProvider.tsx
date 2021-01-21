@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import BigNumber from 'bignumber.js';
 import isEmpty from 'lodash/isEmpty';
 import prop from 'ramda/src/prop';
 import sortBy from 'ramda/src/sortBy';
@@ -28,6 +27,7 @@ import {
 import { translateRaw } from '@translations';
 import {
   Asset,
+  Bigish,
   DomainNameRecord,
   IAccount,
   IAccountAdditionData,
@@ -112,7 +112,7 @@ export interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getAssetRate: (asset: Asset) => number | undefined) => BigNumber;
+  ): (getAssetRate: (asset: Asset) => number | undefined) => Bigish;
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   deleteAccountFromCache(account: IAccount): void;

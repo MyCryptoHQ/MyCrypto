@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Identicon } from '@mycrypto/ui';
-import BigNumber from 'bignumber.js';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -33,7 +32,7 @@ import {
 import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
+import { Bigish, ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
 import { truncate, useScreenSize } from '@utils';
 
 import Checkbox from './Checkbox';
@@ -297,7 +296,7 @@ interface ITableFullAccountType {
   account: StoreAccount;
   index: number;
   label: string;
-  total: BigNumber;
+  total: Bigish;
   addressCard: ExtendedContact;
 }
 

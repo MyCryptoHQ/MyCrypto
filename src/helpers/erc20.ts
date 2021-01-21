@@ -1,13 +1,19 @@
-import BigNumber from 'bignumber.js';
-
 import { DEFAULT_NETWORK_CHAINID } from '@config';
 import { ERC20 } from '@services';
-import { ITxData, ITxFromAddress, ITxGasPrice, ITxObject, ITxToAddress, TAddress } from '@types';
+import {
+  Bigish,
+  ITxData,
+  ITxFromAddress,
+  ITxGasPrice,
+  ITxObject,
+  ITxToAddress,
+  TAddress
+} from '@types';
 import { inputValueToHex } from '@utils';
 
 interface IFormatApproveTxInputs {
   contractAddress: ITxToAddress;
-  baseTokenAmount: BigNumber;
+  baseTokenAmount: Bigish;
   fromAddress: ITxFromAddress;
   spenderAddress: TAddress;
   chainId: number;
