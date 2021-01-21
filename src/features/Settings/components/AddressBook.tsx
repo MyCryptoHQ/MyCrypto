@@ -11,8 +11,11 @@ import {
   EditableText,
   EthAddress,
   FixedSizeCollapsibleTable,
+  Icon,
+  Link,
   Network,
   RowDeleteOverlay,
+  Text,
   Tooltip,
   UndoDeleteOverlay
 } from '@components';
@@ -38,22 +41,6 @@ const DeleteButton = styled(Button)`
   font-size: 0.7em;
   justify-content: center;
   width: 100%;
-`;
-
-const AddAccountButton = styled(Button)`
-  color: ${COLORS.BLUE_BRIGHT};
-  padding: ${SPACING.BASE};
-  opacity: 1;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
-
-const BottomRow = styled.div`
-  text-align: center;
-  background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
 const Label = styled.span`
@@ -288,8 +275,19 @@ export default function AddressBook({
     <DashboardPanel
       heading={
         <>
-          {translateRaw('ADDRESSBOOK')} <Tooltip tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
+          {translateRaw('ADDRESSBOOK')}{' '}
+          <Tooltip width="16px" tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
         </>
+      }
+      headingRight={
+        <Link>
+          <Box variant="rowAlign" onClick={toggleFlipped}>
+            <Icon type="add-bold" width="16px" />
+            <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+              {translateRaw('ADD')}
+            </Text>
+          </Box>
+        </Link>
       }
     >
       <FixedSizeCollapsibleTable
@@ -297,11 +295,6 @@ export default function AddressBook({
         maxHeight={'450px'}
         {...addressBookTable}
       />
-      <BottomRow>
-        <AddAccountButton onClick={toggleFlipped} basic={true}>
-          {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
-        </AddAccountButton>
-      </BottomRow>
     </DashboardPanel>
   );
 }
