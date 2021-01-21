@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
-import { BREAK_POINTS, COLORS } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { IStory, WalletId } from '@types';
 import { getWeb3Config } from '@utils';
@@ -87,6 +87,8 @@ const Info = styled.div<InfoProps>`
 const SDemoButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: ${SPACING.BASE};
+  margin-bottom: ${SPACING.BASE};
 `;
 
 interface WalletListProps {
@@ -112,6 +114,19 @@ const WalletList = ({
           <Heading>{translate('DECRYPT_ACCESS')}</Heading>
           <Description>{translate('ADD_ACCOUNT_DESCRIPTION')}</Description>
         </>
+      )}
+      {accounts.length === 0 && (
+        <SDemoButtonContainer>
+          <Link to={ROUTE_PATHS.DASHBOARD.path}>
+            <Button
+              colorScheme={'warning'}
+              disabled={isDemoMode}
+              onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
+            >
+              {translateRaw('DEMO_BUTTON_TEXT')}
+            </Button>
+          </Link>
+        </SDemoButtonContainer>
       )}
       <WalletsContainer>
         {wallets
@@ -149,19 +164,6 @@ const WalletList = ({
             {translateRaw('ADD_ACCOUNT_IMPORT_SETTINGS_LINK')}
           </Link>
         </Info>
-        {accounts.length === 0 && (
-          <SDemoButtonContainer>
-            <Link to={ROUTE_PATHS.DASHBOARD.path}>
-              <Button
-                colorScheme={'warning'}
-                disabled={isDemoMode}
-                onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
-              >
-                {translateRaw('DEMO_BUTTON_TEXT')}
-              </Button>
-            </Link>
-          </SDemoButtonContainer>
-        )}
       </InfoWrapper>
     </div>
   );
