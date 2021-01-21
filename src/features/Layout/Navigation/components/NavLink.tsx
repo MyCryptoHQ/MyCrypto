@@ -18,15 +18,17 @@ const SLink = styled(Link)`
 `;
 
 const SBox = styled(Box)`
-  & * {
+  p {
     transition: all 300ms;
   }
   &:hover {
     background-color: ${COLORS.BG_GRAY};
     transition: all 300ms;
-    * {
-      color: ${COLORS.GREYISH_BROWN};
+    svg {
       fill: ${COLORS.GREYISH_BROWN};
+    }
+    p {
+      color: ${COLORS.GREYISH_BROWN};
       transition: all 300ms;
     }
   }

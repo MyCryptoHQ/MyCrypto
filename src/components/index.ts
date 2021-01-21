@@ -92,3 +92,4 @@ export { ActionPanel, TweetButtonProps, ActionButtonProps, ActionButton } from '
 export { default as AppLoading } from './AppLoading';
 export { SkeletonLoader } from './SkeletonLoader';
 export { DemoGatewayBanner } from './DemoBanner';
+export { AnnouncementBanner } from './AnnouncementBanner';

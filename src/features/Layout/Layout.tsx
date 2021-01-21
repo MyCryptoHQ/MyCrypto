@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { Banner, RouterLink } from '@components';
+import { AnnouncementBanner, Banner, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { DrawerContext, ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
@@ -18,7 +18,7 @@ import {
   MIN_CONTENT_PADDING,
   SPACING
 } from '@theme';
-import translate, { Trans, translateRaw } from '@translations';
+import { Trans, translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
 import { useTimeoutFn } from '@vendor';
@@ -121,42 +121,15 @@ const SContainer = styled.div`
 
 const BannerWrapper = styled.div<{ newNav: boolean }>`
   max-width: 1000px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: absolute;
-    top: 35px;
-    left: 150px;
-  }
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: sticky;
-    top: ${(p) => (p.newNav ? '15px' : '77px')};
-    left: 0;
-    ${(p) =>
-      p.newNav &&
-      css`
-        margin: 0 15px;
-      `}
-  }
+  position: sticky;
+  top: ${(p) => (p.newNav ? '15px' : '77px')};
+  left: 0;
+  ${(p) =>
+    p.newNav &&
+    css`
+      margin: 0 15px;
+    `}
 `;
-
-const SBanner = styled(Banner)`
-  background-color: ${COLORS.LIGHT_PURPLE};
-  border-radius: 16px;
-`;
-
-const CenteredBannerText = styled.div`
-  text-align: center;
-  & a {
-    &:hover {
-      font-weight: normal;
-    }
-  }
-`;
-
-export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>{translate('LAUNCH_ANNOUNCEMENT')}</CenteredBannerText>
-);
-
-const announcementMessage = ANNOUNCEMENT_MSG();
 
 const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
@@ -257,9 +230,11 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                 openTray={() => setIsOpen(!isOpen)}
               />
             )}
-            <BannerWrapper newNav={featureFlags.NEW_NAVIGATION}>
-              <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
-            </BannerWrapper>
+            {isMobile && (
+              <BannerWrapper newNav={featureFlags.NEW_NAVIGATION}>
+                <AnnouncementBanner />
+              </BannerWrapper>
+            )}
             <SContainer
               centered={centered}
               fluid={fluid}
