@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import settingsIcon from '@assets/images/icn-settings.svg';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { isTruthy } from '@utils';
 
 import { Panel } from './Panel';
 import RouterLink from './RouterLink';
@@ -51,12 +52,13 @@ const DFooterWrapper = styled.div`
   background: ${COLORS.BLUE_GREY_LIGHTEST};
 `;
 
-const DHeading = styled(Heading)`
+const DHeading = styled(Heading)<{ hasRightHeading: boolean }>`
   && {
     margin: 0;
     font-size: ${FONT_SIZE.XL};
     font-weight: bold;
     color: ${COLORS.BLUE_DARK_SLATE};
+    ${({ hasRightHeading }) => !hasRightHeading && `width: 100%;`}
   }
 `;
 
@@ -100,12 +102,14 @@ export const DashboardPanel = ({
     }
   };
 
+  const rightHeadingComponent = (headingRight || actionLink) && getRightHeading();
+
   return (
     <DPanel {...rest}>
       {heading && (
         <DHeadingWrapper>
-          <DHeading>{heading}</DHeading>
-          {(headingRight || actionLink) && getRightHeading()}
+          <DHeading hasRightHeading={isTruthy(rightHeadingComponent)}>{heading}</DHeading>
+          {rightHeadingComponent}
         </DHeadingWrapper>
       )}
       {padChildren ? <Content>{children}</Content> : children}

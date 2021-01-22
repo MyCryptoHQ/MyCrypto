@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { DashboardPanel } from '@components';
+import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
 import { StoreContext } from '@services/Store/StoreProvider';
@@ -25,6 +25,7 @@ const DetailsHeading = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
+  justify-content: center;
 `;
 
 const SIcon = styled(Icon)`
@@ -78,19 +79,20 @@ export const ActionPanel = () => {
     <SDashboardPanel
       heading={
         currentAction ? (
-          <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
+          <Box variant="rowAlign">
+            <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
+            <DetailsHeading>
+              <Icon width={20} type={currentAction.icon} />
+              <HeadingText>{currentAction.heading}</HeadingText>
+            </DetailsHeading>
+            <SIcon width={20} type="closed-eye" onClick={dismiss} />
+          </Box>
         ) : (
           <Trans id="ACTION_PANEL_HEADING" />
         )
       }
       headingRight={
-        currentAction ? (
-          <DetailsHeading>
-            <Icon width={20} type={currentAction.icon} />
-            <HeadingText>{currentAction.heading}</HeadingText>
-            <SIcon width={20} type="closed-eye" onClick={dismiss} />
-          </DetailsHeading>
-        ) : (
+        currentAction ? undefined : (
           <Text color="GREY" fontSize={0} mb={0}>
             <Trans
               id="ACTION_PANEL_COMPLETED_COUNT"
