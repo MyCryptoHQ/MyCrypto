@@ -36,7 +36,7 @@ function getComponent() {
 describe('RequestAssets', () => {
   test('it renders', async () => {
     const { getByText } = getComponent();
-    expect(getByText(translateRaw('RECEIVE_ASSETS'))).toBeInTheDocument();
+    expect(getByText(translateRaw('REQUEST'))).toBeInTheDocument();
     expect(getByText(fAccounts[0].label)).toBeInTheDocument();
   });
 });
