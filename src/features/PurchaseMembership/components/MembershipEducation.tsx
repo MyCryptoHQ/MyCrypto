@@ -129,12 +129,6 @@ const PlanContainer = styled.div`
   margin-bottom: ${SPACING.LG};
 `;
 
-const Disclaimer = styled(Typography)`
-  color: ${COLORS.GREY};
-  width: 80%;
-  text-align: center;
-`;
-
 const MembershipEducation = withRouter(({ history }) => {
   const handleSubmit = () => history.push(`${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`);
   return (
@@ -197,7 +191,6 @@ const MembershipEducation = withRouter(({ history }) => {
             ))}
         </PlanContainer>
         <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
-        <Disclaimer>{translate('MEMBERSHIP_NOTE')}</Disclaimer>
       </SpacedPanelSection>
       <SpacedPanelSection>
         <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>

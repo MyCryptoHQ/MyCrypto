@@ -84,7 +84,9 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
   return (
     <>
       <SHeader>
-        {translateRaw('UNLOCK_WALLET_TITLE', { $wallet: translateRaw('X_WALLETCONNECT') })}
+        {translateRaw('SIGNER_SELECT_WALLETCONNECT', {
+          $walletId: translateRaw('X_WALLETCONNECT')
+        })}
       </SHeader>
       <SContent>
         <SSection center={true}>
