@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-create-pw.svg';
 import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
-import { KB_HELP_ARTICLE } from '@config';
+import { KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
 import translate, { translateRaw } from '@translations';
 import { goBack } from '@utils';
 
@@ -146,7 +146,7 @@ const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
             <BottomActions>
               <div>
                 {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                <NewTabLink href={KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK}>
+                <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}>
                   {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
                 </NewTabLink>
               </div>

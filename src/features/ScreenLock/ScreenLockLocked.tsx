@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
 import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
-import { KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { KB_HELP_ARTICLE, ROUTE_PATHS, getKBHelpArticle } from '@config';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
 
@@ -96,7 +96,7 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
           </div>
           <div>
             {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-            <NewTabLink href={KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK}>
+            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}>
               {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
             </NewTabLink>
           </div>
