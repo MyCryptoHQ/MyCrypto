@@ -1,14 +1,21 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { DashboardPanel } from '@components';
 import Icon from '@components/Icon';
-import { useUserActions } from '@services';
+import { useTxHistory, useUserActions } from '@services';
 import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
+import {
+  ACTION_NAME,
+  ACTION_STATE,
+  ActionFilters,
+  ActionTemplate,
+  ExtendedUserAction,
+  ITxType
+} from '@types';
 import { dateIsBetween } from '@utils';
 import { filter, pipe } from '@vendor';
 
@@ -38,31 +45,64 @@ const HeadingText = styled.span`
   margin: 0 ${SPACING.BASE};
 `;
 
-const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFilters) =>
+const filterUserActions = (
+  actionTemplates: ActionTemplate[],
+  filters: ActionFilters,
+  findUserAction: (name: ACTION_NAME) => ExtendedUserAction | undefined
+) =>
   actionTemplates.filter((action) => {
+    const userAction = findUserAction(action.name);
+    // Always show completed actions
+    if (userAction && userAction.state === ACTION_STATE.COMPLETED) return true;
     const filter = action.filter;
     if (!filter) return true;
     return filter(filters);
   });
 
+// @todo Move this somewhere where it makes sense
+const MIGRATION_MAPPING: { [key: string]: ACTION_NAME } = {
+  [ITxType.AAVE_TOKEN_MIGRATION]: ACTION_NAME.MIGRATE_LEND,
+  [ITxType.ANT_TOKEN_MIGRATION]: ACTION_NAME.MIGRATE_ANT,
+  [ITxType.REP_TOKEN_MIGRATION]: ACTION_NAME.MIGRATE_REP,
+  [ITxType.GOLEM_TOKEN_MIGRATION]: ACTION_NAME.MIGRATE_GOL
+};
+
 export const ActionPanel = () => {
   const { assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember } = useContext(
     StoreContext
   );
+  const { txHistory } = useTxHistory();
   const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
+
+  // @todo Move this somewhere where it makes sense
+  useEffect(() => {
+    Object.entries(MIGRATION_MAPPING).forEach(([txType, actionType]) => {
+      const action = findUserAction(actionType);
+      if (action && txHistory.some((t) => t.txType === txType)) {
+        updateUserAction(action.uuid, {
+          ...action,
+          state: ACTION_STATE.COMPLETED
+        });
+      }
+    });
+  }, [txHistory]);
 
   const relevantActions = useMemo(
     () =>
       pipe(
         (a: ActionTemplate[]) =>
-          filterUserActions(a, {
-            assets,
-            uniClaims,
-            ensOwnershipRecords,
-            accounts,
-            isMyCryptoMember
-          }),
+          filterUserActions(
+            a,
+            {
+              assets,
+              uniClaims,
+              ensOwnershipRecords,
+              accounts,
+              isMyCryptoMember
+            },
+            findUserAction
+          ),
         filter((a: ActionTemplate) => (a.time ? dateIsBetween(a.time.start, a.time.end) : true))
       )(actionTemplates),
     [assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember]
