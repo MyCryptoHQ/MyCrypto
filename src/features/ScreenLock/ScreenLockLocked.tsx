@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
-import { ExtendedContentPanel, InputField } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
 
@@ -96,9 +96,9 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
           </div>
           <div>
             {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-            <Link to={ROUTE_PATHS.DASHBOARD.path}>
+            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}>
               {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-            </Link>
+            </NewTabLink>
           </div>
         </BottomActions>
       </ContentWrapper>
