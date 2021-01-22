@@ -11,14 +11,11 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useNetworks, useTxHistory } from '@services';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { NetworkId } from '@types';
 import { isVoid, noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 
 import { fetchTxStatus, makeTx } from './helpers';
 import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
-
-const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
 
 const Loader = styled.div`
   padding-bottom: 6rem;
@@ -62,8 +59,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { txHistory } = useTxHistory();
 
   const defaultTxHash = qs.hash ? qs.hash : '';
-  const defaultNetwork =
-    qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
+  const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);
 
@@ -121,7 +117,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               onChange={(n) =>
                 dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
               }
-              filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
             />
             <SLabel htmlFor="txhash">{translateRaw('TX_HASH')}</SLabel>
             <Input

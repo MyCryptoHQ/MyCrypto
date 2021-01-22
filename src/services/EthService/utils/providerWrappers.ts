@@ -37,7 +37,8 @@ export const getTransactionReceiptFromHash = async (
   await provider
     .getTransactionReceipt(txHash)
     .then((receipt) => receipt)
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       return undefined;
     });
 
