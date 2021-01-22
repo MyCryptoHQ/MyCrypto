@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
 import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
-import { KB_HELP_ARTICLE, ROUTE_PATHS, getKBHelpArticle } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
 

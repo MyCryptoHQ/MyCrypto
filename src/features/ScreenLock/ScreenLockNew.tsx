@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-create-pw.svg';
 import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
-import { KB_HELP_ARTICLE, getKBHelpArticle } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { translateRaw } from '@translations';
 import { goBack } from '@utils';
 
