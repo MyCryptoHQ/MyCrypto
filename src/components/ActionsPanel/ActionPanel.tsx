@@ -93,7 +93,7 @@ export const ActionPanel = () => {
       }
       headingRight={
         currentAction ? undefined : (
-          <Text color="GREY" fontSize={0} mb={0}>
+          <Text color="GREY" fontSize={1} mb={0}>
             <Trans
               id="ACTION_PANEL_COMPLETED_COUNT"
               variables={{
