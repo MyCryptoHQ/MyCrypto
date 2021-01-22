@@ -1,6 +1,8 @@
 import React from 'react';
 
 import InlineSVG from 'react-inlinesvg';
+import styled from 'styled-components';
+import { layout, LayoutProps } from 'styled-system';
 
 import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
@@ -113,6 +115,14 @@ import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
+
+const SInlineSVG = styled(InlineSVG)<LayoutProps>`
+  ${layout}
+`;
+
+const SImg = styled.img<LayoutProps>`
+  ${layout}
+`;
 
 const svgIcons = {
   /* Action icons */
@@ -251,7 +261,7 @@ type SvgIcons = keyof typeof svgIcons;
 type PngIcons = keyof typeof pngIcons;
 export type TIcon = SvgIcons | PngIcons;
 
-interface Props extends Omit<React.ComponentProps<typeof InlineSVG>, 'src'> {
+interface Props extends Omit<React.ComponentProps<typeof SInlineSVG>, 'src'> {
   type: TIcon;
   color?: string;
 }
@@ -260,9 +270,9 @@ const Icon: React.FunctionComponent<Props> = ({ type, color, ...props }) => {
   return (
     <>
       {svgIcons[type as SvgIcons] && (
-        <InlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />
+        <SInlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />
       )}
-      {pngIcons[type as PngIcons] && <img src={pngIcons[type as PngIcons]} {...props} />}
+      {pngIcons[type as PngIcons] && <SImg src={pngIcons[type as PngIcons]} {...props} />}
     </>
   );
 };

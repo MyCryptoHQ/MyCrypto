@@ -25,15 +25,19 @@ const SLink = styled(Link)`
 `;
 
 export const TrayItem = ({ item, current }: { item: IRouteLink; current: boolean }) => (
-  <SLink style={{ width: '100%', padding: '1vh 1.5vh', margin: 0 }} to={item.to}>
+  <SLink style={{ width: '100%', padding: '10px 15px', margin: 0 }} to={item.to}>
     <Box variant="rowAlign">
-      <Icon color={COLORS.BLUE_DARK_SLATE} type={item.icon} width="2.4vh" />
+      <Icon
+        color={COLORS.BLUE_DARK_SLATE}
+        type={item.icon}
+        width={{ _: '24px', sm: '2.4vh', xxl: '24px' }}
+      />
       <Text
-        ml="1.5vh"
+        ml={{ _: '15px', sm: '1.5vh', xxl: '15px' }}
         color="BLUE_DARK_SLATE"
         fontWeight={current ? 'bold' : 'normal'}
         mb={0}
-        fontSize={{ _: '16px', sm: '1.6vh' }}
+        fontSize={{ _: '16px', sm: '1.6vh', xxl: '16px' }}
       >
         {item.title}
       </Text>
