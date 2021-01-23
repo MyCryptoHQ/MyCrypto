@@ -281,7 +281,12 @@ export default function WalletBreakdownView({
       .dividedBy(new BigNumber(totalFiatValue))
       .multipliedBy(100)
       .toFixed(2);
-
+  console.debug(
+    'chartBalances',
+    chartBalances.length,
+    'breakdownBalances: ',
+    breakdownBalances.length
+  );
   return (
     <>
       <BreakDownChartWrapper>
@@ -290,7 +295,7 @@ export default function WalletBreakdownView({
           <BreakDownLabel>({label})</BreakDownLabel>
         </BreakDownHeading>
         {!isScanning && bigify(totalFiatValue).eq(0) ? (
-          <NoAssets />
+          <NoAssets numOfAssets={balances.length} />
         ) : (
           <>
             <BreakdownChart
