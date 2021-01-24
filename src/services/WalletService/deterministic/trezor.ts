@@ -1,4 +1,8 @@
-import { hexlify, serializeTransaction, Signature, UnsignedTransaction } from 'ethers/utils';
+import { hexlify, SignatureLike } from '@ethersproject/bytes';
+import {
+  serialize as serializeTransaction,
+  UnsignedTransaction
+} from '@ethersproject/transactions';
 import mapValues from 'lodash/mapValues';
 import TrezorConnect from 'trezor-connect';
 
@@ -64,7 +68,7 @@ export class TrezorWallet extends HardwareWallet {
 
         // @todo: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-        const signature: Signature = {
+        const signature: SignatureLike = {
           v: res.payload.v,
           r: res.payload.r,
           s: res.payload.s

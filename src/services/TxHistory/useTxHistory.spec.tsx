@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
+import { parseEther } from '@ethersproject/units';
 import { renderHook } from '@testing-library/react-hooks';
-import { bigNumberify, parseEther } from 'ethers/utils';
 import { ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
@@ -56,19 +57,19 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxHistoryAPI,
-        amount: fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'),
+        amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'),
         asset: fAssets[0],
         baseAsset: fAssets[0],
         fromAddressBookEntry: undefined,
         toAddressBookEntry: undefined,
         receiverAddress: fTxHistoryAPI.recipientAddress,
-        nonce: bigNumberify(fTxHistoryAPI.nonce).toString(),
+        nonce: BigNumber.from(fTxHistoryAPI.nonce).toString(),
         networkId: DEFAULT_NETWORK,
-        blockNumber: bigNumberify(fTxHistoryAPI.blockNumber!).toNumber(),
-        gasLimit: bigNumberify(fTxHistoryAPI.gasLimit),
-        gasPrice: bigNumberify(fTxHistoryAPI.gasPrice),
-        gasUsed: bigNumberify(fTxHistoryAPI.gasUsed || 0),
-        value: parseEther(fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'))
+        blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
+        gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
+        gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
+        gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
+        value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
       }
     ]);
   });

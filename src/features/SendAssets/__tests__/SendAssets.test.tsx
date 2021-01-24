@@ -10,7 +10,7 @@ import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
-jest.mock('ethers/providers', () => {
+jest.mock('@ethersproject/providers', () => {
   return {
     // Since there are no nodes in our StoreContext,
     // ethers will default to FallbackProvider

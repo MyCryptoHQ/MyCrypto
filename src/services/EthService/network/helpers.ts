@@ -1,5 +1,5 @@
+import { BaseProvider, FallbackProvider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
-import { BaseProvider, FallbackProvider } from 'ethers/providers';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
 
@@ -42,7 +42,7 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
             url,
             user: node.auth.username,
             password: node.auth.password,
-            allowInsecure: true
+            allowInsecureAuthentication: true
           },
           chainId
         );

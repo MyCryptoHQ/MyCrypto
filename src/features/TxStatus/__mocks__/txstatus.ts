@@ -24,13 +24,15 @@ export const mockFactory = (validHash: string) => {
   return {
     InfuraProvider: () => ({}),
     FallbackProvider: () => ({
-      providers: [
+      providerConfigs: [
         {
-          getTransaction: jest
-            .fn()
-            .mockImplementation((hash) =>
-              hash === validHash ? Promise.resolve(txResponse) : Promise.resolve(undefined)
-            )
+          provider: {
+            getTransaction: jest
+              .fn()
+              .mockImplementation((hash) =>
+                hash === validHash ? Promise.resolve(txResponse) : Promise.resolve(undefined)
+              )
+          }
         }
       ]
     })

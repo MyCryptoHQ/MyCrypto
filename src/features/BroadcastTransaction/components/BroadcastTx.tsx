@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
-import { parseTransaction, Transaction } from 'ethers/utils';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 

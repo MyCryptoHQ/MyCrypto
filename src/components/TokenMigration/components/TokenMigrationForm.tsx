@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
-import { bigNumberify, formatUnits } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
 import { useFormik } from 'formik';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -150,7 +151,7 @@ export const TokenMigrationFormUI = ({
     if (!accountAssetAmt || !asset.decimal) {
       return;
     }
-    setFieldValue('amount', formatUnits(bigNumberify(accountAssetAmt.balance), asset.decimal)); // this would be better as a reducer imo.
+    setFieldValue('amount', formatUnits(BigNumber.from(accountAssetAmt.balance), asset.decimal)); // this would be better as a reducer imo.
     setFieldValue('account', values.account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
 
     handleNonceEstimate(values.account);

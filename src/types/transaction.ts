@@ -1,5 +1,5 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import BN from 'bn.js';
-import { BigNumber } from 'ethers/utils';
 import { Brand, Overwrite } from 'utility-types';
 
 import { Address, Wei } from '@utils';

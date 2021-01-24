@@ -16,7 +16,7 @@ const createTxRaw = (idx: number): Partial<ITxObject> => ({
   data: 'empty' as ITxData
 });
 
-jest.mock('ethers/providers', () => {
+jest.mock('@ethersproject/providers', () => {
   return {
     // Since there are no nodes in our StoreContext,
     // ethers will default to FallbackProvider

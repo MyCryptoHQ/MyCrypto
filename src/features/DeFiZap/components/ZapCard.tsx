@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { formatEther } from 'ethers/utils';
+import { formatEther } from '@ethersproject/units';
 import styled from 'styled-components';
 
 import { Button, RouterLink, Tooltip } from '@components';

@@ -1,5 +1,5 @@
-import { TransactionResponse } from 'ethers/providers';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   IFailedTxReceipt,
@@ -30,22 +30,22 @@ import { default as ethWeb3TxResponse } from './ethWeb3TxResponse.json';
 
 const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
   ...fixtureTxResponse,
-  gasPrice: bigNumberify(fixtureTxResponse.gasPrice),
-  gasLimit: bigNumberify(fixtureTxResponse.gasLimit),
-  value: bigNumberify(fixtureTxResponse.value)
+  gasPrice: BigNumber.from(fixtureTxResponse.gasPrice),
+  gasLimit: BigNumber.from(fixtureTxResponse.gasLimit),
+  value: BigNumber.from(fixtureTxResponse.value)
 });
 
 const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
   const result = {
     ...fixtureTxReceipt,
-    gasPrice: bigNumberify(fixtureTxReceipt.gasPrice),
-    gasLimit: bigNumberify(fixtureTxReceipt.gasLimit),
-    value: bigNumberify(fixtureTxReceipt.value),
+    gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice),
+    gasLimit: BigNumber.from(fixtureTxReceipt.gasLimit),
+    value: BigNumber.from(fixtureTxReceipt.value),
     status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
   };
   return {
     ...result,
-    ...(fixtureTxReceipt.gasUsed && { gasUsed: bigNumberify(fixtureTxReceipt.gasUsed) })
+    ...(fixtureTxReceipt.gasUsed && { gasUsed: BigNumber.from(fixtureTxReceipt.gasUsed) })
   };
 };
 

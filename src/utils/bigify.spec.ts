@@ -1,6 +1,6 @@
 import Bignumber from 'bignumber.js';
 import BN from 'bn.js';
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber as EthersBN } from 'ethers';
 
 import { bigify, isBigish } from './bigify';
 
@@ -28,7 +28,7 @@ describe('isBigish()', () => {
   });
 
   test('a BigNumberish is a bigish', () => {
-    const value = bigNumberify('42');
+    const value = EthersBN.from('42');
     expect(isBigish(value)).toEqual(true);
   });
 });

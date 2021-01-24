@@ -1,4 +1,4 @@
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   makeTxConfigFromTxReceipt,

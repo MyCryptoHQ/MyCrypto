@@ -1,4 +1,4 @@
-import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 
 import { Asset, IHexStrTransaction } from '@types';
 import { TokenValue, Wei } from '@utils';

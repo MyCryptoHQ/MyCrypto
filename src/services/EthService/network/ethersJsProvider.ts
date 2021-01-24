@@ -1,4 +1,4 @@
-import { FallbackProvider } from 'ethers/providers';
+import { FallbackProvider } from '@ethersproject/providers';
 
 import { Network } from '@types';
 

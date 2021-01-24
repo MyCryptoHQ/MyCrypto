@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { Web3Provider } from '@ethersproject/providers';
 import { utils } from 'ethers';
-import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';

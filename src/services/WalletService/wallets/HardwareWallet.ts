@@ -1,4 +1,4 @@
-import { computeAddress } from 'ethers/utils';
+import { computeAddress } from '@ethersproject/transactions';
 import HDKey from 'hdkey';
 
 import { DPath, WalletId } from '@types';
