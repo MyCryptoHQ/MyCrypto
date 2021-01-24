@@ -124,9 +124,13 @@ const ListImg = styled.img`
 const PlanContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   margin-bottom: ${SPACING.LG};
+  div:nth-child(odd) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `;
 
 const MembershipEducation = withRouter(({ history }) => {

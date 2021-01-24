@@ -65,7 +65,7 @@ const StatusWrapper = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  margin-right: ${SPACING.BASE};
+  margin-right: 17px;
   display: flex;
   align-items: center;
 `;

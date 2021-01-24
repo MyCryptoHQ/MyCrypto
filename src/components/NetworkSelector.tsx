@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
+import styled from 'styled-components';
 import { Overwrite } from 'utility-types';
 
 import { Body, Box, Selector, Tooltip } from '@components';
 import { DEFAULT_NETWORK } from '@config';
 import { isWalletSupported, useNetworks } from '@services/Store';
+import { COLORS } from '@theme';
 import translate from '@translations';
 import { Network, NetworkId, WalletId } from '@types';
 import { curry, filter, isNil, pipe, when } from '@vendor';
@@ -43,6 +45,11 @@ const NetworkOption = ({
   </Box>
 );
 
+const SLabel = styled.label`
+  color: ${COLORS.GREY_DARKEST};
+  font-weight: normal;
+`;
+
 const NetworkSelectorUI = ({
   network,
   networks,
@@ -53,10 +60,10 @@ const NetworkSelectorUI = ({
 }: UIProps) => {
   return (
     <div {...props}>
-      <label htmlFor="network">
+      <SLabel htmlFor="network">
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
-      </label>
+      </SLabel>
       <Selector
         name={'network'}
         placeholder={'Select Network'}

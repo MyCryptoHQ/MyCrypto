@@ -1054,6 +1054,7 @@
     "DEMO_BUTTON_TEXT": "View Demo Mode",
     "DEMO_GATEWAY_BANNER": "You are currently in DEMO MODE. To continue with sending a transaction, please $link to exit demo mode.",
     "EDIT": "Edit",
-    "NOT_ENOUGH_GAS": "The account you're sending from does not have enough gas to complete this transaction. Please add more $baseAsset to your account and try again. [Learn about gas.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)"
+    "NOT_ENOUGH_GAS": "The account you're sending from does not have enough gas to complete this transaction. Please add more $baseAsset to your account and try again. [Learn about gas.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)",
+    "DANGERZONE_CONFIRM": "Are you sure you want to do this? This will reset your browser's LocalStorage for MyCrypto and clear all of your accounts, balances, and settings. This cannot be undone."
   }
 }

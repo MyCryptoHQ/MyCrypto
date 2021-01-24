@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 
-import { Button } from '@mycrypto/ui';
-import styled from 'styled-components';
-
-import { CollapsibleTable, DashboardPanel, Network } from '@components';
+import { Box, CollapsibleTable, DashboardPanel, Icon, Link, Network, Text } from '@components';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
 import { useFeatureFlags } from '@services';
 import { COLORS, SPACING } from '@theme';
@@ -16,22 +13,6 @@ interface Props {
   toggleFlipped(networkId: NetworkId, node?: CustomNodeConfig): void;
   toggleNetworkCreation(): void;
 }
-
-const AddNetworkButton = styled(Button)`
-  color: ${COLORS.BLUE_BRIGHT};
-  padding: ${SPACING.BASE};
-  opacity: 1;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
-
-const BottomRow = styled.div`
-  text-align: center;
-  background: ${COLORS.BLUE_GREY_LIGHTEST};
-`;
 
 const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreation }) => {
   const { featureFlags } = useFeatureFlags();
@@ -63,15 +44,22 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
     }
   };
   return (
-    <DashboardPanel heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}>
+    <DashboardPanel
+      heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}
+      headingRight={
+        featureFlags.CUSTOM_NETWORKS ? (
+          <Link>
+            <Box variant="rowAlign" onClick={toggleNetworkCreation}>
+              <Icon type="add-bold" width="16px" />
+              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                {translateRaw('ADD_NETWORK')}
+              </Text>
+            </Box>
+          </Link>
+        ) : undefined
+      }
+    >
       <CollapsibleTable breakpoint={450} {...networkNodesTable} />
-      {featureFlags.CUSTOM_NETWORKS && (
-        <BottomRow>
-          <AddNetworkButton onClick={toggleNetworkCreation} basic={true}>
-            {`+ ${translateRaw('ADD_NETWORK')}`}
-          </AddNetworkButton>
-        </BottomRow>
-      )}
     </DashboardPanel>
   );
 };

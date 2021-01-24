@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 
 import {
   Amount,
+  Box,
   Button,
   EditableAccountLabel,
   EthAddress,
@@ -316,15 +317,9 @@ const DeterministicTable = ({
           </NoAccountContainer>
         ) : (
           <NoAccountContainer>
-            <Spinner
-              color="brand"
-              size={3}
-              mr={SPACING.BASE}
-              pr={SPACING.BASE}
-              mb={SPACING.BASE}
-              pb={'6rem'}
-              mt={'calc(-6rem + 100px)'}
-            />
+            <Box mb={SPACING.BASE} mt={'calc(-6rem + 100px)'}>
+              <Spinner color="brand" size={5} />
+            </Box>
             <Trans id="DETERMINISTIC_SCANNING" variables={{ $asset: () => asset.ticker }} />
           </NoAccountContainer>
         )
