@@ -26,9 +26,9 @@ jest.mock('@ethersproject/providers', () => {
         .mockImplementationOnce(() =>
           Promise.resolve({
             hash: '0x1',
-            value: '0x',
-            gasLimit: '0x',
-            gasPrice: '0x',
+            value: '0x00',
+            gasLimit: '0x7d3c',
+            gasPrice: '0x012a05f200',
             nonce: '0x',
             to: '0x',
             from: '0x',
@@ -38,9 +38,9 @@ jest.mock('@ethersproject/providers', () => {
         .mockImplementationOnce(() =>
           Promise.resolve({
             hash: '0x2',
-            value: '0x',
-            gasLimit: '0x',
-            gasPrice: '0x',
+            value: '0x00',
+            gasLimit: '0x7d3c',
+            gasPrice: '0x012a05f200',
             nonce: '0x',
             to: '0x',
             from: '0x',
@@ -165,7 +165,7 @@ describe('useTxMulti', () => {
 
     const rawTx = {
       to: 'address' as ITxToAddress,
-      value: '0x' as ITxValue,
+      value: '0x00' as ITxValue,
       data: '0x' as ITxData,
       chainId: 3
     };

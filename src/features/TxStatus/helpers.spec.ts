@@ -45,7 +45,11 @@ describe('fetchTxStatus', () => {
       gasLimit: BigNumber.from(result?.fetchedTx?.gasLimit || 0),
       gasPrice: BigNumber.from(result?.fetchedTx?.gasPrice || 0),
       value: BigNumber.from(result?.fetchedTx?.value || 0)
-    }).toStrictEqual(fETHWeb3TxResponse);
+    }).toStrictEqual({
+      ...fETHWeb3TxResponse,
+      gasLimit: BigNumber.from('0x7d3c'),
+      value: BigNumber.from('0x00')
+    });
   });
 });
 
