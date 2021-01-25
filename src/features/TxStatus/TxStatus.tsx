@@ -18,6 +18,7 @@ import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useNetworks, useTxHistory } from '@services';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { ITxReceipt } from '@types';
 import { isVoid, noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 
@@ -60,7 +61,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
-  const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
+  const { networkId, txHash, tx, error, fetching, fromLink } = reducerState;
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -80,6 +81,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   useEffect(() => {
     if (fetching) {
       fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
+        .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
@@ -96,11 +98,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
-  const fullPageLoading = fromLink && !txState;
+  const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
-
-  const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
@@ -140,7 +140,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
           <>
             <TxReceipt
               txConfig={tx.config}
-              txReceipt={tx.receipt}
+              txReceipt={tx.receipt as ITxReceipt}
               resetFlow={noOp}
               onComplete={noOp}
               disableDynamicTxReceiptDisplay={true}
