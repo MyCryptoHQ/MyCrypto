@@ -1,8 +1,8 @@
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber';
 import { UnsignedTransaction } from '@ethersproject/transactions';
 import { formatEther } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
-import { BigNumber as EthersBigNumber } from 'ethers';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';

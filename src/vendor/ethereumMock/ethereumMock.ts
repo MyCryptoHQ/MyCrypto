@@ -1,14 +1,15 @@
-import { ethers, Wallet } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { Wallet } from '@ethersproject/wallet';
 
 export const ethereumMock = () => {
   let wallet: Wallet;
-  let provider: ethers.providers.JsonRpcProvider;
+  let provider: JsonRpcProvider;
   let chainId: number;
 
   // CONFIG
   const initialize = (privKey: string, _chainId: number, jsonRpcUrl: string) => {
     chainId = _chainId;
-    provider = new ethers.providers.JsonRpcProvider(jsonRpcUrl, chainId);
+    provider = new JsonRpcProvider(jsonRpcUrl, chainId);
     wallet = new Wallet(privKey, provider);
   };
 

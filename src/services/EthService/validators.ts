@@ -1,7 +1,7 @@
+import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import BigNumber from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { BigNumber as EthersBN } from 'ethers';
 import { Validator } from 'jsonschema';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 

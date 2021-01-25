@@ -1,6 +1,6 @@
+import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import Bignumber from 'bignumber.js';
 import BN from 'bn.js';
-import { BigNumber as EthersBN } from 'ethers';
 
 import { bigify, isBigish } from './bigify';
 
