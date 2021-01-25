@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import {
+  ResolutionError,
+  ResolutionErrorCode
+} from '@unstoppabledomains/resolution/build/resolutionError';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
@@ -27,6 +30,13 @@ const withInlineError = (children: JSX.Element, type?: InlineMessageType) => (
   <InlineError type={type}>{children}</InlineError>
 );
 
+const humanizeEnsError = (error: ResolutionError, props: DomainStatusProps) => {
+  if (error.code === ResolutionErrorCode.RecordNotFound) {
+    return translateRaw('ENS_NO_ADDRESS_RECORD', { $domain: props.domain });
+  }
+  return error.message;
+};
+
 export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusProps) => {
   const parseError = (resolutionError?: ResolutionError) => {
     if (!resolutionError)
@@ -35,7 +45,9 @@ export const DomainStatus: React.FC<DomainStatusProps> = (props: DomainStatusPro
           {translateRaw('COULD_NOT_RESOLVE_THE_DOMAIN', { $domain: props.domain })}
         </div>
       );
-    return withInlineError(<div data-testid="domainStatus">{`${resolutionError.message}`}</div>);
+    return withInlineError(
+      <div data-testid="domainStatus">{humanizeEnsError(resolutionError, props)}</div>
+    );
   };
 
   const spinner = () => (
