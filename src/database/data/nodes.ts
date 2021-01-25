@@ -262,7 +262,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   POA: [
     {
       name: NetworkUtils.makeNodeName('POA', 'core'),
-      type: NodeType.INFURA,
+      type: NodeType.RPC,
       service: 'core.poa.network',
       url: 'https://core.poa.network'
     }
