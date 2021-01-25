@@ -7,12 +7,12 @@ export const getAccountsByNetwork = ({
   includeViewOnly = false
 }: {
   accounts: StoreAccount[];
-  networkId: NetworkId;
+  networkId?: NetworkId;
   includeViewOnly?: boolean;
 }) =>
   accounts.filter(
     (acc) =>
-      acc.networkId === networkId &&
+      (acc.networkId === networkId || !networkId) &&
       ((!includeViewOnly && !isViewOnlyWallet(acc.wallet)) || includeViewOnly)
   );
 

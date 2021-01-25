@@ -365,9 +365,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       return sortBy(prop('ticker'), uniq);
     },
     getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
-      sortByLabel(
-        getAccountsByNetwork({ accounts, networkId: networkId || DEFAULT_NETWORK, includeViewOnly })
-      )[0],
+      sortByLabel(getAccountsByNetwork({ accounts, networkId, includeViewOnly }))[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>
