@@ -3,18 +3,20 @@ import { isSameAddress } from '@utils';
 
 export const getAccountsByNetwork = ({
   accounts,
-  networkId,
-  includeViewOnly = false
+  networkId = true
 }: {
   accounts: StoreAccount[];
-  networkId?: NetworkId;
-  includeViewOnly?: boolean;
-}) =>
-  accounts.filter(
-    (acc) =>
-      (acc.networkId === networkId || !networkId) &&
-      ((!includeViewOnly && !isViewOnlyWallet(acc.wallet)) || includeViewOnly)
-  );
+  networkId: NetworkId | boolean;
+}) => {
+  // Return all accounts if networkId === true
+  if (networkId === true) return accounts;
+  return accounts.filter((acc) => acc.networkId === networkId);
+};
+
+export const getAccountsByViewOnly = (accounts: StoreAccount[], includeViewOnly?: boolean) => {
+  if (includeViewOnly) return accounts;
+  return accounts.filter((acc) => !isViewOnlyWallet(acc.wallet));
+};
 
 export const isViewOnlyWallet = (walletId: WalletId): boolean => walletId === WalletId.VIEW_ONLY;
 

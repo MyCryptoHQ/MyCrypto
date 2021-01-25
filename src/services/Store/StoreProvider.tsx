@@ -50,6 +50,7 @@ import {
   generateDeterministicAddressUUID,
   generateUUID,
   getAccountsByNetwork,
+  getAccountsByViewOnly,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
@@ -58,7 +59,7 @@ import {
   useInterval,
   weiToFloat
 } from '@utils';
-import { isEmpty as isVoid, useEffectOnce } from '@vendor';
+import { isEmpty as isVoid, pipe, useEffectOnce } from '@vendor';
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
@@ -365,7 +366,11 @@ export const StoreProvider: React.FC = ({ children }) => {
       return sortBy(prop('ticker'), uniq);
     },
     getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
-      sortByLabel(getAccountsByNetwork({ accounts, networkId, includeViewOnly }))[0],
+      pipe(
+        (a: StoreAccount[]) => getAccountsByNetwork({ accounts: a, networkId: networkId || true }),
+        (a) => getAccountsByViewOnly(a, includeViewOnly),
+        sortByLabel
+      )(accounts)[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     tokens: (selectedAssets = state.assets()) =>
