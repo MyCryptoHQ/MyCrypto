@@ -238,5 +238,15 @@
     "name": "PoolTogether: DAI",
     "address": "0x29fe7d60ddf151e5b52e5fab4f1325da6b2bd958",
     "abi": ""
+  },
+  {
+    "name": "1inch.exchange v2",
+    "address": "0x111111125434b319222cdbf8c261674adb56f3ae",
+    "abi": ""
+  },
+  {
+    "name": "Gitcoin Bulk Checkout",
+    "address": "0x7d655c57f71464b6f83811c55d84009cd9f5221c",
+    "abi": ""
   }
 ]
