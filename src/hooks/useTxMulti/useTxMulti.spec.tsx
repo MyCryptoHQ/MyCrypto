@@ -30,8 +30,8 @@ jest.mock('@ethersproject/providers', () => {
             gasLimit: '0x7d3c',
             gasPrice: '0x012a05f200',
             nonce: '0x',
-            to: '0x',
-            from: '0x',
+            to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+            from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
             data: '0x'
           })
         )
@@ -42,8 +42,8 @@ jest.mock('@ethersproject/providers', () => {
             gasLimit: '0x7d3c',
             gasPrice: '0x012a05f200',
             nonce: '0x',
-            to: '0x',
-            from: '0x',
+            to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+            from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
             data: '0x'
           })
         ),

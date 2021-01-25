@@ -1,3 +1,4 @@
+import { getAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
 import { BytesLike, hexlify } from '@ethersproject/bytes';
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
@@ -8,7 +9,6 @@ import {
   Transaction
 } from '@ethersproject/transactions';
 import { formatEther } from '@ethersproject/units';
-import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { Optional } from 'utility-types';
 
 import { CREATION_ADDRESS } from '@config';
@@ -47,6 +47,7 @@ import {
   TAddress
 } from '@types';
 import {
+  addHexPrefix,
   bigify,
   bigNumGasLimitToViewable,
   bigNumGasPriceToViewableGwei,
@@ -81,12 +82,12 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
 
   const txReceipt = {
     hash: txHash,
-    from: txConfig.from,
-    receiverAddress: txConfig.receiverAddress,
+    from: getAddress(txConfig.from) as TAddress,
+    receiverAddress: getAddress(txConfig.receiverAddress) as TAddress,
     gasLimit: BigNumber.from(gasLimit),
     gasPrice: BigNumber.from(gasPrice),
     value: BigNumber.from(txConfig.rawTransaction.value),
-    to: txConfig.rawTransaction.to,
+    to: getAddress(txConfig.rawTransaction.to) as TAddress,
 
     status,
     amount,
@@ -227,16 +228,16 @@ export const makeTxConfigFromTxResponse = (
 
   const txConfig = {
     rawTransaction: {
-      to: toChecksumAddress(to) as ITxToAddress,
+      to: getAddress(to) as ITxToAddress,
       value: hexlify(decodedTx.value) as ITxValue,
       gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
       data: decodedTx.data as ITxData,
       gasPrice: hexlify(decodedTx.gasPrice) as ITxGasPrice,
       nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
-      from: toChecksumAddress(decodedTx.from) as ITxFromAddress
+      from: getAddress(decodedTx.from) as ITxFromAddress
     },
-    receiverAddress: toChecksumAddress(receiverAddress) as TAddress,
+    receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
     network,
     value: BigNumber.from(decodedTx.value).toString(),
@@ -247,7 +248,7 @@ export const makeTxConfigFromTxResponse = (
     gasLimit: decodedTx.gasLimit.toString(),
     data: decodedTx.data,
     nonce: decodedTx.nonce.toString(),
-    from: toChecksumAddress(decodedTx.from) as TAddress
+    from: getAddress(decodedTx.from) as TAddress
   };
   return txConfig;
 };
@@ -266,16 +267,16 @@ export const makeTxConfigFromTxReceipt = (
 
   const txConfig = {
     rawTransaction: {
-      to: toChecksumAddress(txReceipt.to),
+      to: getAddress(txReceipt.to),
       value: BigNumber.from(txReceipt.value).toHexString(),
       gasLimit: BigNumber.from(txReceipt.gasLimit).toHexString(),
       data: txReceipt.data,
       gasPrice: BigNumber.from(txReceipt.gasPrice).toHexString(),
       nonce: BigNumber.from(txReceipt.nonce).toHexString(),
       chainId: network.chainId,
-      from: toChecksumAddress(txReceipt.from)
+      from: getAddress(txReceipt.from)
     },
-    receiverAddress: toChecksumAddress(
+    receiverAddress: getAddress(
       contractAsset ? decodeTransfer(txReceipt.data)._to : txReceipt.to
     ) as TAddress,
     amount: contractAsset
@@ -290,7 +291,7 @@ export const makeTxConfigFromTxReceipt = (
     gasLimit: BigNumber.from(txReceipt.gasLimit).toString(),
     data: txReceipt.data,
     nonce: txReceipt.nonce,
-    from: toChecksumAddress(txReceipt.from)
+    from: getAddress(txReceipt.from)
   };
   // @ts-expect-error Ignore possible missing senderAccount for now
   return txConfig;

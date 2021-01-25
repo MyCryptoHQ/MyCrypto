@@ -1,3 +1,4 @@
+import { getAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 
@@ -38,6 +39,9 @@ const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
 const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
   const result = {
     ...fixtureTxReceipt,
+    to: getAddress(fixtureTxReceipt.to),
+    from: getAddress(fixtureTxReceipt.from),
+    receiverAddress: getAddress(fixtureTxReceipt.receiverAddress),
     gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice),
     gasLimit: BigNumber.from(fixtureTxReceipt.gasLimit),
     value: BigNumber.from(fixtureTxReceipt.value),

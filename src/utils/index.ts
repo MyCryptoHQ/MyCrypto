@@ -136,3 +136,4 @@ export { arrayToObj } from './toObject';
 export { mapAsync, filterAsync } from './asyncFilter';
 export { isValidJSON } from './isValidJSON';
 export { goBack } from './navigation';
+export { addHexPrefix } from './addHexPrefix';
