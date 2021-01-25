@@ -1,5 +1,6 @@
 import React from 'react';
 
+import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
 import styled from 'styled-components';
 import { layout, LayoutProps } from 'styled-system';
@@ -116,7 +117,7 @@ import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
-const SInlineSVG = styled(InlineSVG)<LayoutProps>`
+const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<LayoutProps>`
   ${layout}
 `;
 
