@@ -24,6 +24,7 @@ interface Props {
 interface IWeb3UnlockError {
   error: boolean;
   message: string;
+  errorTotal: any;
 }
 const WalletService = WalletFactory[WalletId.WEB3];
 
@@ -57,7 +58,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
       }
       onUnlock(walletPayload);
     } catch (e) {
-      setWeb3UnlockError({ error: true, message: e.message });
+      setWeb3UnlockError({ error: true, message: e.message, errorTotal: e });
       setWeb3Unlocked(false);
     }
   }, [addNodeToNetwork, formData, formDispatch, setWeb3Unlocked]);
@@ -75,6 +76,10 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
       <Body textAlign="center" fontSize="2" paddingTop="16px">
         {translate(`ADD_ACCOUNT_WEB3_DESC`)}
       </Body>
+      {JSON.stringify((window as any).ethereum, null, 2)}
+      <br />
+      {JSON.stringify((window as any).web3, null, 2)}
+      <br />
       <Box m="2em" variant="columnCenter">
         <div className="Web3-img-container">
           <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>

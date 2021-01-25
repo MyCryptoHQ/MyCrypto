@@ -109,17 +109,18 @@ export async function setupWeb3Node() {
     const web3Node = new Web3Node();
     console.debug(`[setupWeb3Node]: web3Node: ${JSON.stringify(web3Node)}`);
     console.debug(`[setupWeb3Node]: requesting permissions`);
-    const permissions = await requestPermission(web3Node);
-    if (permissions) {
-      console.debug(`[setupWeb3Node]: permissions found`);
+    const detectedPermissions = await getPermissions(web3Node);
+    if (detectedPermissions) {
       return await getChainIdAndLib();
-    } else {
-      console.debug(`[setupWeb3Node]: no permissions found`);
     }
-    console.debug(`[setupWeb3Node]: attempting to fallback to legacyConnect`);
+
+    const requestedPermissions = await requestPermission(web3Node);
+    if (requestedPermissions) {
+      return await getChainIdAndLib();
+    }
+
     const legacyConnect = await requestLegacyConnect(ethereum);
     if (legacyConnect) {
-      console.debug(`[setupWeb3Node]: legacyConnect successful`);
       return await getChainIdAndLib();
     }
     console.debug(`[setupWeb3Node]: legacyConnect not successful. returning permission denied.`);
@@ -138,6 +139,15 @@ export async function setupWeb3Node() {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 }
+
+const getPermissions = async (web3Node: Web3Node) => {
+  try {
+    return await web3Node.getApprovedAccounts();
+  } catch (e) {
+    console.debug('[getPermissions]: ERROR:', e);
+    return;
+  }
+};
 
 const requestPermission = async (web3Node: Web3Node) => {
   try {
