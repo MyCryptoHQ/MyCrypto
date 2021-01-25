@@ -47,7 +47,7 @@ export const TopNav = ({
       )}
       {!isMobile && (
         <>
-          <Box maxWidth="1000px" mr="auto" ml="65px">
+          <Box mr="auto" ml={{ _: '0', xxl: 'calc(50% - 350px)' }}>
             <AnnouncementBanner />
           </Box>
           <Icon

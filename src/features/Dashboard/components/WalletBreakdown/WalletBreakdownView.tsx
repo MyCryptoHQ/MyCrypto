@@ -61,7 +61,7 @@ const BreakDownChartWrapper = styled.div`
   padding-left: ${SPACING.BASE};
   padding-top: ${SPACING.BASE};
   padding-bottom: ${SPACING.BASE};
-  height: 530px;
+  height: 544px;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     padding-right: ${SPACING.BASE};

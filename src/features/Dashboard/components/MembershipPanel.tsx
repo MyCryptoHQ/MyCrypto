@@ -10,12 +10,15 @@ import { Button, DashboardPanel, Link, Typography } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 import { AppState, getMemberships, getMembershipState, membershipExpiryDate } from '@store';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { flatten, uniq } from '@vendor';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    height: 171px;
+  }
   ${(props) => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
 
