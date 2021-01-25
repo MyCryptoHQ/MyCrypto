@@ -39,21 +39,12 @@ describe('useFeatureFlags', () => {
     expect(result.current.featureFlags[target]).toEqual(FEATURE_FLAGS[target]);
   });
 
-  it('can toggle a value', () => {
-    const { result } = renderUseFeatureFlags();
-    const { toggleFeatureFlag, featureFlags } = result.current;
-    const target = 'DASHBOARD';
-    const original = featureFlags[target];
-    act(() => toggleFeatureFlag(target));
-    expect(result.current.featureFlags[target]).toEqual(!original);
-  });
-
   it('can return the current value of a feature flag', () => {
     const { result } = renderUseFeatureFlags();
-    const { toggleFeatureFlag, isFeatureActive, featureFlags } = result.current;
+    const { isFeatureActive, featureFlags, setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
     const original = featureFlags[target];
-    act(() => toggleFeatureFlag(target));
+    act(() => setFeatureFlag(target, !original));
     expect(isFeatureActive(target)).toEqual(!!original);
   });
 });

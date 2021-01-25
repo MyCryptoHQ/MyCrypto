@@ -9,7 +9,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
-import { FeatureFlagProvider, useFeatureFlags } from '@services';
+import { FeatureFlagProvider } from '@services';
 import { trackInit } from '@services/Analytics';
 import { createStore, useDispatch } from '@store';
 import { COLORS, theme } from '@theme';
@@ -50,14 +50,11 @@ const GlobalStyle = createGlobalStyle`
 const { store, persistor } = createStore();
 
 const RootComponent = () => {
-  const { isFeatureActive, featureFlags } = useFeatureFlags();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isFeatureActive('ANALYTICS')) {
-      dispatch(trackInit());
-    }
-  }, [featureFlags]);
+    dispatch(trackInit());
+  });
 
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
   return (
@@ -79,8 +76,8 @@ const RootComponent = () => {
 
 const RootClass = () => {
   return (
-    <FeatureFlagProvider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <FeatureFlagProvider>
         <PersistGate persistor={persistor}>
           {(isHydrated: boolean) =>
             isHydrated ? (
@@ -92,8 +89,8 @@ const RootClass = () => {
             )
           }
         </PersistGate>
-      </Provider>
-    </FeatureFlagProvider>
+      </FeatureFlagProvider>
+    </Provider>
   );
 };
 

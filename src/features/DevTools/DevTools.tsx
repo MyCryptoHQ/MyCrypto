@@ -4,8 +4,8 @@ import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Checkbox, Link } from '@components';
-import { IFeatureFlags } from '@config';
 import { useDevTools, useFeatureFlags } from '@services';
+import { FeatureFlag } from '@services/FeatureFlag';
 import { DataContext } from '@services/Store';
 import { useDispatch, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
@@ -94,7 +94,7 @@ const FeatureFlags = () => {
     <div style={{ marginBottom: '1em' }}>
       {Object.entries(featureFlags)
         .filter(([, v]) => v !== 'core')
-        .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+        .map(([k, v]: [FeatureFlag, boolean]) => (
           <SCheckbox
             key={k}
             name={k}

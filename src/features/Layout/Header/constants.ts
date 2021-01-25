@@ -1,10 +1,11 @@
 import dashboardIcon from '@assets/images/icn-dashboard.svg';
 import settingsIcon from '@assets/images/icn-settings.svg';
-import { IFeatureFlags, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { getAppRoutesObject } from '@routing';
+import { FeatureFlags } from '@services/FeatureFlag';
 import { translateRaw } from '@translations';
 
-export const getLinks = (featureFlags: IFeatureFlags) => {
+export const getLinks = (featureFlags: FeatureFlags) => {
   const APP_ROUTES_OBJECT = getAppRoutesObject(featureFlags);
   return [
     {

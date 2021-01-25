@@ -136,7 +136,7 @@ const BannerWrapper = styled.div<{ newNav: boolean }>`
 
 const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
-  const { featureFlags } = useFeatureFlags();
+  const { featureFlags, isFeatureActive } = useFeatureFlags();
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const { isMobile } = useScreenSize();
@@ -170,26 +170,26 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
   const APP_ROUTES = getAppRoutesObject(featureFlags);
   return (
     <>
-      {featureFlags.NEW_NAVIGATION && isMobile && (
+      {isFeatureActive('NEW_NAVIGATION') && isMobile && (
         <MobileNav appRoutes={APP_ROUTES} current={pathname} />
       )}
-      {featureFlags.NEW_NAVIGATION && !isMobile && (
+      {isFeatureActive('NEW_NAVIGATION') && !isMobile && (
         <DesktopNav
           appRoutes={APP_ROUTES}
           current={pathname}
           openTray={() => isReady() !== false && set()}
         />
       )}
-      {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
+      {isFeatureActive('NEW_NAVIGATION') && !isMobile && isOpen && (
         <ExtrasTray isMobile={isMobile} closeTray={() => isReady() !== false && set()} />
       )}
-      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
-        <STop newNav={featureFlags.NEW_NAVIGATION} ref={topRef}>
+      <SMain className={className} bgColor={bgColor} newNav={isFeatureActive('NEW_NAVIGATION')}>
+        <STop newNav={isFeatureActive('NEW_NAVIGATION')} ref={topRef}>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
 
-          {featureFlags.OLD_NAVIGATION && (
+          {isFeatureActive('OLD_NAVIGATION') && (
             <Header
               drawerVisible={visible}
               toggleDrawerVisible={toggleVisible}
@@ -197,10 +197,10 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
             />
           )}
         </STop>
-        {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
+        {isFeatureActive('NEW_NAVIGATION') && isMobile && isOpen ? (
           <>
             <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
-            {featureFlags.NEW_NAVIGATION && (
+            {isFeatureActive('NEW_NAVIGATION') && (
               <TopNav
                 current={pathname}
                 isMobile={isMobile}
@@ -225,7 +225,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                 />
               </DemoBanner>
             )}
-            {featureFlags.NEW_NAVIGATION && (
+            {isFeatureActive('NEW_NAVIGATION') && (
               <TopNav
                 current={pathname}
                 isMobile={isMobile}
@@ -234,7 +234,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
               />
             )}
             {isMobile && (
-              <BannerWrapper newNav={featureFlags.NEW_NAVIGATION}>
+              <BannerWrapper newNav={isFeatureActive('NEW_NAVIGATION')}>
                 <AnnouncementBanner />
               </BannerWrapper>
             )}
@@ -243,11 +243,11 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
               fluid={fluid}
               fullW={fullW}
               paddingV={paddingV}
-              marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
+              marginTop={isFeatureActive('OLD_NAVIGATION') ? topHeight : 0}
             >
               {children}
             </SContainer>
-            {featureFlags.OLD_NAVIGATION && <Footer />}
+            {isFeatureActive('OLD_NAVIGATION') && <Footer />}
           </DemoLayoutWrapper>
         )}
       </SMain>

@@ -1,8 +1,9 @@
 import { createAction, PayloadAction } from '@reduxjs/toolkit';
-import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import { canTrackProductAnalytics, setProductAnalyticsAuthorisation } from '@store';
 
+import { isActiveFeature } from '../FeatureFlag';
 import { default as AnalyticsService, PageParams, TrackParams } from './Analytics';
 
 /**
@@ -16,15 +17,18 @@ export const trackPage = createAction<PageParams>(`analytics/trackPage`);
  * Saga
  */
 export function* analyticsSaga() {
-  yield takeLatest(trackInit, initAnalytics);
-  yield takeEvery(trackEvent.type, trackEventWorker);
-  yield takeEvery(trackPage.type, trackPageWorker);
-  yield takeEvery(setProductAnalyticsAuthorisation, deactivateAnalyticsWorker);
+  yield all([
+    yield takeLatest(trackInit, initAnalytics),
+    yield takeEvery(trackEvent.type, trackEventWorker),
+    yield takeEvery(trackPage.type, trackPageWorker),
+    yield takeEvery(setProductAnalyticsAuthorisation, deactivateAnalyticsWorker)
+  ]);
 }
 
 function* initAnalytics() {
+  const isActive = yield select(isActiveFeature('ANALYTICS'));
   const canTrack = yield select(canTrackProductAnalytics);
-  if (canTrack) {
+  if (isActive && canTrack) {
     yield call(AnalyticsService.initAnalytics);
     yield put(trackEvent({ name: 'App Load' }));
   }

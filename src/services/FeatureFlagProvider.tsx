@@ -1,28 +1,32 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect } from 'react';
 
-import { FEATURE_FLAGS, IFeatureFlags } from '@config';
+import { useDispatch, useSelector } from '@store';
+
+import {
+  FeatureFlag,
+  getFeatureFlags,
+  resetFeatureFlags as resetFeatureFlagsAction,
+  setFeatureFlag as setFeatureFlagAction
+} from './FeatureFlag';
 
 export interface IFeatureFlagContext {
-  featureFlags: IFeatureFlags;
-  isFeatureActive(f: keyof IFeatureFlags): boolean;
-  setFeatureFlag(key: keyof IFeatureFlags, value: boolean): void;
+  featureFlags: ReturnType<typeof getFeatureFlags>;
+  isFeatureActive(f: FeatureFlag): boolean;
+  setFeatureFlag(key: FeatureFlag, value: boolean): void;
   resetFeatureFlags(): void;
-  toggleFeatureFlag(key: keyof IFeatureFlags): void;
 }
 
 export const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
 export const FeatureFlagProvider: React.FC = ({ children }) => {
-  const [featureFlags, setFeatureFlags] = useState(FEATURE_FLAGS);
+  const dispatch = useDispatch();
+  const featureFlags = useSelector(getFeatureFlags);
 
   const setFeatureFlag: IFeatureFlagContext['setFeatureFlag'] = (key, value) =>
-    setFeatureFlags({ ...featureFlags, [key]: value });
-
-  const toggleFeatureFlag: IFeatureFlagContext['toggleFeatureFlag'] = (key) =>
-    setFeatureFlag(key, !featureFlags[key]);
+    dispatch(setFeatureFlagAction({ feature: key, isActive: value }));
 
   const resetFeatureFlags: IFeatureFlagContext['resetFeatureFlags'] = () =>
-    setFeatureFlags(FEATURE_FLAGS);
+    dispatch(resetFeatureFlagsAction());
 
   const isFeatureActive: IFeatureFlagContext['isFeatureActive'] = (f) => !!featureFlags[f];
 
@@ -36,7 +40,6 @@ export const FeatureFlagProvider: React.FC = ({ children }) => {
     featureFlags,
     isFeatureActive,
     setFeatureFlag,
-    toggleFeatureFlag,
     resetFeatureFlags
   };
 
