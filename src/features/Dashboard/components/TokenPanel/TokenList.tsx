@@ -66,7 +66,7 @@ const MoreIcon = styled(Icon)`
 
 const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
-  height: 95vh;
+  height: 652px;
   min-height: 430px;
 `;
 

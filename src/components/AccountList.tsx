@@ -41,6 +41,12 @@ import { DashboardPanel } from './DashboardPanel';
 import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
 
+const SDashboardPanel = styled(DashboardPanel)`
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    height: 508px;
+  }
+`;
+
 const Label = styled.span`
   display: flex;
   align-items: center;
@@ -204,7 +210,7 @@ export default function AccountList(props: AccountListProps) {
   };
 
   return (
-    <DashboardPanel
+    <SDashboardPanel
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
@@ -238,7 +244,7 @@ export default function AccountList(props: AccountListProps) {
     >
       <FixedSizeCollapsibleTable
         breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
-        maxHeight={'450px'}
+        maxHeight={'430px'}
         {...BuildAccountTable(
           getDisplayAccounts(),
           deleteAccountFromCache,
@@ -253,7 +259,7 @@ export default function AccountList(props: AccountListProps) {
           setDeletingIndex
         )}
       />
-    </DashboardPanel>
+    </SDashboardPanel>
   );
 }
 

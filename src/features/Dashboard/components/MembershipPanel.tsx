@@ -16,6 +16,7 @@ import { flatten, uniq } from '@vendor';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
+  height: 171px;
   ${(props) => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
 

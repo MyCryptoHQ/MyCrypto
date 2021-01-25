@@ -45,6 +45,7 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
       position={{ _: undefined, sm: 'relative' }}
       onMouseEnter={handleOpen}
       onMouseLeave={handleClose}
+      px={{ sm: '3px' }}
     >
       <SIcon type="caret" color={COLORS.BLUE_GREY} height={{ _: '0.8vh', xxl: '8px' }} />
       <Icon type={tray.icon} height={{ _: '24px', sm: '2.4vh', xxl: '24px' }} color="WHITE" />
