@@ -1,6 +1,8 @@
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber';
+import { UnsignedTransaction } from '@ethersproject/transactions';
+import { formatEther } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
-import { bigNumberify, formatEther, UnsignedTransaction } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';
@@ -49,5 +51,5 @@ export const bigNumGasLimitToViewable = (gasLimitBigNum: Bigish | string): strin
   bigify(gasLimitBigNum).toString();
 
 export const bigNumValueToViewableEther = (valueWeiBigNum: Bigish | string): string =>
-  formatEther(bigNumberify(valueWeiBigNum.toString()));
+  formatEther(EthersBigNumber.from(valueWeiBigNum.toString()));
 /* region:end BigNum to User Viewable */

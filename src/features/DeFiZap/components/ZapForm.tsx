@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { parseEther } from 'ethers/utils';
+import { parseEther } from '@ethersproject/units';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import { connect, ConnectedProps } from 'react-redux';

@@ -1,10 +1,10 @@
 import { ITxConfig } from '@types';
 
 export const mockFactory = (txConfig: ITxConfig) => {
-  const ethersUtils = jest.requireActual('ethers/utils');
+  const ethersTransactions = jest.requireActual('@ethersproject/transactions');
   return {
-    ...ethersUtils,
-    parseTransaction: () => ({
+    ...ethersTransactions,
+    parse: () => ({
       gasPrice: txConfig.gasPrice,
       gasLimit: txConfig.gasLimit,
       value: txConfig.value,

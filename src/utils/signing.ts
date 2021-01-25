@@ -1,5 +1,5 @@
+import { verifyMessage } from '@ethersproject/wallet';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { verifyMessage } from 'ethers/utils';
 
 import { ISignedMessage } from '@types';
 

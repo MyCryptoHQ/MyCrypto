@@ -1,4 +1,4 @@
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   makeTxConfigFromTxReceipt,
@@ -48,13 +48,13 @@ export const makeTx = ({
   networks: Network[];
   accounts: StoreAccount[];
   assets: Asset[];
-  cachedTx?: ITxReceipt;
+  cachedTx?: ITxHistoryEntry | ITxReceipt;
   fetchedTx?: TransactionResponse;
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
   if (cachedTx) {
     return {
-      config: makeTxConfigFromTxReceipt(cachedTx, assets, network, accounts),
+      config: makeTxConfigFromTxReceipt(cachedTx as ITxReceipt, assets, network, accounts),
       receipt: cachedTx
     };
   } else {

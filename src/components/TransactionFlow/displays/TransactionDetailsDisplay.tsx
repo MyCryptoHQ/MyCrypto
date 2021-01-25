@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
 import { Button, Network } from '@mycrypto/ui';
-import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress } from '@components';
@@ -90,7 +90,7 @@ function TransactionDetailsDisplay({
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend
-    ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
+    ? weiToFloat(BigNumber.from(userAssetToSend.balance), asset.decimal).toFixed(6)
     : translateRaw('UNKNOWN_BALANCE');
 
   const gasUsedPercentage = gasUsed && calculateGasUsedPercentage(gasLimit, gasUsed.toString());

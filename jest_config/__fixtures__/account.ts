@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { REPV1UUID } from '@config';
 import { DWAccountDisplay } from '@services';
@@ -22,7 +22,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'ETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
+        balance: BigNumber.from('0x1b9ced41465be000'),
         mtime: 1581530607024
       },
       {
@@ -34,7 +34,7 @@ export const fAccounts: StoreAccount[] = [
         decimal: 18,
         contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
         isCustom: false,
-        balance: bigNumberify('0x3782dace9d900000'),
+        balance: BigNumber.from('0x3782dace9d900000'),
         mtime: 1581530607024
       }
     ],
@@ -59,7 +59,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
+        balance: BigNumber.from('0x1b9ced41465be000'),
         mtime: 1581530607024
       }
     ],
@@ -86,7 +86,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
+        balance: BigNumber.from('0x54ab1b2ceea88000'),
         mtime: 1581530607024
       },
       {
@@ -97,7 +97,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
+        balance: BigNumber.from('0x0e2347cb6425dc00'),
         mtime: 1581530607024
       }
     ],
@@ -123,7 +123,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
+        balance: BigNumber.from('0x54ab1b2ceea88000'),
         mtime: 1581530607024
       },
       {
@@ -134,7 +134,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
+        balance: BigNumber.from('0x0e2347cb6425dc00'),
         mtime: 1581530607024
       }
     ],
@@ -160,7 +160,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
+        balance: BigNumber.from('0x54ab1b2ceea88000'),
         mtime: 1581530607024
       },
       {
@@ -172,7 +172,7 @@ export const fAccounts: StoreAccount[] = [
         decimal: 18,
 
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
+        balance: BigNumber.from('0x0e2347cb6425dc00'),
         mtime: 1581530607024
       }
     ],
@@ -197,7 +197,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'ETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
+        balance: BigNumber.from('0x1b9ced41465be000'),
         mtime: 1581530607024
       }
     ],

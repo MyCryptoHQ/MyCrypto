@@ -1,5 +1,11 @@
-import { ethers } from 'ethers';
-import { BaseProvider, FallbackProvider } from 'ethers/providers';
+import {
+  BaseProvider,
+  EtherscanProvider,
+  FallbackProvider,
+  InfuraProvider,
+  JsonRpcProvider,
+  Web3Provider
+} from '@ethersproject/providers';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
 
@@ -25,29 +31,29 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
   const { type, url } = node;
   switch (type) {
     case NodeType.ETHERSCAN: {
-      return new ethers.providers.EtherscanProvider(networkish, ETHERSCAN_API_KEY);
+      return new EtherscanProvider(networkish, ETHERSCAN_API_KEY);
     }
     case NodeType.WEB3: {
       const ethereumProvider = (window as CustomWindow).ethereum;
-      return new ethers.providers.Web3Provider(ethereumProvider, networkish);
+      return new Web3Provider(ethereumProvider, networkish);
     }
     case NodeType.INFURA:
-      return new ethers.providers.InfuraProvider(networkish, INFURA_API_KEY);
+      return new InfuraProvider(networkish, INFURA_API_KEY);
 
     // default case covers the remaining NodeTypes.
     default: {
       if ('auth' in node && node.auth) {
-        return new ethers.providers.JsonRpcProvider(
+        return new JsonRpcProvider(
           {
             url,
             user: node.auth.username,
             password: node.auth.password,
-            allowInsecure: true
+            allowInsecureAuthentication: true
           },
           chainId
         );
       }
-      return new ethers.providers.JsonRpcProvider(url, chainId);
+      return new JsonRpcProvider(url, chainId);
     }
   }
 };
@@ -78,7 +84,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
 
   const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any, chainId));
 
-  return new ethers.providers.FallbackProvider(providers);
+  return new FallbackProvider(providers);
 };
 
 export const getDPath = (network: Network | undefined, type: DPathFormat): DPath | undefined => {

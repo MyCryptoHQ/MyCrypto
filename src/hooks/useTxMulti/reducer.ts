@@ -1,4 +1,4 @@
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import { ITxHash, ITxObject, ITxStatus, ITxType } from '@types';
 import { getUUID } from '@utils';

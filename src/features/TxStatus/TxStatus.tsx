@@ -1,37 +1,29 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 
+import { isHexString } from '@ethersproject/bytes';
 import { Input } from '@mycrypto/ui';
-import { isHexString } from 'ethers/utils';
 import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
+import {
+  Button,
+  ContentPanel,
+  InlineMessage,
+  NetworkSelector,
+  Spinner,
+  TxReceipt
+} from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useNetworks, useTxHistory } from '@services';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { NetworkId } from '@types';
+import { ITxReceipt } from '@types';
 import { isVoid, noOp } from '@utils';
 import { useEffectOnce, useUpdateEffect } from '@vendor';
 
 import { fetchTxStatus, makeTx } from './helpers';
 import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
-
-const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
-
-const Loader = styled.div`
-  padding-bottom: 6rem;
-  transform: scale(3.75);
-
-  &&::before {
-    border-width: 0.75px;
-  }
-
-  &&::after {
-    border-width: 0.75px;
-  }
-`;
 
 const Wrapper = styled.div<{ fullPageLoading: boolean }>`
   ${({ fullPageLoading }) =>
@@ -39,6 +31,7 @@ const Wrapper = styled.div<{ fullPageLoading: boolean }>`
     `
     display: flex;
     justify-content: center;
+    align-items: center;
 `}
   min-height: 600px;
 `;
@@ -62,14 +55,13 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { txHistory } = useTxHistory();
 
   const defaultTxHash = qs.hash ? qs.hash : '';
-  const defaultNetwork =
-    qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
+  const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);
 
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
-  const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
+  const { networkId, txHash, tx, error, fetching, fromLink } = reducerState;
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
@@ -89,6 +81,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   useEffect(() => {
     if (fetching) {
       fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
+        .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
@@ -105,11 +98,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
-  const fullPageLoading = fromLink && !txState;
+  const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
-
-  const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
@@ -121,7 +112,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               onChange={(n) =>
                 dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
               }
-              filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
             />
             <SLabel htmlFor="txhash">{translateRaw('TX_HASH')}</SLabel>
             <Input
@@ -145,12 +135,12 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             </Button>
           </>
         )}
-        {fullPageLoading && <Loader className="loading" />}
+        {fullPageLoading && <Spinner color="brand" size={4} />}
         {tx && (
           <>
             <TxReceipt
               txConfig={tx.config}
-              txReceipt={tx.receipt}
+              txReceipt={tx.receipt as ITxReceipt}
               resetFlow={noOp}
               onComplete={noOp}
               disableDynamicTxReceiptDisplay={true}

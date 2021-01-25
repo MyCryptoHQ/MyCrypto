@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { formatEther } from 'ethers/utils';
+import { formatEther } from '@ethersproject/units';
 import { OptionProps } from 'react-select';
 
 import { AccountSummary, Divider, Selector } from '@components';

@@ -1,4 +1,4 @@
-import { UnsignedTransaction } from 'ethers/utils';
+import { UnsignedTransaction } from '@ethersproject/transactions';
 
 import { Web3Node } from '@services/EthService';
 import { INode } from '@types';

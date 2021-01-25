@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/abstract-provider';
 
 import { appendGasLimit, appendNonce } from '@helpers';
 import { ERC20, ProviderHandler } from '@services';

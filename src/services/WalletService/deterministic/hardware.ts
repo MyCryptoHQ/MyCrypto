@@ -1,4 +1,4 @@
-import { UnsignedTransaction } from 'ethers/utils';
+import { UnsignedTransaction } from '@ethersproject/transactions';
 
 import { IFullWallet } from '../IWallet';
 import { DeterministicWallet } from './deterministic';

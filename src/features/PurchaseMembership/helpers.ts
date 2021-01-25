@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { AddressZero } from '@ethersproject/constants';
 
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
 import { formatApproveTx } from '@helpers';
@@ -28,7 +28,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
-    _referrer: ethers.constants.AddressZero,
+    _referrer: AddressZero,
     _data: []
   });
 

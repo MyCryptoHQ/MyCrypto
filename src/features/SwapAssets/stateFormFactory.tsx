@@ -1,4 +1,4 @@
-import { formatEther } from 'ethers/utils';
+import { formatEther } from '@ethersproject/units';
 
 import {
   DEFAULT_NETWORK,

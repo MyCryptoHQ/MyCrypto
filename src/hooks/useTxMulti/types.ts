@@ -1,4 +1,4 @@
-import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 
 import { ITxHash, ITxObject, ITxStatus, ITxType, Network, StoreAccount, TUuid } from '@types';
 

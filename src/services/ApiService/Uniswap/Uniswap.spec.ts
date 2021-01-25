@@ -7,7 +7,7 @@ import { ITxValue } from '@types';
 import { UniswapService } from '.';
 import { ClaimState } from './Uniswap';
 
-jest.mock('ethers/providers', () => {
+jest.mock('@ethersproject/providers', () => {
   return {
     // Mock return value of isClaimed()
     FallbackProvider: () => ({

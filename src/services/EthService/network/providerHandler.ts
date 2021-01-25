@@ -1,12 +1,13 @@
-import any from '@ungap/promise-any';
+import { BigNumber } from '@ethersproject/bignumber';
 import {
   BaseProvider,
   Block,
   FallbackProvider,
   TransactionReceipt,
   TransactionResponse
-} from 'ethers/providers';
-import { BigNumber, formatEther } from 'ethers/utils';
+} from '@ethersproject/providers';
+import { formatEther } from '@ethersproject/units';
+import any from '@ungap/promise-any';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20, RPCRequests } from '@services/EthService';
@@ -91,7 +92,7 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        const providers = (client as FallbackProvider).providers;
+        const providers = (client as FallbackProvider).providerConfigs.map((p) => p.provider);
         return any(
           providers.map((p) => {
             // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
@@ -110,15 +111,22 @@ export class ProviderHandler {
 
   /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
-    return this.injectClient((client) => client.getTransactionReceipt(txhash));
+    return this.injectClient((client) => {
+      // @todo Fix this ugly hack
+      const format = client.formatter.formats;
+      format.receipt['root'] = format.receipt['logsBloom'];
+      Object.assign(client.formatter, { format: format });
+
+      return client.getTransactionReceipt(txhash);
+    });
   }
 
   public getBlockByHash(blockHash: string): Promise<Block> {
-    return this.injectClient((client) => client.getBlock(blockHash, false));
+    return this.injectClient((client) => client.getBlock(blockHash));
   }
 
   public getBlockByNumber(blockNumber: number): Promise<Block> {
-    return this.injectClient((client) => client.getBlock(blockNumber, false));
+    return this.injectClient((client) => client.getBlock(blockNumber));
   }
 
   /* Tested */

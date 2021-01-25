@@ -1,5 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther, parseEther } from '@ethersproject/units';
 import BigNumberJs from 'bignumber.js';
-import { BigNumber, bigNumberify, formatEther, parseEther } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { StoreAsset } from '@types';
@@ -11,7 +12,7 @@ export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): str
   const splitRate = rate.toString().split('.');
   const decimals = splitRate.length > 1 ? splitRate[1].length : 0;
   const rateDivisor = Math.pow(10, decimals);
-  const rateBN = bigNumberify(Math.round(rate * rateDivisor));
+  const rateBN = BigNumber.from(Math.round(rate * rateDivisor));
 
   const convertedFloat = weiToFloat(asset.balance.mul(rateBN), asset.decimal);
   return convertedFloat.dividedBy(rateDivisor).toString();
@@ -37,7 +38,7 @@ export const multiplyBNFloats = (
 ): BigNumber => {
   const assetBN = bigify(asset);
   const rateBN = bigify(rate);
-  return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
+  return BigNumber.from(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
 };
 
 // Divide a floating-point BNs by another floating-point BN
@@ -47,7 +48,7 @@ export const divideBNFloats = (
 ): BigNumber => {
   const assetBN = bigify(asset);
   const divisorBN = bigify(divisor);
-  return bigNumberify(
+  return BigNumber.from(
     parseEther(trimBN(assetBN.dividedBy(divisorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
 };
@@ -59,7 +60,7 @@ export const subtractBNFloats = (
 ): BigNumber => {
   const assetBN = bigify(asset);
   const subtractorBN = bigify(subtractor);
-  return bigNumberify(
+  return BigNumber.from(
     parseEther(
       trimBN(BigNumberJs.sum(assetBN, subtractorBN.negated()).toFixed(DEFAULT_ASSET_DECIMAL))
     )
@@ -70,7 +71,7 @@ export const subtractBNFloats = (
 export const addBNFloats = (asset: number | string, additor: number | string): BigNumber => {
   const assetBN = bigify(asset);
   const additorBN = bigify(additor);
-  return bigNumberify(
+  return BigNumber.from(
     parseEther(trimBN(BigNumberJs.sum(assetBN, additorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
 };

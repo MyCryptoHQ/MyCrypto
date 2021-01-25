@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { utils } from 'ethers';
-import { Web3Provider } from 'ethers/providers/web3-provider';
+import { getAddress } from '@ethersproject/address';
+import { Web3Provider } from '@ethersproject/providers';
 
 import { WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
@@ -27,7 +27,7 @@ export default function SignTransactionWeb3({
 }: ISignComponentProps) {
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
 
-  const desiredAddress = utils.getAddress(senderAccount.address);
+  const desiredAddress = getAddress(senderAccount.address);
 
   const { getNetworkByChainId } = useNetworks();
   const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
@@ -62,7 +62,7 @@ export default function SignTransactionWeb3({
 
     const web3Signer = web3Provider.getSigner();
     const web3Address = await web3Signer.getAddress();
-    const checksumAddress = utils.getAddress(web3Address);
+    const checksumAddress = getAddress(web3Address);
 
     const web3Network = await web3Provider.getNetwork();
     const addressMatches = isSameAddress(checksumAddress as TAddress, desiredAddress as TAddress);

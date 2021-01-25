@@ -92,21 +92,6 @@ const GO_DEFAULT: DPath = {
   value: "m/44'/6060'/0'/0"
 };
 
-const ESN_DEFAULT: DPath = {
-  label: 'Default (ESN)',
-  value: "m/44'/31102'/0'/0"
-};
-
-const AKA_DEFAULT: DPath = {
-  label: 'Default (AKA)',
-  value: "m/44'/200625'/0'/0"
-};
-
-const PIRL_DEFAULT: DPath = {
-  label: 'Default (PIRL)',
-  value: "m/44'/164'/0'/0"
-};
-
 const ATH_DEFAULT: DPath = {
   label: 'Default (ATH)',
   value: "m/44'/1620'/0'/0"
@@ -209,9 +194,6 @@ export const DPathsList = {
   RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
-  ESN_DEFAULT,
-  AKA_DEFAULT,
-  PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
   MIX_DEFAULT,

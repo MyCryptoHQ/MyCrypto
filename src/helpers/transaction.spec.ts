@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { donationAddressMap } from '@config';
 import {
@@ -368,11 +368,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x49634f1e439e3760265888434a2f9782928362412030db1429458ddc9dcee995',
@@ -385,11 +385,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a1',
@@ -402,11 +402,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a1',
@@ -419,11 +419,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x12345',
         s: '0x12345',
@@ -436,11 +436,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1
       })
     ).toBe(false);

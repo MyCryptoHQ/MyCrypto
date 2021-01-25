@@ -1,5 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
 import BigNumberJs from 'bignumber.js';
-import { BigNumber, formatEther } from 'ethers/utils';
 
 import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from '@config';
 import { StoreAsset } from '@types';
@@ -23,7 +24,7 @@ const defaultAsset = {
   type: 'erc20',
   ticker: 'FTKN',
   mtime: new Date().valueOf(),
-  balance: new BigNumber('1'),
+  balance: BigNumber.from('1'),
   decimal: 18,
   networkId: DEFAULT_NETWORK
 } as StoreAsset;
@@ -33,7 +34,7 @@ describe('convert()', () => {
     const expected = '2.86756';
     const rate = 0.00008434;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
-      balance: new BigNumber('34000000000000000000000')
+      balance: BigNumber.from('34000000000000000000000')
     });
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);
@@ -43,7 +44,7 @@ describe('convert()', () => {
     const expected = '0.4582269583';
     const rate = 0.001867;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
-      balance: new BigNumber('245434900000000000000')
+      balance: BigNumber.from('245434900000000000000')
     });
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);
@@ -53,7 +54,7 @@ describe('convert()', () => {
     const expected = '608.342632226824';
     const rate = 169.48;
     const assetObject: StoreAsset = Object.assign({}, defaultAsset, {
-      balance: new BigNumber('3589465613800000000')
+      balance: BigNumber.from('3589465613800000000')
     });
     const converted = convertToFiatFromAsset(assetObject, rate);
     expect(converted).toEqual(expected);

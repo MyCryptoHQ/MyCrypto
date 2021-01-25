@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
-import { bigNumberify } from 'ethers/utils';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
@@ -316,7 +316,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             const asset = this.parent.asset;
             if (!isEmpty(account)) {
               const balance = getAccountBalance(account, asset.type === 'base' ? undefined : asset);
-              const amount = bigNumberify(toTokenBase(value, asset.decimal).toString());
+              const amount = BigNumber.from(toTokenBase(value, asset.decimal).toString());
               if (balance.lt(amount)) {
                 return this.createError({
                   message: translateRaw('BALANCE_TOO_LOW_ERROR', {

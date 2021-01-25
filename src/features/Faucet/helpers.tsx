@@ -1,4 +1,5 @@
-import { bigNumberify, formatEther } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
 
 import { getBaseAssetByNetwork } from '@services/Store';
 import {
@@ -96,11 +97,11 @@ export const makeTxReceipt = (
     receiverAddress: txResult.to,
     amount: formatEther(txResult.value),
     data: txResult.data,
-    gasPrice: bigNumberify(txResult.gasPrice),
-    gasLimit: bigNumberify(txResult.gasLimit),
+    gasPrice: BigNumber.from(txResult.gasPrice),
+    gasLimit: BigNumber.from(txResult.gasLimit),
     to: txResult.to,
     from: txResult.from,
-    value: bigNumberify(txResult.value),
+    value: BigNumber.from(txResult.value),
     nonce: txResult.nonce.toString(),
     hash: txResult.hash
   };

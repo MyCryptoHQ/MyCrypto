@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
@@ -55,7 +55,7 @@ describe('TransactionDetailsDisplay', () => {
     const { getAllByText, container, getByTestId } = getComponent({
       ...defaultProps,
       status: ITxStatus.SUCCESS,
-      gasUsed: new BigNumber(19000),
+      gasUsed: BigNumber.from(19000),
       confirmations: 100,
       data: fApproveERC20TxResponse.data,
       signedTransaction: fETHWeb3TxResponse.raw

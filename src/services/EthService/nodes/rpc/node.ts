@@ -1,5 +1,5 @@
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import BN from 'bn.js';
-import { TransactionReceipt, TransactionResponse } from 'ethers/providers';
 
 import {
   isValidCallRequest,

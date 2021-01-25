@@ -1,4 +1,4 @@
-import { BigNumber, bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { Asset, NetworkId, StoreAccount, TAddress } from '@types';
 import { isSameAddress } from '@utils';
@@ -6,12 +6,12 @@ import { isSameAddress } from '@utils';
 // Assume StoreAccount baseAsset balance to be 0 if asset does not exist.
 const getAccountBaseBalance = (account: StoreAccount) => {
   const baseAsset = account.assets.find((as) => as.type === 'base');
-  return baseAsset ? baseAsset.balance : bigNumberify(0);
+  return baseAsset ? baseAsset.balance : BigNumber.from(0);
 };
 
 const getAccountTokenBalance = (account: StoreAccount, token: Asset): BigNumber => {
   const erc20 = account.assets.find((as) => as.uuid === token.uuid);
-  return erc20 ? erc20.balance : bigNumberify(0);
+  return erc20 ? erc20.balance : BigNumber.from(0);
 };
 
 export const getAccountBalance = (account: StoreAccount, token?: Asset): BigNumber =>

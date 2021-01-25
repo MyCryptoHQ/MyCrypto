@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { fAccount, fAssets, fNetworks } from '@fixtures';
 import { ITxStatus, ITxType } from '@types';
@@ -69,15 +69,15 @@ describe('Faucet helpers', () => {
         baseAsset: fAssets[1],
         data: '0x',
         from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-        gasLimit: bigNumberify(21000),
-        gasPrice: bigNumberify(1000000000),
+        gasLimit: BigNumber.from(21000),
+        gasPrice: BigNumber.from(1000000000),
         hash: '0x5049c0847681402db2c303847f2f66ac7f3a6caf63119b676374d5781b8d11e9',
         nonce: '39',
         receiverAddress: fAccount.address,
         status: ITxStatus.PENDING,
         to: fAccount.address,
         txType: ITxType.FAUCET,
-        value: bigNumberify('1')
+        value: BigNumber.from('1')
       });
     });
   });

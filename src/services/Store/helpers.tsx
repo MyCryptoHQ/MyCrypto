@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { TOKEN_MIGRATIONS } from '@config';
 import { translateRaw } from '@translations';
@@ -29,7 +29,7 @@ const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): 
         ...asset
       };
     })
-    .map((asset) => ({ ...asset, balance: bigNumberify(asset.balance), mtime: Date.now() }));
+    .map((asset) => ({ ...asset, balance: BigNumber.from(asset.balance), mtime: Date.now() }));
 
 export const getStoreAccounts = (
   accounts: IAccount[],

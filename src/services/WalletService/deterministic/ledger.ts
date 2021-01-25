@@ -1,10 +1,14 @@
+import { SignatureLike } from '@ethersproject/bytes';
+import {
+  serialize as serializeTransaction,
+  UnsignedTransaction
+} from '@ethersproject/transactions';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
-import { serializeTransaction, Signature, UnsignedTransaction } from 'ethers/utils';
 
 import { translateRaw } from '@translations';
 
@@ -68,7 +72,7 @@ export class LedgerWallet extends HardwareWallet {
         stripHexPrefix(serializeTransaction(t))
       );
 
-      const signature: Signature = {
+      const signature: SignatureLike = {
         v: parseInt(result.v, 16),
         r: addHexPrefix(result.r),
         s: addHexPrefix(result.s)

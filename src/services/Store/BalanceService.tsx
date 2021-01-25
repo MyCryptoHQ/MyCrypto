@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import {
   BalanceMap as EthScanBalanceMap,
   getEtherBalances,
@@ -8,7 +9,6 @@ import {
   toBalanceMap
 } from '@mycrypto/eth-scan';
 import { default as BN } from 'bignumber.js';
-import { bigNumberify } from 'ethers/utils';
 import partition from 'lodash/partition';
 
 import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
@@ -59,7 +59,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
           return asset;
       }
     })
-    .map((asset) => ({ ...asset, balance: bigNumberify(asset.balance) }))
+    .map((asset) => ({ ...asset, balance: BigNumber.from(asset.balance) }))
 });
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
