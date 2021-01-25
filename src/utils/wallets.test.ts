@@ -3,6 +3,7 @@ import { TAddress, WalletId } from '@types';
 
 import {
   getAccountsByNetwork,
+  getAccountsByViewOnly,
   isHardwareWallet,
   isSenderAccountPresent,
   isViewOnlyWallet
@@ -10,13 +11,13 @@ import {
 
 describe('getAccountsByNetwork', () => {
   it('filters correctly by default', () => {
-    expect(getAccountsByNetwork({ accounts: fAccounts, networkId: 'Ropsten' })).toHaveLength(3);
+    expect(getAccountsByNetwork(fAccounts, 'Ropsten')).toHaveLength(4);
   });
+});
 
-  it('includes view only when expected', () => {
-    expect(
-      getAccountsByNetwork({ accounts: fAccounts, networkId: 'Ropsten', includeViewOnly: true })
-    ).toHaveLength(4);
+describe('getAccountsByViewOnly', () => {
+  it('filters view only when expected', () => {
+    expect(getAccountsByViewOnly(fAccounts, false)).toHaveLength(5);
   });
 });
 

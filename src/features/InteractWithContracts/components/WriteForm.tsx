@@ -13,10 +13,12 @@ import { ITxConfig, Network, StoreAccount } from '@types';
 import {
   baseToConvertedUnit,
   getAccountsByNetwork,
+  getAccountsByViewOnly,
   hexToString,
   hexWeiToString,
   inputGasPriceToHex
 } from '@utils';
+import { pipe } from '@vendor';
 
 import { ABIItem } from '../types';
 
@@ -66,7 +68,10 @@ export const WriteForm = (props: Props) => {
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const { accounts } = useContext(StoreContext);
-  const filteredAccounts = getAccountsByNetwork({ accounts, networkId: network.id });
+  const filteredAccounts = pipe(
+    (a: StoreAccount[]) => getAccountsByNetwork(a, network.id),
+    (a) => getAccountsByViewOnly(a, false)
+  )(accounts);
 
   const handleGasPriceChange = (val: string) => {
     if (val.length) {
