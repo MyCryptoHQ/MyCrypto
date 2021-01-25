@@ -5,5 +5,6 @@ export {
   resetFeatureFlags,
   isActiveFeature,
   FeatureFlag,
-  FeatureFlags
+  FeatureFlags,
+  initialState
 } from './slice';

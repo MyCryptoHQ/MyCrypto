@@ -1,5 +1,5 @@
 import { createAction, PayloadAction } from '@reduxjs/toolkit';
-import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { canTrackProductAnalytics, setProductAnalyticsAuthorisation } from '@store';
 
@@ -18,7 +18,7 @@ export const trackPage = createAction<PageParams>(`analytics/trackPage`);
  */
 export function* analyticsSaga() {
   yield all([
-    yield takeLatest(trackInit, initAnalytics),
+    yield takeEvery(trackInit, initAnalytics),
     yield takeEvery(trackEvent.type, trackEventWorker),
     yield takeEvery(trackPage.type, trackPageWorker),
     yield takeEvery(setProductAnalyticsAuthorisation, deactivateAnalyticsWorker)
