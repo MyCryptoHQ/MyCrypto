@@ -3,6 +3,7 @@ import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
+import { analyticsMiddleware } from '@services/Analytics';
 import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
@@ -33,6 +34,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
         }
       }),
       sagaMiddleware,
+      analyticsMiddleware,
       // Logger MUST be last in chain.
       // https://github.com/LogRocket/redux-logger#usage
       ...(IS_DEV ? [createLogger({ collapsed: true })] : [])
