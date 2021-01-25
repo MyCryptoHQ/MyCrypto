@@ -3,10 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import addIcon from '@assets/images/icn-add-assets.svg';
-import { BUY_MYCRYPTO_WEBSITE } from '@config';
+import { Link, RouterLink } from '@components';
+import { BUY_MYCRYPTO_WEBSITE, ROUTE_PATHS } from '@config';
 import { COLORS } from '@theme';
-import translate from '@translations';
-import { openLink } from '@utils';
+import translate, { Trans, translateRaw } from '@translations';
 
 const { BLUE_BRIGHT } = COLORS;
 
@@ -24,7 +24,6 @@ const NoAssetsCenter = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 `;
 
 const PlusIcon = styled.img`
@@ -48,14 +47,40 @@ const NoAssetsDescription = styled.div`
   }
 `;
 
-export default function NoAssets() {
+const NoAssets = ({ numOfAssets }: { numOfAssets: number }) => {
   return (
     <NoAssetsWrapper>
-      <NoAssetsCenter onClick={() => openLink(BUY_MYCRYPTO_WEBSITE)}>
+      <NoAssetsCenter>
         <PlusIcon src={addIcon} />
         <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
-        <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>
+        <NoAssetsDescription>
+          {numOfAssets === 0 ? (
+            <Trans
+              id="WALLET_BREAKDOWN_NO_ASSETS_MORE_HIDDEN"
+              variables={{
+                $link: () => (
+                  <RouterLink to={ROUTE_PATHS.SETTINGS.path}>
+                    {translateRaw('WALLET_BREAKDOWN_SETTINGS_PAGE')}
+                  </RouterLink>
+                )
+              }}
+            />
+          ) : (
+            <Trans
+              id="WALLET_BREAKDOWN_NO_ASSETS_MORE"
+              variables={{
+                $externalLink: () => (
+                  <Link href={BUY_MYCRYPTO_WEBSITE} target="_blank" rel="noreferrer">
+                    {translateRaw('WALLET_BREAKDOWN_BUY_ETH')}
+                  </Link>
+                )
+              }}
+            />
+          )}
+        </NoAssetsDescription>
       </NoAssetsCenter>
     </NoAssetsWrapper>
   );
-}
+};
+
+export default NoAssets;

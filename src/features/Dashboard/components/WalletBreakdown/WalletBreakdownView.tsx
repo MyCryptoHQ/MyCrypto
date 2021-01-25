@@ -290,7 +290,7 @@ export default function WalletBreakdownView({
           <BreakDownLabel>({label})</BreakDownLabel>
         </BreakDownHeading>
         {!isScanning && bigify(totalFiatValue).eq(0) ? (
-          <NoAssets />
+          <NoAssets numOfAssets={balances.length} />
         ) : (
           <>
             <BreakdownChart
