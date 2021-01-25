@@ -195,8 +195,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isCustom: false,
     color: '#673ab7',
     blockExplorer: makeExplorer({
-      name: 'Gander',
-      origin: 'https://www.gander.tech'
+      name: 'Expanse Explorer',
+      origin: 'https://explorer.expanse.tech/home'
     }),
     tokens: [],
     contracts: require('./contracts/exp.json'),
@@ -460,32 +460,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 2
     }
   },
-  ESN: {
-    id: 'ESN',
-    name: 'EthersocialNetwork',
-    unit: 'ESN' as TTicker,
-    chainId: 31102,
-    isCustom: false,
-    color: '#7a56ad',
-    blockExplorer: makeExplorer({
-      name: 'ESN Explorer',
-      origin: 'https://ethersocial.net'
-    }),
-    tokens: [],
-    contracts: require('./contracts/esn.json'),
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.ESN_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.ESN_DEFAULT,
-      [WalletId.TREZOR_NEW]: DPaths.ESN_DEFAULT,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ESN_DEFAULT,
-      default: DPaths.ESN_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   AQUA: {
     id: 'AQUA',
     name: 'Aquachain',
@@ -510,58 +484,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.1,
       max: 10,
       initial: 0.1
-    }
-  },
-  AKA: {
-    id: 'AKA',
-    name: 'Akroma',
-    unit: 'AKA' as TTicker,
-    chainId: 200625,
-    isCustom: false,
-    color: '#aa0087',
-    blockExplorer: makeExplorer({
-      name: 'Akroma Explorer',
-      origin: 'https://explorer.akroma.io'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.AKA_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.AKA_DEFAULT,
-      [WalletId.TREZOR_NEW]: DPaths.AKA_DEFAULT,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.AKA_DEFAULT,
-      default: DPaths.AKA_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-  PIRL: {
-    id: 'PIRL',
-    name: 'Pirl',
-    unit: 'PIRL' as TTicker,
-    chainId: 3125659152,
-    isCustom: false,
-    color: '#a2d729',
-    blockExplorer: makeExplorer({
-      name: 'Pirl Poseidon Explorer',
-      origin: 'https://devexplorer.pirl.io'
-    }),
-    tokens: [],
-    contracts: require('./contracts/pirl.json'),
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.PIRL_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.PIRL_DEFAULT,
-      [WalletId.TREZOR_NEW]: DPaths.PIRL_DEFAULT,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.PIRL_DEFAULT,
-      default: DPaths.PIRL_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
     }
   },
   ATH: {

@@ -97,15 +97,6 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     }
   ],
 
-  AKA: [
-    {
-      name: NetworkUtils.makeNodeName('AKA', 'remote.akroma.io'),
-      type: NodeType.RPC,
-      service: 'remote.akroma.io',
-      url: 'https://remote.akroma.io'
-    }
-  ],
-
   AQUA: [
     {
       name: NetworkUtils.makeNodeName('AQUA', 'uncan.onical'),
@@ -178,15 +169,6 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     }
   ],
 
-  ESN: [
-    {
-      name: NetworkUtils.makeNodeName('ESN', 'esn'),
-      type: NodeType.RPC,
-      service: 'ethersocial.org',
-      url: 'https://api.esn.gonspool.com'
-    }
-  ],
-
   ETHO: [
     {
       name: NetworkUtils.makeNodeName('ETHO', 'ether1.org'),
@@ -247,15 +229,6 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.RPC,
       service: 'rpc.musicoin.org',
       url: 'https://rpc.musicoin.org/'
-    }
-  ],
-
-  PIRL: [
-    {
-      name: NetworkUtils.makeNodeName('PIRL', 'wallrpc.pirl.io'),
-      type: NodeType.RPC,
-      service: 'wallrpc.pirl.io',
-      url: 'https://wallrpc.pirl.io'
     }
   ],
 
