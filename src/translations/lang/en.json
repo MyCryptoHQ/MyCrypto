@@ -1034,7 +1034,7 @@
     "NAVIGATION_NEW": "New",
     "NAVIGATION_MENU": "Menu",
     "TOKEN_ALLOWANCES": "Token Allowances",
-    "TOKEN_ALLOWANCES_DESC": "Token allowances means other address can spend your tokens - this is usually needed for contract interaction. You can check with this utiity tool on who has spending access on your tokens.",
+    "TOKEN_ALLOWANCES_DESC": "Token allowances means other address can spend your tokens - this is usually needed for contract interaction. You can check with this utility tool on who has spending access on your tokens.",
     "TOKEN_ALLOWANCES_INSPECT_TOKENS": "Check Tokens",
     "TOKEN_ALLOWANCES_NO_TOKENS_ERROR": "You do not have any tracked ERC20 tokens on this address!",
     "TOKEN_ALLOWANCES_UNKNOWN_ERROR": "Unknown Error!",
