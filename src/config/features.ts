@@ -44,5 +44,6 @@ export const FEATURE_FLAGS = {
   GOLEM_TOKEN_MIGRATION: true,
   CUSTOM_NETWORKS: IS_DEV,
   FAUCET: true,
-  ANALYTICS: !IS_DEV // Analytics requires running local server and setting a SEGEMENT_WRITE_KEY in .env
+  ANALYTICS: true
+  // ANALYTICS: !IS_DEV // Analytics requires running local server and setting a SEGEMENT_WRITE_KEY in .env
 };
