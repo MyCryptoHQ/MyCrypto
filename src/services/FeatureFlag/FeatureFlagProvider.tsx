@@ -7,7 +7,7 @@ import {
   getFeatureFlags,
   resetFeatureFlags as resetFeatureFlagsAction,
   setFeatureFlag as setFeatureFlagAction
-} from './FeatureFlag';
+} from './slice';
 
 export interface IFeatureFlagContext {
   featureFlags: ReturnType<typeof getFeatureFlags>;

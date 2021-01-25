@@ -8,3 +8,4 @@ export {
   FeatureFlags,
   initialState
 } from './slice';
+export { FeatureFlagProvider, useFeatureFlags } from './FeatureFlagProvider';

@@ -1,6 +1,7 @@
 import { call } from 'redux-saga-test-plan/matchers';
 import { expectSaga, mockAppState } from 'test-utils';
 
+import { featureFlagSlice } from '../FeatureFlag';
 import { initialState, default as settingsSlice } from '../Store/store/settings.slice';
 import { default as AnalyticsService, TrackParams } from './Analytics';
 import { analyticsSaga, initAnalytics, trackEvent, trackEventWorker } from './saga';
@@ -18,7 +19,7 @@ describe('AnalyticsSaga', () => {
     return expectSaga(initAnalytics)
       .withState({
         ...mockAppState({ [settingsSlice.name]: initialState }),
-        featureFlags: { ANALYTICS: false }
+        [featureFlagSlice.name]: { ANALYTICS: false }
       })
       .run()
       .then(({ effects }) => {
