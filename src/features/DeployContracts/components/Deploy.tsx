@@ -23,10 +23,12 @@ import { ITxConfig, NetworkId, StoreAccount } from '@types';
 import {
   baseToConvertedUnit,
   getAccountsByNetwork,
+  getAccountsByViewOnly,
   hexToString,
   hexWeiToString,
   inputGasPriceToHex
 } from '@utils';
+import { pipe } from '@vendor';
 
 import { constructGasCallProps } from '../helpers';
 
@@ -100,7 +102,10 @@ export const Deploy = (props: Props) => {
   const { accounts } = useContext(StoreContext);
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
-  const filteredAccounts = getAccountsByNetwork({ accounts, networkId });
+  const filteredAccounts = pipe(
+    (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
+    (a) => getAccountsByViewOnly(a, false)
+  )(accounts);
 
   useEffect(() => {
     if (!account) return;

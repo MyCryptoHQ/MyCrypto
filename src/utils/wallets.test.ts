@@ -11,7 +11,7 @@ import {
 
 describe('getAccountsByNetwork', () => {
   it('filters correctly by default', () => {
-    expect(getAccountsByNetwork({ accounts: fAccounts, networkId: 'Ropsten' })).toHaveLength(4);
+    expect(getAccountsByNetwork(fAccounts, 'Ropsten')).toHaveLength(4);
   });
 });
 

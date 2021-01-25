@@ -367,7 +367,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     },
     getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
       pipe(
-        (a: StoreAccount[]) => getAccountsByNetwork({ accounts: a, networkId: networkId || true }),
+        (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
         (a) => getAccountsByViewOnly(a, includeViewOnly),
         sortByLabel
       )(accounts)[0],
