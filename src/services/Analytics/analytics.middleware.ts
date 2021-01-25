@@ -1,6 +1,6 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-import { addAccounts, getAccounts } from '@store';
+import { addAccounts } from '@store';
 
 import { trackEvent } from './saga';
 
@@ -11,11 +11,10 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
 ) => {
   switch (action.type) {
     case addAccounts.type: {
-      const curr = getAccounts(state.getState()).length;
       state.dispatch(
         trackEvent({
           name: 'Add Account',
-          params: { before: curr, after: curr + action.payload.length }
+          params: { qty: action.payload.length, walletId: action.payload[0].walletId } // multiple add accounts are always of the same type.
         })
       );
       break;
