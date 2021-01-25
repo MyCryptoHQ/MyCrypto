@@ -25,7 +25,7 @@ export function* analyticsSaga() {
   ]);
 }
 
-function* initAnalytics() {
+export function* initAnalytics() {
   const isActive = yield select(isActiveFeature('ANALYTICS'));
   const canTrack = yield select(canTrackProductAnalytics);
   if (isActive && canTrack) {

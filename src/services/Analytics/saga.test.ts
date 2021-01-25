@@ -3,16 +3,29 @@ import { expectSaga, mockAppState } from 'test-utils';
 
 import { initialState, default as settingsSlice } from '../Store/store/settings.slice';
 import { default as AnalyticsService, TrackParams } from './Analytics';
-import { analyticsSaga, trackEvent, trackEventWorker } from './saga';
+import { analyticsSaga, initAnalytics, trackEvent, trackEventWorker } from './saga';
 
 describe('AnalyticsSaga', () => {
-  it('calls AnalyticsService on dispatch', () => {
+  it('analyticsSaga(): calls AnalyticsService on dispatch', () => {
     const params: TrackParams = { name: 'Add Account' };
     expectSaga(analyticsSaga)
       .withState(mockAppState({ [settingsSlice.name]: initialState }))
       .provide([[call.fn(AnalyticsService.track), params]])
       .dispatch(trackEvent(params))
       .silentRun();
+  });
+  it('trackInit(): noOps when feature is inactive', () => {
+    return expectSaga(initAnalytics)
+      .withState({
+        ...mockAppState({ [settingsSlice.name]: initialState }),
+        featureFlags: { ANALYTICS: false }
+      })
+      .run()
+      .then(({ effects }) => {
+        expect(effects.select).toHaveLength(2);
+        expect(effects.call).toBeUndefined();
+        expect(effects.put).toBeUndefined();
+      });
   });
   it('respects user tracking preferences', () => {
     const params: TrackParams = { name: 'Add Account' };
