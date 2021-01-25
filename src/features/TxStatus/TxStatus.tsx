@@ -6,7 +6,14 @@ import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, ContentPanel, InlineMessage, NetworkSelector, TxReceipt } from '@components';
+import {
+  Button,
+  ContentPanel,
+  InlineMessage,
+  NetworkSelector,
+  Spinner,
+  TxReceipt
+} from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { StoreContext, useAssets, useNetworks, useTxHistory } from '@services';
 import { COLORS, SPACING } from '@theme';
@@ -17,25 +24,13 @@ import { useEffectOnce, useUpdateEffect } from '@vendor';
 import { fetchTxStatus, makeTx } from './helpers';
 import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
 
-const Loader = styled.div`
-  padding-bottom: 6rem;
-  transform: scale(3.75);
-
-  &&::before {
-    border-width: 0.75px;
-  }
-
-  &&::after {
-    border-width: 0.75px;
-  }
-`;
-
 const Wrapper = styled.div<{ fullPageLoading: boolean }>`
   ${({ fullPageLoading }) =>
     fullPageLoading &&
     `
     display: flex;
     justify-content: center;
+    align-items: center;
 `}
   min-height: 600px;
 `;
@@ -140,7 +135,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             </Button>
           </>
         )}
-        {fullPageLoading && <Loader className="loading" />}
+        {fullPageLoading && <Spinner color="brand" size={4} />}
         {tx && (
           <>
             <TxReceipt
