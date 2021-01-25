@@ -34,6 +34,9 @@ export const FEATURE_FLAGS = {
   SIGN_MESSAGE: 'core',
   VERIFY_MESSAGE: 'core',
 
+  /* Product Tools */
+  ANALYTICS: 'core',
+
   /* Misc */
   PRIVATE_TAGS: true,
   PROTECT_TX: true,
@@ -43,7 +46,5 @@ export const FEATURE_FLAGS = {
   ANT_TOKEN_MIGRATION: true,
   GOLEM_TOKEN_MIGRATION: true,
   CUSTOM_NETWORKS: IS_DEV,
-  FAUCET: true,
-  ANALYTICS: true
-  // ANALYTICS: !IS_DEV // Analytics requires running local server and setting a SEGEMENT_WRITE_KEY in .env
+  FAUCET: true
 };
