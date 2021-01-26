@@ -8,6 +8,7 @@ import BannerAd from '@components/BannerAd/BannerAd';
 import { useFeatureFlags } from '@services';
 import { StoreContext, useAccounts } from '@services/Store';
 import { translateRaw } from '@translations';
+import { useScreenSize } from '@utils';
 
 import { DashboardZapCTA } from '../DeFiZap';
 import { NotificationsPanel } from '../NotificationsPanel';
@@ -37,7 +38,8 @@ export default function Dashboard() {
   const storeContextState = useContext(StoreContext);
   const { isMyCryptoMember, currentAccounts } = storeContextState;
   const { accounts } = useAccounts();
-  const relevantActions = filterDashboardActions(actions, storeContextState);
+  const { isMobile } = useScreenSize();
+  const relevantActions = filterDashboardActions(actions, isMobile);
 
   return (
     <DashboardWrapper>

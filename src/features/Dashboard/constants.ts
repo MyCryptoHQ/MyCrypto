@@ -1,6 +1,7 @@
 import buyIcon from '@assets/images/icn-buy.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
+import sentIcon from '@assets/images/icn-sent.svg';
 import swapIcon from '@assets/images/icn-swap.svg';
 import { ROUTE_PATHS } from '@config';
 import { translateRaw } from '@translations';
@@ -31,5 +32,12 @@ export const actions: Action[] = [
     title: translateRaw('DASHBOARD_ACTIONS_BUY_TITLE'),
     link: ROUTE_PATHS.BUY.path,
     description: translateRaw('DASHBOARD_ACTIONS_BUY_SUBTITLE')
+  },
+  {
+    icon: sentIcon,
+    title: translateRaw('ADD_ACCOUNT'),
+    link: ROUTE_PATHS.ADD_ACCOUNT.path,
+    description: '',
+    filter: (isMobile) => isMobile
   }
 ];
