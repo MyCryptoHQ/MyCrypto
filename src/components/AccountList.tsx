@@ -530,7 +530,7 @@ const BuildAccountTable = (
           </LabelWithWallet>
         </Label>,
         <EthAddress key={index} address={account.address} truncate={true} isCopyable={copyable} />,
-        <Network key={index} color={account.network.color || COLORS.LIGHT_PURPLE}>
+        <Network key={index} color={account?.network?.color || COLORS.LIGHT_PURPLE}>
           {account.networkId}
         </Network>,
         isScanning ? (
