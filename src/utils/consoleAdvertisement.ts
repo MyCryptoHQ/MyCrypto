@@ -13,6 +13,6 @@ export default function consoleAdvertisement() {
 
                     https://mycrypto.com/jobs
     `,
-    'color: #FFF;'
+    'color: #007896;'
   );
 }
