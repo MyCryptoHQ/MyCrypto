@@ -6,7 +6,7 @@ import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
 import { StoreContext } from '@services/Store/StoreProvider';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
 import { dateIsBetween } from '@utils';
@@ -17,7 +17,9 @@ import { ActionDetails, ActionsList } from './components';
 import { actionTemplates } from './constants';
 
 const SDashboardPanel = styled(DashboardPanel)`
-  min-height: 280px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    min-height: 280px;
+  }
 `;
 
 const DetailsHeading = styled.div`
@@ -30,6 +32,7 @@ const DetailsHeading = styled.div`
 
 const SIcon = styled(Icon)`
   cursor: pointer;
+  min-width: 20px;
 `;
 
 const HeadingText = styled.span`
@@ -82,7 +85,7 @@ export const ActionPanel = () => {
           <Box variant="rowAlign">
             <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
             <DetailsHeading>
-              <Icon width={20} type={currentAction.icon} />
+              <Icon width={20} minWidth={20} marginX={SPACING.XS} type={currentAction.icon} />
               <HeadingText>{currentAction.heading}</HeadingText>
             </DetailsHeading>
             <SIcon width={20} type="closed-eye" onClick={dismiss} />
