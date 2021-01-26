@@ -4,5 +4,5 @@ Contact: https://security.mycrypto.com
 Preferred-Languages: en
 Canonical: https://mycrypto.com/.well-known/security.txt
 Policy: https://security.mycrypto.com/#intro
-Hiring: https://about.mycrypto.com/jobs/
+Hiring: https://mycrypto.com/jobs/
 OpenBugBounty: https://openbugbounty.org/bugbounty/MyCrypto/
