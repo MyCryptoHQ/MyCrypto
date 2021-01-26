@@ -20,6 +20,9 @@ export const WalletFactory = {
   [WalletId.METAMASK]: {
     init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
   } as WalletService,
+  [WalletId.STATUS]: {
+    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+  } as WalletService,
   [WalletId.FRAME]: {
     init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
   } as WalletService,
