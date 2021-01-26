@@ -16,6 +16,7 @@ import {
   Network,
   NetworkId,
   NetworkNodes,
+  NodeType,
   TAddress,
   TUuid
 } from '@types';
@@ -62,7 +63,9 @@ export const mergeConfigWithLocalStorage = (
       ([networkId, networkSetup]: [NetworkId, NetworkNodes]) => {
         config[networkId].selectedNode = networkSetup.selectedNode;
         if (networkSetup.nodes) {
-          config[networkId].nodes = networkSetup.nodes;
+          config[networkId].nodes = networkSetup.nodes.filter(
+            (node) => node.type !== NodeType.WEB3
+          );
         }
       }
     );
@@ -134,7 +137,16 @@ export function deMarshallState(st: DataStore): LocalStorage {
     [LSKeys.CONTRACTS]: arrayToObj('uuid')(st[LSKeys.CONTRACTS].filter((c) => c.isCustom)),
     [LSKeys.NETWORKS]: st[LSKeys.NETWORKS]
       .filter((c) => c.isCustom)
-      .reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {} as Record<NetworkId, Network>),
+      .reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr.id]: {
+            ...curr,
+            nodes: curr.nodes.filter(({ type }) => type !== NodeType.WEB3)
+          }
+        }),
+        {} as Record<NetworkId, Network>
+      ),
     [LSKeys.NOTIFICATIONS]: arrayToObj('uuid')(st[LSKeys.NOTIFICATIONS]),
     [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
     [LSKeys.PASSWORD]: st[LSKeys.PASSWORD],

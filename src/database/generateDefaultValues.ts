@@ -11,7 +11,8 @@ import {
   Network,
   NetworkId,
   NetworkLegacy,
-  NodeOptions
+  NodeOptions,
+  NodeType
 } from '@types';
 import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils/generateUUID';
 import { chain, filter, map, mapObjIndexed, mergeRight, pipe, reduce } from '@vendor';
@@ -45,7 +46,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
       tokenExplorer: n.tokenExplorer,
       baseAsset: baseAssetUuid, // Set baseAssetUuid
       baseUnit: n.unit,
-      nodes,
+      nodes: nodes.filter(({ type }) => type !== NodeType.WEB3),
       selectedNode: n.selectedNode
     };
   };
