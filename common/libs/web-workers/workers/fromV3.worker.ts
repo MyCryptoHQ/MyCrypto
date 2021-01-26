@@ -1,4 +1,5 @@
 import Wallet from 'ethereumjs-wallet';
+import 'regenerator-runtime/runtime.js';
 
 const worker: Worker = self as any;
 interface DecryptionParameters {

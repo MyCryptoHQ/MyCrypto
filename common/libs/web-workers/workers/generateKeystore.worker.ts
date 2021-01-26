@@ -1,4 +1,5 @@
 import Wallet from 'ethereumjs-wallet';
+import 'regenerator-runtime/runtime.js';
 
 const worker: Worker = self as any;
 
@@ -12,7 +13,7 @@ worker.onmessage = (event: MessageEvent) => {
   const wallet = Wallet.generate();
   const filename = wallet.getV3Filename();
   const privateKey = wallet.getPrivateKeyString();
-  const keystore = wallet.toV3(info.password, { n: info.N_FACTOR });
-
-  worker.postMessage({ keystore, filename, privateKey });
+  wallet.toV3(info.password, { n: info.N_FACTOR }).then(keystore => {
+    worker.postMessage({ keystore, filename, privateKey });
+  });
 };
