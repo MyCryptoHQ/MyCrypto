@@ -16,6 +16,7 @@ import {
   Amount,
   AssetIcon,
   Box,
+  Button,
   DashboardPanel,
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
@@ -29,7 +30,7 @@ import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount } from '@types';
-import { bigify, convertToFiat, isSameAddress } from '@utils';
+import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
@@ -168,6 +169,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { settings } = useSettings();
   const { txHistory } = useTxHistory();
   const { createContact, updateContact } = useContacts();
+  const { isMobile } = useScreenSize();
 
   const accountTxs = txHistory.filter((tx) =>
     accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
@@ -234,12 +236,19 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
             }}
           />,
-          <RouterLink
-            key={4}
-            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}
-          >
-            <Icon type="more" alt="View more information about this transaction" height="24px" />
-          </RouterLink>
+          <Box key={4} variant="rowCenter">
+            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
+              {isMobile ? (
+                <Button>View</Button>
+              ) : (
+                <Icon
+                  type="more"
+                  alt="View more information about this transaction"
+                  height="24px"
+                />
+              )}
+            </RouterLink>
+          </Box>
         ];
       }
     );

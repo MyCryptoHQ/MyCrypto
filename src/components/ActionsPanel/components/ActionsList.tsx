@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import IconArrow from '@components/IconArrow';
 import { Text } from '@components/NewTypography';
 import { useUserActions } from '@services';
-import { COLORS, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ACTION_STATE, ActionTemplate } from '@types';
 import { descend, filter, flatten, groupBy, pipe, prop, sort, union, values } from '@vendor';
@@ -18,7 +18,9 @@ interface ActionsListProps {
 }
 
 const ActionsContainer = styled.div`
-  height: 240px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    height: 240px;
+  }
   overflow-y: scroll;
 `;
 

@@ -3,6 +3,8 @@ import React, { ReactNode } from 'react';
 import { scale } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';
 
+import { isEmpty } from '@vendor';
+
 import Typography from './Typography';
 
 type StackedCardEntry = string | ReactNode;
@@ -65,14 +67,10 @@ const StackedCardIcons = styled.div`
     `}
 `;
 
-// Arbitrary left margin to allow AccountList rows to align to
-// the Identicon + label display.
-// @todo: remove arbitrary style.
 const StackedCardBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.5625em;
-  margin-left: calc(14px + 2em);
 `;
 
 const StackedCardEntry = styled.dl`
@@ -115,7 +113,7 @@ export const StackedCard = ({ heading, icons = [], entries, ...rest }: Props) =>
       <StackedCardBody>
         {entries.map(([label, value], index) => (
           <StackedCardEntry key={index}>
-            <StackedCardLabel>{label}</StackedCardLabel>
+            {!isEmpty(label) && <StackedCardLabel>{label}</StackedCardLabel>}
             <StackedCardValue>{value}</StackedCardValue>
           </StackedCardEntry>
         ))}

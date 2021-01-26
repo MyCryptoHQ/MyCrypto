@@ -3,7 +3,7 @@ import React from 'react';
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
 import styled from 'styled-components';
-import { layout, LayoutProps } from 'styled-system';
+import { layout, LayoutProps, space } from 'styled-system';
 
 import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
@@ -119,10 +119,12 @@ import trezorIcon from '@assets/images/wallets/trezor.svg';
 
 const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<LayoutProps>`
   ${layout}
+  ${space}
 `;
 
 const SImg = styled.img<LayoutProps>`
   ${layout}
+  ${space}
 `;
 
 const svgIcons = {

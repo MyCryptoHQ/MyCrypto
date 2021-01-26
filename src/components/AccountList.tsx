@@ -41,9 +41,9 @@ import { DashboardPanel } from './DashboardPanel';
 import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
 
-const SDashboardPanel = styled(DashboardPanel)`
+const SDashboardPanel = styled(DashboardPanel)<{ dashboard?: boolean }>`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    height: 508px;
+    ${({ dashboard }) => dashboard && `height: 508px;`}
   }
 `;
 
@@ -211,6 +211,7 @@ export default function AccountList(props: AccountListProps) {
 
   return (
     <SDashboardPanel
+      dashboard={dashboard}
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
@@ -346,7 +347,7 @@ const BuildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
-  const { isXsScreen } = useScreenSize();
+  const { isMobile } = useScreenSize();
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
@@ -387,7 +388,7 @@ const BuildAccountTable = (
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
   const convertColumnToClickable = (id: IColumnValues) =>
-    isXsScreen ? (
+    isMobile ? (
       translateRaw(id)
     ) : (
       <div key={id} onClick={() => updateSortingState(id)}>
@@ -405,7 +406,7 @@ const BuildAccountTable = (
       onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
     >
       {translateRaw('ACCOUNT_LIST_VALUE')}
-      {!isXsScreen && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
+      {!isMobile && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
