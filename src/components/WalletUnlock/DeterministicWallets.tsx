@@ -60,6 +60,7 @@ const Title = styled.div`
 
 const SDropdown = styled.div`
   width: 365px;
+  margin-left: ${SPACING.SM};
 
   @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     width: 100%;
@@ -382,7 +383,7 @@ export function DeterministicWalletsClass({
           <label>
             {translate('DPATH')}{' '}
             <NewTabLink href={HELP_ARTICLE.DPATH}>
-              <img src={questionSVG} />
+              <img width="16px" src={questionSVG} />
             </NewTabLink>
           </label>
           <Selector
