@@ -76,10 +76,6 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
       <Body textAlign="center" fontSize="2" paddingTop="16px">
         {translate(`ADD_ACCOUNT_WEB3_DESC`)}
       </Body>
-      {JSON.stringify((window as any).ethereum, null, 2)}
-      <br />
-      {JSON.stringify((window as any).web3, null, 2)}
-      <br />
       <Box m="2em" variant="columnCenter">
         <div className="Web3-img-container">
           <div className={isDefault ? 'Web3-img-default' : 'Web3-img'}>

@@ -107,16 +107,11 @@ export async function setupWeb3Node() {
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   const { ethereum } = window as any;
   if (ethereum) {
-    console.debug(`[setupWeb3Node]: found window.ethereum`);
     // Overwrite the legacy Web3 with the newer version.
-    console.debug(`[setupWeb3Node]: setting up window.web3`);
     if ((window as any).Web3) {
       (window as any).web3 = new (window as any).Web3(ethereum);
     }
-    console.debug(`[setupWeb3Node]: set up window.web3`);
     const web3Node = new Web3Node();
-    console.debug(`[setupWeb3Node]: web3Node: ${JSON.stringify(web3Node)}`);
-    console.debug(`[setupWeb3Node]: requesting permissions`);
     const detectedPermissions = await getPermissions(web3Node);
     if (detectedPermissions) {
       return await getChainIdAndLib();
@@ -131,10 +126,8 @@ export async function setupWeb3Node() {
     if (legacyConnect) {
       return await getChainIdAndLib();
     }
-    console.debug(`[setupWeb3Node]: legacyConnect not successful. returning permission denied.`);
     throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
-    console.debug(`[setupWeb3Node]: did not find window.ethereum`);
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;
 
