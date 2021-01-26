@@ -13,6 +13,7 @@ import {
   AssetSelector,
   ContentPanel,
   CopyableCodeBlock,
+  FlowFooter,
   InlineMessage,
   QRCode
 } from '@components';
@@ -283,6 +284,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
           </Form>
         )}
       </Formik>
+      <FlowFooter type="SUPPORT" />
     </ContentPanel>
   );
 }

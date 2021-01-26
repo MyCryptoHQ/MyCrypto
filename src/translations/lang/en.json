@@ -1065,6 +1065,8 @@
     "FLOW_FOOTER_GENERAL_1": "Create New Account",
     "FLOW_FOOTER_GENERAL_2": "Use Secret Phrase",
     "FLOW_FOOTER_GENERAL_3": "Import Settings",
-    "FLOW_FOOTER_GENERAL_4": "Contact Support"
+    "FLOW_FOOTER_SUPPORT": "Contact Support",
+    "FLOW_FOOTER_WALLETCONNECT_1": "What is WalletConnect",
+    "FLOW_FOOTER_WALLETCONNECT_2": "WalletConnect Instructions"
   }
 }

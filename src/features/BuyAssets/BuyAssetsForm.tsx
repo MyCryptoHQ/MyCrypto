@@ -6,7 +6,13 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { object } from 'yup';
 
-import { AccountSelector, AssetSelector, ContentPanel, InlineMessage } from '@components';
+import {
+  AccountSelector,
+  AssetSelector,
+  ContentPanel,
+  FlowFooter,
+  InlineMessage
+} from '@components';
 import {
   BUY_MYCRYPTO_WEBSITE,
   ETHUUID,
@@ -192,6 +198,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
+      <FlowFooter type="SUPPORT" />
     </ContentPanel>
   );
 };

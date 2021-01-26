@@ -24,7 +24,9 @@ export enum KB_HELP_ARTICLE {
   MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
   HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper',
   WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether',
-  WHAT_IS_SCREEN_LOCK = 'how-to/accessing-wallet/what-is-screen-lock'
+  WHAT_IS_SCREEN_LOCK = 'how-to/accessing-wallet/what-is-screen-lock',
+  WHAT_IS_WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
+  HOW_TO_USE_WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto'
 }
 
 export enum HELP_ARTICLE {

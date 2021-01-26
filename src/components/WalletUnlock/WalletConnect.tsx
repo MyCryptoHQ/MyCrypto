@@ -3,8 +3,7 @@ import React, { useEffect } from 'react';
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
-import { Button, Overlay, QRCodeContainer, Typography } from '@components';
-import { getWalletConfig } from '@config';
+import { Button, FlowFooter, Overlay, QRCodeContainer, Typography } from '@components';
 import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -54,12 +53,6 @@ const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
   font-size: ${FONT_SIZE.MD};
 `;
 
-const SFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
-`;
-
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,14 +64,15 @@ const SContainer = styled.div`
 `;
 
 const WalletService = WalletFactory[WalletId.WALLETCONNECT];
-const wikiLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
 
 export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnProps) {
   const { state, requestConnection, signMessage } = useWalletConnectProps;
 
   useEffect(() => {
     if (!state.detectedAddress) return;
-    onUnlock(WalletService.init({ address: state.detectedAddress, signMessageHandler: signMessage }));
+    onUnlock(
+      WalletService.init({ address: state.detectedAddress, signMessageHandler: signMessage })
+    );
   }, [state.detectedAddress]);
 
   return (
@@ -110,9 +104,7 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
           <QRCodeContainer data={state.uri} disableSpinner={true} />
         </SSection>
       </SContent>
-      <SFooter>
-        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</Typography>
-      </SFooter>
+      <FlowFooter type="WALLETCONNECT" />
     </>
   );
 }
