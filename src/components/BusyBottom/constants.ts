@@ -66,7 +66,7 @@ export const configs: Record<
     },
     {
       copy: 'BUSY_BOTTOM_TROUBLESHOOTING',
-      link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
+      link: getKBHelpArticle(KB_HELP_ARTICLE.LEDGER_TROUBLESHOOTING),
       external: true
     },
     SUPPORT_LINK

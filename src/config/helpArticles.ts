@@ -27,7 +27,8 @@ export enum KB_HELP_ARTICLE {
   WHAT_IS_SCREEN_LOCK = 'how-to/accessing-wallet/what-is-screen-lock',
   WHAT_IS_WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
   HOW_TO_USE_WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto',
-  TREZOR_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto'
+  TREZOR_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto',
+  LEDGER_TROUBLESHOOTING = 'troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto'
 }
 
 export enum HELP_ARTICLE {
