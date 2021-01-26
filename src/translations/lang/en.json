@@ -320,7 +320,7 @@
     "FAUCET_ADD_ACCOUNT_LINK": "add an existing account",
     "FAUCET_CREATE_ACCOUNT_LINK": "create a new one",
     "FAUCET_LIMIT_REACHED": "Unfortunately, you have reached your daily limit. Please try again later.",
-    "FAUCET_NOT_SURE": "Not sure what a faucet or testnet is?",
+    "FAUCET_NOT_SURE": "Want to learn more about faucets or request a specific amount of testnet ETH?",
     "FAUCET_RUNNING_LOW": "Our faucet is currently running low on this network. Please try again later.",
     "FAUCET_SHARE": "Share on Twitter",
     "FAUCET_SUCCESS": "Success! The testnet ETH has been sent to your wallet.",
@@ -1070,6 +1070,7 @@
     "FLOW_FOOTER_WALLETCONNECT_2": "WalletConnect Instructions",
     "FLOW_FOOTER_TREZOR_1": "Get a Trezor",
     "FLOW_FOOTER_TROUBLESHOOTING": "Troubleshooting Tips",
-    "FLOW_FOOTER_LEDGER_1": "Get a Ledger"
+    "FLOW_FOOTER_LEDGER_1": "Get a Ledger",
+    "VISIT_KB": "Visit the Knowledge Base"
   }
 }
