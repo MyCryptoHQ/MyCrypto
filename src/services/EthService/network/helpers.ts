@@ -5,6 +5,7 @@ import {
   InfuraProvider,
   JsonRpcProvider
 } from '@ethersproject/providers';
+import { FallbackProviderConfig } from '@ethersproject/providers/lib/fallback-provider';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
 
@@ -75,9 +76,12 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any, chainId));
+  const providers: FallbackProviderConfig[] = sortedNodes.map((n, i) => ({
+    provider: getProvider(id, n as any, chainId),
+    priority: i
+  }));
 
-  return new FallbackProvider(providers);
+  return new FallbackProvider(providers, 0);
 };
 
 export const getDPath = (network: Network | undefined, type: DPathFormat): DPath | undefined => {
