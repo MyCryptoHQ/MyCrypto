@@ -52,7 +52,7 @@ describe('SignTransactionWallets: WalletConnect', () => {
 
   test('It renders and can sign', async () => {
     const titleText = /Connect and Unlock/i;
-    const footerText = /Here are some troubleshooting/i;
+    const footerText = /What is WalletConnect/i;
 
     const { getByText } = getComponent(defaultProps);
     // Check html
