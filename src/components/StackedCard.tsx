@@ -3,6 +3,8 @@ import React, { ReactNode } from 'react';
 import { scale } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';
 
+import { isEmpty } from '@vendor';
+
 import Typography from './Typography';
 
 type StackedCardEntry = string | ReactNode;
@@ -111,7 +113,7 @@ export const StackedCard = ({ heading, icons = [], entries, ...rest }: Props) =>
       <StackedCardBody>
         {entries.map(([label, value], index) => (
           <StackedCardEntry key={index}>
-            <StackedCardLabel>{label}</StackedCardLabel>
+            {!isEmpty(label) && <StackedCardLabel>{label}</StackedCardLabel>}
             <StackedCardValue>{value}</StackedCardValue>
           </StackedCardEntry>
         ))}
