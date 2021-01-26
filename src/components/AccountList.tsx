@@ -211,6 +211,7 @@ export default function AccountList(props: AccountListProps) {
 
   return (
     <SDashboardPanel
+      dashboard={dashboard}
       heading={
         <>
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
