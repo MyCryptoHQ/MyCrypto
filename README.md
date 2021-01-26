@@ -87,7 +87,7 @@ yarn test:e2e:dev
 You can also run a single file
 
 ```bash
-yarn test:e2e:dev __tests__/layout.test.js
+yarn test:e2e:dev __tests__/dashboard.test.js
 ```
 
 ## Environments
