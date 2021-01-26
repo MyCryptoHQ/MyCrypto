@@ -54,7 +54,6 @@ interface UnlockProps extends Props {
 interface IWeb3UnlockError {
   error: boolean;
   message: string;
-  errorTotal: any;
 }
 const WalletService = WalletFactory[WalletId.WEB3];
 
@@ -86,7 +85,7 @@ const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch
       setIsSubmitting(false);
       onUnlock(walletPayload);
     } catch (e) {
-      setWeb3UnlockError({ error: true, message: e.message, errorTotal: e });
+      setWeb3UnlockError({ error: true, message: e.message });
       setWeb3Unlocked(false);
       setIsSubmitting(false);
     }
