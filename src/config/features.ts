@@ -23,7 +23,7 @@ export const FEATURE_FLAGS = {
   CREATE_WALLET: 'core',
   SWAP: 'core',
   TX_STATUS: 'core',
-  DEFIZAP: IS_DEV,
+  DEFIZAP: false,
 
   /* Tools */
   BROADCAST_TX: 'core',
