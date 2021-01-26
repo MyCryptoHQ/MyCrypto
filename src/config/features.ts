@@ -1,7 +1,5 @@
 import { IS_DEV } from '@utils/environment';
 
-export type IFeatureFlags = typeof FEATURE_FLAGS;
-
 /**
  * We use 'core' to distinguish between the permanent features
  * and the ones that we want to toggle with DevTools.

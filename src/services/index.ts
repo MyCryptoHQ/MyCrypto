@@ -5,5 +5,5 @@ export * from './Store';
 export * from './WalletService';
 export * from './Rates';
 export { DevToolsContext, DevToolsProvider, useDevTools } from './DevToolsProvider';
-export { FeatureFlagContext, FeatureFlagProvider, useFeatureFlags } from './FeatureFlagProvider';
+export { FeatureFlagProvider, useFeatureFlags } from './FeatureFlag';
 export * from './TxHistory';
