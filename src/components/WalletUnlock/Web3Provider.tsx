@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { Box, Button, Heading, InlineMessage, NewTabLink, Web3ProviderInstall } from '@components';
 import { Body } from '@components/NewTypography';
@@ -65,6 +65,15 @@ const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch
 
   const isDefault = web3ProviderSettings.id === WalletId.WEB3;
   const transProps = { $walletId: web3ProviderSettings.name };
+
+  useEffect(
+    () => {
+      // @ts-expect-error bla
+      console.re.log(window.ethereum);
+    },
+    // @ts-expect-error bla
+    [window.ethereum]
+  );
 
   return (
     <Box p="2.5em">
