@@ -3,7 +3,7 @@ import {
   EtherscanProvider,
   FallbackProvider,
   InfuraProvider,
-  JsonRpcProvider
+  StaticJsonRpcProvider
 } from '@ethersproject/providers';
 import { FallbackProviderConfig } from '@ethersproject/providers/lib/fallback-provider';
 import isEmpty from 'lodash/isEmpty';
@@ -37,7 +37,7 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
     // default case covers the remaining NodeTypes.
     default: {
       if ('auth' in node && node.auth) {
-        return new JsonRpcProvider(
+        return new StaticJsonRpcProvider(
           {
             url,
             user: node.auth.username,
@@ -47,7 +47,7 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
           chainId
         );
       }
-      return new JsonRpcProvider(url, chainId);
+      return new StaticJsonRpcProvider(url, chainId);
     }
   }
 };
