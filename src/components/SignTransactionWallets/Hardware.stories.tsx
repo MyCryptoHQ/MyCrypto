@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FlowFooterConfig } from '@components/FlowFooter';
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
@@ -14,7 +15,7 @@ const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
   signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
     $network: DEFAULT_NETWORK
   }),
-  wallet: 'LEDGER',
+  wallet: FlowFooterConfig.LEDGER,
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
   isTxSignatureRequestDenied: true
 };

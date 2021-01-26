@@ -5,7 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { FlowFooter } from '@components';
+import { FlowFooter, FlowFooterConfig } from '@components';
 import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
@@ -110,7 +110,7 @@ const WalletList = ({
             );
           })}
       </WalletsContainer>
-      <FlowFooter type="GENERAL" />
+      <FlowFooter type={FlowFooterConfig.GENERAL} />
     </div>
   );
 };

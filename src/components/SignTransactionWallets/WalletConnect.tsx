@@ -7,6 +7,7 @@ import {
   Button,
   CodeBlock,
   FlowFooter,
+  FlowFooterConfig,
   Overlay,
   QRCodeContainer,
   Spinner,
@@ -218,7 +219,7 @@ export function SignTransactionWalletConnect({
         </SSection>
       </SContent>
       <SFooter>
-        <FlowFooter type="WALLETCONNECT" />
+        <FlowFooter type={FlowFooterConfig.WALLETCONNECT} />
       </SFooter>
     </>
   );

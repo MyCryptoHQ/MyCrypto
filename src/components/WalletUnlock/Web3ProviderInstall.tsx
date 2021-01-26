@@ -37,10 +37,6 @@ const DownloadOption = styled(NewTabLink)`
   align-self: flex-start;
 `;
 
-const Footer = styled.div`
-  text-align: center;
-`;
-
 const STypography = styled(Typography)`
   text-align: center;
 `;
@@ -107,13 +103,13 @@ const InstallMetaMask = () => {
           <Button>{translate('PROVIDER_DOWNLOAD', { $provider: provider.name })}</Button>
         </a>
       </Box>
-      <Footer>
+      <Box style={{ textAlign: 'center' }} mt={4}>
         {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
         <NewTabLink
           content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
           href={DOWNLOAD_MYCRYPTO_LINK}
         />
-      </Footer>
+      </Box>
     </>
   );
 };

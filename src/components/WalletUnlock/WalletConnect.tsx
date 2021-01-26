@@ -3,7 +3,14 @@ import React, { useEffect } from 'react';
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
-import { Button, FlowFooter, Overlay, QRCodeContainer, Typography } from '@components';
+import {
+  Button,
+  FlowFooter,
+  FlowFooterConfig,
+  Overlay,
+  QRCodeContainer,
+  Typography
+} from '@components';
 import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -104,7 +111,7 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
           <QRCodeContainer data={state.uri} disableSpinner={true} />
         </SSection>
       </SContent>
-      <FlowFooter type="WALLETCONNECT" />
+      <FlowFooter type={FlowFooterConfig.WALLETCONNECT} />
     </>
   );
 }

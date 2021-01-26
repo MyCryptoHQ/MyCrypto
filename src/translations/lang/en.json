@@ -1060,6 +1060,8 @@
     "FLOW_FOOTER_TREZOR_1": "Get a Trezor",
     "FLOW_FOOTER_TROUBLESHOOTING": "Troubleshooting Tips",
     "FLOW_FOOTER_LEDGER_1": "Get a Ledger",
-    "VISIT_KB": "Visit the Knowledge Base"
+    "VISIT_KB": "Visit the Knowledge Base",
+    "FLOW_FOOTER_GET_WEB3": "Get $app",
+    "FLOW_FOOTER_METAMASK_1": "MetaMask Instructions"
   }
 }

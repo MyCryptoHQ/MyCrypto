@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { getAddress } from '@ethersproject/address';
 import { Web3Provider } from '@ethersproject/providers';
 
+import { FlowFooter, FlowFooterConfig } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import { ISignComponentProps, TAddress } from '@types';
+import { ISignComponentProps, TAddress, WalletId } from '@types';
 import { getWeb3Config, isSameAddress } from '@utils';
 
 import './Web3.scss';
@@ -152,11 +153,13 @@ export default function SignTransactionWeb3({
         </div>
         <div className="SignTransactionWeb3-description">{translateRaw('SIGN_TX_EXPLANATION')}</div>
         <div className="SignTransactionWeb3-footer">
-          {walletConfig.helpLink && (
-            <div className="SignTransactionWeb3-help">
-              {translate('SIGN_TX_HELP_LINK', { $helpLink: walletConfig.helpLink })}
-            </div>
-          )}
+          <FlowFooter
+            type={
+              walletConfig.id === WalletId.METAMASK
+                ? FlowFooterConfig.METAMASK_SIGN
+                : FlowFooterConfig.GENERIC_WEB3
+            }
+          />
         </div>
       </div>
     </>

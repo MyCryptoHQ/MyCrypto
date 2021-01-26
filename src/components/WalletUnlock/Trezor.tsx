@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Box, FlowFooter, Heading, Spinner } from '@components';
+import { Box, FlowFooter, FlowFooterConfig, Heading, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
@@ -98,7 +98,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
               </Button>
             )}
             <div className="TrezorDecrypt-footer">
-              <FlowFooter type="TREZOR" />
+              <FlowFooter type={FlowFooterConfig.TREZOR} />
             </div>
           </div>
         </Box>

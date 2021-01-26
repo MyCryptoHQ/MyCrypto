@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   FlowFooter,
+  FlowFooterConfig,
   Heading,
   Icon,
   InlineMessage,
@@ -131,7 +132,13 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         )}
       </Text>
       <HardwareFooter>
-        <FlowFooter type={walletId === WalletId.LEDGER_NANO_S_NEW ? 'LEDGER' : 'TREZOR'} />
+        <FlowFooter
+          type={
+            walletId === WalletId.LEDGER_NANO_S_NEW
+              ? FlowFooterConfig.LEDGER
+              : FlowFooterConfig.TREZOR
+          }
+        />
       </HardwareFooter>
     </Box>
   </Box>

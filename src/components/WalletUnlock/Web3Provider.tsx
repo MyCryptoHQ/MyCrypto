@@ -2,16 +2,17 @@ import React, { FC, useCallback, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Button, Heading, InlineMessage, NewTabLink, Web3ProviderInstall } from '@components';
+import { Box, Button, Heading, InlineMessage, Web3ProviderInstall } from '@components';
+import { FlowFooter, FlowFooterConfig } from '@components/FlowFooter';
 import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { BREAK_POINTS } from '@theme';
-import translate, { translateRaw } from '@translations';
+import translate from '@translations';
 import { FormData, WalletId } from '@types';
-import { hasWeb3Provider, useScreenSize } from '@utils';
+import { hasWeb3Provider } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 
 const Web3ImgContainer = styled.div`
@@ -58,7 +59,6 @@ interface IWeb3UnlockError {
 const WalletService = WalletFactory[WalletId.WEB3];
 
 const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch, onUnlock }) => {
-  const { isMobile } = useScreenSize();
   const { addNodeToNetwork, networks } = useNetworks();
   const [web3Unlocked, setWeb3Unlocked] = useState<boolean | undefined>(undefined);
   const [web3UnlockError, setWeb3UnlockError] = useState<IWeb3UnlockError | undefined>(undefined);
@@ -102,7 +102,6 @@ const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch
       web3UnlockError={web3UnlockError}
       web3ProviderSettings={web3ProviderSettings}
       isSubmitting={isSubmitting}
-      isMobile={isMobile}
       unlockWallet={unlockWallet}
     />
   );
@@ -111,7 +110,6 @@ const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch
 export interface Web3UnlockUIProps {
   isDefault: boolean;
   transProps: { $walletId: string };
-  isMobile: boolean;
   web3ProviderSettings: IWalletConfig;
   isSubmitting: boolean;
   web3Unlocked?: boolean;
@@ -126,7 +124,6 @@ export const Web3UnlockUI = ({
   isSubmitting,
   web3UnlockError,
   web3ProviderSettings,
-  isMobile,
   unlockWallet
 }: Web3UnlockUIProps) => (
   <Box p="2.5em">
@@ -160,27 +157,13 @@ export const Web3UnlockUI = ({
       )}
     </Box>
     <Footer>
-      <div>
-        {isDefault
-          ? translate('ADD_ACCOUNT_WEB3_FOOTER_DEFAULT', transProps)
-          : translate('ADD_ACCOUNT_WEB3_FOOTER', transProps)}{' '}
-        <NewTabLink
-          content={translate(`ADD_ACCOUNT_WEB3_FOOTER_LINK`, transProps)}
-          href={
-            web3ProviderSettings.install
-              ? web3ProviderSettings.install.getItLink
-              : isMobile
-              ? translateRaw('ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_MOBILE')
-              : translateRaw(`ADD_ACCOUNT_WEB3_FOOTER_LINK_HREF_DESKTOP`)
-          }
-        />
-      </div>
-      <div>
-        <NewTabLink
-          content={translate('ADD_ACCOUNT_WEB3_HELP', transProps)}
-          href={web3ProviderSettings.helpLink}
-        />
-      </div>
+      <FlowFooter
+        type={
+          web3ProviderSettings.id === WalletId.METAMASK
+            ? FlowFooterConfig.METAMASK_UNLOCK
+            : FlowFooterConfig.GENERIC_WEB3
+        }
+      />
     </Footer>
   </Box>
 );

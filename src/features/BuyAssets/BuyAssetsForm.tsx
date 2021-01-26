@@ -11,6 +11,7 @@ import {
   AssetSelector,
   ContentPanel,
   FlowFooter,
+  FlowFooterConfig,
   InlineMessage
 } from '@components';
 import {
@@ -198,7 +199,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
-      <FlowFooter type="SUPPORT" />
+      <FlowFooter type={FlowFooterConfig.SUPPORT} />
     </ContentPanel>
   );
 };

@@ -123,10 +123,10 @@ export default function HardwareSignTransaction({
     switch (senderAccount.wallet) {
       case WalletId.TREZOR:
       case WalletId.TREZOR_NEW:
-        return 'TREZOR';
+        return FlowFooterConfig.TREZOR;
 
       default:
-        return 'LEDGER';
+        return FlowFooterConfig.LEDGER;
     }
   })();
 
