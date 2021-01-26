@@ -27,6 +27,10 @@ export interface GetAccountsRequest extends RPCRequestBase {
   method: 'eth_accounts';
 }
 
+export interface GetChainIdRequest extends RPCRequestBase {
+  method: 'eth_chainId';
+}
+
 export interface GetPermissionsRequest extends RPCRequestBase {
   method: 'wallet_getPermissions';
 }

@@ -4,7 +4,7 @@ import {
   isValidSendTransaction,
   isValidSignMessage
 } from '@services/EthService';
-import { isValidRequestPermissions } from '@services/EthService/validators';
+import { isValidGetChainId, isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
@@ -14,6 +14,7 @@ import {
   TAddress,
   Web3RequestPermissionsResult
 } from '@types';
+import { stripHexPrefix } from '@utils';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
@@ -73,6 +74,13 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result && result[0] && result[0].caveats)
       .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
   }
+
+  public getChainId(): Promise<string> {
+    return this.client
+      .call(this.requests.getChainId())
+      .then(isValidGetChainId)
+      .then(({ result }) => stripHexPrefix(result));
+  }
 }
 
 export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
@@ -81,7 +89,7 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
 
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
-  const chainId = await lib.getNetVersion();
+  const chainId = await lib.getChainId();
   const accounts = await lib.getAccounts();
   if (!accounts || !accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');

@@ -400,7 +400,8 @@ enum API_NAME {
   Transaction_By_Hash = 'Transaction By Hash',
   Transaction_Receipt = 'Transaction Receipt',
   Request_Permissions = 'Request_Permissions',
-  Get_Permissions = 'Get_Permissions'
+  Get_Permissions = 'Get_Permissions',
+  Get_ChainId = 'Get_ChainId'
 }
 
 const isValidEthServiceResponse = (
@@ -456,6 +457,9 @@ export const isValidGetAccounts = (response: JsonRPCResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
   isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Net_Version);
+
+export const isValidGetChainId = (response: JsonRPCResponse) =>
+  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_ChainId);
 
 export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
   isValidEthServiceResponse(
