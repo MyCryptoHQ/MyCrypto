@@ -14,7 +14,7 @@ import {
   TAddress,
   Web3RequestPermissionsResult
 } from '@types';
-import { stripHexPrefix } from '@utils';
+import { bigify } from '@utils';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
@@ -79,7 +79,7 @@ export class Web3Node extends RPCNode {
     return this.client
       .call(this.requests.getChainId())
       .then(isValidGetChainId)
-      .then(({ result }) => stripHexPrefix(result));
+      .then(({ result }) => bigify(result).toString());
   }
 }
 
