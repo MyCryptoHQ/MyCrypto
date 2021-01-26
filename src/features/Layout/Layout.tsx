@@ -233,7 +233,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                 openTray={() => setIsOpen(!isOpen)}
               />
             )}
-            {isMobile && (
+            {isMobile && pathname === ROUTE_PATHS.DASHBOARD.path && (
               <BannerWrapper newNav={isFeatureActive('NEW_NAVIGATION')}>
                 <AnnouncementBanner />
               </BannerWrapper>
