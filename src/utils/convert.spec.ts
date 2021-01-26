@@ -232,7 +232,7 @@ describe('it Remove / Add commission from amount', () => {
     return bigify(trimBN(amountBN.times(rateBN).toString()));
   };
   it('remove commission from decimal amount', () => {
-    const expected = bigify(198.5);
+    const expected = bigify(199.5);
     const amount = 200;
     const converted = withCommission({
       amount: convertToBN(amount),
