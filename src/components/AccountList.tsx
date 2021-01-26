@@ -41,9 +41,9 @@ import { DashboardPanel } from './DashboardPanel';
 import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
 
-const SDashboardPanel = styled(DashboardPanel)`
+const SDashboardPanel = styled(DashboardPanel)<{ dashboard?: boolean }>`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    height: 508px;
+    ${({ dashboard }) => dashboard && `height: 508px;`}
   }
 `;
 
