@@ -15,6 +15,7 @@ const Web3ImgContainer = styled.div`
   margin: 2em;
   padding-top: 2em;
   display: flex;
+  width: 60%;
   justify-content: center;
   align-content: center;
 
@@ -33,16 +34,23 @@ const Footer = styled.div`
 `;
 
 const SImgContainer = styled.div`
-  height: 150px;
-  width: 150px;
+  width: 100%;
 `;
 
 function InstallTrunk() {
   const providers = [WALLETS_CONFIG.TRUST, WALLETS_CONFIG.COINBASE];
   return (
-    <Box variant="rowCenter" mt={SPACING.BASE}>
+    <Box variant="rowAlign" mt={SPACING.BASE}>
       {providers.map((provider) => (
-        <Box key={provider.id} variant="columnCenter" margin={SPACING.SM}>
+        <Box
+          key={provider.id}
+          width="100%"
+          justifyContent="space-between"
+          variant="columnCenter"
+          alignSelf="flex-start"
+          flexWrap="wrap"
+          margin={SPACING.SM}
+        >
           <NewTabLink href={provider.install ? provider.install.getItLink : undefined}>
             <SImgContainer>
               <img src={provider.icon} />
@@ -71,7 +79,7 @@ const InstallMetaMask = () => {
   const provider = WALLETS_CONFIG.METAMASK;
   return (
     <>
-      <div>
+      <Box variant="columnCenter" mb={SPACING.BASE}>
         <Web3ImgContainer>
           <SImgContainer>
             <img src={provider.icon} />
@@ -84,7 +92,7 @@ const InstallMetaMask = () => {
         >
           <Button>{translate('PROVIDER_DOWNLOAD', { $provider: provider.name })}</Button>
         </a>
-      </div>
+      </Box>
       <Footer>
         {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
         <NewTabLink
