@@ -2,7 +2,7 @@ import { IUseWalletConnect } from '@services';
 import { Network, TAddress } from '@types';
 
 export interface WalletService {
-  init(initArgs: WalletServiceInitArgs, cb?: (cbArgs: any) => any): any;
+  init(initArgs: WalletServiceInitArgs): any;
 }
 
 export interface HardwareWalletService extends WalletService {

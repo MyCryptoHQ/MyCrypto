@@ -78,7 +78,7 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
 
   useEffect(() => {
     if (!state.detectedAddress) return;
-    onUnlock(WalletService.init({ address: state.detectedAddress }, signMessage));
+    onUnlock(WalletService.init({ address: state.detectedAddress, signMessageHandler: signMessage }));
   }, [state.detectedAddress]);
 
   return (

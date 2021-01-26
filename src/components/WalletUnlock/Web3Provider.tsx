@@ -190,7 +190,7 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
   const [isProviderPresent, setIsProviderPresent] = useState(hasWeb3Provider());
   const tripProviderStatus = () => setIsProviderPresent(true);
 
-  (window as any).addEventListener('ethereum#initialized', tripProviderStatus, {
+  (window as CustomWindow).addEventListener('ethereum#initialized', tripProviderStatus, {
     once: true
   });
 

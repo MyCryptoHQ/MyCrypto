@@ -8,7 +8,7 @@ export default class Web3Client extends RPCClient {
 
   constructor() {
     super('web3'); // initialized with fake endpoint
-    this.provider = (window as any).ethereum || (window as any).web3.currentProvider;
+    this.provider = (window as CustomWindow).ethereum || (window as CustomWindow).web3.currentProvider;
   }
 
   // @ts-expect-error: conflict between Web3Client and RPCClient method signatures

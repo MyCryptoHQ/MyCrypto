@@ -15,7 +15,7 @@ const Web3ImgContainer = styled.div`
   margin: 2em;
   padding-top: 2em;
   display: flex;
-  width: 60%;
+  width: 150px;
   flex: 1;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {

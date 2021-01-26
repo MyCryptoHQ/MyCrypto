@@ -105,17 +105,13 @@ export async function getChainIdAndLib() {
 export async function setupWeb3Node() {
   // Handle the following MetaMask breaking change:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  const { ethereum } = window as any;
+  const { ethereum } = window as CustomWindow;
   if (ethereum) {
     // Overwrite the legacy Web3 with the newer version.
     if ((window as any).Web3) {
-      (window as any).web3 = new (window as any).Web3(ethereum);
+      (window as CustomWindow).web3 = new (window as any).Web3(ethereum);
     }
     const web3Node = new Web3Node();
-    const detectedPermissions = await getPermissions(web3Node);
-    if (detectedPermissions) {
-      return await getChainIdAndLib();
-    }
 
     const requestedPermissions = await requestPermission(web3Node);
     if (requestedPermissions) {
@@ -140,15 +136,6 @@ export async function setupWeb3Node() {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 }
-
-const getPermissions = async (web3Node: Web3Node) => {
-  try {
-    return await web3Node.getApprovedAccounts();
-  } catch (e) {
-    console.debug('[getPermissions]: ERROR:', e);
-    return;
-  }
-};
 
 const requestPermission = async (web3Node: Web3Node) => {
   try {
