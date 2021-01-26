@@ -11,7 +11,6 @@ import {
   AssetSelector,
   ContentPanel,
   FlowFooter,
-  FlowFooterConfig,
   InlineMessage
 } from '@components';
 import {
@@ -27,7 +26,7 @@ import { getAssetByUUID, useAssets } from '@services/Store/Asset';
 import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, IAccount, StoreAccount, TURL } from '@types';
+import { Asset, FlowFooterConfig, IAccount, StoreAccount, TURL } from '@types';
 import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`

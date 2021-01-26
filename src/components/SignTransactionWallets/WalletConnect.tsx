@@ -7,7 +7,6 @@ import {
   Button,
   CodeBlock,
   FlowFooter,
-  FlowFooterConfig,
   Overlay,
   QRCodeContainer,
   Spinner,
@@ -18,7 +17,7 @@ import { useNetworks } from '@services/Store';
 import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISignComponentProps, ITxHash, TAddress } from '@types';
+import { FlowFooterConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
 import { noOp, objToString } from '@utils';
 import { useUpdateEffect } from '@vendor';
 

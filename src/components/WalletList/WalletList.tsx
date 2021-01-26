@@ -5,13 +5,13 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { FlowFooter, FlowFooterConfig } from '@components';
+import { FlowFooter } from '@components';
 import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { IStory, WalletId } from '@types';
+import { FlowFooterConfig, IStory, WalletId } from '@types';
 import { getWeb3Config } from '@utils';
 
 import { WalletButton } from './WalletButton';

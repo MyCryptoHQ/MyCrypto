@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   FlowFooter,
-  FlowFooterConfig,
   Heading,
   Icon,
   InlineMessage,
@@ -18,7 +17,7 @@ import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { InlineMessageType, Network, WalletId } from '@types';
+import { FlowFooterConfig, InlineMessageType, Network, WalletId } from '@types';
 
 interface HWConfig {
   walletTypeTransKey: string;

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { FlowFooter, FlowFooterConfig, Icon, InlineMessage, Text, TIcon } from '@components';
+import { FlowFooter, Icon, InlineMessage, Text, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
+  FlowFooterConfig,
   HardwareWalletId,
   HardwareWalletService,
   IAccount,

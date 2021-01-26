@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { getAddress } from '@ethersproject/address';
 import { Web3Provider } from '@ethersproject/providers';
 
-import { FlowFooter, FlowFooterConfig } from '@components';
+import { FlowFooter } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import { ISignComponentProps, TAddress, WalletId } from '@types';
+import { FlowFooterConfig, ISignComponentProps, TAddress, WalletId } from '@types';
 import { getWeb3Config, isSameAddress } from '@utils';
 
 import './Web3.scss';

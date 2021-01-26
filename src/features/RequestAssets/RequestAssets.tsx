@@ -14,7 +14,6 @@ import {
   ContentPanel,
   CopyableCodeBlock,
   FlowFooter,
-  FlowFooterConfig,
   InlineMessage,
   QRCode
 } from '@components';
@@ -22,7 +21,7 @@ import { ROUTE_PATHS } from '@config';
 import { validateAmountField } from '@features/SendAssets/components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import { IAccount as IIAccount } from '@types';
+import { FlowFooterConfig, IAccount as IIAccount } from '@types';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest,

@@ -2,8 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Button, Heading, InlineMessage, Web3ProviderInstall } from '@components';
-import { FlowFooter, FlowFooterConfig } from '@components/FlowFooter';
+import { Box, Button, FlowFooter, Heading, InlineMessage, Web3ProviderInstall } from '@components';
 import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
@@ -11,7 +10,7 @@ import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
-import { FormData, WalletId } from '@types';
+import { FlowFooterConfig, FormData, Network, WalletId } from '@types';
 import { hasWeb3Provider } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 

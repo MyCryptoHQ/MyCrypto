@@ -1,7 +1,3 @@
-import React from 'react';
-
-import { useHistory } from 'react-router-dom';
-
 import {
   EXT_URLS,
   getKBHelpArticle,
@@ -10,24 +6,8 @@ import {
   SUPPORT_EMAIL,
   WALLETS_CONFIG
 } from '@config';
-import { translateRaw } from '@translations';
-import { TURL, WalletId } from '@types';
-import { getWeb3Config, openLink } from '@utils';
-
-import Box from './Box';
-import Icon from './Icon';
-import { Link } from './NewTypography';
-
-export enum FlowFooterConfig {
-  GENERAL = 'GENERAL',
-  METAMASK_SIGN = 'METAMASK_SIGN',
-  METAMASK_UNLOCK = 'METAMASK_UNLOCK',
-  GENERIC_WEB3 = 'GENERIC_WEB3',
-  LEDGER = 'LEDGER',
-  TREZOR = 'TREZOR',
-  WALLETCONNECT = 'WALLETCONNECT',
-  SUPPORT = 'SUPPORT'
-}
+import { FlowFooterConfig, WalletId } from '@types';
+import { getWeb3Config } from '@utils';
 
 const web3Config = getWeb3Config();
 
@@ -37,7 +17,7 @@ const SUPPORT_LINK = {
   external: true
 };
 
-const configs: Record<
+export const configs: Record<
   FlowFooterConfig,
   { copy: string; link?: string; copyVariables?: any; external?: boolean }[]
 > = {
@@ -118,33 +98,4 @@ const configs: Record<
     SUPPORT_LINK
   ],
   SUPPORT: [SUPPORT_LINK]
-};
-
-export const FlowFooter = ({ type }: { type: FlowFooterConfig }) => {
-  const history = useHistory();
-
-  return (
-    <Box mt={4}>
-      <Box style={{ textAlign: 'center' }} mb={2}>
-        {translateRaw('FLOW_FOOTER_HEADER')}
-      </Box>
-      <Box variant="rowAlign" justifyContent="center">
-        {configs[type].map(({ copy, copyVariables, link, external }, index) => (
-          <>
-            <Box
-              key={link}
-              onClick={() => (external ? openLink(link as TURL) : history.push(link!))}
-            >
-              <Link>{translateRaw(copy, copyVariables)}</Link>
-            </Box>
-            {index < configs[type].length - 1 && (
-              <Box paddingX="15px" paddingY={1} variant="rowAlign">
-                <Icon type="separator" />
-              </Box>
-            )}
-          </>
-        ))}
-      </Box>
-    </Box>
-  );
 };

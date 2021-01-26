@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, FlowFooter, FlowFooterConfig, Heading, Icon, NewTabLink, Spinner } from '@components';
+import { Box, FlowFooter, Heading, Icon, NewTabLink, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, FormData, TAddress, WalletId } from '@types';
+import { DPath, FlowFooterConfig, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';

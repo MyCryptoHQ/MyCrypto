@@ -3,18 +3,11 @@ import React, { useEffect } from 'react';
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
-import {
-  Button,
-  FlowFooter,
-  FlowFooterConfig,
-  Overlay,
-  QRCodeContainer,
-  Typography
-} from '@components';
+import { Button, FlowFooter, Overlay, QRCodeContainer, Typography } from '@components';
 import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { WalletId } from '@types';
+import { FlowFooterConfig, WalletId } from '@types';
 
 interface OwnProps {
   useWalletConnectProps: IUseWalletConnect;

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { FlowFooterConfig } from '@components/FlowFooter';
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
-import { WalletId } from '@types';
+import { FlowFooterConfig, WalletId } from '@types';
 
 import { SignTxHardwareUI } from './Hardware';
 

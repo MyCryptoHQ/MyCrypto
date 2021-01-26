@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Box, FlowFooter, FlowFooterConfig, Heading, Spinner } from '@components';
+import { Box, FlowFooter, Heading, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
-import { DPath, FormData, TAddress, WalletId } from '@types';
+import { DPath, FlowFooterConfig, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
