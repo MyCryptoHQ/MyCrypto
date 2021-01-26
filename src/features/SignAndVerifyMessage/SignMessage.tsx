@@ -14,6 +14,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, INode, ISignedMessage, WalletId } from '@types';
+import { addHexPrefix } from '@utils';
 
 import { getStories } from './stories';
 
@@ -117,7 +118,7 @@ function SignMessage(props: Props) {
       const combined = {
         address,
         msg: message,
-        sig,
+        sig: addHexPrefix(sig),
         version: '2'
       };
       setError(undefined);
