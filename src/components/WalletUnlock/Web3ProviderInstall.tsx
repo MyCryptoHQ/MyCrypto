@@ -16,8 +16,7 @@ const Web3ImgContainer = styled.div`
   padding-top: 2em;
   display: flex;
   width: 60%;
-  justify-content: center;
-  align-content: center;
+  flex: 1;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin: 0.5em;
@@ -25,11 +24,24 @@ const Web3ImgContainer = styled.div`
   }
 `;
 
+const AppLinkContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  > * {
+    margin-top: ${SPACING.SM};
+  }
+`;
+
 const DownloadOption = styled(NewTabLink)`
-  margin-top: ${SPACING.BASE};
+  align-self: flex-start;
 `;
 
 const Footer = styled.div`
+  text-align: center;
+`;
+
+const STypography = styled(Typography)`
   text-align: center;
 `;
 
@@ -46,29 +58,31 @@ function InstallTrunk() {
           key={provider.id}
           width="100%"
           justifyContent="space-between"
-          variant="columnCenter"
-          alignSelf="flex-start"
+          variant="columnAlign"
           flexWrap="wrap"
+          alignSelf="stretch"
           margin={SPACING.SM}
         >
-          <NewTabLink href={provider.install ? provider.install.getItLink : undefined}>
+          <DownloadOption href={provider.install ? provider.install.getItLink : undefined}>
             <SImgContainer>
               <img src={provider.icon} />
             </SImgContainer>
-          </NewTabLink>
+          </DownloadOption>
 
-          <Typography>{provider.name}</Typography>
-          {provider.install && provider.install.appStore && (
-            <DownloadOption href={provider.install.appStore}>
-              <img src={AppStoreBadgeIMG} />
-            </DownloadOption>
-          )}
+          <STypography>{provider.name}</STypography>
+          <AppLinkContainer>
+            {provider.install && provider.install.appStore && (
+              <DownloadOption href={provider.install.appStore}>
+                <img src={AppStoreBadgeIMG} />
+              </DownloadOption>
+            )}
 
-          {provider.install && provider.install.googlePlay && (
-            <DownloadOption href={provider.install.googlePlay}>
-              <img src={GooglePlayBadgeIMG} />
-            </DownloadOption>
-          )}
+            {provider.install && provider.install.googlePlay && (
+              <DownloadOption href={provider.install.googlePlay}>
+                <img src={GooglePlayBadgeIMG} />
+              </DownloadOption>
+            )}
+          </AppLinkContainer>
         </Box>
       ))}
     </Box>
