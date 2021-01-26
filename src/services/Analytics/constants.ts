@@ -4,4 +4,6 @@ export type TAnalyticEvents =
   | 'Add Account'
   | 'Link clicked'
   | 'Donate clicked'
-  | 'Newsletter subscription';
+  | 'Newsletter subscription'
+  | 'Screen locked'
+  | 'Screen unlocked';
