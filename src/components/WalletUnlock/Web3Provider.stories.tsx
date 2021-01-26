@@ -13,7 +13,6 @@ const initialProps: Web3UnlockUIProps = {
   web3ProviderSettings: WALLETS_CONFIG[WalletId.METAMASK],
   web3Unlocked: true,
   web3UnlockError: undefined,
-  isMobile: false,
   isSubmitting: false,
   transProps: { $walletId: WALLETS_CONFIG[WalletId.METAMASK].name },
   unlockWallet: noOp

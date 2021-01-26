@@ -10,7 +10,7 @@ import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
-import { BusyBottomConfig, FormData, Network, WalletId } from '@types';
+import { BusyBottomConfig, FormData, WalletId } from '@types';
 import { hasWeb3Provider } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 
