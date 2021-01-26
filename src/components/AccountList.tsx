@@ -346,7 +346,7 @@ const BuildAccountTable = (
   overlayRows?: [number[], [number, TUuid][]],
   setDeletingIndex?: any
 ) => {
-  const { isXsScreen } = useScreenSize();
+  const { isMobile } = useScreenSize();
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const { totalFiat } = useContext(StoreContext);
@@ -387,7 +387,7 @@ const BuildAccountTable = (
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
   const convertColumnToClickable = (id: IColumnValues) =>
-    isXsScreen ? (
+    isMobile ? (
       translateRaw(id)
     ) : (
       <div key={id} onClick={() => updateSortingState(id)}>
@@ -405,7 +405,7 @@ const BuildAccountTable = (
       onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
     >
       {translateRaw('ACCOUNT_LIST_VALUE')}
-      {!isXsScreen && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
+      {!isMobile && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
     </HeaderAlignment>,
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
