@@ -65,14 +65,10 @@ const StackedCardIcons = styled.div`
     `}
 `;
 
-// Arbitrary left margin to allow AccountList rows to align to
-// the Identicon + label display.
-// @todo: remove arbitrary style.
 const StackedCardBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.5625em;
-  margin-left: calc(14px + 2em);
 `;
 
 const StackedCardEntry = styled.dl`
