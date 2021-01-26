@@ -10,7 +10,7 @@ import React from 'react';
 
 import { render } from 'react-dom';
 
-import { consoleAdvertisement, getRootDomain, IS_E2E, IS_PROD, IS_STAGING } from '@utils';
+import { consoleAdvertisement, getRootDomain, IS_DEV, IS_E2E } from '@utils';
 import { ethereumMock } from '@vendor';
 
 import Root from './Root';
@@ -44,6 +44,6 @@ if (IS_E2E) {
 
 render(<Root />, document.getElementById('app'));
 
-if (IS_PROD || IS_STAGING) {
+if (!IS_DEV) {
   consoleAdvertisement();
 }
