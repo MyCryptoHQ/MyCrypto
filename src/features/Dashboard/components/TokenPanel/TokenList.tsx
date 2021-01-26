@@ -17,7 +17,7 @@ import {
 } from '@components';
 import { Link } from '@components/NewTypography';
 import { ROUTE_PATHS } from '@config';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { StoreAsset } from '@types';
 import { convertToFiatFromAsset } from '@utils';
@@ -66,8 +66,10 @@ const MoreIcon = styled(Icon)`
 
 const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
-  height: 652px;
-  min-height: 430px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    min-height: 430px;
+    height: 652px;
+  }
 `;
 
 interface TokenListProps {
