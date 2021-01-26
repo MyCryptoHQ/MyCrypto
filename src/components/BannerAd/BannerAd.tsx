@@ -17,6 +17,8 @@ const AdWrapper = styled.div`
 const BannerImageDesktop = styled.img`
   width: 100%;
   height: auto;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  border-radius: 3px;
 
   @media (max-width: ${SCREEN_SM}) {
     display: none;
@@ -26,6 +28,8 @@ const BannerImageDesktop = styled.img`
 const BannerImageMobile = styled.img`
   width: 100%;
   height: auto;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  border-radius: 3px;
 
   @media (min-width: ${SCREEN_SM}) {
     display: none;
