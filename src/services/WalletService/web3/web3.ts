@@ -23,7 +23,7 @@ export const unlockWeb3 = async (networks: Network[]) => {
       // Coinbase Wallet returns undefined when using wallet_getPermissions, it doesn't fail. Therefore fail if accounts == undefined
       throw new Error('Failed to get web3 accounts via wallet_getPermissions');
     }
-  } catch (e) {
+  } catch {
     // if modern wallet_getPermissions doesn't exist,
     try {
       const legacyAccounts = await getLegacyAccounts(nodeLib);
@@ -31,7 +31,7 @@ export const unlockWeb3 = async (networks: Network[]) => {
         return legacyAccounts.map((address) => new Web3Wallet(address, network.id));
       }
       throw new Error('Could not get accounts');
-    } catch (e) {
+    } catch {
       throw new Error('Error fetching legacy web3 accounts');
     }
   }
