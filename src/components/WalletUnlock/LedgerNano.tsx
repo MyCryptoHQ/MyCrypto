@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, FlowFooter, Heading, Icon, NewTabLink, Spinner } from '@components';
+import { Box, BusyBottom, Heading, Icon, NewTabLink, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, FlowFooterConfig, FormData, TAddress, WalletId } from '@types';
+import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
@@ -109,7 +109,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
               )}
             </div>
             <div className="LedgerPanel-footer">
-              <FlowFooter type={FlowFooterConfig.LEDGER} />
+              <BusyBottom type={BusyBottomConfig.LEDGER} />
             </div>
           </div>
         </Box>

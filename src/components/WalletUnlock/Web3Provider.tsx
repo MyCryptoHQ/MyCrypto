@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Button, FlowFooter, Heading, InlineMessage, Web3ProviderInstall } from '@components';
+import { Box, BusyBottom, Button, Heading, InlineMessage, Web3ProviderInstall } from '@components';
 import { Body } from '@components/NewTypography';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
@@ -10,7 +10,7 @@ import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
-import { FlowFooterConfig, FormData, Network, WalletId } from '@types';
+import { BusyBottomConfig, FormData, Network, WalletId } from '@types';
 import { hasWeb3Provider } from '@utils';
 import { getWeb3Config } from '@utils/web3';
 
@@ -156,11 +156,11 @@ export const Web3UnlockUI = ({
       )}
     </Box>
     <Footer>
-      <FlowFooter
+      <BusyBottom
         type={
           web3ProviderSettings.id === WalletId.METAMASK
-            ? FlowFooterConfig.METAMASK_UNLOCK
-            : FlowFooterConfig.GENERIC_WEB3
+            ? BusyBottomConfig.METAMASK_UNLOCK
+            : BusyBottomConfig.GENERIC_WEB3
         }
       />
     </Footer>

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import {
   Box,
+  BusyBottom,
   Button,
-  FlowFooter,
   Heading,
   Icon,
   InlineMessage,
@@ -17,7 +17,7 @@ import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { FlowFooterConfig, InlineMessageType, Network, WalletId } from '@types';
+import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
 
 interface HWConfig {
   walletTypeTransKey: string;
@@ -131,11 +131,11 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         )}
       </Text>
       <HardwareFooter>
-        <FlowFooter
+        <BusyBottom
           type={
             walletId === WalletId.LEDGER_NANO_S_NEW
-              ? FlowFooterConfig.LEDGER
-              : FlowFooterConfig.TREZOR
+              ? BusyBottomConfig.LEDGER
+              : BusyBottomConfig.TREZOR
           }
         />
       </HardwareFooter>

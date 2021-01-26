@@ -1,4 +1,4 @@
-export enum FlowFooterConfig {
+export enum BusyBottomConfig {
   GENERAL = 'GENERAL',
   METAMASK_SIGN = 'METAMASK_SIGN',
   METAMASK_UNLOCK = 'METAMASK_UNLOCK',

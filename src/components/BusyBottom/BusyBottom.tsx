@@ -4,18 +4,18 @@ import { useHistory } from 'react-router-dom';
 
 import { Box, Icon, Link } from '@components';
 import { translateRaw } from '@translations';
-import { FlowFooterConfig, TURL } from '@types';
+import { BusyBottomConfig, TURL } from '@types';
 import { openLink } from '@utils';
 
 import { configs } from './constants';
 
-export const FlowFooter = ({ type }: { type: FlowFooterConfig }) => {
+export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
   const history = useHistory();
 
   return (
     <Box mt={4}>
       <Box style={{ textAlign: 'center' }} mb={2}>
-        {translateRaw('FLOW_FOOTER_HEADER')}
+        {translateRaw('BUSY_BOTTOM_HEADER')}
       </Box>
       <Box variant="rowAlign" justifyContent="center">
         {configs[type].map(({ copy, copyVariables, link, external }, index) => (

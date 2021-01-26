@@ -4,9 +4,9 @@ import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
 import {
+  BusyBottom,
   Button,
   CodeBlock,
-  FlowFooter,
   Overlay,
   QRCodeContainer,
   Spinner,
@@ -17,7 +17,7 @@ import { useNetworks } from '@services/Store';
 import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { FlowFooterConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
+import { BusyBottomConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
 import { noOp, objToString } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
@@ -218,7 +218,7 @@ export function SignTransactionWalletConnect({
         </SSection>
       </SContent>
       <SFooter>
-        <FlowFooter type={FlowFooterConfig.WALLETCONNECT} />
+        <BusyBottom type={BusyBottomConfig.WALLETCONNECT} />
       </SFooter>
     </>
   );

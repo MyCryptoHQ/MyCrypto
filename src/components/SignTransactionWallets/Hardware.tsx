@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { FlowFooter, Icon, InlineMessage, Text, TIcon } from '@components';
+import { BusyBottom, Icon, InlineMessage, Text, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
-  FlowFooterConfig,
+  BusyBottomConfig,
   HardwareWalletId,
   HardwareWalletService,
   IAccount,
@@ -124,10 +124,10 @@ export default function HardwareSignTransaction({
     switch (senderAccount.wallet) {
       case WalletId.TREZOR:
       case WalletId.TREZOR_NEW:
-        return FlowFooterConfig.TREZOR;
+        return BusyBottomConfig.TREZOR;
 
       default:
-        return FlowFooterConfig.LEDGER;
+        return BusyBottomConfig.LEDGER;
     }
   })();
 
@@ -146,7 +146,7 @@ interface UIProps {
   walletIconType: TIcon;
   signerDescription: string;
   isTxSignatureRequestDenied: boolean;
-  wallet: FlowFooterConfig;
+  wallet: BusyBottomConfig;
   senderAccount: IAccount;
 }
 
@@ -179,7 +179,7 @@ export const SignTxHardwareUI = ({
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Text>
       <SFooter>
-        <FlowFooter type={wallet} />
+        <BusyBottom type={wallet} />
       </SFooter>
     </div>
   </>

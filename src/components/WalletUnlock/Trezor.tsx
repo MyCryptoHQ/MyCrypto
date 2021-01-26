@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Box, FlowFooter, Heading, Spinner } from '@components';
+import { Box, BusyBottom, Heading, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
-import { DPath, FlowFooterConfig, FormData, TAddress, WalletId } from '@types';
+import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
@@ -98,7 +98,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
               </Button>
             )}
             <div className="TrezorDecrypt-footer">
-              <FlowFooter type={FlowFooterConfig.TREZOR} />
+              <BusyBottom type={BusyBottomConfig.TREZOR} />
             </div>
           </div>
         </Box>

@@ -9,8 +9,8 @@ import { object } from 'yup';
 import {
   AccountSelector,
   AssetSelector,
+  BusyBottom,
   ContentPanel,
-  FlowFooter,
   InlineMessage
 } from '@components';
 import {
@@ -26,7 +26,7 @@ import { getAssetByUUID, useAssets } from '@services/Store/Asset';
 import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, FlowFooterConfig, IAccount, StoreAccount, TURL } from '@types';
+import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
 import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`
@@ -198,7 +198,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
-      <FlowFooter type={FlowFooterConfig.SUPPORT} />
+      <BusyBottom type={BusyBottomConfig.SUPPORT} />
     </ContentPanel>
   );
 };
