@@ -2,7 +2,17 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Button, Heading, Icon, InlineMessage, Spinner, Text, TIcon } from '@components';
+import {
+  Box,
+  Button,
+  FlowFooter,
+  Heading,
+  Icon,
+  InlineMessage,
+  Spinner,
+  Text,
+  TIcon
+} from '@components';
 import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -121,9 +131,7 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         )}
       </Text>
       <HardwareFooter>
-        {translate(hardwareConfigs[walletId].referralTransKey, {
-          $url: hardwareConfigs[walletId].referralURL
-        })}
+        <FlowFooter type={walletId === WalletId.LEDGER_NANO_S_NEW ? 'LEDGER' : 'TREZOR'} />
       </HardwareFooter>
     </Box>
   </Box>

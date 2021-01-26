@@ -26,7 +26,8 @@ export enum KB_HELP_ARTICLE {
   WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether',
   WHAT_IS_SCREEN_LOCK = 'how-to/accessing-wallet/what-is-screen-lock',
   WHAT_IS_WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
-  HOW_TO_USE_WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto'
+  HOW_TO_USE_WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto',
+  TREZOR_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto'
 }
 
 export enum HELP_ARTICLE {

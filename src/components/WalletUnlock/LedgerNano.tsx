@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, Heading, Icon, NewTabLink, Spinner } from '@components';
-import { EXT_URLS } from '@config';
+import { Box, FlowFooter, Heading, Icon, NewTabLink, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
@@ -110,7 +109,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
+              <FlowFooter type="LEDGER" />
             </div>
           </div>
         </Box>

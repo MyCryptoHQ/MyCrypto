@@ -14,8 +14,7 @@ const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
   signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
     $network: DEFAULT_NETWORK
   }),
-  helpCopy: 'LEDGER_HELP',
-  referralCopy: 'LEDGER_REFERRAL',
+  wallet: 'LEDGER',
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
   isTxSignatureRequestDenied: true
 };

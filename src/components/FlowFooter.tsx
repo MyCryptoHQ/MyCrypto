@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS, SUPPORT_EMAIL } from '@config';
+import { EXT_URLS, getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS, SUPPORT_EMAIL } from '@config';
 import { translateRaw } from '@translations';
 import { TURL } from '@types';
 import { openLink } from '@utils';
@@ -22,6 +22,32 @@ const configs = {
     { copy: 'FLOW_FOOTER_GENERAL_1', link: ROUTE_PATHS.CREATE_WALLET.path, external: false },
     { copy: 'FLOW_FOOTER_GENERAL_2', link: ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path, external: false },
     { copy: 'FLOW_FOOTER_GENERAL_3', link: ROUTE_PATHS.SETTINGS_IMPORT.path, external: false },
+    SUPPORT_LINK
+  ],
+  LEDGER: [
+    {
+      copy: 'FLOW_FOOTER_LEDGER_1',
+      link: EXT_URLS.LEDGER_REFERRAL.url,
+      external: true
+    },
+    {
+      copy: 'FLOW_FOOTER_TROUBLESHOOTING',
+      link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
+      external: true
+    },
+    SUPPORT_LINK
+  ],
+  TREZOR: [
+    {
+      copy: 'FLOW_FOOTER_TREZOR_1',
+      link: EXT_URLS.TREZOR_REFERRAL.url,
+      external: true
+    },
+    {
+      copy: 'FLOW_FOOTER_TROUBLESHOOTING',
+      link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
+      external: true
+    },
     SUPPORT_LINK
   ],
   WALLETCONNECT: [

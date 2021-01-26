@@ -1067,6 +1067,9 @@
     "FLOW_FOOTER_GENERAL_3": "Import Settings",
     "FLOW_FOOTER_SUPPORT": "Contact Support",
     "FLOW_FOOTER_WALLETCONNECT_1": "What is WalletConnect",
-    "FLOW_FOOTER_WALLETCONNECT_2": "WalletConnect Instructions"
+    "FLOW_FOOTER_WALLETCONNECT_2": "WalletConnect Instructions",
+    "FLOW_FOOTER_TREZOR_1": "Get a Trezor",
+    "FLOW_FOOTER_TROUBLESHOOTING": "Troubleshooting Tips",
+    "FLOW_FOOTER_LEDGER_1": "Get a Ledger"
   }
 }

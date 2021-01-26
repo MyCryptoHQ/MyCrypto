@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Icon, InlineMessage, Text, TIcon } from '@components';
+import { FlowFooter, FlowFooterConfig, Icon, InlineMessage, Text, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
@@ -119,25 +119,14 @@ export default function HardwareSignTransaction({
     }
   }, [wallet, isRequestingTxSignature]);
 
-  const helpCopy = (() => {
+  const walletType = (() => {
     switch (senderAccount.wallet) {
       case WalletId.TREZOR:
       case WalletId.TREZOR_NEW:
-        return 'TREZOR_HELP';
+        return 'TREZOR';
 
       default:
-        return 'LEDGER_HELP';
-    }
-  })();
-
-  const referralCopy = (() => {
-    switch (senderAccount.wallet) {
-      case WalletId.TREZOR:
-      case WalletId.TREZOR_NEW:
-        return 'TREZOR_REFERRAL';
-
-      default:
-        return 'LEDGER_REFERRAL';
+        return 'LEDGER';
     }
   })();
 
@@ -146,8 +135,7 @@ export default function HardwareSignTransaction({
       walletIconType={walletIconType}
       signerDescription={signerDescription}
       isTxSignatureRequestDenied={isTxSignatureRequestDenied}
-      helpCopy={helpCopy}
-      referralCopy={referralCopy}
+      wallet={walletType}
       senderAccount={senderAccount}
     />
   );
@@ -157,8 +145,7 @@ interface UIProps {
   walletIconType: TIcon;
   signerDescription: string;
   isTxSignatureRequestDenied: boolean;
-  helpCopy: string;
-  referralCopy: string;
+  wallet: FlowFooterConfig;
   senderAccount: IAccount;
 }
 
@@ -166,8 +153,7 @@ export const SignTxHardwareUI = ({
   walletIconType,
   signerDescription,
   isTxSignatureRequestDenied,
-  helpCopy,
-  referralCopy,
+  wallet,
   senderAccount
 }: UIProps) => (
   <>
@@ -192,10 +178,7 @@ export const SignTxHardwareUI = ({
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Text>
       <SFooter>
-        <Text textAlign="center" marginTop={SPACING.MD}>
-          {translate(helpCopy)}
-        </Text>
-        <Text textAlign="center">{translate(referralCopy)}</Text>
+        <FlowFooter type={wallet} />
       </SFooter>
     </div>
   </>
