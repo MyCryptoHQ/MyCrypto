@@ -386,7 +386,7 @@ export const socialLinks = [
 export const MYCLinks = [
   {
     title: translateRaw('NEW_FOOTER_TEXT_8'),
-    link: 'https://about.mycrypto.com/',
+    link: 'https://mycrypto.com/about',
     icon: 'nav-team'
   },
   {
@@ -396,7 +396,7 @@ export const MYCLinks = [
   },
   {
     title: translateRaw('NEW_FOOTER_TEXT_10'),
-    link: 'https://about.mycrypto.com/privacy/',
+    link: 'https://mycrypto.com/privacy/',
     icon: 'nav-privacy'
   }
 ];
