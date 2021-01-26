@@ -3,6 +3,7 @@ import { IHexStrWeb3Transaction } from '@types';
 import { RPCRequests } from '../rpc';
 import {
   GetAccountsRequest,
+  GetChainIdRequest,
   GetPermissionsRequest,
   RequestPermissionsRequest,
   SendTransactionRequest,
@@ -27,6 +28,12 @@ export default class Web3Requests extends RPCRequests {
   public getAccounts(): GetAccountsRequest {
     return {
       method: 'eth_accounts'
+    };
+  }
+
+  public getChainId(): GetChainIdRequest {
+    return {
+      method: 'eth_chainId'
     };
   }
 

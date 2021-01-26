@@ -5,6 +5,7 @@ import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
+import StatusSVG from '@assets/images/wallets/status.svg';
 import TrezorSVG from '@assets/images/wallets/trezor.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
 import WalletConnectSVG from '@assets/images/wallets/walletconnect.svg';
@@ -104,6 +105,24 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
     install: {
       getItLink: 'https://frame.sh/'
+    },
+    flags: {
+      supportsNonce: false
+    }
+  },
+  [WalletId.STATUS]: {
+    id: WalletId.STATUS,
+    name: 'Status',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.WEB3,
+    lid: 'X_STATUS',
+    icon: StatusSVG,
+    description: 'ADD_WEB3DESC',
+    helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
+    install: {
+      getItLink: 'https://status.im/'
     },
     flags: {
       supportsNonce: false

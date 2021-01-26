@@ -818,6 +818,7 @@
     "X_COINBASE": "Coinbase Wallet",
     "X_CUSTOM": "Custom ",
     "X_FRAME": "Frame",
+    "X_STATUS": "Status",
     "X_LEDGER": "Ledger",
     "X_METAMASK": "MetaMask",
     "X_RECIPIENT": "Recipient",

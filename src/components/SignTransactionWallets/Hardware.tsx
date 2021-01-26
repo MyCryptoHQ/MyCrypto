@@ -7,7 +7,15 @@ import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
+import {
+  HardwareWalletId,
+  HardwareWalletService,
+  IAccount,
+  IPendingTxReceipt,
+  ISignedTx,
+  ITxObject,
+  WalletId
+} from '@types';
 import { makeTransaction, useInterval } from '@utils';
 
 export interface IDestructuredDPath {
@@ -61,7 +69,9 @@ export default function HardwareSignTransaction({
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
   const [wallet, setWallet] = useState<HardwareWallet | undefined>();
-  const SigningWalletService = WalletFactory(senderAccount.wallet);
+  const SigningWalletService = WalletFactory[
+    senderAccount.wallet as HardwareWalletId
+  ] as HardwareWalletService;
 
   useInterval(
     async () => {
@@ -69,11 +79,11 @@ export default function HardwareSignTransaction({
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
         const dpathObject = splitDPath(senderAccount.dPath);
-        const walletObject = SigningWalletService.init(
-          senderAccount.address,
-          dpathObject.dpath,
-          dpathObject.index
-        );
+        const walletObject = SigningWalletService.init({
+          address: senderAccount.address,
+          dPath: dpathObject.dpath,
+          index: dpathObject.index
+        });
         try {
           await SigningWalletService.getChainCode(dpathObject.dpath);
           setIsRequestingWalletUnlock(false);

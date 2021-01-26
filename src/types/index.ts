@@ -12,7 +12,14 @@ export {
 } from './walletSubTypes';
 export { WalletType } from './wallet';
 export { WalletId } from './walletId';
-export { WalletService } from './walletService';
+export {
+  HardwareWalletService,
+  WalletService,
+  Web3WalletInitArgs,
+  HardwareWalletInitArgs,
+  ViewOnlyWalletInitArgs,
+  WalletConnectWalletInitArgs
+} from './walletService';
 export {
   Fiat,
   Asset,

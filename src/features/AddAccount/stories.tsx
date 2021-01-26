@@ -3,12 +3,11 @@ import {
   TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
-  Web3ProviderDecrypt,
-  Web3ProviderInstall
+  Web3ProviderDecrypt
 } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
-import { hasWeb3Provider, IS_PROD, IS_STAGING } from '@utils';
+import { IS_PROD, IS_STAGING } from '@utils';
 
 import { NetworkSelectPanel } from './components';
 
@@ -18,7 +17,7 @@ export const IS_WEB_AND_PRODUCTION: boolean = IS_PROD && !IS_STAGING;
 export const getStories = (): IStory[] => [
   {
     name: WalletId.WEB3,
-    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    steps: [Web3ProviderDecrypt]
   },
   {
     name: WalletId.WALLETCONNECT,

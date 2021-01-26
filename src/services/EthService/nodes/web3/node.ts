@@ -4,7 +4,7 @@ import {
   isValidSendTransaction,
   isValidSignMessage
 } from '@services/EthService';
-import { isValidRequestPermissions } from '@services/EthService/validators';
+import { isValidGetChainId, isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
@@ -14,6 +14,7 @@ import {
   TAddress,
   Web3RequestPermissionsResult
 } from '@types';
+import { bigify } from '@utils';
 
 import { RPCNode } from '../rpc';
 import Web3Client from './client';
@@ -73,6 +74,13 @@ export class Web3Node extends RPCNode {
       .then(({ result }) => result && result[0] && result[0].caveats)
       .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
   }
+
+  public getChainId(): Promise<string> {
+    return this.client
+      .call(this.requests.getChainId())
+      .then(isValidGetChainId)
+      .then(({ result }) => bigify(result).toString());
+  }
 }
 
 export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
@@ -81,7 +89,7 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
 
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
-  const chainId = await lib.getNetVersion();
+  const chainId = await lib.getChainId();
   const accounts = await lib.getAccounts();
   if (!accounts || !accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
@@ -97,17 +105,19 @@ export async function getChainIdAndLib() {
 export async function setupWeb3Node() {
   // Handle the following MetaMask breaking change:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  const { ethereum } = window as any;
+  const { ethereum } = window as CustomWindow;
   if (ethereum) {
     // Overwrite the legacy Web3 with the newer version.
     if ((window as any).Web3) {
-      (window as any).web3 = new (window as any).Web3(ethereum);
+      (window as CustomWindow).web3 = new (window as any).Web3(ethereum);
     }
     const web3Node = new Web3Node();
-    const permissions = await requestPermission(web3Node);
-    if (permissions) {
+
+    const requestedPermissions = await requestPermission(web3Node);
+    if (requestedPermissions) {
       return await getChainIdAndLib();
     }
+
     const legacyConnect = await requestLegacyConnect(ethereum);
     if (legacyConnect) {
       return await getChainIdAndLib();
@@ -131,7 +141,7 @@ const requestPermission = async (web3Node: Web3Node) => {
   try {
     return await web3Node.requestPermissions();
   } catch (e) {
-    console.debug('[requestPermission]: ', e);
+    console.debug('[requestPermission]: ERROR:', e);
     return;
   }
 };
@@ -141,7 +151,7 @@ const requestLegacyConnect = async (ethereum: any) => {
     await ethereum.enable();
     return true;
   } catch (e) {
-    console.debug('[requestLegacyConnect]: ', e);
+    console.debug('[requestLegacyConnect]: ERROR', e);
     return;
   }
 };
