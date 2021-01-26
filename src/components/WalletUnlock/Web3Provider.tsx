@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { Box, Button, Heading, InlineMessage, NewTabLink } from '@components';
+import { Box, Button, Heading, InlineMessage, NewTabLink, Web3ProviderInstall } from '@components';
 import { Body } from '@components/NewTypography';
-import { IWalletConfig, WALLETS_CONFIG } from '@config';
+import { WALLETS_CONFIG } from '@config';
 import { FormDataActionType as ActionType } from '@features/AddAccount/types';
 import { useNetworks } from '@services/Store';
 import { WalletFactory, Web3Wallet } from '@services/WalletService';
@@ -16,9 +16,13 @@ import './Web3Provider.scss';
 interface Props {
   formDispatch: any;
   formData: FormData;
-  wallet: TObject;
-  isMobile: boolean;
+  wallet?: TObject;
+  isMobile?: boolean;
   onUnlock(param: Web3Wallet[]): void;
+}
+
+interface UnlockProps extends Props {
+  isProviderPresent: boolean;
 }
 
 interface IWeb3UnlockError {
@@ -28,18 +32,14 @@ interface IWeb3UnlockError {
 }
 const WalletService = WalletFactory[WalletId.WEB3];
 
-const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
+const Web3Unlock: FC<UnlockProps> = ({ isProviderPresent, formData, formDispatch, onUnlock }) => {
   const { isMobile } = useScreenSize();
   const { addNodeToNetwork, networks } = useNetworks();
-  const [web3ProviderSettings] = useState<IWalletConfig>(() => {
-    if (hasWeb3Provider()) {
-      return getWeb3Config();
-    }
-    return WALLETS_CONFIG[WalletId.WEB3]; //Default to Web3
-  });
-
   const [web3Unlocked, setWeb3Unlocked] = useState<boolean | undefined>(undefined);
   const [web3UnlockError, setWeb3UnlockError] = useState<IWeb3UnlockError | undefined>(undefined);
+
+  const web3ProviderSettings = isProviderPresent ? getWeb3Config() : WALLETS_CONFIG[WalletId.WEB3];
+
   const unlockWallet = useCallback(async () => {
     try {
       const walletPayload: Web3Wallet[] | undefined = await WalletService.init({
@@ -116,11 +116,31 @@ const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) =>
         <div>
           <NewTabLink
             content={translate('ADD_ACCOUNT_WEB3_HELP', transProps)}
-            href={`${web3ProviderSettings.helpLink}`}
+            href={web3ProviderSettings.helpLink}
           />
         </div>
       </div>
     </Box>
+  );
+};
+
+const Web3ProviderDecrypt: FC<Props> = ({ formData, formDispatch, onUnlock }) => {
+  const [isProviderPresent, setIsProviderPresent] = useState(hasWeb3Provider());
+  const tripProviderStatus = () => setIsProviderPresent(true);
+
+  (window as any).addEventListener('ethereum#initialized', tripProviderStatus, {
+    once: true
+  });
+
+  return isProviderPresent ? (
+    <Web3Unlock
+      isProviderPresent={isProviderPresent}
+      formData={formData}
+      formDispatch={formDispatch}
+      onUnlock={onUnlock}
+    />
+  ) : (
+    <Web3ProviderInstall />
   );
 };
 
