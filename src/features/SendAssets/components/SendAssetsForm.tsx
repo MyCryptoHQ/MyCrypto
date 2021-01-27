@@ -514,7 +514,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         setFieldValue('gasLimitField', gas);
         setGasEstimationError(undefined);
       } catch (err) {
-        setGasEstimationError(err.message);
+        setGasEstimationError(err.reason);
       }
       setIsEstimatingGasLimit(false);
     } else {
