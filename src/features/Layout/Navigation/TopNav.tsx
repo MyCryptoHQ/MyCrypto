@@ -47,7 +47,8 @@ export const TopNav = ({
       )}
       {!isMobile && (
         <>
-          <Box mr="auto" ml={{ _: '0', xxl: 'calc(50% - 350px)' }}>
+          {/* Center Banner by adding left margin */}
+          <Box mr="auto" ml={{ _: '0', xxl: 'calc(50% - 462px)' }}>
             <AnnouncementBanner />
           </Box>
           <Icon
