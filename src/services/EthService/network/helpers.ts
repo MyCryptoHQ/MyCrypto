@@ -75,11 +75,6 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  /**const providers: FallbackProviderConfig[] = sortedNodes.map((n, i) => ({
-    provider: getProvider(id, n as any, chainId),
-    priority: i
-  }));**/
-
   const providers = sortedNodes.map((n) => getProvider(id, n as any, chainId));
 
   return new FallbackProvider(providers);
