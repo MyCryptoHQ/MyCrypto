@@ -103,6 +103,7 @@ import questionBlack from '@assets/images/icn-question.svg';
 import receiveIcon from '@assets/images/icn-receive.svg';
 import sendIcon from '@assets/images/icn-send.svg';
 import sentIcon from '@assets/images/icn-sent.svg';
+import separator from '@assets/images/icn-separator.svg';
 import closedEye from '@assets/images/icn-show-closed-eye-svg.svg';
 import openedEye from '@assets/images/icn-show-eye.svg';
 import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
@@ -190,6 +191,9 @@ const svgIcons = {
   telegram,
   twitter,
   check,
+
+  /* MISC */
+  separator,
 
   /* TX Receipt */
   'status-badge-success': statusBadgeSuccess,

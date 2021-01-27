@@ -11,6 +11,7 @@ import receiveIcon from '@assets/images/icn-receive.svg';
 import {
   AccountSelector,
   AssetSelector,
+  BusyBottom,
   ContentPanel,
   CopyableCodeBlock,
   InlineMessage,
@@ -20,7 +21,7 @@ import { ROUTE_PATHS } from '@config';
 import { validateAmountField } from '@features/SendAssets/components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
 import translate, { translateRaw } from '@translations';
-import { IAccount as IIAccount } from '@types';
+import { BusyBottomConfig, IAccount as IIAccount } from '@types';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest,
@@ -283,6 +284,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
           </Form>
         )}
       </Formik>
+      <BusyBottom type={BusyBottomConfig.SUPPORT} />
     </ContentPanel>
   );
 }

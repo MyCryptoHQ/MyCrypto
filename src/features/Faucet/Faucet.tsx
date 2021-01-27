@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
+import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ import {
   Button,
   ExtendedContentPanel,
   InlineMessage,
+  Link,
   NewTabLink,
   RouterLink,
   TxReceipt
@@ -53,17 +54,6 @@ const CodeHeader = styled.div`
 
 const CodeHeading = styled(Heading)`
   margin-top: ${SPACING.SM};
-`;
-
-const LearnMoreArrowWrapper = styled.span`
-  vertical-align: middle;
-  margin-left: ${SPACING.XS};
-`;
-
-const LearnMoreArrow = styled(Icon)`
-  transform: rotate(180deg);
-  width: 14px;
-  height: 14px;
 `;
 
 const NoTestnetAccounts = styled(InlineMessage)`
@@ -171,13 +161,13 @@ export default function Faucet() {
             {translate('REQUEST')}
           </RequestButton>
           <CenterText>
-            {translate('FAUCET_NOT_SURE')}{' '}
-            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
-              {translate('LEARN_MORE')}{' '}
-              <LearnMoreArrowWrapper>
-                <LearnMoreArrow icon="backArrow" />
-              </LearnMoreArrowWrapper>
-            </NewTabLink>
+            {translate('FAUCET_NOT_SURE')}
+            <br />
+            <Link>
+              <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
+                {translate('VISIT_KB')}
+              </NewTabLink>
+            </Link>
           </CenterText>
         </Form>
       )}

@@ -2,12 +2,11 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, Heading, Icon, NewTabLink, Spinner } from '@components';
-import { EXT_URLS } from '@config';
+import { Box, BusyBottom, Heading, Icon, NewTabLink, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, FormData, TAddress, WalletId } from '@types';
+import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import DeterministicWallets from './DeterministicWallets';
@@ -91,7 +90,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
           </Heading>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">
-              {translate('LEDGER_TIP')}
+              {translate('LEDGER_TIP', { $network: network.id })}
               <div className="LedgerPanel-image">
                 <Icon type="ledger-icon-lg" />
               </div>
@@ -110,7 +109,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
+              <BusyBottom type={BusyBottomConfig.LEDGER} />
             </div>
           </div>
         </Box>

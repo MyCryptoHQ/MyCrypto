@@ -6,7 +6,13 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { object } from 'yup';
 
-import { AccountSelector, AssetSelector, ContentPanel, InlineMessage } from '@components';
+import {
+  AccountSelector,
+  AssetSelector,
+  BusyBottom,
+  ContentPanel,
+  InlineMessage
+} from '@components';
 import {
   BUY_MYCRYPTO_WEBSITE,
   ETHUUID,
@@ -20,7 +26,7 @@ import { getAssetByUUID, useAssets } from '@services/Store/Asset';
 import { StoreContext } from '@services/Store/StoreProvider';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, IAccount, StoreAccount, TURL } from '@types';
+import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
 import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`
@@ -192,6 +198,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
+      <BusyBottom type={BusyBottomConfig.SUPPORT} />
     </ContentPanel>
   );
 };

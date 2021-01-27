@@ -94,3 +94,4 @@ export { SkeletonLoader } from './SkeletonLoader';
 export { DemoGatewayBanner } from './DemoBanner';
 export { AnnouncementBanner } from './AnnouncementBanner';
 export { Switch } from './Switch';
+export { BusyBottom } from './BusyBottom';

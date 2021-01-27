@@ -2,12 +2,22 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Button, Heading, Icon, InlineMessage, Spinner, Text, TIcon } from '@components';
+import {
+  Box,
+  BusyBottom,
+  Button,
+  Heading,
+  Icon,
+  InlineMessage,
+  Spinner,
+  Text,
+  TIcon
+} from '@components';
 import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { InlineMessageType, Network, WalletId } from '@types';
+import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
 
 interface HWConfig {
   walletTypeTransKey: string;
@@ -121,9 +131,13 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         )}
       </Text>
       <HardwareFooter>
-        {translate(hardwareConfigs[walletId].referralTransKey, {
-          $url: hardwareConfigs[walletId].referralURL
-        })}
+        <BusyBottom
+          type={
+            walletId === WalletId.LEDGER_NANO_S_NEW
+              ? BusyBottomConfig.LEDGER
+              : BusyBottomConfig.TREZOR
+          }
+        />
       </HardwareFooter>
     </Box>
   </Box>
