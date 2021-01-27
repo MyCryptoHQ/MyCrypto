@@ -81,7 +81,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     priority: i
   }));
 
-  return new FallbackProvider(providers, 0);
+  return new FallbackProvider(providers, 1);
 };
 
 export const getDPath = (network: Network | undefined, type: DPathFormat): DPath | undefined => {
