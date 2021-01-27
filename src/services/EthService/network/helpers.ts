@@ -1,15 +1,15 @@
 import {
   BaseProvider,
   EtherscanProvider,
-  FallbackProvider,
   InfuraProvider,
-  JsonRpcProvider
+  StaticJsonRpcProvider
 } from '@ethersproject/providers';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
 
 import { ETHERSCAN_API_KEY, INFURA_API_KEY } from '@config';
 import { DPath, DPathFormat, Network, NetworkId, NodeOptions, NodeType } from '@types';
+import { FallbackProvider } from '@vendor';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEthersNetworkish = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli' | number;
@@ -36,7 +36,7 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
     // default case covers the remaining NodeTypes.
     default: {
       if ('auth' in node && node.auth) {
-        return new JsonRpcProvider(
+        return new StaticJsonRpcProvider(
           {
             url,
             user: node.auth.username,
@@ -46,7 +46,7 @@ const getProvider = (networkId: NetworkId, node: NodeOptions, chainId: number) =
           chainId
         );
       }
-      return new JsonRpcProvider(url, chainId);
+      return new StaticJsonRpcProvider(url, chainId);
     }
   }
 };
@@ -75,7 +75,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  const providers: BaseProvider[] = sortedNodes.map((n) => getProvider(id, n as any, chainId));
+  const providers = sortedNodes.map((n) => getProvider(id, n as any, chainId));
 
   return new FallbackProvider(providers);
 };

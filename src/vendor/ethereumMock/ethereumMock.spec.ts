@@ -13,6 +13,7 @@ jest.mock('@ethersproject/wallet', () => ({
 }));
 
 jest.mock('@ethersproject/providers', () => ({
+  ...jest.requireActual('@ethersproject/providers'),
   JsonRpcProvider: jest.fn().mockImplementation(() => ({
     send: jest.fn()
   }))

@@ -6,7 +6,7 @@ module.exports = {
       '@babel/preset-env',
       // Enable lodash tree shaking
       // https://www.azavea.com/blog/2019/03/07/lessons-on-tree-shaking-lodash/
-      { modules: false, targets: { node: 4 } }
+      { modules: false, targets: { node: 8 } }
     ]
   ],
   plugins: [

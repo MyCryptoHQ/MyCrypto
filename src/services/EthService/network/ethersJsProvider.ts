@@ -1,6 +1,5 @@
-import { FallbackProvider } from '@ethersproject/providers';
-
 import { Network } from '@types';
+import { FallbackProvider } from '@vendor';
 
 import { createFallbackNetworkProviders } from './helpers';
 
