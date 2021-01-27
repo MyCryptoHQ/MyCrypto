@@ -119,7 +119,7 @@ export default function SignTransactionWeb3({
         })}
       </div>
       <div className="SignTransactionWeb3-img">
-        <img src={walletConfig.icon} />
+        <img width="150px" src={walletConfig.icon} />
       </div>
 
       <div className="SignTransactionWeb3-input">
