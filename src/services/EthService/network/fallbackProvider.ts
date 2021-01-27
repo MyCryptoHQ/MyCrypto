@@ -1,40 +1,33 @@
-// Returns:
-//  - true is all networks match
-//  - false if any network is null
-
 import { BaseProvider, Network } from '@ethersproject/providers';
 
-//  - throws if any 2 networks do not match
-function checkNetworks(networks: Array<Network>): boolean {
-  let result = true;
+function checkNetworks(networks: Array<Network>): Network | null {
+  let result = null;
 
-  let check: Network | null = null;
-  networks.forEach((network) => {
-    // Null
+  for (let i = 0; i < networks.length; i++) {
+    const network = networks[i];
+
+    // Null! We do not know our network; bail.
     if (network == null) {
-      result = false;
-      return;
+      return null;
     }
 
-    // Have nothing to compre to yet
-    if (check == null) {
-      check = network;
-      return;
+    if (result) {
+      // Make sure the network matches the previous networks
+      if (
+        !(
+          result.name === network.name &&
+          result.chainId === network.chainId &&
+          (result.ensAddress === network.ensAddress ||
+            (result.ensAddress == null && network.ensAddress == null))
+        )
+      ) {
+        console.error('provider mismatch');
+        throw new Error('provider mismatch');
+      }
+    } else {
+      result = network;
     }
-
-    // Matches!
-    if (
-      check.name === network.name &&
-      check.chainId === network.chainId &&
-      (check.ensAddress === network.ensAddress ||
-        (check.ensAddress == null && network.ensAddress == null))
-    ) {
-      return;
-    }
-
-    console.error('provider mismatch');
-    throw Error('provider mismatch');
-  });
+  }
 
   return result;
 }
@@ -74,6 +67,11 @@ export class FallbackProvider extends BaseProvider {
   get providers(): Array<BaseProvider> {
     // Return a copy, so we don't get mutated
     return this._providers.slice(0);
+  }
+
+  async detectNetwork(): Promise<Network> {
+    const networks = await Promise.all(this.providers.map((p) => p.getNetwork()));
+    return checkNetworks(networks) as Network;
   }
 
   perform(method: string, params: { [name: string]: any }): any {
