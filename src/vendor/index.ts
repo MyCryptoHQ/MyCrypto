@@ -1,4 +1,4 @@
 export * from './react-use';
 export * from './ramda';
 export * from './ethereumMock';
-export * from './fallbackProvider';
+export * from './FallbackProvider/fallbackProvider';
