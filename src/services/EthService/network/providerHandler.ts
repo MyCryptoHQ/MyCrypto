@@ -2,7 +2,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import {
   BaseProvider,
   Block,
-  FallbackProvider,
   TransactionReceipt,
   TransactionResponse
 } from '@ethersproject/providers';
@@ -15,6 +14,7 @@ import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
 import { baseToConvertedUnit } from '@utils';
 
 import { EthersJS } from './ethersJsProvider';
+import { FallbackProvider } from './fallbackProvider';
 import { createCustomNodeProvider } from './helpers';
 
 export class ProviderHandler {
@@ -92,7 +92,7 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        const providers = (client as FallbackProvider).providerConfigs.map((p) => p.provider);
+        const providers = (client as FallbackProvider).providers;
         return any(
           providers.map((p) => {
             // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
