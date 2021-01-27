@@ -1,5 +1,6 @@
 import { BaseProvider, Network } from '@ethersproject/providers';
 
+// Taken from new v5 ethers - https://github.com/ethers-io/ethers.js/blob/master/packages/providers/src.ts/fallback-provider.ts
 function checkNetworks(networks: Array<Network>): Network | null {
   let result = null;
 
@@ -21,7 +22,6 @@ function checkNetworks(networks: Array<Network>): Network | null {
             (result.ensAddress == null && network.ensAddress == null))
         )
       ) {
-        console.error('provider mismatch');
         throw new Error('provider mismatch');
       }
     } else {
@@ -37,7 +37,6 @@ export class FallbackProvider extends BaseProvider {
 
   constructor(providers: Array<BaseProvider>) {
     if (providers.length === 0) {
-      console.error('no providers');
       throw new Error('no providers');
     }
 
@@ -49,31 +48,31 @@ export class FallbackProvider extends BaseProvider {
       // The network won't be known until all child providers know
       const ready = Promise.all(providers.map((p) => p.getNetwork())).then((networks) => {
         if (!checkNetworks(networks)) {
-          console.error('getNetwork returned null');
           throw new Error('getNetwork returned null');
-          //errors.throwError('getNetwork returned null', errors.UNKNOWN_ERROR, {});
         }
         return networks[0];
       });
 
       super(ready);
     }
-    //errors.checkNew(this, FallbackProvider);
 
     // Preserve a copy, so we don't get mutated
     this._providers = providers.slice(0);
   }
 
-  get providers(): Array<BaseProvider> {
-    // Return a copy, so we don't get mutated
-    return this._providers.slice(0);
-  }
-
+  // Taken from Ethers v5 - https://github.com/ethers-io/ethers.js/blob/master/packages/providers/src.ts/fallback-provider.ts#L471-L474
   async detectNetwork(): Promise<Network> {
     const networks = await Promise.all(this.providers.map((p) => p.getNetwork()));
     return checkNetworks(networks) as Network;
   }
 
+  // Taken from Ethers v4 - https://github.com/ethers-io/ethers.js/blob/v4-legacy/src.ts/providers/fallback-provider.ts#L77-L80
+  get providers(): Array<BaseProvider> {
+    // Return a copy, so we don't get mutated
+    return this._providers.slice(0);
+  }
+
+  // Taken from Ethers v4 - https://github.com/ethers-io/ethers.js/blob/v4-legacy/src.ts/providers/fallback-provider.ts#L82-L104
   perform(method: string, params: { [name: string]: any }): any {
     // Creates a copy of the providers array
     const providers = this.providers;

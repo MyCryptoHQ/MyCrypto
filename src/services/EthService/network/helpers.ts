@@ -9,8 +9,7 @@ import equals from 'ramda/src/equals';
 
 import { ETHERSCAN_API_KEY, INFURA_API_KEY } from '@config';
 import { DPath, DPathFormat, Network, NetworkId, NodeOptions, NodeType } from '@types';
-
-import { FallbackProvider } from './fallbackProvider';
+import { FallbackProvider } from '@vendor';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEthersNetworkish = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli' | number;

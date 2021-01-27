@@ -12,9 +12,9 @@ import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20, RPCRequests } from '@services/EthService';
 import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
 import { baseToConvertedUnit } from '@utils';
+import { FallbackProvider } from '@vendor';
 
 import { EthersJS } from './ethersJsProvider';
-import { FallbackProvider } from './fallbackProvider';
 import { createCustomNodeProvider } from './helpers';
 
 export class ProviderHandler {
