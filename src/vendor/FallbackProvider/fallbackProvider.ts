@@ -32,7 +32,7 @@ function checkNetworks(networks: Array<Network>): Network | null {
   return result;
 }
 
-// We use a custom version of FallbackProvider which is heavily inspired by Ethers v4 because we prefer the behaviour of the old version over the new one.
+// We use a custom version of FallbackProvider which is heavily inspired by Ethers v4 because we prefer the FallbackProvider to sequentially use providers and fall back in case of errors over trying to reach a quorum with multiple providers at once.
 // Most of the magic happens in the perform function which does the fetching and falling back in case of errors.
 // A few tweaks were done to support new features of Ethers v5, such as adding the detectNetwork function.
 // Furthermore, the Ethers error logging was removed in favor of simply throwing errors.
