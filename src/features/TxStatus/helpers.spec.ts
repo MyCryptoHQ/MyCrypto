@@ -15,10 +15,13 @@ import { ITxStatus, ITxType } from '@types';
 
 import { fetchTxStatus, makeTx } from './helpers';
 
-jest.mock('@ethersproject/providers', () => {
+jest.mock('@vendor', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('./__mocks__/txstatus');
-  return mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d');
+  return {
+    ...jest.requireActual('@vendor'),
+    ...mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d')
+  };
 });
 
 describe('fetchTxStatus', () => {

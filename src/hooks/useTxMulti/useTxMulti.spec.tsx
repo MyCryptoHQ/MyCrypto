@@ -16,48 +16,46 @@ const createTxRaw = (idx: number): Partial<ITxObject> => ({
   data: 'empty' as ITxData
 });
 
-jest.mock('@ethersproject/providers', () => {
-  return {
-    // Since there are no nodes in our StoreContext,
-    // ethers will default to FallbackProvider
-    FallbackProvider: () => ({
-      sendTransaction: jest
-        .fn()
-        .mockImplementationOnce(() =>
-          Promise.resolve({
-            hash: '0x1',
-            value: '0x00',
-            gasLimit: '0x7d3c',
-            gasPrice: '0x012a05f200',
-            nonce: '0x',
-            to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-            from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-            data: '0x'
-          })
-        )
-        .mockImplementationOnce(() =>
-          Promise.resolve({
-            hash: '0x2',
-            value: '0x00',
-            gasLimit: '0x7d3c',
-            gasPrice: '0x012a05f200',
-            nonce: '0x',
-            to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-            from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-            data: '0x'
-          })
-        ),
-      waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
-      getBlock: jest.fn().mockImplementation(() => Promise.resolve({})),
-      call: jest
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve('0x000000000000000000000000000000000000000000000000016345785d8a0000')
-        )
-    }),
-    InfuraProvider: () => ({})
-  };
-});
+jest.mock('@vendor', () => ({
+  ...jest.requireActual('@vendor'),
+  // Since there are no nodes in our StoreContext,
+  // ethers will default to FallbackProvider
+  FallbackProvider: jest.fn().mockImplementation(() => ({
+    sendTransaction: jest
+      .fn()
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          hash: '0x1',
+          value: '0x00',
+          gasLimit: '0x7d3c',
+          gasPrice: '0x012a05f200',
+          nonce: '0x',
+          to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          data: '0x'
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          hash: '0x2',
+          value: '0x00',
+          gasLimit: '0x7d3c',
+          gasPrice: '0x012a05f200',
+          nonce: '0x',
+          to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          data: '0x'
+        })
+      ),
+    waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
+    getBlock: jest.fn().mockImplementation(() => Promise.resolve({})),
+    call: jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve('0x000000000000000000000000000000000000000000000000016345785d8a0000')
+      )
+  }))
+}));
 
 const renderUseTxMulti = () => {
   const wrapper: React.FC = ({ children }) => (
