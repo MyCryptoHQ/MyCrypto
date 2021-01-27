@@ -20,7 +20,7 @@ export const TxReceiptStatusBadge = ({ status, display }: { status: ITxStatus } 
   })();
   return (
     <Box as="span" display={display} data-testid={status}>
-      <Icon width="90" height="20" type={icon} />
+      <Icon width="90px" height="20px" type={icon} />
     </Box>
   );
 };
