@@ -23,7 +23,7 @@ describe('AnalyticsSaga', () => {
       })
       .run()
       .then(({ effects }) => {
-        expect(effects.select).toHaveLength(2);
+        expect(effects.select).toHaveLength(3);
         expect(effects.call).toBeUndefined();
         expect(effects.put).toBeUndefined();
       });
