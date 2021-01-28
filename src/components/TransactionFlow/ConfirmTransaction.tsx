@@ -224,8 +224,11 @@ export const ConfirmTransactionUI = ({
   const assetType = asset.type;
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei = totalTxFeeToWei(gasPrice, gasLimit);
-  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
+  const transactionFeeWei = totalTxFeeToWei(rawTransaction.gasPrice, rawTransaction.gasLimit);
+  const maxTransactionFeeBase: string = totalTxFeeToString(
+    rawTransaction.gasPrice,
+    rawTransaction.gasLimit
+  );
 
   /* Calculate total base asset amount */
   const valueWei = Wei(rawTransaction.value);

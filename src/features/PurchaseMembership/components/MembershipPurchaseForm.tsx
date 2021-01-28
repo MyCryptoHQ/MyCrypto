@@ -42,7 +42,7 @@ interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
   isSubmitting: boolean;
-  error?: Error;
+  error?: CustomError;
   isDemoMode: boolean;
   onComplete(fields: any): void;
 }
@@ -253,7 +253,9 @@ export const MembershipFormUI = ({
               </FormFieldSubmitButton>
               {error && (
                 <InlineMessage
-                  value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+                  value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+                    $error: error.reason ? error.reason : error.message
+                  })}
                 />
               )}
             </Form>

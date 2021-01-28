@@ -29,7 +29,7 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { isSameAddress, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { addHexPrefix, bigify, isSameAddress, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
 import {
@@ -277,19 +277,21 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_NO_ACCOUNT'));
     }
 
+    const hexlify = (str: string) => addHexPrefix(bigify(str).toString(16));
+
     const { network } = account;
     const { gasPrice, gasLimit, nonce } = rawTransaction;
     const transaction: any = Object.assign(
       constructGasCallProps(contractAddress, submitedFunction, account),
       {
-        gasPrice,
+        gasPrice: hexlify(gasPrice),
         chainId: network.chainId,
-        nonce
+        nonce: hexlify(nonce)
       }
     );
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = gasLimit;
+    transaction.gasLimit = hexlify(gasLimit);
     delete transaction.from;
 
     const txConfig = makeContractInteractionTxConfig(
