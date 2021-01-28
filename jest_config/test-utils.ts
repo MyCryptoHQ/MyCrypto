@@ -7,7 +7,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 
 import { SCHEMA_BASE } from '@database/data/schema';
 import { marshallState } from '@services/Store/DataManager/utils';
-import { AppState, persistanceSlice } from '@store';
+import { AppState, persistenceSlice } from '@store';
 import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 
@@ -65,11 +65,11 @@ export * from 'redux-saga-test-plan';
 export function mockAppState(sliceState?: Partial<DataStore>): AppState {
   if (sliceState) {
     return ({
-      [persistanceSlice.name]: sliceState
+      [persistenceSlice.name]: sliceState
     } as unknown) as AppState;
   } else {
     return ({
-      [persistanceSlice.name]: APP_STATE
+      [persistenceSlice.name]: APP_STATE
     } as unknown) as AppState;
   }
 }

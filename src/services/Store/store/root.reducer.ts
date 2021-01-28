@@ -12,7 +12,7 @@ import { canImport } from './helpers';
 import importSlice from './import.slice';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
-import persistanceSlice from './persistance.slice';
+import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
 import vaultSlice from './vault.slice';
@@ -23,7 +23,7 @@ const reducers = combineReducers({
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
-  [persistanceSlice.name as 'database']: createPersistReducer(persistanceSlice.reducer),
+  [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
   [featureFlagSlice.name]: featureFlagSlice.reducer
 });
 
@@ -37,7 +37,7 @@ const rootReducer = (state = reducers(undefined, { type: '' }), action: AnyActio
     case appReset.type: {
       return {
         ...state,
-        [persistanceSlice.name]: { ...action.payload, _persist: state.database._persist }
+        [persistenceSlice.name]: { ...action.payload, _persist: state.database._persist }
       };
     }
     default: {
