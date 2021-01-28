@@ -6,13 +6,16 @@ import { useEffectOnce } from 'vendor';
 import { getRouteConfigByPath } from '@config';
 import { useAnalytics } from '@services/Analytics';
 
+// Assumes route param is always the last part of the route
+const stripRouteParam = (path: string) => path.split('/:')[0];
+
 export const PageVisitsAnalytics = withRouter(({ history, location }) => {
   const { trackPage } = useAnalytics();
 
   useEffectOnce(() => {
     history.listen((to) => {
       if (to.pathname === location.pathname) return;
-      const { name, title } = getRouteConfigByPath(to.pathname) || {};
+      const { name, title } = getRouteConfigByPath(stripRouteParam(to.pathname)) || {};
       trackPage({ name, title });
     });
   });
