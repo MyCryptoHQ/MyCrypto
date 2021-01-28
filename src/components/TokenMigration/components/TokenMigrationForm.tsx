@@ -52,7 +52,7 @@ interface UIProps {
   storeDefaultAccount?: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
-  error?: Error;
+  error?: CustomError;
   tokenMigrationConfig: ITokenMigrationConfig;
   isDemoMode: boolean;
   onComplete(fields: any): void;
@@ -228,7 +228,11 @@ export const TokenMigrationFormUI = ({
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
       {error && (
-        <InlineMessage value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })} />
+        <InlineMessage
+          value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+            $error: error.reason ? error.reason : error.message
+          })}
+        />
       )}
     </>
   );

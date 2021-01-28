@@ -19,6 +19,10 @@ interface CustomWindow extends Window {
   resetFeatureFlags?(): void;
 }
 
+interface CustomError extends Error {
+  reason?: string; // Used by Ethers.js
+}
+
 // Polyfill for ResizeObserver since type is missing from TS
 // https://github.com/que-etc/resize-observer-polyfill/blob/master/src/index.d.ts
 interface DOMRectReadOnly {

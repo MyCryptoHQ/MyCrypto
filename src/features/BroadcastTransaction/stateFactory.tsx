@@ -72,7 +72,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
       console.debug(`[BroadcastTx] ${err}`);
       setState((prevState: State) => ({
         ...prevState,
-        error: err.message
+        error: err.reason ? err.reason : err.message
       }));
     }
   };

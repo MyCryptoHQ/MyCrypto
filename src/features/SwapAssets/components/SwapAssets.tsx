@@ -43,7 +43,7 @@ interface ISwapProps {
   isCalculatingToAmount: boolean;
   fromAmountError: string;
   toAmountError: string;
-  txError: Error | undefined;
+  txError: CustomError | undefined;
   initialToAmount: string;
   exchangeRate: string;
   markup: string;
@@ -265,7 +265,9 @@ export const SwapAssets = (props: Props) => {
       </StyledButton>
       {txError && (
         <InlineMessage>
-          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: txError.message })}
+          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+            $error: txError.reason ? txError.reason : txError.message
+          })}
         </InlineMessage>
       )}
     </Box>
