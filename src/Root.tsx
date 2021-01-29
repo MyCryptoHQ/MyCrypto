@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
@@ -10,8 +10,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
 import { FeatureFlagProvider } from '@services';
-import { trackInit } from '@services/Analytics';
-import { createStore, useDispatch } from '@store';
+import { createStore } from '@store';
 import { COLORS, theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 
@@ -50,13 +49,8 @@ const GlobalStyle = createGlobalStyle`
 const { store, persistor } = createStore();
 
 const RootComponent = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(trackInit());
-  });
-
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />

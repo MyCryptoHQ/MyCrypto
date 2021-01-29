@@ -1,4 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import { REHYDRATE } from 'redux-persist';
+import { all, put, takeLatest } from 'redux-saga/effects';
+
+import { trackInit } from '@services';
 
 import accountSlice from './account.slice';
 import assetSlice from './asset.slice';
@@ -8,8 +12,14 @@ import { initialLegacyState } from './legacy.initialState';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import passwordSlice from './password.slice';
+import { APP_PERSIST_CONFIG, VAULT_PERSIST_CONFIG } from './persist.config';
 import settingsSlice from './settings.slice';
 import userActionSlice from './userAction.slice';
+
+interface IRehydrate {
+  key: typeof APP_PERSIST_CONFIG.key | typeof VAULT_PERSIST_CONFIG.key;
+  type: typeof REHYDRATE;
+}
 
 const persistenceReducer = combineReducers({
   version: () => initialLegacyState.version,
@@ -30,3 +40,18 @@ const slice = {
 };
 
 export default slice;
+
+/**
+ * Saga
+ */
+export function* persistenceSaga() {
+  yield all([
+    yield takeLatest(REHYDRATE, handleRehydrateSuccess),
+  ]);
+}
+
+function* handleRehydrateSuccess(action: IRehydrate) {
+  if (action.key === APP_PERSIST_CONFIG.key) {
+    yield put(trackInit())
+  }
+}
