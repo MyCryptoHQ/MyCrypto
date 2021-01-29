@@ -110,7 +110,10 @@ function MembershipPanel({
               <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </SLink>
-              <Link href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_INFO)} rel="noreferrer">
+              <Link
+                href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_REQUEST_REWARDS)}
+                rel="noreferrer"
+              >
                 <SButton colorScheme={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
               </Link>
             </>
