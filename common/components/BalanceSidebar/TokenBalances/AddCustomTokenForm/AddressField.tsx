@@ -2,13 +2,21 @@ import React from 'react';
 import { Result } from 'mycrypto-nano-result';
 
 import { translateRaw } from 'translations';
-import { isValidETHAddress } from 'libs/validators';
+import { getIsValidAddressFunction } from 'libs/validators';
 import { Input } from 'components/ui';
 import { IGenerateAddressLookup } from './AddCustomTokenForm';
+import { connect } from 'react-redux';
+import { AppState } from '../../../../features/reducers';
+import { configSelectors } from '../../../../features/config';
+import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
   addressLookup: IGenerateAddressLookup;
   onChange(address: Result<string>): void;
+}
+
+interface StateProps {
+  network: NetworkConfig;
 }
 
 enum ErrType {
@@ -21,7 +29,7 @@ interface State {
   userInput: string;
 }
 
-export class AddressField extends React.Component<OwnProps, State> {
+class AddressField extends React.Component<OwnProps & StateProps, State> {
   public state: State = {
     address: Result.from({ res: '' }),
     userInput: ''
@@ -49,7 +57,10 @@ export class AddressField extends React.Component<OwnProps, State> {
   private handleFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
     const userInput = e.currentTarget.value;
     const addrTaken = this.props.addressLookup[userInput];
-    const validAddr = isValidETHAddress(userInput);
+
+    const validAddrFn = getIsValidAddressFunction(this.props.network.chainId);
+
+    const validAddr = validAddrFn(userInput);
     const err = addrTaken ? ErrType.ADDRTAKEN : !validAddr ? ErrType.INVALIDADDR : undefined;
     const address: Result<string> = err ? Result.from({ err }) : Result.from({ res: userInput });
 
@@ -57,3 +68,9 @@ export class AddressField extends React.Component<OwnProps, State> {
     this.props.onChange(address);
   };
 }
+
+export default connect(
+  (state: AppState): StateProps => ({
+    network: configSelectors.getNetworkConfig(state)
+  })
+)(AddressField);
