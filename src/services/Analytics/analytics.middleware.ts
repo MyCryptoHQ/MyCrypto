@@ -1,6 +1,6 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-import { addAccounts, decrypt, encrypt } from '@store';
+import { addAccounts, createAsset, decrypt, encrypt } from '@store';
 
 import { trackEvent } from './saga';
 
@@ -20,6 +20,7 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
       );
       break;
     }
+    // Track ScreenLock activity
     case encrypt.type: {
       state.dispatch(
         trackEvent({
@@ -32,6 +33,16 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
       state.dispatch(
         trackEvent({
           name: 'Screen unlocked'
+        })
+      );
+      break;
+    }
+    // Track custom token creation. Is also triggered on custom network.
+    case createAsset.type: {
+      state.dispatch(
+        trackEvent({
+          name: 'Add Asset',
+          params: action.payload
         })
       );
       break;
