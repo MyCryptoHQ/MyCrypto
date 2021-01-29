@@ -61,7 +61,7 @@ export async function getLatestElectronRelease() {
         continue;
       }
       const { versionNumber: nextVersion } = assetObj;
-      if (semver.lt(currentVersion, nextVersion)) {
+      if (semver.lt(currentVersion, nextVersion) && semver.lt(nextVersion, '2.0.0')) {
         return nextVersion;
       }
     }
