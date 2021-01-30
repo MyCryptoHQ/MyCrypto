@@ -1,7 +1,8 @@
 import { createAction, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 
-import { canTrackProductAnalytics, setProductAnalyticsAuthorisation } from '@store';
+import { canTrackProductAnalytics, getAccounts, setProductAnalyticsAuthorisation } from '@store';
+import { IAccount } from '@types';
 
 import { isActiveFeature } from '../FeatureFlag';
 import { default as AnalyticsService, PageParams, TrackParams } from './Analytics';
@@ -27,10 +28,12 @@ export function* analyticsSaga() {
 
 export function* initAnalytics() {
   const isActive = yield select(isActiveFeature('ANALYTICS'));
+  const accounts: IAccount[] = yield select(getAccounts);
   const canTrack = yield select(canTrackProductAnalytics);
   if (isActive && canTrack) {
     yield call(AnalyticsService.initAnalytics);
     yield put(trackEvent({ name: 'App Load' }));
+    yield put(trackEvent({ name: 'Total Account Count', params: { totalQty: accounts.length } }));
   }
 }
 

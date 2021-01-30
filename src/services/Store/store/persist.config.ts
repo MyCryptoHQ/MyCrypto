@@ -144,7 +144,7 @@ const migrations = {
   }
 };
 
-const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
+export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   version: 2,
   key: 'Storage',
   keyPrefix: 'MYC_',
@@ -162,7 +162,7 @@ const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
   persistReducer(APP_PERSIST_CONFIG, reducer);
 
-const VAULT_PERSIST_CONFIG: PersistConfig<EncryptedDataStore> = {
+export const VAULT_PERSIST_CONFIG: PersistConfig<EncryptedDataStore> = {
   key: 'Vault',
   keyPrefix: 'MYC_',
   blacklist: ['error'],

@@ -6,4 +6,5 @@ export type TAnalyticEvents =
   | 'Donate clicked'
   | 'Newsletter subscription'
   | 'Screen locked'
-  | 'Screen unlocked';
+  | 'Screen unlocked'
+  | 'Total Account Count';

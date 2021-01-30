@@ -80,6 +80,6 @@ export {
   isEncrypted
 } from './vault.slice';
 export { getAppState } from './selectors';
-export { default as persistanceSlice } from './persistance.slice';
+export { default as persistenceSlice } from './persistence.slice';
 export { appReset } from './root.reducer';
 export { getMemberships, membershipExpiryDate } from './membership.slice';

@@ -15,7 +15,7 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
       state.dispatch(
         trackEvent({
           name: 'Add Account',
-          params: { qty: action.payload.length, walletId: action.payload[0].walletId } // multiple add accounts are always of the same type.
+          params: { qty: action.payload.length, walletId: action.payload[0].wallet } // multiple add accounts are always of the same type.
         })
       );
       break;
