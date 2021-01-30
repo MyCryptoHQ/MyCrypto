@@ -61,7 +61,7 @@ export class TrezorWallet extends HardwareWallet {
         }
         // check the returned signature_v and recalc signature_v if it needed
         // see also https://github.com/trezor/trezor-mcu/pull/399
-        if (Number(res.payload.v) <= 1) {
+        if (parseInt(res.payload.v, 16) <= 1) {
           //  for larger chainId, only signature_v returned. simply recalc signature_v
           res.payload.v = bigify(res.payload.v)
             .plus(2 * chainId + 35)
