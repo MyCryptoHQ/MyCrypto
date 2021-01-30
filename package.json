@@ -149,7 +149,7 @@
     "@types/sha256": "0.2.0",
     "@types/styled-components": "5.1.0",
     "@types/styled-system__should-forward-prop": "5.1.2",
-    "@types/trezor-connect": "6.0.3",
+    "@types/trezor-connect": "7.0.0",
     "@types/uuid": "3.4.0",
     "@types/webpack-env": "1.15.0",
     "@types/yup": "0.26.27",

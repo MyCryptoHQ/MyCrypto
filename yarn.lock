@@ -3982,10 +3982,10 @@
     "@types/testing-library__dom" "*"
     pretty-format "^25.1.0"
 
-"@types/trezor-connect@6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@types/trezor-connect/-/trezor-connect-6.0.3.tgz#37e4a720b6a63cb3af480f707c4c634fd3ac085f"
-  integrity sha512-C65Gm0/hJB2KIEKbuXtco1jDDml7SAJpRnxbnBb6ExGDaqg9vXexZIPfYeDTTIH5zPDqxNGG72laxtrq9lpwpA==
+"@types/trezor-connect@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/trezor-connect/-/trezor-connect-7.0.0.tgz#d733897ea0a9bc4b149e0275869693fd3b562190"
+  integrity sha512-pPXaTkokzZE2xGA4WcFVNQfOAkGv70eqjw9m/bGJW76A5PFZQ3ybrxTeJ3bF5EzBU1nkAvA27Asia0p5J7ZOfg==
 
 "@types/uglify-js@*":
   version "3.0.4"

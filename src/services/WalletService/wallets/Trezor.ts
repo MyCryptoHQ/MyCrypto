@@ -53,6 +53,10 @@ export default class Trezor extends HardwareWallet {
 
     const response = await TrezorConnect.getPublicKey({ path: path.value });
 
+    if (!response.success) {
+      throw Error(response.payload.error);
+    }
+
     return {
       publicKey: response.payload.publicKey,
       chainCode: response.payload.chainCode
@@ -65,6 +69,10 @@ export default class Trezor extends HardwareWallet {
      * https://github.com/trezor/connect/blob/develop/docs/methods/ethereumGetAddress.md
      */
     const response = await TrezorConnect.ethereumGetAddress({ path: getFullPath(path, index) });
+
+    if (!response.success) {
+      throw Error(response.payload.error);
+    }
 
     return response.payload.address;
   }
