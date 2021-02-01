@@ -147,6 +147,10 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
 
   const [isReady, clear, set] = useTimeoutFn(() => setIsOpen(!isOpen), 100);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const topRef = useRef<any>(null);
 
   useEffect(() => clear());
