@@ -1,11 +1,12 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { Box, Icon, Text } from '@components';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { INavTray } from '@types';
-import { useEffectOnce, useTimeoutFn } from '@vendor';
+import { useScreenSize } from '@utils';
+import { useClickAway, useEffectOnce, useTimeoutFn } from '@vendor';
 
 import { Tray } from './Tray';
 
@@ -24,15 +25,26 @@ const SIcon = styled(Icon)`
 
 export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode }) => {
   const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { isMobile } = useScreenSize();
 
   const [isReady, clear, set] = useTimeoutFn(() => setOpen(false), 300);
 
+  const handleToggle = () => {
+    if (!isMobile) return;
+    setOpen(!isOpen);
+  };
+
+  useClickAway(ref, () => isMobile && setOpen(false));
+
   const handleOpen = () => {
+    if (isMobile) return;
     isReady() === false && clear();
     setOpen(true);
   };
 
-  const handleClose = () => isReady() !== false && set();
+  const handleClose = () => isReady() !== false && !isMobile && set();
 
   useEffectOnce(() => clear());
   return (
@@ -45,7 +57,9 @@ export const NavTray = ({ tray, content }: { tray: INavTray; content: ReactNode 
       position={{ _: undefined, sm: 'relative' }}
       onMouseEnter={handleOpen}
       onMouseLeave={handleClose}
+      onClick={handleToggle}
       px={{ sm: '3px' }}
+      ref={ref}
     >
       <SIcon type="caret" color={COLORS.BLUE_GREY} height={{ _: '0.8vh', xxl: '8px' }} />
       <Icon type={tray.icon} height={{ _: '24px', sm: '2.4vh', xxl: '24px' }} color="WHITE" />
