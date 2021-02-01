@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { formatEther } from '@ethersproject/units';
+import { formatUnits } from '@ethersproject/units';
 import { OptionProps } from 'react-select';
 
 import { AccountSummary, Divider, Selector } from '@components';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getAccountBalance, getBaseAsset } from '@services/Store';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -42,7 +43,10 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
     map((a: StoreAccount) => ({
       account: a,
       asset: {
-        balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
+        balance: formatUnits(
+          asset ? getAccountBalance(a, asset) : getAccountBalance(a),
+          asset?.decimal || DEFAULT_ASSET_DECIMAL
+        ),
         assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
         assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
       }
