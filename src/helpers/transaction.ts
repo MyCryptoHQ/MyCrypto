@@ -428,7 +428,7 @@ export const appendGasLimit = (network: Network) => async (
       gasLimit
     };
   } catch (err) {
-    throw new Error(`getGasEstimate: ${err.message}`);
+    throw new Error(`getGasEstimate: ${err.reason ? err.reason : err.message}`);
   }
 };
 
@@ -439,7 +439,7 @@ export const appendNonce = (network: Network, senderAddress: TAddress) => async 
     .then((n) => n.toString())
     .then(inputNonceToHex)
     .catch((err) => {
-      throw new Error(`getNonce: ${err.message}`);
+      throw new Error(`getNonce: ${err.reason ? err.reason : err.message}`);
     });
 
   return {

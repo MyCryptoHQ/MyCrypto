@@ -125,7 +125,7 @@ export const Deploy = (props: Props) => {
     try {
       await handleDeploySubmit();
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     }
   };
 
