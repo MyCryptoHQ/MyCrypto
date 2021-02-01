@@ -62,14 +62,14 @@ export const TopNav = ({
         title="NAVIGATION_LOCK"
         icon="nav-lock"
         onClick={() => startLockCountdown(true)}
-        current={locked}
+        current={!isTrayOpen && locked}
         color={color}
       />
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"
         onClick={() => push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}
-        current={current === ROUTE_PATHS.MYC_MEMBERSHIP.path}
+        current={!isTrayOpen && current === ROUTE_PATHS.MYC_MEMBERSHIP.path}
         color={color}
       />
       <TopItem
