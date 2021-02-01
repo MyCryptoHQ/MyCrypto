@@ -12,10 +12,6 @@ import translate, { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE } from '@types';
 import { goBack } from '@utils';
 
-const CenteredContentPanel = styled(ContentPanel)`
-  width: 35rem;
-`;
-
 const ImportSuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -38,7 +34,7 @@ export function Export(props: RouteComponentProps) {
   const backupAction = findUserAction(ACTION_NAME.BACKUP);
 
   return (
-    <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
+    <ContentPanel width={560} onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
@@ -51,7 +47,7 @@ export function Export(props: RouteComponentProps) {
           }
         />
       </ImportSuccessContainer>
-    </CenteredContentPanel>
+    </ContentPanel>
   );
 }
 
