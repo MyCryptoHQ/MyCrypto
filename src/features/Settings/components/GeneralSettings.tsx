@@ -42,6 +42,9 @@ const SettingsControl = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-top: ${SPACING.SM};
     width: 100%;
+    div {
+      justify-content: flex-start;
+    }
   }
 `;
 
