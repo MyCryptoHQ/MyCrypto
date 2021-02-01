@@ -26,7 +26,7 @@ const LINK_COLUMNS = [
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_10'),
-        link: 'https://mycrypto.com/privacy/'
+        link: 'https://about.mycrypto.com/privacy/'
       }
     ]
   },
