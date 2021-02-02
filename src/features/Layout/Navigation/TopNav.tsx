@@ -25,6 +25,7 @@ export const TopNav = ({
   const { push } = useHistory();
 
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
+  const currentPath = isMobile && isTrayOpen ? undefined : current;
 
   return (
     <Box
@@ -62,14 +63,14 @@ export const TopNav = ({
         title="NAVIGATION_LOCK"
         icon="nav-lock"
         onClick={() => startLockCountdown(true)}
-        current={!isTrayOpen && locked}
+        current={currentPath !== undefined && locked}
         color={color}
       />
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"
         onClick={() => push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}
-        current={!isTrayOpen && current === ROUTE_PATHS.MYC_MEMBERSHIP.path}
+        current={currentPath === ROUTE_PATHS.MYC_MEMBERSHIP.path}
         color={color}
       />
       <TopItem
