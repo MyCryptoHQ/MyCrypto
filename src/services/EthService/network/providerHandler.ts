@@ -111,14 +111,7 @@ export class ProviderHandler {
 
   /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
-    return this.injectClient((client) => {
-      // @todo Fix this ugly hack
-      const format = client.formatter.formats;
-      format.receipt['root'] = format.receipt['logsBloom'];
-      Object.assign(client.formatter, { format: format });
-
-      return client.getTransactionReceipt(txhash);
-    });
+    return this.injectClient((client) => client.getTransactionReceipt(txhash));
   }
 
   public getBlockByHash(blockHash: string): Promise<Block> {
