@@ -29,7 +29,7 @@ export const Downloader: React.FC<{
       href={blob}
       download={fileName}
       onClick={handleDownload}
-      {...(isMobile ? { rel: 'noopener noreferrer', target: '_blank' } : {})}
+      {...(isMobile ? { rel: 'noopener noreferrer', target: '_system' } : {})}
       {...props}
     >
       {children}
