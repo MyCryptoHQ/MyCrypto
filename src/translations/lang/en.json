@@ -1044,6 +1044,7 @@
     "MYC_POAP_ACTION_BODY_3": "1. Hop into the [MyCrypto Discord](https://discord.gg/VSaTXEA)",
     "MYC_POAP_ACTION_BODY_4": "2. Join the #mycrypto-poap channel",
     "MYC_POAP_ACTION_BODY_5": "3. Follow the instructions there!",
-    "MYC_POAP_ACTION_BUTTON": "Join the MyCrypto Discord!"
+    "MYC_POAP_ACTION_BUTTON": "Join the MyCrypto Discord!",
+    "EXPORT_MOBILE_NOTICE": "Some mobile DApp Browsers prevent downloading files, in that case you can copy the text above manually"
   }
 }

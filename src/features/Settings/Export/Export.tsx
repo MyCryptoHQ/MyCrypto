@@ -4,13 +4,13 @@ import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ContentPanel, Downloader } from '@components';
+import { ContentPanel, Downloader, InlineMessage } from '@components';
 import { getCurrentDBConfig, getExportFileName } from '@database';
 import { useUserActions } from '@services/Store';
 import { exportState, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
-import { ACTION_NAME, ACTION_STATE } from '@types';
-import { goBack } from '@utils';
+import { ACTION_NAME, ACTION_STATE, InlineMessageType } from '@types';
+import { goBack, useScreenSize } from '@utils';
 
 const ImportSuccessContainer = styled.div`
   display: flex;
@@ -28,6 +28,7 @@ export function Export(props: RouteComponentProps) {
   const { history } = props;
   const onBack = () => goBack(history);
   const appState = JSON.stringify(useSelector(exportState));
+  const { isMobile } = useScreenSize();
 
   const { updateUserAction, findUserAction } = useUserActions();
 
@@ -38,6 +39,11 @@ export function Export(props: RouteComponentProps) {
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
         <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
+        {isMobile && (
+          <InlineMessage type={InlineMessageType.INFO_CIRCLE}>
+            {translateRaw('EXPORT_MOBILE_NOTICE')}{' '}
+          </InlineMessage>
+        )}
         <Downloader
           fileName={getExportFileName(getCurrentDBConfig(), new Date())}
           data={appState}
