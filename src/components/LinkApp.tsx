@@ -30,15 +30,15 @@ const LinkApp = ({
   if (isExternal) {
     return (
       <a href={href} target="_blank" rel="noreferrer" onClick={handleClick}>
-        <Text as="span" variant={variant} {...props}>
+        <Text as="span" variant={variant}>
           {children}
         </Text>
       </a>
     );
   } else {
     return (
-      <RouterLink to={href} onClick={handleClick}>
-        <Text as="span" {...props}>
+      <RouterLink to={href} onClick={handleClick} {...props}>
+        <Text as="span" variant={variant}>
           {children}
         </Text>
       </RouterLink>
