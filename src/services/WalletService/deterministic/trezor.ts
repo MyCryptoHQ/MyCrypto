@@ -38,7 +38,7 @@ export class TrezorWallet extends HardwareWallet {
   public signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, nonce, ...rest } = tx;
-      if (!chainId || !nonce) {
+      if (chainId === undefined || nonce === undefined) {
         return reject(Error('Missing chainId or nonce on tx'));
       }
       const formattedTx = { ...rest, nonce: hexlify(nonce) };
