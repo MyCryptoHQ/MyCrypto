@@ -898,31 +898,30 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 0.01
     }
   },
-  HARDLYDIFFICULT: {
-    id: 'HARDLYDIFFICULT',
-    name: 'HardlyDifficult',
-    unit: 'HD' as TTicker,
-    chainId: 666,
+  MATIC: {
+    id: 'MATIC',
+    name: 'MATIC',
+    unit: 'MATIC' as TTicker,
+    chainId: 137,
     isCustom: false,
-    color: '#282457',
+    color: '#60da9a',
     blockExplorer: makeExplorer({
-      name: 'HardlyDifficult Explorer',
-      origin: 'https://etherscan.io',
+      name: 'Matic',
+      origin: 'https://explorer.matic.network/',
       addressPath: 'address',
       blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DPaths.ETH_TESTNET,
-      [WalletId.LEDGER_NANO_S]: DPaths.ETH_TESTNET,
-      [WalletId.TREZOR_NEW]: DPaths.ETH_TESTNET,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_TESTNET,
-      default: DPaths.ETH_TESTNET
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER
     },
     gasPriceSettings: {
-      min: 1,
-      max: 100,
+      min: 0.01,
+      max: 30,
       initial: 1
     },
     shouldEstimateGasPrice: false
