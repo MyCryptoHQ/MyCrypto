@@ -15,9 +15,13 @@ const SBox = styled(Box)`
   & > * {
     margin-bottom: ${SPACING.BASE};
   }
+  & ol {
+    margin: 0;
+  }
   & li {
     list-style-position: inside;
     font-weight: 400;
+    margin: 0;
   }
 `;
 
