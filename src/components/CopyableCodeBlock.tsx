@@ -3,6 +3,8 @@ import React from 'react';
 import { Copyable } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import { isTruthy } from '@utils';
+
 interface Props {
   children?: React.ReactNode;
 }
@@ -57,12 +59,14 @@ const CodeDisplay = styled('pre')`
   }
 `;
 
-const CopyableCodeBlock = ({ children }: Props) => (
-  <CopyableCodeBlockWrapper>
+const CopyableCodeBlock = ({ children, ...props }: Props) => (
+  <CopyableCodeBlockWrapper {...props}>
     <CodeDisplay>
       <code>{children}</code>
     </CodeDisplay>
-    <Copyable text={`${children}`} truncate={truncate} disableTooltip={true} />
+    {isTruthy(navigator.clipboard) && (
+      <Copyable text={`${children}`} truncate={truncate} disableTooltip={true} />
+    )}
   </CopyableCodeBlockWrapper>
 );
 
