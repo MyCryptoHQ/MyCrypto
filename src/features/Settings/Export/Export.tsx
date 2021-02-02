@@ -4,7 +4,7 @@ import { Typography } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ContentPanel, CopyableCodeBlock, Downloader } from '@components';
+import { ContentPanel, Downloader } from '@components';
 import { getCurrentDBConfig, getExportFileName } from '@database';
 import { useUserActions } from '@services/Store';
 import { exportState, useSelector } from '@store';
@@ -18,7 +18,7 @@ const ImportSuccessContainer = styled.div`
   align-items: center;
 `;
 
-const SCopyableCodeBlock = styled(CopyableCodeBlock)`
+const CacheDisplay = styled.code`
   overflow: auto;
   width: 100%;
   height: 10rem;
@@ -37,7 +37,7 @@ export function Export(props: RouteComponentProps) {
     <ContentPanel width={560} onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <ImportSuccessContainer>
         <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
-        <SCopyableCodeBlock data-testid="export-json-display">{appState}</SCopyableCodeBlock>
+        <CacheDisplay data-testid="export-json-display">{appState}</CacheDisplay>
         <Downloader
           fileName={getExportFileName(getCurrentDBConfig(), new Date())}
           data={appState}
