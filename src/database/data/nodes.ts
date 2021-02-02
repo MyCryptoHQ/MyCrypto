@@ -344,12 +344,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://rpc.energyweb.org'
     }
   ],
-  HARDLYDIFFICULT: [
+  MATIC: [
     {
-      name: NetworkUtils.makeNodeName('HARDLYDIFFICULT', 'ethscan'),
-      type: NodeType.ETHERSCAN,
-      service: 'Etherscan',
-      url: 'https://api.etherscan.io/api'
+      name: NetworkUtils.makeNodeName('MATIC', 'matic'),
+      type: NodeType.RPC,
+      service: 'matic',
+      url: 'https://rpc-mainnet.matic.network'
     }
   ]
 };
