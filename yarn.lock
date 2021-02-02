@@ -17281,11 +17281,6 @@ react-from-dom@^0.4.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
   integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
 
-react-from-dom@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.5.1.tgz#5ab82944209059aded60dc26abf43f8989126fa2"
-  integrity sha512-ki6OGVgSjDCF0Gt4SMl2cUNBA9ZB8g59bwv9ZiSEXQ37Cw9ZGY0s7EgfPFQYDvaiVx22jto7/dYgQeS+Qw1Mfw==
-
 react-helmet-async@^1.0.2:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-helmet-async/-/react-helmet-async-1.0.7.tgz#b988fbc3abdc4b704982bb74b9cb4a08fcf062c1"
@@ -17318,21 +17313,13 @@ react-hotkeys@2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-inlinesvg@2.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.1.tgz#9f2445d597e6adb6aaa8f1b80917696f4fbf4961"
-  integrity sha512-GJvBpqciAnxHG468CcJRS+75BmEpi1LY+sDfzlOjJ3pzCPoqvQcw7cQvESMftPq/DkkoGtsFVDJp04YdPdx5yA==
+react-inlinesvg@2.0, react-inlinesvg@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.0.tgz#aba239c7846f8259e40c147c3842aaa00f78a556"
+  integrity sha512-GuhTqaPhaBXr+L0LV/MowJUJIvHoLZ36O7LQhX4joxdYxO+kWcdjG/y474UOj2OVfgF1WV0R8S2hgDuH6ODFyQ==
   dependencies:
     exenv "^1.2.2"
     react-from-dom "^0.4.2"
-
-react-inlinesvg@^2.0.0:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.2.2.tgz#b43ac35ed9d0b6f60274b93049a5d091fd4384b6"
-  integrity sha512-5uXTB0yL9LiRLbN5FhTnL1IK9mLg93kspY2HnKUftzoJDEqZrlscuZxzXStbMBZpNyO359U7QDspM3AqUYUrog==
-  dependencies:
-    exenv "^1.2.2"
-    react-from-dom "^0.5.1"
 
 react-input-autosize@^2.2.2:
   version "2.2.2"

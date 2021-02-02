@@ -167,7 +167,7 @@ const GeneralLookupField = ({
       return input;
     };
 
-    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
       if (e.keyCode === 13) {
         handleNewInput(inputValue.current);
         if (onChange) onChange(inputValue.current);
