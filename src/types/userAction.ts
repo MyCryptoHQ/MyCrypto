@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { ActionButtonProps, TIcon, TweetButtonProps } from '@components';
+import { ActionButtonProps, TIcon } from '@components';
 import { UniClaimResult } from '@services';
 
 import { StoreAccount } from './account';
@@ -25,11 +25,8 @@ export enum ACTION_NAME {
   TWITTER = 'twitter',
   MIGRATE_LEND = 'migrate_lend',
   MIGRATE_GOL = 'migrate_gol',
-  MYC_WINTER_START = 'myc_winter_start',
-  MYC_WINTER_MID = 'myc_winter_mid',
-  MYC_WINTER_END = 'myc_winter_end',
-  MYC_WINTER_BONUS = 'myc_winter_bonus',
-  TESTNET_FAUCET = 'testnet_faucet'
+  TESTNET_FAUCET = 'testnet_faucet',
+  MYC_POAP = 'myc_poap'
 }
 
 export enum ACTION_CATEGORIES {
@@ -72,8 +69,8 @@ export interface ActionTemplate {
     end: Date;
   };
   button: {
-    component(props: ActionButtonProps | TweetButtonProps): JSX.Element;
-    props?: Omit<ActionButtonProps, 'userAction'>;
+    component(props: ActionButtonProps): JSX.Element;
+    props: Omit<ActionButtonProps, 'userAction'>;
   };
   category: ACTION_CATEGORIES;
 }

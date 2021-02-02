@@ -20,8 +20,7 @@ import logoMyCryptoTextBlue from '@assets/icons/brand/logo-text-blue.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
-import mycWinterMembership from '@assets/icons/myc-winter-membership.svg';
-import mycWinter from '@assets/icons/myc-winter.svg';
+import mycPoap from '@assets/icons/myc_poap.svg';
 import navAddAccount from '@assets/icons/navigation/add-account.svg';
 import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
@@ -167,8 +166,7 @@ const svgIcons = {
   'telegram-icon': telegramIcon,
   swap,
   'twitter-icon': twitterIcon,
-  'myc-winter': mycWinter,
-  'myc-winter-membership': mycWinterMembership,
+  'myc-poap': mycPoap,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,

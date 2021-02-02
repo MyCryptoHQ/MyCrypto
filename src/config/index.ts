@@ -12,7 +12,8 @@ export {
   UNISWAP_LINK,
   MYC_WINTER_LINK,
   TWEET_LINK,
-  MYCRYPTO_FAUCET_LINK
+  MYCRYPTO_FAUCET_LINK,
+  MYCRYPTO_DISCORD_LINK
 } from './links';
 export * from './dpaths';
 export * from './constants';
