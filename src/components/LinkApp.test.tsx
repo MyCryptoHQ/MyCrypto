@@ -11,7 +11,10 @@ function getComponent(props: Props) {
 
 describe('LinkApp', () => {
   it('displays link text passed as children', () => {
-    const props = { children: 'foo bar' } as Props;
+    const props = {
+      href: '/demo',
+      children: 'foo bar'
+    } as Props;
     getComponent(props);
     expect(screen.getByText(`${props.children}`)).toBeInTheDocument();
   });
@@ -19,6 +22,7 @@ describe('LinkApp', () => {
   it('renders anchor tag when provided an href attribute', () => {
     const props = {
       href: 'https://help.example.com',
+      isExternal: true,
       children: 'Get help'
     } as Props;
     getComponent(props);
@@ -28,6 +32,7 @@ describe('LinkApp', () => {
   it('renders anchor tag that can open in new tab', () => {
     const props = {
       href: 'https://help.example.com',
+      isExternal: true,
       children: 'Get help'
     } as Props;
     getComponent(props);
@@ -40,6 +45,7 @@ describe('LinkApp', () => {
   it('sets noreferrer attribute on tag', () => {
     const props = {
       href: 'https://help.example.com',
+      isExternal: true,
       children: 'Get help'
     } as Props;
     getComponent(props);
