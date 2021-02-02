@@ -88,7 +88,7 @@ export {
   Text,
   TextProps
 } from './NewTypography';
-export { ActionPanel, TweetButtonProps, ActionButtonProps, ActionButton } from './ActionsPanel';
+export { ActionPanel, ActionButtonProps, ActionButton } from './ActionsPanel';
 export { default as AppLoading } from './AppLoading';
 export { SkeletonLoader } from './SkeletonLoader';
 export { DemoGatewayBanner } from './DemoBanner';

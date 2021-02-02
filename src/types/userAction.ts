@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { ActionButtonProps, TIcon, TweetButtonProps } from '@components';
+import { ActionButtonProps, TIcon } from '@components';
 import { UniClaimResult } from '@services';
 
 import { StoreAccount } from './account';
@@ -69,8 +69,8 @@ export interface ActionTemplate {
     end: Date;
   };
   button: {
-    component(props: ActionButtonProps | TweetButtonProps): JSX.Element;
-    props?: Omit<ActionButtonProps, 'userAction'>;
+    component(props: ActionButtonProps): JSX.Element;
+    props: Omit<ActionButtonProps, 'userAction'>;
   };
   category: ACTION_CATEGORIES;
 }
