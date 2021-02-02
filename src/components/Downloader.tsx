@@ -2,7 +2,7 @@ import React from 'react';
 
 import { COLORS } from '@theme';
 import translate from '@translations';
-import { makeBlob, useScreenSize } from '@utils';
+import { makeBlob } from '@utils';
 
 import { default as Button } from './Button';
 import { default as Link } from './Link';
@@ -20,8 +20,6 @@ export const Downloader: React.FC<{
     if (onClick) onClick();
   };
 
-  const { isMobile } = useScreenSize();
-
   return (
     <Link
       data-testid="export-json-link"
@@ -29,7 +27,6 @@ export const Downloader: React.FC<{
       href={blob}
       download={fileName}
       onClick={handleDownload}
-      {...(isMobile ? { rel: 'noopener noreferrer', target: '_system' } : {})}
       {...props}
     >
       {children}
