@@ -15,11 +15,7 @@ export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
       <Box variant="rowAlign" justifyContent="center">
         {configs[type].map(({ copy, copyVariables, link, external }, index) => {
           return (
-<<<<<<< HEAD
             <React.Fragment key={index}>
-=======
-            <Box key={index}>
->>>>>>> c5a320e93 (Create LinkApp)
               <LinkApp isExternal={!!external} href={link}>
                 {translateRaw(copy, copyVariables)}
               </LinkApp>
@@ -29,11 +25,7 @@ export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
                   <Icon type="separator" />
                 </Box>
               )}
-<<<<<<< HEAD
             </React.Fragment>
-=======
-            </Box>
->>>>>>> c5a320e93 (Create LinkApp)
           );
         })}
       </Box>
