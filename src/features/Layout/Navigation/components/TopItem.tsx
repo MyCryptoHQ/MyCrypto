@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Icon, Text, TIcon } from '@components';
+import { Box, Icon, LinkApp, Text, TIcon } from '@components';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -10,36 +10,44 @@ export const TopItem = ({
   title,
   current,
   onClick,
-  color
+  color,
+  href,
+  isExternal = false
 }: {
   left?: boolean;
   icon: TIcon;
   title: string;
+  color: string;
   current?: boolean;
   onClick?(): void;
-  color: string;
-}) => (
-  <Box
-    zIndex={999}
-    variant="columnCenter"
-    mr={{ _: left ? 'auto' : SPACING.MD, sm: SPACING.MD }}
-    onClick={onClick && onClick}
-    style={{
-      cursor: 'pointer',
-      transform: current ? 'scale(1.1)' : 'unset',
-      transition: 'all 300ms ease'
-    }}
-  >
-    <Icon type={icon} height="24px" color={current ? COLORS.BLUE_BRIGHT : color} />
-    <Text
-      mt={SPACING.XS}
-      color={current ? COLORS.BLUE_BRIGHT : color}
-      textTransform="uppercase"
-      fontSize={5}
-      fontWeight={current ? 'bold' : 700}
-      mb={0}
+  href?: string;
+  isExternal?: boolean;
+}) => {
+  const currentColor = current ? COLORS.BLUE_BRIGHT : color;
+  return (
+    <Box
+      zIndex={999}
+      variant="columnCenter"
+      mr={{ _: left ? 'auto' : SPACING.MD, sm: SPACING.MD }}
+      style={{
+        cursor: 'pointer',
+        transform: current ? 'scale(1.1)' : 'unset',
+        transition: 'all 300ms ease'
+      }}
     >
-      {translateRaw(title)}
-    </Text>
-  </Box>
-);
+      <LinkApp isExternal={isExternal} href={href ? href : '#'} color={color} onClick={onClick}>
+        <Icon type={icon} height="24px" color={currentColor} />
+        <Text
+          mt={SPACING.XS}
+          color={currentColor}
+          textTransform="uppercase"
+          fontSize={5}
+          fontWeight={current ? 'bold' : 700}
+          mb={0}
+        >
+          {translateRaw(title)}
+        </Text>
+      </LinkApp>
+    </Box>
+  );
+};

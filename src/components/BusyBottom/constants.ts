@@ -19,7 +19,7 @@ const SUPPORT_LINK = {
 
 export const configs: Record<
   BusyBottomConfig,
-  { copy: string; link?: string; copyVariables?: any; external?: boolean }[]
+  { copy: string; link: string; copyVariables?: any; external?: boolean }[]
 > = {
   GENERAL: [
     { copy: 'BUSY_BOTTOM_GENERAL_1', link: ROUTE_PATHS.CREATE_WALLET.path },
@@ -53,7 +53,7 @@ export const configs: Record<
     {
       copy: 'BUSY_BOTTOM_GET_WEB3',
       copyVariables: { $app: web3Config.name },
-      link: web3Config.install?.getItLink,
+      link: web3Config.install?.getItLink || WALLETS_CONFIG[WalletId.METAMASK].install!.getItLink!,
       external: true
     },
     SUPPORT_LINK

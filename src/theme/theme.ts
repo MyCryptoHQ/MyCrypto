@@ -101,7 +101,7 @@ const TEXT_VARIANTS = {
     color: 'BLUE_BRIGHT',
     fontWeight: 'bold'
   },
-  link: {
+  defaultLink: {
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
     color: 'BLUE_BRIGHT',

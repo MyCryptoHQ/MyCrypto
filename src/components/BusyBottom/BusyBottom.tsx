@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { Link as RouterLink } from 'react-router-dom';
-
-import { Box, Icon, NewTabLink } from '@components';
-import { Link } from '@components/NewTypography';
+import { Box, Icon, LinkApp } from '@components';
 import { translateRaw } from '@translations';
 import { BusyBottomConfig } from '@types';
 
@@ -17,20 +14,18 @@ export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
       </Box>
       <Box variant="rowAlign" justifyContent="center">
         {configs[type].map(({ copy, copyVariables, link, external }, index) => {
-          const linkContent = <Link>{translateRaw(copy, copyVariables)}</Link>;
           return (
-            <>
-              {external ? (
-                <NewTabLink href={link}>{linkContent}</NewTabLink>
-              ) : (
-                <RouterLink to={link!}>{linkContent}</RouterLink>
-              )}
+            <Box key={index}>
+              <LinkApp isExternal={!!external} href={link}>
+                {translateRaw(copy, copyVariables)}
+              </LinkApp>
+
               {index < configs[type].length - 1 && (
                 <Box paddingX="15px" paddingY={1} variant="rowAlign">
                   <Icon type="separator" />
                 </Box>
               )}
-            </>
+            </Box>
           );
         })}
       </Box>
