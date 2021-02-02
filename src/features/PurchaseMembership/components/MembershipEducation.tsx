@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Accordion } from '@mycrypto/ui';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
@@ -11,8 +11,8 @@ import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor
 import membershipShirt from '@assets/images/membership/membership-shirt.svg';
 import membershipStickers from '@assets/images/membership/membership-stickers.svg';
 import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
-import { Button, FullSizeContentPanel, Typography } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { Button, FullSizeContentPanel, NewTabLink, Typography } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
 
@@ -161,7 +161,9 @@ const MembershipEducation = withRouter(({ history }) => {
             <ListItem>
               <ListImg src={membershipUnlimited} />
               <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>&nbsp;
-              <Link to={ROUTE_PATHS.DASHBOARD.path}>{translate('MEMBERSHIP_LIST_THIRD_2')}</Link>
+              <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_ARE_PROTECTED_TRANSACTIONS)}>
+                {translate('MEMBERSHIP_LIST_THIRD_2')}
+              </NewTabLink>
             </ListItem>
             <ListItem>
               <ListImg src={membershipNoAds} />
