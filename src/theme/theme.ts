@@ -99,6 +99,9 @@ const TEXT_VARIANTS = {
     fontSize: 1,
     lineHeight: 1,
     color: 'BLUE_BRIGHT',
+    '&:hover': {
+      color: '#005166'
+    },
     fontWeight: 'bold'
   },
   defaultLink: {

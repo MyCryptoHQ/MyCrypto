@@ -5,17 +5,17 @@ import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-d
 import { Text, TextProps } from '@components';
 
 interface LinkProps {
-  isExternal: boolean;
-  variant?: 'inlineLink' | 'defaultLink';
-  href: string;
+  readonly href: string;
+  readonly isExternal?: boolean;
+  readonly variant?: 'inlineLink' | 'defaultLink';
   onClick?(): void;
 }
 
 type LinkAppProps = LinkProps & Omit<RouterLinkProps, 'to'>;
 
 const LinkApp = ({
-  isExternal = false,
   href,
+  isExternal = false,
   variant = 'defaultLink',
   children,
   onClick,

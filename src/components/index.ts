@@ -49,7 +49,6 @@ export { Banner } from './Banner';
 export * from './SignTransactionWallets';
 export { WhenQueryExists, Query } from './Query';
 export { default as DisclaimerModal } from './DisclaimerModal';
-export { default as HelpLink } from './HelpLink';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
 export { default as LinkOut } from './LinkOut';
