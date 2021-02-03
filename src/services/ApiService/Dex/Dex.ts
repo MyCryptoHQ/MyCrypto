@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import {
   DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK_CHAINID,
   DEX_BASE_URL,
   DEX_FEE_RECIPIENT,
   MYC_DEX_COMMISSION_RATE
@@ -201,7 +202,7 @@ export const formatApproveTx = ({
   return {
     to,
     data: data as ITxData,
-    chainId: 1,
+    chainId: DEFAULT_NETWORK_CHAINID,
     value: addHexPrefix(bigify('0').toString(16)) as ITxValue,
     type: ITxType.APPROVAL
   };
@@ -216,7 +217,7 @@ export const formatTradeTx = ({
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
-    chainId: 1,
+    chainId: DEFAULT_NETWORK_CHAINID,
     type: ITxType.SWAP
   };
 };
