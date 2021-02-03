@@ -37,10 +37,6 @@ export interface DexAsset {
 
 export default class DexService {
   public static instance = new DexService();
-  /**public static defaultParams = {
-    discluded: 'radar-relay',
-    dex: 'all'
-  };**/
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: DEX_BASE_URL
@@ -129,7 +125,7 @@ export default class DexService {
         ? [
             formatApproveTx({
               to: data.sellTokenAddress,
-              spender: data.allowanceTarget!,
+              spender: data.allowanceTarget,
               value: data.sellAmount as ITxValue
             })
           ]
