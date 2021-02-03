@@ -1,3 +1,4 @@
+import { AddressZero } from '@ethersproject/constants';
 import axios, { AxiosInstance } from 'axios';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
@@ -111,7 +112,8 @@ export default class DexService {
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE
       }
     });
-    const isMultiTx = data.allowanceTarget !== undefined;
+
+    const isMultiTx = data.allowanceTarget !== AddressZero;
 
     return [
       // Include the Approve transaction when necessary.

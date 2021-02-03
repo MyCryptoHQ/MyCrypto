@@ -6,7 +6,7 @@ export interface DexTrade {
   gas: ITxGasLimit;
   data: ITxData;
   gasPrice: ITxGasPrice;
-  allowanceTarget?: TAddress;
+  allowanceTarget: TAddress;
   sellAmount: string; // Wei
   buyAmount: string; // Wei
   buyTokenAddress: TAddress;
