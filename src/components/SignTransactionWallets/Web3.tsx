@@ -129,7 +129,7 @@ const Footer = styled.div`
 `;
 
 const Web3ImgContainer = styled.div`
-  padding: 2em;
+  margin: 2em;
   display: flex;
   justify-content: center;
   align-content: center;
