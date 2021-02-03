@@ -149,6 +149,10 @@ const Web3Img = styled.div`
   }
 `;
 
+const SInlineMessage = styled(InlineMessage)`
+  text-align: center;
+`;
+
 export interface UIProps {
   walletConfig: IWalletConfig;
   walletState: WalletSigningState;
@@ -182,28 +186,28 @@ export const SignTransactionWeb3UI = ({
     <>
       <Box variant="columnCenter">
         {walletState === WalletSigningState.REJECTED && (
-          <InlineMessage textAlign="center">{translate('SIGN_TX_WEB3_REJECTED')}</InlineMessage>
+          <SInlineMessage>{translate('SIGN_TX_WEB3_REJECTED')}</SInlineMessage>
         )}
         {walletState === WalletSigningState.NETWORK_MISMATCH && (
-          <InlineMessage textAlign="center">
+          <SInlineMessage>
             {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
               $walletName: walletConfig.name,
               $networkName: networkName
             })}
-          </InlineMessage>
+          </SInlineMessage>
         )}
         {walletState === WalletSigningState.ADDRESS_MISMATCH && (
-          <InlineMessage textAlign="center">
+          <SInlineMessage>
             {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
               $walletName: walletConfig.name,
               $address: senderAccount.address
             })}
-          </InlineMessage>
+          </SInlineMessage>
         )}
         {walletState === WalletSigningState.SUBMITTING && (
-          <InlineMessage textAlign="center" type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
+          <SInlineMessage type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
             {translate('SIGN_TX_SUBMITTING_PENDING')}
-          </InlineMessage>
+          </SInlineMessage>
         )}
       </Box>
       <Body textAlign="center" fontSize={FONT_SIZE.MD} marginTop="16px">

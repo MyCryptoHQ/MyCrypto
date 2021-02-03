@@ -16,7 +16,6 @@ interface Props {
   value?: any;
   children?: any;
   className?: string;
-  textAlign?: string;
 }
 
 interface Config {
@@ -24,10 +23,10 @@ interface Config {
   icon: string;
 }
 
-export const Wrapper = styled.div<{ textAlign?: string }>`
+export const Wrapper = styled.div`
   font-size: ${FONT_SIZE.BASE};
   width: 100%;
-  text-align: ${({ textAlign }) => textAlign || 'justify'};
+  text-align: 'justify';
   white-space: pre-line;
 `;
 
@@ -75,7 +74,7 @@ const messageConfig = (type: InlineMessageType): Config => {
       };
     case InlineMessageType.INDICATOR_INFO_CIRCLE:
       return {
-        color: COLORS.BLUE_BRIGHT,
+        color: COLORS.BLUE_SKY,
         icon: blueInfoSVG
       };
     case InlineMessageType.INFO_ARROW:
@@ -90,12 +89,11 @@ export default function InlineMessage({
   type = InlineMessageType.ERROR,
   value,
   children,
-  className,
-  textAlign
+  className
 }: Props) {
   const config = messageConfig(type);
   return (
-    <Wrapper className={className} textAlign={textAlign}>
+    <Wrapper className={className}>
       <Icon src={config.icon} color={config.color} alt={type} />
       <STypography value={value || children} color={config.color} />
     </Wrapper>
