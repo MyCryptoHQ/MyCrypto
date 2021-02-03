@@ -33,4 +33,5 @@ export type NetworkId =
   | 'ASK'
   | 'VOLTA'
   | 'EnergyWebChain'
-  | 'MATIC';
+  | 'MATIC'
+  | 'xDAI';
