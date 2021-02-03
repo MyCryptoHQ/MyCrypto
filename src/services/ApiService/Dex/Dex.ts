@@ -1,7 +1,5 @@
 import { AddressZero } from '@ethersproject/constants';
 import axios, { AxiosInstance } from 'axios';
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 
 import {
   DEFAULT_ASSET_DECIMAL,
@@ -20,7 +18,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { bigify, toWei } from '@utils';
+import { addHexPrefix, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -208,7 +206,7 @@ export const formatApproveTx = ({
     to,
     data: data as ITxData,
     chainId: 1,
-    value: addHexPrefix(new BN('0').toString()) as ITxValue,
+    value: addHexPrefix(bigify('0').toString(16)) as ITxValue,
     type: ITxType.APPROVAL
   };
 };
@@ -221,7 +219,7 @@ export const formatTradeTx = ({
   return {
     to,
     data,
-    value: addHexPrefix(new BN(value || '0').toString(16)) as ITxValue,
+    value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId: 1,
     type: ITxType.SWAP
   };
