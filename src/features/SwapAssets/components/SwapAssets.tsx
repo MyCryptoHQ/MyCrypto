@@ -48,6 +48,7 @@ interface ISwapProps {
   exchangeRate: string;
   markup: string;
   isSubmitting: boolean;
+  raw: any;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -85,6 +86,7 @@ export const SwapAssets = (props: Props) => {
     handleAccountSelected,
     exchangeRate,
     markup,
+    raw,
     isDemoMode
   } = props;
 
@@ -245,6 +247,18 @@ export const SwapAssets = (props: Props) => {
         />
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
+        )}
+        {raw && (
+          <>
+            {`Price: ${raw.price}`}
+            <br />
+            {`Provider: ${raw.sources
+              .filter((s: any) => s.proportion !== '0')
+              .map((s: any) => s.name)
+              .join(',')}`}
+            <br />
+            {JSON.stringify(raw)}
+          </>
         )}
       </Box>
       <StyledButton

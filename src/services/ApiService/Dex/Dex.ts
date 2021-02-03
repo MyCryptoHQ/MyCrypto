@@ -62,23 +62,23 @@ export default class DexService {
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
-    const { costBasis, tokenPrices: price } = await this.getTokenPrice(from, to, fromAmount);
-    return { costBasis: bigify(costBasis), price: bigify(price) };
+  ): Promise<{ costBasis: Bigish; price: Bigish; raw: any }> => {
+    const { costBasis, tokenPrices: price, raw } = await this.getTokenPrice(from, to, fromAmount);
+    return { costBasis: bigify(costBasis), price: bigify(price), raw };
   };
 
   public getTokenPriceTo = async (
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
-    const { costBasis, tokenPrices: price } = await this.getTokenPrice(
+  ): Promise<{ costBasis: Bigish; price: Bigish; raw: any }> => {
+    const { costBasis, tokenPrices: price, raw } = await this.getTokenPrice(
       from,
       to,
       undefined,
       toAmount
     );
-    return { costBasis: bigify(costBasis), price: bigify(price) };
+    return { costBasis: bigify(costBasis), price: bigify(price), raw };
   };
 
   public getOrderDetailsFrom = async (from: ISwapAsset, to: ISwapAsset, fromAmount: string) =>
@@ -178,7 +178,7 @@ export default class DexService {
         })
       });
 
-      return { costBasis: costBasis.price, tokenPrices: tokenPrices.price };
+      return { costBasis: costBasis.price, tokenPrices: tokenPrices.price, raw: tokenPrices };
     } catch (e) {
       if (axios.isCancel(e)) {
         e.isCancel = true;

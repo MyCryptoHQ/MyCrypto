@@ -40,6 +40,7 @@ export interface SwapFormState {
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
   isMulti: boolean;
+  raw: any;
 }
 
 export interface IAssetPair {
