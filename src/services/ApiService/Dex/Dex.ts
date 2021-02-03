@@ -90,6 +90,22 @@ export default class DexService {
   public getOrderDetailsTo = async (from: ISwapAsset, to: ISwapAsset, toAmount: string) =>
     this.getOrderDetails(from, to, undefined, toAmount);
 
+  private buildParams = (
+    sellToken: ISwapAsset,
+    buyToken: ISwapAsset,
+    sellAmount?: string,
+    buyAmount?: string
+  ) => ({
+    sellToken: sellToken.ticker,
+    buyToken: buyToken.ticker,
+    buyAmount: buyAmount
+      ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+      : undefined,
+    sellAmount: sellAmount
+      ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+      : undefined
+  });
+
   private getOrderDetails = async (
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
@@ -98,14 +114,7 @@ export default class DexService {
   ): Promise<Partial<ITxObject & { type: ITxType }>[]> => {
     const { data }: { data: DexTrade } = await this.service.get('swap/v1/quote', {
       params: {
-        sellToken: sellToken.ticker,
-        buyToken: buyToken.ticker,
-        buyAmount: buyAmount
-          ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-          : undefined,
-        sellAmount: sellAmount
-          ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-          : undefined,
+        ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount),
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE
       }
@@ -147,14 +156,12 @@ export default class DexService {
       // IS IT REALLY NEEDED TO DO THE REQUEST TWICE??
       const { data: costBasis } = await this.service.get('swap/v1/price', {
         params: {
-          sellToken: sellToken.ticker,
-          buyToken: buyToken.ticker,
-          buyAmount: buyAmount
-            ? toWei('0.01', buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-            : undefined,
-          sellAmount: sellAmount
-            ? toWei('0.01', sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-            : undefined
+          ...this.buildParams(
+            sellToken,
+            buyToken,
+            sellAmount ? '0.01' : undefined,
+            buyAmount ? '0.01' : undefined
+          )
         },
         cancelToken: new CancelToken(function executor(c) {
           // An executor function receives a cancel function as a parameter
@@ -164,14 +171,7 @@ export default class DexService {
 
       const { data: tokenPrices } = await this.service.get('swap/v1/price', {
         params: {
-          sellToken: sellToken.ticker,
-          buyToken: buyToken.ticker,
-          buyAmount: buyAmount
-            ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-            : undefined,
-          sellAmount: sellAmount
-            ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
-            : undefined
+          ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount)
           /**feeRecipient: DEX_FEE_RECIPIENT,
           buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE**/
         },
