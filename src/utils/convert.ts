@@ -98,7 +98,7 @@ export const withCommission = ({
   rate: number;
   subtract?: boolean;
 }): BigNumberJs => {
-  const commission = subtract ? (100 - rate) / 100 : (100 + rate) / 100;
+  const commission = subtract ? 1.0 - rate : 1.0 + rate;
   const outputBN = multiplyBNFloats(weiToFloat(amount), commission);
   return bigify(trimBN(formatEther(outputBN)));
 };

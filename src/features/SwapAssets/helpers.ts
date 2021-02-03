@@ -30,11 +30,7 @@ export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => a
     ? DexService.instance.getOrderDetailsTo
     : DexService.instance.getOrderDetailsFrom;
 
-  return getOrderDetails(
-    fromAsset.ticker,
-    toAsset.ticker,
-    (isLastChangedTo ? toAmount : fromAmount).toString()
-  )
+  return getOrderDetails(fromAsset, toAsset, (isLastChangedTo ? toAmount : fromAmount).toString())
     .then((txs) => txs.map(appendSender(address)))
     .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
 };

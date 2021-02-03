@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatEther } from '@ethersproject/units';
 import BigNumberJs from 'bignumber.js';
 
-import { DEFAULT_NETWORK, MYC_DEXAG_COMMISSION_RATE } from '@config';
+import { DEFAULT_NETWORK, MYC_DEX_COMMISSION_RATE } from '@config';
 import { StoreAsset } from '@types';
 
 import { bigify } from './bigify';
@@ -232,11 +232,11 @@ describe('it Remove / Add commission from amount', () => {
     return bigify(trimBN(amountBN.times(rateBN).toString()));
   };
   it('remove commission from decimal amount', () => {
-    const expected = bigify(198.5);
+    const expected = bigify(199.5);
     const amount = 200;
     const converted = withCommission({
       amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE,
+      rate: MYC_DEX_COMMISSION_RATE,
       subtract: true
     });
     expect(converted).toEqual(expected);
@@ -245,22 +245,22 @@ describe('it Remove / Add commission from amount', () => {
     const amount = 0;
     const expected = withCommissionTest({
       amount,
-      rate: MYC_DEXAG_COMMISSION_RATE,
+      rate: MYC_DEX_COMMISSION_RATE,
       substract: true
     });
     const converted = withCommission({
       amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE,
+      rate: MYC_DEX_COMMISSION_RATE,
       subtract: true
     });
     expect(converted).toEqual(expected);
   });
   it('add commission from decimal amount', () => {
     const amount = 200;
-    const expected = withCommissionTest({ amount, rate: MYC_DEXAG_COMMISSION_RATE });
+    const expected = withCommissionTest({ amount, rate: MYC_DEX_COMMISSION_RATE });
     const converted = withCommission({
       amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE
+      rate: MYC_DEX_COMMISSION_RATE
     });
     expect(converted).toEqual(expected);
   });
@@ -268,11 +268,11 @@ describe('it Remove / Add commission from amount', () => {
     const amount = 0;
     const expected = withCommissionTest({
       amount,
-      rate: MYC_DEXAG_COMMISSION_RATE
+      rate: MYC_DEX_COMMISSION_RATE
     });
     const converted = withCommission({
       amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE
+      rate: MYC_DEX_COMMISSION_RATE
     });
     expect(converted).toEqual(expected);
   });
@@ -280,11 +280,11 @@ describe('it Remove / Add commission from amount', () => {
     const amount = 479.230659764268923;
     const expected = withCommissionTest({
       amount,
-      rate: MYC_DEXAG_COMMISSION_RATE
+      rate: MYC_DEX_COMMISSION_RATE
     });
     const converted = withCommission({
       amount: convertToBN(amount),
-      rate: MYC_DEXAG_COMMISSION_RATE
+      rate: MYC_DEX_COMMISSION_RATE
     });
     expect(converted).toEqual(expected);
   });

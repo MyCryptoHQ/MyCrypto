@@ -4,7 +4,7 @@ import {
   DEFAULT_NETWORK,
   DEFAULT_NETWORK_CHAINID,
   DEFAULT_NETWORK_TICKER,
-  MYC_DEXAG_COMMISSION_RATE
+  MYC_DEX_COMMISSION_RATE
 } from '@config';
 import { DexAsset, DexService, getNetworkById, useNetworks } from '@services';
 import translate from '@translations';
@@ -135,13 +135,13 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       const commissionIncreasedAmount = trimBN(
         withCommission({
           amount: convertToBN(value),
-          rate: MYC_DEXAG_COMMISSION_RATE
+          rate: MYC_DEX_COMMISSION_RATE
         }).toString()
       );
 
       const { price, costBasis } = await DexService.instance.getTokenPriceTo(
-        fromAsset.ticker,
-        toAsset.ticker,
+        fromAsset,
+        toAsset,
         commissionIncreasedAmount.toString()
       );
 
@@ -206,8 +206,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, costBasis } = await DexService.instance.getTokenPriceFrom(
-        fromAsset.ticker,
-        toAsset.ticker,
+        fromAsset,
+        toAsset,
         value
       );
 
@@ -216,7 +216,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         isCalculatingToAmount: false,
         toAmount: withCommission({
           amount: multiplyBNFloats(value, price),
-          rate: MYC_DEXAG_COMMISSION_RATE,
+          rate: MYC_DEX_COMMISSION_RATE,
           subtract: true
         }).toString(),
         fromAmountError: '',

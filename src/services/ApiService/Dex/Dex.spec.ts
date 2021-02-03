@@ -1,4 +1,4 @@
-import { ITxData, ITxToAddress, ITxType, ITxValue } from '@types';
+import { ITxData, ITxToAddress, ITxType, ITxValue, TAddress } from '@types';
 
 import { formatApproveTx, formatTradeTx } from './Dex';
 
@@ -8,11 +8,12 @@ describe('SwapFlow', () => {
       expect(
         formatApproveTx({
           to: '0x6b175474e89094c44da98b954eedeac495271d0f' as ITxToAddress,
+          spender: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,
           value: '1000000000000000' as ITxValue
         })
       ).toEqual({
         to: '0x6b175474e89094c44da98b954eedeac495271d0f' as ITxToAddress,
-        data: '0x095ea7b3000000000000000000000000ae0a30ac8c76d85f1e76a3ebdcedc3047e0da45600000000000000000000000000000000000000000000000000038d7ea4c68000' as ITxData,
+        data: '0x095ea7b30000000000000000000000000x7a250d5630b4cf539739df2c5dacb4c659f2488d00000000000000000000000000000000000000000000000000038d7ea4c68000' as ITxData,
         chainId: 1,
         value: '0x0' as ITxValue,
         type: ITxType.APPROVAL

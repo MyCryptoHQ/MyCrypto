@@ -35,12 +35,9 @@ export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
-// Handler address will change if the trade contract changes.
-// Can also access handler by calling `approvalHandler()` on the trade contract.
-// Also update eth contracts when updating DexAG addresses
-export const DEXAG_MYC_TRADE_CONTRACT = '0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD'; //'0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
-export const DEXAG_MYC_HANDLER_CONTRACT = '0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456';
-export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
+export const DEX_BASE_URL = 'https://api.0x.org/';
+export const DEX_KOVAN_BASE_URL = 'https://kovan.api.0x.org/';
+export const DEX_FEE_RECIPIENT = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
 export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
