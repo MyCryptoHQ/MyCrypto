@@ -24,9 +24,6 @@ const SettingsField = styled.div`
 `;
 
 const SettingsControl = styled.div`
-  button {
-    margin-left: ${SPACING.SM};
-  }
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-top: ${SPACING.SM};
     width: 100%;

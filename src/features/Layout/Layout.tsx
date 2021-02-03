@@ -54,8 +54,8 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string; isDemoMode?: b
       @media screen and (min-width: ${BREAK_POINTS.SCREEN_XXL}) {
         margin-left: 64px;
       }
-      @media only screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-        margin-bottom: 57px;
+      @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+        padding-bottom: 57px;
       }
     `}
 
