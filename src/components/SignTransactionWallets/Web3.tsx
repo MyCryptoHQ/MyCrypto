@@ -4,11 +4,10 @@ import { getAddress } from '@ethersproject/address';
 import { Web3Provider } from '@ethersproject/providers';
 import styled from 'styled-components';
 
-import { Box, BusyBottom, InlineMessage } from '@components';
-import { Body, Heading } from '@components/NewTypography';
+import { Body, Box, BusyBottom, Heading, InlineMessage } from '@components';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
-import { BREAK_POINTS, SPACING } from '@theme';
+import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
   BusyBottomConfig,
@@ -130,7 +129,7 @@ const Footer = styled.div`
 `;
 
 const Web3ImgContainer = styled.div`
-  padding-bottom: 3em;
+  padding: 2em;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -163,13 +162,13 @@ export const SignTransactionWeb3UI = ({
   networkName,
   senderAccount
 }: UIProps) => (
-  <Box p="2.5em">
+  <Box p="1.5em 2.25em">
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('SIGN_TX_TITLE', {
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
       })}
     </Heading>
-    <Body textAlign="center" fontSize="2" mb={SPACING.BASE} paddingTop="16px">
+    <Body textAlign="center" fontSize={FONT_SIZE.MD} paddingTop={SPACING.LG}>
       {translate('SIGN_TX_WEB3_PROMPT', {
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
       })}
@@ -202,12 +201,12 @@ export const SignTransactionWeb3UI = ({
           </InlineMessage>
         )}
         {walletState === WalletSigningState.SUBMITTING && (
-          <InlineMessage textAlign="center" type={InlineMessageType.INFO_CIRCLE}>
+          <InlineMessage textAlign="center" type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
             {translate('SIGN_TX_SUBMITTING_PENDING')}
           </InlineMessage>
         )}
       </Box>
-      <Body textAlign="center" fontSize="2" paddingTop="16px">
+      <Body textAlign="center" fontSize={FONT_SIZE.MD} marginTop="16px">
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Body>
       <Footer>

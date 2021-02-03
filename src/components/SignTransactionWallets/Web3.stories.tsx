@@ -10,14 +10,14 @@ export default { title: 'SignTransaction/Web3' };
 
 const initialProps: UIProps = {
   walletConfig: WALLETS_CONFIG[WalletId.METAMASK],
-  walletState: WalletSigningState.UNKNOWN,
+  walletState: WalletSigningState.SUBMITTING,
   networkName: 'Ethereum',
   senderAccount: { ...fAccounts[0], wallet: WalletId.METAMASK }
 };
 
 export const SignTransactionWeb3 = () => {
   return (
-    <div className="sb-container" style={{ maxWidth: '800px' }}>
+    <div className="sb-container" style={{ maxWidth: '650px' }}>
       <SignTransactionWeb3UI {...initialProps} />
     </div>
   );
