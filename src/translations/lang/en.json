@@ -674,7 +674,6 @@
     "SWAP_RATE_TEXT": "$displayString $toAssetSymbol per $fromAssetSymbol",
     "SWAP_RATE_TOOLTIP": "The total amount received may differ slightly from the displayed rate due to timing and fees associated with your transaction.",
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
-    "SWAP_ROUTE_TITLE": "Buy and Exchange",
     "SWAP_SELECT_ACCOUNT_TOOLTIP": "MyCrypto allows you to send from any of the accounts you have added. Please select the account you’d like to send from.",
     "SWAP_SEND_AMOUNT": "Convert Amount",
     "SWAP_SETTING_ALLOWANCE": "Setting allowance...",
