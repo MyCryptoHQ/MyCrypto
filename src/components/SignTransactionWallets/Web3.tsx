@@ -172,7 +172,7 @@ export const SignTransactionWeb3UI = ({
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
       })}
     </Heading>
-    <Body textAlign="center" fontSize={FONT_SIZE.MD} paddingTop={SPACING.LG}>
+    <Body textAlign="center" lineHeight="1.5" fontSize={FONT_SIZE.MD} paddingTop={SPACING.LG}>
       {translate('SIGN_TX_WEB3_PROMPT', {
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
       })}
@@ -184,7 +184,7 @@ export const SignTransactionWeb3UI = ({
     </Web3ImgContainer>
 
     <>
-      <Box variant="columnCenter">
+      <Box variant="columnCenter" pt={SPACING.SM}>
         {walletState === WalletSigningState.REJECTED && (
           <SInlineMessage>{translate('SIGN_TX_WEB3_REJECTED')}</SInlineMessage>
         )}
@@ -210,7 +210,7 @@ export const SignTransactionWeb3UI = ({
           </SInlineMessage>
         )}
       </Box>
-      <Body textAlign="center" fontSize={FONT_SIZE.MD} marginTop="16px">
+      <Body textAlign="center" lineHeight="1.5" fontSize={FONT_SIZE.MD} marginTop="16px">
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Body>
       <Footer>
