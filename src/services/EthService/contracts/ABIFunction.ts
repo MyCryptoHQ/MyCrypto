@@ -41,7 +41,7 @@ export class AbiFunction {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
-    const argBuffer = new Buffer(argString, 'hex');
+    const argBuffer = Buffer.from(argString, 'hex');
     // Decode!
     const argArr = abi.rawDecode(this.inputTypes, argBuffer);
     //@todo: parse checksummed addresses
@@ -63,7 +63,7 @@ export class AbiFunction {
     argString = argString.replace('0x', '');
 
     // Convert argdata to a hex buffer for ethereumjs-abi
-    const argBuffer = new Buffer(argString, 'hex');
+    const argBuffer = Buffer.from(argString, 'hex');
     // Decode!
     const argArr = abi.rawDecode(this.outputTypes, argBuffer);
 
