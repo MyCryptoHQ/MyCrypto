@@ -228,7 +228,7 @@ describe('it Remove / Add commission from amount', () => {
     substract?: boolean;
   }) => {
     const amountBN = new BigNumberJs(amount);
-    const rateBN = new BigNumberJs((substract ? 100 - rate : 100 + rate) / 100);
+    const rateBN = new BigNumberJs(substract ? 1.0 - rate : 1.0 + rate);
     return bigify(trimBN(amountBN.times(rateBN).toString()));
   };
   it('remove commission from decimal amount', () => {
