@@ -17,7 +17,7 @@ export default abstract class Ledger extends HardwareWallet {
       await this.checkConnection();
 
       // Fetch a random address to ensure the connection works
-      await this.getAddress(DPathsList.ETH_LEDGER, 50);
+      await this.getAddress(DPathsList.RSK_MAINNET, 50);
     } catch (err) {
       throw ledgerErrToMessage(err.message);
     }
