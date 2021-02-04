@@ -11,6 +11,7 @@ import {
 } from '@config';
 import {
   getAssetByUUID,
+  getDPaths,
   getNetworkById,
   useAssets,
   useDeterministicWallet,
@@ -30,17 +31,20 @@ interface OwnProps {
 }
 
 const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
-  const dpaths = uniqBy(prop('value'), TREZOR_DERIVATION_PATHS);
+  const { networks } = useNetworks();
+  const { assets } = useAssets();
+  const network = getNetworkById(formData.network, networks);
+  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const dpaths = uniqBy(prop('value'), [
+    ...getDPaths([network], WalletId.TREZOR_NEW),
+    ...TREZOR_DERIVATION_PATHS
+  ]);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
     numOfAddresses: numOfAccountsToCheck
   }));
-  const { networks } = useNetworks();
-  const { assets } = useAssets();
-  const network = getNetworkById(formData.network, networks);
-  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
