@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AnnouncementBanner, Banner, RouterLink } from '@components';
+import { AnnouncementBanner, Banner, LinkApp } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
@@ -173,9 +173,9 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                   id="DEMO_BANNER"
                   variables={{
                     $link: () => (
-                      <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                      <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                         {translateRaw('DEMO_BANNER_LINK_TEXT')}
-                      </RouterLink>
+                      </LinkApp>
                     )
                   }}
                 />

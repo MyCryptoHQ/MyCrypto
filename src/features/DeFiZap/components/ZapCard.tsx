@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { formatEther } from '@ethersproject/units';
 import styled from 'styled-components';
 
-import { Button, RouterLink, Tooltip } from '@components';
+import { Button, LinkApp, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -299,14 +299,14 @@ const ZapCard = ({ config }: Props) => {
       </ZapCardContent>
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
-          <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+          <LinkApp href={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
             <ZapCardButton colorScheme={'inverted'}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
-          </RouterLink>
+          </LinkApp>
         ) : (
           <>
-            <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+            <LinkApp href={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
               <ZapCardButton colorScheme={'inverted'}>{translateRaw('ADD')}</ZapCardButton>
-            </RouterLink>
+            </LinkApp>
             <a target="_blank" href={config.link} rel="noreferrer">
               {config.withdrawTooltip ? (
                 <Tooltip tooltip={config.withdrawTooltip}>

@@ -13,8 +13,8 @@ import {
   ExtendedContentPanel,
   InlineMessage,
   Link,
+  LinkApp,
   NewTabLink,
-  RouterLink,
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
@@ -140,14 +140,14 @@ export default function Faucet() {
                 id="FAUCET_NO_ACCOUNTS"
                 variables={{
                   $link_add_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_ADD_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   ),
                   $link_create_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_CREATE_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   )
                 }}
               />

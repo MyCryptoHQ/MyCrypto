@@ -10,7 +10,7 @@ import {
   DashboardPanel,
   Heading,
   Icon,
-  RouterLink,
+  LinkApp,
   SkeletonLoader,
   Text,
   Tooltip
@@ -158,9 +158,9 @@ export function TokenList(props: TokenListProps) {
                   id="NO_TOKENS_CONTENT"
                   variables={{
                     $link: () => (
-                      <RouterLink to={ROUTE_PATHS.SWAP.path}>
+                      <LinkApp href={ROUTE_PATHS.SWAP.path}>
                         {translateRaw('GET_SOME_HERE')}
-                      </RouterLink>
+                      </LinkApp>
                     )
                   }}
                 />

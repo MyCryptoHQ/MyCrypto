@@ -25,7 +25,6 @@ export { default as InputField } from './InputField';
 export { default as NetworkSelector } from './NetworkSelector';
 export { default as Overlay } from './Overlay';
 export { default as QRCode, QRCodeContainer } from './QRCode';
-export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
 export { default as TimeElapsedCounter } from './TimeElapsedCounter';
 export { default as Spinner } from './Spinner';

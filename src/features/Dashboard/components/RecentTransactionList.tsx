@@ -21,7 +21,7 @@ import {
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
   Icon,
-  RouterLink
+  LinkApp
 } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
@@ -237,7 +237,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             }}
           />,
           <Box key={4} variant="rowCenter">
-            <RouterLink to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
+            <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
                 <Button>View</Button>
               ) : (
@@ -247,7 +247,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
                   height="24px"
                 />
               )}
-            </RouterLink>
+            </LinkApp>
           </Box>
         ];
       }

@@ -757,7 +757,7 @@
     "WALLET_BREAKDOWN_DETAIL_ACCOUNTS": "$numOfAccounts Accounts",
     "WALLET_BREAKDOWN_MORE": "View details",
     "WALLET_BREAKDOWN_NO_ASSETS": "No Assets Found",
-    "WALLET_BREAKDOWN_NO_ASSETS_MORE": "You can $externalLink with your credit card to get started!",
+    "WALLET_BREAKDOWN_NO_ASSETS_MORE": "You can $link with your credit card to get started!",
     "WALLET_BREAKDOWN_BUY_ETH": "buy some ETH",
     "WALLET_BREAKDOWN_NO_ASSETS_MORE_HIDDEN": "It looks like you've hidden all your assets. You can revert this from the $link.",
     "WALLET_BREAKDOWN_SETTINGS_PAGE": "Settings page",
