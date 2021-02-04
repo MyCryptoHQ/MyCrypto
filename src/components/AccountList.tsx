@@ -12,8 +12,8 @@ import {
   EthAddress,
   FixedSizeCollapsibleTable,
   Icon,
+  LinkApp,
   Network,
-  RouterLink,
   RowDeleteOverlay,
   SkeletonLoader,
   Text,
@@ -221,23 +221,23 @@ export default function AccountList(props: AccountListProps) {
       headingRight={
         <Box variant="rowAlign">
           {dashboard && (
-            <RouterLink to={ROUTE_PATHS.SETTINGS.path} style={{ marginRight: SPACING.MD }}>
+            <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.MD}>
               <Box variant="rowAlign">
                 <Icon type="edit" width="16px" />
                 <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
                   {translateRaw('EDIT')}
                 </Text>
               </Box>
-            </RouterLink>
+            </LinkApp>
           )}
-          <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+          <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
             <Box variant="rowAlign">
               <Icon type="add-bold" width="16px" />
               <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
                 {translateRaw('ADD')}
               </Text>
             </Box>
-          </RouterLink>
+          </LinkApp>
         </Box>
       }
       className={`AccountList ${className}`}
