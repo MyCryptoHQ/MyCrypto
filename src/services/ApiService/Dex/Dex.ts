@@ -20,7 +20,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { addHexPrefix, bigify, toWei } from '@utils';
+import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -169,6 +169,12 @@ export default class DexService {
       return {
         costBasis: bigify(costBasis.price),
         price: bigify(tokenPrices.price),
+        buyAmount: bigify(
+          baseToConvertedUnit(tokenPrices.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)
+        ),
+        sellAmount: bigify(
+          baseToConvertedUnit(tokenPrices.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
+        ),
         raw: tokenPrices,
         gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
         gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice

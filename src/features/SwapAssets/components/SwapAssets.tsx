@@ -139,9 +139,7 @@ export const SwapAssets = (props: Props) => {
   }, [fromAsset, fromAmount]);
 
   const makeDisplayString = (amount: string) =>
-    bigify(trimBN(amount, 10)).lte(bigify(0.01))
-      ? '<0.01'
-      : `~ ${bigify(trimBN(amount, 10)).toFixed(2)}`;
+    bigify(trimBN(amount, 10)).lte(bigify(0.01)) ? '<0.01' : `~ ${bigify(amount).toFixed(2)}`;
 
   return (
     <Box mt="20px" mb="1em">

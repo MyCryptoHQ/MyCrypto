@@ -139,7 +139,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         }).toString()
       );
 
-      const { price, costBasis } = await DexService.instance.getTokenPriceTo(
+      const { price, costBasis, ...rest } = await DexService.instance.getTokenPriceTo(
         fromAsset,
         toAsset,
         commissionIncreasedAmount.toString()
@@ -157,7 +157,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         markup: calculateMarkup(
           trimBN(formatEther(divideBNFloats(1, price).toString())),
           trimBN(formatEther(divideBNFloats(1, costBasis).toString()))
-        )
+        ),
+        ...rest
       }));
     } catch (e) {
       if (!e.isCancel) {
@@ -217,9 +218,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         fromAmountError: '',
         toAmountError: '',
         exchangeRate: withCommission({
-          amount: multiplyBNFloats(value, price),
-          rate: MYC_DEX_COMMISSION_RATE,
-          subtract: false
+          amount: multiplyBNFloats(1, price), // @todo Fix this
+          rate: MYC_DEX_COMMISSION_RATE
         }).toString(),
         markup: calculateMarkup(price, costBasis),
         ...rest
