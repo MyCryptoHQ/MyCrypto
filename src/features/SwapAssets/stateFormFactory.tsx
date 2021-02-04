@@ -214,15 +214,15 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: withCommission({
-          amount: multiplyBNFloats(value, price),
-          rate: MYC_DEX_COMMISSION_RATE,
-          subtract: true
-        }).toString(),
+        toAmount: price.toString(),
         fromAmountError: '',
         toAmountError: '',
         initialToAmount: trimBN(formatEther(multiplyBNFloats(value, price).toString())),
-        exchangeRate: price.toString(),
+        exchangeRate: withCommission({
+          amount: multiplyBNFloats(value, price),
+          rate: MYC_DEX_COMMISSION_RATE,
+          subtract: false
+        }).toString(),
         markup: calculateMarkup(price, costBasis),
         ...rest
       }));
