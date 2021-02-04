@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-forgot-password.svg';
-import { ExtendedContentPanel } from '@components';
+import { ExtendedContentPanel, LinkApp } from '@components';
 import { ROUTE_PATHS } from '@config';
 import translate, { translateRaw } from '@translations';
 import { goBack } from '@utils';
@@ -63,13 +63,9 @@ const ScreenLockForgotPassword: FC<RouteComponentProps> = ({ history }) => {
         <p>{translate('SCREEN_LOCK_FORGOT_PASSWORD_LIST_ITEM2')}</p>
       </Description>
       <FormWrapper>
-        <ActionButton
-          onClick={() => {
-            history.push(ROUTE_PATHS.SETTINGS_IMPORT.path);
-          }}
-        >
+        <LinkApp href={ROUTE_PATHS.SETTINGS_IMPORT.path}>
           {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
-        </ActionButton>
+        </LinkApp>
         <ActionButton
           onClick={() => {
             resetAll();
