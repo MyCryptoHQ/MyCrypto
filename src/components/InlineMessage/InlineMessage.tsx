@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import arrowSVG from '@assets/images/icn-arrow-purple.svg';
-import blueInfoSVG from '@assets/images/icn-info-blue.svg';
+import purpleInfoSVG from '@assets/images/icn-info-purple.svg';
 import infoSVG from '@assets/images/icn-info.svg';
 import warningSVG from '@assets/images/icn-warning.svg';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -74,8 +74,8 @@ const messageConfig = (type: InlineMessageType): Config => {
       };
     case InlineMessageType.INDICATOR_INFO_CIRCLE:
       return {
-        color: COLORS.BLUE_SKY,
-        icon: blueInfoSVG
+        color: COLORS.PURPLE,
+        icon: purpleInfoSVG
       };
     case InlineMessageType.INFO_ARROW:
       return {

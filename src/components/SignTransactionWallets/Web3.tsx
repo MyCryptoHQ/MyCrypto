@@ -166,7 +166,7 @@ export const SignTransactionWeb3UI = ({
   networkName,
   senderAccount
 }: UIProps) => (
-  <Box p="1.5em 2.25em">
+  <Box>
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('SIGN_TX_TITLE', {
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
