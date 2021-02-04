@@ -3,27 +3,11 @@ import React from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import settingsIcon from '@assets/images/icn-settings.svg';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { isTruthy } from '@utils';
 
 import { Panel } from './Panel';
-import RouterLink from './RouterLink';
 import Typography from './Typography';
-
-const SRouterLink = styled(RouterLink)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  & span,
-  p,
-  div {
-    color: ${COLORS.BLUE_BRIGHT};
-  }
-  & img {
-    margin-right: ${(p: { imageFirst?: boolean }) => (p.imageFirst ? '0.5em' : '0')};
-  }
-`;
 
 const Content = styled.div`
   padding: ${SPACING.BASE};
@@ -67,7 +51,6 @@ interface Props {
   children: any;
   headingRight?: string | JSX.Element;
   footer?: JSX.Element;
-  actionLink?: string;
   className?: string;
   padChildren?: boolean;
 }
@@ -75,41 +58,17 @@ interface Props {
 export const DashboardPanel = ({
   heading,
   headingRight,
-  actionLink,
   footer,
   children,
   padChildren,
   ...rest
 }: Props) => {
-  const getRightHeading = () => {
-    if (headingRight && actionLink) {
-      return (
-        <SRouterLink to={actionLink} imageFirst={true}>
-          <img src={settingsIcon} alt={'settings'} width={30} />
-          <Typography>{headingRight}</Typography>
-        </SRouterLink>
-      );
-    } else if (headingRight && !actionLink) {
-      return <Typography>{headingRight}</Typography>;
-    } else if (!headingRight && actionLink) {
-      return (
-        <SRouterLink to={actionLink}>
-          <img src={settingsIcon} alt={'settings'} width={30} />
-        </SRouterLink>
-      );
-    } else {
-      return false;
-    }
-  };
-
-  const rightHeadingComponent = (headingRight || actionLink) && getRightHeading();
-
   return (
     <DPanel {...rest}>
       {heading && (
         <DHeadingWrapper>
-          <DHeading hasRightHeading={isTruthy(rightHeadingComponent)}>{heading}</DHeading>
-          {rightHeadingComponent}
+          <DHeading hasRightHeading={isTruthy(headingRight)}>{heading}</DHeading>
+          {headingRight && <Typography>{headingRight}</Typography>}
         </DHeadingWrapper>
       )}
       {padChildren ? <Content>{children}</Content> : children}

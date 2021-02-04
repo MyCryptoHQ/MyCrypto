@@ -288,12 +288,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     }
   };
   return (
-    <DashboardPanel
-      heading="Recent Transactions"
-      //headingRight="Export"
-      //actionLink="/dashboard/recent-transactions"
-      className={`RecentTransactionsList ${className}`}
-    >
+    <DashboardPanel heading="Recent Transactions" className={`RecentTransactionsList ${className}`}>
       {filteredGroups.length >= 1 ? (
         <FixedSizeCollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
       ) : (
