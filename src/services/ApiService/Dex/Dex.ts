@@ -71,12 +71,7 @@ export default class DexService {
     gasPrice: ITxGasPrice;
     gasLimit: ITxGasLimit;
   }> => {
-    const { costBasis, tokenPrices: price, ...rest } = await this.getTokenPrice(
-      from,
-      to,
-      fromAmount
-    );
-    return { costBasis: bigify(costBasis), price: bigify(price), ...rest };
+    return this.getTokenPrice(from, to, fromAmount);
   };
 
   public getTokenPriceTo = async (
@@ -90,13 +85,7 @@ export default class DexService {
     gasPrice: ITxGasPrice;
     gasLimit: ITxGasLimit;
   }> => {
-    const { costBasis, tokenPrices: price, ...rest } = await this.getTokenPrice(
-      from,
-      to,
-      undefined,
-      toAmount
-    );
-    return { costBasis: bigify(costBasis), price: bigify(price), ...rest };
+    return this.getTokenPrice(from, to, undefined, toAmount);
   };
 
   public getOrderDetailsFrom = async (from: ISwapAsset, to: ISwapAsset, fromAmount: string) =>
@@ -199,8 +188,8 @@ export default class DexService {
       });
 
       return {
-        costBasis: costBasis.price,
-        tokenPrices: tokenPrices.price,
+        costBasis: bigify(costBasis.price),
+        price: bigify(tokenPrices.price),
         raw: tokenPrices,
         gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
         gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice
