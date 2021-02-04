@@ -2,6 +2,7 @@ import { IS_DEV as isDev, IS_PROD as isProd, IS_STAGING as isStaging } from '../
 
 export const SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
 export const ANALYTICS_API_URL = process.env.ANALYTICS_API_URL;
+export const COMMIT_HASH = process.env.COMMIT_HASH;
 
 export const IS_DEV: boolean = isDev;
 export const IS_PROD: boolean = isProd;
