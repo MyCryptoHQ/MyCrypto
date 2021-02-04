@@ -153,8 +153,6 @@ export const SwapAssets = (props: Props) => {
     }
   }, [fromAsset, fromAmount]);
 
-  console.log(gasPrice && gasLimit && totalTxFeeToString(gasPrice, gasLimit));
-
   const makeDisplayString = (amount: string) =>
     bigify(trimBN(amount, 10)).lte(bigify(0.01))
       ? '<0.01'
