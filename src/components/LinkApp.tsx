@@ -67,20 +67,18 @@ const LinkApp: React.FC<LinkAppProps & TextProps> = ({
     onClick();
   };
 
-  if (isExternal) {
-    return (
-      <SLink
-        href={href}
-        variant={variant}
-        target="_blank"
-        rel="noreferrer"
-        onClick={handleClick}
-        {...props}
-      />
-    );
-  } else {
-    return <SRouterLink to={href} variant={variant} onClick={handleClick} {...props} />;
-  }
+  return isExternal ? (
+    <SLink
+      href={href}
+      variant={variant}
+      target="_blank"
+      rel="noreferrer"
+      onClick={handleClick}
+      {...props}
+    />
+  ) : (
+    <SRouterLink to={href} variant={variant} onClick={handleClick} {...props} />
+  );
 };
 
 export default LinkApp;
