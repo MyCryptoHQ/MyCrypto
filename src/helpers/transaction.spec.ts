@@ -381,6 +381,25 @@ describe('appendGasPrice', () => {
     };
     expect(actual).toStrictEqual(expected);
   });
+
+  it('respects gas price if present', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      gasPrice: '0x2540be400' as ITxGasPrice,
+      chainId: 1
+    };
+    const actual = await appendGasPrice(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasPrice: '0x2540be400'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
 });
 
 describe('appendNonce', () => {

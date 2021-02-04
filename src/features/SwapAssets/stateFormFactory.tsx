@@ -205,7 +205,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const { price, costBasis, raw } = await DexService.instance.getTokenPriceFrom(
+      const { price, costBasis, ...rest } = await DexService.instance.getTokenPriceFrom(
         fromAsset,
         toAsset,
         value
@@ -224,7 +224,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         initialToAmount: trimBN(formatEther(multiplyBNFloats(value, price).toString())),
         exchangeRate: price.toString(),
         markup: calculateMarkup(price, costBasis),
-        raw
+        ...rest
       }));
     } catch (e) {
       if (!e.isCancel) {

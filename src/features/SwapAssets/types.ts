@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 
-import { ISwapAsset, ITxObject, ITxStatus, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, ITxGasPrice, ITxObject, ITxStatus, StoreAccount } from '@types';
 
 export enum LAST_CHANGED_AMOUNT {
   FROM = 'FROM_AMOUNT',
@@ -40,6 +40,8 @@ export interface SwapFormState {
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
   isMulti: boolean;
+  gasPrice: ITxGasPrice;
+  gasLimit: ITxGasLimit;
   raw: any;
 }
 

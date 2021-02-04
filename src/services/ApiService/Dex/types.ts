@@ -1,11 +1,11 @@
-import { ITxData, ITxGasLimit, ITxGasPrice, ITxToAddress, ITxValue, TAddress } from '@types';
+import { ITxData, ITxToAddress, ITxValue, TAddress } from '@types';
 
 export interface DexTrade {
   to: ITxToAddress;
   value: ITxValue;
-  gas: ITxGasLimit;
+  gas: string; // Wei
   data: ITxData;
-  gasPrice: ITxGasPrice;
+  gasPrice: string; // Wei
   allowanceTarget: TAddress;
   sellAmount: string; // Wei
   buyAmount: string; // Wei

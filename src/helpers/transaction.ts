@@ -394,6 +394,10 @@ export const appendSender = (senderAddress: ITxFromAddress) => (
 export const appendGasPrice = (network: Network) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
+  // Respect gas price if present
+  if (tx.gasPrice) {
+    return tx as TxBeforeGasLimit;
+  }
   const gasPrice = await fetchGasPriceEstimates(network)
     .then(({ fast }) => fast.toString())
     .then(inputGasPriceToHex)

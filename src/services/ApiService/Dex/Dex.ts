@@ -13,6 +13,8 @@ import {
   Bigish,
   ISwapAsset,
   ITxData,
+  ITxGasLimit,
+  ITxGasPrice,
   ITxObject,
   ITxType,
   ITxValue,
@@ -62,23 +64,39 @@ export default class DexService {
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish; raw: any }> => {
-    const { costBasis, tokenPrices: price, raw } = await this.getTokenPrice(from, to, fromAmount);
-    return { costBasis: bigify(costBasis), price: bigify(price), raw };
+  ): Promise<{
+    costBasis: Bigish;
+    price: Bigish;
+    raw: any;
+    gasPrice: ITxGasPrice;
+    gasLimit: ITxGasLimit;
+  }> => {
+    const { costBasis, tokenPrices: price, ...rest } = await this.getTokenPrice(
+      from,
+      to,
+      fromAmount
+    );
+    return { costBasis: bigify(costBasis), price: bigify(price), ...rest };
   };
 
   public getTokenPriceTo = async (
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish; raw: any }> => {
-    const { costBasis, tokenPrices: price, raw } = await this.getTokenPrice(
+  ): Promise<{
+    costBasis: Bigish;
+    price: Bigish;
+    raw: any;
+    gasPrice: ITxGasPrice;
+    gasLimit: ITxGasLimit;
+  }> => {
+    const { costBasis, tokenPrices: price, ...rest } = await this.getTokenPrice(
       from,
       to,
       undefined,
       toAmount
     );
-    return { costBasis: bigify(costBasis), price: bigify(price), raw };
+    return { costBasis: bigify(costBasis), price: bigify(price), ...rest };
   };
 
   public getOrderDetailsFrom = async (from: ISwapAsset, to: ISwapAsset, fromAmount: string) =>
@@ -134,6 +152,8 @@ export default class DexService {
       formatTradeTx({
         to: data.to,
         data: data.data,
+        gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        gasLimit: addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit,
         value: data.value
       })
     ];
@@ -168,9 +188,9 @@ export default class DexService {
 
       const { data: tokenPrices } = await this.service.get('swap/v1/price', {
         params: {
-          ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount)
-          /**feeRecipient: DEX_FEE_RECIPIENT,
-          buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE**/
+          ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount),
+          feeRecipient: DEX_FEE_RECIPIENT,
+          buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE
         },
         cancelToken: new CancelToken(function executor(c) {
           // An executor function receives a cancel function as a parameter
@@ -178,7 +198,13 @@ export default class DexService {
         })
       });
 
-      return { costBasis: costBasis.price, tokenPrices: tokenPrices.price, raw: tokenPrices };
+      return {
+        costBasis: costBasis.price,
+        tokenPrices: tokenPrices.price,
+        raw: tokenPrices,
+        gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
+        gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice
+      };
     } catch (e) {
       if (axios.isCancel(e)) {
         e.isCancel = true;
@@ -211,13 +237,17 @@ export const formatApproveTx = ({
 export const formatTradeTx = ({
   to,
   data,
-  value
+  value,
+  gasPrice,
+  gasLimit
 }: Partial<ITxObject>): Partial<ITxObject & { type: ITxType }> => {
   return {
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId: DEFAULT_NETWORK_CHAINID,
+    gasPrice,
+    gasLimit,
     type: ITxType.SWAP
   };
 };

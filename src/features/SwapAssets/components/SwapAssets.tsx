@@ -19,8 +19,8 @@ import { StoreContext } from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISwapAsset, StoreAccount } from '@types';
-import { bigify, trimBN } from '@utils';
+import { ISwapAsset, ITxGasLimit, ITxGasPrice, StoreAccount } from '@types';
+import { bigify, totalTxFeeToString, trimBN } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 
@@ -48,6 +48,8 @@ interface ISwapProps {
   exchangeRate: string;
   markup: string;
   isSubmitting: boolean;
+  gasLimit: ITxGasLimit;
+  gasPrice: ITxGasPrice;
   raw: any;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
@@ -86,6 +88,8 @@ export const SwapAssets = (props: Props) => {
     handleAccountSelected,
     exchangeRate,
     markup,
+    gasLimit,
+    gasPrice,
     raw,
     isDemoMode
   } = props;
@@ -148,6 +152,8 @@ export const SwapAssets = (props: Props) => {
       handleAccountSelected(undefined);
     }
   }, [fromAsset, fromAmount]);
+
+  console.log(gasPrice && gasLimit && totalTxFeeToString(gasPrice, gasLimit));
 
   const makeDisplayString = (amount: string) =>
     bigify(trimBN(amount, 10)).lte(bigify(0.01))
@@ -248,8 +254,12 @@ export const SwapAssets = (props: Props) => {
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
         )}
+        {gasPrice && gasLimit && (
+          <>Estimated TX Fee: {totalTxFeeToString(gasPrice, gasLimit)} ETH</>
+        )}
         {raw && (
           <>
+            <br />
             {`Price: ${raw.price}`}
             <br />
             {`Provider: ${raw.sources
