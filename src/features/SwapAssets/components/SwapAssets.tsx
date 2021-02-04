@@ -104,7 +104,7 @@ export const SwapAssets = (props: Props) => {
   // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
   const ownedAssets = filteredAssets.filter((a) =>
-    userAssets.find((userAsset) => a.ticker === userAsset.ticker)
+    userAssets.find((userAsset) => a.uuid === userAsset.uuid)
   );
 
   // SEND AMOUNT CHANGED
@@ -249,7 +249,7 @@ export const SwapAssets = (props: Props) => {
           onSelect={(option: StoreAccount) => {
             handleAccountSelected(option);
           }}
-          asset={fromAsset ? userAssets.find((x) => x.ticker === fromAsset.ticker) : undefined}
+          asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
         />
         {!filteredAccounts.length && fromAsset && (
           <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>

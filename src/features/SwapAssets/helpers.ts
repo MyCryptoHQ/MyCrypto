@@ -109,4 +109,4 @@ export const getUnselectedAssets = (
 ) =>
   !toAsset || !fromAsset
     ? assets
-    : assets.filter((x) => fromAsset.ticker !== x.ticker && toAsset.ticker !== x.ticker);
+    : assets.filter((x) => fromAsset.uuid !== x.uuid && toAsset.uuid !== x.uuid);
