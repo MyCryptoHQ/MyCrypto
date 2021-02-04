@@ -34,7 +34,7 @@ export type TextProps = SpaceProps &
     variant?: TextVariants;
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
   } & {
-    textTransform?: 'uppercase' | 'capitalize';
+    textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
   };
 
 const Text: React.FC<TextProps> = styled.p<TextProps>`

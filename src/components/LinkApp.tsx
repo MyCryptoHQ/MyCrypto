@@ -17,7 +17,11 @@ import {
 import { TextProps } from '@components';
 import { textVariants } from '@theme';
 
-const SLink = styled.a<TextProps & HTMLAnchorElement>`
+type StyleProps = Omit<TextProps, 'textTransform'> & {
+  $textTransform?: TextProps['textTransform'];
+};
+
+const SLink = styled.a<StyleProps & HTMLAnchorElement>`
   ${textVariants}
   ${space}
   ${fontStyle}
@@ -28,10 +32,10 @@ const SLink = styled.a<TextProps & HTMLAnchorElement>`
   ${lineHeight}
   ${typography}
   ${layout}
-  ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
+  ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
 `;
 
-const SRouterLink = styled(RouterLink)<TextProps & RouterLinkProps>`
+const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
   ${textVariants}
   ${space}
   ${fontStyle}
@@ -42,7 +46,7 @@ const SRouterLink = styled(RouterLink)<TextProps & RouterLinkProps>`
   ${lineHeight}
   ${typography}
   ${layout}
-  ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
+  ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
 `;
 
 interface LinkProps {
@@ -54,13 +58,18 @@ interface LinkProps {
 
 type LinkAppProps = LinkProps & Omit<RouterLinkProps, 'to'>;
 
-const LinkApp: React.FC<LinkAppProps & TextProps> = ({
+const LinkApp: React.FC<LinkAppProps & StyleProps> = ({
   href,
   isExternal = false,
   variant = 'defaultLink',
   onClick,
   ...props
 }) => {
+  if (!isExternal && href.includes(`http`)) {
+    throw new Error(
+      `LinkApp: Received href prop ${href}. Set prop isExternal to use an external link.`
+    );
+  }
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!onClick) return;
     event.preventDefault();

@@ -70,7 +70,7 @@ const NoAssets = ({ numOfAssets }: { numOfAssets: number }) => {
               id="WALLET_BREAKDOWN_NO_ASSETS_MORE"
               variables={{
                 $link: () => (
-                  <LinkApp href={BUY_MYCRYPTO_WEBSITE} target="_blank" rel="noreferrer">
+                  <LinkApp href={BUY_MYCRYPTO_WEBSITE} isExternal={true}>
                     {translateRaw('WALLET_BREAKDOWN_BUY_ETH')}
                   </LinkApp>
                 )
