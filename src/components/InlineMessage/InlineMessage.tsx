@@ -26,7 +26,7 @@ interface Config {
 export const Wrapper = styled.div`
   font-size: ${FONT_SIZE.BASE};
   width: 100%;
-  text-align: 'justify';
+  text-align: justify;
   white-space: pre-line;
 `;
 
