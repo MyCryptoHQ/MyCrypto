@@ -616,7 +616,8 @@ export const USEFUL_TOKENS = [
   'd69f3e38-de6b-5c27-be7f-a9df4581043c',
   'c469f604-d610-5252-8f8b-580ca1837e58',
   '12470ffd-9ed1-5899-80b8-b1d30b1d1194',
-  '281fa3af-8e6d-5f33-900c-33a480035475'
+  '281fa3af-8e6d-5f33-900c-33a480035475',
+  'bcc71596-ea9d-5a90-add0-14e1717f22a1'
 ];
 
 export const USEFUL_ASSETS = [...USEFUL_TOKENS, ...MOONPAY_ASSET_UUIDS];
