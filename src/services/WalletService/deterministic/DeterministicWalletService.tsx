@@ -13,7 +13,12 @@ import { bigify } from '@utils';
 import { getDeterministicWallets, LedgerUSB, Wallet } from '..';
 import { LedgerU2F, Trezor, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
-import { DWAccountDisplay, ExtendedDPath, IDeterministicWalletService } from './types';
+import {
+  DWAccountDisplay,
+  ExtendedDPath,
+  HardwareInitProps,
+  IDeterministicWalletService
+} from './types';
 
 interface IPrefetchBundle {
   [key: string]: KeyInfo;
@@ -53,10 +58,10 @@ export const DeterministicWalletService = ({
   handleEnqueueAccounts,
   handleComplete
 }: EventHandlers): IDeterministicWalletService => {
-  const init = async (walletId: WalletId, asset: ExtendedAsset) => {
+  const init = async ({ walletId, asset, dpath }: HardwareInitProps) => {
     const wallet = await selectWallet(walletId);
     wallet
-      .initialize()
+      .initialize(dpath!)
       .then(() => {
         handleInit(wallet, asset);
       })
@@ -75,22 +80,26 @@ export const DeterministicWalletService = ({
       const prefetchedBundle: IPrefetchBundle = await session.prefetch(dpaths);
       const returnedData = flatten(
         Object.entries(prefetchedBundle).map(([key, value]) => {
-          const dpath = dpaths.find((x) => x.value === key) as ExtendedDPath;
-          return getDeterministicWallets({
-            dPath: key,
-            chainCode: value.chainCode,
-            publicKey: value.publicKey,
-            limit: dpath.numOfAddresses,
-            offset: dpath.offset
-          }).map((item) => ({
-            address: item.address as TAddress,
-            pathItem: {
-              path: `${key}/${item.index}`,
-              baseDPath: dpath,
-              index: item.index
-            },
-            balance: undefined
-          }));
+          try {
+            const dpath = dpaths.find((x) => x.value === key) as ExtendedDPath;
+            return getDeterministicWallets({
+              dPath: key,
+              chainCode: value.chainCode,
+              publicKey: value.publicKey,
+              limit: dpath.numOfAddresses,
+              offset: dpath.offset
+            }).map((item) => ({
+              address: item.address as TAddress,
+              pathItem: {
+                path: `${key}/${item.index}`,
+                baseDPath: dpath,
+                index: item.index
+              },
+              balance: undefined
+            }));
+          } catch {
+            return [];
+          }
         })
       );
       handleEnqueueAccounts(returnedData);
@@ -152,20 +161,22 @@ export const DeterministicWalletService = ({
   ): Promise<DWAccountDisplay[]> => {
     const outputAddresses: DWAccountDisplay[] = [];
     for (const dpath of dpaths) {
-      for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-        const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
-        const outputObject = {
-          address: data.address as TAddress,
-          pathItem: {
-            path: data.path,
-            baseDPath: dpath,
-            index: idx + dpath.offset
-          },
-          balance: undefined
-        };
-        outputAddresses.push(outputObject);
-        //
-      }
+      try {
+        for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
+          const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
+          const outputObject = {
+            address: data.address as TAddress,
+            pathItem: {
+              path: data.path,
+              baseDPath: dpath,
+              index: idx + dpath.offset
+            },
+            balance: undefined
+          };
+          outputAddresses.push(outputObject);
+        }
+        // eslint-disable-next-line no-empty
+      } catch {}
     }
 
     return outputAddresses;

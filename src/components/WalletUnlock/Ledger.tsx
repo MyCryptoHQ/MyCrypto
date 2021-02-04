@@ -36,6 +36,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
+
+  // @todo: LEDGER_DERIVATION_PATHS are not available on all networks. Fix this to only display DPaths relevant to the specified network.
   const dpaths = uniqBy(prop('value'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
     ...LEDGER_DERIVATION_PATHS

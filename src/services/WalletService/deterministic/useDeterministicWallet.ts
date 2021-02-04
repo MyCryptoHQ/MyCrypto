@@ -16,11 +16,6 @@ import {
   IUseDeterministicWallet
 } from './types';
 
-interface MnemonicPhraseInputs {
-  phrase: string;
-  pass: string;
-}
-
 const useDeterministicWallet = (
   dpaths: ExtendedDPath[],
   walletId: DPathFormat,
@@ -36,7 +31,7 @@ const useDeterministicWallet = (
   const [service, setService] = useState<IDeterministicWalletService | undefined>(); // Keep a reference to the session in order to send
   const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);
   const [network, setNetwork] = useState(undefined as Network | undefined);
-  const [mnemonicInputs, setMnemonicInputs] = useState({} as MnemonicPhraseInputs);
+
   // Initialize DeterministicWallet and get the uri.
   useEffect(() => {
     if (!shouldInit || !assetToQuery || !network) return;
@@ -86,7 +81,8 @@ const useDeterministicWallet = (
         })
     });
 
-    dwService.init(walletId, assetToQuery, mnemonicInputs.phrase, mnemonicInputs.pass);
+    // @todo: This currently expects the default dpath for the network to always be first in the arr
+    dwService.init({ walletId, asset: assetToQuery, dpath: dpaths[0] });
     setService(dwService);
   }, [shouldInit]);
 
@@ -134,15 +130,7 @@ const useDeterministicWallet = (
     return;
   }, [state.finishedAccounts, state.completed]);
 
-  const requestConnection = (
-    networkToUse: Network,
-    asset: ExtendedAsset,
-    mnemonicPhrase?: string,
-    pass?: string
-  ) => {
-    if (mnemonicPhrase) {
-      setMnemonicInputs({ phrase: mnemonicPhrase, pass: pass! });
-    }
+  const requestConnection = (networkToUse: Network, asset: ExtendedAsset) => {
     setNetwork(networkToUse);
     setAssetToQuery(asset);
     setShouldInit(true);
