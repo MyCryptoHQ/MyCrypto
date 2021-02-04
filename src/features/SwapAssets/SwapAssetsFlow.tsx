@@ -118,8 +118,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
             toAsset,
             fromAmount: bigify(fromAmount),
             toAmount: bigify(toAmount),
-            rate: bigify(exchangeRate),
-            markup: bigify(markup),
+            rate: bigify(exchangeRate!),
+            markup: bigify(markup!),
             lastChangedAmount
           };
           initWith(getTradeOrder(pair, account), account, account.network);
