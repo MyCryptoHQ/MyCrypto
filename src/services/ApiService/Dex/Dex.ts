@@ -10,7 +10,6 @@ import {
 } from '@config';
 import { ERC20 } from '@services/EthService';
 import {
-  Bigish,
   ISwapAsset,
   ITxData,
   ITxGasLimit,
@@ -60,31 +59,11 @@ export default class DexService {
     return tokenList;
   };
 
-  public getTokenPriceFrom = async (
-    from: ISwapAsset,
-    to: ISwapAsset,
-    fromAmount: string
-  ): Promise<{
-    costBasis: Bigish;
-    price: Bigish;
-    raw: any;
-    gasPrice: ITxGasPrice;
-    gasLimit: ITxGasLimit;
-  }> => {
+  public getTokenPriceFrom = async (from: ISwapAsset, to: ISwapAsset, fromAmount: string) => {
     return this.getTokenPrice(from, to, fromAmount);
   };
 
-  public getTokenPriceTo = async (
-    from: ISwapAsset,
-    to: ISwapAsset,
-    toAmount: string
-  ): Promise<{
-    costBasis: Bigish;
-    price: Bigish;
-    raw: any;
-    gasPrice: ITxGasPrice;
-    gasLimit: ITxGasLimit;
-  }> => {
+  public getTokenPriceTo = async (from: ISwapAsset, to: ISwapAsset, toAmount: string) => {
     return this.getTokenPrice(from, to, undefined, toAmount);
   };
 
