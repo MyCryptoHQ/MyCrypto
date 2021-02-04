@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Banner, RouterLink } from '@components';
+import { Banner, LinkApp } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SPACING } from '@theme';
 import { Trans, translateRaw } from '@translations';
@@ -23,9 +23,9 @@ const BannerText = (
     id="DEMO_GATEWAY_BANNER"
     variables={{
       $link: () => (
-        <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+        <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
           {translateRaw('DEMO_BANNER_LINK_TEXT')}
-        </RouterLink>
+        </LinkApp>
       )
     }}
   />

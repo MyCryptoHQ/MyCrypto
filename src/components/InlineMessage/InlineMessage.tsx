@@ -36,16 +36,6 @@ interface BannerTypographyProps {
 const STypography = styled(Body)<BannerTypographyProps>`
   color: ${(props) => props.color};
   vertical-align: middle;
-
-  a {
-    color: ${(props) => props.color};
-    font-weight: normal;
-  }
-
-  a:hover {
-    color: ${(props) => props.color};
-    font-weight: bold;
-  }
 `;
 
 const Icon = styled.img`
