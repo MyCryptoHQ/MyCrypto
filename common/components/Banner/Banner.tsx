@@ -10,8 +10,8 @@ interface Props {
 export const ANNOUNCEMENT_MSG = () => (
   <React.Fragment>
     <div>
-      We've launched a new beta version of MyCrypto that you can try at{' '}
-      <a href="https://beta.mycrypto.com">beta.mycrypto.com</a>!
+      This is an older version of MyCrypto! We've kept it up for specific use cases but we recommend
+      that you use the most up-to-date version of <a href="https://app.mycrypto.com">MyCrypto</a>!
     </div>
   </React.Fragment>
 );
