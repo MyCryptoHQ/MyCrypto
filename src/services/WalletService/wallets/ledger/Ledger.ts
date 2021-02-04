@@ -1,7 +1,7 @@
 import EthereumApp from '@ledgerhq/hw-app-eth';
 import Transport from '@ledgerhq/hw-transport';
 
-import { DPathsList, LEDGER_DERIVATION_PATHS } from '@config/dpaths';
+import { LEDGER_DERIVATION_PATHS } from '@config/dpaths';
 import { DPath, WalletId } from '@types';
 
 import HardwareWallet, { KeyInfo } from '../HardwareWallet';
@@ -12,12 +12,12 @@ export default abstract class Ledger extends HardwareWallet {
   protected abstract transport: Transport<any> | null = null;
   protected abstract app: EthereumApp | null = null;
 
-  public async initialize(): Promise<void> {
+  public async initialize(dpath: DPath): Promise<void> {
     try {
       await this.checkConnection();
 
       // Fetch a random address to ensure the connection works
-      await this.getAddress(DPathsList.RSK_MAINNET, 50);
+      await this.getAddress(dpath, 50);
     } catch (err) {
       throw ledgerErrToMessage(err.message);
     }

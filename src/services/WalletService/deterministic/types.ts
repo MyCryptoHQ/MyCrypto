@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { ValuesType } from 'utility-types';
 
-import { DPath, DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
+import { DPath, ExtendedAsset, Network, TAddress, WalletId } from '@types';
 
 import { Wallet } from '..';
 import DeterministicWalletReducer from './reducer';
@@ -45,19 +45,20 @@ export interface DeterministicWalletState {
 
 export interface IUseDeterministicWallet {
   state: DeterministicWalletState;
-  requestConnection(
-    network: Network,
-    asset: ExtendedAsset,
-    mnemonicPhrase?: string,
-    pass?: string
-  ): void;
+  requestConnection(network: Network, asset: ExtendedAsset): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
   generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
 }
 
+export interface HardwareInitProps {
+  walletId: WalletId;
+  asset: ExtendedAsset;
+  dpath: DPath;
+}
+
 export interface IDeterministicWalletService {
-  init(walletId: DPathFormat, asset: ExtendedAsset, phrase: string, pass: string): void;
+  init(props: HardwareInitProps): void;
   getAccounts(session: Wallet, dpath: ExtendedDPath[]): void;
   handleAccountsQueue(accounts: DWAccountDisplay[], network: Network, asset: ExtendedAsset): void;
   triggerComplete(): void;

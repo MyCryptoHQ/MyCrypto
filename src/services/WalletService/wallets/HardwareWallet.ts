@@ -34,7 +34,7 @@ export default abstract class HWWallet implements Wallet {
     };
   }
 
-  public abstract initialize(): Promise<void>;
+  public abstract initialize(dpath?: DPath): Promise<void>;
 
   public abstract getDPaths(): DPath[];
 

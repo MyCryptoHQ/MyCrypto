@@ -7,7 +7,7 @@ export default interface Wallet {
   /**
    * Initialize the wallet. Can be used to connect to the device and check the connection.
    */
-  initialize(): Promise<void>;
+  initialize(dpath?: DPath): Promise<void>;
 
   /**
    * Optional function that can be used to prefetch necessary info from a device.

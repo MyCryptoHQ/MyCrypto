@@ -13,7 +13,12 @@ import { bigify } from '@utils';
 import { getDeterministicWallets, LedgerUSB, Wallet } from '..';
 import { LedgerU2F, Trezor, WalletResult } from '../wallets';
 import { KeyInfo } from '../wallets/HardwareWallet';
-import { DWAccountDisplay, ExtendedDPath, IDeterministicWalletService } from './types';
+import {
+  DWAccountDisplay,
+  ExtendedDPath,
+  HardwareInitProps,
+  IDeterministicWalletService
+} from './types';
 
 interface IPrefetchBundle {
   [key: string]: KeyInfo;
@@ -53,10 +58,10 @@ export const DeterministicWalletService = ({
   handleEnqueueAccounts,
   handleComplete
 }: EventHandlers): IDeterministicWalletService => {
-  const init = async (walletId: WalletId, asset: ExtendedAsset) => {
+  const init = async ({ walletId, asset, dpath }: HardwareInitProps) => {
     const wallet = await selectWallet(walletId);
     wallet
-      .initialize()
+      .initialize(dpath!)
       .then(() => {
         handleInit(wallet, asset);
       })
