@@ -97,8 +97,7 @@ export const DeterministicWalletService = ({
               },
               balance: undefined
             }));
-          } catch (err) {
-            console.error(err);
+          } catch {
             return [];
           }
         })
@@ -176,9 +175,8 @@ export const DeterministicWalletService = ({
           };
           outputAddresses.push(outputObject);
         }
-      } catch (err) {
-        console.error(err);
-      }
+        // eslint-disable-next-line no-empty
+      } catch {}
     }
 
     return outputAddresses;
