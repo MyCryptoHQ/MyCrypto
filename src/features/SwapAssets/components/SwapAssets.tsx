@@ -19,10 +19,11 @@ import { StoreContext } from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISwapAsset, ITxGasLimit, ITxGasPrice, StoreAccount } from '@types';
+import { ISwapAsset, StoreAccount } from '@types';
 import { bigify, totalTxFeeToString, trimBN } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
+import { SwapFormState } from '../types';
 
 const StyledButton = styled(Button)`
   margin-top: 12px;
@@ -32,25 +33,9 @@ const StyledButton = styled(Button)`
   }
 `;
 
-interface ISwapProps {
-  account: StoreAccount;
-  fromAmount: string;
-  toAmount: string;
-  fromAsset: ISwapAsset;
-  toAsset: ISwapAsset;
-  assets: ISwapAsset[];
-  isCalculatingFromAmount: boolean;
-  isCalculatingToAmount: boolean;
-  fromAmountError: string;
-  toAmountError: string;
-  txError: CustomError | undefined;
-  initialToAmount: string;
-  exchangeRate: string;
-  markup: string;
+type ISwapProps = SwapFormState & {
   isSubmitting: boolean;
-  gasLimit: ITxGasLimit;
-  gasPrice: ITxGasPrice;
-  raw: any;
+  txError?: CustomError;
   onSuccess(): void;
   handleFromAssetSelected(asset: ISwapAsset): void;
   handleToAssetSelected(asset: ISwapAsset): void;
@@ -59,7 +44,7 @@ interface ISwapProps {
   handleFromAmountChanged(value: string): void;
   handleToAmountChanged(value: string): void;
   handleAccountSelected(account?: StoreAccount): void;
-}
+};
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;

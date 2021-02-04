@@ -31,17 +31,16 @@ export interface SwapFormState {
   fromAmount: string;
   toAsset: ISwapAsset;
   toAmount: string;
-  fromAmountError: string | JSX.Element;
+  fromAmountError?: string | JSX.Element;
   isCalculatingFromAmount: boolean;
-  toAmountError: string | JSX.Element;
+  toAmountError?: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
   exchangeRate: string; // The exchange rate displayed to the user (post-markup)
   markup: string;
   isMulti: boolean;
-  gasPrice: ITxGasPrice;
-  gasLimit: ITxGasLimit;
+  gasPrice?: ITxGasPrice;
+  gasLimit?: ITxGasLimit;
   raw: any;
 }
 
