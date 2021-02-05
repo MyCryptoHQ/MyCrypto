@@ -20,7 +20,6 @@ export { default as LinkApp } from './LinkApp';
 export { default as Typography } from './Typography';
 export { default as Modal } from './Modal';
 export { IButton, LegacyModal } from './LegacyModal';
-export { default as NewAppReleaseModal } from './NewAppReleaseModal';
 export { default as InputField } from './InputField';
 export { default as NetworkSelector } from './NetworkSelector';
 export { default as Overlay } from './Overlay';
