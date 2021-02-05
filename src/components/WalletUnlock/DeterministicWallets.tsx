@@ -11,8 +11,8 @@ import {
   Button,
   InlineMessage,
   Input,
+  LinkApp,
   LinkOut,
-  NewTabLink,
   Selector,
   Spinner,
   Typography
@@ -382,9 +382,9 @@ export function DeterministicWalletsClass({
         <SDropdown>
           <label>
             {translate('DPATH')}{' '}
-            <NewTabLink href={HELP_ARTICLE.DPATH}>
+            <LinkApp href={HELP_ARTICLE.DPATH} isExternal={true}>
               <img width="16px" src={questionSVG} />
-            </NewTabLink>
+            </LinkApp>
           </label>
           <Selector
             value={currentDPath}

@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-create-pw.svg';
-import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
+import { ExtendedContentPanel, InputField, LinkApp } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { translateRaw } from '@translations';
 import { goBack } from '@utils';
@@ -146,9 +146,12 @@ const ScreenLockNew: FC<RouteComponentProps> = ({ history }) => {
             <BottomActions>
               <div>
                 {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}>
+                <LinkApp
+                  href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}
+                  isExternal={true}
+                >
                   {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-                </NewTabLink>
+                </LinkApp>
               </div>
             </BottomActions>
           </ContentWrapper>

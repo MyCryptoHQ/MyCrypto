@@ -739,7 +739,7 @@
     "UNKNOWN": "Unknown",
     "UNKNOWN_BALANCE": "Unknown Balance",
     "UNKNOWN_NETWORK": "Unknown Network",
-    "UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS": "Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can unlock your wallet at $newTabLink",
+    "UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS": "Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can unlock your wallet at $link",
     "UNLOCK_WALLET": "Connect and Unlock",
     "UNSUPPORTED_NETWORK": "$walletType does not support the $networkName network",
     "VALUE": "Value",

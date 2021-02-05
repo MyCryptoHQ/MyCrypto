@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Icon, NewTabLink, Text, TIcon } from '@components';
+import { Box, Icon, LinkApp, Text, TIcon } from '@components';
 import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -81,9 +81,12 @@ export const LinkSet = ({ isMobile }: { isMobile: boolean }) => {
       {COMMIT_HASH && (
         <Box variant="rowAlign" justifyContent="flex-end">
           {'v'}
-          <NewTabLink href={`https://github.com/MyCryptoHQ/MyCrypto/commit/${COMMIT_HASH}`}>
+          <LinkApp
+            href={`https://github.com/MyCryptoHQ/MyCrypto/commit/${COMMIT_HASH}`}
+            isExternal={true}
+          >
             {COMMIT_HASH.substr(0, 7)}
-          </NewTabLink>
+          </LinkApp>
         </Box>
       )}
       <Text

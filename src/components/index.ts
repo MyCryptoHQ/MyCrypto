@@ -29,7 +29,6 @@ export { default as Stepper } from './Stepper';
 export { default as TimeElapsedCounter } from './TimeElapsedCounter';
 export { default as Spinner } from './Spinner';
 export { default as Input } from './Input';
-export { default as NewTabLink } from './NewTabLink';
 export { Panel } from './Panel';
 export { DashboardPanel } from './DashboardPanel';
 export { Desktop, Mobile } from './ResponsiveLayout';

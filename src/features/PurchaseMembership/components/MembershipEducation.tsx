@@ -10,7 +10,7 @@ import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor
 import membershipShirt from '@assets/images/membership/membership-shirt.svg';
 import membershipStickers from '@assets/images/membership/membership-stickers.svg';
 import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
-import { Button, FullSizeContentPanel, LinkApp, NewTabLink, Typography } from '@components';
+import { Button, FullSizeContentPanel, LinkApp, Typography } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
@@ -161,9 +161,12 @@ const MembershipEducation = () => {
             <ListItem>
               <ListImg src={membershipUnlimited} />
               <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>&nbsp;
-              <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_ARE_PROTECTED_TRANSACTIONS)}>
+              <LinkApp
+                href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_ARE_PROTECTED_TRANSACTIONS)}
+                isExternal={true}
+              >
                 {translate('MEMBERSHIP_LIST_THIRD_2')}
-              </NewTabLink>
+              </LinkApp>
             </ListItem>
             <ListItem>
               <ListImg src={membershipNoAds} />

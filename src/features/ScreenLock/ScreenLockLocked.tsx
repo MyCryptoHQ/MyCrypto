@@ -2,11 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
-import { ExtendedContentPanel, InputField, NewTabLink } from '@components';
+import { ExtendedContentPanel, InputField, LinkApp } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
@@ -90,15 +89,15 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
         <BottomActions>
           <div>
             {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
-            <Link to={ROUTE_PATHS.SCREEN_LOCK_FORGOT.path}>
+            <LinkApp href={ROUTE_PATHS.SCREEN_LOCK_FORGOT.path}>
               {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
-            </Link>
+            </LinkApp>
           </div>
           <div>
             {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)}>
+            <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)} isExternal={true}>
               {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-            </NewTabLink>
+            </LinkApp>
           </div>
         </BottomActions>
       </ContentWrapper>
