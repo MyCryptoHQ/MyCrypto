@@ -64,7 +64,6 @@ module.exports = merge.smart(common, {
       clearConsole: false
     }),
 
-    //new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
