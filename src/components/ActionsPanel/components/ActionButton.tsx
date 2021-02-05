@@ -1,11 +1,8 @@
 import React from 'react';
 
-import { useHistory } from 'react-router-dom';
-
-import { Button } from '@components';
+import { Button, LinkApp } from '@components';
 import { useUserActions } from '@services';
-import { ACTION_STATE, ExtendedUserAction, TURL } from '@types';
-import { openLink } from '@utils';
+import { ACTION_STATE, ExtendedUserAction } from '@types';
 
 export interface ActionButtonProps {
   userAction: ExtendedUserAction;
@@ -23,23 +20,23 @@ export const ActionButton = ({
   userAction
 }: ActionButtonProps) => {
   const { updateUserAction } = useUserActions();
-  const history = useHistory();
 
   const handleClick = () => {
     updateUserAction(userAction.uuid, {
       ...userAction,
       state: shouldComplete ? ACTION_STATE.COMPLETED : ACTION_STATE.STARTED
     });
-    external ? openLink(to as TURL) : history.push(to);
   };
 
   return (
-    <Button
-      onClick={handleClick}
-      disabled={userAction.state != 'default' && userAction.state === 'completed'}
-      fullwidth={true}
-    >
-      {content}
-    </Button>
+    <LinkApp href={to} isExternal={external} onClick={handleClick}>
+      <Button
+        onClick={handleClick}
+        disabled={userAction.state != 'default' && userAction.state === 'completed'}
+        fullwidth={true}
+      >
+        {content}
+      </Button>
+    </LinkApp>
   );
 };

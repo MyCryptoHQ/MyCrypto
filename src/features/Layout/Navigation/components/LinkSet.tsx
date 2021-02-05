@@ -6,8 +6,7 @@ import { Box, Icon, LinkApp, Text, TIcon } from '@components';
 import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { TURL } from '@types';
-import { COMMIT_HASH, openLink } from '@utils';
+import { COMMIT_HASH } from '@utils';
 
 import { MYCLinks, productsLinks, socialLinks, supportUsTray } from '../constants';
 import { SupportUsTray } from './SupportUsTray';
@@ -16,63 +15,77 @@ const SBox = styled(Box)<{ animation: 'small' | 'big' }>`
   &:hover {
     transform: scale(${(p) => (p.animation === 'small' ? 1.02 : 1.1)});
   }
+  color: inherit;
   transition: all 300ms ease;
 `;
 
-const SocialLink = ({ icon, onClick }: { icon: string; onClick(): void }) => (
-  <SBox
-    animation="big"
-    variant="rowCenter"
-    backgroundColor="WHITE"
-    width="40px"
-    height="40px"
-    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
-    onClick={onClick}
-    style={{ cursor: 'pointer' }}
-  >
-    <Icon type={icon as TIcon} width="24px" />
-  </SBox>
+const SocialLink = ({ icon, link, onClick }: { icon: string; link: string; onClick(): void }) => (
+  <LinkApp href={link} isExternal={true} onClick={onClick}>
+    <SBox
+      animation="big"
+      variant="rowCenter"
+      backgroundColor="WHITE"
+      width="40px"
+      height="40px"
+      boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
+    >
+      <Icon type={icon as TIcon} width="24px" />
+    </SBox>
+  </LinkApp>
 );
 
-const MYCLink = ({ title, icon, onClick }: { title: string; icon: string; onClick(): void }) => (
-  <SBox
-    animation="small"
-    variant="rowAlign"
-    width="100%"
-    height="56px"
-    my={SPACING.XS}
-    backgroundColor="WHITE"
-    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
-    style={{ cursor: 'pointer' }}
-    onClick={onClick}
-  >
-    <Icon type={icon as TIcon} width="24px" style={{ margin: `0 ${SPACING.SM}` }} />
-    <Text fontSize="14px" fontWeight="400" mb={0}>
-      {title}
-    </Text>
-  </SBox>
+const MYCLink = ({
+  title,
+  icon,
+  link,
+  onClick
+}: {
+  title: string;
+  icon: string;
+  link: string;
+  onClick(): void;
+}) => (
+  <LinkApp variant="noStyleLink" href={link} isExternal={true} onClick={onClick}>
+    <SBox
+      animation="small"
+      variant="rowAlign"
+      width="100%"
+      height="56px"
+      my={SPACING.XS}
+      backgroundColor="WHITE"
+      boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
+    >
+      <Icon type={icon as TIcon} width="24px" style={{ margin: `0 ${SPACING.SM}` }} />
+      <Text fontSize="14px" fontWeight="400" mb={0}>
+        {title}
+      </Text>
+    </SBox>
+  </LinkApp>
 );
 
-const ProductLink = ({ title, onClick }: { title: string; link: string; onClick(): void }) => (
-  <Box
-    variant="rowAlign"
-    width="48%"
-    my={SPACING.SM}
-    style={{ cursor: 'pointer' }}
-    onClick={onClick}
-  >
-    <Icon type="nav-new-tab" width="24px" />
-    <Text ml={SPACING.SM} mb={0} color="BLUE_SKY" fontSize="14px">
-      {title}
-    </Text>
-  </Box>
+const ProductLink = ({
+  title,
+  link,
+  onClick
+}: {
+  title: string;
+  link: string;
+  onClick(): void;
+}) => (
+  <LinkApp width="48%" href={link} isExternal={true} onClick={onClick}>
+    <Box variant="rowAlign" my={SPACING.SM}>
+      <Icon type="nav-new-tab" width="24px" />
+      <Text ml={SPACING.SM} mb={0} color="BLUE_SKY" fontSize="14px">
+        {title}
+      </Text>
+    </Box>
+  </LinkApp>
 );
 
 export const LinkSet = ({ isMobile }: { isMobile: boolean }) => {
   const { track } = useAnalytics();
 
   const handleClick = (item: { link: string }) => {
-    openLink(item.link as TURL);
     track({ name: 'Link clicked', params: { url: item.link } });
   };
 

@@ -16,10 +16,10 @@ import {
 
 import { TextProps } from '@components';
 import { textVariants } from '@theme';
+import { isUrl } from '@utils';
 
 type StyleProps = Omit<TextProps, 'textTransform'> & {
   $textTransform?: TextProps['textTransform'];
-  $animate?: boolean;
 };
 
 const SLink = styled.a<StyleProps & HTMLAnchorElement>`
@@ -34,13 +34,6 @@ const SLink = styled.a<StyleProps & HTMLAnchorElement>`
   ${typography}
   ${layout}
   ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
-  ${({ $animate }) =>
-    $animate &&
-    `&:hover {
-      transform: scale(1.05);
-      transition: all 300ms;
-    }
-    transition: all 300ms;`}
 `;
 
 const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
@@ -55,19 +48,12 @@ const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
   ${typography}
   ${layout}
   ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
-  ${({ $animate }) =>
-    $animate &&
-    `&:hover {
-      transform: scale(1.05);
-      transition: all 300ms;
-    }
-    transition: all 300ms;`}
 `;
 
 interface LinkProps {
   readonly href: string;
   readonly isExternal?: boolean;
-  readonly variant?: 'inlineLink' | 'defaultLink';
+  readonly variant?: 'inlineLink' | 'defaultLink' | 'noStyleLink';
   onClick?(): void;
 }
 
@@ -77,34 +63,27 @@ const LinkApp: React.FC<LinkAppProps & StyleProps> = ({
   href,
   isExternal = false,
   variant = 'defaultLink',
-  $animate = false,
   onClick,
   ...props
 }) => {
-  if (!isExternal && href.includes(`http`)) {
+  if (!isExternal && isUrl(href)) {
     throw new Error(
       `LinkApp: Received href prop ${href}. Set prop isExternal to use an external link.`
     );
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    if (!onClick) return;
-    event.preventDefault();
-    onClick();
-  };
-
   return isExternal ? (
     <SLink
       href={href}
       variant={variant}
-      $animate={$animate}
       target="_blank"
-      rel="noreferrer"
-      onClick={handleClick}
+      onClick={onClick}
       {...props}
+      // @SECURITY set last to avoid override
+      rel="noreferrer"
     />
   ) : (
-    <SRouterLink to={href} variant={variant} $animate={$animate} onClick={handleClick} {...props} />
+    <SRouterLink to={href} variant={variant} onClick={onClick} {...props} />
   );
 };
 

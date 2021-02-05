@@ -39,6 +39,17 @@ describe('LinkApp', () => {
     expect(screen.getByText(`${props.children}`).closest('a')).toHaveAttribute('target', '_blank');
   });
 
+  it('target can be overriden', () => {
+    const props = {
+      href: 'https://help.example.com',
+      isExternal: true,
+      target: 'self',
+      children: 'Get help'
+    } as Props;
+    getComponent(props);
+    expect(screen.getByText(`${props.children}`).closest('a')).toHaveAttribute('target', 'self');
+  });
+
   // @PRIVACY - Ensure we don't leak user info when linking.
   // @SECURITY - Avoid phishing vector with `window.opener.location
   // https://security.stackexchange.com/a/241570
@@ -47,6 +58,17 @@ describe('LinkApp', () => {
       href: 'https://help.example.com',
       isExternal: true,
       children: 'Get help'
+    } as Props;
+    getComponent(props);
+    expect(screen.getByText(`${props.children}`).closest('a')).toHaveAttribute('rel', 'noreferrer');
+  });
+
+  it('the rel may not be overridden', () => {
+    const props = {
+      href: 'https://help.example.com',
+      isExternal: true,
+      children: 'Get help',
+      rel: 'show me the money'
     } as Props;
     getComponent(props);
     expect(screen.getByText(`${props.children}`).closest('a')).toHaveAttribute('rel', 'noreferrer');

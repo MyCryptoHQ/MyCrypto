@@ -1,9 +1,19 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import { Box, Icon, LinkApp, Text } from '@components';
 import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { IExternalLink } from '@types';
+
+const SBox = styled(Box)`
+  &:hover {
+    transform: scale(1.05);
+    transition: all 300ms;
+  }
+  transition: all 300ms;
+`;
 
 export const TrayLink = ({ item }: { item: IExternalLink }) => {
   const { track } = useAnalytics();
@@ -13,8 +23,8 @@ export const TrayLink = ({ item }: { item: IExternalLink }) => {
   };
 
   return (
-    <LinkApp href={item.link} isExternal={true} onClick={handleClick} $animate={true}>
-      <Box variant="rowAlign" my={SPACING.SM}>
+    <LinkApp href={item.link} isExternal={true} onClick={handleClick}>
+      <SBox variant="rowAlign" my={SPACING.SM}>
         <Icon type={item.icon} width={{ _: '20px', sm: '2vh', xxl: '20px' }} />
         <Text
           ml={{ _: '15px', sm: '1.5vh', xxl: '15px' }}
@@ -24,7 +34,7 @@ export const TrayLink = ({ item }: { item: IExternalLink }) => {
         >
           {item.title}
         </Text>
-      </Box>
+      </SBox>
     </LinkApp>
   );
 };
