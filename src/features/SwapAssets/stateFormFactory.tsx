@@ -12,7 +12,6 @@ import { ISwapAsset, StoreAccount } from '@types';
 import {
   bigify,
   calculateMarkup,
-  convertToBN,
   divideBNFloats,
   formatErrorEmailMarkdown,
   generateAssetUUID,
@@ -132,28 +131,22 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         isCalculatingFromAmount: true
       }));
 
-      const commissionIncreasedAmount = trimBN(
-        withCommission({
-          amount: convertToBN(value),
-          rate: MYC_DEX_COMMISSION_RATE
-        }).toString()
-      );
-
-      const { price, costBasis, ...rest } = await DexService.instance.getTokenPriceTo(
+      const { price, costBasis, sellAmount, ...rest } = await DexService.instance.getTokenPriceTo(
         fromAsset,
         toAsset,
-        commissionIncreasedAmount.toString()
+        value
       );
 
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: trimBN(
-          formatEther(multiplyBNFloats(commissionIncreasedAmount, price).toString())
-        ),
+        fromAmount: sellAmount.toString(),
         fromAmountError: '',
         toAmountError: '',
-        exchangeRate: trimBN(formatEther(divideBNFloats(1, price).toString())),
+        exchangeRate: withCommission({
+          amount: divideBNFloats(1, price),
+          rate: MYC_DEX_COMMISSION_RATE
+        }).toString(),
         markup: calculateMarkup(
           trimBN(formatEther(divideBNFloats(1, price).toString())),
           trimBN(formatEther(divideBNFloats(1, costBasis).toString()))
