@@ -35,6 +35,7 @@ jobs:
         env:
           SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
           ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${{ github.event.pull_request.head.sha }}
 
       - name: Zip standalone build folder
         run: zip -r dist/web/standalone_mycrypto.zip dist/web/

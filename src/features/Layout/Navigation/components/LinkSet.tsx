@@ -2,12 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Box, Icon, Text, TIcon } from '@components';
+import { Box, Icon, NewTabLink, Text, TIcon } from '@components';
 import { useAnalytics } from '@services/Analytics';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { TURL } from '@types';
-import { openLink } from '@utils';
+import { COMMIT_HASH, openLink } from '@utils';
 
 import { MYCLinks, productsLinks, socialLinks, supportUsTray } from '../constants';
 import { SupportUsTray } from './SupportUsTray';
@@ -77,7 +77,15 @@ export const LinkSet = ({ isMobile }: { isMobile: boolean }) => {
   };
 
   return (
-    <Box px={SPACING.SM} py={SPACING.BASE}>
+    <Box px={SPACING.SM} pb={SPACING.BASE} pt={SPACING.SM}>
+      {COMMIT_HASH && (
+        <Box variant="rowAlign" justifyContent="flex-end">
+          {'v'}
+          <NewTabLink href={`https://github.com/MyCryptoHQ/MyCrypto/commit/${COMMIT_HASH}`}>
+            {COMMIT_HASH.substr(0, 7)}
+          </NewTabLink>
+        </Box>
+      )}
       <Text
         fontSize="14px"
         textTransform="uppercase"
