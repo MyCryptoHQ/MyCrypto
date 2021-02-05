@@ -925,5 +925,33 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     shouldEstimateGasPrice: false
+  },
+  xDAI: {
+    id: 'xDAI',
+    name: 'xDAI',
+    unit: 'xDAI' as TTicker,
+    chainId: 100,
+    isCustom: false,
+    color: '#15bba6',
+    blockExplorer: makeExplorer({
+      name: 'xDai',
+      origin: 'https://blockscout.com/poa/xdai',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER
+    },
+    gasPriceSettings: {
+      min: 0.01,
+      max: 30,
+      initial: 1
+    },
+    shouldEstimateGasPrice: false
   }
 };

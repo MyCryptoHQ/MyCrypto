@@ -351,5 +351,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'matic',
       url: 'https://rpc-mainnet.matic.network'
     }
+  ],
+  xDAI: [
+    {
+      name: NetworkUtils.makeNodeName('xDAI', 'xdaichain.com'),
+      type: NodeType.RPC,
+      service: 'xdaichain.com',
+      url: 'https://rpc.xdaichain.com/'
+    }
   ]
 };
