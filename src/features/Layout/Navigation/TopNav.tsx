@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
 
-import { useHistory } from 'react-router-dom';
-
 import { AnnouncementBanner, Box, Icon } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { ScreenLockContext } from '@features/ScreenLock';
 import { COLORS, SPACING } from '@theme';
-import { openLink } from '@utils';
 
 import { TopItem } from './components';
 
@@ -22,7 +19,6 @@ export const TopNav = ({
   openTray(): void;
 }) => {
   const { locked, startLockCountdown } = useContext(ScreenLockContext);
-  const { push } = useHistory();
 
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
   const currentPath = isMobile && isTrayOpen ? undefined : current;
@@ -69,22 +65,24 @@ export const TopNav = ({
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"
-        onClick={() => push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}
+        href={ROUTE_PATHS.MYC_MEMBERSHIP.path}
         current={currentPath === ROUTE_PATHS.MYC_MEMBERSHIP.path}
         color={color}
       />
       <TopItem
+        isExternal={true}
         title="NAVIGATION_HELP"
         icon="nav-help"
-        onClick={() => openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME))}
+        href={getKBHelpArticle(KB_HELP_ARTICLE.HOME)}
         color={color}
       />
       {!isMobile && (
         <TopItem
+          isExternal={true}
           color={color}
           title="NAVIGATION_NEW"
           icon="nav-new"
-          onClick={() => openLink(LATEST_NEWS_URL)}
+          href={LATEST_NEWS_URL}
         />
       )}
     </Box>

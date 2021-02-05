@@ -15,7 +15,6 @@ import {
   Text,
   Tooltip
 } from '@components';
-import { Link } from '@components/NewTypography';
 import { ROUTE_PATHS } from '@config';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
@@ -103,22 +102,19 @@ export function TokenList(props: TokenListProps) {
       }
       headingRight={
         <Box variant="rowAlign">
-          <Link>
-            <Box variant="rowAlign" marginRight={SPACING.MD} onClick={() => handleScanTokens()}>
-              <Icon type="refresh" width="16px" />
-              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-                {translateRaw('SCAN_TOKENS_SHORT')}
-              </Text>
-            </Box>
-          </Link>
-          <Link>
-            <Box variant="rowAlign" onClick={() => setShowAddToken(true)}>
-              <Icon type="add-bold" width="16px" />
-              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-                {translateRaw('ADD_TOKEN_SHORT')}
-              </Text>
-            </Box>
-          </Link>
+          <Box variant="rowAlign" marginRight={SPACING.MD} onClick={() => handleScanTokens()}>
+            <Icon type="refresh" width="16px" />
+            <Text variant="defaultLink" ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+              {translateRaw('SCAN_TOKENS_SHORT')}
+            </Text>
+          </Box>
+
+          <Box variant="rowAlign" onClick={() => setShowAddToken(true)}>
+            <Icon type="add-bold" width="16px" />
+            <Text variant="defaultLink" ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+              {translateRaw('ADD_TOKEN_SHORT')}
+            </Text>
+          </Box>
         </Box>
       }
       padChildren={false}

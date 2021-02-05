@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { HelpLink, IButton, LegacyModal } from '@components';
-import { KB_HELP_ARTICLE } from '@config';
+import { IButton, LegacyModal, LinkApp } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import translate, { translateRaw } from '@translations';
 
 import './DisclaimerModal.scss';
@@ -24,9 +24,9 @@ const DisclaimerModal: React.FC<Props> = ({ isOpen, handleClose }) => {
     >
       <p>
         <b>{translateRaw('DISCLAIMER_BE_SAFE')}: </b>
-        <HelpLink article={KB_HELP_ARTICLE.SECURING_YOUR_ETH}>
+        <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.SECURING_YOUR_ETH)}>
           {translateRaw('DISCLAIMER_HELP_LINK_DESC')}
-        </HelpLink>
+        </LinkApp>
       </p>
       <p>
         <b>{translateRaw('DISCLAIMER_ALWAYS_BACKUP_KEYS')}: </b>

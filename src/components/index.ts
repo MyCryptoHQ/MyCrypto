@@ -16,6 +16,7 @@ export { default as Divider } from './Divider';
 export { default as Selector, SelectorProps } from './Selector';
 export { default as ExtendedContentPanel, ExtendedControlPanelProps } from './ExtendedContentPanel';
 export { default as Link } from './Link';
+export { default as LinkApp } from './LinkApp';
 export { default as Typography } from './Typography';
 export { default as Modal } from './Modal';
 export { IButton, LegacyModal } from './LegacyModal';
@@ -48,7 +49,6 @@ export { Banner } from './Banner';
 export * from './SignTransactionWallets';
 export { WhenQueryExists, Query } from './Query';
 export { default as DisclaimerModal } from './DisclaimerModal';
-export { default as HelpLink } from './HelpLink';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
 export { default as LinkOut } from './LinkOut';
@@ -78,16 +78,7 @@ export { default as IFrame } from './IFrame';
 export { Downloader } from './Downloader';
 export { TokenMigrationStepper } from './TokenMigration';
 export { default as Box } from './Box';
-export {
-  Heading,
-  SubHeading,
-  Body,
-  InlineLink,
-  Link as NewLink,
-  Label,
-  Text,
-  TextProps
-} from './NewTypography';
+export { Heading, SubHeading, Body, Label, Text, TextProps } from './NewTypography';
 export { ActionPanel, ActionButtonProps, ActionButton } from './ActionsPanel';
 export { default as AppLoading } from './AppLoading';
 export { SkeletonLoader } from './SkeletonLoader';
