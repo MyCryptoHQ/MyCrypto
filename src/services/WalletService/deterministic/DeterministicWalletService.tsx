@@ -107,7 +107,7 @@ export const DeterministicWalletService = ({
       const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
       const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
       if (normalDPaths.length > 0) {
-        await getNormalDPathAddresses(session, normalDPaths)
+        await getDPathAddresses(session, normalDPaths)
           .then((accounts) => {
             handleEnqueueAccounts(accounts);
           })
@@ -117,7 +117,7 @@ export const DeterministicWalletService = ({
       }
 
       if (hardenedDPaths.length > 0) {
-        await getHardenedDPathAddresses(session, hardenedDPaths)
+        await getDPathAddresses(session, hardenedDPaths)
           .then((accounts) => {
             handleEnqueueAccounts(accounts);
           })
@@ -155,7 +155,7 @@ export const DeterministicWalletService = ({
     }
   };
 
-  const getNormalDPathAddresses = async (
+  const getDPathAddresses = async (
     session: Wallet,
     dpaths: ExtendedDPath[]
   ): Promise<DWAccountDisplay[]> => {
@@ -179,31 +179,6 @@ export const DeterministicWalletService = ({
       } catch {}
     }
 
-    return outputAddresses;
-  };
-
-  const getHardenedDPathAddresses = async (
-    session: Wallet,
-    dpaths: ExtendedDPath[]
-  ): Promise<DWAccountDisplay[]> => {
-    const outputAddresses: any[] = [];
-    for (const dpath of dpaths) {
-      for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-        const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
-
-        // @todo - fix this type
-        const outputObject = {
-          address: data.address as TAddress,
-          pathItem: {
-            path: data.path,
-            baseDPath: dpath,
-            index: idx + dpath.offset
-          },
-          balance: undefined
-        };
-        outputAddresses.push(outputObject);
-      }
-    }
     return outputAddresses;
   };
 
