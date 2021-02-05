@@ -354,9 +354,9 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   ],
   xDAI: [
     {
-      name: NetworkUtils.makeNodeName('xDAI', 'blockscout'),
+      name: NetworkUtils.makeNodeName('xDAI', 'xdaichain.com'),
       type: NodeType.RPC,
-      service: 'blockscout',
+      service: 'xdaichain.com',
       url: 'https://rpc.xdaichain.com/'
     }
   ]
