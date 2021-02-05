@@ -38,6 +38,7 @@ module.exports = {
   },
 
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         default: false,
@@ -100,7 +101,11 @@ module.exports = {
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
               // allow babel-plugin-recharts to reduce recharts size.
-              plugins: ['lodash', 'recharts']
+              plugins: [
+                'lodash',
+                'recharts',
+                IS_DEV && require.resolve('react-refresh/babel')
+              ].filter(Boolean)
             }
           }
         ],

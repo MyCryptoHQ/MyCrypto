@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { setConfig } from 'react-hot-loader';
-import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -68,7 +66,7 @@ const RootComponent = () => {
   );
 };
 
-const RootClass = () => {
+const Root = () => {
   return (
     <Provider store={store}>
       <FeatureFlagProvider>
@@ -88,7 +86,4 @@ const RootClass = () => {
   );
 };
 
-// Silence RHL 'reconciliation failed' errors
-// https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
-setConfig({ logLevel: 'no-errors-please' });
-export default hot(RootClass);
+export default Root;
