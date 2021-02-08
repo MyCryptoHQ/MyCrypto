@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext } from 'react';
 
 import styled from 'styled-components';
 
-import { EthAddress, LinkOut, PoweredByText, Spinner, VerticalStepper } from '@components';
+import { EthAddress, LinkApp, PoweredByText, Spinner, VerticalStepper } from '@components';
 import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
@@ -169,15 +169,13 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
               id="PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK"
               variables={{
                 $etherscanLink: () => (
-                  <LinkOut
-                    showIcon={false}
-                    inline={true}
-                    fontSize={FONT_SIZE.BASE}
-                    fontColor={COLORS.PURPLE}
-                    underline={true}
-                    link={`${ETHAddressExplorer(address)}`}
-                    text="Etherscan"
-                  />
+                  <LinkApp
+                    color={COLORS.PURPLE}
+                    isExternal={true}
+                    href={`${ETHAddressExplorer(address)}`}
+                  >
+                    Etherscan
+                  </LinkApp>
                 )
               }}
             />

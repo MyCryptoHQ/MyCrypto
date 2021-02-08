@@ -10,7 +10,7 @@ import React, {
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import { Body, Box, Button, Icon, LinkApp, PoweredByText, TimeElapsed, Tooltip } from '@components';
 import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
@@ -466,14 +466,16 @@ export const TxReceiptUI = ({
               {': '}
               <Body as="span" color={COLORS.BLUE_GREY} fontWeight="normal">
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
-                  <LinkOut
-                    inline={true}
-                    fontColor={COLORS.BLUE_GREY}
-                    fontSize="16px"
-                    text={displayTxReceipt.hash}
-                    truncate={truncate}
-                    link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
-                  />
+                  <LinkApp
+                    color={COLORS.BLUE_GREY}
+                    href={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
+                    isExternal={true}
+                  >
+                    <Box display={'inline-flex'} alignItems={'center'}>
+                      {truncate(displayTxReceipt.hash)}
+                      <Icon type="link-out" color={COLORS.BLUE_GREY} ml={'1ch'} />
+                    </Box>
+                  </LinkApp>
                 )}
                 {!displayTxReceipt && translate('PENDING_STATE')}
               </Body>

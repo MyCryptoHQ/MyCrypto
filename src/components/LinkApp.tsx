@@ -21,6 +21,7 @@ import { TextProps } from './NewTypography';
 
 type StyleProps = Omit<TextProps, 'textTransform'> & {
   $textTransform?: TextProps['textTransform'];
+  $underline?: boolean;
 };
 
 const SLink = styled.a<StyleProps & HTMLAnchorElement>`
@@ -35,6 +36,7 @@ const SLink = styled.a<StyleProps & HTMLAnchorElement>`
   ${typography}
   ${layout}
   ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
+  ${({ $underline }) => $underline && { 'text-decoration': 'underline' }}
 `;
 
 const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
@@ -48,6 +50,7 @@ const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
   ${lineHeight}
   ${typography}
   ${layout}
+  ${({ $underline }) => $underline && { 'text-decoration': 'underline' }}
   ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
 `;
 

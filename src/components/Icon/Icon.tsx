@@ -110,6 +110,7 @@ import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
+import linkOutIcon from '@assets/images/link-out.svg';
 import membership from '@assets/images/membership/membership-none.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
@@ -145,6 +146,7 @@ const svgIcons = {
   'arrow-right': arrowRight,
   'faucet-icon': faucetIcon,
   'down-caret': downCaret,
+  'link-out': linkOutIcon,
 
   /* Tooltips*/
   informational,

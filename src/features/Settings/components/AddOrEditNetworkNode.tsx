@@ -11,7 +11,7 @@ import {
   Checkbox,
   DashboardPanel,
   InputField,
-  LinkOut,
+  LinkApp,
   NetworkSelector
 } from '@components';
 import {
@@ -133,7 +133,7 @@ const DeleteButton = styled(Button)<{ disabled: boolean }>`
     `
     background-color: ${COLORS.PASTEL_RED};
 
-    
+
   :hover {
     background-color: ${COLORS.ERROR_RED};
   }
@@ -257,13 +257,13 @@ export default function AddOrEditNetworkNode({
               return (
                 <>
                   {tSplit[0]}
-                  <a href={GITHUB_RELEASE_NOTES_URL} rel="noopener noreferrer" target="_blank">
+                  <LinkApp href={GITHUB_RELEASE_NOTES_URL} isExternal={true}>
                     {translateRaw('CUSTOM_NODE_SUBTITLE_REPO')}
-                  </a>
+                  </LinkApp>
                   {tSplit[1]}
-                  <a href={LETS_ENCRYPT_URL} rel="noopener noreferrer" target="_blank">
+                  <LinkApp href={LETS_ENCRYPT_URL} isExternal={true}>
                     LetsEncrypt
-                  </a>
+                  </LinkApp>
                   {tSplit[2]}
                 </>
               );
@@ -507,13 +507,9 @@ export default function AddOrEditNetworkNode({
                   id="CUSTOM_NODE_QUIKNODE_LINK"
                   variables={{
                     $link: () => (
-                      <LinkOut
-                        showIcon={false}
-                        inline={true}
-                        fontColor={COLORS.BLUE_BRIGHT}
-                        link={EXT_URLS.QUIKNODE_REFERRAL.url}
-                        text={translateRaw('CUSTOM_NODE_QUIKNODE_TEXT')}
-                      />
+                      <LinkApp href={EXT_URLS.QUIKNODE_REFERRAL.url}>
+                        {translateRaw('CUSTOM_NODE_QUIKNODE_TEXT')}
+                      </LinkApp>
                     )
                   }}
                 />

@@ -20,6 +20,8 @@ breakpoints.xxl = breakpoints[5];
 const theme = Object.assign({}, light, {
   breakpoints,
   colors: {
+    WARNING: '#ef4747',
+
     BLUE_BRIGHT: '#1eb8e7',
     BLUE_LIGHT: '#007896',
     BLUE_LIGHTEST: '#E4EDFD',
