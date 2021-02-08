@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 
 import { AnnouncementBanner, Banner, RouterLink } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { DrawerContext, ErrorContext } from '@features';
+import { ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
 import { AppState, getIsDemoMode } from '@store';
@@ -24,8 +24,6 @@ import { useScreenSize } from '@utils';
 import { useTimeoutFn } from '@vendor';
 
 import { DemoBanner } from './Banners';
-import Footer from './Footer';
-import Header from './Header';
 import { DesktopNav, ExtrasTray, MobileNav, TopNav } from './Navigation';
 
 export interface LayoutConfig {
@@ -137,7 +135,6 @@ const BannerWrapper = styled.div<{ newNav: boolean }>`
 const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { featureFlags, isFeatureActive } = useFeatureFlags();
-  const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const { isMobile } = useScreenSize();
   const { pathname } = useLocation();
@@ -192,14 +189,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
-
-          {isFeatureActive('OLD_NAVIGATION') && (
-            <Header
-              drawerVisible={visible}
-              toggleDrawerVisible={toggleVisible}
-              setDrawerScreen={setScreen}
-            />
-          )}
         </STop>
         {isFeatureActive('NEW_NAVIGATION') && isMobile && isOpen ? (
           <>
@@ -251,7 +240,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
             >
               {children}
             </SContainer>
-            {isFeatureActive('OLD_NAVIGATION') && <Footer />}
           </DemoLayoutWrapper>
         )}
       </SMain>
