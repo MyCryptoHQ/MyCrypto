@@ -13,8 +13,6 @@ export const FEATURE_FLAGS = {
   TX_HISTORY: 'core',
   MYC_MEMBERSHIP: 'core',
   DOWNLOAD_DESKTOP_APP: 'core',
-  OLD_NAVIGATION: false,
-  NEW_NAVIGATION: true,
 
   /* Manage Assets */
   ADD_ACCOUNT: 'core',
