@@ -14,15 +14,24 @@ import {
   InputField,
   Tooltip
 } from '@components';
-import { StoreContext } from '@services/Store';
+import { DEFAULT_NETWORK } from '@config';
+import { useRates } from '@services/Rates';
+import {
+  getBaseAssetByNetwork,
+  StoreContext,
+  useAssets,
+  useNetworks,
+  useSettings
+} from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISwapAsset, StoreAccount } from '@types';
-import { bigify, totalTxFeeToString, trimBN } from '@utils';
+import { Asset, ISwapAsset, StoreAccount } from '@types';
+import { totalTxFeeToString } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
+import { SwapQuote } from './SwapQuote';
 
 const StyledButton = styled(Button)`
   margin-top: 12px;
@@ -73,10 +82,20 @@ export const SwapAssets = (props: Props) => {
     exchangeRate,
     gasLimit,
     gasPrice,
+    expiration,
     isDemoMode
   } = props;
 
   const { accounts, userAssets } = useContext(StoreContext);
+  const { getNetworkById } = useNetworks();
+  const { assets: allAssets } = useAssets();
+  const { getAssetRate } = useRates();
+  const { settings } = useSettings();
+
+  const network = getNetworkById(DEFAULT_NETWORK);
+  const baseAsset = getBaseAssetByNetwork({ network, assets: allAssets })!;
+  const baseAssetRate = getAssetRate(baseAsset);
+  const fromAssetRate = fromAsset && getAssetRate(fromAsset as Asset);
 
   // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
@@ -135,8 +154,7 @@ export const SwapAssets = (props: Props) => {
     }
   }, [fromAsset, fromAmount]);
 
-  const makeDisplayString = (amount: string) =>
-    bigify(trimBN(amount, 10)).lte(bigify(0.01)) ? '<0.01' : `~ ${bigify(amount).toFixed(2)}`;
+  const estimatedGasFee = gasPrice && gasLimit && totalTxFeeToString(gasPrice, gasLimit);
 
   return (
     <Box mt="20px" mb="1em">
@@ -206,23 +224,20 @@ export const SwapAssets = (props: Props) => {
         />
       </Box>
       <Box mb={SPACING.SM}>
-        {exchangeRate && toAsset && fromAsset && (
-          <Box display="flex" justifyContent="space-between">
-            <Body>
-              {translateRaw('SWAP_RATE_LABEL')}{' '}
-              <Tooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />
-            </Body>
-            <Body>
-              {translateRaw('SWAP_RATE_TEXT', {
-                $displayString: makeDisplayString(exchangeRate.toString()),
-                $toAssetSymbol: toAsset.ticker,
-                $fromAssetSymbol: fromAsset.ticker
-              })}
-            </Body>
-          </Box>
-        )}
-        {gasPrice && gasLimit && (
-          <>Estimated TX Fee: {totalTxFeeToString(gasPrice, gasLimit)} ETH</>
+        {exchangeRate && toAsset && fromAsset && expiration && estimatedGasFee && (
+          <SwapQuote
+            toAsset={toAsset}
+            fromAsset={fromAsset}
+            fromAssetRate={fromAssetRate}
+            toAmount={toAmount}
+            fromAmount={fromAmount}
+            exchangeRate={exchangeRate}
+            baseAsset={baseAsset}
+            baseAssetRate={baseAssetRate}
+            estimatedGasFee={estimatedGasFee}
+            settings={settings}
+            expiration={expiration}
+          />
         )}
       </Box>
       <StyledButton

@@ -54,7 +54,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     lastChangedAmount,
     exchangeRate,
     gasLimit,
-    gasPrice
+    gasPrice,
+    expiration
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -98,6 +99,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         account,
         gasLimit,
         gasPrice,
+        expiration,
         isSubmitting
       },
       actions: {

@@ -159,7 +159,8 @@ export default class DexService {
           baseToConvertedUnit(tokenPrices.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
         ),
         gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
-        gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice
+        gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice,
+        expiration: tokenPrices.orders[0].expirationTimeSeconds
       };
     } catch (e) {
       if (axios.isCancel(e)) {

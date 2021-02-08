@@ -24,7 +24,7 @@ export { default as NetworkSelector } from './NetworkSelector';
 export { default as Overlay } from './Overlay';
 export { default as QRCode, QRCodeContainer } from './QRCode';
 export { default as Stepper } from './Stepper';
-export { default as TimeElapsedCounter } from './TimeElapsedCounter';
+export { default as TimeCountdown } from './TimeCountdown';
 export { default as Spinner } from './Spinner';
 export { default as Input } from './Input';
 export { Panel } from './Panel';

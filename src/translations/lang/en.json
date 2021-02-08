@@ -1015,6 +1015,8 @@
     "VISIT_KB": "Visit the Knowledge Base",
     "BUSY_BOTTOM_GET_WEB3": "Get $app",
     "BUSY_BOTTOM_METAMASK_1": "MetaMask Instructions",
-    "EXPORT_MOBILE_NOTICE": "Some mobile dapp browsers prevent downloading files - in that case, you can copy the above text manually."
+    "EXPORT_MOBILE_NOTICE": "Some mobile dapp browsers prevent downloading files - in that case, you can copy the above text manually.",
+    "EXPIRES_IN": "Expires in",
+    "YOUR_QUOTE": "Your Quote"
   }
 }
