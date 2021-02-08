@@ -154,6 +154,7 @@ export const SwapAssets = (props: Props) => {
     }
   }, [fromAsset, fromAmount]);
 
+  // @todo: Add approval tx fee to this
   const estimatedGasFee = gasPrice && gasLimit && totalTxFeeToString(gasPrice, gasLimit);
 
   return (

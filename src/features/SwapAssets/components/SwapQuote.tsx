@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Amount, Box, Heading, TimeCountdown } from '@components';
+import { Amount, Box, Heading, TimeCountdown, Tooltip } from '@components';
 import { getFiat } from '@config/fiats';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -36,10 +36,14 @@ export const SwapQuote = ({
 }: Props) => (
   <Box border="1px solid #55b6e2" p="3">
     <Box>
-      <Heading m="0">{translateRaw('YOUR_QUOTE')}</Heading>
+      <Heading m="0" fontWeight="bold">
+        {translateRaw('YOUR_QUOTE')}
+      </Heading>
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
-      {translateRaw('Amount')}
+      <Box>
+        {translateRaw('Amount')} <Tooltip tooltip="bla" />
+      </Box>
       <Amount
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`${bigify(fromAmount).toFixed(6)} ${fromAsset.ticker} = ${bigify(
@@ -53,7 +57,9 @@ export const SwapQuote = ({
       />
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
-      {translateRaw('SWAP_RATE_LABEL')}
+      <Box>
+        {translateRaw('SWAP_RATE_LABEL')} <Tooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />
+      </Box>
       <Amount
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`1 ${fromAsset.ticker} = ${bigify(exchangeRate).toFixed(6)} ${toAsset.ticker}`}
@@ -65,7 +71,9 @@ export const SwapQuote = ({
       />
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
-      {translateRaw('MAX_TX_FEE')}
+      <Box>
+        {translateRaw('MAX_TX_FEE')} <Tooltip tooltip="bla" />
+      </Box>
       <Amount
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`${estimatedGasFee} ${baseAsset.ticker}`}
@@ -77,7 +85,9 @@ export const SwapQuote = ({
       />
     </Box>
     <Box variant="rowAlign" justifyContent="space-between">
-      {translateRaw('EXPIRES_IN')}
+      <Box>
+        {translateRaw('EXPIRES_IN')} <Tooltip tooltip="bla" />
+      </Box>
       <Box>
         <TimeCountdown value={parseInt(expiration, 10)} />
       </Box>
