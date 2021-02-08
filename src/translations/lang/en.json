@@ -104,7 +104,6 @@
     "ADD_WEB3DESC": "Connect & sign via your browser or extension",
     "ADD_WEB3_DEFAULT": "Connect via Web3 Provider",
     "ADVANCED_OPTIONS_LABEL": "Advanced Options",
-    "ANNOUNCEMENT_MESSAGE": "MyCrypto.com no longer allows the use of private keys, mnemonics, or keystore files in the browser. To continue using them, please download the [MyCrypto Desktop App](https://download.mycrypto.com).",
     "APPROVE_MEMBERSHIP": "Approve Membership Contract",
     "APPROVE_SWAP": "Approve Swap",
     "APP_LOADING": "Loading...",

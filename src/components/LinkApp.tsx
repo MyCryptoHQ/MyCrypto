@@ -14,9 +14,10 @@ import {
   typography
 } from 'styled-system';
 
-import { TextProps } from '@components';
 import { textVariants } from '@theme';
-import { isUrl } from '@utils';
+import { isUrl } from '@utils/isUrl';
+
+import { TextProps } from './NewTypography';
 
 type StyleProps = Omit<TextProps, 'textTransform'> & {
   $textTransform?: TextProps['textTransform'];

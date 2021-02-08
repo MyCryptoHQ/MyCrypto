@@ -8,7 +8,7 @@ interface Props {
   source: string;
 }
 
-export const TranslateMarkdown = ({ source }: Props) => {
+const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
       disallowedTypes={['html']}

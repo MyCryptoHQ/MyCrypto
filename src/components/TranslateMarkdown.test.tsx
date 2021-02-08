@@ -21,7 +21,7 @@ describe('TranslateMarkdown', () => {
     const props = { source: '[simple link](https://example.com)' };
     const { container } = renderComponent(props);
 
-    expect(container.querySelector('a[rel="noopener noreferrer"]')).toBeInTheDocument();
+    expect(container.querySelector('a[rel="noreferrer"]')).toBeInTheDocument();
     expect(screen.getByText(/simple link/)).toBeInTheDocument();
   });
 
