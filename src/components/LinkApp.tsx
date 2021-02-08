@@ -48,7 +48,7 @@ const SRouterLink = styled(RouterLink)<TextProps & RouterLinkProps>`
 interface LinkProps {
   readonly href: string;
   readonly isExternal?: boolean;
-  readonly variant?: 'inlineLink' | 'defaultLink' | 'topNavLink';
+  readonly variant?: 'inlineLink' | 'defaultLink';
   onClick?(): void;
 }
 
