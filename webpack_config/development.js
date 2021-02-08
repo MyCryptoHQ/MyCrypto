@@ -1,3 +1,4 @@
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
@@ -35,10 +36,6 @@ module.exports = merge.smart(common, {
     filename: '[name].js'
   },
 
-  resolve: {
-    alias: { 'react-dom': '@hot-loader/react-dom' }
-  },
-
   module: {
     rules: [
       {
@@ -67,8 +64,7 @@ module.exports = merge.smart(common, {
       clearConsole: false
     }),
 
-    new webpack.HotModuleReplacementPlugin(),
-
+    new ReactRefreshWebpackPlugin(),
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
     new BundleAnalyzerPlugin({ openAnalyzer: false }),

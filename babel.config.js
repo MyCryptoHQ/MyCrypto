@@ -17,6 +17,6 @@ module.exports = {
     // Fix warnings with TS "export '...' was not found in '...' "
     // https: //github.com/webpack-contrib/imports-loader/issues/68#issuecomment-528788909
     '@babel/plugin-transform-modules-commonjs',
-    'react-hot-loader/babel'
-  ]
+    process.env.NODE_ENV === 'development' && 'react-refresh/babel'
+  ].filter(Boolean)
 };

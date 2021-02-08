@@ -66,7 +66,7 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const tabClickRedirect = (history: History, url: string): void => {
+const tabClickRedirect = (history: History<unknown>, url: string): void => {
   history.push(url);
 };
 
