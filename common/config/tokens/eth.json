@@ -350,6 +350,13 @@
     "uuid": "2dc7f25d-a3c9-5938-ad97-6a31fa52cbe3"
   },
   {
+    "address": "0x27702a26126e0B3702af63Ee09aC4d1A084EF628",
+    "symbol": "ALEPH",
+    "decimal": 18,
+    "name": "Aleph.im",
+    "uuid": "774ba1ce-f41d-58d2-9fc9-394073c54737"
+  },
+  {
     "address": "0x4289c043A12392F1027307fB58272D8EBd853912",
     "symbol": "ALI",
     "decimal": 18,
@@ -495,6 +502,13 @@
     "decimal": 18,
     "name": "Aurora",
     "uuid": "cbb8d161-639f-5c6f-a180-ee37d76f1a07"
+  },
+  {
+    "address": "0x0b38210ea11411557c13457D4dA7dC6ea731B88a",
+    "symbol": "API3",
+    "decimal": 18,
+    "name": "API3",
+    "uuid": "5c33bad7-656d-5499-81b3-9132f35014dc"
   },
   {
     "address": "0x4C0fBE1BB46612915E7967d2C3213cd4d87257AD",
@@ -817,6 +831,13 @@
     "decimal": 18,
     "name": "BALI COIN",
     "uuid": "67a0148a-af92-5e11-ab1b-cf6b7e58612c"
+  },
+  {
+    "address": "0xf56842Af3B56Fd72d17cB103f92d027bBa912e89",
+    "symbol": "BAMBOO",
+    "decimal": 18,
+    "name": "BambooDeFi",
+    "uuid": "ded43244-7aa5-597d-9171-e3c70a494083"
   },
   {
     "address": "0x998b3B82bC9dBA173990Be7afb772788B5aCB8Bd",
@@ -2077,6 +2098,13 @@
     "decimal": 9,
     "name": "CryptoLending",
     "uuid": "71bf609e-e0e0-565a-9e7d-570442d7a6b1"
+  },
+  {
+    "address": "0x2001f2A0Cf801EcFda622f6C28fb6E10d803D969",
+    "symbol": "CLT",
+    "decimal": 8,
+    "name": "CoinLoan",
+    "uuid": "2ba469d7-5adf-552c-a738-ace421bf88b4"
   },
   {
     "address": "0x3EDD235C3E840C1F29286B2e39370a255C7B6fdb",
@@ -4851,6 +4879,20 @@
     "uuid": "977cc2ce-6f74-5909-9776-9b30eee95caa"
   },
   {
+    "address": "0xeEAA40B28A2d1b0B08f6f97bB1DD4B75316c6107",
+    "symbol": "GOVI",
+    "decimal": 18,
+    "name": "GOVI",
+    "uuid": "eeee8964-0c9d-57dd-898a-9623ffb803d3"
+  },
+  {
+    "address": "0xcE593a29905951E8Fc579bC092ecA72577dA575c",
+    "symbol": "GR",
+    "decimal": 6,
+    "name": "GROM",
+    "uuid": "f36069dc-a5de-569e-b892-3721a331ee6a"
+  },
+  {
     "address": "0x4FbB350052Bca5417566f188eB2EBCE5b19BC964",
     "symbol": "GRG",
     "decimal": 18,
@@ -5796,6 +5838,13 @@
     "uuid": "b43a6d27-098d-5ed4-baf2-c41f01b9a183"
   },
   {
+    "address": "0x7420B4b9a0110cdC71fB720908340C03F9Bc03EC",
+    "symbol": "JASMY",
+    "decimal": 18,
+    "name": "JasmyCoin",
+    "uuid": "92867cc7-9761-5e2e-949c-9c92fb907cf5"
+  },
+  {
     "address": "0x9A3619499825fbAe63329Aa8bCb3f10CD5958E1c",
     "symbol": "JBD",
     "decimal": 10,
@@ -6585,6 +6634,13 @@
     "decimal": 18,
     "name": "Measurable Data Token",
     "uuid": "a5485ce8-f4a1-5ad9-9641-8e074eb4beee"
+  },
+  {
+    "address": "0x947AEb02304391f8fbE5B25D7D98D649b57b1788",
+    "symbol": "MDX",
+    "decimal": 18,
+    "name": "Mandala Exchange Token",
+    "uuid": "58262ced-156f-549a-a088-30fbafb7207b"
   },
   {
     "address": "0xfd1e80508F243E64CE234eA88A5Fd2827c71D4b7",
@@ -7938,6 +7994,13 @@
     "uuid": "b8d289a2-5d1f-55d5-84b1-2090099df8e5"
   },
   {
+    "address": "0x9318105460626e7fA58308FA4bcE40e4616F3565",
+    "symbol": "PIXIE",
+    "decimal": 18,
+    "name": "Pixie Dust",
+    "uuid": "3502f82b-d478-5cb0-a3b1-eadd71629750"
+  },
+  {
     "address": "0x02F2D4a04E6E01aCE88bD2Cd632875543b2eF577",
     "symbol": "PKG",
     "decimal": 18,
@@ -8519,6 +8582,13 @@
     "uuid": "024a1bda-5a16-541d-b760-65e6f6e4e4fb"
   },
   {
+    "address": "0xFE3E6a25e6b192A42a44ecDDCd13796471735ACf",
+    "symbol": "REEF",
+    "decimal": 18,
+    "name": "Reef Finance",
+    "uuid": "c87dc83d-ad2c-53e0-bc93-caa31a59941c"
+  },
+  {
     "address": "0x89303500a7Abfb178B274FD89F2469C264951e1f",
     "symbol": "REF",
     "decimal": 8,
@@ -9014,6 +9084,13 @@
     "decimal": 18,
     "name": "Synth sETH",
     "uuid": "6c7a1a4b-8987-57bc-a7ce-e763a6541839"
+  },
+  {
+    "address": "0x04E0Af0af1b7f0023c6B12af5a94Df59B0e8cF59",
+    "symbol": "SETS",
+    "decimal": 18,
+    "name": "Sensitrust Token",
+    "uuid": "61b46ffd-e0c5-567b-b2d6-144eade886e2"
   },
   {
     "address": "0x68473dc4B7A4b0867fd7C5b9A982Fea407DAD320",
