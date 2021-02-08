@@ -35,7 +35,13 @@ export const TopItem = ({
         transition: 'all 300ms ease'
       }}
     >
-      <LinkApp isExternal={isExternal} href={href ? href : '#'} color={color} onClick={onClick}>
+      <LinkApp
+        variant="topNavLink"
+        isExternal={isExternal}
+        href={href ? href : '#'}
+        color={color}
+        onClick={onClick}
+      >
         <Icon type={icon} height="24px" color={currentColor} />
         <Text
           mt={SPACING.XS}

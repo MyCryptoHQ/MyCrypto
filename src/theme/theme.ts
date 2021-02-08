@@ -95,6 +95,12 @@ const TEXT_VARIANTS = {
     lineHeight: 1,
     color: { _: 'BLUE_DARK_SLATE', sm: 'GREYISH_BROWN' }
   },
+  topNavLink: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   inlineLink: {
     fontSize: 1,
     lineHeight: 1,
