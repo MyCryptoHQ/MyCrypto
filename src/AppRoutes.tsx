@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { AppLoading } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { Dashboard, DrawerProvider, PageNotFound, ScreenLockProvider } from '@features';
+import { Dashboard, PageNotFound, ScreenLockProvider } from '@features';
 import { Layout, LayoutConfig } from '@features/Layout';
 import {
   DefaultHomeHandler,
@@ -58,33 +58,31 @@ export const AppRoutes = () => {
       <ScrollToTop />
       <PageVisitsAnalytics />
       <ScreenLockProvider>
-        <DrawerProvider>
-          <DefaultHomeHandler>
-            <Suspense
-              fallback={
-                <Layout>
-                  <AppLoading />
-                </Layout>
-              }
-            >
-              <Switch>
-                {/* To avoid fiddling with layout we provide a complete route to home */}
-                <LayoutWithLocation>
-                  <Switch>
-                    <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
-                    {getAppRoutes(featureFlags)
-                      .filter((route) => !route.seperateLayout)
-                      .map((config, idx) => (
-                        <PrivateRoute key={idx} {...config} />
-                      ))}
-                    <Route component={PageNotFound} />
-                  </Switch>
-                </LayoutWithLocation>
-              </Switch>
-            </Suspense>
-          </DefaultHomeHandler>
-          <LegacyRoutesHandler />
-        </DrawerProvider>
+        <DefaultHomeHandler>
+          <Suspense
+            fallback={
+              <Layout>
+                <AppLoading />
+              </Layout>
+            }
+          >
+            <Switch>
+              {/* To avoid fiddling with layout we provide a complete route to home */}
+              <LayoutWithLocation>
+                <Switch>
+                  <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
+                  {getAppRoutes(featureFlags)
+                    .filter((route) => !route.seperateLayout)
+                    .map((config, idx) => (
+                      <PrivateRoute key={idx} {...config} />
+                    ))}
+                  <Route component={PageNotFound} />
+                </Switch>
+              </LayoutWithLocation>
+            </Switch>
+          </Suspense>
+        </DefaultHomeHandler>
+        <LegacyRoutesHandler />
       </ScreenLockProvider>
     </>
   );
