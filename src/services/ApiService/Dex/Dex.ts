@@ -175,7 +175,6 @@ export default class DexService {
         sellAmount: bigify(
           baseToConvertedUnit(tokenPrices.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
         ),
-        raw: tokenPrices,
         gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
         gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice
       };

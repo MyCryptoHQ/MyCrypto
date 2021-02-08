@@ -41,7 +41,6 @@ export interface SwapFormState {
   isMulti: boolean;
   gasPrice?: ITxGasPrice;
   gasLimit?: ITxGasLimit;
-  raw?: any; // @todo Remove
 }
 
 export interface IAssetPair {

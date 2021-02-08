@@ -75,7 +75,6 @@ export const SwapAssets = (props: Props) => {
     markup,
     gasLimit,
     gasPrice,
-    raw,
     isDemoMode
   } = props;
 
@@ -237,19 +236,6 @@ export const SwapAssets = (props: Props) => {
         )}
         {gasPrice && gasLimit && (
           <>Estimated TX Fee: {totalTxFeeToString(gasPrice, gasLimit)} ETH</>
-        )}
-        {raw && (
-          <>
-            <br />
-            {`Price: ${raw.price}`}
-            <br />
-            {`Provider: ${raw.sources
-              .filter((s: any) => s.proportion !== '0')
-              .map((s: any) => s.name)
-              .join(',')}`}
-            <br />
-            {JSON.stringify(raw)}
-          </>
         )}
       </Box>
       <StyledButton

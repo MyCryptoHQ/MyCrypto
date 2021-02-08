@@ -25,7 +25,6 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   isSubmitting: false,
   exchangeRate: '10',
   markup: '0',
-  raw: undefined,
   dispatch: (a) => a,
   onSuccess: noOp,
   handleFromAssetSelected: noOp,
