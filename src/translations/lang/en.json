@@ -410,7 +410,6 @@
     "NEW_FOOTER_TEXT_8": "Our Team",
     "NEW_FOOTER_TEXT_9": "Press",
     "NEW_HEADER_TEXT_14": "Interact with Contracts",
-    "NEW_SIDEBAR_TEXT_1": "Select a Language",
     "NONCE": "Nonce",
     "NONCE_ERROR": "Please double-check your nonce. If this error persists, please email [support@mycrypto.com]($link)",
     "NONCE_TOOLTIP": "The nonce is the number of transactions sent from a given address and its purpose is to prevent double spending. [Learn more about nonce.](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce)",
