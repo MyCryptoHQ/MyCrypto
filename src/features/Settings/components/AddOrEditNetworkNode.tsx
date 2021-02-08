@@ -507,7 +507,7 @@ export default function AddOrEditNetworkNode({
                   id="CUSTOM_NODE_QUIKNODE_LINK"
                   variables={{
                     $link: () => (
-                      <LinkApp href={EXT_URLS.QUIKNODE_REFERRAL.url}>
+                      <LinkApp href={EXT_URLS.QUIKNODE_REFERRAL.url} isExternal={true}>
                         {translateRaw('CUSTOM_NODE_QUIKNODE_TEXT')}
                       </LinkApp>
                     )
