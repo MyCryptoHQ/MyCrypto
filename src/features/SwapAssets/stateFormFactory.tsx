@@ -43,9 +43,10 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       // sort assets alphabetically
       const newAssets = assets
         .map(
-          ({ symbol, ...asset }: DexAsset): ISwapAsset => ({
+          ({ symbol, decimals, ...asset }: DexAsset): ISwapAsset => ({
             ...asset,
             ticker: symbol,
+            decimal: decimals,
             uuid:
               symbol === DEFAULT_NETWORK_TICKER
                 ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
