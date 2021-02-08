@@ -35,7 +35,6 @@ export {
   addBNFloats,
   subtractBNFloats,
   trimBN,
-  calculateMarkup,
   withCommission
 } from './convert';
 export { isArrayEqual } from './isArrayEqual';

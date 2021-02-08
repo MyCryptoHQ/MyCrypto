@@ -36,8 +36,7 @@ export interface SwapFormState {
   toAmountError?: string | JSX.Element;
   isCalculatingToAmount: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  exchangeRate?: string; // The exchange rate displayed to the user (post-markup)
-  markup?: string;
+  exchangeRate?: string; // The exchange rate displayed to the user
   isMulti: boolean;
   gasPrice?: ITxGasPrice;
   gasLimit?: ITxGasLimit;
@@ -50,7 +49,6 @@ export interface IAssetPair {
   fromAmount: BigNumber;
   toAmount: BigNumber;
   rate: BigNumber;
-  markup: BigNumber;
 }
 
 export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;

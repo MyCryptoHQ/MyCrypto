@@ -102,12 +102,3 @@ export const withCommission = ({
   const outputBN = multiplyBNFloats(weiToFloat(amount), commission);
   return bigify(trimBN(formatEther(outputBN)));
 };
-
-export const calculateMarkup = (
-  exchangeRate: BigNumberJs | string,
-  costBasis: BigNumberJs | string
-): string =>
-  bigify(1)
-    .minus(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis)), 10))
-    .multipliedBy(100)
-    .toString();

@@ -138,22 +138,6 @@ export default class DexService {
         cancel();
       }
 
-      // IS IT REALLY NEEDED TO DO THE REQUEST TWICE??
-      const { data: costBasis } = await this.service.get('swap/v1/price', {
-        params: {
-          ...this.buildParams(
-            sellToken,
-            buyToken,
-            sellAmount ? '0.01' : undefined,
-            buyAmount ? '0.01' : undefined
-          )
-        },
-        cancelToken: new CancelToken(function executor(c) {
-          // An executor function receives a cancel function as a parameter
-          cancel = c;
-        })
-      });
-
       const { data: tokenPrices } = await this.service.get('swap/v1/price', {
         params: {
           ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount),
@@ -167,7 +151,6 @@ export default class DexService {
       });
 
       return {
-        costBasis: bigify(costBasis.price),
         price: bigify(tokenPrices.price),
         buyAmount: bigify(
           baseToConvertedUnit(tokenPrices.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)

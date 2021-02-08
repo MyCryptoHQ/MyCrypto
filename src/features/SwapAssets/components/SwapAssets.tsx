@@ -14,10 +14,9 @@ import {
   InputField,
   Tooltip
 } from '@components';
-import { MYC_DEXAG_MARKUP_THRESHOLD } from '@config';
 import { StoreContext } from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
-import { COLORS, SPACING } from '@theme';
+import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISwapAsset, StoreAccount } from '@types';
 import { bigify, totalTxFeeToString, trimBN } from '@utils';
@@ -72,7 +71,6 @@ export const SwapAssets = (props: Props) => {
     handleToAmountChanged,
     handleAccountSelected,
     exchangeRate,
-    markup,
     gasLimit,
     gasPrice,
     isDemoMode
@@ -220,19 +218,6 @@ export const SwapAssets = (props: Props) => {
                 $toAssetSymbol: toAsset.ticker,
                 $fromAssetSymbol: fromAsset.ticker
               })}
-            </Body>
-          </Box>
-        )}
-        {markup && fromAsset && (
-          <Box display="flex" justifyContent="space-between">
-            <Body>
-              {translateRaw('SWAP_MARKUP_LABEL')}{' '}
-              <Tooltip tooltip={translateRaw('SWAP_MARKUP_TOOLTIP')} />
-            </Body>
-            <Body
-              color={bigify(markup).gte(MYC_DEXAG_MARKUP_THRESHOLD) ? COLORS.RED : COLORS.GREEN}
-            >
-              {`${makeDisplayString(markup.toString())}%`}
             </Body>
           </Box>
         )}

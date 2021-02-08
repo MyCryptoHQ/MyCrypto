@@ -8,7 +8,6 @@ import { StoreAsset } from '@types';
 import { bigify } from './bigify';
 import {
   addBNFloats,
-  calculateMarkup,
   convertToBN,
   convertToFiatFromAsset,
   divideBNFloats,
@@ -286,17 +285,6 @@ describe('it Remove / Add commission from amount', () => {
       amount: convertToBN(amount),
       rate: MYC_DEX_COMMISSION_RATE
     });
-    expect(converted).toEqual(expected);
-  });
-});
-
-describe('it calculates markup correctly', () => {
-  it('calculates markup from costBasis and exchangeRate', () => {
-    const exchangeRate = bigify(224.78743749068855);
-    const costBasis = bigify(263.0915899);
-
-    const expected = '14.559247';
-    const converted = calculateMarkup(exchangeRate, costBasis);
     expect(converted).toEqual(expected);
   });
 });

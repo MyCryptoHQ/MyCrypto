@@ -53,7 +53,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     toAmountError,
     lastChangedAmount,
     exchangeRate,
-    markup,
     gasLimit,
     gasPrice
   }: SwapFormState = formState;
@@ -96,7 +95,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         toAmountError,
         txError,
         exchangeRate,
-        markup,
         account,
         gasLimit,
         gasPrice,
@@ -117,7 +115,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
             fromAmount: bigify(fromAmount),
             toAmount: bigify(toAmount),
             rate: bigify(exchangeRate!),
-            markup: bigify(markup!),
             lastChangedAmount
           };
           initWith(getTradeOrder(pair, account), account, account.network);

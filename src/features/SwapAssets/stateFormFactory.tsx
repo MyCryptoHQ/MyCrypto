@@ -1,5 +1,3 @@
-import { formatEther } from '@ethersproject/units';
-
 import {
   DEFAULT_NETWORK,
   DEFAULT_NETWORK_CHAINID,
@@ -11,12 +9,10 @@ import translate from '@translations';
 import { ISwapAsset, StoreAccount } from '@types';
 import {
   bigify,
-  calculateMarkup,
   divideBNFloats,
   formatErrorEmailMarkdown,
   generateAssetUUID,
   multiplyBNFloats,
-  trimBN,
   TUseStateReducerFactory,
   withCommission
 } from '@utils';
@@ -131,7 +127,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         isCalculatingFromAmount: true
       }));
 
-      const { price, costBasis, sellAmount, ...rest } = await DexService.instance.getTokenPriceTo(
+      const { price, sellAmount, ...rest } = await DexService.instance.getTokenPriceTo(
         fromAsset,
         toAsset,
         value
@@ -147,10 +143,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           amount: divideBNFloats(1, price),
           rate: MYC_DEX_COMMISSION_RATE
         }).toString(),
-        markup: calculateMarkup(
-          trimBN(formatEther(divideBNFloats(1, price).toString())),
-          trimBN(formatEther(divideBNFloats(1, costBasis).toString()))
-        ),
         ...rest
       }));
     } catch (e) {
@@ -198,7 +190,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const { price, costBasis, buyAmount, ...rest } = await DexService.instance.getTokenPriceFrom(
+      const { price, buyAmount, ...rest } = await DexService.instance.getTokenPriceFrom(
         fromAsset,
         toAsset,
         value
@@ -214,7 +206,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           amount: multiplyBNFloats(1, price), // @todo Fix this
           rate: MYC_DEX_COMMISSION_RATE
         }).toString(),
-        markup: calculateMarkup(price, costBasis),
         ...rest
       }));
     } catch (e) {
