@@ -3,7 +3,7 @@ import React from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fNetworks, fRopDAI, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { noOp, truncate } from '@utils';
 
@@ -46,7 +46,8 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
             addressBook: [],
             contracts: [],
             userActions: [],
-            settings: fSettings
+            settings: fSettings,
+            networks: fNetworks
           } as unknown) as IDataContext
         }
       >

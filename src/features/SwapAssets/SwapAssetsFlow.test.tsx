@@ -58,25 +58,22 @@ describe('SwapAssetsFlow', () => {
   });
 
   it('calculates and shows to amount', async () => {
-    const { getAllByText, container } = getComponent();
+    const { getAllByText, getAllByDisplayValue, container } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
     mockAxios.mockResponse({ data: { records: fAssets.map((a) => ({ ...a, symbol: a.ticker })) } });
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
     await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
     mockAxios.reset();
-    fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
+    fireEvent.change(container.querySelector('input[name="swap-from"]')!, {
+      target: { value: '1' }
+    });
     await waitFor(() =>
       expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/price', expect.anything())
     );
     mockAxios.mockResponse({ data: fSwapQuote });
-    // We currently do this call twice, mock it twice
+    await waitFor(() => expect(getAllByDisplayValue('1', { exact: false })).toBeDefined());
     await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/price', expect.anything())
-    );
-    mockAxios.mockResponse({ data: fSwapQuote });
-    await waitFor(() => expect(getAllByText('1', { exact: false })).toBeDefined());
-    await waitFor(() =>
-      expect(getAllByText('0.000642566300455615', { exact: false })).toBeDefined()
+      expect(getAllByDisplayValue('0.000642566300455615', { exact: false })).toBeDefined()
     );
   });
 });

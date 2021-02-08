@@ -182,6 +182,7 @@ export const SwapAssets = (props: Props) => {
       <Box display="flex">
         <Box mr="1em" flex="1">
           <InputField
+            name="swap-from"
             label={translateRaw('SWAP_SEND_AMOUNT')}
             value={fromAmount}
             placeholder="0.00"
