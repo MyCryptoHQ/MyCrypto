@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -125,7 +125,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
   const { isMobile } = useScreenSize();
   const { pathname } = useLocation();
 
-  // const [topHeight, setTopHeight] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [isReady, clear, set] = useTimeoutFn(() => setIsOpen(!isOpen), 100);
@@ -134,25 +133,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
     setIsOpen(false);
   }, [pathname]);
 
-  const topRef = useRef<any>(null);
-
   useEffect(() => clear());
-
-  // useLayoutEffect(() => {
-  //   const resizeObserver = new ResizeObserver((entries) => {
-  //     // Wrap with requestAnimationFrame to avoir loop limit exceeded error
-  //     // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
-  //     window.requestAnimationFrame(() => {
-  //       for (const entry of entries) {
-  //         setTopHeight(entry.contentRect.height);
-  //       }
-  //     });
-  //   });
-
-  //   resizeObserver.observe(topRef.current);
-
-  //   return () => resizeObserver.disconnect();
-  // }, [topRef.current]);
 
   const APP_ROUTES = getAppRoutesObject(featureFlags);
   return (
@@ -169,7 +150,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
         <ExtrasTray isMobile={isMobile} closeTray={() => isReady() !== false && set()} />
       )}
       <SMain className={className} bgColor={bgColor}>
-        <STop ref={topRef}>
+        <STop>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
