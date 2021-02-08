@@ -143,6 +143,26 @@ export const SwapAssets = (props: Props) => {
   return (
     <Box mt="20px" mb="1em">
       {isDemoMode && <DemoGatewayBanner />}
+      <Box mb="15px">
+        <Box>
+          <Body>
+            {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
+            <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
+          </Body>
+        </Box>
+        <AccountSelector
+          name="account"
+          value={account}
+          accounts={filteredAccounts}
+          onSelect={(option: StoreAccount) => {
+            handleAccountSelected(option);
+          }}
+          asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
+        />
+        {!filteredAccounts.length && fromAsset && (
+          <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
+        )}
+      </Box>
       <Box display="flex">
         <Box mr="1em" flex="1">
           <InputField
@@ -215,24 +235,6 @@ export const SwapAssets = (props: Props) => {
               {`${makeDisplayString(markup.toString())}%`}
             </Body>
           </Box>
-        )}
-        <Box>
-          <Body>
-            {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
-            <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
-          </Body>
-        </Box>
-        <AccountSelector
-          name="account"
-          value={account}
-          accounts={filteredAccounts}
-          onSelect={(option: StoreAccount) => {
-            handleAccountSelected(option);
-          }}
-          asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
-        />
-        {!filteredAccounts.length && fromAsset && (
-          <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
         )}
         {gasPrice && gasLimit && (
           <>Estimated TX Fee: {totalTxFeeToString(gasPrice, gasLimit)} ETH</>
