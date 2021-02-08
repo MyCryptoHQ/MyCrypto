@@ -27,7 +27,6 @@ export const TopItem = ({
   return (
     <Box
       zIndex={999}
-      variant="columnCenter"
       mr={{ _: left ? 'auto' : SPACING.MD, sm: SPACING.MD }}
       style={{
         cursor: 'pointer',
@@ -36,17 +35,19 @@ export const TopItem = ({
       }}
     >
       <LinkApp isExternal={isExternal} href={href ? href : '#'} color={color} onClick={onClick}>
-        <Icon type={icon} height="24px" color={currentColor} />
-        <Text
-          mt={SPACING.XS}
-          color={currentColor}
-          textTransform="uppercase"
-          fontSize={5}
-          fontWeight={current ? 'bold' : 700}
-          mb={0}
-        >
-          {translateRaw(title)}
-        </Text>
+        <Box variant="columnCenter">
+          <Icon type={icon} height="24px" color={currentColor} />
+          <Text
+            mt={SPACING.XS}
+            color={currentColor}
+            textTransform="uppercase"
+            fontSize={5}
+            fontWeight={current ? 'bold' : 700}
+            mb={0}
+          >
+            {translateRaw(title)}
+          </Text>
+        </Box>
       </LinkApp>
     </Box>
   );
