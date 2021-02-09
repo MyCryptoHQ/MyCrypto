@@ -35,7 +35,7 @@ const SBox = styled(Box)`
 `;
 
 export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean }) => (
-  <SLink href={link.to}>
+  <SLink href={link.to} variant="barren">
     <SBox
       variant="columnCenter"
       backgroundColor={current ? 'BG_GRAY' : 'transparent'}

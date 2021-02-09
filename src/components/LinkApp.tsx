@@ -4,28 +4,80 @@ import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-d
 import styled from 'styled-components';
 import {
   color,
+  ColorProps,
   colorStyle,
+  ColorStyleProps,
   fontStyle,
+  FontStyleProps,
   layout,
+  LayoutProps,
   lineHeight,
+  LineHeightProps,
   size,
+  SizeProps,
   space,
+  SpaceProps,
   textStyle,
-  typography
+  TextStyleProps,
+  typography,
+  TypographyProps,
+  variant
 } from 'styled-system';
 
-import { textVariants } from '@theme';
 import { isUrl } from '@utils/isUrl';
 
-import { TextProps } from './NewTypography';
+type LinkStyleProps = SpaceProps &
+  LineHeightProps &
+  FontStyleProps &
+  SizeProps &
+  ColorProps &
+  ColorStyleProps &
+  TextStyleProps &
+  LayoutProps &
+  TypographyProps & {
+    variant?: keyof typeof LINK_VARIANTS;
+    $underline?: boolean;
+    $textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
+  };
 
-type StyleProps = Omit<TextProps, 'textTransform'> & {
-  $textTransform?: TextProps['textTransform'];
-  $underline?: boolean;
+const LINK_VARIANTS = {
+  barren: {
+    cursor: 'pointer',
+    textDecoration: 'none'
+  },
+  defaultLink: {
+    cursor: 'pointer',
+    textDecoration: 'none',
+    fontSize: { _: 0, sm: 1 },
+    lineHeight: { _: 0, sm: 1 },
+    color: 'BLUE_BRIGHT',
+
+    '&:hover': {
+      opacity: 0.8,
+      color: 'BLUE_BRIGHT'
+    },
+    svg: {
+      fill: 'BLUE_BRIGHT'
+    },
+    '&:hover svg': {
+      fill: 'BLUE_BRIGHT'
+    },
+    '&:active': {
+      opacity: 1
+    },
+    '&:focus': {
+      opacity: 1
+    }
+  }
 };
 
-const SLink = styled.a<StyleProps & HTMLAnchorElement>`
-  ${textVariants}
+const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
+  /** Overide @mycrypto/ui global styles */
+  &&& {
+    ${variant({
+      variants: LINK_VARIANTS
+    })}
+  }
   ${space}
   ${fontStyle}
   ${color}
@@ -36,11 +88,16 @@ const SLink = styled.a<StyleProps & HTMLAnchorElement>`
   ${typography}
   ${layout}
   ${({ $textTransform }) => $textTransform && { 'text-transform': $textTransform }}
-  ${({ $underline }) => $underline && { 'text-decoration': 'underline' }}
+  ${({ $underline }) => $underline && { 'text-decoration': 'underline' }};
 `;
 
-const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
-  ${textVariants}
+const SRouterLink = styled(RouterLink)<LinkStyleProps & RouterLinkProps>`
+  /** Overide @mycrypto/ui global styles */
+  &&& {
+    ${variant({
+      variants: LINK_VARIANTS
+    })}
+  }
   ${space}
   ${fontStyle}
   ${color}
@@ -57,13 +114,10 @@ const SRouterLink = styled(RouterLink)<StyleProps & RouterLinkProps>`
 interface LinkProps {
   readonly href: string;
   readonly isExternal?: boolean;
-  readonly variant?: 'inlineLink' | 'defaultLink' | 'noStyleLink';
-  onClick?(): void;
+  onClick?(e: React.MouseEvent<HTMLAnchorElement>): void | undefined;
 }
 
-type LinkAppProps = LinkProps & Omit<RouterLinkProps, 'to'>;
-
-const LinkApp: React.FC<LinkAppProps & StyleProps> = ({
+const LinkApp: React.FC<LinkProps & LinkStyleProps & Omit<RouterLinkProps, 'to'>> = ({
   href,
   isExternal = false,
   variant = 'defaultLink',
@@ -75,7 +129,6 @@ const LinkApp: React.FC<LinkAppProps & StyleProps> = ({
       `LinkApp: Received href prop ${href}. Set prop isExternal to use an external link.`
     );
   }
-
   return isExternal ? (
     <SLink
       href={href}

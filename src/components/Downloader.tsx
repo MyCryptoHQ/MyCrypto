@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { LinkApp } from '@components';
 import { COLORS } from '@theme';
 import translate from '@translations';
 import { makeBlob } from '@utils';
 
 import { default as Button } from './Button';
+import { default as LinkApp } from './LinkApp';
 
 export const Downloader: React.FC<{
   data: string | TObject;

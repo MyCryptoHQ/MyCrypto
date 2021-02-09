@@ -45,7 +45,7 @@ const MYCLink = ({
   link: string;
   onClick(): void;
 }) => (
-  <LinkApp variant="noStyleLink" href={link} isExternal={true} onClick={onClick}>
+  <LinkApp variant="barren" href={link} isExternal={true} onClick={onClick}>
     <SBox
       animation="small"
       variant="rowAlign"
