@@ -55,6 +55,21 @@ const LINK_VARIANTS = {
       textDecoration: 'none'
     }
   },
+  opacityLink: {
+    color: 'BLUE_BRIGHT',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    transition: 'all 120ms ease',
+    svg: {
+      fill: 'BLUE_BRIGHT'
+    },
+    '&:hover': {
+      opacity: '0.8'
+    },
+    '&:hover svg': {
+      opacity: '0.8'
+    }
+  },
   defaultLink: {
     cursor: 'pointer',
     textDecoration: 'none',
@@ -83,7 +98,7 @@ const LINK_VARIANTS = {
 
 const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
   /** Overide @mycrypto/ui global styles */
-  && {
+  &&& {
     ${variant({
       variants: LINK_VARIANTS
     })}
@@ -103,7 +118,7 @@ const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchor
 
 const SRouterLink = styled(RouterLink)<LinkStyleProps & RouterLinkProps>`
   /** Overide @mycrypto/ui global styles */
-  && {
+  &&& {
     ${variant({
       variants: LINK_VARIANTS
     })}

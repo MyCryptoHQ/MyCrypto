@@ -102,15 +102,15 @@ export function TokenList(props: TokenListProps) {
       }
       headingRight={
         <Box variant="rowAlign">
-          <LinkApp href="#" onClick={() => handleScanTokens()}>
-            <Box variant="rowAlign" marginRight={SPACING.MD}>
+          <LinkApp href="#" variant="opacityLink" onClick={() => handleScanTokens()}>
+            <Box variant="rowAlign" mr={SPACING.BASE}>
               <Icon type="refresh" width="1em" />
               <Text ml={SPACING.XS} mb={0}>
                 {translateRaw('SCAN_TOKENS_SHORT')}
               </Text>
             </Box>
           </LinkApp>
-          <LinkApp href="#" variant="defaultLink" onClick={() => setShowAddToken(true)}>
+          <LinkApp href="#" variant="opacityLink" onClick={() => setShowAddToken(true)}>
             <Box variant="rowAlign">
               <Icon type="add-bold" width="1em" />
               <Text ml={SPACING.XS} mb={0}>
