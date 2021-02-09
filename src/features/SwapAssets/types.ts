@@ -35,11 +35,14 @@ export interface SwapFormState {
   isCalculatingFromAmount: boolean;
   toAmountError?: string | JSX.Element;
   isCalculatingToAmount: boolean;
+  isEstimatingGas: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
   exchangeRate?: string; // The exchange rate displayed to the user
   isMulti: boolean;
   gasPrice?: ITxGasPrice;
-  gasLimit?: ITxGasLimit;
+  approvalGasLimit?: ITxGasLimit;
+  tradeGasLimit?: ITxGasLimit;
+  approvalTx?: Partial<ITxObject>;
   expiration?: string;
 }
 

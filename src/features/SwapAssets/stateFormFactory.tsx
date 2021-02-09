@@ -4,14 +4,16 @@ import {
   DEFAULT_NETWORK_TICKER,
   MYC_DEX_COMMISSION_RATE
 } from '@config';
-import { DexAsset, DexService, getNetworkById, useNetworks } from '@services';
+import { checkRequiresApproval } from '@helpers';
+import { DexAsset, DexService, getGasEstimate, getNetworkById, useNetworks } from '@services';
 import translate from '@translations';
-import { ISwapAsset, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
   formatErrorEmailMarkdown,
   generateAssetUUID,
+  inputGasLimitToHex,
   multiplyBNFloats,
   TUseStateReducerFactory,
   withCommission
@@ -35,6 +37,7 @@ const swapFormInitialState = {
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const { networks } = useNetworks();
+  const network = getNetworkById(DEFAULT_NETWORK, networks);
 
   const fetchSwapAssets = async () => {
     try {
@@ -57,7 +60,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
-      const network = getNetworkById(DEFAULT_NETWORK, networks);
       const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === network.baseUnit);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
@@ -250,6 +252,30 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     }));
   };
 
+  const handleGasLimitEstimation = async () => {
+    const { approvalTx, account } = state;
+    if (approvalTx && approvalTx.to && approvalTx.data && account) {
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isEstimatingGas: true
+      }));
+
+      const requiresApproval =
+        approvalTx &&
+        (await checkRequiresApproval(network, approvalTx.to, account.address, approvalTx.data));
+
+      const gasLimit = requiresApproval ? await getGasEstimate(network, approvalTx!) : '0';
+
+      const approvalGasLimit = inputGasLimitToHex(gasLimit) as ITxGasLimit;
+
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isEstimatingGas: false,
+        approvalGasLimit
+      }));
+    }
+  };
+
   return {
     fetchSwapAssets,
     setSwapAssets,
@@ -260,6 +286,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
     formState: state
   };
 };

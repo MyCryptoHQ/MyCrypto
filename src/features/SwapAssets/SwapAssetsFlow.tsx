@@ -38,6 +38,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
     formState
   } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
   const {
@@ -53,9 +54,12 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     toAmountError,
     lastChangedAmount,
     exchangeRate,
-    gasLimit,
+    approvalGasLimit,
+    tradeGasLimit,
     gasPrice,
-    expiration
+    expiration,
+    approvalTx,
+    isEstimatingGas
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -97,9 +101,12 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         txError,
         exchangeRate,
         account,
-        gasLimit,
+        approvalGasLimit,
+        tradeGasLimit,
         gasPrice,
         expiration,
+        approvalTx,
+        isEstimatingGas,
         isSubmitting
       },
       actions: {
@@ -110,6 +117,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         handleFromAmountChanged,
         handleToAmountChanged,
         handleAccountSelected,
+        handleGasLimitEstimation,
         onSuccess: () => {
           const pair: IAssetPair = {
             fromAsset,

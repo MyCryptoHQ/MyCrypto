@@ -110,10 +110,12 @@ const calculateGasUsedPercentage = (gasLimit: string, gasUsed: string) => {
 const gasPriceToBase = (price: string | number) =>
   toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
-const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
-  bigify(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
+const totalTxFeeToString = (
+  gasPriceEther: string | BigNumber,
+  gasLimit: string | BigNumber
+): string => bigify(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
 
-const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
+const totalTxFeeToWei = (gasPriceEther: string | BigNumber, gasLimit: string | BigNumber): Wei =>
   bigify(gasPriceEther).multipliedBy(gasLimit);
 
 const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BigNumber => {

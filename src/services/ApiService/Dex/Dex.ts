@@ -8,10 +8,9 @@ import {
   DEX_FEE_RECIPIENT,
   MYC_DEX_COMMISSION_RATE
 } from '@config';
-import { ERC20 } from '@services/EthService';
+import { formatApproveTx } from '@helpers';
 import {
   ISwapAsset,
-  ITxData,
   ITxGasLimit,
   ITxGasPrice,
   ITxObject,
@@ -20,7 +19,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
+import { addHexPrefix, baseToConvertedUnit, bigify, inputGasLimitToHex, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -89,6 +88,16 @@ export default class DexService {
       : undefined
   });
 
+  private makeApproval = (data: DexTrade) => ({
+    ...formatApproveTx({
+      contractAddress: data.sellTokenAddress,
+      spenderAddress: data.allowanceTarget,
+      hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+      baseTokenAmount: bigify(data.sellAmount)
+    }),
+    type: ITxType.APPROVAL
+  });
+
   private getOrderDetails = async (
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
@@ -108,20 +117,12 @@ export default class DexService {
     return [
       // Include the Approve transaction when necessary.
       // ie. any trade that is not an ETH/Token
-      ...(isMultiTx
-        ? [
-            formatApproveTx({
-              to: data.sellTokenAddress,
-              spender: data.allowanceTarget,
-              value: data.sellAmount as ITxValue
-            })
-          ]
-        : []),
+      ...(isMultiTx ? [this.makeApproval(data)] : []),
       formatTradeTx({
         to: data.to,
         data: data.data,
         gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-        gasLimit: addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit,
+        gasLimit: inputGasLimitToHex(data.gas),
         value: data.value
       })
     ];
@@ -138,7 +139,7 @@ export default class DexService {
         cancel();
       }
 
-      const { data: tokenPrices } = await this.service.get('swap/v1/price', {
+      const { data } = await this.service.get('swap/v1/price', {
         params: {
           ...this.buildParams(sellToken, buyToken, sellAmount, buyAmount),
           feeRecipient: DEX_FEE_RECIPIENT,
@@ -151,16 +152,17 @@ export default class DexService {
       });
 
       return {
-        price: bigify(tokenPrices.price),
+        price: bigify(data.price),
         buyAmount: bigify(
-          baseToConvertedUnit(tokenPrices.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)
+          baseToConvertedUnit(data.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)
         ),
         sellAmount: bigify(
-          baseToConvertedUnit(tokenPrices.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
+          baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
         ),
-        gasLimit: addHexPrefix(bigify(tokenPrices.gas).toString(16)) as ITxGasLimit,
-        gasPrice: addHexPrefix(bigify(tokenPrices.gasPrice).toString(16)) as ITxGasPrice,
-        expiration: tokenPrices.orders[0].expirationTimeSeconds
+        tradeGasLimit: addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit,
+        gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        expiration: data.orders[0].expirationTimeSeconds,
+        approvalTx: data.allowanceTarget !== AddressZero ? this.makeApproval(data) : undefined
       };
     } catch (e) {
       if (axios.isCancel(e)) {
@@ -170,26 +172,6 @@ export default class DexService {
     }
   };
 }
-
-// Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
-// to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
-export const formatApproveTx = ({
-  to,
-  spender,
-  value
-}: Partial<ITxObject> & { spender: TAddress }): Partial<ITxObject & { type: ITxType }> => {
-  // [spender, amount]. Spender is the contract the user needs to authorize.
-  // It's value is also available in the API response obj `data.metadata.input.spender`
-  const data = ERC20.approve.encodeInput({ _spender: spender, _value: value });
-
-  return {
-    to,
-    data: data as ITxData,
-    chainId: DEFAULT_NETWORK_CHAINID,
-    value: addHexPrefix(bigify('0').toString(16)) as ITxValue,
-    type: ITxType.APPROVAL
-  };
-};
 
 export const formatTradeTx = ({
   to,

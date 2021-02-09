@@ -13,7 +13,7 @@ import { Optional } from 'utility-types';
 
 import { CREATION_ADDRESS } from '@config';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
-import { decodeTransfer, getNonce } from '@services/EthService';
+import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthService';
 import { decodeApproval } from '@services/EthService/contracts/token';
 import {
   getAssetByContractAndNetwork,
@@ -468,4 +468,17 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   } catch (e) {
     return false;
   }
+};
+
+export const checkRequiresApproval = async (
+  network: Network,
+  token: string,
+  owner: string,
+  data: string
+) => {
+  const provider = new ProviderHandler(network);
+  const { _spender, _value } = ERC20.approve.decodeInput(data);
+  const allowance = await provider.getTokenAllowance(token, owner, _spender);
+  // If allowance is less than the value being sent, the approval is needed
+  return bigify(allowance).lt(bigify(_value));
 };

@@ -1,10 +1,10 @@
 import mockAxios from 'jest-mock-axios';
 
 import { fAssets, fRopDAI, fSwapQuote } from '@fixtures';
-import { ITxData, ITxToAddress, ITxType, ITxValue, TAddress } from '@types';
+import { ITxData, ITxToAddress, ITxType, ITxValue } from '@types';
 
 import { DexService } from '.';
-import { formatApproveTx, formatTradeTx } from './Dex';
+import { formatTradeTx } from './Dex';
 
 describe('SwapFlow', () => {
   afterEach(() => {
@@ -22,6 +22,8 @@ describe('SwapFlow', () => {
           chainId: 1,
           data:
             '0x095ea7b3000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff0000000000000000000000000000000000000000000000000de0b6b3a7640000',
+          from: undefined,
+          gasPrice: '0x23db1d8400',
           to: '0x6b175474e89094c44da98b954eedeac495271d0f',
           type: 'APPROVAL',
           value: '0x0'
@@ -37,24 +39,6 @@ describe('SwapFlow', () => {
           value: '0x0'
         }
       ]);
-    });
-  });
-
-  describe('formatApproveTx', () => {
-    it('Prepares the data field for an approve tx', () => {
-      expect(
-        formatApproveTx({
-          to: '0x6b175474e89094c44da98b954eedeac495271d0f' as ITxToAddress,
-          spender: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,
-          value: '1000000000000000' as ITxValue
-        })
-      ).toEqual({
-        to: '0x6b175474e89094c44da98b954eedeac495271d0f' as ITxToAddress,
-        data: '0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d00000000000000000000000000000000000000000000000000038d7ea4c68000' as ITxData,
-        chainId: 1,
-        value: '0x0' as ITxValue,
-        type: ITxType.APPROVAL
-      });
     });
   });
 

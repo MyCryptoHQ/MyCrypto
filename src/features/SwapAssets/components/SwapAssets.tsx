@@ -27,7 +27,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, StoreAccount } from '@types';
-import { totalTxFeeToString } from '@utils';
+import { bigify, totalTxFeeToString } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -52,6 +52,7 @@ type ISwapProps = SwapFormState & {
   handleFromAmountChanged(value: string): void;
   handleToAmountChanged(value: string): void;
   handleAccountSelected(account?: StoreAccount): void;
+  handleGasLimitEstimation(): void;
 };
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -79,9 +80,13 @@ export const SwapAssets = (props: Props) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
+    approvalTx,
     exchangeRate,
-    gasLimit,
+    approvalGasLimit,
+    tradeGasLimit,
     gasPrice,
+    isEstimatingGas,
     expiration,
     isDemoMode
   } = props;
@@ -154,8 +159,17 @@ export const SwapAssets = (props: Props) => {
     }
   }, [fromAsset, fromAmount]);
 
-  // @todo: Add approval tx fee to this
-  const estimatedGasFee = gasPrice && gasLimit && totalTxFeeToString(gasPrice, gasLimit);
+  useEffect(() => {
+    handleGasLimitEstimation();
+  }, [approvalTx, account]);
+
+  const estimatedGasFee =
+    gasPrice &&
+    tradeGasLimit &&
+    totalTxFeeToString(
+      gasPrice,
+      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
+    );
 
   return (
     <Box mt="20px" mb="1em">
@@ -247,6 +261,7 @@ export const SwapAssets = (props: Props) => {
         disabled={
           isDemoMode ||
           !account ||
+          isEstimatingGas ||
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
           !fromAmount ||

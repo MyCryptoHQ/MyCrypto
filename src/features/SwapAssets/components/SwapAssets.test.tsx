@@ -23,6 +23,7 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
   isMulti: false,
   isSubmitting: false,
+  isEstimatingGas: false,
   exchangeRate: '10',
   dispatch: (a) => a,
   onSuccess: noOp,
@@ -32,7 +33,8 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   calculateNewToAmount: () => Promise.resolve(undefined),
   handleFromAmountChanged: noOp,
   handleToAmountChanged: noOp,
-  handleAccountSelected: noOp
+  handleAccountSelected: noOp,
+  handleGasLimitEstimation: noOp
 };
 
 function getComponent(props: React.ComponentProps<typeof SwapAssets>) {

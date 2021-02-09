@@ -14,13 +14,12 @@ import { inputValueToHex } from '@utils';
 interface IFormatApproveTxInputs {
   contractAddress: ITxToAddress;
   baseTokenAmount: Bigish;
-  fromAddress: ITxFromAddress;
+  fromAddress?: ITxFromAddress;
   spenderAddress: TAddress;
-  chainId: number;
+  chainId?: number;
   hexGasPrice: ITxGasPrice;
 }
 
-// @todo: merge with `formatApproveTx` in ApiService/Dex ?
 export const formatApproveTx = ({
   contractAddress,
   baseTokenAmount,
