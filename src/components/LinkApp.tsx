@@ -117,7 +117,10 @@ interface LinkProps {
   onClick?(e: React.MouseEvent<HTMLAnchorElement>): void | undefined;
 }
 
-const LinkApp: React.FC<LinkProps & LinkStyleProps & Omit<RouterLinkProps, 'to'>> = ({
+type Props = LinkProps &
+  (React.ComponentProps<typeof SLink> | React.ComponentProps<typeof SRouterLink>);
+
+const LinkApp: React.FC<Props> = ({
   href,
   isExternal = false,
   variant = 'defaultLink',
