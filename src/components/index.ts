@@ -15,7 +15,6 @@ export { default as RowDeleteOverlay } from './RowDeleteOverlay';
 export { default as Divider } from './Divider';
 export { default as Selector, SelectorProps } from './Selector';
 export { default as ExtendedContentPanel, ExtendedControlPanelProps } from './ExtendedContentPanel';
-export { default as Link } from './Link';
 export { default as LinkApp } from './LinkApp';
 export { default as Typography } from './Typography';
 export { default as Modal } from './Modal';
