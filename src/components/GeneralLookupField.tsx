@@ -22,7 +22,7 @@ export interface IGeneralLookupFieldComponentProps {
   value: IReceiverAddress;
   options: LabeledAddress[];
   placeholder?: string;
-  onBlur?(): void;
+  onBlur?(event?: any): void;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress?(inputString: string): IReceiverAddress;
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
