@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
-import { Box, Button, Heading, NewTabLink } from '@components';
+import { Body, Box, Button, Heading, LinkApp, NewTabLink, Text } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
 import translate from '@translations';
@@ -33,14 +32,6 @@ const AppLinkContainer = styled.div`
   }
 `;
 
-const DownloadOption = styled(NewTabLink)`
-  align-self: flex-start;
-`;
-
-const STypography = styled(Typography)`
-  text-align: center;
-`;
-
 const SImgContainer = styled.div`
   width: 100%;
 `;
@@ -48,35 +39,45 @@ const SImgContainer = styled.div`
 function InstallTrunk() {
   const providers = [WALLETS_CONFIG.TRUST, WALLETS_CONFIG.COINBASE];
   return (
-    <Box variant="rowAlign" mt={SPACING.BASE}>
+    <Box variant="rowAlign" justifyContent="space-between" mt={SPACING.BASE} width="100%">
       {providers.map((provider) => (
         <Box
           key={provider.id}
           width="100%"
           justifyContent="space-between"
           variant="columnAlign"
-          flexWrap="wrap"
-          alignSelf="stretch"
           margin={SPACING.SM}
         >
-          <DownloadOption href={provider.install ? provider.install.getItLink : undefined}>
-            <SImgContainer>
+          <LinkApp href={provider.install!.getItLink!} isExternal={true}>
+            <Box
+              variant="columnCenter"
+              m={SPACING.SM}
+              size={{ _: '150px', xs: '200px' }}
+              backgroundColor="WHITE"
+              boxShadow="0 3px 6px 0 rgba(0, 0, 0, 0.07)"
+              borderRadius="6px"
+              px={SPACING.LG}
+            >
               <img src={provider.icon} />
-            </SImgContainer>
-          </DownloadOption>
+              <Box variant="columnCenter" minHeight="3em" mt={SPACING.SM}>
+                <Text color="BLUE_DARK_SLATE" mb={0} textAlign="center">
+                  {provider.name}
+                </Text>
+              </Box>
+            </Box>
+          </LinkApp>
 
-          <STypography>{provider.name}</STypography>
           <AppLinkContainer>
             {provider.install && provider.install.appStore && (
-              <DownloadOption href={provider.install.appStore}>
+              <LinkApp href={provider.install.appStore}>
                 <img src={AppStoreBadgeIMG} />
-              </DownloadOption>
+              </LinkApp>
             )}
 
             {provider.install && provider.install.googlePlay && (
-              <DownloadOption href={provider.install.googlePlay}>
+              <LinkApp href={provider.install.googlePlay} isExternal={true}>
                 <img src={GooglePlayBadgeIMG} />
-              </DownloadOption>
+              </LinkApp>
             )}
           </AppLinkContainer>
         </Box>
@@ -120,17 +121,17 @@ const Web3ProviderInstall = () => {
 };
 
 export const Web3ProviderInstallUI = ({ isMobile }: { isMobile: boolean }) => (
-  <Box p="2.5em">
+  <Box p={{ _: 0, xs: '2.5em' }}>
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', {
         $walletId: isMobile ? 'Web3 Provider' : 'Metamask'
       })}
     </Heading>
-    <div>
+    <Body textAlign="center">
       {translate(
         isMobile ? 'ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC' : 'ADD_ACCOUNT_WEB3_INSTALL_DESC'
       )}
-    </div>
+    </Body>
     <div>{isMobile ? <InstallTrunk /> : <InstallMetaMask />}</div>
   </Box>
 );
