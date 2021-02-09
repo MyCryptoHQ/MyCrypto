@@ -27,6 +27,7 @@ export const Downloader: React.FC<{
       href={blob}
       isExternal={true}
       download={fileName}
+      target="_self"
       onClick={handleDownload}
       {...props}
     >
