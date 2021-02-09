@@ -2,8 +2,7 @@ import React, { useContext } from 'react';
 
 import styled from 'styled-components';
 
-import { AssetIcon, Currency, DashboardPanel } from '@components';
-import Icon from '@components/Icon';
+import { AssetIcon, Currency, DashboardPanel, Icon, LinkApp } from '@components';
 import { getFiat } from '@config/fiats';
 import { getNetworkById, StoreContext, useSettings } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -155,9 +154,9 @@ export function TokenDetails(props: Props) {
         </DetailsHeadingWrapper>
       }
       headingRight={
-        <a href={contractUrl} target="_blank" rel="noreferrer">
+        <LinkApp href={contractUrl} isExternal={true}>
           <Icon type="expand" />
-        </a>
+        </LinkApp>
       }
       padChildren={true}
     >
@@ -200,21 +199,21 @@ export function TokenDetails(props: Props) {
             value={
               <>
                 {website && (
-                  <a href={website} target="_blank" rel="noreferrer">
+                  <LinkApp href={website} isExternal={true}>
                     <ResourceIcon type="website" color="none" />
-                  </a>
+                  </LinkApp>
                 )}
                 {whitepaper && (
-                  <a href={whitepaper} target="_blank" rel="noreferrer">
+                  <LinkApp href={whitepaper} isExternal={true}>
                     <ResourceIcon type="whitepaper" />
-                  </a>
+                  </LinkApp>
                 )}
                 {social &&
                   filteredSocial.map((s: Social) => {
                     return (
-                      <a key={s} href={social[s]} target="_blank" rel="noreferrer">
+                      <LinkApp key={s} href={social[s] as string} isExternal={true}>
                         <SocialIcon alt={s} type={supportedSocialNetworks[s]} />
-                      </a>
+                      </LinkApp>
                     );
                   })}
               </>
