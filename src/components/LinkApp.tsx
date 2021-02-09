@@ -43,7 +43,8 @@ type LinkStyleProps = SpaceProps &
 const LINK_VARIANTS = {
   barren: {
     cursor: 'pointer',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    transition: 'all 120ms ease'
   },
   defaultLink: {
     cursor: 'pointer',
@@ -51,7 +52,7 @@ const LINK_VARIANTS = {
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
     color: 'BLUE_BRIGHT',
-
+    transition: 'all 120ms ease',
     '&:hover': {
       opacity: 0.8,
       color: 'BLUE_BRIGHT'
@@ -73,7 +74,7 @@ const LINK_VARIANTS = {
 
 const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
   /** Overide @mycrypto/ui global styles */
-  &&& {
+  && {
     ${variant({
       variants: LINK_VARIANTS
     })}
@@ -93,7 +94,7 @@ const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchor
 
 const SRouterLink = styled(RouterLink)<LinkStyleProps & RouterLinkProps>`
   /** Overide @mycrypto/ui global styles */
-  &&& {
+  && {
     ${variant({
       variants: LINK_VARIANTS
     })}

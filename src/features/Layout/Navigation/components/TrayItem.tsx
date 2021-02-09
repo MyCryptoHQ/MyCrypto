@@ -24,7 +24,7 @@ const SLink = styled(LinkApp)`
 `;
 
 export const TrayItem = ({ item, current }: { item: IRouteLink; current: boolean }) => (
-  <SLink style={{ width: '100%', padding: '10px 15px', margin: 0 }} href={item.to}>
+  <SLink style={{ width: '100%', padding: '10px 15px', margin: 0 }} href={item.to} variant="barren">
     <Box variant="rowAlign">
       <Icon
         color={COLORS.BLUE_DARK_SLATE}
