@@ -242,22 +242,28 @@ export const SwapAssets = (props: Props) => {
         />
       </Box>
       <Box mb={SPACING.SM}>
-        {exchangeRate && toAsset && fromAsset && expiration && estimatedGasFee && (
-          <SwapQuote
-            toAsset={toAsset}
-            fromAsset={fromAsset}
-            fromAssetRate={fromAssetRate}
-            toAmount={toAmount}
-            fromAmount={fromAmount}
-            exchangeRate={exchangeRate}
-            baseAsset={baseAsset}
-            baseAssetRate={baseAssetRate}
-            estimatedGasFee={estimatedGasFee}
-            settings={settings}
-            expiration={expiration}
-            handleRefreshQuote={handleRefreshQuote}
-          />
-        )}
+        {exchangeRate &&
+          toAsset &&
+          fromAsset &&
+          expiration &&
+          estimatedGasFee &&
+          toAmount &&
+          fromAmount && (
+            <SwapQuote
+              toAsset={toAsset}
+              fromAsset={fromAsset}
+              fromAssetRate={fromAssetRate}
+              toAmount={toAmount}
+              fromAmount={fromAmount}
+              exchangeRate={exchangeRate}
+              baseAsset={baseAsset}
+              baseAssetRate={baseAssetRate}
+              estimatedGasFee={estimatedGasFee}
+              settings={settings}
+              expiration={expiration}
+              handleRefreshQuote={handleRefreshQuote}
+            />
+          )}
       </Box>
       <StyledButton
         onClick={onSuccess}
