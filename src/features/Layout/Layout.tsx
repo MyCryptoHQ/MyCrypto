@@ -173,7 +173,7 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
                   id="DEMO_BANNER"
                   variables={{
                     $link: () => (
-                      <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                      <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="underlineLink">
                         {translateRaw('DEMO_BANNER_LINK_TEXT')}
                       </LinkApp>
                     )

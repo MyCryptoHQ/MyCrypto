@@ -46,6 +46,15 @@ const LINK_VARIANTS = {
     textDecoration: 'none',
     transition: 'all 120ms ease'
   },
+  underlineLink: {
+    color: 'inherit',
+    cursor: 'pointer',
+    textDecoration: 'underline',
+    transition: 'all 120ms ease',
+    '&:hover': {
+      textDecoration: 'none'
+    }
+  },
   defaultLink: {
     cursor: 'pointer',
     textDecoration: 'none',
@@ -115,6 +124,7 @@ const SRouterLink = styled(RouterLink)<LinkStyleProps & RouterLinkProps>`
 interface LinkProps {
   readonly href: string;
   readonly isExternal?: boolean;
+  readonly variant?: keyof typeof LINK_VARIANTS;
   onClick?(e: React.MouseEvent<HTMLAnchorElement>): void | undefined;
 }
 
