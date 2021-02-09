@@ -7,6 +7,7 @@ import {
   AssetIcon,
   Currency,
   Icon,
+  LinkApp,
   PoweredByText,
   SkeletonLoader,
   Tooltip,
@@ -204,10 +205,6 @@ const BreakDownBalanceTotal = styled.div`
   justify-content: space-between;
   font-size: ${FONT_SIZE.BASE};
   font-weight: normal;
-`;
-
-const ViewDetailsLink = styled.a`
-  color: ${COLORS.BLUE_BRIGHT};
 `;
 
 const PoweredBy = styled.div`
@@ -416,9 +413,9 @@ export default function WalletBreakdownView({
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
           {!isScanning && (
-            <ViewDetailsLink onClick={toggleShowChart}>
+            <LinkApp href="#" onClick={toggleShowChart}>
               {translate('WALLET_BREAKDOWN_MORE')}
-            </ViewDetailsLink>
+            </LinkApp>
           )}
           <PanelDivider />
           {isScanning ? (
