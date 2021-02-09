@@ -75,17 +75,16 @@ const LINK_VARIANTS = {
     textDecoration: 'none',
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
-    color: 'BLUE_BRIGHT',
     transition: 'all 120ms ease',
-    '&:hover': {
-      opacity: 0.8,
-      color: 'BLUE_BRIGHT'
-    },
+    color: 'BLUE_BRIGHT',
     svg: {
       fill: 'BLUE_BRIGHT'
     },
+    '&:hover': {
+      color: 'BLUE_LIGHT_DARKISH'
+    },
     '&:hover svg': {
-      fill: 'BLUE_BRIGHT'
+      fill: 'BLUE_LIGHT_DARKISH'
     },
     '&:active': {
       opacity: 1
