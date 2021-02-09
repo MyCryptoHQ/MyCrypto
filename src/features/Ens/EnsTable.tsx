@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Spinner } from '@components';
+import { BREAK_POINTS, SPACING } from '@theme';
 import { DomainNameRecord } from '@types';
 
 import MyDomains from './MyDomains';
@@ -18,6 +19,9 @@ const SpinnerContainer = styled.div`
 const EnsTableContainer = styled.div`
   max-height: 650px;
   overflow: auto;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-bottom: ${SPACING.BASE};
+  }
 `;
 
 export const EnsTable = ({
