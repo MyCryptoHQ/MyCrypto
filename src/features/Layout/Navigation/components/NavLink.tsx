@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Box, Icon, Text } from '@components';
+import { Box, Icon, LinkApp, Text } from '@components';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { IRouteLink } from '@types';
 
-const SLink = styled(Link)`
+const SLink = styled(LinkApp)`
   &:hover {
     opacity: 1;
   }
@@ -36,7 +35,7 @@ const SBox = styled(Box)`
 `;
 
 export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean }) => (
-  <SLink to={link.to}>
+  <SLink href={link.to}>
     <SBox
       variant="columnCenter"
       backgroundColor={current ? 'BG_GRAY' : 'transparent'}

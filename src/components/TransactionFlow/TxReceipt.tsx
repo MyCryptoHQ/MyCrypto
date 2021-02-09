@@ -7,7 +7,7 @@ import React, {
   useState
 } from 'react';
 
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Body, Box, Button, Icon, LinkApp, PoweredByText, TimeElapsed, Tooltip } from '@components';
@@ -545,11 +545,11 @@ export const TxReceiptUI = ({
             </Button>
           </Tooltip>
         )}
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+      <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
-      </Link>
+      </LinkApp>
       {txType === ITxType.DEFIZAP && <PoweredByText provider="ZAPPER" />}
     </div>
   );

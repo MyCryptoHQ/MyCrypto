@@ -2,10 +2,9 @@ import React from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BusyBottom } from '@components';
+import { BusyBottom, LinkApp } from '@components';
 import Button from '@components/Button';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
 import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
@@ -79,8 +78,9 @@ const WalletList = ({
         </>
       )}
       {accounts.length === 0 && (
+        // @todo: Refactor. use sagas to trigger redirect after import
         <SDemoButtonContainer>
-          <Link to={ROUTE_PATHS.DASHBOARD.path}>
+          <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
             <Button
               colorScheme={'warning'}
               disabled={isDemoMode}
@@ -88,7 +88,7 @@ const WalletList = ({
             >
               {translateRaw('DEMO_BUTTON_TEXT')}
             </Button>
-          </Link>
+          </LinkApp>
         </SDemoButtonContainer>
       )}
       <WalletsContainer>

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Box, CollapsibleTable, DashboardPanel, Icon, Link, Network, Text } from '@components';
+import { Box, CollapsibleTable, DashboardPanel, Icon, LinkApp, Network, Text } from '@components';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
 import { useFeatureFlags } from '@services';
 import { COLORS, SPACING } from '@theme';
@@ -48,14 +48,14 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
       heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}
       headingRight={
         featureFlags.CUSTOM_NETWORKS ? (
-          <Link>
-            <Box variant="rowAlign" onClick={toggleNetworkCreation}>
+          <LinkApp href="#" onClick={toggleNetworkCreation}>
+            <Box variant="rowAlign">
               <Icon type="add-bold" width="16px" />
               <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
                 {translateRaw('ADD_NETWORK')}
               </Text>
             </Box>
-          </Link>
+          </LinkApp>
         ) : undefined
       }
     >

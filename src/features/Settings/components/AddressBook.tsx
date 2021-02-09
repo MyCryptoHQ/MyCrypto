@@ -12,7 +12,7 @@ import {
   EthAddress,
   FixedSizeCollapsibleTable,
   Icon,
-  Link,
+  LinkApp,
   Network,
   RowDeleteOverlay,
   Text,
@@ -280,14 +280,14 @@ export default function AddressBook({
         </>
       }
       headingRight={
-        <Link>
-          <Box variant="rowAlign" onClick={toggleFlipped}>
+        <LinkApp href={'#'} onClick={toggleFlipped}>
+          <Box variant="rowAlign">
             <Icon type="add-bold" width="16px" />
             <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
               {translateRaw('ADD')}
             </Text>
           </Box>
-        </Link>
+        </LinkApp>
       }
     >
       <FixedSizeCollapsibleTable

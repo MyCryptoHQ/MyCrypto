@@ -307,7 +307,7 @@ const ZapCard = ({ config }: Props) => {
             <LinkApp href={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
               <ZapCardButton colorScheme={'inverted'}>{translateRaw('ADD')}</ZapCardButton>
             </LinkApp>
-            <a target="_blank" href={config.link} rel="noreferrer">
+            <LinkApp href={config.link} isExternal={true}>
               {config.withdrawTooltip ? (
                 <Tooltip tooltip={config.withdrawTooltip}>
                   <WithdrawButton />
@@ -315,7 +315,7 @@ const ZapCard = ({ config }: Props) => {
               ) : (
                 <WithdrawButton />
               )}
-            </a>
+            </LinkApp>
           </>
         )}
       </ZapCardContentBottom>

@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Box, Icon, Text } from '@components';
+import { Box, Icon, LinkApp, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -63,7 +62,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
         <Subscribe />
       </Box>
       <LinkSet isMobile={isMobile} />
-      <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} style={{ width: '100%' }}>
+      <LinkApp href={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
         <Box backgroundColor="BLUE_DARK_SLATE" variant="rowCenter" py={SPACING.BASE}>
           <Text
             fontSize="14px"
@@ -77,7 +76,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
           </Text>
           <Icon type="nav-desktop" width="20px" />
         </Box>
-      </Link>
+      </LinkApp>
     </Box>
   );
 };

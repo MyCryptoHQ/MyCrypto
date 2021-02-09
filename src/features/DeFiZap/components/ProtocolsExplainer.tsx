@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Link } from '@components';
+import { LinkApp } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -18,21 +18,27 @@ export default () => {
   return (
     <Container>
       <SubContainer>
-        <Link href="https://compound.finance">{translateRaw('PROTOCOLS_EXPLAINER_COMPOUND')}:</Link>
+        <LinkApp href="https://compound.finance" isExternal={true}>
+          {translateRaw('PROTOCOLS_EXPLAINER_COMPOUND')}:
+        </LinkApp>
         {translateRaw('PROTOCOLS_EXPLAINER_COMPOUND_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://kyber.network">{translateRaw('PROTOCOLS_EXPLAINER_KYBER')}:</Link>
+        <LinkApp href="https://kyber.network" isExternal={true}>
+          {translateRaw('PROTOCOLS_EXPLAINER_KYBER')}:
+        </LinkApp>
         {translateRaw('PROTOCOLS_EXPLAINER_KYBER_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://uniswap.io">{translateRaw('PROTOCOLS_EXPLAINER_UNISWAP')}:</Link>
+        <LinkApp href="https://uniswap.io" isExternal={true}>
+          {translateRaw('PROTOCOLS_EXPLAINER_UNISWAP')}:
+        </LinkApp>
         {translateRaw('PROTOCOLS_EXPLAINER_UNISWAP_DESC')}
       </SubContainer>
       <SubContainer>
-        <Link href="https://synthetix.exchange">
+        <LinkApp href="https://synthetix.exchange" isExternal={true}>
           {translateRaw('PROTOCOLS_EXPLAINER_SYNTHETIX')}:
-        </Link>
+        </LinkApp>
         {translateRaw('PROTOCOLS_EXPLAINER_SYNTHETIX_DESC')}
       </SubContainer>
     </Container>

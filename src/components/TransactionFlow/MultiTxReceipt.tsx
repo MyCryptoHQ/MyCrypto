@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { Link } from 'react-router-dom';
 
 import { Body, LinkApp, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
@@ -192,11 +191,11 @@ export default function MultiTxReceipt({
           {completeButtonText}
         </Button>
       )}
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+      <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
-      </Link>
+      </LinkApp>
     </div>
   );
 }
