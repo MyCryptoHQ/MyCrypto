@@ -221,19 +221,19 @@ export default function AccountList(props: AccountListProps) {
       headingRight={
         <Box variant="rowAlign">
           {dashboard && (
-            <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.MD}>
+            <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
               <Box variant="rowAlign">
-                <Icon type="edit" width="16px" />
-                <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                <Icon type="edit" width="1em" />
+                <Text ml={SPACING.XS} mb={0}>
                   {translateRaw('EDIT')}
                 </Text>
               </Box>
             </LinkApp>
           )}
-          <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
+          <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="opacityLink">
             <Box variant="rowAlign">
-              <Icon type="add-bold" width="16px" />
-              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+              <Icon type="add-bold" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
                 {translateRaw('ADD')}
               </Text>
             </Box>
