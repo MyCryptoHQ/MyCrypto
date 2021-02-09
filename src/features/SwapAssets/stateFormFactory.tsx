@@ -101,8 +101,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const calculateNewFromAmount = async (value: string) => {
-    const { fromAsset, toAsset } = state;
-    if (!fromAsset || !toAsset) {
+    const { fromAsset, toAsset, isCalculatingFromAmount } = state;
+    if (!fromAsset || !toAsset || isCalculatingFromAmount) {
       return;
     }
 
@@ -163,8 +163,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const calculateNewToAmount = async (value: string) => {
-    const { fromAsset, toAsset } = state;
-    if (!fromAsset || !toAsset) {
+    const { fromAsset, toAsset, isCalculatingToAmount } = state;
+    if (!fromAsset || !toAsset || isCalculatingToAmount) {
       return;
     }
 
@@ -276,6 +276,15 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     }
   };
 
+  const handleRefreshQuote = () => {
+    const { fromAmount, toAmount, lastChangedAmount } = state;
+    if (lastChangedAmount === LAST_CHANGED_AMOUNT.FROM) {
+      calculateNewToAmount(fromAmount);
+    } else {
+      calculateNewFromAmount(toAmount);
+    }
+  };
+
   return {
     fetchSwapAssets,
     setSwapAssets,
@@ -287,6 +296,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleToAmountChanged,
     handleAccountSelected,
     handleGasLimitEstimation,
+    handleRefreshQuote,
     formState: state
   };
 };

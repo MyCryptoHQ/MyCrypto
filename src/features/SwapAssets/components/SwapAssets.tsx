@@ -53,6 +53,7 @@ type ISwapProps = SwapFormState & {
   handleToAmountChanged(value: string): void;
   handleAccountSelected(account?: StoreAccount): void;
   handleGasLimitEstimation(): void;
+  handleRefreshQuote(): void;
 };
 
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -81,6 +82,7 @@ export const SwapAssets = (props: Props) => {
     handleToAmountChanged,
     handleAccountSelected,
     handleGasLimitEstimation,
+    handleRefreshQuote,
     approvalTx,
     exchangeRate,
     approvalGasLimit,
@@ -253,6 +255,7 @@ export const SwapAssets = (props: Props) => {
             estimatedGasFee={estimatedGasFee}
             settings={settings}
             expiration={expiration}
+            handleRefreshQuote={handleRefreshQuote}
           />
         )}
       </Box>
@@ -271,7 +274,9 @@ export const SwapAssets = (props: Props) => {
         }
         loading={isSubmitting}
       >
-        {translate('ACTION_6')}
+        {fromAsset && toAsset
+          ? translate('SWAP_FOR', { $from: fromAsset.ticker, $to: toAsset.ticker })
+          : translate('SWAP_ACTION_BUTTON')}
       </StyledButton>
       {txError && (
         <InlineMessage>

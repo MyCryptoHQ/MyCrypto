@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Amount, Box, Heading, TimeCountdown, Tooltip } from '@components';
+import { Amount, Box, Heading, Icon, Text, TimeCountdown, Tooltip } from '@components';
 import { getFiat } from '@config/fiats';
-import { COLORS } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ISettings, ISwapAsset } from '@types';
 import { bigify, convertToFiat } from '@utils';
@@ -19,6 +19,7 @@ interface Props {
   settings: ISettings;
   expiration: string;
   estimatedGasFee: string;
+  handleRefreshQuote(): void;
 }
 
 export const SwapQuote = ({
@@ -32,13 +33,20 @@ export const SwapQuote = ({
   baseAssetRate,
   estimatedGasFee,
   expiration,
-  settings
+  settings,
+  handleRefreshQuote
 }: Props) => (
   <Box border="1px solid #55b6e2" p="3">
-    <Box>
+    <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Heading m="0" fontWeight="bold">
         {translateRaw('YOUR_QUOTE')}
       </Heading>
+      <Box variant="rowAlign" onClick={() => handleRefreshQuote()}>
+        <Icon type="refresh" width="16px" />
+        <Text variant="defaultLink" ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+          {translateRaw('GET_NEW_QUOTE')}
+        </Text>
+      </Box>
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Box>

@@ -34,7 +34,8 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   handleFromAmountChanged: noOp,
   handleToAmountChanged: noOp,
   handleAccountSelected: noOp,
-  handleGasLimitEstimation: noOp
+  handleGasLimitEstimation: noOp,
+  handleRefreshQuote: noOp
 };
 
 function getComponent(props: React.ComponentProps<typeof SwapAssets>) {

@@ -1009,6 +1009,8 @@
     "BUSY_BOTTOM_METAMASK_1": "MetaMask Instructions",
     "EXPORT_MOBILE_NOTICE": "Some mobile dapp browsers prevent downloading files - in that case, you can copy the above text manually.",
     "EXPIRES_IN": "Expires in",
-    "YOUR_QUOTE": "Your Quote"
+    "YOUR_QUOTE": "Your Quote",
+    "GET_NEW_QUOTE": "Get New Quote",
+    "SWAP_FOR": "Swap $from for $to"
   }
 }
