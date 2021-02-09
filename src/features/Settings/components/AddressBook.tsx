@@ -258,7 +258,7 @@ export default function AddressBook({
           <EditableText
             truncate={true}
             value={notes}
-            saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
+            saveValue={(value) => updateContact({ address, label, network, notes: value, uuid })}
           />,
           <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
           /* eslint-enable react/jsx-key */
