@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { FocusEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
@@ -22,7 +22,7 @@ export interface IGeneralLookupFieldComponentProps {
   value: IReceiverAddress;
   options: LabeledAddress[];
   placeholder?: string;
-  onBlur?(event?: any): void;
+  onBlur?: FocusEventHandler;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress?(inputString: string): IReceiverAddress;
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
@@ -196,12 +196,12 @@ const GeneralLookupField = ({
               onSelect(option);
             }
           }}
-          onBlur={() => {
+          onBlur={(e) => {
             handleNewInput(inputValue.current);
             if (setFieldTouched) {
               setFieldTouched(name, true, false);
             }
-            if (onBlur) onBlur();
+            if (onBlur) onBlur(e);
             if (onChange) onChange(inputValue.current);
           }}
           onEnterKeyDown={handleEnterKeyDown}
