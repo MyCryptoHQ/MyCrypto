@@ -24,7 +24,7 @@ import {
   StoreAccount,
   TAddress
 } from '@types';
-import { isSameAddress } from '@utils';
+import { isSameAddress, useScreenSize } from '@utils';
 
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
@@ -187,6 +187,7 @@ function Interact(props: CombinedProps) {
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
   const [interactionDataFromURL, setInteractionDataFromURL] = useState<any>({});
   const { networks } = useNetworks();
+  const { isMobile } = useScreenSize();
   const { networkIdFromUrl, addressFromUrl, functionFromUrl, inputsFromUrl } = getParsedQueryString(
     props.location.search
   );
@@ -390,7 +391,12 @@ function Interact(props: CombinedProps) {
             </FieldWrapper>
 
             <ButtonWrapper>
-              <Button color={WHITE} disabled={wasContractInteracted} onClick={submitInteract}>
+              <Button
+                color={WHITE}
+                disabled={wasContractInteracted}
+                onClick={submitInteract}
+                fullwidth={isMobile}
+              >
                 {translateRaw('INTERACT_WITH_CONTRACT')}
               </Button>
             </ButtonWrapper>
