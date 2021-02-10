@@ -44,7 +44,8 @@ const LINK_VARIANTS = {
   barren: {
     cursor: 'pointer',
     textDecoration: 'none',
-    transition: 'all 120ms ease'
+    transition: 'all 120ms ease',
+    color: 'inherit'
   },
   underlineLink: {
     color: 'inherit',
