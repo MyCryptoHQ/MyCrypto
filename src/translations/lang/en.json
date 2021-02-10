@@ -287,7 +287,7 @@
     "ERROR_9": "Please enter a valid data value (Must be valid hexadecimal with `0x` appended) ",
     "ERROR_HIGH_TRANSACTION_FEE_HIGH": "Warning! High transaction fee: $fee. Please be sure you wish to proceed.",
     "ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH": "Danger! Very high transaction fee: $fee. Please be sure you wish to proceed.",
-    "ERROR_TRANSACTION_FEE_USE_LOWER": "Please note the transaction fee of $fee. It's recommended to use a lower transaction fee unless you need this transaction to be confirmed swiftly.",
+    "TRANSACTION_FEE_NOTICE": "FYI: this transaction has a fee of $fee. [Why?](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-gas)",
     "ETHER_ADDRESS_LOOKUP": "EtherAddressLookup",
     "ETHER_SECURITY_LOOKUP": "EtherSecurityLookup",
     "ETH_ADDRESS_PLACEHOLDER": "ETH Address or blockchain domain",
