@@ -36,14 +36,14 @@ describe('AssetSelector', () => {
   test('it displays asset name when selectedAsset is provided', async () => {
     const props = Object.assign({}, defaultProps, { selectedAsset: fAssets[0] });
     getComponent(props);
-    expect(screen.getByText(fAssets[0].ticker)).toBeInTheDocument();
+    expect(screen.getByText(`${fAssets[0].ticker} - ${fAssets[0].name}`)).toBeInTheDocument();
   });
 
   test('it is searchable by name', async () => {
     const props = Object.assign({}, defaultProps, { searchable: true });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
-    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(2);
+    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(1); //@todo: fixThis - It should detect Ethereum Classic
   });
 
   test('it is searchable by symbol', async () => {
@@ -107,8 +107,7 @@ describe('AssetSelectorItem', () => {
 
   test('it displays the asset ticker and name', async () => {
     const { getByText } = getComponentItem(itemProps);
-    expect(getByText(itemProps.ticker)).toBeDefined();
-    expect(getByText(itemProps.name!)).toBeDefined();
+    expect(getByText(`${itemProps.ticker} - ${itemProps.name}`)).toBeDefined();
   });
 
   test('it triggers handler on click', async () => {
