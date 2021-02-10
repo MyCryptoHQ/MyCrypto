@@ -15,7 +15,7 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
 import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
 
@@ -121,7 +121,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.INFO_CIRCLE,
-      message: translateRaw('CHECKSUM_ERROR')
+      message: translate('CHECKSUM_ERROR')
     };
   } else if (!isValidENSName(address) && !isValidMixedCaseETHAddress(address)) {
     // Is an invalid ens name & an invalid mixed-case address.

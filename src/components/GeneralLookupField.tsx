@@ -30,7 +30,7 @@ export interface IGeneralLookupFieldComponentProps {
   onChange?(input: string): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
-  setFieldError?(field: string, value: string | undefined): void;
+  setFieldError?(field: string, value: any): void;
 }
 
 const GeneralLookupField = ({
@@ -52,7 +52,10 @@ const GeneralLookupField = ({
   setFieldError
 }: IGeneralLookupFieldComponentProps) => {
   const { assets } = useAssets();
-  const errorMessage = typeof error === 'object' ? error.message : error;
+  const errorMessage =
+    error && Object.prototype.hasOwnProperty.call(error, 'message')
+      ? (error as ErrorObject).message
+      : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
 
