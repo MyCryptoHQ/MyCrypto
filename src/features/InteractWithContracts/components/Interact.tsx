@@ -412,6 +412,7 @@ function Interact(props: CombinedProps) {
                 handleGasSelectorChange={handleGasSelectorChange}
                 contractAddress={contractAddress}
                 interactionDataFromURL={interactionDataFromURL}
+                isMobile={isMobile}
               />
             )}
           </>
