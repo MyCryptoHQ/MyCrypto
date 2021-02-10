@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
-import { ExtendedContentPanel, LinkApp } from '@components';
+import { ExtendedContentPanel, LinkApp, Text } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
 import { GithubService } from '@services/ApiService';
 import translate from '@translations';
@@ -76,23 +76,6 @@ const SLinkApp = styled(LinkApp)`
 
     &:first-of-type {
       margin-right: 20px;
-    }
-  }
-`;
-
-const Footer = styled.p`
-  font-size: 16px;
-  font-weight: normal;
-  line-height: normal;
-  margin: 0;
-
-  a {
-    color: ${(props) => props.theme.link};
-    text-decoration: none;
-    font-weight: bold;
-
-    :hover {
-      color: ${(props) => props.theme.linkHover};
     }
   }
 `;
@@ -177,12 +160,12 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
             <SButton secondary={true}>{secondaryDownloads[3].name}</SButton>
           </SLinkApp>
         </OptionGroup>
-        <Footer>
+        <Text mb={0}>
           {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
           <LinkApp href={DOWNLOAD_MYCRYPTO_LINK} isExternal={true}>
             {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
           </LinkApp>
-        </Footer>
+        </Text>
       </DownloadAppWrapper>
     </ExtendedContentPanel>
   );
