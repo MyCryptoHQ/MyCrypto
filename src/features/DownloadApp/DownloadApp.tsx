@@ -153,7 +153,7 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
   return (
     <ExtendedContentPanel onBack={onBack}>
       <DownloadAppWrapper>
-        <Header>Hello {translate('DOWNLOAD_APP_TITLE')}</Header>
+        <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
         <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
         <ImgIcon src={desktopAppIcon} alt="Desktop" />
         <LinkApp href={primaryDownload.link} isExternal={true} target="_self">
