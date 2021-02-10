@@ -72,10 +72,10 @@ const ProductLink = ({
   link: string;
   onClick(): void;
 }) => (
-  <LinkApp width="48%" href={link} isExternal={true} onClick={onClick}>
+  <LinkApp width="48%" href={link} isExternal={true} onClick={onClick} variant="opacityLink">
     <Box variant="rowAlign" my={SPACING.SM}>
       <Icon type="nav-new-tab" width="24px" />
-      <Text ml={SPACING.SM} mb={0} color="BLUE_SKY" fontSize="14px">
+      <Text ml={SPACING.SM} mb={0} fontSize="14px">
         {title}
       </Text>
     </Box>

@@ -57,12 +57,12 @@ const LINK_VARIANTS = {
     }
   },
   opacityLink: {
-    color: 'BLUE_BRIGHT',
+    color: 'BLUE_SKY',
     cursor: 'pointer',
     textDecoration: 'none',
     transition: 'all 120ms ease',
     svg: {
-      fill: 'BLUE_BRIGHT'
+      fill: 'BLUE_SKY'
     },
     '&:hover': {
       opacity: '0.8'
