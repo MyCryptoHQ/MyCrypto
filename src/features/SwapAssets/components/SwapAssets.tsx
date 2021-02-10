@@ -27,7 +27,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, StoreAccount } from '@types';
-import { bigify, totalTxFeeToString } from '@utils';
+import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -164,6 +164,17 @@ export const SwapAssets = (props: Props) => {
   useEffect(() => {
     handleGasLimitEstimation();
   }, [approvalTx, account]);
+
+  useInterval(
+    () => {
+      if (expiration && getTimeDifference(parseInt(expiration, 10)) >= 0) {
+        handleRefreshQuote();
+      }
+    },
+    1000,
+    false,
+    []
+  );
 
   const estimatedGasFee =
     gasPrice &&
