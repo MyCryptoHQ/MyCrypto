@@ -54,6 +54,7 @@ const ExpiredOnWrapper = styled(Typography)`
 `;
 
 const SButton = styled(Button)`
+  width: 100%;
   margin-top: ${SPACING.SM};
 `;
 
