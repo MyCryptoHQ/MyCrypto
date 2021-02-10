@@ -133,7 +133,7 @@ const customStyles: Styles = {
   },
   menuList: (provided) => ({
     ...provided,
-    padding: 0
+    padding: '0px'
   }),
   control: (provided, state) => ({
     ...provided,
@@ -153,9 +153,10 @@ const customStyles: Styles = {
     display: 'inline-block'
   }),
   // Allow the valueComponent to handle it's own padding when present.
+  // If input is present in the field, it takes up 4px.
   valueContainer: (styles, state) => ({
     ...styles,
-    ...(state && state.hasValue && { paddingLeft: 0 })
+    paddingLeft: state.hasValue ? '6px' : '10px'
   })
 };
 

@@ -4,7 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
-import { AssetIcon, Box, Label, Selector, Typography } from '@components';
+import { AssetIcon, Box, Label, Selector, Text } from '@components';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ISwapAsset, TTicker, TUuid } from '@types';
 import { useEffectOnce } from '@vendor';
@@ -14,6 +15,7 @@ interface ItemProps {
   ticker: TTicker;
   showAssetIcon?: boolean;
   name?: string;
+  paddingLeft?: string;
   onClick?(): void;
 }
 
@@ -22,6 +24,7 @@ export function AssetSelectorItem({
   uuid,
   ticker,
   name,
+  paddingLeft,
   onClick
 }: ItemProps) {
   return (
@@ -29,18 +32,14 @@ export function AssetSelectorItem({
       display="flex"
       alignItems="center"
       flexDirection="row"
-      padding="11px 10px"
+      padding={`11px 10px 11px ${paddingLeft || '0px'}`}
       {...(onClick ? { onPointerDown: onClick } : null)}
       data-testid={`asset-selector-option-${ticker}`}
     >
       {showAssetIcon && <AssetIcon uuid={uuid} size={'1.5rem'} />}
-      <Typography
-        bold={false}
-        value={ticker}
-        style={{ marginLeft: showAssetIcon ? '10px' : '0px' }}
-      />
-      {name && <span>&nbsp; - &nbsp;</span>}
-      <Typography value={name} />
+      <Text ml={showAssetIcon ? '10px' : '0px'} mb={'0px'}>
+        {name ? `${ticker} - ${name}` : ticker}
+      </Text>
     </Box>
   );
 }
@@ -114,6 +113,7 @@ function AssetSelector({
               ticker={ticker}
               uuid={uuid}
               name={showAssetName && name}
+              paddingLeft={'15px'}
               onClick={() => selectOption(data)}
             />
           );
@@ -125,6 +125,7 @@ function AssetSelector({
               ticker={ticker}
               uuid={uuid}
               showAssetIcon={showAssetIcon}
+              paddingLeft={SPACING.XS}
               name={showAssetName ? name : undefined}
             />
           );

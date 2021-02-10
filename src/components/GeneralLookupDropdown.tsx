@@ -58,9 +58,10 @@ const GeneralLookupDropdown = ({
         <AccountSummary
           address={address}
           label={label}
+          paddingLeft={SPACING.BASE}
           onClick={() => selectOption({ address, label })}
         />
-        <Divider padding={'14px'} />
+        <Divider padding={SPACING.XS} />
       </>
     )}
     value={value && value.value ? { label: value.display, address: value.value } : undefined} // Allow the value to be undefined at the start in order to display the placeholder

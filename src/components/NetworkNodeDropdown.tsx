@@ -20,7 +20,7 @@ const SContainer = styled.div`
 `;
 
 const SContainerValue = styled(SContainer)`
-  padding: ${SPACING.XS};
+  padding: ${SPACING.XS} ${SPACING.XS} ${SPACING.XS} 0px;
   > img {
     position: absolute;
     right: ${SPACING.SM};

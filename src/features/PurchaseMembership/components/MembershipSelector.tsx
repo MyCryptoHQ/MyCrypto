@@ -12,7 +12,7 @@ import { IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  padding: 12px;
+  padding: 12px 12px 12px 0px;
 `;
 
 const DiscountTypography = styled(Typography)`

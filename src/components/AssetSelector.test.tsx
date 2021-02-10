@@ -5,6 +5,7 @@ import { fireEvent, screen, simpleRender } from 'test-utils';
 
 import { ETHUUID } from '@config';
 import { fAssets } from '@fixtures';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, TTicker, TUuid } from '@types';
 
@@ -88,7 +89,13 @@ function getComponentItem({
   onClick
 }: React.ComponentProps<typeof AssetSelectorItem>) {
   return simpleRender(
-    <AssetSelectorItem ticker={ticker} uuid={uuid} name={name} onClick={onClick} />
+    <AssetSelectorItem
+      ticker={ticker}
+      uuid={uuid}
+      name={name}
+      onClick={onClick}
+      paddingLeft={SPACING.SM}
+    />
   );
 }
 

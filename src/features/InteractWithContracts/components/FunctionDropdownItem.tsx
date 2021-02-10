@@ -27,7 +27,7 @@ const Sticker = styled.div<StickerProps>`
   background-color: ${(props) => (props.isRead ? COLORS.SUCCESS_GREEN : COLORS.BLUE_BRIGHT)};
   border-radius: 28px;
   color: ${COLORS.WHITE};
-  padding: 2px 8px;
+  padding: 2px 8px 2px 0px;
   font-size: 0.7em;
   font-weight: bold;
   display: flex;
