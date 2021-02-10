@@ -47,10 +47,10 @@ const LINK_RECIPES = {
     textDecoration: 'none'
   }
 };
+
 const LINK_VARIANTS = {
   barren: {
     ...LINK_RECIPES.default,
-
     color: 'inherit'
   },
   underlineLink: {
