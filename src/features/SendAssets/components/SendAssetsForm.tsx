@@ -134,11 +134,11 @@ const getTxFeeValidation = ({
           })}
         />
       );
-    case 'Error-Use-Lower':
+    case 'Warning-Use-Lower':
       return (
         <InlineMessage
-          type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `${fiat.symbol}${fee}` })}
+          type={InlineMessageType.WARNING}
+          value={translate('TRANSACTION_FEE_NOTICE', { $fee: `${fiat.symbol}${fee}` })}
         />
       );
     case 'Error-High-Tx-Fee':

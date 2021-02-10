@@ -190,7 +190,7 @@ export function isValidPath(dPath: string) {
 
 export type TxFeeResponseType =
   | 'Warning'
-  | 'Error-Use-Lower'
+  | 'Warning-Use-Lower'
   | 'Error-High-Tx-Fee'
   | 'Error-Very-High-Tx-Fee'
   | 'None'
@@ -277,12 +277,11 @@ export const validateTxFee = (
     return createTxFeeResponse('Error-High-Tx-Fee');
   }
 
-  // More than 5$ OR 0.025 ETH
+  // More than 15$ for ERC20 or 10$ for ETH
   if (
-    txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit('5', DEFAULT_DECIMAL))) ||
-    isGreaterThanEthFraction(0.025)
+    txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit(isERC20 ? '15' : '10', DEFAULT_DECIMAL)))
   ) {
-    return createTxFeeResponse('Error-Use-Lower');
+    return createTxFeeResponse('Warning-Use-Lower');
   }
 
   // Erc token where txFee is higher than amount
