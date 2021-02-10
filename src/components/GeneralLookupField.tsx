@@ -30,7 +30,7 @@ export interface IGeneralLookupFieldComponentProps {
   onChange?(input: string): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
-  setFieldError?(field: string, value: any): void;
+  setFieldError?(field: string, value: string | JSX.Element | undefined): void;
 }
 
 const GeneralLookupField = ({
