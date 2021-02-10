@@ -31,7 +31,6 @@ export const ActionButton = ({
   return (
     <LinkApp href={to} isExternal={external} onClick={handleClick}>
       <Button
-        onClick={handleClick}
         disabled={userAction.state != 'default' && userAction.state === 'completed'}
         fullwidth={true}
       >
