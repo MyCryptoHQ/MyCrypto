@@ -19,7 +19,6 @@ const NoTransactionsWrapper = styled.div`
 
 const NoTransactionsCenter = styled.div`
   align-items: center;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +57,7 @@ function NoTransactions() {
             id="RECENT_TX_LIST_NO_TRANSACTIONS_MORE"
             variables={{
               $link: () => (
-                <LinkApp href={ROUTE_PATHS.SEND.path} $textTransform="lowercase">
+                <LinkApp href={ROUTE_PATHS.SEND.path} $textTransform="capitalize">
                   {translate('SEND_LINK')}
                 </LinkApp>
               )

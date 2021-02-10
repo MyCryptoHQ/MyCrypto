@@ -527,7 +527,7 @@
     "RECENT_TX_LIST_LABEL_REP_MIGRATION": "Migrated REP v1 to v2",
     "RECENT_TX_LIST_LABEL_GOLEM_MIGRATION": "Migrated GOLEM v1 to v2",
     "RECENT_TX_LIST_NO_TRANSACTIONS": "Your MyCrypto Transactions Will Appear Here!",
-    "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "You can $link ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
+    "RECENT_TX_LIST_NO_TRANSACTIONS_MORE": "$link ETH or Tokens with any of your accounts on MyCrypto to see your transactions.",
     "RENEW_MEMBERSHIP": "Renew Membership",
     "REQUEST": "Request Assets",
     "REQUEST_FORM_CODE_HEADER": "Your Request",
