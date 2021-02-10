@@ -40,27 +40,30 @@ type LinkStyleProps = SpaceProps &
     $textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
   };
 
+const LINK_RECIPES = {
+  default: {
+    cursor: 'pointer',
+    transition: 'all 120ms ease',
+    textDecoration: 'none'
+  }
+};
 const LINK_VARIANTS = {
   barren: {
-    cursor: 'pointer',
-    textDecoration: 'none',
-    transition: 'all 120ms ease',
+    ...LINK_RECIPES.default,
+
     color: 'inherit'
   },
   underlineLink: {
+    ...LINK_RECIPES.default,
     color: 'inherit',
-    cursor: 'pointer',
     textDecoration: 'underline',
-    transition: 'all 120ms ease',
     '&:hover': {
       textDecoration: 'none'
     }
   },
   opacityLink: {
+    ...LINK_RECIPES.default,
     color: 'BLUE_SKY',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    transition: 'all 120ms ease',
     svg: {
       fill: 'BLUE_SKY'
     },
@@ -72,11 +75,9 @@ const LINK_VARIANTS = {
     }
   },
   defaultLink: {
-    cursor: 'pointer',
-    textDecoration: 'none',
+    ...LINK_RECIPES.default,
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
-    transition: 'all 120ms ease',
     color: 'BLUE_BRIGHT',
     svg: {
       fill: 'BLUE_BRIGHT'
