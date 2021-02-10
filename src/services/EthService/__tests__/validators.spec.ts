@@ -84,13 +84,12 @@ describe('validateTransactionFee', () => {
       type: 'Error-High-Tx-Fee' as TxFeeResponseType
     });
   });
-  it('return Error-Use-Lower', () => {
-    expect(validateTxFee('100', 40, 40, true, '21000', '10000')).toMatchObject({
-      type: 'Error-Use-Lower' as TxFeeResponseType
+  it('return Warning-Use-Lower', () => {
+    expect(validateTxFee('100', 40, 40, false, '21000', '15000')).toMatchObject({
+      type: 'Warning-Use-Lower' as TxFeeResponseType
     });
-    // Should take into account eth fraction 0.025
-    expect(validateTxFee('100', 50, 50, true, '21000', '5000', 5000)).toMatchObject({
-      type: 'Error-Use-Lower' as TxFeeResponseType
+    expect(validateTxFee('100', 40, 40, true, '21000', '18000')).toMatchObject({
+      type: 'Warning-Use-Lower' as TxFeeResponseType
     });
   });
 });
