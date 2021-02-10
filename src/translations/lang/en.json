@@ -664,7 +664,7 @@
     "SWAP_CONFIRM_TITLE": "Confirm Swap",
     "SWAP_INTRO": "To begin your swap process, we’ll first help you sell your ETH. We will walk you through the process below.",
     "SWAP_RATE_LABEL": "Rate",
-    "SWAP_RATE_TOOLTIP": "The total amount received may differ slightly from the displayed rate due to timing and fees associated with your transaction.",
+    "SWAP_RATE_TOOLTIP": "Your rate is approximate and may vary due to timing and fees associated with your transaction.",
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_SELECT_ACCOUNT_TOOLTIP": "MyCrypto allows you to send from any of the accounts you have added. Please select the account you’d like to send from.",
     "SWAP_SEND_AMOUNT": "Convert Amount",
@@ -1011,6 +1011,9 @@
     "EXPIRES_IN": "Expires in",
     "YOUR_QUOTE": "Your Quote",
     "GET_NEW_QUOTE": "Get New Quote",
-    "SWAP_FOR": "Swap $from for $to"
+    "SWAP_FOR": "Swap $from for $to",
+    "SWAP_AMOUNT_TOOLTIP": "This is confirming the amounts you want to convert and receive.",
+    "SWAP_TX_FEE_TOOLTIP": "This is an approximate maximum fee based off a combination of network and platform fees.",
+    "SWAP_EXPIRY_TOOLTIP": "Your quoted amount and rate will expire after a time. To refresh this, select \"Get New Quote.\""
   }
 }

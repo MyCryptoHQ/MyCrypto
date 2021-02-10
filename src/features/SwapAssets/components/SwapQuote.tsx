@@ -50,7 +50,7 @@ export const SwapQuote = ({
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Box>
-        {translateRaw('Amount')} <Tooltip tooltip="bla" />
+        {translateRaw('Amount')} <Tooltip tooltip={translateRaw('SWAP_AMOUNT_TOOLTIP')} />
       </Box>
       <Amount
         fiatColor={COLORS.BLUE_SKY}
@@ -80,7 +80,7 @@ export const SwapQuote = ({
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Box>
-        {translateRaw('MAX_TX_FEE')} <Tooltip tooltip="bla" />
+        {translateRaw('MAX_TX_FEE')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
       </Box>
       <Amount
         fiatColor={COLORS.BLUE_SKY}
@@ -94,7 +94,7 @@ export const SwapQuote = ({
     </Box>
     <Box variant="rowAlign" justifyContent="space-between">
       <Box>
-        {translateRaw('EXPIRES_IN')} <Tooltip tooltip="bla" />
+        {translateRaw('EXPIRES_IN')} <Tooltip tooltip={translateRaw('SWAP_EXPIRY_TOOLTIP')} />
       </Box>
       <Box>
         <TimeCountdown value={parseInt(expiration, 10)} />
