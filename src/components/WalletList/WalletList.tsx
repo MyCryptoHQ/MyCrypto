@@ -58,18 +58,18 @@ interface WalletListProps {
   wallets: IStory[];
   showHeader?: boolean;
   onSelect(name: WalletId): void;
-  calculateMargin?(index: number): string;
 }
 
 const WalletList = ({
   wallets,
   onSelect,
   showHeader,
-  calculateMargin,
   isDemoMode,
   accounts,
   importState
 }: Props) => {
+  const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
+
   return (
     <div>
       {showHeader && (
@@ -103,7 +103,7 @@ const WalletList = ({
                 name={translateRaw(walletInfo.lid)}
                 icon={walletInfo.icon}
                 description={translateRaw(walletInfo.description)}
-                margin={calculateMargin && calculateMargin(index)}
+                margin={calculateMargin(index)}
                 onClick={() => onSelect(wallet.name)}
                 isDisabled={wallet.isDisabled}
               />

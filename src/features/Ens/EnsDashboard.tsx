@@ -3,10 +3,11 @@ import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, PoweredByText } from '@components';
+import { Box, DashboardPanel, PoweredByText } from '@components';
 import { StoreContext } from '@services';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { useScreenSize } from '@utils';
 
 import { EnsTable } from './EnsTable';
 
@@ -32,6 +33,7 @@ const StyledLayout = styled.div`
 
 export default function EnsDashboard() {
   const { ensOwnershipRecords, isEnsFetched } = useContext(StoreContext);
+  const { isMobile } = useScreenSize();
   return (
     <StyledLayout>
       <DashboardWrapper>
@@ -40,9 +42,12 @@ export default function EnsDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
-          headingRight={<PoweredByText provider="ENS" />}
+          headingRight={!isMobile ? <PoweredByText provider="ENS" /> : <></>}
         >
           <EnsTable records={ensOwnershipRecords} isFetched={isEnsFetched} />
+          <Box display="flex" justifyContent="flex-start" pl={SPACING.MD} pb={SPACING.BASE}>
+            {isMobile && <PoweredByText provider="ENS" />}
+          </Box>
         </DashboardPanel>
       </DashboardWrapper>
     </StyledLayout>
