@@ -583,6 +583,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         <AssetSelector
           selectedAsset={values.asset}
           assets={userAssets}
+          searchable={true}
+          showAssetName={true}
           onSelect={(option: StoreAsset) => {
             setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
           }}

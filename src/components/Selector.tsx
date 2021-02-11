@@ -43,6 +43,9 @@ export interface SelectorProps<T> {
 // Fixes weird placement issues for react-select
 const Wrapper = styled('div')`
   cursor: pointer;
+  &:hover {
+    cursor: default;
+  }
 `;
 
 const IconWrapper = styled('div')`

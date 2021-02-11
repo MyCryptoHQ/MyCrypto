@@ -40,10 +40,10 @@ describe('AssetSelector', () => {
   });
 
   test('it is searchable by name', async () => {
-    const props = Object.assign({}, defaultProps, { searchable: true });
+    const props = Object.assign({}, defaultProps, { searchable: true, showAssetName: true });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
-    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(1); //@todo: fixThis - It should detect Ethereum Classic
+    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(1);
   });
 
   test('it is searchable by symbol', async () => {
