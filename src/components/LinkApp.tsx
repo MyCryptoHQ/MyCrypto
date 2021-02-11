@@ -57,7 +57,8 @@ const LINK_RECIPES = {
 
 const LINK_VARIANTS = {
   barren: {
-    ...LINK_RECIPES.default
+    ...LINK_RECIPES.default,
+    color: 'inherit'
   },
   underlineLink: {
     ...LINK_RECIPES.default,

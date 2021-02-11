@@ -93,7 +93,7 @@ export const LinkSet = ({ isMobile }: { isMobile: boolean }) => {
     <Box px={SPACING.SM} pb={SPACING.BASE} pt={SPACING.SM}>
       {COMMIT_HASH && (
         <Box variant="rowAlign" justifyContent="flex-end">
-          {'v'}
+          {'v.'}
           <LinkApp
             href={`https://github.com/MyCryptoHQ/MyCrypto/commit/${COMMIT_HASH}`}
             isExternal={true}
