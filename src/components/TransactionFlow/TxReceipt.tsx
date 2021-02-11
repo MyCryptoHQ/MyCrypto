@@ -464,16 +464,16 @@ export const TxReceiptUI = ({
             <SubHeading color={COLORS.BLUE_GREY} m="0">
               {translate('TX_HASH')}
               {': '}
-              <Body as="span" color={COLORS.BLUE_GREY} fontWeight="normal">
+              <Body as="span" fontWeight="normal">
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
                   <LinkApp
-                    color={COLORS.BLUE_GREY}
                     href={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
                     isExternal={true}
+                    variant="opacityLink"
                   >
-                    <Box display={'inline-flex'} alignItems={'center'}>
+                    <Box display="inline-flex" variant="rowAlign" color={COLORS.BLUE_GREY}>
                       {truncate(displayTxReceipt.hash)}
-                      <Icon type="link-out" color={COLORS.BLUE_GREY} ml={'1ch'} />
+                      <Icon type="link-out" ml={'1ch'} />
                     </Box>
                   </LinkApp>
                 )}

@@ -44,14 +44,21 @@ const LINK_RECIPES = {
   default: {
     cursor: 'pointer',
     transition: 'all 120ms ease',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    // https://mayashavin.com/articles/svg-icons-currentcolor
+    svg: {
+      fill: 'currentColor'
+    },
+    '&:hover svg': {
+      fill: 'currentColor'
+    }
   }
 };
 
 const LINK_VARIANTS = {
   barren: {
     ...LINK_RECIPES.default,
-    color: 'inherit'
+    color: 'currentColor'
   },
   underlineLink: {
     ...LINK_RECIPES.default,
@@ -64,9 +71,6 @@ const LINK_VARIANTS = {
   opacityLink: {
     ...LINK_RECIPES.default,
     color: 'BLUE_SKY',
-    svg: {
-      fill: 'BLUE_SKY'
-    },
     '&:hover': {
       opacity: '0.8'
     },
@@ -79,14 +83,8 @@ const LINK_VARIANTS = {
     fontSize: { _: 0, sm: 1 },
     lineHeight: { _: 0, sm: 1 },
     color: 'BLUE_BRIGHT',
-    svg: {
-      fill: 'BLUE_BRIGHT'
-    },
     '&:hover': {
       color: 'BLUE_LIGHT_DARKISH'
-    },
-    '&:hover svg': {
-      fill: 'BLUE_LIGHT_DARKISH'
     },
     '&:active': {
       opacity: 1
@@ -104,6 +102,7 @@ const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchor
       variants: LINK_VARIANTS
     })}
   }
+
   ${space}
   ${fontStyle}
   ${color}
@@ -124,6 +123,7 @@ const SRouterLink = styled(RouterLink)<LinkStyleProps & RouterLinkProps>`
       variants: LINK_VARIANTS
     })}
   }
+
   ${space}
   ${fontStyle}
   ${color}

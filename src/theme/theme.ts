@@ -16,8 +16,10 @@ breakpoints.lg = breakpoints[3];
 breakpoints.xl = breakpoints[4];
 breakpoints.xxl = breakpoints[5];
 
+const { link, linkHover, ...lightTheme } = light;
+
 // Combine the themes in a single object to be consummed by SC ThemeProvider
-const theme = Object.assign({}, light, {
+const theme = Object.assign({}, lightTheme, {
   breakpoints,
   colors: {
     WARNING: '#ef4747',
