@@ -1,14 +1,9 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
-import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
-import { FeatureFlagProvider } from '@services';
-import { createStore } from '@store';
 import { COLORS, theme } from '@theme';
 import { USE_HASH_ROUTER } from '@utils';
 
@@ -44,9 +39,7 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 
-const { store, persistor } = createStore();
-
-const RootComponent = () => {
+const App = () => {
   const Router: any = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
   return (
@@ -66,24 +59,4 @@ const RootComponent = () => {
   );
 };
 
-const Root = () => {
-  return (
-    <Provider store={store}>
-      <FeatureFlagProvider>
-        <PersistGate persistor={persistor}>
-          {(isHydrated: boolean) =>
-            isHydrated ? (
-              <RootComponent />
-            ) : (
-              <Box variant="rowCenter">
-                <AppLoading />
-              </Box>
-            )
-          }
-        </PersistGate>
-      </FeatureFlagProvider>
-    </Provider>
-  );
-};
-
-export default Root;
+export default App;
