@@ -16,26 +16,34 @@ import {
   Typography
 } from '@components';
 import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
-import { DWAccountDisplay, useContacts } from '@services';
+import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
-import { ExtendedAsset, Network, TAddress } from '@types';
-import { bigify, buildAddressUrl, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+import { DPath, ExtendedAsset, Network } from '@types';
+import { bigify, buildAddressUrl, fromTokenBase, useScreenSize } from '@utils';
 
 import { Downloader } from '../Downloader';
 
+export interface TableAccountDisplay extends DWAccountDisplay {
+  isSelected: boolean;
+  isDefaultConfig: boolean;
+}
+
+export interface ITableAccounts {
+  [key: string]: TableAccountDisplay;
+}
+
 interface DeterministicTableProps {
   isComplete: boolean;
-  accounts: DWAccountDisplay[];
+  accounts: ITableAccounts;
   network: Network;
   asset: ExtendedAsset;
-  selectedAccounts: {
-    address: TAddress;
-    derivationPath: string;
-  }[];
   freshAddressIndex: number;
   csv: string;
+  selectedDPath: DPath;
+  displayEmptyAddresses: boolean;
   generateFreshAddress(): void;
+  handleScanMoreAddresses(dpath: ExtendedDPath): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
@@ -168,8 +176,8 @@ const DPathType = styled(Typography)`
   line-height: 18px;
 `;
 
-const DPath = styled(Typography)`
-  color: ${COLORS.GREY_ATHENS};
+const DPathDisplay = styled(Typography)`
+  color: ${COLORS.GREY_DARK};
   line-height: 18px;
 `;
 
@@ -199,7 +207,7 @@ const MobileColumn = styled.div`
   }
 `;
 
-const GenerateAddressButton = styled.div<{ disabled: boolean }>`
+const BottomActionButton = styled.div<{ disabled: boolean }>`
   ${(p) =>
     p.disabled &&
     css`
@@ -256,21 +264,32 @@ const SDownloader = styled(Downloader)`
 const DeterministicTable = ({
   isComplete,
   accounts,
-  selectedAccounts,
   network,
   asset,
   freshAddressIndex,
+  displayEmptyAddresses,
+  selectedDPath,
   onSelect,
+  handleScanMoreAddresses,
   generateFreshAddress,
   handleUpdate,
   csv
 }: DeterministicTableProps) => {
   const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
-
-  const isSelected = (account: DWAccountDisplay) =>
-    selectedAccounts.find(({ address }) => isSameAddress(account.address, address)) ? true : false;
-
+  const allAccounts = Object.values(accounts);
+  const accountsToDisplay = allAccounts
+    .filter(
+      ({ balance, pathItem: { baseDPath } }) =>
+        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) || !balance?.isZero()
+    )
+    .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
+  const selectedDPathOffset =
+    Math.max(
+      ...allAccounts
+        .filter((acc) => acc.pathItem.baseDPath.value === selectedDPath.value)
+        .map(({ pathItem: { index } }) => index)
+    ) + 1; // Start scanning from the next index
   return (
     <Table>
       <Heading>
@@ -290,7 +309,7 @@ const DeterministicTable = ({
         <Label width="30px" />
         <Label width="50px" />
       </Heading>
-      {!accounts.length ? (
+      {!Object.values(accountsToDisplay).length ? (
         isComplete ? (
           <NoAccountContainer>
             <Icon type="info" />
@@ -325,9 +344,9 @@ const DeterministicTable = ({
         )
       ) : (
         <Body>
-          {accounts.map((account: DWAccountDisplay, index) => (
-            <Row key={index} onClick={() => onSelect(account)} isSelected={isSelected(account)}>
-              <SelectedContainer isSelected={isSelected(account)}>
+          {accountsToDisplay.map((account: TableAccountDisplay, index) => (
+            <Row key={index} onClick={() => onSelect(account)} isSelected={account.isSelected}>
+              <SelectedContainer isSelected={account.isSelected}>
                 <Icon type="check" />
               </SelectedContainer>
               <MobileColumn>
@@ -344,7 +363,7 @@ const DeterministicTable = ({
                 </AddressContainer>
                 <DPathContainer>
                   <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
-                  <DPath>({account.pathItem.path})</DPath>
+                  <DPathDisplay>({account.pathItem.path})</DPathDisplay>
                 </DPathContainer>
                 <ValueContainer>
                   <Typography>
@@ -371,37 +390,56 @@ const DeterministicTable = ({
               </LinkContainer>
             </Row>
           ))}
-          <GenerateAddressButton
-            onClick={generateFreshAddress}
-            disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
-          >
-            <Icon type="add" color="none" width="32px" />
+          {!displayEmptyAddresses ? (
+            <BottomActionButton
+              onClick={generateFreshAddress}
+              disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
+            >
+              <Icon type="add" color="none" width="32px" />
 
-            {!isComplete ? (
-              <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
+              {!isComplete ? (
+                <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
+                  <STypography>
+                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                  </STypography>
+                </Tooltip>
+              ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
+                <Tooltip
+                  tooltip={
+                    <Trans
+                      id="DETERMINISTIC_CANT_GENERATE_MORE"
+                      variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
+                    />
+                  }
+                >
+                  <STypography>
+                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                  </STypography>
+                </Tooltip>
+              ) : (
                 <STypography>
                   <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
                 </STypography>
-              </Tooltip>
-            ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
-              <Tooltip
-                tooltip={
-                  <Trans
-                    id="DETERMINISTIC_CANT_GENERATE_MORE"
-                    variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
-                  />
-                }
-              >
-                <STypography>
-                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                </STypography>
-              </Tooltip>
-            ) : (
+              )}
+            </BottomActionButton>
+          ) : (
+            <BottomActionButton
+              onClick={() => {
+                if (!isComplete) return;
+                handleScanMoreAddresses({
+                  ...selectedDPath,
+                  offset: selectedDPathOffset,
+                  numOfAddresses: 5
+                });
+              }}
+              disabled={!isComplete}
+            >
+              <Icon type="add" color="none" width="32px" />
               <STypography>
-                <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
+                <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
               </STypography>
-            )}
-          </GenerateAddressButton>
+            </BottomActionButton>
+          )}
         </Body>
       )}
     </Table>

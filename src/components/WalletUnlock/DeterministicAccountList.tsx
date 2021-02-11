@@ -3,22 +3,24 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Icon, PoweredByText, Spinner, Tooltip, Typography } from '@components';
-import { DWAccountDisplay } from '@services';
+import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { ExtendedAsset, Network, TAddress } from '@types';
-import { accountsToCSV, isSameAddress, useScreenSize } from '@utils';
+import { DPath, ExtendedAsset, Network } from '@types';
+import { accountsToCSV, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
 import { Downloader } from '../Downloader';
-import DeterministicTable from './DeterministicAccountTable';
+import DeterministicTable, {
+  ITableAccounts,
+  TableAccountDisplay
+} from './DeterministicAccountTable';
 
 const DeterministicAccountListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 800px;
-  min-height: 640px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: calc(100vw - 30px);
     min-height: auto;
@@ -94,79 +96,83 @@ interface DeterministicAccountListProps {
   isComplete: boolean;
   network: Network;
   freshAddressIndex: number;
+  displayEmptyAddresses: boolean;
+  selectedDPath: DPath;
+  handleScanMoreAddresses(dpath: ExtendedDPath): void;
   generateFreshAddress(): void;
   onUnlock(param: any): void;
   handleUpdate(asset: ExtendedAsset): void;
-}
-
-interface ISelectedAccount {
-  address: TAddress;
-  derivationPath: string;
 }
 
 export default function DeterministicAccountList({
   finishedAccounts,
   asset,
   isComplete,
-  onUnlock,
   network,
   freshAddressIndex,
+  displayEmptyAddresses,
+  selectedDPath,
   generateFreshAddress,
+  handleScanMoreAddresses,
+  onUnlock,
   handleUpdate
 }: DeterministicAccountListProps) {
+  const MAX_EMPTY_ADDRESSES = 5;
   const { isMobile } = useScreenSize();
+  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
 
-  const [selectedAccounts, setSelectedAccounts] = useState([] as ISelectedAccount[]);
+  const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
 
-  const accountsToUse = uniqBy(prop('address'), finishedAccounts).filter(
-    ({ isFreshAddress, balance }) => (balance && !balance.isZero()) || isFreshAddress
-  );
-
+  // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set and
   useEffect(() => {
-    const selected = uniqBy(
-      prop('address'),
-      accountsToUse.map(({ address, pathItem }) => ({
-        address,
-        derivationPath: pathItem.path
-      })) as ISelectedAccount[]
-    );
-    setSelectedAccounts(selected);
+    const tableAccs = accountsToUse.reduce((acc, idx) => {
+      if (!tableAccounts[idx.address]) {
+        acc[idx.address] = {
+          ...idx,
+          isDefaultConfig: true,
+          isSelected: (idx.balance && !idx.balance.isZero()) || false
+        };
+        return acc;
+      } else return acc;
+    }, tableAccounts);
+    setTableAccounts(tableAccs);
   }, [accountsToUse.length]);
 
+  const freshAddresses = uniqBy(prop('address'), finishedAccounts).filter(
+    ({ isFreshAddress }) => isFreshAddress
+  );
+  const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
   const handleSubmit = () => {
     onUnlock(selectedAccounts);
   };
 
-  const handleSelection = (account: DWAccountDisplay) => {
-    const newSelectedAccount: ISelectedAccount = {
-      address: account.address,
-      derivationPath: account.pathItem.path
+  const handleSelection = (account: TableAccountDisplay) => {
+    if (freshAddresses.length > MAX_EMPTY_ADDRESSES) return;
+    const newSelectedAccount: TableAccountDisplay = {
+      ...account,
+      isDefaultConfig: false,
+      isSelected: !account.isSelected
     };
-    const isPresent = selectedAccounts.find(({ address }) =>
-      isSameAddress(newSelectedAccount.address, address)
-    );
-    setSelectedAccounts(
-      isPresent
-        ? selectedAccounts.filter(
-            ({ address }) => !isSameAddress(newSelectedAccount.address, address)
-          )
-        : [...selectedAccounts, newSelectedAccount]
-    );
+    setTableAccounts({
+      ...tableAccounts,
+      [account.address]: newSelectedAccount
+    });
   };
-
   const csv = accountsToCSV(finishedAccounts, asset);
   return (
     <DeterministicAccountListWrapper>
       <TableWrapper>
         <DeterministicTable
           isComplete={isComplete}
-          accounts={accountsToUse}
-          selectedAccounts={selectedAccounts}
+          accounts={tableAccounts}
+          displayEmptyAddresses={displayEmptyAddresses}
+          selectedDPath={selectedDPath}
           generateFreshAddress={generateFreshAddress}
           network={network}
           asset={asset}
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
+          handleScanMoreAddresses={handleScanMoreAddresses}
           csv={csv}
           freshAddressIndex={freshAddressIndex}
         />

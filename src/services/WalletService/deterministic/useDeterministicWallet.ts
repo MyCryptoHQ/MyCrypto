@@ -179,11 +179,17 @@ const useDeterministicWallet = (
     });
   };
 
+  const scanMoreAddresses = (dpath: ExtendedDPath) => {
+    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    service.getAccounts(state.session, [dpath]);
+  };
+
   return {
     state,
     requestConnection,
     updateAsset,
     addDPaths,
+    scanMoreAddresses,
     generateFreshAddress
   };
 };

@@ -39,20 +39,23 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     ...getDPaths([network], WalletId.TREZOR_NEW),
     ...TREZOR_DERIVATION_PATHS
   ]);
+  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
+  const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
     numOfAddresses: numOfAccountsToCheck
   }));
-  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
+
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
     state,
     requestConnection,
     updateAsset,
     generateFreshAddress,
-    addDPaths
+    addDPaths,
+    scanMoreAddresses
   } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleNullConnect = () => {
@@ -73,12 +76,15 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     return (
       <DeterministicWallet
         state={state}
-        defaultDPath={defaultDPath}
+        selectedDPath={selectedDPath}
         assets={assets}
         assetToUse={assetToUse}
         network={network}
+        dpaths={dpaths}
+        setSelectedDPath={setSelectedDPath}
         updateAsset={updateAsset}
         addDPaths={addDPaths}
+        scanMoreAddresses={scanMoreAddresses}
         generateFreshAddress={generateFreshAddress}
         handleAssetUpdate={handleAssetUpdate}
         onUnlock={onUnlock}

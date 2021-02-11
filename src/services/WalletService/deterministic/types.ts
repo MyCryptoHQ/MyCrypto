@@ -18,7 +18,7 @@ export interface DWAccountDisplay {
     path: string;
     index: number;
   };
-  balance: BigNumber | undefined;
+  balance?: BigNumber;
   isFreshAddress?: boolean;
 }
 
@@ -48,6 +48,7 @@ export interface IUseDeterministicWallet {
   requestConnection(network: Network, asset: ExtendedAsset): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
+  scanMoreAddresses(dpath: ExtendedDPath): void;
   generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
 }
 
