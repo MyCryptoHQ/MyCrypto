@@ -68,7 +68,7 @@ describe('SwapAssetsFlow', () => {
       target: { value: '1' }
     });
     await waitFor(() =>
-      expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/price', expect.anything())
+      expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/quote', expect.anything())
     );
     mockAxios.mockResponse({ data: fSwapQuote });
     await waitFor(() => expect(getAllByDisplayValue('1', { exact: false })).toBeDefined());

@@ -27,7 +27,7 @@ export type TUseTxMulti = () => {
   state: TxMultiState;
   init(txs: any[], account: any, network: any): Promise<void>;
   initWith(
-    getTxs: () => Promise<Partial<ITxObject & { label: string; type: ITxType }>[]>,
+    getTxs: () => Promise<Partial<ITxObject & { label?: string; type?: ITxType }>[]>,
     account: any,
     network: any
   ): Promise<void>;

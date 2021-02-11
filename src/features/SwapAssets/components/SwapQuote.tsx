@@ -17,7 +17,7 @@ interface Props {
   baseAsset: Asset;
   baseAssetRate: number;
   settings: ISettings;
-  expiration: string;
+  expiration: number;
   estimatedGasFee: string;
   handleRefreshQuote(): void;
 }
@@ -97,7 +97,7 @@ export const SwapQuote = ({
         {translateRaw('EXPIRES_IN')} <Tooltip tooltip={translateRaw('SWAP_EXPIRY_TOOLTIP')} />
       </Box>
       <Box>
-        <TimeCountdown value={parseInt(expiration, 10)} />
+        <TimeCountdown value={expiration} />
       </Box>
     </Box>
   </Box>

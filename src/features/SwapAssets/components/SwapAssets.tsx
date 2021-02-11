@@ -167,7 +167,7 @@ export const SwapAssets = (props: Props) => {
 
   useInterval(
     () => {
-      if (expiration && getTimeDifference(parseInt(expiration, 10)) >= 0) {
+      if (expiration && getTimeDifference(expiration) >= 0) {
         handleRefreshQuote();
       }
     },

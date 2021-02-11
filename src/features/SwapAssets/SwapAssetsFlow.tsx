@@ -4,6 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
+import { appendSender } from '@helpers';
 import { useTxMulti } from '@hooks';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
@@ -12,7 +13,6 @@ import { bigify, useStateReducer } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
 
 import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
-import { getTradeOrder } from './helpers';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { IAssetPair, SwapFormState } from './types';
 
@@ -60,7 +60,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     gasPrice,
     expiration,
     approvalTx,
-    isEstimatingGas
+    isEstimatingGas,
+    transactions: tradeTransactions
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -129,7 +130,11 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
             rate: bigify(exchangeRate!),
             lastChangedAmount
           };
-          initWith(getTradeOrder(pair, account), account, account.network);
+          initWith(
+            () => Promise.resolve(tradeTransactions.map(appendSender(account.address))),
+            account,
+            account.network
+          );
           setAssetPair(pair);
         }
       }

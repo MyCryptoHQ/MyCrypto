@@ -2,8 +2,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { WALLET_STEPS } from '@components';
-import { appendGasPrice, appendSender } from '@helpers';
-import { DexService, getAssetByTicker, getAssetByUUID } from '@services';
+import { getAssetByTicker, getAssetByUUID } from '@services';
 import {
   IHexStrTransaction,
   ISwapAsset,
@@ -18,22 +17,6 @@ import {
   StoreAsset
 } from '@types';
 import { hexToString, weiToFloat } from '@utils';
-
-import { IAssetPair, LAST_CHANGED_AMOUNT } from './types';
-
-export const getTradeOrder = (assetPair: IAssetPair, account: StoreAccount) => async () => {
-  const { lastChangedAmount, fromAsset, fromAmount, toAsset, toAmount } = assetPair;
-  const { address, network } = account;
-  const isLastChangedTo = lastChangedAmount === LAST_CHANGED_AMOUNT.TO;
-  // Trade order details depends on the direction of the asset exchange.
-  const getOrderDetails = isLastChangedTo
-    ? DexService.instance.getOrderDetailsTo
-    : DexService.instance.getOrderDetailsFrom;
-
-  return getOrderDetails(fromAsset, toAsset, (isLastChangedTo ? toAmount : fromAmount).toString())
-    .then((txs) => txs.map(appendSender(address)))
-    .then((txs) => Promise.all(txs.map(appendGasPrice(network))));
-};
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,

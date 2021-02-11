@@ -1,6 +1,7 @@
 import { ITxData, ITxToAddress, ITxValue, TAddress } from '@types';
 
 export interface DexTrade {
+  price: string;
   to: ITxToAddress;
   value: ITxValue;
   gas: string; // Wei

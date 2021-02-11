@@ -130,7 +130,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         isCalculatingFromAmount: true
       }));
 
-      const { price, sellAmount, ...rest } = await DexService.instance.getTokenPriceTo(
+      const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
         fromAsset,
         toAsset,
         value
@@ -193,7 +193,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const { price, buyAmount, ...rest } = await DexService.instance.getTokenPriceFrom(
+      const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
         fromAsset,
         toAsset,
         value
