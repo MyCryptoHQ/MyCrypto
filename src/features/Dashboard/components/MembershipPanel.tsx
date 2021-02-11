@@ -1,12 +1,11 @@
 import React from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import expiredIcon from '@assets/images/membership/membership-expired.svg';
 import defaultIcon from '@assets/images/membership/membership-none.svg';
-import { Button, DashboardPanel, Link, Typography } from '@components';
+import { Button, DashboardPanel, LinkApp, Typography } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 import { AppState, getMemberships, getMembershipState, membershipExpiryDate } from '@store';
@@ -54,12 +53,8 @@ const ExpiredOnWrapper = styled(Typography)`
   font-style: italic;
 `;
 
-const SLink = styled(Link)`
-  color: ${COLORS.BLUE_BRIGHT};
-  margin-top: ${SPACING.SM};
-`;
-
 const SButton = styled(Button)`
+  width: 100%;
   margin-top: ${SPACING.SM};
 `;
 
@@ -67,12 +62,7 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
   ${(props) => !props.isMemberOrExpired && 'opacity: 0.25;'}
 `;
 
-function MembershipPanel({
-  history,
-  memberships,
-  membershipState,
-  expiryDate
-}: Props & RouteComponentProps) {
+function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
   const allMemberships = memberships ? uniq(flatten(memberships.map((m) => m.memberships))) : [];
@@ -107,23 +97,23 @@ function MembershipPanel({
                 <Typography as="div">{translateRaw('EXPIRES_ON')}</Typography>
                 <Typography as="div">{new Date(expiryDate).toLocaleDateString()}</Typography>
               </ExpiryWrapper>
-              <SLink onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
+              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path} mt={SPACING.SM}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
-              </SLink>
-              <Link
+              </LinkApp>
+              <LinkApp
                 href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_REQUEST_REWARDS)}
-                rel="noreferrer"
+                isExternal={true}
               >
                 <SButton colorScheme={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
-              </Link>
+              </LinkApp>
             </>
           )}
           {membershipState === MembershipState.NOTMEMBER && (
             <>
               <Typography as="div">{translateRaw('MEMBERSHIP_NOTMEMBER')}</Typography>
-              <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
-                {translateRaw('BECOME_MEMBER')}
-              </SButton>
+              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
+                <SButton>{translateRaw('BECOME_MEMBER')}</SButton>
+              </LinkApp>
             </>
           )}
           {membershipState === MembershipState.EXPIRED && (
@@ -132,17 +122,17 @@ function MembershipPanel({
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>
                 <Typography as="div">{new Date(expiryDate).toLocaleDateString()}</Typography>
               </ExpiryWrapper>
-              <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
-                {translateRaw('RENEW_MEMBERSHIP')}
-              </SButton>
+              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
+                <SButton>{translateRaw('RENEW_MEMBERSHIP')}</SButton>
+              </LinkApp>
             </>
           )}
           {membershipState === MembershipState.ERROR && (
             <>
               <Typography as="div">{translate('MEMBERSHIP_ERROR')}</Typography>
-              <SButton onClick={() => history.push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}>
-                {translateRaw('BUY_MEMBERSHIP')}
-              </SButton>
+              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
+                <SButton>{translateRaw('BUY_MEMBERSHIP')}</SButton>
+              </LinkApp>
             </>
           )}
         </TextWrapper>
@@ -159,4 +149,4 @@ const mapStateToProps = (state: AppState) => ({
 const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector>;
 
-export default withRouter(connector(MembershipPanel));
+export default connector(MembershipPanel);

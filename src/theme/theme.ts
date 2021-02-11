@@ -16,10 +16,14 @@ breakpoints.lg = breakpoints[3];
 breakpoints.xl = breakpoints[4];
 breakpoints.xxl = breakpoints[5];
 
+const { link, linkHover, ...lightTheme } = light;
+
 // Combine the themes in a single object to be consummed by SC ThemeProvider
-const theme = Object.assign({}, light, {
+const theme = Object.assign({}, lightTheme, {
   breakpoints,
   colors: {
+    WARNING: '#ef4747',
+
     BLUE_BRIGHT: '#1eb8e7',
     BLUE_LIGHT: '#007896',
     BLUE_LIGHTEST: '#E4EDFD',
@@ -94,23 +98,6 @@ const TEXT_VARIANTS = {
     fontSize: 1,
     lineHeight: 1,
     color: { _: 'BLUE_DARK_SLATE', sm: 'GREYISH_BROWN' }
-  },
-  inlineLink: {
-    fontSize: 1,
-    lineHeight: 1,
-    color: 'BLUE_BRIGHT',
-    '&:hover': {
-      color: '#005166'
-    },
-    fontWeight: 'bold'
-  },
-  defaultLink: {
-    fontSize: { _: 0, sm: 1 },
-    lineHeight: { _: 0, sm: 1 },
-    color: 'BLUE_BRIGHT',
-    '&:hover': {
-      color: '#005166'
-    }
   },
   tableHeading: {
     textTransform: 'uppercase',

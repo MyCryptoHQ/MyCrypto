@@ -2,8 +2,7 @@ import React, { useContext } from 'react';
 
 import styled from 'styled-components';
 
-import { AssetIcon, Currency, DashboardPanel } from '@components';
-import Icon from '@components/Icon';
+import { AssetIcon, Box, Currency, DashboardPanel, Icon, LinkApp } from '@components';
 import { getFiat } from '@config/fiats';
 import { getNetworkById, StoreContext, useSettings } from '@services/Store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -26,7 +25,7 @@ const InfoTitle = styled.div`
   margin-bottom: 2px;
 `;
 
-const InfoValue = styled.div`
+const InfoValue = styled(Box)`
   font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   word-break: break-all;
@@ -53,13 +52,11 @@ const DetailsHeadingWrapper = styled.div`
 
 const StyledIcon = styled(Icon)`
   height: auto;
-  cursor: pointer;
   transition: 100ms transform;
   &:hover {
     transition: 100ms transform;
     transform: scale(1.1);
   }
-
   width: 40px;
   padding: ${SPACING.SM};
 `;
@@ -73,16 +70,8 @@ const TokenIcon = styled.div`
   display: flex;
 `;
 
-const ResourceIcon = styled(StyledIcon)`
+const SIcon = styled(StyledIcon)`
   width: 46px;
-  margin-left: -${SPACING.SM};
-  margin-right: ${SPACING.SM};
-`;
-
-const SocialIcon = styled(StyledIcon)`
-  width: 46px;
-  margin-left: -${SPACING.SM};
-  margin-right: ${SPACING.BASE};
 `;
 
 interface InfoPieceProps {
@@ -155,9 +144,9 @@ export function TokenDetails(props: Props) {
         </DetailsHeadingWrapper>
       }
       headingRight={
-        <a href={contractUrl} target="_blank" rel="noreferrer">
+        <LinkApp href={contractUrl} isExternal={true}>
           <Icon type="expand" />
-        </a>
+        </LinkApp>
       }
       padChildren={true}
     >
@@ -195,31 +184,27 @@ export function TokenDetails(props: Props) {
       </TwoColumnsWrapper>
       {filteredSocial.length > 0 && (
         <Section>
-          <InfoPiece
-            title={translateRaw('RESOURCES')}
-            value={
-              <>
-                {website && (
-                  <a href={website} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="website" color="none" />
-                  </a>
-                )}
-                {whitepaper && (
-                  <a href={whitepaper} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="whitepaper" />
-                  </a>
-                )}
-                {social &&
-                  filteredSocial.map((s: Social) => {
-                    return (
-                      <a key={s} href={social[s]} target="_blank" rel="noreferrer">
-                        <SocialIcon alt={s} type={supportedSocialNetworks[s]} />
-                      </a>
-                    );
-                  })}
-              </>
-            }
-          />
+          <InfoWrapper>
+            <InfoTitle>{translateRaw('RESOURCES')}</InfoTitle>
+            <InfoValue ml={`-${SPACING.SM}`}>
+              {website && (
+                <LinkApp href={website} isExternal={true} variant="barren">
+                  <SIcon type="website" />
+                </LinkApp>
+              )}
+              {whitepaper && (
+                <LinkApp href={whitepaper} isExternal={true} variant="barren">
+                  <SIcon type="whitepaper" />
+                </LinkApp>
+              )}
+              {social &&
+                filteredSocial.map((s: Social) => (
+                  <LinkApp key={s} href={social[s] as string} isExternal={true} variant="barren">
+                    <SIcon alt={s} type={supportedSocialNetworks[s]} />
+                  </LinkApp>
+                ))}
+            </InfoValue>
+          </InfoWrapper>
         </Section>
       )}
     </DashboardPanel>

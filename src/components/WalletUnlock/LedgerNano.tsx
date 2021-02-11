@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, BusyBottom, Heading, Icon, NewTabLink, Spinner } from '@components';
+import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
@@ -58,7 +58,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             <Trans
               id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
               variables={{
-                $newTabLink: () => <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+                $link: () => (
+                  <LinkApp href="https://mycrypto.com" isExternal={true}>
+                    MyCrypto.com
+                  </LinkApp>
+                )
               }}
             />
           </div>

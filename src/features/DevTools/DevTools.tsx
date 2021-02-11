@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Checkbox, Link } from '@components';
+import { Checkbox, LinkApp } from '@components';
 import { useDevTools, useFeatureFlags } from '@services';
 import { FeatureFlag } from '@services/FeatureFlag';
 import { DataContext } from '@services/Store';
@@ -14,10 +14,6 @@ import { IS_PROD } from '@utils';
 import { ErrorContext } from '../ErrorHandling';
 import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
-
-const SLink = styled(Link)`
-  font-weight: 600;
-`;
 
 const SToggle = styled.button`
   position: fixed;
@@ -61,7 +57,11 @@ const DBTools = () => {
   return (
     <div style={{ marginBottom: '1em' }}>
       You can choose to
-      <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values.
+      <LinkApp href="#" onClick={() => resetAppDb()}>
+        {' '}
+        Reset
+      </LinkApp>{' '}
+      the database to it's default values.
     </div>
   );
 };

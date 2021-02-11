@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { LinkApp } from '@components';
 import { BREAK_POINTS } from '@theme';
 
 import { ads } from './constants';
@@ -43,17 +43,10 @@ export default function BannerAd() {
 
   return (
     <AdWrapper>
-      {isExternalLink ? (
-        <a href={ad.url} target="_blank" rel="noreferrer">
-          <BannerImageDesktop src={ad.srcDesktop} />
-          <BannerImageMobile src={ad.srcMobile} />
-        </a>
-      ) : (
-        <Link to={ad.url}>
-          <BannerImageDesktop src={ad.srcDesktop} />
-          <BannerImageMobile src={ad.srcMobile} />
-        </Link>
-      )}
+      <LinkApp href={ad.url} isExternal={isExternalLink}>
+        <BannerImageDesktop src={ad.srcDesktop} />
+        <BannerImageMobile src={ad.srcMobile} />
+      </LinkApp>
     </AdWrapper>
   );
 }

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
@@ -6,13 +6,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import desktopAppIcon from '@assets/images/icn-desktop-app.svg';
-import { ExtendedContentPanel } from '@components';
+import { ExtendedContentPanel, LinkApp, Text } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, GITHUB_RELEASE_NOTES_URL, OS } from '@config';
 import { GithubService } from '@services/ApiService';
 import translate from '@translations';
-import { getFeaturedOS, goBack, openLink } from '@utils';
-
-import { AppDownloadItem } from './types';
+import { getFeaturedOS, goBack } from '@utils';
 
 const DownloadAppWrapper = styled.div`
   display: flex;
@@ -64,7 +62,11 @@ const OptionGroup = styled.div`
   }
 `;
 
-const Option = styled(Button)`
+const SButton = styled(Button)`
+  width: 100%;
+`;
+
+const SLinkApp = styled(LinkApp)`
   width: 320px;
   margin-bottom: 15px;
   font-size: 17px;
@@ -74,23 +76,6 @@ const Option = styled(Button)`
 
     &:first-of-type {
       margin-right: 20px;
-    }
-  }
-`;
-
-const Footer = styled.p`
-  font-size: 16px;
-  font-weight: normal;
-  line-height: normal;
-  margin: 0;
-
-  a {
-    color: ${(props) => props.theme.link};
-    text-decoration: none;
-    font-weight: bold;
-
-    :hover {
-      color: ${(props) => props.theme.linkHover};
     }
   }
 `;
@@ -144,11 +129,6 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
     })();
   }, [setDownloadItems]);
 
-  const openDownloadLink = useCallback((item: AppDownloadItem) => {
-    const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
-    openLink(item.link, target);
-  }, []);
-
   const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
   const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
   const onBack = () => goBack(history);
@@ -159,31 +139,33 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
         <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
         <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
         <ImgIcon src={desktopAppIcon} alt="Desktop" />
-        <PrimaryButton onClick={() => openDownloadLink(primaryDownload)}>
-          {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
-        </PrimaryButton>
+        <LinkApp href={primaryDownload.link} isExternal={true} target="_self">
+          <PrimaryButton>
+            {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
+          </PrimaryButton>
+        </LinkApp>
         <OptionGroup>
-          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[0])}>
-            {secondaryDownloads[0].name}
-          </Option>
-          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[1])}>
-            {secondaryDownloads[1].name}
-          </Option>
+          <SLinkApp href={secondaryDownloads[0].link} isExternal={true} target="_self">
+            <SButton secondary={true}>{secondaryDownloads[0].name}</SButton>
+          </SLinkApp>
+          <SLinkApp href={secondaryDownloads[1].link} isExternal={true} target="_self">
+            <SButton secondary={true}>{secondaryDownloads[1].name}</SButton>
+          </SLinkApp>
         </OptionGroup>
         <OptionGroup>
-          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[2])}>
-            {secondaryDownloads[2].name}
-          </Option>
-          <Option secondary={true} onClick={() => openDownloadLink(secondaryDownloads[3])}>
-            {secondaryDownloads[3].name}
-          </Option>
+          <SLinkApp href={secondaryDownloads[2].link} isExternal={true} target="_self">
+            <SButton secondary={true}>{secondaryDownloads[2].name}</SButton>
+          </SLinkApp>
+          <SLinkApp href={secondaryDownloads[3].link} isExternal={true} target="_self">
+            <SButton secondary={true}>{secondaryDownloads[3].name}</SButton>
+          </SLinkApp>
         </OptionGroup>
-        <Footer>
+        <Text mb={0}>
           {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
-          <a href={DOWNLOAD_MYCRYPTO_LINK} target="_blank" rel="noreferrer">
+          <LinkApp href={DOWNLOAD_MYCRYPTO_LINK} isExternal={true}>
             {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
-          </a>
-        </Footer>
+          </LinkApp>
+        </Text>
       </DownloadAppWrapper>
     </ExtendedContentPanel>
   );

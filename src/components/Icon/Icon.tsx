@@ -110,6 +110,7 @@ import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
+import linkOutIcon from '@assets/images/link-out.svg';
 import membership from '@assets/images/membership/membership-none.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
@@ -145,6 +146,7 @@ const svgIcons = {
   'arrow-right': arrowRight,
   'faucet-icon': faucetIcon,
   'down-caret': downCaret,
+  'link-out': linkOutIcon,
 
   /* Tooltips*/
   informational,
@@ -271,7 +273,22 @@ interface Props extends Omit<React.ComponentProps<typeof SInlineSVG>, 'src'> {
   color?: string;
 }
 
+// This specific svg is designed with strokes instead of fill
+// so we give make sure the fill is not set.
+const SWebsiteIcon = styled(SInlineSVG)`
+  &&&& {
+    fill: transparent;
+  }
+  &&&&:hover {
+    fill: transparent;
+  }
+  stroke: ${({ color }) => color && color};
+`;
+
 const Icon: React.FunctionComponent<Props> = ({ type, color, ...props }) => {
+  if (type === 'website') {
+    return <SWebsiteIcon src={svgIcons[type as SvgIcons]} color={color} {...props} />;
+  }
   return (
     <>
       {svgIcons[type as SvgIcons] && (

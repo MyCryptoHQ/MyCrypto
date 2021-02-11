@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-import prop from 'ramda/src/prop';
-import uniqBy from 'ramda/src/uniqBy';
-
-import { NewTabLink } from '@components';
+import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
@@ -21,6 +18,7 @@ import {
 } from '@services';
 import { Trans, translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
+import { prop, uniqBy } from '@vendor';
 
 import DeterministicWallet from './DeterministicWallet';
 import UnsupportedNetwork from './UnsupportedNetwork';
@@ -80,7 +78,11 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           <Trans
             id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
             variables={{
-              $newTabLink: () => <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+              $link: () => (
+                <LinkApp href="https://mycrypto.com" isExternal={true}>
+                  MyCrypto.com
+                </LinkApp>
+              )
             }}
           />
         </div>

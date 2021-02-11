@@ -27,7 +27,7 @@ export function TokenPanel() {
     }, [] as StoreAsset[])
     .filter(isNotExcludedAsset(settings.excludedAssets));
 
-  const handleScanTokens = async (asset?: ExtendedAsset) => {
+  const handleScanTokens = (asset?: ExtendedAsset) => {
     dispatch(scanTokens({ assets: asset && [asset] }));
   };
 

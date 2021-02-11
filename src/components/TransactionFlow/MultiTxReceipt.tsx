@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
-import { Link } from 'react-router-dom';
 
-import { Body, LinkOut, SubHeading, TimeElapsed, Tooltip } from '@components';
+import { Body, LinkApp, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useRates, useSettings } from '@services';
 import { COLORS } from '@theme';
@@ -112,13 +111,9 @@ export default function MultiTxReceipt({
                 </div>
                 {transaction.txHash && (
                   <div>
-                    <LinkOut
-                      text={transaction.txHash as string}
-                      truncate={truncate}
-                      link={txUrl}
-                      showIcon={false}
-                      fontColor={COLORS.BLUE_SKY}
-                    />
+                    <LinkApp href={txUrl} isExternal={true} color={COLORS.BLUE_SKY}>
+                      {truncate(transaction.txHash)}
+                    </LinkApp>
                   </div>
                 )}
               </div>
@@ -196,11 +191,11 @@ export default function MultiTxReceipt({
           {completeButtonText}
         </Button>
       )}
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+      <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
-      </Link>
+      </LinkApp>
     </div>
   );
 }

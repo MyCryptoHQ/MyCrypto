@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import runningIcon from '@assets/images/icn-running.svg';
-import { Query, Tooltip } from '@components';
+import { LinkApp, Query, Tooltip } from '@components';
 import { IQueryResults } from '@components/Query';
 import {
   MANDATORY_TRANSACTION_QUERY_PARAMS,
@@ -54,9 +53,9 @@ const createQueryWarning = ({
       <BannerText>{translate(contentTranslationKey)}</BannerText>
       <Tooltip type="questionWhite" tooltip={translateRaw(tooltipTranslationKey)} />
     </BannerContent>
-    <Link to={ROUTE_PATHS.DASHBOARD.path}>
+    <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
       <CancelBtn>{translateRaw('CANCEL_ACTION')}</CancelBtn>
-    </Link>
+    </LinkApp>
   </BannerContainer>
 );
 

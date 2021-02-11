@@ -34,7 +34,13 @@ export const TopItem = ({
         transition: 'all 300ms ease'
       }}
     >
-      <LinkApp isExternal={isExternal} href={href ? href : '#'} color={color} onClick={onClick}>
+      <LinkApp
+        isExternal={isExternal}
+        href={href ? href : '#'}
+        color={color}
+        onClick={onClick}
+        variant={'barren'}
+      >
         <Box variant="columnCenter">
           <Icon type={icon} height="24px" color={currentColor} />
           <Text

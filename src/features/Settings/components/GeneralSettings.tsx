@@ -3,10 +3,9 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { DashboardPanel, SubHeading, Switch, Tooltip } from '@components';
+import { DashboardPanel, LinkApp, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
 import {
   AppState,
@@ -111,12 +110,12 @@ const GeneralSettings = ({
           <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
         </SubHeading>
         <SettingsControl>
-          <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
+          <LinkApp href={ROUTE_PATHS.SETTINGS_IMPORT.path}>
             <SettingsButton secondary={true}>{translate('SETTINGS_IMPORT_LABEL')}</SettingsButton>
-          </Link>
-          <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path} style={{ marginLeft: SPACING.SM }}>
+          </LinkApp>
+          <LinkApp href={ROUTE_PATHS.SETTINGS_EXPORT.path} ml={SPACING.SM}>
             <SettingsButton secondary={true}>{translate('SETTINGS_EXPORT_LABEL')}</SettingsButton>
-          </Link>
+          </LinkApp>
         </SettingsControl>
       </SettingsField>
       <SettingsField>

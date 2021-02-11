@@ -10,7 +10,7 @@ import {
   EditableAccountLabel,
   EthAddress,
   Icon,
-  LinkOut,
+  LinkApp,
   Spinner,
   Tooltip,
   Typography
@@ -363,7 +363,12 @@ const DeterministicTable = ({
               </MobileColumn>
               <LinkContainer>
                 <Tooltip tooltip={'View on Etherscan'}>
-                  <LinkOut link={buildAddressUrl(network.blockExplorer, account.address)} />
+                  <LinkApp
+                    href={buildAddressUrl(network.blockExplorer, account.address)}
+                    isExternal={true}
+                  >
+                    <Icon type="link-out" />
+                  </LinkApp>
                 </Tooltip>
               </LinkContainer>
             </Row>

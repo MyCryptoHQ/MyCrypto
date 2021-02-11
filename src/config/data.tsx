@@ -1,6 +1,3 @@
-import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-
-import translate from '@translations';
 import { NetworkId, TURL } from '@types';
 
 import packageJson from '../../package.json';
@@ -8,14 +5,6 @@ import packageJson from '../../package.json';
 // Displays in the footer
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;
-
-// Displays at the top of the site, make message empty string to remove.
-// Type can be primary, warning, danger, success, info, or blank for grey.
-// Message must be a JSX element if you want to use HTML.
-export const ANNOUNCEMENT_TYPE = '';
-export const ANNOUNCEMENT_MESSAGE = (
-  <React.Fragment>{translate('ANNOUNCEMENT_MESSAGE')}</React.Fragment>
-);
 
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';

@@ -8,11 +8,12 @@ import nextIcon from '@assets/images/next-page-button.svg';
 import prevIcon from '@assets/images/previous-page-button.svg';
 import {
   Account,
+  Box,
   Button,
+  Icon,
   InlineMessage,
   Input,
-  LinkOut,
-  NewTabLink,
+  LinkApp,
   Selector,
   Spinner,
   Typography
@@ -361,10 +362,11 @@ export function DeterministicWalletsClass({
           `${bigify(fromWei(wallet.value, 'ether')).toFixed(4)} ${ticker}`
         )}
       </div>,
-      <LinkOut
-        key="wallet-row-3"
-        link={buildAddressUrl(network.blockExplorer, wallet.address as TAddress)}
-      />
+      <Box key="wallet-row-3" display={'inline-flex'} alignItems={'center'}>
+        <LinkApp href={buildAddressUrl(network.blockExplorer, wallet.address as TAddress)}>
+          <Icon type="link-out" />
+        </LinkApp>
+      </Box>
     ];
   };
 
@@ -382,9 +384,9 @@ export function DeterministicWalletsClass({
         <SDropdown>
           <label>
             {translate('DPATH')}{' '}
-            <NewTabLink href={HELP_ARTICLE.DPATH}>
+            <LinkApp href={HELP_ARTICLE.DPATH} isExternal={true}>
               <img width="16px" src={questionSVG} />
-            </NewTabLink>
+            </LinkApp>
           </label>
           <Selector
             value={currentDPath}

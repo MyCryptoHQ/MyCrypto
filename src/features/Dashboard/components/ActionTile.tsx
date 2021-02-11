@@ -1,12 +1,11 @@
 import React from 'react';
 
 import { Button, Typography } from '@mycrypto/ui';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { LinkApp } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { TURL } from '@types';
-import { isUrl, openLink } from '@utils';
+import { isUrl } from '@utils';
 
 import { Action } from '../types';
 
@@ -97,27 +96,20 @@ const SDescription = styled('div')`
   }
 `;
 
-type Props = RouteComponentProps & Action;
-function ActionTile({ icon, faded, title, description, link, history }: Props) {
-  const action = (dest: string | TURL) => {
-    if (isUrl(dest)) {
-      openLink(dest); // go to external url
-    } else {
-      history.push(dest); // go to app route
-    }
-  };
-
+function ActionTile({ icon, faded, title, description, link }: Action) {
   return (
     <SContainer>
-      <SButton basic={true} faded={faded} onClick={() => action(link)}>
-        <img src={icon} alt={title} />
-        <Typography as="div">
-          <STitle isLonger={title.length > 15}>{title}</STitle>
-          <SDescription>{description}</SDescription>
-        </Typography>
-      </SButton>
+      <LinkApp href={link} isExternal={isUrl(link)}>
+        <SButton basic={true} faded={faded}>
+          <img src={icon} alt={title} />
+          <Typography as="div">
+            <STitle isLonger={title.length > 15}>{title}</STitle>
+            <SDescription>{description}</SDescription>
+          </Typography>
+        </SButton>
+      </LinkApp>
     </SContainer>
   );
 }
 
-export default withRouter(ActionTile);
+export default ActionTile;

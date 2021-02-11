@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { ProvidersWrapper } from 'test-utils';
 
-import { Button, NewTabLink } from '@components';
+import { Button, LinkApp } from '@components';
 import { Fiats, MYCRYPTO_FAUCET_LINK } from '@config';
 import { ZapReceiptBanner } from '@features/DeFiZap/components/ZapReceiptBanner';
 import { defaultZapId, IZapConfig, ZAPS_CONFIG } from '@features/DeFiZap/config';
@@ -212,18 +212,19 @@ export const transactionReceiptFaucet = wrapInProvider(
       txType={ITxType.FAUCET}
       customBroadcastText={translateRaw('FAUCET_SUCCESS')}
       completeButton={() => (
-        <NewTabLink
+        <LinkApp
           href={generateTweet(
             translateRaw('FAUCET_TWEET', {
               $faucet_url: MYCRYPTO_FAUCET_LINK
             })
           )}
+          isExternal={true}
         >
           <Button colorScheme={'inverted'} fullwidth={true} className="TransactionReceipt-tweet">
             <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
             <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
           </Button>
-        </NewTabLink>
+        </LinkApp>
       )}
       customComponent={() => (
         <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />

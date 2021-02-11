@@ -35,7 +35,7 @@ const BackIcon = styled(Icon)`
 interface Props {
   setShowDetailsView(setShowDetailsView: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
-  scanTokens(asset?: ExtendedAsset): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): void;
 }
 
 export function AddToken(props: Props) {

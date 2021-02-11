@@ -7,10 +7,20 @@ import React, {
   useState
 } from 'react';
 
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Body, Box, Button, LinkOut, PoweredByText, TimeElapsed, Tooltip } from '@components';
+import {
+  Body,
+  Box,
+  Button,
+  Icon,
+  LinkApp,
+  PoweredByText,
+  Text,
+  TimeElapsed,
+  Tooltip
+} from '@components';
 import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
@@ -464,16 +474,19 @@ export const TxReceiptUI = ({
             <SubHeading color={COLORS.BLUE_GREY} m="0">
               {translate('TX_HASH')}
               {': '}
-              <Body as="span" color={COLORS.BLUE_GREY} fontWeight="normal">
+              <Body as="span" fontWeight="normal">
                 {displayTxReceipt && txConfig.network && txConfig.network.blockExplorer && (
-                  <LinkOut
-                    inline={true}
-                    fontColor={COLORS.BLUE_GREY}
-                    fontSize="16px"
-                    text={displayTxReceipt.hash}
-                    truncate={truncate}
-                    link={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
-                  />
+                  <Box display="inline-flex" variant="rowAlign" color={COLORS.BLUE_GREY}>
+                    <Text as="span">{truncate(displayTxReceipt.hash)}</Text>
+                    <LinkApp
+                      href={buildTxUrl(txConfig.network.blockExplorer, displayTxReceipt.hash)}
+                      isExternal={true}
+                      variant="opacityLink"
+                      display="inline-flex"
+                    >
+                      <Icon type="link-out" ml={'1ch'} height="1em" />
+                    </LinkApp>
+                  </Box>
                 )}
                 {!displayTxReceipt && translate('PENDING_STATE')}
               </Body>
@@ -543,11 +556,11 @@ export const TxReceiptUI = ({
             </Button>
           </Tooltip>
         )}
-      <Link to={ROUTE_PATHS.DASHBOARD.path}>
+      <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
-      </Link>
+      </LinkApp>
       {txType === ITxType.DEFIZAP && <PoweredByText provider="ZAPPER" />}
     </div>
   );

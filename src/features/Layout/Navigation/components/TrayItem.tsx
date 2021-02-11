@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Box, Icon, Text } from '@components';
+import { Box, Icon, LinkApp, Text } from '@components';
 import { COLORS } from '@theme';
 import { IRouteLink } from '@types';
 
-const SLink = styled(Link)`
+const SLink = styled(LinkApp)`
   &:hover {
     background-color: ${COLORS.BLUE_DARK_SLATE};
     p {
@@ -25,7 +24,7 @@ const SLink = styled(Link)`
 `;
 
 export const TrayItem = ({ item, current }: { item: IRouteLink; current: boolean }) => (
-  <SLink style={{ width: '100%', padding: '10px 15px', margin: 0 }} to={item.to}>
+  <SLink style={{ width: '100%', padding: '10px 15px', margin: 0 }} href={item.to} variant="barren">
     <Box variant="rowAlign">
       <Icon
         color={COLORS.BLUE_DARK_SLATE}

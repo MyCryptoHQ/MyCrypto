@@ -10,7 +10,7 @@ import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
 import { useEffectOnce, useTimeoutFn } from '@vendor';
 
-import { ExternalLink } from './ExternalLink';
+import { TrayLink } from './TrayLink';
 
 export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   const [displayingMessage, setDisplayingMessage] = useState(false);
@@ -128,7 +128,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
         >
           {translateRaw('NAVIGATION_PARTNERS')}
         </Text>
-        {items.map((item, i) => item.type === 'external' && <ExternalLink key={i} item={item} />)}
+        {items.map((item, i) => item.type === 'external' && <TrayLink key={i} item={item} />)}
       </Box>
     </>
   );

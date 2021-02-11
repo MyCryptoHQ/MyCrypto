@@ -12,9 +12,7 @@ import {
   Button,
   ExtendedContentPanel,
   InlineMessage,
-  Link,
-  NewTabLink,
-  RouterLink,
+  LinkApp,
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
@@ -140,14 +138,14 @@ export default function Faucet() {
                 id="FAUCET_NO_ACCOUNTS"
                 variables={{
                   $link_add_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_ADD_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   ),
                   $link_create_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_CREATE_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   )
                 }}
               />
@@ -163,11 +161,12 @@ export default function Faucet() {
           <CenterText>
             {translate('FAUCET_NOT_SURE')}
             <br />
-            <Link>
-              <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
-                {translate('VISIT_KB')}
-              </NewTabLink>
-            </Link>
+            <LinkApp
+              href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}
+              isExternal={true}
+            >
+              {translate('VISIT_KB')}
+            </LinkApp>
           </CenterText>
         </Form>
       )}
@@ -226,12 +225,13 @@ export default function Faucet() {
             <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
           )}
           completeButton={() => (
-            <NewTabLink
+            <LinkApp
               href={generateTweet(
                 translateRaw('FAUCET_TWEET', {
                   $faucet_url: MYCRYPTO_FAUCET_LINK
                 })
               )}
+              isExternal={true}
             >
               <Button
                 colorScheme={'inverted'}
@@ -241,7 +241,7 @@ export default function Faucet() {
                 <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
                 <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
               </Button>
-            </NewTabLink>
+            </LinkApp>
           )}
         />
       )}

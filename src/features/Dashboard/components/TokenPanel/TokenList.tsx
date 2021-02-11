@@ -10,7 +10,7 @@ import {
   DashboardPanel,
   Heading,
   Icon,
-  RouterLink,
+  LinkApp,
   SkeletonLoader,
   Text,
   Tooltip
@@ -78,7 +78,7 @@ interface TokenListProps {
   setShowDetailsView(show: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
   setCurrentToken(token: StoreAsset): void;
-  handleScanTokens(): Promise<void>;
+  handleScanTokens(): void;
 }
 
 export function TokenList(props: TokenListProps) {
@@ -97,24 +97,27 @@ export function TokenList(props: TokenListProps) {
       heading={
         <>
           {translateRaw('TOKENS')}{' '}
-          <Tooltip width="16px" tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
+          <Tooltip width="1rem" tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
         </>
       }
       headingRight={
         <Box variant="rowAlign">
-          <Box variant="rowAlign" marginRight={SPACING.MD} onClick={() => handleScanTokens()}>
-            <Icon type="refresh" width="16px" />
-            <Text variant="defaultLink" ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-              {translateRaw('SCAN_TOKENS_SHORT')}
-            </Text>
-          </Box>
-
-          <Box variant="rowAlign" onClick={() => setShowAddToken(true)}>
-            <Icon type="add-bold" width="16px" />
-            <Text variant="defaultLink" ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
-              {translateRaw('ADD_TOKEN_SHORT')}
-            </Text>
-          </Box>
+          <LinkApp href="#" variant="opacityLink" onClick={() => handleScanTokens()}>
+            <Box variant="rowAlign" mr={SPACING.BASE}>
+              <Icon type="refresh" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('SCAN_TOKENS_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
+          <LinkApp href="#" variant="opacityLink" onClick={() => setShowAddToken(true)}>
+            <Box variant="rowAlign">
+              <Icon type="add-bold" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('ADD_TOKEN_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
         </Box>
       }
       padChildren={false}
@@ -158,9 +161,9 @@ export function TokenList(props: TokenListProps) {
                   id="NO_TOKENS_CONTENT"
                   variables={{
                     $link: () => (
-                      <RouterLink to={ROUTE_PATHS.SWAP.path}>
+                      <LinkApp href={ROUTE_PATHS.SWAP.path}>
                         {translateRaw('GET_SOME_HERE')}
-                      </RouterLink>
+                      </LinkApp>
                     )
                   }}
                 />

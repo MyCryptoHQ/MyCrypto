@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from '@assets/images/mobile/google-play-badge.png';
-import { Body, Box, Button, Heading, LinkApp, NewTabLink, Text } from '@components';
+import { Body, Box, Button, Heading, LinkApp, Text } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK, WALLETS_CONFIG } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
 import translate from '@translations';
@@ -30,10 +30,6 @@ const AppLinkContainer = styled.div`
   > * {
     margin-top: ${SPACING.SM};
   }
-`;
-
-const SImgContainer = styled.div`
-  width: 100%;
 `;
 
 function InstallTrunk() {
@@ -69,7 +65,7 @@ function InstallTrunk() {
 
           <AppLinkContainer>
             {provider.install && provider.install.appStore && (
-              <LinkApp href={provider.install.appStore}>
+              <LinkApp href={provider.install.appStore} isExternal={true}>
                 <img src={AppStoreBadgeIMG} />
               </LinkApp>
             )}
@@ -92,24 +88,17 @@ const InstallMetaMask = () => {
     <>
       <Box variant="columnCenter" mb={SPACING.BASE}>
         <Web3ImgContainer>
-          <SImgContainer>
-            <img src={provider.icon} />
-          </SImgContainer>
+          <img src={provider.icon} />
         </Web3ImgContainer>
-        <a
-          href={provider.install ? provider.install.getItLink : undefined}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <LinkApp href={provider.install!.getItLink!} isExternal={true}>
           <Button>{translate('PROVIDER_DOWNLOAD', { $provider: provider.name })}</Button>
-        </a>
+        </LinkApp>
       </Box>
       <Box style={{ textAlign: 'center' }} mt={4}>
         {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
-        <NewTabLink
-          content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
-          href={DOWNLOAD_MYCRYPTO_LINK}
-        />
+        <LinkApp href={DOWNLOAD_MYCRYPTO_LINK} isExternal={true}>
+          {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
+        </LinkApp>
       </Box>
     </>
   );

@@ -5,7 +5,7 @@ import translate from '@translations';
 import { makeBlob } from '@utils';
 
 import { default as Button } from './Button';
-import { default as Link } from './Link';
+import { default as LinkApp } from './LinkApp';
 
 export const Downloader: React.FC<{
   data: string | TObject;
@@ -21,11 +21,13 @@ export const Downloader: React.FC<{
   };
 
   return (
-    <Link
+    <LinkApp
       data-testid="export-json-link"
-      fullWidth={true}
+      width={'100%'}
       href={blob}
+      isExternal={true}
       download={fileName}
+      target="_self"
       onClick={handleDownload}
       {...props}
     >
@@ -35,6 +37,6 @@ export const Downloader: React.FC<{
           {translate('SETTINGS_EXPORT_DOWNLOAD')}
         </Button>
       )}
-    </Link>
+    </LinkApp>
   );
 };
