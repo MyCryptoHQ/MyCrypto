@@ -27,12 +27,17 @@ interface Props {
 
 const ContractDropdownItem = ({
   option,
+  paddingLeft,
   onSelect
 }: {
   option: { name: string };
+  paddingLeft?: string;
   onSelect?(option: { name: string }): void;
 }) => (
-  <div style={{ padding: '12px 15px 12px 0px' }} onClick={() => onSelect && onSelect(option)}>
+  <div
+    style={{ padding: `12px 15px 12px ${paddingLeft || '0px'}` }}
+    onClick={() => onSelect && onSelect(option)}
+  >
     {option.name}
   </div>
 );

@@ -153,10 +153,10 @@ const customStyles: Styles = {
     display: 'inline-block'
   }),
   // Allow the valueComponent to handle it's own padding when present.
-  // If input is present in the field, it takes up 4px.
+  // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    paddingLeft: state.hasValue ? '6px' : '10px'
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px'
   })
 };
 
