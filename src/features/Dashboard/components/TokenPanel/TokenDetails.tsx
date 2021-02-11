@@ -52,13 +52,11 @@ const DetailsHeadingWrapper = styled.div`
 
 const StyledIcon = styled(Icon)`
   height: auto;
-  cursor: pointer;
   transition: 100ms transform;
   &:hover {
     transition: 100ms transform;
     transform: scale(1.1);
   }
-
   width: 40px;
   padding: ${SPACING.SM};
 `;
@@ -191,7 +189,7 @@ export function TokenDetails(props: Props) {
             <InfoValue ml={`-${SPACING.SM}`}>
               {website && (
                 <LinkApp href={website} isExternal={true} variant="barren">
-                  <SIcon type="website" color="white" />
+                  <SIcon type="website" />
                 </LinkApp>
               )}
               {whitepaper && (

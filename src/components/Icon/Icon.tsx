@@ -273,7 +273,22 @@ interface Props extends Omit<React.ComponentProps<typeof SInlineSVG>, 'src'> {
   color?: string;
 }
 
+// This specific svg is designed with strokes instead of fill
+// so we give make sure the fill is not set.
+const SWebsiteIcon = styled(SInlineSVG)`
+  &&&& {
+    fill: transparent;
+  }
+  &&&&:hover {
+    fill: transparent;
+  }
+  stroke: ${({ color }) => color && color};
+`;
+
 const Icon: React.FunctionComponent<Props> = ({ type, color, ...props }) => {
+  if (type === 'website') {
+    return <SWebsiteIcon src={svgIcons[type as SvgIcons]} color={color} {...props} />;
+  }
   return (
     <>
       {svgIcons[type as SvgIcons] && (

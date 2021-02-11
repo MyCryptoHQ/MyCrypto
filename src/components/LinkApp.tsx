@@ -57,8 +57,7 @@ const LINK_RECIPES = {
 
 const LINK_VARIANTS = {
   barren: {
-    ...LINK_RECIPES.default,
-    color: 'currentColor'
+    ...LINK_RECIPES.default
   },
   underlineLink: {
     ...LINK_RECIPES.default,
