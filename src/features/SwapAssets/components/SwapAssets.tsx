@@ -104,11 +104,6 @@ export const SwapAssets = (props: Props) => {
   const baseAssetRate = getAssetRate(baseAsset);
   const fromAssetRate = fromAsset && getAssetRate(fromAsset as Asset);
 
-  // Accounts with a balance of the chosen asset
-  const filteredAccounts = fromAsset
-    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount)
-    : [];
-
   // show only unused assets and assets owned by the user
   const filteredAssets = getUnselectedAssets(assets, fromAsset, toAsset);
   const ownedAssets = filteredAssets.filter((a) =>
@@ -183,6 +178,11 @@ export const SwapAssets = (props: Props) => {
       gasPrice,
       bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
     );
+
+  // Accounts with a balance of the chosen asset
+  const filteredAccounts = fromAsset
+    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
+    : [];
 
   return (
     <Box mt="20px" mb="1em">

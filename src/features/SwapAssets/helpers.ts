@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { WALLET_STEPS } from '@components';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getAssetByTicker, getAssetByUUID } from '@services';
 import {
   IHexStrTransaction,
@@ -14,9 +15,10 @@ import {
   ITxObject,
   ITxValue,
   StoreAccount,
-  StoreAsset
+  StoreAsset,
+  TUuid
 } from '@types';
-import { hexToString, weiToFloat } from '@utils';
+import { hexToString, toTokenBase, weiToFloat } from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
@@ -61,11 +63,12 @@ export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
 };
 
 // filter accounts based on wallet type and sufficient balance
-// @todo: include fees check
 export const getAccountsWithAssetBalance = (
   accounts: StoreAccount[],
   fromAsset: ISwapAsset,
-  fromAmount: string
+  fromAmount: string,
+  baseAssetUuid?: TUuid,
+  baseAssetAmount?: string
 ) =>
   accounts.filter((acc) => {
     if (!WALLET_STEPS[acc.wallet]) {
@@ -77,8 +80,30 @@ export const getAccountsWithAssetBalance = (
       return false;
     }
 
-    const amount = weiToFloat(asset.balance, asset.decimal);
-    if (amount.lt(fromAmount)) {
+    const assetBalance = weiToFloat(asset.balance, asset.decimal);
+    if (assetBalance.lt(fromAmount)) {
+      return false;
+    }
+
+    if (!baseAssetUuid || !baseAssetAmount) {
+      return true;
+    }
+
+    const baseAsset = getAssetByUUID(acc.assets)(baseAssetUuid) as StoreAsset;
+    if (!baseAsset) {
+      return false;
+    }
+
+    const baseAssetUsed =
+      asset.uuid === baseAssetUuid
+        ? toTokenBase(fromAmount, asset.decimal || DEFAULT_ASSET_DECIMAL)
+        : 0;
+
+    const baseAssetBalance = weiToFloat(
+      baseAsset.balance.sub(baseAssetUsed.toString()),
+      baseAsset.decimal
+    );
+    if (baseAssetBalance.lt(baseAssetAmount)) {
       return false;
     }
 
