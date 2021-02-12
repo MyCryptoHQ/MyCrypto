@@ -12,7 +12,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { AppLoading, Box } from '@components';
 import { FeatureFlagProvider } from '@services';
 import { createStore } from '@store';
 import { consoleAdvertisement, getRootDomain, IS_DEV, IS_E2E } from '@utils';
@@ -58,15 +57,7 @@ export const render = () => {
     <Provider store={store}>
       <FeatureFlagProvider>
         <PersistGate persistor={persistor}>
-          {(isHydrated: boolean) =>
-            isHydrated ? (
-              <App />
-            ) : (
-              <Box variant="rowCenter">
-                <AppLoading />
-              </Box>
-            )
-          }
+          {(isHydrated: boolean) => <App storeReady={isHydrated} />}
         </PersistGate>
       </FeatureFlagProvider>
     </Provider>,
