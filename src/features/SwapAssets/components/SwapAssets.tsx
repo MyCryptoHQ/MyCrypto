@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -160,17 +160,6 @@ export const SwapAssets = (props: Props) => {
     handleGasLimitEstimation();
   }, [approvalTx, account]);
 
-  useInterval(
-    () => {
-      if (expiration && getTimeDifference(expiration) >= 0) {
-        handleRefreshQuote();
-      }
-    },
-    1000,
-    false,
-    []
-  );
-
   const estimatedGasFee =
     gasPrice &&
     tradeGasLimit &&
@@ -178,6 +167,23 @@ export const SwapAssets = (props: Props) => {
       gasPrice,
       bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
     );
+
+  const [isExpired, setIsExpired] = useState(false);
+
+  useInterval(
+    () => {
+      if (!expiration) {
+        return;
+      }
+      const expired = getTimeDifference(expiration) >= 0;
+      if (expired !== isExpired) {
+        setIsExpired(expired);
+      }
+    },
+    1000,
+    false,
+    []
+  );
 
   // Accounts with a balance of the chosen asset
   const filteredAccounts = fromAsset
@@ -269,6 +275,7 @@ export const SwapAssets = (props: Props) => {
               baseAssetRate={baseAssetRate}
               estimatedGasFee={estimatedGasFee}
               settings={settings}
+              isExpired={isExpired}
               expiration={expiration}
               handleRefreshQuote={handleRefreshQuote}
             />
@@ -280,6 +287,7 @@ export const SwapAssets = (props: Props) => {
           isDemoMode ||
           !account ||
           isEstimatingGas ||
+          isExpired ||
           isCalculatingToAmount ||
           isCalculatingFromAmount ||
           !fromAmount ||

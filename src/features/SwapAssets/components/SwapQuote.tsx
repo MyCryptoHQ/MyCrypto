@@ -1,6 +1,16 @@
 import React from 'react';
 
-import { Amount, Box, Heading, Icon, LinkApp, Text, TimeCountdown, Tooltip } from '@components';
+import {
+  Amount,
+  Body,
+  Box,
+  Heading,
+  Icon,
+  LinkApp,
+  Text,
+  TimeCountdown,
+  Tooltip
+} from '@components';
 import { getFiat } from '@config/fiats';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -17,6 +27,7 @@ interface Props {
   baseAsset: Asset;
   baseAssetRate: number;
   settings: ISettings;
+  isExpired: boolean;
   expiration: number;
   estimatedGasFee: string;
   handleRefreshQuote(): void;
@@ -32,6 +43,7 @@ export const SwapQuote = ({
   baseAsset,
   baseAssetRate,
   estimatedGasFee,
+  isExpired,
   expiration,
   settings,
   handleRefreshQuote
@@ -55,6 +67,7 @@ export const SwapQuote = ({
         {translateRaw('Amount')} <Tooltip tooltip={translateRaw('SWAP_AMOUNT_TOOLTIP')} />
       </Box>
       <Amount
+        style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`${bigify(fromAmount).toFixed(6)} ${fromAsset.ticker} = ${bigify(
           toAmount
@@ -71,6 +84,7 @@ export const SwapQuote = ({
         {translateRaw('SWAP_RATE_LABEL')} <Tooltip tooltip={translateRaw('SWAP_RATE_TOOLTIP')} />
       </Box>
       <Amount
+        style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`1 ${fromAsset.ticker} = ${bigify(exchangeRate).toFixed(6)} ${toAsset.ticker}`}
         fiat={{
@@ -85,6 +99,7 @@ export const SwapQuote = ({
         {translateRaw('MAX_TX_FEE')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
       </Box>
       <Amount
+        style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
         fiatColor={COLORS.BLUE_SKY}
         assetValue={`${estimatedGasFee} ${baseAsset.ticker}`}
         fiat={{
@@ -99,7 +114,13 @@ export const SwapQuote = ({
         {translateRaw('EXPIRES_IN')} <Tooltip tooltip={translateRaw('SWAP_EXPIRY_TOOLTIP')} />
       </Box>
       <Box>
-        <TimeCountdown value={expiration} />
+        {!isExpired ? (
+          <TimeCountdown value={expiration} />
+        ) : (
+          <Body m="0" color="ERROR_RED" textTransform="uppercase">
+            {translateRaw('EXPIRED')}
+          </Body>
+        )}
       </Box>
     </Box>
   </Box>
