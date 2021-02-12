@@ -13,7 +13,7 @@ import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import passwordSlice from './password.slice';
 import { APP_PERSIST_CONFIG, VAULT_PERSIST_CONFIG } from './persist.config';
-import settingsSlice from './settings.slice';
+import settingsSlice, { startRatesPolling } from './settings.slice';
 import userActionSlice from './userAction.slice';
 
 interface IRehydrate {
@@ -45,13 +45,12 @@ export default slice;
  * Saga
  */
 export function* persistenceSaga() {
-  yield all([
-    yield takeLatest(REHYDRATE, handleRehydrateSuccess),
-  ]);
+  yield all([yield takeLatest(REHYDRATE, handleRehydrateSuccess)]);
 }
 
 function* handleRehydrateSuccess(action: IRehydrate) {
   if (action.key === APP_PERSIST_CONFIG.key) {
-    yield put(trackInit())
+    yield put(trackInit());
+    yield put(startRatesPolling());
   }
 }

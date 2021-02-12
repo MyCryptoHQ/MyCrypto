@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 
 import { analyticsSaga } from '@services/Analytics';
+import { pollingSaga } from '@services/Polling';
 
 import { accountsSaga } from './account.slice';
 import { assetSaga } from './asset.slice';
@@ -23,6 +24,7 @@ export default function* rootSaga() {
     scanTokensSaga(),
     vaultSaga(),
     analyticsSaga(),
-    persistenceSaga()
+    persistenceSaga(),
+    pollingSaga()
   ]);
 }

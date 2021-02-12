@@ -1,15 +1,20 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
-import { IRates, LSKeys, TFiatTicker, TUuid } from '@types';
+import { Fiats } from '@config';
+import { RatesService } from '@services/ApiService/Rates';
+import { IPollingPayload, pollStart } from '@services/Polling';
+import { ExtendedAsset, IRates, LSKeys, TFiatTicker, TTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
+import { addAssetsFromAPI, getAssets } from './asset.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
 
 const sliceName = LSKeys.SETTINGS;
 export const initialState = initialLegacyState[sliceName];
 
+// @todo: Get rates out of settings
 const slice = createSlice({
   name: sliceName,
   initialState,
@@ -86,12 +91,15 @@ export const canTrackProductAnalytics = createSelector(
  * Actions
  */
 export const addAccountsToFavorites = createAction<TUuid[]>(`${slice.name}/addAccountsToFavorites`);
+export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`);
 
 /**
  * Sagas
  */
 export function* settingsSaga() {
   yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
+  yield takeLatest(addAssetsFromAPI.type, pollRates);
+  yield takeLatest(startRatesPolling, pollRates);
 }
 
 export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]>) {
@@ -102,4 +110,38 @@ export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]
   } else {
     yield put(slice.actions.addFavorites(payload));
   }
+}
+
+export function* pollRates() {
+  const assets: ExtendedAsset[] = yield select(getAssets);
+
+  const geckoIds = assets.reduce((acc, a) => {
+    if (a.mappings && a.mappings.coinGeckoId) {
+      acc.push(a.mappings.coinGeckoId);
+    }
+    return acc;
+  }, [] as string[]);
+
+  const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
+    // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+    // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
+    const updateRateObj = (acc: any, curValue: TTicker): IRates => {
+      const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
+      acc[asset!.uuid] = rates[curValue];
+      return acc;
+    };
+
+    return Object.keys(rates).reduce(updateRateObj, {} as IRates);
+  };
+
+  const payload: IPollingPayload = {
+    params: {
+      interval: 9000
+    },
+    successAction: 'test/setRates',
+    promise: () => RatesService.instance.fetchAssetsRates(geckoIds, Object.keys(Fiats)),
+    transformer: (result: IRates) => destructureCoinGeckoIds(result, assets)
+  };
+
+  yield put(pollStart(payload));
 }
