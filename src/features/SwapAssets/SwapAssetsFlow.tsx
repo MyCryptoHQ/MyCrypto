@@ -158,7 +158,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         }
       },
       {
-        title: translateRaw('SWAP'),
+        title: '',
         backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
         component: account && WALLET_STEPS[account.wallet],
         props: {
