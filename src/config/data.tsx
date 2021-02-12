@@ -36,7 +36,6 @@ export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
 export const DEX_BASE_URL = 'https://api.0x.org/';
-export const DEX_KOVAN_BASE_URL = 'https://kovan.api.0x.org/';
 export const DEX_FEE_RECIPIENT = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'; // @todo Set to an address we want
 export const DEX_TRADE_EXPIRATION = 31;
 

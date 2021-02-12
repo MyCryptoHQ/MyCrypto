@@ -3,7 +3,7 @@ import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 
-import { bigify } from './bigify';
+import { bigify, Bigish } from './bigify';
 
 type UnitKey = keyof typeof Units;
 type Wei = BigNumber;
@@ -115,7 +115,7 @@ const totalTxFeeToString = (
   gasLimit: string | BigNumber
 ): string => bigify(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
 
-const totalTxFeeToWei = (gasPriceEther: string | BigNumber, gasLimit: string | BigNumber): Wei =>
+const totalTxFeeToWei = (gasPriceEther: string | Bigish, gasLimit: string | Bigish): Wei =>
   bigify(gasPriceEther).multipliedBy(gasLimit);
 
 const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BigNumber => {

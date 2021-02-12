@@ -198,9 +198,7 @@ export const SwapAssets = (props: Props) => {
           name="account"
           value={account}
           accounts={filteredAccounts}
-          onSelect={(option: StoreAccount) => {
-            handleAccountSelected(option);
-          }}
+          onSelect={handleAccountSelected}
           asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
         />
         {!filteredAccounts.length && fromAsset && (
