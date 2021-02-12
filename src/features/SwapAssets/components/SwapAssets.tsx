@@ -16,10 +16,7 @@ import {
 } from '@components';
 import { useRates } from '@services/Rates';
 import { getBaseAssetByNetwork, StoreContext } from '@services/Store';
-import { AppState, getIsDemoMode } from '@store';
-import { getAssets } from '@store/asset.slice';
-import { getDefaultNetwork } from '@store/network.slice';
-import { getSettings } from '@store/settings.slice';
+import { AppState, getAssets, getDefaultNetwork, getIsDemoMode, getSettings } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, StoreAccount } from '@types';

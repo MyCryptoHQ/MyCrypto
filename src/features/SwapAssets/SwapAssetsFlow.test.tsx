@@ -1,8 +1,7 @@
 import React from 'react';
 
 import mockAxios from 'jest-mock-axios';
-import { MemoryRouter as Router } from 'react-router-dom';
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fNetworks, fSettings, fSwapQuote } from '@fixtures';
 import { RatesContext } from '@services/Rates';
@@ -12,7 +11,7 @@ import SwapAssetsFlow from './SwapAssetsFlow';
 
 function getComponent() {
   return simpleRender(
-    <Router>
+    <ProvidersWrapper>
       <DataContext.Provider
         value={
           ({
@@ -41,7 +40,7 @@ function getComponent() {
           </StoreContext.Provider>
         </RatesContext.Provider>
       </DataContext.Provider>
-    </Router>
+    </ProvidersWrapper>
   );
 }
 

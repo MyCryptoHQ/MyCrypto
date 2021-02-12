@@ -29,7 +29,8 @@ export {
   updateNetworks,
   deleteNodeOrNetwork,
   deleteNode,
-  canDeleteNode
+  canDeleteNode,
+  getDefaultNetwork
 } from './network.slice';
 export {
   createAssets,
@@ -38,7 +39,8 @@ export {
   updateAsset,
   updateAssets,
   addAssetsFromAPI,
-  fetchAssets
+  fetchAssets,
+  getAssets
 } from './asset.slice';
 export {
   fetchMemberships,
@@ -66,7 +68,8 @@ export {
   getIsDemoMode,
   addAccountsToFavorites,
   canTrackProductAnalytics,
-  setProductAnalyticsAuthorisation
+  setProductAnalyticsAuthorisation,
+  getSettings
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';

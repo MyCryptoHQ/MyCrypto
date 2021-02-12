@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
-import { simpleRender } from 'test-utils';
+import { ProvidersWrapper, simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetworks, fRopDAI, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
@@ -39,7 +38,7 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
 
 function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
   return simpleRender(
-    <Router>
+    <ProvidersWrapper>
       <DataContext.Provider
         value={
           ({
@@ -67,7 +66,7 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
           </StoreContext.Provider>
         </RatesContext.Provider>
       </DataContext.Provider>
-    </Router>
+    </ProvidersWrapper>
   );
 }
 
