@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BrowserRouter, HashRouter } from 'react-router-dom';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import { AppLoading, Box } from '@components';
 import { DevToolsManager } from '@features';
@@ -10,6 +10,16 @@ import { USE_HASH_ROUTER } from '@utils';
 
 import AppProviders from './AppProviders';
 import { AppRoutes } from './AppRoutes';
+
+const FullHeight = styled.div`
+  display: flex;
+  min-height: 100%;
+`;
+const FullScreen = styled.div`
+  flex: 1;
+  max-width: 100vw;
+  max-height: 100vh;
+`;
 
 const GlobalStyle = createGlobalStyle`
 ::-webkit-scrollbar-track {
@@ -38,12 +48,12 @@ const App = ({ storeReady }: { storeReady: boolean }) => {
       <GlobalStyle />
       <Router>
         <AppProviders>
-          <Box display="flex" height="100%">
+          <FullHeight>
             <DevToolsManager />
-            <Box display="flex" flex="1" maxWidth="100vw" maxHeight="vh" id="ModalContainer">
+            <FullScreen id="ModalContainer">
               <AppRoutes />
-            </Box>
-          </Box>
+            </FullScreen>
+          </FullHeight>
         </AppProviders>
       </Router>
     </ThemeProvider>
