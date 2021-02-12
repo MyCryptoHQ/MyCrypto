@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button, Icon, PoweredByText, Spinner, Tooltip, Typography } from '@components';
+import { Button, Icon, PoweredByText, Spinner, Text, Tooltip, Typography } from '@components';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
@@ -21,6 +21,7 @@ const DeterministicAccountListWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 800px;
+  min-height: 600px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     width: calc(100vw - 30px);
     min-height: auto;
@@ -90,6 +91,9 @@ const SDownloader = styled(Downloader)`
   }
 `;
 
+export const filterZeroBalanceAccounts = (accounts: DWAccountDisplay[]) =>
+  accounts.filter(({ balance }) => balance?.isZero());
+
 interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
@@ -138,24 +142,21 @@ export default function DeterministicAccountList({
     setTableAccounts(tableAccs);
   }, [accountsToUse.length]);
 
-  const freshAddresses = uniqBy(prop('address'), finishedAccounts).filter(
-    ({ isFreshAddress }) => isFreshAddress
-  );
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
+  const emptySelectedAccounts = filterZeroBalanceAccounts(selectedAccounts);
   const handleSubmit = () => {
     onUnlock(selectedAccounts);
   };
 
   const handleSelection = (account: TableAccountDisplay) => {
-    if (freshAddresses.length > MAX_EMPTY_ADDRESSES) return;
-    const newSelectedAccount: TableAccountDisplay = {
-      ...account,
-      isDefaultConfig: false,
-      isSelected: !account.isSelected
-    };
+    if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES && !account.isSelected) return;
     setTableAccounts({
       ...tableAccounts,
-      [account.address]: newSelectedAccount
+      [account.address]: {
+        ...account,
+        isDefaultConfig: false,
+        isSelected: !account.isSelected
+      }
     });
   };
   const csv = accountsToCSV(finishedAccounts, asset);
@@ -185,8 +186,16 @@ export default function DeterministicAccountList({
             </IconWrapper>
             <Typography>
               <Trans
-                id="DETERMINISTIC_SCANNING_STATUS_DONE"
-                variables={{ $asset: () => asset.ticker }}
+                id={
+                  displayEmptyAddresses
+                    ? 'DETERMINISTIC_SCANNING_STATUS_DONE_EMPTY'
+                    : 'DETERMINISTIC_SCANNING_STATUS_DONE'
+                }
+                variables={{
+                  $asset: () => asset.ticker,
+                  $total: () => finishedAccounts.length,
+                  $network: () => network.name
+                }}
               />{' '}
               <SButton onClick={() => handleUpdate(asset)}>
                 <Trans id="DETERMINISTIC_SCAN_AGAIN" />
@@ -194,6 +203,15 @@ export default function DeterministicAccountList({
               .
               <PoweredByText provider="FINDETH" />
             </Typography>
+            <Text>
+              <Trans
+                id="DETERMINISTIC_SCANNING_EMPTY_ADDR"
+                variables={{
+                  $count: () => emptySelectedAccounts.length,
+                  $total: () => MAX_EMPTY_ADDRESSES
+                }}
+              />
+            </Text>
           </StatusWrapper>
         )}
         {isComplete && !accountsToUse.length && (

@@ -429,7 +429,7 @@ const DeterministicTable = ({
                 handleScanMoreAddresses({
                   ...selectedDPath,
                   offset: selectedDPathOffset,
-                  numOfAddresses: 5
+                  numOfAddresses: 10
                 });
               }}
               disabled={!isComplete}
