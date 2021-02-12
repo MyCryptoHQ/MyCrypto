@@ -14,19 +14,15 @@ import {
   InputField,
   Tooltip
 } from '@components';
-import { DEFAULT_NETWORK } from '@config';
 import { useRates } from '@services/Rates';
-import {
-  getBaseAssetByNetwork,
-  StoreContext,
-  useAssets,
-  useNetworks,
-  useSettings
-} from '@services/Store';
+import { getBaseAssetByNetwork, StoreContext } from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
+import { getAssets } from '@store/asset.slice';
+import { getDefaultNetwork } from '@store/network.slice';
+import { getSettings } from '@store/settings.slice';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ISwapAsset, StoreAccount } from '@types';
+import { Asset, ISwapAsset, Network, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
@@ -59,7 +55,7 @@ type ISwapProps = SwapFormState & {
 let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
-export const SwapAssets = (props: Props) => {
+const SwapAssets = (props: Props) => {
   const {
     account,
     fromAmount,
@@ -90,16 +86,16 @@ export const SwapAssets = (props: Props) => {
     gasPrice,
     isEstimatingGas,
     expiration,
-    isDemoMode
+    isDemoMode,
+    allAssets,
+    settings,
+    network
   } = props;
 
+  const [isExpired, setIsExpired] = useState(false);
   const { accounts, userAssets } = useContext(StoreContext);
-  const { getNetworkById } = useNetworks();
-  const { assets: allAssets } = useAssets();
   const { getAssetRate } = useRates();
-  const { settings } = useSettings();
 
-  const network = getNetworkById(DEFAULT_NETWORK);
   const baseAsset = getBaseAssetByNetwork({ network, assets: allAssets })!;
   const baseAssetRate = getAssetRate(baseAsset);
   const fromAssetRate = fromAsset && getAssetRate(fromAsset as Asset);
@@ -168,8 +164,6 @@ export const SwapAssets = (props: Props) => {
       bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
     );
 
-  const [isExpired, setIsExpired] = useState(false);
-
   useInterval(
     () => {
       if (!expiration) {
@@ -182,7 +176,7 @@ export const SwapAssets = (props: Props) => {
     },
     1000,
     false,
-    []
+    [expiration]
   );
 
   // Accounts with a balance of the chosen asset
@@ -313,7 +307,10 @@ export const SwapAssets = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
+  isDemoMode: getIsDemoMode(state),
+  allAssets: getAssets(state),
+  settings: getSettings(state),
+  network: getDefaultNetwork(state) as Network
 });
 
 const connector = connect(mapStateToProps);

@@ -8,7 +8,7 @@ import { DataContext, IDataContext, RatesContext, StoreContext } from '@services
 import { noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
-import { SwapAssets } from './SwapAssets';
+import SwapAssets from './SwapAssets';
 
 const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   account: fAccounts[0],
@@ -17,7 +17,6 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   toAsset: fRopDAI,
   fromAmount: '1',
   toAmount: '10',
-  isDemoMode: false,
   isCalculatingFromAmount: false,
   isCalculatingToAmount: false,
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
@@ -26,7 +25,6 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   isEstimatingGas: false,
   exchangeRate: '10',
   transactions: [],
-  dispatch: (a) => a,
   onSuccess: noOp,
   handleFromAssetSelected: noOp,
   handleToAssetSelected: noOp,

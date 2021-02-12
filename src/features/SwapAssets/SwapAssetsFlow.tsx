@@ -158,6 +158,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         }
       },
       {
+        // No title as signing page already has a title
         title: '',
         backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
         component: account && WALLET_STEPS[account.wallet],
