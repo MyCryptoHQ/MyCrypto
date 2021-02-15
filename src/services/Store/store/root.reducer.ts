@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { put } from 'redux-saga-test-plan/matchers';
 import { select, takeLatest } from 'redux-saga/effects';
 
-import demoReducer from '@features/DevTools/slice';
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { DataStore } from '@types';
@@ -18,7 +17,6 @@ import tokenScanningSlice from './tokenScanning.slice';
 import vaultSlice from './vault.slice';
 
 const reducers = combineReducers({
-  demo: demoReducer,
   [importSlice.name]: importSlice.reducer,
   [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,

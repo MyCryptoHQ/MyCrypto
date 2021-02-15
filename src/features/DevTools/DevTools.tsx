@@ -7,12 +7,10 @@ import { Checkbox, LinkApp } from '@components';
 import { useDevTools, useFeatureFlags } from '@services';
 import { FeatureFlag } from '@services/FeatureFlag';
 import { DataContext } from '@services/Store';
-import { useDispatch, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
-import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
 
 const SToggle = styled.button`
@@ -107,24 +105,6 @@ const FeatureFlags = () => {
   );
 };
 
-const DemoRedux = () => {
-  const greeting = useSelector(getGreeting);
-  const count = useSelector(getCount);
-  const dispatch = useDispatch();
-  const handleIncrement = () => dispatch(increment());
-  const handleReset = () => dispatch(reset());
-
-  return (
-    <div style={{ marginBottom: '1em' }}>
-      <div>
-        {greeting} {count}
-      </div>
-      <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleReset}>Reset</button>
-    </div>
-  );
-};
-
 const DevToolsManager = () => {
   const { isActive, toggleDevTools } = useDevTools();
 
@@ -151,9 +131,6 @@ const DevToolsManager = () => {
           {/* DB tools*/}
           <p style={{ fontWeight: 600 }}>DB Tools</p>
           <DBTools />
-          {/* Redux Demo */}
-          <p style={{ fontWeight: 600 }}>Redux Demo</p>
-          <DemoRedux />
         </Panel>
       )}
     </Wrapper>
