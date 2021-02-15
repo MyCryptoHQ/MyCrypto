@@ -25,14 +25,14 @@ export class Web3Node {
 
   public signMessage(msgHex: string, fromAddr: string): Promise<string> {
     return this.client
-      .call(this.requests.signMessage(msgHex, fromAddr))
+      .send(this.requests.signMessage(msgHex, fromAddr))
       .then(isValidSignMessage)
       .then(({ result }) => result);
   }
 
   public getAccounts(): Promise<TAddress[] | undefined> {
     return this.client
-      .call(this.requests.getAccounts())
+      .send(this.requests.getAccounts())
       .then(isValidGetAccounts)
       .then(({ result }) => result && result.length > 0 && result)
       .catch(undefined);
@@ -40,14 +40,14 @@ export class Web3Node {
 
   public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
     return this.client
-      .call<Web3RequestPermissionsResponse>(this.requests.requestPermissions())
+      .send<Web3RequestPermissionsResponse>(this.requests.requestPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result);
   }
 
   public getApprovedAccounts(): Promise<TAddress[] | undefined> {
     return this.client
-      .call<Web3RequestPermissionsResponse>(this.requests.getPermissions())
+      .send<Web3RequestPermissionsResponse>(this.requests.getPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result && result[0] && result[0].caveats)
       .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
@@ -55,7 +55,7 @@ export class Web3Node {
 
   public getChainId(): Promise<string> {
     return this.client
-      .call(this.requests.getChainId())
+      .send(this.requests.getChainId())
       .then(isValidGetChainId)
       .then(({ result }) => bigify(result).toString());
   }

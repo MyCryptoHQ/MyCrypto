@@ -23,7 +23,7 @@ export default class Web3Client {
     params: req.params || [] // default to empty array so MetaMask doesn't error
   });
 
-  public call = <T = JsonRPCResponse>(request: Web3Request): Promise<T> =>
+  public send = <T = JsonRPCResponse>(request: Web3Request): Promise<T> =>
     (this.sendAsync(this.decorateRequest(request)) as unknown) as Promise<T>;
 
   private sendAsync = (request: any): Promise<JsonRPCResponse | JsonRPCResponse[]> => {
