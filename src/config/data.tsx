@@ -36,7 +36,7 @@ export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
 export const DEX_BASE_URL = 'https://api.0x.org/';
-export const DEX_FEE_RECIPIENT = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'; // @todo Set to an address we want
+export const DEX_FEE_RECIPIENT = '0xD8D46494e200Fa585FC98f86e6A5Ea0DC1F18aD0';
 export const DEX_TRADE_EXPIRATION = 31; // in seconds
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
