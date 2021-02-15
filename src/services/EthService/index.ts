@@ -9,7 +9,7 @@ export {
   AntMigrator,
   GolemV2Migration
 } from './contracts';
-export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests } from './nodes';
+export { Web3Node, isWeb3Node, setupWeb3Node } from './nodes';
 export {
   isValidPath,
   isValidETHAddress,

@@ -1,23 +1,11 @@
 import { JsonRPCResponse } from '@types';
 
-import { DATA, QUANTITY, RPCRequest, RPCRequestBase } from '../rpc';
-
 type MESSAGE_HEX = string;
 type ADDRESS = string;
 
-export interface SendTransactionRequest extends RPCRequestBase {
-  method: 'eth_sendTransaction';
-  params: [
-    {
-      from: DATA;
-      to: DATA;
-      gas: QUANTITY;
-      gasPrice: QUANTITY;
-      value: QUANTITY;
-      data?: DATA;
-      nonce?: QUANTITY;
-    }
-  ];
+export interface RPCRequestBase {
+  method: string;
+  params?: any[];
 }
 
 export interface SignMessageRequest extends RPCRequestBase {
@@ -41,8 +29,15 @@ export interface RequestPermissionsRequest extends RPCRequestBase {
   method: 'wallet_requestPermissions';
 }
 
+export type Web3Request =
+  | SignMessageRequest
+  | GetAccountsRequest
+  | GetChainIdRequest
+  | GetPermissionsRequest
+  | RequestPermissionsRequest;
+
 type TWeb3ProviderCallback = (error: string, result: JsonRPCResponse | JsonRPCResponse[]) => any;
-type TSendAsync = (request: RPCRequest | any, callback: TWeb3ProviderCallback) => void;
+type TSendAsync = (request: Web3Request, callback: TWeb3ProviderCallback) => void;
 
 export interface IWeb3Provider {
   sendAsync: TSendAsync;
