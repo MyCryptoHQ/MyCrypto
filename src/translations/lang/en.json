@@ -668,7 +668,6 @@
     "SWAP_RECEIVE_AMOUNT": "Receive Amount",
     "SWAP_SELECT_ACCOUNT_TOOLTIP": "MyCrypto allows you to send from any of the accounts you have added. Please select the account you’d like to send from.",
     "SWAP_SEND_AMOUNT": "Convert Amount",
-    "SWAP_SETTING_ALLOWANCE": "Setting allowance...",
     "SWAP_START_ANOTHER": "Start Another Swap",
     "SWAP_STEP1_TEXT": "Before swapping a token, you must approve the swap contract to execute the transaction.",
     "SWAP_STEP2_TEXT": "The contract you approved will complete the swap contract as soon as you confirm the transaction below.",
