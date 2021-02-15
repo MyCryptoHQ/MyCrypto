@@ -10,8 +10,8 @@ const TimeCountdown = ({ value }: { value: number }) => {
       setCountdown(formatTimeDuration(value));
     },
     1000,
-    false,
-    []
+    true,
+    [value]
   );
 
   return <>{countdown}</>;

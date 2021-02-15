@@ -10,8 +10,8 @@ const TimeElapsed = ({ value }: { value: number }) => {
       setTimeElapsed(formatTimeDifference(value));
     },
     1000,
-    false,
-    []
+    true,
+    [value]
   );
 
   return <>{timeElapsed}</>;
