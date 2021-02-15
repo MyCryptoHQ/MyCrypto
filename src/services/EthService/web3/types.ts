@@ -36,7 +36,7 @@ export type Web3Request =
   | GetPermissionsRequest
   | RequestPermissionsRequest;
 
-type TWeb3ProviderCallback = (error: string, result: JsonRPCResponse | JsonRPCResponse[]) => any;
+type TWeb3ProviderCallback = (error: string, result: JsonRPCResponse) => any;
 type TSendAsync = (request: Web3Request, callback: TWeb3ProviderCallback) => void;
 
 export interface IWeb3Provider {
