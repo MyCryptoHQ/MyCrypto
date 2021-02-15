@@ -1,60 +1,37 @@
-import {
-  isValidGetAccounts,
-  isValidGetNetVersion,
-  isValidSendTransaction,
-  isValidSignMessage
-} from '@services/EthService';
+import { isValidGetAccounts, isValidSignMessage } from '@services/EthService';
 import { isValidGetChainId, isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
-  IHexStrWeb3Transaction,
-  INode,
   IWeb3Permission,
   TAddress,
+  Web3RequestPermissionsResponse,
   Web3RequestPermissionsResult
 } from '@types';
 import { bigify } from '@utils';
 
-import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
 
-export class Web3Node extends RPCNode {
-  // @ts-expect-error: conflict between any[] and [string, string]
+export class Web3Node {
   public client: Web3Client;
   public requests: Web3Requests;
 
   constructor() {
-    super('web3'); // initialized with fake endpoint
     this.client = new Web3Client();
     this.requests = new Web3Requests();
   }
 
-  public getNetVersion(): Promise<string> {
-    return this.client
-      .call(this.requests.getNetVersion())
-      .then(isValidGetNetVersion)
-      .then(({ result }) => result);
-  }
-
-  public sendTransaction(web3Tx: IHexStrWeb3Transaction): Promise<string> {
-    return this.client
-      .call(this.requests.sendTransaction(web3Tx))
-      .then(isValidSendTransaction)
-      .then(({ result }) => result);
-  }
-
   public signMessage(msgHex: string, fromAddr: string): Promise<string> {
     return this.client
-      .call(this.requests.signMessage(msgHex, fromAddr))
+      .send(this.requests.signMessage(msgHex, fromAddr))
       .then(isValidSignMessage)
       .then(({ result }) => result);
   }
 
   public getAccounts(): Promise<TAddress[] | undefined> {
     return this.client
-      .call(this.requests.getAccounts())
+      .send(this.requests.getAccounts())
       .then(isValidGetAccounts)
       .then(({ result }) => result && result.length > 0 && result)
       .catch(undefined);
@@ -62,14 +39,14 @@ export class Web3Node extends RPCNode {
 
   public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
     return this.client
-      .callWeb3(this.requests.requestPermissions())
+      .send<Web3RequestPermissionsResponse>(this.requests.requestPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result);
   }
 
   public getApprovedAccounts(): Promise<TAddress[] | undefined> {
     return this.client
-      .callWeb3(this.requests.getPermissions())
+      .send<Web3RequestPermissionsResponse>(this.requests.getPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result && result[0] && result[0].caveats)
       .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
@@ -77,13 +54,13 @@ export class Web3Node extends RPCNode {
 
   public getChainId(): Promise<string> {
     return this.client
-      .call(this.requests.getChainId())
+      .send(this.requests.getChainId())
       .then(isValidGetChainId)
       .then(({ result }) => bigify(result).toString());
   }
 }
 
-export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
+export function isWeb3Node(nodeLib: Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
 

@@ -3,14 +3,15 @@ import {
   BaseProvider,
   Block,
   TransactionReceipt,
+  TransactionRequest,
   TransactionResponse
 } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
 import any from '@ungap/promise-any';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { ERC20, RPCRequests } from '@services/EthService';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+import { ERC20 } from '@services/EthService';
+import { Asset, IHexStrTransaction, ITxSigned, Network } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
@@ -28,16 +29,14 @@ export class ProviderHandler {
   }
 
   public network: Network;
-  public requests: RPCRequests;
   private isFallbackProvider: boolean;
 
   constructor(network: Network, isFallbackProvider = true) {
     this.network = network;
-    this.requests = new RPCRequests();
     this.isFallbackProvider = isFallbackProvider;
   }
 
-  public call(txObj: TxObj): Promise<string> {
+  public call(txObj: TransactionRequest): Promise<string> {
     return this.injectClient((client) => {
       return client.call(txObj);
     });
@@ -63,8 +62,8 @@ export class ProviderHandler {
     return this.injectClient((client) =>
       client
         .call({
-          to: this.requests.getTokenBalance(address, token).params[0].to,
-          data: this.requests.getTokenBalance(address, token).params[0].data
+          to: token.contractAddress,
+          data: ERC20.balanceOf.encodeInput({ _owner: address })
         })
         .then((data) => ERC20.balanceOf.decodeOutput(data))
         .then(({ balance }) => balance)

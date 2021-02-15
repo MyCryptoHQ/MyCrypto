@@ -130,7 +130,7 @@ export {
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther
 } from './makeTransaction';
-export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
+export { hexEncodeQuantity } from './hexEncode';
 export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';

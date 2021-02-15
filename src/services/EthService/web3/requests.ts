@@ -1,23 +1,12 @@
-import { IHexStrWeb3Transaction } from '@types';
-
-import { RPCRequests } from '../rpc';
 import {
   GetAccountsRequest,
   GetChainIdRequest,
   GetPermissionsRequest,
   RequestPermissionsRequest,
-  SendTransactionRequest,
   SignMessageRequest
 } from './types';
 
-export default class Web3Requests extends RPCRequests {
-  public sendTransaction(web3Tx: IHexStrWeb3Transaction): SendTransactionRequest {
-    return {
-      method: 'eth_sendTransaction',
-      params: [web3Tx]
-    };
-  }
-
+export default class Web3Requests {
   public signMessage(msgHex: string, fromAddr: string): SignMessageRequest {
     return {
       method: 'personal_sign',

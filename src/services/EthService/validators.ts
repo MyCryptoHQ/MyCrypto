@@ -385,19 +385,8 @@ function formatErrors(response: JsonRPCResponse, apiType: string) {
 }
 
 enum API_NAME {
-  Get_Balance = 'Get Balance',
-  Estimate_Gas = 'Estimate Gas',
-  Call_Request = 'Call Request',
-  Token_Balance = 'Token Balance',
-  Transaction_Count = 'Transaction Count',
-  Current_Block = 'Current Block',
-  Raw_Tx = 'Raw Tx',
-  Send_Transaction = 'Send Transaction',
   Sign_Message = 'Sign Message',
   Get_Accounts = 'Get Accounts',
-  Net_Version = 'Net Version',
-  Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt',
   Request_Permissions = 'Request_Permissions',
   Get_Permissions = 'Get_Permissions',
   Get_ChainId = 'Get_ChainId'
@@ -416,46 +405,11 @@ const isValidEthServiceResponse = (
   return response;
 };
 
-export const isValidGetBalance = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Balance);
-
-export const isValidEstimateGas = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Estimate_Gas);
-
-export const isValidCallRequest = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Call_Request);
-
-export const isValidTokenBalance = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
-    result: 'Failed'
-  }));
-
-export const isValidTransactionCount = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Count);
-
-export const isValidTransactionByHash = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
-
-export const isValidTransactionReceipt = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
-
-export const isValidCurrentBlock = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Current_Block);
-
-export const isValidRawTxApi = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Raw_Tx);
-
-export const isValidSendTransaction = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Send_Transaction);
-
 export const isValidSignMessage = (response: JsonRPCResponse) =>
   isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Sign_Message);
 
 export const isValidGetAccounts = (response: JsonRPCResponse) =>
   isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Accounts);
-
-export const isValidGetNetVersion = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Net_Version);
 
 export const isValidGetChainId = (response: JsonRPCResponse) =>
   isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_ChainId);

@@ -90,7 +90,6 @@ export {
   IFlowConfig
 } from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
-export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';
 export { ISignedMessage } from './signing';
