@@ -1,7 +1,6 @@
 import { UnsignedTransaction } from '@ethersproject/transactions';
 
 import { Web3Node } from '@services/EthService';
-import { INode } from '@types';
 
 interface IBaseWallet {
   isReadOnly?: boolean;
@@ -16,7 +15,7 @@ export interface IReadOnlyWallet extends IBaseWallet {
 export interface IFullWallet extends IBaseWallet {
   isReadOnly?: false;
   signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> | Buffer;
-  signMessage(msg: string, nodeLib: Web3Node | INode): Promise<string> | string;
+  signMessage(msg: string, nodeLib?: Web3Node): Promise<string> | string;
 }
 
 export type IWallet = IReadOnlyWallet | IFullWallet;

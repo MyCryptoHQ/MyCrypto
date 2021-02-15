@@ -3,6 +3,7 @@ import {
   BaseProvider,
   Block,
   TransactionReceipt,
+  TransactionRequest,
   TransactionResponse
 } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
@@ -10,7 +11,7 @@ import any from '@ungap/promise-any';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+import { Asset, IHexStrTransaction, ITxSigned, Network } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
@@ -35,7 +36,7 @@ export class ProviderHandler {
     this.isFallbackProvider = isFallbackProvider;
   }
 
-  public call(txObj: TxObj): Promise<string> {
+  public call(txObj: TransactionRequest): Promise<string> {
     return this.injectClient((client) => {
       return client.call(txObj);
     });

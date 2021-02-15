@@ -14,7 +14,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, ISignedMessage, WalletId } from '@types';
-import { addHexPrefix } from '@utils';
+import { addHexPrefix, isWeb3Wallet } from '@utils';
 
 import { getStories } from './stories';
 
@@ -109,8 +109,8 @@ function SignMessage(props: Props) {
       const address = toChecksumAddress(wallet.getAddressString());
       let sig = '';
 
-      let lib: Web3Node = {} as Web3Node;
-      if (walletName === WalletId.METAMASK) {
+      let lib: Web3Node | undefined = undefined;
+      if (walletName && isWeb3Wallet(walletName)) {
         lib = (await setupWeb3Node()).lib;
       }
       sig = await wallet.signMessage(message, lib);

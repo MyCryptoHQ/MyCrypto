@@ -3,7 +3,6 @@ import { isValidGetChainId, isValidRequestPermissions } from '@services/EthServi
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
-  INode,
   IWeb3Permission,
   TAddress,
   Web3RequestPermissionsResponse,
@@ -61,7 +60,7 @@ export class Web3Node {
   }
 }
 
-export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
+export function isWeb3Node(nodeLib: Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
 
