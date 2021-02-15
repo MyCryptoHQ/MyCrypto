@@ -12,6 +12,7 @@ import {
   DemoGatewayBanner,
   InlineMessage,
   InputField,
+  PoweredByText,
   Tooltip
 } from '@components';
 import { useRates } from '@services/Rates';
@@ -182,124 +183,127 @@ const SwapAssets = (props: Props) => {
     : [];
 
   return (
-    <Box mt="20px" mb="1em">
-      {isDemoMode && <DemoGatewayBanner />}
-      <Box mb="15px">
-        <Box>
-          <Body>
-            {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
-            <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
-          </Body>
+    <>
+      <Box mt="20px" mb="1em">
+        {isDemoMode && <DemoGatewayBanner />}
+        <Box mb="15px">
+          <Box>
+            <Body>
+              {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
+              <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
+            </Body>
+          </Box>
+          <AccountSelector
+            name="account"
+            value={account}
+            accounts={filteredAccounts}
+            onSelect={handleAccountSelected}
+            asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
+          />
+          {!filteredAccounts.length && fromAsset && (
+            <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
+          )}
         </Box>
-        <AccountSelector
-          name="account"
-          value={account}
-          accounts={filteredAccounts}
-          onSelect={handleAccountSelected}
-          asset={fromAsset ? userAssets.find((x) => x.uuid === fromAsset.uuid) : undefined}
-        />
-        {!filteredAccounts.length && fromAsset && (
-          <InlineMessage>{translate('ACCOUNT_SELECTION_NO_FUNDS')}</InlineMessage>
+        <Box display="flex">
+          <Box mr="1em" flex="1">
+            <InputField
+              name="swap-from"
+              label={translateRaw('SWAP_SEND_AMOUNT')}
+              value={fromAmount}
+              placeholder="0.00"
+              onChange={handleFromAmountChangedEvent}
+              height={'54px'}
+              isLoading={isCalculatingFromAmount}
+              inputError={fromAmountError}
+              inputMode="decimal"
+            />
+          </Box>
+          <AssetSelector
+            selectedAsset={fromAsset}
+            assets={ownedAssets}
+            label={translateRaw('X_ASSET')}
+            onSelect={handleFromAssetSelected}
+            disabled={isCalculatingToAmount || isCalculatingFromAmount}
+            searchable={true}
+          />
+        </Box>
+        <Box display="flex">
+          <Box mr="1em" flex="1">
+            <InputField
+              label={translateRaw('SWAP_RECEIVE_AMOUNT')}
+              value={toAmount}
+              placeholder="0.00"
+              onChange={handleToAmountChangedEvent}
+              height={'54px'}
+              isLoading={isCalculatingToAmount}
+              inputError={toAmountError}
+              inputMode="decimal"
+            />
+          </Box>
+          <AssetSelector
+            selectedAsset={toAsset}
+            assets={filteredAssets}
+            label={translateRaw('ASSET')}
+            onSelect={handleToAssetSelected}
+            disabled={isCalculatingToAmount || isCalculatingFromAmount}
+            searchable={true}
+          />
+        </Box>
+        <Box mb={SPACING.SM}>
+          {exchangeRate &&
+            toAsset &&
+            fromAsset &&
+            expiration &&
+            estimatedGasFee &&
+            toAmount &&
+            fromAmount && (
+              <SwapQuote
+                toAsset={toAsset}
+                fromAsset={fromAsset}
+                fromAssetRate={fromAssetRate}
+                toAmount={toAmount}
+                fromAmount={fromAmount}
+                exchangeRate={exchangeRate}
+                baseAsset={baseAsset}
+                baseAssetRate={baseAssetRate}
+                estimatedGasFee={estimatedGasFee}
+                settings={settings}
+                isExpired={isExpired}
+                expiration={expiration}
+                handleRefreshQuote={handleRefreshQuote}
+              />
+            )}
+        </Box>
+        <StyledButton
+          onClick={onSuccess}
+          disabled={
+            isDemoMode ||
+            !account ||
+            isEstimatingGas ||
+            isExpired ||
+            isCalculatingToAmount ||
+            isCalculatingFromAmount ||
+            !fromAmount ||
+            !toAmount ||
+            !!fromAmountError ||
+            !!toAmountError
+          }
+          loading={isSubmitting}
+        >
+          {fromAsset && toAsset
+            ? translate('SWAP_FOR', { $from: fromAsset.ticker, $to: toAsset.ticker })
+            : translate('SWAP_ACTION_BUTTON')}
+        </StyledButton>
+        {txError && (
+          <InlineMessage>
+            {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+              $error: txError.reason ? txError.reason : txError.message
+            })}
+          </InlineMessage>
         )}
       </Box>
-      <Box display="flex">
-        <Box mr="1em" flex="1">
-          <InputField
-            name="swap-from"
-            label={translateRaw('SWAP_SEND_AMOUNT')}
-            value={fromAmount}
-            placeholder="0.00"
-            onChange={handleFromAmountChangedEvent}
-            height={'54px'}
-            isLoading={isCalculatingFromAmount}
-            inputError={fromAmountError}
-            inputMode="decimal"
-          />
-        </Box>
-        <AssetSelector
-          selectedAsset={fromAsset}
-          assets={ownedAssets}
-          label={translateRaw('X_ASSET')}
-          onSelect={handleFromAssetSelected}
-          disabled={isCalculatingToAmount || isCalculatingFromAmount}
-          searchable={true}
-        />
-      </Box>
-      <Box display="flex">
-        <Box mr="1em" flex="1">
-          <InputField
-            label={translateRaw('SWAP_RECEIVE_AMOUNT')}
-            value={toAmount}
-            placeholder="0.00"
-            onChange={handleToAmountChangedEvent}
-            height={'54px'}
-            isLoading={isCalculatingToAmount}
-            inputError={toAmountError}
-            inputMode="decimal"
-          />
-        </Box>
-        <AssetSelector
-          selectedAsset={toAsset}
-          assets={filteredAssets}
-          label={translateRaw('ASSET')}
-          onSelect={handleToAssetSelected}
-          disabled={isCalculatingToAmount || isCalculatingFromAmount}
-          searchable={true}
-        />
-      </Box>
-      <Box mb={SPACING.SM}>
-        {exchangeRate &&
-          toAsset &&
-          fromAsset &&
-          expiration &&
-          estimatedGasFee &&
-          toAmount &&
-          fromAmount && (
-            <SwapQuote
-              toAsset={toAsset}
-              fromAsset={fromAsset}
-              fromAssetRate={fromAssetRate}
-              toAmount={toAmount}
-              fromAmount={fromAmount}
-              exchangeRate={exchangeRate}
-              baseAsset={baseAsset}
-              baseAssetRate={baseAssetRate}
-              estimatedGasFee={estimatedGasFee}
-              settings={settings}
-              isExpired={isExpired}
-              expiration={expiration}
-              handleRefreshQuote={handleRefreshQuote}
-            />
-          )}
-      </Box>
-      <StyledButton
-        onClick={onSuccess}
-        disabled={
-          isDemoMode ||
-          !account ||
-          isEstimatingGas ||
-          isExpired ||
-          isCalculatingToAmount ||
-          isCalculatingFromAmount ||
-          !fromAmount ||
-          !toAmount ||
-          !!fromAmountError ||
-          !!toAmountError
-        }
-        loading={isSubmitting}
-      >
-        {fromAsset && toAsset
-          ? translate('SWAP_FOR', { $from: fromAsset.ticker, $to: toAsset.ticker })
-          : translate('SWAP_ACTION_BUTTON')}
-      </StyledButton>
-      {txError && (
-        <InlineMessage>
-          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
-            $error: txError.reason ? txError.reason : txError.message
-          })}
-        </InlineMessage>
-      )}
-    </Box>
+      <PoweredByText provider="ZEROX" />
+    </>
   );
 };
 
