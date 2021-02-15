@@ -1,17 +1,22 @@
-import { Web3RequestPermissionsResponse } from '@types';
+import { randomBytes } from 'crypto';
 
-import { JsonRpcResponse, RPCClient, RPCRequest } from '../rpc';
+import { JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
+
+import { RPCRequest } from '../rpc';
 import { IWeb3Provider } from './types';
 
-export default class Web3Client extends RPCClient {
+export default class Web3Client {
   private provider: IWeb3Provider;
 
   constructor() {
-    super('web3'); // initialized with fake endpoint
-    this.provider = (window as CustomWindow).ethereum || (window as CustomWindow).web3.currentProvider;
+    this.provider =
+      (window as CustomWindow).ethereum || (window as CustomWindow).web3.currentProvider;
   }
 
-  // @ts-expect-error: conflict between Web3Client and RPCClient method signatures
+  public id(): string | number {
+    return randomBytes(16).toString('hex');
+  }
+
   public decorateRequest = (req: RPCRequest) => ({
     ...req,
     id: this.id(),
@@ -19,22 +24,22 @@ export default class Web3Client extends RPCClient {
     params: req.params || [] // default to empty array so MetaMask doesn't error
   });
 
-  public call = (request: RPCRequest | any): Promise<JsonRpcResponse> =>
-    this.sendAsync(this.decorateRequest(request)) as Promise<JsonRpcResponse>;
+  public call = (request: RPCRequest | any): Promise<JsonRPCResponse> =>
+    this.sendAsync(this.decorateRequest(request)) as Promise<JsonRPCResponse>;
 
   public callWeb3 = (request: RPCRequest | any): Promise<Web3RequestPermissionsResponse> =>
     (this.sendAsync(this.decorateRequest(request)) as unknown) as Promise<
       Web3RequestPermissionsResponse
     >;
 
-  public request = (request: RPCRequest | any): Promise<JsonRpcResponse> => this.request(request);
+  public request = (request: RPCRequest | any): Promise<JsonRPCResponse> => this.request(request);
 
-  public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> =>
-    this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRpcResponse[]>;
+  public batch = (requests: RPCRequest[] | any): Promise<JsonRPCResponse[]> =>
+    this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRPCResponse[]>;
 
-  private sendAsync = (request: any): Promise<JsonRpcResponse | JsonRpcResponse[]> => {
+  private sendAsync = (request: any): Promise<JsonRPCResponse | JsonRPCResponse[]> => {
     return new Promise((resolve, reject) => {
-      this.provider.sendAsync(request, (error, result: JsonRpcResponse | JsonRpcResponse[]) => {
+      this.provider.sendAsync(request, (error, result: JsonRPCResponse | JsonRPCResponse[]) => {
         if (error) {
           return reject(error);
         }

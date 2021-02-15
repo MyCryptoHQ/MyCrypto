@@ -1,14 +1,8 @@
-import {
-  isValidGetAccounts,
-  isValidGetNetVersion,
-  isValidSendTransaction,
-  isValidSignMessage
-} from '@services/EthService';
+import { isValidGetAccounts, isValidSignMessage } from '@services/EthService';
 import { isValidGetChainId, isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
-  IHexStrWeb3Transaction,
   INode,
   IWeb3Permission,
   TAddress,
@@ -16,33 +10,16 @@ import {
 } from '@types';
 import { bigify } from '@utils';
 
-import { RPCNode } from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
 
-export class Web3Node extends RPCNode {
-  // @ts-expect-error: conflict between any[] and [string, string]
+export class Web3Node {
   public client: Web3Client;
   public requests: Web3Requests;
 
   constructor() {
-    super('web3'); // initialized with fake endpoint
     this.client = new Web3Client();
     this.requests = new Web3Requests();
-  }
-
-  public getNetVersion(): Promise<string> {
-    return this.client
-      .call(this.requests.getNetVersion())
-      .then(isValidGetNetVersion)
-      .then(({ result }) => result);
-  }
-
-  public sendTransaction(web3Tx: IHexStrWeb3Transaction): Promise<string> {
-    return this.client
-      .call(this.requests.sendTransaction(web3Tx))
-      .then(isValidSendTransaction)
-      .then(({ result }) => result);
   }
 
   public signMessage(msgHex: string, fromAddr: string): Promise<string> {

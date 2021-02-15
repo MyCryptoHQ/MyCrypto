@@ -6,18 +6,6 @@ type TX = string;
 
 export type DEFAULT_BLOCK = string | 'earliest' | 'latest' | 'pending';
 
-export type JSONRPC2 = '2.0';
-
-export interface JsonRpcResponse {
-  id: string;
-  result: string;
-  error?: {
-    code: string;
-    message: string;
-    data?: any;
-  };
-}
-
 export interface RPCRequestBase {
   method: string;
   params?: any[];

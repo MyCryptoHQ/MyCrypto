@@ -8,12 +8,12 @@ import styled from 'styled-components';
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
-import { setupWeb3Node } from '@services/EthService';
+import { setupWeb3Node, Web3Node } from '@services/EthService';
 import { IFullWallet, IUseWalletConnect, withWalletConnect } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { FormData, INode, ISignedMessage, WalletId } from '@types';
+import { FormData, ISignedMessage, WalletId } from '@types';
 import { addHexPrefix } from '@utils';
 
 import { getStories } from './stories';
@@ -109,7 +109,7 @@ function SignMessage(props: Props) {
       const address = toChecksumAddress(wallet.getAddressString());
       let sig = '';
 
-      let lib: INode = {} as INode;
+      let lib: Web3Node = {} as Web3Node;
       if (walletName === WalletId.METAMASK) {
         lib = (await setupWeb3Node()).lib;
       }

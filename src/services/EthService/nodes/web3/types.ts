@@ -1,4 +1,6 @@
-import { DATA, JsonRpcResponse, QUANTITY, RPCRequest, RPCRequestBase } from '../rpc';
+import { JsonRPCResponse } from '@types';
+
+import { DATA, QUANTITY, RPCRequest, RPCRequestBase } from '../rpc';
 
 type MESSAGE_HEX = string;
 type ADDRESS = string;
@@ -39,7 +41,7 @@ export interface RequestPermissionsRequest extends RPCRequestBase {
   method: 'wallet_requestPermissions';
 }
 
-type TWeb3ProviderCallback = (error: string, result: JsonRpcResponse | JsonRpcResponse[]) => any;
+type TWeb3ProviderCallback = (error: string, result: JsonRPCResponse | JsonRPCResponse[]) => any;
 type TSendAsync = (request: RPCRequest | any, callback: TWeb3ProviderCallback) => void;
 
 export interface IWeb3Provider {
