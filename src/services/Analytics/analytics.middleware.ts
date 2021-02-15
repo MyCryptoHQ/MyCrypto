@@ -47,9 +47,8 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
       );
       break;
     }
-    default:
-      next(action);
   }
+  return next(action);
 };
 
 export default analyticsMiddleware;
