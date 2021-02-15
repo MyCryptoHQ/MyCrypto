@@ -8,7 +8,7 @@ export interface IPollingPayload {
     retries?: number;
     retriesAfter?: number;
   };
-  successAction: string;
+  successAction: any;
   //errorAction: string;
   promise(): Promise<any>;
   transformer?(result: any): any;
@@ -33,7 +33,7 @@ export function* pollingSaga() {
 // @todo: Replace with promise executed by poll
 // @todo: Enhance polling
 // @todo: Figure out multiple polling instances
-function* poll(payload: IPollingPayload) {
+export function* poll(payload: IPollingPayload) {
   const { promise, params, successAction, transformer } = payload;
 
   while (true) {
@@ -45,10 +45,7 @@ function* poll(payload: IPollingPayload) {
       const formatted = transformer ? transformer(res) : res;
 
       // Calling succes action on request success
-      yield put({
-        type: successAction,
-        payload: formatted
-      });
+      yield put(successAction(formatted));
 
       // Calling delay on request success
       yield call(delay, params.interval);
@@ -68,11 +65,9 @@ function* poll(payload: IPollingPayload) {
 }
 
 export default function* pollingSagaWatcher() {
-  while (true) {
-    // Take the polling start dispatch action
-    const { payload } = yield take(pollStart.type);
+  // Take the polling start dispatch action
+  const { payload } = yield take(pollStart.type);
 
-    // Payload will be available in action object
-    yield race([call(poll, payload), take(pollStop.type)]);
-  }
+  // Payload will be available in action object
+  yield race([call(poll, payload), take(pollStop.type)]);
 }

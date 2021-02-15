@@ -4,10 +4,11 @@ import { put, select, takeLatest } from 'redux-saga/effects';
 import { Fiats } from '@config';
 import { RatesService } from '@services/ApiService/Rates';
 import { IPollingPayload, pollStart } from '@services/Polling';
-import { ExtendedAsset, IRates, LSKeys, TFiatTicker, TTicker, TUuid } from '@types';
+import { ExtendedAsset, IRates, LSKeys, StoreAccount, TFiatTicker, TTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
-import { addAssetsFromAPI, getAssets } from './asset.slice';
+import { getAccounts } from './account.slice';
+import { addAssetsFromAPI } from './asset.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
 
@@ -113,7 +114,8 @@ export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]
 }
 
 export function* pollRates() {
-  const assets: ExtendedAsset[] = yield select(getAssets);
+  const accounts: StoreAccount[] = yield select(getAccounts);
+  const assets: ExtendedAsset[] = accounts.flatMap((account) => account.assets);
 
   const geckoIds = assets.reduce((acc, a) => {
     if (a.mappings && a.mappings.coinGeckoId) {
@@ -138,7 +140,7 @@ export function* pollRates() {
     params: {
       interval: 9000
     },
-    successAction: 'test/setRates',
+    successAction: slice.actions.setRates,
     promise: () => RatesService.instance.fetchAssetsRates(geckoIds, Object.keys(Fiats)),
     transformer: (result: IRates) => destructureCoinGeckoIds(result, assets)
   };
