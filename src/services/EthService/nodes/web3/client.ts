@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 
-import { JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
+import { JsonRPCResponse } from '@types';
 
 import { RPCRequest } from '../rpc';
 import { IWeb3Provider } from './types';
@@ -24,18 +24,8 @@ export default class Web3Client {
     params: req.params || [] // default to empty array so MetaMask doesn't error
   });
 
-  public call = (request: RPCRequest | any): Promise<JsonRPCResponse> =>
-    this.sendAsync(this.decorateRequest(request)) as Promise<JsonRPCResponse>;
-
-  public callWeb3 = (request: RPCRequest | any): Promise<Web3RequestPermissionsResponse> =>
-    (this.sendAsync(this.decorateRequest(request)) as unknown) as Promise<
-      Web3RequestPermissionsResponse
-    >;
-
-  public request = (request: RPCRequest | any): Promise<JsonRPCResponse> => this.request(request);
-
-  public batch = (requests: RPCRequest[] | any): Promise<JsonRPCResponse[]> =>
-    this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRPCResponse[]>;
+  public call = <T = JsonRPCResponse>(request: RPCRequest): Promise<T> =>
+    (this.sendAsync(this.decorateRequest(request)) as unknown) as Promise<T>;
 
   private sendAsync = (request: any): Promise<JsonRPCResponse | JsonRPCResponse[]> => {
     return new Promise((resolve, reject) => {

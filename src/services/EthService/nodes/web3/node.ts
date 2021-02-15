@@ -6,6 +6,7 @@ import {
   INode,
   IWeb3Permission,
   TAddress,
+  Web3RequestPermissionsResponse,
   Web3RequestPermissionsResult
 } from '@types';
 import { bigify } from '@utils';
@@ -39,14 +40,14 @@ export class Web3Node {
 
   public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
     return this.client
-      .callWeb3(this.requests.requestPermissions())
+      .call<Web3RequestPermissionsResponse>(this.requests.requestPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result);
   }
 
   public getApprovedAccounts(): Promise<TAddress[] | undefined> {
     return this.client
-      .callWeb3(this.requests.getPermissions())
+      .call<Web3RequestPermissionsResponse>(this.requests.getPermissions())
       .then(isValidRequestPermissions)
       .then(({ result }) => result && result[0] && result[0].caveats)
       .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
