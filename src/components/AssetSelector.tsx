@@ -37,7 +37,7 @@ export function AssetSelectorItem({
       data-testid={`asset-selector-option-${ticker}`}
     >
       {showAssetIcon && <AssetIcon uuid={uuid} size={'1.5rem'} />}
-      <Text ml={showAssetIcon ? '10px' : '0px'} mb={'0px'}>
+      <Text ml={showAssetIcon ? '15px' : '0px'} mb={'0px'}>
         {name ? `${ticker} - ${name}` : ticker}
       </Text>
     </Box>
