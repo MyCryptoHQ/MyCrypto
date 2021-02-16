@@ -18,7 +18,7 @@ export interface StackedCardData {
 type Props = StackedCardData;
 
 const StackedCardContainer = styled.section`
-  padding: 0.9375em;
+  padding: 16px;
   border-bottom: 0.0625em solid #dde3ee;
 `;
 
