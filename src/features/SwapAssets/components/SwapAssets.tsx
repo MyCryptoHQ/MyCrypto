@@ -281,6 +281,7 @@ const SwapAssets = (props: Props) => {
             !account ||
             isEstimatingGas ||
             isExpired ||
+            !estimatedGasFee ||
             isCalculatingToAmount ||
             isCalculatingFromAmount ||
             !fromAmount ||

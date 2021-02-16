@@ -61,7 +61,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     expiration,
     approvalTx,
     isEstimatingGas,
-    transactions: tradeTransactions
+    tradeTx
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -131,7 +131,10 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
             lastChangedAmount
           };
           initWith(
-            () => Promise.resolve(tradeTransactions.map(appendSender(account.address))),
+            () =>
+              Promise.resolve(
+                (approvalTx ? [approvalTx, tradeTx] : [tradeTx]).map(appendSender(account.address))
+              ),
             account,
             account.network
           );

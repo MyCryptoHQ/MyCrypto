@@ -10,16 +10,7 @@ import {
   MYC_DEX_COMMISSION_RATE
 } from '@config';
 import { formatApproveTx } from '@helpers';
-import {
-  ISwapAsset,
-  ITxGasLimit,
-  ITxGasPrice,
-  ITxObject,
-  ITxType,
-  ITxValue,
-  TAddress,
-  TTicker
-} from '@types';
+import { ISwapAsset, ITxGasPrice, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
 import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
@@ -101,16 +92,12 @@ export default class DexService {
               contractAddress: data.sellTokenAddress,
               spenderAddress: data.allowanceTarget,
               hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-              baseTokenAmount: bigify(data.sellAmount)
+              baseTokenAmount: bigify(data.sellAmount),
+              chainId: DEFAULT_NETWORK_CHAINID
             }),
             type: ITxType.APPROVAL
           }
         : undefined;
-
-    // Gas Limit may be a bit too small so increase slightly
-    const tradeGasLimit = addHexPrefix(
-      bigify(data.gas).multipliedBy(1.2).integerValue(7).toString(16)
-    ) as ITxGasLimit;
 
     return {
       price: bigify(data.price),
@@ -120,23 +107,16 @@ export default class DexService {
       sellAmount: bigify(
         baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
       ),
-      tradeGasLimit,
       gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
       // @todo: Better way to calculate expiration? This is what matcha.xyz does
       expiration: Date.now() / 1000 + DEX_TRADE_EXPIRATION,
       approvalTx,
-      transactions: [
-        // Include the Approve transaction when necessary.
-        // ie. any trade that is not an ETH/Token
-        ...(approvalTx ? [approvalTx] : []),
-        formatTradeTx({
-          to: data.to,
-          data: data.data,
-          gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-          gasLimit: tradeGasLimit,
-          value: data.value
-        })
-      ]
+      tradeTx: formatTradeTx({
+        to: data.to,
+        data: data.data,
+        gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        value: data.value
+      })
     };
   };
 }
@@ -145,16 +125,14 @@ export const formatTradeTx = ({
   to,
   data,
   value,
-  gasPrice,
-  gasLimit
-}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'gasLimit'>) => {
+  gasPrice
+}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice'>) => {
   return {
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId: DEFAULT_NETWORK_CHAINID,
     gasPrice,
-    gasLimit,
     type: ITxType.SWAP
   };
 };

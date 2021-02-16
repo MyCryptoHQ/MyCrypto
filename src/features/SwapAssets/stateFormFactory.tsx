@@ -1,9 +1,4 @@
-import {
-  DEFAULT_NETWORK,
-  DEFAULT_NETWORK_CHAINID,
-  DEFAULT_NETWORK_TICKER,
-  MYC_DEX_COMMISSION_RATE
-} from '@config';
+import { DEFAULT_NETWORK, DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate, getNetworkById, useNetworks } from '@services';
 import translate from '@translations';
@@ -52,8 +47,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
             decimal: decimals,
             uuid:
               symbol === DEFAULT_NETWORK_TICKER
-                ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
-                : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
+                ? generateAssetUUID(network.chainId)
+                : generateAssetUUID(network.chainId, asset.address)
           })
         )
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
@@ -253,26 +248,43 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const handleGasLimitEstimation = async () => {
-    const { approvalTx, account } = state;
-    if (approvalTx && approvalTx.to && approvalTx.data && account) {
+    const { approvalTx, account, tradeTx } = state;
+    if (tradeTx && account) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isEstimatingGas: true
       }));
 
-      const requiresApproval =
-        approvalTx &&
-        (await checkRequiresApproval(network, approvalTx.to, account.address, approvalTx.data));
+      try {
+        const requiresApproval =
+          approvalTx &&
+          (await checkRequiresApproval(network, approvalTx.to!, account.address, approvalTx.data!));
 
-      const gasLimit = requiresApproval ? await getGasEstimate(network, approvalTx!) : '0';
+        const approvalGasLimit = inputGasLimitToHex(
+          requiresApproval ? await getGasEstimate(network, approvalTx!) : '0'
+        ) as ITxGasLimit;
 
-      const approvalGasLimit = inputGasLimitToHex(gasLimit) as ITxGasLimit;
+        const tradeGasLimit = inputGasLimitToHex(
+          await getGasEstimate(network, { ...tradeTx, from: account.address })
+        ) as ITxGasLimit;
 
-      setState((prevState: SwapFormState) => ({
-        ...prevState,
-        isEstimatingGas: false,
-        approvalGasLimit
-      }));
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isEstimatingGas: false,
+          approvalGasLimit,
+          tradeGasLimit,
+          tradeTx: { ...prevState.tradeTx, gasLimit: tradeGasLimit }
+        }));
+      } catch (err) {
+        console.error(err);
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isEstimatingGas: false,
+          fromAmountError: translate('UNEXPECTED_ERROR', {
+            $link: formatErrorEmailMarkdown('Swap Error', err)
+          })
+        }));
+      }
     }
   };
 

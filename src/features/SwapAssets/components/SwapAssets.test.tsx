@@ -23,7 +23,6 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   isSubmitting: false,
   isEstimatingGas: false,
   exchangeRate: '10',
-  transactions: [],
   onSuccess: noOp,
   handleFromAssetSelected: noOp,
   handleToAssetSelected: noOp,
