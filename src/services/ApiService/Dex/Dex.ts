@@ -10,7 +10,16 @@ import {
   MYC_DEX_COMMISSION_RATE
 } from '@config';
 import { formatApproveTx } from '@helpers';
-import { ISwapAsset, ITxGasPrice, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
+import {
+  ISwapAsset,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxObject,
+  ITxType,
+  ITxValue,
+  TAddress,
+  TTicker
+} from '@types';
 import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
@@ -50,13 +59,22 @@ export default class DexService {
     return tokenList;
   };
 
-  public getOrderDetailsFrom = async (from: ISwapAsset, to: ISwapAsset, fromAmount: string) =>
-    this.getOrderDetails(from, to, fromAmount);
+  public getOrderDetailsFrom = async (
+    account: string | null,
+    from: ISwapAsset,
+    to: ISwapAsset,
+    fromAmount: string
+  ) => this.getOrderDetails(account, from, to, fromAmount);
 
-  public getOrderDetailsTo = async (from: ISwapAsset, to: ISwapAsset, toAmount: string) =>
-    this.getOrderDetails(from, to, undefined, toAmount);
+  public getOrderDetailsTo = async (
+    account: string | null,
+    from: ISwapAsset,
+    to: ISwapAsset,
+    toAmount: string
+  ) => this.getOrderDetails(account, from, to, undefined, toAmount);
 
   private getOrderDetails = async (
+    account: string | null,
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
     sellAmount?: string,
@@ -77,7 +95,8 @@ export default class DexService {
           ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
           : undefined,
         feeRecipient: DEX_FEE_RECIPIENT,
-        buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE
+        buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
+        takerAddress: account ? account : undefined
       },
       cancelToken: new CancelToken(function executor(c) {
         // An executor function receives a cancel function as a parameter
@@ -99,6 +118,8 @@ export default class DexService {
           }
         : undefined;
 
+    const tradeGasLimit = addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit;
+
     return {
       price: bigify(data.price),
       buyAmount: bigify(
@@ -111,10 +132,12 @@ export default class DexService {
       // @todo: Better way to calculate expiration? This is what matcha.xyz does
       expiration: Date.now() / 1000 + DEX_TRADE_EXPIRATION,
       approvalTx,
+      tradeGasLimit,
       tradeTx: formatTradeTx({
         to: data.to,
         data: data.data,
         gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        gasLimit: tradeGasLimit,
         value: data.value
       })
     };
@@ -125,14 +148,16 @@ export const formatTradeTx = ({
   to,
   data,
   value,
-  gasPrice
-}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice'>) => {
+  gasPrice,
+  gasLimit
+}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'gasLimit'>) => {
   return {
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId: DEFAULT_NETWORK_CHAINID,
     gasPrice,
+    gasLimit,
     type: ITxType.SWAP
   };
 };

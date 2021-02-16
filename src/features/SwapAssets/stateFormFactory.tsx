@@ -96,7 +96,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const calculateNewFromAmount = async (value: string) => {
-    const { fromAsset, toAsset, isCalculatingFromAmount } = state;
+    const { fromAsset, toAsset, isCalculatingFromAmount, account } = state;
     if (!fromAsset || !toAsset || isCalculatingFromAmount) {
       return;
     }
@@ -126,6 +126,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
+        account?.address,
         fromAsset,
         toAsset,
         value
@@ -144,21 +145,30 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         ...rest
       }));
     } catch (e) {
-      if (!e.isCancel) {
+      if (e.isCancel) {
+        return;
+      }
+      console.error(e);
+      if (!e.response?.data?.reason) {
         setState((prevState: SwapFormState) => ({
           ...prevState,
-          isCalculatingFromAmount: false,
-          toAmountError: translate('UNEXPECTED_ERROR', {
+          isCalculatingToAmount: false,
+          fromAmountError: translate('UNEXPECTED_ERROR', {
             $link: formatErrorEmailMarkdown('Swap Error', e)
           })
         }));
-        console.error(e);
+      } else {
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isCalculatingToAmount: false,
+          fromAmountError: e.response.data.reason
+        }));
       }
     }
   };
 
   const calculateNewToAmount = async (value: string) => {
-    const { fromAsset, toAsset, isCalculatingToAmount } = state;
+    const { fromAsset, toAsset, isCalculatingToAmount, account } = state;
     if (!fromAsset || !toAsset || isCalculatingToAmount) {
       return;
     }
@@ -189,6 +199,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
+        account?.address,
         fromAsset,
         toAsset,
         value
@@ -207,7 +218,11 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         ...rest
       }));
     } catch (e) {
-      if (!e.isCancel) {
+      if (e.isCancel) {
+        return;
+      }
+      console.error(e);
+      if (!e.response?.data?.reason) {
         setState((prevState: SwapFormState) => ({
           ...prevState,
           isCalculatingToAmount: false,
@@ -215,7 +230,12 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
             $link: formatErrorEmailMarkdown('Swap Error', e)
           })
         }));
-        console.error(e);
+      } else {
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isCalculatingToAmount: false,
+          fromAmountError: e.response.data.reason
+        }));
       }
     }
   };
@@ -248,8 +268,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const handleGasLimitEstimation = async () => {
-    const { approvalTx, account, tradeTx } = state;
-    if (tradeTx && account) {
+    const { approvalTx, account } = state;
+    if (approvalTx && account) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isEstimatingGas: true
@@ -264,16 +284,10 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           requiresApproval ? await getGasEstimate(network, approvalTx!) : '0'
         ) as ITxGasLimit;
 
-        const tradeGasLimit = inputGasLimitToHex(
-          await getGasEstimate(network, { ...tradeTx, from: account.address })
-        ) as ITxGasLimit;
-
         setState((prevState: SwapFormState) => ({
           ...prevState,
           isEstimatingGas: false,
-          approvalGasLimit,
-          tradeGasLimit,
-          tradeTx: { ...prevState.tradeTx, gasLimit: tradeGasLimit }
+          approvalGasLimit
         }));
       } catch (err) {
         console.error(err);
