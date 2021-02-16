@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { isTruthy } from '@utils';
 
+import { default as Box } from './Box';
 import { Panel } from './Panel';
 import Typography from './Typography';
 
@@ -20,13 +21,6 @@ const DPanel = styled(Panel)`
   margin: 0 0 ${SPACING.BASE} 0;
   min-height: 0;
   padding: 0;
-`;
-
-const DHeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: ${SPACING.BASE};
 `;
 
 const DFooterWrapper = styled.div`
@@ -66,10 +60,10 @@ export const DashboardPanel = ({
   return (
     <DPanel {...rest}>
       {heading && (
-        <DHeadingWrapper>
+        <Box variant="spaceBetween" padding={{ _: '16px', md: SPACING.BASE }}>
           <DHeading hasRightHeading={isTruthy(headingRight)}>{heading}</DHeading>
           {headingRight && <Typography>{headingRight}</Typography>}
-        </DHeadingWrapper>
+        </Box>
       )}
       {padChildren ? <Content>{children}</Content> : children}
       {footer && <DFooterWrapper>{footer}</DFooterWrapper>}

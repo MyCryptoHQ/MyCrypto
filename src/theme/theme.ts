@@ -128,6 +128,10 @@ const FLEX_RECIPES = {
   center: {
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 };
 
@@ -151,6 +155,10 @@ const FLEX_VARIANTS = {
     display: 'flex',
     flexDirection: 'column',
     ...FLEX_RECIPES.center
+  },
+  spaceBetween: {
+    display: 'flex',
+    ...FLEX_RECIPES.spaceBetween
   }
 };
 
