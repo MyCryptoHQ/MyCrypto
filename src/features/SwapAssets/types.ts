@@ -44,7 +44,7 @@ export interface SwapFormState {
   tradeGasLimit?: ITxGasLimit;
   approvalTx?: Partial<ITxObject>;
   expiration?: number;
-  tradeTx?: Pick<ITxObject, 'data' | 'gasPrice' | 'to' | 'value' | 'chainId'>;
+  tradeTx?: Partial<ITxObject>;
 }
 
 export interface IAssetPair {
