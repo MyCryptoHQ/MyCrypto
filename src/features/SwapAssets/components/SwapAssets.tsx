@@ -78,6 +78,7 @@ const SwapAssets = (props: Props) => {
     handleGasLimitEstimation,
     handleRefreshQuote,
     approvalTx,
+    tradeTx,
     exchangeRate,
     approvalGasLimit,
     tradeGasLimit,
@@ -152,7 +153,7 @@ const SwapAssets = (props: Props) => {
 
   useEffect(() => {
     handleGasLimitEstimation();
-  }, [approvalTx, account]);
+  }, [approvalTx, tradeTx, account]);
 
   const estimatedGasFee =
     gasPrice &&
