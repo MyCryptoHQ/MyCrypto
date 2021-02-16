@@ -20,7 +20,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { addHexPrefix, baseToConvertedUnit, bigify, inputGasLimitToHex, toWei } from '@utils';
+import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -107,6 +107,11 @@ export default class DexService {
           }
         : undefined;
 
+    // Gas Limit may be a bit too small so increase slightly
+    const tradeGasLimit = addHexPrefix(
+      bigify(data.gas).multipliedBy(1.2).integerValue(7).toString(16)
+    ) as ITxGasLimit;
+
     return {
       price: bigify(data.price),
       buyAmount: bigify(
@@ -115,7 +120,7 @@ export default class DexService {
       sellAmount: bigify(
         baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
       ),
-      tradeGasLimit: addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit,
+      tradeGasLimit,
       gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
       // @todo: Better way to calculate expiration? This is what matcha.xyz does
       expiration: Date.now() / 1000 + DEX_TRADE_EXPIRATION,
@@ -128,7 +133,7 @@ export default class DexService {
           to: data.to,
           data: data.data,
           gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-          gasLimit: inputGasLimitToHex(data.gas),
+          gasLimit: tradeGasLimit,
           value: data.value
         })
       ]
