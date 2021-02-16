@@ -9,11 +9,11 @@ const LabelText = styled(Text)`
   cursor: pointer;
 `;
 const Checkbox = styled(Input)<{
-  greyable?: boolean;
+  $greyable?: boolean;
 }>`
   :checked + span {
     background-color: ${(props) =>
-      props.greyable && !props.checked ? props.theme.switchBackgroundGreyable : '#b2d7e0'};
+      props.$greyable && !props.checked ? props.theme.switchBackgroundGreyable : '#b2d7e0'};
   }
   :checked + span::before {
     transform: translateX(30px);
@@ -31,7 +31,7 @@ const SliderBackground = styled.label`
     display: none;
   }
 `;
-const Slider = styled.span<{ greyable?: boolean; checked?: boolean }>`
+const Slider = styled.span<{ $greyable?: boolean; checked?: boolean }>`
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -39,7 +39,7 @@ const Slider = styled.span<{ greyable?: boolean; checked?: boolean }>`
   right: 0;
   bottom: 0;
   background-color: ${(props) =>
-    props.greyable && !props.checked ? props.theme.switchBackgroundGreyable : '#b2d7e0'};
+    props.$greyable && !props.checked ? props.theme.switchBackgroundGreyable : '#b2d7e0'};
   transition: 0.4s;
   border-radius: 17px;
   ::before {
@@ -50,33 +50,33 @@ const Slider = styled.span<{ greyable?: boolean; checked?: boolean }>`
     left: -4px;
     bottom: -3px;
     background-color: ${(props) =>
-      props.greyable && !props.checked ? 'grey' : props.theme.primary};
+      props.$greyable && !props.checked ? 'grey' : props.theme.primary};
     transition: 0.4s;
     border-radius: 17px;
   }
 `;
 
 interface Props {
-  greyable?: boolean;
+  $greyable?: boolean;
   labelLeft?: string;
   labelRight?: string;
   checked?: boolean;
   onChange?(): void;
 }
-export const Switch = ({ greyable, onChange, labelLeft, labelRight, checked }: Props) => (
+export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: Props) => (
   <Box variant="rowCenter">
     <LabelText as="label" htmlFor="toggle">
       {labelLeft}
     </LabelText>
     <SliderBackground htmlFor="toggle">
       <Checkbox
-        greyable={greyable}
+        $greyable={$greyable}
         id="toggle"
         type="checkbox"
         onChange={onChange}
         checked={checked}
       />
-      <Slider checked={checked} greyable={greyable} />
+      <Slider checked={checked} $greyable={$greyable} />
     </SliderBackground>
     <LabelText as="label" htmlFor="toggle">
       {labelRight}
