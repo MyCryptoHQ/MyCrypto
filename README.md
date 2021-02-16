@@ -3,11 +3,7 @@
 [![Build](https://github.com/MyCryptoHQ/MyCrypto/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/MyCryptoHQ/MyCrypto/actions)
 [![codecov](https://codecov.io/gh/MyCryptoHQ/MyCrypto/branch/master/graph/badge.svg)](https://codecov.io/gh/MyCryptoHQ/MyCrypto)
 
-This repo stores both the beta and production versions of the MyCrypto codebase.
-
-#### The default `master` branch represents the beta code hosted on [beta.mycrypto.com](https://beta.mycrypto.com)
-
-#### The `legacy` branch represents the production code hosted on [mycrypto.com](https://mycrypto.com)
+This repo stores the MyCrypto codebase. The code is served at [app.mycrypto.com](https://mycrypto.com)
 
 #### Documentation can be found in [our wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 
