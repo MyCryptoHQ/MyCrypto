@@ -3,7 +3,7 @@
 [![Build](https://github.com/MyCryptoHQ/MyCrypto/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/MyCryptoHQ/MyCrypto/actions)
 [![codecov](https://codecov.io/gh/MyCryptoHQ/MyCrypto/branch/master/graph/badge.svg)](https://codecov.io/gh/MyCryptoHQ/MyCrypto)
 
-This repo stores the MyCrypto codebase. The code is served at [app.mycrypto.com](https://mycrypto.com)
+This repo stores the MyCrypto codebase. The code is served at [app.mycrypto.com](https://app.mycrypto.com)
 
 #### Documentation can be found in [our wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 
