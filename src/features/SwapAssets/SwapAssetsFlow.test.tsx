@@ -32,7 +32,7 @@ function getComponent() {
                 assets: () => fAssets,
                 accounts: fAccounts,
                 userAssets: fAccounts.flatMap((a) => a.assets),
-                getDefaultAccount: () => fAccounts[0]
+                getDefaultAccount: () => undefined
               } as any) as any
             }
           >

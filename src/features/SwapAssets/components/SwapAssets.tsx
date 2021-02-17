@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -102,9 +102,12 @@ const SwapAssets = (props: Props) => {
     userAssets.find((userAsset) => a.uuid === userAsset.uuid)
   );
 
-  const [, , calculateNewToAmountDebounced] = useDebounce(() => {
-    calculateNewToAmount(fromAmount);
-  }, 500);
+  const [, , calculateNewToAmountDebounced] = useDebounce(
+    useCallback(() => {
+      calculateNewToAmount(fromAmount);
+    }, [fromAmount, account]),
+    500
+  );
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -114,9 +117,12 @@ const SwapAssets = (props: Props) => {
     calculateNewToAmountDebounced();
   };
 
-  const [, , calculateNewFromAmountDebounced] = useDebounce(() => {
-    calculateNewFromAmount(toAmount);
-  }, 500);
+  const [, , calculateNewFromAmountDebounced] = useDebounce(
+    useCallback(() => {
+      calculateNewFromAmount(toAmount);
+    }, [toAmount, account]),
+    500
+  );
 
   // RECEIVE AMOUNT CHANGED
   const handleToAmountChangedEvent = async (e: React.ChangeEvent<HTMLSelectElement>) => {
