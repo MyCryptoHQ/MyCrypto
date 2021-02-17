@@ -7,6 +7,7 @@ This repo stores the MyCrypto codebase. The code is served at [app.mycrypto.com]
 
 #### Documentation can be found in [our wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 
+- [Contributor Guidelines](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributor-Guidelines) A must-read if you'd like to contribute to MyCrypto
 - [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)
 - [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
 - [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
@@ -47,14 +48,14 @@ To disable it you can your settings in chrome: chrome://flags/#allow-insecure-lo
 #### Staging
 
 ```bash
-# builds staging app version used on mycryptobuilds.com
+# builds app for staging
 yarn build:staging
 ```
 
 #### Production
 
 ```bash
-# builds production app version used on beta.mycrypto.com
+# builds app for production
 yarn build
 ```
 
