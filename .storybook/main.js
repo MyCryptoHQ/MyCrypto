@@ -5,10 +5,10 @@ module.exports = {
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
 
   addons: [
+    '@storybook/addon-essentials',
     'storybook-addon-designs/register',
     'storybook-addon-styled-component-theme/dist/register',
-    '@storybook/addon-a11y/register',
-    '@storybook/addon-docs'
+    '@storybook/addon-a11y/register'
   ],
 
   webpackFinal: async (config) => {
