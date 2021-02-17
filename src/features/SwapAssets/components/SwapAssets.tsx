@@ -115,7 +115,7 @@ const SwapAssets = (props: Props) => {
   };
 
   const [, , calculateNewFromAmountDebounced] = useDebounce(() => {
-    calculateNewFromAmount(fromAmount);
+    calculateNewFromAmount(toAmount);
   }, 500);
 
   // RECEIVE AMOUNT CHANGED
