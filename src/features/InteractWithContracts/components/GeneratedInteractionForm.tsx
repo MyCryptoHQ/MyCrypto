@@ -17,8 +17,7 @@ import {
 } from '../helpers';
 import { ABIField, ABIItem } from '../types';
 import { BooleanOutputField, BooleanSelector, FieldLabel } from './fields';
-import FunctionDropdownOption from './FunctionDropdownOption';
-import FunctionDropdownValue from './FunctionDropdownValue';
+import FunctionDropdownItem from './FunctionDropdownItem';
 import WriteForm from './WriteForm';
 
 const { GREY_LIGHTER, WHITE } = COLORS;
@@ -226,8 +225,10 @@ export default function GeneratedInteractionForm({
           onChange={(selectedFunction) => {
             handleFunctionSelected(selectedFunction);
           }}
-          optionComponent={FunctionDropdownOption}
-          valueComponent={FunctionDropdownValue}
+          optionComponent={({ data, selectOption }) => (
+            <FunctionDropdownItem option={data} onSelect={selectOption} />
+          )}
+          valueComponent={({ value }) => <FunctionDropdownItem option={value} />}
           searchable={true}
         />
       </DropdownWrapper>
