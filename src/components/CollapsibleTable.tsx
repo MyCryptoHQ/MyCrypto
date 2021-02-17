@@ -5,11 +5,15 @@
 
 import React, { Component, ReactNode } from 'react';
 
-import { Icon, scale, StackedCardData, Typography } from '@mycrypto/ui';
+import { scale, StackedCardData, Typography } from '@mycrypto/ui';
 import isFunction from 'lodash/isFunction';
 import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 
+import { default as Box } from './Box';
+import { default as Icon } from './Icon';
+import { IconNavArrow } from './IconArrow';
+import { SubHeading, Text } from './NewTypography';
 import { StackedCard } from './StackedCard';
 import { Table, TableConfig, TableData } from './Table';
 
@@ -125,9 +129,6 @@ const GroupHeadingCaret = styled(Icon)<Flippable>`
   `};
 `;
 
-const StackedCardContainer = styled.div`
-  position: relative;
-`;
 const StackedCardOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -174,20 +175,26 @@ export class CollapsibleTable extends Component<Props, State> {
       transformTableToCards(this.props, collapsedGroups).map((cardData, index) =>
         typeof cardData === 'string' ? (
           // The element being iterated on is a group heading.
-          <GroupHeading key={index} onClick={this.toggleCollapseGroup.bind(this, cardData)}>
-            {cardData}
-            <GroupHeadingCaret icon="navDownCaret" $isFlipped={collapsedGroups[cardData]} />
-          </GroupHeading>
+          <Box as="section" variant="rowAlign" padding="16px" role="button">
+            <SubHeading
+              textTransform="uppercase"
+              key={index}
+              onClick={this.toggleCollapseGroup.bind(this, cardData)}
+            >
+              {cardData}
+            </SubHeading>
+            <IconNavArrow $isFlipped={collapsedGroups[cardData]} />
+          </Box>
         ) : (
           // The element being iterated on is table data.
-          <StackedCardContainer key={index}>
+          <React.Fragment key={index}>
             <StackedCard {...cardData} />
             {overlay && overlayRows!.includes(index) && (
               <StackedCardOverlay>
                 {isFunction(overlay) ? overlay(index) : overlay}
               </StackedCardOverlay>
             )}
-          </StackedCardContainer>
+          </React.Fragment>
         )
       )
     ) : (

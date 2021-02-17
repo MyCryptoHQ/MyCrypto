@@ -80,7 +80,7 @@ const StackedCardEntry = styled.dl`
 `;
 
 const StackedCardLabel = styled(Typography)`
-  flex: 0.7;
+  flex: 0.5;
   margin: 0;
   color: ${(props) => props.theme.cardText};
   letter-spacing: 0.106875em;

@@ -18,6 +18,13 @@ const SIconContainer = styled.div`
   align-items: center;
 `;
 
+const SCollapseIcon = styled(CollapseIcon)<{ $isFlipped: boolean }>`
+  &&& {
+    transform: rotate(90deg);
+  }
+  background-color: red;
+`;
+
 export const IconArrow = ({ isFlipped, fillColor, size, onClick }: ArrowProps) => {
   return (
     <>
@@ -29,6 +36,8 @@ export const IconArrow = ({ isFlipped, fillColor, size, onClick }: ArrowProps) =
     </>
   );
 };
+
+export const IconNavArrow = (props) => <SCollapseIcon {...props} />;
 
 export const CenteredIconArrow = (props: ArrowProps) => (
   <SIconContainer>
