@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
-import { BREAK_POINTS, COLORS, monospace, SPACING } from '@theme';
+import { COLORS, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 

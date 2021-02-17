@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
 import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
-import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import {
