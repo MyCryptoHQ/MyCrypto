@@ -151,21 +151,17 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         return;
       }
       console.error(e);
-      if (!e.response?.data?.reason) {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingToAmount: false,
-          fromAmountError: translate('UNEXPECTED_ERROR', {
-            $link: formatErrorEmailMarkdown('Swap Error', e)
-          })
-        }));
-      } else {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingToAmount: false,
-          fromAmountError: e.response.data.reason
-        }));
-      }
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isCalculatingFromAmount: false,
+        fromAmount: '',
+        toAmountError:
+          e.response?.data?.code && e.response.data.code === 109
+            ? e.response.data.reason
+            : translate('UNEXPECTED_ERROR', {
+                $link: formatErrorEmailMarkdown('Swap Error', e)
+              })
+      }));
     }
   };
 
@@ -224,21 +220,17 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         return;
       }
       console.error(e);
-      if (!e.response?.data?.reason) {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingToAmount: false,
-          fromAmountError: translate('UNEXPECTED_ERROR', {
-            $link: formatErrorEmailMarkdown('Swap Error', e)
-          })
-        }));
-      } else {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingToAmount: false,
-          fromAmountError: e.response.data.reason
-        }));
-      }
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isCalculatingToAmount: false,
+        toAmount: '',
+        fromAmountError:
+          e.response?.data?.code && e.response.data.code === 109
+            ? e.response.data.reason
+            : translate('UNEXPECTED_ERROR', {
+                $link: formatErrorEmailMarkdown('Swap Error', e)
+              })
+      }));
     }
   };
 
