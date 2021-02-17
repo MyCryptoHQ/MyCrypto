@@ -35,9 +35,6 @@ const AccountSelectorWrapper = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: fit-content;
-  }
 `;
 
 const CustomLabel = styled(Typography)`

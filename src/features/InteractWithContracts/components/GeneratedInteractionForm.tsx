@@ -80,9 +80,6 @@ const HorizontalLine = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: fit-content;
-  }
 `;
 
 const WriteFormWrapper = styled.div`
