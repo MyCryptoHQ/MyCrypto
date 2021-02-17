@@ -1,3 +1,4 @@
+import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
@@ -75,7 +76,19 @@ export default slice;
 /**
  * Selectors
  */
-export const getAccounts = createSelector([getAppState], (s) => s[slice.name]);
+export const getAccounts = createSelector([getAppState], (s) => {
+  const accounts = s[slice.name];
+  return accounts.map((a) => ({
+    ...a,
+    transactions: a.transactions.map((t) => ({
+      ...t,
+      value: EthersBN.from(t.value),
+      gasLimit: EthersBN.from(t.gasLimit),
+      gasPrice: EthersBN.from(t.gasPrice),
+      gasUsed: t.gasUsed && EthersBN.from(t.gasUsed)
+    }))
+  }));
+});
 
 export const getWalletAccountsOnDefaultNetwork = createSelector(
   getAccounts,

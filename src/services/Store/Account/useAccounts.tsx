@@ -1,19 +1,16 @@
-import { useContext } from 'react';
-
-import eqBy from 'ramda/src/eqBy';
-import prop from 'ramda/src/prop';
-import unionWith from 'ramda/src/unionWith';
+import { useSelector } from 'react-redux';
 
 import {
   addAccounts,
   destroyAccount,
+  getAccounts,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
 import { Asset, IAccount, IRawAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
+import { eqBy, prop, unionWith } from '@vendor';
 
-import { DataContext } from '../DataManager';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
@@ -31,7 +28,7 @@ export interface IAccountContext {
 }
 
 function useAccounts() {
-  const { accounts } = useContext(DataContext);
+  const accounts = useSelector(getAccounts);
 
   const dispatch = useDispatch();
 
