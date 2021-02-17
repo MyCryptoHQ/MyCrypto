@@ -1,4 +1,4 @@
-import 'idempotent-babel-polyfill';
+// import 'idempotent-babel-polyfill';
 
 export enum PollingAction {
   START = 'POLLING_WORKER_START',

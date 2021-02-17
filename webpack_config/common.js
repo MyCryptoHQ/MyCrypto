@@ -29,10 +29,13 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [config.path.src, config.path.modules, config.path.root],
+    modules: [config.path.src, config.path.root, 'node_modules'],
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
-      '@fixtures': `${config.path.root}/jest_config/__fixtures__`
+      '@fixtures': `${config.path.root}/jest_config/__fixtures__`,
+      // recharts 1.8.5 relies on core-js@2. Allow it to resolve to core-js@3
+      // https://github.com/recharts/recharts/issues/1673#issuecomment-499680671
+      'core-js/es6': 'core-js/es'
     },
     plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
   },
