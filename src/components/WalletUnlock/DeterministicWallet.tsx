@@ -5,9 +5,9 @@ import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Button, Input, Selector, Switch, Text, Typography } from '@components';
+import { AssetSelector, Box, Button, Input, Selector, Switch, Text, Typography } from '@components';
 import Icon from '@components/Icon';
-import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
+import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
@@ -130,7 +130,6 @@ interface DeterministicWalletProps {
   setSelectedDPath(dpath: DPath): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
-  generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
   scanMoreAddresses?(dpath: ExtendedDPath): void;
   handleAssetUpdate(asset: ExtendedAsset): void;
   onUnlock(param: any): void;
@@ -166,14 +165,12 @@ const DeterministicWallet = ({
   setSelectedDPath,
   updateAsset,
   addDPaths,
-  generateFreshAddress,
   scanMoreAddresses,
   handleAssetUpdate,
   onUnlock
 }: DeterministicWalletProps) => {
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
-  const [freshAddressIndex, setFreshAddressIndex] = useState(0);
   const [displayEmptyAddresses, toggleDisplayEmptyAddresses] = useState(false);
 
   const handleDPathAddition = (values: FormValues) => {
@@ -191,20 +188,6 @@ const DeterministicWallet = ({
     scanMoreAddresses!(dpath);
   };
 
-  const handleFreshAddressGeneration = () => {
-    if (freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR || !state.completed) {
-      return;
-    }
-    const freshAddressGenerationSuccess = generateFreshAddress({
-      ...selectedDPath,
-      offset: freshAddressIndex,
-      numOfAddresses: 1
-    });
-    if (freshAddressGenerationSuccess) {
-      setFreshAddressIndex(freshAddressIndex + 1);
-    }
-  };
-
   const csv = accountsToCSV(state.finishedAccounts, assetToUse);
 
   const Schema = object().shape({
@@ -215,6 +198,7 @@ const DeterministicWallet = ({
         isValidPath(value)
       )
   });
+  console.debug('ACCOUNTS REFRESHED:', state.finishedAccounts);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
 
@@ -281,9 +265,9 @@ const DeterministicWallet = ({
           <Trans id="MNEMONIC_TITLE" />
         </Title>
       </HeadingWrapper>
-      <Typography>
+      <Text>
         <Trans id="MNEMONIC_SUBTITLE" />
-      </Typography>
+      </Text>
       <Parameters>
         <AssetSelector
           selectedAsset={assetToUse}
@@ -295,49 +279,46 @@ const DeterministicWallet = ({
             handleAssetUpdate(option);
           }}
         />
+        <Box variant="columnAlign" alignItems="flex-start">
+          <Text>
+            <Trans id="MNEMONIC_DISPLAY_EMPTY_ADDRESSES" />
+          </Text>
+          <Switch
+            greyable={true}
+            checked={displayEmptyAddresses}
+            onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
+            labelLeft="Hide"
+            labelRight="Show"
+          />
+        </Box>
+      </Parameters>
+      <Text>{'Select a Derivation Path'}</Text>
+      <Parameters>
+        <Selector
+          value={selectedDPath}
+          onChange={setSelectedDPath}
+          options={dpaths}
+          optionComponent={DPathOption}
+          valueComponent={({ value }) => <DPathOption data={value} />}
+          clearable={false}
+          searchable={false}
+        />
         <Button onClick={() => setDpathAddView(true)} colorScheme={'inverted'}>
           <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
         </Button>
       </Parameters>
-      <Parameters>
-        <Text>
-          <Trans id="MNEMONIC_DISPLAY_EMPTY_ADDRESSES" />
-        </Text>
-        <Switch
-          greyable={true}
-          checked={displayEmptyAddresses}
-          onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
-          labelLeft="Hide"
-          labelRight="Show"
-        />
-      </Parameters>
-      {displayEmptyAddresses && (
-        <Parameters>
-          <Text>{'Select a Derivation Path'}</Text>
-          <Selector
-            value={selectedDPath}
-            onChange={setSelectedDPath}
-            options={dpaths}
-            optionComponent={DPathOption}
-            valueComponent={({ value }) => <DPathOption data={value} />}
-            clearable={false}
-            searchable={false}
-          />
-        </Parameters>
-      )}
+
       <TableContainer>
         {state.asset && (
           <DeterministicAccountList
             isComplete={state.completed}
             asset={state.asset}
             finishedAccounts={state.finishedAccounts}
-            freshAddressIndex={freshAddressIndex}
             network={network}
             selectedDPath={selectedDPath}
             displayEmptyAddresses={displayEmptyAddresses}
             onUnlock={onUnlock}
             handleScanMoreAddresses={handleScanMoreAddresses}
-            generateFreshAddress={handleFreshAddressGeneration}
             handleUpdate={updateAsset}
           />
         )}

@@ -73,14 +73,14 @@ const IconWrapper = styled.div`
   align-items: center;
 `;
 
-const SButton = styled.span`
-  color: ${COLORS.BLUE_MYC};
-  cursor: pointer;
-  font-weight: bold;
-  &:hover {
-    color: ${COLORS.BLUE_LIGHT_DARKISH};
-  }
-`;
+// const SButton = styled.span`
+//   color: ${COLORS.BLUE_MYC};
+//   cursor: pointer;
+//   font-weight: bold;
+//   &:hover {
+//     color: ${COLORS.BLUE_LIGHT_DARKISH};
+//   }
+// `;
 
 const SDownloader = styled(Downloader)`
   color: ${COLORS.BLUE_MYC};
@@ -99,11 +99,9 @@ interface DeterministicAccountListProps {
   asset: ExtendedAsset;
   isComplete: boolean;
   network: Network;
-  freshAddressIndex: number;
   displayEmptyAddresses: boolean;
   selectedDPath: DPath;
   handleScanMoreAddresses(dpath: ExtendedDPath): void;
-  generateFreshAddress(): void;
   onUnlock(param: any): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
@@ -113,34 +111,35 @@ export default function DeterministicAccountList({
   asset,
   isComplete,
   network,
-  freshAddressIndex,
   displayEmptyAddresses,
   selectedDPath,
-  generateFreshAddress,
   handleScanMoreAddresses,
   onUnlock,
   handleUpdate
 }: DeterministicAccountListProps) {
+  console.debug(
+    'AccountList: ',
+    asset,
+    finishedAccounts.map(({ address, balance }) => ({ address, balance: balance?.toString() }))
+  );
   const MAX_EMPTY_ADDRESSES = 5;
   const { isMobile } = useScreenSize();
-  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
 
   const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
 
+  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set and
   useEffect(() => {
     const tableAccs = accountsToUse.reduce((acc, idx) => {
-      if (!tableAccounts[idx.address]) {
-        acc[idx.address] = {
-          ...idx,
-          isDefaultConfig: true,
-          isSelected: (idx.balance && !idx.balance.isZero()) || false
-        };
-        return acc;
-      } else return acc;
+      acc[idx.address] = {
+        ...idx,
+        isDefaultConfig: true,
+        isSelected: (idx.balance && !idx.balance.isZero()) || false
+      };
+      return acc;
     }, tableAccounts);
     setTableAccounts(tableAccs);
-  }, [accountsToUse.length]);
+  }, [accountsToUse]);
 
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
   const emptySelectedAccounts = filterZeroBalanceAccounts(selectedAccounts);
@@ -168,14 +167,12 @@ export default function DeterministicAccountList({
           accounts={tableAccounts}
           displayEmptyAddresses={displayEmptyAddresses}
           selectedDPath={selectedDPath}
-          generateFreshAddress={generateFreshAddress}
           network={network}
           asset={asset}
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
           handleScanMoreAddresses={handleScanMoreAddresses}
           csv={csv}
-          freshAddressIndex={freshAddressIndex}
         />
       </TableWrapper>
       <StatusBar>
@@ -186,22 +183,18 @@ export default function DeterministicAccountList({
             </IconWrapper>
             <Typography>
               <Trans
-                id={
-                  displayEmptyAddresses
-                    ? 'DETERMINISTIC_SCANNING_STATUS_DONE_EMPTY'
-                    : 'DETERMINISTIC_SCANNING_STATUS_DONE'
-                }
+                id="DETERMINISTIC_SCANNING_STATUS_DONE"
                 variables={{
                   $asset: () => asset.ticker,
                   $total: () => finishedAccounts.length,
                   $network: () => network.name
                 }}
               />{' '}
-              <SButton onClick={() => handleUpdate(asset)}>
-                <Trans id="DETERMINISTIC_SCAN_AGAIN" />
-              </SButton>
+              <Trans id="DETERMINISTIC_SEE_SUMMARY" />{' '}
+              <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
+                <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+              </SDownloader>
               .
-              <PoweredByText provider="FINDETH" />
             </Typography>
             <Text>
               <Trans
@@ -224,13 +217,14 @@ export default function DeterministicAccountList({
                 id="DETERMINISTIC_SCANNING_STATUS_EMPTY"
                 variables={{ $asset: () => asset.ticker }}
               />
-              <PoweredByText provider="FINDETH" />
             </Typography>
           </StatusWrapper>
         )}
         {!isComplete && (
           <StatusWrapper>
-            <Spinner color="brand" mr={SPACING.BASE} pr={SPACING.BASE} />
+            <IconWrapper>
+              <Spinner color="brand" size={1} />
+            </IconWrapper>
             <div>
               <Trans
                 id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
@@ -253,7 +247,6 @@ export default function DeterministicAccountList({
                   </>
                 }
               />
-              <PoweredByText provider="FINDETH" />
             </div>
           </StatusWrapper>
         )}
@@ -267,6 +260,8 @@ export default function DeterministicAccountList({
               }}
             />
           </Button>
+          <br />
+          <PoweredByText provider="FINDETH" />
         </div>
       </StatusBar>
     </DeterministicAccountListWrapper>

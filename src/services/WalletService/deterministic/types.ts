@@ -49,7 +49,6 @@ export interface IUseDeterministicWallet {
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
   scanMoreAddresses(dpath: ExtendedDPath): void;
-  generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
 }
 
 export interface HardwareInitProps {

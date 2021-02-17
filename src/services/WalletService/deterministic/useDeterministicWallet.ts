@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react';
 import { useReducer } from 'reinspect';
 
 import { DPathFormat, ExtendedAsset, Network } from '@types';
-import { identity, pipe, prop, uniqBy } from '@vendor';
+import { identity } from '@vendor';
 
 import { processFinishedAccounts, Wallet } from '..';
 import { default as DeterministicWalletService } from './DeterministicWalletService';
-import { findFinishedZeroBalanceAccounts } from './helpers';
 import DeterministicWalletReducer, { DWActionTypes, initialState } from './reducer';
 import {
   DWAccountDisplay,
@@ -98,6 +97,7 @@ const useDeterministicWallet = (
   }, [state.isConnected]);
 
   useEffect(() => {
+    console.debug('recheck', assetToQuery?.name);
     if (
       !service ||
       shouldInit ||
@@ -106,8 +106,11 @@ const useDeterministicWallet = (
       !assetToQuery ||
       !network ||
       state.queuedAccounts.length === 0
-    )
+    ) {
+      console.debug('recheck failed', assetToQuery?.name);
       return;
+    }
+    console.debug('recheck queued', assetToQuery?.name, state.queuedAccounts);
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
@@ -146,32 +149,10 @@ const useDeterministicWallet = (
     });
   };
 
-  const generateFreshAddress = (defaultDPath: ExtendedDPath): boolean => {
-    if (!service || shouldInit || !state.isConnected || !network || !state.session) {
-      return false;
-    }
-    const finishedDefaultDPathEntries = state.finishedAccounts.filter(
-      (account) => account.pathItem.baseDPath.value === defaultDPath.value
-    );
-    const finishedAccountFreshAddress = findFinishedZeroBalanceAccounts(
-      finishedDefaultDPathEntries
-    );
-    const filteredDefaultDPathAccounts = uniqBy(
-      pipe(prop('pathItem'), prop('index')),
-      finishedAccountFreshAddress
-    );
-    if (filteredDefaultDPathAccounts.length > defaultDPath.offset) {
-      dispatch({
-        type: DWActionTypes.DESIGNATE_FRESH_ADDRESS,
-        payload: { address: filteredDefaultDPathAccounts[defaultDPath.offset].address }
-      });
-      return true;
-    }
-    return false;
-  };
-
   const updateAsset = (asset: ExtendedAsset) => {
+    console.debug('1');
     if (!service) return;
+    console.debug('2');
     setAssetToQuery(asset);
     dispatch({
       type: DWActionTypes.UPDATE_ASSET,
@@ -189,8 +170,7 @@ const useDeterministicWallet = (
     requestConnection,
     updateAsset,
     addDPaths,
-    scanMoreAddresses,
-    generateFreshAddress
+    scanMoreAddresses
   };
 };
 

@@ -54,7 +54,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     requestConnection,
     updateAsset,
     addDPaths,
-    generateFreshAddress,
     scanMoreAddresses
   } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
@@ -104,7 +103,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
         updateAsset={updateAsset}
         addDPaths={addDPaths}
         scanMoreAddresses={scanMoreAddresses}
-        generateFreshAddress={generateFreshAddress}
         handleAssetUpdate={handleAssetUpdate}
         onUnlock={onUnlock}
       />

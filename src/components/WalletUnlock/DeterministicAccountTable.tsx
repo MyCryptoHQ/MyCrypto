@@ -15,7 +15,6 @@ import {
   Tooltip,
   Typography
 } from '@components';
-import { DEFAULT_GAP_TO_SCAN_FOR } from '@config';
 import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
@@ -38,11 +37,9 @@ interface DeterministicTableProps {
   accounts: ITableAccounts;
   network: Network;
   asset: ExtendedAsset;
-  freshAddressIndex: number;
   csv: string;
   selectedDPath: DPath;
   displayEmptyAddresses: boolean;
-  generateFreshAddress(): void;
   handleScanMoreAddresses(dpath: ExtendedDPath): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
@@ -266,12 +263,10 @@ const DeterministicTable = ({
   accounts,
   network,
   asset,
-  freshAddressIndex,
   displayEmptyAddresses,
   selectedDPath,
   onSelect,
   handleScanMoreAddresses,
-  generateFreshAddress,
   handleUpdate,
   csv
 }: DeterministicTableProps) => {
@@ -318,10 +313,19 @@ const DeterministicTable = ({
             </Typography>
             <Typography>
               <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
-              <NoAccountAction onClick={generateFreshAddress}>
+              <NoAccountAction
+                onClick={() => {
+                  if (!isComplete) return;
+                  handleScanMoreAddresses({
+                    ...selectedDPath,
+                    offset: selectedDPathOffset,
+                    numOfAddresses: 10
+                  });
+                }}
+              >
                 <Trans id="DETERMINISTIC_ALTERNATIVES_2" />
-              </NoAccountAction>{' '}
-              <Trans id="DETERMINISTIC_ALTERNATIVES_3" />
+              </NoAccountAction>
+              {'.'}
               <br />
               <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
               <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
@@ -390,56 +394,22 @@ const DeterministicTable = ({
               </LinkContainer>
             </Row>
           ))}
-          {!displayEmptyAddresses ? (
-            <BottomActionButton
-              onClick={generateFreshAddress}
-              disabled={!isComplete || freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR}
-            >
-              <Icon type="add" color="none" width="32px" />
-
-              {!isComplete ? (
-                <Tooltip tooltip={<Trans id="DETERMINISTIC_WAIT_FOR_SCAN" />}>
-                  <STypography>
-                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                  </STypography>
-                </Tooltip>
-              ) : freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR ? (
-                <Tooltip
-                  tooltip={
-                    <Trans
-                      id="DETERMINISTIC_CANT_GENERATE_MORE"
-                      variables={{ $number: () => DEFAULT_GAP_TO_SCAN_FOR }}
-                    />
-                  }
-                >
-                  <STypography>
-                    <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                  </STypography>
-                </Tooltip>
-              ) : (
-                <STypography>
-                  <Trans id="DETERMINISTIC_GENERATE_FRESH_ADDRESS" />
-                </STypography>
-              )}
-            </BottomActionButton>
-          ) : (
-            <BottomActionButton
-              onClick={() => {
-                if (!isComplete) return;
-                handleScanMoreAddresses({
-                  ...selectedDPath,
-                  offset: selectedDPathOffset,
-                  numOfAddresses: 10
-                });
-              }}
-              disabled={!isComplete}
-            >
-              <Icon type="add" color="none" width="32px" />
-              <STypography>
-                <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
-              </STypography>
-            </BottomActionButton>
-          )}
+          <BottomActionButton
+            onClick={() => {
+              if (!isComplete) return;
+              handleScanMoreAddresses({
+                ...selectedDPath,
+                offset: selectedDPathOffset,
+                numOfAddresses: 10
+              });
+            }}
+            disabled={!isComplete}
+          >
+            <Icon type="add" color="none" width="32px" />
+            <STypography>
+              <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
+            </STypography>
+          </BottomActionButton>
         </Body>
       )}
     </Table>

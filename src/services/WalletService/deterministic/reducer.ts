@@ -1,7 +1,6 @@
 import { Overwrite, ValuesType } from 'utility-types';
 
 import { TAction } from '@types';
-import { isSameAddress } from '@utils';
 
 import { DeterministicWalletState } from './types';
 
@@ -17,8 +16,7 @@ export enum DWActionTypes {
   UPDATE_ASSET = 'UPDATE_ASSET',
   RELOAD_QUEUES = 'RELOAD_QUEUES',
   TRIGGER_COMPLETE = 'TRIGGER_COMPLETE',
-  ADD_CUSTOM_DPATHS = 'ADD_CUSTOM_DPATHS',
-  DESIGNATE_FRESH_ADDRESS = 'DESIGNATE_FRESH_ADDRESS'
+  ADD_CUSTOM_DPATHS = 'ADD_CUSTOM_DPATHS'
 }
 
 // @todo convert to FSA compatible action type
@@ -101,10 +99,18 @@ const DeterministicWalletReducer = (
     }
     case DWActionTypes.UPDATE_ACCOUNTS: {
       const { accounts, asset } = payload;
+      console.debug('[UPDATE_ACCOUNTS]: ', accounts, asset);
       // handles asset updates more-gracefully
       if (asset.uuid !== state.asset!.uuid) {
+        console.debug("[UPDATE_ACCOUNTS]: err'd here");
         return state;
       }
+      console.debug(
+        '[UPDATE_ACCOUNTS]: finished: ',
+        [...state.finishedAccounts, ...accounts],
+        ' queued: ',
+        [...state.queuedAccounts.filter(({ address }) => accounts.includes(address))]
+      );
       return {
         ...state,
         queuedAccounts: [
@@ -141,18 +147,6 @@ const DeterministicWalletReducer = (
         ...state,
         completed: false,
         customDPaths: [...state.customDPaths, ...dpaths]
-      };
-    }
-    case DWActionTypes.DESIGNATE_FRESH_ADDRESS: {
-      const { address } = payload;
-      const newFinishedAccounts = state.finishedAccounts.map((finishedAccount) => {
-        return isSameAddress(finishedAccount.address, address)
-          ? { ...finishedAccount, isFreshAddress: true }
-          : { ...finishedAccount };
-      });
-      return {
-        ...state,
-        finishedAccounts: newFinishedAccounts
       };
     }
     case DWActionTypes.TRIGGER_COMPLETE: {

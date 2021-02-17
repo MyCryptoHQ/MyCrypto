@@ -5,11 +5,7 @@ import { TAddress } from '@types';
 
 // eslint-disable-next-line jest/no-mocks-import
 import { fixtures } from './__mocks__';
-import {
-  findFinishedZeroBalanceAccounts,
-  processFinishedAccounts as process,
-  sortAccountDisplayItems
-} from './helpers';
+import { processFinishedAccounts as process, sortAccountDisplayItems } from './helpers';
 import { DWAccountDisplay } from './types';
 
 interface TInputToSerialize {
@@ -66,13 +62,6 @@ describe('deterministic wallets helpers - processFinishedAccounts', () => {
 describe('deterministic wallets helpers - sortAccountDisplayItems', () => {
   it('sorts account display items correctly based on index', () => {
     const outputArr = sortAccountDisplayItems(fixtures.finishedAccountsDone);
-    expect(outputArr).toMatchSnapshot();
-  });
-});
-
-describe('deterministic wallets helpers - findFinishedZeroBalanceAccounts', () => {
-  it('returns first account display item with 0 balance', () => {
-    const outputArr = findFinishedZeroBalanceAccounts(fixtures.finishedAccountsDone);
     expect(outputArr).toMatchSnapshot();
   });
 });

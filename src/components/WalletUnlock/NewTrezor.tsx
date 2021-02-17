@@ -53,7 +53,6 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     state,
     requestConnection,
     updateAsset,
-    generateFreshAddress,
     addDPaths,
     scanMoreAddresses
   } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
@@ -85,7 +84,6 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
         updateAsset={updateAsset}
         addDPaths={addDPaths}
         scanMoreAddresses={scanMoreAddresses}
-        generateFreshAddress={generateFreshAddress}
         handleAssetUpdate={handleAssetUpdate}
         onUnlock={onUnlock}
       />
