@@ -7,8 +7,7 @@ import { IPollingPayload, pollStart } from '@services/Polling';
 import { ExtendedAsset, IRates, LSKeys, StoreAccount, TFiatTicker, TTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
-import { getAccounts } from './account.slice';
-import { addAssetsFromAPI } from './asset.slice';
+import { getAccounts, getAccountsAssets, updateAccountAssets } from './account.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
 
@@ -99,7 +98,7 @@ export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`)
  */
 export function* settingsSaga() {
   yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
-  yield takeLatest(addAssetsFromAPI.type, pollRates);
+  yield takeLatest(updateAccountAssets, pollRates);
   yield takeLatest(startRatesPolling, pollRates);
 }
 
@@ -114,8 +113,7 @@ export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]
 }
 
 export function* pollRates() {
-  const accounts: StoreAccount[] = yield select(getAccounts);
-  const assets: ExtendedAsset[] = accounts.flatMap((account) => account.assets);
+  const assets: ExtendedAsset[] = yield select(getAccountsAssets);
 
   const geckoIds = assets.reduce((acc, a) => {
     if (a.mappings && a.mappings.coinGeckoId) {
@@ -141,7 +139,7 @@ export function* pollRates() {
       interval: 9000
     },
     successAction: slice.actions.setRates,
-    promise: () => RatesService.instance.fetchAssetsRates(geckoIds, Object.keys(Fiats)),
+    promise: async () => RatesService.instance.fetchAssetsRates(geckoIds, Object.keys(Fiats)),
     transformer: (result: IRates) => destructureCoinGeckoIds(result, assets)
   };
 

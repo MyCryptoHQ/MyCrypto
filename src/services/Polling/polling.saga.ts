@@ -1,15 +1,15 @@
-import { createAction } from '@reduxjs/toolkit';
-import { all, call, delay, put, race, take, takeLatest } from 'redux-saga/effects';
+import { createAction, PayloadAction } from '@reduxjs/toolkit';
+import { call, delay, put, race, take, takeLatest } from 'redux-saga/effects';
 
 export interface IPollingPayload {
   params: {
     interval: number;
     retryOnFailure?: boolean;
     retries?: number;
-    retriesAfter?: number;
+    retryAfter?: number;
   };
   successAction: any;
-  //errorAction: string;
+  errorAction?: any;
   promise(): Promise<any>;
   transformer?(result: any): any;
 }
@@ -27,19 +27,19 @@ export const pollError = createAction(`polling/error`);
  */
 
 export function* pollingSaga() {
-  yield all([takeLatest(pollStart.type, pollingSagaWatcher)]);
+  yield takeLatest(pollStart.type, pollingSagaWatcher);
 }
 
-// @todo: Replace with promise executed by poll
 // @todo: Enhance polling
 // @todo: Figure out multiple polling instances
 export function* poll(payload: IPollingPayload) {
-  const { promise, params, successAction, transformer } = payload;
+  const { promise, params, successAction, errorAction, transformer } = payload;
 
+  const retriesCount = 0;
+
+  console.debug(`[Polling Saga]: Initialising polling every ${params.interval}ms `);
   while (true) {
     try {
-      console.debug(`[Polling Saga]: Initialising polling every ${params.interval}ms `);
-
       // Fetch requested content
       const res = yield call(promise);
       const formatted = transformer ? transformer(res) : res;
@@ -48,26 +48,32 @@ export function* poll(payload: IPollingPayload) {
       yield put(successAction(formatted));
 
       // Calling delay on request success
-      yield call(delay, params.interval);
+      yield delay(params.interval);
     } catch (err) {
-      // Stop polling if an error is encounterd
-      yield put({
-        type: pollStop.type
-      });
+      // Determine if the polling should retry on error
+      const shouldRetry =
+        params.retryOnFailure && params.retries ? retriesCount < params.retries : true;
 
-      // Handle polled slice error gracefully
-      // yield put({
-      //   type: errorAction,
-      //   err
-      // });
+      if (shouldRetry && params.retryAfter) {
+        //
+
+        console.debug(
+          `[Polling Saga]: Polling encounterd an error, retrying after ${params.retryAfter}ms. Error: `,
+          err
+        );
+        yield delay(params.retryAfter);
+      } else if (!shouldRetry) {
+        // Stop polling if an error is encounterd without retry
+
+        console.debug(`[Polling Saga]: Polling encounterd an error, stopping with error: `, err);
+        yield put(pollStop());
+        if (errorAction) yield put(errorAction(err)); // Handle polling error gracefully
+      } else
+        console.debug(`[Polling Saga]: Polling encounterd an error, retrying now. Error: `, err);
     }
   }
 }
 
-export default function* pollingSagaWatcher() {
-  // Take the polling start dispatch action
-  const { payload } = yield take(pollStart.type);
-
-  // Payload will be available in action object
+export default function* pollingSagaWatcher({ payload }: PayloadAction<IPollingPayload>) {
   yield race([call(poll, payload), take(pollStop.type)]);
 }

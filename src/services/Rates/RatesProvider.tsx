@@ -94,24 +94,24 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     })();
   });
 
-  useEffect(() => {
-    worker.current = new PollingService(
-      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
-      POLLING_INTERVAL,
-      updateRates,
-      (err) => console.debug('[RatesProvider]', err)
-    );
+  // useEffect(() => {
+  //   worker.current = new PollingService(
+  //     buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
+  //     POLLING_INTERVAL,
+  //     updateRates,
+  //     (err) => console.debug('[RatesProvider]', err)
+  //   );
 
-    // Start Polling service
-    worker.current.start();
+  //   // Start Polling service
+  //   worker.current.start();
 
-    // Make sure to close the worker onUnMount.
-    return () => {
-      if (!worker.current) return;
-      worker.current.stop();
-      worker.current.close();
-    };
-  }, [geckoIds.length]);
+  //   // Make sure to close the worker onUnMount.
+  //   return () => {
+  //     if (!worker.current) return;
+  //     worker.current.stop();
+  //     worker.current.close();
+  //   };
+  // }, [geckoIds.length]);
 
   const state: State = {
     get rates() {

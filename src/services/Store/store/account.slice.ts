@@ -89,6 +89,7 @@ export const getAccounts = createSelector([getAppState], (s) => {
     }))
   }));
 });
+export const getAccountsAssets = createSelector([getAccounts], (a) => a.flatMap((a) => a.assets));
 
 export const getWalletAccountsOnDefaultNetwork = createSelector(
   getAccounts,
