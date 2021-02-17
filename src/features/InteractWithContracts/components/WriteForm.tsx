@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
 import { StoreContext } from '@services';
 import { AppState, getIsDemoMode } from '@store';
-import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import {
@@ -35,9 +34,6 @@ const AccountSelectorWrapper = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: fit-content;
-  }
 `;
 
 const CustomLabel = styled(Typography)`
@@ -50,7 +46,6 @@ interface WriteProps {
   currentFunction: ABIItem;
   rawTransaction: ITxConfig;
   estimateGasCallProps: TObject;
-  isMobile: boolean;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
   handleGasSelectorChange(payload: any): void;
@@ -66,8 +61,7 @@ export const WriteForm = (props: Props) => {
     handleAccountSelected,
     handleSubmit,
     handleGasSelectorChange,
-    isDemoMode,
-    isMobile
+    isDemoMode
   } = props;
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
@@ -127,7 +121,7 @@ export const WriteForm = (props: Props) => {
       <ActionButton
         disabled={isDemoMode}
         onClick={() => handleSubmit(currentFunction)}
-        fullwidth={isMobile}
+        fullwidth={true}
       >
         {translateRaw('ACTION_17')}
       </ActionButton>

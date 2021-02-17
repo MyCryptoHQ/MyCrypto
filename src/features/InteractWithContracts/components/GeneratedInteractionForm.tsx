@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
-import { BREAK_POINTS, COLORS, monospace, SPACING } from '@theme';
+import { COLORS, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 
@@ -17,8 +17,7 @@ import {
 } from '../helpers';
 import { ABIField, ABIItem } from '../types';
 import { BooleanOutputField, BooleanSelector, FieldLabel } from './fields';
-import FunctionDropdownOption from './FunctionDropdownOption';
-import FunctionDropdownValue from './FunctionDropdownValue';
+import FunctionDropdownItem from './FunctionDropdownItem';
 import WriteForm from './WriteForm';
 
 const { GREY_LIGHTER, WHITE } = COLORS;
@@ -80,9 +79,6 @@ const HorizontalLine = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: fit-content;
-  }
 `;
 
 const WriteFormWrapper = styled.div`
@@ -102,7 +98,6 @@ interface Props {
   rawTransaction: ITxConfig;
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
-  isMobile: boolean;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
@@ -119,8 +114,7 @@ export default function GeneratedInteractionForm({
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
   handleGasSelectorChange,
-  interactionDataFromURL,
-  isMobile
+  interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
@@ -231,8 +225,10 @@ export default function GeneratedInteractionForm({
           onChange={(selectedFunction) => {
             handleFunctionSelected(selectedFunction);
           }}
-          optionComponent={FunctionDropdownOption}
-          valueComponent={FunctionDropdownValue}
+          optionComponent={({ data, selectOption }) => (
+            <FunctionDropdownItem option={data} onSelect={selectOption} />
+          )}
+          valueComponent={({ value }) => <FunctionDropdownItem option={value} />}
           searchable={true}
         />
       </DropdownWrapper>
@@ -306,7 +302,7 @@ export default function GeneratedInteractionForm({
                 <ActionButton
                   color={WHITE}
                   onClick={() => submitFormRead(currentFunction)}
-                  fullwidth={isMobile}
+                  fullwidth={true}
                 >
                   {translateRaw('ACTION_16')}
                 </ActionButton>
@@ -338,7 +334,6 @@ export default function GeneratedInteractionForm({
                     rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
                     estimateGasCallProps={gasCallProps}
-                    isMobile={isMobile}
                   />
                 </WriteFormWrapper>
               )}
