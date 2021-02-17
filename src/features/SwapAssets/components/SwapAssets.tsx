@@ -22,6 +22,7 @@ import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
+import { useDebounce } from '@vendor';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -49,9 +50,6 @@ type ISwapProps = SwapFormState & {
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
 };
-
-let calculateToAmountTimeout: ReturnType<typeof setTimeout> | null = null;
-let calculateFromAmountTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const SwapAssets = (props: Props) => {
   const {
@@ -104,28 +102,28 @@ const SwapAssets = (props: Props) => {
     userAssets.find((userAsset) => a.uuid === userAsset.uuid)
   );
 
+  const [, , calculateNewToAmountDebounced] = useDebounce(() => {
+    calculateNewToAmount(fromAmount);
+  }, 500);
+
   // SEND AMOUNT CHANGED
   const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleFromAmountChanged(value);
 
-    // Calculate new "to amount" 500 ms after user stopped typing
-    if (calculateToAmountTimeout) clearTimeout(calculateToAmountTimeout);
-    calculateToAmountTimeout = setTimeout(() => {
-      calculateNewToAmount(value);
-    }, 500);
+    calculateNewToAmountDebounced();
   };
+
+  const [, , calculateNewFromAmountDebounced] = useDebounce(() => {
+    calculateNewFromAmount(fromAmount);
+  }, 500);
 
   // RECEIVE AMOUNT CHANGED
   const handleToAmountChangedEvent = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleToAmountChanged(value);
 
-    // Calculate new "from amount" 500 ms after user stopped typing
-    if (calculateFromAmountTimeout) clearTimeout(calculateFromAmountTimeout);
-    calculateFromAmountTimeout = setTimeout(() => {
-      calculateNewFromAmount(value);
-    }, 500);
+    calculateNewFromAmountDebounced();
   };
 
   // Calculate new "to amount" after "to asset" is selected

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate, getNetworkById, useNetworks } from '@services';
@@ -145,7 +147,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         ...rest
       }));
     } catch (e) {
-      if (e.isCancel) {
+      if (axios.isCancel(e)) {
         return;
       }
       console.error(e);
@@ -218,7 +220,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         ...rest
       }));
     } catch (e) {
-      if (e.isCancel) {
+      if (axios.isCancel(e)) {
         return;
       }
       console.error(e);
