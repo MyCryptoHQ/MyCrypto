@@ -159,7 +159,7 @@ const GeneralSettings = ({
         </SubHeading>
         <SettingsControl>
           <Switch
-            greyable={true}
+            $greyable={true}
             checked={canTrackProductAnalytics}
             onChange={toggleAnalytics}
             labelLeft="OFF"

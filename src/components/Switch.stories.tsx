@@ -18,5 +18,5 @@ export const Colored = () => {
 export const Greyable = () => {
   const [state, setState] = useState(false);
   const toggleState = () => setState(!state);
-  return <Switch {...defaultProps} checked={state} onChange={toggleState} greyable={true} />;
+  return <Switch {...defaultProps} checked={state} onChange={toggleState} $greyable={true} />;
 };
