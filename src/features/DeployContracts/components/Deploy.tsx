@@ -26,8 +26,7 @@ import {
   getAccountsByViewOnly,
   hexToString,
   hexWeiToString,
-  inputGasPriceToHex,
-  useScreenSize
+  inputGasPriceToHex
 } from '@utils';
 import { pipe } from '@vendor';
 
@@ -101,7 +100,6 @@ export const Deploy = (props: Props) => {
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
   const { accounts } = useContext(StoreContext);
-  const { isMobile } = useScreenSize();
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
   const filteredAccounts = pipe(
@@ -203,7 +201,7 @@ export const Deploy = (props: Props) => {
       )}
 
       <ButtonWrapper>
-        <Button disabled={isDemoMode} onClick={deploySubmit} fullwidth={isMobile}>
+        <Button disabled={isDemoMode} onClick={deploySubmit} fullwidth={true}>
           {translateRaw('NAV_DEPLOYCONTRACT')}
         </Button>
       </ButtonWrapper>

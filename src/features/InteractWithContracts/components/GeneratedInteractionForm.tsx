@@ -102,7 +102,6 @@ interface Props {
   rawTransaction: ITxConfig;
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
-  isMobile: boolean;
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
@@ -119,8 +118,7 @@ export default function GeneratedInteractionForm({
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
   handleGasSelectorChange,
-  interactionDataFromURL,
-  isMobile
+  interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
@@ -306,7 +304,7 @@ export default function GeneratedInteractionForm({
                 <ActionButton
                   color={WHITE}
                   onClick={() => submitFormRead(currentFunction)}
-                  fullwidth={isMobile}
+                  fullwidth={true}
                 >
                   {translateRaw('ACTION_16')}
                 </ActionButton>
@@ -338,7 +336,6 @@ export default function GeneratedInteractionForm({
                     rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
                     estimateGasCallProps={gasCallProps}
-                    isMobile={isMobile}
                   />
                 </WriteFormWrapper>
               )}

@@ -50,7 +50,6 @@ interface WriteProps {
   currentFunction: ABIItem;
   rawTransaction: ITxConfig;
   estimateGasCallProps: TObject;
-  isMobile: boolean;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
   handleGasSelectorChange(payload: any): void;
@@ -66,8 +65,7 @@ export const WriteForm = (props: Props) => {
     handleAccountSelected,
     handleSubmit,
     handleGasSelectorChange,
-    isDemoMode,
-    isMobile
+    isDemoMode
   } = props;
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
@@ -127,7 +125,7 @@ export const WriteForm = (props: Props) => {
       <ActionButton
         disabled={isDemoMode}
         onClick={() => handleSubmit(currentFunction)}
-        fullwidth={isMobile}
+        fullwidth={true}
       >
         {translateRaw('ACTION_17')}
       </ActionButton>
