@@ -226,7 +226,7 @@ export default function GeneratedInteractionForm({
             handleFunctionSelected(selectedFunction);
           }}
           optionComponent={({ data, selectOption }) => (
-            <FunctionDropdownItem option={data} onSelect={selectOption} />
+            <FunctionDropdownItem option={data} onSelect={selectOption} paddingLeft={SPACING.SM} />
           )}
           valueComponent={({ value }) => <FunctionDropdownItem option={value} />}
           searchable={true}

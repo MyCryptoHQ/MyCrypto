@@ -25,7 +25,6 @@ import { BusyBottomConfig, IAccount as IIAccount } from '@types';
 import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest,
-  filterDropdownAssets,
   filterValidAssets,
   isValidAmount,
   noOp,
@@ -111,7 +110,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
   const [networkId, setNetworkId] = useState(defaultAccount!.networkId);
   const network = getNetworkById(networkId, networks);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
-  const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
+  const filteredAssets = sortByTicker(relevantAssets);
 
   const [chosenAssetUuid, setAssetUuid] = useState(
     filteredAssets.find((a) => a.type === 'base')?.uuid
@@ -208,6 +207,7 @@ export function RequestAssets({ history }: RouteComponentProps) {
                     <AssetSelector
                       selectedAsset={selectedAsset ? selectedAsset : null}
                       assets={filteredAssets}
+                      showAssetIcon={false}
                       showAssetName={true}
                       searchable={true}
                       onSelect={(option) => {

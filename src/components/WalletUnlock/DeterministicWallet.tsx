@@ -11,13 +11,7 @@ import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services'
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
-import {
-  accountsToCSV,
-  filterDropdownAssets,
-  filterValidAssets,
-  sortByTicker,
-  useScreenSize
-} from '@utils';
+import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
 import { Downloader } from '../Downloader';
 import DeterministicAccountList from './DeterministicAccountList';
@@ -188,7 +182,7 @@ const DeterministicWallet = ({
       )
   });
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
-  const filteredAssets = sortByTicker(filterDropdownAssets(relevantAssets));
+  const filteredAssets = sortByTicker(relevantAssets);
 
   return dpathAddView ? (
     <MnemonicWrapper>
@@ -259,7 +253,7 @@ const DeterministicWallet = ({
       <Parameters>
         <AssetSelector
           selectedAsset={assetToUse}
-          showAssetIcon={true}
+          showAssetIcon={false}
           showAssetName={true}
           searchable={true}
           assets={filteredAssets}

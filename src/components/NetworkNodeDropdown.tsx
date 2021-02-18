@@ -13,14 +13,20 @@ import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
 
-const SContainer = styled.div`
+const SContainer = styled.div<StyleProps>`
   display: flex;
   flex-direction: row;
   padding: ${SPACING.SM};
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
 `;
 
-const SContainerValue = styled(SContainer)`
-  padding: ${SPACING.XS};
+interface StyleProps {
+  paddingLeft?: string;
+}
+
+const SContainerValue = styled(SContainer)<StyleProps>`
+  padding: ${SPACING.XS} ${SPACING.XS} ${SPACING.XS} 0px;
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
   > img {
     position: absolute;
     right: ${SPACING.SM};
@@ -63,6 +69,7 @@ const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, sele
   if (label !== newNode) {
     return (
       <SContainerValue
+        paddingLeft={SPACING.SM}
         data-testid={`node-selector-option-${data.service}`}
         onClick={() => handleSelect(data)}
       >
@@ -72,6 +79,7 @@ const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, sele
   } else {
     return (
       <SContainerOption
+        paddingLeft={SPACING.SM}
         data-testid="node-selector-option-custom"
         onClick={() => handleSelect(data)}
       >

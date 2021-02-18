@@ -78,7 +78,7 @@ const DropdownDPath = styled.span`
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  padding: 12px;
+  padding: 12px 12px 12px 0px;
 `;
 
 const CustomDPath = styled.div`

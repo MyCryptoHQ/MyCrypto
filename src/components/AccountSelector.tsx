@@ -82,8 +82,9 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
               assetTicker={assetTicker}
               label={label}
               onClick={() => selectOption(data)}
+              paddingLeft="15px"
             />
-            <Divider padding={SPACING.XS} />
+            <Divider padding={SPACING.SM} />
           </>
         );
       }}
@@ -97,6 +98,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
             label={label}
             uuid={assetUUID}
             assetTicker={assetTicker}
+            paddingLeft={SPACING.XS}
           />
         );
       }}

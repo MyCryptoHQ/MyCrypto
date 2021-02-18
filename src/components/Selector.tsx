@@ -43,6 +43,9 @@ export interface SelectorProps<T> {
 // Fixes weird placement issues for react-select
 const Wrapper = styled('div')`
   cursor: pointer;
+  &:hover {
+    cursor: default;
+  }
 `;
 
 const IconWrapper = styled('div')`
@@ -133,7 +136,7 @@ const customStyles: Styles = {
   },
   menuList: (provided) => ({
     ...provided,
-    padding: 0
+    padding: '0px'
   }),
   control: (provided, state) => ({
     ...provided,
@@ -153,9 +156,10 @@ const customStyles: Styles = {
     display: 'inline-block'
   }),
   // Allow the valueComponent to handle it's own padding when present.
+  // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    ...(state && state.hasValue && { paddingLeft: 0 })
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px'
   })
 };
 
