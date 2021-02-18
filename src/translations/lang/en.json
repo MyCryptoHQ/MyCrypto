@@ -1016,14 +1016,6 @@
     "VISIT_KB": "Visit the Knowledge Base",
     "BUSY_BOTTOM_GET_WEB3": "Get $app",
     "BUSY_BOTTOM_METAMASK_1": "MetaMask Instructions",
-    "MYC_POAP_ACTION_HEADING": "Get your free \"MyCrypto Launch\" POAP NFT",
-    "MYC_POAP_ACTION_SUBHEAD": "Get one while they're still available!",
-    "MYC_POAP_ACTION_BODY_1": "Thank you for participating in the launch of the new MyCrypto!",
-    "MYC_POAP_ACTION_BODY_2": "To redeem your free Proof of Attendance Protocol NFT:",
-    "MYC_POAP_ACTION_BODY_3": "1. Hop into the [MyCrypto Discord](https://discord.gg/VSaTXEA)",
-    "MYC_POAP_ACTION_BODY_4": "2. Join the #mycrypto-poap channel",
-    "MYC_POAP_ACTION_BODY_5": "3. Follow the instructions there!",
-    "MYC_POAP_ACTION_BUTTON": "Join the MyCrypto Discord!",
     "EXPORT_MOBILE_NOTICE": "Some mobile dapp browsers prevent downloading files - in that case, you can copy the above text manually."
   }
 }

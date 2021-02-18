@@ -25,8 +25,7 @@ export enum ACTION_NAME {
   TWITTER = 'twitter',
   MIGRATE_LEND = 'migrate_lend',
   MIGRATE_GOL = 'migrate_gol',
-  TESTNET_FAUCET = 'testnet_faucet',
-  MYC_POAP = 'myc_poap'
+  TESTNET_FAUCET = 'testnet_faucet'
 }
 
 export enum ACTION_CATEGORIES {
