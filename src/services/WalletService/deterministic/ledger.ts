@@ -76,13 +76,18 @@ export class LedgerWallet extends HardwareWallet {
       if (chainId > 0) {
         // EIP155 support. check/recalc signature v value.
         const rv = parseInt(v, 16);
-        let cv = chainId * 2 + 35; // calculated signature v, without signature bit.
-        const bits = rv.toString(2);
-        // If the value is not instantly usable, find the signature v bit and apply
-        if (rv !== cv && bits[4] === '1') {
-          cv += 1; // add signature v bit.
+        const cv = chainId * 2 + 35; // calculated signature v, without signature bit.
+        if (rv !== cv) {
+          // Ledger returns the low byte of the v value
+          const lowByte = v.slice(-2);
+          // Turn low byte into bits
+          const lowBits = parseInt(lowByte, 16).toString(2);
+          // Use high bytes from re-calculated v
+          const highBytes = cv.toString(2).slice(0, -lowBits.length);
+          // Calculate actual v by concatting the high and low bits
+          const actualV = parseInt(highBytes + lowBits, 2);
+          v = actualV.toString(16);
         }
-        v = cv.toString(16);
       }
 
       const signature: SignatureLike = {
