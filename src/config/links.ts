@@ -23,8 +23,6 @@ export const MYCRYPTO_PROD_LINK = 'https://app.mycrypto.com';
 
 export const MYCRYPTO_FAUCET_LINK = `${MYCRYPTO_PROD_LINK}/faucet`;
 
-export const MYCRYPTO_DISCORD_LINK = 'https://discord.gg/VSaTXEA';
-
 export const socialMediaLinks: Link[] = [
   {
     link: 'https://twitter.com/mycrypto',

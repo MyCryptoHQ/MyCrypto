@@ -20,7 +20,6 @@ import logoMyCryptoTextBlue from '@assets/icons/brand/logo-text-blue.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
 import feedback from '@assets/icons/feedback.svg';
-import mycPoap from '@assets/icons/myc_poap.svg';
 import navAddAccount from '@assets/icons/navigation/add-account.svg';
 import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
@@ -168,7 +167,6 @@ const svgIcons = {
   'telegram-icon': telegramIcon,
   swap,
   'twitter-icon': twitterIcon,
-  'myc-poap': mycPoap,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,

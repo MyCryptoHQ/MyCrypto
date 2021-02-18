@@ -8,7 +8,6 @@ import {
   FAUCET_NETWORKS,
   GOLEMV1UUID,
   LENDUUID,
-  MYCRYPTO_DISCORD_LINK,
   REPV1UUID,
   ROUTE_PATHS,
   socialMediaLinks,
@@ -23,7 +22,6 @@ import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@u
 import {
   ActionButton,
   ActionButtonProps,
-  GeneralSubHead,
   MigrationSubHead,
   MigrationTable,
   UniClaimSubHead,
@@ -370,32 +368,5 @@ export const actionTemplates: ActionTemplate[] = [
       }
     },
     category: ACTION_CATEGORIES.THIRD_PARTY
-  },
-  {
-    name: ACTION_NAME.MYC_POAP,
-    icon: 'myc-poap',
-    heading: translateRaw('MYC_POAP_ACTION_HEADING'),
-    subHeading: GeneralSubHead,
-    props: {
-      content: translateRaw('MYC_POAP_ACTION_SUBHEAD')
-    },
-    body: [
-      translate('MYC_POAP_ACTION_BODY_1'),
-      translate('MYC_POAP_ACTION_BODY_2'),
-      translate('MYC_POAP_ACTION_BODY_3'),
-      translate('MYC_POAP_ACTION_BODY_4'),
-      translate('MYC_POAP_ACTION_BODY_5')
-    ],
-    priority: 0,
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('MYC_POAP_ACTION_BUTTON'),
-        shouldComplete: true,
-        external: true,
-        to: MYCRYPTO_DISCORD_LINK
-      }
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
   }
 ];

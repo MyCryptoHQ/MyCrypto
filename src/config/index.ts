@@ -13,7 +13,6 @@ export {
   MYC_WINTER_LINK,
   TWEET_LINK,
   MYCRYPTO_FAUCET_LINK,
-  MYCRYPTO_DISCORD_LINK,
   MYCRYPTO_PROD_LINK
 } from './links';
 export * from './dpaths';
