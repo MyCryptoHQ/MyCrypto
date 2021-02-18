@@ -33,7 +33,7 @@ export interface Network {
   shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
   selectedNode?: string;
-  unitName?: string;
+  baseUnitName?: string;
 }
 
 interface NetworkPropsMissingInLegacy {

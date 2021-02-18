@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { mockAppState, mockStore } from 'test-utils';
+import { mockStore } from 'test-utils';
 
 import { fAssets } from '@fixtures';
 
