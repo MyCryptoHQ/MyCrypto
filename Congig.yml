@@ -1,0 +1,15 @@
+# checkoutv2
+# uses linux 64bit
+# configures encryption/decryption/public_private_keys/generates"secrets"/
+# continous integration includes calculate_math="sha256_sha384_keccak_sha512_base64_base58_hexadecimal_bytecode_0x00000-0xfffff-smartcontract-configurations_utf8_unix_binaries-generation"
+# .ci can build,compile, and run smart contracts using pragma.solidity.0.0.1>-8.0.0< via http://remixide.ethereum.org
+# .ci can access all solidity smart contracts for liquidity integration via etherscan.io/solidity/contractaddress/0x000000000000000000000000000000000000000000
+# uses continuos integration/.ci/
+ Jobs:
+  - name: create ci.service
+     Runs: circle.ci/automated_integration
+     Command:
+      Wget: http://getsentry/action-release@v1.1.5
+     Command: .ci/run_sentry_release_integration
+  - name: Sentry Release
+     uses: getsentry/action-release@v1.1.5
