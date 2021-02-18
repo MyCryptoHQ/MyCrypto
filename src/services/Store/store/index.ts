@@ -61,8 +61,6 @@ export {
   setLanguage,
   getFiat,
   setFiat,
-  setRates,
-  getRates,
   getInactivityTimer,
   setInactivityTimer,
   setDemoMode,
@@ -87,3 +85,5 @@ export { getAppState } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
 export { appReset } from './root.reducer';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
+export { setRates, getRates } from './rates.slice';
+export { trackAsset, getTrackedAssets } from './trackedAssets.slice';

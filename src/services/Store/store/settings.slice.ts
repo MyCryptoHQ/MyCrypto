@@ -1,13 +1,9 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
-import { Fiats } from '@config';
-import { RatesService } from '@services/ApiService/Rates';
-import { IPollingPayload, pollStart } from '@services/Polling';
-import { ExtendedAsset, IRates, LSKeys, StoreAccount, TFiatTicker, TTicker, TUuid } from '@types';
+import { LSKeys, TFiatTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
-import { getAccounts, getAccountsAssets, updateAccountAssets } from './account.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
 
@@ -41,9 +37,6 @@ const slice = createSlice({
     setFiat(state, action: PayloadAction<TFiatTicker>) {
       state.fiatCurrency = action.payload;
     },
-    setRates(state, action: PayloadAction<IRates>) {
-      state.rates = action.payload;
-    },
     setInactivityTimer(state, action: PayloadAction<number>) {
       state.inactivityTimer = action.payload;
     },
@@ -64,7 +57,6 @@ export const {
   setFiat,
   addExcludedAsset,
   removeExcludedAsset,
-  setRates,
   setInactivityTimer,
   setDemoMode,
   setProductAnalyticsAuthorisation
@@ -80,7 +72,6 @@ export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccoun
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
-export const getRates = createSelector(getSettings, (s) => s.rates);
 export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
 export const canTrackProductAnalytics = createSelector(
@@ -91,15 +82,12 @@ export const canTrackProductAnalytics = createSelector(
  * Actions
  */
 export const addAccountsToFavorites = createAction<TUuid[]>(`${slice.name}/addAccountsToFavorites`);
-export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`);
 
 /**
  * Sagas
  */
 export function* settingsSaga() {
   yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
-  yield takeLatest(updateAccountAssets, pollRates);
-  yield takeLatest(startRatesPolling, pollRates);
 }
 
 export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]>) {
@@ -110,38 +98,4 @@ export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]
   } else {
     yield put(slice.actions.addFavorites(payload));
   }
-}
-
-export function* pollRates() {
-  const assets: ExtendedAsset[] = yield select(getAccountsAssets);
-
-  const geckoIds = assets.reduce((acc, a) => {
-    if (a.mappings && a.mappings.coinGeckoId) {
-      acc.push(a.mappings.coinGeckoId);
-    }
-    return acc;
-  }, [] as string[]);
-
-  const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
-    // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
-    // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
-    const updateRateObj = (acc: any, curValue: TTicker): IRates => {
-      const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
-      acc[asset!.uuid] = rates[curValue];
-      return acc;
-    };
-
-    return Object.keys(rates).reduce(updateRateObj, {} as IRates);
-  };
-
-  const payload: IPollingPayload = {
-    params: {
-      interval: 9000
-    },
-    successAction: slice.actions.setRates,
-    promise: async () => RatesService.instance.fetchAssetsRates(geckoIds, Object.keys(Fiats)),
-    transformer: (result: IRates) => destructureCoinGeckoIds(result, assets)
-  };
-
-  yield put(pollStart(payload));
 }

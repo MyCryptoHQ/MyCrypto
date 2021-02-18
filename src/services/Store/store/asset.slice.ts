@@ -81,6 +81,8 @@ export default slice;
 export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
 export const getBaseAssetByNetwork = (network: Network) =>
   createSelector(getAssets, find(propEq('uuid', network.baseAsset)));
+export const getAssetByUUID = (uuid: TUuid) =>
+  createSelector([getAssets], (a) => a.find((asset) => asset.uuid === uuid));
 
 /**
  * Sagas

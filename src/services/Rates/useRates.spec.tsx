@@ -3,7 +3,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ProvidersWrapper } from 'test-utils';
 
-import { fAssets, fDefiReserveRates, fSettings } from '@fixtures';
+import { fAssets, fDefiReserveRates, fRates, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext } from '@services';
 import { IRates, TUuid } from '@types';
 
@@ -30,7 +30,7 @@ const renderUseRates = ({
 
 describe('useRates', () => {
   it('getAssetRate() gets correct rate from settings', () => {
-    const { result } = renderUseRates({ rates: fSettings.rates });
+    const { result } = renderUseRates({ rates: fRates });
     expect(result.current.getAssetRate(fAssets[2])).toBe(195.04);
   });
 
@@ -42,7 +42,7 @@ describe('useRates', () => {
   });
 
   it('getAssetRateInCurrency() gets correct rate from settings', () => {
-    const { result } = renderUseRates({ rates: fSettings.rates });
+    const { result } = renderUseRates({ rates: fRates });
     expect(result.current.getAssetRateInCurrency(fAssets[2], 'EUR')).toBe(179.88);
   });
 

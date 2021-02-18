@@ -32,6 +32,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
       // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
       id: n.id,
       name: n.name,
+      unitName: n.unitName,
       chainId: n.chainId,
       isCustom: n.isCustom,
       isTestnet: n.isTestnet,
@@ -92,10 +93,11 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
   const formatAsset = (n: Network): Asset => ({
     uuid: n.baseAsset,
     ticker: n.baseUnit,
-    name: n.name,
+    name: n.unitName ? n.unitName : n.name,
     networkId: n.id,
     type: 'base',
-    decimal: DEFAULT_ASSET_DECIMAL
+    decimal: DEFAULT_ASSET_DECIMAL,
+    isCustom: n.isCustom
   });
 
   // From { <networkId>: { baseAsset: <asset_uui> } }

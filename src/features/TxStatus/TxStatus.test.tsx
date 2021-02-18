@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
+import { fAccount, fAssets, fNetwork, fNetworks, fRates, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
@@ -40,7 +40,7 @@ describe('TxStatus', () => {
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount], userActions: [] } as any}>
-          <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
+          <RatesContext.Provider value={{ rates: fRates, trackAsset: jest.fn() } as any}>
             <TxStatus />
           </RatesContext.Provider>
         </StoreContext.Provider>

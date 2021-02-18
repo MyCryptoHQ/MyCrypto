@@ -2,10 +2,12 @@ import {
   ExtendedAsset,
   ExtendedNotification,
   IAccount,
+  IRates,
   LocalStorage,
   Network,
   NodeOptions,
-  StoreAccount
+  StoreAccount,
+  TTicker
 } from '@types';
 import { bigify, isBigish } from '@utils';
 import {
@@ -102,3 +104,18 @@ export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) 
     return diff.length === 0;
   }
 };
+
+export const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
+  // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+  // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
+  const updateRateObj = (acc: any, curValue: TTicker): IRates => {
+    const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
+    acc[asset!.uuid] = rates[curValue];
+    return acc;
+  };
+
+  return Object.keys(rates).reduce(updateRateObj, {} as IRates);
+};
+
+export const buildCoinGeckoIdArray = (assets: ExtendedAsset[]) =>
+  assets.reduce((acc, a) => (a.mappings?.coinGeckoId ? [...acc, a.mappings.coinGeckoId] : acc), []);

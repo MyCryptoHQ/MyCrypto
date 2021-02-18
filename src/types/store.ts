@@ -6,6 +6,7 @@ import {
   ExtendedNotification,
   ExtendedUserAction,
   IAccount,
+  IRates,
   ISettings,
   Network,
   NetworkId,
@@ -19,6 +20,7 @@ export enum LSKeys {
   ADDRESS_BOOK = 'addressBook',
   ACCOUNTS = 'accounts',
   ASSETS = 'assets',
+  RATES = 'rates',
   CONTRACTS = 'contracts',
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
@@ -33,6 +35,7 @@ export interface LocalStorage {
   readonly mtime: number;
   readonly [LSKeys.ACCOUNTS]: Record<TUuid, IAccount>;
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
+  readonly [LSKeys.RATES]: IRates;
   readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, ExtendedContact>;
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
   readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
@@ -46,6 +49,7 @@ export interface DataStore {
   readonly version: string;
   readonly [LSKeys.ACCOUNTS]: IAccount[];
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
+  readonly [LSKeys.RATES]: IRates;
   readonly [LSKeys.ADDRESS_BOOK]: ExtendedContact[];
   readonly [LSKeys.CONTRACTS]: ExtendedContract[];
   readonly [LSKeys.NETWORKS]: Network[];

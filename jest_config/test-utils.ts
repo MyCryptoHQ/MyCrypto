@@ -1,5 +1,6 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
+import { Slice } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
@@ -94,3 +95,13 @@ export const expectToThrow = (func: () => unknown, error?: JestToErrorArg): void
 };
 
 type JestToErrorArg = Parameters<jest.Matchers<unknown, () => unknown>['toThrow']>[0];
+
+export function mockStore(
+  storeSlice: Partial<AppState>,
+  dataStoreState?: Partial<DataStore>
+): AppState {
+  return {
+    ...mockAppState(dataStoreState),
+    ...storeSlice
+  } as AppState;
+}

@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fAssets, fNetworks, fSettings } from '@fixtures';
+import { fAccount, fAssets, fNetworks, fRates, fSettings } from '@fixtures';
 import { DataContext, RatesContext, StoreContext } from '@services';
 import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
@@ -67,7 +67,7 @@ describe('Faucet', () => {
         }
       >
         <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
+          <RatesContext.Provider value={{ rates: fRates, trackAsset: jest.fn() } as any}>
             <Faucet />
           </RatesContext.Provider>
         </StoreContext.Provider>

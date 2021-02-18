@@ -77,12 +77,12 @@ export const mergeConfigWithLocalStorage = (
 // From LocalStorage to the state we want to use within the app.
 export function marshallState(ls: LocalStorage): DataStore {
   const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
-
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
     [LSKeys.ADDRESS_BOOK]: objToExtendedArray(ls[LSKeys.ADDRESS_BOOK]) as ExtendedContact[],
     [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
+    [LSKeys.RATES]: ls[LSKeys.RATES],
     [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
     [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]),
     [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
@@ -134,6 +134,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
     ),
     [LSKeys.ADDRESS_BOOK]: arrayToObj('uuid')(st[LSKeys.ADDRESS_BOOK]),
     [LSKeys.ASSETS]: arrayToObj('uuid')(st[LSKeys.ASSETS].filter((a) => a.isCustom)),
+    [LSKeys.RATES]: st[LSKeys.RATES],
     [LSKeys.CONTRACTS]: arrayToObj('uuid')(st[LSKeys.CONTRACTS].filter((c) => c.isCustom)),
     [LSKeys.NETWORKS]: st[LSKeys.NETWORKS]
       .filter((c) => c.isCustom)
