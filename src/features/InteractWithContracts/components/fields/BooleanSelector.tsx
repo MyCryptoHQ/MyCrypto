@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Selector } from '@components';
+import { SPACING } from '@theme';
 
 import FieldLabel from './FieldLabel';
 
@@ -57,7 +58,7 @@ export default function BooleanSelector(props: Props) {
           options={options}
           onChange={(option) => handleInputChange(fieldName, option.value)}
           optionComponent={({ data, selectOption }) => (
-            <ContractDropdownItem option={data} onSelect={selectOption} />
+            <ContractDropdownItem option={data} onSelect={selectOption} paddingLeft={SPACING.SM} />
           )}
           valueComponent={({ value }) => <ContractDropdownItem option={value} />}
           searchable={true}
