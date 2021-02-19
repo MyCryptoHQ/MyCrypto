@@ -284,7 +284,6 @@ const DeterministicWallet = ({
             <Trans id="MNEMONIC_DISPLAY_EMPTY_ADDRESSES" />
           </Text>
           <Switch
-            greyable={true}
             checked={displayEmptyAddresses}
             onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
             labelLeft="Hide"

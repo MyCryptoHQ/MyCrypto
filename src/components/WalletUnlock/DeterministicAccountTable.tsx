@@ -32,7 +32,7 @@ export interface ITableAccounts {
   [key: string]: TableAccountDisplay;
 }
 
-interface DeterministicTableProps {
+export interface DeterministicTableProps {
   isComplete: boolean;
   accounts: ITableAccounts;
   network: Network;
