@@ -251,7 +251,7 @@ module.exports = {
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin()
+    new LodashModuleReplacementPlugin({ flattening: true })
   ],
 
   stats: {
