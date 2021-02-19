@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
@@ -46,7 +46,7 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const DeployContractsFlow = (props: RouteComponentProps) => {
+const DeployContractsFlow = () => {
   const [step, setStep] = useState(0);
   const { getDefaultAccount } = useContext(StoreContext);
   const defaultAccount = getDefaultAccount();
@@ -64,7 +64,9 @@ const DeployContractsFlow = (props: RouteComponentProps) => {
   });
 
   const { account }: DeployContractsState = deployContractsState;
-  const { history, location } = props;
+
+  const history = useHistory();
+  const location = useLocation();
 
   const goToFirstStep = () => {
     setStep(0);
@@ -173,4 +175,4 @@ const DeployContractsFlow = (props: RouteComponentProps) => {
   );
 };
 
-export default withRouter(DeployContractsFlow);
+export default DeployContractsFlow;
