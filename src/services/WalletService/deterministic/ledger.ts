@@ -72,27 +72,7 @@ export class LedgerWallet extends HardwareWallet {
         stripHexPrefix(serializeTransaction(t))
       );
 
-      const v = (() => {
-        if (chainId > 0) {
-          // EIP155 support. check/recalc signature v value.
-          const rv = parseInt(result.v, 16);
-          const cv = chainId * 2 + 35; // calculated signature v, without signature bit.
-          // Since Ledger only returns the lowest byte of the v value, we must recalculate v and replace the low byte with the returned value from Ledger.
-          // Since the v is either 2 * CHAINID + 35 or 2 * CHAINID + 35 + 1 the important part is the lower byte containing the information as to whether we have the +1 or not.
-          if (rv !== cv) {
-            // Ledger returns the low byte of the v value
-            const lowByte = result.v.slice(-2);
-            // Turn low byte into bits
-            const lowBits = parseInt(lowByte, 16).toString(2);
-            // Use high bytes from re-calculated v
-            const highBytes = cv.toString(2).slice(0, -lowBits.length);
-            // Calculate actual v by concatting the high and low bits
-            const actualV = parseInt(highBytes + lowBits, 2);
-            return actualV.toString(16);
-          }
-        }
-        return result.v;
-      })();
+      const v = recalculateV(chainId, result.v);
 
       const signature: SignatureLike = {
         v: parseInt(v, 16),
@@ -142,6 +122,28 @@ export class LedgerWallet extends HardwareWallet {
     return translateRaw('X_LEDGER');
   }
 }
+
+// EIP155 support. check/recalc signature v value.
+const recalculateV = (chainId: number, v: string) => {
+  if (chainId > 0) {
+    const rv = parseInt(v, 16);
+    const cv = chainId * 2 + 35; // calculated signature v, without signature bit.
+    // Since Ledger only returns the lowest byte of the v value, we must recalculate v and replace the low byte with the returned value from Ledger.
+    // Since the v is either 2 * CHAINID + 35 or 2 * CHAINID + 35 + 1 the important part is the lower byte containing the information as to whether we have the +1 or not.
+    if (rv !== cv) {
+      // Ledger returns the low byte of the v value
+      const lowByte = v.slice(-2);
+      // Turn low byte into bits
+      const lowBits = parseInt(lowByte, 16).toString(2);
+      // Use high bytes from re-calculated v
+      const highBytes = cv.toString(2).slice(0, -lowBits.length);
+      // Calculate actual v by concatting the high and low bits
+      const actualV = parseInt(highBytes + lowBits, 2);
+      return actualV.toString(16);
+    }
+  }
+  return v;
+};
 
 const getTransport = async (): Promise<Transport<any>> => {
   try {
