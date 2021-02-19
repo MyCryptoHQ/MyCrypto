@@ -10,18 +10,14 @@ import { IRates, TUuid } from '@types';
 import { ReserveMapping } from './RatesProvider';
 import useRates from './useRates';
 
-const renderUseRates = ({
-  rates = {} as IRates,
-  reserveRateMapping = {} as ReserveMapping,
-  trackAsset = jest.fn()
-} = {}) => {
+const renderUseRates = ({ rates = {} as IRates } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ settings: fSettings } as unknown) as IDataContext}>
-        <RatesContext.Provider value={{ rates, reserveRateMapping, trackAsset } as any}>
-          {' '}
-          {children}
-        </RatesContext.Provider>
+      <DataContext.Provider
+        value={({ settings: fSettings, rates: rates } as unknown) as IDataContext}
+      >
+        {' '}
+        {children}
       </DataContext.Provider>
     </ProvidersWrapper>
   );

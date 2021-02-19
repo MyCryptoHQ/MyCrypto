@@ -11,6 +11,7 @@ import { ExtendedAsset, IRates, LSKeys } from '@types';
 
 import { buildCoinGeckoIdArray, destructureCoinGeckoIds } from './helpers';
 import { getAppState } from './selectors';
+import { getTrackedAssets, trackAsset } from './trackedAssets.slice';
 
 export const initialState = {} as IRates;
 
@@ -21,7 +22,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setRates(state, action: PayloadAction<IRates>) {
-      state = mergeRight(state, action.payload);
+      return mergeRight(state, action.payload);
     }
   }
 });
@@ -48,11 +49,15 @@ export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`)
 
 export function* ratesSaga() {
   yield takeLatest(updateAccountAssets, pollRates);
+  yield takeLatest(trackAsset, pollRates);
   yield takeLatest(startRatesPolling, pollRates);
 }
 
 export function* pollRates() {
-  const assets: ExtendedAsset[] = yield select(getAccountsAssets);
+  const accountAssets: ExtendedAsset[] = yield select(getAccountsAssets);
+  const trackedAssets: ExtendedAsset[] = yield select(getTrackedAssets);
+  console.log(trackedAssets);
+  const assets = [...accountAssets, ...trackedAssets];
   const coinGeckoIds = buildCoinGeckoIdArray(assets);
 
   const payload: IPollingPayload = {

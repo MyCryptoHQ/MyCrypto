@@ -8,6 +8,7 @@ import { assetSaga } from './asset.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
 import { persistenceSaga } from './persistence.slice';
+import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
 import { settingsSaga } from './settings.slice';
 import { scanTokensSaga } from './tokenScanning.slice';
@@ -25,6 +26,7 @@ export default function* rootSaga() {
     vaultSaga(),
     analyticsSaga(),
     persistenceSaga(),
-    pollingSaga()
+    pollingSaga(),
+    ratesSaga()
   ]);
 }
