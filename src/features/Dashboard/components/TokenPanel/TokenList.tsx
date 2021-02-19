@@ -130,7 +130,7 @@ export function TokenList(props: TokenListProps) {
         <TokenListWrapper>
           {sortedTokens.length > 0 ? (
             sortedTokens.map((token) => (
-              <Token key={token.uuid}>
+              <Token key={token.uuid} data-testid={token.uuid}>
                 <Asset>
                   <AssetIcon uuid={token.uuid} size={'26px'} />
                   <AssetName>{token.name}</AssetName>
