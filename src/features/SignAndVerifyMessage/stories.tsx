@@ -4,6 +4,7 @@ import {
   WalletConnectDecrypt,
   Web3ProviderDecrypt
 } from '@components';
+import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
 
 export const getStories = (): IStory[] => [
@@ -21,6 +22,6 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [WalletConnectDecrypt]
+    steps: [withWalletConnect(WalletConnectDecrypt)]
   }
 ];
