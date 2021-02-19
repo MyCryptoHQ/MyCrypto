@@ -363,8 +363,11 @@ export function DeterministicWalletsClass({
         )}
       </div>,
       <Box key="wallet-row-3" display={'inline-flex'} alignItems={'center'}>
-        <LinkApp href={buildAddressUrl(network.blockExplorer, wallet.address as TAddress)}>
-          <Icon type="link-out" />
+        <LinkApp
+          href={buildAddressUrl(network.blockExplorer, wallet.address as TAddress)}
+          isExternal={true}
+        >
+          <Icon type="link-out" width="1em" />
         </LinkApp>
       </Box>
     ];

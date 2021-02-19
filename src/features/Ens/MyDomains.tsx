@@ -52,7 +52,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
             href={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`}
           >
             <Box display={'inline-flex'} alignItems={'center'}>
-              <Icon type="link-out" />
+              <Icon type="link-out" width="1em" />
             </Box>
           </LinkApp>
         </RowAlignment>
