@@ -3,10 +3,10 @@ import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
+import { analyticsMiddleware } from '@services/Analytics';
 import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
-import { analyticsMiddleware } from './analytics.middleware';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';

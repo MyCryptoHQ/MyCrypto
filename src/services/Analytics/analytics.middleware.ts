@@ -1,10 +1,8 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-import { trackEvent } from '@services/Analytics';
+import { addAccounts, createAsset, decrypt, encrypt } from '@store';
 
-import { addAccounts } from './account.slice';
-import { createAsset } from './asset.slice';
-import { decrypt, encrypt } from './vault.slice';
+import { trackEvent } from './saga';
 
 // Prefer middleware to track events throughout the app.
 // ie. https://medium.com/@mwq27/using-redux-middleware-for-simpler-analytics-and-event-tracking-aa22cd996407
