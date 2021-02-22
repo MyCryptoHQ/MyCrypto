@@ -11,9 +11,8 @@ import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 
 import { default as Box } from './Box';
-import { default as Icon } from './Icon';
 import { IconNavArrow } from './IconArrow';
-import { SubHeading, Text } from './NewTypography';
+import { SubHeading } from './NewTypography';
 import { StackedCard } from './StackedCard';
 import { Table, TableConfig, TableData } from './Table';
 
@@ -33,10 +32,6 @@ export interface CollapsibleTableData extends TableData {
 
 interface CollapsedGroups {
   [title: string]: boolean;
-}
-
-interface Flippable {
-  $isFlipped?: boolean;
 }
 
 interface Props extends CollapsibleTableData {
@@ -118,17 +113,6 @@ GroupHeading.defaultProps = {
   role: 'button'
 };
 
-const GroupHeadingCaret = styled(Icon)<Flippable>`
-  margin-left: 0.5em;
-  ${(props) =>
-    props.$isFlipped &&
-    `
-    svg {
-      transform: rotateX(180deg)
-    }
-  `};
-`;
-
 const StackedCardOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -175,15 +159,16 @@ export class CollapsibleTable extends Component<Props, State> {
       transformTableToCards(this.props, collapsedGroups).map((cardData, index) =>
         typeof cardData === 'string' ? (
           // The element being iterated on is a group heading.
-          <Box as="section" variant="rowAlign" padding="16px" role="button">
-            <SubHeading
-              textTransform="uppercase"
-              key={index}
-              onClick={this.toggleCollapseGroup.bind(this, cardData)}
-            >
-              {cardData}
-            </SubHeading>
-            <IconNavArrow $isFlipped={collapsedGroups[cardData]} />
+          <Box
+            key={index}
+            as="section"
+            variant="rowAlign"
+            padding="16px"
+            role="button"
+            onClick={this.toggleCollapseGroup.bind(this, cardData)}
+          >
+            <SubHeading textTransform="uppercase">{cardData}</SubHeading>
+            <IconNavArrow isFlipped={collapsedGroups[cardData]} />
           </Box>
         ) : (
           // The element being iterated on is table data.

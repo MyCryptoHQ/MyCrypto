@@ -16,7 +16,6 @@ import {
   Amount,
   AssetIcon,
   Box,
-  Button,
   DashboardPanel,
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
@@ -239,7 +238,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Box key={4} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
-                <Button>View</Button>
+                translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')
               ) : (
                 <Icon
                   type="more"

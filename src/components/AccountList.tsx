@@ -94,10 +94,7 @@ const PrivateWalletLabel = styled(StyledAccountLabel)`
 `;
 
 const PrivacyCheckBox = styled(Checkbox)`
-  display: flex;
-  justify-content: center;
   margin-bottom: 0px;
-  height: auto;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -128,15 +125,6 @@ const HeaderAlignment = styled.div`
   & img {
     margin-left: ${SPACING.XS};
   }
-`;
-
-const DeleteButton = styled(Button)`
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7em;
-  width: 100%;
 `;
 
 const PrivateColumnLabel = styled.div`
@@ -524,28 +512,50 @@ const BuildAccountTable = (
       if (privacyCheckboxEnabled) {
         bodyContent = [
           ...bodyContent,
-          <PrivacyCheckBox
-            key={index}
-            name={'Private'}
-            marginLeft="0"
-            checked={account.isPrivate || false}
-            onChange={() => toggleAccountPrivacy(account.uuid)}
-          />
+          <Box key={index} variant="rowCenter">
+            {!isMobile && (
+              <PrivacyCheckBox
+                name={'Private'}
+                marginLeft="0"
+                checked={account.isPrivate || false}
+                onChange={() => toggleAccountPrivacy(account.uuid)}
+              />
+            )}
+          </Box>
         ];
       }
 
       if (deletable) {
         bodyContent = [
           ...bodyContent,
-          <DeleteButton
-            key={index}
-            onClick={() =>
-              setDeletingIndex(
-                getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
-              )
-            }
-            icon="exit"
-          />
+          <>
+            {isMobile ? (
+              <Box key={index}>
+                <LinkApp
+                  href="#"
+                  onClick={() =>
+                    setDeletingIndex(
+                      getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
+                    )
+                  }
+                >
+                  {translateRaw('ACCOUNT_LIST_REMOVE')}
+                </LinkApp>
+              </Box>
+            ) : (
+              <Box key={index} variant="rowCenter">
+                <Button
+                  style={{ fontSize: '0.7em' }}
+                  onClick={() =>
+                    setDeletingIndex(
+                      getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
+                    )
+                  }
+                  icon="exit"
+                />
+              </Box>
+            )}
+          </>
         ];
       }
 
