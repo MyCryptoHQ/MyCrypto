@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { DeepPartial } from '@reduxjs/toolkit';
 import { renderHook } from '@testing-library/react-hooks';
 import {
   actionWithPayload,
@@ -10,6 +11,7 @@ import {
 } from 'test-utils';
 
 import { fAccounts, fSettings, fTxReceipt } from '@fixtures';
+import { AppState } from '@store';
 import { IAccount, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -36,7 +38,9 @@ jest.mock('@mycrypto/eth-scan', () => {
 
 const renderUseAccounts = ({ accounts = [] as IAccount[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper initialState={mockAppState({ accounts })}>
+    <ProvidersWrapper
+      initialState={(mockAppState({ accounts }) as unknown) as DeepPartial<AppState>}
+    >
       <DataContext.Provider value={({ settings: fSettings } as any) as IDataContext}>
         {children}
       </DataContext.Provider>

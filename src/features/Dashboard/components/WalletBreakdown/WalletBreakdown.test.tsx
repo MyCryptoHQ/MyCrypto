@@ -30,7 +30,11 @@ function getComponent({
   initialState?: DeepPartial<AppState>;
 }) {
   return simpleRender(
-    <ProvidersWrapper initialState={{ ...initialState, ...mockAppState({ accounts }) }}>
+    <ProvidersWrapper
+      initialState={
+        ({ ...initialState, ...mockAppState({ accounts }) } as unknown) as DeepPartial<AppState>
+      }
+    >
       <MemoryRouter>
         <DataContext.Provider
           value={
