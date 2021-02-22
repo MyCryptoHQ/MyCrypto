@@ -299,13 +299,18 @@ interface Props
   type: TIcon;
 }
 
+export const isSVGType = (type: TIcon): type is SvgIcons =>
+  typeof svgIcons[type as SvgIcons] !== 'undefined';
+export const isPNGType = (type: TIcon): type is PngIcons =>
+  typeof pngIcons[type as PngIcons] !== 'undefined';
+
 const Icon = ({ type, color, ...props }: Props) => {
   if (type === 'website') {
-    return <SWebsiteIcon src={svgIcons[type as SvgIcons]} color={color} {...props} />;
-  } else if (svgIcons[type as SvgIcons]) {
-    return <SInlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />;
-  } else if (pngIcons[type as PngIcons]) {
-    return <SImg src={pngIcons[type as PngIcons]} {...props} />;
+    return <SWebsiteIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (isSVGType(type)) {
+    return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
+  } else if (isPNGType(type)) {
+    return <SImg src={pngIcons[type]} {...props} />;
   } else {
     throw new Error('[Icon]: Invalid type property');
   }
