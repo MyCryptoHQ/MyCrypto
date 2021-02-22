@@ -111,7 +111,7 @@ const SIdenticon = styled(Identicon)`
   }
 `;
 
-// On mobile screen the CollapisableTable becomes a Stacked card.
+// On mobile screen the CollapsibleTable becomes a Stacked card.
 // We provide better styles for desktop screens
 const CurrencyContainer = styled(Currency)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {

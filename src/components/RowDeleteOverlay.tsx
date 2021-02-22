@@ -7,7 +7,7 @@ import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
 
 /*
-  Passed to CollapisableTable and Table by AccountList and AddressBook
+  Passed to CollapsibleTable and Table by AccountList and AddressBook
   It handles its own display to adapt to overlay on table row or over
   StackCard.
 */
