@@ -125,24 +125,24 @@ export const confirmTransactionZap = wrapInProvider(
 
 // Uncomment this for Figma support:
 
-// (confirmTransaction as any).story = {
-//   name: 'ConfirmTransaction',
-//   parameters: {
-//     design: {
-//       type: 'figma',
-//       url:
-//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
-//     }
-//   }
-// };
+(confirmTransaction as any).story = {
+  name: 'ConfirmTransaction',
+  parameters: {
+    design: {
+      type: 'figma',
+      url:
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+    }
+  }
+};
 
-// (confirmTransactionZap as any).story = {
-//   name: 'ConfirmTransaction-DeFiZap',
-//   parameters: {
-//     design: {
-//       type: 'figma',
-//       url:
-//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
-//     }
-//   }
-// };
+(confirmTransactionZap as any).story = {
+  name: 'ConfirmTransaction-DeFiZap',
+  parameters: {
+    design: {
+      type: 'figma',
+      url:
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+    }
+  }
+};

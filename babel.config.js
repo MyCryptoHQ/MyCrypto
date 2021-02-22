@@ -25,7 +25,7 @@ module.exports = {
     '@babel/plugin-syntax-dynamic-import',
     // Fix warnings with TS "export '...' was not found in '...' "
     // https: //github.com/webpack-contrib/imports-loader/issues/68#issuecomment-528788909
-    '@babel/plugin-transform-modules-commonjs'
-    // process.env.NODE_ENV === 'development' && 'react-refresh/babel'
+    '@babel/plugin-transform-modules-commonjs',
+    process.env.NODE_ENV === 'development' && 'react-refresh/babel'
   ].filter(Boolean)
 };
