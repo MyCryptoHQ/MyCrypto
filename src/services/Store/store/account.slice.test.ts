@@ -1,8 +1,11 @@
-import { ETHUUID, REPV2UUID } from '@config';
-import { fAccounts } from '@fixtures';
-import { IAccount, TUuid } from '@types';
+import { BigNumber } from '@ethersproject/bignumber';
+import { mockAppState } from 'test-utils';
 
-import { initialState, default as slice } from './account.slice';
+import { ETHUUID, REPV2UUID } from '@config';
+import { fAccount, fAccounts, fTransaction } from '@fixtures';
+import { IAccount, ITxReceipt, TUuid } from '@types';
+
+import { getAccounts, initialState, default as slice } from './account.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
@@ -83,5 +86,33 @@ describe('AccountSlice', () => {
     const state = [entity];
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+
+  it('getAccounts(): transforms serialized BNs to BNs', () => {
+    const state = mockAppState({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [
+            ({ ...fTransaction, gasUsed: fTransaction.gasLimit } as unknown) as ITxReceipt
+          ]
+        }
+      ]
+    });
+    const actual = getAccounts(state);
+    expect(actual).toEqual([
+      {
+        ...fAccount,
+        transactions: [
+          {
+            ...fTransaction,
+            gasLimit: BigNumber.from(fTransaction.gasLimit),
+            gasPrice: BigNumber.from(fTransaction.gasPrice),
+            gasUsed: BigNumber.from(fTransaction.gasLimit),
+            value: BigNumber.from(fTransaction.value)
+          }
+        ]
+      }
+    ]);
   });
 });

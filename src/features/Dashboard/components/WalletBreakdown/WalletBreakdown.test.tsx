@@ -2,7 +2,7 @@ import React from 'react';
 
 import { MemoryRouter } from 'react-router-dom';
 import { DeepPartial } from 'redux';
-import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, mockAppState, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import {
   fAccounts,
@@ -30,13 +30,16 @@ function getComponent({
   initialState?: DeepPartial<AppState>;
 }) {
   return simpleRender(
-    <ProvidersWrapper initialState={initialState}>
+    <ProvidersWrapper
+      initialState={
+        ({ ...initialState, ...mockAppState({ accounts }) } as unknown) as DeepPartial<AppState>
+      }
+    >
       <MemoryRouter>
         <DataContext.Provider
           value={
             {
               addressBook: fContacts,
-              accounts,
               assets: fAssets,
               contracts: [],
               networks: fNetworks,

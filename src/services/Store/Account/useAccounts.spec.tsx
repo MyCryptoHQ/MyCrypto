@@ -1,9 +1,17 @@
 import React from 'react';
 
+import { DeepPartial } from '@reduxjs/toolkit';
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper, waitFor } from 'test-utils';
+import {
+  actionWithPayload,
+  mockAppState,
+  mockUseDispatch,
+  ProvidersWrapper,
+  waitFor
+} from 'test-utils';
 
 import { fAccounts, fSettings, fTxReceipt } from '@fixtures';
+import { AppState } from '@store';
 import { IAccount, TUuid } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -30,8 +38,10 @@ jest.mock('@mycrypto/eth-scan', () => {
 
 const renderUseAccounts = ({ accounts = [] as IAccount[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ accounts, settings: fSettings } as any) as IDataContext}>
+    <ProvidersWrapper
+      initialState={(mockAppState({ accounts }) as unknown) as DeepPartial<AppState>}
+    >
+      <DataContext.Provider value={({ settings: fSettings } as any) as IDataContext}>
         {children}
       </DataContext.Provider>
     </ProvidersWrapper>
@@ -109,7 +119,7 @@ describe('useAccounts', () => {
       fAccounts[0].address,
       fAccounts[0].networkId
     );
-    expect(account).toBe(fAccounts[0]);
+    expect(account).toStrictEqual(fAccounts[0]);
   });
 
   it('updateAccounts() calls updateAll with merged list', async () => {

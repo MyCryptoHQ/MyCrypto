@@ -18,6 +18,7 @@ import {
   lensPath,
   lensProp,
   map,
+  mapObjIndexed,
   mergeRight,
   over,
   pipe,
@@ -27,8 +28,10 @@ import {
 const balanceLens = lensProp('balance');
 const txValueLens = lensProp('value');
 const assetLens = lensProp('assets');
+const transactionsLens = lensProp('transactions');
 
-export const stringifyBalance = over(balanceLens, ifElse(isBigish, toString, identity));
+const stringifyBigish = ifElse(isBigish, toString, identity);
+export const stringifyBalance = over(balanceLens, stringifyBigish);
 export const stringifyValue = over(txValueLens, toString);
 export const bigifyBalnce = over(balanceLens, bigify);
 
@@ -43,7 +46,8 @@ export const stringifyDate = ifElse(
 );
 
 export const serializeAccount: (a: IAccount | StoreAccount) => IAccount | StoreAccount = pipe(
-  over(assetLens, map(stringifyBalance))
+  over(assetLens, map(stringifyBalance)),
+  over(transactionsLens, map(mapObjIndexed(stringifyBigish)))
 );
 
 export const serializeNotification: (n: ExtendedNotification) => ExtendedNotification = (n) => {
