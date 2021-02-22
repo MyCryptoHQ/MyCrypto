@@ -60,8 +60,6 @@ jobs:
       - name: yarn build:storybook
         if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
         run: yarn build:storybook
-        env:
-          E2E_PRIVATE_KEY: 'DUMMY_PRIVATE_KEY'
 
       - name: S3 Sync - Storybook SHA
         uses: jakejarvis/s3-sync-action@v0.5.1
