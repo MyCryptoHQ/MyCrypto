@@ -52,7 +52,7 @@ const editNetworkNode = wrapInProvider(
   </div>
 );
 
-storiesOf('NetworkNodeForm', module)
+storiesOf('Features/NetworkNodeForm', module)
   .addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
   .add('Add node', () => addNetworkNode, {
     design: {

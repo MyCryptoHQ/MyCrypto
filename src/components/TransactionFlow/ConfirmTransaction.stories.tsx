@@ -28,7 +28,7 @@ const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 const onComplete = noOp;
 
-export default { title: 'ConfirmTx' };
+export default { title: 'Features/ConfirmTx', components: ConfirmTransactionUI };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
@@ -125,24 +125,24 @@ export const confirmTransactionZap = wrapInProvider(
 
 // Uncomment this for Figma support:
 
-(confirmTransaction as any).story = {
-  name: 'ConfirmTransaction',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
-    }
-  }
-};
+// (confirmTransaction as any).story = {
+//   name: 'ConfirmTransaction',
+//   parameters: {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+//     }
+//   }
+// };
 
-(confirmTransactionZap as any).story = {
-  name: 'ConfirmTransaction-DeFiZap',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
-    }
-  }
-};
+// (confirmTransactionZap as any).story = {
+//   name: 'ConfirmTransaction-DeFiZap',
+//   parameters: {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+//     }
+//   }
+// };

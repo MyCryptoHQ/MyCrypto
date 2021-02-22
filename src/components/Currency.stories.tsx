@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Divider } from '@components';
 import { FONT_SIZE } from '@theme';
 import { TTicker, TUuid } from '@types';
 
 import Currency from './Currency';
+import Divider from './Divider';
 
 const defaultProps: React.ComponentProps<typeof Currency> = {
   amount: '0.00012312',
   ticker: 'USD' as TTicker
 };
 
-export default { title: 'Components/Currency' };
+export default { title: 'Molecules/Currency', component: Currency };
 
 export const defaultState = () => {
   return (

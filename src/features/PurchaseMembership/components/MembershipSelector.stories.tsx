@@ -8,7 +8,7 @@ import MembershipSelector, {
   MembershipSelectorProps
 } from './MembershipSelector';
 
-export default { title: 'Selectors/MembershipSelector' };
+export default { title: 'Molecules/Selectors/MembershipSelector', component: MembershipSelector };
 
 const defaultProps: MembershipSelectorProps = {
   name: '',

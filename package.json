@@ -110,6 +110,10 @@
     "@lowb/preload-webpack-plugin": "3.0.2",
     "@phenomnomnominal/tsquery": "4.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
+    "@storybook/addon-actions": "^6.1.18",
+    "@storybook/addon-essentials": "^6.1.18",
+    "@storybook/addon-links": "^6.1.18",
+    "@storybook/react": "^6.1.18",
     "@testing-library/jest-dom": "5.0.2",
     "@testing-library/react": "9.4.0",
     "@testing-library/react-hooks": "3.2.1",
@@ -193,6 +197,7 @@
     "react-refresh": "0.9.0",
     "react-select-event": "4.1.4",
     "react-test-renderer": "16.12.0",
+    "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.1",
     "reinspect": "1.1.0",
     "sass": "1.26.10",
@@ -229,7 +234,7 @@
     "pretest": "check-node-version --package",
     "predev": "check-node-version --package",
     "dev": "cross-env NODE_ENV=development TARGET_ENV=local webpack-dev-server --config webpack_config/development.js",
-    "storybook": "start-storybook -p 3001 --ci",
+    "storybook": "start-storybook -p 6006 --ci",
     "build:storybook": "build-storybook",
     "tscheck": "tsc",
     "start": " yarn run dev",
@@ -245,7 +250,8 @@
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
     "validate": "npm-run-all --parallel lint:styles lint:code tscheck",
-    "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate"
+    "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate",
+    "build-storybook": "build-storybook"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [

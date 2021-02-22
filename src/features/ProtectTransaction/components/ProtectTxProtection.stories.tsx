@@ -55,7 +55,7 @@ const ProtectTxStep1Mobile = () => (
     </div>
   </>
 );
-storiesOf('ProtectTransaction', module)
+storiesOf('Features/ProtectTransaction', module)
   .add('Step 1', () => ProtectTxStep1(), {
     design: {
       type: 'figma',

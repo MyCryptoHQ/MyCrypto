@@ -6,7 +6,7 @@ import { translateRaw } from '@translations';
 
 import AssetSelector, { AssetSelectorItem, TAssetOption } from './AssetSelector';
 
-export default { title: 'Selectors/AssetSelector' };
+export default { title: 'Molecules/Selectors/AssetSelector', component: AssetSelector };
 
 const initialProps = {
   assets: fAssets,

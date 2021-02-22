@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Switch } from './Switch';
 
-export default { title: 'Components/Switch' };
+export default { title: 'Atoms/Switch', component: Switch };
 
 const defaultProps = {
   labelLeft: 'Off',

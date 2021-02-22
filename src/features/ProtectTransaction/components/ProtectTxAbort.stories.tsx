@@ -13,7 +13,7 @@ const AbortTransaction = () => (
   </div>
 );
 
-storiesOf('ProtectTransaction', module)
+storiesOf('Features/ProtectTransaction/Abort', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
   .add('Abort transaction', () => AbortTransaction(), {
     design: {

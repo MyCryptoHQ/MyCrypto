@@ -17,46 +17,32 @@ const ProtectTxStep3 = (report: PTXReport) => (
   </div>
 );
 
-storiesOf('ProtectTransaction', module).add(
-  'Step 3 - Unknown',
-  () => ProtectTxStep3(unknownReport),
-  {
+storiesOf('Features/ProtectTransaction/Report', module)
+  .add('Step 3 - Unknown', () => ProtectTxStep3(unknownReport), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
-  }
-);
-
-storiesOf('ProtectTransaction', module).add('Step 3 - Scam', () => ProtectTxStep3(scamReport), {
-  design: {
-    type: 'figma',
-    url:
-      'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
-  }
-});
-
-storiesOf('ProtectTransaction', module).add(
-  'Step 3 - Verified',
-  () => ProtectTxStep3(verifiedReport),
-  {
+  })
+  .add('Step 3 - Scam', () => ProtectTxStep3(scamReport), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
-  }
-);
-
-storiesOf('ProtectTransaction', module).add(
-  'Step 3 - Loading',
-  () => ProtectTxStep3(loadingReport),
-  {
+  })
+  .add('Step 3 - Verified', () => ProtectTxStep3(verifiedReport), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
-  }
-);
+  })
+  .add('Step 3 - Loading', () => ProtectTxStep3(loadingReport), {
+    design: {
+      type: 'figma',
+      url:
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+    }
+  });

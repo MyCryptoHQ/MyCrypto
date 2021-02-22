@@ -46,7 +46,7 @@ const someNetworkNode = () => (
   </div>
 );
 
-storiesOf('NetworkNodes', module)
+storiesOf('Molecules/Selectors/NetworkNodes', module)
   .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
   .add('Empty', () => networkNodesEmpty(), {
     design: {

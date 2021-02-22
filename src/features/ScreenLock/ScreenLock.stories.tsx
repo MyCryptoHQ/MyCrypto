@@ -4,7 +4,7 @@ import ScreenLockForgotPassword from './ScreenLockForgotPassword';
 import ScreenLockLocked from './ScreenLockLocked';
 import ScreenLockNew from './ScreenLockNew';
 
-export default { title: 'ScreenLock' };
+export default { title: 'Features/ScreenLock', component: ScreenLockNew };
 
 const Wrapper = ({ children }: { children: any }) => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>

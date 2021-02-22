@@ -3,7 +3,16 @@ import React from 'react';
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
 import styled from 'styled-components';
-import { layout, LayoutProps, space } from 'styled-system';
+import {
+  color,
+  ColorProps,
+  colorStyle,
+  ColorStyleProps,
+  layout,
+  LayoutProps,
+  space,
+  SpaceProps
+} from 'styled-system';
 
 import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
@@ -116,16 +125,6 @@ import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
-
-const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<LayoutProps>`
-  ${layout}
-  ${space}
-`;
-
-const SImg = styled.img<LayoutProps>`
-  ${layout}
-  ${space}
-`;
 
 const svgIcons = {
   /* Action icons */
@@ -266,14 +265,26 @@ type SvgIcons = keyof typeof svgIcons;
 type PngIcons = keyof typeof pngIcons;
 export type TIcon = SvgIcons | PngIcons;
 
-interface Props extends Omit<React.ComponentProps<typeof SInlineSVG>, 'src'> {
-  type: TIcon;
-  color?: string;
-}
+type StylingProps = LayoutProps & SpaceProps & ColorProps & ColorStyleProps;
+
+const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<StylingProps>`
+  ${layout}
+  ${space}
+  ${color}
+  ${colorStyle}
+
+`;
+
+const SImg = styled.img<StylingProps>`
+  ${layout}
+  ${space}
+  ${color}
+  ${colorStyle}
+`;
 
 // This specific svg is designed with strokes instead of fill
 // so we give make sure the fill is not set.
-const SWebsiteIcon = styled(SInlineSVG)`
+const SWebsiteIcon = styled(SInlineSVG)<StylingProps>`
   &&&& {
     fill: transparent;
   }
@@ -283,18 +294,21 @@ const SWebsiteIcon = styled(SInlineSVG)`
   stroke: ${({ color }) => color && color};
 `;
 
-const Icon: React.FunctionComponent<Props> = ({ type, color, ...props }) => {
+interface Props
+  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SWebsiteIcon>, 'src'> {
+  type: TIcon;
+}
+
+const Icon = ({ type, color, ...props }: Props) => {
   if (type === 'website') {
     return <SWebsiteIcon src={svgIcons[type as SvgIcons]} color={color} {...props} />;
+  } else if (svgIcons[type as SvgIcons]) {
+    return <SInlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />;
+  } else if (pngIcons[type as PngIcons]) {
+    return <SImg src={pngIcons[type as PngIcons]} {...props} />;
+  } else {
+    throw new Error('[Icon]: Invalid type property');
   }
-  return (
-    <>
-      {svgIcons[type as SvgIcons] && (
-        <SInlineSVG src={svgIcons[type as SvgIcons]} color={color} fill={color} {...props} />
-      )}
-      {pngIcons[type as PngIcons] && <SImg src={pngIcons[type as PngIcons]} {...props} />}
-    </>
-  );
 };
 
 export default Icon;

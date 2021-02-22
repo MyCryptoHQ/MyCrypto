@@ -2,16 +2,24 @@ import React from 'react';
 
 import { Web3ProviderInstallUI } from './Web3ProviderInstall';
 
-export default { title: 'WalletUnlock/Web3ProviderInstall' };
+export default {
+  title: 'Features/AddAccount/Web3ProviderInstall',
+  component: Web3ProviderInstallUI
+};
 
 const initialProps = {
   isMobile: true
 };
 
-export const Web3ProviderInstall = () => {
+const Template = (args: typeof initialProps) => {
   return (
     <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <Web3ProviderInstallUI {...initialProps} />
+      <Web3ProviderInstallUI {...args} />
     </div>
   );
+};
+
+export const Mobile = Template.bind({});
+Mobile.args = {
+  isMobile: true
 };
