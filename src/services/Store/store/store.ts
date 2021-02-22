@@ -6,7 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
-// import { analyticsMiddleware } from './analytics.middleware';
+import { analyticsMiddleware } from './analytics.middleware';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';
@@ -34,7 +34,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
         }
       }),
       sagaMiddleware,
-      // analyticsMiddleware,
+      analyticsMiddleware,
       // Logger MUST be last in chain.
       // https://github.com/LogRocket/redux-logger#usage
       ...(IS_DEV ? [createLogger({ collapsed: true })] : [])
