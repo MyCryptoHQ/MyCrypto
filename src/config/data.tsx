@@ -35,7 +35,7 @@ export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
-export const DEX_BASE_URL = 'https://api.0x.org/';
+export const DEX_BASE_URL = 'https://swap.mycryptoapi.com/';
 export const DEX_FEE_RECIPIENT = '0xD8D46494e200Fa585FC98f86e6A5Ea0DC1F18aD0';
 export const DEX_TRADE_EXPIRATION = 31; // in seconds
 
