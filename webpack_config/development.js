@@ -70,6 +70,7 @@ module.exports = merge.smart(common, {
     new BundleAnalyzerPlugin({ openAnalyzer: false }),
 
     // Make .env variables available to react code.
+    // We use Github secrets for production, so this is only defined in development.
     new Dotenv({
       safe: true // loads .env.example to sure all values are defined in .env
     })

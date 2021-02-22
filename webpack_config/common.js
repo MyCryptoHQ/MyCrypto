@@ -29,7 +29,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [config.path.src, config.path.root, 'node_modules'],
+    modules: [config.path.src, 'node_modules'],
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
       '@fixtures': `${config.path.root}/jest_config/__fixtures__`,
