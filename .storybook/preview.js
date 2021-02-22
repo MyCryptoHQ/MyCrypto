@@ -8,12 +8,11 @@ import configureStore from 'redux-mock-store';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '@theme';
+import { FeatureFlagProvider } from '@services';
 import { mockAppState } from '../jest_config/test-utils';
 
 const mockStore = configureStore([]);
 const store = mockStore(mockAppState());
-
-import AppProviders from '../src/AppProviders';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -27,14 +26,11 @@ export const parameters = {
 };
 
 export const decorators = [
-  //  (story) => (
-  //    <Provider store={store}>
-  //      <AppProviders>{story()}</AppProviders>
-  //    </Provider>
-  //  ),
   (story) => (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>{story()}</ThemeProvider>
+      <FeatureFlagProvider>
+        <ThemeProvider theme={theme}>{story()}</ThemeProvider>
+      </FeatureFlagProvider>
     </Provider>
   ),
   (story) => (
