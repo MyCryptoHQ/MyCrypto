@@ -250,8 +250,7 @@
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
     "validate": "npm-run-all --parallel lint:styles lint:code tscheck",
-    "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate",
-    "build-storybook": "build-storybook"
+    "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
