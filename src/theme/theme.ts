@@ -26,6 +26,7 @@ const theme = Object.assign({}, lightTheme, {
 
     BLUE_BRIGHT: '#1eb8e7',
     BLUE_LIGHT: '#007896',
+    BRAND_PRIMARY: '#007896',
     BLUE_LIGHTEST: '#E4EDFD',
     BLUE_SKY: '#55b6e2',
     BLUE_LIGHT_DARKISH: '#006077',
