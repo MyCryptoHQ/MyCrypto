@@ -3,7 +3,7 @@ import React, { FocusEventHandler, useCallback, useEffect, useRef, useState } fr
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
-import { isValidAddress, isValidENSName, isValidETHRecipientAddress } from '@services/EthService';
+import { isValidAddress, isValidENSName, isValidRecipientAddress } from '@services/EthService';
 import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { ErrorObject, IReceiverAddress, Network } from '@types';
@@ -73,7 +73,7 @@ const GeneralLookupField = ({
   useEffect(() => {
     // Run validation if possible
     if (setFieldError) {
-      const validationResult = isValidETHRecipientAddress(value.value, resolutionError, network);
+      const validationResult = isValidRecipientAddress(value.value, resolutionError, network);
       setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
   }, [value, resolutionError]);

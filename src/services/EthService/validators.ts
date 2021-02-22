@@ -72,7 +72,7 @@ export function isValidLikeAddress(address: string, isChecksumValid: boolean): b
   return true;
 }
 
-export const isValidETHRecipientAddress = (
+export const isValidRecipientAddress = (
   address: string,
   resolutionErr: ResolutionError | undefined,
   network: Network | number
