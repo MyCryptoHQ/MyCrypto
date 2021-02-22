@@ -1014,6 +1014,7 @@
     "SWAP_AMOUNT_TOOLTIP": "This is confirming the amounts you want to convert and receive.",
     "SWAP_TX_FEE_TOOLTIP": "This is an approximate maximum fee based off a combination of network and platform fees.",
     "SWAP_EXPIRY_TOOLTIP": "Your quoted amount and rate will expire after a time. To refresh this, select \"Get New Quote.\"",
-    "EXPIRED": "Expired"
+    "EXPIRED": "Expired",
+    "SWAP_INSUFFICIENT_FUNDS": "Insufficient funds for transaction"
   }
 }

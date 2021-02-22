@@ -157,7 +157,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         fromAmount: '',
         toAmountError:
           e.response?.data?.code && e.response.data.code === 109
-            ? e.response.data.reason
+            ? translate('SWAP_INSUFFICIENT_FUNDS')
             : translate('UNEXPECTED_ERROR', {
                 $link: formatErrorEmailMarkdown('Swap Error', e)
               })
