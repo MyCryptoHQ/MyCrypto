@@ -1,5 +1,5 @@
 import { DPathsList } from '@config/dpaths';
-import { isValidAddress, isValidETHAddress, isValidPath } from '@services/EthService/validators';
+import { isValidAddress, isValidPath } from '@services/EthService/validators';
 
 import { invalid, valid } from '../utils/testStrings';
 
@@ -13,10 +13,10 @@ const BIP49_DPATH = "m/49'/0'/0'";
 
 describe('Validator', () => {
   it('should validate correct ETH address as true', () => {
-    expect(isValidETHAddress(VALID_ETH_ADDRESS)).toBeTruthy();
+    expect(isValidAddress(VALID_ETH_ADDRESS, ETH_CHAIN_ID)).toBeTruthy();
   });
   it('should validate incorrect ETH address as false', () => {
-    expect(isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')).toBeFalsy();
+    expect(isValidAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense', ETH_CHAIN_ID)).toBeFalsy();
   });
   it('should validate correct ETH address in RSK network as false', () => {
     expect(isValidAddress(VALID_ETH_ADDRESS, RSK_TESTNET_CHAIN_ID)).toBeFalsy();

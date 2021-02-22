@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 import { Account, EditableAccountLabel, Typography } from '@components';
 import { useContacts } from '@services';
+import { useSelector } from '@store';
+import { getNetwork } from '@store/network.slice';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
-import { ExtendedContact, NetworkId, TAddress } from '@types';
+import { ExtendedContact, Network, NetworkId, TAddress } from '@types';
 
 export interface IAddressAndLabel {
   address: TAddress;
@@ -71,6 +73,8 @@ const LabelWrapper = styled.div`
 
 const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = true }: Props) => {
   const { updateContact, createContact } = useContacts();
+  const network = useSelector(getNetwork(networkId)) as Network;
+
   const editableFromAccountLabel = EditableAccountLabel({
     address: fromAccount.address,
     addressBookEntry: fromAccount.addressBookEntry,
@@ -92,7 +96,12 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Account address={fromAccount.address} title={editableFromAccountLabel} truncate={true} />
+          <Account
+            address={fromAccount.address}
+            network={network}
+            title={editableFromAccountLabel}
+            truncate={true}
+          />
         </AddressWrapper>
       </AddressContainer>
       {displayToAddress && (
@@ -101,7 +110,12 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
             <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
           </LabelWrapper>
           <AddressWrapper>
-            <Account address={toAccount.address} title={editableToAccountLabel} truncate={true} />
+            <Account
+              address={toAccount.address}
+              network={network}
+              title={editableToAccountLabel}
+              truncate={true}
+            />
           </AddressWrapper>
         </AddressContainer>
       )}

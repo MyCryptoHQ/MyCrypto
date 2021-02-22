@@ -3,11 +3,7 @@ import React, { FocusEventHandler, useCallback, useEffect, useRef, useState } fr
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
 import { DomainStatus, InlineMessage } from '@components';
-import {
-  isValidENSName,
-  isValidETHAddress,
-  isValidETHRecipientAddress
-} from '@services/EthService';
+import { isValidAddress, isValidENSName, isValidETHRecipientAddress } from '@services/EthService';
 import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { ErrorObject, IReceiverAddress, Network } from '@types';
@@ -77,7 +73,7 @@ const GeneralLookupField = ({
   useEffect(() => {
     // Run validation if possible
     if (setFieldError) {
-      const validationResult = isValidETHRecipientAddress(value.value, resolutionError);
+      const validationResult = isValidETHRecipientAddress(value.value, resolutionError, network);
       setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
   }, [value, resolutionError]);
@@ -115,7 +111,7 @@ const GeneralLookupField = ({
       value: inputString
     };
 
-    if (isValidETHAddress(inputString)) {
+    if (isValidAddress(inputString, network)) {
       contact = handleEthAddressDefault(inputString);
     } else if (isValidENSName(inputString)) {
       contact = await handleENSnameDefault(inputString, contact);

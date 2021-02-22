@@ -27,6 +27,8 @@ import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useContacts, useRates, useSettings, useTxHistory } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
+import { useSelector } from '@store';
+import { getNetworks } from '@store/network.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount } from '@types';
@@ -35,6 +37,7 @@ import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
+
 import './RecentTransactionList.scss';
 
 interface Props {
@@ -170,6 +173,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { txHistory } = useTxHistory();
   const { createContact, updateContact } = useContacts();
   const { isMobile } = useScreenSize();
+  const networks = useSelector(getNetworks);
 
   const accountTxs = txHistory.filter((tx) =>
     accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
@@ -210,6 +214,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           updateContact
         });
 
+        const network = networks.find((n) => n.id === networkId)!;
+
         return [
           <TransactionLabel
             key={0}
@@ -218,13 +224,20 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={status}
             date={timestamp}
           />,
-          <Account key={1} title={editableFromLabel} truncate={true} address={from} />,
+          <Account
+            key={1}
+            title={editableFromLabel}
+            truncate={true}
+            address={from}
+            network={network}
+          />,
           to && (
             <Account
               key={2}
               title={editableToLabel}
               truncate={true}
               address={receiverAddress || to}
+              network={network}
             />
           ),
           <Amount

@@ -253,7 +253,7 @@ export default function AddressBook({
               saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
             />
           </Label>,
-          <EthAddress address={address} truncate={true} isCopyable={true} />,
+          <EthAddress address={address} network={networkData} truncate={true} isCopyable={true} />,
           <Network color={color}>{network}</Network>,
           <EditableText
             truncate={true}

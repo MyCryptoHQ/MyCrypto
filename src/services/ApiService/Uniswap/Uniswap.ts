@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
-import { toChecksumAddress } from 'ethereumjs-util';
 
 import { UNISWAP_TOKEN_DISTRIBUTOR, UNISWAP_UNI_CLAIM_API } from '@config/data';
 import { ApiService } from '@services/ApiService';
 import { ProviderHandler } from '@services/EthService';
 import { UniDistributor } from '@services/EthService/contracts';
 import { ITxValue, Network, TAddress } from '@types';
+import { toChecksumAddress } from '@utils';
 import { mapAsync } from '@utils/asyncFilter';
 
 let instantiated = false;

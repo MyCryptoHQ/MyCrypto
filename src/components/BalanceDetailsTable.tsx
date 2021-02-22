@@ -148,6 +148,7 @@ const createAccountRow = (
       >
         <EthAddress
           address={balanceAccount.address}
+          network={1} // @todo: Get network/chain ID here somehow
           isCopyable={true}
           truncate={true}
           disableTooltip={true}

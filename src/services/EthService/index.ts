@@ -12,7 +12,7 @@ export {
 export { Web3Node, isWeb3Node, setupWeb3Node } from './web3';
 export {
   isValidPath,
-  isValidETHAddress,
+  isValidAddress,
   isValidHex,
   isValidPositiveOrZeroInteger,
   isValidPositiveNumber,
@@ -21,9 +21,7 @@ export {
   gasLimitValidator,
   isValidSignMessage,
   isValidGetAccounts,
-  isValidAddress,
   isTransactionFeeHigh,
-  isChecksumAddress,
   isBurnAddress,
   isValidRequestPermissions,
   isValidETHRecipientAddress

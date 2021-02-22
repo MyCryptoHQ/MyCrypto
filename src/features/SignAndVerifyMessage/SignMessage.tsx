@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
@@ -14,7 +13,7 @@ import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, ISignedMessage, WalletId } from '@types';
-import { addHexPrefix, isWeb3Wallet } from '@utils';
+import { addHexPrefix, isWeb3Wallet, toChecksumAddress } from '@utils';
 
 import { getStories } from './stories';
 
@@ -106,6 +105,7 @@ function SignMessage(props: Props) {
         throw Error;
       }
 
+      // SignMessage isn't network-aware so we can't properly checksum the address here for certain networks (e.g. RSK)
       const address = toChecksumAddress(wallet.getAddressString());
       let sig = '';
 

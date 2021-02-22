@@ -1,9 +1,7 @@
 import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import BigNumber from 'bignumber.js';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { Validator } from 'jsonschema';
-import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 
 import {
   CREATION_ADDRESS,
@@ -16,8 +14,19 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
 import translate, { translateRaw } from '@translations';
-import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
-import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
+import {
+  InlineMessageType,
+  JsonRPCResponse,
+  Network,
+  Web3RequestPermissionsResponse
+} from '@types';
+import {
+  baseToConvertedUnit,
+  bigify,
+  convertedToBaseUnit,
+  gasStringsToMaxGasBN,
+  isChecksumAddress
+} from '@utils';
 
 import { isValidENSName } from './ens/validators';
 
@@ -34,10 +43,6 @@ const isPositiveNonZeroNumber = (value: BigNumber | number | string) => bigify(v
 
 const isInteger = (value: BigNumber | number | string) => bigify(value).isInteger();
 
-export function isChecksumAddress(address: string): boolean {
-  return address === toChecksumAddress(address);
-}
-
 export function isBurnAddress(address: string): boolean {
   return (
     address === '0x0000000000000000000000000000000000000000' ||
@@ -45,20 +50,9 @@ export function isBurnAddress(address: string): boolean {
   );
 }
 
-export function isValidRSKAddress(address: string, chainId: number): boolean {
-  return isValidETHLikeAddress(address, isValidChecksumRSKAddress(address, chainId));
-}
-
-function getIsValidAddressFunction(chainId: number) {
-  if (chainId === 30 || chainId === 31) {
-    return (address: string) => isValidRSKAddress(address, chainId);
-  }
-  return isValidETHAddress;
-}
-
-export function isValidETHLikeAddress(address: string, isChecksumValid: boolean): boolean {
-  const isValidMixedCase = isValidMixedCaseETHAddress(address);
-  const isValidUpperOrLowerCase = isValidUpperOrLowerCaseETHAddress(address);
+export function isValidLikeAddress(address: string, isChecksumValid: boolean): boolean {
+  const isValidMixedCase = isValidMixedCaseAddress(address);
+  const isValidUpperOrLowerCase = isValidUpperOrLowerCaseAddress(address);
   if (!['0x', '0X'].includes(address.substring(0, 2))) {
     // Invalid if the address doesn't begin with '0x' or '0X'
     return false;
@@ -80,7 +74,8 @@ export function isValidETHLikeAddress(address: string, isChecksumValid: boolean)
 
 export const isValidETHRecipientAddress = (
   address: string,
-  resolutionErr: ResolutionError | undefined
+  resolutionErr: ResolutionError | undefined,
+  network: Network | number
 ) => {
   if (isValidENSName(address) && resolutionErr) {
     // Is a valid ENS name, but it couldn't be resolved or there is some other issue.
@@ -97,24 +92,24 @@ export const isValidETHRecipientAddress = (
     };
   } else if (
     !isValidENSName(address) &&
-    isValidMixedCaseETHAddress(address) &&
-    isChecksumAddress(address)
+    isValidMixedCaseAddress(address) &&
+    isChecksumAddress(address, network)
   ) {
     // isMixedCase Address that is a valid checksum
     return { success: true };
   } else if (
     !isValidENSName(address) &&
-    isValidMixedCaseETHAddress(address) &&
-    !isChecksumAddress(address) &&
-    isValidUpperOrLowerCaseETHAddress(address)
+    isValidMixedCaseAddress(address) &&
+    !isChecksumAddress(address, network) &&
+    isValidUpperOrLowerCaseAddress(address)
   ) {
     // Is a fully-uppercase or fully-lowercase address and is an invalid checksum
     return { success: true };
   } else if (
     !isValidENSName(address) &&
-    isValidMixedCaseETHAddress(address) &&
-    !isChecksumAddress(address) &&
-    !isValidUpperOrLowerCaseETHAddress(address)
+    isValidMixedCaseAddress(address) &&
+    !isChecksumAddress(address, network) &&
+    !isValidUpperOrLowerCaseAddress(address)
   ) {
     // Is not fully-uppercase or fully-lowercase address and is an invalid checksum
     return {
@@ -123,7 +118,7 @@ export const isValidETHRecipientAddress = (
       type: InlineMessageType.INFO_CIRCLE,
       message: translate('CHECKSUM_ERROR')
     };
-  } else if (!isValidENSName(address) && !isValidMixedCaseETHAddress(address)) {
+  } else if (!isValidENSName(address) && !isValidMixedCaseAddress(address)) {
     // Is an invalid ens name & an invalid mixed-case address.
     return {
       success: false,
@@ -135,20 +130,16 @@ export const isValidETHRecipientAddress = (
   return { success: true };
 };
 
-export function isValidMixedCaseETHAddress(address: string) {
+export function isValidMixedCaseAddress(address: string) {
   return /^(0(x|X)[a-fA-F0-9]{40})$/.test(address);
 }
 
-export function isValidUpperOrLowerCaseETHAddress(address: string) {
+export function isValidUpperOrLowerCaseAddress(address: string) {
   return /^(0(x|X)(([a-f0-9]{40})|([A-F0-9]{40})))$/.test(address);
 }
 
-export function isValidAddress(address: string, chainId: number) {
-  return getIsValidAddressFunction(chainId)(address);
-}
-
-export function isValidETHAddress(address: string): boolean {
-  return isValidETHLikeAddress(address, isChecksumAddress(address));
+export function isValidAddress(address: string, network: Network | number): boolean {
+  return isValidLikeAddress(address, isChecksumAddress(address, network));
 }
 
 export const isCreationAddress = (address: string): boolean =>

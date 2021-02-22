@@ -255,7 +255,8 @@ export function DeterministicWalletsClass({
             publicKey,
             chainCode,
             limit: WALLETS_PER_PAGE,
-            offset: WALLETS_PER_PAGE * page
+            offset: WALLETS_PER_PAGE * page,
+            network
           })
         );
         setRequestingWallets(false);
@@ -353,6 +354,7 @@ export function DeterministicWalletsClass({
         key="wallet-row-1"
         title={addrBook ? addrBook.label : translateRaw('NO_ADDRESS')}
         address={wallet.address}
+        network={network}
         truncate={true}
       />,
       <div key="wallet-row-2">

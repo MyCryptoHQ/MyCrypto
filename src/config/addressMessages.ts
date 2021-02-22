@@ -1,4 +1,5 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { Network } from '@types';
+import { toChecksumAddress } from '@utils/checksum';
 
 export interface AddressMessage {
   msg: string;
@@ -187,8 +188,11 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
   }
 };
 
-export function getAddressMessage(address: string): AddressMessage | undefined {
+export function getAddressMessage(
+  address: string,
+  network: Network | number
+): AddressMessage | undefined {
   const lowerAddr = address.toLowerCase();
-  const checksumAddr = toChecksumAddress(address);
+  const checksumAddr = toChecksumAddress(address, network);
   return ADDRESS_MESSAGES[lowerAddr] || ADDRESS_MESSAGES[checksumAddr];
 }

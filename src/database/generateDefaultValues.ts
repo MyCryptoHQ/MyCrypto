@@ -14,7 +14,11 @@ import {
   NodeOptions,
   NodeType
 } from '@types';
-import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils/generateUUID';
+import {
+  generateAssetUUID,
+  generateDeterministicAddressUUID,
+  generateUUIDByIdAndName
+} from '@utils/generateUUID';
 import { chain, filter, map, mapObjIndexed, mergeRight, pipe, reduce } from '@vendor';
 
 import { NetworkConfig, NETWORKS_CONFIG, NODES_CONFIG } from './data';
@@ -47,7 +51,8 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
       baseAsset: baseAssetUuid, // Set baseAssetUuid
       baseUnit: n.unit,
       nodes: nodes.filter(({ type }) => type !== NodeType.WEB3),
-      selectedNode: n.selectedNode
+      selectedNode: n.selectedNode,
+      eip1191: n.eip1191
     };
   };
 
@@ -110,7 +115,7 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
 
 const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage) => {
   const formatFiat = ({ ticker, name }: Fiat): ExtendedAsset => ({
-    uuid: generateAssetUUID(ticker, name),
+    uuid: generateUUIDByIdAndName(ticker, name),
     name,
     ticker,
     networkId: 'OldWorld' as NetworkId,

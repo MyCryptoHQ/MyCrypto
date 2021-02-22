@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Copyable } from '@mycrypto/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 
 import { COLORS, monospace } from '@theme';
-import { truncate as truncateFunc } from '@utils';
+import { Network } from '@types';
+import { toChecksumAddress, truncate as truncateFunc } from '@utils';
 
 // Override styles of @mycrypto/ui in order to vertically align text and icon.
 // Ensure the icon uses the discrete color.
@@ -41,6 +41,7 @@ const Overrides = styled.div`
 
 interface Props extends SProps {
   address: string;
+  network: Network | number;
   truncate: boolean;
   isCopyable?: boolean;
   disableTooltip?: boolean;
@@ -48,6 +49,7 @@ interface Props extends SProps {
 
 function EthAddress({
   address,
+  network,
   isCopyable = true,
   truncate = false,
   inline = false,
@@ -56,7 +58,7 @@ function EthAddress({
   return (
     <Overrides inline={inline} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
       <Copyable
-        text={toChecksumAddress(address)}
+        text={toChecksumAddress(address, network)}
         isCopyable={isCopyable}
         truncate={truncate ? truncateFunc : undefined}
         disableTooltip={disableTooltip}

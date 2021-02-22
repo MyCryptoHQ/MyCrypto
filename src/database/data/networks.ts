@@ -376,7 +376,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 0.06
     },
     //unsupportedTabs: [TAB.ENS],
-    hideEquivalentValues: true
+    hideEquivalentValues: true,
+    eip1191: true
   },
 
   RSK_TESTNET: {
@@ -404,7 +405,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.06,
       max: 1.5,
       initial: 0.06
-    }
+    },
+    eip1191: true
     //unsupportedTabs: [TAB.ENS]
   },
 

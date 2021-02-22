@@ -38,7 +38,7 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           )}
         </RowAlignment>,
         <Label key={2}>
-          <Account title={record.ownerLabel} address={record.owner} truncate={true} />
+          <Account title={record.ownerLabel} address={record.owner} network={1} truncate={true} />
         </Label>,
         <RowAlignment key={3} align="left">
           {record.readableDomainName}

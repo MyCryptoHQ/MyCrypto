@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { TTicker, TUuid } from '@types';
+import { Network, TTicker, TUuid } from '@types';
 
 import Account from './Account';
 import Currency from './Currency';
@@ -12,6 +12,7 @@ interface StyleProps {
 }
 interface Props {
   address: string;
+  network: Network;
   uuid?: TUuid;
   balance?: string;
   assetTicker?: TTicker;
@@ -45,6 +46,7 @@ const SAccountWrapper = styled.div<StyleProps>`
 // Display an address with it's balance
 function AccountSummary({
   address,
+  network,
   balance,
   assetTicker,
   uuid,
@@ -54,7 +56,13 @@ function AccountSummary({
 }: Props & StyleProps) {
   return (
     <SAccountWrapper onPointerDown={onClick} paddingLeft={paddingLeft}>
-      <SAccount title={label} truncate={true} address={address} isCopyable={false} />
+      <SAccount
+        title={label}
+        truncate={true}
+        address={address}
+        network={network}
+        isCopyable={false}
+      />
       {balance && uuid && (
         <SCurrency
           amount={balance}

@@ -1,5 +1,4 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { toChecksumAddress } from 'ethereumjs-util';
 
 import {
   fAccounts,
@@ -12,6 +11,7 @@ import {
   fTxReceipt
 } from '@fixtures';
 import { ITxStatus, ITxType } from '@types';
+import { toChecksumAddress } from '@utils/checksum';
 
 import { fetchTxStatus, makeTx } from './helpers';
 

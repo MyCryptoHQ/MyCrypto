@@ -8,6 +8,7 @@ import EthAddress from '../EthAddress';
 
 const defaultProps: React.ComponentProps<typeof EthAddress> = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+  network: 1,
   truncate: true
 };
 

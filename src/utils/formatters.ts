@@ -1,6 +1,3 @@
-import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
-import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
-
 import { toTokenBase } from './units';
 
 export const buildEIP681EtherRequest = (
@@ -26,16 +23,4 @@ export const buildEIP681TokenRequest = (
 // space characters. it should be fairly easy to add new delimiters as required
 export function formatMnemonic(phrase: string) {
   return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm, ' ').trim();
-}
-
-// Checksumming split into two functions so it's shared by network selector
-function getChecksumAddressFunction(chainId: number) {
-  if (chainId === 30 || chainId === 31) {
-    return (addr: string) => toRSKChecksumAddress(addr, chainId);
-  }
-  return toETHChecksumAddress;
-}
-
-export function toChecksumAddressByChainId(address: string, chainId: number) {
-  return getChecksumAddressFunction(chainId)(address);
 }

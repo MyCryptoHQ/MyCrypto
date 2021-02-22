@@ -12,7 +12,7 @@ import {
   InputField,
   NetworkSelector
 } from '@components';
-import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
+import { getNetworkById, isValidAddress, isValidENSName, useNetworks } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import {
@@ -142,16 +142,6 @@ interface Props {
   handleDeleteContract(contractUuid: string): void;
 }
 
-const FormSchema = object().shape({
-  address: object({
-    value: string().test(
-      'check-eth-address',
-      translateRaw('TO_FIELD_ERROR'),
-      (value) => isValidETHAddress(value) || isValidENSName(value)
-    )
-  }).required(translateRaw('REQUIRED'))
-});
-
 type CombinedProps = RouteComponentProps & Props;
 
 function Interact(props: CombinedProps) {
@@ -179,6 +169,16 @@ function Interact(props: CombinedProps) {
     handleGasSelectorChange,
     handleDeleteContract
   } = props;
+
+  const FormSchema = object().shape({
+    address: object({
+      value: string().test(
+        'check-eth-address',
+        translateRaw('TO_FIELD_ERROR'),
+        (value) => isValidAddress(value, network) || isValidENSName(value)
+      )
+    }).required(translateRaw('REQUIRED'))
+  });
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [isResolvingName, setIsResolvingDomain] = useState(false);

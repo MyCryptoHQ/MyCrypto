@@ -1,8 +1,8 @@
-import { toChecksumAddress } from 'ethereumjs-util';
 import getUuid from 'uuid-by-string';
 import v4 from 'uuid/v4';
 
 import { NetworkId, TUuid } from '@types';
+import { toChecksumAddress } from '@utils/checksum';
 
 // This is a randomly-generated uuid (non-deterministic).
 export const generateUUID = (): TUuid => {
@@ -11,6 +11,9 @@ export const generateUUID = (): TUuid => {
 
 const generateUUIDByIdAndAddress = (id: string, address?: string) =>
   address ? (getUuid(`${id}-${toChecksumAddress(address)}`) as TUuid) : (getUuid(`${id}`) as TUuid);
+
+export const generateUUIDByIdAndName = (id: string, name?: string) =>
+  name ? (getUuid(`${id}-${name}`) as TUuid) : (getUuid(`${id}`) as TUuid);
 
 export const generateAssetUUID = (chainId: string | number, address?: string): TUuid =>
   generateUUIDByIdAndAddress(chainId.toString(), address);

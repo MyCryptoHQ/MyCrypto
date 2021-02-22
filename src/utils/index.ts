@@ -19,6 +19,7 @@ export { getFeaturedOS } from './getFeaturedOS';
 export {
   generateUUID,
   generateAssetUUID,
+  generateUUIDByIdAndName,
   generateDeterministicAddressUUID,
   getUUID
 } from './generateUUID';
@@ -50,12 +51,7 @@ export {
   createQueryParamsDefaultObject
 } from './queries';
 export { noOp } from './noOp';
-export {
-  formatMnemonic,
-  toChecksumAddressByChainId,
-  buildEIP681EtherRequest,
-  buildEIP681TokenRequest
-} from './formatters';
+export { formatMnemonic, buildEIP681EtherRequest, buildEIP681TokenRequest } from './formatters';
 export { makeBlob } from './blob';
 export { default as consoleAdvertisement } from './consoleAdvertisement';
 export {
@@ -138,3 +134,4 @@ export { mapAsync, filterAsync } from './asyncFilter';
 export { isValidJSON } from './isValidJSON';
 export { goBack } from './navigation';
 export { addHexPrefix } from './addHexPrefix';
+export * from './checksum';

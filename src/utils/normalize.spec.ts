@@ -1,4 +1,4 @@
-import { normalize } from '@utils';
+import { normalize } from '@utils/normalize';
 
 describe('normalize', () => {
   it('converts a domain name to a normalized Unicode', () => {

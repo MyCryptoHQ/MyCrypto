@@ -146,13 +146,23 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('X_SENDER')}:</div>
               <div className="TransactionDetails-row-column">
-                <EthAddress address={sender.address} truncate={true} disableTooltip={true} />
+                <EthAddress
+                  address={sender.address}
+                  network={sender.network}
+                  truncate={true}
+                  disableTooltip={true}
+                />
               </div>
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
               <div className="TransactionDetails-row-column">
-                <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+                <EthAddress
+                  address={recipient}
+                  network={sender.network}
+                  truncate={true}
+                  disableTooltip={true}
+                />
               </div>
             </div>
             <div className="TransactionDetails-row border">

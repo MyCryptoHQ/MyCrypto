@@ -530,7 +530,13 @@ const BuildAccountTable = (
             </WalletLabelContainer>
           </LabelWithWallet>
         </Label>,
-        <EthAddress key={index} address={account.address} truncate={true} isCopyable={copyable} />,
+        <EthAddress
+          key={index}
+          address={account.address}
+          network={account.network}
+          truncate={true}
+          isCopyable={copyable}
+        />,
         <Network key={index} color={account?.network?.color || COLORS.LIGHT_PURPLE}>
           {account.networkId}
         </Network>,

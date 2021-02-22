@@ -9,7 +9,7 @@ import {
   getGasEstimate,
   getNetworkById,
   getResolvedENSAddress,
-  isValidETHAddress,
+  isValidAddress,
   ProviderHandler,
   useAccounts,
   useContracts,
@@ -137,7 +137,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       debouncedResolveAddressFromDomain(value);
     }
 
-    if (isValidETHAddress(value)) {
+    if (isValidAddress(value, state.network)) {
       fetchABI(value);
     }
   };
@@ -203,7 +203,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_MISSING_DATA'));
     }
 
-    if (!isValidETHAddress(state.contractAddress)) {
+    if (!isValidAddress(state.contractAddress, state.network)) {
       throw new Error(translateRaw('INTERACT_ERROR_INVALID_ADDRESS'));
     }
 
@@ -240,7 +240,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         throw new Error(translateRaw('INTERACT_ERROR_NO_CONTRACT_SELECTED'));
       }
 
-      if (!isValidETHAddress(state.contractAddress)) {
+      if (!isValidAddress(state.contractAddress, state.network)) {
         throw new Error(translateRaw('INTERACT_ERROR_INVALID_ADDRESS'));
       }
 

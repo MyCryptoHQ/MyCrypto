@@ -41,7 +41,7 @@ import { getNonce, useRates } from '@services';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
   isBurnAddress,
-  isValidETHAddress,
+  isValidAddress,
   isValidPositiveNumber,
   TxFeeResponseType,
   validateTxFee
@@ -502,7 +502,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
       values.network &&
       values.asset &&
       values.address &&
-      isValidETHAddress(values.address.value) &&
+      isValidAddress(values.address.value, values.network) &&
       values.account &&
       isValidPositiveNumber(values.amount) &&
       (values.isAutoGasSet || forceEstimate)

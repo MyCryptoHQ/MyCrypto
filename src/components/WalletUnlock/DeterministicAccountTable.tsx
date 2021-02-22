@@ -342,7 +342,7 @@ const DeterministicTable = ({
                   />
                 </LabelContainer>
                 <AddressContainer>
-                  <EthAddress address={account.address} truncate={true} />
+                  <EthAddress address={account.address} network={network} truncate={true} />
                 </AddressContainer>
                 <DPathContainer>
                   <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>

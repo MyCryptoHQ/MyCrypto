@@ -11,7 +11,7 @@ import GeneralLookupField from '@components/GeneralLookupField';
 import { DEFAULT_NETWORK } from '@config/constants';
 import { useToasts } from '@features/Toasts';
 import { useContacts, useNetworks } from '@services';
-import { isValidETHAddress } from '@services/EthService';
+import { isValidAddress } from '@services/EthService';
 import { translateRaw } from '@translations';
 import { Contact, NetworkId } from '@types';
 
@@ -63,9 +63,10 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
     address: object()
-      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), (value) =>
-        isValidETHAddress(value.value)
-      )
+      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), function (value) {
+        // @todo: Check if this works, fix types
+        return isValidAddress(value, (this.options.context as any).network ?? 1);
+      })
       .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function (value) {
         const contact = getContactByAddress(value.value);
         if (contact !== undefined) {

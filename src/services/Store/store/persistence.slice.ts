@@ -45,13 +45,11 @@ export default slice;
  * Saga
  */
 export function* persistenceSaga() {
-  yield all([
-    yield takeLatest(REHYDRATE, handleRehydrateSuccess),
-  ]);
+  yield all([yield takeLatest(REHYDRATE, handleRehydrateSuccess)]);
 }
 
 function* handleRehydrateSuccess(action: IRehydrate) {
   if (action.key === APP_PERSIST_CONFIG.key) {
-    yield put(trackInit())
+    yield put(trackInit());
   }
 }

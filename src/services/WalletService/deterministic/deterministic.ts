@@ -1,8 +1,9 @@
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
+import { publicToAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 
-import { TAddress } from '@types';
+import { Network, TAddress } from '@types';
 import { TokenValue } from '@utils';
+import { toChecksumAddress } from '@utils/checksum';
 
 export class DeterministicWallet {
   protected address: string;
@@ -30,6 +31,7 @@ export interface GetDeterministicWalletsArgs {
   chainCode?: string;
   limit: number;
   offset: number;
+  network?: Network;
 }
 
 export interface DeterministicWalletData {
@@ -50,7 +52,7 @@ export interface ITokenValues {
 export const getDeterministicWallets = (
   args: GetDeterministicWalletsArgs
 ): DeterministicWalletData[] => {
-  const { seed, dPath, publicKey, chainCode, limit, offset } = args;
+  const { seed, dPath, publicKey, chainCode, limit, offset, network } = args;
   let pathBase;
   let hdk;
 
@@ -74,7 +76,7 @@ export const getDeterministicWallets = (
     const address = publicToAddress(dkey.publicKey, true).toString('hex');
     wallets.push({
       index,
-      address: toChecksumAddress(address) as TAddress
+      address: toChecksumAddress(address, network) as TAddress
     });
   }
   return wallets;

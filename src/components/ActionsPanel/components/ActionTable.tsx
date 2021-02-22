@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 import { Amount, EthAddress } from '@components';
 import { Text } from '@components/NewTypography';
+import { useSelector } from '@store';
+import { getNetwork } from '@store/network.slice';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { Asset, TAddress } from '@types';
+import { Asset, Network, TAddress } from '@types';
 import { bigNumValueToViewableEther } from '@utils';
 
 export interface ActionTableProps {
@@ -28,37 +30,46 @@ const AssetAmount = styled.div`
   flex-direction: row;
 `;
 
-export const ActionTable = ({ accounts, asset }: ActionTableProps) => (
-  <STable>
-    <thead>
-      <tr>
-        <Text variant="tableHeading" as="th">
-          {translateRaw('ADDRESS')}
-        </Text>
-        <Text variant="tableHeading" as="th">
-          {translateRaw('BALANCE')}
-        </Text>
-      </tr>
-    </thead>
-    <tbody>
-      {accounts.map((account, i) => {
-        return (
-          <tr key={i}>
-            <th>
-              <EthAddress address={account.address} isCopyable={true} truncate={true} />
-            </th>
-            <th>
-              <AssetAmount>
-                <Amount assetValue={bigNumValueToViewableEther(account.amount)} />
+export const ActionTable = ({ accounts, asset }: ActionTableProps) => {
+  const network = useSelector(getNetwork(asset.networkId)) as Network;
 
-                <Text m={0} ml={SPACING.XS} fontWeight="normal">
-                  {asset.ticker}
-                </Text>
-              </AssetAmount>
-            </th>
-          </tr>
-        );
-      })}
-    </tbody>
-  </STable>
-);
+  return (
+    <STable>
+      <thead>
+        <tr>
+          <Text variant="tableHeading" as="th">
+            {translateRaw('ADDRESS')}
+          </Text>
+          <Text variant="tableHeading" as="th">
+            {translateRaw('BALANCE')}
+          </Text>
+        </tr>
+      </thead>
+      <tbody>
+        {accounts.map((account, i) => {
+          return (
+            <tr key={i}>
+              <th>
+                <EthAddress
+                  address={account.address}
+                  network={network}
+                  isCopyable={true}
+                  truncate={true}
+                />
+              </th>
+              <th>
+                <AssetAmount>
+                  <Amount assetValue={bigNumValueToViewableEther(account.amount)} />
+
+                  <Text m={0} ml={SPACING.XS} fontWeight="normal">
+                    {asset.ticker}
+                  </Text>
+                </AssetAmount>
+              </th>
+            </tr>
+          );
+        })}
+      </tbody>
+    </STable>
+  );
+};

@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 
 import { Avatar, Identicon, scale } from '@mycrypto/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, FONT_SIZE } from '@theme';
 import { translateRaw } from '@translations';
+import { Network } from '@types';
 
 import EthAddress from './EthAddress';
 import Tooltip from './Tooltip';
@@ -64,6 +64,7 @@ interface TooltipType {
 
 interface Props {
   address: string;
+  network: Network | number;
   title?: JSX.Element | string;
   className?: string;
   isCopyable?: boolean;
@@ -75,6 +76,7 @@ interface Props {
 export default function Account({
   title = translateRaw('NO_LABEL'),
   address,
+  network,
   isCopyable = true,
   truncate,
   tooltip,
@@ -92,7 +94,8 @@ export default function Account({
         <>{TitleItem}</>
         <div>
           <Address
-            address={toChecksumAddress(address)}
+            address={address}
+            network={network}
             truncate={truncate}
             isCopyable={isCopyable}
           />

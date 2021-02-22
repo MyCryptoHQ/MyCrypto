@@ -174,6 +174,7 @@ export function SignTransactionWalletConnect({
                   inline={true}
                   isCopyable={false}
                   address={state.detectedAddress!}
+                  network={state.detectedChainId!}
                   truncate={true}
                 />{' '}
                 {translateRaw('SIGN_TX_WALLETCONNECT_SESSION_NETWORK')}{' '}

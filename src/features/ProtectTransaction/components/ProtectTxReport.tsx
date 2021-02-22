@@ -8,8 +8,11 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
 import { StepData } from '@components/VerticalStepper';
 import { ETHAddressExplorer } from '@config';
+import { useSelector } from '@store';
+import { getNetwork } from '@store/network.slice';
 import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 import { Trans, translateRaw } from '@translations';
+import { Network } from '@types';
 import { useScreenSize } from '@utils';
 
 import { ProtectTxContext } from '../ProtectTxProvider';
@@ -143,6 +146,7 @@ interface Props {
 
 export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
   const { isSmScreen } = useScreenSize();
+  const network = useSelector(getNetwork(report.asset.networkId)) as Network;
   const { address, labels } = report;
   const steps = getTimelineSteps(report);
 
@@ -152,7 +156,7 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
       <ProtectIconCheck size="lg" />
       <h4>{translateRaw('PROTECTED_TX_REPORT_TITLE')}</h4>
       <SEthAddress>
-        <EthAddress address={address} truncate={true} isCopyable={false} />
+        <EthAddress address={address} network={network} truncate={true} isCopyable={false} />
       </SEthAddress>
       {labels && <h5 className="subtitle">{translateRaw('PROTECTED_TX_REPORT_SUBTITLE')}</h5>}
       <div className="timeline">

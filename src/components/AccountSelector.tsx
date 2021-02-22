@@ -71,12 +71,13 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
       getOptionLabel={(option) => option.account.label}
       optionComponent={({ data, selectOption }: OptionProps<TOption>) => {
         const { account, asset: selectedAsset } = data;
-        const { address, label } = account;
+        const { address, network, label } = account;
         const { balance, assetUUID, assetTicker } = selectedAsset;
         return (
           <>
             <AccountSummary
               address={address}
+              network={network}
               balance={balance}
               uuid={assetUUID}
               assetTicker={assetTicker}
@@ -89,11 +90,12 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
         );
       }}
       valueComponent={({ value: { account: selectedAccount, asset: selectedAsset } }) => {
-        const { address, label } = selectedAccount;
+        const { address, network, label } = selectedAccount;
         const { balance, assetTicker, assetUUID } = selectedAsset;
         return (
           <AccountSummary
             address={address}
+            network={network}
             balance={balance}
             label={label}
             uuid={assetUUID}
