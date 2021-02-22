@@ -226,15 +226,28 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               address={receiverAddress || to}
             />
           ),
-          <Amount
-            key={3}
-            assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
-            }}
-          />,
+          <Box key={3}>
+            {isMobile ? (
+              <Amount
+                alignLeft={true}
+                assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
+                  amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
+                }}
+              />
+            ) : (
+              <Amount
+                assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
+                  amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
+                }}
+              />
+            )}
+          </Box>,
           <Box key={4} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
