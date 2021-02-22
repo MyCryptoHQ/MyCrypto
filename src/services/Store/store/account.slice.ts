@@ -78,9 +78,9 @@ export default slice;
  */
 export const getAccounts = createSelector([getAppState], (s) => {
   const accounts = s[slice.name];
-  return accounts.map((a) => ({
+  return accounts?.map((a) => ({
     ...a,
-    transactions: a.transactions.map((t) => ({
+    transactions: a.transactions?.map((t) => ({
       ...t,
       value: EthersBN.from(t.value),
       gasLimit: EthersBN.from(t.gasLimit),

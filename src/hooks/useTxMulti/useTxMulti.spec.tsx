@@ -1,7 +1,13 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper, waitFor } from 'test-utils';
+import {
+  actionWithPayload,
+  mockAppState,
+  mockUseDispatch,
+  ProvidersWrapper,
+  waitFor
+} from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
@@ -59,11 +65,10 @@ jest.mock('@vendor', () => ({
 
 const renderUseTxMulti = () => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ accounts: fAccounts })}>
       <DataContext.Provider
         value={
           ({
-            accounts: fAccounts,
             networks: fNetworks,
             assets: fAssets,
             settings: fSettings
