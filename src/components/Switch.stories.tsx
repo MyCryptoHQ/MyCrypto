@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 
-import { Switch } from './Switch';
+import { Switch as SwitchComponent } from './Switch';
 
-export default { title: 'Atoms/Switch', component: Switch };
+export default { title: 'Atoms/Switch', component: SwitchComponent };
 
-const defaultProps = {
+const Template: React.FC<React.ComponentProps<typeof SwitchComponent>> = (args) => {
+  const [state, setState] = useState(false);
+  const toggleState = () => setState(!state);
+  return <SwitchComponent onChange={toggleState} checked={state} {...args} />;
+};
+
+export const Switch = Template.bind({});
+Switch.args = {
   labelLeft: 'Off',
-  labelRight: 'On'
-};
-
-export const Colored = () => {
-  const [state, setState] = useState(false);
-  const toggleState = () => setState(!state);
-  return <Switch {...defaultProps} checked={state} onChange={toggleState} />;
-};
-
-export const Greyable = () => {
-  const [state, setState] = useState(false);
-  const toggleState = () => setState(!state);
-  return <Switch {...defaultProps} checked={state} onChange={toggleState} $greyable={true} />;
+  labelRight: 'On',
+  $greyable: false
 };
