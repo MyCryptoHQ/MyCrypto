@@ -7,11 +7,7 @@ export default {
   component: Web3ProviderInstallUI
 };
 
-const initialProps = {
-  isMobile: true
-};
-
-const Template = (args: typeof initialProps) => {
+const Template = (args: React.ComponentProps<typeof Web3ProviderInstallUI>) => {
   return (
     <div className="sb-container" style={{ maxWidth: '620px' }}>
       <Web3ProviderInstallUI {...args} />
