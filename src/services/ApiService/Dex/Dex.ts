@@ -1,11 +1,26 @@
+import { AddressZero } from '@ethersproject/constants';
 import axios, { AxiosInstance } from 'axios';
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 
-import { DEX_BASE_URL, DEXAG_MYC_HANDLER_CONTRACT, DEXAG_MYC_TRADE_CONTRACT } from '@config';
-import { ERC20 } from '@services/EthService';
-import { Bigish, ITxData, ITxObject, ITxType, ITxValue, TAddress, TTicker } from '@types';
-import { bigify } from '@utils';
+import {
+  DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK_CHAINID,
+  DEX_BASE_URL,
+  DEX_FEE_RECIPIENT,
+  DEX_TRADE_EXPIRATION,
+  MYC_DEX_COMMISSION_RATE
+} from '@config';
+import { formatApproveTx } from '@helpers';
+import {
+  ISwapAsset,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxObject,
+  ITxType,
+  ITxValue,
+  TAddress,
+  TTicker
+} from '@types';
+import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -24,10 +39,6 @@ export interface DexAsset {
 
 export default class DexService {
   public static instance = new DexService();
-  public static defaultParams = {
-    discluded: 'radar-relay',
-    dex: 'all'
-  };
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: DEX_BASE_URL
@@ -42,154 +53,111 @@ export default class DexService {
   }
 
   public getTokenList = async (): Promise<DexAsset[]> => {
-    const { data: tokenList }: { data: DexAsset[] } = await this.service.get('token-list-full');
+    const {
+      data: { records: tokenList }
+    }: { data: { records: DexAsset[] } } = await this.service.get('swap/v1/tokens');
     return tokenList;
   };
 
-  public getTokenPriceFrom = async (
-    from: TTicker,
-    to: TTicker,
+  public getOrderDetailsFrom = async (
+    account: string | null,
+    from: ISwapAsset,
+    to: ISwapAsset,
     fromAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
-    const { costBasis, tokenPrices: price } = await this.getTokenPrice(from, to, fromAmount);
-    return { costBasis: bigify(costBasis), price: bigify(price) };
-  };
+  ) => this.getOrderDetails(account, from, to, fromAmount);
 
-  public getTokenPriceTo = async (
-    from: TTicker,
-    to: TTicker,
+  public getOrderDetailsTo = async (
+    account: string | null,
+    from: ISwapAsset,
+    to: ISwapAsset,
     toAmount: string
-  ): Promise<{ costBasis: Bigish; price: Bigish }> => {
-    const { costBasis, tokenPrices: price } = await this.getTokenPrice(
-      from,
-      to,
-      undefined,
-      toAmount
-    );
-    return { costBasis: bigify(costBasis), price: bigify(price) };
-  };
-
-  public getOrderDetailsFrom = async (from: TTicker, to: TTicker, fromAmount: string) =>
-    this.getOrderDetails(from, to, fromAmount);
-
-  public getOrderDetailsTo = async (from: TTicker, to: TTicker, toAmount: string) =>
-    this.getOrderDetails(from, to, undefined, toAmount);
+  ) => this.getOrderDetails(account, from, to, undefined, toAmount);
 
   private getOrderDetails = async (
-    from: TTicker,
-    to: TTicker,
-    fromAmount?: string,
-    toAmount?: string
-  ): Promise<Partial<ITxObject & { type: ITxType }>[]> => {
-    const params = {
-      ...DexService.defaultParams,
-      from,
-      to,
-      fromAmount,
-      toAmount,
-      dex: 'ag',
-      proxy: DEXAG_MYC_TRADE_CONTRACT
-    };
-    const { data }: { data: DexTrade } = await this.service.get('trade', {
-      params
-    });
-    const isMultiTx = !!(data.metadata && data.metadata.input);
-
-    return [
-      // Include the Approve transaction when necessary.
-      // ie. any trade that is not an ETH/Token
-      ...(isMultiTx
-        ? [
-            formatApproveTx({
-              to: data.metadata.input.address,
-              value: data.metadata.input.amount as ITxValue
-            })
-          ]
-        : []),
-      formatTradeTx({
-        to: data.trade.to,
-        data: data.trade.data,
-        value: data.trade.value
-      })
-    ];
-  };
-
-  private getTokenPrice = async (
-    from: TTicker,
-    to: TTicker,
-    fromAmount?: string,
-    toAmount?: string
+    account: string | null,
+    sellToken: ISwapAsset,
+    buyToken: ISwapAsset,
+    sellAmount?: string,
+    buyAmount?: string
   ) => {
-    try {
-      if (cancel) {
-        cancel();
-      }
-
-      const params = {
-        ...DexService.defaultParams,
-        from,
-        to,
-        fromAmount,
-        toAmount
-      };
-      const { data: costBasis } = await this.service.get('price', {
-        params: {
-          ...params,
-          toAmount: toAmount ? '0.01' : undefined,
-          fromAmount: fromAmount ? '0.01' : undefined
-        },
-        cancelToken: new CancelToken(function executor(c) {
-          // An executor function receives a cancel function as a parameter
-          cancel = c;
-        })
-      });
-      const { data: tokenPrices } = await this.service.get('price', {
-        params,
-        cancelToken: new CancelToken(function executor(c) {
-          // An executor function receives a cancel function as a parameter
-          cancel = c;
-        })
-      });
-
-      return { costBasis: costBasis[0].price, tokenPrices: tokenPrices[0].price };
-    } catch (e) {
-      if (axios.isCancel(e)) {
-        e.isCancel = true;
-      }
-      throw e;
+    if (cancel) {
+      cancel();
     }
+
+    const { data }: { data: DexTrade } = await this.service.get('swap/v1/quote', {
+      params: {
+        sellToken: sellToken.ticker,
+        buyToken: buyToken.ticker,
+        buyAmount: buyAmount
+          ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+          : undefined,
+        sellAmount: sellAmount
+          ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+          : undefined,
+        feeRecipient: DEX_FEE_RECIPIENT,
+        buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
+        takerAddress: account ? account : undefined
+      },
+      cancelToken: new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        cancel = c;
+      })
+    });
+
+    const approvalTx =
+      data.allowanceTarget !== AddressZero
+        ? {
+            ...formatApproveTx({
+              contractAddress: data.sellTokenAddress,
+              spenderAddress: data.allowanceTarget,
+              hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+              baseTokenAmount: bigify(data.sellAmount),
+              chainId: DEFAULT_NETWORK_CHAINID
+            }),
+            type: ITxType.APPROVAL
+          }
+        : undefined;
+
+    const tradeGasLimit = addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit;
+
+    return {
+      price: bigify(data.price),
+      buyAmount: bigify(
+        baseToConvertedUnit(data.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)
+      ),
+      sellAmount: bigify(
+        baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
+      ),
+      gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+      // @todo: Better way to calculate expiration? This is what matcha.xyz does
+      expiration: Date.now() / 1000 + DEX_TRADE_EXPIRATION,
+      approvalTx,
+      tradeGasLimit,
+      tradeTx: formatTradeTx({
+        to: data.to,
+        data: data.data,
+        gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        gasLimit: tradeGasLimit,
+        value: data.value
+      })
+    };
   };
 }
-
-// Create a transaction that approves the MYC_HANDLER_CONTRACT in order for the TRADE_CONTRACT
-// to execute. Example: https://docs.dex.ag/api/using-the-api-with-node.js
-export const formatApproveTx = ({
-  to,
-  value
-}: Partial<ITxObject>): Partial<ITxObject & { type: ITxType }> => {
-  // [spender, amount]. Spender is the contract the user needs to authorize.
-  // It's value is also available in the API response obj `data.metadata.input.spender`
-  const data = ERC20.approve.encodeInput({ _spender: DEXAG_MYC_HANDLER_CONTRACT, _value: value });
-
-  return {
-    to,
-    data: data as ITxData,
-    chainId: 1,
-    value: addHexPrefix(new BN('0').toString()) as ITxValue,
-    type: ITxType.APPROVAL
-  };
-};
 
 export const formatTradeTx = ({
   to,
   data,
-  value
-}: Partial<ITxObject>): Partial<ITxObject & { type: ITxType }> => {
+  value,
+  gasPrice,
+  gasLimit
+}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'gasLimit'>) => {
   return {
     to,
     data,
-    value: addHexPrefix(new BN(value || '0').toString(16)) as ITxValue,
-    chainId: 1,
+    value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
+    chainId: DEFAULT_NETWORK_CHAINID,
+    gasPrice,
+    gasLimit,
     type: ITxType.SWAP
   };
 };

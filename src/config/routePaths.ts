@@ -95,7 +95,7 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: translateRaw('SWAP_ROUTE_TITLE'),
+    title: translateRaw('SWAP'),
     path: '/swap'
   },
   {

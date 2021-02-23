@@ -7,7 +7,7 @@ export type TTicker = Brand<string, 'Ticker'>;
 export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;
 export type TCurrencySymbol = Brand<string, 'Symbol'>;
 export type TAssetType = 'base' | 'erc20' | 'fiat';
-export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid'>;
+export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid' | 'decimal'>;
 
 export interface Fiat {
   name: string;

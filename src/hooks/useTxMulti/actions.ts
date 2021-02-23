@@ -2,8 +2,8 @@ import { Dispatch } from 'react';
 
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 
-import { appendGasLimit, appendNonce } from '@helpers';
-import { ERC20, ProviderHandler } from '@services';
+import { appendGasLimit, appendNonce, checkRequiresApproval } from '@helpers';
+import { ProviderHandler } from '@services';
 import {
   ITxHash,
   ITxObject,
@@ -13,7 +13,7 @@ import {
   StoreAccount,
   TStateGetter
 } from '@types';
-import { bigify, isTxHash, isTxSigned, isWeb3Wallet } from '@utils';
+import { isTxHash, isTxSigned, isWeb3Wallet } from '@utils';
 import { filterAsync } from '@utils/asyncFilter';
 
 import { ActionTypes, TxMultiAction, TxMultiState } from './types';
@@ -40,11 +40,7 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
     const filteredTxs = await filterAsync(txs, async (tx) => {
       if (network && tx.type === ITxType.APPROVAL && tx.from) {
         try {
-          const { _spender, _value } = ERC20.approve.decodeInput(tx.data);
-          const provider = new ProviderHandler(network);
-          const allowance = await provider.getTokenAllowance(tx.to, tx.from, _spender);
-          // If allowance is less than the value being sent, the approval is needed
-          return bigify(allowance).lt(bigify(_value));
+          return checkRequiresApproval(network, tx.to, tx.from, tx.data);
         } catch (err) {
           console.error(err);
         }

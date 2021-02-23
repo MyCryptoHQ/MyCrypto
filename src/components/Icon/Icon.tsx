@@ -90,6 +90,7 @@ import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import antLogo from '@assets/images/ant-logo.png';
 import arrowRight from '@assets/images/arrow-right.svg';
+import zeroxLogo from '@assets/images/credits/credits-0x.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
@@ -178,6 +179,7 @@ const svgIcons = {
   coinGeckoLogo,
   zapperLogo,
   'rep-logo': repLogo,
+  zeroxLogo,
 
   /* Social Icons */
   coinmarketcap,

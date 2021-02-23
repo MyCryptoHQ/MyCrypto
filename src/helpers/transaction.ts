@@ -13,7 +13,7 @@ import { Optional } from 'utility-types';
 
 import { CREATION_ADDRESS } from '@config';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
-import { decodeTransfer, getNonce } from '@services/EthService';
+import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthService';
 import { decodeApproval } from '@services/EthService/contracts/token';
 import {
   getAssetByContractAndNetwork,
@@ -394,6 +394,10 @@ export const appendSender = (senderAddress: ITxFromAddress) => (
 export const appendGasPrice = (network: Network) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
+  // Respect gas price if present
+  if (tx.gasPrice) {
+    return tx as TxBeforeGasLimit;
+  }
   const gasPrice = await fetchGasPriceEstimates(network)
     .then(({ fast }) => fast.toString())
     .then(inputGasPriceToHex)
@@ -464,4 +468,17 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   } catch (e) {
     return false;
   }
+};
+
+export const checkRequiresApproval = async (
+  network: Network,
+  token: string,
+  owner: string,
+  data: string
+) => {
+  const provider = new ProviderHandler(network);
+  const { _spender, _value } = ERC20.approve.decodeInput(data);
+  const allowance = await provider.getTokenAllowance(token, owner, _spender);
+  // If allowance is less than the value being sent, the approval is needed
+  return bigify(allowance).lt(bigify(_value));
 };

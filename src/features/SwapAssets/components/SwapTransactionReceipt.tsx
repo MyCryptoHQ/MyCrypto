@@ -69,6 +69,7 @@ export default function SwapTransactionReceipt({
 
   return txReceipts.length === 1 ? (
     <TxReceipt
+      disableDynamicTxReceiptDisplay={true}
       txReceipt={txItems[0].txReceipt}
       txConfig={txItems[0].txConfig}
       completeButton={translateRaw('SWAP_START_ANOTHER')}

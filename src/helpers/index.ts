@@ -19,7 +19,8 @@ export {
   ERCType,
   makeTxItem,
   verifyTransaction,
-  deriveTxFields
+  deriveTxFields,
+  checkRequiresApproval
 } from './transaction';
 export { formatApproveTx } from './erc20';
 export { withProtectTxProvider } from './withProtectTxProvider';
