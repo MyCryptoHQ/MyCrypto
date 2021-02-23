@@ -96,7 +96,7 @@
         "jest/expect-expect": [
           "error",
           {
-            "assertFunctionNames": ["expect", "expectSaga", "testSaga"]
+            "assertFunctionNames": ["expect", "expectSaga", "testSaga", "expectToThrow"]
           }
         ]
       },
