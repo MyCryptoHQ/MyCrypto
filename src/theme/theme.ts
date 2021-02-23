@@ -112,6 +112,9 @@ const TEXT_VARIANTS = {
     marginTop: '5px',
     textAlign: 'center',
     textTransform: 'uppercase'
+  },
+  discrete: {
+    color: 'BLUE_GREY'
   }
 };
 

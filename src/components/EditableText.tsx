@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import editIcon from '@assets/images/icn-edit.svg';
-import { Typography } from '@components';
 import { COLORS, SPACING } from '@theme';
+import { isVoid } from '@utils';
 
 import Box from './Box';
+import { Text } from './NewTypography';
 
 const EditIcon = styled.img`
   display: inline-flex;
   align-self: flex-start;
   cursor: pointer;
-  margin: ${SPACING.XS} ${SPACING.SM};
+  margin: ${SPACING.XS};
   opacity: 1;
   height: 0.9em;
   &:hover {
@@ -30,9 +31,9 @@ const SInputField = styled.input`
   padding: ${SPACING.XS};
 `;
 
-const STypography = styled(Typography)`
-  border-color: transparent;
-  line-height: 1.4;
+const SText = styled(Text)<React.ComponentProps<typeof Text>>`
+  /* Create space for hover border to avoid screen jump */
+  border-bottom: 1px transparent solid;
   &:hover {
     border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
     cursor: pointer;
@@ -41,16 +42,16 @@ const STypography = styled(Typography)`
 
 export interface Props {
   value: string;
-  bold?: boolean;
+  placeholder?: string;
   truncate?: boolean;
-  saveValue(value: string): void;
+  onChange(value: string): void;
 }
 
 function EditableText({
-  saveValue,
+  onChange,
   value,
-  bold,
   truncate,
+  placeholder,
   ...props
 }: Props & React.ComponentProps<typeof Box>) {
   const [editMode, setEditMode] = useState(false);
@@ -79,14 +80,17 @@ function EditableText({
   };
 
   const save = () => {
-    saveValue(editValue);
+    onChange(editValue);
     setEditMode(false);
   };
+
+  const hasValue = !isVoid(value);
 
   return (
     <Box variant="rowAlign" height="100%" {...props}>
       {editMode ? (
         <SInputField
+          placeholder={placeholder}
           autoFocus={true}
           value={editValue}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
@@ -96,9 +100,15 @@ function EditableText({
         />
       ) : (
         <>
-          <STypography bold={bold} truncate={truncate} inheritFontWeight={true} onClick={edit}>
-            {value}
-          </STypography>
+          <SText
+            forwardedAs="span"
+            isDiscrete={!hasValue}
+            onClick={edit}
+            $truncate={truncate}
+            $value={value}
+          >
+            {hasValue ? value : placeholder}
+          </SText>
           <EditIcon onClick={edit} src={editIcon} />
         </>
       )}
