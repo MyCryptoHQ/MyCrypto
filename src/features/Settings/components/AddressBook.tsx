@@ -24,6 +24,7 @@ import { useNetworks } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TUuid } from '@types';
+import { useScreenSize } from '@utils';
 
 interface Props {
   contacts: ExtendedContact[];
@@ -125,6 +126,7 @@ export default function AddressBook({
   updateContact,
   restoreDeletedContact
 }: Props) {
+  const { isMobile } = useScreenSize();
   const { getNetworkById } = useNetworks();
   const [sortingState, setSortingState] = useState(initialSortingState);
   const [deletingIndex, setDeletingIndex] = useState<number>();
@@ -264,7 +266,17 @@ export default function AddressBook({
             value={notes}
             onChange={(value) => updateContact({ address, label, network, notes: value, uuid })}
           />,
-          <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
+          <>
+            {isMobile ? (
+              <Box key={index}>
+                <LinkApp href="#" onClick={() => setDeletingIndex(index)}>
+                  {translateRaw('ADDRESSBOOK_REMOVE')}
+                </LinkApp>
+              </Box>
+            ) : (
+              <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
+            )}
+          </>
           /* eslint-enable react/jsx-key */
         ];
       }
