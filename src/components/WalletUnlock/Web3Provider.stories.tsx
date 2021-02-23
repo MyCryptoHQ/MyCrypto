@@ -6,7 +6,7 @@ import { noOp } from '@utils';
 
 import { Web3UnlockUI, Web3UnlockUIProps } from './Web3Provider';
 
-export default { title: 'WalletUnlock/Web3Unlock' };
+export default { title: 'Features/AddAccount/Web3Unlock', components: Web3UnlockUI };
 
 const initialProps: Web3UnlockUIProps = {
   isDefault: false,

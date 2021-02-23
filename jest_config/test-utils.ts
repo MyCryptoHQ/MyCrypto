@@ -73,3 +73,24 @@ export function mockAppState(sliceState?: Partial<DataStore>): AppState {
     } as unknown) as AppState;
   }
 }
+
+/**
+ * Remove console.error when we expect toThrow.
+ * Helps prevent error logs blowing up as a result of expecting an error to be thrown,
+ * when using a library (such as enzyme)
+ * https://github.com/facebook/jest/issues/5785#issuecomment-769475904
+ *
+ * @param func Function that you would normally pass to `expect(func).toThrow()`
+ */
+export const expectToThrow = (func: () => unknown, error?: JestToErrorArg): void => {
+  // Even though the error is caught, it still gets printed to the console
+  // so we mock that out to avoid the wall of red text.
+  const spy = jest.spyOn(console, 'error');
+  spy.mockImplementation(noOp);
+
+  expect(func).toThrow(error);
+
+  spy.mockRestore();
+};
+
+type JestToErrorArg = Parameters<jest.Matchers<unknown, () => unknown>['toThrow']>[0];

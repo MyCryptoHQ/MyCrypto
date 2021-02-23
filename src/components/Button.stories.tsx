@@ -1,11 +1,13 @@
 import React from 'react';
 
-import Button from './Button';
+import ButtonComponent from './Button';
 
-export default { title: 'Button' };
+export default { title: 'Atoms/Button', component: ButtonComponent };
 
-export const defaultState = () => <Button>Activate</Button>;
-
-export const disabled = () => <Button disabled={true}>Disabled</Button>;
-
-export const loading = () => <Button loading={true}>Loading</Button>;
+const Template: React.FC = (args: React.ComponentProps<typeof Button>) => (
+  <ButtonComponent {...args} />
+);
+export const Button = Template.bind({});
+Button.args = {
+  children: 'Button'
+};

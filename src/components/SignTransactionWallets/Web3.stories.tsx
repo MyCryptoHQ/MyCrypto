@@ -6,7 +6,7 @@ import { WalletId } from '@types';
 
 import { SignTransactionWeb3UI, UIProps, WalletSigningState } from './Web3';
 
-export default { title: 'SignTransaction/Web3' };
+export default { title: 'Features/SignTransaction/Web3', components: SignTransactionWeb3UI };
 
 const initialProps: UIProps = {
   walletConfig: WALLETS_CONFIG[WalletId.METAMASK],

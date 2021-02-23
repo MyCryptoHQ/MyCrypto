@@ -5,7 +5,7 @@ import { fAssets } from '@fixtures';
 import { noOp } from '../utils';
 import AmountInput from './AmountInput';
 
-export default { title: 'AmountInput' };
+export default { title: 'Molecules/AmountInput', component: AmountInput };
 
 const asset = fAssets[0]; // Ether
 

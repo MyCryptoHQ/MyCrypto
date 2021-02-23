@@ -28,7 +28,7 @@ const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 const onComplete = noOp;
 
-export default { title: 'ConfirmTx' };
+export default { title: 'Features/ConfirmTx', components: ConfirmTransactionUI };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>

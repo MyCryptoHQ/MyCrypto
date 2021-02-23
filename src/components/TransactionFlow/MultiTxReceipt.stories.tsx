@@ -38,7 +38,7 @@ const wrapInProvider = (component: ReactNode) => (
   </DataContext.Provider>
 );
 
-export default { title: 'MultiTxReceipt' };
+export default { title: 'Features/MultiTxReceipt', components: MultiTxReceipt };
 
 export const swapTransactionReceipt = wrapInProvider(
   <div className="sb-container" style={{ maxWidth: '620px' }}>

@@ -7,9 +7,9 @@ import { trackEvent } from './saga';
 // Prefer middleware to track events throughout the app.
 // ie. https://medium.com/@mwq27/using-redux-middleware-for-simpler-analytics-and-event-tracking-aa22cd996407
 // Since this the dispatch is tested it is removed from codecov stats:
-const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) => (next) => (
-  action
-) => {
+export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) => (
+  next
+) => (action) => {
   switch (action.type) {
     case addAccounts.type: {
       state.dispatch(
@@ -54,5 +54,3 @@ const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (state) 
   }
   return next(action);
 };
-
-export default analyticsMiddleware;

@@ -1,7 +1,9 @@
 import { useFeatureFlags } from '@services';
-import { PageParams, trackEvent, trackPage, TrackParams } from '@services/Analytics';
 import { useDispatch } from '@store';
 import { noOp } from '@utils';
+
+import { PageParams, TrackParams } from './Analytics';
+import { trackEvent, trackPage } from './saga';
 
 const useAnalytics = () => {
   const dispatch = useDispatch();

@@ -7,7 +7,7 @@ import { noOp } from '@utils';
 
 import { WalletButton } from './WalletButton';
 
-export default { title: 'WalletButton' };
+export default { title: 'Molecules/WalletButton', components: WalletButton };
 
 const walletInfo = getWalletConfig(WalletId.WEB3);
 

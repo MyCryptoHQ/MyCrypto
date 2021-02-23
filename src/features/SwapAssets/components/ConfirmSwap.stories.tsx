@@ -10,7 +10,7 @@ import { bigify, noOp } from '@utils';
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwap from './ConfirmSwap';
 
-export default { title: 'ConfirmSwap' };
+export default { title: 'Features/ConfirmSwap', component: ConfirmSwap };
 
 const wrapInProvider = (component: ReactNode) => (
   <DataContext.Provider

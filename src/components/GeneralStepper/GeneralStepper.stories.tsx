@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { MemoryRouter, Route, Switch } from 'react-router-dom';
-
-import { GeneralStepper, StepperProps } from './GeneralStepper';
+import { GeneralStepper as GeneralStepperComponent, StepperProps } from './GeneralStepper';
 
 const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => (
   <>
@@ -26,7 +24,15 @@ const functionTest = (_: string, cb: any) => {
   cb();
 };
 
-const props: StepperProps = {
+export default {
+  title: 'Molecules/GeneralStepper',
+  component: GeneralStepperComponent
+};
+
+const Template = (args: StepperProps) => <GeneralStepperComponent {...args} />;
+
+export const GeneralStepper = Template.bind({});
+GeneralStepper.args = {
   steps: [
     {
       label: 'Test Component 1',
@@ -44,17 +50,3 @@ const props: StepperProps = {
   defaultBackPathLabel: 'Dashboard',
   completeBtnText: 'Finished'
 };
-
-const renderComponent = (storyFn: any) => (
-  <MemoryRouter>
-    <Switch>
-      <Route path="*">{storyFn()} </Route>
-    </Switch>
-  </MemoryRouter>
-);
-
-export default {
-  title: 'GeneralStepper'
-};
-
-export const DefaultState = renderComponent(() => <GeneralStepper {...props} />);

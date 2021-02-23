@@ -15,7 +15,7 @@ import {
 } from './components';
 import { CloseButton, MainPanel } from './NotificationsPanel';
 
-export default { title: 'Notifications' };
+export default { title: 'Molecules/Notifications', component: MainPanel };
 
 const NotificationPanel: FC = ({ children }) => (
   <div style={{ width: '100%', maxWidth: '1200px' }}>

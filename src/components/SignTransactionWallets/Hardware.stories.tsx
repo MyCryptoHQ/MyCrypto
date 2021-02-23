@@ -7,7 +7,7 @@ import { BusyBottomConfig, WalletId } from '@types';
 
 import { SignTxHardwareUI } from './Hardware';
 
-export default { title: 'SignTransaction' };
+export default { title: 'Features/SignTransaction/Hardware', component: SignTxHardwareUI };
 
 const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
   walletIconType: 'ledger-icon-lg',

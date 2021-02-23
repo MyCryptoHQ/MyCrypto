@@ -5,7 +5,7 @@ import { COLORS } from '@theme';
 
 import VerticalStepper from './VerticalStepper';
 
-export default { title: 'VerticalStepper' };
+export default { title: 'Organisms/VerticalStepper', component: VerticalStepper };
 
 export const defaultState = () => (
   <VerticalStepper

@@ -39,7 +39,7 @@ const resetFlow = noOp;
 const handleTxCancelRedirect = noOp;
 const handleTxSpeedUpRedirect = noOp;
 
-export default { title: 'TxReceipt' };
+export default { title: 'Features/TxReceipt', components: TxReceiptUI };
 
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
@@ -248,24 +248,24 @@ export const transactionReceiptFaucet = wrapInProvider(
 
 // Uncomment this for Figma support:
 
-(transactionReceipt as any).story = {
-  name: 'TransactionReceipt-Standard',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A116927'
-    }
-  }
-};
+// (transactionReceipt as any).story = {
+//   name: 'TransactionReceipt-Standard',
+//   parameters: {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A116927'
+//     }
+//   }
+// };
 
-(transactionReceiptDeFiZap as any).story = {
-  name: 'TransactionReceipt-DeFiZap',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A117793'
-    }
-  }
-};
+// (transactionReceiptDeFiZap as any).story = {
+//   name: 'TransactionReceipt-DeFiZap',
+//   parameters: {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=8544%3A117793'
+//     }
+//   }
+// };

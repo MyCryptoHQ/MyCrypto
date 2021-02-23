@@ -23,7 +23,7 @@ const ProtectTransactionButtonProtected = () => (
   </div>
 );
 
-storiesOf('ProtectTransaction', module)
+storiesOf('Features/ProtectTransaction/Button', module)
   .add('Protect transaction button', () => ProtectTransactionButton(), {
     design: {
       type: 'figma',

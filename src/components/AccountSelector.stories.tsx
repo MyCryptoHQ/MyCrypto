@@ -6,7 +6,7 @@ import { noOp } from '@utils';
 import AccountSelector from './AccountSelector';
 import AccountSummary from './AccountSummary';
 
-export default { title: 'Selectors/AccountSelector' };
+export default { title: 'Molecules/Selectors/AccountSelector', component: AccountSelector };
 
 const initialProps: React.ComponentProps<typeof AccountSelector> = {
   accounts: fAccounts,

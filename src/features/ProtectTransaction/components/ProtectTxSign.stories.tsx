@@ -45,7 +45,7 @@ const ProtectTxStep2 = () => (
   </div>
 );
 
-storiesOf('ProtectTransaction', module)
+storiesOf('Features/ProtectTransaction', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
   .add('Step 2', () => ProtectTxStep2(), {
     design: {
