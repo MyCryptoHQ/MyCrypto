@@ -2,26 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import editIcon from '@assets/images/icn-edit.svg';
 import { COLORS, SPACING } from '@theme';
 import { isVoid } from '@utils';
 
 import Box from './Box';
+import Icon from './Icon';
 import { Text } from './NewTypography';
-
-const EditIcon = styled.img`
-  display: inline-flex;
-  align-self: flex-start;
-  cursor: pointer;
-  margin: ${SPACING.XS};
-  opacity: 1;
-  height: 0.9em;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
 
 const SInputField = styled.input`
   border-radius: 6px;
@@ -34,9 +20,23 @@ const SInputField = styled.input`
 const SText = styled(Text)<React.ComponentProps<typeof Text>>`
   /* Create space for hover border to avoid screen jump */
   border-bottom: 1px transparent solid;
+`;
+
+const SIcon = styled(Icon)`
+  margin: ${SPACING.XS};
+`;
+
+const SBox = styled(Box)`
+  cursor: pointer;
   &:hover {
-    border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
-    cursor: pointer;
+    ${SText} {
+      border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
+    }
+    ${SIcon} {
+      transition: 200ms ease all;
+      transform: scale(1.02);
+      opacity: 0.7;
+    }
   }
 `;
 
@@ -87,7 +87,7 @@ function EditableText({
   const hasValue = !isVoid(value);
 
   return (
-    <Box variant="rowAlign" height="100%" {...props}>
+    <SBox variant="rowAlign" height="100%" {...props}>
       {editMode ? (
         <SInputField
           placeholder={placeholder}
@@ -109,10 +109,10 @@ function EditableText({
           >
             {hasValue ? value : placeholder}
           </SText>
-          <EditIcon onClick={edit} src={editIcon} />
+          <SIcon type="edit" onClick={edit} height="0.8em" />
         </>
       )}
-    </Box>
+    </SBox>
   );
 }
 
