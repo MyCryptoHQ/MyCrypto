@@ -8,7 +8,7 @@ import { Box, Button, ContactLookupField, Heading } from '@components';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ErrorObject, FormData, IReceiverAddress, TAddress, WalletId } from '@types';
 import { isFormValid, toChecksumAddressByChainId } from '@utils';
 
@@ -18,6 +18,13 @@ const FormWrapper = styled(Form)`
 
 const ButtonWrapper = styled(Button)`
   margin-top: 4em;
+`;
+
+const Disclaimer = styled.p`
+  line-height: 24px;
+  padding-top: 16px;
+  text-align: center;
+  font-size: 18px;
 `;
 
 interface Props {
@@ -57,6 +64,7 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
+      <Disclaimer>{translate('VIEW_ONLY_ADDR_DISCLAIMER')}</Disclaimer>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>
