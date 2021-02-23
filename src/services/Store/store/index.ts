@@ -40,7 +40,8 @@ export {
   updateAssets,
   addAssetsFromAPI,
   fetchAssets,
-  getAssets
+  getAssets,
+  getBaseAssetByNetwork
 } from './asset.slice';
 export {
   fetchMemberships,

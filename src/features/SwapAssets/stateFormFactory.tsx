@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-import { DEFAULT_NETWORK, DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
+import { DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
-import { DexAsset, DexService, getGasEstimate, getNetworkById, useNetworks } from '@services';
+import { DexAsset, DexService, getGasEstimate } from '@services';
+import { getDefaultNetwork, useSelector } from '@store';
 import translate from '@translations';
-import { ISwapAsset, ITxGasLimit, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, Network, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
@@ -33,8 +34,7 @@ const swapFormInitialState = {
 };
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const { networks } = useNetworks();
-  const network = getNetworkById(DEFAULT_NETWORK, networks);
+  const network = useSelector(getDefaultNetwork) as Network;
 
   const fetchSwapAssets = async () => {
     try {

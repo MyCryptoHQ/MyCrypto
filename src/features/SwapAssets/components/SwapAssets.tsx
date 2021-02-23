@@ -16,11 +16,17 @@ import {
   Tooltip
 } from '@components';
 import { useRates } from '@services/Rates';
-import { getBaseAssetByNetwork, StoreContext } from '@services/Store';
-import { AppState, getAssets, getDefaultNetwork, getIsDemoMode, getSettings } from '@store';
+import { StoreContext } from '@services/Store';
+import {
+  AppState,
+  getBaseAssetByNetwork,
+  getDefaultNetwork,
+  getIsDemoMode,
+  getSettings
+} from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ISwapAsset, Network, StoreAccount } from '@types';
+import { Asset, ExtendedAsset, ISwapAsset, Network, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
@@ -83,16 +89,14 @@ const SwapAssets = (props: Props) => {
     isEstimatingGas,
     expiration,
     isDemoMode,
-    allAssets,
-    settings,
-    network
+    baseAsset,
+    settings
   } = props;
 
   const [isExpired, setIsExpired] = useState(false);
   const { accounts, userAssets } = useContext(StoreContext);
   const { getAssetRate } = useRates();
 
-  const baseAsset = getBaseAssetByNetwork({ network, assets: allAssets })!;
   const baseAssetRate = getAssetRate(baseAsset);
   const fromAssetRate = fromAsset && getAssetRate(fromAsset as Asset);
 
@@ -316,12 +320,15 @@ const SwapAssets = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state),
-  allAssets: getAssets(state),
-  settings: getSettings(state),
-  network: getDefaultNetwork(state) as Network
-});
+const mapStateToProps = (state: AppState) => {
+  const network = getDefaultNetwork(state) as Network;
+
+  return {
+    isDemoMode: getIsDemoMode(state),
+    baseAsset: getBaseAssetByNetwork(network)(state) as ExtendedAsset,
+    settings: getSettings(state)
+  };
+};
 
 const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector> & ISwapProps;
