@@ -55,7 +55,7 @@
     "idempotent-babel-polyfill": "7.4.4",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "papaparse": "5.2.0",
     "post-message-stream": "3.0.0",
     "qrcode": "1.4.4",
