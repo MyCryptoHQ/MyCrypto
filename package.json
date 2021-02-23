@@ -11,7 +11,6 @@
     "yarn": ">= 1.19.1"
   },
   "dependencies": {
-    "@babel/plugin-proposal-private-methods": "7.12.13",
     "@blockstack/stats": "0.7.0",
     "@ethersproject/abstract-provider": "5.0.9",
     "@ethersproject/address": "5.0.10",
@@ -99,8 +98,6 @@
     "@babel/core": "7.12.16",
     "@babel/plugin-proposal-class-properties": "7.12.13",
     "@babel/plugin-proposal-object-rest-spread": "7.12.13",
-    "@babel/plugin-proposal-private-methods": "7.12.13",
-    "@babel/plugin-proposal-private-property-in-object": "7.12.13",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
     "@babel/plugin-transform-modules-commonjs": "7.12.13",
     "@babel/preset-env": "7.12.16",
