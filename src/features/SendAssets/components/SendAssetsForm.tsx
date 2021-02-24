@@ -128,7 +128,7 @@ const getTxFeeValidation = ({
       return (
         <InlineMessage
           type={InlineMessageType.WARNING}
-          value={translateRaw('WARNING_TRANSACTION_FEE', {
+          value={translate('WARNING_TRANSACTION_FEE', {
             $amount: `${fiat.symbol}${amount}`,
             $fee: `${fiat.symbol}${fee}`
           })}
@@ -145,14 +145,14 @@ const getTxFeeValidation = ({
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${fee}` })}
+          value={translate('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${fee}` })}
         />
       );
     case 'Error-Very-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
+          value={translate('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
             $fee: `${fiat.symbol}${fee}`
           })}
         />
