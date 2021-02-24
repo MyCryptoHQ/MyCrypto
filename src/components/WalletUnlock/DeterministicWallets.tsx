@@ -21,7 +21,7 @@ import {
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
-import { BalanceMap, getBaseAssetBalances } from '@services/Store/BalanceService';
+import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -270,17 +270,19 @@ export function DeterministicWalletsClass({
   const getBaseBalances = () => {
     const addressesToLookup = wallets.map((wallet) => wallet.address);
     try {
-      return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
-        const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
-          const balance = balanceMapData[wallet.address] || 0;
-          return {
-            ...wallet,
-            value: balance
-          };
-        });
-        setRequestingBalanceCheck(false);
-        setWallets(walletsWithBalances);
-      });
+      return getBaseAssetBalancesForAddresses(addressesToLookup, network).then(
+        (balanceMapData: BalanceMap) => {
+          const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
+            const balance = balanceMapData[wallet.address] || 0;
+            return {
+              ...wallet,
+              value: balance
+            };
+          });
+          setRequestingBalanceCheck(false);
+          setWallets(walletsWithBalances);
+        }
+      );
     } catch (err) {
       console.error('getBaseBalance err ', err);
     }

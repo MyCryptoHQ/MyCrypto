@@ -4,8 +4,8 @@ import flatten from 'ramda/src/flatten';
 
 import {
   BalanceMap,
-  getBaseAssetBalances,
-  getTokenAssetBalances
+  getBaseAssetBalancesForAddresses,
+  getSingleTokenBalanceForAddresses
 } from '@services/Store/BalanceService';
 import { ExtendedAsset, Network, TAddress, WalletId } from '@types';
 import { bigify } from '@utils';
@@ -136,8 +136,8 @@ export const DeterministicWalletService = ({
     const addresses = accounts.map(({ address }) => address);
     const balanceLookup =
       asset.type === 'base'
-        ? () => getBaseAssetBalances(addresses, network)
-        : () => getTokenAssetBalances(addresses, network, asset);
+        ? () => getBaseAssetBalancesForAddresses(addresses, network)
+        : () => getSingleTokenBalanceForAddresses(asset, network, addresses);
 
     try {
       balanceLookup().then((balanceMapData: BalanceMap<BN>) => {

@@ -46,7 +46,7 @@ jest.mock('../BalanceService', () => ({
       }
     })
   ),
-  getBaseAssetBalances: jest.fn().mockImplementation(() =>
+  getBaseAssetBalancesForAddresses: jest.fn().mockImplementation(() =>
     Promise.resolve({
       '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': mockBigify(2000000000000000000)
     })
