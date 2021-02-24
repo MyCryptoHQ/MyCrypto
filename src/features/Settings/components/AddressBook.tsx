@@ -198,12 +198,12 @@ export default function AddressBook({
         {translateRaw('ADDRESSBOOK_REMOVE')}
       </HeaderAlignment>
     ],
-    overlay: (rowIndex: number): JSX.Element => {
+    overlay: ({ indexKey }: { indexKey: number }) => {
       if (!overlayRows) return <></>;
 
-      if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+      if (overlayRows[0].length && overlayRows[0][0] === indexKey) {
         // Row delete overlay
-        const { uuid, label } = displayAddressBook[rowIndex];
+        const { uuid, label } = displayAddressBook[indexKey];
         return (
           <RowDeleteOverlay
             prompt={translateRaw('ADDRESS_BOOK_REMOVE_OVERLAY_TEXT', {
@@ -211,15 +211,15 @@ export default function AddressBook({
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [indexKey, uuid]]);
               deleteContact(uuid);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
           />
         );
-      } else if (overlayRows[1].length && overlayRows[1].map((row) => row[0]).includes(rowIndex)) {
+      } else if (overlayRows[1].length && overlayRows[1].map((row) => row[0]).includes(indexKey)) {
         // Undo delete overlay
-        const { uuid, label, address } = displayAddressBook[rowIndex];
+        const { uuid, label, address } = displayAddressBook[indexKey];
 
         return (
           <UndoDeleteOverlay
@@ -229,7 +229,7 @@ export default function AddressBook({
             })}
             restoreAccount={() => {
               restoreDeletedContact(uuid);
-              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== indexKey));
             }}
           />
         );

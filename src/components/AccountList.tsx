@@ -418,13 +418,13 @@ const BuildAccountTable = (
 
   return {
     head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
-    overlay: (rowIndex: number): JSX.Element => {
+    overlay: ({ indexKey }: { indexKey: number }) => {
       const label = (l?: { label: string }) => (l ? l.label : translateRaw('NO_LABEL'));
 
-      if (overlayRows && overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+      if (overlayRows && overlayRows[0].length && overlayRows[0][0] === indexKey) {
         // Row delete overlay
-        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
-        const { account } = getFullTableData[rowIndex];
+        const addressBookRecord = getLabelByAccount(getFullTableData[indexKey].account, contacts)!;
+        const { account } = getFullTableData[indexKey];
         const { uuid, address } = account;
         return (
           <RowDeleteOverlay
@@ -434,7 +434,7 @@ const BuildAccountTable = (
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [indexKey, uuid]]);
               deleteAccount(account);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
@@ -443,13 +443,13 @@ const BuildAccountTable = (
       } else if (
         overlayRows &&
         overlayRows[1].length &&
-        overlayRows[1].map((row) => row[0]).includes(rowIndex)
+        overlayRows[1].map((row) => row[0]).includes(indexKey)
       ) {
         // Undo delete overlay
-        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
+        const addressBookRecord = getLabelByAccount(getFullTableData[indexKey].account, contacts)!;
         const {
           account: { uuid, address, wallet }
-        } = getFullTableData[rowIndex];
+        } = getFullTableData[indexKey];
         return (
           <UndoDeleteOverlay
             address={address}
@@ -459,7 +459,7 @@ const BuildAccountTable = (
             })}
             restoreAccount={() => {
               restoreDeletedAccount(uuid);
-              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== indexKey));
             }}
           />
         );

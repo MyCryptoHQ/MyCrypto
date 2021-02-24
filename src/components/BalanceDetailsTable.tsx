@@ -204,8 +204,8 @@ export default function BalanceDetailsTable({
         createFirstButton
       );
     }),
-    overlay: (bId: string): JSX.Element => {
-      const balanceRow = balances.find((b) => b.id === bId)!;
+    overlay: ({ indexKey }: { indexKey: string }) => {
+      const balanceRow = balances.find((b) => b.id === indexKey)!;
       return (
         <>
           <BalancesDetailViewTableRow spacingBottom="0" borderBottom={false}>

@@ -5,12 +5,11 @@
 
 import React, { Component, ReactNode } from 'react';
 
-import isFunction from 'lodash/isFunction';
-import path from 'ramda/src/path';
 import styled from 'styled-components';
 
 import { SPACING } from '@theme';
 import { noOp } from '@utils';
+import { path } from '@vendor';
 
 import Box from './Box';
 import Icon from './Icon';
@@ -41,7 +40,7 @@ export interface TableContent {
 
 export interface TableData extends TableContent {
   head: (string | JSX.Element)[];
-  overlay?: ReactNode;
+  overlay?: React.FC<{ indexKey: number | string }>;
   overlayRows?: (number | string)[];
   config?: TableConfig;
 }
@@ -216,6 +215,8 @@ class AbstractTable extends Component<Props, State> {
     const { overlayRoot } = config || { overlayRoot: false };
     const { body, groups } = this.getSortedLayout();
 
+    const Overlay = overlay;
+
     const isReversedColumn = (heading: any) =>
       config && config.reversedColumns && config.reversedColumns.includes(heading);
     return (
@@ -262,22 +263,24 @@ class AbstractTable extends Component<Props, State> {
               row[0] &&
               Object.prototype.hasOwnProperty.call(row[0], 'key') &&
               (row[0] as any).key;
-            if (primaryRowKey && overlayRows!.includes(primaryRowKey)) {
+
+            if (Overlay && primaryRowKey && overlayRows!.includes(primaryRowKey)) {
               return (
                 <React.Fragment key={rowIndex}>
-                  {isFunction(overlay) ? overlay(primaryRowKey) : overlay}
+                  <Overlay indexKey={primaryRowKey} />
                 </React.Fragment>
               );
             }
 
             const isOverlayRowIncluded = overlay && overlayRows!.includes(rowIndex);
-            const overlayRow =
-              isOverlayRowIncluded && isFunction(overlay) ? overlay(rowIndex) : overlay;
+
             return (
               <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
-                {isOverlayRowIncluded ? (
+                {Overlay && isOverlayRowIncluded ? (
                   // @todo: Solve jump in th width when the overlay is toggled.
-                  <td colSpan={head.length}>{overlayRow}</td>
+                  <td colSpan={head.length}>
+                    <Overlay indexKey={primaryRowKey} />
+                  </td>
                 ) : (
                   row.map((cell, cellIndex) => (
                     <TableCell
