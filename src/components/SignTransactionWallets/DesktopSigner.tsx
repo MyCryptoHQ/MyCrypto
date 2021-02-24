@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Web3Provider } from 'ethers/providers/web3-provider';
+import { Web3Provider } from '@ethersproject/providers';
 import WebsocketProvider from 'web3-providers-ws';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
@@ -28,7 +28,7 @@ const SignTransactionDesktopSigner = ({
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
   const [error, setError] = useState('');
 
-  // @ts-ignore This is a valid constructor, not sure why it's failing
+  // @ts-expect-error This is a valid constructor, not sure why it's failing
   const ws = new WebsocketProvider('ws://localhost:8000');
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 

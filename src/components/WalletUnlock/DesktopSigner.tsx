@@ -1,18 +1,16 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { Web3Provider } from 'ethers/providers/web3-provider';
+import { Web3Provider } from '@ethersproject/providers';
 import WebsocketProvider from 'web3-providers-ws';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { InlineMessage } from '@components';
-import { useNetworks, useSettings } from '@services/Store';
+import { useNetworks } from '@services/Store';
 import translate from '@translations';
 import { FormData } from '@types';
 
 interface Props {
-  formDispatch: any;
   formData: FormData;
-  wallet: object;
   onUnlock(param: string[]): void;
 }
 
@@ -22,10 +20,9 @@ interface IWeb3UnlockError {
 }
 
 const DesktopSignerDecrypt: FC<Props> = ({ formData, onUnlock }) => {
-  const { updateSettingsNode } = useSettings();
   const { addNodeToNetwork, networks } = useNetworks();
   const network = networks.find((n) => n.id === formData.network);
-  // @ts-ignore This is a valid constructor, not sure why it's failing
+  // @ts-expect-error This is a valid constructor, not sure why it's failing
   const ws = new WebsocketProvider('ws://localhost:8000');
   const ethersProvider = new Web3Provider(ws, network!.chainId);
 
@@ -44,7 +41,7 @@ const DesktopSignerDecrypt: FC<Props> = ({ formData, onUnlock }) => {
       setWeb3UnlockError({ error: true, message: e.message });
       setWeb3Unlocked(false);
     }
-  }, [updateSettingsNode, addNodeToNetwork, setWeb3Unlocked]);
+  }, [addNodeToNetwork, setWeb3Unlocked]);
 
   return (
     <div className="Panel">
