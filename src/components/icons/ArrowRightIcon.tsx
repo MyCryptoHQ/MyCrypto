@@ -9,6 +9,7 @@ interface ArrowRightIconProps {
 
 const ArrowRightIcon: React.FC<ArrowRightIconProps> = ({ fillColor, size }) => (
   <svg
+    style={{ transformOrigin: `50px 50px` }}
     width={(size || 'sm') === 'sm' ? '7' : '14'}
     height={(size || 'sm') === 'sm' ? '11' : '22'}
     viewBox="0 0 7 11"

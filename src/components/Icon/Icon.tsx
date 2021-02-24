@@ -20,6 +20,7 @@ import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
 import downCaret from '@assets/icons/actions/down-caret.svg';
 import edit from '@assets/icons/actions/edit.svg';
+import expandable from '@assets/icons/actions/expand-default.svg';
 import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
@@ -138,6 +139,7 @@ const svgIcons = {
   more,
   confirm,
   refresh,
+  expandable,
   'add-bold': addBold,
   'info-small': infoSmall,
   'opened-eye': openedEye,
@@ -296,6 +298,12 @@ const SStrokeIcon = styled(SInlineSVG)<StylingProps>`
   stroke: ${({ color }) => color && color};
 `;
 
+const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  transform: ${({ isExpanded }) => (isExpanded ? `rotate(180deg)` : `rotate(90deg)`)};
+`;
+
 interface Props
   extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
   type: TIcon;
@@ -309,6 +317,8 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 const Icon = ({ type, color, ...props }: Props) => {
   if (type === 'website' || type === 'faucet-icon') {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'expandable') {
+    return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {

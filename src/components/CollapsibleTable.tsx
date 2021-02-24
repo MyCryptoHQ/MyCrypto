@@ -11,8 +11,8 @@ import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 
 import { default as Box } from './Box';
-import { IconNavArrow } from './IconArrow';
-import { SubHeading } from './NewTypography';
+import { default as Icon } from './Icon';
+import { Text } from './NewTypography';
 import { StackedCard } from './StackedCard';
 import { Table, TableConfig, TableData } from './Table';
 
@@ -165,10 +165,18 @@ export class CollapsibleTable extends Component<Props, State> {
             variant="rowAlign"
             padding="16px"
             role="button"
+            backgroundColor="tableHeadBackground"
             onClick={this.toggleCollapseGroup.bind(this, cardData)}
           >
-            <SubHeading textTransform="uppercase">{cardData}</SubHeading>
-            <IconNavArrow isFlipped={collapsedGroups[cardData]} />
+            <Text as="span" textTransform="uppercase">
+              {cardData}
+            </Text>
+            <Icon
+              ml="0.5ch"
+              type="expandable"
+              isExpanded={!collapsedGroups[cardData]}
+              height="1em"
+            />
           </Box>
         ) : (
           // The element being iterated on is table data.

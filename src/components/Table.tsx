@@ -12,7 +12,10 @@ import styled from 'styled-components';
 import { SPACING } from '@theme';
 import { noOp } from '@utils';
 
+import Box from './Box';
+import Icon from './Icon';
 import IconArrow from './IconArrow';
+import { Text } from './NewTypography';
 import { default as Typography } from './Typography';
 
 export interface TableGroup {
@@ -66,7 +69,6 @@ const sharedCellProperties = ({ isReversed }: CellProps) => `
   min-width: .75em;
   padding: .75em;
   text-align: ${isReversed ? 'right' : 'left'};
-  & >
 `;
 
 const TableHead = styled.tr`
@@ -89,10 +91,9 @@ interface TableHeadingProps extends CellProps {
 
 const TableHeading = styled(Typography)<TableHeadingProps>`
   ${sharedCellProperties}
+  padding-left: 20px;
   color: ${(props) => props.theme.headline};
   font-weight: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.0625em;
   border-top: '0px';
   position: sticky;
   top: 0;
@@ -295,8 +296,17 @@ class AbstractTable extends Component<Props, State> {
             <React.Fragment key={title}>
               <TableGroupHead onClick={this.toggleCollapseGroup.bind(this, title)} role="button">
                 <TableHeading colSpan={head.length}>
-                  {title}
-                  <IconArrow isFlipped={collapsedGroups[title]} />
+                  <Box variant="rowAlign">
+                    <Text as="span" textTransform="uppercase">
+                      {title}
+                    </Text>
+                    <Icon
+                      ml="0.5ch"
+                      type="expandable"
+                      isExpanded={!collapsedGroups[title]}
+                      height="1em"
+                    />
+                  </Box>
                 </TableHeading>
               </TableGroupHead>
               {/* Display group rows if not collapsed. */}
