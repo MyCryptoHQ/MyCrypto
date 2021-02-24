@@ -359,5 +359,36 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'xdaichain.com',
       url: 'https://rpc.xdaichain.com/'
     }
+  ],
+  SmartChain: [
+    {
+      name: NetworkUtils.makeNodeName('SmartChain', 'bsc-dataseed.binance.org'),
+      type: NodeType.RPC,
+      service: 'bsc-dataseed.binance.org',
+      url: 'https://bsc-dataseed.binance.org/'
+    },
+    {
+      name: NetworkUtils.makeNodeName('SmartChain', 'bsc-dataseed1.defibit.io'),
+      type: NodeType.RPC,
+      service: 'bsc-dataseed1.defibit.io',
+      url: 'https://bsc-dataseed1.defibit.io/'
+    },
+    {
+      name: NetworkUtils.makeNodeName('SmartChain', 'bsc-dataseed1.ninicoin.io'),
+      type: NodeType.RPC,
+      service: 'bsc-dataseed1.ninicoin.io',
+      url: 'https://bsc-dataseed1.ninicoin.io/'
+    }
+  ],
+  SmartChainTestNetwork: [
+    {
+      name: NetworkUtils.makeNodeName(
+        'SmartChainTestNetwork',
+        'data-seed-prebsc-1-s3.binance.org:8545'
+      ),
+      type: NodeType.RPC,
+      service: 'data-seed-prebsc-1-s1.binance.org',
+      url: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+    }
   ]
 };

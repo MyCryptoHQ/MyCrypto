@@ -953,5 +953,56 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     shouldEstimateGasPrice: false
+  },
+  SmartChain: {
+    id: 'SmartChain',
+    name: 'Smart Chain',
+    unit: 'BNB' as TTicker,
+    chainId: 56,
+    isCustom: false,
+    color: '#f0b90b',
+    blockExplorer: makeExplorer({
+      name: 'BscScan Explorer',
+      origin: 'https://bscscan.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER
+    },
+    gasPriceSettings: {
+      min: 20,
+      max: 60,
+      initial: 20
+    }
+  },
+  SmartChainTestNetwork: {
+    id: 'SmartChainTestNetwork',
+    name: 'Smart Chain Test Network',
+    unit: 'BNB Test' as TTicker,
+    chainId: 97,
+    isCustom: false,
+    color: '#f0b90b',
+    blockExplorer: makeExplorer({
+      name: 'BscScan Explorer',
+      origin: 'https://testnet.bscscan.com'
+    }),
+    isTestnet: true,
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.ETH_TREZOR,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER
+    },
+    gasPriceSettings: {
+      min: 20,
+      max: 60,
+      initial: 20
+    }
   }
 };
