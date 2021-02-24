@@ -6,7 +6,8 @@ enum EthscanSupportedNetworks {
   Rinkeby = 'Rinkeby',
   Kovan = 'Kovan',
   Goerli = 'Goerli',
-  MATIC = 'MATIC'
+  MATIC = 'MATIC',
+  xDAI = 'xDAI'
 }
 
 export const ETHSCAN_NETWORKS: NetworkId[] = Object.values(EthscanSupportedNetworks);

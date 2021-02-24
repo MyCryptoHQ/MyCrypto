@@ -253,13 +253,14 @@ export const getBaseAssetBalancesForAddresses = async (
   if (!network) {
     return {};
   }
-  const provider = ProviderHandler.fetchProvider(network);
+  const providerHandler = new ProviderHandler(network);
   if (isEthScanCompatible(network.id)) {
+    const provider = ProviderHandler.fetchProvider(network);
     return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
       .then(bigifyBalanceMap)
       .catch(() => ({} as BalanceMap));
   } else {
-    const result = await mapAsync(addresses, (address) => provider.getBalance(address));
+    const result = await mapAsync(addresses, (address) => providerHandler.getBalance(address));
     return bigifyBalanceMap(toBalanceMap(addresses, result));
   }
 };
