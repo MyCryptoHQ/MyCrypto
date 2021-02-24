@@ -304,9 +304,28 @@ const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
   transform: ${({ isExpanded }) => (isExpanded ? `rotate(180deg)` : `rotate(90deg)`)};
 `;
 
+const SNavCloseIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 300ms ease;
+  fill: ${(props) => (props.color ? props.color : props.theme.colors.discrete)};
+  &:hover {
+    transform: rotate(90deg);
+  }
+`;
+
+const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 300ms ease;
+  fill: ${(props) => (props.color ? props.color : props.theme.colors.discrete)};
+  &:hover {
+    fill: ${(props) => props.theme.colors.warning};
+    transform: rotate(90deg);
+  }
+`;
+
 interface Props
   extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
-  type: TIcon;
+  type: TIcon | 'delete';
 }
 
 export const isSVGType = (type: TIcon): type is SvgIcons =>
@@ -319,6 +338,10 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'nav-close') {
+    return <SNavCloseIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'delete') {
+    return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {

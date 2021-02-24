@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 
-import styled from 'styled-components';
-
 import { Box, Icon, LinkApp, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SPACING } from '@theme';
@@ -9,13 +7,6 @@ import { translateRaw } from '@translations';
 import { useClickAway } from '@vendor';
 
 import { LinkSet, Subscribe } from './components';
-
-const SIcon = styled(Icon)`
-  &:hover {
-    transform: rotate(90deg);
-  }
-  transition: all 300ms ease;
-`;
 
 export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTray(): void }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -51,12 +42,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
             <Text fontSize={3} color="WHITE" fontWeight={700} mb={0}>
               {translateRaw('NAVIGATION_EXTRAS')}
             </Text>
-            <SIcon
-              type="nav-close"
-              width="16px"
-              style={{ cursor: 'pointer', marginRight: '15px' }}
-              onClick={closeTray}
-            />
+            <Icon type="nav-close" color="WHITE" width="16px" mr="15px" onClick={closeTray} />
           </Box>
         )}
         <Subscribe />

@@ -66,7 +66,12 @@ const COLORS = {
 // Combine the themes in a single object to be consummed by SC ThemeProvider
 const theme = Object.assign({}, lightTheme, {
   breakpoints,
-  colors: { ...COLORS, tableHeadBackground: COLORS.BLUE_GREY_LIGHTEST },
+  colors: {
+    ...COLORS,
+    tableHeadBackground: COLORS.BLUE_GREY_LIGHTEST,
+    discrete: COLORS.BLUE_GREY,
+    warning: COLORS.ERROR_RED
+  },
   fontSizes: ['12px', '16px', '18px', '24px', '40px', '10px'],
   lineHeights: ['16px', '24px', '30px', '32px', '48px'],
   shadows: {

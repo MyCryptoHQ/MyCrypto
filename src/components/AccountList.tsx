@@ -544,14 +544,14 @@ const BuildAccountTable = (
               </Box>
             ) : (
               <Box key={index} variant="rowCenter">
-                <Button
-                  style={{ fontSize: '0.7em' }}
+                <Icon
+                  type="delete"
+                  size="0.8em"
                   onClick={() =>
                     setDeletingIndex(
                       getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
                     )
                   }
-                  icon="exit"
                 />
               </Box>
             )}

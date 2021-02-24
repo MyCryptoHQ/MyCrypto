@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Identicon } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
@@ -34,15 +34,6 @@ interface Props {
   updateContact(addressBooksData: ExtendedContact): void;
   restoreDeletedContact(id: TUuid): void;
 }
-
-const DeleteButton = styled(Button)`
-  align-items: center;
-  align-self: flex-end;
-  display: flex;
-  font-size: 0.7em;
-  justify-content: center;
-  width: 100%;
-`;
 
 const Label = styled.span`
   display: flex;
@@ -274,7 +265,9 @@ export default function AddressBook({
                 </LinkApp>
               </Box>
             ) : (
-              <DeleteButton onClick={() => setDeletingIndex(index)} icon="exit" />
+              <Box variant="rowCenter" key={index}>
+                <Icon type="delete" size="0.8em" onClick={() => setDeletingIndex(index)} />
+              </Box>
             )}
           </>
           /* eslint-enable react/jsx-key */
