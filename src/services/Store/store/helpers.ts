@@ -105,17 +105,27 @@ export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) 
   }
 };
 
-export const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
+export const destructureCoinGeckoIds = (
+  rates: IRates,
+  coinGeckoIdMapping: Record<string, string>
+): IRates => {
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
-  const updateRateObj = (acc: any, curValue: TTicker): IRates => {
-    const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
-    acc[asset!.uuid] = rates[curValue];
-    return acc;
-  };
+  const updateRateObj = (acc: any, curValue: TTicker): IRates =>
+    Object.entries(coinGeckoIdMapping).reduce((acc, [assetUuid, coinGeckoId]) => {
+      if (coinGeckoId === curValue) {
+        acc[assetUuid] = rates[curValue];
+      }
+      return acc;
+    }, acc as Record<string, string>);
 
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-export const buildCoinGeckoIdArray = (assets: ExtendedAsset[]) =>
-  assets.reduce((acc, a) => (a.mappings?.coinGeckoId ? [...acc, a.mappings.coinGeckoId] : acc), []);
+export const buildCoinGeckoIdMapping = (assets: ExtendedAsset[]) =>
+  assets.reduce((acc, a) => {
+    if (a.mappings && a.mappings.coinGeckoId) {
+      acc[a.uuid as string] = a.mappings.coinGeckoId;
+    }
+    return acc;
+  }, {} as Record<string, string>);

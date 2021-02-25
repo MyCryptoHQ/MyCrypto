@@ -18,6 +18,7 @@ import {
   fetchMemberships,
   getMemberships,
   getMembershipState,
+  getTrackedAssets,
   isMyCryptoMember,
   scanTokens,
   useDispatch,
@@ -28,6 +29,7 @@ import {
   Asset,
   Bigish,
   DomainNameRecord,
+  ExtendedAsset,
   IAccount,
   IAccountAdditionData,
   IPendingTxReceipt,
@@ -98,6 +100,7 @@ export interface State {
   readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
   readonly currentAccounts: StoreAccount[];
+  readonly trackedAssets: ExtendedAsset[];
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
   readonly txHistory: ITxHistoryApiResponse[];
@@ -152,6 +155,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const memberships = useSelector(getMemberships);
   const membershipState = useSelector(getMembershipState);
+  const trackedAssets = useSelector(getTrackedAssets);
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
@@ -349,6 +353,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
+    trackedAssets,
     /**
      * Check if the user has already added an account to our persistence layer.
      */

@@ -6,7 +6,6 @@ import { simpleRender } from 'test-utils';
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { RatesContext } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
@@ -30,28 +29,25 @@ function getComponent(props: TokenMigrationReceiptProps) {
           ({
             assets: fAssets,
             settings: fSettings,
-            networks: [fNetwork]
+            networks: [fNetwork],
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider
-          value={{ rates: {}, getAssetRate: jest.fn(), trackAsset: jest.fn() } as any}
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: fAccounts,
+              defaultAccount: { assets: [] },
+              getAccount: jest.fn(),
+              getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID),
+              networks: [{ nodes: [] }]
+            } as unknown) as any
+          }
         >
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: fAccounts,
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <TokenMigrationReceipt {...((props as unknown) as any)} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+          <TokenMigrationReceipt {...((props as unknown) as any)} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

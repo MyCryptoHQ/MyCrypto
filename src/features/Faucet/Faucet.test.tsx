@@ -5,7 +5,7 @@ import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
 import { fAccount, fAssets, fNetworks, fRates, fSettings } from '@fixtures';
-import { DataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, StoreContext } from '@services';
 import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
@@ -62,14 +62,13 @@ describe('Faucet', () => {
             contracts: [],
             settings: fSettings,
             userActions: [],
+            rates: fRates,
             createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
           } as any
         }
       >
-        <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <RatesContext.Provider value={{ rates: fRates, trackAsset: jest.fn() } as any}>
-            <Faucet />
-          </RatesContext.Provider>
+        <StoreContext.Provider value={{ accounts: [fAccount], trackedAssets: [] } as any}>
+          <Faucet />
         </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>

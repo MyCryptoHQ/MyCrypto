@@ -33,7 +33,7 @@ export default slice;
 
 export const getTrackedAssets = createSelector(
   [(s: AppState) => s[slice.name], (s) => s],
-  (uuids, state) => uuids.map((uuid) => getAssetByUUID(uuid)(state))
+  (uuids, state) => uuids.map((uuid) => getAssetByUUID(uuid)(state)!)
 );
 
 /**

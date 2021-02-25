@@ -1,6 +1,5 @@
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
-import { Slice } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 // eslint-disable-next-line import/no-namespace
 import * as ReactRedux from 'react-redux';
@@ -39,6 +38,11 @@ export const mockUseDispatch = () => {
   const mockDispatch = jest.fn();
   jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
   return mockDispatch;
+};
+
+export const mockUseSelector = () => {
+  const mockSelector = jest.fn();
+  return mockSelector;
 };
 
 export const actionWithPayload = (payload: any) => expect.objectContaining({ payload });

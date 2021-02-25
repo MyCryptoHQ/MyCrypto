@@ -22,10 +22,10 @@ export default class RatesService {
   }
 
   // @todo: figure out return type
-  public fetchAssetsRates = async (assets: string[], currencies: string[]): Promise<any> => {
+  public fetchAssetsRates = async (coinGeckoIds: string[], currencies: string[]): Promise<any> => {
     return this.service
       .get('/', {
-        params: { ids: assets.join(','), vs_currencies: currencies.join(',') }
+        params: { ids: coinGeckoIds.join(','), vs_currencies: currencies.join(',') }
       })
       .then((res) => res.data)
       .catch((err) => {

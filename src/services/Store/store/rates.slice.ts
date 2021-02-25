@@ -6,10 +6,10 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { Fiats } from '@config';
 import { RatesService } from '@services/ApiService/Rates';
 import { IPollingPayload, pollStart } from '@services/Polling';
-import { getAccountsAssets, updateAccountAssets } from '@store/account.slice';
 import { ExtendedAsset, IRates, LSKeys } from '@types';
 
-import { buildCoinGeckoIdArray, destructureCoinGeckoIds } from './helpers';
+import { getAccountsAssets, updateAccountAssets } from './account.slice';
+import { buildCoinGeckoIdMapping, destructureCoinGeckoIds } from './helpers';
 import { getAppState } from './selectors';
 import { getTrackedAssets, trackAsset } from './trackedAssets.slice';
 
@@ -56,17 +56,21 @@ export function* ratesSaga() {
 export function* pollRates() {
   const accountAssets: ExtendedAsset[] = yield select(getAccountsAssets);
   const trackedAssets: ExtendedAsset[] = yield select(getTrackedAssets);
-  console.log(trackedAssets);
+
   const assets = [...accountAssets, ...trackedAssets];
-  const coinGeckoIds = buildCoinGeckoIdArray(assets);
+  const coinGeckoIdsMapping = buildCoinGeckoIdMapping(assets);
 
   const payload: IPollingPayload = {
     params: {
       interval: 9000
     },
     successAction: slice.actions.setRates,
-    promise: async () => RatesService.instance.fetchAssetsRates(coinGeckoIds, Object.keys(Fiats)),
-    transformer: (result: IRates) => destructureCoinGeckoIds(result, assets)
+    promise: async () =>
+      RatesService.instance.fetchAssetsRates(
+        [...new Set(Object.values(coinGeckoIdsMapping))],
+        Object.keys(Fiats)
+      ),
+    transformer: (result: IRates) => destructureCoinGeckoIds(result, coinGeckoIdsMapping)
   };
 
   yield put(pollStart(payload));

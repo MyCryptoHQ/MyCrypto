@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
 import { isEmpty } from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { DataContext, useSettings } from '@services/Store';
-import { getTrackedAssets, trackAsset } from '@store';
+import { DataContext, StoreContext, useSettings } from '@services/Store';
+import { trackAsset } from '@store';
 import { Asset, ReserveAsset, TUuid } from '@types';
 
 export interface IRatesContext {
@@ -17,8 +17,9 @@ const DEFAULT_FIAT_RATE = 0;
 
 function useRates() {
   const { rates } = useContext(DataContext);
+  const { trackedAssets } = useContext(StoreContext);
   const { settings } = useSettings();
-  const trackedAssets = useSelector(getTrackedAssets);
+
   const dispatch = useDispatch();
 
   const getAssetRate = (asset: Asset) => {
@@ -27,7 +28,7 @@ function useRates() {
       dispatch(trackAsset(uuid));
       return DEFAULT_FIAT_RATE;
     }
-    return settings && settings.fiatCurrency && rates[uuid]
+    return rates[uuid]
       ? rates[uuid][(settings.fiatCurrency as string).toLowerCase()]
       : DEFAULT_FIAT_RATE;
   };
