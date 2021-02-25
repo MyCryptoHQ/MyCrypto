@@ -1,24 +1,14 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import Box from './Box';
 
-interface Props {
-  height?: string;
-  color?: string;
-  padding?: string;
-}
-
-const SDivider = styled('div')`
-  height: ${(p: Props) => (p.height ? p.height : '1px')};
-  background-color: ${(p: Props) => (p.color ? p.color : 'var(--color-gray-lighter)')};
-  width: 100%;
-  background-clip: content-box;
-  padding-left: ${(p: Props) => (p.padding ? p.padding : 0)};
-  padding-right: ${(p: Props) => (p.padding ? p.padding : 0)};
-`;
-
-const Divider = ({ color, height, padding, ...props }: Props) => {
-  return <SDivider padding={padding} color={color} height={height} {...props} />;
+const Divider = ({
+  height = '1px',
+  width = '100%',
+  color = 'discrete',
+  ...props
+}: React.ComponentProps<typeof Box>) => {
+  return <Box backgroundColor={color} height={height} width={width} {...props} />;
 };
 
 export default Divider;

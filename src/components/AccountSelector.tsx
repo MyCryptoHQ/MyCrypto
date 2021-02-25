@@ -84,7 +84,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
               onClick={() => selectOption(data)}
               paddingLeft="15px"
             />
-            <Divider padding={SPACING.SM} />
+            <Divider />
           </>
         );
       }}

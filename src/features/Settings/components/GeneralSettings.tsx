@@ -5,7 +5,7 @@ import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
-import { DashboardPanel, LinkApp, SubHeading, Switch, Tooltip } from '@components';
+import { DashboardPanel, Divider, LinkApp, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
 import {
   AppState,
@@ -19,12 +19,6 @@ import {
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { TFiatTicker } from '@types';
-
-const Divider = styled.div`
-  height: 2px;
-  margin-bottom: ${SPACING.BASE};
-  background: ${COLORS.GREY_ATHENS};
-`;
 
 const SettingsField = styled.div`
   display: flex;
@@ -103,7 +97,7 @@ const GeneralSettings = ({
 
   return (
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
-      <Divider />
+      <Divider mb={SPACING.BASE} />
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_HANDLING_LABEL')}{' '}

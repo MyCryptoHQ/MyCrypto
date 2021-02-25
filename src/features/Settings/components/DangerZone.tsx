@@ -3,15 +3,10 @@ import React, { useContext, useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel, RowDeleteOverlay, SubHeading, Tooltip } from '@components';
+import { DashboardPanel, Divider, RowDeleteOverlay, SubHeading, Tooltip } from '@components';
 import { DataContext } from '@services/Store';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { BREAK_POINTS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-
-const Divider = styled.div`
-  height: 2px;
-  background: ${COLORS.GREY_ATHENS};
-`;
 
 const SettingsField = styled.div`
   display: flex;
@@ -41,9 +36,7 @@ const DangerZone: React.FC = () => {
 
   return (
     <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
-      <Divider
-        style={{ borderBottom: '1px solid red', marginBottom: confirmDelete ? '0' : SPACING.BASE }}
-      />
+      <Divider color="warning" mb={SPACING.BASE} />
 
       {confirmDelete ? (
         <RowDeleteOverlay
