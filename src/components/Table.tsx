@@ -123,11 +123,6 @@ export const TableCell = styled(Typography)`
   ${sharedCellProperties};
 `;
 
-const SortPlaceholder = styled.div`
-  width: calc(9px + 0.5em);
-  display: inline-block;
-`;
-
 TableCell.defaultProps = {
   as: 'td'
 };
@@ -223,9 +218,6 @@ class AbstractTable extends Component<Props, State> {
         <thead>
           <TableHead>
             {head.map((heading, index) => {
-              const isSelectedSortableColumn = this.isCurrentColumnSortable(
-                getHeaderColumn(heading)
-              );
               const isSortableColumn = this.isColumnSortable(getHeaderColumn(heading));
 
               return (
@@ -243,17 +235,15 @@ class AbstractTable extends Component<Props, State> {
                 >
                   <Box variant="rowAlign">
                     <Text as="span">{heading}</Text>
-                    {isSortableColumn &&
-                      (isSelectedSortableColumn ? (
-                        <Icon
-                          type="sort"
-                          isActive={sortedColumnDirection === ColumnDirections.Reverse}
-                          size="1em"
-                          color="linkActive"
-                        />
-                      ) : (
-                        <SortPlaceholder />
-                      ))}
+                    {isSortableColumn && (
+                      <Icon
+                        ml="0.3ch"
+                        type="sort"
+                        isActive={sortedColumnDirection === ColumnDirections.Reverse}
+                        size="1em"
+                        color="linkAction"
+                      />
+                    )}
                   </Box>
                 </TableHeading>
               );
@@ -335,10 +325,6 @@ class AbstractTable extends Component<Props, State> {
       </table>
     );
   }
-
-  private readonly isCurrentColumnSortable = (heading: string) => {
-    return this.getCurrentColumnSortable() === heading;
-  };
 
   private readonly getCurrentColumnSortable = () => {
     const { currentSortColumn } = this.state;
