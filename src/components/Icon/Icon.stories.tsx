@@ -28,3 +28,10 @@ Filter.args = {
   height: '1em',
   color: 'linkAction'
 };
+
+export const Edit = Template.bind({});
+Edit.args = {
+  type: 'edit',
+  height: '1em',
+  color: 'linkAction'
+};
