@@ -36,17 +36,22 @@ const buildAssetQueryUrl = (assets: string[], currencies: string[]) => `
 const fetchDeFiReserveMappingList = async (): Promise<ReserveMapping | any> =>
   DeFiReserveMapService.instance.getDeFiReserveMap();
 
-const destructureCoinGeckoIds = (rates: IRates, assets: ExtendedAsset[]): IRates => {
+const destructureCoinGeckoIds = (rates: IRates, coinGeckoIdMapping: GeckoIds): IRates => {
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
   const updateRateObj = (acc: any, curValue: TTicker): IRates => {
-    const asset = assets.find((a) => a.mappings && a.mappings.coinGeckoId === curValue);
-    acc[asset!.uuid] = rates[curValue];
+    const relevantAssets = Object.entries(coinGeckoIdMapping).filter(
+      ([_, coinGeckoId]) => coinGeckoId === curValue
+    );
+    relevantAssets.forEach(([assetUuid, _]) => (acc[assetUuid] = rates[curValue]));
     return acc;
   };
 
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
+interface GeckoIds {
+  [key: string]: string;
+}
 
 export const RatesContext = createContext({} as State);
 
@@ -70,13 +75,13 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   const geckoIds = currentAssets.reduce((acc, a) => {
     if (a.mappings && a.mappings.coinGeckoId) {
-      acc.push(a.mappings.coinGeckoId);
+      acc[a.uuid as string] = a.mappings.coinGeckoId;
     }
     return acc;
-  }, [] as string[]);
+  }, {} as GeckoIds);
 
   const updateRates = (data: IRates) =>
-    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, currentAssets) });
+    updateSettingsRates({ ...state.rates, ...destructureCoinGeckoIds(data, geckoIds) });
 
   // update rate worker success handler with updated settings context
   useEffect(() => {
@@ -96,7 +101,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     worker.current = new PollingService(
-      buildAssetQueryUrl(geckoIds, Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
+      buildAssetQueryUrl(Object.values(geckoIds), Object.keys(Fiats)), // @todo: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERVAL,
       updateRates,
       (err) => console.debug('[RatesProvider]', err)
@@ -111,7 +116,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       worker.current.stop();
       worker.current.close();
     };
-  }, [geckoIds.length]);
+  }, [Object.values(geckoIds).length]);
 
   const state: State = {
     get rates() {
