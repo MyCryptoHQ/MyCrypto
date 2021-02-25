@@ -69,6 +69,7 @@ const theme = Object.assign({}, lightTheme, {
   colors: {
     ...COLORS,
     tableHeadBackground: COLORS.BLUE_GREY_LIGHTEST,
+    linkAction: COLORS.BLUE_SKY,
     discrete: COLORS.BLUE_GREY,
     warning: COLORS.ERROR_RED
   },

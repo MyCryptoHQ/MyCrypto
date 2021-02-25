@@ -38,7 +38,6 @@ import { truncate, useScreenSize } from '@utils';
 import Checkbox from './Checkbox';
 import { default as Currency } from './Currency';
 import { DashboardPanel } from './DashboardPanel';
-import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
 
 const SDashboardPanel = styled(DashboardPanel)<{ dashboard?: boolean }>`
@@ -179,10 +178,10 @@ export default function AccountList(props: AccountListProps) {
     <SDashboardPanel
       dashboard={dashboard}
       heading={
-        <>
+        <Box variant="rowAlign">
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
-          <Tooltip width="16px" tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
-        </>
+          <Tooltip ml="0.5ch" width="16px" tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
+        </Box>
       }
       headingRight={
         <Box variant="rowAlign">
@@ -351,25 +350,25 @@ const BuildAccountTable = (
 
   const convertColumnToClickable = (id: IColumnValues) =>
     isMobile ? (
-      translateRaw(id)
+      <Text>{translateRaw(id)}</Text>
     ) : (
-      <div key={id} onClick={() => updateSortingState(id)}>
-        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-      </div>
+      <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
+        <Text as="span">{translateRaw(id)}</Text>
+        <Icon
+          ml="0.3ch"
+          type="sort"
+          isActive={getColumnSortDirection(id)}
+          size="1em"
+          color="linkAction"
+        />
+      </Box>
     );
 
   const columns = [
     convertColumnToClickable('ACCOUNT_LIST_LABEL'),
     convertColumnToClickable('ACCOUNT_LIST_ADDRESS'),
     convertColumnToClickable('ACCOUNT_LIST_NETWORK'),
-    <HeaderAlignment
-      key={'ACCOUNT_LIST_VALUE'}
-      align="center"
-      onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
-    >
-      {translateRaw('ACCOUNT_LIST_VALUE')}
-      {!isMobile && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
-    </HeaderAlignment>,
+    convertColumnToClickable('ACCOUNT_LIST_VALUE'),
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
       <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />

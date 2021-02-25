@@ -21,3 +21,10 @@ ExpandableOpen.args = {
   isExpanded: true,
   height: '1em'
 };
+
+export const Filter = Template.bind({});
+Filter.args = {
+  type: 'sort',
+  height: '1em',
+  color: 'linkAction'
+};

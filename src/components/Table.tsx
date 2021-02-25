@@ -13,7 +13,6 @@ import { path } from '@vendor';
 
 import Box from './Box';
 import Icon from './Icon';
-import IconArrow from './IconArrow';
 import { Text } from './NewTypography';
 import { default as Typography } from './Typography';
 
@@ -242,13 +241,20 @@ class AbstractTable extends Component<Props, State> {
                   isReversed={isReversedColumn(heading)}
                   data-testid={isSortableColumn ? 'sortable-column-heading' : ''}
                 >
-                  {heading}
-                  {isSortableColumn &&
-                    (isSelectedSortableColumn ? (
-                      <IconArrow isFlipped={sortedColumnDirection === ColumnDirections.Reverse} />
-                    ) : (
-                      <SortPlaceholder />
-                    ))}
+                  <Box variant="rowAlign">
+                    <Text as="span">{heading}</Text>
+                    {isSortableColumn &&
+                      (isSelectedSortableColumn ? (
+                        <Icon
+                          type="sort"
+                          isActive={sortedColumnDirection === ColumnDirections.Reverse}
+                          size="1em"
+                          color="linkActive"
+                        />
+                      ) : (
+                        <SortPlaceholder />
+                      ))}
+                  </Box>
                 </TableHeading>
               );
             })}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   color,
   ColorProps,
@@ -271,12 +271,14 @@ export type TIcon = SvgIcons | PngIcons;
 
 type StylingProps = LayoutProps & SpaceProps & ColorProps & ColorStyleProps;
 
-const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<StylingProps>`
+const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<
+  StylingProps & { fill: string }
+>`
   ${layout}
   ${space}
   ${color}
   ${colorStyle}
-
+  fill: ${({ fill, theme }) => (fill ? theme.colors[fill] : fill)};
 `;
 
 const SImg = styled.img<StylingProps>`
@@ -304,6 +306,15 @@ const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
   transform: ${({ isExpanded }) => (isExpanded ? `rotate(180deg)` : `rotate(90deg)`)};
 `;
 
+const SSortIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  /* Align sort icon with Table column header  */
+  margin-top: 3px;
+  ${({ isActive }) =>
+    isActive ? css({ transform: `rotate(0deg)` }) : css({ transform: `rotate(180deg)` })};
+`;
+
 const SNavCloseIcon = styled(SInlineSVG)<StylingProps>`
   cursor: pointer;
   transition: all 300ms ease;
@@ -325,7 +336,7 @@ const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
 
 interface Props
   extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
-  type: TIcon | 'delete';
+  type: TIcon | 'sort' | 'delete';
 }
 
 export const isSVGType = (type: TIcon): type is SvgIcons =>
@@ -338,6 +349,8 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'sort') {
+    return <SSortIcon src={svgIcons['expandable']} fill={color} {...props} />;
   } else if (type === 'nav-close') {
     return <SNavCloseIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'delete') {

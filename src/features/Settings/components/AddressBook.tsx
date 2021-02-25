@@ -19,7 +19,6 @@ import {
   Tooltip,
   UndoDeleteOverlay
 } from '@components';
-import IconArrow from '@components/IconArrow';
 import { useNetworks } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -105,10 +104,6 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
   }
 };
 
-const breakpoint = 450;
-export const screenIsMobileSized = (): boolean =>
-  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
-
 export default function AddressBook({
   contacts,
   contactRestore,
@@ -171,11 +166,18 @@ export default function AddressBook({
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
   const convertColumnToClickable = (id: IColumnValues) =>
-    screenIsMobileSized() ? (
-      translateRaw(id)
+    isMobile ? (
+      <Text>{translateRaw(id)}</Text>
     ) : (
-      <Box key={id} onClick={() => updateSortingState(id)} variant="rowAlign">
-        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
+      <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
+        <Text as="span">{translateRaw(id)}</Text>
+        <Icon
+          ml="0.3ch"
+          type="sort"
+          isActive={getColumnSortDirection(id)}
+          size="1em"
+          color="linkAction"
+        />
       </Box>
     );
 
@@ -283,10 +285,10 @@ export default function AddressBook({
   return (
     <DashboardPanel
       heading={
-        <>
+        <Box variant="rowAlign">
           {translateRaw('ADDRESSBOOK')}{' '}
-          <Tooltip width="16px" tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
-        </>
+          <Tooltip ml="0.5ch" width="16px" tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
+        </Box>
       }
       headingRight={
         <LinkApp href={'#'} onClick={toggleFlipped}>
@@ -299,11 +301,7 @@ export default function AddressBook({
         </LinkApp>
       }
     >
-      <FixedSizeCollapsibleTable
-        breakpoint={breakpoint}
-        maxHeight={'450px'}
-        {...addressBookTable}
-      />
+      <FixedSizeCollapsibleTable breakpoint={450} maxHeight={'450px'} {...addressBookTable} />
     </DashboardPanel>
   );
 }
