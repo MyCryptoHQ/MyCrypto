@@ -84,11 +84,20 @@ jobs:
 
       - name: yarn build:staging
         run: yarn build:staging
+        if: github.event_name == 'pull_request'
         env:
           SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
           ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
           COMMIT_HASH: ${{ github.event.pull_request.head.sha }}
-          
+
+      - name: yarn build:staging
+        run: yarn build:staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${GITHUB_SHA}
+
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
         if: github.event_name == 'push'
