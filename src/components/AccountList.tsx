@@ -350,7 +350,7 @@ const BuildAccountTable = (
 
   const convertColumnToClickable = (id: IColumnValues) =>
     isMobile ? (
-      <Text>{translateRaw(id)}</Text>
+      translateRaw(id)
     ) : (
       <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
         <Text as="span">{translateRaw(id)}</Text>
