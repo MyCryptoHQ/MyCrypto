@@ -59,7 +59,10 @@ const DangerZone: React.FC = () => {
         <SettingsField>
           <SubHeading fontWeight="initial">
             {translate('SETTINGS_DB_RESET_LABEL')}{' '}
-            <Tooltip tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>} />
+            <Tooltip
+              width="16px"
+              tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>}
+            />
           </SubHeading>
           <SettingsControl>
             <SettingsButton secondary={true} onClick={() => setConfirmDelete(true)}>

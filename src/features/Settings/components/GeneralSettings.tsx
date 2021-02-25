@@ -107,7 +107,7 @@ const GeneralSettings = ({
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_HANDLING_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
+          <Tooltip width="16px" tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
         </SubHeading>
         <SettingsControl>
           <LinkApp href={ROUTE_PATHS.SETTINGS_IMPORT.path}>
@@ -121,7 +121,7 @@ const GeneralSettings = ({
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_INACTIVITY_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>} />
+          <Tooltip width="16px" tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>} />
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
@@ -138,7 +138,10 @@ const GeneralSettings = ({
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_FIAT_SELECTION_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>} />
+          <Tooltip
+            width="16px"
+            tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>}
+          />
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
@@ -155,7 +158,10 @@ const GeneralSettings = ({
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_PRODUCT_ANALYTICS')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP')}</span>} />
+          <Tooltip
+            width="16px"
+            tooltip={<span>{translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP')}</span>}
+          />
         </SubHeading>
         <SettingsControl>
           <Switch
