@@ -311,6 +311,7 @@
     "GAS_USED": "Gas Used",
     "GENERIC_ERROR": "Something went wrong! Please [email us]($link) so we can help you and fix this.",
     "HIDE": "Hide",
+    "HIDE_ASSET": "Hide Asset",
     "HIDE_ASSET_TOOLTIP": "Hide this asset (this can be reverted in Settings).",
     "INPUT_ERROR_PASSWORDS_DONT_MATCH": "Passwords don't match",
     "INPUT_ERROR_PASSWORD_TOO_SHORT": "Password must be at least 8 characters long",

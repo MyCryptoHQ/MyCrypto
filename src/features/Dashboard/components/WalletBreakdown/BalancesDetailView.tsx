@@ -4,11 +4,20 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { BalanceDetailsTable, Currency, DashboardPanel, SubtractIcon, Tooltip } from '@components';
+import {
+  BalanceDetailsTable,
+  Box,
+  Currency,
+  DashboardPanel,
+  LinkApp,
+  SubtractIcon,
+  Tooltip
+} from '@components';
 import { useSettings } from '@services/Store';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { TUuid } from '@types';
+import { useScreenSize } from '@utils';
 
 import { BalancesDetailProps } from './types';
 
@@ -43,27 +52,41 @@ const BalancesOnlyTotal = styled.div`
     font-size: 24px;
   }
 `;
-const SIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
-const HideAssetButton = ({ uuid, key }: { uuid: TUuid; key: string }) => {
+export const HideAssetButton = ({
+  uuid,
+  key,
+  isMobile
+}: {
+  uuid: TUuid;
+  key: string;
+  isMobile: boolean;
+}) => {
   const { addAssetToExclusionList } = useSettings();
   return (
-    <SIconContainer key={key} onClick={() => addAssetToExclusionList(uuid)}>
-      <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
-        <SIconContainer>
-          <SubtractIcon size="xl" />
-        </SIconContainer>
-      </Tooltip>
-    </SIconContainer>
+    <>
+      {isMobile ? (
+        <Box key={key} onClick={() => addAssetToExclusionList(uuid!)}>
+          <LinkApp href="#">{translateRaw('HIDE_ASSET')}</LinkApp>
+        </Box>
+      ) : (
+        <Box variant="rowCenter" key={key} onClick={() => addAssetToExclusionList(uuid!)}>
+          <Tooltip tooltip={translateRaw('HIDE_ASSET_TOOLTIP')}>
+            <Box variant="rowCenter">
+              <SubtractIcon size="xl" />
+            </Box>
+          </Tooltip>
+        </Box>
+      )}
+    </>
   );
 };
 
 const BalancesDetailView = (props: BalancesDetailProps) => {
   const BALANCES = translateRaw('WALLET_BREAKDOWN_BALANCES');
   const { toggleShowChart, totalFiatValue, fiat } = props;
+  const { isMobile } = useScreenSize();
+
   return (
     <BalancesOnly>
       <DashboardPanel
@@ -83,7 +106,11 @@ const BalancesDetailView = (props: BalancesDetailProps) => {
           </BalancesOnlyTotal>
         }
       >
-        <BalanceDetailsTable {...props} createFirstButton={HideAssetButton} />
+        <BalanceDetailsTable
+          {...props}
+          isMobile={isMobile}
+          firstAction={(props) => <HideAssetButton {...props} isMobile={isMobile} />}
+        />
       </DashboardPanel>
     </BalancesOnly>
   );

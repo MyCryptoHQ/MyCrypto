@@ -132,42 +132,47 @@ export const textVariants = variant({
 
 const FLEX_RECIPES = {
   align: {
+    display: 'flex',
     alignItems: 'center'
   },
   center: {
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },
   spaceBetween: {
+    display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  end: {
+    display: 'flex',
+    justifyContent: 'flex-end'
   }
 };
 
 const FLEX_VARIANTS = {
   rowAlign: {
-    display: 'flex',
     flexDirection: 'row',
     ...FLEX_RECIPES.align
   },
   rowCenter: {
-    display: 'flex',
     flexDirection: 'row',
     ...FLEX_RECIPES.center
   },
   columnAlign: {
-    display: 'flex',
     flexDirection: 'column',
     ...FLEX_RECIPES.align
   },
   columnCenter: {
-    display: 'flex',
     flexDirection: 'column',
     ...FLEX_RECIPES.center
   },
   spaceBetween: {
-    display: 'flex',
     ...FLEX_RECIPES.spaceBetween
+  },
+  alignRight: {
+    ...FLEX_RECIPES.end
   }
 };
 

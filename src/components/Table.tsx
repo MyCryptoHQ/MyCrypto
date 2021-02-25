@@ -211,8 +211,10 @@ class AbstractTable extends Component<Props, State> {
 
     const Overlay = overlay;
 
-    const isReversedColumn = (heading: any) =>
-      config && config.reversedColumns && config.reversedColumns.includes(heading);
+    const isReversedColumn = (heading: any) => {
+      return config?.reversedColumns?.includes(heading);
+    };
+
     return (
       <table {...rest}>
         <thead>
@@ -233,7 +235,10 @@ class AbstractTable extends Component<Props, State> {
                   isReversed={isReversedColumn(heading)}
                   data-testid={isSortableColumn ? 'sortable-column-heading' : ''}
                 >
-                  <Box variant="rowAlign">
+                  <Box
+                    variant="rowAlign"
+                    justifyContent={isReversedColumn(heading) ? 'flex-end' : 'flex-start'}
+                  >
                     <Text as="span">{heading}</Text>
                     {isSortableColumn && (
                       <Icon

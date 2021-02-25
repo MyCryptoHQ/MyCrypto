@@ -3,16 +3,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { AddIcon, BalanceDetailsTable, DashboardPanel, Tooltip } from '@components';
+import { ColumnAction } from '@components/BalanceDetailsTable';
 import { useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
-import { Balance, Fiat, IAccount, TUuid } from '@types';
+import { Balance, Fiat, IAccount } from '@types';
+import { useScreenSize } from '@utils';
 
 const SIconContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
+const UnHideAssetButton: ColumnAction = ({ uuid }) => {
   const { removeAssetfromExclusionList } = useSettings();
   return (
     <SIconContainer onClick={() => removeAssetfromExclusionList(uuid)}>
@@ -34,6 +36,7 @@ interface ExcludedAssetsProps {
 }
 
 const ExcludedAssets = (props: ExcludedAssetsProps) => {
+  const { isMobile } = useScreenSize();
   return (
     <>
       {props.balances && props.balances.length !== 0 && (
@@ -46,7 +49,11 @@ const ExcludedAssets = (props: ExcludedAssetsProps) => {
           }
           className={`ExcludedAssetTableList E`}
         >
-          <BalanceDetailsTable {...props} createFirstButton={UnHideAssetButton} />
+          <BalanceDetailsTable
+            isMobile={isMobile}
+            {...props}
+            firstAction={(props) => <UnHideAssetButton {...props} isMobile={isMobile} />}
+          />
         </DashboardPanel>
       )}
     </>

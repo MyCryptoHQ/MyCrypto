@@ -5,7 +5,6 @@
 
 import React, { ReactNode, useState } from 'react';
 
-import { scale, StackedCardData, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { useScreenSize } from '@utils';
@@ -16,23 +15,26 @@ import { Text } from './NewTypography';
 import { StackedCard } from './StackedCard';
 import { Table, TableConfig, TableData } from './Table';
 
-export enum CollapsibleTableModes {
-  Mobile,
-  Desktop
-}
+type StackedCardData = React.ComponentProps<typeof StackedCard>;
 
-export interface CollapsibleTableConfig extends TableConfig {
-  primaryColumn: string;
-  iconColumns?: string[];
-}
-
-export interface CollapsibleTableData extends TableData {
-  config: CollapsibleTableConfig;
-}
+type CollapsibleTableData = TableData & {
+  config: TableConfig & {
+    primaryColumn: string;
+    iconColumns?: string[];
+  };
+};
 
 interface CollapsedGroups {
   [title: string]: boolean;
 }
+
+const StackedCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+`;
 
 export const transformRowToCards = (
   row: ReactNode[],
@@ -82,32 +84,6 @@ export const transformTableToCards = (
 
   return cards;
 };
-
-const GroupHeading = styled(Typography)`
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0.9375rem;
-  border-bottom: 0.0625rem solid #dde3ee;
-  background: ${(props) => props.theme.tableHeadBackground};
-  text-transform: uppercase;
-  font-size: ${scale(1)};
-  cursor: pointer;
-  z-index: 3;
-`;
-
-GroupHeading.defaultProps = {
-  as: 'section',
-  role: 'button'
-};
-
-const StackedCardOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-`;
 
 export const CollapsibleTable = ({
   overlay: Overlay,
