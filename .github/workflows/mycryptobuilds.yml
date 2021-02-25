@@ -82,6 +82,10 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+
       - name: yarn build:staging
         run: yarn build:staging
         if: github.event_name == 'pull_request'
@@ -96,7 +100,7 @@ jobs:
         env:
           SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
           ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
-          COMMIT_HASH: ${GITHUB_SHA}
+          COMMIT_HASH: ${{ steps.vars.outputs.sha }}
 
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
