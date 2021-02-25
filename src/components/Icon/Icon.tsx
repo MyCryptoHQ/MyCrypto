@@ -286,7 +286,7 @@ const SImg = styled.img<StylingProps>`
 
 // This specific svg is designed with strokes instead of fill
 // so we give make sure the fill is not set.
-const SWebsiteIcon = styled(SInlineSVG)<StylingProps>`
+const SStrokeIcon = styled(SInlineSVG)<StylingProps>`
   &&&& {
     fill: transparent;
   }
@@ -297,7 +297,7 @@ const SWebsiteIcon = styled(SInlineSVG)<StylingProps>`
 `;
 
 interface Props
-  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SWebsiteIcon>, 'src'> {
+  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
   type: TIcon;
 }
 
@@ -307,8 +307,8 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
   typeof pngIcons[type as PngIcons] !== 'undefined';
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website') {
-    return <SWebsiteIcon src={svgIcons[type]} color={color} {...props} />;
+  if (type === 'website' || type === 'faucet-icon') {
+    return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {
