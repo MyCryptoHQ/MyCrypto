@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 
 import {
-  addAccountsToFavorites,
   addExcludedAsset,
   removeExcludedAsset,
   resetFavoritesTo,
@@ -17,8 +16,6 @@ import { DataContext } from '../DataManager';
 export interface ISettingsContext {
   settings: ISettings;
   language: string;
-  addAccountToFavorites(uuid: TUuid): void;
-  addMultipleAccountsToFavorites(uuids: TUuid[]): void;
   addAssetToExclusionList(uuid: TUuid): void;
   removeAssetfromExclusionList(uuid: TUuid): void;
   updateSettingsAccounts(accounts: TUuid[]): void;
@@ -32,14 +29,6 @@ function useSettings() {
   const { settings } = useContext(DataContext);
   const dispatch = useDispatch();
   const language = settings.language || '';
-
-  const addAccountToFavorites = (account: TUuid) => {
-    dispatch(addAccountsToFavorites([account]));
-  };
-
-  const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
-    dispatch(addAccountsToFavorites(accounts));
-  };
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {
     dispatch(resetFavoritesTo(accounts));
@@ -68,8 +57,6 @@ function useSettings() {
   return {
     settings,
     language,
-    addAccountToFavorites,
-    addMultipleAccountsToFavorites,
     addAssetToExclusionList,
     removeAssetfromExclusionList,
     updateSettingsAccounts,

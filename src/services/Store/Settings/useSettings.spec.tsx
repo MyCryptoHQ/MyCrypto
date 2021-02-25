@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { Fiats } from '@config';
-import { fAccount, fAccounts, fAssets, fRates, fSettings } from '@fixtures';
+import { fAccounts, fAssets, fRates, fSettings } from '@fixtures';
 import { ISettings } from '@types';
 
 import { DataContext, IDataContext } from '../DataManager';
@@ -26,21 +26,6 @@ describe('useSettings', () => {
     const { result } = renderUseSettings({ settings: fSettings });
     expect(result.current.settings).toEqual(fSettings);
     expect(result.current.language).toBe(fSettings.language);
-  });
-
-  it('addAccountToFavorites() should call updateAll', () => {
-    const mockDispatch = mockUseDispatch();
-    const { result } = renderUseSettings({ settings: fSettings });
-    result.current.addAccountToFavorites(fAccount.uuid);
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload([fAccount.uuid]));
-  });
-
-  it('addMultipleAccountsToFavorites() should call updateAll', () => {
-    const mockDispatch = mockUseDispatch();
-    const { result } = renderUseSettings({ settings: fSettings });
-    const uuids = fAccounts.map((a) => a.uuid);
-    result.current.addMultipleAccountsToFavorites(uuids);
-    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(uuids));
   });
 
   it('addAssetToExclusionList() should call updateAll', () => {

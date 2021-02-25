@@ -130,25 +130,6 @@ const HeaderAlignment = styled.div`
   }
 `;
 
-interface IFavoriteProps {
-  favorited: boolean;
-}
-
-const FavoriteButton = styled(Button)`
-  span {
-    span {
-      svg {
-        path {
-          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.WHITE)};
-          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : COLORS.GREY)};
-        }
-      }
-    }
-  }
-  align-self: flex-start;
-  margin-left: 1em;
-`;
-
 const DeleteButton = styled(Button)`
   align-self: flex-end;
   display: flex;
@@ -172,7 +153,6 @@ interface AccountListProps {
   className?: string;
   currentsOnly?: boolean;
   deletable?: boolean;
-  favoritable?: boolean;
   copyable?: boolean;
   privacyCheckboxEnabled?: boolean;
   dashboard?: boolean;
@@ -183,7 +163,6 @@ export default function AccountList(props: AccountListProps) {
     accounts: displayAccounts,
     className,
     deletable,
-    favoritable,
     copyable,
     privacyCheckboxEnabled = false,
     dashboard
@@ -191,7 +170,6 @@ export default function AccountList(props: AccountListProps) {
   const { deleteAccountFromCache, restoreDeletedAccount, accountRestore } = useContext(
     StoreContext
   );
-  const { updateAccount } = useAccounts();
   const [deletingIndex, setDeletingIndex] = useState<number | undefined>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
@@ -249,11 +227,9 @@ export default function AccountList(props: AccountListProps) {
         {...BuildAccountTable(
           getDisplayAccounts(),
           deleteAccountFromCache,
-          updateAccount,
           setUndoDeletingIndexes,
           restoreDeletedAccount,
           deletable,
-          favoritable,
           copyable,
           privacyCheckboxEnabled,
           overlayRows,
@@ -337,11 +313,9 @@ const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
 const BuildAccountTable = (
   accounts: StoreAccount[],
   deleteAccount: (a: IAccount) => void,
-  updateAccount: (u: TUuid, a: IAccount) => void,
   setUndoDeletingIndexes: Dispatch<SetStateAction<[number, TUuid][]>>,
   restoreDeletedAccount: (accountId: TUuid) => void,
   deletable?: boolean,
-  favoritable?: boolean,
   copyable?: boolean,
   privacyCheckboxEnabled?: boolean,
   overlayRows?: [number[], [number, TUuid][]],
@@ -572,23 +546,6 @@ const BuildAccountTable = (
             }
             icon="exit"
           />
-        ];
-      }
-
-      if (favoritable) {
-        bodyContent = [
-          <FavoriteButton
-            key={index}
-            icon="star"
-            favorited={account.favorite ? account.favorite : false}
-            onClick={() =>
-              updateAccount(account.uuid, {
-                ...account,
-                favorite: !account.favorite
-              })
-            }
-          />,
-          ...bodyContent
         ];
       }
 
