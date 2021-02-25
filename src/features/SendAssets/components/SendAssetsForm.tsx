@@ -31,7 +31,9 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND,
-  getWalletConfig
+  getKBHelpArticle,
+  getWalletConfig,
+  KB_HELP_ARTICLE
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
@@ -128,9 +130,10 @@ const getTxFeeValidation = ({
       return (
         <InlineMessage
           type={InlineMessageType.WARNING}
-          value={translateRaw('WARNING_TRANSACTION_FEE', {
+          value={translate('WARNING_TRANSACTION_FEE', {
             $amount: `${fiat.symbol}${amount}`,
-            $fee: `${fiat.symbol}${fee}`
+            $fee: `${fiat.symbol}${fee}`,
+            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
           })}
         />
       );
@@ -138,22 +141,29 @@ const getTxFeeValidation = ({
       return (
         <InlineMessage
           type={InlineMessageType.WARNING}
-          value={translate('TRANSACTION_FEE_NOTICE', { $fee: `${fiat.symbol}${fee}` })}
+          value={translate('TRANSACTION_FEE_NOTICE', {
+            $fee: `${fiat.symbol}${fee}`,
+            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
+          })}
         />
       );
     case 'Error-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `${fiat.symbol}${fee}` })}
+          value={translate('ERROR_HIGH_TRANSACTION_FEE_HIGH', {
+            $fee: `${fiat.symbol}${fee}`,
+            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
+          })}
         />
       );
     case 'Error-Very-High-Tx-Fee':
       return (
         <InlineMessage
           type={InlineMessageType.ERROR}
-          value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
-            $fee: `${fiat.symbol}${fee}`
+          value={translate('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
+            $fee: `${fiat.symbol}${fee}`,
+            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
           })}
         />
       );
