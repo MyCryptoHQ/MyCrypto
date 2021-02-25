@@ -8,7 +8,7 @@ import { fAccounts, fAssets, fContacts, fNetworks, fRates, fSettings } from '@fi
 import { DataContext, StoreProvider } from '@services';
 import { AppState } from '@store';
 import { translateRaw } from '@translations';
-import { ISettings, StoreAccount } from '@types';
+import { ExtendedAsset, ISettings, StoreAccount } from '@types';
 
 import { WalletBreakdown } from './WalletBreakdown';
 
@@ -54,7 +54,9 @@ function getComponent({
 describe('WalletBreakdown', () => {
   it('can render', async () => {
     const { getByText, getAllByText, container, getByTestId } = getComponent({
-      initialState: { database: { assets: [] } }
+      initialState: {
+        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
+      }
     });
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_TITLE'))).toBeInTheDocument();
@@ -85,7 +87,9 @@ describe('WalletBreakdown', () => {
   it('can render empty state', async () => {
     const { getByText } = getComponent({
       settings: { ...fSettings, dashboardAccounts: [] },
-      initialState: { database: { assets: [] } }
+      initialState: {
+        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
+      }
     });
 
     expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
@@ -93,7 +97,9 @@ describe('WalletBreakdown', () => {
 
   it('can switch to details view', async () => {
     const { getByText, getAllByText } = getComponent({
-      initialState: { database: { assets: [] } }
+      initialState: {
+        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
+      }
     });
 
     const detailsButton = getByText(translateRaw('WALLET_BREAKDOWN_MORE'));
@@ -116,7 +122,12 @@ describe('WalletBreakdown', () => {
 
   it('can render loading state', async () => {
     const { getAllByTestId } = getComponent({
-      initialState: { database: { assets: [] }, tokenScanning: { scanning: true } }
+      initialState: {
+        database: {
+          assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]>
+        },
+        tokenScanning: { scanning: true }
+      }
     });
 
     getAllByTestId('skeleton-loader').forEach((l) => expect(l).toBeInTheDocument());
