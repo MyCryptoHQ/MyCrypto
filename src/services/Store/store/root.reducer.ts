@@ -5,10 +5,10 @@ import { select, takeLatest } from 'redux-saga/effects';
 
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
-import { DataStore } from '@types';
 
 import { canImport, migrateConfig } from './helpers';
 import importSlice from './import.slice';
+import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
 import { createPersistReducer, createVaultReducer } from './persist.config';
 import persistenceSlice from './persistence.slice';
@@ -28,7 +28,9 @@ const reducers = combineReducers({
 /**
  * Actions
  */
-export const appReset = createAction<DataStore>('app/Reset');
+export const appReset = createAction('app/Reset', (newDb = initialLegacyState) => ({
+  payload: newDb
+}));
 
 const rootReducer = (state = reducers(undefined, { type: '' }), action: AnyAction) => {
   switch (action.type) {

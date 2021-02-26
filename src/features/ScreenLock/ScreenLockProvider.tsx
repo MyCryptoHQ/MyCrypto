@@ -5,20 +5,22 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext } from '@services/Store';
 import {
+  appReset as appResetAction,
   AppState,
   clearEncryptedData,
   decrypt,
   encrypt,
   exportState,
   getEncryptedData,
+  getInactivityTimer,
+  getPassword,
   importState,
-  isEncrypted
+  isEncrypted,
+  setPassword
 } from '@store';
 import { translateRaw } from '@translations';
-import { hashPassword, withContext } from '@utils';
-import { pipe } from '@vendor';
+import { hashPassword } from '@utils';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -47,7 +49,7 @@ const onDemandLockCountDownDuration = 5;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & Props, State> {
+class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
   public state: State = {
     locking: false,
     locked: false,
@@ -64,7 +66,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 
   // causes prop changes that are being observed in componentDidUpdate
   public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
-    const { setUnlockPassword } = this.props;
+    const { setPassword } = this.props;
     try {
       // If password is not hashed yet, hash it
       if (!hashed) {
@@ -73,7 +75,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
           (prevState) => ({ ...prevState, shouldAutoLock: true }),
           () => {
             // Initiates encryption in componentDidUpdate
-            setUnlockPassword(passwordHash);
+            setPassword(passwordHash);
           }
         );
       } else {
@@ -130,8 +132,8 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 
   // Wipes both DBs in case of forgotten pw
   public resetAll = async () => {
-    const { resetAppDb } = this.props;
-    resetAppDb();
+    const { appReset } = this.props;
+    appReset();
     this.resetEncrypted();
   };
 
@@ -154,9 +156,9 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   };
 
   public resetInactivityTimer = () => {
-    const { settings } = this.props;
+    const { inactivityTimer: timer } = this.props;
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
+    inactivityTimer = setTimeout(this.startLockCountdown, timer);
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
@@ -264,12 +266,24 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 const mapStateToProps = (state: AppState) => ({
   exportState: exportState(state),
   isEncrypted: isEncrypted(state),
-  getEncryptedData: getEncryptedData(state)
+  getEncryptedData: getEncryptedData(state),
+  password: getPassword(state),
+  inactivityTimer: getInactivityTimer(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
-  bindActionCreators({ importState, clearEncryptedData, encrypt, decrypt }, dispatch);
+  bindActionCreators(
+    {
+      importState,
+      clearEncryptedData,
+      encrypt,
+      decrypt,
+      setPassword,
+      appReset: appResetAction
+    },
+    dispatch
+  );
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-export default pipe(withRouter, withContext(DataContext), connector)(ScreenLockProvider);
+export default withRouter(connector(ScreenLockProvider));
