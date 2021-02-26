@@ -48,7 +48,7 @@ export function* pollingWorker(payload: IPollingPayload) {
 
       yield put(successAction(formatted)); // Calling succes action on request success
 
-      yield delay(params.interval); // Calling delay on request success
+      yield delay(params.interval); // Calling delay after request success
     } catch (err) {
       const shouldRetry =
         params.retryOnFailure && params.retries ? retriesCount < params.retries : false; // Determine if the polling should retry on error
