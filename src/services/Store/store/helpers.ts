@@ -111,7 +111,7 @@ export const destructureCoinGeckoIds = (
 ): IRates => {
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
-  const updateRateObj = (acc: Record<string, string>, curValue: TTicker): IRates =>
+  const updateRateObj = (acc: IRates, curValue: TTicker): IRates =>
     Object.entries(coinGeckoIdMapping).reduce((accum, [assetUuid, coinGeckoId]) => {
       if (coinGeckoId === curValue) {
         accum[assetUuid] = rates[curValue];
