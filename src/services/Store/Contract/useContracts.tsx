@@ -1,12 +1,15 @@
-import { useContext } from 'react';
-
-import { DataContext } from '@services/Store';
-import { createContract as createAContract, destroyContract, useDispatch } from '@store';
+import {
+  createContract as createAContract,
+  destroyContract,
+  selectContracts,
+  useDispatch,
+  useSelector
+} from '@store';
 import { Contract, ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
-  const { contracts } = useContext(DataContext);
+  const contracts = useSelector(selectContracts);
   const dispatch = useDispatch();
 
   /**

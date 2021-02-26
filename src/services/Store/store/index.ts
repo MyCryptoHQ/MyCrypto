@@ -30,7 +30,7 @@ export {
   updateUserActionStateByName,
   selectUserActions
 } from './userAction.slice';
-export { createContract, destroyContract } from './contract.slice';
+export { createContract, destroyContract, selectContracts } from './contract.slice';
 export {
   createNetworks,
   createNetwork,
