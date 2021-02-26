@@ -1,13 +1,12 @@
-import { useContext } from 'react';
-
 import {
   addAssetsFromAPI as addAssetsFromAPIRedux,
   createAsset as createAssetRedux,
-  useDispatch
+  getAssets,
+  useDispatch,
+  useSelector
 } from '@store';
 import { ExtendedAsset, TUuid } from '@types';
 
-import { DataContext } from '../DataManager';
 import { getAssetByUUID as getAssetByUUIDFunc } from './helpers';
 
 export interface IAssetContext {
@@ -18,7 +17,7 @@ export interface IAssetContext {
 }
 
 function useAssets() {
-  const { assets } = useContext(DataContext);
+  const assets = useSelector(getAssets);
   const dispatch = useDispatch();
 
   const createAsset = (asset: ExtendedAsset) => dispatch(createAssetRedux(asset));
