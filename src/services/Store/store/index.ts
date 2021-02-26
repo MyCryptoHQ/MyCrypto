@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 export { default as createStore } from './store';
 export { importState, exportState, AppState } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
-export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
 export { createNotification, updateNotification } from './notification.slice';
 export { setPassword, getPassword } from './password.slice';
@@ -92,7 +91,7 @@ export {
   getEncryptedData,
   isEncrypted
 } from './vault.slice';
-export { getAppState } from './selectors';
+export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
 export { appReset, default as rootReducer } from './root.reducer';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
