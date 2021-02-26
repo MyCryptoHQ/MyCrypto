@@ -1,17 +1,15 @@
-import { useContext } from 'react';
-
 import {
   addExcludedAsset,
+  getSettings,
   removeExcludedAsset,
   resetFavoritesTo,
   setFiat,
   setLanguage,
   setRates,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
-
-import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {
   settings: ISettings;
@@ -26,7 +24,7 @@ export interface ISettingsContext {
 }
 
 function useSettings() {
-  const { settings } = useContext(DataContext);
+  const settings = useSelector(getSettings);
   const dispatch = useDispatch();
   const language = settings.language || '';
 
