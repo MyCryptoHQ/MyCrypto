@@ -34,7 +34,6 @@ export function* pollingSaga() {
   yield takeLatest(pollStart.type, pollingSagaWatcher);
 }
 
-// @todo: Enhance polling
 // @todo: Figure out multiple polling instances
 export function* pollingWorker(payload: IPollingPayload) {
   const { promise, params, successAction, errorAction, transformer } = payload;
@@ -52,7 +51,7 @@ export function* pollingWorker(payload: IPollingPayload) {
       yield delay(params.interval); // Calling delay on request success
     } catch (err) {
       const shouldRetry =
-        params.retryOnFailure && params.retries ? retriesCount < params.retries : true; // Determine if the polling should retry on error
+        params.retryOnFailure && params.retries ? retriesCount < params.retries : false; // Determine if the polling should retry on error
 
       if (shouldRetry && params.retryAfter) {
         ++retriesCount;

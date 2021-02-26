@@ -62,7 +62,10 @@ export function* pollRates() {
 
   const payload: IPollingPayload = {
     params: {
-      interval: 9000
+      interval: 9000,
+      retryOnFailure: true,
+      retries: 3,
+      retryAfter: 3000
     },
     successAction: slice.actions.setRates,
     promise: async () =>
