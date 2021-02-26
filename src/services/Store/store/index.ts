@@ -4,7 +4,7 @@ export { default as createStore } from './store';
 export { importState, exportState, AppState } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
-export { createNotification, updateNotification } from './notification.slice';
+export { createNotification, updateNotification, selectNotifications } from './notification.slice';
 export { setPassword, getPassword } from './password.slice';
 export {
   createAccount,
