@@ -21,7 +21,8 @@ export {
   createContact,
   destroyContact,
   updateContact,
-  createOrUpdateContact
+  createOrUpdateContact,
+  selectContacts
 } from './contact.slice';
 export {
   createUserAction,

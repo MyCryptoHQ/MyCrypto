@@ -50,7 +50,10 @@ export const {
 } = slice.actions;
 
 export const selectContacts = createSelector(getAppState, (s) => s[slice.name]);
+<<<<<<< HEAD
 export const selectContact = (uuid: TUuid) =>
   createSelector(selectContacts, find(propEq('uuid', uuid)));
+=======
+>>>>>>> 5ecc45ece (Remove DataContext from useContacts)
 
 export default slice;
