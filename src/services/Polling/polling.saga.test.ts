@@ -23,15 +23,10 @@ const pollingParams: IPollingPayload = {
 
 describe('PollingSaga', () => {
   it('pollingSaga(): calls pollingSagaWatcher on pollStart dispatch', () => {
-    return (
-      expectSaga(pollingSagaWatcher, pollStart(pollingParams))
-        .call(pollingParams.promise)
-        .put(pollingParams.successAction(data))
-        // .delay(pollingParams.params.interval)
-        // .call(pollingParams.promise)
-        // .put(pollingParams.successAction(data))
-        .silentRun()
-    );
+    return expectSaga(pollingSagaWatcher, pollStart(pollingParams))
+      .call(pollingParams.promise)
+      .put(pollingParams.successAction(data))
+      .silentRun();
   });
 
   it('pollingSaga(): stops polling on pollStop dispatch', () => {
