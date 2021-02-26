@@ -3,7 +3,7 @@ import React from 'react';
 import { ProvidersWrapper, simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetworks, fRopDAI, fSettings } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -47,23 +47,23 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
             contracts: [],
             userActions: [],
             settings: fSettings,
-            networks: fNetworks
+            networks: fNetworks,
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts,
-                userAssets: fAccounts.flatMap((a) => a.assets)
-              } as any) as any
-            }
-          >
-            <SwapAssets {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts,
+              userAssets: fAccounts.flatMap((a) => a.assets),
+              trackedAssets: []
+            } as any) as any
+          }
+        >
+          <SwapAssets {...props} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </ProvidersWrapper>
   );

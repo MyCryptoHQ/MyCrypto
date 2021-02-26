@@ -4,7 +4,6 @@ import mockAxios from 'jest-mock-axios';
 import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fNetworks, fSettings, fSwapQuote } from '@fixtures';
-import { RatesContext } from '@services/Rates';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
@@ -21,24 +20,24 @@ function getComponent() {
             contracts: [],
             userActions: [],
             settings: fSettings,
-            networks: fNetworks
+            networks: fNetworks,
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts,
-                userAssets: fAccounts.flatMap((a) => a.assets),
-                getDefaultAccount: () => undefined
-              } as any) as any
-            }
-          >
-            <SwapAssetsFlow />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts,
+              userAssets: fAccounts.flatMap((a) => a.assets),
+              getDefaultAccount: () => undefined,
+              trackedAssets: []
+            } as any) as any
+          }
+        >
+          <SwapAssetsFlow />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </ProvidersWrapper>
   );
