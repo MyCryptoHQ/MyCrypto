@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 
+import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
 import { Button, LinkApp } from '@components';
@@ -39,8 +40,6 @@ const resetFlow = noOp;
 const handleTxCancelRedirect = noOp;
 const handleTxSpeedUpRedirect = noOp;
 
-export default { title: 'Features/TxReceipt', components: TxReceiptUI };
-
 const wrapInProvider = (component: ReactNode) => (
   <ProvidersWrapper>
     <DataContext.Provider value={({ userActions: [], assets: fAssets } as unknown) as IDataContext}>
@@ -49,119 +48,124 @@ const wrapInProvider = (component: ReactNode) => (
   </ProvidersWrapper>
 );
 
-export const transactionReceiptPending = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txStatus={ITxStatus.PENDING}
-      timestamp={0}
-      resetFlow={resetFlow}
-      assetRate={assetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txConfig={fTxConfig}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptPending = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txStatus={ITxStatus.PENDING}
+        timestamp={0}
+        resetFlow={resetFlow}
+        assetRate={assetRate}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        txConfig={fTxConfig}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
-export const transactionReceipt = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txStatus={txStatus}
-      displayTxReceipt={fTxReceipt}
-      timestamp={timestamp}
-      resetFlow={resetFlow}
-      assetRate={assetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txConfig={fTxConfig}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceipt = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txStatus={txStatus}
+        displayTxReceipt={fTxReceipt}
+        timestamp={timestamp}
+        resetFlow={resetFlow}
+        assetRate={assetRate}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        txConfig={fTxConfig}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
-export const transactionReceiptToken = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txStatus={txStatus}
-      displayTxReceipt={fERC20Web3TxReceipt}
-      timestamp={timestamp}
-      resetFlow={resetFlow}
-      assetRate={assetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptToken = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txStatus={txStatus}
+        displayTxReceipt={fERC20Web3TxReceipt}
+        timestamp={timestamp}
+        resetFlow={resetFlow}
+        assetRate={assetRate}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
 const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
 
-export const transactionReceiptDeFiZap = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txStatus={txStatus}
-      txType={ITxType.DEFIZAP}
-      customComponent={() => <ZapReceiptBanner zapSelected={zapSelected} />}
-      displayTxReceipt={fERC20Web3TxReceipt}
-      timestamp={timestamp}
-      resetFlow={resetFlow}
-      assetRate={assetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptDeFiZap = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txStatus={txStatus}
+        txType={ITxType.DEFIZAP}
+        customComponent={() => <ZapReceiptBanner zapSelected={zapSelected} />}
+        displayTxReceipt={fERC20Web3TxReceipt}
+        timestamp={timestamp}
+        resetFlow={resetFlow}
+        assetRate={assetRate}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        txConfig={{ ...fERC20NonWeb3TxConfigJSON, network: fAccount.network }}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
 const membershipSelected = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
 
-export const transactionReceiptMembership = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txReceipt={fTxReceipt}
-      txConfig={fTxConfig}
-      txType={ITxType.PURCHASE_MEMBERSHIP}
-      customComponent={() => <MembershipReceiptBanner membershipSelected={membershipSelected} />}
-      timestamp={timestamp}
-      txStatus={txStatus}
-      assetRate={assetRate}
-      displayTxReceipt={fERC20Web3TxReceipt}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      contractName={'MyCrypto Membership'}
-      resetFlow={resetFlow}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptMembership = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txReceipt={fTxReceipt}
+        txConfig={fTxConfig}
+        txType={ITxType.PURCHASE_MEMBERSHIP}
+        customComponent={() => <MembershipReceiptBanner membershipSelected={membershipSelected} />}
+        timestamp={timestamp}
+        txStatus={txStatus}
+        assetRate={assetRate}
+        displayTxReceipt={fERC20Web3TxReceipt}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        contractName={'MyCrypto Membership'}
+        resetFlow={resetFlow}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
 const swapDisplay: SwapDisplayData = {
   fromAsset: fAssets[0],
@@ -170,81 +174,92 @@ const swapDisplay: SwapDisplayData = {
   toAmount: bigify('0.5')
 };
 
-export const transactionReceiptSwap = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txReceipt={fTxReceipt}
-      txConfig={fTxConfig}
-      txType={ITxType.PURCHASE_MEMBERSHIP}
-      customComponent={() => (
-        <SwapFromToDiagram
-          fromSymbol={swapDisplay.fromAsset.ticker}
-          toSymbol={swapDisplay.toAsset.ticker}
-          fromAmount={swapDisplay.fromAmount.toString()}
-          toAmount={swapDisplay.toAmount.toString()}
-          fromUUID={swapDisplay.fromAsset.uuid}
-          toUUID={swapDisplay.toAsset.uuid}
-        />
-      )}
-      timestamp={timestamp}
-      txStatus={txStatus}
-      assetRate={assetRate}
-      displayTxReceipt={fERC20Web3TxReceipt}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      resetFlow={resetFlow}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptSwap = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txReceipt={fTxReceipt}
+        txConfig={fTxConfig}
+        txType={ITxType.PURCHASE_MEMBERSHIP}
+        customComponent={() => (
+          <SwapFromToDiagram
+            fromSymbol={swapDisplay.fromAsset.ticker}
+            toSymbol={swapDisplay.toAsset.ticker}
+            fromAmount={swapDisplay.fromAmount.toString()}
+            toAmount={swapDisplay.toAmount.toString()}
+            fromUUID={swapDisplay.fromAsset.uuid}
+            toUUID={swapDisplay.toAsset.uuid}
+          />
+        )}
+        timestamp={timestamp}
+        txStatus={txStatus}
+        assetRate={assetRate}
+        displayTxReceipt={fERC20Web3TxReceipt}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        resetFlow={resetFlow}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
 
-export const transactionReceiptFaucet = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txReceipt={fTxReceipt}
-      txConfig={fTxConfig}
-      txType={ITxType.FAUCET}
-      customBroadcastText={translateRaw('FAUCET_SUCCESS')}
-      completeButton={() => (
-        <LinkApp
-          href={generateTweet(
-            translateRaw('FAUCET_TWEET', {
-              $faucet_url: MYCRYPTO_FAUCET_LINK
-            })
-          )}
-          isExternal={true}
-        >
-          <Button colorScheme={'inverted'} fullwidth={true} className="TransactionReceipt-tweet">
-            <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
-            <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
-          </Button>
-        </LinkApp>
-      )}
-      customComponent={() => (
-        <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
-      )}
-      timestamp={timestamp}
-      queryStringsDisabled={true}
-      txStatus={ITxStatus.PENDING}
-      assetRate={assetRate}
-      displayTxReceipt={fERC20Web3TxReceipt}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-      resetFlow={resetFlow}
-      baseAssetRate={assetRate}
-      fiat={Fiats.USD}
-      handleTxCancelRedirect={handleTxCancelRedirect}
-      handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
-    />
-  </div>
-);
+const TransactionReceiptFaucet = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <TxReceiptUI
+        settings={fSettings}
+        txReceipt={fTxReceipt}
+        txConfig={fTxConfig}
+        txType={ITxType.FAUCET}
+        customBroadcastText={translateRaw('FAUCET_SUCCESS')}
+        completeButton={() => (
+          <LinkApp
+            href={generateTweet(
+              translateRaw('FAUCET_TWEET', {
+                $faucet_url: MYCRYPTO_FAUCET_LINK
+              })
+            )}
+            isExternal={true}
+          >
+            <Button colorScheme={'inverted'} fullwidth={true} className="TransactionReceipt-tweet">
+              <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
+              <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
+            </Button>
+          </LinkApp>
+        )}
+        customComponent={() => (
+          <FaucetReceiptBanner network={fNetworks[1]} received="1000000000000000000" />
+        )}
+        timestamp={timestamp}
+        queryStringsDisabled={true}
+        txStatus={ITxStatus.PENDING}
+        assetRate={assetRate}
+        displayTxReceipt={fERC20Web3TxReceipt}
+        senderContact={senderContact}
+        recipientContact={recipientContact}
+        sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
+        resetFlow={resetFlow}
+        baseAssetRate={assetRate}
+        fiat={Fiats.USD}
+        handleTxCancelRedirect={handleTxCancelRedirect}
+        handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
+      />
+    </div>
+  );
+
+storiesOf('Features/TxReceipt', module)
+  .add('Transaction Receipt Pending', () => TransactionReceiptPending())
+  .add('Transaction Receipt', () => TransactionReceipt())
+  .add('Transaction Receipt Token', () => TransactionReceiptToken())
+  .add('Transaction Receipt DefiZap', () => TransactionReceiptDeFiZap())
+  .add('Transaction Receipt Membership', () => TransactionReceiptMembership())
+  .add('Transaction Receipt Swap', () => TransactionReceiptSwap())
+  .add('Transaction Receipt Faucet', () => TransactionReceiptFaucet());
 
 // Uncomment this for Figma support:
 

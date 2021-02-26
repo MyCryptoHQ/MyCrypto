@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { storiesOf } from '@storybook/react';
+
 import { DAIUUID, ETHUUID } from '@config';
 import { fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
 import { RatesContext } from '@services';
@@ -9,8 +11,6 @@ import { bigify, noOp } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwap from './ConfirmSwap';
-
-export default { title: 'Features/ConfirmSwap', component: ConfirmSwap };
 
 const wrapInProvider = (component: ReactNode) => (
   <DataContext.Provider
@@ -50,12 +50,15 @@ const assetPair = {
   rate: bigify('0.0045')
 };
 
-export const ethToDai = wrapInProvider(
-  <ConfirmSwap
-    account={fAccounts[0]}
-    flowConfig={assetPair}
-    onComplete={noOp}
-    transactions={fTxParcels}
-    currentTxIdx={0}
-  />
-);
+const ethToDai = () =>
+  wrapInProvider(
+    <ConfirmSwap
+      account={fAccounts[0]}
+      flowConfig={assetPair}
+      onComplete={noOp}
+      transactions={fTxParcels}
+      currentTxIdx={0}
+    />
+  );
+
+storiesOf('Features/ConfirmSwap', module).add('Eth To Dai', () => ethToDai());

@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { storiesOf } from '@storybook/react';
+
 import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { stepsContent } from '@features/SwapAssets/config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
@@ -38,48 +40,52 @@ const wrapInProvider = (component: ReactNode) => (
   </DataContext.Provider>
 );
 
-export default { title: 'Features/MultiTxReceipt', components: MultiTxReceipt };
+const SwapTransactionReceipt = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <MultiTxReceipt
+        txType={ITxType.SWAP}
+        transactions={fTxParcels}
+        transactionsConfigs={transactionsConfigs}
+        steps={stepsContent}
+        account={fAccount}
+        network={fNetwork}
+        resetFlow={resetFlow}
+        onComplete={resetFlow}
+        customComponent={() => (
+          <SwapFromToDiagram
+            fromSymbol={swapDisplay.fromAsset.ticker}
+            toSymbol={swapDisplay.toAsset.ticker}
+            fromAmount={swapDisplay.fromAmount.toString()}
+            toAmount={swapDisplay.toAmount.toString()}
+            fromUUID={swapDisplay.fromAsset.uuid}
+            toUUID={swapDisplay.toAsset.uuid}
+          />
+        )}
+        baseAssetRate={baseAssetRate}
+        fiat={Fiats.USD}
+      />
+    </div>
+  );
 
-export const swapTransactionReceipt = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <MultiTxReceipt
-      txType={ITxType.SWAP}
-      transactions={fTxParcels}
-      transactionsConfigs={transactionsConfigs}
-      steps={stepsContent}
-      account={fAccount}
-      network={fNetwork}
-      resetFlow={resetFlow}
-      onComplete={resetFlow}
-      customComponent={() => (
-        <SwapFromToDiagram
-          fromSymbol={swapDisplay.fromAsset.ticker}
-          toSymbol={swapDisplay.toAsset.ticker}
-          fromAmount={swapDisplay.fromAmount.toString()}
-          toAmount={swapDisplay.toAmount.toString()}
-          fromUUID={swapDisplay.fromAsset.uuid}
-          toUUID={swapDisplay.toAsset.uuid}
-        />
-      )}
-      baseAssetRate={baseAssetRate}
-      fiat={Fiats.USD}
-    />
-  </div>
-);
+const TokenMigrationTransactionReceipt = () =>
+  wrapInProvider(
+    <div className="sb-container" style={{ maxWidth: '620px' }}>
+      <MultiTxReceipt
+        txType={ITxType.REP_TOKEN_MIGRATION}
+        transactions={[fTxParcels[0], fTxParcels[0]]}
+        transactionsConfigs={transactionsConfigs}
+        steps={stepsContent}
+        account={fAccount}
+        network={fNetwork}
+        resetFlow={resetFlow}
+        onComplete={resetFlow}
+        baseAssetRate={baseAssetRate}
+        fiat={Fiats.USD}
+      />
+    </div>
+  );
 
-export const tokenMigrationTransactionReceipt = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <MultiTxReceipt
-      txType={ITxType.REP_TOKEN_MIGRATION}
-      transactions={[fTxParcels[0], fTxParcels[0]]}
-      transactionsConfigs={transactionsConfigs}
-      steps={stepsContent}
-      account={fAccount}
-      network={fNetwork}
-      resetFlow={resetFlow}
-      onComplete={resetFlow}
-      baseAssetRate={baseAssetRate}
-      fiat={Fiats.USD}
-    />
-  </div>
-);
+storiesOf('Features/MultiTxReceipt', module)
+  .add('Swap Transaction Receipt', () => SwapTransactionReceipt())
+  .add('Token Migration Transaction Receipt', () => TokenMigrationTransactionReceipt());

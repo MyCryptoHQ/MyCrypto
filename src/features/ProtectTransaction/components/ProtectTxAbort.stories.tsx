@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
-import { FeatureFlagProvider } from '@services/FeatureFlagProvider';
+import { FeatureFlagProvider } from '@services/FeatureFlag';
 import { DataProvider } from '@services/Store';
 import { noOp } from '@utils';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import AppProviders from '@AppProviders';
 import { storiesOf } from '@storybook/react';
 import { ProvidersWrapper } from 'test-utils';
 
