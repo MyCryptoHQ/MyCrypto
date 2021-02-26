@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { importState, exportState, AppState, getPassword } from './root.reducer';
+export { importState, exportState, AppState } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
 export { createNotification, updateNotification } from './notification.slice';
-export { setPassword } from './password.slice';
+export { setPassword, getPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
