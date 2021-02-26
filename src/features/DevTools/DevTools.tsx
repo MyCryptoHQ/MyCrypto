@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Checkbox, LinkApp } from '@components';
 import { useDevTools, useFeatureFlags } from '@services';
 import { FeatureFlag } from '@services/FeatureFlag';
-import { DataContext } from '@services/Store';
+import { appReset, useDispatch } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 
@@ -51,11 +51,16 @@ const Wrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const DBTools = () => {
-  const { resetAppDb } = useContext(DataContext);
+  const dispatch = useDispatch();
   return (
     <div style={{ marginBottom: '1em' }}>
       You can choose to
-      <LinkApp href="#" onClick={() => resetAppDb()}>
+      <LinkApp
+        href="#"
+        onClick={() => {
+          dispatch(appReset());
+        }}
+      >
         {' '}
         Reset
       </LinkApp>{' '}
