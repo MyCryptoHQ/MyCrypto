@@ -15,16 +15,20 @@ import { WalletBreakdown } from './WalletBreakdown';
 function getComponent({
   settings = fSettings,
   accounts = fAccounts,
+  assets = [],
   initialState
 }: {
   settings?: ISettings;
   accounts?: StoreAccount[];
+  assets?: ExtendedAsset[];
   initialState?: DeepPartial<AppState>;
 }) {
   return simpleRender(
     <ProvidersWrapper
       initialState={
-        ({ ...initialState, ...mockAppState({ accounts }) } as unknown) as DeepPartial<AppState>
+        ({ ...initialState, ...mockAppState({ accounts, assets }) } as unknown) as DeepPartial<
+          AppState
+        >
       }
     >
       <MemoryRouter>
@@ -54,9 +58,7 @@ function getComponent({
 describe('WalletBreakdown', () => {
   it('can render', async () => {
     const { getByText, getAllByText, container, getByTestId } = getComponent({
-      initialState: {
-        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
-      }
+      assets: fAssets
     });
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_TITLE'))).toBeInTheDocument();
@@ -78,7 +80,7 @@ describe('WalletBreakdown', () => {
   it('can render no assets state', async () => {
     const { getByText } = getComponent({
       accounts: [{ ...fAccounts[0], assets: [] }],
-      initialState: { database: { assets: [] } }
+      assets: []
     });
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_NO_ASSETS'))).toBeInTheDocument();
@@ -87,9 +89,7 @@ describe('WalletBreakdown', () => {
   it('can render empty state', async () => {
     const { getByText } = getComponent({
       settings: { ...fSettings, dashboardAccounts: [] },
-      initialState: {
-        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
-      }
+      assets: fAssets
     });
 
     expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
@@ -97,9 +97,7 @@ describe('WalletBreakdown', () => {
 
   it('can switch to details view', async () => {
     const { getByText, getAllByText } = getComponent({
-      initialState: {
-        database: { assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]> }
-      }
+      assets: fAssets
     });
 
     const detailsButton = getByText(translateRaw('WALLET_BREAKDOWN_MORE'));
@@ -122,10 +120,8 @@ describe('WalletBreakdown', () => {
 
   it('can render loading state', async () => {
     const { getAllByTestId } = getComponent({
+      assets: fAssets,
       initialState: {
-        database: {
-          assets: ([...fAssets] as unknown) as DeepPartial<ExtendedAsset[]>
-        },
         tokenScanning: { scanning: true }
       }
     });
