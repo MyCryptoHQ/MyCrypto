@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
-import { Box, Button, ContactLookupField, Heading } from '@components';
+import { Body, Box, Button, ContactLookupField, Heading } from '@components';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
@@ -18,13 +18,6 @@ const FormWrapper = styled(Form)`
 
 const ButtonWrapper = styled(Button)`
   margin-top: 4em;
-`;
-
-const Disclaimer = styled.p`
-  line-height: 24px;
-  padding-top: 16px;
-  text-align: center;
-  font-size: 18px;
 `;
 
 interface Props {
@@ -64,7 +57,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
-      <Disclaimer>{translate('VIEW_ONLY_ADDR_DISCLAIMER')}</Disclaimer>
+      <Body textAlign="center" fontSize="18px" paddingTop="16px">
+        {translate('VIEW_ONLY_ADDR_DISCLAIMER')}
+      </Body>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>
