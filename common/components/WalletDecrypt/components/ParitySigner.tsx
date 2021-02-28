@@ -65,7 +65,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
           <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
             <img className="ParitySigner-badge" src={AppStoreBadge} alt="App Store" />
           </NewTabLink>
-          <NewTabLink href="https://play.google.com/store/apps/details?id=com.nativesigner">
+          <NewTabLink href="https://play.google.com/store/apps/details?id=io.parity.signer">
             <img className="ParitySigner-badge" src={GooglePlayBadge} alt="Google Play" />
           </NewTabLink>
         </p>
