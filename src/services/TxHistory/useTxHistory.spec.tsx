@@ -3,7 +3,7 @@ import React from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther } from '@ethersproject/units';
 import { renderHook } from '@testing-library/react-hooks';
-import { ProvidersWrapper } from 'test-utils';
+import { mockAppState, ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
@@ -12,13 +12,11 @@ import {
   fAccounts,
   fAssets,
   fContacts,
-  fContracts,
   fNetwork,
-  fNetworks,
   fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { fromWei, Wei } from '@utils';
 
@@ -29,22 +27,15 @@ const renderUseTxHistory = ({
   accounts = fAccounts
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            addressBook: fContacts,
-            contracts: fContracts,
-            networks: fNetworks,
-            assets: fAssets
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
-          {' '}
-          {children}
-        </StoreContext.Provider>
-      </DataContext.Provider>
+    <ProvidersWrapper
+      initialState={mockAppState({
+        addressBook: fContacts,
+        assets: fAssets
+      })}
+    >
+      <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
+        {children}
+      </StoreContext.Provider>
     </ProvidersWrapper>
   );
   return renderHook(() => useTxHistory(), { wrapper });

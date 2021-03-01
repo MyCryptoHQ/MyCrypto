@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAccount, fNotifications } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
 import { ExtendedNotification } from '@types';
 
 import { NotificationTemplates } from '.';
@@ -12,17 +11,13 @@ import { useNotifications } from './useNotifications';
 
 const renderUseNotifications = ({ notifications = [] as ExtendedNotification[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ notifications } as unknown) as IDataContext}>
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ notifications })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useNotifications(), { wrapper });
 };
 
 describe('useNotifications', () => {
-  it('uses get notifications from DataContext', () => {
+  it('uses get notifications from the store', () => {
     const { result } = renderUseNotifications({ notifications: fNotifications });
     expect(result.current.notifications).toEqual(fNotifications);
   });

@@ -1,28 +1,22 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fActionTemplates, fUserActions } from '@fixtures';
 import { ACTION_NAME, ACTION_STATE, ExtendedUserAction } from '@types';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useUserActions from './useUserActions';
 
 const renderUseUserActions = ({ userActions = [] as ExtendedUserAction[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ userActions } as unknown) as IDataContext}>
-        {' '}
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ userActions })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useUserActions(), { wrapper });
 };
 
 describe('useUserActions', () => {
-  it('uses get userActions from DataContext', () => {
+  it('uses get userActions from store', () => {
     const { result } = renderUseUserActions();
     expect(result.current.userActions).toEqual([]);
   });

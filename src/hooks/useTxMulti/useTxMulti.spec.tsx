@@ -10,7 +10,7 @@ import {
 } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { StoreContext } from '@services';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -65,21 +65,17 @@ jest.mock('@vendor', () => ({
 
 const renderUseTxMulti = () => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper initialState={mockAppState({ accounts: fAccounts })}>
-      <DataContext.Provider
-        value={
-          ({
-            networks: fNetworks,
-            assets: fAssets,
-            settings: fSettings
-          } as any) as IDataContext
-        }
-      >
-        <StoreContext.Provider value={{ accounts: fAccounts } as any}>
-          {' '}
-          {children}
-        </StoreContext.Provider>
-      </DataContext.Provider>
+    <ProvidersWrapper
+      initialState={mockAppState({
+        accounts: fAccounts,
+        networks: fNetworks,
+        assets: fAssets,
+        settings: fSettings
+      })}
+    >
+      <StoreContext.Provider value={{ accounts: fAccounts } as any}>
+        {children}
+      </StoreContext.Provider>
     </ProvidersWrapper>
   );
   return renderHook(() => useTxMulti(), { wrapper });

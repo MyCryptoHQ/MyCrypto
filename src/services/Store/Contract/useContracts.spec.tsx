@@ -1,28 +1,23 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fContracts } from '@fixtures';
 import { ExtendedContract, TAddress, TUuid } from '@types';
 import { innerJoin, map, pipe, prop, slice, sort } from '@vendor';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useContracts from './useContracts';
 
 const renderUseContract = ({ contracts = [] as ExtendedContract[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ contracts } as any) as IDataContext}>
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ contracts })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useContracts(), { wrapper });
 };
 
 describe('useContract', () => {
-  it('uses get contracts from DataContext', () => {
+  it('uses get contracts from store', () => {
     const { result } = renderUseContract();
     expect(result.current.contracts).toEqual([]);
   });

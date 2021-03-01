@@ -1,28 +1,23 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { Fiats } from '@config';
 import { fAccounts, fAssets, fRates, fSettings } from '@fixtures';
 import { ISettings } from '@types';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useSettings from './useSettings';
 
 const renderUseSettings = ({ settings = {} as ISettings } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ settings } as any) as IDataContext}>
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ settings })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useSettings(), { wrapper });
 };
 
 describe('useSettings', () => {
-  it('uses get settings from DataContext', () => {
+  it('uses get settings from store', () => {
     const { result } = renderUseSettings({ settings: fSettings });
     expect(result.current.settings).toEqual(fSettings);
     expect(result.current.language).toBe(fSettings.language);
