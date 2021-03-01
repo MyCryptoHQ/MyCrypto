@@ -18,7 +18,6 @@ export const COLORS = {
   ERROR_RED: '#ff5050',
   PASTEL_RED: '#ef4747',
   ERROR_RED_LIGHT: '#dd544e',
-  GOLD: '#ffd166',
 
   WHITE: '#fff',
   GREY_LIGHTEST: '#f7f7f7',

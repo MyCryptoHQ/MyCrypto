@@ -19,10 +19,7 @@ import useAccounts from './useAccounts';
 
 jest.mock('../Settings', () => {
   return {
-    useSettings: () => ({
-      addAccountToFavorites: jest.fn(),
-      addMultipleAccountsToFavorites: jest.fn()
-    })
+    useSettings: () => ({})
   };
 });
 
