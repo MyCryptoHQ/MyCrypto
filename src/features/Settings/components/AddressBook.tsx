@@ -250,12 +250,15 @@ export default function AddressBook({
             <SEditableText
               truncate={true}
               value={label}
-              saveValue={(value) => updateContact({ address, label: value, network, notes, uuid })}
+              saveValue={(value: string) =>
+                updateContact({ address, label: value, network, notes, uuid })
+              }
             />
           </Label>,
           <EthAddress address={address} truncate={true} isCopyable={true} />,
           <Network color={color}>{network}</Network>,
           <EditableText
+            maxWidth="260px"
             truncate={true}
             value={notes}
             saveValue={(value) => updateContact({ address, label, network, notes: value, uuid })}
