@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
 import { render } from '@testing-library/react';
@@ -11,7 +13,7 @@ import { AppState, persistenceSlice } from '@store';
 import { DataStore, TAction } from '@types';
 import { noOp } from '@utils';
 
-import { ProvidersWrapper } from './providersWrapper';
+import { ProvidersWrapper, withInitialState } from './providersWrapper';
 
 // Workaround due to circular dependency issues
 const APP_STATE = marshallState(SCHEMA_BASE);
@@ -50,8 +52,16 @@ export const actionWithPayload = (payload: any) => expect.objectContaining({ pay
 expectSaga.DEFAULT_TIMEOUT = 100;
 
 // wrapper option : Wrap renders with our providers so components can consume it
-export const simpleRender = (ui: React.ReactElement, options?: any) =>
-  render(ui, { wrapper: ProvidersWrapper, ...options });
+export const simpleRender = (ui: React.ReactElement, options?: any) => {
+  if (options?.initialState) {
+    return render(ui, {
+      wrapper: withInitialState(options.initialState),
+      ...options
+    });
+  } else {
+    return render(ui, { wrapper: ProvidersWrapper, ...options });
+  }
+};
 
 // Generate 'dispatch' for the reducer that is being tested
 export const createStore = <S>(reducer: (state: S, action: TAction<any, any>) => S) => (

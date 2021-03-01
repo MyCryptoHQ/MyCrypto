@@ -37,3 +37,15 @@ export const ProvidersWrapper = ({
     </Router>
   );
 };
+
+/**
+ * HOC to bind an initialState to our test wrappers.
+ * @param state AppState
+ */
+export const withInitialState = (
+  state: React.ComponentProps<typeof ProvidersWrapper>['initialState']
+) => (props: React.ComponentProps<typeof ProvidersWrapper>) => (
+  <ProvidersWrapper initialState={state} {...props}>
+    {props.children}
+  </ProvidersWrapper>
+);
