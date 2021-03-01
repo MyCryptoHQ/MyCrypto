@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { DeepPartial } from '@reduxjs/toolkit';
 import { MemoryRouter } from 'react-router-dom';
-import { DeepPartial } from 'redux';
 import { fireEvent, mockAppState, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetworks, fRates, fSettings } from '@fixtures';
@@ -24,13 +24,7 @@ function getComponent({
   initialState?: DeepPartial<AppState>;
 }) {
   return simpleRender(
-    <ProvidersWrapper
-      initialState={
-        ({ ...initialState, ...mockAppState({ accounts, assets }) } as unknown) as DeepPartial<
-          AppState
-        >
-      }
-    >
+    <ProvidersWrapper initialState={{ ...initialState, ...mockAppState({ accounts, assets }) }}>
       <MemoryRouter>
         <DataContext.Provider
           value={

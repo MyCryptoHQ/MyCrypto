@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { DeepPartial } from '@reduxjs/toolkit';
 import { act, renderHook } from '@testing-library/react-hooks';
 import {
   actionWithPayload,
@@ -12,7 +11,6 @@ import {
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
 import { DataContext, IDataContext, StoreContext } from '@services';
-import { AppState } from '@store';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -67,9 +65,7 @@ jest.mock('@vendor', () => ({
 
 const renderUseTxMulti = () => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper
-      initialState={(mockAppState({ accounts: fAccounts }) as unknown) as DeepPartial<AppState>}
-    >
+    <ProvidersWrapper initialState={mockAppState({ accounts: fAccounts })}>
       <DataContext.Provider
         value={
           ({

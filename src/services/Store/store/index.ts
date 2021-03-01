@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { importState, exportState, AppState } from './root.reducer';
+export { default as rootReducer, importState, exportState, AppState } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
 export { createNotification, updateNotification, selectNotifications } from './notification.slice';
