@@ -15,12 +15,14 @@ import { theme } from '@theme';
 */
 export const ProvidersWrapper = ({
   children,
-  initialState
+  initialState,
+  initialRoute
 }: {
   children: React.ReactNode;
   initialState?: DeepPartial<AppState>;
+  initialRoute?: string;
 }) => (
-  <Router>
+  <Router initialEntries={initialRoute ? [initialRoute] : undefined}>
     <Provider store={createStore(initialState).store}>
       <FeatureFlagProvider>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>

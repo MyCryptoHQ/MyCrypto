@@ -46,7 +46,7 @@ describe('TokenPanel', () => {
 
   test('it shows details on click', async () => {
     const { getByText, getByTestId } = getComponent();
-    fireEvent.click(getByTestId(fAccounts[0].assets[1].uuid).querySelector('svg')!);
+    fireEvent.click(getByTestId(`token-${fAccounts[0].assets[1].uuid}`).querySelector('svg')!);
     await waitFor(() => expect(getByText(fAccounts[0].assets[1].decimal!)).toBeInTheDocument());
     await waitFor(() =>
       expect(getByText(fAccounts[0].assets[1].contractAddress!)).toBeInTheDocument()

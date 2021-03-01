@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
 import { fireEvent, ProvidersWrapper, simpleRender } from 'test-utils';
 
 import { fAccounts, fAssets, fContracts, fNetworks, fSettings } from '@fixtures';
@@ -10,16 +9,9 @@ import { translateRaw } from '@translations';
 
 import SignAndVerifyMessage from './SignAndVerifyMessage';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockImplementation(() => ({
-    pathname: '/sign-message'
-  }))
-}));
-
-function getComponent() {
+function getComponent(pathname: string) {
   return simpleRender(
-    <ProvidersWrapper>
+    <ProvidersWrapper initialRoute={pathname}>
       <DataContext.Provider
         value={
           ({
@@ -54,17 +46,14 @@ function getComponent() {
 
 describe('SignAndVerifyMessage', () => {
   it('renders', async () => {
-    const { getAllByText } = getComponent();
+    const { getAllByText } = getComponent('/sign-message');
     getAllByText(translateRaw('SIGN_MESSAGE'), { exact: false }).forEach((s) =>
       expect(s).toBeInTheDocument()
     );
   });
 
   it('verify message', async () => {
-    (useLocation as jest.Mock).mockImplementation(() => ({
-      pathname: '/verify-message'
-    }));
-    const { getAllByText, container, getByTestId } = getComponent();
+    const { getAllByText, container, getByTestId } = getComponent('/verify-message');
     getAllByText(translateRaw('VERIFY_MESSAGE'), { exact: false }).forEach((s) =>
       expect(s).toBeInTheDocument()
     );

@@ -23,16 +23,9 @@ jest.mock('@vendor', () => {
   };
 });
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: () => ({
-    pathname: '/deploy-contracts'
-  })
-}));
-
 function getComponent() {
   return simpleRender(
-    <ProvidersWrapper>
+    <ProvidersWrapper initialRoute={'/deploy-contracts'}>
       <DataContext.Provider
         value={
           ({

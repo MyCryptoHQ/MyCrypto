@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { History } from 'history';
-import { useHistory, useLocation } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs } from '@components';
@@ -70,11 +70,8 @@ const tabClickRedirect = (history: History<unknown>, url: string): void => {
   history.push(url);
 };
 
-function SignAndVerifyMessage() {
+function SignAndVerifyMessage({ history, location }: RouteComponentProps) {
   const [showSubtitle, setShowSubtitle] = useState(true);
-
-  const history = useHistory();
-  const location = useLocation();
 
   const currentRoute = tabsConfig.find(
     (tabConfig) => ROUTE_PATHS[tabConfig.key].path === location.pathname
@@ -111,4 +108,4 @@ function SignAndVerifyMessage() {
   );
 }
 
-export default SignAndVerifyMessage;
+export default withRouter(SignAndVerifyMessage);
