@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
 
@@ -15,34 +14,24 @@ import TokenMigrationStepper from '../TokenMigrationStepper';
 /* Test components */
 describe('TokenMigrationStepper', () => {
   const StepperComponent = (
-    <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            settings: fSettings,
-            networks: fNetworks
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              userAssets: [],
-              accounts: [fAccounts[0]],
-              getDefaultAccount: () => fAccounts[0],
-              getAccount: jest.fn(),
-              networks: fNetworks,
-              getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
-            } as unknown) as any
-          }
-        >
-          <TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
+    <StoreContext.Provider
+      value={
+        ({
+          accounts: [fAccounts[0]],
+          getDefaultAccount: () => fAccounts[0],
+          getAccount: jest.fn(),
+          networks: fNetworks,
+          getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
+        } as unknown) as any
+      }
+    >
+      <TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />
+    </StoreContext.Provider>
   );
-  const renderComponent = () => simpleRender(StepperComponent);
+  const renderComponent = () =>
+    simpleRender(StepperComponent, {
+      initialState: mockAppState({ assets: fAssets, settings: fSettings, networks: fNetworks })
+    });
 
   it('renders the first step in the flow', () => {
     const { getByText } = renderComponent();

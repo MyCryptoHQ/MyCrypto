@@ -29,7 +29,7 @@ function getComponent() {
               userAssets: [],
               accounts: [],
               uniClaims: [],
-              assets: () => [fAssets[1]],
+              assets: [fAssets[1]],
               ensOwnershipRecords: [],
               userActions: [{ name: 'update_label', state: 'new' }],
               createUserAction: jest.fn()
