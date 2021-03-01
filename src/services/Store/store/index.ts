@@ -42,7 +42,8 @@ export {
   deleteNode,
   canDeleteNode,
   getDefaultNetwork,
-  getNetworks
+  getNetworks,
+  selectNetwork
 } from './network.slice';
 export {
   createAssets,

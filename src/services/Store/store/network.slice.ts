@@ -88,10 +88,15 @@ export default slice;
  * Selectors
  */
 
+// @ts-expect-error: TS fails to infer correct type from find
+const findNetwork: (id: NetworkId) => (n: Network[]) => Network = (id: NetworkId) =>
+  find(propEq('id', id));
+
 export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
-export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));
-export const getNetwork = (network: NetworkId) =>
-  createSelector(getNetworks, find(propEq('id', network)));
+export const getDefaultNetwork = createSelector(getNetworks, findNetwork(DEFAULT_NETWORK));
+export const getNetwork = (networkId: NetworkId) =>
+  createSelector(getNetworks, findNetwork(networkId));
+export const selectNetwork = getNetwork;
 export const canDeleteNode = (networkId: NetworkId) =>
   createSelector([getAppState], (state) => {
     const network = state.networks.find((n) => n.id === networkId)!;

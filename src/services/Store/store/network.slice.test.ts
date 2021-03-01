@@ -11,6 +11,7 @@ import {
   deleteNodeOrNetworkWorker,
   deleteNodeWorker,
   initialState,
+  selectNetwork,
   default as slice
 } from './network.slice';
 
@@ -154,6 +155,14 @@ describe('NetworkSlice', () => {
 
     const actual = canDeleteNode(networkId)(state);
     expect(actual).toEqual(true);
+  });
+});
+
+describe('Network Selectors', () => {
+  it('selectNetwork(): finds a network by id', () => {
+    const actual = selectNetwork(fNetworks[0].id)(mockAppState({ networks: fNetworks }));
+    const expected = fNetworks[0];
+    expect(actual).toEqual(expected);
   });
 });
 
