@@ -4,6 +4,7 @@ import selectEvent from 'react-select-event';
 import {
   actionWithPayload,
   fireEvent,
+  mockAppState,
   mockUseDispatch,
   screen,
   simpleRender,
@@ -11,7 +12,6 @@ import {
 } from 'test-utils';
 
 import { fNetworks } from '@fixtures';
-import { DataContext, IDataContext } from '@services/Store';
 
 import NetworkNodeDropdown from './NetworkNodeDropdown';
 
@@ -21,11 +21,9 @@ const defaultProps: Props = {
 };
 
 function getComponent(props = defaultProps) {
-  return simpleRender(
-    <DataContext.Provider value={({ networks: fNetworks } as unknown) as IDataContext}>
-      <NetworkNodeDropdown {...props} />
-    </DataContext.Provider>
-  );
+  return simpleRender(<NetworkNodeDropdown {...props} />, {
+    initialState: mockAppState({ networks: fNetworks })
+  });
 }
 
 describe('NetworkSelector', () => {
