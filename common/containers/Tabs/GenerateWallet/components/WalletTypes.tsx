@@ -119,7 +119,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         },
         {
           text: translate('DOWNLOAD_PHONE_APP', { $os: 'Android' }),
-          href: 'https://play.google.com/store/apps/details?id=com.nativesigner'
+          href: 'https://play.google.com/store/apps/details?id=io.parity.signer'
         }
       ]
     }
@@ -189,7 +189,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
             </ul>
 
             <div className="WalletSuggestion-buttons">
-              {sug.links.map(link => {
+              {sug.links.map((link) => {
                 if (link.onClick) {
                   return (
                     <button
@@ -250,7 +250,7 @@ const GenerateOptions: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
 
       <div className="WalletTypes-types">
-        {walletTypes.map(wallet => (
+        {walletTypes.map((wallet) => (
           <div key={wallet.type} className="WalletType">
             <h3 className="WalletType-title">{wallet.name}</h3>
             <ul className="WalletType-features">
