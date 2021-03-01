@@ -38,10 +38,6 @@ export const {
   updateStateByName: updateUserActionStateByName
 } = slice.actions;
 
-<<<<<<< HEAD
 export const selectUserActions = createSelector(getAppState, (s) => s[slice.name]);
-=======
-export const selectUserAction = createSelector(getAppState, (s) => s[slice.name]);
->>>>>>> b975ca03a (Remove DataContext from useUserActions)
 
 export default slice;
