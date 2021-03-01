@@ -1017,6 +1017,6 @@
     "BUSY_BOTTOM_GET_WEB3": "Get $app",
     "BUSY_BOTTOM_METAMASK_1": "MetaMask Instructions",
     "EXPORT_MOBILE_NOTICE": "Some mobile dapp browsers prevent downloading files - in that case, you can copy the above text manually.",
-    "VIEW_ONLY_ADDR_DISCLAIMER": "Adding a \"view-only\" account means that you will not be able to send a transaction from it. If you want the ability to send from this account, please choose another method of connection on the [Add Account](/add-account) screen. Or, you can add it as \"view-only\" for now and [fully connect it at another time](https://support.mycrypto.com/how-to/accessing-wallet/how-does-view-address-work)."
+    "VIEW_ONLY_ADDR_DISCLAIMER": "Adding a \"view-only\" account means that you will not be able to send a transaction from it. If you want the ability to send from this account, please choose another method of connection on the [Add Account](/add-account) screen. Or, you can add it as \"view-only\" for now and [fully connect it at another time]($link)."
   }
 }

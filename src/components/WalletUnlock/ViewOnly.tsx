@@ -5,6 +5,7 @@ import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
 import { Body, Box, Button, ContactLookupField, Heading } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
@@ -58,7 +59,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
         {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
       <Body textAlign="center" fontSize="18px" paddingTop="16px">
-        {translate('VIEW_ONLY_ADDR_DISCLAIMER')}
+        {translate('VIEW_ONLY_ADDR_DISCLAIMER', {
+          $link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)
+        })}
       </Body>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
