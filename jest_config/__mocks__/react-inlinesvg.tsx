@@ -7,6 +7,6 @@ import React from 'react';
  * ref. https://github.com/gilbarbara/react-inlinesvg/issues/140
  */
 
-const svgMock = ({ src }) => <svg id={src} />;
+const svgMock = ({ src, ...props }) => <svg {...props} id={src} />;
 
 export default svgMock;

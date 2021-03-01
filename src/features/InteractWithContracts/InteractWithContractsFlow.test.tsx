@@ -81,9 +81,9 @@ describe('InteractWithContractsFlow', () => {
 
     await selectEvent.openMenu(getByText('Select...', { exact: false }));
 
-    fireEvent.pointerDown(getByText('addColonyVersion'));
+    fireEvent.click(getByText('addColonyVersion'));
 
-    await waitFor(() => expect(getByText('_version', { exact: false })).toBeInTheDocument());
-    await waitFor(() => expect(getByText('_resolver', { exact: false })).toBeInTheDocument());
+    await waitFor(() => expect(getByText('_version')).toBeInTheDocument());
+    await waitFor(() => expect(getByText('_resolver')).toBeInTheDocument());
   });
 });

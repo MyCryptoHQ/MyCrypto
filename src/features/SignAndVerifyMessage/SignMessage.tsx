@@ -9,7 +9,7 @@ import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { setupWeb3Node, Web3Node } from '@services/EthService';
-import { IFullWallet, IUseWalletConnect, withWalletConnect } from '@services/WalletService';
+import { IFullWallet } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -85,7 +85,6 @@ enum SignStatus {
 }
 
 interface SignProps {
-  useWalletConnectProps: IUseWalletConnect;
   setShowSubtitle(show: boolean): void;
 }
 
@@ -97,7 +96,7 @@ function SignMessage(props: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const { setShowSubtitle, useWalletConnectProps, isDemoMode } = props;
+  const { setShowSubtitle, isDemoMode } = props;
 
   const handleSignMessage = async () => {
     setSignStatus(SignStatus.SIGNING);
@@ -172,7 +171,6 @@ function SignMessage(props: Props) {
               wallet={WALLETS_CONFIG[walletName]}
               onUnlock={onUnlock}
               formData={defaultFormData}
-              useWalletConnectProps={useWalletConnectProps}
             />
           )}
         </>
@@ -219,4 +217,4 @@ const mapStateToProps = (state: AppState) => ({
 const connector = connect(mapStateToProps);
 type Props = ConnectedProps<typeof connector> & SignProps;
 
-export default connector(withWalletConnect(SignMessage));
+export default connector(SignMessage);

@@ -70,10 +70,8 @@ const tabClickRedirect = (history: History<unknown>, url: string): void => {
   history.push(url);
 };
 
-function SignAndVerifyMessage(props: RouteComponentProps) {
+function SignAndVerifyMessage({ history, location }: RouteComponentProps) {
   const [showSubtitle, setShowSubtitle] = useState(true);
-
-  const { history, location } = props;
 
   const currentRoute = tabsConfig.find(
     (tabConfig) => ROUTE_PATHS[tabConfig.key].path === location.pathname
