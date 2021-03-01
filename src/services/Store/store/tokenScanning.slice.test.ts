@@ -39,14 +39,14 @@ describe('Token Scanning Slice', () => {
 });
 
 jest.mock('../BalanceService', () => ({
-  getAllTokensBalancesOfAccounts: jest.fn().mockImplementation(() =>
+  getTokenBalancesForAddresses: jest.fn().mockImplementation(() =>
     Promise.resolve({
       '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': {
         '0x221657776846890989a759BA2973e427DfF5C9bB': mockBigify(1000000000000000000)
       }
     })
   ),
-  getBaseAssetBalances: jest.fn().mockImplementation(() =>
+  getBaseAssetBalancesForAddresses: jest.fn().mockImplementation(() =>
     Promise.resolve({
       '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': mockBigify(2000000000000000000)
     })

@@ -35,6 +35,7 @@ import {
 } from '@types';
 
 import {
+  appendGasLimit,
   appendGasPrice,
   appendNonce,
   appendSender,
@@ -50,11 +51,13 @@ import {
 } from './transaction';
 
 jest.mock('@services/ApiService/Gas', () => ({
-  fetchGasPriceEstimates: () => new Promise((resolve, _) => resolve({ fast: 20 }))
+  ...jest.requireActual('@services/ApiService/Gas'),
+  fetchGasPriceEstimates: () => Promise.resolve({ fast: 20 }),
+  getGasEstimate: () => Promise.resolve(21000)
 }));
 
 jest.mock('@services/EthService/nonce', () => ({
-  getNonce: () => new Promise((resolve, _) => resolve(1))
+  getNonce: () => Promise.resolve(1)
 }));
 
 const senderAddr = donationAddressMap.ETH as TAddress;
@@ -317,6 +320,49 @@ describe('appendSender', () => {
   });
 });
 
+describe('appendGasLimit', () => {
+  it('appends gas limit to transaction input', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice
+    };
+    const actual = await appendGasLimit(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasLimit: '0x6270',
+      gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('respects gas limit if present', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice,
+      gasLimit: '0x5208' as ITxGasLimit
+    };
+    const actual = await appendGasLimit(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasLimit: '0x5208',
+      gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+});
+
 describe('appendGasPrice', () => {
   it('appends gas price to transaction input', async () => {
     const input = {
@@ -332,6 +378,25 @@ describe('appendGasPrice', () => {
       data: '0x0',
       chainId: 1,
       gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('respects gas price if present', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      gasPrice: '0x2540be400' as ITxGasPrice,
+      chainId: 1
+    };
+    const actual = await appendGasPrice(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasPrice: '0x2540be400'
     };
     expect(actual).toStrictEqual(expected);
   });

@@ -78,6 +78,10 @@ const providers: Record<string, PoweredByProvider> = {
       justify-content: left;
     }`,
     text: translate('POWERED_BY_FINDETH')
+  },
+  ZEROX: {
+    icon: 'zeroxLogo',
+    text: translateRaw('POWERED_BY')
   }
 };
 

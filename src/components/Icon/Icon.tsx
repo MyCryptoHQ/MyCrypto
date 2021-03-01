@@ -90,6 +90,7 @@ import website from '@assets/icons/website.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import antLogo from '@assets/images/ant-logo.png';
 import arrowRight from '@assets/images/arrow-right.svg';
+import zeroxLogo from '@assets/images/credits/credits-0x.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
@@ -178,6 +179,7 @@ const svgIcons = {
   coinGeckoLogo,
   zapperLogo,
   'rep-logo': repLogo,
+  zeroxLogo,
 
   /* Social Icons */
   coinmarketcap,
@@ -284,7 +286,7 @@ const SImg = styled.img<StylingProps>`
 
 // This specific svg is designed with strokes instead of fill
 // so we give make sure the fill is not set.
-const SWebsiteIcon = styled(SInlineSVG)<StylingProps>`
+const SStrokeIcon = styled(SInlineSVG)<StylingProps>`
   &&&& {
     fill: transparent;
   }
@@ -295,7 +297,7 @@ const SWebsiteIcon = styled(SInlineSVG)<StylingProps>`
 `;
 
 interface Props
-  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SWebsiteIcon>, 'src'> {
+  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
   type: TIcon;
 }
 
@@ -305,8 +307,8 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
   typeof pngIcons[type as PngIcons] !== 'undefined';
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website') {
-    return <SWebsiteIcon src={svgIcons[type]} color={color} {...props} />;
+  if (type === 'website' || type === 'faucet-icon') {
+    return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {

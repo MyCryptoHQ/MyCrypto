@@ -445,7 +445,7 @@ export const TxReceiptUI = ({
         settings={settings}
         gasPrice={gasPrice}
         gasUsed={gasAmount()}
-        value={txConfig.value}
+        value={rawTransaction.value}
       />
 
       <div className="TransactionReceipt-details-row">

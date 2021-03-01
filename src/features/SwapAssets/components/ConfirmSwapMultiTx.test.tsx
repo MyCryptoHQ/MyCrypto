@@ -18,8 +18,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
     lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
     fromAmount: bigify(1),
     toAmount: bigify(100),
-    rate: bigify(0),
-    markup: bigify(0)
+    rate: bigify(0)
   },
   account: fAccount,
   onComplete: noOp,

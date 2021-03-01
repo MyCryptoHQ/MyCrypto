@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 
-import { ISwapAsset, ITxObject, ITxStatus, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, ITxGasPrice, ITxObject, ITxStatus, StoreAccount } from '@types';
 
 export enum LAST_CHANGED_AMOUNT {
   FROM = 'FROM_AMOUNT',
@@ -31,15 +31,20 @@ export interface SwapFormState {
   fromAmount: string;
   toAsset: ISwapAsset;
   toAmount: string;
-  fromAmountError: string | JSX.Element;
+  fromAmountError?: string | JSX.Element;
   isCalculatingFromAmount: boolean;
-  toAmountError: string | JSX.Element;
+  toAmountError?: string | JSX.Element;
   isCalculatingToAmount: boolean;
+  isEstimatingGas: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
-  exchangeRate: string; // The exchange rate displayed to the user (post-markup)
-  markup: string;
+  exchangeRate?: string; // The exchange rate displayed to the user
   isMulti: boolean;
+  gasPrice?: ITxGasPrice;
+  approvalGasLimit?: ITxGasLimit;
+  tradeGasLimit?: ITxGasLimit;
+  approvalTx?: Partial<ITxObject>;
+  expiration?: number;
+  tradeTx?: Partial<ITxObject>;
 }
 
 export interface IAssetPair {
@@ -49,7 +54,6 @@ export interface IAssetPair {
   fromAmount: BigNumber;
   toAmount: BigNumber;
   rate: BigNumber;
-  markup: BigNumber;
 }
 
 export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;

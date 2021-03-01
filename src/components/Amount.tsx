@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import styled, { css } from 'styled-components';
 
@@ -52,6 +52,7 @@ interface Props {
   baseAssetValue?: string;
   fiatColor?: string;
   bold?: boolean;
+  style?: CSSProperties;
 }
 
 // @todo:
@@ -61,10 +62,11 @@ export default function Amount({
   fiat,
   baseAssetValue,
   fiatColor = COLORS.BLUE_GREY,
-  bold = false
+  bold = false,
+  ...rest
 }: Props) {
   return (
-    <SAmount>
+    <SAmount {...rest}>
       <Asset bold={bold}>{assetValue}</Asset>
       {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
       {fiat && (

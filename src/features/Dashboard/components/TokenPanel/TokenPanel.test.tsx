@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ProvidersWrapper, simpleRender } from 'test-utils';
+import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fSettings } from '@fixtures';
+import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
 import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
@@ -24,7 +24,8 @@ function getComponent() {
             value={
               ({
                 currentAccounts: fAccounts,
-                totals: () => fAccounts[0].assets
+                totals: () => fAccounts[0].assets,
+                networks: fNetworks
               } as any) as any
             }
           >
@@ -41,5 +42,14 @@ describe('TokenPanel', () => {
     const { getByText } = getComponent();
     expect(getByText(fAccounts[0].assets[1].ticker)).toBeInTheDocument();
     expect(getByText(translateRaw('TOKENS'))).toBeInTheDocument();
+  });
+
+  test('it shows details on click', async () => {
+    const { getByText, getByTestId } = getComponent();
+    fireEvent.click(getByTestId(`token-${fAccounts[0].assets[1].uuid}`).querySelector('svg')!);
+    await waitFor(() => expect(getByText(fAccounts[0].assets[1].decimal!)).toBeInTheDocument());
+    await waitFor(() =>
+      expect(getByText(fAccounts[0].assets[1].contractAddress!)).toBeInTheDocument()
+    );
   });
 });

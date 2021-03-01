@@ -4,6 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
+import { appendSender } from '@helpers';
 import { useTxMulti } from '@hooks';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
@@ -12,7 +13,6 @@ import { bigify, useStateReducer } from '@utils';
 import { useEffectOnce, usePromise } from '@vendor';
 
 import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
-import { getTradeOrder } from './helpers';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
 import { IAssetPair, SwapFormState } from './types';
 
@@ -38,6 +38,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
+    handleRefreshQuote,
     formState
   } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
   const {
@@ -53,8 +55,13 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     toAmountError,
     lastChangedAmount,
     exchangeRate,
-    initialToAmount,
-    markup
+    approvalGasLimit,
+    tradeGasLimit,
+    gasPrice,
+    expiration,
+    approvalTx,
+    isEstimatingGas,
+    tradeTx
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -94,10 +101,14 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         fromAmountError,
         toAmountError,
         txError,
-        initialToAmount,
         exchangeRate,
-        markup,
         account,
+        approvalGasLimit,
+        tradeGasLimit,
+        gasPrice,
+        expiration,
+        approvalTx,
+        isEstimatingGas,
         isSubmitting
       },
       actions: {
@@ -108,17 +119,25 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         handleFromAmountChanged,
         handleToAmountChanged,
         handleAccountSelected,
+        handleGasLimitEstimation,
+        handleRefreshQuote,
         onSuccess: () => {
           const pair: IAssetPair = {
             fromAsset,
             toAsset,
             fromAmount: bigify(fromAmount),
             toAmount: bigify(toAmount),
-            rate: bigify(exchangeRate),
-            markup: bigify(markup),
+            rate: bigify(exchangeRate!),
             lastChangedAmount
           };
-          initWith(getTradeOrder(pair, account), account, account.network);
+          initWith(
+            () =>
+              Promise.resolve(
+                (approvalTx ? [approvalTx, tradeTx] : [tradeTx]).map(appendSender(account.address))
+              ),
+            account,
+            account.network
+          );
           setAssetPair(pair);
         }
       }
@@ -142,7 +161,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         }
       },
       {
-        title: translateRaw('SWAP'),
+        // No title as signing page already has a title
+        title: '',
         backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
         component: account && WALLET_STEPS[account.wallet],
         props: {

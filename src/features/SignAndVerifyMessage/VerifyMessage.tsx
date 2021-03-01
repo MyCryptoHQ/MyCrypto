@@ -123,7 +123,7 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
         {translate('MSG_VERIFY')}
       </VerifyButton>
       {signedMessage && (
-        <SignedMessage>
+        <SignedMessage data-testid="sign-result">
           {translate('VERIFY_MESSAGE_SIGNED', {
             $address: signedMessage.address,
             $msg: signedMessage.msg
