@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import CollapseIcon from './icons/CollapseIcon';
 import ExpandIcon from './icons/ExpandIcon';
 import { IconSize } from './icons/helpers';
@@ -12,11 +10,6 @@ interface ArrowProps {
   isFlipped?: boolean;
   onClick?(): void;
 }
-
-const SIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 export const IconArrow = ({ isFlipped, fillColor, size, onClick }: ArrowProps) => {
   return (
@@ -29,11 +22,5 @@ export const IconArrow = ({ isFlipped, fillColor, size, onClick }: ArrowProps) =
     </>
   );
 };
-
-export const CenteredIconArrow = (props: ArrowProps) => (
-  <SIconContainer>
-    <IconArrow {...props} />
-  </SIconContainer>
-);
 
 export default IconArrow;
