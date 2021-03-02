@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { ProvidersWrapper, simpleRender } from 'test-utils';
+import { simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
-import { fAccounts, fAssets, fNetworks } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccounts } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { noOp } from '@utils';
 
@@ -20,27 +20,16 @@ const defaultProps: React.ComponentProps<typeof MembershipPurchaseForm> = {
 
 function getComponent(props: React.ComponentProps<typeof MembershipPurchaseForm>) {
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            networks: fNetworks
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              accounts: fAccounts,
-              getDefaultAccount: () => fAccounts[0]
-            } as any) as any
-          }
-        >
-          <MembershipPurchaseForm {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          accounts: fAccounts,
+          getDefaultAccount: () => fAccounts[0]
+        } as any) as any
+      }
+    >
+      <MembershipPurchaseForm {...props} />
+    </StoreContext.Provider>
   );
 }
 

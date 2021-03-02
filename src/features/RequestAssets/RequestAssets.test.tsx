@@ -1,35 +1,25 @@
 import React from 'react';
 
-import { ProvidersWrapper, simpleRender } from 'test-utils';
+import { simpleRender } from 'test-utils';
 
-import { fAccounts, fAssets } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccounts } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import RequestAssets from './RequestAssets';
 
 function getComponent() {
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              accounts: fAccounts,
-              getDefaultAccount: () => fAccounts[0]
-            } as any) as any
-          }
-        >
-          <RequestAssets />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          accounts: fAccounts,
+          getDefaultAccount: () => fAccounts[0]
+        } as any) as any
+      }
+    >
+      <RequestAssets />
+    </StoreContext.Provider>
   );
 }
 
