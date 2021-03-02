@@ -34,7 +34,6 @@ import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
-import './RecentTransactionList.scss';
 
 interface Props {
   className?: string;
