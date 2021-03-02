@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
-import { Button, Identicon } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled, { css } from 'styled-components';
