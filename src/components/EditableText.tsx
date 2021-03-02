@@ -84,7 +84,7 @@ function EditableText({
   };
 
   return (
-    <Box variant="rowCenter" height="100%" {...props}>
+    <Box variant="rowAlign" height="100%" {...props}>
       {editMode ? (
         <SInputField
           autoFocus={true}
