@@ -1,11 +1,12 @@
-import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks, fRates } from '@fixtures';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
-import { NodeOptions, StoreAsset, TUuid } from '@types';
+import { LocalStorage, LSKeys, NodeOptions, StoreAsset, TUuid } from '@types';
 
 import {
   canImport,
   mergeAssets,
   mergeNetworks,
+  migrateConfig,
   serializeAccount,
   serializeNotification
 } from './helpers';
@@ -142,6 +143,20 @@ describe('canImport()', () => {
   it('returns true with valid import file', () => {
     const actual = canImport(fLocalStorage, persistable);
     expect(actual).toBe(true);
+  });
+
+  describe('migrateConfig()', () => {
+    it('Migrate rates outside of settings', () => {
+      const toMigrate = {
+        [LSKeys.SETTINGS]: {
+          rates: fRates
+        }
+      };
+      const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
+
+      expect(result.rates).toEqual(toMigrate.settings.rates);
+      expect(result.settings).not.toContain(toMigrate.settings.rates);
+    });
   });
 
   it('returns false with mismatching versions', () => {
