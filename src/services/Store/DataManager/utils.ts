@@ -15,12 +15,13 @@ import {
   LSKeys,
   Network,
   NetworkId,
+  NetworkLegacy,
   NetworkNodes,
   NodeType,
-  TAddress,
   TUuid
 } from '@types';
-import { merge } from '@vendor';
+import { isVoid } from '@utils';
+import { map, mergeRight, pipe } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
 const objToArray: ObjToArray = (obj) => Object.values(obj);
@@ -44,18 +45,42 @@ export const mergeConfigWithLocalStorage = (
       .filter((n) => n[1].isCustom)
       .map(([k, v]) => [k, { ...v, tokens: [] }])
   ) as unknown) as NetworkConfig;
-  const config = merge(defaultConfig, customNetworks);
+  const mergeWithDefault = (config: NetworkConfig) => mergeRight(config, customNetworks);
 
   // add contracts and assets from localstorage
   const lsContracts = objToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[];
   const lsAssets = objToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[];
-  lsContracts.forEach((c) => config[c.networkId] && config[c.networkId].contracts.push(c));
-  lsAssets.forEach(
-    (a) =>
-      a.networkId &&
-      config[a.networkId] &&
-      config[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
-  );
+
+  // filter LS contracts and add them to default networks
+  const addCustomContracts = map((n: NetworkLegacy) => {
+    const contracts = lsContracts.filter((c) => c.networkId === n.id);
+    return !isVoid(contracts)
+      ? {
+          ...n,
+          contracts: [...n.contracts, ...contracts]
+        }
+      : n;
+  });
+
+  // filter LS assets and add them to default networks
+  const addCustomAssets = map((n: NetworkLegacy) => {
+    const assets = lsAssets.filter((c) => c.networkId === n.id);
+    return !isVoid(assets)
+      ? {
+          ...n,
+          tokens: [...n.tokens, ...assets.map((a) => ({ ...a, address: a.contractAddress }))]
+        }
+      : n;
+  });
+
+  //@ts-expect-error incorrect type inference from ramda
+  const config: NetworkConfig = pipe(
+    mergeWithDefault,
+    //@ts-expect-error incorrect type inference from ramda
+    addCustomContracts,
+    addCustomAssets
+    //@ts-expect-error incorrect type inference from ramda
+  )(defaultConfig);
 
   // add selected and custom nodes per network
   if (ls[LSKeys.NETWORK_NODES]) {

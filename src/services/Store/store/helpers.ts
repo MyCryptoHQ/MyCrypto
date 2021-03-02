@@ -12,6 +12,7 @@ import {
 import { bigify, isBigish } from '@utils';
 import {
   difference,
+  dissoc,
   either,
   identity,
   ifElse,
@@ -103,6 +104,15 @@ export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) 
     const diff = difference(keys(store), keys(toImport));
     return diff.length === 0;
   }
+};
+
+export const migrateConfig = (toImport: Partial<LocalStorage>) => {
+  return {
+    ...toImport,
+    // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
+    rates: toImport.settings.rates && toImport.settings.rates,
+    settings: dissoc('rates', toImport.settings)
+  } as LocalStorage;
 };
 
 export const destructureCoinGeckoIds = (
