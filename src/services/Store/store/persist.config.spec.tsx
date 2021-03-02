@@ -1,4 +1,5 @@
 import { defaultContacts } from '@database';
+import { fContacts } from '@fixtures';
 import { DataStore, LSKeys } from '@types';
 import { values } from '@vendor';
 
@@ -9,9 +10,9 @@ describe('Persist Migrations', () => {
     const migration = migrations['3'];
     const contact = values(defaultContacts)[0];
     const actual = migration({
-      [LSKeys.ADDRESS_BOOK]: [{ ...contact, label: 'Deprecated label' }]
+      [LSKeys.ADDRESS_BOOK]: [{ ...contact, label: 'Deprecated label' }, ...fContacts]
     } as DataStore);
-    const expected = { [LSKeys.ADDRESS_BOOK]: [contact] };
+    const expected = { [LSKeys.ADDRESS_BOOK]: [...fContacts, contact] };
     expect(actual).toEqual(expected);
   });
 });
