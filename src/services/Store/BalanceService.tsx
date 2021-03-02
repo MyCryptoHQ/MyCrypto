@@ -260,7 +260,7 @@ export const getBaseAssetBalancesForAddresses = async (
       .then(bigifyBalanceMap)
       .catch(() => ({} as BalanceMap));
   } else {
-    const result = await mapAsync(addresses, (address) => providerHandler.getBalance(address));
+    const result = await mapAsync(addresses, (address) => providerHandler.getRawBalance(address));
     return bigifyBalanceMap(toBalanceMap(addresses, result));
   }
 };

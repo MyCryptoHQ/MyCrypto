@@ -29,7 +29,7 @@ jest.mock('@mycrypto/eth-scan', () => ({
 }));
 ProviderHandler.prototype.getRawTokenBalance = jest.fn().mockResolvedValue('150');
 ProviderHandler.prototype.getTokenBalance = jest.fn().mockResolvedValue('150');
-ProviderHandler.prototype.getBalance = jest.fn().mockResolvedValue('150');
+ProviderHandler.prototype.getRawBalance = jest.fn().mockResolvedValue('150');
 ProviderHandler.fetchProvider = jest.fn().mockResolvedValue({} as FallbackProvider);
 
 const RopstenNoEthScanNetworkId = 'ROPSTEN_NO_ETHSCAN' as NetworkId;
