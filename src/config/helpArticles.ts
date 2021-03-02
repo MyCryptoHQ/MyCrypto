@@ -31,6 +31,7 @@ export enum KB_HELP_ARTICLE {
   TREZOR_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto',
   LEDGER_TROUBLESHOOTING = 'troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto',
   WHAT_ARE_PROTECTED_TRANSACTIONS = 'general-knowledge/about-mycrypto/what-are-protected-transactions',
+  HOW_DOES_VIEW_ADDRESS_WORK = 'how-to/accessing-wallet/how-does-view-address-work',
   WHY_IS_GAS = 'general-knowledge/ethereum-blockchain/why-is-gas'
 }
 
