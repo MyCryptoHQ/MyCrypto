@@ -99,6 +99,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     }
   },
   assets: {},
+  rates: {},
   contracts: {},
   networks: {},
   notifications: {
@@ -124,7 +125,6 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     dashboardAccounts: ['256b782e-52bc-51f9-a357-602501e59700'],
     excludedAssets: [],
     inactivityTimer: 1800000,
-    rates: {},
     language: 'en',
     isDemoMode: false
   },
