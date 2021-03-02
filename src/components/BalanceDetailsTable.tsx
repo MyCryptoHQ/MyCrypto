@@ -8,13 +8,13 @@ import {
   Currency,
   EthAddress,
   FixedSizeCollapsibleTable,
+  Icon,
   TableCell,
   TableRow,
   Text,
   Tooltip,
   Typography
 } from '@components';
-import { CenteredIconArrow } from '@components/IconArrow';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Balance, BalanceAccount, Fiat, IAccount, TTicker, TUuid } from '@types';
@@ -108,7 +108,14 @@ const createBalancesDetailViewRow = (
       ) : (
         <Box variant="rowAlign" key={balance.id} onClick={onCollapseOrExpand}>
           <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_SHOW_ACCOUNTS_TOOLTIP')}>
-            <CenteredIconArrow size="xl" isFlipped={rowState === 'opened'} />
+            <Box variant="columnCenter">
+              <Icon
+                type="expandable"
+                isExpanded={rowState === 'opened'}
+                height="1em"
+                fill="linkAction"
+              />
+            </Box>
           </Tooltip>
         </Box>
       )}
