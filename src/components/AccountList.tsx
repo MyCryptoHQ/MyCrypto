@@ -381,17 +381,15 @@ const BuildAccountTable = (
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
       <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
-    <>
-      {isMobile ? (
-        translateRaw('ACCOUNT_LIST_REMOVE')
-      ) : (
-        <Box variant="columnCenter" key={'ACCOUNT_LIST_REMOVE'} width="100%">
-          <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
-            {translateRaw('ACCOUNT_LIST_REMOVE')}
-          </Text>
-        </Box>
-      )}
-    </>
+    isMobile ? (
+      translateRaw('ACCOUNT_LIST_REMOVE')
+    ) : (
+      <Box variant="columnCenter" key={'ACCOUNT_LIST_REMOVE'} width="100%">
+        <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+          {translateRaw('ACCOUNT_LIST_REMOVE')}
+        </Text>
+      </Box>
+    )
   ];
 
   const getFullTableData = accounts

@@ -181,17 +181,15 @@ export default function AddressBook({
       convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
-      <>
-        {isMobile ? (
-          translateRaw('ADDRESSBOOK_REMOVE')
-        ) : (
-          <Box variant="columnCenter" key={'ADDRESSBOOK_REMOVE'} width="100%">
-            <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
-              {translateRaw('ADDRESSBOOK_REMOVE')}
-            </Text>
-          </Box>
-        )}
-      </>
+      isMobile ? (
+        translateRaw('ADDRESSBOOK_REMOVE')
+      ) : (
+        <Box variant="columnCenter" key={'ADDRESSBOOK_REMOVE'} width="100%">
+          <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+            {translateRaw('ADDRESSBOOK_REMOVE')}
+          </Text>
+        </Box>
+      )
     ],
     overlay: ({ indexKey }: { indexKey: number }) => {
       if (!overlayRows) return <></>;
