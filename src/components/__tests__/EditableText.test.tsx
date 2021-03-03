@@ -6,7 +6,6 @@ import EditableText, { Props } from '../EditableText';
 
 const defaultProps: Props = {
   value: 'Editable',
-  bold: false,
   truncate: false,
   onChange: jest.fn()
 };
