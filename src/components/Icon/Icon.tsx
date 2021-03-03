@@ -309,8 +309,6 @@ const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
 const SSortIcon = styled(SInlineSVG)<StylingProps>`
   cursor: pointer;
   transition: all 0.3s ease-out;
-  /* Align sort icon with Table column header  */
-  margin-top: 3px;
   ${({ isActive }) =>
     isActive ? css({ transform: `rotate(0deg)` }) : css({ transform: `rotate(180deg)` })};
 `;

@@ -239,7 +239,14 @@ class AbstractTable extends Component<Props, State> {
                     variant="rowAlign"
                     justifyContent={isReversedColumn(heading) ? 'flex-end' : 'flex-start'}
                   >
-                    <Text as="span">{heading}</Text>
+                    <Text
+                      as="span"
+                      textTransform="uppercase"
+                      fontSize="14px"
+                      letterSpacing="0.0625em"
+                    >
+                      {heading}
+                    </Text>
                     {isSortableColumn && (
                       <Icon
                         ml="0.3ch"

@@ -353,7 +353,9 @@ const BuildAccountTable = (
       translateRaw(id)
     ) : (
       <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
-        <Text as="span">{translateRaw(id)}</Text>
+        <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+          {translateRaw(id)}
+        </Text>
         <Icon
           ml="0.3ch"
           type="sort"
