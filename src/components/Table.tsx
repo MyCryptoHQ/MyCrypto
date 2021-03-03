@@ -287,7 +287,7 @@ class AbstractTable extends Component<Props, State> {
                 {Overlay && isOverlayRowIncluded ? (
                   // @todo: Solve jump in th width when the overlay is toggled.
                   <td colSpan={head.length}>
-                    <Overlay indexKey={primaryRowKey} />
+                    <Overlay indexKey={rowIndex} />
                   </td>
                 ) : (
                   row.map((cell, cellIndex) => (
