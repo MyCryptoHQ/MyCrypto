@@ -8,10 +8,11 @@ import uniqBy from 'ramda/src/uniqBy';
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
-import { ENSService, isEthereumAccount } from '@services';
+import { ENSService } from '@services/ApiService';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { isEthereumAccount } from '@services/Store/Account';
 import {
   deleteMembership,
   fetchAssets,

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-import { BalanceDetailsTable } from '@components';
 import { Fiats } from '@config';
 import { fAccounts, fBalances } from '@fixtures';
 import { noOp } from '@utils';
@@ -10,7 +9,7 @@ import { noOp } from '@utils';
 import BalanceDetailsTableComponent from './BalanceDetailsTable';
 
 export default {
-  title: 'Molecules/BalanceDetailsTable',
+  title: 'Organisms/BalanceDetailsTable',
   component: BalanceDetailsTableComponent,
   parameters: {
     //👇 The viewports object from the Essentials addon
@@ -20,7 +19,7 @@ export default {
     }
   }
 };
-const Template = (args: React.ComponentProps<typeof BalanceDetailsTable>) => (
+const Template = (args: React.ComponentProps<typeof BalanceDetailsTableComponent>) => (
   <BalanceDetailsTableComponent {...args} />
 );
 

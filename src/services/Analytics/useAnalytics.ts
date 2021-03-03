@@ -1,7 +1,7 @@
-import { useFeatureFlags } from '@services';
 import { useDispatch } from '@store';
 import { noOp } from '@utils';
 
+import { useFeatureFlags } from '../FeatureFlag';
 import { PageParams, TrackParams } from './Analytics';
 import { trackEvent, trackPage } from './saga';
 
