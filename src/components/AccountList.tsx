@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import informationalSVG from '@assets/images/icn-info-blue.svg';
 import {
@@ -113,21 +113,6 @@ const CurrencyContainer = styled(Currency)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     float: right;
   }
-`;
-
-const HeaderAlignment = styled.div`
-  ${(props: { align?: string }) => css`
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      text-align: ${props.align || 'inherit'};
-    }
-  `};
-  & img {
-    margin-left: ${SPACING.XS};
-  }
-`;
-
-const PrivateColumnLabel = styled.div`
-  display: inline-block;
 `;
 
 const InformationalIcon = styled.img`
@@ -377,10 +362,18 @@ const BuildAccountTable = (
     convertColumnToClickable('ACCOUNT_LIST_ADDRESS'),
     convertColumnToClickable('ACCOUNT_LIST_NETWORK'),
     convertColumnToClickable('ACCOUNT_LIST_VALUE', { isReversed: true }),
-    <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
-      <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
-    </HeaderAlignment>,
+    <Box variant={isMobile ? 'rowAlign' : 'rowCenter'} key={'ACCOUNT_LIST_PRIVATE'} width="100%">
+      <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+        {translateRaw('ACCOUNT_LIST_PRIVATE')}
+      </Text>
+      <Tooltip
+        mt={
+          isMobile ? '0' : '4px'
+        } /* Hack to get the tooltip to align with text of a different size. */
+        paddingLeft={SPACING.XS}
+        tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}
+      />
+    </Box>,
     isMobile ? (
       translateRaw('ACCOUNT_LIST_REMOVE')
     ) : (

@@ -34,7 +34,7 @@ export const FEATURE_FLAGS = {
   ANALYTICS: 'core',
 
   /* Misc */
-  PRIVATE_TAGS: false,
+  PRIVATE_TAGS: true,
   PROTECT_TX: true,
   ENS: true,
   REP_TOKEN_MIGRATION: true,
