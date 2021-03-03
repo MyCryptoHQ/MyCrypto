@@ -66,7 +66,7 @@ interface CellProps {
 const sharedCellProperties = ({ isReversed }: CellProps) => `
   min-width: .75em;
   padding: .75em 0.25em;
-  text-align: ${isReversed ? 'right' : 'left'};
+  ${isReversed && 'text-align: right'};
 `;
 
 const TableHead = styled.tr`
@@ -89,7 +89,6 @@ interface TableHeadingProps extends CellProps {
 
 const TableHeading = styled(Typography)<TableHeadingProps>`
   ${sharedCellProperties}
-  padding-left: 20px;
   color: ${(props) => props.theme.headline};
   font-weight: normal;
   border-top: '0px';
@@ -305,7 +304,7 @@ class AbstractTable extends Component<Props, State> {
           {groups!.map(({ title, entries }) => (
             <React.Fragment key={title}>
               <TableGroupHead onClick={this.toggleCollapseGroup.bind(this, title)} role="button">
-                <TableHeading colSpan={head.length}>
+                <TableHeading colSpan={head.length} style={{ paddingLeft: SPACING.BASE }}>
                   <Box variant="rowAlign">
                     <Text as="span" textTransform="uppercase">
                       {title}
