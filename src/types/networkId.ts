@@ -34,4 +34,6 @@ export type NetworkId =
   | 'VOLTA'
   | 'EnergyWebChain'
   | 'MATIC'
-  | 'xDAI';
+  | 'xDAI'
+  | 'SmartChain'
+  | 'SmartChainTestNetwork';
