@@ -285,8 +285,7 @@ class AbstractTable extends Component<Props, State> {
             return (
               <TableRow key={rowIndex} onClick={() => this.handleRowClicked(rowIndex)}>
                 {Overlay && isOverlayRowIncluded ? (
-                  // @todo: Solve jump in th width when the overlay is toggled.
-                  <td colSpan={head.length}>
+                  <td colSpan={head.length} style={{ padding: 0 }}>
                     <Overlay indexKey={rowIndex} />
                   </td>
                 ) : (
