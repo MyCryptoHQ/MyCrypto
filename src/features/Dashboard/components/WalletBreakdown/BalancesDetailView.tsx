@@ -98,6 +98,7 @@ const BalancesDetailView = (props: BalancesDetailProps) => {
         headingRight={
           <BalancesOnlyTotal>
             <Currency
+              bold={true}
               amount={totalFiatValue.toString()}
               symbol={fiat.symbol}
               ticker={fiat.ticker}
