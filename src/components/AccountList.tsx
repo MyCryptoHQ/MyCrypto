@@ -513,15 +513,13 @@ const BuildAccountTable = (
       if (privacyCheckboxEnabled) {
         bodyContent = [
           ...bodyContent,
-          <Box key={index} variant="rowCenter">
-            {!isMobile && (
-              <PrivacyCheckBox
-                name={'Private'}
-                marginLeft="0"
-                checked={account.isPrivate || false}
-                onChange={() => toggleAccountPrivacy(account.uuid)}
-              />
-            )}
+          <Box key={index} variant={!isMobile ? 'rowCenter' : undefined}>
+            <PrivacyCheckBox
+              name={'Private'}
+              marginLeft="0"
+              checked={account.isPrivate || false}
+              onChange={() => toggleAccountPrivacy(account.uuid)}
+            />
           </Box>
         ];
       }
