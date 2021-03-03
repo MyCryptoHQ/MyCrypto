@@ -19,9 +19,10 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
+import { defaultContacts } from '@database';
 import { DataStore, EncryptedDataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
-import { flatten, pipe, values } from '@vendor';
+import { flatten, pipe, propEq, reject, values } from '@vendor';
 
 import { mergeAssets, mergeNetworks } from './helpers';
 
@@ -131,7 +132,7 @@ const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   }
 };
 
-const migrations = {
+export const migrations = {
   2: (state: DataStore) => {
     return {
       ...state,
@@ -141,11 +142,23 @@ const migrations = {
         selectedNode: n.selectedNode === autoNode ? undefined : n.selectedNode
       }))
     };
+  },
+  3: (state: DataStore) => {
+    const MYC_DONATE_CONTACT = values(defaultContacts)[0];
+    return {
+      ...state,
+      // Update the label and description of the MYC donate address which exists in
+      // a users local storage.
+      [LSKeys.ADDRESS_BOOK]: [
+        ...reject(propEq('uuid', MYC_DONATE_CONTACT.uuid), state[LSKeys.ADDRESS_BOOK]),
+        MYC_DONATE_CONTACT
+      ]
+    };
   }
 };
 
 export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
-  version: 2,
+  version: 3,
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,

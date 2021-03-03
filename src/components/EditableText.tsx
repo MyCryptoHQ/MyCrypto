@@ -6,11 +6,7 @@ import editIcon from '@assets/images/icn-edit.svg';
 import { Typography } from '@components';
 import { COLORS, SPACING } from '@theme';
 
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-  align-items: center;
-`;
+import Box from './Box';
 
 const EditIcon = styled.img`
   display: inline-flex;
@@ -45,13 +41,18 @@ const STypography = styled(Typography)`
 
 export interface Props {
   value: string;
-  className?: string;
   bold?: boolean;
   truncate?: boolean;
   saveValue(value: string): void;
 }
 
-function EditableText({ saveValue, value, className, bold, truncate }: Props) {
+function EditableText({
+  saveValue,
+  value,
+  bold,
+  truncate,
+  ...props
+}: Props & React.ComponentProps<typeof Box>) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
@@ -83,7 +84,7 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
   };
 
   return (
-    <Wrapper className={className}>
+    <Box variant="rowAlign" height="100%" {...props}>
       {editMode ? (
         <SInputField
           autoFocus={true}
@@ -101,7 +102,7 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
           <EditIcon onClick={edit} src={editIcon} />
         </>
       )}
-    </Wrapper>
+    </Box>
   );
 }
 

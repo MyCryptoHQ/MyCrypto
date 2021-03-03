@@ -1304,7 +1304,7 @@ export const DEMO_SETTINGS = {
       favorite: false,
       mtime: 0,
       uuid: '624d4cb6-b9ba-5b46-b40b-02bf4e435b08',
-      label: 'MyCrypto Tip Jar'
+      label: 'MyCrypto Team Tip Jar'
     },
     'f625fa21-20ed-5154-a785-d88fbb85f58a': {
       address: '0x8000F432747ccDc71B9DF9F8eB96EFfeeac6218E',
@@ -2184,9 +2184,9 @@ export const DEMO_SETTINGS = {
   },
   addressBook: {
     'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {
-      label: 'MyCrypto Tip Jar',
+      label: 'MyCrypto Team Tip Jar',
       address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-      notes: 'Toss us a coin!',
+      notes: "This is MyCrypto's Donate address. Feel free to delete it!",
       network: 'Ethereum',
       uuid: 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
     },
