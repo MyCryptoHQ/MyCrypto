@@ -277,9 +277,7 @@ export default function AddressBook({
       }
     ),
     config: {
-      primaryColumn: translateRaw('ADDRESSBOOK_LABEL'),
-      hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE')],
-      iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE')]
+      primaryColumn: translateRaw('ADDRESSBOOK_LABEL')
     }
   };
   return (
