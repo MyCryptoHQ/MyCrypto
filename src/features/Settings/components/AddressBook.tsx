@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import {
   Box,
@@ -53,14 +53,6 @@ const SEditableText = styled(EditableText)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-weight: inherit;
   }
-`;
-
-const HeaderAlignment = styled.div`
-  ${(props: { align?: string }) => css`
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      text-align: ${props.align || 'inherit'};
-    }
-  `};
 `;
 
 type ISortTypes = 'label' | 'label-reverse' | 'address' | 'address-reverse';
@@ -189,9 +181,17 @@ export default function AddressBook({
       convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
-      <HeaderAlignment key={'ADDRESSBOOK_REMOVE'} align="center">
-        {translateRaw('ADDRESSBOOK_REMOVE')}
-      </HeaderAlignment>
+      <>
+        {isMobile ? (
+          translateRaw('ADDRESSBOOK_REMOVE')
+        ) : (
+          <Box variant="columnCenter" key={'ADDRESSBOOK_REMOVE'} width="100%">
+            <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+              {translateRaw('ADDRESSBOOK_REMOVE')}
+            </Text>
+          </Box>
+        )}
+      </>
     ],
     overlay: ({ indexKey }: { indexKey: number }) => {
       if (!overlayRows) return <></>;

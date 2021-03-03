@@ -238,22 +238,28 @@ class AbstractTable extends Component<Props, State> {
                     variant="rowAlign"
                     justifyContent={isReversedColumn(heading) ? 'flex-end' : 'flex-start'}
                   >
-                    <Text
-                      as="span"
-                      textTransform="uppercase"
-                      fontSize="14px"
-                      letterSpacing="0.0625em"
-                    >
-                      {heading}
-                    </Text>
-                    {isSortableColumn && (
-                      <Icon
-                        ml="0.3ch"
-                        type="sort"
-                        isActive={sortedColumnDirection === ColumnDirections.Reverse}
-                        size="1em"
-                        color="linkAction"
-                      />
+                    {typeof heading === 'string' ? (
+                      <>
+                        <Text
+                          as="span"
+                          textTransform="uppercase"
+                          fontSize="14px"
+                          letterSpacing="0.0625em"
+                        >
+                          {heading}
+                        </Text>
+                        {isSortableColumn && (
+                          <Icon
+                            ml="0.3ch"
+                            type="sort"
+                            isActive={sortedColumnDirection === ColumnDirections.Reverse}
+                            size="1em"
+                            color="linkAction"
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <>{heading}</>
                     )}
                   </Box>
                 </TableHeading>

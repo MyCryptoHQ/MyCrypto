@@ -348,11 +348,17 @@ const BuildAccountTable = (
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) =>
+  const convertColumnToClickable = (id: IColumnValues, options?: { isReversed: boolean }) =>
     isMobile ? (
       translateRaw(id)
     ) : (
-      <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
+      <Box
+        variant="rowAlign"
+        key={id}
+        onClick={() => updateSortingState(id)}
+        width="100%"
+        justifyContent={options?.isReversed ? 'flex-end' : undefined}
+      >
         <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
           {translateRaw(id)}
         </Text>
@@ -370,14 +376,22 @@ const BuildAccountTable = (
     convertColumnToClickable('ACCOUNT_LIST_LABEL'),
     convertColumnToClickable('ACCOUNT_LIST_ADDRESS'),
     convertColumnToClickable('ACCOUNT_LIST_NETWORK'),
-    convertColumnToClickable('ACCOUNT_LIST_VALUE'),
+    convertColumnToClickable('ACCOUNT_LIST_VALUE', { isReversed: true }),
     <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
       <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
       <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
     </HeaderAlignment>,
-    <HeaderAlignment key={'ACCOUNT_LIST_REMOVE'} align="center">
-      {translateRaw('ACCOUNT_LIST_REMOVE')}
-    </HeaderAlignment>
+    <>
+      {isMobile ? (
+        translateRaw('ACCOUNT_LIST_REMOVE')
+      ) : (
+        <Box variant="columnCenter" key={'ACCOUNT_LIST_REMOVE'} width="100%">
+          <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+            {translateRaw('ACCOUNT_LIST_REMOVE')}
+          </Text>
+        </Box>
+      )}
+    </>
   ];
 
   const getFullTableData = accounts
