@@ -1,3 +1,4 @@
+import { put } from 'redux-saga-test-plan/matchers';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fLocalStorage } from '@fixtures';
@@ -18,9 +19,12 @@ describe('Import - Export', () => {
     const importable = JSON.stringify(fLocalStorage);
     return expectSaga(importSaga)
       .withState(mockAppState())
-      .put(appReset(marshallState(fLocalStorage)))
       .dispatch(importState(importable))
-      .silentRun();
+      .silentRun()
+      .then(({ effects }) => {
+        expect(effects.put).toHaveLength(2);
+        expect(effects.put[0]).toEqual(put(appReset(marshallState(fLocalStorage))));
+      });
   });
 
   it('importSaga(): sets error state on failure', () => {
