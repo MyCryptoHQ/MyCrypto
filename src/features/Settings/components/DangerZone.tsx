@@ -30,14 +30,17 @@ const SettingsButton = styled(Button)`
   padding: ${SPACING.SM};
 `;
 
+const SDashboardPanel = styled(DashboardPanel)`
+  border: 1px solid ${({ theme }) => theme.colors.warning};
+`;
+
 const DangerZone: React.FC = () => {
   const { resetAppDb } = useContext(DataContext);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
-    <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
-      <Divider color="warning" mb={SPACING.BASE} />
-
+    <SDashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
+      <Divider mb={SPACING.BASE} />
       {confirmDelete ? (
         <RowDeleteOverlay
           prompt={translateRaw('DANGERZONE_CONFIRM')}
@@ -64,7 +67,7 @@ const DangerZone: React.FC = () => {
           </SettingsControl>
         </SettingsField>
       )}
-    </DashboardPanel>
+    </SDashboardPanel>
   );
 };
 
