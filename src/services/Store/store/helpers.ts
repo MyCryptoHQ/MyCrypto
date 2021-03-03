@@ -135,7 +135,7 @@ export const destructureCoinGeckoIds = (
 
 export const buildCoinGeckoIdMapping = (assets: ExtendedAsset[]) =>
   assets.reduce((acc, a) => {
-    if (a.mappings && a.mappings.coinGeckoId) {
+    if (a.mappings?.coinGeckoId) {
       acc[a.uuid as string] = a.mappings.coinGeckoId;
     }
     return acc;

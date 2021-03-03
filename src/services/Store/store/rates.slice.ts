@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { mergeRight } from 'ramda';
 import { select } from 'redux-saga-test-plan/matchers';
-import { put, takeLatest } from 'redux-saga/effects';
+import { all, put, takeLatest } from 'redux-saga/effects';
 
 import { Fiats } from '@config';
 import { RatesService } from '@services/ApiService/Rates';
@@ -10,6 +10,7 @@ import { ExtendedAsset, IRates, LSKeys } from '@types';
 
 import { getAccountsAssets, updateAccountAssets } from './account.slice';
 import { buildCoinGeckoIdMapping, destructureCoinGeckoIds } from './helpers';
+import { appReset } from './root.reducer';
 import { getAppState } from './selectors';
 import { getTrackedAssets, trackAsset } from './trackedAssets.slice';
 
@@ -48,9 +49,12 @@ export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`)
  */
 
 export function* ratesSaga() {
-  yield takeLatest(updateAccountAssets, pollRates);
-  yield takeLatest(trackAsset, pollRates);
-  yield takeLatest(startRatesPolling, pollRates);
+  yield all([
+    yield takeLatest(updateAccountAssets.type, pollRates),
+    yield takeLatest(trackAsset.type, pollRates),
+    yield takeLatest(startRatesPolling.type, pollRates),
+    yield takeLatest(appReset, pollRates)
+  ]);
 }
 
 export function* pollRates() {
