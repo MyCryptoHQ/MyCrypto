@@ -285,7 +285,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       sortableColumn: translateRaw('RECENT_TRANSACTIONS_DATE'),
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
-      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')]
+      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
+      reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
     }
   };
   return (
