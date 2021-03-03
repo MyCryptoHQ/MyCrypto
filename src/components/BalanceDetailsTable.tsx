@@ -215,7 +215,10 @@ export default function BalanceDetailsTable({
               firstAction,
               isMobile
             ).map((c, i) => (
-              <TableCell key={i}>{c}</TableCell>
+              // We know that we want columns "Balance" and "Value" to align-right:
+              <TableCell key={i} isReversed={i === 2 || i === 3}>
+                {c}
+              </TableCell>
             ))}
           </BalancesDetailViewTableRow>
 
