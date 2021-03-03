@@ -137,7 +137,7 @@ export const CollapsibleTable = ({
           )
         )
       ) : (
-        <Table {...props} />
+        <Table {...props} overlay={Overlay} overlayRows={overlayRows} />
       )}
     </>
   );
