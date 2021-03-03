@@ -126,14 +126,14 @@ export const CollapsibleTable = ({
             </Box>
           ) : (
             // The element being iterated on is table data.
-            <React.Fragment key={index}>
+            <Box key={index} position="relative">
               <StackedCard {...cardData} />
               {Overlay && overlayRows!.includes(index) && (
                 <StackedCardOverlay>
                   <Overlay indexKey={index} />
                 </StackedCardOverlay>
               )}
-            </React.Fragment>
+            </Box>
           )
         )
       ) : (
