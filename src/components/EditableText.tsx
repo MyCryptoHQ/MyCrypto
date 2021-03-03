@@ -100,16 +100,10 @@ function EditableText({
         />
       ) : (
         <>
-          <SText
-            forwardedAs="span"
-            isDiscrete={!hasValue}
-            onClick={edit}
-            $truncate={truncate}
-            $value={value}
-          >
+          <SText forwardedAs="span" isDiscrete={!hasValue} onClick={edit}>
             {hasValue ? value : placeholder}
           </SText>
-          <SIcon type="edit" onClick={edit} height="0.8em" color="discrete" />
+          <SIcon type="edit" onClick={edit} height="0.8rem" color="discrete" />
         </>
       )}
     </SBox>

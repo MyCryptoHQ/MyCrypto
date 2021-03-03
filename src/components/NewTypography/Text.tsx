@@ -23,7 +23,6 @@ import {
 } from 'styled-system';
 
 import { textVariants, TextVariants } from '@theme';
-import { isVoid } from '@utils';
 
 export type TextProps = SpaceProps &
   LineHeightProps &
@@ -38,9 +37,6 @@ export type TextProps = SpaceProps &
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
   } & {
     textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
-    $truncate?: boolean;
-    $maxCharLen?: number;
-    $value?: string;
   };
 
 const SText: React.FC<TextProps> = styled.p<TextProps & { $maxCharLen: number }>`
@@ -55,53 +51,10 @@ const SText: React.FC<TextProps> = styled.p<TextProps & { $maxCharLen: number }>
   ${typography}
   ${layout}
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
-
-  ${({ $truncate, $maxCharLen, $value }) => {
-    if (!$truncate || !$value) return;
-    const charLength = $value && $value.length;
-
-    if (charLength >= $maxCharLen / 3) {
-      return `
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-
-          line-height: 1.4rem;
-          max-height: calc(1.4rem * 3);
-          width: ${$maxCharLen / 3}ch;
-        `;
-    }
-    if (charLength >= $maxCharLen / 5) {
-      return `
-        @media (max-width: 850px) {
-          display: -webkit-box;
-          -webkit-line-clamp: 5;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-
-          line-height: 1.4rem;
-          max-height: calc(1.4rem * 5);
-          width: ${$maxCharLen / 5}ch;
-        }
-      `;
-    }
-  }}
 `;
 
-const Text: React.FC<TextProps & { isDiscrete?: boolean }> = ({
-  isDiscrete,
-  $value,
-  $maxCharLen = 51,
-  ...props
-}) => {
-  return isVoid($value) ? (
-    <SText variant={isDiscrete ? 'discrete' : 'body'} $maxCharLen={$maxCharLen} {...props} />
-  ) : (
-    <SText variant={isDiscrete ? 'discrete' : 'body'} $maxCharLen={$maxCharLen} {...props}>
-      {$value}
-    </SText>
-  );
+const Text: React.FC<TextProps & { isDiscrete?: boolean }> = ({ isDiscrete, ...props }) => {
+  return <SText variant={isDiscrete ? 'discrete' : 'body'} {...props} />;
 };
 
 export default Text;
