@@ -15,7 +15,7 @@ describe('Import - Export', () => {
     expect(omit(['mtime'], actual)).toEqual(omit(['mtime'], expected));
   });
 
-  it('importSaga(): updates the app state with the provided data', () => {
+  it('importSaga(): updates the app state with the provided data', async () => {
     const importable = JSON.stringify(fLocalStorage);
     return expectSaga(importSaga)
       .withState(mockAppState())
@@ -24,6 +24,7 @@ describe('Import - Export', () => {
       .then(({ effects }) => {
         expect(effects.put).toHaveLength(2);
         expect(effects.put[0]).toEqual(put(appReset(marshallState(fLocalStorage))));
+        expect(effects.put[1]).toEqual(put(importSlice.actions.success()));
       });
   });
 
