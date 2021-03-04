@@ -31,7 +31,7 @@ const mockOn = jest.fn().mockImplementation((type, cb) => {
   }
 });
 const mockSend = jest.fn().mockImplementation(() => 'txhash');
-jest.mock('@walletconnect/browser', () =>
+jest.mock('@walletconnect/client', () =>
   jest.fn().mockImplementation(() => ({
     createSession: mockCreateSession,
     killSession: mockKillSession,

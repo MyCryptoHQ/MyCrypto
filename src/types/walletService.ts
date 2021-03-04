@@ -32,4 +32,5 @@ export interface ViewOnlyWalletInitArgs {
 export interface WalletConnectWalletInitArgs {
   address: TAddress;
   signMessageHandler: IUseWalletConnect['signMessage'];
+  killHandler: IUseWalletConnect['kill'];
 }

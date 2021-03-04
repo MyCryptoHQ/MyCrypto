@@ -56,7 +56,7 @@ export const WalletFactory = {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
   } as WalletService,
   [WalletId.WALLETCONNECT]: {
-    init: ({ address, signMessageHandler }: WalletConnectWalletInitArgs) =>
-      new WalletConnectWallet(address, signMessageHandler)
+    init: ({ address, signMessageHandler, killHandler }: WalletConnectWalletInitArgs) =>
+      new WalletConnectWallet(address, signMessageHandler, killHandler)
   } as WalletService
 };

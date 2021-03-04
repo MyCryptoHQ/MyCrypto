@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
+import { WalletConnectWallet } from '@services';
 import { setupWeb3Node, Web3Node } from '@services/EthService';
 import { IFullWallet } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
@@ -15,6 +16,7 @@ import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, ISignedMessage, WalletId } from '@types';
 import { addHexPrefix, isWeb3Wallet } from '@utils';
+import { useUnmount } from '@vendor';
 
 import { getStories } from './stories';
 
@@ -156,6 +158,13 @@ function SignMessage(props: Props) {
 
   const story = getStories().find((x) => x.name === walletName);
   const Step = story && story.steps[0];
+
+  useUnmount(() => {
+    // Kill WalletConnect session
+    if (wallet && walletName === WalletId.WALLETCONNECT) {
+      (wallet as WalletConnectWallet).kill();
+    }
+  });
 
   return (
     <Content>

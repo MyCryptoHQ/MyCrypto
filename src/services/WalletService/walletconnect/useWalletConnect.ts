@@ -12,15 +12,15 @@ const isExpectedAddress = (received: TAddress, target: TAddress): boolean =>
   isSameAddress(received, target);
 const isExpectedNetwork = (received: number, target: number): boolean => received === target;
 
-export function useWalletConnect(): IUseWalletConnect {
+export function useWalletConnect(autoKill?: boolean): IUseWalletConnect {
   const [state, dispatch] = useReducer(WcReducer, initialState);
   const [shouldConnect, setShouldConnect] = useState(true);
   const [service, setService] = useState<IWalletConnectService | undefined>(); // Keep a reference to the session in order to send
 
   // Ensure the service is killed when we leave the component.
-  useUnmount(() => service && service.kill());
+  useUnmount(() => autoKill && service && service.kill());
 
-  // Iniitialise walletconnect and get the uri.
+  // Initialise walletconnect and get the uri.
   useEffect(() => {
     if (!shouldConnect) return;
 
@@ -130,10 +130,17 @@ export function useWalletConnect(): IUseWalletConnect {
 
   const requestConnection = () => setShouldConnect(true);
 
+  const kill = async () => {
+    if (service) {
+      return service.kill();
+    }
+  };
+
   return {
     state,
     requestSign,
     requestConnection,
-    signMessage
+    signMessage,
+    kill
   };
 }

@@ -22,6 +22,6 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [withWalletConnect(WalletConnectDecrypt)]
+    steps: [withWalletConnect(WalletConnectDecrypt, false)]
   }
 ];
