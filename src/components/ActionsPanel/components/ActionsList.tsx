@@ -17,7 +17,7 @@ interface ActionsListProps {
 }
 
 const DismissedButton = styled.div`
-  height: 80px;
+  height: ${SPACING.XL};
   width: 100%;
   display: flex;
   align-items: center;
@@ -63,7 +63,7 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
 
   return (
     <>
-      <Box maxHeight={{ md: '240px' }} overflowY="scroll">
+      <Box maxHeight={{ md: '240px' }} overflowY="auto">
         {actions.map((action: ActionTemplate, i) => (
           <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
         ))}
@@ -75,7 +75,7 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
         <Icon type="expandable" isExpanded={showHidden} height="1em" fill="linkAction" />
       </DismissedButton>
       {showHidden && (
-        <Box maxHeight="240px" overflowY="scroll">
+        <Box maxHeight="240px" overflowY="auto">
           {hiddenActions.map((action: ActionTemplate, i) => (
             <ActionItem key={i} actionTemplate={action} hidden={true} />
           ))}
