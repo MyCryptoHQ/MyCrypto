@@ -36,13 +36,12 @@ describe('TxStatus', () => {
             contracts: [],
             settings: fSettings,
             userActions: [],
+            trackedAssets: [],
             rates: fRates
           } as unknown) as IDataContext
         }
       >
-        <StoreContext.Provider
-          value={{ accounts: [fAccount], userActions: [], trackedAssets: [] } as any}
-        >
+        <StoreContext.Provider value={{ accounts: [fAccount], userActions: [] } as any}>
           <TxStatus />
         </StoreContext.Provider>
       </DataContext.Provider>

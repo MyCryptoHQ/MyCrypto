@@ -12,7 +12,6 @@ import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
 import { settingsSaga } from './settings.slice';
 import { scanTokensSaga } from './tokenScanning.slice';
-import { trackedAssetsSaga } from './trackedAssets.slice';
 import { vaultSaga } from './vault.slice';
 
 export default function* rootSaga() {
@@ -28,7 +27,6 @@ export default function* rootSaga() {
     analyticsSaga(),
     persistenceSaga(),
     pollingSaga(),
-    ratesSaga(),
-    trackedAssetsSaga()
+    ratesSaga()
   ]);
 }

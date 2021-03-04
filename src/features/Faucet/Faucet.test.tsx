@@ -63,11 +63,12 @@ describe('Faucet', () => {
             settings: fSettings,
             userActions: [],
             rates: fRates,
+            trackedAssets: [],
             createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
           } as any
         }
       >
-        <StoreContext.Provider value={{ accounts: [fAccount], trackedAssets: [] } as any}>
+        <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
           <Faucet />
         </StoreContext.Provider>
       </DataContext.Provider>

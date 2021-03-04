@@ -1,13 +1,8 @@
 import { AnyAction } from 'redux';
-import { mockStore } from 'test-utils';
+import { mockAppState } from 'test-utils';
 
 import { fAssets } from '@fixtures';
 
-import {
-  initialState as assetsInitialState,
-  default as assetSlice,
-  createAssets
-} from './asset.slice';
 import {
   getTrackedAssets,
   initialState,
@@ -21,10 +16,9 @@ const combinedReducers = (
   sliceState: ReturnType<typeof slice.reducer> | undefined,
   action: AnyAction
 ) => {
-  return mockStore(
-    { [slice.name]: slice.reducer(sliceState, action) },
-    { [assetSlice.name]: assetSlice.reducer(assetsInitialState, createAssets(fAssets)) }
-  );
+  return mockAppState({
+    [slice.name]: slice.reducer(sliceState, action)
+  });
 };
 
 describe('ratesSlice', () => {
@@ -36,13 +30,13 @@ describe('ratesSlice', () => {
 
   it('trackAsset(): track an asset', () => {
     const assetToTrack = fAssets[0];
-    const actual = reducer(initialState, trackAsset(assetToTrack.uuid));
-    expect(actual).toEqual([assetToTrack.uuid]);
+    const actual = reducer(initialState, trackAsset(assetToTrack));
+    expect(actual).toEqual([assetToTrack]);
   });
 
   it('getTrackedAssets(): gets all tracked assets', () => {
     const assetToTrack = fAssets[0];
-    const actual = combinedReducers(initialState, trackAsset(assetToTrack.uuid));
+    const actual = combinedReducers(initialState, trackAsset(assetToTrack));
     expect(getTrackedAssets(actual)).toEqual([assetToTrack]);
   });
 });

@@ -1,14 +1,12 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { put, takeLatest } from 'redux-saga/effects';
 
-import { TUuid } from '@types';
+import { Asset, LSKeys } from '@types';
 
-import { getAssetByUUID } from './asset.slice';
-import { appReset, AppState } from './root.reducer';
+import { getAppState } from './selectors';
 
-export const initialState = [] as TUuid[];
+export const initialState = [] as Asset[];
 
-const sliceName = 'trackedAssets';
+const sliceName = LSKeys.TRACKED_ASSETS;
 
 /**
  * Store assets not present in accounts assets but needed for rates fetching
@@ -18,16 +16,16 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    trackAsset(state, action: PayloadAction<TUuid>) {
+    trackAsset(state, action: PayloadAction<Asset>) {
       return [...new Set([...state, action.payload])];
     },
-    flush() {
-      return [];
+    trackAssets(state, action: PayloadAction<Asset[]>) {
+      return [...new Set([...state, ...action.payload])];
     }
   }
 });
 
-export const { trackAsset, flush } = slice.actions;
+export const { trackAsset, trackAssets } = slice.actions;
 
 export default slice;
 
@@ -35,19 +33,4 @@ export default slice;
  * Selectors
  */
 
-export const getTrackedAssets = createSelector(
-  [(s: AppState) => s[slice.name], (s) => s],
-  (uuids, state) => uuids.map((uuid) => getAssetByUUID(uuid)(state)!)
-);
-
-/**
- * Sagas
- */
-
-export function* trackedAssetsSaga() {
-  yield takeLatest(appReset.type, flushTrackedAssets);
-}
-
-export function* flushTrackedAssets() {
-  yield put(flush());
-}
+export const getTrackedAssets = createSelector([getAppState], (s) => s[slice.name]);

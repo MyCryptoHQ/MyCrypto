@@ -42,6 +42,7 @@ function getComponent({
               createActions: jest.fn(),
               userActions: [],
               rates: fRates,
+              trackedAssets: [],
               settings
             } as any
           }

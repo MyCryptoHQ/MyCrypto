@@ -10,7 +10,6 @@ import { ExtendedAsset, IRates, LSKeys } from '@types';
 
 import { getAccountsAssets, updateAccountAssets } from './account.slice';
 import { buildCoinGeckoIdMapping, destructureCoinGeckoIds } from './helpers';
-import { appReset } from './root.reducer';
 import { getAppState } from './selectors';
 import { getTrackedAssets, trackAsset } from './trackedAssets.slice';
 
@@ -52,8 +51,7 @@ export function* ratesSaga() {
   yield all([
     yield takeLatest(updateAccountAssets.type, pollRates),
     yield takeLatest(trackAsset.type, pollRates),
-    yield takeLatest(startRatesPolling.type, pollRates),
-    yield takeLatest(appReset, pollRates)
+    yield takeLatest(startRatesPolling.type, pollRates)
   ]);
 }
 

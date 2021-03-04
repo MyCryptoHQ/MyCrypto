@@ -4,7 +4,7 @@ import {
   createAction,
   PayloadAction
 } from '@reduxjs/toolkit';
-import { call, delay, put, race, take, takeLatest } from 'redux-saga/effects';
+import { call, delay, fork, put, race, take, takeLatest } from 'redux-saga/effects';
 
 export interface IPollingPayload {
   params: {
@@ -76,5 +76,5 @@ export function* pollingWorker(payload: IPollingPayload) {
 }
 
 export default function* pollingSagaWatcher({ payload }: PayloadAction<IPollingPayload>) {
-  yield race([call(pollingWorker, payload), take(pollStop.type)]);
+  yield race([fork(pollingWorker, payload), take(pollStop.type)]);
 }

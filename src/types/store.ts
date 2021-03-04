@@ -21,6 +21,7 @@ export enum LSKeys {
   ACCOUNTS = 'accounts',
   ASSETS = 'assets',
   RATES = 'rates',
+  TRACKED_ASSETS = 'trackedAssets',
   CONTRACTS = 'contracts',
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
@@ -36,6 +37,7 @@ export interface LocalStorage {
   readonly [LSKeys.ACCOUNTS]: Record<TUuid, IAccount>;
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
   readonly [LSKeys.RATES]: IRates;
+  readonly [LSKeys.TRACKED_ASSETS]: Asset[];
   readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, ExtendedContact>;
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
   readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
@@ -50,6 +52,7 @@ export interface DataStore {
   readonly [LSKeys.ACCOUNTS]: IAccount[];
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
   readonly [LSKeys.RATES]: IRates;
+  readonly [LSKeys.TRACKED_ASSETS]: Asset[];
   readonly [LSKeys.ADDRESS_BOOK]: ExtendedContact[];
   readonly [LSKeys.CONTRACTS]: ExtendedContract[];
   readonly [LSKeys.NETWORKS]: Network[];

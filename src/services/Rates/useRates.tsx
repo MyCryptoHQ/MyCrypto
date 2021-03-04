@@ -1,10 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { isEmpty } from 'ramda';
 import { useDispatch } from 'react-redux';
 
-import { DataContext, StoreContext, useSettings } from '@services/Store';
-import { trackAsset } from '@store';
+import { DataContext, useSettings } from '@services/Store';
+import { trackAssets } from '@store';
 import { Asset, ReserveAsset, TUuid } from '@types';
 
 export interface IRatesContext {
@@ -16,16 +16,25 @@ export interface IRatesContext {
 const DEFAULT_FIAT_RATE = 0;
 
 function useRates() {
-  const { rates } = useContext(DataContext);
-  const { trackedAssets } = useContext(StoreContext);
+  const { rates, trackedAssets } = useContext(DataContext);
   const { settings } = useSettings();
+  const [trackedAssetsList, setTrackedAssetsList] = useState<Record<string, Asset>>({});
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(trackAssets(Object.values(trackedAssetsList)));
+  }, [trackedAssetsList]);
+
   const getAssetRate = (asset: Asset) => {
     const uuid = asset.uuid;
-    if (!isEmpty(rates) && !rates[uuid] && !trackedAssets.find((a) => a?.uuid === uuid)) {
-      dispatch(trackAsset(uuid));
+    if (
+      !isEmpty(rates) &&
+      !rates[uuid] &&
+      !trackedAssets.find((a) => a.uuid === uuid) &&
+      !trackedAssetsList[uuid as string]
+    ) {
+      setTrackedAssetsList({ ...trackedAssetsList, [asset.uuid]: asset });
       return DEFAULT_FIAT_RATE;
     }
     return rates[uuid]
@@ -35,8 +44,13 @@ function useRates() {
 
   const getAssetRateInCurrency = (asset: Asset, currency: string) => {
     const uuid = asset.uuid;
-    if (!isEmpty(rates) && !rates[uuid] && !trackedAssets.find((a) => a?.uuid === uuid)) {
-      dispatch(trackAsset(uuid));
+    if (
+      !isEmpty(rates) &&
+      !rates[uuid] &&
+      !trackedAssets.find((a) => a.uuid === uuid) &&
+      !trackedAssetsList[uuid as string]
+    ) {
+      setTrackedAssetsList({ ...trackedAssetsList, [asset.uuid]: asset });
       return DEFAULT_FIAT_RATE;
     }
     return rates[uuid] ? rates[uuid][currency.toLowerCase()] : DEFAULT_FIAT_RATE;

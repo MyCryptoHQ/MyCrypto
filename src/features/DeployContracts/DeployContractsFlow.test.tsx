@@ -35,7 +35,8 @@ function getComponent() {
             userActions: [],
             settings: fSettings,
             networks: fNetworks,
-            rates: {}
+            rates: {},
+            trackedAssets: []
           } as unknown) as IDataContext
         }
       >
@@ -45,8 +46,7 @@ function getComponent() {
               assets: () => fAssets,
               accounts: fAccounts,
               userAssets: fAccounts.flatMap((a) => a.assets),
-              getDefaultAccount: () => undefined,
-              trackedAssets: []
+              getDefaultAccount: () => undefined
             } as any) as any
           }
         >

@@ -14,7 +14,6 @@ import { createPersistReducer, createVaultReducer } from './persist.config';
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
-import trackedAssetsSlice from './trackedAssets.slice';
 import vaultSlice from './vault.slice';
 
 const reducers = combineReducers({
@@ -23,8 +22,7 @@ const reducers = combineReducers({
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
-  [featureFlagSlice.name]: featureFlagSlice.reducer,
-  [trackedAssetsSlice.name]: trackedAssetsSlice.reducer
+  [featureFlagSlice.name]: featureFlagSlice.reducer
 });
 
 /**

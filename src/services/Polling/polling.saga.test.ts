@@ -37,7 +37,7 @@ describe('PollingSaga', () => {
       .silentRun()
       .then(({ effects }) => {
         // effects.call = total of call effects + expect-saga assertions - call assertions
-        expect(effects.call).toHaveLength(3);
+        expect(effects.call).toHaveLength(1);
 
         // Put is undefined because of the previous put assetion
         expect(effects.put).toBeUndefined();

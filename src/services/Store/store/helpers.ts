@@ -111,6 +111,7 @@ export const migrateConfig = (toImport: Partial<LocalStorage>) => {
     ...toImport,
     // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
     rates: toImport.settings?.rates ? toImport.settings.rates : toImport.rates,
+    trackedAssets: toImport.trackedAssets ? toImport.trackedAssets : [],
     // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
     settings: toImport.settings?.rates ? dissoc('rates', toImport.settings) : toImport.settings
   } as LocalStorage;

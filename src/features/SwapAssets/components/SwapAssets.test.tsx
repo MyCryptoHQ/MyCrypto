@@ -48,7 +48,8 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
             userActions: [],
             settings: fSettings,
             networks: fNetworks,
-            rates: {}
+            rates: {},
+            trackedAssets: []
           } as unknown) as IDataContext
         }
       >
@@ -57,8 +58,7 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
             ({
               assets: () => fAssets,
               accounts: fAccounts,
-              userAssets: fAccounts.flatMap((a) => a.assets),
-              trackedAssets: []
+              userAssets: fAccounts.flatMap((a) => a.assets)
             } as any) as any
           }
         >
