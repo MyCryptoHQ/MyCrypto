@@ -63,7 +63,7 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
 
   return (
     <>
-      <Box maxHeight={{ md: '240px' }} overflowY="auto">
+      <Box maxHeight={{ md: '180px' }} overflowY="auto">
         {actions.map((action: ActionTemplate, i) => (
           <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
         ))}
