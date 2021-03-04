@@ -39,7 +39,7 @@ export type TextProps = SpaceProps &
     textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
   };
 
-const SText: React.FC<TextProps> = styled.p<TextProps & { $maxCharLen: number }>`
+const SText: React.FC<TextProps> = styled.p<TextProps>`
   ${textVariants}
   ${space}
   ${fontStyle}
