@@ -104,7 +104,7 @@ export { ErrorObject } from './errorObject';
 export { TAction, TStateGetter } from './action';
 export { TxParcel } from '@hooks/useTxMulti/types'; // Specific re-export to avoid Circular deps
 export { TURL } from './url';
-export { Balance, BalanceAccount, BalanceDetailsTableProps } from './balanceDisplays';
+export { Balance, BalanceAccount } from './balanceDisplays';
 export {
   Web3RequestPermissionsResult,
   Web3RequestPermissionsResponse,

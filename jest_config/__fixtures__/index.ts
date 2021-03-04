@@ -76,3 +76,4 @@ export { membershipApiResponse, accountWithMembership } from './membership';
 export { default as APP_STATE } from './appState';
 
 export { fSwapQuote } from './swapQuote';
+export { fBalances } from './balances';

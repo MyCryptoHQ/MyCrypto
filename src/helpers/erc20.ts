@@ -1,5 +1,5 @@
 import { DEFAULT_NETWORK_CHAINID } from '@config';
-import { ERC20 } from '@services';
+import { ERC20 } from '@services/EthService';
 import {
   Bigish,
   ITxData,

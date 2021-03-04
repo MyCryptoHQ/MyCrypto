@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 
-import { Button, Identicon } from '@mycrypto/ui';
+import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import informationalSVG from '@assets/images/icn-info-blue.svg';
 import {
@@ -38,7 +38,6 @@ import { truncate, useScreenSize } from '@utils';
 import Checkbox from './Checkbox';
 import { default as Currency } from './Currency';
 import { DashboardPanel } from './DashboardPanel';
-import IconArrow from './IconArrow';
 import Tooltip from './Tooltip';
 
 const SDashboardPanel = styled(DashboardPanel)<{ dashboard?: boolean }>`
@@ -94,10 +93,7 @@ const PrivateWalletLabel = styled(StyledAccountLabel)`
 `;
 
 const PrivacyCheckBox = styled(Checkbox)`
-  display: flex;
-  justify-content: center;
   margin-bottom: 0px;
-  height: auto;
 `;
 
 const SIdenticon = styled(Identicon)`
@@ -111,36 +107,12 @@ const SIdenticon = styled(Identicon)`
   }
 `;
 
-// On mobile screen the CollapisableTable becomes a Stacked card.
+// On mobile screen the CollapsibleTable becomes a Stacked card.
 // We provide better styles for desktop screens
 const CurrencyContainer = styled(Currency)`
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     float: right;
   }
-`;
-
-const HeaderAlignment = styled.div`
-  ${(props: { align?: string }) => css`
-    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-      text-align: ${props.align || 'inherit'};
-    }
-  `};
-  & img {
-    margin-left: ${SPACING.XS};
-  }
-`;
-
-const DeleteButton = styled(Button)`
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7em;
-  width: 100%;
-`;
-
-const PrivateColumnLabel = styled.div`
-  display: inline-block;
 `;
 
 const InformationalIcon = styled.img`
@@ -191,10 +163,10 @@ export default function AccountList(props: AccountListProps) {
     <SDashboardPanel
       dashboard={dashboard}
       heading={
-        <>
+        <Box variant="rowAlign">
           {translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}{' '}
-          <Tooltip width="16px" tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
-        </>
+          <Tooltip ml="0.5ch" width="16px" tooltip={translateRaw('SETTINGS_ACCOUNTS_TOOLTIP')} />
+        </Box>
       }
       headingRight={
         <Box variant="rowAlign">
@@ -361,34 +333,56 @@ const BuildAccountTable = (
   const getColumnSortDirection = (id: IColumnValues): boolean =>
     sortingState.sortState[id].indexOf('-reverse') > -1;
 
-  const convertColumnToClickable = (id: IColumnValues) =>
+  const convertColumnToClickable = (id: IColumnValues, options?: { isReversed: boolean }) =>
     isMobile ? (
       translateRaw(id)
     ) : (
-      <div key={id} onClick={() => updateSortingState(id)}>
-        {translateRaw(id)} <IconArrow isFlipped={getColumnSortDirection(id)} />
-      </div>
+      <Box
+        variant="rowAlign"
+        key={id}
+        onClick={() => updateSortingState(id)}
+        width="100%"
+        justifyContent={options?.isReversed ? 'flex-end' : undefined}
+      >
+        <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+          {translateRaw(id)}
+        </Text>
+        <Icon
+          ml="0.3ch"
+          type="sort"
+          isActive={getColumnSortDirection(id)}
+          size="1em"
+          color="linkAction"
+        />
+      </Box>
     );
 
   const columns = [
     convertColumnToClickable('ACCOUNT_LIST_LABEL'),
     convertColumnToClickable('ACCOUNT_LIST_ADDRESS'),
     convertColumnToClickable('ACCOUNT_LIST_NETWORK'),
-    <HeaderAlignment
-      key={'ACCOUNT_LIST_VALUE'}
-      align="center"
-      onClick={() => updateSortingState('ACCOUNT_LIST_VALUE')}
-    >
-      {translateRaw('ACCOUNT_LIST_VALUE')}
-      {!isMobile && <IconArrow isFlipped={getColumnSortDirection('ACCOUNT_LIST_VALUE')} />}
-    </HeaderAlignment>,
-    <HeaderAlignment key={'ACCOUNT_LIST_PRIVATE'} align="center">
-      <PrivateColumnLabel>{translateRaw('ACCOUNT_LIST_PRIVATE')}</PrivateColumnLabel>
-      <Tooltip paddingLeft={SPACING.XS} tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')} />
-    </HeaderAlignment>,
-    <HeaderAlignment key={'ACCOUNT_LIST_REMOVE'} align="center">
-      {translateRaw('ACCOUNT_LIST_REMOVE')}
-    </HeaderAlignment>
+    convertColumnToClickable('ACCOUNT_LIST_VALUE', { isReversed: true }),
+    <Box variant={isMobile ? 'rowAlign' : 'rowCenter'} key={'ACCOUNT_LIST_PRIVATE'} width="100%">
+      <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+        {translateRaw('ACCOUNT_LIST_PRIVATE')}
+      </Text>
+      <Tooltip
+        mt={
+          isMobile ? '0' : '4px'
+        } /* Hack to get the tooltip to align with text of a different size. */
+        paddingLeft={SPACING.XS}
+        tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}
+      />
+    </Box>,
+    isMobile ? (
+      translateRaw('ACCOUNT_LIST_REMOVE')
+    ) : (
+      <Box variant="columnCenter" key={'ACCOUNT_LIST_REMOVE'} width="100%">
+        <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+          {translateRaw('ACCOUNT_LIST_REMOVE')}
+        </Text>
+      </Box>
+    )
   ];
 
   const getFullTableData = accounts
@@ -430,13 +424,13 @@ const BuildAccountTable = (
 
   return {
     head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
-    overlay: (rowIndex: number): JSX.Element => {
+    overlay: ({ indexKey }: { indexKey: number }) => {
       const label = (l?: { label: string }) => (l ? l.label : translateRaw('NO_LABEL'));
 
-      if (overlayRows && overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+      if (overlayRows && overlayRows[0].length && overlayRows[0][0] === indexKey) {
         // Row delete overlay
-        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
-        const { account } = getFullTableData[rowIndex];
+        const addressBookRecord = getLabelByAccount(getFullTableData[indexKey].account, contacts)!;
+        const { account } = getFullTableData[indexKey];
         const { uuid, address } = account;
         return (
           <RowDeleteOverlay
@@ -446,7 +440,7 @@ const BuildAccountTable = (
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [indexKey, uuid]]);
               deleteAccount(account);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
@@ -455,13 +449,13 @@ const BuildAccountTable = (
       } else if (
         overlayRows &&
         overlayRows[1].length &&
-        overlayRows[1].map((row) => row[0]).includes(rowIndex)
+        overlayRows[1].map((row) => row[0]).includes(indexKey)
       ) {
         // Undo delete overlay
-        const addressBookRecord = getLabelByAccount(getFullTableData[rowIndex].account, contacts)!;
+        const addressBookRecord = getLabelByAccount(getFullTableData[indexKey].account, contacts)!;
         const {
           account: { uuid, address, wallet }
-        } = getFullTableData[rowIndex];
+        } = getFullTableData[indexKey];
         return (
           <UndoDeleteOverlay
             address={address}
@@ -471,7 +465,7 @@ const BuildAccountTable = (
             })}
             restoreAccount={() => {
               restoreDeletedAccount(uuid);
-              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== indexKey));
             }}
           />
         );
@@ -524,28 +518,48 @@ const BuildAccountTable = (
       if (privacyCheckboxEnabled) {
         bodyContent = [
           ...bodyContent,
-          <PrivacyCheckBox
-            key={index}
-            name={'Private'}
-            marginLeft="0"
-            checked={account.isPrivate || false}
-            onChange={() => toggleAccountPrivacy(account.uuid)}
-          />
+          <Box key={index} variant={!isMobile ? 'rowCenter' : undefined}>
+            <PrivacyCheckBox
+              name={'Private'}
+              marginLeft="0"
+              checked={account.isPrivate || false}
+              onChange={() => toggleAccountPrivacy(account.uuid)}
+            />
+          </Box>
         ];
       }
 
       if (deletable) {
         bodyContent = [
           ...bodyContent,
-          <DeleteButton
-            key={index}
-            onClick={() =>
-              setDeletingIndex(
-                getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
-              )
-            }
-            icon="exit"
-          />
+          <>
+            {isMobile ? (
+              <Box key={index}>
+                <LinkApp
+                  href="#"
+                  onClick={() =>
+                    setDeletingIndex(
+                      getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
+                    )
+                  }
+                >
+                  {translateRaw('ACCOUNT_LIST_REMOVE')}
+                </LinkApp>
+              </Box>
+            ) : (
+              <Box key={index} variant="rowCenter">
+                <Icon
+                  type="delete"
+                  size="0.8em"
+                  onClick={() =>
+                    setDeletingIndex(
+                      getFullTableData.findIndex((row) => row.account.uuid === accounts[index].uuid)
+                    )
+                  }
+                />
+              </Box>
+            )}
+          </>
         ];
       }
 

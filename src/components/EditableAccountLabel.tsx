@@ -38,7 +38,7 @@ const EditableAccountLabel = ({
     <SWrapper>
       <EditableText
         truncate={true}
-        saveValue={(value) => {
+        onChange={(value) => {
           if (addressBookEntry) {
             updateContact({ ...addressBookEntry, label: value });
             updateLabelAction &&

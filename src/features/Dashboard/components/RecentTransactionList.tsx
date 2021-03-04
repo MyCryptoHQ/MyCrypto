@@ -16,7 +16,6 @@ import {
   Amount,
   AssetIcon,
   Box,
-  Button,
   DashboardPanel,
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
@@ -35,7 +34,6 @@ import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
-import './RecentTransactionList.scss';
 
 interface Props {
   className?: string;
@@ -227,19 +225,22 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               address={receiverAddress || to}
             />
           ),
-          <Amount
-            key={3}
-            assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
-            }}
-          />,
+          <Box key={3}>
+            <Amount
+              // Adapt alignment for mobile display
+              alignLeft={isMobile}
+              assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
+              }}
+            />
+          </Box>,
           <Box key={4} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
-                <Button>View</Button>
+                translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')
               ) : (
                 <Icon
                   type="more"
@@ -284,7 +285,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       sortableColumn: translateRaw('RECENT_TRANSACTIONS_DATE'),
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
-      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')]
+      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
+      reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
     }
   };
   return (

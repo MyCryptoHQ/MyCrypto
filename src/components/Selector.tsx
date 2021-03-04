@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import crossIcon from '@assets/images/icn-cross.svg';
 import { COLORS, FONT_SIZE } from '@theme';
 
-import { CenteredIconArrow } from './IconArrow';
+import Icon from './Icon';
 
 export interface SelectorProps<T> {
   options: T[];
@@ -76,7 +76,11 @@ const DropdownIndicator: (icon?: JSX.Element) => React.FC<IndicatorProps<any>> =
   } = props;
   return (
     <ReactSelectComponents.DropdownIndicator {...props}>
-      {icon ? <IconWrapper>{icon}</IconWrapper> : <CenteredIconArrow isFlipped={menuIsOpen} />}
+      {icon ? (
+        <IconWrapper>{icon}</IconWrapper>
+      ) : (
+        <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
+      )}
     </ReactSelectComponents.DropdownIndicator>
   );
 };

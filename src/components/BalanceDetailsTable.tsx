@@ -4,46 +4,21 @@ import styled from 'styled-components';
 
 import {
   AssetIcon,
+  Box,
   Currency,
   EthAddress,
   FixedSizeCollapsibleTable,
+  Icon,
   TableCell,
   TableRow,
+  Text,
   Tooltip,
   Typography
 } from '@components';
-import { CenteredIconArrow } from '@components/IconArrow';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { Balance, BalanceAccount, BalanceDetailsTableProps, Fiat, TTicker, TUuid } from '@types';
+import { Balance, BalanceAccount, Fiat, IAccount, TTicker, TUuid } from '@types';
 import { bigify } from '@utils';
-
-const HeaderAlignment = styled.div<{ align?: string }>`
-  display: inline-block;
-  width: calc(100% - 9px - 0.5em);
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    text-align: ${({ align }) => align || 'inherit'};
-  }
-`;
-
-const RowAlignment = styled.div`
-  float: ${(props: { align?: string }) => props.align || 'inherit'};
-`;
-
-const Label = styled.span<{ minWidth?: string }>`
-  display: flex;
-  align-items: center;
-  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
-`;
-
-const Icon = styled(AssetIcon)`
-  margin-right: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 interface BalancesDetailViewTableRowProps {
   borderBottom?: boolean;
@@ -64,20 +39,23 @@ const BalancesDetailViewTableRow = styled(TableRow)<BalancesDetailViewTableRowPr
   }
 `;
 
-const AccountOverlayButton = ({ isFlipped, onClick }: { isFlipped: boolean; onClick(): void }) => (
-  <ButtonContainer onClick={() => onClick()}>
-    <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_SHOW_ACCOUNTS_TOOLTIP')}>
-      <CenteredIconArrow size="xl" isFlipped={isFlipped} />
-    </Tooltip>
-  </ButtonContainer>
-);
+export type ColumnAction = ({
+  uuid,
+  key,
+  isMobile
+}: {
+  uuid: TUuid;
+  key: string;
+  isMobile?: boolean;
+}) => JSX.Element;
 
 const createBalancesDetailViewRow = (
   balance: Balance,
   fiat: Fiat,
   rowState: 'opened' | 'closed',
   setOverlayRows: Dispatch<SetStateAction<string[]>>,
-  DisplayButton: ({ uuid, key }: { uuid: TUuid; key: string }) => JSX.Element
+  FirstAction: ColumnAction,
+  isMobile: boolean
 ): JSX.Element[] => {
   const onCollapseOrExpand = () => {
     if (rowState === 'closed') {
@@ -88,24 +66,26 @@ const createBalancesDetailViewRow = (
   };
 
   return [
-    <Label key={balance.id}>
-      <Icon uuid={balance.uuid as TUuid} size={'2rem'} />
-      {balance.name}
-    </Label>,
-    <Label key={balance.id}>
-      {balance.accounts &&
-        (balance.accounts.length > 1
-          ? translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNTS', {
-              $numOfAccounts: balance.accounts.length.toString()
-            })
-          : translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNT', {
-              $numOfAccounts: balance.accounts.length.toString()
-            }))}
-    </Label>,
-    <RowAlignment data-balance={balance.amount} key={balance.id} align="right">
+    <Box variant="rowAlign" data-sortkey={balance.name} key={balance.id}>
+      <AssetIcon mr={'0.5ch'} uuid={balance.uuid as TUuid} size="26px" />
+      <Text as="span">{balance.name}</Text>
+    </Box>,
+    <Box key={balance.id}>
+      <Text as="span">
+        {balance.accounts &&
+          (balance.accounts.length > 1
+            ? translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNTS', {
+                $numOfAccounts: balance.accounts.length.toString()
+              })
+            : translateRaw('WALLET_BREAKDOWN_DETAIL_ACCOUNT', {
+                $numOfAccounts: balance.accounts.length.toString()
+              }))}
+      </Text>
+    </Box>,
+    <Box key={balance.id} data-sortkey={balance.amount}>
       <Currency amount={bigify(balance.amount).toFixed(6)} ticker={balance.ticker as TTicker} />
-    </RowAlignment>,
-    <RowAlignment key={balance.id} align="right" data-value={balance.fiatValue}>
+    </Box>,
+    <Box key={balance.id} data-sortkey={balance.fiatValue}>
       <Tooltip
         tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
           $exchangeRate: bigify(balance.exchangeRate).toFixed(3),
@@ -120,13 +100,26 @@ const createBalancesDetailViewRow = (
           decimals={2}
         />
       </Tooltip>
-    </RowAlignment>,
-    <DisplayButton key={balance.id as string} uuid={balance.uuid as TUuid} />,
-    <AccountOverlayButton
-      key={balance.id}
-      isFlipped={rowState === 'opened'}
-      onClick={onCollapseOrExpand}
-    />
+    </Box>,
+    <FirstAction uuid={balance.uuid!} key={balance.id!} />,
+    <>
+      {isMobile ? (
+        <></>
+      ) : (
+        <Box variant="rowAlign" key={balance.id} onClick={onCollapseOrExpand}>
+          <Tooltip tooltip={translateRaw('WALLET_BREAKDOWN_SHOW_ACCOUNTS_TOOLTIP')}>
+            <Box variant="columnCenter">
+              <Icon
+                type="expandable"
+                isExpanded={rowState === 'opened'}
+                height="1em"
+                fill="linkAction"
+              />
+            </Box>
+          </Tooltip>
+        </Box>
+      )}
+    </>
   ];
 };
 
@@ -137,7 +130,7 @@ const createAccountRow = (
 ): JSX.Element[] => {
   return [
     <></>,
-    <Label minWidth="140px" key={index}>
+    <Box minWidth="140px" key={index}>
       <Tooltip
         tooltip={
           <>
@@ -153,45 +146,49 @@ const createAccountRow = (
           disableTooltip={true}
         />
       </Tooltip>
-    </Label>,
-    <RowAlignment data-balance={balanceAccount.amount} key={index} align="right">
+    </Box>,
+    <Box variant="alignRight" data-balance={balanceAccount.amount} key={index}>
       {`${bigify(balanceAccount.amount).toFixed(6)} ${balanceAccount.ticker}`}
-    </RowAlignment>,
-    <RowAlignment key={index} align="right" data-value={balanceAccount.fiatValue}>
+    </Box>,
+    <Box variant="alignRight" key={index} data-value={balanceAccount.fiatValue}>
       <Currency
         amount={balanceAccount.fiatValue.toString()}
         symbol={fiat.symbol}
         ticker={fiat.ticker}
         decimals={2}
       />
-    </RowAlignment>,
+    </Box>,
     <></>,
     <></>
   ];
 };
+interface BalanceDetailsTableProps {
+  balances: Balance[];
+  totalFiatValue: string;
+  fiat: Fiat;
+  accounts: IAccount[];
+  selected: string[];
+  firstAction: ColumnAction;
+  isMobile: boolean;
+}
 
 export default function BalanceDetailsTable({
   balances,
   fiat,
-  createFirstButton
+  firstAction,
+  isMobile = false
 }: BalanceDetailsTableProps) {
   const [overlayRows, setOverlayRows] = useState<string[]>([]);
   const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
   const ACCOUNTS = translateRaw('WALLET_BREAKDOWN_ACCOUNTS');
   const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
   const VALUE = translateRaw('WALLET_BREAKDOWN_VALUE');
-  const balancesTable = {
+  const tableProps: React.ComponentProps<typeof FixedSizeCollapsibleTable> = {
     head: [
       TOKEN,
-      <Label minWidth="160px" key={ACCOUNTS}>
-        {ACCOUNTS}
-      </Label>,
-      <HeaderAlignment key={BALANCE} align="end">
-        {BALANCE}
-      </HeaderAlignment>,
-      <HeaderAlignment key={VALUE} align="end">
-        {VALUE}
-      </HeaderAlignment>,
+      ACCOUNTS,
+      BALANCE,
+      VALUE,
       <React.Fragment key={'HIDE'} />,
       <React.Fragment key={'EXPAND'} />
     ],
@@ -201,11 +198,12 @@ export default function BalanceDetailsTable({
         fiat,
         'closed',
         setOverlayRows,
-        createFirstButton
+        firstAction,
+        isMobile
       );
     }),
-    overlay: (bId: string): JSX.Element => {
-      const balanceRow = balances.find((b) => b.id === bId)!;
+    overlay: ({ indexKey }: { indexKey: string }) => {
+      const balanceRow = balances.find((b) => b.id === indexKey)!;
       return (
         <>
           <BalancesDetailViewTableRow spacingBottom="0" borderBottom={false}>
@@ -214,9 +212,13 @@ export default function BalanceDetailsTable({
               fiat,
               'opened',
               setOverlayRows,
-              createFirstButton
+              firstAction,
+              isMobile
             ).map((c, i) => (
-              <TableCell key={i}>{c}</TableCell>
+              // We know that we want columns "Balance" and "Value" to align-right:
+              <TableCell key={i} isReversed={i === 2 || i === 3}>
+                {c}
+              </TableCell>
             ))}
           </BalancesDetailViewTableRow>
 
@@ -246,21 +248,20 @@ export default function BalanceDetailsTable({
       sortFunction: (column: typeof TOKEN | typeof BALANCE | typeof VALUE) => (a: any, b: any) => {
         switch (column) {
           case VALUE:
-            return a.props['data-value'] - b.props['data-value'];
           case BALANCE:
-            return a.props['data-balance'] - b.props['data-balance'];
+            return a.props['data-sortkey'] - b.props['data-sortkey'];
           case TOKEN:
           default: {
-            const aLabel = a.props.children[1];
-            const bLabel = b.props.children[1];
+            const aLabel = a.props['data-sortkey'];
+            const bLabel = b.props['data-sortkey'];
             return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
           }
         }
       },
-      hiddenHeadings: [],
+      reversedColumns: [BALANCE, VALUE],
       overlayRoot: true
     }
   };
 
-  return <FixedSizeCollapsibleTable {...balancesTable} maxHeight={'450px'} />;
+  return <FixedSizeCollapsibleTable {...tableProps} maxHeight={'450px'} />;
 }

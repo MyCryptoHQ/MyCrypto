@@ -4,15 +4,18 @@ import 'sass/styles.scss';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
+import { configureStore } from '@reduxjs/toolkit';
 import { ThemeProvider } from 'styled-components';
 
+import { rootReducer } from '@store';
 import { theme } from '@theme';
 import { FeatureFlagProvider } from '@services';
 import { mockAppState } from '../jest_config/test-utils';
 
-const mockStore = configureStore([]);
-const store = mockStore(mockAppState());
+const store = configureStore({
+  reducer: rootReducer,
+  preloadedState: mockAppState()
+});
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

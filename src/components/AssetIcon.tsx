@@ -8,6 +8,8 @@ import { StoreContext } from '@services';
 import { CoinGeckoManifest } from '@services/Store/StoreProvider';
 import { TUuid } from '@types';
 
+import Box from './Box';
+
 const baseURL = `${MYC_API}/images`;
 
 function buildUrl(uuid: TUuid) {
@@ -32,7 +34,7 @@ interface Props {
   className?: string;
 }
 
-function AssetIcon({ uuid, size = '32px', className }: Props) {
+const AssetIcon = ({ uuid, size = '32px', ...props }: Props & React.ComponentProps<typeof Box>) => {
   const { coinGeckoAssetManifest } = useContext(StoreContext);
   const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
 
@@ -42,7 +44,11 @@ function AssetIcon({ uuid, size = '32px', className }: Props) {
     elem.src = genericIcon;
   };
 
-  return <SImg src={iconUrl} size={size} className={className} onError={handleError} />;
-}
+  return (
+    <Box variant="rowCenter" {...props} height={size} width={size}>
+      <SImg src={iconUrl} size={size} onError={handleError} />
+    </Box>
+  );
+};
 
 export default AssetIcon;

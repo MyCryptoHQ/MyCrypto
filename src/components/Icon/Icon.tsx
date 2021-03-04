@@ -2,7 +2,7 @@ import React from 'react';
 
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   color,
   ColorProps,
@@ -20,6 +20,7 @@ import back from '@assets/icons/actions/back.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
 import downCaret from '@assets/icons/actions/down-caret.svg';
 import edit from '@assets/icons/actions/edit.svg';
+import expandable from '@assets/icons/actions/expand-default.svg';
 import caret from '@assets/icons/actions/expand-purple.svg';
 import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
@@ -138,6 +139,7 @@ const svgIcons = {
   more,
   confirm,
   refresh,
+  expandable,
   'add-bold': addBold,
   'info-small': infoSmall,
   'opened-eye': openedEye,
@@ -269,12 +271,14 @@ export type TIcon = SvgIcons | PngIcons;
 
 type StylingProps = LayoutProps & SpaceProps & ColorProps & ColorStyleProps;
 
-const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<StylingProps>`
+const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<
+  StylingProps & { fill: string }
+>`
   ${layout}
   ${space}
   ${color}
   ${colorStyle}
-
+  fill: ${({ fill, theme }) => (fill ? theme.colors[fill] : fill)};
 `;
 
 const SImg = styled.img<StylingProps>`
@@ -296,9 +300,41 @@ const SStrokeIcon = styled(SInlineSVG)<StylingProps>`
   stroke: ${({ color }) => color && color};
 `;
 
+const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  transform: ${({ isExpanded }) => (isExpanded ? `rotate(180deg)` : `rotate(90deg)`)};
+`;
+
+const SSortIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  ${({ isActive }) =>
+    isActive ? css({ transform: `rotate(0deg)` }) : css({ transform: `rotate(180deg)` })};
+`;
+
+const SNavCloseIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 300ms ease;
+  fill: ${(props) => (props.color ? props.color : props.theme.colors.discrete)};
+  &:hover {
+    transform: rotate(90deg);
+  }
+`;
+
+const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 300ms ease;
+  fill: ${(props) => (props.color ? props.color : props.theme.colors.discrete)};
+  &:hover {
+    fill: ${(props) => props.theme.colors.warning};
+    transform: rotate(90deg);
+  }
+`;
+
 interface Props
   extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
-  type: TIcon;
+  type: TIcon | 'sort' | 'delete';
 }
 
 export const isSVGType = (type: TIcon): type is SvgIcons =>
@@ -309,6 +345,14 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 const Icon = ({ type, color, ...props }: Props) => {
   if (type === 'website' || type === 'faucet-icon') {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'expandable') {
+    return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'sort') {
+    return <SSortIcon src={svgIcons['expandable']} fill={color} {...props} />;
+  } else if (type === 'nav-close') {
+    return <SNavCloseIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'delete') {
+    return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {
