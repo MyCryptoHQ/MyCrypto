@@ -12,7 +12,7 @@ export const emptyState = {
   })),
   [LSKeys.ASSETS]: [],
   [LSKeys.RATES]: {},
-  [LSKeys.TRACKED_ASSETS]: [],
+  [LSKeys.TRACKED_ASSETS]: {},
   [LSKeys.CONTRACTS]: [],
   [LSKeys.NETWORKS]: [],
   [LSKeys.NOTIFICATIONS]: [],

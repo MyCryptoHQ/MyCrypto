@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { act, renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAssets, fRates, fSettings } from '@fixtures';
@@ -14,7 +14,7 @@ const renderUseRates = ({ rates = {} as IRates } = {}) => {
     <ProvidersWrapper>
       <DataContext.Provider
         value={
-          ({ settings: fSettings, rates: rates, trackedAssets: [] } as unknown) as IDataContext
+          ({ settings: fSettings, rates: rates, trackedAssets: {} } as unknown) as IDataContext
         }
       >
         {children}
@@ -33,10 +33,9 @@ describe('useRates', () => {
   it('getAssetRate() calls trackAsset on unknown assets', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseRates({ rates: fRates });
-    act(() => {
-      result.current.getAssetRate(fAssets[3]);
-    });
-    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload([fAssets[3]]));
+
+    expect(result.current.getAssetRate(fAssets[3])).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
 
   it('getAssetRateInCurrency() gets correct rate from settings', () => {
@@ -49,9 +48,8 @@ describe('useRates', () => {
   it('getAssetRateInCurrency() calls trackAsset on unknown assets', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseRates({ rates: fRates });
-    act(() => {
-      result.current.getAssetRateInCurrency(fAssets[3], 'EUR');
-    });
-    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload([fAssets[3]]));
+
+    expect(result.current.getAssetRateInCurrency(fAssets[3], 'EUR')).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
 });

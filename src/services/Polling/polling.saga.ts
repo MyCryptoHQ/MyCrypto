@@ -1,10 +1,5 @@
-import {
-  ActionCreatorWithOptionalPayload,
-  ActionCreatorWithPayload,
-  createAction,
-  PayloadAction
-} from '@reduxjs/toolkit';
-import { call, delay, fork, put, race, take, takeLatest } from 'redux-saga/effects';
+import { createAction, PayloadAction } from '@reduxjs/toolkit';
+import { call, delay, put, race, take, takeLatest } from 'redux-saga/effects';
 
 export interface IPollingPayload {
   params: {
@@ -13,10 +8,7 @@ export interface IPollingPayload {
     retries?: number;
     retryAfter?: number;
   };
-  successAction: ActionCreatorWithPayload<any, string>;
-  errorAction?: ActionCreatorWithOptionalPayload<any, string>;
-  promise(): Promise<any>;
-  transformer?(result: any): any;
+  saga(): Generator<any, void, unknown>;
 }
 
 /**
@@ -36,18 +28,14 @@ export function* pollingSaga() {
 
 // @todo: Figure out multiple polling instances
 export function* pollingWorker(payload: IPollingPayload) {
-  const { promise, params, successAction, errorAction, transformer } = payload;
+  const { saga, params } = payload;
 
   let retriesCount = 0;
 
   console.debug(`[Polling Saga]: Initialising polling every ${params.interval}ms `);
   while (true) {
     try {
-      const res = yield call(promise); // Fetch requested content
-      const formatted = transformer ? transformer(res) : res;
-
-      yield put(successAction(formatted)); // Calling succes action on request success
-
+      yield call(saga); // Fetch requested content
       yield delay(params.interval); // Calling delay after request success
     } catch (err) {
       const shouldRetry =
@@ -65,10 +53,8 @@ export function* pollingWorker(payload: IPollingPayload) {
         yield delay(params.retryAfter);
       } else if (!shouldRetry) {
         // Stop polling if an error is encounterd without retry
-
         console.debug(`[Polling Saga]: Polling encounterd an error, stopping with error: `, err);
         yield put(pollStop());
-        if (errorAction) yield put(errorAction(err)); // Handle polling error gracefully
       } else
         console.debug(`[Polling Saga]: Polling encounterd an error, retrying now. Error: `, err);
     }
@@ -76,5 +62,5 @@ export function* pollingWorker(payload: IPollingPayload) {
 }
 
 export default function* pollingSagaWatcher({ payload }: PayloadAction<IPollingPayload>) {
-  yield race([fork(pollingWorker, payload), take(pollStop.type)]);
+  yield race([call(pollingWorker, payload), take(pollStop.type)]);
 }

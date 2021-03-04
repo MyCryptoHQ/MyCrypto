@@ -36,7 +36,13 @@ describe('TxStatus', () => {
             contracts: [],
             settings: fSettings,
             userActions: [],
-            trackedAssets: [],
+            trackedAssets: fAssets.reduce(
+              (acc, a) => ({
+                ...acc,
+                [a.uuid]: { coinGeckoId: 'ethereum' }
+              }),
+              {}
+            ),
             rates: fRates
           } as unknown) as IDataContext
         }

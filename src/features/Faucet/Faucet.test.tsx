@@ -63,7 +63,13 @@ describe('Faucet', () => {
             settings: fSettings,
             userActions: [],
             rates: fRates,
-            trackedAssets: [],
+            trackedAssets: fAssets.reduce(
+              (acc, a) => ({
+                ...acc,
+                [a.uuid]: { coinGeckoId: 'ethereum' }
+              }),
+              {}
+            ),
             createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
           } as any
         }

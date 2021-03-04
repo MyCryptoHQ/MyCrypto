@@ -1,10 +1,10 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Asset, LSKeys } from '@types';
+import { ExtendedAsset, IMappings, LSKeys } from '@types';
 
 import { getAppState } from './selectors';
 
-export const initialState = [] as Asset[];
+export const initialState = {} as Record<string, IMappings>;
 
 const sliceName = LSKeys.TRACKED_ASSETS;
 
@@ -16,16 +16,13 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    trackAsset(state, action: PayloadAction<Asset>) {
-      return [...new Set([...state, action.payload])];
-    },
-    trackAssets(state, action: PayloadAction<Asset[]>) {
-      return [...new Set([...state, ...action.payload])];
+    trackAsset(state, action: PayloadAction<ExtendedAsset>) {
+      return { ...state, [action.payload.uuid]: { ...action.payload.mappings } };
     }
   }
 });
 
-export const { trackAsset, trackAssets } = slice.actions;
+export const { trackAsset } = slice.actions;
 
 export default slice;
 

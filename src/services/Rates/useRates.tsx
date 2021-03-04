@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 
 import { isEmpty } from 'ramda';
 import { useDispatch } from 'react-redux';
 
 import { DataContext, useSettings } from '@services/Store';
-import { trackAssets } from '@store';
-import { Asset, ReserveAsset, TUuid } from '@types';
+import { trackAsset } from '@store';
+import { Asset, ExtendedAsset, ReserveAsset, TUuid } from '@types';
 
 export interface IRatesContext {
   getAssetRate(asset: Asset): number | undefined;
@@ -18,23 +18,13 @@ const DEFAULT_FIAT_RATE = 0;
 function useRates() {
   const { rates, trackedAssets } = useContext(DataContext);
   const { settings } = useSettings();
-  const [trackedAssetsList, setTrackedAssetsList] = useState<Record<string, Asset>>({});
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(trackAssets(Object.values(trackedAssetsList)));
-  }, [trackedAssetsList]);
-
-  const getAssetRate = (asset: Asset) => {
+  const getAssetRate = (asset: ExtendedAsset) => {
     const uuid = asset.uuid;
-    if (
-      !isEmpty(rates) &&
-      !rates[uuid] &&
-      !trackedAssets.find((a) => a.uuid === uuid) &&
-      !trackedAssetsList[uuid as string]
-    ) {
-      setTrackedAssetsList({ ...trackedAssetsList, [asset.uuid]: asset });
+    if (!isEmpty(rates) && !rates[uuid] && !trackedAssets[uuid]) {
+      dispatch(trackAsset(asset));
       return DEFAULT_FIAT_RATE;
     }
     return rates[uuid]
@@ -42,15 +32,10 @@ function useRates() {
       : DEFAULT_FIAT_RATE;
   };
 
-  const getAssetRateInCurrency = (asset: Asset, currency: string) => {
+  const getAssetRateInCurrency = (asset: ExtendedAsset, currency: string) => {
     const uuid = asset.uuid;
-    if (
-      !isEmpty(rates) &&
-      !rates[uuid] &&
-      !trackedAssets.find((a) => a.uuid === uuid) &&
-      !trackedAssetsList[uuid as string]
-    ) {
-      setTrackedAssetsList({ ...trackedAssetsList, [asset.uuid]: asset });
+    if (!isEmpty(rates) && !rates[uuid] && !trackedAssets[uuid]) {
+      dispatch(trackAsset(asset));
       return DEFAULT_FIAT_RATE;
     }
     return rates[uuid] ? rates[uuid][currency.toLowerCase()] : DEFAULT_FIAT_RATE;

@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { put } from 'redux-saga/effects';
 import { expectSaga } from 'test-utils';
 
 import {
@@ -8,38 +9,36 @@ import {
   pollStop
 } from './polling.saga';
 
-const data = 'test';
+const testAction = createAction(`test/test`);
 
-const successAction = createAction<string>(`test/test`);
+function* falseSaga() {
+  yield put(testAction);
+}
 
 const pollingParams: IPollingPayload = {
   params: {
     interval: 10000
   },
-  successAction: successAction,
-  promise: jest.fn(() => Promise.resolve(data)),
-  transformer: jest.fn((data) => data)
+  saga: falseSaga
 };
 
 describe('PollingSaga', () => {
   it('pollingSaga(): calls pollingSagaWatcher on pollStart dispatch', () => {
     return expectSaga(pollingSagaWatcher, pollStart(pollingParams))
-      .call(pollingParams.promise)
-      .put(pollingParams.successAction(data))
+      .call(pollingParams.saga)
+      .put(testAction)
       .silentRun();
   });
 
   it('pollingSaga(): stops polling on pollStop dispatch', () => {
     return expectSaga(pollingSagaWatcher, pollStart(pollingParams))
-      .call(pollingParams.promise)
-      .put(pollingParams.successAction(data))
+      .call(pollingParams.saga)
+      .put(testAction)
       .dispatch(pollStop())
       .silentRun()
       .then(({ effects }) => {
         // effects.call = total of call effects + expect-saga assertions - call assertions
-        expect(effects.call).toHaveLength(1);
-
-        // Put is undefined because of the previous put assetion
+        expect(effects.call).toHaveLength(4);
         expect(effects.put).toBeUndefined();
       });
   });

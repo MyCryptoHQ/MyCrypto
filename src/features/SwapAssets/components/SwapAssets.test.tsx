@@ -49,7 +49,7 @@ function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
             settings: fSettings,
             networks: fNetworks,
             rates: {},
-            trackedAssets: []
+            trackedAssets: {}
           } as unknown) as IDataContext
         }
       >

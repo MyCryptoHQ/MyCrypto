@@ -3,7 +3,7 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { DEFAULT_NETWORK } from '@config';
-import { AssetBalanceObject, IAccount, LSKeys, TUuid, WalletId } from '@types';
+import { AssetBalanceObject, IAccount, IMappings, LSKeys, TUuid, WalletId } from '@types';
 import { filter, findIndex, pipe, propEq, reject } from '@vendor';
 
 import { getAppState } from './selectors';
@@ -90,6 +90,11 @@ export const getAccounts = createSelector([getAppState], (s) => {
   }));
 });
 export const getAccountsAssets = createSelector([getAccounts], (a) => a.flatMap((a) => a.assets));
+
+export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
+  //@ts-expect-error Wrong type on accounts assets
+  assets.reduce((acc, a) => ({ ...acc, [a.uuid]: a.mappings }), {} as Record<string, IMappings>)
+);
 
 export const getWalletAccountsOnDefaultNetwork = createSelector(
   getAccounts,

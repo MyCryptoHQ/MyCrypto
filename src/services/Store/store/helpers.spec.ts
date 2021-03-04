@@ -157,6 +157,16 @@ describe('canImport()', () => {
       expect(result.rates).toEqual(toMigrate.settings.rates);
       expect(result.settings).not.toContain(toMigrate.settings.rates);
     });
+    it('Creates trackedAsset object if missing', () => {
+      const toMigrate = {
+        [LSKeys.SETTINGS]: {
+          rates: fRates
+        }
+      };
+      const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
+
+      expect(result.trackedAssets).toEqual({});
+    });
   });
 
   it('returns false with mismatching versions', () => {

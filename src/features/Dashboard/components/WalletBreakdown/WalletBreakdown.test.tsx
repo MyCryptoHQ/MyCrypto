@@ -42,7 +42,13 @@ function getComponent({
               createActions: jest.fn(),
               userActions: [],
               rates: fRates,
-              trackedAssets: [],
+              trackedAssets: fAssets.reduce(
+                (acc, a) => ({
+                  ...acc,
+                  [a.uuid]: { coinGeckoId: 'ethereum' }
+                }),
+                {}
+              ),
               settings
             } as any
           }

@@ -100,6 +100,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
   },
   assets: {},
   rates: {},
+  trackedAssets: {},
   contracts: {},
   networks: {},
   notifications: {

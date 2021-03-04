@@ -2,6 +2,7 @@ import {
   ExtendedAsset,
   ExtendedNotification,
   IAccount,
+  IMappings,
   IRates,
   LocalStorage,
   Network,
@@ -111,7 +112,7 @@ export const migrateConfig = (toImport: Partial<LocalStorage>) => {
     ...toImport,
     // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
     rates: toImport.settings?.rates ? toImport.settings.rates : toImport.rates,
-    trackedAssets: toImport.trackedAssets ? toImport.trackedAssets : [],
+    trackedAssets: toImport.trackedAssets ? toImport.trackedAssets : {},
     // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
     settings: toImport.settings?.rates ? dissoc('rates', toImport.settings) : toImport.settings
   } as LocalStorage;
@@ -134,10 +135,10 @@ export const destructureCoinGeckoIds = (
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-export const buildCoinGeckoIdMapping = (assets: ExtendedAsset[]) =>
-  assets.reduce((acc, a) => {
-    if (a.mappings?.coinGeckoId) {
-      acc[a.uuid as string] = a.mappings.coinGeckoId;
+export const buildCoinGeckoIdMapping = (assets: Record<string, IMappings>) =>
+  Object.keys(assets).reduce((acc, a) => {
+    if (assets[a].coinGeckoId) {
+      return { ...acc, [a]: assets[a].coinGeckoId! };
     }
     return acc;
   }, {} as Record<string, string>);

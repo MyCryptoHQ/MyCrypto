@@ -22,7 +22,7 @@ function getComponent() {
             settings: fSettings,
             networks: fNetworks,
             rates: {},
-            trackedAssets: []
+            trackedAssets: {}
           } as unknown) as IDataContext
         }
       >

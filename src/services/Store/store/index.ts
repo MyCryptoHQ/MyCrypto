@@ -86,4 +86,4 @@ export { default as persistenceSlice } from './persistence.slice';
 export { appReset, default as rootReducer } from './root.reducer';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
 export { setRates, getRates } from './rates.slice';
-export { trackAsset, trackAssets, getTrackedAssets } from './trackedAssets.slice';
+export { trackAsset, getTrackedAssets } from './trackedAssets.slice';

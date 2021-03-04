@@ -21,7 +21,7 @@ const combinedReducers = (
   });
 };
 
-describe('ratesSlice', () => {
+describe('trackedAssetsSlice', () => {
   it('has an initial state', () => {
     const actual = reducer(undefined, { type: null });
     const expected = initialState;
@@ -29,14 +29,14 @@ describe('ratesSlice', () => {
   });
 
   it('trackAsset(): track an asset', () => {
-    const assetToTrack = fAssets[0];
+    const assetToTrack = { ...fAssets[0], mappings: {} };
     const actual = reducer(initialState, trackAsset(assetToTrack));
-    expect(actual).toEqual([assetToTrack]);
+    expect(actual).toEqual({ [assetToTrack.uuid]: { ...assetToTrack.mappings } });
   });
 
   it('getTrackedAssets(): gets all tracked assets', () => {
-    const assetToTrack = fAssets[0];
+    const assetToTrack = { ...fAssets[0], mappings: {} };
     const actual = combinedReducers(initialState, trackAsset(assetToTrack));
-    expect(getTrackedAssets(actual)).toEqual([assetToTrack]);
+    expect(getTrackedAssets(actual)).toEqual({ [assetToTrack.uuid]: { ...assetToTrack.mappings } });
   });
 });

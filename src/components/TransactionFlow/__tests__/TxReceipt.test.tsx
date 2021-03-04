@@ -37,7 +37,13 @@ function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(
     <Router>
       <DataContext.Provider
-        value={({ addressBook: [], contracts: [], userActions: [] } as unknown) as IDataContext}
+        value={
+          ({
+            addressBook: [],
+            contracts: [],
+            userActions: []
+          } as unknown) as IDataContext
+        }
       >
         <TxReceiptUI {...props} />
       </DataContext.Provider>
