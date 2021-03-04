@@ -67,7 +67,7 @@ const createBalancesDetailViewRow = (
 
   return [
     <Box variant="rowAlign" data-sortkey={balance.name} key={balance.id}>
-      <AssetIcon mr={'0.5ch'} uuid={balance.uuid as TUuid} size="1.5em" />
+      <AssetIcon mr={'0.5ch'} uuid={balance.uuid as TUuid} size="26px" />
       <Text as="span">{balance.name}</Text>
     </Box>,
     <Box key={balance.id}>
