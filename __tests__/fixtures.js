@@ -121,7 +121,7 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     canTrackProductAnalytics: true,
     fiatCurrency: 'USD',
     darkMode: false,
-    dashboardAccounts: ['256b782e-52bc-51f9-a357-602501e59700'],
+    dashboardAccounts: ['1782c060-8bc0-55d6-8078-ff255b4aae90'],
     excludedAssets: [],
     inactivityTimer: 1800000,
     rates: {},
