@@ -15,7 +15,7 @@ import { WalletBreakdown } from './WalletBreakdown';
 function getComponent({
   settings = fSettings,
   accounts = fAccounts,
-  assets = [],
+  assets = fAssets,
   initialState
 }: {
   settings?: ISettings;
@@ -64,9 +64,7 @@ function getComponent({
 
 describe('WalletBreakdown', () => {
   it('can render', async () => {
-    const { getByText, getAllByText, container, getByTestId } = getComponent({
-      assets: fAssets
-    });
+    const { getByText, getAllByText, container, getByTestId } = getComponent({});
 
     expect(getByText(translateRaw('WALLET_BREAKDOWN_TITLE'))).toBeInTheDocument();
 
@@ -95,17 +93,14 @@ describe('WalletBreakdown', () => {
 
   it('can render empty state', async () => {
     const { getByText } = getComponent({
-      settings: { ...fSettings, dashboardAccounts: [] },
-      assets: fAssets
+      settings: { ...fSettings, dashboardAccounts: [] }
     });
 
     expect(getByText(translateRaw('NO_ACCOUNTS_SELECTED_HEADER'))).toBeInTheDocument();
   });
 
   it('can switch to details view', async () => {
-    const { getByText, getAllByText } = getComponent({
-      assets: fAssets
-    });
+    const { getByText, getAllByText } = getComponent({});
 
     const detailsButton = getByText(translateRaw('WALLET_BREAKDOWN_MORE'));
 
@@ -127,7 +122,6 @@ describe('WalletBreakdown', () => {
 
   it('can render loading state', async () => {
     const { getAllByTestId } = getComponent({
-      assets: fAssets,
       initialState: {
         tokenScanning: { scanning: true }
       }

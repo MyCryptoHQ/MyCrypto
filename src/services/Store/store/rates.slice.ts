@@ -6,7 +6,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { Fiats } from '@config';
 import { RatesService } from '@services/ApiService/Rates';
 import { IPollingPayload, pollStart } from '@services/Polling';
-import { IMappings, IRates, LSKeys } from '@types';
+import { IRates, LSKeys } from '@types';
 
 import { getAccountsAssetsMappings } from './account.slice';
 import { buildCoinGeckoIdMapping, destructureCoinGeckoIds } from './helpers';
@@ -36,6 +36,11 @@ export default slice;
  */
 
 export const getRates = createSelector([getAppState], (s) => s[slice.name]);
+export const getCoingeckoIdsMapping = createSelector(
+  [getAccountsAssetsMappings, getTrackedAssets],
+  (accountsAssets, trackedAssets) =>
+    buildCoinGeckoIdMapping({ ...accountsAssets, ...trackedAssets })
+);
 
 /**
  * Actions
@@ -52,14 +57,10 @@ export function* ratesSaga() {
 }
 
 export function* fetchRates() {
-  const accountAssets: Record<string, IMappings> = yield select(getAccountsAssetsMappings);
-  const trackedAssets: Record<string, IMappings> = yield select(getTrackedAssets);
+  const coinGeckoIdsMapping: Record<string, string> = yield select(getCoingeckoIdsMapping);
 
-  const assets = { ...accountAssets, ...trackedAssets };
-  const coinGeckoIdsMapping = buildCoinGeckoIdMapping(assets);
-
-  const res = yield call(
-    RatesService.instance.fetchAssetsRates,
+  const res: IRates = yield call(
+    RatesService.fetchAssetsRates,
     [...new Set(Object.values(coinGeckoIdsMapping))],
     Object.keys(Fiats)
   );

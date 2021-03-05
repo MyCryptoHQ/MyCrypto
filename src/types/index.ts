@@ -23,7 +23,7 @@ export {
 export {
   Fiat,
   Asset,
-  IMappings,
+  IProvidersMappings,
   ExtendedAsset,
   TCurrencySymbol,
   TTicker,

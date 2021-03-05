@@ -2,7 +2,7 @@ import {
   ExtendedAsset,
   ExtendedNotification,
   IAccount,
-  IMappings,
+  IProvidersMappings,
   IRates,
   LocalStorage,
   Network,
@@ -135,10 +135,10 @@ export const destructureCoinGeckoIds = (
   return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
 
-export const buildCoinGeckoIdMapping = (assets: Record<string, IMappings>) =>
+export const buildCoinGeckoIdMapping = (assets: Record<string, IProvidersMappings | undefined>) =>
   Object.keys(assets).reduce((acc, a) => {
-    if (!isVoid(assets[a]) && assets[a].coinGeckoId) {
-      return { ...acc, [a]: assets[a].coinGeckoId! };
+    if (!isVoid(assets[a]) && assets[a]?.coinGeckoId) {
+      return { ...acc, [a]: assets[a]!.coinGeckoId! };
     }
     return acc;
   }, {} as Record<string, string>);

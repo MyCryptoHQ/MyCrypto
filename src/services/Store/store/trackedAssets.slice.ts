@@ -1,10 +1,10 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ExtendedAsset, IMappings, LSKeys } from '@types';
+import { ExtendedAsset, IProvidersMappings, LSKeys } from '@types';
 
 import { getAppState } from './selectors';
 
-export const initialState = {} as Record<string, IMappings>;
+export const initialState = {} as Record<string, IProvidersMappings>;
 
 const sliceName = LSKeys.TRACKED_ASSETS;
 

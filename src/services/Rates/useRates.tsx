@@ -42,7 +42,7 @@ function useRates() {
   };
 
   /*
-   * Depetcated method, to reactivate see 10aa0311d1827b0c7c6e8f55dea10fd953c93e61
+   * Deprecated method, to reactivate see 10aa0311d1827b0c7c6e8f55dea10fd953c93e61
    * returns an empty object to avoid type errors
    **/
 

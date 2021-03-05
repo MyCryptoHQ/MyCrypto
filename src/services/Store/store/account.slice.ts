@@ -7,7 +7,7 @@ import {
   AssetBalanceObject,
   ExtendedAsset,
   IAccount,
-  IMappings,
+  IProvidersMappings,
   LSKeys,
   TUuid,
   WalletId
@@ -105,7 +105,10 @@ export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) 
 );
 
 export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
-  assets.reduce((acc, a) => ({ ...acc, [a.uuid]: a.mappings }), {} as Record<string, IMappings>)
+  assets.reduce(
+    (acc, a) => ({ ...acc, [a.uuid]: a.mappings }),
+    {} as Record<string, IProvidersMappings>
+  )
 );
 
 export const getWalletAccountsOnDefaultNetwork = createSelector(
