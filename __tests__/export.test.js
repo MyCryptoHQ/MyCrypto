@@ -2,7 +2,7 @@ import { getByTestId, getByText } from '@testing-library/testcafe';
 import { existsSync, readFileSync, unlinkSync } from 'fs';
 import { homedir } from 'os';
 import { join } from 'path';
-import { compose, dissocPath, head, keys, lensPath, omit, pipe, set, tap, view } from 'ramda';
+import { lensPath, omit, pipe, set } from 'ramda';
 import { ClientFunction } from 'testcafe';
 import timeLimit from 'time-limit-promise';
 
