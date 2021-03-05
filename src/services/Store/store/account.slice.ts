@@ -3,9 +3,18 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { DEFAULT_NETWORK } from '@config';
-import { AssetBalanceObject, IAccount, IMappings, LSKeys, TUuid, WalletId } from '@types';
+import {
+  AssetBalanceObject,
+  ExtendedAsset,
+  IAccount,
+  IMappings,
+  LSKeys,
+  TUuid,
+  WalletId
+} from '@types';
 import { filter, findIndex, pipe, propEq, reject } from '@vendor';
 
+import { getAssetByUUID } from './asset.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getIsDemoMode } from './settings.slice';
 
@@ -89,10 +98,13 @@ export const getAccounts = createSelector([getAppState], (s) => {
     }))
   }));
 });
-export const getAccountsAssets = createSelector([getAccounts], (a) => a.flatMap((a) => a.assets));
+export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
+  a
+    .flatMap((a) => a.assets)
+    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)!], [] as ExtendedAsset[])
+);
 
 export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
-  //@ts-expect-error Wrong type on accounts assets
   assets.reduce((acc, a) => ({ ...acc, [a.uuid]: a.mappings }), {} as Record<string, IMappings>)
 );
 

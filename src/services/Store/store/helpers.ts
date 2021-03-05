@@ -10,7 +10,7 @@ import {
   StoreAccount,
   TTicker
 } from '@types';
-import { bigify, isBigish } from '@utils';
+import { bigify, isBigish, isVoid } from '@utils';
 import {
   difference,
   dissoc,
@@ -137,7 +137,7 @@ export const destructureCoinGeckoIds = (
 
 export const buildCoinGeckoIdMapping = (assets: Record<string, IMappings>) =>
   Object.keys(assets).reduce((acc, a) => {
-    if (assets[a].coinGeckoId) {
+    if (!isVoid(assets[a]) && assets[a].coinGeckoId) {
       return { ...acc, [a]: assets[a].coinGeckoId! };
     }
     return acc;
