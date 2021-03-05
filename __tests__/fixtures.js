@@ -71,8 +71,8 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
           type: 'base',
           isCustom: false,
           uuid: 'ac3478d6-9a3c-51fa-a2e6-0f5c3696165a',
-          balance: { _hex: '0x3e73362871420000' },
-          mtime: 1581530607024
+          balance: '10119688100000000000',
+          mtime: 1614873218615
         }
       ],
       transactions: [],
