@@ -160,6 +160,7 @@ export const migrations = {
       ...state,
       // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
       rates: state.settings.rates && state.settings.rates,
+      trackedAssets: state.trackedAssets ? state.trackedAssets : [],
       settings: dissoc('rates', state.settings)
     };
   }
