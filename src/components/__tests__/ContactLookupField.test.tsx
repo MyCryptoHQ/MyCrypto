@@ -157,7 +157,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts).toHaveLength(2);
+    expect(contacts).toHaveLength(3);
     expect(output.data.address).toStrictEqual({
       display: contact.label,
       value: contact.address
