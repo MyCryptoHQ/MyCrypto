@@ -15,7 +15,7 @@ interface OwnProps {
   networkId: NetworkId;
 }
 
-const EditableAccountLabel = ({
+export const EditableAccountLabel = ({
   addressBookEntry,
   address,
   networkId,
