@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ErrorProvider } from '@features';
-import { DevToolsProvider, RatesProvider, StoreProvider } from '@services';
+import { DevToolsProvider, StoreProvider } from '@services';
 import { DataProvider } from '@services/Store';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
@@ -10,10 +10,7 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
       <ErrorProvider>
         <DataProvider>
           {/* StoreProvider relies on the others Providers */}
-          <StoreProvider>
-            {/* RatesProvider relies on the Store */}
-            <RatesProvider>{children}</RatesProvider>
-          </StoreProvider>
+          <StoreProvider>{children}</StoreProvider>
         </DataProvider>
       </ErrorProvider>
     </DevToolsProvider>

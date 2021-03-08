@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { TAddress } from '@types';
 import { noOp, truncate } from '@utils';
@@ -35,22 +35,21 @@ function getComponent(props: React.ComponentProps<typeof MembershipReceipt>) {
             addressBook: [],
             contracts: [],
             userActions: [],
+            rates: {},
             settings: fSettings
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts
-              } as any) as any
-            }
-          >
-            <MembershipReceipt {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts
+            } as any) as any
+          }
+        >
+          <MembershipReceipt {...props} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </Router>
   );

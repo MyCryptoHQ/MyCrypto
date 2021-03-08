@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { mockAppState } from 'test-utils';
 
-import { fRates } from '@fixtures';
 import { TFiatTicker, TUuid } from '@types';
 
 import {
@@ -15,7 +14,6 @@ import {
   getInactivityTimer,
   getIsDemoMode,
   getLanguage,
-  getRates,
   initialState,
   removeExcludedAsset,
   resetFavoritesTo,
@@ -24,7 +22,6 @@ import {
   setInactivityTimer,
   setLanguage,
   setProductAnalyticsAuthorisation,
-  setRates,
   default as slice
 } from './settings.slice';
 
@@ -74,12 +71,6 @@ describe('settingsSlice', () => {
     const fiat = 'EUR' as TFiatTicker;
     const actual = reducer(initialState, setFiat(fiat));
     expect(getFiat(actual)).toEqual(fiat);
-  });
-
-  it('setRates(): sets rates', () => {
-    const rates = fRates;
-    const actual = reducer(initialState, setRates(rates));
-    expect(getRates(actual)).toEqual(rates);
   });
 
   it('setInactivityTimer(): sets time', () => {

@@ -6,5 +6,5 @@
 //   }
 // }
 export type IRates = {
-  [k in string]: any;
+  [k in string]: Record<string, number>;
 };

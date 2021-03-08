@@ -67,3 +67,6 @@ export { default as mergeAll } from 'ramda/src/mergeAll';
 export { default as uniq } from 'ramda/src/uniq';
 export { default as whereEq } from 'ramda/src/whereEq';
 export { default as head } from 'ramda/src/head';
+export { default as hasPath } from 'ramda/src/hasPath';
+export { default as append } from 'ramda/src/append';
+export { default as dissoc } from 'ramda/src/dissoc';

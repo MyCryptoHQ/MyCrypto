@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
 import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { TAddress } from '@types';
 import { bigify, noOp, truncate } from '@utils';
@@ -38,22 +38,21 @@ function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>
             addressBook: [],
             contracts: [],
             userActions: [],
-            settings: fSettings
+            settings: fSettings,
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts
-              } as any) as any
-            }
-          >
-            <SwapTransactionReceipt {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts
+            } as any) as any
+          }
+        >
+          <SwapTransactionReceipt {...props} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </Router>
   );

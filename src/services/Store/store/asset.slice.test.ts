@@ -1,12 +1,18 @@
 import { call } from 'redux-saga-test-plan/matchers';
-import { expectSaga } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAssets } from '@fixtures';
 import { MyCryptoApiService } from '@services';
 import { ExtendedAsset } from '@types';
 import { arrayToObj } from '@utils';
 
-import { addAssetsFromAPI, fetchAssetsWorker, initialState, default as slice } from './asset.slice';
+import {
+  addAssetsFromAPI,
+  fetchAssetsWorker,
+  getAssetByUUID,
+  initialState,
+  default as slice
+} from './asset.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset } = slice.actions;
@@ -71,6 +77,12 @@ describe('AccountSlice', () => {
     const state = [entity];
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+
+  it('getAssetByUUID(): return an asset by its uuid', () => {
+    const asset = fAssets[0];
+    const state = mockAppState({ [slice.name]: fAssets });
+    expect(getAssetByUUID(asset.uuid)(state)).toEqual(asset);
   });
 });
 

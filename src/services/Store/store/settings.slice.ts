@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
-import { IRates, LSKeys, TFiatTicker, TUuid } from '@types';
+import { LSKeys, TFiatTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
@@ -10,6 +10,7 @@ import { getAppState } from './selectors';
 const sliceName = LSKeys.SETTINGS;
 export const initialState = initialLegacyState[sliceName];
 
+// @todo: Get rates out of settings
 const slice = createSlice({
   name: sliceName,
   initialState,
@@ -36,9 +37,6 @@ const slice = createSlice({
     setFiat(state, action: PayloadAction<TFiatTicker>) {
       state.fiatCurrency = action.payload;
     },
-    setRates(state, action: PayloadAction<IRates>) {
-      state.rates = action.payload;
-    },
     setInactivityTimer(state, action: PayloadAction<number>) {
       state.inactivityTimer = action.payload;
     },
@@ -59,7 +57,6 @@ export const {
   setFiat,
   addExcludedAsset,
   removeExcludedAsset,
-  setRates,
   setInactivityTimer,
   setDemoMode,
   setProductAnalyticsAuthorisation
@@ -75,7 +72,6 @@ export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccoun
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
-export const getRates = createSelector(getSettings, (s) => s.rates);
 export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
 export const canTrackProductAnalytics = createSelector(

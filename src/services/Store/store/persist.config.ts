@@ -22,7 +22,7 @@ import { OmitByValue, ValuesType } from 'utility-types';
 import { defaultContacts } from '@database';
 import { DataStore, EncryptedDataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
-import { flatten, pipe, propEq, reject, values } from '@vendor';
+import { dissoc, flatten, pipe, propEq, reject, values } from '@vendor';
 
 import { mergeAssets, mergeNetworks } from './helpers';
 
@@ -46,11 +46,11 @@ const fromReduxStore: TransformInbound<
     case LSKeys.ASSETS:
     case LSKeys.NOTIFICATIONS:
     case LSKeys.USER_ACTIONS: {
-      //@ts-expect-error: TS doesnt' respect swtich type-guard
+      //@ts-expect-error: TS doesnt' respect switch type-guard
       return arrayToObj<TUuid>('uuid')(slice);
     }
     case LSKeys.NETWORKS: {
-      //@ts-expect-error: TS doesnt' respect swtich type-guard
+      //@ts-expect-error: TS doesnt' respect switch type-guard
       return arrayToObj<NetworkId>('id')(slice);
     }
     case LSKeys.SETTINGS:
@@ -154,11 +154,20 @@ export const migrations = {
         MYC_DONATE_CONTACT
       ]
     };
+  },
+  4: (state: DataStore) => {
+    return {
+      ...state,
+      // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
+      rates: state.settings.rates && state.settings.rates,
+      trackedAssets: state.trackedAssets ? state.trackedAssets : [],
+      settings: dissoc('rates', state.settings)
+    };
   }
 };
 
 export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
-  version: 3,
+  version: 4,
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,

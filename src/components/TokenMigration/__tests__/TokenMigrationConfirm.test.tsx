@@ -6,7 +6,6 @@ import { simpleRender } from 'test-utils';
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { RatesContext } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
@@ -35,25 +34,24 @@ function getComponent(props: ITxMultiConfirmProps) {
             assets: [{ uuid: fNetwork.baseAsset }],
             settings: fSettings,
             networks: [fNetwork],
-            userActions: []
+            userActions: [],
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <ConfirmTokenMigration {...((props as unknown) as any)} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              userAssets: [],
+              accounts: [],
+              defaultAccount: { assets: [] },
+              getAccount: jest.fn(),
+              networks: [{ nodes: [] }]
+            } as unknown) as any
+          }
+        >
+          <ConfirmTokenMigration {...((props as unknown) as any)} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>
   );

@@ -13,7 +13,9 @@ import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import passwordSlice from './password.slice';
 import { APP_PERSIST_CONFIG, VAULT_PERSIST_CONFIG } from './persist.config';
+import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
+import trackedAssetsSlice from './trackedAssets.slice';
 import userActionSlice from './userAction.slice';
 
 interface IRehydrate {
@@ -25,6 +27,8 @@ const persistenceReducer = combineReducers({
   version: () => initialLegacyState.version,
   [accountSlice.name]: accountSlice.reducer,
   [assetSlice.name]: assetSlice.reducer,
+  [ratesSlice.name]: ratesSlice.reducer,
+  [trackedAssetsSlice.name]: trackedAssetsSlice.reducer,
   [contactSlice.name]: contactSlice.reducer,
   [contractSlice.name]: contractSlice.reducer,
   [networkSlice.name]: networkSlice.reducer,
@@ -45,13 +49,12 @@ export default slice;
  * Saga
  */
 export function* persistenceSaga() {
-  yield all([
-    yield takeLatest(REHYDRATE, handleRehydrateSuccess),
-  ]);
+  yield all([yield takeLatest(REHYDRATE, handleRehydrateSuccess)]);
 }
 
 function* handleRehydrateSuccess(action: IRehydrate) {
   if (action.key === APP_PERSIST_CONFIG.key) {
-    yield put(trackInit())
+    yield put(trackInit());
+    yield put(startRatesPolling());
   }
 }

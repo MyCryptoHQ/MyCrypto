@@ -15,12 +15,13 @@ import {
   LSKeys,
   Network,
   NetworkId,
+  NetworkLegacy,
   NetworkNodes,
   NodeType,
-  TAddress,
   TUuid
 } from '@types';
-import { merge } from '@vendor';
+import { isVoid } from '@utils';
+import { map, mergeRight, pipe } from '@vendor';
 
 type ObjToArray = <T>(o: T) => ValuesType<T>[];
 const objToArray: ObjToArray = (obj) => Object.values(obj);
@@ -44,18 +45,42 @@ export const mergeConfigWithLocalStorage = (
       .filter((n) => n[1].isCustom)
       .map(([k, v]) => [k, { ...v, tokens: [] }])
   ) as unknown) as NetworkConfig;
-  const config = merge(defaultConfig, customNetworks);
+  const mergeWithDefault = (config: NetworkConfig) => mergeRight(config, customNetworks);
 
   // add contracts and assets from localstorage
   const lsContracts = objToArray(ls[LSKeys.CONTRACTS]) as ExtendedContract[];
   const lsAssets = objToArray(ls[LSKeys.ASSETS]) as ExtendedAsset[];
-  lsContracts.forEach((c) => config[c.networkId] && config[c.networkId].contracts.push(c));
-  lsAssets.forEach(
-    (a) =>
-      a.networkId &&
-      config[a.networkId] &&
-      config[a.networkId].tokens.push({ ...a, address: a.contractAddress as TAddress })
-  );
+
+  // filter LS contracts and add them to default networks
+  const addCustomContracts = map((n: NetworkLegacy) => {
+    const contracts = lsContracts.filter((c) => c.networkId === n.id);
+    return !isVoid(contracts)
+      ? {
+          ...n,
+          contracts: [...n.contracts, ...contracts]
+        }
+      : n;
+  });
+
+  // filter LS assets and add them to default networks
+  const addCustomAssets = map((n: NetworkLegacy) => {
+    const assets = lsAssets.filter((c) => c.networkId === n.id);
+    return !isVoid(assets)
+      ? {
+          ...n,
+          tokens: [...n.tokens, ...assets.map((a) => ({ ...a, address: a.contractAddress }))]
+        }
+      : n;
+  });
+
+  //@ts-expect-error incorrect type inference from ramda
+  const config: NetworkConfig = pipe(
+    mergeWithDefault,
+    //@ts-expect-error incorrect type inference from ramda
+    addCustomContracts,
+    addCustomAssets
+    //@ts-expect-error incorrect type inference from ramda
+  )(defaultConfig);
 
   // add selected and custom nodes per network
   if (ls[LSKeys.NETWORK_NODES]) {
@@ -77,12 +102,13 @@ export const mergeConfigWithLocalStorage = (
 // From LocalStorage to the state we want to use within the app.
 export function marshallState(ls: LocalStorage): DataStore {
   const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
-
   return {
     version: ls.version,
     [LSKeys.ACCOUNTS]: Object.values(ls[LSKeys.ACCOUNTS]),
     [LSKeys.ADDRESS_BOOK]: objToExtendedArray(ls[LSKeys.ADDRESS_BOOK]) as ExtendedContact[],
     [LSKeys.ASSETS]: objToArray(mergedLs[LSKeys.ASSETS]) as ExtendedAsset[],
+    [LSKeys.RATES]: ls[LSKeys.RATES],
+    [LSKeys.TRACKED_ASSETS]: ls[LSKeys.TRACKED_ASSETS],
     [LSKeys.CONTRACTS]: objToArray(mergedLs[LSKeys.CONTRACTS]) as ExtendedContract[],
     [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]),
     [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
@@ -134,6 +160,8 @@ export function deMarshallState(st: DataStore): LocalStorage {
     ),
     [LSKeys.ADDRESS_BOOK]: arrayToObj('uuid')(st[LSKeys.ADDRESS_BOOK]),
     [LSKeys.ASSETS]: arrayToObj('uuid')(st[LSKeys.ASSETS].filter((a) => a.isCustom)),
+    [LSKeys.RATES]: st[LSKeys.RATES],
+    [LSKeys.TRACKED_ASSETS]: st[LSKeys.TRACKED_ASSETS],
     [LSKeys.CONTRACTS]: arrayToObj('uuid')(st[LSKeys.CONTRACTS].filter((c) => c.isCustom)),
     [LSKeys.NETWORKS]: st[LSKeys.NETWORKS]
       .filter((c) => c.isCustom)

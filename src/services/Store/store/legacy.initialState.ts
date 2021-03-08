@@ -11,6 +11,8 @@ export const emptyState = {
     uuid: k as TUuid
   })),
   [LSKeys.ASSETS]: [],
+  [LSKeys.RATES]: {},
+  [LSKeys.TRACKED_ASSETS]: {},
   [LSKeys.CONTRACTS]: [],
   [LSKeys.NETWORKS]: [],
   [LSKeys.NOTIFICATIONS]: [],

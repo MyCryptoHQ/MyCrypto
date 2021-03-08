@@ -9,6 +9,8 @@ export const SCHEMA_BASE: LocalStorage = {
   [LSKeys.ACCOUNTS]: {},
   [LSKeys.ADDRESS_BOOK]: defaultContacts,
   [LSKeys.ASSETS]: {},
+  [LSKeys.RATES]: {},
+  [LSKeys.TRACKED_ASSETS]: {},
   [LSKeys.CONTRACTS]: {},
   [LSKeys.NETWORKS]: {} as LocalStorage[LSKeys.NETWORKS],
   [LSKeys.NOTIFICATIONS]: {},

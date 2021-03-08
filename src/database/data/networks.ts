@@ -18,6 +18,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Ethereum: {
     id: DEFAULT_NETWORK, // Ethereum Network Id
     name: 'Ethereum',
+    baseUnitName: 'Ether',
     unit: DEFAULT_NETWORK_TICKER,
     chainId: 1,
     isCustom: false,

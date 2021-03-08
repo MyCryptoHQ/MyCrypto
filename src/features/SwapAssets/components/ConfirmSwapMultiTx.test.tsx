@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
 import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { DataContext, IDataContext, StoreContext } from '@services';
 import { bigify, noOp } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -37,22 +37,21 @@ function getComponent(props: React.ComponentProps<typeof ConfirmSwapMultiTx>) {
             addressBook: [],
             contracts: [],
             userActions: [],
+            rates: {},
             settings: fSettings
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts
-              } as any) as any
-            }
-          >
-            <ConfirmSwapMultiTx {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts
+            } as any) as any
+          }
+        >
+          <ConfirmSwapMultiTx {...props} />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </Router>
   );

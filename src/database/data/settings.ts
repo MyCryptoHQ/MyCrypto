@@ -6,7 +6,6 @@ export const defaultSettings = {
   dashboardAccounts: [],
   excludedAssets: [],
   inactivityTimer: 1800000,
-  rates: {},
   language: 'en',
   isDemoMode: false,
   canTrackProductAnalytics: true

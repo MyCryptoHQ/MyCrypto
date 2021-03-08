@@ -4,7 +4,6 @@ import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { stepsContent } from '@features/SwapAssets/config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
 import { fAccount, fNetwork, fSettings, fTxConfigs, fTxParcels } from '@fixtures';
-import { RatesContext } from '@services';
 import { DataContext, IDataContext } from '@services/Store';
 import { ISwapAsset, ITxConfig, ITxType, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
@@ -31,10 +30,8 @@ const transactionsConfigs: ITxConfig[] = fTxConfigs;
 const baseAssetRate = 250;
 
 const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider value={({ settings: fSettings } as unknown) as IDataContext}>
-    <RatesContext.Provider value={({ rates: {}, trackAsset: noOp } as unknown) as any}>
-      {component}
-    </RatesContext.Provider>
+  <DataContext.Provider value={({ settings: fSettings, rates: {} } as unknown) as IDataContext}>
+    {component}
   </DataContext.Provider>
 );
 

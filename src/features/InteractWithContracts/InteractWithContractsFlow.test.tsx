@@ -4,7 +4,6 @@ import selectEvent from 'react-select-event';
 import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fContracts, fNetworks, fSettings } from '@fixtures';
-import { RatesContext } from '@services/Rates';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
@@ -29,24 +28,23 @@ function getComponent() {
             contracts: fContracts,
             userActions: [],
             settings: fSettings,
-            networks: fNetworks
+            networks: fNetworks,
+            rates: {}
           } as unknown) as IDataContext
         }
       >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts,
-                userAssets: fAccounts.flatMap((a) => a.assets),
-                getDefaultAccount: () => undefined
-              } as any) as any
-            }
-          >
-            <InteractWithContractsFlow />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
+        <StoreContext.Provider
+          value={
+            ({
+              assets: () => fAssets,
+              accounts: fAccounts,
+              userAssets: fAccounts.flatMap((a) => a.assets),
+              getDefaultAccount: () => undefined
+            } as any) as any
+          }
+        >
+          <InteractWithContractsFlow />
+        </StoreContext.Provider>
       </DataContext.Provider>
     </ProvidersWrapper>
   );

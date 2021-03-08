@@ -5,7 +5,6 @@ import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
 import { fAssets, fSettings } from '@fixtures';
-import { RatesContext } from '@services';
 import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { WalletId } from '@types';
 
@@ -29,7 +28,8 @@ describe('SendAssetsFlow', () => {
           ({
             addressBook: [],
             settings: fSettings,
-            assets: fAssets
+            assets: fAssets,
+            rates: {}
           } as unknown) as IDataContext
         }
       >
@@ -44,9 +44,7 @@ describe('SendAssetsFlow', () => {
             } as unknown) as any
           }
         >
-          <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
-            <SendAssets />
-          </RatesContext.Provider>
+          <SendAssets />
         </StoreContext.Provider>
       </DataContext.Provider>
     </MemoryRouter>

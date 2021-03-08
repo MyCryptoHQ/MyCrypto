@@ -40,6 +40,11 @@ export const mockUseDispatch = () => {
   return mockDispatch;
 };
 
+export const mockUseSelector = () => {
+  const mockSelector = jest.fn();
+  return mockSelector;
+};
+
 export const actionWithPayload = (payload: any) => expect.objectContaining({ payload });
 
 expectSaga.DEFAULT_TIMEOUT = 100;
@@ -94,3 +99,13 @@ export const expectToThrow = (func: () => unknown, error?: JestToErrorArg): void
 };
 
 type JestToErrorArg = Parameters<jest.Matchers<unknown, () => unknown>['toThrow']>[0];
+
+export function mockStore(
+  storeSlice: Partial<AppState>,
+  dataStoreState?: Partial<DataStore>
+): AppState {
+  return {
+    ...mockAppState(dataStoreState),
+    ...storeSlice
+  } as AppState;
+}

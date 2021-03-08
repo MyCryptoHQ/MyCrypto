@@ -2,14 +2,18 @@ import {
   ExtendedAsset,
   ExtendedNotification,
   IAccount,
+  IProvidersMappings,
+  IRates,
   LocalStorage,
   Network,
   NodeOptions,
-  StoreAccount
+  StoreAccount,
+  TTicker
 } from '@types';
-import { bigify, isBigish } from '@utils';
+import { bigify, isBigish, isVoid } from '@utils';
 import {
   difference,
+  dissoc,
   either,
   identity,
   ifElse,
@@ -102,3 +106,39 @@ export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) 
     return diff.length === 0;
   }
 };
+
+export const migrateConfig = (toImport: Partial<LocalStorage>) => {
+  return {
+    ...toImport,
+    // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
+    rates: toImport.settings?.rates ? toImport.settings.rates : toImport.rates,
+    trackedAssets: toImport.trackedAssets ? toImport.trackedAssets : {},
+    // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
+    settings: toImport.settings?.rates ? dissoc('rates', toImport.settings) : toImport.settings
+  } as LocalStorage;
+};
+
+export const destructureCoinGeckoIds = (
+  rates: IRates,
+  coinGeckoIdMapping: Record<string, string>
+): IRates => {
+  // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+  // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
+  const updateRateObj = (acc: IRates, curValue: TTicker): IRates =>
+    Object.entries(coinGeckoIdMapping).reduce((accum, [assetUuid, coinGeckoId]) => {
+      if (coinGeckoId === curValue) {
+        accum[assetUuid] = rates[curValue];
+      }
+      return accum;
+    }, acc);
+
+  return Object.keys(rates).reduce(updateRateObj, {} as IRates);
+};
+
+export const buildCoinGeckoIdMapping = (assets: Record<string, IProvidersMappings | undefined>) =>
+  Object.keys(assets).reduce((acc, a) => {
+    if (!isVoid(assets[a]) && assets[a]?.coinGeckoId) {
+      return { ...acc, [a]: assets[a]!.coinGeckoId! };
+    }
+    return acc;
+  }, {} as Record<string, string>);
