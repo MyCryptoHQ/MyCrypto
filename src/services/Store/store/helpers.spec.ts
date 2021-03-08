@@ -1,9 +1,11 @@
 import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks, fRates } from '@fixtures';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
-import { LocalStorage, LSKeys, NodeOptions, StoreAsset, TUuid } from '@types';
+import { IProvidersMappings, LocalStorage, LSKeys, NodeOptions, StoreAsset, TUuid } from '@types';
 
 import {
+  buildCoinGeckoIdMapping,
   canImport,
+  destructureCoinGeckoIds,
   mergeAssets,
   mergeNetworks,
   migrateConfig,
@@ -145,30 +147,6 @@ describe('canImport()', () => {
     expect(actual).toBe(true);
   });
 
-  describe('migrateConfig()', () => {
-    it('Migrate rates outside of settings', () => {
-      const toMigrate = {
-        [LSKeys.SETTINGS]: {
-          rates: fRates
-        }
-      };
-      const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
-
-      expect(result.rates).toEqual(toMigrate.settings.rates);
-      expect(result.settings).not.toContain(toMigrate.settings.rates);
-    });
-    it('Creates trackedAsset object if missing', () => {
-      const toMigrate = {
-        [LSKeys.SETTINGS]: {
-          rates: fRates
-        }
-      };
-      const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
-
-      expect(result.trackedAssets).toEqual({});
-    });
-  });
-
   it('returns false with mismatching versions', () => {
     const validate = () => canImport({ ...fLocalStorage, version: 'v0.0' }, persistable);
     expect(validate()).toBe(false);
@@ -178,5 +156,70 @@ describe('canImport()', () => {
     const { accounts, ...lsWithoutAccounts } = fLocalStorage;
     const actual = canImport(lsWithoutAccounts, persistable);
     expect(actual).toBe(false);
+  });
+});
+
+describe('migrateConfig()', () => {
+  it('Migrate rates outside of settings', () => {
+    const toMigrate = {
+      [LSKeys.SETTINGS]: {
+        rates: fRates
+      }
+    };
+    const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
+
+    expect(result.rates).toEqual(toMigrate.settings.rates);
+    expect(result.settings).not.toContain(toMigrate.settings.rates);
+  });
+  it('Creates trackedAsset object if missing', () => {
+    const toMigrate = {
+      [LSKeys.SETTINGS]: {
+        rates: fRates
+      }
+    };
+    const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
+
+    expect(result.trackedAssets).toEqual({});
+  });
+});
+
+describe('destructureCoinGeckoIds()', () => {
+  it('returns a new object with asset uuid as key', () => {
+    const rates = {
+      usd: 1524.39,
+      eur: 1280.09
+    };
+
+    const coinGeckoIdMapping = {
+      '356a192b-7913-504c-9457-4d18c28d46e6': 'ethereum'
+    };
+    const expected = {
+      '356a192b-7913-504c-9457-4d18c28d46e6': rates
+    };
+
+    const result = destructureCoinGeckoIds({ ethereum: rates }, coinGeckoIdMapping);
+
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('buildCoinGeckoIdMapping', () => {
+  it('transforms a list of ExtendedAsset to a list of coingecko ids with asset uuid as key', () => {
+    const assets = {
+      [fAssets[0].uuid]: { coinGeckoId: fAssets[0].name, cryptoCompareId: 'notRelevant' },
+      [fAssets[1].uuid]: { coinGeckoId: fAssets[1].name },
+      [fAssets[2].uuid]: { cryptoCompareId: 'anotherOne' }
+    } as Record<string, IProvidersMappings>;
+
+    const expected = {
+      [fAssets[0].uuid]: fAssets[0].name,
+      [fAssets[1].uuid]: fAssets[1].name
+    };
+
+    const result = buildCoinGeckoIdMapping(assets);
+
+    expect(result).toEqual(expected);
+    expect(result[fAssets[0].uuid]).not.toContain(assets[fAssets[0].uuid].cryptoCompareId);
+    expect(Object.keys(result)).not.toContain(fAssets[2].uuid);
   });
 });
