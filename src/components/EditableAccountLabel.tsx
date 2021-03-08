@@ -1,9 +1,6 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
-import { useUserActions } from '@services';
-import { BREAK_POINTS } from '@theme';
+import { updateUserActionStateByName, useDispatch } from '@store';
 import { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE, Contact, ExtendedContact, NetworkId, TAddress } from '@types';
 
@@ -17,12 +14,6 @@ export interface Props {
   updateContact(contact: ExtendedContact): void;
 }
 
-const SWrapper = styled.span`
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    font-weight: bold;
-  }
-`;
-
 const EditableAccountLabel = ({
   addressBookEntry,
   address,
@@ -30,34 +21,33 @@ const EditableAccountLabel = ({
   updateContact,
   createContact
 }: Props) => {
-  const { findUserAction, updateUserAction } = useUserActions();
-
-  const updateLabelAction = findUserAction(ACTION_NAME.UPDATE_LABEL);
+  const dispatch = useDispatch();
+  const handleChange = (value: string) => {
+    if (addressBookEntry) {
+      updateContact({ ...addressBookEntry, label: value });
+      dispatch(
+        updateUserActionStateByName({
+          name: ACTION_NAME.UPDATE_LABEL,
+          state: ACTION_STATE.COMPLETED
+        })
+      );
+    } else {
+      createContact({
+        address,
+        label: value,
+        network: networkId,
+        notes: ''
+      });
+    }
+  };
 
   return (
-    <SWrapper>
-      <EditableText
-        truncate={true}
-        onChange={(value) => {
-          if (addressBookEntry) {
-            updateContact({ ...addressBookEntry, label: value });
-            updateLabelAction &&
-              updateUserAction(updateLabelAction.uuid, {
-                ...updateLabelAction,
-                state: ACTION_STATE.COMPLETED
-              });
-          } else {
-            createContact({
-              address,
-              label: value,
-              network: networkId,
-              notes: ''
-            });
-          }
-        }}
-        value={addressBookEntry ? addressBookEntry.label : translateRaw('NO_LABEL')}
-      />
-    </SWrapper>
+    <EditableText
+      bold={true}
+      truncate={true}
+      onChange={handleChange}
+      value={addressBookEntry ? addressBookEntry.label : translateRaw('NO_LABEL')}
+    />
   );
 };
 

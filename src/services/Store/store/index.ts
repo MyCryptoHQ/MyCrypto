@@ -19,7 +19,13 @@ export {
   addAccounts
 } from './account.slice';
 export { createContact, destroyContact, updateContact } from './contact.slice';
-export { createUserAction, destroyUserAction, updateUserAction } from './userAction.slice';
+export {
+  createUserAction,
+  destroyUserAction,
+  updateUserAction,
+  updateUserActionStateByName,
+  selectUserActions
+} from './userAction.slice';
 export { createContract, destroyContract } from './contract.slice';
 export {
   createNetworks,

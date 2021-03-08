@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedContact, LSKeys, TUuid } from '@types';
 import { findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
+import { getAppState } from './selectors';
 
 const sliceName = LSKeys.ADDRESS_BOOK;
 export const initialState = initialLegacyState[sliceName];
@@ -31,5 +32,7 @@ export const {
   destroy: destroyContact,
   update: updateContact
 } = slice.actions;
+
+export const selectContacts = createSelector(getAppState, (s) => s[slice.name]);
 
 export default slice;
