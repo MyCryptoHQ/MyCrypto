@@ -2,7 +2,7 @@ import { getByTestId, getByText } from '@testing-library/testcafe';
 import { existsSync, readFileSync, unlinkSync } from 'fs';
 import { homedir } from 'os';
 import { join } from 'path';
-import omit from 'ramda/src/omit';
+import { lensPath, omit, pipe, set } from 'ramda';
 import { ClientFunction } from 'testcafe';
 import timeLimit from 'time-limit-promise';
 
@@ -55,9 +55,24 @@ test('Can export AppState to file', async (t) => {
   const fileName = await downloadBtn.getAttribute('download');
   const filePath = getFilePath(fileName);
   await waitForFileWithTimeout(filePath, FIXTURES_CONST.TIMEOUT);
-  const rawJSON = omit(['mtime'], JSON.parse(readFileSync(filePath)));
-  const actual = { ...rawJSON };
-  await t.expect(actual).eql(omit(['mtime'], FIXTURE_LOCALSTORAGE_WITH_ONE_ACC));
+
+  // mtime and balances are dynamic values.
+  // remove them before we assert equality.
+  const removeKeysFromAccountAsset = omit(['mtime', 'balance']);
+  const accountAssetsLens = lensPath([
+    'accounts',
+    '1782c060-8bc0-55d6-8078-ff255b4aae90', // First account in account object.
+    'assets',
+    0 // First asset in asset list.
+  ]);
+  const omitDynamicValues = pipe(
+    omit(['mtime']),
+    set(accountAssetsLens, removeKeysFromAccountAsset)
+  );
+
+  const actual = omitDynamicValues(JSON.parse(readFileSync(filePath)));
+  const expected = omitDynamicValues(FIXTURE_LOCALSTORAGE_WITH_ONE_ACC);
+  await t.expect(actual).eql(expected);
 
   // Clean up
   unlinkSync(filePath);
