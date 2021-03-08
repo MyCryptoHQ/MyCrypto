@@ -300,7 +300,7 @@ const BuildAccountTable = (
   const isScanning = useSelector(isScanningSelector);
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
-  const { contacts, createContact, updateContact } = useContacts();
+  const { contacts } = useContacts();
   const { toggleAccountPrivacy } = useAccounts();
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
@@ -482,8 +482,6 @@ const BuildAccountTable = (
               addressBookEntry={addressCard}
               address={account.address}
               networkId={account.networkId}
-              createContact={createContact}
-              updateContact={updateContact}
             />
             <WalletLabelContainer>
               {account.wallet === WalletId.VIEW_ONLY && (

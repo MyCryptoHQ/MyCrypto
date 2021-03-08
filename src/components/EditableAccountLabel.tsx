@@ -1,42 +1,39 @@
 import React from 'react';
 
-import { updateUserActionStateByName, useDispatch } from '@store';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
+
+import { createOrUpdateContact, updateUserActionStateByName } from '@store';
 import { translateRaw } from '@translations';
-import { ACTION_NAME, ACTION_STATE, Contact, ExtendedContact, NetworkId, TAddress } from '@types';
+import { ACTION_NAME, ACTION_STATE, ExtendedContact, NetworkId, TAddress } from '@types';
 
 import EditableText from './EditableText';
 
-export interface Props {
+interface OwnProps {
   addressBookEntry?: ExtendedContact;
   address: TAddress;
   networkId: NetworkId;
-  createContact(contact: Contact): void;
-  updateContact(contact: ExtendedContact): void;
 }
 
 const EditableAccountLabel = ({
   addressBookEntry,
   address,
   networkId,
-  updateContact,
-  createContact
+  createOrUpdateContact,
+  updateUserActionStateByName
 }: Props) => {
-  const dispatch = useDispatch();
   const handleChange = (value: string) => {
+    const contact = {
+      address,
+      network: networkId,
+      ...addressBookEntry,
+      label: value
+    };
+    createOrUpdateContact(contact);
     if (addressBookEntry) {
-      updateContact({ ...addressBookEntry, label: value });
-      dispatch(
-        updateUserActionStateByName({
-          name: ACTION_NAME.UPDATE_LABEL,
-          state: ACTION_STATE.COMPLETED
-        })
-      );
-    } else {
-      createContact({
-        address,
-        label: value,
-        network: networkId,
-        notes: ''
+      updateUserActionStateByName({
+        name: ACTION_NAME.UPDATE_LABEL,
+        state: ACTION_STATE.COMPLETED
       });
     }
   };
@@ -51,4 +48,10 @@ const EditableAccountLabel = ({
   );
 };
 
-export default EditableAccountLabel;
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ createOrUpdateContact, updateUserActionStateByName }, dispatch);
+
+const connector = connect(() => ({}), mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export default connector(EditableAccountLabel);

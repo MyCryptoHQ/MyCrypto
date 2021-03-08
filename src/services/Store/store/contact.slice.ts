@@ -1,7 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedContact, LSKeys, TUuid } from '@types';
-import { findIndex, propEq } from '@vendor';
+import { generateUUID } from '@utils';
+import { find, findIndex, prop, propEq, uniqBy } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -23,6 +24,20 @@ const slice = createSlice({
     update(state, action: PayloadAction<ExtendedContact>) {
       const idx = findIndex(propEq('uuid', action.payload.uuid), state);
       state[idx] = action.payload;
+    },
+    createOrUpdate: {
+      reducer: (state, action: PayloadAction<ExtendedContact>) => {
+        return uniqBy(prop('uuid'), [action.payload, ...state]);
+      },
+      prepare: ({ uuid = generateUUID(), notes = '', ...rest }) => {
+        return {
+          payload: {
+            uuid,
+            notes,
+            ...rest
+          }
+        };
+      }
     }
   }
 });
@@ -30,9 +45,12 @@ const slice = createSlice({
 export const {
   create: createContact,
   destroy: destroyContact,
-  update: updateContact
+  update: updateContact,
+  createOrUpdate: createOrUpdateContact
 } = slice.actions;
 
 export const selectContacts = createSelector(getAppState, (s) => s[slice.name]);
+export const selectContact = (uuid: TUuid) =>
+  createSelector(selectContacts, find(propEq('uuid', uuid)));
 
 export default slice;

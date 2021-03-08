@@ -265,7 +265,7 @@ const DeterministicTable = ({
   handleUpdate,
   csv
 }: DeterministicTableProps) => {
-  const { getContactByAddressAndNetworkId, updateContact, createContact } = useContacts();
+  const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
 
   const isSelected = (account: DWAccountDisplay) =>
@@ -337,8 +337,6 @@ const DeterministicTable = ({
                     addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
                     address={account.address}
                     networkId={network.id}
-                    createContact={createContact}
-                    updateContact={updateContact}
                   />
                 </LabelContainer>
                 <AddressContainer>

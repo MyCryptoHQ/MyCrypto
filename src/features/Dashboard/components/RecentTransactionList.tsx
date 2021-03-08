@@ -24,7 +24,7 @@ import {
 } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
-import { ITxHistoryEntry, useContacts, useRates, useSettings, useTxHistory } from '@services';
+import { ITxHistoryEntry, useRates, useSettings, useTxHistory } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -166,7 +166,6 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { txHistory } = useTxHistory();
-  const { createContact, updateContact } = useContacts();
   const { isMobile } = useScreenSize();
 
   const accountTxs = txHistory.filter((tx) =>
@@ -193,20 +192,17 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         networkId,
         txType
       }) => {
-        const editableFromLabel = EditableAccountLabel({
+        const labelFromProps = {
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId,
-          createContact,
-          updateContact
-        });
-        const editableToLabel = EditableAccountLabel({
+          networkId
+        };
+
+        const labelToProps = {
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId,
-          createContact,
-          updateContact
-        });
+          networkId
+        };
 
         return [
           <TransactionLabel
@@ -216,11 +212,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={status}
             date={timestamp}
           />,
-          <Account key={1} title={editableFromLabel} truncate={true} address={from} />,
+          <Account
+            key={1}
+            title={<EditableAccountLabel {...labelFromProps} />}
+            truncate={true}
+            address={from}
+          />,
           to && (
             <Account
               key={2}
-              title={editableToLabel}
+              title={<EditableAccountLabel {...labelToProps} />}
               truncate={true}
               address={receiverAddress || to}
             />

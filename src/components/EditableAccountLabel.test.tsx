@@ -7,16 +7,14 @@ import { fContacts } from '@fixtures';
 import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ExtendedContact, TAddress, TUuid } from '@types';
-import { noOp } from '@utils';
 
-import EditableAccountLabel, { Props } from '../EditableAccountLabel';
+import EditableAccountLabel from './EditableAccountLabel';
 
+type Props = React.ComponentProps<typeof EditableAccountLabel>;
 const defaultProps: Props = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
   networkId: DEFAULT_NETWORK,
-  addressBookEntry: undefined,
-  createContact: noOp,
-  updateContact: noOp
+  addressBookEntry: undefined
 };
 
 const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([key, value]) => ({
@@ -35,10 +33,7 @@ function getComponent(contacts: ExtendedContact[], props: Props) {
         } as unknown) as IDataContext
       }
     >
-      <EditableAccountLabel
-        {...props}
-        createContact={(c) => contacts.push({ ...c, uuid: 'uuid' as TUuid })}
-      />
+      <EditableAccountLabel {...props} />
     </DataContext.Provider>
   );
 }
