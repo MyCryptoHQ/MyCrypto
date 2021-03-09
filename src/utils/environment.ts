@@ -1,7 +1,7 @@
 import { IS_DEV as isDev, IS_PROD as isProd, IS_STAGING as isStaging } from '../../environment';
 
 export const SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY;
-export const ANALYTICS_API_URL = "https://segment.mycryptodev.com";
+export const ANALYTICS_API_URL = 'https://segment.mycryptoapi.com';
 export const COMMIT_HASH = process.env.COMMIT_HASH;
 
 export const IS_DEV: boolean = isDev;
