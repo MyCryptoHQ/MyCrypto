@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { DeepPartial } from '@reduxjs/toolkit';
-import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, mockAppState, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, mockStore, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fContacts, fNetworks, fRates, fSettings } from '@fixtures';
-import { DataContext, StoreProvider } from '@services';
+import { fAccounts, fAssets, fSettings } from '@fixtures';
+import { StoreProvider } from '@services';
 import { AppState } from '@store';
 import { translateRaw } from '@translations';
 import { ExtendedAsset, ISettings, StoreAccount } from '@types';
@@ -24,35 +23,26 @@ function getComponent({
   initialState?: DeepPartial<AppState>;
 }) {
   return simpleRender(
-    <ProvidersWrapper initialState={{ ...initialState, ...mockAppState({ accounts, assets }) }}>
-      <MemoryRouter>
-        <DataContext.Provider
-          value={
-            {
-              addressBook: fContacts,
-              assets: fAssets,
-              contracts: [],
-              networks: fNetworks,
-              createActions: jest.fn(),
-              userActions: [],
-              rates: fRates,
-              trackedAssets: fAssets.reduce(
-                (acc, a) => ({
-                  ...acc,
-                  [a.uuid]: { coinGeckoId: 'ethereum' }
-                }),
-                {}
-              ),
-              settings
-            } as any
-          }
-        >
-          <StoreProvider>
-            <WalletBreakdown />
-          </StoreProvider>
-        </DataContext.Provider>
-      </MemoryRouter>
-    </ProvidersWrapper>
+    <StoreProvider>
+      <WalletBreakdown />
+    </StoreProvider>,
+    {
+      initialState: mockStore({
+        storeSlice: initialState,
+        dataStoreState: {
+          accounts,
+          assets,
+          settings,
+          trackedAssets: fAssets.reduce(
+            (acc, a) => ({
+              ...acc,
+              [a.uuid]: { coinGeckoId: 'ethereum' }
+            }),
+            {}
+          )
+        }
+      })
+    }
   );
 }
 

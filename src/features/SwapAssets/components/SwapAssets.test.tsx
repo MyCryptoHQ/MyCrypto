@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ProvidersWrapper, simpleRender } from 'test-utils';
+import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fNetworks, fRopDAI, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAccounts, fAssets, fRopDAI } from '@fixtures';
+import { StoreContext } from '@services';
 import { noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -37,35 +37,16 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
 
 function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            settings: fSettings,
-            networks: fNetworks,
-            rates: {},
-            trackedAssets: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts,
-              userAssets: fAccounts.flatMap((a) => a.assets)
-            } as any) as any
-          }
-        >
-          <SwapAssets {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          accounts: fAccounts,
+          userAssets: fAccounts.flatMap((a) => a.assets)
+        } as any) as any
+      }
+    >
+      <SwapAssets {...props} />
+    </StoreContext.Provider>
   );
 }
 

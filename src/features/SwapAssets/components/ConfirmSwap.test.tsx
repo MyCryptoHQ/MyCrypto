@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAccounts, fAssets, fRopDAI, fTxParcels } from '@fixtures';
+import { StoreContext } from '@services';
 import { bigify, noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -27,32 +26,16 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
 
 function getComponent(props: React.ComponentProps<typeof ConfirmSwap>) {
   return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            rates: {},
-            settings: fSettings
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts
-            } as any) as any
-          }
-        >
-          <ConfirmSwap {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </Router>
+    <StoreContext.Provider
+      value={
+        ({
+          assets: () => fAssets,
+          accounts: fAccounts
+        } as unknown) as any
+      }
+    >
+      <ConfirmSwap {...props} />
+    </StoreContext.Provider>
   );
 }
 

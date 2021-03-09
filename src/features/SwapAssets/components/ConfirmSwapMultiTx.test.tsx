@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAssets, fRopDAI, fTxParcels } from '@fixtures';
 import { bigify, noOp } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -27,34 +25,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmSwapMultiTx>) {
-  return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            rates: {},
-            settings: fSettings
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts
-            } as any) as any
-          }
-        >
-          <ConfirmSwapMultiTx {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </Router>
-  );
+  return simpleRender(<ConfirmSwapMultiTx {...props} />);
 }
 
 describe('ConfirmSwapMultiTx', () => {

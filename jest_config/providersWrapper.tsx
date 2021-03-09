@@ -42,10 +42,11 @@ export const ProvidersWrapper = ({
  * HOC to bind an initialState to our test wrappers.
  * @param state AppState
  */
-export const withInitialState = (
-  state: React.ComponentProps<typeof ProvidersWrapper>['initialState']
+export const withOptions = (
+  state?: React.ComponentProps<typeof ProvidersWrapper>['initialState'],
+  route?: React.ComponentProps<typeof ProvidersWrapper>['initialRoute']
 ) => (props: React.ComponentProps<typeof ProvidersWrapper>) => (
-  <ProvidersWrapper initialState={state} {...props}>
+  <ProvidersWrapper initialState={state} initialRoute={route} {...props}>
     {props.children}
   </ProvidersWrapper>
 );

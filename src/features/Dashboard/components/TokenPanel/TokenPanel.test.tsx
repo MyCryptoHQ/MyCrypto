@@ -1,38 +1,26 @@
 import React from 'react';
 
-import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccounts, fNetworks } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import { TokenPanel } from './TokenPanel';
 
 function getComponent() {
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            settings: fSettings,
-            rates: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              currentAccounts: fAccounts,
-              totals: () => fAccounts[0].assets,
-              networks: fNetworks
-            } as any) as any
-          }
-        >
-          <TokenPanel />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          currentAccounts: fAccounts,
+          totals: () => fAccounts[0].assets,
+          networks: fNetworks
+        } as any) as any
+      }
+    >
+      <TokenPanel />
+    </StoreContext.Provider>
   );
 }
 

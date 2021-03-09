@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccounts, fAssets, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccounts, fAssets, fTokenMigrationTxs } from '@fixtures';
+import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import TokenMigrationReceipt, {
@@ -23,33 +22,20 @@ const defaultProps: TokenMigrationReceiptProps = {
 
 function getComponent(props: TokenMigrationReceiptProps) {
   return simpleRender(
-    <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            settings: fSettings,
-            networks: [fNetwork],
-            rates: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              userAssets: [],
-              accounts: fAccounts,
-              defaultAccount: { assets: [] },
-              getAccount: jest.fn(),
-              getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID),
-              networks: [{ nodes: [] }]
-            } as unknown) as any
-          }
-        >
-          <TokenMigrationReceipt {...((props as unknown) as any)} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
+    <StoreContext.Provider
+      value={
+        ({
+          userAssets: [],
+          accounts: fAccounts,
+          defaultAccount: { assets: [] },
+          getAccount: jest.fn(),
+          getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID),
+          networks: [{ nodes: [] }]
+        } as unknown) as any
+      }
+    >
+      <TokenMigrationReceipt {...props} />
+    </StoreContext.Provider>
   );
 }
 
