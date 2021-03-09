@@ -131,11 +131,11 @@ export default function DeterministicAccountList({
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set and
   useEffect(() => {
     const tableAccs = accountsToUse.reduce((acc, idx) => {
-      acc[idx.address] = tableAccounts[idx.address] || ({
+      acc[idx.address] = tableAccounts[idx.address] || {
         ...idx,
         isDefaultConfig: true,
         isSelected: (idx.balance && !idx.balance.isZero()) || false
-      });
+      };
       return acc;
     }, tableAccounts);
     setTableAccounts(tableAccs);
@@ -148,7 +148,11 @@ export default function DeterministicAccountList({
   };
 
   const handleSelection = (account: TableAccountDisplay) => {
-    console.debug('[handleSelection]: selectedAccount ', account, Object.values(tableAccounts).filter(({ isSelected }) => isSelected))
+    console.debug(
+      '[handleSelection]: selectedAccount ',
+      account,
+      Object.values(tableAccounts).filter(({ isSelected }) => isSelected)
+    );
     if (account.isSelected) {
       setTableAccounts({
         ...tableAccounts,
@@ -158,7 +162,7 @@ export default function DeterministicAccountList({
           isSelected: !account.isSelected
         }
       });
-      return
+      return;
     }
     if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES) return;
     setTableAccounts({

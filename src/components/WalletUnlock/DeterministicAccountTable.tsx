@@ -276,7 +276,9 @@ const DeterministicTable = ({
   const accountsToDisplay = allAccounts
     .filter(
       ({ balance, isSelected, pathItem: { baseDPath } }) =>
-        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) || !balance?.isZero() || isSelected
+        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) ||
+        !balance?.isZero() ||
+        isSelected
     )
     .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
   const selectedDPathOffset =
