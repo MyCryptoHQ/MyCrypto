@@ -4,7 +4,7 @@ import { generateUUID } from '@utils';
 import { initialState, default as slice } from './userAction.slice';
 
 const reducer = slice.reducer;
-const { create, destroy, update } = slice.actions;
+const { create, destroy, update, updateStateByName } = slice.actions;
 
 describe('UserActionSlice', () => {
   it('has an initial state', () => {
@@ -38,6 +38,19 @@ describe('UserActionSlice', () => {
     const state = [entity];
     const modifiedEntity = { ...entity, state: ACTION_STATE.COMPLETED } as ExtendedUserAction;
     const actual = reducer(state, update(modifiedEntity));
+    const expected = [modifiedEntity];
+    expect(actual).toEqual(expected);
+  });
+
+  it('updateStateByName(): updates an entities state provided a name', () => {
+    const entity = {
+      name: 'update_me',
+      state: ACTION_STATE.STARTED,
+      uuid: generateUUID()
+    } as ExtendedUserAction;
+    const state = [entity];
+    const modifiedEntity = { ...entity, state: ACTION_STATE.COMPLETED } as ExtendedUserAction;
+    const actual = reducer(state, updateStateByName(modifiedEntity));
     const expected = [modifiedEntity];
     expect(actual).toEqual(expected);
   });

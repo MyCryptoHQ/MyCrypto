@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Account, EditableAccountLabel, Typography } from '@components';
-import { useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedContact, NetworkId, TAddress } from '@types';
@@ -70,21 +69,17 @@ const LabelWrapper = styled.div`
 `;
 
 const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = true }: Props) => {
-  const { updateContact, createContact } = useContacts();
-  const editableFromAccountLabel = EditableAccountLabel({
+  const labelFromProps = {
     address: fromAccount.address,
     addressBookEntry: fromAccount.addressBookEntry,
-    networkId,
-    createContact,
-    updateContact
-  });
-  const editableToAccountLabel = EditableAccountLabel({
+    networkId
+  };
+  const labelToProps = {
     address: toAccount.address,
     addressBookEntry: toAccount.addressBookEntry,
-    networkId,
-    createContact,
-    updateContact
-  });
+    networkId
+  };
+
   return (
     <Addresses>
       <AddressContainer>
@@ -92,7 +87,11 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
           <Label value={translate('CONFIRM_TX_FROM')} fontSize="1.13em" />
         </LabelWrapper>
         <AddressWrapper>
-          <Account address={fromAccount.address} title={editableFromAccountLabel} truncate={true} />
+          <Account
+            address={fromAccount.address}
+            title={<EditableAccountLabel {...labelFromProps} />}
+            truncate={true}
+          />
         </AddressWrapper>
       </AddressContainer>
       {displayToAddress && (
@@ -101,7 +100,11 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
             <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
           </LabelWrapper>
           <AddressWrapper>
-            <Account address={toAccount.address} title={editableToAccountLabel} truncate={true} />
+            <Account
+              address={toAccount.address}
+              title={<EditableAccountLabel {...labelToProps} />}
+              truncate={true}
+            />
           </AddressWrapper>
         </AddressContainer>
       )}

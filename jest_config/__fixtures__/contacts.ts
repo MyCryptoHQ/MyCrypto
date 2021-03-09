@@ -16,5 +16,12 @@ export const fContacts: ExtendedContact[] = [
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
     notes: '',
     network: fNetworks[0].id
+  },
+  {
+    uuid: '5670d4a-adf3-1990-5eb9-fe78e613f987' as TUuid,
+    label: 'WalletConnect Account 3',
+    address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+    notes: '',
+    network: fNetworks[0].id
   }
 ];
