@@ -198,7 +198,6 @@ const DeterministicWallet = ({
         isValidPath(value)
       )
   });
-  console.debug('ACCOUNTS REFRESHED:', state.finishedAccounts);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
 

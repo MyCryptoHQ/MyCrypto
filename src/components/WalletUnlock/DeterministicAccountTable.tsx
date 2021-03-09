@@ -275,8 +275,8 @@ const DeterministicTable = ({
   const allAccounts = Object.values(accounts);
   const accountsToDisplay = allAccounts
     .filter(
-      ({ balance, pathItem: { baseDPath } }) =>
-        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) || !balance?.isZero()
+      ({ balance, isSelected, pathItem: { baseDPath } }) =>
+        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) || !balance?.isZero() || isSelected
     )
     .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
   const selectedDPathOffset =
@@ -408,6 +408,7 @@ const DeterministicTable = ({
             <Icon type="add" color="none" width="32px" />
             <STypography>
               <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
+              {!isComplete && <Spinner color="default" size={1} />}
             </STypography>
           </BottomActionButton>
         </Body>
