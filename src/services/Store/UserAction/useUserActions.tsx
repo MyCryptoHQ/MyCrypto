@@ -1,7 +1,7 @@
 import {
   createUserAction as createAUserAction,
   destroyUserAction,
-  selectUserAction,
+  selectUserActions,
   updateUserAction as updateAUserAction,
   useDispatch,
   useSelector
@@ -26,7 +26,7 @@ export interface IUserActionContext {
 
 function useUserActions() {
   const dispatch = useDispatch();
-  const userActions = useSelector(selectUserAction);
+  const userActions = useSelector(selectUserActions);
 
   const createUserAction = (actionTemplate: ActionTemplate) => {
     const userAction: UserAction = {

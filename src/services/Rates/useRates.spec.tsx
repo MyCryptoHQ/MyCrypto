@@ -10,9 +10,7 @@ import useRates from './useRates';
 
 const renderUseRates = ({ rates = {} as IRates } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper
-      initialState={mockAppState({ settings: fSettings, rates, trackedAssets = {} })}
-    >
+    <ProvidersWrapper initialState={mockAppState({ settings: fSettings, rates })}>
       {children}
     </ProvidersWrapper>
   );
