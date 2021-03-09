@@ -46,8 +46,6 @@
     "DETERMINISTIC_CUSTOM_LABEL_DPATH": "New Derivation Path Credentials",
     "DETERMINISTIC_ADD_DPATH": "Add DPath",
     "DETERMINISTIC_SEE_SUMMARY": "To see a summary of the scanned addresses, download CSV report",
-    "DETERMINISTIC_CANT_GENERATE_MORE": "You can't generate more than $number accounts",
-    "DETERMINISTIC_WAIT_FOR_SCAN": "Wait for scanning to complete",
     "DETERMINISTIC_INVALID_DPATH": "Please enter a valid dpath",
     "ACTION_10": "Done",
     "ACTION_15": "Remove",
