@@ -1,45 +1,27 @@
 import React from 'react';
 
 import mockAxios from 'jest-mock-axios';
-import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fNetworks, fSettings, fSwapQuote } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccounts, fAssets, fSwapQuote } from '@fixtures';
+import { StoreContext } from '@services/Store';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
 
 function getComponent() {
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            settings: fSettings,
-            networks: fNetworks,
-            rates: {},
-            trackedAssets: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts,
-              userAssets: fAccounts.flatMap((a) => a.assets),
-              getDefaultAccount: () => undefined
-            } as any) as any
-          }
-        >
-          <SwapAssetsFlow />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          assets: () => fAssets,
+          accounts: fAccounts,
+          userAssets: fAccounts.flatMap((a) => a.assets),
+          getDefaultAccount: () => undefined
+        } as any) as any
+      }
+    >
+      <SwapAssetsFlow />
+    </StoreContext.Provider>
   );
 }
 
