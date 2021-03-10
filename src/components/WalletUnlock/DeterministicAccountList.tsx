@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button, Icon, PoweredByText, Spinner, Text, Tooltip, Typography } from '@components';
+import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { DPath, ExtendedAsset, Network } from '@types';
+import { BannerType, DPath, ExtendedAsset, Network } from '@types';
 import { accountsToCSV, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
@@ -16,20 +16,9 @@ import DeterministicTable, {
   TableAccountDisplay
 } from './DeterministicAccountTable';
 
-const DeterministicAccountListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 800px;
-  min-height: 600px;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: calc(100vw - 30px);
-    min-height: auto;
-  }
-`;
-
 const TableWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
 `;
 
@@ -106,6 +95,16 @@ interface DeterministicAccountListProps {
   handleUpdate(asset: ExtendedAsset): void;
 }
 
+const tableBannerText = (emptySelectedAccountsLength: number, maxEmptyAddresses: number) => (
+  <Trans
+    id="DETERMINISTIC_SCANNING_EMPTY_ADDR"
+    variables={{
+      $count: () => emptySelectedAccountsLength,
+      $total: () => maxEmptyAddresses
+    }}
+  />
+)
+
 export default function DeterministicAccountList({
   finishedAccounts,
   asset,
@@ -117,11 +116,6 @@ export default function DeterministicAccountList({
   onUnlock,
   handleUpdate
 }: DeterministicAccountListProps) {
-  console.debug(
-    'AccountList: ',
-    asset,
-    finishedAccounts.map(({ address, balance }) => ({ address, balance: balance?.toString() }))
-  );
   const MAX_EMPTY_ADDRESSES = 5;
   const { isMobile } = useScreenSize();
 
@@ -148,11 +142,6 @@ export default function DeterministicAccountList({
   };
 
   const handleSelection = (account: TableAccountDisplay) => {
-    console.debug(
-      '[handleSelection]: selectedAccount ',
-      account,
-      Object.values(tableAccounts).filter(({ isSelected }) => isSelected)
-    );
     if (account.isSelected) {
       setTableAccounts({
         ...tableAccounts,
@@ -176,7 +165,10 @@ export default function DeterministicAccountList({
   };
   const csv = accountsToCSV(finishedAccounts, asset);
   return (
-    <DeterministicAccountListWrapper>
+    <Box variant="columnAlign" width="800px" justifyContent="center">
+      <Box maxHeight="32px" height="32px" width="100%">
+        <Banner type={BannerType.ANNOUNCEMENT} displayIcon={false} value={tableBannerText(emptySelectedAccounts.length, MAX_EMPTY_ADDRESSES)} />
+      </Box>
       <TableWrapper>
         <DeterministicTable
           isComplete={isComplete}
@@ -212,15 +204,6 @@ export default function DeterministicAccountList({
               </SDownloader>
               .
             </Typography>
-            <Text>
-              <Trans
-                id="DETERMINISTIC_SCANNING_EMPTY_ADDR"
-                variables={{
-                  $count: () => emptySelectedAccounts.length,
-                  $total: () => MAX_EMPTY_ADDRESSES
-                }}
-              />
-            </Text>
           </StatusWrapper>
         )}
         {isComplete && !accountsToUse.length && (
@@ -276,11 +259,10 @@ export default function DeterministicAccountList({
               }}
             />
           </Button>
-          <br />
-          <PoweredByText provider="FINDETH" />
+          
         </div>
       </StatusBar>
-    </DeterministicAccountListWrapper>
+    </Box>
   );
 }
 

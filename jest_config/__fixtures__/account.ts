@@ -223,7 +223,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as DPath,
       index: 0
     },
-    balance: bigify('0')
+    balance: bigify('100000000000000000000')
   },
   {
     address: '0xE8C0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -238,6 +238,62 @@ export const fDWAccounts: DWAccountDisplay[] = [
       index: 1
     },
     balance: bigify('0')
+  },
+  {
+    address: '0xE8A0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/2",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as DPath,
+      index: 1
+    },
+    balance: bigify('1000000000000000000')
+  },
+  {
+    address: '0xE8B0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/3",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as DPath,
+      index: 1
+    },
+    balance: bigify('1500000000000000000')
+  },
+  {
+    address: '0xE8D0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/4",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as DPath,
+      index: 1
+    },
+    balance: bigify('0')
+  },
+  {
+    address: '0xE8E0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/5",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as DPath,
+      index: 1
+    },
+    balance: bigify('12000000000000000000')
   }
 ];
 

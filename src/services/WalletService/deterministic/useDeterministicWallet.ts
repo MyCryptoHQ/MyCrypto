@@ -97,7 +97,6 @@ const useDeterministicWallet = (
   }, [state.isConnected]);
 
   useEffect(() => {
-    console.debug('recheck', assetToQuery?.name);
     if (
       !service ||
       shouldInit ||
@@ -107,10 +106,8 @@ const useDeterministicWallet = (
       !network ||
       state.queuedAccounts.length === 0
     ) {
-      console.debug('recheck failed', assetToQuery?.name);
       return;
     }
-    console.debug('recheck queued', assetToQuery?.name, state.queuedAccounts);
     service.handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
   }, [state.queuedAccounts]);
 
@@ -150,9 +147,7 @@ const useDeterministicWallet = (
   };
 
   const updateAsset = (asset: ExtendedAsset) => {
-    console.debug('1');
     if (!service) return;
-    console.debug('2');
     setAssetToQuery(asset);
     dispatch({
       type: DWActionTypes.UPDATE_ASSET,
@@ -162,10 +157,10 @@ const useDeterministicWallet = (
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    service.getAccounts(state.session, [dpath]);
     dispatch({
       type: DWActionTypes.GET_ADDRESSES_REQUEST
     });
-    service.getAccounts(state.session, [dpath]);
   };
 
   return {

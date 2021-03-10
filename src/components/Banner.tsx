@@ -12,6 +12,7 @@ import { default as Typography } from './Typography';
 interface Props {
   value: string | React.ReactElement<any>;
   type: BannerType;
+  displayIcon?: boolean
 }
 
 interface Config {
@@ -101,12 +102,12 @@ const bannerConfig = (type: BannerType): Config => {
   }
 };
 
-export const Banner = ({ value, type, ...props }: Props) => {
+export const Banner = ({ value, type, displayIcon = true, ...props }: Props) => {
   const config = bannerConfig(type);
   return (
     <Container config={config} {...props}>
       <RowContainer>
-        {config.icon && <Icon src={config.icon} alt={type} />}
+        {config.icon && displayIcon && <Icon src={config.icon} alt={type} />}
 
         <STypography color={config.color} fontSize={FONT_SIZE.SM}>
           {value}

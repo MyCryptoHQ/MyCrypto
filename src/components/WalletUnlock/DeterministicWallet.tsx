@@ -5,8 +5,8 @@ import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Box, Button, Input, Selector, Switch, Text, Typography } from '@components';
-import Icon from '@components/Icon';
+import { AssetSelector, Box, Button, Input, LinkApp, PoweredByText, Selector, Switch, Text, Typography } from '@components';
+import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
@@ -28,20 +28,6 @@ const Title = styled.span`
   font-weight: bold;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     font-size: ${FONT_SIZE.XL};
-  }
-`;
-
-const Parameters = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: ${SPACING.LG};
-  margin-top: ${SPACING.SM};
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
-    flex-direction: column;
-    & > div:first-child {
-      margin-bottom: ${SPACING.BASE};
-    }
   }
 `;
 
@@ -120,7 +106,12 @@ const SContainer = styled('div')`
   padding: 12px;
 `;
 
-interface DeterministicWalletProps {
+
+const SBox = styled(Box)`
+  margin: ${SPACING.XS}
+`
+
+export interface DeterministicWalletProps {
   state: DeterministicWalletState;
   assets: ExtendedAsset[];
   assetToUse: ExtendedAsset;
@@ -264,48 +255,56 @@ const DeterministicWallet = ({
           <Trans id="MNEMONIC_TITLE" />
         </Title>
       </HeadingWrapper>
-      <Text>
-        <Trans id="MNEMONIC_SUBTITLE" />
-      </Text>
-      <Parameters>
-        <AssetSelector
-          selectedAsset={assetToUse}
-          showAssetIcon={false}
-          showAssetName={true}
-          searchable={true}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
-        />
-        <Box variant="columnAlign" alignItems="flex-start">
-          <Text>
-            <Trans id="MNEMONIC_DISPLAY_EMPTY_ADDRESSES" />
-          </Text>
-          <Switch
-            checked={displayEmptyAddresses}
-            onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
-            labelLeft="Hide"
-            labelRight="Show"
-          />
-        </Box>
-      </Parameters>
-      <Text>{'Select a Derivation Path'}</Text>
-      <Parameters>
-        <Selector
-          value={selectedDPath}
-          onChange={setSelectedDPath}
-          options={dpaths}
-          optionComponent={DPathOption}
-          valueComponent={({ value }) => <DPathOption data={value} />}
-          clearable={false}
-          searchable={false}
-        />
-        <Button onClick={() => setDpathAddView(true)} colorScheme={'inverted'}>
-          <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
-        </Button>
-      </Parameters>
 
+      <Box pb={SPACING.MD} variant="spaceBetween">
+        <SBox variant="columnAlignLeft">
+          <Text>
+            <Trans id="MNEMONIC_SUBTITLE" />
+          </Text>
+          <AssetSelector
+            selectedAsset={assetToUse}
+            showAssetIcon={false}
+            showAssetName={true}
+            searchable={true}
+            assets={filteredAssets}
+            onSelect={(option: ExtendedAsset) => {
+              handleAssetUpdate(option);
+            }}
+          />
+        </SBox>
+        <SBox variant="columnAlignLeft">
+          <Text>
+            <Trans
+              id="MNEMONIC_DPATH_SELECT"
+            />
+            {' '}
+            <LinkApp href='' onClick={() => setDpathAddView(true)}>
+              <Trans
+                id="DETERMINISTIC_CUSTOM_LINK_TEXT"
+              />
+            </LinkApp>
+            {'.'}
+          </Text>
+          <Selector
+            value={selectedDPath}
+            onChange={setSelectedDPath}
+            options={dpaths}
+            optionComponent={DPathOption}
+            valueComponent={({ value }) => <DPathOption data={value} />}
+            clearable={false}
+            searchable={false}
+          />
+        </SBox>
+      </Box>
+      <Box variant="rowAlign" justifyContent="space-between" pb={SPACING.SM}>
+        <Switch
+          checked={displayEmptyAddresses}
+          onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
+          labelLeft="Hide Empty Addresses"
+          labelRight="Show Empty Addresses"
+        />
+        <PoweredByText provider="FINDETH" />
+      </Box>
       <TableContainer>
         {state.asset && (
           <DeterministicAccountList

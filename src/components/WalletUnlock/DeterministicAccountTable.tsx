@@ -273,6 +273,7 @@ const DeterministicTable = ({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
   const allAccounts = Object.values(accounts);
+
   const accountsToDisplay = allAccounts
     .filter(
       ({ balance, isSelected, pathItem: { baseDPath } }) =>

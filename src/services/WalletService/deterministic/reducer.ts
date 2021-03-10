@@ -45,6 +45,7 @@ const DeterministicWalletReducer = (
   state: DeterministicWalletState,
   { type, payload, error }: DWAction
 ): DeterministicWalletState => {
+  console.debug("[",type,"]: triggered", state)
   switch (type) {
     case DWActionTypes.CONNECTION_REQUEST: {
       return {
@@ -99,18 +100,10 @@ const DeterministicWalletReducer = (
     }
     case DWActionTypes.UPDATE_ACCOUNTS: {
       const { accounts, asset } = payload;
-      console.debug('[UPDATE_ACCOUNTS]: ', accounts, asset);
       // handles asset updates more-gracefully
       if (asset.uuid !== state.asset!.uuid) {
-        console.debug("[UPDATE_ACCOUNTS]: err'd here");
         return state;
       }
-      console.debug(
-        '[UPDATE_ACCOUNTS]: finished: ',
-        [...state.finishedAccounts, ...accounts],
-        ' queued: ',
-        [...state.queuedAccounts.filter(({ address }) => accounts.includes(address))]
-      );
       return {
         ...state,
         queuedAccounts: [

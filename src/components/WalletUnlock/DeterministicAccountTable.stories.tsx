@@ -1,6 +1,10 @@
 import React from 'react';
 
+import { ProvidersWrapper } from '@../jest_config/providersWrapper';
+
+import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
+import { DataContext, IDataContext } from '@services';
 import { noOp } from '@utils';
 
 import {
@@ -28,7 +32,7 @@ const initialProps: DeterministicTableProps = {
   displayEmptyAddresses: true,
   selectedDPath: {
     ...fDWAccounts[0].pathItem,
-    label: 'default dpath',
+    label: 'Default ETH DPath',
     value: '0.001'
   },
   csv: '',
@@ -39,8 +43,12 @@ const initialProps: DeterministicTableProps = {
 
 export const DeterministicAccountTable = () => {
   return (
-    <div className="sb-container" style={{ maxWidth: '620px' }}>
-      <DeterministicTable {...initialProps} />
-    </div>
+    <ProvidersWrapper>
+      <DataContext.Provider value={({ accounts: [], addressBook: [], contracts: [], assets: fAssets } as unknown) as IDataContext}>
+        <ExtendedContentPanel width='800px'>
+          <DeterministicTable {...initialProps} />
+        </ExtendedContentPanel>
+      </DataContext.Provider>
+    </ProvidersWrapper>
   );
 };
