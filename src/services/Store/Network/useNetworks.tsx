@@ -6,7 +6,7 @@ import {
   destroyNetwork as deleteNetworkRedux,
   deleteNodeOrNetwork as deleteNodeOrNetworkRedux,
   deleteNode as deleteNodeRedux,
-  getNetworks,
+  selectNetworks,
   updateNetwork as updateNetworkRedux,
   useDispatch,
   useSelector
@@ -33,7 +33,7 @@ export interface INetworkContext {
 }
 
 function useNetworks() {
-  const networks = useSelector(getNetworks);
+  const networks = useSelector(selectNetworks);
   const dispatch = useDispatch();
 
   const addNetwork = (network: Network) => dispatch(createNetwork(network));

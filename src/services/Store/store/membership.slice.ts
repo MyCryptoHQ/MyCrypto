@@ -8,7 +8,7 @@ import { IAccount, Network, StoreAccount, TAddress } from '@types';
 import { flatten } from '@vendor';
 
 import { getWalletAccountsOnDefaultNetwork } from './account.slice';
-import { getDefaultNetwork } from './network.slice';
+import { selectDefaultNetwork } from './network.slice';
 import { AppState } from './root.reducer';
 
 export const initialState = {
@@ -88,7 +88,7 @@ export function* fetchMembershipsSaga() {
 
 export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | undefined>) {
   const accounts: StoreAccount[] = yield select(getWalletAccountsOnDefaultNetwork);
-  const network: Network = yield select(getDefaultNetwork);
+  const network: Network = yield select(selectDefaultNetwork);
 
   const relevantAccounts = (payload ?? accounts).map((a) => a.address);
 

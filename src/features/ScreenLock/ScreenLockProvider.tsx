@@ -14,9 +14,9 @@ import {
   exportState,
   getEncryptedData,
   getInactivityTimer,
-  getPassword,
   importState,
   isEncrypted,
+  selectPassword,
   setPassword
 } from '@store';
 import { translateRaw } from '@translations';
@@ -267,7 +267,7 @@ const mapStateToProps = (state: AppState) => ({
   exportState: exportState(state),
   isEncrypted: isEncrypted(state),
   getEncryptedData: getEncryptedData(state),
-  password: getPassword(state),
+  password: selectPassword(state),
   inactivityTimer: getInactivityTimer(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>

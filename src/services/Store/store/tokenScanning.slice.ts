@@ -15,7 +15,7 @@ import { eqBy, identity, mergeAll, prop, unionWith } from '@vendor';
 import { getBaseAssetBalancesForAddresses, getTokenBalancesForAddresses } from '../BalanceService';
 import { getAccounts, updateAccountAssets } from './account.slice';
 import { getAssets } from './asset.slice';
-import { getNetworks } from './network.slice';
+import { selectNetworks } from './network.slice';
 import { AppState } from './root.reducer';
 
 export const initialState = {
@@ -141,7 +141,7 @@ export function* scanTokensWorker({
 
   yield put(startTokenScan());
 
-  const networks = yield select(getNetworks);
+  const networks = yield select(selectNetworks);
   const allAssets = yield select(getAssets);
 
   const accounts: IAccount[] = requestedAccounts ? requestedAccounts : yield select(getAccounts);

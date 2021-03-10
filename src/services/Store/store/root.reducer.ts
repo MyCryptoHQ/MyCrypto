@@ -51,11 +51,6 @@ export default rootReducer;
 export type AppState = ReturnType<typeof rootReducer>;
 
 /**
- * Selectors
- */
-export const getPassword = createSelector([getAppState], (s) => s.password);
-
-/**
  * AppState
  */
 export const exportState = createSelector(getAppState, deMarshallState);

@@ -23,6 +23,6 @@ const slice = createSlice({
 
 export const { set: setPassword, reset: resetPassword } = slice.actions;
 
-export const getPassword = createSelector(getAppState, (s) => s[slice.name]);
+export const selectPassword = createSelector(getAppState, (s) => s[slice.name]);
 
 export default slice;

@@ -20,9 +20,9 @@ import { StoreContext } from '@services/Store';
 import {
   AppState,
   getBaseAssetByNetwork,
-  getDefaultNetwork,
   getIsDemoMode,
-  getSettings
+  getSettings,
+  selectDefaultNetwork
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -321,7 +321,7 @@ const SwapAssets = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-  const network = getDefaultNetwork(state) as Network;
+  const network = selectDefaultNetwork(state) as Network;
 
   return {
     isDemoMode: getIsDemoMode(state),

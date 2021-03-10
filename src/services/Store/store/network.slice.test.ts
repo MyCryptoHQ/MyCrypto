@@ -1,5 +1,6 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
+import { DEFAULT_NETWORK } from '@config';
 import { fAccount, fAccounts, fContacts, fContracts, fNetwork, fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { ExtendedContact, ExtendedContract, Network, NetworkId, NodeOptions } from '@types';
@@ -11,7 +12,9 @@ import {
   deleteNodeOrNetworkWorker,
   deleteNodeWorker,
   initialState,
+  selectDefaultNetwork,
   selectNetwork,
+  selectNetworks,
   default as slice
 } from './network.slice';
 
@@ -159,10 +162,20 @@ describe('NetworkSlice', () => {
 });
 
 describe('Network Selectors', () => {
+  it('selectNetworks(): selects correct slice', () => {
+    const actual = selectNetworks(mockAppState({ networks: fNetworks }));
+    expect(actual).toEqual(fNetworks);
+  });
+
   it('selectNetwork(): finds a network by id', () => {
     const actual = selectNetwork(fNetworks[0].id)(mockAppState({ networks: fNetworks }));
     const expected = fNetworks[0];
     expect(actual).toEqual(expected);
+  });
+
+  it('selectDefaultNetwork(): returns the default network', () => {
+    const actual = selectDefaultNetwork(mockAppState({ networks: fNetworks }));
+    expect(actual.id).toEqual(DEFAULT_NETWORK);
   });
 });
 

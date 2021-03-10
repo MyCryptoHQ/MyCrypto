@@ -11,7 +11,7 @@ export {
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
 export { createNotification, updateNotification, selectNotifications } from './notification.slice';
-export { setPassword, getPassword } from './password.slice';
+export { setPassword, selectPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
@@ -47,8 +47,8 @@ export {
   deleteNodeOrNetwork,
   deleteNode,
   canDeleteNode,
-  getDefaultNetwork,
-  getNetworks,
+  selectDefaultNetwork,
+  selectNetworks,
   selectNetwork
 } from './network.slice';
 export {

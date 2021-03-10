@@ -92,11 +92,16 @@ export default slice;
 const findNetwork: (id: NetworkId) => (n: Network[]) => Network = (id: NetworkId) =>
   find(propEq('id', id));
 
-export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
-export const getDefaultNetwork = createSelector(getNetworks, findNetwork(DEFAULT_NETWORK));
+export const selectNetworks = createSelector([getAppState], (s) => s[slice.name]);
+
 export const getNetwork = (networkId: NetworkId) =>
-  createSelector(getNetworks, findNetwork(networkId));
+  createSelector(selectNetworks, findNetwork(networkId));
+
+// Create alias in anticipation of renaming
+// @todo: Remove original in favor of alias.
 export const selectNetwork = getNetwork;
+export const selectDefaultNetwork = selectNetwork(DEFAULT_NETWORK);
+
 export const canDeleteNode = (networkId: NetworkId) =>
   createSelector([getAppState], (state) => {
     const network = state.networks.find((n) => n.id === networkId)!;
