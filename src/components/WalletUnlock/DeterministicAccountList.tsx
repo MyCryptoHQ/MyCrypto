@@ -103,7 +103,7 @@ const tableBannerText = (emptySelectedAccountsLength: number, maxEmptyAddresses:
       $total: () => maxEmptyAddresses
     }}
   />
-)
+);
 
 export default function DeterministicAccountList({
   finishedAccounts,
@@ -167,7 +167,11 @@ export default function DeterministicAccountList({
   return (
     <Box variant="columnAlign" width="800px" justifyContent="center">
       <Box maxHeight="32px" height="32px" width="100%">
-        <Banner type={BannerType.ANNOUNCEMENT} displayIcon={false} value={tableBannerText(emptySelectedAccounts.length, MAX_EMPTY_ADDRESSES)} />
+        <Banner
+          type={BannerType.ANNOUNCEMENT}
+          displayIcon={false}
+          value={tableBannerText(emptySelectedAccounts.length, MAX_EMPTY_ADDRESSES)}
+        />
       </Box>
       <TableWrapper>
         <DeterministicTable
@@ -259,7 +263,6 @@ export default function DeterministicAccountList({
               }}
             />
           </Button>
-          
         </div>
       </StatusBar>
     </Box>

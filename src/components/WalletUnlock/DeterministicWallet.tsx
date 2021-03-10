@@ -5,7 +5,18 @@ import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Box, Button, Input, LinkApp, PoweredByText, Selector, Switch, Text, Typography } from '@components';
+import {
+  AssetSelector,
+  Box,
+  Button,
+  Input,
+  LinkApp,
+  PoweredByText,
+  Selector,
+  Switch,
+  Text,
+  Typography
+} from '@components';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
@@ -106,10 +117,9 @@ const SContainer = styled('div')`
   padding: 12px;
 `;
 
-
 const SBox = styled(Box)`
-  margin: ${SPACING.XS}
-`
+  margin: ${SPACING.XS};
+`;
 
 export interface DeterministicWalletProps {
   state: DeterministicWalletState;
@@ -274,14 +284,9 @@ const DeterministicWallet = ({
         </SBox>
         <SBox variant="columnAlignLeft">
           <Text>
-            <Trans
-              id="MNEMONIC_DPATH_SELECT"
-            />
-            {' '}
-            <LinkApp href='' onClick={() => setDpathAddView(true)}>
-              <Trans
-                id="DETERMINISTIC_CUSTOM_LINK_TEXT"
-              />
+            <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
+            <LinkApp href="" onClick={() => setDpathAddView(true)}>
+              <Trans id="DETERMINISTIC_CUSTOM_LINK_TEXT" />
             </LinkApp>
             {'.'}
           </Text>

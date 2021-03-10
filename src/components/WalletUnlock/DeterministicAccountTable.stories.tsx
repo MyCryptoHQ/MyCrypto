@@ -44,8 +44,17 @@ const initialProps: DeterministicTableProps = {
 export const DeterministicAccountTable = () => {
   return (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ accounts: [], addressBook: [], contracts: [], assets: fAssets } as unknown) as IDataContext}>
-        <ExtendedContentPanel width='800px'>
+      <DataContext.Provider
+        value={
+          ({
+            accounts: [],
+            addressBook: [],
+            contracts: [],
+            assets: fAssets
+          } as unknown) as IDataContext
+        }
+      >
+        <ExtendedContentPanel width="800px">
           <DeterministicTable {...initialProps} />
         </ExtendedContentPanel>
       </DataContext.Provider>

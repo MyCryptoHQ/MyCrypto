@@ -12,7 +12,7 @@ import { default as Typography } from './Typography';
 interface Props {
   value: string | React.ReactElement<any>;
   type: BannerType;
-  displayIcon?: boolean
+  displayIcon?: boolean;
 }
 
 interface Config {

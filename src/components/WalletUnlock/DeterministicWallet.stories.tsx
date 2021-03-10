@@ -8,15 +8,11 @@ import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { DataContext, IDataContext, LedgerUSB, Wallet } from '@services';
 import { noOp } from '@utils';
 
-import {
-  DeterministicWalletProps,
-  default as DeterministicWalletUI
-} from './DeterministicWallet';
+import { DeterministicWalletProps, default as DeterministicWalletUI } from './DeterministicWallet';
 
 export default {
   title: 'Hardware/DeterministicWallet'
 };
-
 
 const initialProps: DeterministicWalletProps = {
   state: {
@@ -53,8 +49,17 @@ const initialProps: DeterministicWalletProps = {
 export const DeterministicWallet = () => {
   return (
     <ProvidersWrapper>
-      <DataContext.Provider value={({ accounts: [], addressBook: [], contracts: [], assets: fAssets } as unknown) as IDataContext}>
-        <ExtendedContentPanel width='800px'>
+      <DataContext.Provider
+        value={
+          ({
+            accounts: [],
+            addressBook: [],
+            contracts: [],
+            assets: fAssets
+          } as unknown) as IDataContext
+        }
+      >
+        <ExtendedContentPanel width="800px">
           <DeterministicWalletUI {...initialProps} />
         </ExtendedContentPanel>
       </DataContext.Provider>
