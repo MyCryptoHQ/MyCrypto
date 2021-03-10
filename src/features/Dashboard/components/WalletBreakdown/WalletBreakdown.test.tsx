@@ -3,7 +3,7 @@ import React from 'react';
 import { DeepPartial } from '@reduxjs/toolkit';
 import { fireEvent, mockStore, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fSettings } from '@fixtures';
+import { fAccounts, fAssets, fRates, fSettings } from '@fixtures';
 import { StoreProvider } from '@services';
 import { AppState } from '@store';
 import { translateRaw } from '@translations';
@@ -33,6 +33,7 @@ function getComponent({
           accounts,
           assets,
           settings,
+          rates: fRates,
           trackedAssets: fAssets.reduce(
             (acc, a) => ({
               ...acc,
@@ -96,6 +97,9 @@ describe('WalletBreakdown', () => {
     fAccounts[0].assets.forEach((a) =>
       getAllByText(a.name).forEach((t) => expect(t).toBeInTheDocument())
     );
+
+    // Renders total fiat value
+    getAllByText('$767.14').forEach((s) => expect(s).toBeInTheDocument());
 
     // Render account columns
     getAllByText('1 Account').forEach((s) => expect(s).toBeInTheDocument());
