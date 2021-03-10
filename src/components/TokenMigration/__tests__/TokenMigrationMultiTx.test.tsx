@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccount, fNetwork, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccount, fTokenMigrationTxs } from '@fixtures';
 import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationMultiTx';
@@ -19,33 +17,7 @@ const defaultProps: ITxMultiConfirmProps = {
 };
 
 function getComponent(props: ITxMultiConfirmProps) {
-  return simpleRender(
-    <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: [{ uuid: fNetwork.baseAsset }],
-            settings: fSettings,
-            networks: [fNetwork]
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              userAssets: [],
-              accounts: [],
-              defaultAccount: { assets: [] },
-              getAccount: jest.fn(),
-              networks: [{ nodes: [] }]
-            } as unknown) as any
-          }
-        >
-          <ConfirmTokenMigration {...((props as unknown) as any)} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
+  return simpleRender(<ConfirmTokenMigration {...props} />);
 }
 
 /* Test components */

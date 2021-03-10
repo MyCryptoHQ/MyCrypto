@@ -1,11 +1,11 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, ProvidersWrapper, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { fAccounts, fAssets, fContracts, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccounts, fAssets } from '@fixtures';
+import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import DeployContractsFlow from './DeployContractsFlow';
@@ -24,36 +24,21 @@ jest.mock('@vendor', () => {
 
 function getComponent() {
   return simpleRender(
-    <ProvidersWrapper initialRoute={'/deploy-contracts'}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: fContracts,
-            userActions: [],
-            settings: fSettings,
-            networks: fNetworks,
-            rates: {},
-            trackedAssets: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts,
-              userAssets: fAccounts.flatMap((a) => a.assets),
-              getDefaultAccount: () => undefined
-            } as any) as any
-          }
-        >
-          <DeployContractsFlow />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <StoreContext.Provider
+      value={
+        ({
+          assets: () => fAssets,
+          accounts: fAccounts,
+          userAssets: fAccounts.flatMap((a) => a.assets),
+          getDefaultAccount: () => undefined
+        } as any) as any
+      }
+    >
+      <DeployContractsFlow />
+    </StoreContext.Provider>,
+    {
+      initialRoute: '/deploy-contracts'
+    }
   );
 }
 

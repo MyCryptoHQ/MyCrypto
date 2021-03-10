@@ -1,7 +1,10 @@
-import { useContext } from 'react';
-
-import { DataContext } from '@services/Store';
-import { createNotification, updateNotification, useDispatch } from '@store';
+import {
+  createNotification,
+  selectNotifications,
+  updateNotification,
+  useDispatch,
+  useSelector
+} from '@store';
 import { ExtendedNotification } from '@types';
 import { generateUUID, getTimeDifference, notUndefined } from '@utils';
 import { filter, last, pipe, sort } from '@vendor';
@@ -47,7 +50,7 @@ function isValidNotification(n: ExtendedNotification) {
 }
 
 export function useNotifications() {
-  const { notifications } = useContext(DataContext);
+  const notifications = useSelector(selectNotifications);
 
   const currentNotification = getCurrent(notifications);
   const dispatch = useDispatch();

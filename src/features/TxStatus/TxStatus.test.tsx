@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fAssets, fNetwork, fNetworks, fRates, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAssets, fNetwork } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import TxStatus from './TxStatus';
@@ -25,37 +24,22 @@ jest.mock('@vendor', () => {
 
 /* Test components */
 describe('TxStatus', () => {
-  const component = (path?: string) => (
-    <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
+  const renderComponent = (pathToLoad?: string) => {
+    return simpleRender(
+      <StoreContext.Provider
         value={
-          ({
-            assets: fAssets,
-            networks: fNetworks,
-            addressBook: [],
-            contracts: [],
-            settings: fSettings,
-            userActions: [],
-            trackedAssets: fAssets.reduce(
-              (acc, a) => ({
-                ...acc,
-                [a.uuid]: { coinGeckoId: 'ethereum' }
-              }),
-              {}
-            ),
-            rates: fRates
-          } as unknown) as IDataContext
+          {
+            accounts: [fAccount],
+            userActions: []
+          } as any
         }
       >
-        <StoreContext.Provider value={{ accounts: [fAccount], userActions: [] } as any}>
-          <TxStatus />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
-
-  const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(component(pathToLoad));
+        <TxStatus />
+      </StoreContext.Provider>,
+      {
+        initialRoute: pathToLoad
+      }
+    );
   };
 
   test('Can render', () => {

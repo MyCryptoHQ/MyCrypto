@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
+import { connect, ConnectedProps } from 'react-redux';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
@@ -9,6 +10,7 @@ import addIcon from '@assets/images/icn-add.svg';
 import editIcon from '@assets/images/icn-edit.svg';
 import { Selector, Typography } from '@components/index';
 import { NetworkUtils, useNetworks } from '@services/Store';
+import { AppState, selectNetwork } from '@store';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
@@ -90,14 +92,13 @@ const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, sele
   }
 };
 
-interface Props {
+interface OwnProps {
   networkId: NetworkId;
   onEdit?(node?: CustomNodeConfig): void;
 }
 
-const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
-  const { getNetworkById, setNetworkSelectedNode } = useNetworks();
-  const network = getNetworkById(networkId);
+const NetworkNodeDropdown: FC<Props> = ({ networkId, network, onEdit }) => {
+  const { setNetworkSelectedNode } = useNetworks();
 
   const onChange = useCallback(
     (node: NodeOptions) => {
@@ -139,4 +140,13 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   );
 };
 
-export default NetworkNodeDropdown;
+const mapStateToProps = (state: AppState, ownProps: OwnProps) => {
+  const { networkId } = ownProps;
+  return {
+    network: selectNetwork(networkId)(state)
+  };
+};
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export default connector(NetworkNodeDropdown);

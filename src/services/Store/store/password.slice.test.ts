@@ -1,4 +1,6 @@
-import { initialState, default as slice } from './password.slice';
+import { mockAppState } from 'test-utils';
+
+import { initialState, selectPassword, default as slice } from './password.slice';
 
 const reducer = slice.reducer;
 const { set, reset } = slice.actions;
@@ -20,5 +22,11 @@ describe('Password', () => {
     const state = 'my-old-secret';
     const actual = reducer(state, reset());
     expect(actual).toEqual(initialState);
+  });
+
+  it('selectPassword(): selects the correct slice', () => {
+    const actual = selectPassword(mockAppState());
+    const expected = initialState;
+    expect(actual).toEqual(expected);
   });
 });

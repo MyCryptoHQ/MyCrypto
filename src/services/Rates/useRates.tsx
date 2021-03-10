@@ -1,10 +1,8 @@
-import { useContext } from 'react';
-
 import { isEmpty } from 'ramda';
 import { useDispatch } from 'react-redux';
 
-import { DataContext, useSettings } from '@services/Store';
-import { trackAsset } from '@store';
+import { useSettings } from '@services/Store';
+import { getRates, getTrackedAssets, trackAsset, useSelector } from '@store';
 import { Asset, ExtendedAsset, ReserveAsset, TUuid } from '@types';
 
 export interface IRatesContext {
@@ -16,7 +14,8 @@ export interface IRatesContext {
 const DEFAULT_FIAT_RATE = 0;
 
 function useRates() {
-  const { rates, trackedAssets } = useContext(DataContext);
+  const rates = useSelector(getRates);
+  const trackedAssets = useSelector(getTrackedAssets);
   const { settings } = useSettings();
 
   const dispatch = useDispatch();

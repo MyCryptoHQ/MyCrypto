@@ -4,6 +4,7 @@ import { configureStore, DeepPartial } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { mockAppState } from 'test-utils';
 
 import { FeatureFlagProvider } from '@services';
 import { AppState, rootReducer } from '@store';
@@ -15,11 +16,11 @@ import { theme } from '@theme';
 */
 export const ProvidersWrapper = ({
   children,
-  initialState,
+  initialState = mockAppState(),
   initialRoute
 }: {
   children: React.ReactNode;
-  initialState?: DeepPartial<AppState>;
+  initialState?: AppState;
   initialRoute?: string;
 }) => {
   const store = configureStore({
@@ -36,3 +37,16 @@ export const ProvidersWrapper = ({
     </Router>
   );
 };
+
+/**
+ * HOC to bind an initialState to our test wrappers.
+ * @param state AppState
+ */
+export const withOptions = (
+  state?: React.ComponentProps<typeof ProvidersWrapper>['initialState'],
+  route?: React.ComponentProps<typeof ProvidersWrapper>['initialRoute']
+) => (props: React.ComponentProps<typeof ProvidersWrapper>) => (
+  <ProvidersWrapper initialState={state} initialRoute={route} {...props}>
+    {props.children}
+  </ProvidersWrapper>
+);

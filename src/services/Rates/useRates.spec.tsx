@@ -1,24 +1,17 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAssets, fRates, fSettings } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
 import { IRates } from '@types';
 
 import useRates from './useRates';
 
 const renderUseRates = ({ rates = {} as IRates } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({ settings: fSettings, rates: rates, trackedAssets: {} } as unknown) as IDataContext
-        }
-      >
-        {children}
-      </DataContext.Provider>
+    <ProvidersWrapper initialState={mockAppState({ settings: fSettings, rates })}>
+      {children}
     </ProvidersWrapper>
   );
   return renderHook(() => useRates(), { wrapper });

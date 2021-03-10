@@ -3,8 +3,7 @@ import React from 'react';
 import { simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
-import { fNetwork, fTxConfig } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 
 // eslint-disable-next-line jest/no-mocks-import
@@ -17,11 +16,7 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 };
 
 const getComponent = () => {
-  return simpleRender(
-    <DataContext.Provider value={({ networks: [fNetwork] } as unknown) as IDataContext}>
-      <SignTransaction {...defaultProps} />
-    </DataContext.Provider>
-  );
+  return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
 jest.mock('@ethersproject/providers', () => {

@@ -1,46 +1,13 @@
 import React from 'react';
 
-import { fireEvent, ProvidersWrapper, simpleRender } from 'test-utils';
+import { fireEvent, simpleRender } from 'test-utils';
 
-import { fAccounts, fAssets, fContracts, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import SignAndVerifyMessage from './SignAndVerifyMessage';
 
 function getComponent(pathname: string) {
-  return simpleRender(
-    <ProvidersWrapper initialRoute={pathname}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: fContracts,
-            userActions: [],
-            settings: fSettings,
-            networks: fNetworks,
-            rates: {},
-            trackedAssets: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts,
-              userAssets: fAccounts.flatMap((a) => a.assets),
-              getDefaultAccount: () => undefined
-            } as any) as any
-          }
-        >
-          <SignAndVerifyMessage />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </ProvidersWrapper>
-  );
+  return simpleRender(<SignAndVerifyMessage />, { initialRoute: pathname });
 }
 
 describe('SignAndVerifyMessage', () => {

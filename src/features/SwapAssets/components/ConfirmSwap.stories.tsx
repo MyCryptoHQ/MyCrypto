@@ -1,33 +1,20 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { DAIUUID, ETHUUID } from '@config';
-import { fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccounts, fAssets, fTxParcels } from '@fixtures';
+import { StoreContext } from '@services/Store';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
-import ConfirmSwap from './ConfirmSwap';
+import ConfirmSwapComponent from './ConfirmSwap';
 
-export default { title: 'Features/ConfirmSwap', component: ConfirmSwap };
+export default { title: 'Features/ConfirmSwap', component: ConfirmSwapComponent };
 
-const wrapInProvider = (component: ReactNode) => (
-  <DataContext.Provider
-    value={
-      ({
-        assets: fAssets,
-        userActions: [],
-        addressBook: [],
-        contracts: [],
-        rates: {},
-        settings: fSettings
-      } as unknown) as IDataContext
-    }
-  >
-    <StoreContext.Provider value={{ accounts: fAccounts, assets: () => fAssets } as any}>
-      {component}
-    </StoreContext.Provider>
-  </DataContext.Provider>
+const Template = (args: React.ComponentProps<typeof ConfirmSwapComponent>) => (
+  <StoreContext.Provider value={{ accounts: fAccounts, assets: () => fAssets } as any}>
+    <ConfirmSwapComponent {...args} />
+  </StoreContext.Provider>
 );
 
 const DAI: ISwapAsset = {
@@ -48,12 +35,12 @@ const assetPair = {
   rate: bigify('0.0045')
 };
 
-export const ethToDai = wrapInProvider(
-  <ConfirmSwap
-    account={fAccounts[0]}
-    flowConfig={assetPair}
-    onComplete={noOp}
-    transactions={fTxParcels}
-    currentTxIdx={0}
-  />
-);
+export const EthToDai = Template.bind({});
+EthToDai.storyName = 'EthToDai';
+EthToDai.args = {
+  account: fAccounts[0],
+  flowConfig: assetPair,
+  onComplete: noOp,
+  transactions: fTxParcels,
+  currentTxIdx: 0
+};

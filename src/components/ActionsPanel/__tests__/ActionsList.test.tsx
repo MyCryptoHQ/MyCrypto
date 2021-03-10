@@ -3,34 +3,13 @@ import React from 'react';
 import { screen, simpleRender } from 'test-utils';
 
 import { fActionTemplates } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
-import { ExtendedUserAction } from '@types';
 
 import { ActionsList, sortActions } from '../components/ActionsList';
 
 type Props = React.ComponentProps<typeof ActionsList>;
 
 function getComponent(props: Props) {
-  return simpleRender(
-    <DataContext.Provider
-      value={
-        ({
-          userActions: [] as ExtendedUserAction[]
-        } as unknown) as IDataContext
-      }
-    >
-      <StoreContext.Provider
-        value={
-          ({
-            userActions: [],
-            createUserAction: jest.fn()
-          } as any) as any
-        }
-      >
-        <ActionsList {...props} />
-      </StoreContext.Provider>
-    </DataContext.Provider>
-  );
+  return simpleRender(<ActionsList {...props} />);
 }
 
 const defaultProps = {

@@ -3,7 +3,6 @@ import React from 'react';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
 import { translateRaw } from '@translations';
 import { ExtendedContact } from '@types';
 import { bigify, truncate } from '@utils';
@@ -26,13 +25,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmTransactionUI>) {
-  return simpleRender(
-    <DataContext.Provider
-      value={({ addressBook: [], contracts: [], userActions: [] } as unknown) as IDataContext}
-    >
-      <ConfirmTransactionUI {...props} />
-    </DataContext.Provider>
-  );
+  return simpleRender(<ConfirmTransactionUI {...props} />);
 }
 
 describe('ConfirmTransaction', () => {

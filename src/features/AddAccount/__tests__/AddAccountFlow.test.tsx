@@ -5,8 +5,6 @@ import { fireEvent, simpleRender } from 'test-utils';
 
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
-import { fNetworks } from '@fixtures';
-import { DataContext, IDataContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
@@ -26,25 +24,16 @@ describe('AddAccountFlow', () => {
 
   const component = (path?: string) => (
     <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            networks: fNetworks,
-            notifications: []
-          } as unknown) as IDataContext
-        }
-      >
-        <Switch>
-          <Route
-            path="*"
-            render={(props) => {
-              history = props.history;
-              location = props.location;
-              return <AddAccountFlow {...props} />;
-            }}
-          />
-        </Switch>
-      </DataContext.Provider>
+      <Switch>
+        <Route
+          path="*"
+          render={(props) => {
+            history = props.history;
+            location = props.location;
+            return <AddAccountFlow {...props} />;
+          }}
+        />
+      </Switch>
     </MemoryRouter>
   );
 

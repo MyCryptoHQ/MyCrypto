@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAccounts, fAssets, fTxConfig, fTxReceipt } from '@fixtures';
+import { StoreContext } from '@services';
 import { ITxType } from '@types';
 import { noOp, truncate } from '@utils';
 
@@ -26,32 +25,16 @@ const defaultProps: React.ComponentProps<typeof ZapReceipt> = {
 
 function getComponent(props: React.ComponentProps<typeof ZapReceipt>) {
   return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            settings: fSettings,
-            rates: {}
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts
-            } as any) as any
-          }
-        >
-          <ZapReceipt {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </Router>
+    <StoreContext.Provider
+      value={
+        ({
+          assets: () => fAssets,
+          accounts: fAccounts
+        } as any) as any
+      }
+    >
+      <ZapReceipt {...props} />
+    </StoreContext.Provider>
   );
 }
 

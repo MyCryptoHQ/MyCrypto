@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { fAccount, fAccounts, fTxParcels } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { TAddress } from '@types';
 import { noOp, truncate } from '@utils';
@@ -26,32 +25,15 @@ const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
 
 function getComponent(props: React.ComponentProps<typeof MembershipReceipt>) {
   return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            rates: {},
-            settings: fSettings
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider
-          value={
-            ({
-              assets: () => fAssets,
-              accounts: fAccounts
-            } as any) as any
-          }
-        >
-          <MembershipReceipt {...props} />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </Router>
+    <StoreContext.Provider
+      value={
+        ({
+          accounts: fAccounts
+        } as any) as any
+      }
+    >
+      <MembershipReceipt {...props} />
+    </StoreContext.Provider>
   );
 }
 

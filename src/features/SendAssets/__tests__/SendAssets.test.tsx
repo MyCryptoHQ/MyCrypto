@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import { simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { fAssets, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { StoreContext } from '@services/Store';
 import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
@@ -21,37 +19,22 @@ jest.mock('@vendor', () => {
 });
 /* Test components */
 describe('SendAssetsFlow', () => {
-  const component = (path?: string) => (
-    <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
+  const renderComponent = () => {
+    return simpleRender(
+      <StoreContext.Provider
         value={
           ({
-            addressBook: [],
-            settings: fSettings,
-            assets: fAssets,
-            rates: {}
-          } as unknown) as IDataContext
+            userAssets: [],
+            accounts: [],
+            getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
+            getAccount: jest.fn(),
+            networks: [{ nodes: [] }]
+          } as unknown) as any
         }
       >
-        <StoreContext.Provider
-          value={
-            ({
-              userAssets: [],
-              accounts: [],
-              getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
-              getAccount: jest.fn(),
-              networks: [{ nodes: [] }]
-            } as unknown) as any
-          }
-        >
-          <SendAssets />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
-
-  const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(component(pathToLoad));
+        <SendAssets />
+      </StoreContext.Provider>
+    );
   };
 
   test('Can render the first step (Send Assets Form) in the flow.', () => {

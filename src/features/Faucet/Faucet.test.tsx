@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fAssets, fNetworks, fRates, fSettings } from '@fixtures';
-import { DataContext, StoreContext } from '@services';
+import { fAccount } from '@fixtures';
+import { StoreContext } from '@services';
 import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
@@ -51,38 +50,13 @@ FaucetService.solveChallenge = jest.fn(() =>
 
 /* Test components */
 describe('Faucet', () => {
-  const component = (path?: string) => (
-    <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
-        value={
-          {
-            assets: fAssets,
-            networks: fNetworks,
-            addressBook: [],
-            contracts: [],
-            settings: fSettings,
-            userActions: [],
-            rates: fRates,
-            trackedAssets: fAssets.reduce(
-              (acc, a) => ({
-                ...acc,
-                [a.uuid]: { coinGeckoId: 'ethereum' }
-              }),
-              {}
-            ),
-            createActions: jest.fn().mockImplementation(() => ({ create: jest.fn() }))
-          } as any
-        }
-      >
-        <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-          <Faucet />
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
-
   const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(component(pathToLoad));
+    return simpleRender(
+      <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
+        <Faucet />
+      </StoreContext.Provider>,
+      { initialRoute: pathToLoad }
+    );
   };
 
   beforeEach(() => jest.clearAllMocks());

@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 
@@ -8,13 +6,14 @@ import {
   destroyNetwork as deleteNetworkRedux,
   deleteNodeOrNetwork as deleteNodeOrNetworkRedux,
   deleteNode as deleteNodeRedux,
+  selectNetworks,
   updateNetwork as updateNetworkRedux,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 import { Network, NetworkId, NodeOptions } from '@types';
 
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
-import { DataContext } from '../DataManager';
 import { getNetworkById as getNetworkByIdFunc } from './helpers';
 import { NetworkUtils } from './utils';
 
@@ -34,7 +33,7 @@ export interface INetworkContext {
 }
 
 function useNetworks() {
-  const { networks } = useContext(DataContext);
+  const networks = useSelector(selectNetworks);
   const dispatch = useDispatch();
 
   const addNetwork = (network: Network) => dispatch(createNetwork(network));

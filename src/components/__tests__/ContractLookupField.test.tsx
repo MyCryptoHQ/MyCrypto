@@ -4,7 +4,6 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
 import { fContacts, fContracts, fNetwork } from '@fixtures';
-import { DataContext, IDataContext } from '@services/Store';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
@@ -38,19 +37,11 @@ function getComponent(
   };
 
   return simpleRender(
-    <DataContext.Provider
-      value={
-        ({
-          assets: [{ uuid: fNetwork.baseAsset }]
-        } as unknown) as IDataContext
-      }
-    >
-      <ContractLookupField
-        {...props}
-        value={output.data.address}
-        setFieldValue={(_, value) => setFormValue(value)}
-      />
-    </DataContext.Provider>
+    <ContractLookupField
+      {...props}
+      value={output.data.address}
+      setFieldValue={(_, value) => setFormValue(value)}
+    />
   );
 }
 

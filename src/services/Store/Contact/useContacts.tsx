@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 
@@ -6,8 +6,10 @@ import { STATIC_CONTACTS } from '@config';
 import {
   createContact as createAContact,
   destroyContact,
+  selectContacts,
   updateContact as updateAContact,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 import {
   Contact,
@@ -21,7 +23,6 @@ import {
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 import { useContracts } from '../Contract';
-import { DataContext } from '../DataManager';
 
 export interface IAddressBookContext {
   contacts: ExtendedContact[];
@@ -40,7 +41,7 @@ export interface IAddressBookContext {
 }
 
 function useContacts() {
-  const { addressBook: contacts } = useContext(DataContext);
+  const contacts = useSelector(selectContacts);
   const { getContractByAddress } = useContracts();
   const dispatch = useDispatch();
   const [contactRestore, setContactRestore] = useState<{

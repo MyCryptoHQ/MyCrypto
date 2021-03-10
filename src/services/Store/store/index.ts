@@ -1,12 +1,17 @@
 import { useDispatch } from 'react-redux';
 
 export { default as createStore } from './store';
-export { importState, exportState, AppState, getPassword } from './root.reducer';
+export {
+  default as rootReducer,
+  appReset,
+  importState,
+  exportState,
+  AppState
+} from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
-export { useSelector, default as useAppState } from './useAppState';
 export { useDispatch };
-export { createNotification, updateNotification } from './notification.slice';
-export { setPassword } from './password.slice';
+export { createNotification, updateNotification, selectNotifications } from './notification.slice';
+export { setPassword, selectPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
@@ -22,7 +27,8 @@ export {
   createContact,
   destroyContact,
   updateContact,
-  createOrUpdateContact
+  createOrUpdateContact,
+  selectContacts
 } from './contact.slice';
 export {
   createUserAction,
@@ -31,7 +37,7 @@ export {
   updateUserActionStateByName,
   selectUserActions
 } from './userAction.slice';
-export { createContract, destroyContract } from './contract.slice';
+export { createContract, destroyContract, selectContracts } from './contract.slice';
 export {
   createNetworks,
   createNetwork,
@@ -41,7 +47,9 @@ export {
   deleteNodeOrNetwork,
   deleteNode,
   canDeleteNode,
-  getDefaultNetwork
+  selectDefaultNetwork,
+  selectNetworks,
+  selectNetwork
 } from './network.slice';
 export {
   createAssets,
@@ -92,9 +100,8 @@ export {
   getEncryptedData,
   isEncrypted
 } from './vault.slice';
-export { getAppState } from './selectors';
+export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
-export { appReset, default as rootReducer } from './root.reducer';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
 export { setRates, getRates } from './rates.slice';
 export { trackAsset, getTrackedAssets } from './trackedAssets.slice';

@@ -5,20 +5,22 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
-import { DataContext, IDataContext } from '@services/Store';
 import {
+  appReset as appResetAction,
   AppState,
   clearEncryptedData,
   decrypt,
   encrypt,
   exportState,
   getEncryptedData,
+  getInactivityTimer,
   importState,
-  isEncrypted
+  isEncrypted,
+  selectPassword,
+  setPassword
 } from '@store';
 import { translateRaw } from '@translations';
-import { hashPassword, withContext } from '@utils';
-import { pipe } from '@vendor';
+import { hashPassword } from '@utils';
 
 import { default as ScreenLockLocking } from './ScreenLockLocking';
 
@@ -47,7 +49,7 @@ const onDemandLockCountDownDuration = 5;
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
-class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & Props, State> {
+class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
   public state: State = {
     locking: false,
     locked: false,
@@ -64,7 +66,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 
   // causes prop changes that are being observed in componentDidUpdate
   public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
-    const { setUnlockPassword } = this.props;
+    const { setPassword } = this.props;
     try {
       // If password is not hashed yet, hash it
       if (!hashed) {
@@ -73,7 +75,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
           (prevState) => ({ ...prevState, shouldAutoLock: true }),
           () => {
             // Initiates encryption in componentDidUpdate
-            setUnlockPassword(passwordHash);
+            setPassword(passwordHash);
           }
         );
       } else {
@@ -86,26 +88,27 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   };
 
   public async componentDidUpdate() {
+    const { password, encrypt, isEncrypted } = this.props;
     // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
     //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
     //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
-    if (this.state.shouldAutoLock && this.props.password && !this.props.isEncrypted) {
-      this.props.encrypt(this.props.password);
+    if (this.state.shouldAutoLock && password && !isEncrypted) {
+      encrypt(password);
       this.lockScreen();
       this.setState({ shouldAutoLock: false });
-    } else if (!this.props.isEncrypted && this.state.locked) {
+    } else if (!isEncrypted && this.state.locked) {
       // After decrypt with valid password, reset db and
       this.redirectOut();
     }
   }
 
   public decryptWithPassword = (password: string): void => {
-    const { isEncrypted } = this.props;
+    const { isEncrypted, decrypt } = this.props;
     if (!isEncrypted) return;
     try {
       const passwordHash = hashPassword(password);
       // Decrypt the data and store it to the MyCryptoCache
-      this.props.decrypt(passwordHash);
+      decrypt(passwordHash);
     } catch (error) {
       console.error(error);
       this.setState({ decryptError: error });
@@ -120,16 +123,17 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   };
 
   public redirectOut = () => {
+    const { history } = this.props;
     this.setState({ locked: false }, () => {
       this.resetInactivityTimer();
-      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
+      history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
 
   // Wipes both DBs in case of forgotten pw
   public resetAll = async () => {
-    const { resetAppDb } = this.props;
-    resetAppDb();
+    const { appReset } = this.props;
+    appReset();
     this.resetEncrypted();
   };
 
@@ -152,25 +156,26 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   };
 
   public resetInactivityTimer = () => {
-    const { settings } = this.props;
+    const { inactivityTimer: timer } = this.props;
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, settings.inactivityTimer);
+    inactivityTimer = setTimeout(this.startLockCountdown, timer);
   };
 
   public startLockCountdown = (lockingOnDemand = false) => {
+    const { password, location } = this.props;
     // @todo: Refactor to use .bind() probably
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const appContext = this;
 
     // Lock immediately if password is already set after clicking "Lock" button
-    if (lockingOnDemand && this.props.password) {
+    if (lockingOnDemand && password) {
       this.handleCountdownEnded();
       return;
     }
     if (
       this.state.locked ||
       this.state.locking ||
-      this.props.location.pathname === ROUTE_PATHS.SCREEN_LOCK_NEW.path
+      location.pathname === ROUTE_PATHS.SCREEN_LOCK_NEW.path
     ) {
       return;
     }
@@ -202,7 +207,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   public handleCountdownEnded = () => {
     /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
       If user has not setup the password yet, just navigate to "/screen-lock/new. */
-    const { password } = this.props;
+    const { password, history } = this.props;
 
     clearInterval(countDownTimer);
     if (password) {
@@ -211,11 +216,12 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('DEFAULT_PAGE_TITLE');
-      this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
+      history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
     }
   };
 
   public lockScreen = () => {
+    const { location, history } = this.props;
     /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages or to the set new password page*/
     this.setState({ locking: false, locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
@@ -224,15 +230,15 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
       !path.includes('screen-lock') && path !== ROUTE_PATHS.SETTINGS_IMPORT.path;
 
     if (
-      isOutsideLock(this.props.location.pathname) ||
-      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path)
+      isOutsideLock(location.pathname) ||
+      location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path)
     ) {
-      this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
+      history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
-    this.props.history.listen((location) => {
+    history.listen((location) => {
       if (this.state.locked && isOutsideLock(location.pathname)) {
-        this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
+        history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
     });
   };
@@ -240,7 +246,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
   public render() {
     const { children } = this.props;
     const { locking, timeLeft, lockingOnDemand } = this.state;
-
     return (
       <ScreenLockContext.Provider value={this.state}>
         {locking ? (
@@ -261,12 +266,24 @@ class ScreenLockProvider extends Component<RouteComponentProps & IDataContext & 
 const mapStateToProps = (state: AppState) => ({
   exportState: exportState(state),
   isEncrypted: isEncrypted(state),
-  getEncryptedData: getEncryptedData(state)
+  getEncryptedData: getEncryptedData(state),
+  password: selectPassword(state),
+  inactivityTimer: getInactivityTimer(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
-  bindActionCreators({ importState, clearEncryptedData, encrypt, decrypt }, dispatch);
+  bindActionCreators(
+    {
+      importState,
+      clearEncryptedData,
+      encrypt,
+      decrypt,
+      setPassword,
+      appReset: appResetAction
+    },
+    dispatch
+  );
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-export default pipe(withRouter, withContext(DataContext), connector)(ScreenLockProvider);
+export default withRouter(connector(ScreenLockProvider));

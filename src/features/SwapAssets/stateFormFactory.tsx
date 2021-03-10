@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
-import { getDefaultNetwork, useSelector } from '@store';
+import { selectDefaultNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, StoreAccount } from '@types';
 import {
@@ -34,7 +34,7 @@ const swapFormInitialState = {
 };
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const network = useSelector(getDefaultNetwork) as Network;
+  const network = useSelector(selectDefaultNetwork) as Network;
 
   const fetchSwapAssets = async () => {
     try {

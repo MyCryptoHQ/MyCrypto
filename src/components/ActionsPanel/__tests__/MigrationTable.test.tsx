@@ -4,7 +4,7 @@ import { screen, simpleRender } from 'test-utils';
 
 import { ETHUUID } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
-import { DataContext, getAccountsByAsset, IDataContext, StoreContext } from '@services/Store';
+import { getAccountsByAsset, StoreContext } from '@services/Store';
 import { TUuid } from '@types';
 import { truncate } from '@utils';
 
@@ -14,25 +14,16 @@ type Props = React.ComponentProps<typeof MigrationTable>;
 
 function getComponent(props: Props) {
   return simpleRender(
-    <DataContext.Provider
+    <StoreContext.Provider
       value={
         ({
           accounts: fAccounts,
           assets: fAssets
-        } as unknown) as IDataContext
+        } as any) as any
       }
     >
-      <StoreContext.Provider
-        value={
-          ({
-            accounts: fAccounts,
-            assets: fAssets
-          } as any) as any
-        }
-      >
-        <MigrationTable {...props} />
-      </StoreContext.Provider>
-    </DataContext.Provider>
+      <MigrationTable {...props} />
+    </StoreContext.Provider>
   );
 }
 
