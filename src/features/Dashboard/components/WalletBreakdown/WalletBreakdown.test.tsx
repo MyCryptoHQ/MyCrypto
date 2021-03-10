@@ -97,9 +97,6 @@ describe('WalletBreakdown', () => {
       getAllByText(a.name).forEach((t) => expect(t).toBeInTheDocument())
     );
 
-    // Renders total fiat value
-    getAllByText('$767.14').forEach((s) => expect(s).toBeInTheDocument());
-
     // Render account columns
     getAllByText('1 Account').forEach((s) => expect(s).toBeInTheDocument());
   });
