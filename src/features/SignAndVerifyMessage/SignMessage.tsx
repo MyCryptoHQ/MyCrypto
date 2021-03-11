@@ -111,7 +111,7 @@ function SignMessage(props: Props) {
       let sig = '';
 
       let lib: Web3Node | undefined = undefined;
-      if (walletName && isWeb3Wallet(walletName)) {
+      if (walletName && walletName !== WalletId.WALLETCONNECT && isWeb3Wallet(walletName)) {
         lib = (await setupWeb3Node()).lib;
       }
       sig = await wallet.signMessage(message, lib);
