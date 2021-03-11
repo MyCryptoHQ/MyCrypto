@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
+import path from 'path';
 
 export default function showPrompt(template: string, event: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -14,7 +15,13 @@ export default function showPrompt(template: string, event: string): Promise<str
       height: 380,
       frame: false,
       backgroundColor: '#21252B',
-      darkTheme: true
+      darkTheme: true,
+      webPreferences: {
+        preload: path.join(__dirname, 'preload.js'),
+        enableRemoteModule: true,
+        nodeIntegration: false,
+        nodeIntegrationInWorker: false
+      }
     });
 
     window.on('closed', () => {
