@@ -390,5 +390,27 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'data-seed-prebsc-1-s1.binance.org',
       url: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
     }
+  ],
+  Avalanche: [
+    {
+      name: NetworkUtils.makeNodeName(
+        'Avalanche',
+        'api.avax.network'
+      ),
+      type: NodeType.RPC,
+      service: 'api.avax.network',
+      url: 'https://api.avax.network/ext/bc/C/rpc'
+    }
+  ],
+  Avalanche_Test: [
+    {
+      name: NetworkUtils.makeNodeName(
+        'Avalanche_Test',
+        'api.avax-test.network'
+      ),
+      type: NodeType.RPC,
+      service: 'api.avax-test.network',
+      url: 'https://api.avax-test.network/ext/bc/C/rpc'
+    }
   ]
 };
