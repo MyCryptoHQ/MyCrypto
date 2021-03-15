@@ -2,10 +2,13 @@ import React from 'react';
 
 import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
-import { AccountSummary, Box, Icon, Selector } from '@components';
+import { AccountSummary, Icon } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, IReceiverAddress } from '@types';
+
+import Box from './Box';
+import Selector, { ClearIndicatorWrapper, DropdownIndicatorWrapper } from './Selector';
 
 export interface LabeledAddress {
   label: string;
@@ -37,12 +40,7 @@ const GeneralLookupDropdown = ({
   onEnterKeyDown,
   placeholder
 }: IGeneralLookupDropdownProps) => (
-  <Selector
-    dropdownIcon={
-      <Box variant="rowCenter" mr="2px">
-        <Icon type="address-book" width="1em" />
-      </Box>
-    }
+  <Selector<LabeledAddress>
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
     name={name}
@@ -70,9 +68,30 @@ const GeneralLookupDropdown = ({
       <AccountSummary address={address} label={label} paddingLeft={SPACING.NONE} />
     )}
     searchable={true}
-    clearable={true}
+    isClearable={true}
     onCloseResetsInput={false}
     onBlurResetsInput={false}
+    components={{
+      // Interaction of the indicator is handled by the imported wrapper.
+      DropdownIndicator: ({ hasValue, ...props }) => {
+        // When a value is selected, we hide the indicator to allow the
+        // ClearIndicator to takes it's place.
+        return !hasValue ? (
+          <DropdownIndicatorWrapper hasValue={hasValue} {...props}>
+            <Icon type="address-book" width="1em" mr="2px" />
+          </DropdownIndicatorWrapper>
+        ) : (
+          <></>
+        );
+      },
+      ClearIndicator: (props) => (
+        <ClearIndicatorWrapper {...props}>
+          <Box width="16px" variant="rowCenter">
+            <Icon type="remove" size="0.6em" mr="2px" />
+          </Box>
+        </ClearIndicatorWrapper>
+      )
+    }}
   />
 );
 

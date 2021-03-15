@@ -26,6 +26,7 @@ import expand from '@assets/icons/actions/expand.svg';
 import infoSmall from '@assets/icons/actions/info-small.svg';
 import info from '@assets/icons/actions/info.svg';
 import refresh from '@assets/icons/actions/refresh.svg';
+import remove from '@assets/icons/actions/remove.svg';
 import logoMyCryptoTextBlue from '@assets/icons/brand/logo-text-blue.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
@@ -141,6 +142,7 @@ const svgIcons = {
   confirm,
   refresh,
   expandable,
+  remove,
   'add-bold': addBold,
   'info-small': infoSmall,
   'opened-eye': openedEye,
