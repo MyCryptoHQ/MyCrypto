@@ -12,7 +12,7 @@ import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { ErrorObject, IReceiverAddress, Network } from '@types';
 
-import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
+import AddressLookupSelector, { LabeledAddress } from './AddressLookupSelector';
 
 export interface IGeneralLookupFieldComponentProps {
   error?: string | ErrorObject;
@@ -179,7 +179,7 @@ const GeneralLookupField = ({
 
     return (
       <>
-        <GeneralLookupDropdown
+        <AddressLookupSelector
           name={name}
           value={value}
           options={options}

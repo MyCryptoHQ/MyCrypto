@@ -15,7 +15,7 @@ export interface LabeledAddress {
   address: string;
 }
 
-interface IGeneralLookupDropdownProps {
+interface Props {
   options: LabeledAddress[];
   name: string;
   value: IReceiverAddress;
@@ -29,7 +29,7 @@ interface IGeneralLookupDropdownProps {
   onInputChange(e: any): string;
 }
 
-const GeneralLookupDropdown = ({
+const AddressLookupSelector = ({
   inputValue,
   options,
   name,
@@ -39,7 +39,7 @@ const GeneralLookupDropdown = ({
   onInputChange,
   onEnterKeyDown,
   placeholder
-}: IGeneralLookupDropdownProps) => (
+}: Props) => (
   <Selector<LabeledAddress>
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
@@ -95,4 +95,4 @@ const GeneralLookupDropdown = ({
   />
 );
 
-export default GeneralLookupDropdown;
+export default AddressLookupSelector;
