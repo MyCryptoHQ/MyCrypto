@@ -480,7 +480,6 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
       fetchGasPriceEstimates(network).then((data) => {
-        console.debug('data: ', data);
         setFieldValue('gasEstimates', data);
         setFieldValue('gasPriceSlider', data.fast);
       });
