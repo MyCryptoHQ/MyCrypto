@@ -97,6 +97,7 @@ import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
+import addressBookIcon from '@assets/images/icn-address-book.svg';
 import check from '@assets/images/icn-check.svg';
 import trezorLgIcon from '@assets/images/icn-connect-trezor-new.svg';
 import experience from '@assets/images/icn-experience.svg';
@@ -169,6 +170,7 @@ const svgIcons = {
   'telegram-icon': telegramIcon,
   swap,
   'twitter-icon': twitterIcon,
+  'address-book': addressBookIcon,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,
@@ -353,6 +355,8 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SNavCloseIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'delete') {
     return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
+  } else if (type === 'address-book') {
+    return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {

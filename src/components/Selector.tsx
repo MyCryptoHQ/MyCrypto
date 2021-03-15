@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import crossIcon from '@assets/images/icn-cross.svg';
 import { COLORS, FONT_SIZE } from '@theme';
 
+import Box from './Box';
 import Icon from './Icon';
 
 export interface SelectorProps<T> {
@@ -48,10 +49,6 @@ const Wrapper = styled('div')`
   }
 `;
 
-const IconWrapper = styled('div')`
-  width: 30px;
-`;
-
 const OptionWrapper = styled.div`
   ${(p: { optionDivider: boolean }) =>
     p.optionDivider
@@ -77,7 +74,7 @@ const DropdownIndicator: (icon?: JSX.Element) => React.FC<IndicatorProps<any>> =
   return (
     <ReactSelectComponents.DropdownIndicator {...props}>
       {icon ? (
-        <IconWrapper>{icon}</IconWrapper>
+        <>{icon}</>
       ) : (
         <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
       )}
@@ -86,9 +83,9 @@ const DropdownIndicator: (icon?: JSX.Element) => React.FC<IndicatorProps<any>> =
 };
 
 const ClearIndicator: React.FC<IndicatorProps<any>> = ({ clearValue }) => (
-  <IconWrapper onClick={clearValue}>
+  <Box width="30px" onClick={clearValue}>
     <img src={crossIcon} />
-  </IconWrapper>
+  </Box>
 );
 
 const getValueContainer: <T = any>(

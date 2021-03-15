@@ -2,8 +2,7 @@ import React from 'react';
 
 import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
-import addressBookIcon from '@assets/images/icn-address-book.svg';
-import { AccountSummary, Selector } from '@components';
+import { AccountSummary, Box, Icon, Selector } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, IReceiverAddress } from '@types';
@@ -39,7 +38,11 @@ const GeneralLookupDropdown = ({
   placeholder
 }: IGeneralLookupDropdownProps) => (
   <Selector
-    dropdownIcon={<img src={addressBookIcon} />}
+    dropdownIcon={
+      <Box variant="rowCenter" mr="2px">
+        <Icon type="address-book" width="1em" />
+      </Box>
+    }
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
     name={name}
