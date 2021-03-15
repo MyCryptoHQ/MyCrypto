@@ -91,10 +91,33 @@ const useDeterministicWallet = (
     }
   }, [state.isInit]);
 
+  // On first connection && on asset update
   useEffect(() => {
-    if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
+    if (
+      !service ||
+      shouldInit ||
+      !state.isConnected ||
+      !network ||
+      !state.session ||
+      state.finishedAccounts.length !== 0
+    )
+      return;
     service.getAccounts(state.session, dpaths);
-  }, [state.isConnected]);
+  }, [state.isConnected, state.finishedAccounts]);
+
+  // On scan more
+  useEffect(() => {
+    if (
+      !service ||
+      shouldInit ||
+      !state.isConnected ||
+      !network ||
+      !state.session ||
+      state.completed
+    )
+      return;
+    service.getAccounts(state.session, dpaths);
+  }, [state.completed]);
 
   useEffect(() => {
     if (
@@ -112,7 +135,9 @@ const useDeterministicWallet = (
   }, [state.queuedAccounts]);
 
   useEffect(() => {
-    if (state.finishedAccounts.length === 0 || !service || !state.session) return;
+    if (state.finishedAccounts.length === 0 || !service || !state.session) {
+      return;
+    }
     const { newGapItems, customDPathItems } = processFinishedAccounts(
       state.finishedAccounts,
       state.customDPaths,
@@ -126,7 +151,9 @@ const useDeterministicWallet = (
       service.getAccounts(state.session, customDPathItems);
       return;
     }
-    service.triggerComplete();
+    if (!state.isGettingAccounts) {
+      service.triggerComplete();
+    }
     return;
   }, [state.finishedAccounts, state.completed]);
 
@@ -148,19 +175,20 @@ const useDeterministicWallet = (
 
   const updateAsset = (asset: ExtendedAsset) => {
     if (!service) return;
-    setAssetToQuery(asset);
     dispatch({
       type: DWActionTypes.UPDATE_ASSET,
       payload: { asset }
     });
+    setAssetToQuery(asset);
   };
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
+    console.debug('[scanMoreAddresses]: added dpath ', dpath);
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
-    service.getAccounts(state.session, [dpath]);
     dispatch({
       type: DWActionTypes.GET_ADDRESSES_REQUEST
     });
+    service.getAccounts(state.session, [dpath]);
   };
 
   return {

@@ -104,11 +104,13 @@ const DeterministicWalletReducer = (
       if (asset.uuid !== state.asset!.uuid) {
         return state;
       }
+      const newQueuedAccounts = state.queuedAccounts.filter(({ address }) =>
+        accounts.includes(address)
+      );
       return {
         ...state,
-        queuedAccounts: [
-          ...state.queuedAccounts.filter(({ address }) => accounts.includes(address))
-        ],
+        isGettingAccounts: newQueuedAccounts.length > 0,
+        queuedAccounts: [...newQueuedAccounts],
         finishedAccounts: [...state.finishedAccounts, ...accounts]
       };
     }

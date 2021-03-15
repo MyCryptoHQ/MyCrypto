@@ -124,15 +124,19 @@ export default function DeterministicAccountList({
   const accountsToUse = uniqBy(prop('address'), finishedAccounts);
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set and
   useEffect(() => {
-    const tableAccs = accountsToUse.reduce((acc, idx) => {
-      acc[idx.address] = tableAccounts[idx.address] || {
-        ...idx,
-        isDefaultConfig: true,
-        isSelected: (idx.balance && !idx.balance.isZero()) || false
-      };
-      return acc;
-    }, tableAccounts);
-    setTableAccounts(tableAccs);
+    if (accountsToUse.length === 0 && Object.keys(tableAccounts).length !== 0) {
+      setTableAccounts({} as ITableAccounts);
+    } else {
+      const tableAccs = accountsToUse.reduce((acc, idx) => {
+        acc[idx.address] = tableAccounts[idx.address] || {
+          ...idx,
+          isDefaultConfig: true,
+          isSelected: (idx.balance && !idx.balance.isZero()) || false
+        };
+        return acc;
+      }, tableAccounts);
+      setTableAccounts(tableAccs);
+    }
   }, [accountsToUse]);
 
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);

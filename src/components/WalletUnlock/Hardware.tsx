@@ -2,17 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import {
-  Box,
-  BusyBottom,
-  Button,
-  Heading,
-  Icon,
-  InlineMessage,
-  Spinner,
-  Text,
-  TIcon
-} from '@components';
+import { Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text, TIcon } from '@components';
+import Icon from '@components/Icon';
 import { EXT_URLS } from '@config';
 import { DeterministicWalletState } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -34,7 +25,7 @@ type THardwareConfigs = {
   [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW]: HWConfig;
 };
 
-const HardwareImageContainer = styled.div`
+const HardwareImage = styled(Icon)`
   vertical-align: center;
   margin: 2em;
 
@@ -109,9 +100,7 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         textAlign="center"
       >
         {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
-        <HardwareImageContainer>
-          <Icon type={hardwareConfigs[walletId].iconId} />
-        </HardwareImageContainer>
+        <HardwareImage type={hardwareConfigs[walletId].iconId} />
         {state.error && (
           <ErrorMessageContainer>
             <InlineMessage
@@ -121,9 +110,9 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
           </ErrorMessageContainer>
         )}
         {state.isConnecting ? (
-          <div className="HardwarePanel-loading">
+          <>
             <Spinner /> {translate('WALLET_UNLOCKING')}
-          </div>
+          </>
         ) : (
           <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={state.isConnecting}>
             {translate(hardwareConfigs[walletId].scanTransKey)}
