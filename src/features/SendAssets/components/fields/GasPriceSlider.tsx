@@ -95,10 +95,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   private formatTooltip = (gas: number) => {
-    const { gasEstimates, network } = this.props;
-    if (!(gasEstimates && !gasEstimates.isDefault) && !network.isTestnet) {
-      return '';
-    }
+    const { gasEstimates } = this.props;
 
     const gasTooltips: GasTooltips = {
       [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
