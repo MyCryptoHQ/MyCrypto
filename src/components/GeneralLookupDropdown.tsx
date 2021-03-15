@@ -3,7 +3,7 @@ import React from 'react';
 import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
 import addressBookIcon from '@assets/images/icn-address-book.svg';
-import { AccountSummary, Divider, Selector } from '@components';
+import { AccountSummary, Selector } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, IReceiverAddress } from '@types';
@@ -53,16 +53,14 @@ const GeneralLookupDropdown = ({
     }}
     onInputChange={onInputChange}
     onBlur={onBlur}
+    optionDivider={true}
     optionComponent={({ data: { address, label }, selectOption }) => (
-      <>
-        <AccountSummary
-          address={address}
-          label={label}
-          paddingLeft={SPACING.SM}
-          onClick={() => selectOption({ address, label })}
-        />
-        <Divider />
-      </>
+      <AccountSummary
+        address={address}
+        label={label}
+        paddingLeft={SPACING.SM}
+        onClick={() => selectOption({ address, label })}
+      />
     )}
     value={value && value.value ? { label: value.display, address: value.value } : undefined} // Allow the value to be undefined at the start in order to display the placeholder
     valueComponent={({ value: { address, label } }) => (
