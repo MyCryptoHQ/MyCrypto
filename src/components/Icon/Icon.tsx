@@ -14,6 +14,7 @@ import {
   SpaceProps
 } from 'styled-system';
 
+import genericAssetIcon from '@assets/generic.svg';
 import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
 import back from '@assets/icons/actions/back.svg';
@@ -173,6 +174,7 @@ const svgIcons = {
   swap,
   'twitter-icon': twitterIcon,
   'address-book': addressBookIcon,
+  'generic-asset-icon': genericAssetIcon,
 
   /* Brand icons */
   'logo-mycrypto': logoMyCrypto,
@@ -345,6 +347,7 @@ export const isSVGType = (type: TIcon): type is SvgIcons =>
   typeof svgIcons[type as SvgIcons] !== 'undefined';
 export const isPNGType = (type: TIcon): type is PngIcons =>
   typeof pngIcons[type as PngIcons] !== 'undefined';
+export const getSVGIcon = (type: SvgIcons) => svgIcons[type];
 
 const Icon = ({ type, color, ...props }: Props) => {
   if (type === 'website' || type === 'faucet-icon') {

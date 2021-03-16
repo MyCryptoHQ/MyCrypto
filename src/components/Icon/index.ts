@@ -1,2 +1,1 @@
-export { default } from './Icon';
-export { TIcon } from './Icon';
+export { default, TIcon, getSVGIcon } from './Icon';

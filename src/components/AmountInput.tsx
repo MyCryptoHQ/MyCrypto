@@ -7,6 +7,7 @@ import { Asset } from '@types';
 import { sanitizeDecimalSeparator } from '@utils';
 
 import AssetIcon from './AssetIcon';
+import Box from './Box';
 import Typography from './Typography';
 
 interface Props {
@@ -42,10 +43,10 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
       placeholder={placeholder}
       iconSide={'right'}
       icon={() => (
-        <div>
+        <Box variant="rowCenter">
           {asset.ticker && <SAssetIcon uuid={asset.uuid} size={'1.5rem'} />}
           <Typography>{asset.ticker}</Typography>
-        </div>
+        </Box>
       )}
     />
   );

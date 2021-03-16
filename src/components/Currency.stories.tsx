@@ -17,16 +17,16 @@ export const defaultState = () => {
   return (
     <div className="sb-container">
       <Currency amount={defaultProps.amount} ticker={defaultProps.ticker} />
-      <Divider height={'1em'} />
+      <Divider />
       <Currency amount={defaultProps.amount} ticker={'ETH' as TTicker} />
-      <Divider height={'1em'} />
+      <Divider />
       <Currency
         amount={defaultProps.amount}
         ticker={'ETH' as TTicker}
         icon={true}
         uuid={'dummy_id' as TUuid}
       />
-      <Divider height={'1em'} />
+      <Divider />
       <Currency
         amount={defaultProps.amount}
         ticker={'ETH' as TTicker}
@@ -34,7 +34,7 @@ export const defaultState = () => {
         uuid={'dummy_id' as TUuid}
         bold={true}
       />
-      <Divider height={'1em'} />
+      <Divider />
       <Currency
         amount={defaultProps.amount}
         ticker={'ETH' as TTicker}
