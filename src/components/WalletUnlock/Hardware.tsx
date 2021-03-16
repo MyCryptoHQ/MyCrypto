@@ -109,6 +109,7 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
             />
           </ErrorMessageContainer>
         )}
+        <br />
         {state.isConnecting ? (
           <>
             <Spinner /> {translate('WALLET_UNLOCKING')}
