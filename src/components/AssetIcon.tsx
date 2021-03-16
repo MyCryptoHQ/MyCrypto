@@ -25,7 +25,7 @@ interface Props {
   className?: string;
 }
 
-const AssetIcon = ({ uuid, size = '32px', ...props }: Props & React.ComponentProps<typeof Box>) => {
+const AssetIcon = ({ uuid, size, ...props }: Props & React.ComponentProps<typeof Box>) => {
   const { coinGeckoAssetManifest } = useContext(StoreContext);
   const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
 
