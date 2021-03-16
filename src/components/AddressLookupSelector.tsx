@@ -2,18 +2,20 @@ import React from 'react';
 
 import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
-import addressBookIcon from '@assets/images/icn-address-book.svg';
-import { AccountSummary, Divider, Selector } from '@components';
+import { AccountSummary, Icon } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, IReceiverAddress } from '@types';
+
+import Box from './Box';
+import Selector, { ClearIndicatorWrapper, DropdownIndicatorWrapper } from './Selector';
 
 export interface LabeledAddress {
   label: string;
   address: string;
 }
 
-interface IGeneralLookupDropdownProps {
+interface Props {
   options: LabeledAddress[];
   name: string;
   value: IReceiverAddress;
@@ -27,7 +29,7 @@ interface IGeneralLookupDropdownProps {
   onInputChange(e: any): string;
 }
 
-const GeneralLookupDropdown = ({
+const AddressLookupSelector = ({
   inputValue,
   options,
   name,
@@ -37,9 +39,8 @@ const GeneralLookupDropdown = ({
   onInputChange,
   onEnterKeyDown,
   placeholder
-}: IGeneralLookupDropdownProps) => (
-  <Selector
-    dropdownIcon={<img src={addressBookIcon} />}
+}: Props) => (
+  <Selector<LabeledAddress>
     onInputKeyDown={onEnterKeyDown}
     inputValue={inputValue}
     name={name}
@@ -53,26 +54,45 @@ const GeneralLookupDropdown = ({
     }}
     onInputChange={onInputChange}
     onBlur={onBlur}
+    optionDivider={true}
     optionComponent={({ data: { address, label }, selectOption }) => (
-      <>
-        <AccountSummary
-          address={address}
-          label={label}
-          paddingLeft={SPACING.SM}
-          onClick={() => selectOption({ address, label })}
-        />
-        <Divider />
-      </>
+      <AccountSummary
+        address={address}
+        label={label}
+        paddingLeft={SPACING.SM}
+        onClick={() => selectOption({ address, label })}
+      />
     )}
     value={value && value.value ? { label: value.display, address: value.value } : undefined} // Allow the value to be undefined at the start in order to display the placeholder
     valueComponent={({ value: { address, label } }) => (
       <AccountSummary address={address} label={label} paddingLeft={SPACING.NONE} />
     )}
     searchable={true}
-    clearable={true}
+    isClearable={true}
     onCloseResetsInput={false}
     onBlurResetsInput={false}
+    components={{
+      // Interaction of the indicator is handled by the imported wrapper.
+      DropdownIndicator: ({ hasValue, ...props }) => {
+        // When a value is selected, we hide the indicator to allow the
+        // ClearIndicator to takes it's place.
+        return !hasValue ? (
+          <DropdownIndicatorWrapper hasValue={hasValue} {...props}>
+            <Icon type="address-book" width="1em" mr="2px" />
+          </DropdownIndicatorWrapper>
+        ) : (
+          <></>
+        );
+      },
+      ClearIndicator: (props) => (
+        <ClearIndicatorWrapper {...props}>
+          <Box width="16px" variant="rowCenter">
+            <Icon type="remove" size="0.6em" mr="2px" />
+          </Box>
+        </ClearIndicatorWrapper>
+      )
+    }}
   />
 );
 
-export default GeneralLookupDropdown;
+export default AddressLookupSelector;

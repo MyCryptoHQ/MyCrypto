@@ -399,7 +399,6 @@ export function DeterministicWalletsClass({
             options={dPaths.concat([customDPath])}
             optionComponent={DPathOption}
             valueComponent={({ value }) => <DPathOption data={value} />}
-            clearable={false}
             searchable={false}
           />
         </SDropdown>

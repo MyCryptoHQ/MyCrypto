@@ -100,15 +100,10 @@ function AssetSelector({
         onChange={(option: TAssetOption) => onSelect(option)}
         getOptionLabel={(option) => (showAssetName ? option.name : option.ticker)}
         optionDivider={true}
-        optionComponent={({
-          data,
-          selectOption,
-          innerProps: { onMouseMove, onMouseOver, ...newInnerProps }
-        }: OptionProps<TAssetOption>) => {
+        optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
           const { ticker, name, uuid } = data;
           return (
             <AssetSelectorItem
-              {...newInnerProps}
               showAssetIcon={showAssetIcon}
               ticker={ticker}
               uuid={uuid}

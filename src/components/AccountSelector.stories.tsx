@@ -20,10 +20,10 @@ export const Selector = () => {
   return (
     <div className="sb-container">
       <form role="form">
-        <AccountSelector clearable={true} {...initialProps} />
+        <AccountSelector {...initialProps} />
       </form>
       <form role="form">
-        <AccountSelector clearable={true} {...withAsset} />
+        <AccountSelector {...withAsset} />
       </form>
     </div>
   );
