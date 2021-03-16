@@ -592,6 +592,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     values.asset,
     values.account,
     values.advancedTransaction,
+    values.gasLimitField,
     isSendMax
   ]);
 
