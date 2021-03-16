@@ -163,7 +163,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xEB24302c4c78963e1b348b274aa9cC6fcbe80527',
     description: '',
     icon: lifetimeIcon,
-    price: '1000',
+    price: '999',
     assetUUID: XDAIUUID,
     durationInDays: 36500,
     discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC'),

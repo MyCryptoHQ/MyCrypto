@@ -29,15 +29,15 @@ describe('MembershipSelector', () => {
 
   test('it displays the list of membership plans on click', async () => {
     const props = Object.assign({}, defaultProps);
-    const { getByText, getByLabelText } = getComponent(props);
+    const { getAllByText, getByLabelText } = getComponent(props);
 
     await selectEvent.openMenu(getByLabelText('Membership'));
 
     // Ensure each plan is displayed in the list.
     Object.values(MEMBERSHIP_CONFIG)
       .filter(({ disabled }) => !disabled)
-      .map((p) => `${p.title} ${p.networkId.toLowerCase()}`)
-      .forEach((t) => expect(getByText(t)).toBeInTheDocument());
+      .map((p) => p.title)
+      .forEach((t) => expect(getAllByText(t)).toHaveLength(2));
   });
 
   test('it calls the success handler with the correct value', async () => {
