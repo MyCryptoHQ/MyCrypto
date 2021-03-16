@@ -36,7 +36,7 @@ describe('MembershipSelector', () => {
     // Ensure each plan is displayed in the list.
     Object.values(MEMBERSHIP_CONFIG)
       .filter(({ disabled }) => !disabled)
-      .map((p) => p.title)
+      .map((p) => `${p.title} ${p.networkId.toLowerCase()}`)
       .forEach((t) => expect(getByText(t)).toBeInTheDocument());
   });
 
@@ -45,7 +45,7 @@ describe('MembershipSelector', () => {
     const { getByRole, getByLabelText } = getComponent(props);
 
     expect(getByRole('form')).toHaveFormValues({ [defaultProps.name]: '' });
-    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.onemonth.title);
-    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.onemonth);
+    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.xdaionemonth.title);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.xdaionemonth);
   });
 });
