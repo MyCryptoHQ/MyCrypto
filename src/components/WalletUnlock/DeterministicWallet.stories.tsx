@@ -5,7 +5,7 @@ import { ProvidersWrapper } from '@../jest_config/providersWrapper';
 import { ExtendedContentPanel } from '@components';
 import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
-import { DataContext, IDataContext, LedgerUSB, Wallet } from '@services';
+import { LedgerUSB, Wallet } from '@services';
 import { noOp } from '@utils';
 
 import { DeterministicWalletProps, default as DeterministicWalletUI } from './DeterministicWallet';
@@ -49,20 +49,9 @@ const initialProps: DeterministicWalletProps = {
 export const DeterministicWallet = () => {
   return (
     <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            accounts: [],
-            addressBook: [],
-            contracts: [],
-            assets: fAssets
-          } as unknown) as IDataContext
-        }
-      >
-        <ExtendedContentPanel width="800px">
-          <DeterministicWalletUI {...initialProps} />
-        </ExtendedContentPanel>
-      </DataContext.Provider>
+      <ExtendedContentPanel width="800px">
+        <DeterministicWalletUI {...initialProps} />
+      </ExtendedContentPanel>
     </ProvidersWrapper>
   );
 };

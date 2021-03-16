@@ -4,7 +4,6 @@ import { ProvidersWrapper } from '@../jest_config/providersWrapper';
 
 import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
 import { noOp } from '@utils';
 
 import {
@@ -44,20 +43,9 @@ const initialProps: DeterministicTableProps = {
 export const DeterministicAccountTable = () => {
   return (
     <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            accounts: [],
-            addressBook: [],
-            contracts: [],
-            assets: fAssets
-          } as unknown) as IDataContext
-        }
-      >
-        <ExtendedContentPanel width="800px">
-          <DeterministicTable {...initialProps} />
-        </ExtendedContentPanel>
-      </DataContext.Provider>
+      <ExtendedContentPanel width="800px">
+        <DeterministicTable {...initialProps} />
+      </ExtendedContentPanel>
     </ProvidersWrapper>
   );
 };
