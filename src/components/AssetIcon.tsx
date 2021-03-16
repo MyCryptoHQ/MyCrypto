@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 
-import styled from 'styled-components';
-
-import genericIcon from '@assets/generic.svg';
 import { MYC_API } from '@config';
 import { StoreContext } from '@services';
 import { CoinGeckoManifest } from '@services/Store/StoreProvider';
 import { TUuid } from '@types';
 
 import Box from './Box';
+import { getSVGIcon } from './Icon';
 
 const baseURL = `${MYC_API}/images`;
 
@@ -17,16 +15,9 @@ function buildUrl(uuid: TUuid) {
 }
 
 function getIconUrl(uuid: TUuid, assetIconsManifest: CoinGeckoManifest) {
-  const assetIconsManifestEntry = assetIconsManifest && assetIconsManifest[uuid];
-
-  const curr = assetIconsManifestEntry || false;
-  return curr ? buildUrl(uuid) : genericIcon;
+  const assetIconExists = assetIconsManifest && !!assetIconsManifest[uuid];
+  return assetIconExists ? buildUrl(uuid) : getSVGIcon('generic-asset-icon');
 }
-
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
 
 interface Props {
   uuid: TUuid;
@@ -38,15 +29,16 @@ const AssetIcon = ({ uuid, size = '32px', ...props }: Props & React.ComponentPro
   const { coinGeckoAssetManifest } = useContext(StoreContext);
   const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
 
+  // Replace src in the eventuality the server fails to reply with the requested icon.
   const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const elem = event.currentTarget;
     elem.onerror = null;
-    elem.src = genericIcon;
+    elem.src = getSVGIcon('generic-asset-icon');
   };
 
   return (
-    <Box variant="rowCenter" {...props} height={size} width={size}>
-      <SImg src={iconUrl} size={size} onError={handleError} />
+    <Box display="inline-flex" height={size} width={size} {...props}>
+      <img src={iconUrl} onError={handleError} />
     </Box>
   );
 };
