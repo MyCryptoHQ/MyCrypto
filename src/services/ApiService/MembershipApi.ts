@@ -1,8 +1,8 @@
 import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
 import {
+  getMembershipContracts,
   MEMBERSHIP_CONTRACTS,
-  MEMBERSHIP_CONTRACTS_ADDRESSES,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { ProviderHandler } from '@services/EthService/';
@@ -39,7 +39,7 @@ const MembershipApi = {
   getMemberships(addresses: TAddress[] = [], network: Network): Promise<MembershipStatus[]> {
     const provider = new ProviderHandler(network);
     return getUnlockTimestamps(provider, addresses, {
-      contracts: MEMBERSHIP_CONTRACTS_ADDRESSES
+      contracts: getMembershipContracts(network.id)
     }).then(formatResponse);
   }
 };

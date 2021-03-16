@@ -1,6 +1,6 @@
 import { AddressZero } from '@ethersproject/constants';
 
-import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { formatApproveTx } from '@helpers';
 import { getAssetByUUID } from '@services';
 import { UnlockToken } from '@services/EthService/contracts';
@@ -17,7 +17,7 @@ export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<IT
     baseTokenAmount: toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL),
     fromAddress: payload.account.address,
     spenderAddress: payload.membershipSelected.contractAddress as TAddress,
-    chainId: DEFAULT_NETWORK_CHAINID,
+    chainId: payload.network.chainId,
     hexGasPrice: inputGasPriceToHex(payload.gasPrice)
   });
 
@@ -38,7 +38,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
     value: isERC20Asset(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
     data: data as ITxData,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
-    chainId: DEFAULT_NETWORK_CHAINID
+    chainId: payload.network.chainId
   };
 };
 

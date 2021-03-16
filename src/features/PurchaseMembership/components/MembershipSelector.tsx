@@ -25,6 +25,11 @@ const SContainer = styled('div')<StyleProps>`
   ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
 `;
 
+const NetworkName = styled(Typography)`
+  margin-left: ${SPACING.XS};
+  font-weight: 300;
+`;
+
 const DiscountTypography = styled(Typography)`
   color: ${COLORS.BLUE_BRIGHT};
   font-size: ${FONT_SIZE.XS};
@@ -39,6 +44,7 @@ export const MembershipSelectorItem = ({
   return (
     <SContainer paddingLeft={paddingLeft} onClick={() => onClick && onClick(option)}>
       <Typography value={option.title} />
+      <NetworkName value={` (${option.networkId.toLowerCase()})`} />
       <DiscountTypography value={option.discountNotice} />
     </SContainer>
   );
