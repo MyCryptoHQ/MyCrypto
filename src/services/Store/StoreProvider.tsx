@@ -33,7 +33,6 @@ import {
   StoreAccount,
   StoreAsset,
   TAddress,
-  TTicker,
   TUuid,
   WalletId
 } from '@types';
@@ -54,12 +53,7 @@ import { isEmpty, isEmpty as isVoid, pipe, prop, sortBy, uniqBy, useEffectOnce }
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
-import {
-  getAssetByTicker,
-  getNewDefaultAssetTemplateByNetwork,
-  getTotalByAsset,
-  useAssets
-} from './Asset';
+import { getNewDefaultAssetTemplateByNetwork, getTotalByAsset, useAssets } from './Asset';
 import { getAccountsAssetsBalances } from './BalanceService';
 import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
@@ -108,7 +102,6 @@ export interface State {
     walletId: WalletId | undefined,
     accounts: IAccountAdditionData[]
   ): IAccount[] | undefined;
-  getAssetByTicker(ticker: TTicker): Asset | undefined;
 }
 export const StoreContext = createContext({} as State);
 
@@ -416,8 +409,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       });
       createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
-    },
-    getAssetByTicker: getAssetByTicker(assets)
+    }
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
