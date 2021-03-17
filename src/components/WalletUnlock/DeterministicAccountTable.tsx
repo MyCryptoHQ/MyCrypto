@@ -258,6 +258,23 @@ const SDownloader = styled(Downloader)`
   }
 `;
 
+const sortAccounts = (
+  accounts: TableAccountDisplay[],
+  displayEmptyAddresses: boolean,
+  selectedDPath: DPath
+) => {
+  const selectedAccounts = accounts
+    .filter(({ isSelected }) => isSelected)
+    .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
+  const deselectedAccounts = accounts
+    .filter(
+      ({ isSelected, pathItem: { baseDPath } }) =>
+        !isSelected && baseDPath.value === selectedDPath.value
+    )
+    .sort((a, b) => (a.pathItem.index < b.pathItem.index ? -1 : 1));
+  return displayEmptyAddresses ? [...selectedAccounts, ...deselectedAccounts] : selectedAccounts;
+};
+
 const DeterministicTable = ({
   isComplete,
   accounts,
@@ -273,15 +290,7 @@ const DeterministicTable = ({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
   const allAccounts = Object.values(accounts);
-
-  const accountsToDisplay = allAccounts
-    .filter(
-      ({ balance, isSelected, pathItem: { baseDPath } }) =>
-        (displayEmptyAddresses && baseDPath.value === selectedDPath.value) ||
-        !balance?.isZero() ||
-        isSelected
-    )
-    .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
+  const accountsToDisplay = sortAccounts(allAccounts, displayEmptyAddresses, selectedDPath);
   const selectedDPathOffset =
     Math.max(
       ...allAccounts

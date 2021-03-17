@@ -282,7 +282,10 @@ const DeterministicWallet = ({
             }}
           />
         </SBox>
-        <SBox variant="columnAlignLeft">
+        <SBox
+          variant="columnAlignLeft"
+          style={{ visibility: !displayEmptyAddresses ? 'hidden' : 'visible' }}
+        >
           <Text>
             <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
             <LinkApp href="" onClick={() => setDpathAddView(true)}>

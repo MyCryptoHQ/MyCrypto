@@ -170,7 +170,12 @@ export default function DeterministicAccountList({
   const csv = accountsToCSV(finishedAccounts, asset);
   return (
     <Box variant="columnAlign" width="800px" justifyContent="center">
-      <Box maxHeight="32px" height="32px" width="100%">
+      <Box
+        maxHeight="32px"
+        height="32px"
+        width="100%"
+        style={{ visibility: !displayEmptyAddresses ? 'hidden' : 'visible' }}
+      >
         <Banner
           type={BannerType.ANNOUNCEMENT}
           displayIcon={false}
