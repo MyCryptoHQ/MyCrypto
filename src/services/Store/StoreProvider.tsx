@@ -95,7 +95,6 @@ export interface State {
   readonly ensOwnershipRecords: DomainNameRecord[];
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
-  isDefault: boolean;
   getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount | undefined;
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -325,14 +324,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,
-    /**
-     * Check if the user has already added an account to our persistence layer.
-     */
-    get isDefault() {
-      return (
-        (!state.accounts || isVoid(state.accounts)) && (!isVoid(contacts) || contacts.length < 1)
-      );
-    },
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
