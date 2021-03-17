@@ -1,10 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
-import isEmpty from 'lodash/isEmpty';
-import prop from 'ramda/src/prop';
-import sortBy from 'ramda/src/sortBy';
-import uniqBy from 'ramda/src/uniqBy';
-
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
@@ -60,7 +55,7 @@ import {
   useInterval,
   weiToFloat
 } from '@utils';
-import { isEmpty as isVoid, pipe, useEffectOnce } from '@vendor';
+import { isEmpty, isEmpty as isVoid, pipe, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
