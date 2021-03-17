@@ -22,8 +22,6 @@ export interface IAccount {
   isPrivate?: boolean;
 }
 
-export type IRawAccount = Omit<IAccount, 'uuid'>;
-
 export type StoreAccount = Overwrite<
   IAccount,
   {

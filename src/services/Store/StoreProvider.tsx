@@ -14,6 +14,7 @@ import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { isEthereumAccount } from '@services/Store/Account';
 import {
+  addAccounts,
   deleteMembership,
   fetchAssets,
   fetchMemberships,
@@ -138,7 +139,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     getAccountByAddressAndNetworkName,
     updateAccounts,
     deleteAccount,
-    createAccountWithID,
     createMultipleAccountsWithIDs
   } = useAccounts();
   const { assets } = useAssets();
@@ -393,10 +393,8 @@ export const StoreProvider: React.FC = ({ children }) => {
       if (isEmpty(account)) {
         throw new Error('Unable to restore account! No account with id specified.');
       }
-
-      const { uuid, ...restAccount } = account!;
-      createAccountWithID(uuid, restAccount);
-      setAccountRestore((prevState) => ({ ...prevState, [uuid]: undefined }));
+      dispatch(addAccounts([account!]));
+      setAccountRestore((prevState) => ({ ...prevState, [account!.uuid]: undefined }));
     },
     addMultipleAccounts: (
       networkId: NetworkId,

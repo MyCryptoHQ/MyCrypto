@@ -8,14 +8,13 @@ import {
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import { Asset, IAccount, IRawAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
+import { Asset, IAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
 import { eqBy, prop, unionWith } from '@vendor';
 
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(uuid: TUuid, accountData: IRawAccount): void;
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
@@ -31,10 +30,6 @@ function useAccounts() {
   const accounts = useSelector(getAccounts);
 
   const dispatch = useDispatch();
-
-  const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
-    dispatch(addAccounts([{ ...item, uuid }]));
-  };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
     dispatch(addAccounts(newAccounts));
@@ -78,7 +73,6 @@ function useAccounts() {
 
   return {
     accounts,
-    createAccountWithID,
     createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,
