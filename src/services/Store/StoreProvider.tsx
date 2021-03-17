@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
-import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
+import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ENSService } from '@services/ApiService';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
@@ -13,8 +13,6 @@ import {
   deleteMembership,
   fetchAssets,
   fetchMemberships,
-  getMemberships,
-  getMembershipState,
   isMyCryptoMember,
   scanTokens,
   useDispatch,
@@ -88,7 +86,6 @@ export interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly isMyCryptoMember: boolean;
-  readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
@@ -133,8 +130,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { networks } = useNetworks();
   const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
   const dispatch = useDispatch();
-  const memberships = useSelector(getMemberships);
-  const membershipState = useSelector(getMembershipState);
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
@@ -323,8 +318,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     accounts,
     networks,
     isMyCryptoMember: useSelector(isMyCryptoMember),
-    membershipState,
-    memberships,
     currentAccounts,
     accountRestore,
     coinGeckoAssetManifest,
