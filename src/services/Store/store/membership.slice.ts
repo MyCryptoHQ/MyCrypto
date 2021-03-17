@@ -121,7 +121,6 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
     );
     yield put(slice.actions.setMemberships([...xdaiMemberships, ...ethereumMemberships]));
   } catch (err) {
-    console.error('[fetchMembershipsWorker]: Error');
     yield put(slice.actions.fetchError());
   }
 }
