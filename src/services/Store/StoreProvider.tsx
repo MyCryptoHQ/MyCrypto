@@ -32,7 +32,6 @@ import {
   IAccount,
   IAccountAdditionData,
   IPendingTxReceipt,
-  IRawAccount,
   ITxStatus,
   ITxType,
   Network,
@@ -121,7 +120,6 @@ export interface State {
     accounts: IAccountAdditionData[]
   ): IAccount[] | undefined;
   getAssetByTicker(ticker: TTicker): Asset | undefined;
-  getAccount(a: IRawAccount): StoreAccount | undefined;
   getDeFiAssetReserveAssets(
     asset: StoreAsset
   ): (
@@ -451,8 +449,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       return newRawAccounts;
     },
     getAssetByTicker: getAssetByTicker(assets),
-    getAccount: ({ address, networkId }) =>
-      accounts.find((a) => isSameAddress(a.address, address) && a.networkId === networkId),
     getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
       getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
     ) =>
