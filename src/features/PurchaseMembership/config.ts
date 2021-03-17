@@ -223,7 +223,11 @@ export const accordionContent = [
     component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
   },
   {
-    title: translateRaw('MEMBERSHIP_ACCORDION_FORTH_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_FORTH_CONTENT')
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIFTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FOURTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FOURTH_CONTENT')
   }
 ];
