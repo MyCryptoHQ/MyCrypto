@@ -94,7 +94,7 @@ const FromToAccount = ({ networkId, fromAccount, toAccount, displayToAddress = t
           />
         </AddressWrapper>
       </AddressContainer>
-      {displayToAddress && (
+      {displayToAddress && toAccount.address && (
         <AddressContainer>
           <LabelWrapper>
             <Label value={translate('CONFIRM_TX_TO')} fontSize="1.13em" />
