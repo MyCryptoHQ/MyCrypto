@@ -114,7 +114,6 @@ export interface State {
   totalFiat(
     selectedAccounts?: StoreAccount[]
   ): (getAssetRate: (asset: Asset) => number | undefined) => Bigish;
-  assetTickers(targetAssets?: StoreAsset[]): TTicker[];
   assetUUIDs(targetAssets?: StoreAsset[]): any[];
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
@@ -388,9 +387,6 @@ export const StoreProvider: React.FC = ({ children }) => {
           bigify(0)
         ),
 
-    assetTickers: (targetAssets = state.assets()) => [
-      ...new Set(targetAssets.map((a) => a.ticker))
-    ],
     assetUUIDs: (targetAssets = state.assets()) => {
       return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
     },
