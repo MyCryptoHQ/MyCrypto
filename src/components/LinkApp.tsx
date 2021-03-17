@@ -95,7 +95,7 @@ const LINK_VARIANTS = {
   }
 };
 
-export const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
+const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
   /** Overide @mycrypto/ui global styles */
   &&& {
     ${variant({

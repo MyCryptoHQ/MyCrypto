@@ -28,9 +28,7 @@ export interface TableAccountDisplay extends DWAccountDisplay {
   isDefaultConfig: boolean;
 }
 
-export interface ITableAccounts {
-  [key: string]: TableAccountDisplay;
-}
+export type ITableAccounts = Record<string, TableAccountDisplay>;
 
 export interface DeterministicTableProps {
   isComplete: boolean;

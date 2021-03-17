@@ -183,7 +183,6 @@ const useDeterministicWallet = (
   };
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
-    console.debug('[scanMoreAddresses]: added dpath ', dpath);
     if (!service || shouldInit || !state.isConnected || !network || !state.session) return;
     dispatch({
       type: DWActionTypes.GET_ADDRESSES_REQUEST

@@ -16,6 +16,8 @@ import DeterministicTable, {
   TableAccountDisplay
 } from './DeterministicAccountTable';
 
+const MAX_EMPTY_ADDRESSES = 5;
+
 const TableWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -116,7 +118,6 @@ export default function DeterministicAccountList({
   onUnlock,
   handleUpdate
 }: DeterministicAccountListProps) {
-  const MAX_EMPTY_ADDRESSES = 5;
   const { isMobile } = useScreenSize();
 
   const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);

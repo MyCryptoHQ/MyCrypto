@@ -45,7 +45,6 @@ const DeterministicWalletReducer = (
   state: DeterministicWalletState,
   { type, payload, error }: DWAction
 ): DeterministicWalletState => {
-  console.debug('[', type, ']: triggered', state);
   switch (type) {
     case DWActionTypes.CONNECTION_REQUEST: {
       return {

@@ -172,7 +172,7 @@ const DeterministicWallet = ({
 }: DeterministicWalletProps) => {
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
-  const [displayEmptyAddresses, toggleDisplayEmptyAddresses] = useState(false);
+  const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
 
   const handleDPathAddition = (values: FormValues) => {
     addDPaths([
@@ -288,7 +288,7 @@ const DeterministicWallet = ({
         >
           <Text>
             <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
-            <LinkApp href="" onClick={() => setDpathAddView(true)}>
+            <LinkApp href="#" onClick={() => setDpathAddView(true)}>
               <Trans id="DETERMINISTIC_CUSTOM_LINK_TEXT" />
             </LinkApp>
             {'.'}
@@ -307,9 +307,9 @@ const DeterministicWallet = ({
       <Box variant="rowAlign" justifyContent="space-between" pb={SPACING.SM}>
         <Switch
           checked={displayEmptyAddresses}
-          onChange={() => toggleDisplayEmptyAddresses(!displayEmptyAddresses)}
-          labelLeft="Hide Empty Addresses"
-          labelRight="Show Empty Addresses"
+          onChange={() => setDisplayEmptyAddresses(!displayEmptyAddresses)}
+          labelLeft={translateRaw('HIDE_EMPTY_ADDRESSES')}
+          labelRight={translateRaw('SHOW_EMPTY_ADDRESSES')}
         />
         <PoweredByText provider="FINDETH" />
       </Box>
