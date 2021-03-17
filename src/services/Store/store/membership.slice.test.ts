@@ -96,7 +96,7 @@ describe('fetchMembershipsSaga()', () => {
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
         .provide([[call.fn(MembershipApi.getMemberships), res]])
-        .put(setMemberships(res))
+        .put(setMemberships([...res, ...res]))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
         // use `silentRun` to silence the warning.
@@ -108,7 +108,7 @@ describe('fetchMembershipsSaga()', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
       .provide([[call.fn(MembershipApi.getMemberships), res]])
-      .put(setMemberships(res))
+      .put(setMemberships([...res, ...res]))
       .dispatch(fetchMemberships())
       .silentRun();
   });
