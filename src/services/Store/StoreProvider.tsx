@@ -113,7 +113,6 @@ export interface State {
   totalFiat(
     selectedAccounts?: StoreAccount[]
   ): (getAssetRate: (asset: Asset) => number | undefined) => Bigish;
-  assetUUIDs(targetAssets?: StoreAsset[]): any[];
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
   addMultipleAccounts(
@@ -383,10 +382,6 @@ export const StoreProvider: React.FC = ({ children }) => {
           (sum, asset) => sum.plus(bigify(convertToFiatFromAsset(asset, getAssetRate(asset)))),
           bigify(0)
         ),
-
-    assetUUIDs: (targetAssets = state.assets()) => {
-      return [...new Set(targetAssets.map((a: StoreAsset) => a.uuid))];
-    },
     deleteAccountFromCache: (account) => {
       setAccountRestore((prevState) => ({ ...prevState, [account.uuid]: account }));
       deleteAccount(account);
