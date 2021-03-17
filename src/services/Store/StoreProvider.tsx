@@ -32,7 +32,6 @@ import {
   ITxType,
   Network,
   NetworkId,
-  ReserveAsset,
   StoreAccount,
   StoreAsset,
   TAddress,
@@ -50,10 +49,8 @@ import {
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
-  multiplyBNFloats,
   sortByLabel,
-  useInterval,
-  weiToFloat
+  useInterval
 } from '@utils';
 import { isEmpty, isEmpty as isVoid, pipe, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
 
@@ -116,11 +113,6 @@ export interface State {
     accounts: IAccountAdditionData[]
   ): IAccount[] | undefined;
   getAssetByTicker(ticker: TTicker): Asset | undefined;
-  getDeFiAssetReserveAssets(
-    asset: StoreAsset
-  ): (
-    getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
-  ) => StoreAsset[];
 }
 export const StoreContext = createContext({} as State);
 
@@ -441,18 +433,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
     },
-    getAssetByTicker: getAssetByTicker(assets),
-    getDeFiAssetReserveAssets: (poolAsset: StoreAsset) => (
-      getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
-    ) =>
-      getPoolAssetReserveRate(poolAsset.uuid, assets).map((reserveAsset) => ({
-        ...reserveAsset,
-        balance: multiplyBNFloats(
-          weiToFloat(poolAsset.balance, poolAsset.decimal).toString(),
-          reserveAsset.reserveExchangeRate
-        ),
-        mtime: Date.now()
-      }))
+    getAssetByTicker: getAssetByTicker(assets)
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;

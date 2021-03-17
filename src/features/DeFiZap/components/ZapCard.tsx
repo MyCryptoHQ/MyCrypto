@@ -8,7 +8,8 @@ import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { bigify, trimBN, weiToFloat } from '@utils';
+import { Asset, ReserveAsset, StoreAsset } from '@types';
+import { bigify, multiplyBNFloats, trimBN, weiToFloat } from '@utils';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -215,9 +216,22 @@ interface Props {
   config: IZapConfig;
 }
 
+// Moved from StoreProvider
+const getDeFiAssetReserveAssets = (poolAsset: StoreAsset, assets: StoreAsset[]) => (
+  getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
+) =>
+  getPoolAssetReserveRate(poolAsset.uuid, assets).map((reserveAsset) => ({
+    ...reserveAsset,
+    balance: multiplyBNFloats(
+      weiToFloat(poolAsset.balance, poolAsset.decimal).toString(),
+      reserveAsset.reserveExchangeRate
+    ),
+    mtime: Date.now()
+  }));
+
 const ZapCard = ({ config }: Props) => {
   const { getPoolAssetReserveRate } = useRates();
-  const { currentAccounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
+  const { currentAccounts, assets } = useContext(StoreContext);
   const IndicatorItem = config.positionDetails;
   const defiPoolBalances = assets(currentAccounts).filter(
     ({ uuid }) => uuid === config.poolTokenUUID
@@ -230,7 +244,7 @@ const ZapCard = ({ config }: Props) => {
 
   const defiReserveBalances = !userZapBalances
     ? []
-    : getDeFiAssetReserveAssets(userZapBalances)(getPoolAssetReserveRate);
+    : getDeFiAssetReserveAssets(userZapBalances, assets())(getPoolAssetReserveRate);
 
   const isZapOwned = !!humanReadableZapBalance;
 
