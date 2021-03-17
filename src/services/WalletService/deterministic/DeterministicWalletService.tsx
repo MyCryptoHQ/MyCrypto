@@ -39,9 +39,7 @@ const selectWallet = async (walletId: WalletId) => {
   switch (walletId) {
     default:
     case WalletId.LEDGER_NANO_S_NEW: {
-      const isWebUSBSupported = !navigator.platform.includes('Win')
-        ? await TransportWebUSB.isSupported().catch(() => false)
-        : false;
+      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
       return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
     }
     case WalletId.TREZOR_NEW:
