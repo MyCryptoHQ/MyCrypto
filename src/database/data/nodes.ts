@@ -45,7 +45,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Kovan', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://kovan.etherscan.io/api'
+      url: 'https://api-kovan.etherscan.io/api'
     }
   ],
 
@@ -60,7 +60,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Rinkeby', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://rinkeby.etherscan.io/api'
+      url: 'https://api-rinkeby.etherscan.io/api'
     }
   ],
 
