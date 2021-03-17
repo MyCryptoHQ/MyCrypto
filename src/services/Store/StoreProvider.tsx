@@ -108,7 +108,6 @@ export interface State {
   readonly accountRestore: { [name: string]: IAccount | undefined };
   isDefault: boolean;
   getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount | undefined;
-  tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
@@ -373,8 +372,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       )(accounts)[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
-    tokens: (selectedAssets = state.assets()) =>
-      selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
     totalFiat: (selectedAccounts = state.accounts) => (
