@@ -1,18 +1,15 @@
 import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
-import {
-  MEMBERSHIP_CONTRACTS,
-  MEMBERSHIP_CONTRACTS_ADDRESSES,
-  MembershipStatus
-} from '@features/PurchaseMembership/config';
+import { MEMBERSHIP_CONTRACTS, MembershipStatus } from '@features/PurchaseMembership/config';
+import { getMembershipContracts } from '@features/PurchaseMembership/helpers';
 import { ProviderHandler } from '@services/EthService/';
-import { Bigish, Network, TAddress } from '@types';
+import { Bigish, Network, NetworkId, TAddress } from '@types';
 import { bigify } from '@utils';
 import { mapObjIndexed, pickBy, pipe, toString } from '@vendor';
 
 const isSafeInt = (bn: Bigish) => bn.isLessThanOrEqualTo(bigify(Number.MAX_SAFE_INTEGER));
 
-export const formatResponse = (timestamps: TimestampMap) => {
+export const formatResponse = (networkId: NetworkId) => (timestamps: TimestampMap) => {
   // We receive timestamps in the form of hex values.
   // Convert to Bigies so we can determine their expiry date.
   // @todo: prefer date-fns for time comparisons.
@@ -25,6 +22,7 @@ export const formatResponse = (timestamps: TimestampMap) => {
   return Object.keys(expiries)
     .map((address: TAddress) => ({
       address,
+      networkId,
       memberships: Object.keys(expiries[address])
         .filter((contract) => expiries[address][contract] !== '0')
         .map((contract) => ({
@@ -39,8 +37,8 @@ const MembershipApi = {
   getMemberships(addresses: TAddress[] = [], network: Network): Promise<MembershipStatus[]> {
     const provider = new ProviderHandler(network);
     return getUnlockTimestamps(provider, addresses, {
-      contracts: MEMBERSHIP_CONTRACTS_ADDRESSES
-    }).then(formatResponse);
+      contracts: getMembershipContracts(network.id)
+    }).then(formatResponse(network.id));
   }
 };
 

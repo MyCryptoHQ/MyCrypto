@@ -33,6 +33,8 @@ export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 
+export const XDAI_NETWORK: NetworkId = 'xDAI';
+
 export const DEFAULT_NETWORK_TICKER = 'ETH' as TTicker;
 
 export const DEFAULT_ASSET_DECIMAL = 18;

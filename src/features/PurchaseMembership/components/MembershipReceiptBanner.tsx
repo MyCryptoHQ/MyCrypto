@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';
 
-import { getExpiryDate, IMembershipConfig } from '../config';
+import { IMembershipConfig } from '../config';
+import { getExpiryDate } from '../helpers';
 
 interface Props {
   membershipSelected: IMembershipConfig;

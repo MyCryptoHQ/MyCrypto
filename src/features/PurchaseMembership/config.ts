@@ -5,9 +5,9 @@ import onemonthIcon from '@assets/images/membership/membership-onemonth.svg';
 import sixMonthsIcon from '@assets/images/membership/membership-sixmonths.svg';
 import threemonthsIcon from '@assets/images/membership/membership-threemonths.svg';
 import twelveMonthsIcon from '@assets/images/membership/membership-twelvemonths.svg';
-import { DAIUUID, ETHUUID } from '@config';
+import { DAIUUID, DEFAULT_NETWORK, ETHUUID, XDAI_NETWORK, XDAIUUID } from '@config';
 import translate, { translateRaw } from '@translations';
-import { TAddress } from '@types';
+import { NetworkId, TAddress } from '@types';
 
 export interface IMembershipConfig {
   title: string;
@@ -16,6 +16,7 @@ export interface IMembershipConfig {
   description: string;
   icon: string;
   price: string;
+  networkId: NetworkId;
   discount?: string;
   assetUUID: string;
   durationInDays: number;
@@ -36,6 +37,7 @@ export enum MembershipState {
 
 export interface MembershipStatus {
   address: TAddress;
+  networkId: NetworkId;
   memberships: MembershipExpiry[];
 }
 
@@ -49,7 +51,10 @@ export enum IMembershipId {
   threemonths = 'threemonths',
   sixmonths = 'sixmonths',
   twelvemonths = 'twelvemonths',
-  lifetime = 'lifetime'
+  lifetime = 'lifetime',
+  xdaionemonth = 'xdaionemonth',
+  xdaitwelvemonths = 'xdaitwelvemonths',
+  xdailifetime = 'xdailifetime'
 }
 
 export const MEMBERSHIP_PURCHASE_GAS_LIMIT = 1000000;
@@ -65,7 +70,21 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     price: '4',
     assetUUID: DAIUUID,
     durationInDays: 30,
-    discountNotice: ''
+    discountNotice: '',
+    networkId: DEFAULT_NETWORK
+  },
+
+  xdaionemonth: {
+    title: translateRaw('MEMBERSHIP_MONTH', { $duration: '1' }),
+    key: IMembershipId.xdaionemonth,
+    contractAddress: '0xcB3BB4CCe15b492E7fdD7cb9a3835C034714207A',
+    description: '',
+    icon: onemonthIcon,
+    price: '4',
+    assetUUID: XDAIUUID,
+    durationInDays: 30,
+    discountNotice: '',
+    networkId: XDAI_NETWORK
   },
 
   threemonths: {
@@ -79,7 +98,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 90,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~12.5%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~12.5%' }),
+    networkId: DEFAULT_NETWORK
   },
 
   sixmonths: {
@@ -93,7 +113,8 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 180,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~25%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~25%' }),
+    networkId: DEFAULT_NETWORK
   },
 
   twelvemonths: {
@@ -106,7 +127,22 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     discount: '40',
     assetUUID: DAIUUID,
     durationInDays: 366,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' })
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' }),
+    networkId: DEFAULT_NETWORK
+  },
+
+  xdaitwelvemonths: {
+    title: translateRaw('MEMBERSHIP_MONTHS', { $duration: '12' }),
+    key: IMembershipId.xdaitwelvemonths,
+    contractAddress: '0xf97f516Cc0700a4Ce9Ee64D488F744f631e1525d',
+    description: '',
+    icon: twelveMonthsIcon,
+    price: '30',
+    discount: '40',
+    assetUUID: XDAIUUID,
+    durationInDays: 366,
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' }),
+    networkId: XDAI_NETWORK
   },
 
   lifetime: {
@@ -118,7 +154,21 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     price: '2',
     assetUUID: ETHUUID,
     durationInDays: 36500,
-    discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC')
+    discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC'),
+    networkId: DEFAULT_NETWORK
+  },
+
+  xdailifetime: {
+    title: translateRaw('MEMBERSHIP_LIFETIME_EMOJI'),
+    key: IMembershipId.xdailifetime,
+    contractAddress: '0xEB24302c4c78963e1b348b274aa9cC6fcbe80527',
+    description: '',
+    icon: lifetimeIcon,
+    price: '999',
+    assetUUID: XDAIUUID,
+    durationInDays: 36500,
+    discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC'),
+    networkId: XDAI_NETWORK
   }
 };
 
@@ -132,17 +182,6 @@ export const MEMBERSHIP_CONTRACTS = Object.fromEntries(
     key as IMembershipId
   ])
 );
-
-export const MEMBERSHIP_CONTRACTS_ADDRESSES = Object.values(MEMBERSHIP_CONFIG).map(
-  (membership) => membership.contractAddress
-);
-
-export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
-  const today = new Date();
-  return new Date(
-    today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
-  );
-};
 
 export const stepsContent = [
   {
@@ -173,7 +212,11 @@ export const accordionContent = [
     component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
   },
   {
-    title: translateRaw('MEMBERSHIP_ACCORDION_FORTH_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_FORTH_CONTENT')
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIFTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FOURTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FOURTH_CONTENT')
   }
 ];

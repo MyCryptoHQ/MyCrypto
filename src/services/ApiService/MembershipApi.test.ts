@@ -1,3 +1,4 @@
+import { DEFAULT_NETWORK } from '@config';
 import { IMembershipId } from '@features/PurchaseMembership/config';
 import { accountWithMembership, membershipApiResponse } from '@fixtures';
 
@@ -11,10 +12,11 @@ describe('MembershipApi', () => {
         memberships: [
           { expiry: '1590743978', type: 'onemonth' as IMembershipId },
           { expiry: '1609372800', type: 'lifetime' as IMembershipId }
-        ]
+        ],
+        networkId: DEFAULT_NETWORK
       }
     ];
-    const actual = formatResponse(membershipApiResponse);
+    const actual = formatResponse(DEFAULT_NETWORK)(membershipApiResponse);
     expect(actual).toEqual(expected);
   });
 });

@@ -2,17 +2,15 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
-import { DEFAULT_NETWORK } from '@config';
 import {
   AssetBalanceObject,
   ExtendedAsset,
   IAccount,
   IProvidersMappings,
   LSKeys,
-  TUuid,
-  WalletId
+  TUuid
 } from '@types';
-import { filter, findIndex, pipe, propEq, reject } from '@vendor';
+import { findIndex, propEq } from '@vendor';
 
 import { getAssetByUUID } from './asset.slice';
 import { getAppState } from './selectors';
@@ -109,11 +107,6 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
     (acc, a) => ({ ...acc, [a.uuid]: a.mappings }),
     {} as Record<string, IProvidersMappings>
   )
-);
-
-export const getWalletAccountsOnDefaultNetwork = createSelector(
-  getAccounts,
-  pipe(reject(propEq('wallet', WalletId.VIEW_ONLY)), filter(propEq('networkId', DEFAULT_NETWORK)))
 );
 
 /**

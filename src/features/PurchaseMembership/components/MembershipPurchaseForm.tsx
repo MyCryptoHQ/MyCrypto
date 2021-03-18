@@ -14,13 +14,13 @@ import {
   DemoGatewayBanner,
   InlineMessage
 } from '@components';
-import { ETHUUID } from '@config';
+import { DEFAULT_NETWORK, ETHUUID, XDAI_NETWORK, XDAIUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { isAccountInNetwork, isEthereumAccount } from '@services/Store/Account/helpers';
 import { AppState, getIsDemoMode } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -39,7 +39,7 @@ interface MembershipProps extends MembershipPurchaseState {
 }
 
 interface UIProps {
-  network: Network;
+  relevantNetworks: Network[];
   relevantAccounts: StoreAccount[];
   isSubmitting: boolean;
   error?: CustomError;
@@ -71,14 +71,18 @@ const FormFieldSubmitButton = styled(Button)`
 const MembershipForm = ({ isSubmitting, error, isDemoMode, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
-  const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
-  const relevantAccounts = accounts.filter(isEthereumAccount);
+  const relevantNetworks = networks.filter((n) =>
+    [ETHUUID, XDAIUUID].includes(n.baseAsset)
+  ) as Network[];
+  const relevantAccounts = accounts.filter(
+    (account) => isEthereumAccount(account) || isAccountInNetwork(account, XDAI_NETWORK)
+  );
 
   return (
     <MembershipFormUI
       isSubmitting={isSubmitting}
       error={error}
-      network={network}
+      relevantNetworks={relevantNetworks}
       relevantAccounts={relevantAccounts}
       isDemoMode={isDemoMode}
       onComplete={onComplete}
@@ -89,7 +93,7 @@ const MembershipForm = ({ isSubmitting, error, isDemoMode, onComplete }: Props) 
 export const MembershipFormUI = ({
   isSubmitting,
   error,
-  network,
+  relevantNetworks,
   relevantAccounts,
   isDemoMode,
   onComplete
@@ -108,7 +112,7 @@ export const MembershipFormUI = ({
     gasPrice: '20',
     address: '',
     gasLimit: '',
-    network
+    network: (relevantNetworks.find(({ id }) => id === DEFAULT_NETWORK) as unknown) as Network
   };
 
   const MembershipFormSchema = object().shape({
@@ -162,7 +166,6 @@ export const MembershipFormUI = ({
               setFieldValue('account', undefined);
             }
           }, [amount, asset]);
-
           return (
             <Form>
               <FormFieldItem>
@@ -177,11 +180,15 @@ export const MembershipFormUI = ({
                       name={field.name}
                       value={field.value}
                       onSelect={(option: IMembershipConfig) => {
+                        const asset = getAssetByUUID(option.assetUUID as TUuid);
+                        const network =
+                          asset && relevantNetworks.find(({ id }) => asset.networkId === id);
                         // if this gets deleted, it no longer shows as selected on interface,
                         // would like to set only object keys that are needed instead of full object
                         form.setFieldValue('membershipSelected', option);
                         form.setFieldValue('amount', option.price);
-                        form.setFieldValue('asset', getAssetByUUID(option.assetUUID as TUuid));
+                        form.setFieldValue('asset', asset);
+                        network && form.setFieldValue('network', network);
                       }}
                     />
                   )}
