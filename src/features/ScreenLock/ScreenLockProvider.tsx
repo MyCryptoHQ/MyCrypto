@@ -12,8 +12,7 @@ import {
   decrypt,
   getEncryptedData,
   isEncrypted,
-  selectPassword,
-  setPassword
+  selectPassword
 } from '@store';
 import { translateRaw } from '@translations';
 import { hashPassword } from '@utils';
@@ -127,7 +126,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       clearEncryptedData,
       decrypt,
-      setPassword,
       appReset: appResetAction
     },
     dispatch
