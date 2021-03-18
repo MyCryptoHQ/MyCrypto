@@ -80,8 +80,6 @@ export {
   setLanguage,
   getFiat,
   setFiat,
-  getInactivityTimer,
-  setInactivityTimer,
   setDemoMode,
   getIsDemoMode,
   addAccountsToFavorites,

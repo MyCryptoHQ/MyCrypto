@@ -10,10 +10,7 @@ import {
   AppState,
   clearEncryptedData,
   decrypt,
-  exportState,
   getEncryptedData,
-  getInactivityTimer,
-  importState,
   isEncrypted,
   selectPassword,
   setPassword
@@ -32,8 +29,6 @@ interface State {
 
 export const ScreenLockContext = React.createContext({} as State);
 
-// const inactivityTimer: any = null;
-
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
@@ -45,7 +40,16 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
     resetAll: () => this.resetAll()
   };
 
-  public async componentDidUpdate() {
+  public componentDidMount() {
+    //Determine if screen is locked and set "locked" state accordingly
+    const { isEncrypted } = this.props;
+
+    if (isEncrypted) {
+      this.lockScreen();
+    }
+  }
+
+  public componentDidUpdate() {
     const { isEncrypted } = this.props;
     if (!isEncrypted && this.state.locked) {
       // After decrypt with valid password, reset db and
@@ -87,15 +91,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
     this.resetEncrypted();
   };
 
-  public componentDidMount() {
-    //Determine if screen is locked and set "locked" state accordingly
-    const { isEncrypted } = this.props;
-
-    if (isEncrypted) {
-      this.lockScreen();
-    }
-  }
-
   public lockScreen = () => {
     const { location, history } = this.props;
     /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages or to the set new password page*/
@@ -105,10 +100,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
     const isOutsideLock = (path: string) =>
       !path.includes('screen-lock') && path !== ROUTE_PATHS.SETTINGS_IMPORT.path;
 
-    if (
-      isOutsideLock(location.pathname) ||
-      location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path)
-    ) {
+    if (isOutsideLock(location.pathname)) {
       history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
@@ -126,16 +118,13 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  exportState: exportState(state),
   isEncrypted: isEncrypted(state),
   getEncryptedData: getEncryptedData(state),
-  password: selectPassword(state),
-  inactivityTimer: getInactivityTimer(state)
+  password: selectPassword(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
-      importState,
       clearEncryptedData,
       decrypt,
       setPassword,

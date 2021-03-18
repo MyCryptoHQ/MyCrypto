@@ -125,7 +125,6 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
     darkMode: false,
     dashboardAccounts: ['1782c060-8bc0-55d6-8078-ff255b4aae90'],
     excludedAssets: [],
-    inactivityTimer: 1800000,
     language: 'en',
     isDemoMode: false
   },
