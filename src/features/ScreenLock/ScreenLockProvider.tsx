@@ -10,7 +10,6 @@ import {
   AppState,
   clearEncryptedData,
   decrypt,
-  encrypt,
   exportState,
   getEncryptedData,
   getInactivityTimer,
@@ -26,7 +25,6 @@ interface State {
   locked: boolean;
   decryptError?: Error;
   toImport?: string;
-  shouldAutoLock: boolean;
   decryptWithPassword(password: string): void;
   resetEncrypted(): void;
   resetAll(): void;
@@ -42,22 +40,14 @@ export const ScreenLockContext = React.createContext({} as State);
 class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
   public state: State = {
     locked: false,
-    shouldAutoLock: false,
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
     resetEncrypted: () => this.resetEncrypted(),
     resetAll: () => this.resetAll()
   };
 
   public async componentDidUpdate() {
-    const { password, encrypt, isEncrypted } = this.props;
-    // locks screen after calling setPasswordAndInitiateEncryption which causes one of these cases:
-    //  - password was just set (props.password goes from undefined to defined) and encrypted local storage data does not exist
-    //  - password was already set and auto lock should happen (shouldAutoLock) and encrypted local storage data does not exist
-    if (this.state.shouldAutoLock && password && !isEncrypted) {
-      encrypt(password);
-      this.lockScreen();
-      this.setState({ shouldAutoLock: false });
-    } else if (!isEncrypted && this.state.locked) {
+    const { isEncrypted } = this.props;
+    if (!isEncrypted && this.state.locked) {
       // After decrypt with valid password, reset db and
       this.redirectOut();
     }
@@ -147,7 +137,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       importState,
       clearEncryptedData,
-      encrypt,
       decrypt,
       setPassword,
       appReset: appResetAction

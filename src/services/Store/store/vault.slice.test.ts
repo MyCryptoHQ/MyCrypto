@@ -1,33 +1,24 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccounts, fAssets, fNetworks } from '@fixtures';
-import { decrypt as decryptData, encrypt as encryptData, hashPassword } from '@utils';
+import { decrypt as decryptData, hashPassword } from '@utils';
 
-import { marshallState } from '../DataManager/utils';
 import { importState } from './root.reducer';
 import {
   decrypt,
   decryptError,
   decryptionWorker,
-  encrypt,
-  encryptionWorker,
   initialState,
   default as slice
 } from './vault.slice';
 
 const reducer = slice.reducer;
-const { setEncryptedData, clearEncryptedData } = slice.actions;
+const { clearEncryptedData } = slice.actions;
 
 describe('Vault Slice', () => {
   it('has an initial state', () => {
     const actual = reducer(undefined, { type: null });
     const expected = initialState;
-    expect(actual).toEqual(expected);
-  });
-
-  it('setEncryptedData(): sets data to payload', () => {
-    const actual = reducer(initialState, setEncryptedData('encrypted'));
-    const expected = { data: 'encrypted', error: false };
     expect(actual).toEqual(expected);
   });
 
@@ -47,16 +38,6 @@ const decryptedData =
   '{"version":"v1.0.0","mtime":1608048741382,"accounts":{},"addressBook":{"a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe":{"label":"MyCrypto Tip Jar","address":"0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520","notes":"Toss us a coin!","network":"Ethereum","uuid":"a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe"}},"assets":{},"contracts":{},"networks":{},"notifications":{},"settings":{"fiatCurrency":"USD","darkMode":false,"dashboardAccounts":[],"excludedAssets":[],"inactivityTimer":1800000,"rates":{},"language":"en"},"password":"b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3","networkNodes":{},"userActions":{}}';
 
 Date.now = jest.fn(() => 1608048741382);
-
-describe('encryptionWorker()', () => {
-  it('encrypts existing state and resets app state', () => {
-    return expectSaga(encryptionWorker, encrypt(hashedPassword))
-      .withState(mockAppState(marshallState(JSON.parse(decryptedData))))
-      .call(encryptData, decryptedData, hashedPassword)
-      .put(setEncryptedData(encryptedData))
-      .silentRun();
-  });
-});
 
 describe('decryptionWorker()', () => {
   it('decrypts existing state and imports', () => {

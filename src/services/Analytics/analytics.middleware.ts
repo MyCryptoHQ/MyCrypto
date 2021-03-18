@@ -1,6 +1,6 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-import { addAccounts, createAsset, decrypt, encrypt } from '@store';
+import { addAccounts, createAsset, decrypt } from '@store';
 
 import { trackEvent } from './saga';
 
@@ -21,14 +21,6 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
       break;
     }
     // Track ScreenLock activity
-    case encrypt.type: {
-      state.dispatch(
-        trackEvent({
-          name: 'Screen locked'
-        })
-      );
-      break;
-    }
     case decrypt.type: {
       state.dispatch(
         trackEvent({

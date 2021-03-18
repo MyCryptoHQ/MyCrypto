@@ -2,10 +2,9 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { EncryptedDataStore } from '@types';
-import { decrypt as decryptData, encrypt as encryptData, isValidJSON } from '@utils';
+import { decrypt as decryptData, isValidJSON } from '@utils';
 
-import { initialLegacyState } from './legacy.initialState';
-import { appReset, AppState, exportState, importState } from './root.reducer';
+import { AppState, importState } from './root.reducer';
 
 export const initialState: EncryptedDataStore = {
   data: undefined,
@@ -16,10 +15,6 @@ const slice = createSlice({
   name: 'vault',
   initialState,
   reducers: {
-    setEncryptedData(state, action: PayloadAction<string>) {
-      state.data = action.payload;
-      state.error = false;
-    },
     clearEncryptedData() {
       return initialState;
     },
@@ -29,11 +24,10 @@ const slice = createSlice({
   }
 });
 
-export const { setEncryptedData, clearEncryptedData, decryptError } = slice.actions;
+export const { clearEncryptedData, decryptError } = slice.actions;
 
 export default slice;
 
-export const encrypt = createAction<string>(`${slice.name}/encrypt`);
 export const decrypt = createAction<string>(`${slice.name}/decrypt`);
 
 /**
@@ -53,19 +47,7 @@ export const getDecryptionError = createSelector(
  * Sagas
  */
 export function* vaultSaga() {
-  yield all([
-    takeLatest(encrypt.type, encryptionWorker),
-    takeLatest(decrypt.type, decryptionWorker)
-  ]);
-}
-
-export function* encryptionWorker({ payload: password }: PayloadAction<string>) {
-  const state = yield select(exportState);
-
-  const encryptedData = yield call(encryptData, JSON.stringify(state), password);
-
-  yield put(setEncryptedData(encryptedData.toString()));
-  yield put(appReset(initialLegacyState));
+  yield all([takeLatest(decrypt.type, decryptionWorker)]);
 }
 
 export function* decryptionWorker({ payload: passwordHash }: PayloadAction<string>) {

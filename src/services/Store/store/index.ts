@@ -92,9 +92,7 @@ export {
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
 export {
-  encrypt,
   decrypt,
-  setEncryptedData,
   clearEncryptedData,
   getDecryptionError,
   getEncryptedData,
