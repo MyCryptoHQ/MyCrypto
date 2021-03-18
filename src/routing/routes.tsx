@@ -28,9 +28,6 @@ const Export = lazy(() =>
 const DownloadApp = lazy(() =>
   import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
 );
-const ScreenLockNew = lazy(() =>
-  import(/* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew')
-);
 const ScreenLockLocked = lazy(() =>
   import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
 );
@@ -169,14 +166,6 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     exact: true,
     requireAccounts: true,
     component: RequestAssets
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_NEW.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_NEW.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_NEW.path,
-    enabled: isTruthy(featureFlags.DASHBOARD),
-    exact: true,
-    component: ScreenLockNew
   },
   {
     name: ROUTE_PATHS.SCREEN_LOCK_LOCKED.name,

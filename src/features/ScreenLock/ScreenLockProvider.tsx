@@ -22,8 +22,6 @@ import {
 import { translateRaw } from '@translations';
 import { hashPassword } from '@utils';
 
-import { default as ScreenLockLocking } from './ScreenLockLocking';
-
 interface State {
   locking: boolean;
   locked: boolean;
@@ -32,7 +30,6 @@ interface State {
   shouldAutoLock: boolean;
   lockingOnDemand: boolean;
   timeLeft: number;
-  encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
   startLockCountdown(lockOnDemand?: boolean): void;
   resetEncrypted(): void;
@@ -56,8 +53,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
     shouldAutoLock: false,
     lockingOnDemand: false,
     timeLeft: defaultCountDownDuration,
-    encryptWithPassword: (password: string, hashed: boolean) =>
-      this.setPasswordAndInitiateEncryption(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
     startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand),
     resetEncrypted: () => this.resetEncrypted(),
@@ -245,21 +240,7 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
 
   public render() {
     const { children } = this.props;
-    const { locking, timeLeft, lockingOnDemand } = this.state;
-    return (
-      <ScreenLockContext.Provider value={this.state}>
-        {locking ? (
-          <ScreenLockLocking
-            onScreenLockClicked={() => this.handleCountdownEnded()}
-            onCancelLockCountdown={() => this.cancelLockCountdown()}
-            lockingOnDemand={lockingOnDemand}
-            timeLeft={timeLeft}
-          />
-        ) : (
-          children
-        )}
-      </ScreenLockContext.Provider>
-    );
+    return <ScreenLockContext.Provider value={this.state}>{children}</ScreenLockContext.Provider>;
   }
 }
 
