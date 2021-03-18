@@ -33,11 +33,42 @@ const password = 'password1234';
 const hashedPassword = hashPassword(password);
 const wrongPassword = 'bla';
 const encryptedData =
-  '9d6bac0e4873d30b2cd0d734f60c0e05b4195f71bd67e7ca43d3e9b35d317a8750e6c234a99d0ea871597315e6d156ea8d74655238bde7cbe21c3657e3af16bb89bebf23e847a2386c6c39c24dff458e63f0e955a961b831da43505c37815b12e0395af5ba2ef85c777cf1bbfb20ee329d76dac9612935849a5dee0be8dd06506741e1e39d0433160110db4fb89457fe112366006d2bca48d74da17c08178589154498c7f3a5b3077ec882616b2f559fa6bfc2f0e83e483366de2de6a314d0ff2979497004786c306ae5159365d0fb4da7e2da70e13206b95f784db439c46b9724d458c382b4cfd32c3f34c0a2e891647b5b2dc397cd64126c2f6828ad6461654ae0eb79e736a3ce5841312886d1d55066dcb8ffa35ad68d1a3617027296ae0d965834f1901019c9fdbed66fef37f888f4d5b93950ac8b9bf33ad9c8c7812fe7589e1433ca3178447c5b685d33682425c22f4fe6088b621fea0d31c05112e35995480daf87be6e7dc90fb4e8869061dcc571dfe23cb00b8f4e230cd8c7e27b51e6cc92752e717daebb6f07ec5fc9dfb150ff15d788a331bf93eeb8c9f2907abc60d957e6326389d0d2121acbe8d7f319923daaa630a0edbcb6deea5ba96001415da557a50a34ced329546cb5825ab99a46f86ea33d0c9530abb4c884c6b55b6ca29a0dc472dd43839edc045eea4de52ce4b675d50e1a1c5d3d5cfb419bd76aaddc6d6001ac8fc0b1fe44b510a0be8946c498703875b03bc1373329135405516fc6d08576d391b8077d486a55e422fc9fe3c30bfe71ffc1080bac8e317c6a09271fbcf3b23131a23d2a099a06464210ca0c92f190c130f94dc9b887c7e418748e';
-const decryptedData =
-  '{"version":"v1.0.0","mtime":1608048741382,"accounts":{},"addressBook":{"a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe":{"label":"MyCrypto Tip Jar","address":"0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520","notes":"Toss us a coin!","network":"Ethereum","uuid":"a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe"}},"assets":{},"contracts":{},"networks":{},"notifications":{},"settings":{"fiatCurrency":"USD","darkMode":false,"dashboardAccounts":[],"excludedAssets":[],"rates":{},"language":"en"},"password":"b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3","networkNodes":{},"userActions":{}}';
+  '9d6bac0e4873d30b2cd0d734f60c0e05b4195f71bd67e7ca43d3e9b35d317b8950eac833ac9a0aa873597315e6d156ea8d74655238bde7cbe21c3657e3af16bb89bebf23e847a2386c6c39c24dff458e63f0e955a961b831da43505c37815b12e0395af5ba2ef85c777cf1bbfb20ee329d76dac9612935849a5dee0be8dd06506741edf2d06e060d531cb34faed209b9033420482a68c15e8f0df4417e45d1da354298c887f7b67223ba824268785ced819cc1fd9b4b694533da2b93d047d2eb346e152f52313d7c3fb3248f3499f96cbcabc870eb2e4f9a071913ef27d570c73886778ed6f7fec2643b22c1a5e0c03b770e1ecf96837e567f7b6c6bbf3a273302bcbd35b23bffd81d553033d8d7920a3bcce7bca941a4cd136503022586f10d964c32eb914650c9a6f4ca20ab65f1d4ad97eb6214f29cc3ec71d8d3998768bd058e4b21d832340d314f6057657c3f60832f48fc0291621fea0d31c05113e759845241f28fe178249f1bbcea99b670efc467d4f536b00bd6665c6a9984ae6b42f5c4ab69682e24e9f12c05fa4e9292a75aff5f8f9cbf6ff9bce2afcfe1976dae368a63d56d63d6d3cc524ddce8c7c6038f3fadf728e19487f39df776bd71074d45af5afe647ff6e51f547aa6de0bfbc13ba726e46d578734b4e597d399fd1873ab9605d061de67c2c791145ebc43eb34cf8a2a841c0d0d556a02bc47e3c720fd9828760b92e38ea0a01ee416edef9e4cd2d817342ee370803b37261552535769ddc28d738cc0fd5f784c715ea021a68cffd450ef54ae940470a5d9767272012307b8f9ec781cac371b08d95f566f4e871d94f796c13dec48dfa29d86ad413387cf70dd09657d585c43272ebc9ffd132cfeb1aed5395ecc6e9619d4e6e75138a3c5f25d75396ccb6adf49da7642c4e48c8486dd5fa5a1b20f5658dfccf996d1a6e54148458063c2f6504435405d2b7c1b1f3ce0d09e23e32996d48a2a6a34fe612102460c240978367c9e096e82894dedbe720f8b8faa';
+const decryptedData = {
+  version: 'v1.0.0',
+  mtime: 1616082016780,
+  accounts: {},
+  addressBook: {
+    'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe': {
+      label: 'MyCrypto Team Tip Jar',
+      address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+      notes: "This is MyCrypto's Donate address. Feel free to delete it!",
+      network: 'Ethereum',
+      uuid: 'a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe'
+    }
+  },
+  assets: {},
+  rates: {},
+  trackedAssets: {},
+  contracts: {},
+  networks: {},
+  notifications: {},
+  settings: {
+    fiatCurrency: 'USD',
+    darkMode: false,
+    dashboardAccounts: [],
+    excludedAssets: [],
+    inactivityTimer: 1800000,
+    language: 'en',
+    isDemoMode: false,
+    canTrackProductAnalytics: true
+  },
+  password: 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3',
+  networkNodes: {},
+  userActions: {}
+};
 
-Date.now = jest.fn(() => 1608048741382);
+Date.now = jest.fn(() => 1616082016780);
 
 describe('decryptionWorker()', () => {
   it('decrypts existing state and imports', () => {
@@ -49,7 +80,7 @@ describe('decryptionWorker()', () => {
       })
       .call(decryptData, encryptedData, hashedPassword)
       .put(clearEncryptedData())
-      .put(importState(decryptedData))
+      .put(importState(JSON.stringify(decryptedData)))
       .silentRun();
   });
 
