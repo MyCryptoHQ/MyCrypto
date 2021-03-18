@@ -10,7 +10,7 @@ import {
 } from 'test-utils';
 
 import { fAccounts, fTxReceipt } from '@fixtures';
-import { IAccount, TUuid } from '@types';
+import { IAccount } from '@types';
 
 import useAccounts from './useAccounts';
 
@@ -41,15 +41,6 @@ describe('useAccounts', () => {
   it('uses get addressbook from store', () => {
     const { result } = renderUseAccounts({ accounts: fAccounts });
     expect(result.current.accounts).toEqual(fAccounts);
-  });
-
-  it('createAccountWithID() calls create', () => {
-    const mockDispatch = mockUseDispatch();
-    const { result } = renderUseAccounts({ accounts: [] });
-    result.current.createAccountWithID('uuid' as TUuid, fAccounts[0]);
-    expect(mockDispatch).toHaveBeenCalledWith(
-      actionWithPayload([{ ...fAccounts[0], uuid: 'uuid' }])
-    );
   });
 
   it('createMultipleAccountsWithIDs() calls updateAll with multiple accounts', () => {

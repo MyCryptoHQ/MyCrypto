@@ -250,13 +250,9 @@ interface ISendFormProps extends IStepComponentProps {
 }
 
 const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: Props) => {
-  const {
-    accounts,
-    userAssets,
-    networks,
-    getAccount,
-    getDefaultAccount: getDefaultStoreAccount
-  } = useContext(StoreContext);
+  const { accounts, userAssets, networks, getDefaultAccount: getDefaultStoreAccount } = useContext(
+    StoreContext
+  );
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
@@ -533,9 +529,8 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   };
 
   const setAmountFieldToAssetMax = () => {
-    const account = getAccount(values.account);
-    if (values.asset && account && baseAsset) {
-      const accountBalance = getAccountBalance(account, values.asset);
+    if (values.asset && values.account && baseAsset) {
+      const accountBalance = getAccountBalance(values.account, values.asset);
       const isERC20 = isERC20Asset(values.asset);
       const balance = fromTokenBase(bigify(accountBalance), values.asset.decimal);
       const gasPrice = values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider;
