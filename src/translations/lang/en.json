@@ -351,7 +351,7 @@
     "MEMBERSHIP_ACCORDION_SECOND_TITLE": "How much does the MyCrypto Membership cost?",
     "MEMBERSHIP_ACCORDION_THIRD_CONTENT": "We use the [Unlock Protocol](https://unlock-protocol.com/) for this. You’ll be purchasing a token that unlocks features of MyCrypto when we detect that you hold that token. Each token has an expiration date according to the duration of membership you purchased.",
     "MEMBERSHIP_ACCORDION_THIRD_TITLE": "How does the MyCrypto Membership work?",
-    "MEMBERSHIP_ACCORDION_FIFTH_CONTENT": "You can purchase a MyCrypto Membership with DAI and ETH, or on the xDai network with [xDai](https://support.mycrypto.com/general-knowledge/scaling/how-to-get-xdai). We will likely be adding support for more networks and tokens in the future.",
+    "MEMBERSHIP_ACCORDION_FIFTH_CONTENT": "You can currently purchase a MyCrypto Membership on the Ethereum network with DAI or [ETH](https://support.mycrypto.com/how-to/getting-started/how-to-buy-ether-with-usd), or on the xDAI network with [xDAI](https://support.mycrypto.com/general-knowledge/scaling/how-to-get-xdai). We will likely add more payment methods in the future - stay tuned!",
     "MEMBERSHIP_ACCORDION_FIFTH_TITLE": "What cryptocurrencies can I use to buy a MyCrypto Membership?",
     "MEMBERSHIP_COST_TOOLTIP": "This is the amount you'll be paying according to the level of membership you've chosen.",
     "MEMBERSHIP_DESC_FIRST": "The MyCrypto Membership is a way to elevate your experience, and a way to support MyCrypto’s future developments.",
