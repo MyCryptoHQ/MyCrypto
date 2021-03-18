@@ -400,7 +400,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       updateSettingsAccounts(
         settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
       );
-      dispatch(deleteMembership(account.address));
+      dispatch(deleteMembership({ address: account.address, networkId: account.networkId }));
     },
     restoreDeletedAccount: (accountId) => {
       const account = accountRestore[accountId];

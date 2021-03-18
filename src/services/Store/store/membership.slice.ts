@@ -9,7 +9,7 @@ import {
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { MembershipApi } from '@services/ApiService';
-import { IAccount, Network, StoreAccount, TAddress } from '@types';
+import { IAccount, Network, NetworkId, StoreAccount, TAddress } from '@types';
 import { flatten } from '@vendor';
 
 import { isAccountInNetwork, isEthereumAccount } from '../Account/helpers';
@@ -36,8 +36,11 @@ const slice = createSlice({
     setMembership(state, action: PayloadAction<MembershipStatus>) {
       state.record.push(action.payload);
     },
-    deleteMembership(state, action: PayloadAction<TAddress>) {
-      const idx = state.record.findIndex((item) => item.address === action.payload);
+    deleteMembership(state, action: PayloadAction<{ address: TAddress; networkId: NetworkId }>) {
+      const idx = state.record.findIndex(
+        (item) =>
+          item.address === action.payload.address && item.networkId === action.payload.networkId
+      );
       state.record.splice(idx, 1);
     },
     fetchError(state) {

@@ -109,7 +109,11 @@ describe('mergeNetworks', () => {
       [{ ...fNetworks[0], nodes, selectedNode: nodeName }, fNetworks[1]],
       fNetworks
     );
-    expect(actual).toEqual([{ ...fNetworks[0], nodes, selectedNode: nodeName }, fNetworks[1]]);
+    expect(actual).toEqual([
+      { ...fNetworks[0], nodes, selectedNode: nodeName },
+      fNetworks[1],
+      fNetworks[2]
+    ]);
   });
 
   test('it supports merging with new networks in initial state', () => {

@@ -37,6 +37,7 @@ export enum MembershipState {
 
 export interface MembershipStatus {
   address: TAddress;
+  networkId: NetworkId;
   memberships: MembershipExpiry[];
 }
 
