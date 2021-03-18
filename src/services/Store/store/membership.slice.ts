@@ -122,7 +122,7 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
       xdaiAccounts.map(({ address }) => address as TAddress),
       xdaiNetwork
     );
-    yield put(slice.actions.setMemberships([...xdaiMemberships, ...ethereumMemberships]));
+    yield put(slice.actions.setMemberships([...ethereumMemberships, ...xdaiMemberships]));
   } catch (err) {
     yield put(slice.actions.fetchError());
   }

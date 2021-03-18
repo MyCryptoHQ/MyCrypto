@@ -83,6 +83,14 @@ describe('MembershipsSlice', () => {
 describe('fetchMembershipsSaga()', () => {
   const res = [
     {
+      address: '0xfeac75a09662396283f4bb50f0a9249576a81866',
+      memberships: [
+        { expiry: '1590743978', type: 'onemonth' },
+        { expiry: '1609372800', type: 'lifetime' }
+      ],
+      networkId: XDAI_NETWORK
+    } as MembershipStatus,
+    {
       address: accountWithMembership,
       memberships: [
         { expiry: '1590743978', type: 'onemonth' },
@@ -100,11 +108,20 @@ describe('fetchMembershipsSaga()', () => {
   const initialState = mockAppState({ accounts, networks: fNetworks });
 
   it('can fetch memberships from provided accounts', () => {
+    const ethereumAccounts = accounts
+      .filter(({ networkId }) => networkId === DEFAULT_NETWORK)
+      .map(({ address }) => address);
+    const xdaiAccounts = accounts
+      .filter(({ networkId }) => networkId === XDAI_NETWORK)
+      .map(({ address }) => address);
     return (
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
-        .provide([[call.fn(MembershipApi.getMemberships), res]])
-        .put(setMemberships([...res, ...res]))
+        .provide([
+          [call(MembershipApi.getMemberships, xdaiAccounts, fNetworks[2]), [res[1]]],
+          [call(MembershipApi.getMemberships, ethereumAccounts, fNetworks[0]), [res[0]]]
+        ])
+        .put(setMemberships(res))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
         // use `silentRun` to silence the warning.
