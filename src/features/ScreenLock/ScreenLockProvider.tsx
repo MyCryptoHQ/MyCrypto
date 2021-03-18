@@ -23,63 +23,29 @@ import { translateRaw } from '@translations';
 import { hashPassword } from '@utils';
 
 interface State {
-  locking: boolean;
   locked: boolean;
   decryptError?: Error;
   toImport?: string;
   shouldAutoLock: boolean;
-  lockingOnDemand: boolean;
-  timeLeft: number;
   decryptWithPassword(password: string): void;
-  startLockCountdown(lockOnDemand?: boolean): void;
   resetEncrypted(): void;
   resetAll(): void;
 }
 
 export const ScreenLockContext = React.createContext({} as State);
 
-let inactivityTimer: any = null;
-let countDownTimer: any = null;
-const defaultCountDownDuration = 59;
-const onDemandLockCountDownDuration = 5;
+// const inactivityTimer: any = null;
 
 // Would be better to have in services/Store but circular dependencies breaks
 // Jest test. Consider adopting such as importing from a 'internal.js'
 // https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
   public state: State = {
-    locking: false,
     locked: false,
     shouldAutoLock: false,
-    lockingOnDemand: false,
-    timeLeft: defaultCountDownDuration,
     decryptWithPassword: (password: string) => this.decryptWithPassword(password),
-    startLockCountdown: (lockingOnDemand: boolean) => this.startLockCountdown(lockingOnDemand),
     resetEncrypted: () => this.resetEncrypted(),
     resetAll: () => this.resetAll()
-  };
-
-  // causes prop changes that are being observed in componentDidUpdate
-  public setPasswordAndInitiateEncryption = async (password: string, hashed: boolean) => {
-    const { setPassword } = this.props;
-    try {
-      // If password is not hashed yet, hash it
-      if (!hashed) {
-        const passwordHash = hashPassword(password);
-        this.setState(
-          (prevState) => ({ ...prevState, shouldAutoLock: true }),
-          () => {
-            // Initiates encryption in componentDidUpdate
-            setPassword(passwordHash);
-          }
-        );
-      } else {
-        // If password is already set initate encryption in componentDidUpdate
-        this.setState({ shouldAutoLock: true });
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   public async componentDidUpdate() {
@@ -120,7 +86,6 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
   public redirectOut = () => {
     const { history } = this.props;
     this.setState({ locked: false }, () => {
-      this.resetInactivityTimer();
       history.replace(ROUTE_PATHS.DASHBOARD.path);
     });
   };
@@ -139,86 +104,12 @@ class ScreenLockProvider extends Component<RouteComponentProps & Props, State> {
     if (isEncrypted) {
       this.lockScreen();
     }
-    this.trackInactivity();
   }
-
-  public trackInactivity = () => {
-    window.onload = this.resetInactivityTimer;
-    window.onmousemove = this.resetInactivityTimer;
-    window.onkeypress = this.resetInactivityTimer;
-    window.onmousedown = this.resetInactivityTimer;
-    window.ontouchstart = this.resetInactivityTimer;
-  };
-
-  public resetInactivityTimer = () => {
-    const { inactivityTimer: timer } = this.props;
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, timer);
-  };
-
-  public startLockCountdown = (lockingOnDemand = false) => {
-    const { password, location } = this.props;
-    // @todo: Refactor to use .bind() probably
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const appContext = this;
-
-    // Lock immediately if password is already set after clicking "Lock" button
-    if (lockingOnDemand && password) {
-      this.handleCountdownEnded();
-      return;
-    }
-    if (
-      this.state.locked ||
-      this.state.locking ||
-      location.pathname === ROUTE_PATHS.SCREEN_LOCK_NEW.path
-    ) {
-      return;
-    }
-
-    this.setState({
-      locking: true,
-      timeLeft: lockingOnDemand ? onDemandLockCountDownDuration : defaultCountDownDuration,
-      lockingOnDemand
-    });
-
-    countDownTimer = setInterval(() => {
-      if (appContext.state.timeLeft === 1) {
-        appContext.handleCountdownEnded();
-      } else {
-        document.title = `${translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKING')} ${
-          appContext.state.timeLeft - 1
-        }`;
-        appContext.setState({ timeLeft: appContext.state.timeLeft - 1 });
-      }
-    }, 1000);
-  };
-
-  public cancelLockCountdown = () => {
-    clearInterval(countDownTimer);
-    this.resetInactivityTimer();
-    this.setState({ locking: false });
-  };
-
-  public handleCountdownEnded = () => {
-    /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
-      If user has not setup the password yet, just navigate to "/screen-lock/new. */
-    const { password, history } = this.props;
-
-    clearInterval(countDownTimer);
-    if (password) {
-      this.setState({ locking: false, locked: true });
-      this.setPasswordAndInitiateEncryption(password, true);
-    } else {
-      this.setState({ locking: false, locked: false });
-      document.title = translateRaw('DEFAULT_PAGE_TITLE');
-      history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
-    }
-  };
 
   public lockScreen = () => {
     const { location, history } = this.props;
     /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages or to the set new password page*/
-    this.setState({ locking: false, locked: true });
+    this.setState({ locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
 
     const isOutsideLock = (path: string) =>
