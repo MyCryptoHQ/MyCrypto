@@ -308,8 +308,6 @@
     "HIDE": "Hide",
     "HIDE_ASSET": "Hide Asset",
     "HIDE_ASSET_TOOLTIP": "Hide this asset (this can be reverted in Settings).",
-    "INPUT_ERROR_PASSWORDS_DONT_MATCH": "Passwords don't match",
-    "INPUT_ERROR_PASSWORD_TOO_SHORT": "Password must be at least 8 characters long",
     "INPUT_PUBLIC_ADDRESS_LABEL": "Add a view-only Address or ENS Name",
     "INSECURE_WALLET_GO_BACK": "Go back to wallet selection",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on any website is dangerous. If MyCrypto.com was compromised, or you accidentally visited a phishing website, you could lose your funds. Because of that, we have disabled the use of $wallet_type wallets through the website. In order to access your account, please download MyCrypto and run it locally.",
