@@ -228,8 +228,8 @@ const getInitialFormikValues = ({
     txDataField: s.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
     gasLimitField: s.gasLimit && bigify(s.gasLimit).toString(),
-    gasPriceSlider: gasPriceInGwei,
-    gasPriceField: gasPriceInGwei
+    gasPriceSlider: gasPriceInGwei as string,
+    gasPriceField: gasPriceInGwei as string
   };
 
   const preferValueFromState = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
