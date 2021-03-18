@@ -182,18 +182,6 @@ export const MEMBERSHIP_CONTRACTS = Object.fromEntries(
   ])
 );
 
-export const getMembershipContracts = (membershipNetworkId: NetworkId) =>
-  Object.values(MEMBERSHIP_CONFIG)
-    .filter(({ networkId }) => networkId === membershipNetworkId)
-    .map((membership) => membership.contractAddress);
-
-export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
-  const today = new Date();
-  return new Date(
-    today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
-  );
-};
-
 export const stepsContent = [
   {
     title: translateRaw('APPROVE_MEMBERSHIP'),

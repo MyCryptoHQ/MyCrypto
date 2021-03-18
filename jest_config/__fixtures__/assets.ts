@@ -1,6 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
-import { ANTv1UUID, DEFAULT_ASSET_DECIMAL, LENDUUID, REPV1UUID, REPV2UUID } from '@config';
+import {
+  ANTv1UUID,
+  DAIUUID,
+  DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK,
+  LENDUUID,
+  REPV1UUID,
+  REPV2UUID,
+  XDAI_NETWORK,
+  XDAIUUID
+} from '@config';
 import { ExtendedAsset, StoreAsset, TTicker, TUuid } from '@types';
 
 export const fRopDAI: ExtendedAsset = {
@@ -11,6 +21,17 @@ export const fRopDAI: ExtendedAsset = {
   networkId: 'Ropsten',
   contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
   isCustom: true,
+  type: 'erc20'
+};
+
+export const fDAI: ExtendedAsset = {
+  uuid: DAIUUID as TUuid,
+  name: 'DAI v2',
+  decimal: 18,
+  ticker: 'DAI' as TTicker,
+  networkId: DEFAULT_NETWORK,
+  contractAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  isCustom: false,
   type: 'erc20'
 };
 
@@ -145,6 +166,15 @@ export const fAssets = [
     isCustom: false,
     type: 'erc20'
   },
+  {
+    uuid: XDAIUUID,
+    name: 'xDAI',
+    type: 'base',
+    networkId: XDAI_NETWORK,
+    isCustom: false,
+    ticker: 'xDAI'
+  },
+  fDAI,
   fRopDAI
 ] as ExtendedAsset[];
 

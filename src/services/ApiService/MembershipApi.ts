@@ -1,10 +1,7 @@
 import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
-import {
-  getMembershipContracts,
-  MEMBERSHIP_CONTRACTS,
-  MembershipStatus
-} from '@features/PurchaseMembership/config';
+import { MEMBERSHIP_CONTRACTS, MembershipStatus } from '@features/PurchaseMembership/config';
+import { getMembershipContracts } from '@features/PurchaseMembership/helpers';
 import { ProviderHandler } from '@services/EthService/';
 import { Bigish, Network, TAddress } from '@types';
 import { bigify } from '@utils';

@@ -126,13 +126,12 @@ const PlanContainer = styled.div`
   justify-content: center;
   width: 90%;
   margin-bottom: ${SPACING.LG};
-  div:nth-child(even) {
+  & div {
     margin-bottom: 15px;
   }
   div:nth-child(odd) {
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 15px;
   }
 `;
 
