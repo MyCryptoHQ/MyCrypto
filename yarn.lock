@@ -2356,10 +2356,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.3.0.tgz#8b99eb2aaf1adce07521500490f8126e05665235"
-  integrity sha512-r5gocRrV6qTBDrHcO8M6lBm9kJvIRJoKd14kqZcFlI9jXUcmgKA2zGnofi02wl0sENVb0gg8DXqQdL2qBsBjSw==
+"@mycrypto/eth-scan@3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.3.1.tgz#217f85e31998173b3ea735a276c2fc3f7db33ba0"
+  integrity sha512-DYxqRs7hL3xkNa3ZC2mtHAqDzl5fKa9Khwjgb6Ir+CCFXALR0EPZTueteSBFxgBOAer2y69sNEsM7Bbm5NyZng==
   dependencies:
     "@findeth/abi" "^0.5.2"
     isomorphic-unfetch "^3.1.0"
@@ -2378,10 +2378,10 @@
     react-inlinesvg "^2.0.0"
     react-popper-tooltip "^2.10.1"
 
-"@mycrypto/unlock-scan@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@mycrypto/unlock-scan/-/unlock-scan-1.0.2.tgz#ae6e58f2c8b1f7b9926f5ce0c5f6f12edfd2494f"
-  integrity sha512-e0phinhhGWyhi2d57Y6zTKbKWAdEH9qf3lPcGF4FITVoBbMx2M/KCrE/qm8/l1ru8kSSDS0qE1BO7PaPRXUzyQ==
+"@mycrypto/unlock-scan@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/unlock-scan/-/unlock-scan-1.1.0.tgz#f75f905e117c416395644f8dd5889a3593c55318"
+  integrity sha512-U42iH2XLLXl4SgriinyHXxKwTENuHMy8ZWt8vBPn+qDx+audCRqQ3qq8fqGIqJfshXZESBJiNLJdYRbN1bp15Q==
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
@@ -19871,10 +19871,10 @@ typescript-tuple@^2.2.1:
   dependencies:
     typescript-compare "^0.0.2"
 
-typescript@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.2.tgz#7ea7c88777c723c681e33bf7988be5d008d05ac2"
-  integrity sha512-e4ERvRV2wb+rRZ/IQeb3jm2VxBsirQLpQhdxplZ2MEzGvDkkMmPglecnNDfSUBivMjP93vRbngYYDQqQ/78bcQ==
+typescript@4.1.0:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
+  integrity sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
 
 typescript@^3.3.3:
   version "3.9.9"

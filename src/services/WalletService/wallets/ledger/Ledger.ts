@@ -31,7 +31,7 @@ export default abstract class Ledger extends HardwareWallet {
     return WalletId.LEDGER_NANO_S_NEW;
   }
 
-  protected abstract async checkConnection(): Promise<void>;
+  protected abstract checkConnection(): Promise<void>;
 
   protected async getKeyInfo(dPath: DPath): Promise<KeyInfo> {
     await this.checkConnection();
