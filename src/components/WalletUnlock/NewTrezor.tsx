@@ -20,7 +20,7 @@ import {
 import { translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
-import DeterministicWallet from './DeterministicWallet';
+import { DeterministicWallet } from './components';
 import HardwareWalletUI from './Hardware';
 import UnsupportedNetwork from './UnsupportedNetwork';
 

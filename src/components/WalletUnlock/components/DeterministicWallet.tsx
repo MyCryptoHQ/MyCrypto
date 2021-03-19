@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Formik } from 'formik';
-import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
@@ -17,15 +16,16 @@ import {
   Text,
   Typography
 } from '@components';
+import { Downloader } from '@components/Downloader';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
-import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
 import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
-import { Downloader } from '../Downloader';
+import { DPathOption } from './DerivationPath';
 import DeterministicAccountList from './DeterministicAccountList';
 
 const MnemonicWrapper = styled.div`
@@ -104,19 +104,6 @@ const SInput = styled(Input)`
   margin-bottom: ${SPACING.XS};
 `;
 
-const DropdownDPath = styled.span`
-  padding-left: ${SPACING.XS};
-  opacity: 0.5;
-  font-size: 11px;
-  font-family: ${monospace};
-`;
-
-const SContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  padding: 12px;
-`;
-
 const SBox = styled(Box)`
   margin: ${SPACING.XS};
 `;
@@ -131,7 +118,7 @@ export interface DeterministicWalletProps {
   setSelectedDPath(dpath: DPath): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
-  scanMoreAddresses?(dpath: ExtendedDPath): void;
+  scanMoreAddresses(dpath: ExtendedDPath): void;
   handleAssetUpdate(asset: ExtendedAsset): void;
   onUnlock(param: any): void;
 }
@@ -145,16 +132,6 @@ const initialFormikValues: FormValues = {
   label: '',
   value: ''
 };
-
-type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
-const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
-  <SContainer onClick={selectOption && (() => selectOption(data))}>
-    <Typography>
-      {data.label}{' '}
-      {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
-    </Typography>
-  </SContainer>
-);
 
 const DeterministicWallet = ({
   state,
@@ -186,7 +163,7 @@ const DeterministicWallet = ({
   };
 
   const handleScanMoreAddresses = (dpath: ExtendedDPath) => {
-    scanMoreAddresses!(dpath);
+    scanMoreAddresses(dpath);
   };
 
   const csv = accountsToCSV(state.finishedAccounts, assetToUse);
@@ -282,10 +259,7 @@ const DeterministicWallet = ({
             }}
           />
         </SBox>
-        <SBox
-          variant="columnAlignLeft"
-          style={{ visibility: !displayEmptyAddresses ? 'hidden' : 'visible' }}
-        >
+        <SBox variant="columnAlignLeft">
           <Text>
             <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
             <LinkApp href="#" onClick={() => setDpathAddView(true)}>

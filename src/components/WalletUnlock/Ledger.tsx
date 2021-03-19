@@ -20,7 +20,7 @@ import { Trans, translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
 
-import DeterministicWallet from './DeterministicWallet';
+import { DeterministicWallet } from './components';
 import UnsupportedNetwork from './UnsupportedNetwork';
 
 interface OwnProps {

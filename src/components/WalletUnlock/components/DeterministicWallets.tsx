@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import questionSVG from '@assets/images/icn-question.svg';
@@ -15,20 +14,20 @@ import {
   Input,
   LinkApp,
   Selector,
-  Spinner,
-  Typography
+  Spinner
 } from '@components';
+import { Table } from '@components/Table';
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
-import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
-import { Table } from '../Table';
+import { DPathOption } from './DerivationPath';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 
@@ -66,19 +65,6 @@ const SDropdown = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     width: 100%;
   }
-`;
-
-const DropdownDPath = styled.span`
-  padding-left: ${SPACING.XS};
-  opacity: 0.5;
-  font-size: 11px;
-  font-family: ${monospace};
-`;
-
-const SContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  padding: 12px 12px 12px 0px;
 `;
 
 const CustomDPath = styled.div`
@@ -329,16 +315,6 @@ export function DeterministicWalletsClass({
   const prevPage = () => {
     setPage(Math.max(page - 1, 0));
   };
-
-  type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
-  const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
-    <SContainer onClick={selectOption && (() => selectOption(data))}>
-      <Typography>
-        {data.label}{' '}
-        {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
-      </Typography>
-    </SContainer>
-  );
 
   const renderWalletRow = (
     wallet: DeterministicWalletData,

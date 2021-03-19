@@ -14,7 +14,7 @@ export interface TDWActionError {
 export interface DWAccountDisplay {
   address: TAddress;
   pathItem: {
-    baseDPath: DPath;
+    baseDPath: ExtendedDPath;
     path: string;
     index: number;
   };

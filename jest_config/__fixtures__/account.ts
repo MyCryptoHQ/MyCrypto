@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
 import { REPV1UUID } from '@config';
-import { DWAccountDisplay } from '@services';
-import { DPath, StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
+import { DWAccountDisplay, ExtendedDPath } from '@services';
+import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 import { bigify } from '@utils';
 
 import { fNetwork, fNetworks } from './network';
@@ -220,7 +220,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 0
     },
     balance: bigify('100000000000000000000')
@@ -234,7 +234,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
     balance: bigify('0')
@@ -248,7 +248,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
     balance: bigify('1000000000000000000')
@@ -262,7 +262,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
     balance: bigify('1500000000000000000')
@@ -276,7 +276,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
     balance: bigify('0')
@@ -290,7 +290,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
     balance: bigify('12000000000000000000')

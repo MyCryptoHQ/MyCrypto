@@ -10,7 +10,7 @@ import { BannerType, DPath, ExtendedAsset, Network } from '@types';
 import { accountsToCSV, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
-import { Downloader } from '../Downloader';
+import { Downloader } from '../../Downloader';
 import DeterministicTable, {
   ITableAccounts,
   TableAccountDisplay
@@ -64,15 +64,6 @@ const IconWrapper = styled.div`
   align-items: center;
 `;
 
-// const SButton = styled.span`
-//   color: ${COLORS.BLUE_MYC};
-//   cursor: pointer;
-//   font-weight: bold;
-//   &:hover {
-//     color: ${COLORS.BLUE_LIGHT_DARKISH};
-//   }
-// `;
-
 const SDownloader = styled(Downloader)`
   color: ${COLORS.BLUE_MYC};
   cursor: pointer;
@@ -123,7 +114,8 @@ export default function DeterministicAccountList({
   const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
 
   const accountsToUse = uniqBy(prop('address'), finishedAccounts);
-  // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set and
+  // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set
+  // and if accountsToUse is cleared (occurs when re-scanning all accounts or when changing asset), refresh tableAccounts
   useEffect(() => {
     if (accountsToUse.length === 0 && Object.keys(tableAccounts).length !== 0) {
       setTableAccounts({} as ITableAccounts);
@@ -131,7 +123,6 @@ export default function DeterministicAccountList({
       const tableAccs = accountsToUse.reduce((acc, idx) => {
         acc[idx.address] = tableAccounts[idx.address] || {
           ...idx,
-          isDefaultConfig: true,
           isSelected: (idx.balance && !idx.balance.isZero()) || false
         };
         return acc;
@@ -152,18 +143,18 @@ export default function DeterministicAccountList({
         ...tableAccounts,
         [account.address]: {
           ...account,
-          isDefaultConfig: false,
           isSelected: !account.isSelected
         }
       });
       return;
     }
-    if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES) return;
+    // disallows selecting an account that is empty if MAX_EMPTY_ADDRESSES is already met
+    if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES && account.balance!.isEqualTo(0))
+      return;
     setTableAccounts({
       ...tableAccounts,
       [account.address]: {
         ...account,
-        isDefaultConfig: false,
         isSelected: !account.isSelected
       }
     });

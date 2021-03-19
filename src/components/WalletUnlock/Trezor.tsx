@@ -10,7 +10,7 @@ import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import DeterministicWallets from './DeterministicWallets';
+import { DeterministicWallets } from './components';
 import './Trezor.scss';
 import UnsupportedNetwork from './UnsupportedNetwork';
 

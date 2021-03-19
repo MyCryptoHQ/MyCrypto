@@ -17,8 +17,7 @@ export default { title: 'Hardware/DeterministicAccountTable' };
 const addressMap = fDWAccounts.reduce((acc, item) => {
   acc[item.address as string] = {
     ...item,
-    isSelected: true,
-    isDefaultConfig: true
+    isSelected: true
   };
   return acc;
 }, {} as ITableAccounts);

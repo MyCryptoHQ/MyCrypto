@@ -9,7 +9,7 @@ import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import DeterministicWallets from './DeterministicWallets';
+import { DeterministicWallets } from './components';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 

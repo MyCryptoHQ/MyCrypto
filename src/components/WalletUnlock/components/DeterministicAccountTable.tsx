@@ -15,17 +15,17 @@ import {
   Tooltip,
   Typography
 } from '@components';
+import { Downloader } from '@components/Downloader';
 import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
 import { bigify, buildAddressUrl, fromTokenBase, useScreenSize } from '@utils';
 
-import { Downloader } from '../Downloader';
+import { sortAccounts } from './helpers';
 
 export interface TableAccountDisplay extends DWAccountDisplay {
   isSelected: boolean;
-  isDefaultConfig: boolean;
 }
 
 export type ITableAccounts = Record<string, TableAccountDisplay>;
@@ -255,23 +255,6 @@ const SDownloader = styled(Downloader)`
     color: ${COLORS.BLUE_LIGHT_DARKISH};
   }
 `;
-
-const sortAccounts = (
-  accounts: TableAccountDisplay[],
-  displayEmptyAddresses: boolean,
-  selectedDPath: DPath
-) => {
-  const selectedAccounts = accounts
-    .filter(({ isSelected }) => isSelected)
-    .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
-  const deselectedAccounts = accounts
-    .filter(
-      ({ isSelected, pathItem: { baseDPath } }) =>
-        !isSelected && baseDPath.value === selectedDPath.value
-    )
-    .sort((a, b) => (a.pathItem.index < b.pathItem.index ? -1 : 1));
-  return displayEmptyAddresses ? [...selectedAccounts, ...deselectedAccounts] : selectedAccounts;
-};
 
 const DeterministicTable = ({
   isComplete,
