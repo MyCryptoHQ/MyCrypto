@@ -1035,8 +1035,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 470
     }
   },
-  Avalanche_Test: {
-    id: 'Avalanche_Test',
+  AvalancheTestnet: {
+    id: 'AvalancheTestnet',
     name: 'Avalanche C-Chain Testnet',
     unit: 'AVAX' as TTicker,
     chainId: 43113,

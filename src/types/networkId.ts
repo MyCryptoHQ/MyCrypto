@@ -38,4 +38,4 @@ export type NetworkId =
   | 'SmartChain'
   | 'SmartChainTestNetwork'
   | 'Avalanche'
-  | 'Avalanche_Test';
+  | 'AvalancheTestnet';

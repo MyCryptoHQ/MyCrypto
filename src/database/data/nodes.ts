@@ -402,10 +402,10 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://api.avax.network/ext/bc/C/rpc'
     }
   ],
-  Avalanche_Test: [
+  AvalancheTestnet: [
     {
       name: NetworkUtils.makeNodeName(
-        'Avalanche_Test',
+        'AvalancheTestnet',
         'api.avax-test.network'
       ),
       type: NodeType.RPC,
