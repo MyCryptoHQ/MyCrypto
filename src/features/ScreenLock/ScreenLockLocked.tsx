@@ -5,7 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import mainImage from '@assets/images/icn-unlock-wallet.svg';
-import { ExtendedContentPanel, InputField, LinkApp } from '@components';
+import { Body, ExtendedContentPanel, InputField, LinkApp } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { AppState, getDecryptionError } from '@store';
 import translate, { translateRaw } from '@translations';
@@ -84,6 +84,12 @@ const ScreenLockLocked = ({ getDecryptionError: decryptErrorRedux }: Props) => {
             inputError={state.passwordError}
             type={'password'}
           />
+          <Body>
+            The Screen Lock feature is being removed. You will not be able to lock MyCrypto again.{' '}
+            <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_SCREEN_LOCK)} isExternal={true}>
+              Read More
+            </LinkApp>
+          </Body>
           <PrimaryButton type="submit">{translate('SCREEN_LOCK_LOCKED_UNLOCK')}</PrimaryButton>
         </FormWrapper>
         <BottomActions>
