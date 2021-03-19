@@ -255,7 +255,7 @@ class EquivalentValues extends React.Component<Props, State> {
           ...Object.keys(rateType).map(rate => {
             const balanceIndex: AllValue = balance[i];
             const value =
-              balanceIndex && !!balanceIndex.balance
+              balanceIndex && !!balanceIndex.balance && rateType[rate] < 0x4000000
                 ? balanceIndex.balance.muln(rateType[rate])
                 : null;
             return { rate, value };
