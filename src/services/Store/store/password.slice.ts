@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { LSKeys } from '@types';
 
@@ -12,16 +12,13 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    set(_, action: PayloadAction<string>) {
-      return action.payload;
-    },
     reset() {
       return initialState;
     }
   }
 });
 
-export const { set: setPassword, reset: resetPassword } = slice.actions;
+export const { reset: resetPassword } = slice.actions;
 
 export const selectPassword = createSelector(getAppState, (s) => s[slice.name]);
 

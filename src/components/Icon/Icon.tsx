@@ -52,7 +52,6 @@ import navHome from '@assets/icons/navigation/home.svg';
 import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
 import navLedger from '@assets/icons/navigation/ledger.svg';
 import navLinkedin from '@assets/icons/navigation/linkedin.svg';
-import navLock from '@assets/icons/navigation/lock.svg';
 import navMedium from '@assets/icons/navigation/medium.svg';
 import navMembership from '@assets/icons/navigation/membership.svg';
 import navMenu from '@assets/icons/navigation/menu.svg';
@@ -236,7 +235,6 @@ const svgIcons = {
   'nav-settings': navSettings,
   'nav-ethereum': navEthereum,
   'nav-bitcoin': navBitcoin,
-  'nav-lock': navLock,
   'nav-membership': navMembership,
   'nav-help': navHelp,
   'nav-new': navNew,

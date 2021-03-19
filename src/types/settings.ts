@@ -6,7 +6,6 @@ export interface ISettings {
   darkMode: boolean;
   dashboardAccounts: TUuid[];
   excludedAssets: TUuid[];
-  inactivityTimer: number;
   node?: string;
   language: string; // @todo: Change to enum
   isDemoMode: boolean;

@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { AnnouncementBanner, Box, Icon } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
-import { ScreenLockContext } from '@features/ScreenLock';
 import { COLORS, SPACING } from '@theme';
 
 import { TopItem } from './components';
@@ -18,8 +17,6 @@ export const TopNav = ({
   isTrayOpen: boolean;
   openTray(): void;
 }) => {
-  const { locked, startLockCountdown } = useContext(ScreenLockContext);
-
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
   const currentPath = isMobile && isTrayOpen ? undefined : current;
 
@@ -55,13 +52,6 @@ export const TopNav = ({
           />
         </>
       )}
-      <TopItem
-        title="NAVIGATION_LOCK"
-        icon="nav-lock"
-        onClick={() => startLockCountdown(true)}
-        current={currentPath !== undefined && locked}
-        color={color}
-      />
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"

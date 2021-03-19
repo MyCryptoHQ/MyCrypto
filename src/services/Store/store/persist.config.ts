@@ -163,11 +163,17 @@ export const migrations = {
       trackedAssets: state.trackedAssets ? state.trackedAssets : [],
       settings: dissoc('rates', state.settings)
     };
+  },
+  5: (state: DataStore) => {
+    return {
+      ...state,
+      settings: dissoc('inactivityTimer', state.settings)
+    };
   }
 };
 
 export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
-  version: 4,
+  version: 5,
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,

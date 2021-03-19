@@ -2812,7 +2812,6 @@ export const DEMO_SETTINGS = {
       '78d42968-6071-5a72-8dd0-9ca4c6c55e83'
     ],
     excludedAssets: [],
-    inactivityTimer: 1800000,
     language: 'en',
     node: 'web3'
   },

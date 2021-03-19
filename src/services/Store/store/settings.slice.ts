@@ -37,9 +37,6 @@ const slice = createSlice({
     setFiat(state, action: PayloadAction<TFiatTicker>) {
       state.fiatCurrency = action.payload;
     },
-    setInactivityTimer(state, action: PayloadAction<number>) {
-      state.inactivityTimer = action.payload;
-    },
     setDemoMode(state, action: PayloadAction<boolean>) {
       state.isDemoMode = action.payload;
     },
@@ -57,7 +54,6 @@ export const {
   setFiat,
   addExcludedAsset,
   removeExcludedAsset,
-  setInactivityTimer,
   setDemoMode,
   setProductAnalyticsAuthorisation
 } = slice.actions;
@@ -72,7 +68,6 @@ export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccoun
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
-export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
 export const canTrackProductAnalytics = createSelector(
   getSettings,

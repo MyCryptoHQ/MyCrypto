@@ -1,5 +1,5 @@
 export { DevToolsManager } from './DevTools';
-export { ScreenLockLocking, ScreenLockProvider, ScreenLockContext } from './ScreenLock';
+export { ScreenLockProvider, ScreenLockContext } from './ScreenLock';
 export { default as PageNotFound } from './PageNotFound';
 export { useNotifications } from './NotificationsPanel';
 export { useToasts } from './Toasts';

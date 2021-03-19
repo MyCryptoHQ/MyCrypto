@@ -11,7 +11,6 @@ import {
   getExcludedAssets,
   getFavorites,
   getFiat,
-  getInactivityTimer,
   getIsDemoMode,
   getLanguage,
   initialState,
@@ -19,7 +18,6 @@ import {
   resetFavoritesTo,
   setDemoMode,
   setFiat,
-  setInactivityTimer,
   setLanguage,
   setProductAnalyticsAuthorisation,
   default as slice
@@ -71,12 +69,6 @@ describe('settingsSlice', () => {
     const fiat = 'EUR' as TFiatTicker;
     const actual = reducer(initialState, setFiat(fiat));
     expect(getFiat(actual)).toEqual(fiat);
-  });
-
-  it('setInactivityTimer(): sets time', () => {
-    const time = 2700000;
-    const actual = reducer(initialState, setInactivityTimer(time));
-    expect(getInactivityTimer(actual)).toEqual(time);
   });
 
   it('addExcludedAsset(), adds uuid to list', () => {

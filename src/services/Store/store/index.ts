@@ -11,7 +11,7 @@ export {
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
 export { createNotification, updateNotification, selectNotifications } from './notification.slice';
-export { setPassword, selectPassword } from './password.slice';
+export { selectPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
@@ -80,8 +80,6 @@ export {
   setLanguage,
   getFiat,
   setFiat,
-  getInactivityTimer,
-  setInactivityTimer,
   setDemoMode,
   getIsDemoMode,
   addAccountsToFavorites,
@@ -92,9 +90,7 @@ export {
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
 export {
-  encrypt,
   decrypt,
-  setEncryptedData,
   clearEncryptedData,
   getDecryptionError,
   getEncryptedData,

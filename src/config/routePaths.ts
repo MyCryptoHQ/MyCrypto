@@ -54,11 +54,6 @@ const PATHS: IRoutePath[] = [
     path: '/request'
   },
   {
-    name: 'SCREEN_LOCK_NEW',
-    title: translateRaw('SCREEN_LOCK_NEW'),
-    path: '/screen-lock/new'
-  },
-  {
     name: 'SCREEN_LOCK_LOCKED',
     title: translateRaw('SCREEN_LOCK_LOCKED'),
     path: '/screen-lock/locked'
