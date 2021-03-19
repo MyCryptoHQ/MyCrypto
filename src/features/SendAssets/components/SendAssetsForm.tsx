@@ -666,6 +666,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             onChange={(e) => {
               setFieldValue('amount', e.target.value);
             }}
+            disabled={isSendMax}
             asset={values.asset}
             value={values.amount}
             onBlur={() => {
