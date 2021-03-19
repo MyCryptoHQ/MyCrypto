@@ -36,4 +36,6 @@ export type NetworkId =
   | 'MATIC'
   | 'xDAI'
   | 'SmartChain'
-  | 'SmartChainTestNetwork';
+  | 'SmartChainTestNetwork'
+  | 'Avalanche'
+  | 'AvalancheTestnet';

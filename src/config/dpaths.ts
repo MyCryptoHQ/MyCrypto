@@ -176,6 +176,11 @@ const EWC_DEFAULT: DPath = {
   value: "m/44'/246'/0'/0"
 };
 
+const AVAX_DEFAULT: DPath = {
+  label: 'Default (AVAX)',
+  value: "m/44'/60'/0'/0"
+};
+
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -211,7 +216,8 @@ export const DPathsList = {
   ETH_SINGULAR,
   ERE_DEFAULT,
   VOLTA_DEFAULT,
-  EWC_DEFAULT
+  EWC_DEFAULT,
+  AVAX_DEFAULT
 };
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

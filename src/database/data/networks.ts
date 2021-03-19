@@ -1005,5 +1005,63 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 60,
       initial: 20
     }
+  },
+  Avalanche: {
+    id: 'Avalanche',
+    name: 'Avalanche C-Chain',
+    unit: 'AVAX' as TTicker,
+    chainId: 43114,
+    isCustom: false,
+    color: '#a70518',
+    blockExplorer: makeExplorer({
+      name: 'Avalanche C-Chain Explorer',
+      origin: 'https://cchain.explorer.avax.network/',
+      addressPath: 'address',
+      blockPath: 'blocks',
+      txPath: 'tx'
+    }),
+    isTestnet: false,
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.AVAX_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.AVAX_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.AVAX_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.AVAX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 10,
+      max: 470,
+      initial: 470
+    }
+  },
+  AvalancheTestnet: {
+    id: 'AvalancheTestnet',
+    name: 'Avalanche C-Chain Testnet',
+    unit: 'AVAX' as TTicker,
+    chainId: 43113,
+    isCustom: false,
+    color: '#a70518',
+    blockExplorer: makeExplorer({
+      name: 'Avalanche C-Chain Explorer',
+      origin: 'https://cchain.explorer.avax-test.network/',
+      addressPath: 'address',
+      blockPath: 'blocks',
+      txPath: 'tx'
+    }),
+    isTestnet: true,
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.AVAX_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.AVAX_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.AVAX_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.AVAX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 10,
+      max: 470,
+      initial: 470
+    }
   }
 };
