@@ -120,8 +120,6 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
           const pendingTxReceipt = makePendingTxReceipt(
             retrievedTransactionReceipt.hash as ITxHash
