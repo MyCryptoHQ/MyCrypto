@@ -149,12 +149,14 @@ function TransactionDetailsDisplay({
                 <EthAddress address={sender.address} truncate={true} disableTooltip={true} />
               </div>
             </div>
-            <div className="TransactionDetails-row border">
-              <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
-              <div className="TransactionDetails-row-column">
-                <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+            {recipient && (
+              <div className="TransactionDetails-row border">
+                <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
+                <div className="TransactionDetails-row-column">
+                  <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+                </div>
               </div>
-            </div>
+            )}
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('SEND_AMOUNT')}:</div>
               <div className="TransactionDetails-row-column">{`${bigify(assetAmount).toFixed(6)} ${

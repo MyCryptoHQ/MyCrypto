@@ -83,11 +83,11 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   const txReceipt = {
     hash: txHash,
     from: getAddress(txConfig.from) as TAddress,
-    receiverAddress: getAddress(txConfig.receiverAddress) as TAddress,
+    receiverAddress: (txConfig.receiverAddress && getAddress(txConfig.receiverAddress)) as TAddress,
     gasLimit: BigNumber.from(gasLimit),
     gasPrice: BigNumber.from(gasPrice),
     value: BigNumber.from(txConfig.rawTransaction.value),
-    to: getAddress(txConfig.rawTransaction.to) as TAddress,
+    to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
 
     status,
     amount,
