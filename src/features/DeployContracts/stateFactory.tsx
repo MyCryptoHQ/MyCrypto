@@ -10,7 +10,7 @@ import { makePendingTxReceipt } from '@helpers';
 import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
-import { addHexPrefix, bigify, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { inputGasLimitToHex, inputNonceToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
 import { DeployContractsState } from './types';
@@ -71,7 +71,8 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
 
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = addHexPrefix(bigify(gasLimit).toString(16));
+    transaction.gasLimit = inputGasLimitToHex(gasLimit);
+    transaction.nonce = inputNonceToHex(nonce);
     delete transaction.from;
 
     const txConfig = makeDeployContractTxConfig(transaction, account, '0');
