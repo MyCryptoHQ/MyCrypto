@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Atoms/Button Button 1`] = `
+exports[` Storyshots Atoms/Button Button 1`] = `
 <button
   className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm"
   type="button"
@@ -17,7 +17,7 @@ exports[`Storyshots Atoms/Button Button 1`] = `
 </button>
 `;
 
-exports[`Storyshots Atoms/Icon Edit 1`] = `
+exports[` Storyshots Atoms/Icon Edit 1`] = `
 <svg
   className="Icon__SInlineSVG-tq1i3y-0 jyVzxj"
   fill="linkAction"
@@ -25,7 +25,7 @@ exports[`Storyshots Atoms/Icon Edit 1`] = `
 />
 `;
 
-exports[`Storyshots Atoms/Icon Expandable Closed 1`] = `
+exports[` Storyshots Atoms/Icon Expandable Closed 1`] = `
 <svg
   className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 iedUKU"
   id="test-file-stub"
@@ -33,7 +33,7 @@ exports[`Storyshots Atoms/Icon Expandable Closed 1`] = `
 />
 `;
 
-exports[`Storyshots Atoms/Icon Expandable Open 1`] = `
+exports[` Storyshots Atoms/Icon Expandable Open 1`] = `
 <svg
   className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 dsfHMM"
   id="test-file-stub"
@@ -41,7 +41,7 @@ exports[`Storyshots Atoms/Icon Expandable Open 1`] = `
 />
 `;
 
-exports[`Storyshots Atoms/Icon Filter 1`] = `
+exports[` Storyshots Atoms/Icon Filter 1`] = `
 <svg
   className="Icon__SInlineSVG-tq1i3y-0 Icon__SSortIcon-tq1i3y-4 cscQPW"
   fill="linkAction"
@@ -49,7 +49,7 @@ exports[`Storyshots Atoms/Icon Filter 1`] = `
 />
 `;
 
-exports[`Storyshots Atoms/LinkApp Opacity Link 1`] = `
+exports[` Storyshots Atoms/LinkApp Opacity Link 1`] = `
 <a
   className="LinkApp__SRouterLink-sc-275gt9-1 UZFth"
   href="/"
@@ -65,7 +65,7 @@ exports[`Storyshots Atoms/LinkApp Opacity Link 1`] = `
 </a>
 `;
 
-exports[`Storyshots Atoms/Switch Switch 1`] = `
+exports[` Storyshots Atoms/Switch Switch 1`] = `
 <div
   className="Box-sc-1974eaf-0 ljBdCD"
 >
@@ -101,7 +101,7 @@ exports[`Storyshots Atoms/Switch Switch 1`] = `
 </div>
 `;
 
-exports[`Storyshots Atoms/Text Default 1`] = `
+exports[` Storyshots Atoms/Text Default 1`] = `
 <p
   className="Text__SText-sc-14ylyin-0 Ueu"
 >
@@ -109,7 +109,7 @@ exports[`Storyshots Atoms/Text Default 1`] = `
 </p>
 `;
 
-exports[`Storyshots Atoms/Text Truncate 1`] = `
+exports[` Storyshots Atoms/Text Truncate 1`] = `
 <p
   className="Text__SText-sc-14ylyin-0 Ueu"
 >
@@ -117,7 +117,7 @@ exports[`Storyshots Atoms/Text Truncate 1`] = `
 </p>
 `;
 
-exports[`Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
+exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
 <div
   className="sb-container"
   style={
@@ -268,7 +268,7 @@ exports[`Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/AddAccount/Hardware Trezor Unlock UI 1`] = `
+exports[` Storyshots Features/AddAccount/Hardware Trezor Unlock UI 1`] = `
 <div
   className="sb-container"
   style={
@@ -410,7 +410,7 @@ exports[`Storyshots Features/AddAccount/Hardware Trezor Unlock UI 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/AddAccount/Web3ProviderInstall Mobile 1`] = `
+exports[` Storyshots Features/AddAccount/Web3ProviderInstall Mobile 1`] = `
 <div
   className="sb-container"
   style={
@@ -563,7 +563,7 @@ exports[`Storyshots Features/AddAccount/Web3ProviderInstall Mobile 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/AddAccount/Web3Unlock Web 3 Unlock 1`] = `
+exports[` Storyshots Features/AddAccount/Web3Unlock Web 3 Unlock 1`] = `
 <div
   className="sb-container"
   style={
@@ -684,7 +684,7 @@ exports[`Storyshots Features/AddAccount/Web3Unlock Web 3 Unlock 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmSwap EthToDai 1`] = `
+exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
 <div
   className="ConfirmTransaction__ConfirmTransactionWrapper-sc-1hu9kp8-0 fijNgY"
 >
@@ -1187,7 +1187,7 @@ exports[`Storyshots Features/ConfirmSwap EthToDai 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmSwapMultiTx Dai To Eth 1`] = `
+exports[` Storyshots Features/ConfirmSwapMultiTx Dai To Eth 1`] = `
 <div>
   <p
     className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -1425,7 +1425,7 @@ exports[`Storyshots Features/ConfirmSwapMultiTx Dai To Eth 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmSwapMultiTx Dai To Eth Step 2 1`] = `
+exports[` Storyshots Features/ConfirmSwapMultiTx Dai To Eth Step 2 1`] = `
 <div>
   <p
     className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -1641,7 +1641,7 @@ exports[`Storyshots Features/ConfirmSwapMultiTx Dai To Eth Step 2 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
+exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
 <div
   className="sb-container"
   style={
@@ -2022,7 +2022,7 @@ exports[`Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
+exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
 <div
   className="sb-container"
   style={
@@ -2550,7 +2550,7 @@ exports[`Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
+exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
 <div
   className="sb-container"
   style={
@@ -3013,7 +3013,7 @@ exports[`Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
+exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
 <div
   className="sb-container"
   style={
@@ -3538,7 +3538,7 @@ exports[`Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
+exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
 <div
   className="sb-container"
   style={
@@ -3978,7 +3978,7 @@ exports[`Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
+exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
 <div
   className="sb-container"
   style={
@@ -4357,7 +4357,7 @@ exports[`Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
+exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
 <div
   className="sb-container"
   style={
@@ -5012,7 +5012,7 @@ exports[`Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction Step 1 - Mobile 1`] = `
+exports[` Storyshots Features/ProtectTransaction Step 1 - Mobile 1`] = `
 <div
   style={
     Object {
@@ -5302,7 +5302,7 @@ exports[`Storyshots Features/ProtectTransaction Step 1 - Mobile 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction Step 1 - Web 3 1`] = `
+exports[` Storyshots Features/ProtectTransaction Step 1 - Web 3 1`] = `
 <div
   style={
     Object {
@@ -5580,7 +5580,7 @@ exports[`Storyshots Features/ProtectTransaction Step 1 - Web 3 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction Step 1 1`] = `
+exports[` Storyshots Features/ProtectTransaction Step 1 1`] = `
 <div
   style={
     Object {
@@ -5845,7 +5845,7 @@ exports[`Storyshots Features/ProtectTransaction Step 1 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction Step 2 1`] = `
+exports[` Storyshots Features/ProtectTransaction Step 2 1`] = `
 <div
   style={
     Object {
@@ -5992,7 +5992,7 @@ exports[`Storyshots Features/ProtectTransaction Step 2 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Abort Abort transaction 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Abort Abort transaction 1`] = `
 <div
   style={
     Object {
@@ -6053,7 +6053,7 @@ exports[`Storyshots Features/ProtectTransaction/Abort Abort transaction 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Button Protect transaction button 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Button Protect transaction button 1`] = `
 <div
   style={
     Object {
@@ -6123,7 +6123,7 @@ exports[`Storyshots Features/ProtectTransaction/Button Protect transaction butto
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Button Protect transaction button protected 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Button Protect transaction button protected 1`] = `
 <div
   style={
     Object {
@@ -6193,7 +6193,7 @@ exports[`Storyshots Features/ProtectTransaction/Button Protect transaction butto
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Loading 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Loading 1`] = `
 <div
   style={
     Object {
@@ -6335,7 +6335,7 @@ exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Loading 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
 <div
   style={
     Object {
@@ -6950,7 +6950,7 @@ exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
 <div
   style={
     Object {
@@ -7565,7 +7565,7 @@ exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = `
+exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = `
 <div
   style={
     Object {
@@ -8180,7 +8180,7 @@ exports[`Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ScreenLock Forgot Password 1`] = `
+exports[` Storyshots Features/ScreenLock Forgot Password 1`] = `
 <div
   className="sb-container"
   style={
@@ -8264,7 +8264,7 @@ exports[`Storyshots Features/ScreenLock Forgot Password 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/ScreenLock Locked 1`] = `
+exports[` Storyshots Features/ScreenLock Locked 1`] = `
 <div
   className="sb-container"
   style={
@@ -8381,7 +8381,7 @@ exports[`Storyshots Features/ScreenLock Locked 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/SignTransaction/Hardware Hardware Wallet UI 1`] = `
+exports[` Storyshots Features/SignTransaction/Hardware Hardware Wallet UI 1`] = `
 <div
   className="sb-container"
   style={
@@ -8503,7 +8503,7 @@ exports[`Storyshots Features/SignTransaction/Hardware Hardware Wallet UI 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/SignTransaction/Web3 Sign Transaction Web 3 1`] = `
+exports[` Storyshots Features/SignTransaction/Web3 Sign Transaction Web 3 1`] = `
 <div
   className="sb-container"
   style={
@@ -8615,7 +8615,7 @@ exports[`Storyshots Features/SignTransaction/Web3 Sign Transaction Web 3 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceipt 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
 <div
   className="sb-container"
   style={
@@ -8981,7 +8981,7 @@ exports[`Storyshots Features/TxReceipt TxReceipt 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -9075,7 +9075,7 @@ exports[`Storyshots Features/TxReceipt TxReceipt 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
 <div
   className="sb-container"
   style={
@@ -9548,7 +9548,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -9655,7 +9655,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
 <div
   className="sb-container"
   style={
@@ -10082,7 +10082,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -10176,7 +10176,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
 <div
   className="sb-container"
   style={
@@ -10624,7 +10624,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -10718,7 +10718,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptPending 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
 <div
   className="sb-container"
   style={
@@ -11101,7 +11101,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptPending 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -11245,7 +11245,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptPending 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
 <div
   className="sb-container"
   style={
@@ -11747,7 +11747,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -11841,7 +11841,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
 </div>
 `;
 
-exports[`Storyshots Features/TxReceipt TxReceiptToken 1`] = `
+exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
 <div
   className="sb-container"
   style={
@@ -12266,7 +12266,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptToken 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                3/3/2020, 9:11:31 PM
+                2020-03-03T20:11:31.000Z
               </span>
             </div>
           </span>
@@ -12382,7 +12382,7 @@ exports[`Storyshots Features/TxReceipt TxReceiptToken 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/AmountInput With Placeholder 1`] = `
+exports[` Storyshots Molecules/AmountInput With Placeholder 1`] = `
 <div
   className="sc-fzozJi bNgZvS"
 >
@@ -12416,7 +12416,7 @@ exports[`Storyshots Molecules/AmountInput With Placeholder 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/AmountInput With Text 1`] = `
+exports[` Storyshots Molecules/AmountInput With Text 1`] = `
 <div
   className="sc-fzozJi bNgZvS"
 >
@@ -12449,7 +12449,7 @@ exports[`Storyshots Molecules/AmountInput With Text 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Banner Announcement 1`] = `
+exports[` Storyshots Molecules/Banner Announcement 1`] = `
 <div
   className="Banner__Container-sc-12319m8-0 ejfdKa"
 >
@@ -12471,7 +12471,7 @@ exports[`Storyshots Molecules/Banner Announcement 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/ContractLookupField Default State 1`] = `
+exports[` Storyshots Molecules/ContractLookupField Default State 1`] = `
 <div
   className="sb-container"
   style={
@@ -12593,7 +12593,7 @@ exports[`Storyshots Molecules/ContractLookupField Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Currency Default State 1`] = `
+exports[` Storyshots Molecules/Currency Default State 1`] = `
 <div
   className="sb-container"
 >
@@ -12738,7 +12738,7 @@ exports[`Storyshots Molecules/Currency Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/DemoGatewayBanner Default State 1`] = `
+exports[` Storyshots Molecules/DemoGatewayBanner Default State 1`] = `
 <div
   className="sb-container"
   style={
@@ -12774,7 +12774,7 @@ exports[`Storyshots Molecules/DemoGatewayBanner Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/EditableText Placeholder 1`] = `
+exports[` Storyshots Molecules/EditableText Placeholder 1`] = `
 <div
   className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
   height="100%"
@@ -12794,7 +12794,7 @@ exports[`Storyshots Molecules/EditableText Placeholder 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/EditableText Truncate 1`] = `
+exports[` Storyshots Molecules/EditableText Truncate 1`] = `
 <div
   className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
   height="100%"
@@ -12814,7 +12814,7 @@ exports[`Storyshots Molecules/EditableText Truncate 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/EditableText Value 1`] = `
+exports[` Storyshots Molecules/EditableText Value 1`] = `
 <div
   className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
   height="100%"
@@ -12834,7 +12834,7 @@ exports[`Storyshots Molecules/EditableText Value 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/GeneralLookupField Default State 1`] = `
+exports[` Storyshots Molecules/GeneralLookupField Default State 1`] = `
 <div
   className="sb-container"
   style={
@@ -12956,7 +12956,7 @@ exports[`Storyshots Molecules/GeneralLookupField Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/GeneralStepper General Stepper 1`] = `
+exports[` Storyshots Molecules/GeneralStepper General Stepper 1`] = `
 <div
   className="ContentPanel__ContentPanelWrapper-sc-1hs9w0m-0 mjSTH"
   width={650}
@@ -13013,7 +13013,7 @@ exports[`Storyshots Molecules/GeneralStepper General Stepper 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/MobileNavBar Settings nav bar 1`] = `
+exports[` Storyshots Molecules/MobileNavBar Settings nav bar 1`] = `
 <div
   className="sb-container"
   style={
@@ -13061,7 +13061,7 @@ exports[`Storyshots Molecules/MobileNavBar Settings nav bar 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Get Hardware Wallet Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Get Hardware Wallet Notification 1`] = `
 <div
   style={
     Object {
@@ -13145,7 +13145,7 @@ exports[`Storyshots Molecules/Notifications Get Hardware Wallet Notification 1`]
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Onboarding Please Understand Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Onboarding Please Understand Notification 1`] = `
 <div
   style={
     Object {
@@ -13250,7 +13250,7 @@ exports[`Storyshots Molecules/Notifications Onboarding Please Understand Notific
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Onboarding Responsible Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Onboarding Responsible Notification 1`] = `
 <div
   style={
     Object {
@@ -13411,7 +13411,7 @@ exports[`Storyshots Molecules/Notifications Onboarding Responsible Notification 
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Save Dashboard Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Save Dashboard Notification 1`] = `
 <div
   style={
     Object {
@@ -13482,7 +13482,7 @@ exports[`Storyshots Molecules/Notifications Save Dashboard Notification 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Wallet Added Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Wallet Added Notification 1`] = `
 <div
   style={
     Object {
@@ -13586,7 +13586,7 @@ exports[`Storyshots Molecules/Notifications Wallet Added Notification 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Wallet Created Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Wallet Created Notification 1`] = `
 <div
   style={
     Object {
@@ -13690,7 +13690,7 @@ exports[`Storyshots Molecules/Notifications Wallet Created Notification 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Notifications Wallet Not Added Notification 1`] = `
+exports[` Storyshots Molecules/Notifications Wallet Not Added Notification 1`] = `
 <div
   style={
     Object {
@@ -13785,7 +13785,7 @@ exports[`Storyshots Molecules/Notifications Wallet Not Added Notification 1`] = 
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
+exports[` Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
 <div
   className="sb-container"
   style={
@@ -13844,7 +13844,7 @@ exports[`Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/AccountSelector Selector 1`] = `
+exports[` Storyshots Molecules/Selectors/AccountSelector Selector 1`] = `
 <div
   className="sb-container"
 >
@@ -14055,7 +14055,7 @@ exports[`Storyshots Molecules/Selectors/AccountSelector Selector 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/AssetSelector Selector 1`] = `
+exports[` Storyshots Molecules/Selectors/AssetSelector Selector 1`] = `
 <div
   style={
     Object {
@@ -14870,7 +14870,7 @@ exports[`Storyshots Molecules/Selectors/AssetSelector Selector 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/MembershipSelector Dropdown Item 1`] = `
+exports[` Storyshots Molecules/Selectors/MembershipSelector Dropdown Item 1`] = `
 <div
   className="sb-container"
   style={
@@ -14903,7 +14903,7 @@ exports[`Storyshots Molecules/Selectors/MembershipSelector Dropdown Item 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/MembershipSelector Selector 1`] = `
+exports[` Storyshots Molecules/Selectors/MembershipSelector Selector 1`] = `
 <div
   className="sb-container"
   style={
@@ -14974,7 +14974,7 @@ exports[`Storyshots Molecules/Selectors/MembershipSelector Selector 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/NetworkNodes Empty 1`] = `
+exports[` Storyshots Molecules/Selectors/NetworkNodes Empty 1`] = `
 <div
   className="sb-container"
   style={
@@ -15041,7 +15041,7 @@ exports[`Storyshots Molecules/Selectors/NetworkNodes Empty 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/NetworkNodes Some networks 1`] = `
+exports[` Storyshots Molecules/Selectors/NetworkNodes Some networks 1`] = `
 <div
   className="sb-container"
   style={
@@ -15394,7 +15394,7 @@ exports[`Storyshots Molecules/Selectors/NetworkNodes Some networks 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/NetworkNodesDropdown Select 1`] = `
+exports[` Storyshots Molecules/Selectors/NetworkNodesDropdown Select 1`] = `
 <div
   className="sb-container"
   style={
@@ -15509,7 +15509,7 @@ exports[`Storyshots Molecules/Selectors/NetworkNodesDropdown Select 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/Selectors/NetworkNodesDropdown Select with add 1`] = `
+exports[` Storyshots Molecules/Selectors/NetworkNodesDropdown Select with add 1`] = `
 <div
   className="sb-container"
   style={
@@ -15624,7 +15624,7 @@ exports[`Storyshots Molecules/Selectors/NetworkNodesDropdown Select with add 1`]
 </div>
 `;
 
-exports[`Storyshots Molecules/UndoDeleteOverlay Desktop 1`] = `
+exports[` Storyshots Molecules/UndoDeleteOverlay Desktop 1`] = `
 <div
   style={
     Object {
@@ -15675,7 +15675,7 @@ exports[`Storyshots Molecules/UndoDeleteOverlay Desktop 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/UndoDeleteOverlay Mobile 1`] = `
+exports[` Storyshots Molecules/UndoDeleteOverlay Mobile 1`] = `
 <div
   style={
     Object {
@@ -15726,7 +15726,7 @@ exports[`Storyshots Molecules/UndoDeleteOverlay Mobile 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/WalletButton Default State 1`] = `
+exports[` Storyshots Molecules/WalletButton Default State 1`] = `
 <div
   className="WalletButton__WalletButtonWrapper-sc-1nn21nf-0 bjDeHt"
   onClick={[Function]}
@@ -15744,7 +15744,7 @@ exports[`Storyshots Molecules/WalletButton Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Molecules/WalletButton Disabled State 1`] = `
+exports[` Storyshots Molecules/WalletButton Disabled State 1`] = `
 <span
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -15767,7 +15767,7 @@ exports[`Storyshots Molecules/WalletButton Disabled State 1`] = `
 </span>
 `;
 
-exports[`Storyshots Organisms/AccountList Desktop 1`] = `
+exports[` Storyshots Organisms/AccountList Desktop 1`] = `
 <section
   className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe AccountList__SDashboardPanel-u5emqg-0 bTlZCq AccountList undefined"
   data-testid="account-list"
@@ -16933,7 +16933,7 @@ exports[`Storyshots Organisms/AccountList Desktop 1`] = `
 </section>
 `;
 
-exports[`Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
+exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
 <div
   className="Box-sc-1974eaf-0 fTswyL"
   overflow="auto"
@@ -17925,7 +17925,7 @@ exports[`Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
 </div>
 `;
 
-exports[`Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
+exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
 <div
   className="Box-sc-1974eaf-0 fTswyL"
   overflow="auto"
@@ -18745,7 +18745,7 @@ exports[`Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
 </div>
 `;
 
-exports[`Storyshots Organisms/MembershipPanel Default State 1`] = `
+exports[` Storyshots Organisms/MembershipPanel Default State 1`] = `
 <section
   className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe MembershipPanel__SDashboardPanel-h1muqn-0 gYJuCq"
 >
@@ -18803,7 +18803,7 @@ exports[`Storyshots Organisms/MembershipPanel Default State 1`] = `
 </section>
 `;
 
-exports[`Storyshots Organisms/VerticalStepper Default State 1`] = `
+exports[` Storyshots Organisms/VerticalStepper Default State 1`] = `
 <div
   className="rc-steps rc-steps-vertical"
   style={Object {}}
@@ -19005,7 +19005,7 @@ exports[`Storyshots Organisms/VerticalStepper Default State 1`] = `
 </div>
 `;
 
-exports[`Storyshots Organisms/VerticalStepper Large State 1`] = `
+exports[` Storyshots Organisms/VerticalStepper Large State 1`] = `
 <div
   className="rc-steps rc-steps-vertical"
   style={Object {}}
