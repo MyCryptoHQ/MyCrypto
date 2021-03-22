@@ -1,11 +1,19 @@
 import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
-import { MEMBERSHIP_CONTRACTS, MembershipStatus } from '@features/PurchaseMembership/config';
-import { getMembershipContracts } from '@features/PurchaseMembership/helpers';
+import {
+  MEMBERSHIP_CONFIG,
+  MEMBERSHIP_CONTRACTS,
+  MembershipStatus
+} from '@features/PurchaseMembership/config';
 import { ProviderHandler } from '@services/EthService/';
 import { Bigish, Network, NetworkId, TAddress } from '@types';
 import { bigify } from '@utils';
 import { mapObjIndexed, pickBy, pipe, toString } from '@vendor';
+
+export const getMembershipContracts = (membershipNetworkId: NetworkId) =>
+  Object.values(MEMBERSHIP_CONFIG)
+    .filter(({ networkId }) => networkId === membershipNetworkId)
+    .map((membership) => membership.contractAddress);
 
 const isSafeInt = (bn: Bigish) => bn.isLessThanOrEqualTo(bigify(Number.MAX_SAFE_INTEGER));
 
