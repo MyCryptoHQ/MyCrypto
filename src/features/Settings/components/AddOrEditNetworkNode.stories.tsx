@@ -23,13 +23,13 @@ const defaultProps = {
   isAddingCustomNetwork: false
 };
 
-const AddNetworkNode = Template.bind({});
+export const AddNetworkNode = Template.bind({});
 AddNetworkNode.storyName = 'AddNetworkNode';
 AddNetworkNode.args = {
   ...defaultProps
 };
 
-const EditNetworkNode = Template.bind({});
+export const EditNetworkNode = Template.bind({});
 EditNetworkNode.storyName = 'EditNetworkNode';
 EditNetworkNode.args = {
   ...defaultProps,
