@@ -34,7 +34,7 @@ const defaultProps = {
   baseAssetRate: 1.34,
   senderContact: Object.values(fContacts)[0] as ExtendedContact,
   recipientContact: Object.values(fContacts)[1] as ExtendedContact,
-  fTxConfig: fTxConfig,
+  txConfig: fTxConfig,
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   fiat: Fiats.USD,
   resetFlow: noOp,
