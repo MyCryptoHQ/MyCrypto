@@ -684,6 +684,911 @@ exports[` Storyshots Features/AddAccount/Web3Unlock Web 3 Unlock 1`] = `
 </div>
 `;
 
+exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
+<div
+  className="sb-container"
+  style={
+    Object {
+      "maxWidth": "800px",
+    }
+  }
+>
+  <section
+    className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe AddOrEditNetworkNode__AddToNetworkNodePanel-a4clrp-0 gRSmnZ"
+  >
+    <div
+      className="Box-sc-1974eaf-0 dexmhU"
+    >
+      <h1
+        className="sc-AxjAm sc-AxheI DashboardPanel__DHeading-sc-1ws9ecc-3 bpExTa"
+      >
+        <button
+          className="sc-AxjAm sc-AxhUy iHFhvK AddOrEditNetworkNode__BackButton-a4clrp-1 kloGaK"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt="Back"
+            src="test-file-stub"
+          />
+        </button>
+        Add custom node
+      </h1>
+    </div>
+    <div
+      className="DashboardPanel__Content-sc-1ws9ecc-0 dZEhyJ"
+    >
+      <div
+        className="AddOrEditNetworkNode__Row-a4clrp-2 AddOrEditNetworkNode__SubtitleRow-a4clrp-3 kJsams"
+      >
+        <div
+          className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+        >
+          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can 
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+            href="https://github.com/MyCryptoHQ/MyCrypto/releases/latest"
+            rel="noreferrer"
+            target="_blank"
+          >
+            download the MyCrypto repo & run it locally
+          </a>
+           to connect to any node. Or, get a free SSL certificate via 
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+            href="https://letsencrypt.org/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            LetsEncrypt
+          </a>
+          .
+        </div>
+      </div>
+      <form
+        action="#"
+        onReset={[Function]}
+        onSubmit={[Function]}
+      >
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="name"
+              >
+                Node name
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="name"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Node name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <div
+                className="AddOrEditNetworkNode__SNetworkSelector-a4clrp-7 jUcMOl"
+              >
+                <label
+                  className="NetworkSelector__SLabel-jjnf4v-0 gAMqny"
+                  htmlFor="network"
+                >
+                  Network
+                   
+                </label>
+                <div
+                  className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
+                  data-testid="selector"
+                >
+                  <div
+                    className=" css-2b097c-container"
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className=" css-r290gg-control"
+                      onMouseDown={[Function]}
+                      onTouchEnd={[Function]}
+                    >
+                      <div
+                        className=" css-11st0zx-ValueContainer"
+                      >
+                        <div
+                          className="css-15rv5im-Input"
+                        >
+                          <div
+                            className=""
+                            style={
+                              Object {
+                                "display": "inline-block",
+                              }
+                            }
+                          >
+                            <input
+                              aria-autocomplete="list"
+                              autoCapitalize="none"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              disabled={false}
+                              id="network"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              spellCheck="false"
+                              style={
+                                Object {
+                                  "background": 0,
+                                  "border": 0,
+                                  "boxSizing": "content-box",
+                                  "color": "inherit",
+                                  "fontSize": "inherit",
+                                  "label": "input",
+                                  "opacity": 1,
+                                  "outline": 0,
+                                  "padding": 0,
+                                  "width": "1px",
+                                }
+                              }
+                              tabIndex="0"
+                              type="text"
+                              value=""
+                            />
+                            <div
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "left": 0,
+                                  "overflow": "scroll",
+                                  "position": "absolute",
+                                  "top": 0,
+                                  "visibility": "hidden",
+                                  "whiteSpace": "pre",
+                                }
+                              }
+                            >
+                              
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="Box-sc-1974eaf-0 bCSxii"
+                          data-testid="network-selector-option-Ethereum"
+                          display="flex"
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="Text__SText-sc-14ylyin-0 Ueu"
+                          >
+                            Ethereum
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        className=" css-1hb7zxy-IndicatorsContainer"
+                      >
+                        <div
+                          aria-hidden="true"
+                          className=" css-tlfecz-indicatorContainer"
+                          onMouseDown={[Function]}
+                          onTouchEnd={[Function]}
+                        >
+                          <svg
+                            className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 fkpmE"
+                            fill="linkAction"
+                            id="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      name="network"
+                      type="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="url"
+              >
+                Node address
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="url"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Enter the address"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 zUEnY"
+          >
+            <div
+              className="Checkbox__SContainer-rxppxn-0 elKrFG AddOrEditNetworkNode__SCheckbox-a4clrp-8 wkScA"
+              onClick={[Function]}
+            >
+              <label
+                className="Checkbox__SLabel-rxppxn-1 iJMKsN"
+                htmlFor="auth"
+              >
+                <input
+                  checked={false}
+                  data-for="hidden-checkbox"
+                  name="auth"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  data-for="custom-checkbox"
+                />
+              </label>
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "marginLeft": "15px",
+                  }
+                }
+              >
+                <div
+                  className="Checkbox__SLabelContainer-rxppxn-3 kwYYTG"
+                >
+                  <p
+                    className="sc-AxjAm eLvtfo"
+                    style={
+                      Object {
+                        "fontSize": "1em",
+                        "margin": 0,
+                      }
+                    }
+                  >
+                    HTTP Basic Authentication
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 jHkyBp"
+          hidden={true}
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="username"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Your username"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__ReferralLink-a4clrp-11 efyRUm"
+          >
+            Want a node of your own? 
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Get started with QuikNode
+            </a>
+            .
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <div
+              className="AddOrEditNetworkNode__NetworkNodeFieldsButtons-a4clrp-6 fRGKsz"
+            >
+              <button
+                className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm"
+                type="submit"
+              >
+                <div
+                  className="Button__Wrapper-sc-1fs4nba-0 fijKrm"
+                >
+                  <span
+                    className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                  >
+                    Save & use custom node
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 jHkyBp"
+          hidden={true}
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <div
+              className="AddOrEditNetworkNode__SError-a4clrp-9 ZLTAX"
+            >
+              Could not connect to node! Please check if node is up and running.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+`;
+
+exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
+<div
+  className="sb-container"
+  style={
+    Object {
+      "maxWidth": "800px",
+    }
+  }
+>
+  <section
+    className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe AddOrEditNetworkNode__AddToNetworkNodePanel-a4clrp-0 gRSmnZ"
+  >
+    <div
+      className="Box-sc-1974eaf-0 dexmhU"
+    >
+      <h1
+        className="sc-AxjAm sc-AxheI DashboardPanel__DHeading-sc-1ws9ecc-3 bpExTa"
+      >
+        <button
+          className="sc-AxjAm sc-AxhUy iHFhvK AddOrEditNetworkNode__BackButton-a4clrp-1 kloGaK"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt="Back"
+            src="test-file-stub"
+          />
+        </button>
+        Edit custom node
+      </h1>
+    </div>
+    <div
+      className="DashboardPanel__Content-sc-1ws9ecc-0 dZEhyJ"
+    >
+      <div
+        className="AddOrEditNetworkNode__Row-a4clrp-2 AddOrEditNetworkNode__SubtitleRow-a4clrp-3 kJsams"
+      >
+        <div
+          className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+        >
+          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can 
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+            href="https://github.com/MyCryptoHQ/MyCrypto/releases/latest"
+            rel="noreferrer"
+            target="_blank"
+          >
+            download the MyCrypto repo & run it locally
+          </a>
+           to connect to any node. Or, get a free SSL certificate via 
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+            href="https://letsencrypt.org/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            LetsEncrypt
+          </a>
+          .
+        </div>
+      </div>
+      <form
+        action="#"
+        onReset={[Function]}
+        onSubmit={[Function]}
+      >
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="name"
+              >
+                Node name
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="name"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Node name"
+                    type="text"
+                    value="Custom node 1"
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <div
+                className="AddOrEditNetworkNode__SNetworkSelector-a4clrp-7 jUcMOl"
+              >
+                <label
+                  className="NetworkSelector__SLabel-jjnf4v-0 gAMqny"
+                  htmlFor="network"
+                >
+                  Network
+                   
+                </label>
+                <div
+                  className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
+                  data-testid="selector"
+                >
+                  <div
+                    className=" css-14jk2my-container"
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className=" css-1b572dm-control"
+                      onMouseDown={[Function]}
+                      onTouchEnd={[Function]}
+                    >
+                      <div
+                        className=" css-11st0zx-ValueContainer"
+                      >
+                        <div
+                          className="css-15rv5im-Input"
+                        >
+                          <div
+                            className=""
+                            style={
+                              Object {
+                                "display": "inline-block",
+                              }
+                            }
+                          >
+                            <input
+                              aria-autocomplete="list"
+                              autoCapitalize="none"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              disabled={true}
+                              id="network"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              spellCheck="false"
+                              style={
+                                Object {
+                                  "background": 0,
+                                  "border": 0,
+                                  "boxSizing": "content-box",
+                                  "color": "inherit",
+                                  "fontSize": "inherit",
+                                  "label": "input",
+                                  "opacity": 1,
+                                  "outline": 0,
+                                  "padding": 0,
+                                  "width": "1px",
+                                }
+                              }
+                              tabIndex="0"
+                              type="text"
+                              value=""
+                            />
+                            <div
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "left": 0,
+                                  "overflow": "scroll",
+                                  "position": "absolute",
+                                  "top": 0,
+                                  "visibility": "hidden",
+                                  "whiteSpace": "pre",
+                                }
+                              }
+                            >
+                              
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="Box-sc-1974eaf-0 bCSxii"
+                          data-testid="network-selector-option-Ethereum"
+                          display="flex"
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="Text__SText-sc-14ylyin-0 Ueu"
+                          >
+                            Ethereum
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        className=" css-1hb7zxy-IndicatorsContainer"
+                      >
+                        <div
+                          aria-hidden="true"
+                          className=" css-tlfecz-indicatorContainer"
+                          onMouseDown={[Function]}
+                          onTouchEnd={[Function]}
+                        >
+                          <svg
+                            className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 fkpmE"
+                            fill="linkAction"
+                            id="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="url"
+              >
+                Node address
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="url"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Enter the address"
+                    type="text"
+                    value="https://custom.node.com/"
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 zUEnY"
+          >
+            <div
+              className="Checkbox__SContainer-rxppxn-0 elKrFG AddOrEditNetworkNode__SCheckbox-a4clrp-8 emaBUn"
+              onClick={[Function]}
+            >
+              <label
+                className="Checkbox__SLabel-rxppxn-1 iJMKsN"
+                htmlFor="auth"
+              >
+                <input
+                  checked={true}
+                  data-for="hidden-checkbox"
+                  name="auth"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  data-for="custom-checkbox"
+                />
+              </label>
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "marginLeft": "15px",
+                  }
+                }
+              >
+                <div
+                  className="Checkbox__SLabelContainer-rxppxn-3 kwYYTG"
+                >
+                  <p
+                    className="sc-AxjAm eLvtfo"
+                    style={
+                      Object {
+                        "fontSize": "1em",
+                        "margin": 0,
+                      }
+                    }
+                  >
+                    HTTP Basic Authentication
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+          hidden={false}
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="username"
+              >
+                Username
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="username"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Your username"
+                    type="text"
+                    value="username"
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <fieldset
+              className="AddOrEditNetworkNode__AddressFieldset-a4clrp-5 GvjxX"
+            >
+              <label
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div
+                className="InputField__MainWrapper-sc-93a1c1-0 hyzOlH"
+              >
+                <div
+                  className="InputField__InputWrapper-sc-93a1c1-3 bunXwv"
+                >
+                  <input
+                    className="InputField__CustomInput-sc-93a1c1-1 junFoz"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder="Password"
+                    type="password"
+                    value="password"
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__ReferralLink-a4clrp-11 efyRUm"
+          >
+            Want a node of your own? 
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Get started with QuikNode
+            </a>
+            .
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 kshklA"
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <div
+              className="AddOrEditNetworkNode__NetworkNodeFieldsButtons-a4clrp-6 fRGKsz"
+            >
+              <button
+                className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm"
+                type="submit"
+              >
+                <div
+                  className="Button__Wrapper-sc-1fs4nba-0 fijKrm"
+                >
+                  <span
+                    className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                  >
+                    Save & use custom node
+                  </span>
+                </div>
+              </button>
+              <span
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <button
+                  className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm AddOrEditNetworkNode__DeleteButton-a4clrp-10 iCFMIg"
+                  data-testid="deleteButton"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <div
+                    className="Button__Wrapper-sc-1fs4nba-0 fijKrm"
+                  >
+                    <span
+                      className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                    >
+                      Remove node
+                    </span>
+                  </div>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="AddOrEditNetworkNode__Row-a4clrp-2 jHkyBp"
+          hidden={true}
+        >
+          <div
+            className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
+          >
+            <div
+              className="AddOrEditNetworkNode__SError-a4clrp-9 ZLTAX"
+            >
+              Could not connect to node! Please check if node is up and running.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+`;
+
 exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
 <div
   className="ConfirmTransaction__ConfirmTransactionWrapper-sc-1hu9kp8-0 fijNgY"
