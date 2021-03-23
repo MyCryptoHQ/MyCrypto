@@ -261,6 +261,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
+  const [isSendMax, toggleIsSendMax] = useState(false);
 
   const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
 
@@ -576,6 +577,20 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
   );
 
+  useEffect(() => {
+    if (isSendMax) {
+      setAmountFieldToAssetMax();
+    }
+  }, [
+    values.gasPriceField,
+    values.gasPriceSlider,
+    values.asset,
+    values.account,
+    values.advancedTransaction,
+    values.gasLimitField,
+    isSendMax
+  ]);
+
   return (
     <div className="SendAssetsForm">
       <QueryWarning />
@@ -633,9 +648,12 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
       <fieldset className="SendAssetsForm-fieldset">
         <label htmlFor="amount" className="input-group-header label-with-action">
           <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
-          <div className="label-action" onClick={setAmountFieldToAssetMax}>
-            {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
-          </div>
+          <NoMarginCheckbox
+            onChange={() => toggleIsSendMax(!isSendMax)}
+            checked={isSendMax}
+            name="isSendMax"
+            label={translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION')}
+          />
         </label>
         <>
           <AmountInput
@@ -643,6 +661,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
             onChange={(e) => {
               setFieldValue('amount', e.target.value);
             }}
+            disabled={isSendMax}
             asset={values.asset}
             value={values.amount}
             onBlur={() => {
