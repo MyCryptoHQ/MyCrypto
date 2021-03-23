@@ -12,10 +12,8 @@ import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from './config';
 import { MembershipSimpleTxFormFull } from './types';
 
 export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
-  const today = new Date();
-  return new Date(
-    today.getTime() + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays
-  );
+  const today = Date.now();
+  return new Date(today + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays);
 };
 
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> =>
