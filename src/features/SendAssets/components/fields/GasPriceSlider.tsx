@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
+import Slider, { createSliderWithTooltip } from 'rc-slider';
 import styled from 'styled-components';
 
-import { GAS_PRICE_DEFAULT } from '@config';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { GasEstimates, Network } from '@types';
@@ -39,40 +38,31 @@ const SimpleGas = ({ gasPrice: gasPriceProp, gasEstimates, onChange }: Props) =>
 
   const handleChange = (e: number) => setGasPrice(e.toString());
 
-  const makeGasNotches = (): Marks => {
-    return gasEstimates
-      ? {
-          [gasEstimates.safeLow]: '',
-          [gasEstimates.standard]: '',
-          [gasEstimates.fast]: '',
-          [gasEstimates.fastest]: ''
-        }
-      : {};
+  const gasNotches = gasEstimates
+    ? {
+        [gasEstimates.safeLow]: '',
+        [gasEstimates.standard]: '',
+        [gasEstimates.fast]: '',
+        [gasEstimates.fastest]: ''
+      }
+    : {};
+
+  const gasTooltips: GasTooltips = {
+    [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
+    [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
+    [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
+    [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
   };
 
   const formatTooltip = () => {
-    const gasTooltips: GasTooltips = {
-      [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
-      [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
-      [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
-      [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
-    };
-
     const recommended = gasTooltips[parseFloat(gasPrice)] || '';
-
     return translateRaw('GAS_GWEI_COST', {
       $gas: gasPrice.toString(),
       $recommended: recommended
     });
   };
 
-  const bounds = {
-    max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
-    min: gasEstimates ? gasEstimates.safeLow : GAS_PRICE_DEFAULT.min
-  };
-  const gasNotches = makeGasNotches();
-
-  const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
+  const actualGasPrice = Math.max(parseFloat(gasPrice), gasEstimates.safeLow);
   return (
     <div className="GasPriceSlider">
       <div className="GasPriceSlider-input-group">
@@ -80,13 +70,13 @@ const SimpleGas = ({ gasPrice: gasPriceProp, gasEstimates, onChange }: Props) =>
           <SliderWithTooltip
             onChange={handleChange}
             onAfterChange={onChange}
-            min={bounds.min}
-            max={bounds.max}
+            min={gasEstimates.safeLow}
+            max={gasEstimates.fastest}
             marks={gasNotches}
             included={false}
             value={actualGasPrice}
             tipFormatter={formatTooltip}
-            step={bounds.min < 1 ? 0.1 : 1}
+            step={gasEstimates.safeLow < 1 ? 0.1 : 1}
           />
           <div className="GasPriceSlider-slider-labels">
             <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
