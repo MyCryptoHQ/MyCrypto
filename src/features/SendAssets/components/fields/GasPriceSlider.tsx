@@ -79,9 +79,7 @@ const SimpleGas = ({ gasPrice: gasPriceProp, gasEstimates, onChange }: Props) =>
         <div className="GasPriceSlider-slider">
           <SliderWithTooltip
             onChange={handleChange}
-            onAfterChange={(e) => {
-              onChange(e);
-            }}
+            onAfterChange={onChange}
             min={bounds.min}
             max={bounds.max}
             marks={gasNotches}
