@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 import styled from 'styled-components';
@@ -11,19 +11,11 @@ import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
-interface OwnProps {
+interface Props {
   gasPrice: string;
   gasEstimates: GasEstimates;
   network: Network;
   onChange(value: number): void;
-}
-
-type Props = OwnProps;
-
-interface State {
-  gasPrice: string;
-  hasSetRecommendedGasPrice: boolean;
-  realGasPrice: number;
 }
 
 interface GasTooltips {
@@ -36,54 +28,18 @@ const Label = styled.span`
   }
 `;
 
-export default class SimpleGas extends Component<Props> {
-  public state: State = {
-    gasPrice: this.props.gasPrice,
-    hasSetRecommendedGasPrice: false,
-    realGasPrice: 0
-  };
+const SimpleGas = ({ gasPrice: gasPriceProp, gasEstimates, onChange }: Props) => {
+  const [gasPrice, setGasPrice] = useState(gasPriceProp);
 
-  public render() {
-    const { gasEstimates, onChange } = this.props;
-    const { gasPrice } = this.state;
-    const bounds = {
-      max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
-      min: gasEstimates ? gasEstimates.safeLow : GAS_PRICE_DEFAULT.min
-    };
-    const gasNotches = this.makeGasNotches();
+  useEffect(() => {
+    if (gasPrice !== gasPriceProp) {
+      setGasPrice(gasPriceProp);
+    }
+  }, [gasPriceProp]);
 
-    const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
-    return (
-      <div className="GasPriceSlider">
-        <div className="GasPriceSlider-input-group">
-          <div className="GasPriceSlider-slider">
-            <SliderWithTooltip
-              onChange={(e) => {
-                this.setState({ gasPrice: e.toString() });
-              }}
-              onAfterChange={(e) => {
-                onChange(e);
-              }}
-              min={bounds.min}
-              max={bounds.max}
-              marks={gasNotches}
-              included={false}
-              value={actualGasPrice}
-              tipFormatter={this.formatTooltip}
-              step={bounds.min < 1 ? 0.1 : 1}
-            />
-            <div className="GasPriceSlider-slider-labels">
-              <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
-              <Label>{translate('TX_FEE_SCALE_RIGHT')}</Label>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleChange = (e: number) => setGasPrice(e.toString());
 
-  private makeGasNotches = (): Marks => {
-    const { gasEstimates } = this.props;
+  const makeGasNotches = (): Marks => {
     return gasEstimates
       ? {
           [gasEstimates.safeLow]: '',
@@ -94,9 +50,7 @@ export default class SimpleGas extends Component<Props> {
       : {};
   };
 
-  private formatTooltip = (gas: number) => {
-    const { gasEstimates } = this.props;
-
+  const formatTooltip = () => {
     const gasTooltips: GasTooltips = {
       [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
       [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
@@ -104,11 +58,46 @@ export default class SimpleGas extends Component<Props> {
       [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
     };
 
-    const recommended = gasTooltips[gas] || '';
+    const recommended = gasTooltips[parseFloat(gasPrice)] || '';
 
     return translateRaw('GAS_GWEI_COST', {
-      $gas: gas.toString(),
+      $gas: gasPrice.toString(),
       $recommended: recommended
     });
   };
-}
+
+  const bounds = {
+    max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
+    min: gasEstimates ? gasEstimates.safeLow : GAS_PRICE_DEFAULT.min
+  };
+  const gasNotches = makeGasNotches();
+
+  const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
+  return (
+    <div className="GasPriceSlider">
+      <div className="GasPriceSlider-input-group">
+        <div className="GasPriceSlider-slider">
+          <SliderWithTooltip
+            onChange={handleChange}
+            onAfterChange={(e) => {
+              onChange(e);
+            }}
+            min={bounds.min}
+            max={bounds.max}
+            marks={gasNotches}
+            included={false}
+            value={actualGasPrice}
+            tipFormatter={formatTooltip}
+            step={bounds.min < 1 ? 0.1 : 1}
+          />
+          <div className="GasPriceSlider-slider-labels">
+            <Label>{translate('TX_FEE_SCALE_LEFT')}</Label>
+            <Label>{translate('TX_FEE_SCALE_RIGHT')}</Label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SimpleGas;
