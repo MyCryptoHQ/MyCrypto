@@ -1,26 +1,11 @@
 import React, { CSSProperties } from 'react';
 
-import styled from 'styled-components';
-
 import { COLORS } from '@theme';
 import { TCurrencySymbol, TTicker } from '@types';
 
+import Box from './Box';
 import Currency from './Currency';
 import { Text } from './NewTypography';
-
-const SAmount = styled.div<{ alignLeft: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: ${({ alignLeft }) => (alignLeft ? 'flex-start' : 'flex-end')};
-`;
-
-const SCurrency = styled(Currency)<{ fiatColor: string }>`
-  font-size: 0.8em;
-  span {
-    color: ${(props) => props.fiatColor};
-  }
-`;
 
 interface Props {
   assetValue: string;
@@ -43,30 +28,36 @@ export default function Amount({
   assetValue,
   baseAssetValue,
   fiat,
-  fiatColor = COLORS.BLUE_GREY,
+  fiatColor = COLORS.BLUE_SKY,
   bold = false,
   alignLeft = false,
   ...rest
 }: Props) {
   return (
-    <SAmount alignLeft={alignLeft} {...rest}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems={alignLeft ? 'flex-start' : 'flex-end'}
+      {...rest}
+    >
       <Text as="span" isBold={bold}>
         {assetValue}
       </Text>
       {baseAssetValue && (
-        <Text as="span" isDiscrete={true} fontSize="0.85em">
+        <Text as="span" isDiscrete={true} fontSize="0.9em">
           {baseAssetValue}
         </Text>
       )}
       {fiat && (
-        <SCurrency
+        <Currency
           amount={fiat.amount}
           symbol={fiat.symbol}
           ticker={fiat.ticker}
           decimals={2}
-          fiatColor={fiatColor}
+          color={fiatColor}
+          fontSize="0.9em"
         />
       )}
-    </SAmount>
+    </Box>
   );
 }
