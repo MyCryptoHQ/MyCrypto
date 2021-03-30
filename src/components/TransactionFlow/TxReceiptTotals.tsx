@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Amount } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config';
-import { SPACING } from '@theme';
+import { BREAK_POINTS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings } from '@types';
 import { bigify, convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
@@ -15,6 +15,9 @@ const SIcon = styled(Icon)`
   height: 30px;
   margin-right: ${SPACING.SM};
   vertical-align: middle;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: none;
+  }
 `;
 interface Props {
   asset: ExtendedAsset;
