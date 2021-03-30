@@ -196,22 +196,22 @@ export const TokenMigrationFormUI = ({
         )}
       </Box>
       <Box mb={SPACING.LG} display="flex" flexDirection="column">
-        <Label htmlFor="amount">{translate('SEND_ASSETS_AMOUNT_LABEL')}</Label>
         <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
-          <AmountInput
-            disabled={true}
-            asset={values.asset}
-            value={values.amount || '0'}
-            onChange={noOp}
-            onBlur={() => {
-              setFieldTouched('amount');
-            }}
-            placeholder={'0.00'}
-          />
-          {errors && errors.amount && touched && touched.amount ? (
-            <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
-          ) : null}
+          <Label htmlFor="amount">{translate('SEND_ASSETS_AMOUNT_LABEL')}</Label>
         </Tooltip>
+        <AmountInput
+          disabled={true}
+          asset={values.asset}
+          value={values.amount || '0'}
+          onChange={noOp}
+          onBlur={() => {
+            setFieldTouched('amount');
+          }}
+          placeholder={'0.00'}
+        />
+        {errors && errors.amount && touched && touched.amount ? (
+          <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
+        ) : null}
       </Box>
       <FormFieldSubmitButton
         type="submit"
