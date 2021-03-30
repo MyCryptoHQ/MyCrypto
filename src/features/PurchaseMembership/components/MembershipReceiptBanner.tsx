@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 
 import { IMembershipConfig } from '../config';
@@ -11,13 +12,18 @@ interface Props {
   membershipSelected: IMembershipConfig;
 }
 
-const Icon = styled.img``;
+const Image = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+`;
 
 const MembershipReceiptBanner = ({ membershipSelected }: Props) => {
   return (
     <div className="TransactionReceipt-row">
       <div className="TransactionReceipt-row-column">
-        <Icon src={membershipSelected.icon} />
+        <Image src={membershipSelected.icon} />
         {translate('X_MEMBERSHIP')}
       </div>
       <div className="TransactionReceipt-row-column rightAligned">

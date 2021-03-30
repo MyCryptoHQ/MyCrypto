@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import Styled from 'styled-components';
+import styled from 'styled-components';
 
-import feeIcon from '@assets/images/icn-fee.svg';
-import sendIcon from '@assets/images/icn-send.svg';
-import walletIcon from '@assets/images/icn-wallet.svg';
-import { Amount, AssetIcon, Button, InlineMessage, PoweredByText } from '@components';
+import { Amount, Button, InlineMessage, PoweredByText } from '@components';
+import Icon from '@components/Icon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -24,11 +22,11 @@ import { ISender } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const ConfirmTransactionWrapper = Styled.div`
+const ConfirmTransactionWrapper = styled.div`
   text-align: left;
 `;
 
-const RowWrapper = Styled.div<{ stack?: boolean }>`
+const RowWrapper = styled.div<{ stack?: boolean }>`
   display: flex;
   margin-bottom: 24px;
   flex-direction: ${(props) => (props.stack ? 'column' : 'row')};
@@ -38,66 +36,51 @@ const RowWrapper = Styled.div<{ stack?: boolean }>`
   }
 `;
 
-const ColumnWrapper = Styled.div<{ bold?: boolean }>`
+const ColumnWrapper = styled.div<{ bold?: boolean }>`
   font-size: 16px;
   flex: 1;
   font-weight: ${(props) => (props.bold ? 'bold' : 'normal')};
   @media (min-width: ${SCREEN_XS}) {
     margin-bottom: 0;
   }
-  img {
-    width: auto;
-    height: 25px;
-    margin-right: 10px;
-  }
-  svg {
-    width: auto;
-    height: 25px;
-    margin-right: 10px;
-    vertical-align: middle;
+`;
+
+const SIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: none;
   }
 `;
 
-const SendButton = Styled(Button)`
+const SendButton = styled(Button)`
   > div {
     justify-content: center;
   }
 `;
 
-const AmountWrapper = Styled(ColumnWrapper)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
-  img {
-    display: none;
-    @media (min-width: ${SCREEN_XS}) {
-      margin-right: 10px;
-      display: block;
-    }
-  }
-`;
-
-const Divider = Styled.div`
+const Divider = styled.div`
   height: 1px;
   margin-bottom: 20px;
   background: #e3edff;
 `;
 
-const DeFiZapLogoContainer = Styled.div`
+const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
-const DeFiDisclaimerWrapper = Styled.p`
+const DeFiDisclaimerWrapper = styled.p`
   color: ${COLORS.GREY};
   margin-bottom: ${SPACING.MD};
 `;
 
-const PTXWrapper = Styled.div`
+const PTXWrapper = styled.div`
   background-color: ${COLORS.GREY_LIGHTEST};
   padding: ${SPACING.SM};
 `;
 
-const PTXHeader = Styled.p`
+const PTXHeader = styled.p`
   text-align: center;
   color: ${COLORS.BLUE_GREY};
   text-transform: uppercase;
@@ -272,75 +255,84 @@ export const ConfirmTransactionUI = ({
 
       <RowWrapper>
         <ColumnWrapper>
-          <img src={sendIcon} alt="Send" />
+          <SIcon type="tx-send" alt="Send" height="25px" />
           {txType === ITxType.DEFIZAP
             ? translate('ZAP_CONFIRM_TX_SENDING')
             : translate('CONFIRM_TX_SENDING')}
         </ColumnWrapper>
-        <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'25px'} />
+        <ColumnWrapper>
           <Amount
-            assetValue={`${bigify(amount).toFixed(6)} ${asset.ticker}`}
+            asset={{
+              amount: bigify(amount).toFixed(6),
+              ticker: asset.ticker,
+              uuid: asset.uuid
+            }}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
               amount: convertToFiat(bigify(amount), assetRate).toFixed(2)
             }}
           />
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       <RowWrapper>
         <ColumnWrapper>
-          <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
+          <SIcon type="tx-fee" alt="Fee" height="25px" />
+          {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
-        <AmountWrapper>
-          <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
+        <ColumnWrapper>
           <Amount
-            assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
+            asset={{
+              amount: maxTransactionFeeBase,
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid
+            }}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
               amount: convertToFiat(maxTransactionFeeBase, baseAssetRate).toFixed(2)
             }}
           />
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       <Divider />
       <RowWrapper>
         <ColumnWrapper>
-          <img src={walletIcon} alt="Total" />
+          <SIcon type="tx-wallet" alt="Total" height="25px" />
           {translate('TOTAL')}
         </ColumnWrapper>
-        <AmountWrapper>
+        <ColumnWrapper>
           {assetType === 'base' ? (
-            <>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
-              <Amount
-                assetValue={`${totalEtherEgress} ${asset.ticker}`}
-                fiat={{
-                  symbol: getFiat(settings).symbol,
-                  ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(totalEtherEgress, assetRate).toFixed(2)
-                }}
-              />
-            </>
+            <Amount
+              asset={{
+                amount: totalEtherEgress,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(totalEtherEgress, assetRate).toFixed(2)
+              }}
+            />
           ) : (
-            <>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
-              <Amount
-                assetValue={`${amount} ${asset.ticker}`}
-                baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiat={{
-                  symbol: getFiat(settings).symbol,
-                  ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(amount, assetRate)
-                    .plus(convertToFiat(totalEtherEgress, baseAssetRate))
-                    .toFixed(2)
-                }}
-              />
-            </>
+            <Amount
+              asset={{
+                amount: amount,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
+              baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(amount, assetRate)
+                  .plus(convertToFiat(totalEtherEgress, baseAssetRate))
+                  .toFixed(2)
+              }}
+            />
           )}
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       {ptxFee && (
         <PTXWrapper>
@@ -350,34 +342,40 @@ export const ConfirmTransactionUI = ({
               <ProtectIconCheck size="sm" />
               {translate('PROTECTED_TX_PRICE')}
             </ColumnWrapper>
-            <AmountWrapper>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
+            <ColumnWrapper>
               <Amount
-                assetValue={`${ptxFee.amount!.toFixed(6)} ${asset.ticker}`}
+                asset={{
+                  amount: ptxFee.amount!.toFixed(6),
+                  ticker: asset.ticker,
+                  uuid: asset.uuid
+                }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
                   amount: convertToFiat(ptxFee.amount!, assetRate).toFixed(2)
                 }}
               />
-            </AmountWrapper>
+            </ColumnWrapper>
           </RowWrapper>
           <RowWrapper>
             <ColumnWrapper>
-              <img src={feeIcon} alt="Fee" />
+              <SIcon type="tx-fee" alt="Fee" height="25px" />
               {translate('PROTECTED_TX_FEE')}
             </ColumnWrapper>
-            <AmountWrapper>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
+            <ColumnWrapper>
               <Amount
-                assetValue={`${ptxFee.fee!.toFixed(6)} ${asset.ticker}`}
+                asset={{
+                  amount: ptxFee.fee!.toFixed(6),
+                  ticker: asset.ticker,
+                  uuid: asset.uuid
+                }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
                   amount: convertToFiat(ptxFee.fee!, assetRate).toFixed(2)
                 }}
               />
-            </AmountWrapper>
+            </ColumnWrapper>
           </RowWrapper>
         </PTXWrapper>
       )}
