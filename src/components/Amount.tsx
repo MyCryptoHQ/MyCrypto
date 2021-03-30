@@ -8,18 +8,20 @@ import Currency from './Currency';
 import { Text } from './NewTypography';
 
 interface Props {
-  assetValue: string;
+  assetValue?: string; // Free string display
   asset?: {
+    // Formatted Currency display
     amount: string;
     ticker: TTicker;
     uuid?: TUuid;
   };
   fiat?: {
+    // Converted Fiat
     amount: string;
     symbol: TCurrencySymbol;
     ticker: TTicker;
   };
-  baseAssetValue?: string;
+  baseAssetValue?: string; // ?
   fiatColor?: string;
   bold?: boolean;
   style?: CSSProperties;

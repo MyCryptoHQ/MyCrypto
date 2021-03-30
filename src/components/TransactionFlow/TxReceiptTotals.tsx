@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Amount, AssetIcon } from '@components';
+import { Amount } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config';
 import { SPACING } from '@theme';
@@ -54,9 +54,12 @@ export const TxReceiptTotals = ({
           {translate('CONFIRM_TX_SENT')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
-            assetValue={`${bigify(assetAmount).toFixed(6)} ${asset.ticker}`}
+            asset={{
+              amount: bigify(assetAmount).toFixed(6),
+              ticker: asset.ticker,
+              uuid: asset.uuid
+            }}
             fiat={{
               symbol: fiat.symbol,
               ticker: fiat.ticker,
@@ -70,9 +73,12 @@ export const TxReceiptTotals = ({
           <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={baseAsset.uuid} size={'24px'} />
           <Amount
-            assetValue={`${feeFormatted} ${baseAsset.ticker}`}
+            asset={{
+              amount: feeFormatted,
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid
+            }}
             fiat={{
               symbol: fiat.symbol,
               ticker: fiat.ticker,
@@ -90,10 +96,13 @@ export const TxReceiptTotals = ({
           {translate('TOTAL')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
           {asset.type === 'base' ? (
             <Amount
-              assetValue={`${totalEtherFormatted} ${asset.ticker}`}
+              asset={{
+                amount: totalEtherFormatted,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
               fiat={{
                 symbol: fiat.symbol,
                 ticker: fiat.ticker,
@@ -102,9 +111,11 @@ export const TxReceiptTotals = ({
             />
           ) : (
             <Amount
-              assetValue={`${assetAmount} ${asset.ticker}`}
-              bold={true}
-              baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
+              asset={{
+                amount: assetAmount,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
               fiat={{
                 symbol: fiat.symbol,
                 ticker: fiat.ticker,
@@ -112,6 +123,8 @@ export const TxReceiptTotals = ({
                   .plus(convertToFiat(totalEtherFormatted, baseAssetRate))
                   .toFixed(2)
               }}
+              bold={true}
+              baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
             />
           )}
         </div>
