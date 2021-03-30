@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { fAsset } from '@../jest_config/__fixtures__/assets';
+
 import { Fiats } from '@config';
 
 import AmountComponent from './Amount';
@@ -28,6 +30,17 @@ Default.args = {
   ...props,
   bold: true,
   baseAssetValue: '0.043'
+};
+
+export const WithIcon = Template.bind({});
+WithIcon.storyName = 'WithIcon';
+WithIcon.args = {
+  fiat: props.fiat,
+  asset: {
+    amount: props.assetValue,
+    ticker: fAsset.ticker,
+    uuid: fAsset.uuid
+  }
 };
 
 export const LeftAlign = Template.bind({});

@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 
 import { COLORS } from '@theme';
-import { TCurrencySymbol, TTicker } from '@types';
+import { TCurrencySymbol, TTicker, TUuid } from '@types';
 
 import Box from './Box';
 import Currency from './Currency';
@@ -9,6 +9,11 @@ import { Text } from './NewTypography';
 
 interface Props {
   assetValue: string;
+  asset?: {
+    amount: string;
+    ticker: TTicker;
+    uuid?: TUuid;
+  };
   fiat?: {
     amount: string;
     symbol: TCurrencySymbol;
@@ -25,6 +30,7 @@ interface Props {
 // - accept BN instead of string for asset and fiat
 // - define default decimals
 export default function Amount({
+  asset,
   assetValue,
   baseAssetValue,
   fiat,
@@ -40,9 +46,18 @@ export default function Amount({
       alignItems={alignLeft ? 'flex-start' : 'flex-end'}
       {...rest}
     >
-      <Text as="span" isBold={bold}>
-        {assetValue}
-      </Text>
+      {asset && (
+        <Currency amount={asset.amount} ticker={asset.ticker} icon={true} uuid={asset.uuid} />
+      )}
+
+      {
+        // @todo: Remove once all Ammounts are converted to use the the new api
+        assetValue && (
+          <Text as="span" isBold={bold}>
+            {assetValue}
+          </Text>
+        )
+      }
       {baseAssetValue && (
         <Text as="span" isDiscrete={true} fontSize="0.9em">
           {baseAssetValue}
