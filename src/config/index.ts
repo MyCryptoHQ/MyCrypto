@@ -50,3 +50,4 @@ export {
 } from './queryParams';
 export * from './txTypes';
 export { STATIC_CONTACTS } from './staticContacts';
+export { getFiat } from './fiats';
