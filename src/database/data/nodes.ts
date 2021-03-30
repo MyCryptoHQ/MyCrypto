@@ -354,6 +354,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   ],
   xDAI: [
     {
+      name: NetworkUtils.makeNodeName('xDAI', 'mycrypto'),
+      type: NodeType.RPC,
+      service: 'MyCrypto',
+      url: 'https://xdai.mycryptoapi.com/'
+    },
+    {
       name: NetworkUtils.makeNodeName('xDAI', 'xdaichain.com'),
       type: NodeType.RPC,
       service: 'xdaichain.com',
@@ -393,10 +399,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   ],
   Avalanche: [
     {
-      name: NetworkUtils.makeNodeName(
-        'Avalanche',
-        'api.avax.network'
-      ),
+      name: NetworkUtils.makeNodeName('Avalanche', 'api.avax.network'),
       type: NodeType.RPC,
       service: 'api.avax.network',
       url: 'https://api.avax.network/ext/bc/C/rpc'
@@ -404,10 +407,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   ],
   AvalancheTestnet: [
     {
-      name: NetworkUtils.makeNodeName(
-        'AvalancheTestnet',
-        'api.avax-test.network'
-      ),
+      name: NetworkUtils.makeNodeName('AvalancheTestnet', 'api.avax-test.network'),
       type: NodeType.RPC,
       service: 'api.avax-test.network',
       url: 'https://api.avax-test.network/ext/bc/C/rpc'
