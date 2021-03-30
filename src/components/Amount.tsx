@@ -1,44 +1,24 @@
 import React, { CSSProperties } from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from '@theme';
+import { COLORS } from '@theme';
 import { TCurrencySymbol, TTicker } from '@types';
 
 import Currency from './Currency';
-import { default as Typography } from './Typography';
+import { Text } from './NewTypography';
 
 const SAmount = styled.div<{ alignLeft: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: ${({ alignLeft }) => (alignLeft ? 'flex-start' : 'flex-end')};
-  font-size: 16px;
-  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    font-size: 18px;
-  }
-`;
-
-const Asset = styled(Typography)<typeof Typography & { $discrete?: boolean }>`
-  ${(props) =>
-    props.$discrete
-      ? css`
-        color: ${COLORS.BLUE_GREY};
-        font-size: 0.9em;
-        @media(min-width: ${BREAK_POINTS.SCREEN_XS} {
-          font-size: 1em;
-        })
-      `
-      : ``};
 `;
 
 const SCurrency = styled(Currency)<{ fiatColor: string }>`
-  font-size: 0.9em;
+  font-size: 0.8em;
   span {
     color: ${(props) => props.fiatColor};
-  }
-  @media (min-width: ${BREAK_POINTS.SCREEN_XS}) {
-    font-size: 1em;
   }
 `;
 
@@ -57,11 +37,12 @@ interface Props {
 }
 
 // @todo:
-// - accept BN instead of string for asset and fiat and define default decimals
+// - accept BN instead of string for asset and fiat
+// - define default decimals
 export default function Amount({
   assetValue,
-  fiat,
   baseAssetValue,
+  fiat,
   fiatColor = COLORS.BLUE_GREY,
   bold = false,
   alignLeft = false,
@@ -69,8 +50,14 @@ export default function Amount({
 }: Props) {
   return (
     <SAmount alignLeft={alignLeft} {...rest}>
-      <Asset bold={bold}>{assetValue}</Asset>
-      {baseAssetValue && <Asset $discrete={true}>{baseAssetValue}</Asset>}
+      <Text as="span" isBold={bold}>
+        {assetValue}
+      </Text>
+      {baseAssetValue && (
+        <Text as="span" isDiscrete={true} fontSize="0.85em">
+          {baseAssetValue}
+        </Text>
+      )}
       {fiat && (
         <SCurrency
           amount={fiat.amount}
