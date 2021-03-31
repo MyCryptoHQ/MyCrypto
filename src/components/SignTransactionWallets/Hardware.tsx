@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { BusyBottom, Icon, InlineMessage, Text, TIcon } from '@components';
+import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
@@ -158,26 +158,26 @@ export const SignTxHardwareUI = ({
   senderAccount
 }: UIProps) => (
   <>
-    <Text textAlign="center" fontWeight="bold" marginTop={SPACING.LG} fontSize={FONT_SIZE.XXL}>
+    <Heading textAlign="center" fontWeight="bold" fontSize={FONT_SIZE.XXL}>
       {translate('SIGN_TX_TITLE', {
         $walletName: WALLETS_CONFIG[senderAccount.wallet].name
       })}
-    </Text>
-    <Text fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
+    </Heading>
+    <Body fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
       {signerDescription}
-    </Text>
+    </Body>
     <div>
       <SImgContainer>
         <Icon type={walletIconType} />
       </SImgContainer>
-      <Text textAlign="center">
+      <Body textAlign="center">
         {isTxSignatureRequestDenied && (
           <ErrorMessageContainer>
             <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
           </ErrorMessageContainer>
         )}
         {translateRaw('SIGN_TX_EXPLANATION')}
-      </Text>
+      </Body>
       <SFooter>
         <BusyBottom type={wallet} />
       </SFooter>
