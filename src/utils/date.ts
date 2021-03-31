@@ -13,7 +13,7 @@ import {
 
 type DateObject = Date | number | string;
 
-const toUTC = (date: Date) => {
+export const toUTC = (date: Date) => {
   return new Date(date.toUTCString().substring(0, 25));
 };
 

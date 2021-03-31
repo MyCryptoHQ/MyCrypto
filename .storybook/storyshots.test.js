@@ -1,5 +1,5 @@
 import initStoryshots from '@storybook/addon-storyshots';
-import { formatDate } from '@utils';
+import { formatDate, toUTC } from '@utils';
 
 describe('', () => {
   beforeAll(() => {
@@ -14,7 +14,9 @@ describe('', () => {
     });
     // Membership expiration uses Date.now(). Return a set Date in order to assert
     // against snapshots
-    jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('03/31/2021').getTime());
+    jest
+      .spyOn(global.Date, 'now')
+      .mockImplementation(() => toUTC(new Date('03/31/2021')).getTime());
   });
 
   initStoryshots();
