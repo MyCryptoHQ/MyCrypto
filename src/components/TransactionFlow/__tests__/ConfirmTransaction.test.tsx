@@ -52,7 +52,7 @@ describe('ConfirmTransaction', () => {
 
   test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
-    expect(getByText(bigify(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
+    expect(getByText(bigify(fTxConfig.amount).toFixed(5), { exact: false })).toBeDefined();
   });
 
   test('it calls onComplete when clicking next', async () => {

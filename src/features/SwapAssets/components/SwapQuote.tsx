@@ -12,7 +12,7 @@ import {
   Tooltip
 } from '@components';
 import { getFiat } from '@config/fiats';
-import { COLORS, SPACING } from '@theme';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ISettings, ISwapAsset } from '@types';
 import { bigify, convertToFiat } from '@utils';
@@ -68,7 +68,6 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        fiatColor={COLORS.BLUE_SKY}
         assetValue={`${bigify(fromAmount).toFixed(6)} ${fromAsset.ticker} = ${bigify(
           toAmount
         ).toFixed(6)} ${toAsset.ticker}`}
@@ -85,7 +84,6 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        fiatColor={COLORS.BLUE_SKY}
         assetValue={`1 ${fromAsset.ticker} = ${bigify(exchangeRate).toFixed(6)} ${toAsset.ticker}`}
         fiat={{
           symbol: getFiat(settings).symbol,
@@ -100,7 +98,6 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        fiatColor={COLORS.BLUE_SKY}
         assetValue={`${estimatedGasFee} ${baseAsset.ticker}`}
         fiat={{
           symbol: getFiat(settings).symbol,

@@ -53,8 +53,18 @@ const SText: React.FC<TextProps> = styled.p<TextProps>`
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
 `;
 
-const Text: React.FC<TextProps & { isDiscrete?: boolean }> = ({ isDiscrete, ...props }) => {
-  return <SText variant={isDiscrete ? 'discrete' : 'body'} {...props} />;
+const Text: React.FC<TextProps & { isDiscrete?: boolean; isBold?: boolean }> = ({
+  isDiscrete,
+  isBold = false,
+  ...props
+}) => {
+  return (
+    <SText
+      variant={isDiscrete ? 'discrete' : 'body'}
+      fontWeight={isBold ? 'bold' : null}
+      {...props}
+    />
+  );
 };
 
 export default Text;

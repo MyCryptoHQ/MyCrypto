@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { Body, LinkApp, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useRates, useSettings } from '@services';
-import { COLORS } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import {
   Fiat,
@@ -22,6 +23,12 @@ import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
+
+const Image = styled.img`
+  height: 25px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+`;
 
 interface PendingBtnAction {
   text: string;
@@ -99,7 +106,7 @@ export default function MultiTxReceipt({
           <div key={idx}>
             <div className="TransactionReceipt-row">
               <div className="TransactionReceipt-row-column" style={{ display: 'flex' }}>
-                <img src={step.icon} alt={step.title} />
+                <Image src={step.icon} alt={step.title} />
                 <div>{step.title}</div>
               </div>
               <div className="TransactionReceipt-row-column">

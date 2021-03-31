@@ -360,6 +360,10 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
   } else if (type === 'address-book') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
+  } else if (type === 'tx-sent') {
+    return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
+  } else if (type === 'tx-fee') {
+    return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {
