@@ -21,7 +21,8 @@ interface Props {
     symbol: TCurrencySymbol;
     ticker: TTicker;
   };
-  baseAssetValue?: string; // ?
+  // When sending a token we display the equivalent baseAsset value.
+  baseAssetValue?: string;
   fiatColor?: string;
   bold?: boolean;
   style?: CSSProperties;
