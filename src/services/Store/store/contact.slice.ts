@@ -17,6 +17,11 @@ const slice = createSlice({
     create(state, action: PayloadAction<ExtendedContact>) {
       state.push(action.payload);
     },
+    createMany(state, action: PayloadAction<ExtendedContact[]>) {
+      action.payload.forEach((a) => {
+        state.push(a);
+      });
+    },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);
       state.splice(idx, 1);
@@ -24,6 +29,12 @@ const slice = createSlice({
     update(state, action: PayloadAction<ExtendedContact>) {
       const idx = findIndex(propEq('uuid', action.payload.uuid), state);
       state[idx] = action.payload;
+    },
+    updateMany(state, action: PayloadAction<ExtendedContact[]>) {
+      action.payload.forEach((contact) => {
+        const idx = findIndex(propEq('uuid', contact.uuid), state);
+        state[idx] = contact;
+      });
     },
     createOrUpdate: {
       reducer: (state, action: PayloadAction<ExtendedContact>) => {
@@ -44,8 +55,10 @@ const slice = createSlice({
 
 export const {
   create: createContact,
+  createMany: createContacts,
   destroy: destroyContact,
   update: updateContact,
+  updateMany: updateContacts,
   createOrUpdate: createOrUpdateContact
 } = slice.actions;
 

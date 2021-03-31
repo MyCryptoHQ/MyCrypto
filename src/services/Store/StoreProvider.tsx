@@ -24,6 +24,7 @@ import {
   Asset,
   Bigish,
   DomainNameRecord,
+  ExtendedContact,
   IAccount,
   IAccountAdditionData,
   IPendingTxReceipt,
@@ -120,7 +121,12 @@ export const StoreProvider: React.FC = ({ children }) => {
   const { assets } = useAssets();
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
-  const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
+  const {
+    createContacts,
+    contacts,
+    getContactByAddressAndNetworkId,
+    updateContacts
+  } = useContacts();
   const dispatch = useDispatch();
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
@@ -391,24 +397,41 @@ export const StoreProvider: React.FC = ({ children }) => {
         newRawAccounts[0].wallet,
         newRawAccounts.length
       )(contacts);
-      newRawAccounts.forEach((rawAccount, idx) => {
-        const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
-        if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
-          updateContact({
-            ...existingContact,
-            label: newLabels[idx]
-          });
-        } else if (!existingContact) {
-          const newLabel = {
-            label: newLabels[idx],
-            address: rawAccount.address,
-            notes: '',
-            network: rawAccount.networkId,
-            uuid: generateUUID()
-          };
-          createContact(newLabel);
-        }
-      });
+      const contactChanges = newRawAccounts.reduce(
+        (acc, rawAccount, idx) => {
+          const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
+          if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+            return {
+              ...acc,
+              updatedContacts: [
+                ...acc.updatedContacts,
+                {
+                  ...existingContact,
+                  label: newLabels[idx]
+                }
+              ]
+            };
+          } else if (!existingContact) {
+            return {
+              ...acc,
+              newContacts: [
+                ...acc.newContacts,
+                {
+                  label: newLabels[idx],
+                  address: rawAccount.address,
+                  notes: '',
+                  network: rawAccount.networkId,
+                  uuid: generateUUID()
+                }
+              ]
+            };
+          }
+          return acc;
+        },
+        { newContacts: [] as ExtendedContact[], updatedContacts: [] as ExtendedContact[] }
+      );
+      contactChanges.updatedContacts.length > 0 && updateContacts(contactChanges.updatedContacts);
+      contactChanges.newContacts.length > 0 && createContacts(contactChanges.newContacts);
       createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
     }

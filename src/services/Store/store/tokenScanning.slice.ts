@@ -89,7 +89,9 @@ export const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
 
     const uuid = generateDeterministicAddressUUID(network.id, address);
 
-    const existingAccount = accounts.find((x) => x.uuid === uuid);
+    const existingAccount = accounts.find(
+      (x) => x.networkId === network.id && isSameAddress(x.address, address as TAddress)
+    );
     if (!existingAccount) return { ...acc };
 
     const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(

@@ -5,9 +5,11 @@ import isEmpty from 'lodash/isEmpty';
 import { STATIC_CONTACTS } from '@config';
 import {
   createContact as createAContact,
+  createContacts as createManyContacts,
   destroyContact,
   selectContacts,
   updateContact as updateAContact,
+  updateContacts as updateManyContacts,
   useDispatch,
   useSelector
 } from '@store';
@@ -65,8 +67,23 @@ function useContacts() {
     dispatch(createAContact({ ...item, uuid }));
   };
 
+  const createContacts = (items: Contact[]) => {
+    dispatch(
+      createManyContacts(
+        items.map((item) => {
+          const uuid = generateDeterministicAddressUUID(item.network, item.address);
+          return { ...item, uuid };
+        })
+      )
+    );
+  };
+
   const updateContact = (item: ExtendedContact) => {
     dispatch(updateAContact(item));
+  };
+
+  const updateContacts = (items: ExtendedContact[]) => {
+    dispatch(updateManyContacts(items));
   };
 
   const deleteContact = (uuid: TUuid) => {
@@ -118,7 +135,9 @@ function useContacts() {
     contacts,
     contactRestore,
     createContact,
+    createContacts,
     updateContact,
+    updateContacts,
     deleteContact,
     getContactByAddress,
     getContactByAddressAndNetworkId,
