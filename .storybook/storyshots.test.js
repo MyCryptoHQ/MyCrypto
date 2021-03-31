@@ -16,7 +16,11 @@ describe('', () => {
     // against snapshots
     jest
       .spyOn(global.Date, 'now')
-      .mockImplementation(() => toUTC(new Date('03/31/2021')).getTime());
+      .mockImplementation(() =>
+        toUTC(
+          new Date('Wed Mar 31 2021 13:26:46 GMT+0200 (Central European Summer Time)')
+        ).getTime()
+      );
   });
 
   initStoryshots();
