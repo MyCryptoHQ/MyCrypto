@@ -265,9 +265,11 @@ export const makeTxConfigFromTxReceipt = (
     assets
   });
 
+  const receiver = contractAsset ? decodeTransfer(txReceipt.data)._to : txReceipt.to;
+
   const txConfig = {
     rawTransaction: {
-      to: getAddress(txReceipt.to),
+      to: txReceipt.to && getAddress(txReceipt.to),
       value: BigNumber.from(txReceipt.value).toHexString(),
       gasLimit: BigNumber.from(txReceipt.gasLimit).toHexString(),
       data: txReceipt.data,
@@ -276,9 +278,7 @@ export const makeTxConfigFromTxReceipt = (
       chainId: network.chainId,
       from: getAddress(txReceipt.from)
     },
-    receiverAddress: getAddress(
-      contractAsset ? decodeTransfer(txReceipt.data)._to : txReceipt.to
-    ) as TAddress,
+    receiverAddress: receiver && (getAddress(receiver) as TAddress),
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,

@@ -39,7 +39,7 @@ describe('formatTimeDifference', () => {
 
 describe('formatTimeDuration', () => {
   it('formats the duration between two dates', () => {
-    const date = new Date();
+    const date = fromUnixTime(1612083067);
 
     expect(formatTimeDuration(addHours(date, 10), date, true)).toBe('10 hours');
     expect(formatTimeDuration(addMinutes(date, 10), date, true)).toBe('10 minutes');
@@ -49,7 +49,7 @@ describe('formatTimeDuration', () => {
 
 describe('getTimeDifference', () => {
   it('returns the difference between two dates in seconds', () => {
-    const date = new Date();
+    const date = fromUnixTime(1612083067);
 
     expect(getTimeDifference(date, date, true)).toBe(0);
     expect(getTimeDifference(addMinutes(date, -1), date, true)).toBe(60);
@@ -59,7 +59,7 @@ describe('getTimeDifference', () => {
 
 describe('getDayDifference', () => {
   it('returns the difference between two dates in days', () => {
-    const date = new Date();
+    const date = fromUnixTime(1612083067);
 
     expect(getDayDifference(date, date, true)).toBe(0);
     expect(getDayDifference(addDays(date, -1), date, true)).toBe(1);

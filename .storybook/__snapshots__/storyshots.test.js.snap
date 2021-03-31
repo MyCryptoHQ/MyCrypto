@@ -3702,7 +3702,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
       >
         Expires on
         : 
-        2/26/2121
+        2121-03-07
       </div>
     </div>
     <div
@@ -6802,13 +6802,13 @@ exports[` Storyshots Features/ProtectTransaction Step 2 1`] = `
           fill="#a086f7"
         />
       </svg>
-      <p
-        className="Text__SText-sc-14ylyin-0 lcfHVV"
+      <h1
+        className="Text__SText-sc-14ylyin-0 cMyCfq"
         fontSize="36px"
         fontWeight="bold"
       >
         Sign the Transaction with your Ledger wallet
-      </p>
+      </h1>
       <p
         className="Text__SText-sc-14ylyin-0 hkhusL"
         fontSize="18px"
@@ -9295,13 +9295,13 @@ exports[` Storyshots Features/SignTransaction/Hardware Hardware Wallet UI 1`] = 
     }
   }
 >
-  <p
-    className="Text__SText-sc-14ylyin-0 lcfHVV"
+  <h1
+    className="Text__SText-sc-14ylyin-0 cMyCfq"
     fontSize="36px"
     fontWeight="bold"
   >
     Sign the Transaction with your Ledger wallet
-  </p>
+  </h1>
   <p
     className="Text__SText-sc-14ylyin-0 hkhusL"
     fontSize="18px"
@@ -9886,7 +9886,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -10453,7 +10453,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -10987,7 +10987,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -11328,7 +11328,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
       >
         Expires on
         : 
-        3/23/2022
+        2022-04-01
       </div>
     </div>
     <div
@@ -11529,7 +11529,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -12006,7 +12006,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -12652,7 +12652,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
@@ -13171,7 +13171,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
               >
-                2020-03-03T20:11:31.000Z
+                2020-03-03
               </span>
             </div>
           </span>
