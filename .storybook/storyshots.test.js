@@ -8,6 +8,9 @@ describe('', () => {
     jest.spyOn(global.Date.prototype, 'toLocaleString').mockImplementation(function () {
       return new Date(this.valueOf()).toISOString();
     });
+    jest.spyOn(global.Date.prototype, 'toLocaleDateString').mockImplementation(function () {
+      return new Date(this.valueOf()).toISOString();
+    });
     // Membership expiration uses Date.now(). Return a set Date in order to assert
     // against snapshots
     jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('03/22/2021').getTime());
@@ -17,6 +20,7 @@ describe('', () => {
 
   afterAll(() => {
     Date.toLocaleString.mockRestore();
+    Date.toLocaleDateString.mockRestore();
     Date.now.mockRestore();
   });
 });
