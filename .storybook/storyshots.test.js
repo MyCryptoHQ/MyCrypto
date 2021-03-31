@@ -17,5 +17,6 @@ describe('', () => {
 
   afterAll(() => {
     Date.toLocaleString.mockRestore();
+    Date.now.mockRestore();
   });
 });
