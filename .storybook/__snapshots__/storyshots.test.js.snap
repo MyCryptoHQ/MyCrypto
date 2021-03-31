@@ -57,7 +57,7 @@ exports[` Storyshots Atoms/LinkApp Opacity Link 1`] = `
   variant="opacityLink"
 >
   Hello
-
+   
   <svg
     className="Icon__SInlineSVG-tq1i3y-0 giMYvd"
     id="test-file-stub"
@@ -137,7 +137,7 @@ exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
       fontWeight="bold"
     >
       Connect and Unlock
-
+       
       Your Ledger
     </h1>
     <div
@@ -150,7 +150,7 @@ exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
         fontWeight={null}
         letterSpacing="normal"
       >
-        Please open the Ropsten app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our
+        Please open the Ropsten app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our 
         <a
           className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
           href="https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto"
@@ -289,7 +289,7 @@ exports[` Storyshots Features/AddAccount/Hardware Trezor Unlock UI 1`] = `
       fontWeight="bold"
     >
       Connect and Unlock
-
+       
       Your TREZOR
     </h1>
     <div
@@ -732,7 +732,7 @@ exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
         <div
           className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
         >
-          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can
+          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can 
           <a
             className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
             href="https://github.com/MyCryptoHQ/MyCrypto/releases/latest"
@@ -741,7 +741,7 @@ exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
           >
             download the MyCrypto repo & run it locally
           </a>
-           to connect to any node. Or, get a free SSL certificate via
+           to connect to any node. Or, get a free SSL certificate via 
           <a
             className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
             href="https://letsencrypt.org/"
@@ -806,7 +806,7 @@ exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
                   htmlFor="network"
                 >
                   Network
-
+                   
                 </label>
                 <div
                   className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
@@ -877,7 +877,7 @@ exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
                                 }
                               }
                             >
-
+                              
                             </div>
                           </div>
                         </div>
@@ -1079,7 +1079,7 @@ exports[` Storyshots Features/AddorEditNetworkNode AddNetworkNode 1`] = `
           <div
             className="AddOrEditNetworkNode__ReferralLink-a4clrp-11 efyRUm"
           >
-            Want a node of your own?
+            Want a node of your own? 
             <a
               className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
               href="https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251"
@@ -1177,7 +1177,7 @@ exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
         <div
           className="AddOrEditNetworkNode__Column-a4clrp-4 gSwcis"
         >
-          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can
+          Your node must be HTTPS in order to connect to it via MyCrypto.com. You can 
           <a
             className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
             href="https://github.com/MyCryptoHQ/MyCrypto/releases/latest"
@@ -1186,7 +1186,7 @@ exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
           >
             download the MyCrypto repo & run it locally
           </a>
-           to connect to any node. Or, get a free SSL certificate via
+           to connect to any node. Or, get a free SSL certificate via 
           <a
             className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
             href="https://letsencrypt.org/"
@@ -1251,7 +1251,7 @@ exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
                   htmlFor="network"
                 >
                   Network
-
+                   
                 </label>
                 <div
                   className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
@@ -1322,7 +1322,7 @@ exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
                                 }
                               }
                             >
-
+                              
                             </div>
                           </div>
                         </div>
@@ -1520,7 +1520,7 @@ exports[` Storyshots Features/AddorEditNetworkNode EditNetworkNode 1`] = `
           <div
             className="AddOrEditNetworkNode__ReferralLink-a4clrp-11 efyRUm"
           >
-            Want a node of your own?
+            Want a node of your own? 
             <a
               className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
               href="https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251"
@@ -1669,7 +1669,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
                     type="button"
                   >
                     0xfE54…bB7c
-
+                     
                     <span
                       aria-label="copy"
                       role="img"
@@ -1750,7 +1750,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
                     type="button"
                   >
                     0xfE54…bB7c
-
+                     
                     <span
                       aria-label="copy"
                       role="img"
@@ -1793,7 +1793,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
               type="button"
             >
               0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD
-
+               
               <span
                 aria-label="copy"
                 role="img"
@@ -1908,7 +1908,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
     >
       <svg
         alt="Send"
-        className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+        className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
         id="test-file-stub"
       />
       You'll Send
@@ -1978,7 +1978,8 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
     >
       <svg
         alt="Fee"
-        className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+        className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+        fill="none"
         id="test-file-stub"
       />
       Transaction Fee
@@ -2051,7 +2052,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
     >
       <svg
         alt="Total"
-        className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+        className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
         fill="none"
         id="test-file-stub"
       />
@@ -2130,7 +2131,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
           type="button"
         >
           See More
-
+           
           Details
         </button>
       </div>
@@ -2687,7 +2688,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -2768,7 +2769,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
                       type="button"
                     >
                       0x909f…45E2
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -2795,7 +2796,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
       >
         <svg
           alt="Send"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           id="test-file-stub"
         />
         You'll Send
@@ -2865,7 +2866,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+          fill="none"
           id="test-file-stub"
         />
         Transaction Fee
@@ -2938,7 +2940,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
       >
         <svg
           alt="Total"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           fill="none"
           id="test-file-stub"
         />
@@ -3017,7 +3019,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
             type="button"
           >
             See More
-
+             
             Details
           </button>
         </div>
@@ -3121,7 +3123,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -3202,7 +3204,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
                       type="button"
                     >
                       0x5197…77CD
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -3245,7 +3247,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -3331,7 +3333,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
       >
         <svg
           alt="Send"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           id="test-file-stub"
         />
         You'll Open Position With
@@ -3401,7 +3403,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+          fill="none"
           id="test-file-stub"
         />
         Transaction Fee
@@ -3474,7 +3477,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
       >
         <svg
           alt="Total"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           fill="none"
           id="test-file-stub"
         />
@@ -3560,7 +3563,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
             type="button"
           >
             See More
-
+             
             Details
           </button>
         </div>
@@ -3569,7 +3572,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
     <p
       className="ConfirmTransaction__DeFiDisclaimerWrapper-sc-1hu9kp8-7 OVuka"
     >
-      Remember, there are no guarantees that you will make money if you do this. Please review the risks you are taking on
+      Remember, there are no guarantees that you will make money if you do this. Please review the risks you are taking on 
       <a
         className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
         href="https://support.mycrypto.com/"
@@ -3578,7 +3581,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
       >
         here
       </a>
-      . You may also review the Zapper protocols
+      . You may also review the Zapper protocols 
       <a
         className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
         href="https://defizap.com/zaps"
@@ -3704,7 +3707,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -3785,7 +3788,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
                       type="button"
                     >
                       0x5197…77CD
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -3828,7 +3831,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -3865,7 +3868,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
         className="TransactionReceipt-row-column"
       >
         <img
-          className="MembershipReceiptBanner__Image-pakx2w-0 jvVJQi"
+          className="MembershipReceiptBanner__Image-pakx2w-0 gyMiAa"
           src="test-file-stub"
         />
         Membership
@@ -3874,7 +3877,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
         className="TransactionReceipt-row-column rightAligned"
       >
         Expires on
-        :
+        : 
         2121-03-07
       </div>
     </div>
@@ -3889,7 +3892,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
       >
         <svg
           alt="Send"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           id="test-file-stub"
         />
         You'll Send
@@ -3959,7 +3962,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+          fill="none"
           id="test-file-stub"
         />
         Transaction Fee
@@ -4032,7 +4036,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
       >
         <svg
           alt="Total"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           fill="none"
           id="test-file-stub"
         />
@@ -4118,7 +4122,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
             type="button"
           >
             See More
-
+             
             Details
           </button>
         </div>
@@ -4222,7 +4226,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -4303,7 +4307,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
                       type="button"
                     >
                       0x909f…45E2
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -4330,7 +4334,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
       >
         <svg
           alt="Send"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           id="test-file-stub"
         />
         You'll Send
@@ -4400,7 +4404,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+          fill="none"
           id="test-file-stub"
         />
         Transaction Fee
@@ -4473,7 +4478,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
       >
         <svg
           alt="Total"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           fill="none"
           id="test-file-stub"
         />
@@ -4650,7 +4655,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
         >
           <svg
             alt="Fee"
-            className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+            fill="none"
             id="test-file-stub"
           />
           Transaction Fee:
@@ -4729,7 +4735,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
             type="button"
           >
             See More
-
+             
             Details
           </button>
         </div>
@@ -4833,7 +4839,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -4914,7 +4920,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
                       type="button"
                     >
                       0x5197…77CD
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -4957,7 +4963,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -4995,7 +5001,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
       >
         <svg
           alt="Send"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           id="test-file-stub"
         />
         You'll Send
@@ -5065,7 +5071,8 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
+          fill="none"
           id="test-file-stub"
         />
         Transaction Fee
@@ -5138,7 +5145,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
       >
         <svg
           alt="Total"
-          className="Icon__SInlineSVG-tq1i3y-0 duMYNd ConfirmTransaction__SIcon-sc-1hu9kp8-3 hJKMqz"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM ConfirmTransaction__SIcon-sc-1hu9kp8-3 iApGpL"
           fill="none"
           id="test-file-stub"
         />
@@ -5224,7 +5231,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
             type="button"
           >
             See More
-
+             
             Details
           </button>
         </div>
@@ -5350,6 +5357,7 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
         >
           <img
             alt="Approve Swap"
+            className="MultiTxReceipt__Image-sc-1dvq8az-0 hjOOLC"
             src="test-file-stub"
           />
           <div>
@@ -5393,7 +5401,7 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
             id="test-file-stub"
           />
           Amount Sent
@@ -5463,10 +5471,11 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
         >
           <svg
             alt="Fee"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
-
+           
           Transaction Fee
         </div>
         <div
@@ -5537,7 +5546,8 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
           Total
@@ -5611,7 +5621,7 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
             fontWeight={null}
           >
             Timestamp
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -5653,7 +5663,7 @@ exports[` Storyshots Features/MultiTxReceipt Swap Tx Receipt 1`] = `
                 type="button"
               >
                 See More
-
+                 
                 Details
               </button>
             </div>
@@ -5778,6 +5788,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <img
             alt="Approve Swap"
+            className="MultiTxReceipt__Image-sc-1dvq8az-0 hjOOLC"
             src="test-file-stub"
           />
           <div>
@@ -5821,7 +5832,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
             id="test-file-stub"
           />
           Amount Sent
@@ -5891,10 +5902,11 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Fee"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
-
+           
           Transaction Fee
         </div>
         <div
@@ -5965,7 +5977,8 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
           Total
@@ -6039,7 +6052,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
             fontWeight={null}
           >
             Timestamp
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -6081,7 +6094,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
                 type="button"
               >
                 See More
-
+                 
                 Details
               </button>
             </div>
@@ -6103,6 +6116,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <img
             alt="Complete Swap"
+            className="MultiTxReceipt__Image-sc-1dvq8az-0 hjOOLC"
             src="test-file-stub"
           />
           <div>
@@ -6146,7 +6160,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
             id="test-file-stub"
           />
           Amount Sent
@@ -6216,10 +6230,11 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Fee"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
-
+           
           Transaction Fee
         </div>
         <div
@@ -6290,7 +6305,8 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
         >
           <svg
             alt="Sent"
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+            fill="none"
             id="test-file-stub"
           />
           Total
@@ -6364,7 +6380,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
             fontWeight={null}
           >
             Timestamp
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -6406,7 +6422,7 @@ exports[` Storyshots Features/MultiTxReceipt Token Migration Tx Receipt 1`] = `
                 type="button"
               >
                 See More
-
+                 
                 Details
               </button>
             </div>
@@ -7114,7 +7130,7 @@ exports[` Storyshots Features/ProtectTransaction Step 1 1`] = `
       <p
         className="description-text"
       >
-        Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you change your mind. Still not convinced?
+        Once you confirm and sign the transaction, you'll have 20 seconds to cancel sending if you change your mind. Still not convinced? 
         <a
           className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
           href="https://support.mycrypto.com/general-knowledge/about-mycrypto/what-are-protected-transactions"
@@ -7341,7 +7357,7 @@ exports[` Storyshots Features/ProtectTransaction Step 2 1`] = `
         />
       </svg>
       <h1
-        className="Text__SText-sc-14ylyin-0 cMyCfq"
+        className="Text__SText-sc-14ylyin-0 chJPgm"
         fontSize="36px"
         fontWeight="bold"
       >
@@ -7733,7 +7749,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Loading 1`] = `
               type="button"
             >
               0x4bbe…1520
-
+               
             </button>
           </span>
         </div>
@@ -7875,7 +7891,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
               type="button"
             >
               0x820C…470f
-
+               
             </button>
           </span>
         </div>
@@ -8070,7 +8086,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
       <p
         className="view-comments"
       >
-        View comments for this account on
+        View comments for this account on 
         <a
           className="LinkApp__SLink-sc-275gt9-0 fPhOQM"
           color="#a086f7"
@@ -8364,8 +8380,8 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Scam 1`] = `
         className="footer-text"
       >
         If everything looks good, click "Next" on the left to see a preview of your main transaction.
-
-        Upon confirming and sending the transaction, you'll get
+         
+        Upon confirming and sending the transaction, you'll get 
         <span
           className="highlighted"
         >
@@ -8490,7 +8506,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
               type="button"
             >
               0x88F7…1d88
-
+               
             </button>
           </span>
         </div>
@@ -8685,7 +8701,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
       <p
         className="view-comments"
       >
-        View comments for this account on
+        View comments for this account on 
         <a
           className="LinkApp__SLink-sc-275gt9-0 fPhOQM"
           color="#a086f7"
@@ -8979,8 +8995,8 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Unknown 1`] = `
         className="footer-text"
       >
         If everything looks good, click "Next" on the left to see a preview of your main transaction.
-
-        Upon confirming and sending the transaction, you'll get
+         
+        Upon confirming and sending the transaction, you'll get 
         <span
           className="highlighted"
         >
@@ -9105,7 +9121,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = 
               type="button"
             >
               0x4bbe…1520
-
+               
             </button>
           </span>
         </div>
@@ -9300,7 +9316,7 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = 
       <p
         className="view-comments"
       >
-        View comments for this account on
+        View comments for this account on 
         <a
           className="LinkApp__SLink-sc-275gt9-0 fPhOQM"
           color="#a086f7"
@@ -9594,8 +9610,8 @@ exports[` Storyshots Features/ProtectTransaction/Report Step 3 - Verified 1`] = 
         className="footer-text"
       >
         If everything looks good, click "Next" on the left to see a preview of your main transaction.
-
-        Upon confirming and sending the transaction, you'll get
+         
+        Upon confirming and sending the transaction, you'll get 
         <span
           className="highlighted"
         >
@@ -9649,7 +9665,7 @@ exports[` Storyshots Features/ScreenLock Forgot Password 1`] = `
           alt="Back arrow"
           src="test-file-stub"
         />
-
+         
         Back
       </button>
     </div>
@@ -9769,14 +9785,14 @@ exports[` Storyshots Features/ScreenLock Locked 1`] = `
                 value=""
               />
             </div>
-
+            
           </div>
           <p
             className="Text__SText-sc-14ylyin-0 Ueu"
             fontWeight={null}
           >
             The Screen Lock feature is being removed. You will not be able to lock MyCrypto again.
-
+             
             <a
               className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
               href="https://support.mycrypto.com/how-to/accessing-wallet/what-is-screen-lock"
@@ -9798,7 +9814,7 @@ exports[` Storyshots Features/ScreenLock Locked 1`] = `
         >
           <div>
             Forgot Password?
-
+             
             <a
               className="LinkApp__SRouterLink-sc-275gt9-1 kWjpkW"
               href="/screen-lock/forgot-password"
@@ -9810,7 +9826,7 @@ exports[` Storyshots Features/ScreenLock Locked 1`] = `
           </div>
           <div>
             Why do we recommend screen lock?
-
+             
             <a
               className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
               href="https://support.mycrypto.com/how-to/accessing-wallet/what-is-screen-lock"
@@ -9837,7 +9853,7 @@ exports[` Storyshots Features/SignTransaction/Hardware Hardware Wallet UI 1`] = 
   }
 >
   <h1
-    className="Text__SText-sc-14ylyin-0 cMyCfq"
+    className="Text__SText-sc-14ylyin-0 chJPgm"
     fontSize="36px"
     fontWeight="bold"
   >
@@ -10143,7 +10159,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -10224,7 +10240,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
                       type="button"
                     >
                       0x909f…45E2
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -10251,7 +10267,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -10321,10 +10337,11 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -10395,7 +10412,8 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -10469,7 +10487,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -10519,7 +10537,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -10545,7 +10563,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -10655,7 +10673,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -10736,7 +10754,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
                       type="button"
                     >
                       0xB2BB…9017
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -10779,7 +10797,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -10865,7 +10883,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -10935,10 +10953,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -11009,7 +11028,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -11090,7 +11110,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -11140,7 +11160,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -11166,7 +11186,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -11298,7 +11318,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -11379,7 +11399,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
                       type="button"
                     >
                       0xB2BB…9017
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -11405,7 +11425,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
         className="TransactionReceipt-row-column"
       >
         <svg
-          className="Icon__SInlineSVG-tq1i3y-0 fyKoVB FaucetReceiptBanner__SIcon-sc-9wrsf9-0 VzlyU"
+          className="Icon__SInlineSVG-tq1i3y-0 duMYNd FaucetReceiptBanner__SIcon-sc-9wrsf9-0 VzlyU"
           id="test-file-stub"
         />
         Network
@@ -11423,7 +11443,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
         className="TransactionReceipt-row-column"
       >
         <svg
-          className="Icon__SInlineSVG-tq1i3y-0 fyKoVB FaucetReceiptBanner__SIcon-sc-9wrsf9-0 VzlyU"
+          className="Icon__SInlineSVG-tq1i3y-0 duMYNd FaucetReceiptBanner__SIcon-sc-9wrsf9-0 VzlyU"
           id="test-file-stub"
         />
         Amount Received
@@ -11455,7 +11475,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -11525,10 +11545,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -11599,7 +11620,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -11680,7 +11702,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -11730,7 +11752,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -11756,7 +11778,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -11866,7 +11888,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -11947,7 +11969,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
                       type="button"
                     >
                       0xB2BB…9017
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -11990,7 +12012,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -12027,7 +12049,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
         className="TransactionReceipt-row-column"
       >
         <img
-          className="MembershipReceiptBanner__Image-pakx2w-0 jvVJQi"
+          className="MembershipReceiptBanner__Image-pakx2w-0 gyMiAa"
           src="test-file-stub"
         />
         Membership
@@ -12036,7 +12058,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
         className="TransactionReceipt-row-column rightAligned"
       >
         Expires on
-        :
+        : 
         2022-04-01
       </div>
     </div>
@@ -12051,7 +12073,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -12121,10 +12143,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -12195,7 +12218,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -12276,7 +12300,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -12326,7 +12350,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -12352,7 +12376,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -12402,7 +12426,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
       <div
         className="TransactionReceipt-row-desc"
       >
-        Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More:
+        Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More: 
         <a
           className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
           href="https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending"
@@ -12479,7 +12503,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -12560,7 +12584,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
                       type="button"
                     >
                       0x909f…45E2
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -12587,7 +12611,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -12657,10 +12681,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -12731,7 +12756,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -12805,7 +12831,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -12855,7 +12881,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -12881,7 +12907,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -13041,7 +13067,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -13122,7 +13148,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
                       type="button"
                     >
                       0xB2BB…9017
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -13165,7 +13191,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -13280,7 +13306,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -13350,10 +13376,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -13424,7 +13451,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -13505,7 +13533,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -13555,7 +13583,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -13581,7 +13609,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -13691,7 +13719,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
                       type="button"
                     >
                       0xfE54…bB7c
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -13772,7 +13800,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
                       type="button"
                     >
                       0xB2BB…9017
-
+                       
                       <span
                         aria-label="copy"
                         role="img"
@@ -13815,7 +13843,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
                 type="button"
               >
                 0xad6d458402f60fd3bd25163575031acdce07538d
-
+                 
                 <span
                   aria-label="copy"
                   role="img"
@@ -13853,7 +13881,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
           id="test-file-stub"
         />
         Amount Sent
@@ -13923,10 +13951,11 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
       >
         <svg
           alt="Fee"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
-
+         
         Transaction Fee
       </div>
       <div
@@ -13997,7 +14026,8 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
       >
         <svg
           alt="Sent"
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 iyjHuc"
+          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM TxReceiptTotals__SIcon-eik68m-0 eJjpVo"
+          fill="none"
           id="test-file-stub"
         />
         Total
@@ -14078,7 +14108,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
           fontWeight={null}
         >
           Timestamp
-          :
+          : 
           <span
             className="Text__SText-sc-14ylyin-0 hXxbXK"
             fontWeight="normal"
@@ -14128,7 +14158,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
             fontWeight={null}
           >
             TX Hash
-            :
+            : 
             <span
               className="Text__SText-sc-14ylyin-0 hXxbXK"
               fontWeight="normal"
@@ -14177,7 +14207,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
               type="button"
             >
               See More
-
+               
               Details
             </button>
           </div>
@@ -14387,7 +14417,7 @@ exports[` Storyshots Molecules/ContractLookupField Default State 1`] = `
                     }
                   }
                 >
-
+                  
                 </div>
               </div>
             </div>
@@ -14589,7 +14619,7 @@ exports[` Storyshots Molecules/DemoGatewayBanner Default State 1`] = `
         className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 efrCUX Banner__STypography-sc-12319m8-2 hxCyvs"
         color="#fff"
       >
-        You are currently in DEMO MODE. To continue with sending a transaction, please
+        You are currently in DEMO MODE. To continue with sending a transaction, please 
         <a
           className="LinkApp__SRouterLink-sc-275gt9-1 gsitfL"
           href="/add-account"
@@ -14757,7 +14787,7 @@ exports[` Storyshots Molecules/GeneralLookupField Default State 1`] = `
                     }
                   }
                 >
-
+                  
                 </div>
               </div>
             </div>
@@ -14808,7 +14838,7 @@ exports[` Storyshots Molecules/GeneralStepper General Stepper 1`] = `
         src="test-file-stub"
       />
       Back
-      :
+      : 
       <span
         className="ContentPanel__BackButtonExtraText-sc-1hs9w0m-2 bCNHlF"
       >
@@ -15163,7 +15193,7 @@ exports[` Storyshots Molecules/Notifications Onboarding Responsible Notification
               <p
                 className="OnboardingResponsibleNotification__TipText-sc-1l9mkby-6 PhvLh"
               >
-                Making sure you’re not on a
+                Making sure you’re not on a 
                 <a
                   className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
                   href="https://cryptoscamdb.org"
@@ -15209,7 +15239,7 @@ exports[` Storyshots Molecules/Notifications Onboarding Responsible Notification
               <p
                 className="OnboardingResponsibleNotification__TipText-sc-1l9mkby-6 PhvLh"
               >
-                Reducing risk by using the
+                Reducing risk by using the 
                 <a
                   className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
                   href="https://download.mycrypto.com"
@@ -15362,7 +15392,7 @@ exports[` Storyshots Molecules/Notifications Wallet Added Notification 1`] = `
           <p
             className="NotificationWrapper__Description-sc-1eayab0-6 dfQFUb"
           >
-            Your account with the address
+            Your account with the address 
             <strong>
               0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c
             </strong>
@@ -15466,7 +15496,7 @@ exports[` Storyshots Molecules/Notifications Wallet Created Notification 1`] = `
           <p
             className="NotificationWrapper__Description-sc-1eayab0-6 dfQFUb"
           >
-            The address of your new MyCrypto account is:
+            The address of your new MyCrypto account is: 
             <strong>
               0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c
             </strong>
@@ -15667,7 +15697,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
                 type="button"
               >
                 0xfE54…bB7c
-
+                 
               </button>
             </span>
           </div>
@@ -15759,7 +15789,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Selector 1`] = `
                     }
                   }
                 >
-
+                  
                 </div>
               </div>
             </div>
@@ -15861,7 +15891,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Selector 1`] = `
                     }
                   }
                 >
-
+                  
                 </div>
               </div>
             </div>
@@ -16751,7 +16781,7 @@ exports[` Storyshots Molecules/Selectors/MembershipSelector Dropdown Item 1`] = 
     <span
       className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd MembershipSelector__DiscountTypography-b2d9u6-2 kbbSuf"
     >
-
+      
     </span>
   </div>
 </div>
@@ -17082,7 +17112,7 @@ exports[` Storyshots Molecules/Selectors/NetworkNodes Some networks 1`] = `
                             }
                           }
                         >
-
+                          
                         </div>
                       </div>
                     </div>
@@ -17213,7 +17243,7 @@ exports[` Storyshots Molecules/Selectors/NetworkNodes Some networks 1`] = `
                             }
                           }
                         >
-
+                          
                         </div>
                       </div>
                     </div>
@@ -17333,7 +17363,7 @@ exports[` Storyshots Molecules/Selectors/NetworkNodesDropdown Select 1`] = `
                   }
                 }
               >
-
+                
               </div>
             </div>
           </div>
@@ -17448,7 +17478,7 @@ exports[` Storyshots Molecules/Selectors/NetworkNodesDropdown Select with add 1`
                   }
                 }
               >
-
+                
               </div>
             </div>
           </div>
@@ -17642,7 +17672,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
         className="Box-sc-1974eaf-0 jQJFMv"
       >
         Accounts
-
+         
         <div
           className="Tooltip__Override-sc-1ccnnqh-0 fCQThQ"
           display="inline-flex"
@@ -18105,7 +18135,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0xfE54…bB7c
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
@@ -18232,7 +18262,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0xfE54…bB7c
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
@@ -18359,7 +18389,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0x03A0…3D49
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
@@ -18486,7 +18516,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0xB2BB…9017
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
@@ -18613,7 +18643,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0x9458…aED5
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
@@ -18754,7 +18784,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
                   type="button"
                 >
                   0x4bbe…1520
-
+                   
                   <span
                     aria-label="copy"
                     role="img"
