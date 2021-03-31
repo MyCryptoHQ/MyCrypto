@@ -11,8 +11,7 @@ import { ExtendedAsset, ISettings } from '@types';
 import { bigify, convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
 
 const SIcon = styled(Icon)`
-  width: 30px;
-  height: 30px;
+  height: 25px;
   margin-right: ${SPACING.SM};
   vertical-align: middle;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {

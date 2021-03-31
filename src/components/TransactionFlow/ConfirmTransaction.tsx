@@ -46,8 +46,7 @@ const ColumnWrapper = styled.div<{ bold?: boolean }>`
 `;
 
 const SIcon = styled(Icon)`
-  width: 30px;
-  height: 30px;
+  height: 25px;
   margin-right: ${SPACING.SM};
   vertical-align: middle;
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -255,7 +254,7 @@ export const ConfirmTransactionUI = ({
 
       <RowWrapper>
         <ColumnWrapper>
-          <SIcon type="tx-send" alt="Send" height="25px" />
+          <SIcon type="tx-send" alt="Send" />
           {txType === ITxType.DEFIZAP
             ? translate('ZAP_CONFIRM_TX_SENDING')
             : translate('CONFIRM_TX_SENDING')}
@@ -277,7 +276,7 @@ export const ConfirmTransactionUI = ({
       </RowWrapper>
       <RowWrapper>
         <ColumnWrapper>
-          <SIcon type="tx-fee" alt="Fee" height="25px" />
+          <SIcon type="tx-fee" alt="Fee" />
           {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
         <ColumnWrapper>
@@ -298,7 +297,7 @@ export const ConfirmTransactionUI = ({
       <Divider />
       <RowWrapper>
         <ColumnWrapper>
-          <SIcon type="tx-sent" alt="Total" height="25px" />
+          <SIcon type="tx-sent" alt="Total" />
           {translate('TOTAL')}
         </ColumnWrapper>
         <ColumnWrapper>
@@ -359,7 +358,7 @@ export const ConfirmTransactionUI = ({
           </RowWrapper>
           <RowWrapper>
             <ColumnWrapper>
-              <SIcon type="tx-fee" alt="Fee" height="25px" />
+              <SIcon type="tx-fee" alt="Fee" />
               {translate('PROTECTED_TX_FEE')}
             </ColumnWrapper>
             <ColumnWrapper>
