@@ -120,7 +120,6 @@ import openedEye from '@assets/images/icn-show-eye.svg';
 import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
 import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
-import walletIcon from '@assets/images/icn-wallet.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import linkOutIcon from '@assets/images/link-out.svg';
@@ -210,7 +209,6 @@ const svgIcons = {
   'tx-fee': feeIcon,
   'tx-send': sendIcon,
   'tx-sent': sentIcon,
-  'tx-wallet': walletIcon,
   'tx-receive': receiveIcon,
   'tx-network': networkIcon,
 
@@ -362,7 +360,7 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
   } else if (type === 'address-book') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
-  } else if (type === 'tx-wallet') {
+  } else if (type === 'tx-sent') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;

@@ -298,7 +298,7 @@ export const ConfirmTransactionUI = ({
       <Divider />
       <RowWrapper>
         <ColumnWrapper>
-          <SIcon type="tx-wallet" alt="Total" height="25px" />
+          <SIcon type="tx-sent" alt="Total" height="25px" />
           {translate('TOTAL')}
         </ColumnWrapper>
         <ColumnWrapper>
