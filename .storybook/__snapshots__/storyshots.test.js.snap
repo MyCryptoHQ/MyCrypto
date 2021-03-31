@@ -3702,7 +3702,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
       >
         Expires on
         : 
-        2121-02-25T23:00:00.000Z
+        2121-03-06T22:00:00.000Z
       </div>
     </div>
     <div
@@ -11328,7 +11328,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
       >
         Expires on
         : 
-        2022-03-22T23:00:00.000Z
+        2022-03-31T22:00:00.000Z
       </div>
     </div>
     <div

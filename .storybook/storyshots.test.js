@@ -13,7 +13,7 @@ describe('', () => {
     });
     // Membership expiration uses Date.now(). Return a set Date in order to assert
     // against snapshots
-    jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('03/22/2021').getTime());
+    jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('03/31/2021').getTime());
   });
 
   initStoryshots();
