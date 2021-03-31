@@ -61,7 +61,7 @@ export const AppRoutes = () => {
         <DefaultHomeHandler>
           <Suspense
             fallback={
-              <Layout>
+              <Layout className="full-height">
                 <AppLoading />
               </Layout>
             }
