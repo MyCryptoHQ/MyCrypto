@@ -29,14 +29,14 @@ export const FaucetReceiptBanner = ({
     <>
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <SIcon type="tx-network" width={'30px'} height={'30px'} />
+          <SIcon type="tx-network" height={'25px'} />
           {translate('NETWORK')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">{network.name}</div>
       </div>
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
-          <SIcon type="tx-receive" width={'30px'} height={'30px'} />
+          <SIcon type="tx-receive" height={'25px'} />
           {translate('CONFIRM_TX_RECEIVED')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">

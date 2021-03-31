@@ -13,8 +13,7 @@ interface Props {
 }
 
 const Image = styled.img`
-  width: 30px;
-  height: 30px;
+  height: 25px;
   margin-right: ${SPACING.SM};
   vertical-align: middle;
 `;
