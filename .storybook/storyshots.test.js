@@ -1,4 +1,5 @@
 import initStoryshots from '@storybook/addon-storyshots';
+import { formatDate } from '@utils';
 
 describe('', () => {
   beforeAll(() => {
@@ -6,10 +7,10 @@ describe('', () => {
     // contain localized dates (eg. TxReceipt), we stub the call and neutralize
     // localization.
     jest.spyOn(global.Date.prototype, 'toLocaleString').mockImplementation(function () {
-      return new Date(this.valueOf()).toISOString();
+      return formatDate(this, true);
     });
     jest.spyOn(global.Date.prototype, 'toLocaleDateString').mockImplementation(function () {
-      return new Date(this.valueOf()).toISOString();
+      return formatDate(this, true);
     });
     // Membership expiration uses Date.now(). Return a set Date in order to assert
     // against snapshots
