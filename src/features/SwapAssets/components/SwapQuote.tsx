@@ -68,9 +68,9 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        assetValue={`${bigify(fromAmount).toFixed(6)} ${fromAsset.ticker} = ${bigify(
-          toAmount
-        ).toFixed(6)} ${toAsset.ticker}`}
+        text={`${bigify(fromAmount).toFixed(6)} ${fromAsset.ticker} = ${bigify(toAmount).toFixed(
+          6
+        )} ${toAsset.ticker}`}
         fiat={{
           symbol: getFiat(settings).symbol,
           ticker: getFiat(settings).ticker,
@@ -84,7 +84,7 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        assetValue={`1 ${fromAsset.ticker} = ${bigify(exchangeRate).toFixed(6)} ${toAsset.ticker}`}
+        text={`1 ${fromAsset.ticker} = ${bigify(exchangeRate).toFixed(6)} ${toAsset.ticker}`}
         fiat={{
           symbol: getFiat(settings).symbol,
           ticker: getFiat(settings).ticker,
@@ -98,7 +98,10 @@ export const SwapQuote = ({
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
-        assetValue={`${estimatedGasFee} ${baseAsset.ticker}`}
+        asset={{
+          amount: estimatedGasFee,
+          ticker: baseAsset.ticker
+        }}
         fiat={{
           symbol: getFiat(settings).symbol,
           ticker: getFiat(settings).ticker,
