@@ -44,15 +44,15 @@ const Address = styled(EthAddress)`
 
 const SAvatar = styled(Avatar)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
   }
 `;
 
 const SIdenticon = styled(Identicon)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
     max-width: none;
   }
 `;

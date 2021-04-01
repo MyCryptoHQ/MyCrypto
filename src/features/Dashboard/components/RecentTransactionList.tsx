@@ -153,8 +153,8 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
     <Box mr="16px" position="relative">
       <img
         src={TxTypeConfig[type] ? TxTypeConfig[type].icon : transfer}
-        width="45px"
-        height="45px"
+        width="36px"
+        height="36px"
       />
       {greyscaleIcon}
     </Box>
@@ -230,7 +230,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             <Amount
               // Adapt alignment for mobile display
               alignLeft={isMobile}
-              assetValue={`${bigify(amount).toFixed(4)} ${asset.ticker}`}
+              asset={{
+                amount: bigify(amount).toFixed(5),
+                ticker: asset.ticker
+              }}
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,

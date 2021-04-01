@@ -21,7 +21,7 @@ interface Props {
 }
 
 const SCurrency = styled(Currency)`
-  margin-left: 58px;
+  margin-left: 52px;
 `;
 
 // To change the hover behavior on Address, we need it to be a SC.
