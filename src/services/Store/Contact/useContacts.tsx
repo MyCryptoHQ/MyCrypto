@@ -70,10 +70,9 @@ function useContacts() {
   const createContacts = (items: Contact[]) => {
     dispatch(
       createManyContacts(
-        items.map((item) => {
-          const uuid = generateDeterministicAddressUUID(item.network, item.address);
-          return { ...item, uuid };
-        })
+        items.map((item) => 
+          ({ ...item, uuid: generateDeterministicAddressUUID(item.network, item.address) })
+        )
       )
     );
   };
