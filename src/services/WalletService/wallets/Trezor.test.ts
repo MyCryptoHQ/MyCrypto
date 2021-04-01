@@ -11,7 +11,7 @@ describe('Trezor', () => {
     const wallet = new Trezor();
     await wallet.initialize(DPathsList.ETH_DEFAULT);
 
-    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(1);
+    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(2);
 
     await expect(wallet.getAddress(DPathsList.ETH_DEFAULT, 10)).resolves.toMatchSnapshot();
     await expect(wallet.getAddress(DPathsList.ETH_DEFAULT, 15)).resolves.toMatchSnapshot();
@@ -21,7 +21,7 @@ describe('Trezor', () => {
     const wallet = new Trezor();
     await wallet.initialize(DPathsList.ETH_DEFAULT);
 
-    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(2);
+    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(3);
 
     await expect(wallet.getAddress(DPathsList.ETH_LEDGER_LIVE, 10)).resolves.toMatchSnapshot();
     await expect(wallet.getAddress(DPathsList.ETH_LEDGER_LIVE, 15)).resolves.toMatchSnapshot();

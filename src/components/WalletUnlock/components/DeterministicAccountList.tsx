@@ -88,16 +88,6 @@ interface DeterministicAccountListProps {
   handleUpdate(asset: ExtendedAsset): void;
 }
 
-const tableBannerText = (emptySelectedAccountsLength: number, maxEmptyAddresses: number) => (
-  <Trans
-    id="DETERMINISTIC_SCANNING_EMPTY_ADDR"
-    variables={{
-      $count: () => emptySelectedAccountsLength,
-      $total: () => maxEmptyAddresses
-    }}
-  />
-);
-
 export default function DeterministicAccountList({
   finishedAccounts,
   asset,
@@ -171,7 +161,15 @@ export default function DeterministicAccountList({
         <Banner
           type={BannerType.ANNOUNCEMENT}
           displayIcon={false}
-          value={tableBannerText(emptySelectedAccounts.length, MAX_EMPTY_ADDRESSES)}
+          value={
+            <Trans
+              id="DETERMINISTIC_SCANNING_EMPTY_ADDR"
+              variables={{
+                $count: () => emptySelectedAccounts.length,
+                $total: () => MAX_EMPTY_ADDRESSES
+              }}
+            />
+          }
         />
       </Box>
       <TableWrapper>

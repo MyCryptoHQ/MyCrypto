@@ -119,6 +119,7 @@ const useDeterministicWallet = (
     service.getAccounts(state.session, dpaths);
   }, [state.completed]);
 
+  // On accounts added to queue
   useEffect(() => {
     if (
       !service ||

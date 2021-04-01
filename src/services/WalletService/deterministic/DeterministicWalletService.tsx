@@ -1,28 +1,22 @@
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import BN from 'bignumber.js';
-import flatten from 'ramda/src/flatten';
 
 import {
   BalanceMap,
   getBaseAssetBalancesForAddresses,
   getSingleTokenBalanceForAddresses
 } from '@services/Store/BalanceService';
-import { ExtendedAsset, Network, TAddress, WalletId } from '@types';
+import { ExtendedAsset, Network, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { getDeterministicWallets, LedgerUSB, Wallet } from '..';
-import { LedgerU2F, Trezor, WalletResult } from '../wallets';
-import { KeyInfo } from '../wallets/HardwareWallet';
+import { LedgerUSB, Wallet } from '..';
+import { LedgerU2F, Trezor } from '../wallets';
 import {
   DWAccountDisplay,
   ExtendedDPath,
   HardwareInitProps,
   IDeterministicWalletService
 } from './types';
-
-interface IPrefetchBundle {
-  [key: string]: KeyInfo;
-}
 
 interface EventHandlers {
   handleInit(session: Wallet, asset: ExtendedAsset): void;
@@ -74,55 +68,16 @@ export const DeterministicWalletService = ({
   };
 
   const getAccounts = async (session: Wallet, dpaths: ExtendedDPath[]) => {
-    if (session.prefetch) {
-      const prefetchedBundle: IPrefetchBundle = await session.prefetch(dpaths);
-      const returnedData = flatten(
-        Object.entries(prefetchedBundle).map(([key, value]) => {
-          try {
-            const dpath = dpaths.find((x) => x.value === key) as ExtendedDPath;
-            return getDeterministicWallets({
-              dPath: key,
-              chainCode: value.chainCode,
-              publicKey: value.publicKey,
-              limit: dpath.numOfAddresses,
-              offset: dpath.offset
-            }).map((item) => ({
-              address: item.address as TAddress,
-              pathItem: {
-                path: `${key}/${item.index}`,
-                baseDPath: dpath,
-                index: item.index
-              },
-              balance: undefined
-            }));
-          } catch {
-            return [];
-          }
-        })
-      );
-      handleEnqueueAccounts(returnedData);
+    // Trezor wallet uses getMultipleAddresses for fetching multiple addresses at a time. Ledger doesn't have this functionality.
+    if (session.getMultipleAddresses) {
+      await session
+        .getMultipleAddresses(dpaths)
+        .then((accounts) => handleEnqueueAccounts(accounts))
+        .catch((e) => {
+          handleAccountsError(e);
+        });
     } else {
-      const hardenedDPaths = dpaths.filter(({ isHardened }) => isHardened);
-      const normalDPaths = dpaths.filter(({ isHardened }) => !isHardened);
-      if (normalDPaths.length > 0) {
-        await getDPathAddresses(session, normalDPaths)
-          .then((accounts) => {
-            handleEnqueueAccounts(accounts);
-          })
-          .catch((err) => {
-            handleAccountsError(err);
-          });
-      }
-
-      if (hardenedDPaths.length > 0) {
-        await getDPathAddresses(session, hardenedDPaths)
-          .then((accounts) => {
-            handleEnqueueAccounts(accounts);
-          })
-          .catch((err) => {
-            handleAccountsError(err);
-          });
-      }
+      console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
     }
   };
 
@@ -151,33 +106,6 @@ export const DeterministicWalletService = ({
     } catch (err) {
       handleAccountsUpdate(accounts, asset);
     }
-  };
-
-  const getDPathAddresses = async (
-    session: Wallet,
-    dpaths: ExtendedDPath[]
-  ): Promise<DWAccountDisplay[]> => {
-    const outputAddresses: DWAccountDisplay[] = [];
-    for (const dpath of dpaths) {
-      try {
-        for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
-          const data = (await session.getAddress(dpath, idx + dpath.offset)) as WalletResult;
-          const outputObject = {
-            address: data.address as TAddress,
-            pathItem: {
-              path: data.path,
-              baseDPath: dpath,
-              index: idx + dpath.offset
-            },
-            balance: undefined
-          };
-          outputAddresses.push(outputObject);
-        }
-        // eslint-disable-next-line no-empty
-      } catch {}
-    }
-
-    return outputAddresses;
   };
 
   return {

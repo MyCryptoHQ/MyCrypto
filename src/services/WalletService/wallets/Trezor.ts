@@ -1,8 +1,10 @@
 import TrezorConnect from 'trezor-connect';
 
 import { TREZOR_DERIVATION_PATHS } from '@config/dpaths';
-import { DPath, WalletId } from '@types';
+import { DPath, TAddress, WalletId } from '@types';
+import { flatten } from '@vendor';
 
+import { DWAccountDisplay, ExtendedDPath, getDeterministicWallets } from '../deterministic';
 import HardwareWallet, { KeyInfo } from './HardwareWallet';
 import { getFullPath } from './helpers';
 
@@ -36,6 +38,34 @@ export default class Trezor extends HardwareWallet {
     }
 
     return this.cache;
+  }
+
+  public async getMultipleAddresses(paths: ExtendedDPath[]): Promise<DWAccountDisplay[]> {
+    const keyInfo = this.prefetch(paths);
+    return flatten(
+      Object.entries(keyInfo).map(([key, value]) => {
+        const dpath = paths.find((x) => x.value === key);
+        if (!dpath) {
+          console.error('[getMultipleAddresses]: Could not find dpath that was expected.');
+          return [] as DWAccountDisplay[];
+        }
+        return getDeterministicWallets({
+          dPath: key,
+          chainCode: value.chainCode,
+          publicKey: value.publicKey,
+          limit: dpath.numOfAddresses,
+          offset: dpath.offset
+        }).map((item) => ({
+          address: item.address as TAddress,
+          pathItem: {
+            path: `${key}/${item.index}`,
+            baseDPath: dpath,
+            index: item.index
+          },
+          balance: undefined
+        }));
+      })
+    );
   }
 
   public getDPaths(): DPath[] {

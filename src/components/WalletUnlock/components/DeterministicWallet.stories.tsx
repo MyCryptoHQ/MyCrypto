@@ -46,12 +46,10 @@ const initialProps: DeterministicWalletProps = {
   onUnlock: noOp
 };
 
-export const DeterministicWallet = () => {
-  return (
-    <ProvidersWrapper>
-      <ExtendedContentPanel width="800px">
-        <DeterministicWalletUI {...initialProps} />
-      </ExtendedContentPanel>
-    </ProvidersWrapper>
-  );
-};
+export const DeterministicWallet = () => (
+  <ProvidersWrapper>
+    <ExtendedContentPanel width="800px">
+      <DeterministicWalletUI {...initialProps} />
+    </ExtendedContentPanel>
+  </ProvidersWrapper>
+);

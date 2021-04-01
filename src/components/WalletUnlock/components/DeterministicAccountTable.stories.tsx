@@ -39,12 +39,10 @@ const initialProps: DeterministicTableProps = {
   handleScanMoreAddresses: noOp
 };
 
-export const DeterministicAccountTable = () => {
-  return (
-    <ProvidersWrapper>
-      <ExtendedContentPanel width="800px">
-        <DeterministicTable {...initialProps} />
-      </ExtendedContentPanel>
-    </ProvidersWrapper>
-  );
-};
+export const DeterministicAccountTable = () => (
+  <ProvidersWrapper>
+    <ExtendedContentPanel width="800px">
+      <DeterministicTable {...initialProps} />
+    </ExtendedContentPanel>
+  </ProvidersWrapper>
+);

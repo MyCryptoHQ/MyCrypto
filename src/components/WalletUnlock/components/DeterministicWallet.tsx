@@ -104,10 +104,6 @@ const SInput = styled(Input)`
   margin-bottom: ${SPACING.XS};
 `;
 
-const SBox = styled(Box)`
-  margin: ${SPACING.XS};
-`;
-
 export interface DeterministicWalletProps {
   state: DeterministicWalletState;
   assets: ExtendedAsset[];
@@ -160,10 +156,6 @@ const DeterministicWallet = ({
       }
     ]);
     setDpathAddView(false);
-  };
-
-  const handleScanMoreAddresses = (dpath: ExtendedDPath) => {
-    scanMoreAddresses(dpath);
   };
 
   const csv = accountsToCSV(state.finishedAccounts, assetToUse);
@@ -244,7 +236,7 @@ const DeterministicWallet = ({
       </HeadingWrapper>
 
       <Box pb={SPACING.MD} variant="spaceBetween">
-        <SBox variant="columnAlignLeft">
+        <Box variant="columnAlignLeft" m={SPACING.XS}>
           <Text>
             <Trans id="MNEMONIC_SUBTITLE" />
           </Text>
@@ -254,12 +246,10 @@ const DeterministicWallet = ({
             showAssetName={true}
             searchable={true}
             assets={filteredAssets}
-            onSelect={(option: ExtendedAsset) => {
-              handleAssetUpdate(option);
-            }}
+            onSelect={handleAssetUpdate}
           />
-        </SBox>
-        <SBox variant="columnAlignLeft">
+        </Box>
+        <Box variant="columnAlignLeft" m={SPACING.XS}>
           <Text>
             <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
             <LinkApp href="#" onClick={() => setDpathAddView(true)}>
@@ -276,7 +266,7 @@ const DeterministicWallet = ({
             clearable={false}
             searchable={false}
           />
-        </SBox>
+        </Box>
       </Box>
       <Box variant="rowAlign" justifyContent="space-between" pb={SPACING.SM}>
         <Switch
@@ -297,7 +287,7 @@ const DeterministicWallet = ({
             selectedDPath={selectedDPath}
             displayEmptyAddresses={displayEmptyAddresses}
             onUnlock={onUnlock}
-            handleScanMoreAddresses={handleScanMoreAddresses}
+            handleScanMoreAddresses={scanMoreAddresses}
             handleUpdate={updateAsset}
           />
         )}
