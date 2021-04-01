@@ -34,6 +34,7 @@ export interface DeterministicWalletState {
   isGettingAccounts: boolean;
   detectedChainId?: number | undefined;
   asset?: ExtendedAsset;
+  network?: Network;
   queuedAccounts: DWAccountDisplay[];
   finishedAccounts: DWAccountDisplay[];
   customDPaths: ExtendedDPath[];

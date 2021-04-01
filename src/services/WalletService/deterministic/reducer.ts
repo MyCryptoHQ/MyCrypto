@@ -27,6 +27,7 @@ export type DWAction = Overwrite<
 
 export const initialState: DeterministicWalletState = {
   asset: undefined,
+  network: undefined,
   isInit: false,
   isConnected: false,
   session: undefined,
@@ -71,12 +72,13 @@ const DeterministicWalletReducer = (
       };
     }
     case DWActionTypes.CONNECTION_SUCCESS: {
-      const { session, asset } = payload;
+      const { session, asset, network } = payload;
       return {
         ...state,
         isConnected: true,
         isConnecting: false,
         error: initialState.error,
+        network,
         asset,
         session
       };

@@ -16,12 +16,11 @@ import {
   useDeterministicWallet,
   useNetworks
 } from '@services';
-import { Trans, translateRaw } from '@translations';
+import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
 
 import { DeterministicWallet } from './components';
-import UnsupportedNetwork from './UnsupportedNetwork';
 
 interface OwnProps {
   formData: FormData;
@@ -64,11 +63,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
   };
-
-  if (!network) {
-    // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
-  }
 
   if (window.location.protocol !== 'https:') {
     return (

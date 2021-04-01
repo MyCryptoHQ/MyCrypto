@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import BN from 'bignumber.js';
@@ -40,9 +40,6 @@ const useDeterministicWallet = (
     identity,
     'DeterministicWallet'
   );
-  const [shouldInit, setShouldInit] = useState(false);
-  const [assetToQuery, setAssetToQuery] = useState(undefined as ExtendedAsset | undefined);
-  const [network, setNetwork] = useState(undefined as Network | undefined);
 
   const getAccounts = async (session: Wallet, dpaths: ExtendedDPath[]) => {
     // Trezor wallet uses getMultipleAddresses for fetching multiple addresses at a time. Ledger doesn't have this functionality.
@@ -99,50 +96,11 @@ const useDeterministicWallet = (
     }
   };
 
-  // Initialize DeterministicWallet and get the uri.
-  useEffect(() => {
-    if (!shouldInit || !assetToQuery || !network) return;
-    setShouldInit(false);
-
-    // initialize the wallet
-    selectWallet(walletId)
-      .then((walletSession) => {
-        return walletSession.initialize(dpaths[0]).then(() => {
-          dispatch({
-            type: DWActionTypes.CONNECTION_REQUEST
-          });
-          return walletSession;
-        });
-      })
-      .then((walletSession) => {
-        dispatch({
-          type: DWActionTypes.CONNECTION_SUCCESS,
-          payload: { session: walletSession, asset: assetToQuery }
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: DWActionTypes.CONNECTION_FAILURE,
-          error: {
-            code: DeterministicWalletReducer.errorCodes.SESSION_CONNECTION_FAILED,
-            message: err
-          }
-        });
-      });
-  }, [shouldInit]);
-
-  useEffect(() => {
-    if (!state.isConnected && state.isInit) {
-      setShouldInit(false);
-    }
-  }, [state.isInit]);
-
   // On first connection && on asset update
   useEffect(() => {
     if (
-      shouldInit ||
       !state.isConnected ||
-      !network ||
+      !state.network ||
       !state.session ||
       state.finishedAccounts.length !== 0
     )
@@ -152,23 +110,22 @@ const useDeterministicWallet = (
 
   // On scan more
   useEffect(() => {
-    if (shouldInit || !state.isConnected || !network || !state.session || state.completed) return;
+    if (!state.isConnected || !state.network || !state.session || state.completed) return;
     getAccounts(state.session, dpaths);
   }, [state.completed]);
 
   // On accounts added to queue
   useEffect(() => {
     if (
-      shouldInit ||
       !state.isConnected ||
       !state.session ||
-      !assetToQuery ||
-      !network ||
+      !state.asset ||
+      !state.network ||
       state.queuedAccounts.length === 0
     ) {
       return;
     }
-    handleAccountsQueue(state.queuedAccounts, network, assetToQuery);
+    handleAccountsQueue(state.queuedAccounts, state.network, state.asset);
   }, [state.queuedAccounts]);
 
   useEffect(() => {
@@ -197,14 +154,38 @@ const useDeterministicWallet = (
     return;
   }, [state.finishedAccounts, state.completed]);
 
-  const requestConnection = (networkToUse: Network, asset: ExtendedAsset) => {
-    setNetwork(networkToUse);
-    setAssetToQuery(asset);
-    setShouldInit(true);
+  const requestConnection = (network: Network, asset: ExtendedAsset) => {
+    if (!asset || !network) return;
+
+    // initialize the wallet
+    selectWallet(walletId)
+      .then((walletSession) => {
+        return walletSession.initialize(dpaths[0]).then(() => {
+          dispatch({
+            type: DWActionTypes.CONNECTION_REQUEST
+          });
+          return walletSession;
+        });
+      })
+      .then((walletSession) => {
+        dispatch({
+          type: DWActionTypes.CONNECTION_SUCCESS,
+          payload: { session: walletSession, asset, network }
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DWActionTypes.CONNECTION_FAILURE,
+          error: {
+            code: DeterministicWalletReducer.errorCodes.SESSION_CONNECTION_FAILED,
+            message: err
+          }
+        });
+      });
   };
 
   const addDPaths = (customDPaths: ExtendedDPath[]) => {
-    if (shouldInit || !state.isConnected || !network || !state.session) {
+    if (!state.isConnected || !state.network || !state.session) {
       return;
     }
     dispatch({
@@ -218,11 +199,10 @@ const useDeterministicWallet = (
       type: DWActionTypes.UPDATE_ASSET,
       payload: { asset }
     });
-    setAssetToQuery(asset);
   };
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
-    if (shouldInit || !state.isConnected || !network || !state.session) return;
+    if (!state.isConnected || !state.network || !state.session) return;
     dispatch({
       type: DWActionTypes.GET_ADDRESSES_REQUEST
     });

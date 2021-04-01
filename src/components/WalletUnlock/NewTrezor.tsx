@@ -17,12 +17,10 @@ import {
   useDeterministicWallet,
   useNetworks
 } from '@services';
-import { translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
 import { DeterministicWallet } from './components';
 import HardwareWalletUI from './Hardware';
-import UnsupportedNetwork from './UnsupportedNetwork';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -65,11 +63,6 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
   };
-
-  if (!network) {
-    // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('X_TREZOR')} network={network} />;
-  }
 
   if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
     return (
