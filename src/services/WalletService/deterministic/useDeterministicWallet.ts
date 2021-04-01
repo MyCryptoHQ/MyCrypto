@@ -103,20 +103,21 @@ const useDeterministicWallet = (
   useEffect(() => {
     if (!shouldInit || !assetToQuery || !network) return;
     setShouldInit(false);
-    dispatch({
-      type: DWActionTypes.CONNECTION_REQUEST
-    });
 
     // initialize the wallet
     selectWallet(walletId)
       .then((walletSession) => {
-        walletSession.initialize(dpaths[0]);
-        return walletSession;
+        return walletSession.initialize(dpaths[0]).then(() => {
+          dispatch({
+            type: DWActionTypes.CONNECTION_REQUEST
+          });
+          return walletSession;
+        });
       })
       .then((walletSession) => {
         dispatch({
           type: DWActionTypes.CONNECTION_SUCCESS,
-          payload: { walletSession, asset: assetToQuery }
+          payload: { session: walletSession, asset: assetToQuery }
         });
       })
       .catch((err) => {
