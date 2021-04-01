@@ -1,5 +1,595 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` Storyshots Atoms/AppLoading Default 1`] = `
+<div
+  className="Box-sc-1974eaf-0 gRmRk"
+>
+  <div
+    className="Box-sc-1974eaf-0 bQyWKj"
+  >
+    <svg
+      aria-busy="true"
+      className="Spinner__Svg-zka97z-0 haTFFg"
+      color="#a086f7"
+      data-testid="spinner"
+      viewBox="0 0 50 50"
+    >
+      <circle
+        className="path"
+        cx="25"
+        cy="25"
+        fill="none"
+        r="20"
+        strokeWidth="5"
+      />
+    </svg>
+  </div>
+  <p
+    className="Text__SText-sc-14ylyin-0 dqOCzB"
+  >
+    MyCrypto App is loading...
+  </p>
+</div>
+`;
+
+exports[` Storyshots Atoms/AppLoading In Layout 1`] = `
+Array [
+  <div
+    className="Box-sc-1974eaf-0 laJcAc"
+    height={
+      Object {
+        "_": "57px",
+        "sm": "100vh",
+      }
+    }
+    width={
+      Object {
+        "_": "100vw",
+        "sm": "6.4vh",
+        "xxl": "64px",
+      }
+    }
+  >
+    <div
+      className="Box-sc-1974eaf-0 gtXQyg"
+      height="100%"
+      width="100%"
+    >
+      <div
+        className="Box-sc-1974eaf-0 bcSOtL"
+      >
+        <svg
+          className="Icon__SInlineSVG-tq1i3y-0 dFuFys"
+          id="test-file-stub"
+        />
+      </div>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/dashboard"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Home
+          </p>
+        </div>
+      </a>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/send"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Send
+          </p>
+        </div>
+      </a>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/swap"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Swap
+          </p>
+        </div>
+      </a>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/request"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Request
+          </p>
+        </div>
+      </a>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/buy"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Buy
+          </p>
+        </div>
+      </a>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/add-account/:walletId"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Add
+          </p>
+        </div>
+      </a>
+      <div
+        className="Box-sc-1974eaf-0 ghVUql"
+        width="100%"
+      >
+        <div
+          className="Box-sc-1974eaf-0 kKQtAs"
+          height={
+            Object {
+              "sm": "auto",
+            }
+          }
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={
+            Object {
+              "cursor": "pointer",
+            }
+          }
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 gkSipY NavTray__SIcon-fxycol-0 bkphXP"
+            fill="#b5bfc7"
+            id="test-file-stub"
+          />
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 irpKCa"
+            fill="WHITE"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 eyTcur"
+            color="WHITE"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Tools
+          </p>
+        </div>
+        <div
+          className="Box-sc-1974eaf-0 kKQtAs"
+          height={
+            Object {
+              "sm": "auto",
+            }
+          }
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={
+            Object {
+              "cursor": "pointer",
+            }
+          }
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 gkSipY NavTray__SIcon-fxycol-0 bkphXP"
+            fill="#b5bfc7"
+            id="test-file-stub"
+          />
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 irpKCa"
+            fill="WHITE"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 eyTcur"
+            color="WHITE"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Support Us
+          </p>
+        </div>
+      </div>
+      <a
+        className="LinkApp__SRouterLink-sc-275gt9-1 fXwqbC NavLink__SLink-czrk96-0 jgnmGB"
+        href="/settings"
+        onClick={[Function]}
+        variant="barren"
+      >
+        <div
+          className="Box-sc-1974eaf-0 NavLink__SBox-czrk96-1 ipViPC"
+          color="#fff"
+          height="100%"
+          width="100%"
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 kMqfwe"
+            id="test-file-stub"
+          />
+          <p
+            className="Text__SText-sc-14ylyin-0 gcNYmi"
+            fontSize={
+              Object {
+                "_": "10px",
+                "sm": "1.1vh",
+                "xxl": "10px",
+              }
+            }
+          >
+            Settings
+          </p>
+        </div>
+      </a>
+      <div
+        className="Box-sc-1974eaf-0 DesktopNav__SBox-q7m8o-0 iVuoCZ"
+        onClick={[Function]}
+        width="100%"
+      >
+        <svg
+          className="Icon__SInlineSVG-tq1i3y-0 ezQkSv"
+          fill="#fff"
+          id="test-file-stub"
+        />
+        <p
+          className="Text__SText-sc-14ylyin-0 hDDRgQ"
+          color="WHITE"
+          fontSize={
+            Object {
+              "sm": "1.1vh",
+              "xxl": "10px",
+            }
+          }
+        >
+          Menu
+        </p>
+      </div>
+    </div>
+  </div>,
+  <main
+    className="Layout__SMain-sc-15d0ssb-0 hrFVLL"
+  >
+    <div
+      className="Layout__STop-sc-15d0ssb-2 eqNcsM"
+    />
+    <div
+      className="Layout__DemoLayoutWrapper-sc-15d0ssb-1 ksEOzK"
+    >
+      <div
+        className="Box-sc-1974eaf-0 bkgoCA"
+      >
+        <div
+          className="Box-sc-1974eaf-0 ghWfNr"
+        >
+          <div
+            className="Banner__Container-sc-12319m8-0 ejfdKa AnnouncementBanner__SBanner-omm7zm-0 egWYvP"
+          >
+            <div
+              className="Banner__RowContainer-sc-12319m8-3 dmVauS"
+            >
+              <img
+                alt="announcement"
+                className="Banner__Icon-sc-12319m8-1 qcUnC"
+                src="test-file-stub"
+              />
+              <span
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 efrCUX Banner__STypography-sc-12319m8-2 hxCyvs"
+                color="#fff"
+              >
+                <div
+                  className="AnnouncementBanner__CenteredBannerText-omm7zm-1 kdFJRV"
+                >
+                  Welcome to the new MyCrypto! Please update your MyCrypto bookmark to 
+                  <a
+                    className="LinkApp__SLink-sc-275gt9-0 dUBId"
+                    href="https://app.mycrypto.com"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    app.mycrypto.com
+                  </a>
+                   to go directly to this dashboard from now on.
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <svg
+          className="Icon__SInlineSVG-tq1i3y-0 idMVAl"
+          id="test-file-stub"
+          style={
+            Object {
+              "marginLeft": "35px",
+              "marginRight": "35px",
+            }
+          }
+        />
+        <div
+          className="Box-sc-1974eaf-0 ZbKoA"
+          style={
+            Object {
+              "cursor": "pointer",
+              "transform": "unset",
+              "transition": "all 300ms ease",
+            }
+          }
+        >
+          <a
+            className="LinkApp__SRouterLink-sc-275gt9-1 gyMFhT"
+            color="#424242"
+            href="/membership"
+            onClick={[Function]}
+            variant="barren"
+          >
+            <div
+              className="Box-sc-1974eaf-0 kMjbQj"
+            >
+              <svg
+                className="Icon__SInlineSVG-tq1i3y-0 dVFTLd"
+                fill="#424242"
+                id="test-file-stub"
+              />
+              <p
+                className="Text__SText-sc-14ylyin-0 cXtsoS"
+                color="#424242"
+                fontSize={5}
+                fontWeight={700}
+              >
+                Join
+              </p>
+            </div>
+          </a>
+        </div>
+        <div
+          className="Box-sc-1974eaf-0 ZbKoA"
+          style={
+            Object {
+              "cursor": "pointer",
+              "transform": "unset",
+              "transition": "all 300ms ease",
+            }
+          }
+        >
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 ddNdYM"
+            color="#424242"
+            href="https://support.mycrypto.com/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <div
+              className="Box-sc-1974eaf-0 kMjbQj"
+            >
+              <svg
+                className="Icon__SInlineSVG-tq1i3y-0 dVFTLd"
+                fill="#424242"
+                id="test-file-stub"
+              />
+              <p
+                className="Text__SText-sc-14ylyin-0 cXtsoS"
+                color="#424242"
+                fontSize={5}
+                fontWeight={700}
+              >
+                Help
+              </p>
+            </div>
+          </a>
+        </div>
+        <div
+          className="Box-sc-1974eaf-0 ZbKoA"
+          style={
+            Object {
+              "cursor": "pointer",
+              "transform": "unset",
+              "transition": "all 300ms ease",
+            }
+          }
+        >
+          <a
+            className="LinkApp__SLink-sc-275gt9-0 ddNdYM"
+            color="#424242"
+            href="https://medium.com/@mycrypto"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <div
+              className="Box-sc-1974eaf-0 kMjbQj"
+            >
+              <svg
+                className="Icon__SInlineSVG-tq1i3y-0 dVFTLd"
+                fill="#424242"
+                id="test-file-stub"
+              />
+              <p
+                className="Text__SText-sc-14ylyin-0 cXtsoS"
+                color="#424242"
+                fontSize={5}
+                fontWeight={700}
+              >
+                New
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div
+        className="Layout__SContainer-sc-15d0ssb-3 kGmqZa"
+      >
+        <div
+          className="Box-sc-1974eaf-0 gRmRk"
+        >
+          <div
+            className="Box-sc-1974eaf-0 bQyWKj"
+          >
+            <svg
+              aria-busy="true"
+              className="Spinner__Svg-zka97z-0 haTFFg"
+              color="#a086f7"
+              data-testid="spinner"
+              viewBox="0 0 50 50"
+            >
+              <circle
+                className="path"
+                cx="25"
+                cy="25"
+                fill="none"
+                r="20"
+                strokeWidth="5"
+              />
+            </svg>
+          </div>
+          <p
+            className="Text__SText-sc-14ylyin-0 dqOCzB"
+          >
+            MyCrypto App is loading...
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>,
+]
+`;
+
 exports[` Storyshots Atoms/Button Button 1`] = `
 <button
   className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm"
