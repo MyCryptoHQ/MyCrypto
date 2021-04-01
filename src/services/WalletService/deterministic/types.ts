@@ -56,10 +56,3 @@ export interface HardwareInitProps {
   asset: ExtendedAsset;
   dpath: DPath;
 }
-
-export interface IDeterministicWalletService {
-  init(props: HardwareInitProps): void;
-  getAccounts(session: Wallet, dpath: ExtendedDPath[]): void;
-  handleAccountsQueue(accounts: DWAccountDisplay[], network: Network, asset: ExtendedAsset): void;
-  triggerComplete(): void;
-}
