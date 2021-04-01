@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Amount, EthAddress } from '@components';
-import { Text } from '@components/NewTypography';
+import { Currency, EthAddress, Text } from '@components';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, TAddress } from '@types';
@@ -21,11 +20,6 @@ const STable = styled.table`
   & tbody tr th:first-child {
     padding-right: ${SPACING.BASE};
   }
-`;
-
-const AssetAmount = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 export const ActionTable = ({ accounts, asset }: ActionTableProps) => (
@@ -48,13 +42,7 @@ export const ActionTable = ({ accounts, asset }: ActionTableProps) => (
               <EthAddress address={account.address} isCopyable={true} truncate={true} />
             </th>
             <th>
-              <AssetAmount>
-                <Amount assetValue={bigNumValueToViewableEther(account.amount)} />
-
-                <Text m={0} ml={SPACING.XS} fontWeight="normal">
-                  {asset.ticker}
-                </Text>
-              </AssetAmount>
+              <Currency amount={bigNumValueToViewableEther(account.amount)} ticker={asset.ticker} />
             </th>
           </tr>
         );
