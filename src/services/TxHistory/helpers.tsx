@@ -5,7 +5,7 @@ import { ITxHistoryType } from '@features/Dashboard/types';
 import { deriveTxFields, guessERC20Type } from '@helpers';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
-import { Asset, ITxReceipt, ITxType, Network, StoreAccount } from '@types';
+import { Asset, IAccount, ITxReceipt, ITxType, Network } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
 
 export const makeTxReceipt = (
@@ -58,7 +58,7 @@ export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceip
 // Mapping from TX API types to our current types
 const TYPE_MAPPING = { ERC_20_APPROVE: ITxType.APPROVAL } as { [key: string]: ITxHistoryType };
 
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
+export const deriveTxType = (accountsList: IAccount[], tx: ITxReceipt): ITxHistoryType => {
   const fromAccount =
     tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
   const toAddress = tx.receiverAddress || tx.to;

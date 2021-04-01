@@ -7,6 +7,7 @@ import {
   ExtendedAsset,
   IAccount,
   IProvidersMappings,
+  ITxStatus,
   LSKeys,
   TUuid
 } from '@types';
@@ -14,7 +15,7 @@ import { findIndex, propEq } from '@vendor';
 
 import { getAssetByUUID } from './asset.slice';
 import { getAppState } from './selectors';
-import { addAccountsToFavorites, getIsDemoMode } from './settings.slice';
+import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -96,6 +97,28 @@ export const getAccounts = createSelector([getAppState], (s) => {
     }))
   }));
 });
+
+export const selectCurrentAccounts = createSelector(
+  [getAccounts, getFavorites],
+  (accounts, favorites) => {
+    return accounts
+      .filter((a) => a && 'uuid' in a)
+      .filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
+  }
+);
+
+export const selectAccountTxs = createSelector([selectCurrentAccounts], (accounts) => {
+  return accounts
+    .filter(Boolean)
+    .flatMap(({ transactions }) =>
+      transactions.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
+    );
+});
+
+export const selectPendingTxs = createSelector([selectAccountTxs], (txs) => {
+  return txs.filter(({ status }) => status === ITxStatus.PENDING);
+});
+
 export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
   a
     .flatMap((a) => a.assets)

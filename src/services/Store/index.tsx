@@ -8,4 +8,3 @@ export * from './UserAction';
 export * from './DataManager';
 export { StoreContext, default as StoreProvider, State as StoreState } from './StoreProvider';
 export { getAccountBalance, getStoreAccount } from './utils';
-export { getTxsFromAccount } from './helpers';

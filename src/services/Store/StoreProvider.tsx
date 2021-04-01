@@ -15,6 +15,8 @@ import {
   fetchMemberships,
   isMyCryptoMember,
   scanTokens,
+  selectAccountTxs,
+  selectPendingTxs,
   useDispatch,
   useSelector
 } from '@store';
@@ -57,13 +59,7 @@ import { getNewDefaultAssetTemplateByNetwork, getTotalByAsset, useAssets } from 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
-import {
-  getPendingTransactionsFromAccounts,
-  getStoreAccounts,
-  getTxsFromAccount,
-  isNotExcludedAsset,
-  isTokenMigration
-} from './helpers';
+import { getStoreAccounts, isNotExcludedAsset, isTokenMigration } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
 
@@ -136,6 +132,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     contacts,
     networks
   ]);
+
   const currentAccounts = useMemo(
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
     [rawAccounts, settings.dashboardAccounts, assets]
@@ -170,8 +167,9 @@ export const StoreProvider: React.FC = ({ children }) => {
     dispatch(fetchMemberships());
   });
 
+  const pendingTxs = useSelector(selectPendingTxs);
   useEffect(() => {
-    setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
+    setPendingTransactions(pendingTxs);
   }, [currentAccounts]);
 
   // fetch assets from api
@@ -180,6 +178,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   });
 
   // A change to pending txs is detected
+  const txs = useSelector(selectAccountTxs);
   useEffect(() => {
     if (pendingTransactions.length === 0) return;
     // A pending transaction is detected.
@@ -197,7 +196,6 @@ export const StoreProvider: React.FC = ({ children }) => {
           isSameAddress(senderAccount.address, acc.address)
         ) as StoreAccount;
 
-        const txs = getTxsFromAccount([storeAccount]);
         const overwritingTx = txs.find(
           (t) =>
             t.nonce === pendingTxReceipt.nonce &&
