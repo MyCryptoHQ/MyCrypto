@@ -16,7 +16,7 @@ import {
   isMyCryptoMember,
   scanTokens,
   selectAccountTxs,
-  selectPendingTxs,
+  selectTxsByStatus,
   useDispatch,
   useSelector
 } from '@store';
@@ -167,7 +167,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     dispatch(fetchMemberships());
   });
 
-  const pendingTxs = useSelector(selectPendingTxs);
+  const pendingTxs = useSelector(selectTxsByStatus(ITxStatus.PENDING));
   useEffect(() => {
     setPendingTransactions(pendingTxs);
   }, [currentAccounts]);

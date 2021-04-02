@@ -30,10 +30,11 @@ const renderUseTxHistory = ({
     <ProvidersWrapper
       initialState={mockAppState({
         addressBook: fContacts,
-        assets: fAssets
+        assets: fAssets,
+        accounts
       })}
     >
-      <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
+      <StoreContext.Provider value={{ txHistory: apiTransactions } as any}>
         {children}
       </StoreContext.Provider>
     </ProvidersWrapper>

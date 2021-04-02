@@ -24,7 +24,7 @@ export {
   addAccounts,
   selectCurrentAccounts,
   selectAccountTxs,
-  selectPendingTxs
+  selectTxsByStatus
 } from './account.slice';
 export {
   createContact,

@@ -107,7 +107,7 @@ export const selectCurrentAccounts = createSelector(
   }
 );
 
-export const selectAccountTxs = createSelector([selectCurrentAccounts], (accounts) => {
+export const selectAccountTxs = createSelector([getAccounts], (accounts) => {
   return accounts
     .filter(Boolean)
     .flatMap(({ transactions }) =>
@@ -115,9 +115,10 @@ export const selectAccountTxs = createSelector([selectCurrentAccounts], (account
     );
 });
 
-export const selectPendingTxs = createSelector([selectAccountTxs], (txs) => {
-  return txs.filter(({ status }) => status === ITxStatus.PENDING);
-});
+export const selectTxsByStatus = (status: ITxStatus) =>
+  createSelector([selectAccountTxs], (txs) => {
+    return txs.filter(({ status: s }) => s === status);
+  });
 
 export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
   a
