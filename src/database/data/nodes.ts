@@ -191,7 +191,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     {
       name: NetworkUtils.makeNodeName('EVRICE', 'evrice'),
       type: NodeType.RPC,
-      service: 'evrice.com',
+      service: 'meta.evrice.com',
       url: 'https://meta.evrice.com'
     }
   ],
