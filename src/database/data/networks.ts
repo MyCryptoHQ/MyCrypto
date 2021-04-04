@@ -1038,16 +1038,17 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   },
   EVRICE: {
     id: 'EVRICE',
-    name: 'EVRICE',
+    name: 'Evrice',
     unit: 'EVC' as TTicker,
     chainId: 1010,
     isCustom: false,
-    color: '#855DFD',
+    color: '#6d2eae',
     blockExplorer: makeExplorer({
       name: 'Evrice explorer',
       origin: 'https://evrice.com/explorer/',
-      addressPath: 'https://evrice.com/explorer/address/',
-      blockPath: 'https://evrice.com/explorer/block/'
+      addressPath: 'address',
+      blockPath: 'blocks'
+      txPath: 'tx'
     }),
     tokens: [],
     contracts: [],
