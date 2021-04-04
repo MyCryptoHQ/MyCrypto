@@ -186,6 +186,15 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://node.expanse.tech/'
     }
   ],
+  
+   EVRICE: [
+    {
+      name: NetworkUtils.makeNodeName('EVC', 'EVRICE'),
+      type: NodeType.RPC,
+      service: 'evrice.com',
+      url: 'https://meta.evrice.com'
+    }
+  ],
 
   GO: [
     {
