@@ -1046,9 +1046,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     blockExplorer: makeExplorer({
       name: 'Evrice explorer',
       origin: 'https://evrice.com/explorer/',
-      addressPath: 'address',
-      blockPath: 'blocks'
-      txPath: 'tx'
     }),
     tokens: [],
     contracts: [],
