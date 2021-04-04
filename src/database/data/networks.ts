@@ -1037,3 +1037,33 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     }
   }
 };
+  },
+  POA: {
+    id: 'EVRICE',
+    name: 'EVRICE',
+    unit: 'EVC' as TTicker,
+    chainId: 1010,
+    isCustom: false,
+    color: '#855DFD',
+    blockExplorer: makeExplorer({
+      name: 'Evrice explorer',
+      origin: 'https://evrice.com/explorer/',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.EVC_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.EVC_LEDGER,
+      [WalletId.TREZOR_NEW]: DPaths.EVC_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.EVC_LEDGER,
+      default: DPaths.EVC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 1
+    }
+  }
+};
