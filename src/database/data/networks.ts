@@ -1038,7 +1038,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   }
 };
   },
-  POA: {
+  EVRICE: {
     id: 'EVRICE',
     name: 'EVRICE',
     unit: 'EVC' as TTicker,
@@ -1048,8 +1048,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     blockExplorer: makeExplorer({
       name: 'Evrice explorer',
       origin: 'https://evrice.com/explorer/',
-      addressPath: 'address',
-      blockPath: 'blocks'
+      addressPath: 'https://evrice.com/explorer/address/',
+      blockPath: 'https://evrice.com/explorer/block/'
     }),
     tokens: [],
     contracts: [],
