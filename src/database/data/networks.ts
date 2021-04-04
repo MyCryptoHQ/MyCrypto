@@ -1035,8 +1035,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 470,
       initial: 470
     }
-  }
-};
   },
   EVRICE: {
     id: 'EVRICE',
