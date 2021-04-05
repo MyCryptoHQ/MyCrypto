@@ -43,24 +43,24 @@ const useDeterministicWallet = (
 
   const getAccounts = async (session: Wallet, dpaths: ExtendedDPath[]) => {
     // Trezor wallet uses getMultipleAddresses for fetching multiple addresses at a time. Ledger doesn't have this functionality.
-    if (session.getMultipleAddresses) {
-      await session
-        .getMultipleAddresses(dpaths)
-        .then((accounts) => {
-          dispatch({
-            type: DWActionTypes.ENQUEUE_ADDRESSES,
-            payload: { accounts }
-          });
-        })
-        .catch((err) => {
-          dispatch({
-            type: DWActionTypes.GET_ADDRESSES_FAILURE,
-            error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED, message: err }
-          });
-        });
-    } else {
+    if (!session.getMultipleAddresses) {
       console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
+      return;
     }
+    session
+      .getMultipleAddresses(dpaths)
+      .then((accounts) => {
+        dispatch({
+          type: DWActionTypes.ENQUEUE_ADDRESSES,
+          payload: { accounts }
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DWActionTypes.GET_ADDRESSES_FAILURE,
+          error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED, message: err }
+        });
+      });
   };
 
   const handleAccountsQueue = (
@@ -74,8 +74,8 @@ const useDeterministicWallet = (
         ? () => getBaseAssetBalancesForAddresses(addresses, network)
         : () => getSingleTokenBalanceForAddresses(asset, network, addresses);
 
-    try {
-      balanceLookup().then((balanceMapData: BalanceMap<BN>) => {
+    balanceLookup()
+      .then((balanceMapData: BalanceMap<BN>) => {
         const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
           const balance = balanceMapData[account.address] || 0; // @todo - better error handling for failed lookups.
           return {
@@ -87,13 +87,13 @@ const useDeterministicWallet = (
           type: DWActionTypes.UPDATE_ACCOUNTS,
           payload: { accounts: walletsWithBalances, asset }
         });
+      })
+      .catch(() => {
+        dispatch({
+          type: DWActionTypes.UPDATE_ACCOUNTS,
+          payload: { accounts, asset }
+        });
       });
-    } catch (err) {
-      dispatch({
-        type: DWActionTypes.UPDATE_ACCOUNTS,
-        payload: { accounts, asset }
-      });
-    }
   };
 
   // On first connection && on asset update

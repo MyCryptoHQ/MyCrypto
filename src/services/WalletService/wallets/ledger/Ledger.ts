@@ -57,10 +57,6 @@ export default abstract class Ledger extends HardwareWallet {
       console.error('[getMultipleAddresses]: Derivation paths not found');
       return [];
     }
-    return this.getDPathAddresses(dpaths);
-  }
-
-  public async getDPathAddresses(dpaths: ExtendedDPath[]): Promise<DWAccountDisplay[]> {
     const outputAddresses: DWAccountDisplay[] = [];
     for (const dpath of dpaths) {
       try {
@@ -79,10 +75,9 @@ export default abstract class Ledger extends HardwareWallet {
         }
         // eslint-disable-next-line no-empty
       } catch (e) {
-        console.error('[getDPathAddresses]: Error', e);
+        console.error('[getMultipleAddresses]: Error', e);
       }
     }
-
     return outputAddresses;
   }
 }

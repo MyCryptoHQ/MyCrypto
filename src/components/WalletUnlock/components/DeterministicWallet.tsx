@@ -287,7 +287,7 @@ const DeterministicWallet = ({
             selectedDPath={selectedDPath}
             displayEmptyAddresses={displayEmptyAddresses}
             onUnlock={onUnlock}
-            handleScanMoreAddresses={scanMoreAddresses}
+            onScanMoreAddresses={scanMoreAddresses}
             handleUpdate={updateAsset}
           />
         )}

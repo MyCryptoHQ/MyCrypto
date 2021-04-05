@@ -83,7 +83,7 @@ interface DeterministicAccountListProps {
   network: Network;
   displayEmptyAddresses: boolean;
   selectedDPath: DPath;
-  handleScanMoreAddresses(dpath: ExtendedDPath): void;
+  onScanMoreAddresses(dpath: ExtendedDPath): void;
   onUnlock(param: any): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
@@ -95,7 +95,7 @@ export default function DeterministicAccountList({
   network,
   displayEmptyAddresses,
   selectedDPath,
-  handleScanMoreAddresses,
+  onScanMoreAddresses,
   onUnlock,
   handleUpdate
 }: DeterministicAccountListProps) {
@@ -182,7 +182,7 @@ export default function DeterministicAccountList({
           asset={asset}
           onSelect={handleSelection}
           handleUpdate={handleUpdate}
-          handleScanMoreAddresses={handleScanMoreAddresses}
+          onScanMoreAddresses={onScanMoreAddresses}
           csv={csv}
         />
       </TableWrapper>

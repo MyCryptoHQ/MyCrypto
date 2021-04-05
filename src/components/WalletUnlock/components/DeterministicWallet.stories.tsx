@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProvidersWrapper } from '@../jest_config/providersWrapper';
+import { ProvidersWrapper } from 'test-utils';
 
 import { ExtendedContentPanel } from '@components';
 import { LEDGER_DERIVATION_PATHS } from '@config';
@@ -11,7 +11,7 @@ import { noOp } from '@utils';
 import { DeterministicWalletProps, default as DeterministicWalletUI } from './DeterministicWallet';
 
 export default {
-  title: 'Hardware/DeterministicWallet'
+  title: 'Organisms/DeterministicWallet'
 };
 
 const initialProps: DeterministicWalletProps = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProvidersWrapper } from '@../jest_config/providersWrapper';
+import { ProvidersWrapper } from 'test-utils';
 
 import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
@@ -12,7 +12,7 @@ import {
   ITableAccounts
 } from './DeterministicAccountTable';
 
-export default { title: 'Hardware/DeterministicAccountTable' };
+export default { title: 'Organisms/DeterministicAccountTable' };
 
 const addressMap = fDWAccounts.reduce((acc, item) => {
   acc[item.address as string] = {
@@ -36,7 +36,7 @@ const initialProps: DeterministicTableProps = {
   csv: '',
   onSelect: noOp,
   handleUpdate: noOp,
-  handleScanMoreAddresses: noOp
+  onScanMoreAddresses: noOp
 };
 
 export const DeterministicAccountTable = () => (

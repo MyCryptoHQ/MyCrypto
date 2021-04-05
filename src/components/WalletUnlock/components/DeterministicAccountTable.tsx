@@ -21,6 +21,7 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
 import { bigify, buildAddressUrl, fromTokenBase, useScreenSize } from '@utils';
+import { isEmpty } from '@vendor';
 
 import { sortAccounts } from './helpers';
 
@@ -38,7 +39,7 @@ export interface DeterministicTableProps {
   csv: string;
   selectedDPath: DPath;
   displayEmptyAddresses: boolean;
-  handleScanMoreAddresses(dpath: ExtendedDPath): void;
+  onScanMoreAddresses(dpath: ExtendedDPath): void;
   onSelect(account: DWAccountDisplay): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
@@ -264,7 +265,7 @@ const DeterministicTable = ({
   displayEmptyAddresses,
   selectedDPath,
   onSelect,
-  handleScanMoreAddresses,
+  onScanMoreAddresses,
   handleUpdate,
   csv
 }: DeterministicTableProps) => {
@@ -297,7 +298,7 @@ const DeterministicTable = ({
         <Label width="30px" />
         <Label width="50px" />
       </Heading>
-      {!Object.values(accountsToDisplay).length ? (
+      {!isEmpty(accountsToDisplay) ? (
         isComplete ? (
           <NoAccountContainer>
             <Icon type="info" />
@@ -309,7 +310,7 @@ const DeterministicTable = ({
               <NoAccountAction
                 onClick={() => {
                   if (!isComplete) return;
-                  handleScanMoreAddresses({
+                  onScanMoreAddresses({
                     ...selectedDPath,
                     offset: selectedDPathOffset,
                     numOfAddresses: 10
@@ -390,7 +391,7 @@ const DeterministicTable = ({
           <BottomActionButton
             onClick={() => {
               if (!isComplete) return;
-              handleScanMoreAddresses({
+              onScanMoreAddresses({
                 ...selectedDPath,
                 offset: selectedDPathOffset,
                 numOfAddresses: 10
