@@ -15,6 +15,7 @@ export type NetworkId =
   | 'EGEM'
   | 'ETI'
   | 'ETHO'
+  | 'EVRICE'
   | 'EXP'
   | 'GO'
   | 'GO_TESTNET'
