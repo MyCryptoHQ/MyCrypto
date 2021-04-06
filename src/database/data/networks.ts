@@ -1044,8 +1044,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'Evrice explorer',
-      origin: 'https://evrice.com/explorer/',
+      name: 'Evrice Explorer',
+      origin: 'https://evrice.com/explorer'
     }),
     tokens: [],
     contracts: [],
