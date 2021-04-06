@@ -15049,6 +15049,127 @@ exports[` Storyshots Molecules/ActionTable Default 1`] = `
 </table>
 `;
 
+exports[` Storyshots Molecules/Amount Default 1`] = `
+<div
+  className="Box-sc-1974eaf-0 dBbMCd"
+  display="flex"
+>
+  <span
+    className="Text__SText-sc-14ylyin-0 fKAQoI"
+    fontSize="0.9em"
+    fontWeight={null}
+  >
+    0.043
+  </span>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
+  </div>
+</div>
+`;
+
+exports[` Storyshots Molecules/Amount LeftAlign 1`] = `
+<div
+  className="Box-sc-1974eaf-0 gxdDGm"
+  display="flex"
+>
+  <span
+    className="Text__SText-sc-14ylyin-0 fKAQoI"
+    fontSize="0.9em"
+    fontWeight={null}
+  >
+    0.043
+  </span>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
+  </div>
+</div>
+`;
+
+exports[` Storyshots Molecules/Amount WithIcon 1`] = `
+<div
+  className="Box-sc-1974eaf-0 dBbMCd"
+  display="flex"
+>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": undefined,
+      }
+    }
+  >
+    <div
+      className="Box-sc-1974eaf-0 VZtpM"
+      display="inline-flex"
+      height="1.2em"
+      width="1.2em"
+    >
+      <img
+        onError={[Function]}
+        src="test-file-stub"
+      />
+    </div>
+    <span
+      className="Text__SText-sc-14ylyin-0 ehRNVB"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      0.04300
+       ETH
+    </span>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
+  </div>
+</div>
+`;
+
 exports[` Storyshots Molecules/AmountInput With Placeholder 1`] = `
 <div
   className="sc-fzozJi bNgZvS"
@@ -21861,7 +21982,7 @@ exports[` Storyshots Organisms/SwapQuote SwapQuote 1`] = `
     <div
       className="Box-sc-1974eaf-0 exRYr"
     >
-      51198 years 9 months 9 days 10 hours 58 minutes 17 seconds
+      2 hours 10 minutes 5 seconds
     </div>
   </div>
 </div>

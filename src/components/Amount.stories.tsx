@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { fAsset } from '@../jest_config/__fixtures__/assets';
-
 import { Fiats } from '@config';
+import { fAssets } from '@fixtures';
 
 import AmountComponent from './Amount';
 
@@ -38,8 +37,8 @@ WithIcon.args = {
   fiat: props.fiat,
   asset: {
     amount: props.assetValue,
-    ticker: fAsset.ticker,
-    uuid: fAsset.uuid
+    ticker: fAssets[0].ticker,
+    uuid: fAssets[0].uuid
   }
 };
 

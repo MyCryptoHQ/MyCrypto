@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { sub } from 'date-fns';
+
 import { DAIUUID, ETHUUID } from '@config';
 import { fAssets, fSettings } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';
-import { bigify, noOp } from '@utils';
+import { bigify, noOp, toUTC } from '@utils';
 
 import { SwapQuote } from './SwapQuote';
 
@@ -28,7 +30,7 @@ const defaultProps = {
   baseAssetRate: bigify('123'),
   settings: fSettings,
   isExpired: false,
-  expiration: Date.now(),
+  expiration: sub(toUTC(new Date()), { minutes: 10 }),
   estimatedGasFee: '123123',
   handleRefreshQuote: noOp
 };
