@@ -5,7 +5,7 @@ import { sub } from 'date-fns';
 import { DAIUUID, ETHUUID } from '@config';
 import { fAssets, fSettings } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';
-import { bigify, noOp, toUTC } from '@utils';
+import { bigify, noOp } from '@utils';
 
 import { SwapQuote } from './SwapQuote';
 
@@ -30,7 +30,7 @@ const defaultProps = {
   baseAssetRate: bigify('123'),
   settings: fSettings,
   isExpired: false,
-  expiration: sub(toUTC(new Date()), { minutes: 10 }),
+  expiration: sub(new Date(), { minutes: 15 }), // Component displays a time-from so we provide a relative date.
   estimatedGasFee: '123123',
   handleRefreshQuote: noOp
 };
