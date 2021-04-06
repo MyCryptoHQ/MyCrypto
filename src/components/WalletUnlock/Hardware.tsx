@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text, TIcon } from '@components';
 import Icon from '@components/Icon';
 import { EXT_URLS } from '@config';
-import { DeterministicWalletState } from '@services';
+import { TDWActionError } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
@@ -57,7 +57,8 @@ const HardwareConnectBtn = styled(Button)`
 
 export interface HardwareUIProps {
   network: Network;
-  state: DeterministicWalletState;
+  isConnecting: boolean;
+  connectionError?: TDWActionError;
   walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
 
   handleNullConnect(): void;
@@ -82,7 +83,13 @@ const hardwareConfigs: THardwareConfigs = {
   }
 };
 
-const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: HardwareUIProps) => (
+const HardwareWalletUI = ({
+  network,
+  connectionError,
+  isConnecting,
+  walletId,
+  handleNullConnect
+}: HardwareUIProps) => (
   <Box p="2.5em">
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('UNLOCK_WALLET')}{' '}
@@ -101,21 +108,21 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
       >
         {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
         <HardwareImage type={hardwareConfigs[walletId].iconId} />
-        {state.error && (
+        {connectionError && (
           <ErrorMessageContainer>
             <InlineMessage
               type={InlineMessageType.ERROR}
-              value={`${translateRaw('GENERIC_HARDWARE_ERROR')} ${state.error.message}`}
+              value={`${translateRaw('GENERIC_HARDWARE_ERROR')} ${connectionError.message}`}
             />
           </ErrorMessageContainer>
         )}
         <br />
-        {state.isConnecting ? (
+        {isConnecting ? (
           <>
             <Spinner /> {translate('WALLET_UNLOCKING')}
           </>
         ) : (
-          <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={state.isConnecting}>
+          <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={isConnecting}>
             {translate(hardwareConfigs[walletId].scanTransKey)}
           </HardwareConnectBtn>
         )}

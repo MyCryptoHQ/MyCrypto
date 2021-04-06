@@ -1,4 +1,5 @@
 import { DPath } from '@types';
+import { bigify } from '@utils';
 
 import { DWAccountDisplay, ExtendedDPath } from './types';
 
@@ -16,7 +17,7 @@ export const processFinishedAccounts = (
     const curLastIndex = acc[idx]?.lastIndex;
     const curLastInhabitedIndex = acc[idx]?.lastInhabitedIndex || 0;
     const newLastInhabitedIndex =
-      curLastInhabitedIndex < item.index && item.balance && !item.balance.isZero()
+      curLastInhabitedIndex < item.index && item.balance && !bigify(item.balance).isZero()
         ? item.index
         : curLastInhabitedIndex;
     acc[idx] = {

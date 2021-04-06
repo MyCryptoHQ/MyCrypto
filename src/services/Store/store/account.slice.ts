@@ -144,7 +144,7 @@ export function* accountsSaga() {
 }
 
 export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
-  const isDemoMode = yield select(getIsDemoMode);
+  const isDemoMode: boolean = yield select(getIsDemoMode);
   // This is where demo mode is disabled when adding new accounts.
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(payload));

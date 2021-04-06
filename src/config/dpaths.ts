@@ -17,9 +17,8 @@ const ETH_LEDGER: DPath = {
 
 const ETH_LEDGER_LIVE: DPath = {
   label: 'Ledger Live (ETH)',
-  value: "m/44'/60'/0'/0/0",
-  isHardened: true,
-  getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
+  value: `m/44'/60'/addrIndex'/0/0`,
+  isHardened: true
 };
 
 const ETC_LEDGER: DPath = {

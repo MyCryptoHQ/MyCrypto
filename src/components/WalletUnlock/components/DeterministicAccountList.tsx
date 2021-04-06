@@ -7,7 +7,7 @@ import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { BannerType, DPath, ExtendedAsset, Network } from '@types';
-import { accountsToCSV, useScreenSize } from '@utils';
+import { accountsToCSV, bigify, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
 import { Downloader } from '../../Downloader';
@@ -74,12 +74,12 @@ const SDownloader = styled(Downloader)`
 `;
 
 export const filterZeroBalanceAccounts = (accounts: DWAccountDisplay[]) =>
-  accounts.filter(({ balance }) => balance?.isZero());
+  accounts.filter(({ balance }) => balance && bigify(balance).isZero());
 
 interface DeterministicAccountListProps {
   finishedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
-  isComplete: boolean;
+  isCompleted: boolean;
   network: Network;
   displayEmptyAddresses: boolean;
   selectedDPath: DPath;
@@ -91,7 +91,7 @@ interface DeterministicAccountListProps {
 export default function DeterministicAccountList({
   finishedAccounts,
   asset,
-  isComplete,
+  isCompleted,
   network,
   displayEmptyAddresses,
   selectedDPath,
@@ -113,7 +113,7 @@ export default function DeterministicAccountList({
       const tableAccs = accountsToUse.reduce((acc, idx) => {
         acc[idx.address] = tableAccounts[idx.address] || {
           ...idx,
-          isSelected: (idx.balance && !idx.balance.isZero()) || false
+          isSelected: (idx.balance && !bigify(idx.balance).isZero()) || false
         };
         return acc;
       }, tableAccounts);
@@ -139,7 +139,10 @@ export default function DeterministicAccountList({
       return;
     }
     // disallows selecting an account that is empty if MAX_EMPTY_ADDRESSES is already met
-    if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES && account.balance!.isEqualTo(0))
+    if (
+      emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES &&
+      bigify(account.balance!).isEqualTo(0)
+    )
       return;
     setTableAccounts({
       ...tableAccounts,
@@ -174,7 +177,7 @@ export default function DeterministicAccountList({
       </Box>
       <TableWrapper>
         <DeterministicTable
-          isComplete={isComplete}
+          isCompleted={isCompleted}
           accounts={tableAccounts}
           displayEmptyAddresses={displayEmptyAddresses}
           selectedDPath={selectedDPath}
@@ -187,7 +190,7 @@ export default function DeterministicAccountList({
         />
       </TableWrapper>
       <StatusBar>
-        {isComplete && !!accountsToUse.length && (
+        {isCompleted && !!accountsToUse.length && (
           <StatusWrapper>
             <IconWrapper>
               <Icon type="confirm" width="20px" />
@@ -209,7 +212,7 @@ export default function DeterministicAccountList({
             </Typography>
           </StatusWrapper>
         )}
-        {isComplete && !accountsToUse.length && (
+        {isCompleted && !accountsToUse.length && (
           <StatusWrapper>
             <IconWrapper>
               <Icon type="info-small" />
@@ -222,7 +225,7 @@ export default function DeterministicAccountList({
             </Typography>
           </StatusWrapper>
         )}
-        {!isComplete && (
+        {!isCompleted && (
           <StatusWrapper>
             <IconWrapper>
               <Spinner color="brand" size={1} />

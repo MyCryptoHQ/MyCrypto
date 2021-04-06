@@ -48,7 +48,13 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
 
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
-    state,
+    isCompleted,
+    isConnected,
+    isConnecting,
+    connectionError,
+    selectedAsset,
+    queuedAccounts,
+    finishedAccounts,
     requestConnection,
     updateAsset,
     addDPaths,
@@ -64,10 +70,12 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset(newAsset);
   };
 
-  if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
+  if (isConnected && selectedAsset && (queuedAccounts || finishedAccounts)) {
     return (
       <DeterministicWallet
-        state={state}
+        finishedAccounts={finishedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
         selectedDPath={selectedDPath}
         assets={assets}
         assetToUse={assetToUse}
@@ -84,8 +92,9 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   } else {
     return (
       <HardwareWalletUI
+        isConnecting={isConnecting}
+        connectionError={connectionError}
         network={network}
-        state={state}
         handleNullConnect={handleNullConnect}
         walletId={WalletId.TREZOR_NEW}
       />

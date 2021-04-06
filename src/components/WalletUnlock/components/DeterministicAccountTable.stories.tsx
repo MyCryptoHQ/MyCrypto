@@ -23,7 +23,7 @@ const addressMap = fDWAccounts.reduce((acc, item) => {
 }, {} as ITableAccounts);
 
 const initialProps: DeterministicTableProps = {
-  isComplete: true,
+  isCompleted: true,
   network: fNetworks[0],
   accounts: addressMap,
   asset: fAssets[0],

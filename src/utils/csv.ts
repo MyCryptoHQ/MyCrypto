@@ -12,7 +12,7 @@ export const accountsToCSV = (accounts: DWAccountDisplay[], asset: Asset) => {
     dpath: account.pathItem.path,
     asset:
       (account.balance
-        ? bigify(fromTokenBase(account.balance, asset.decimal)).toFixed(4)
+        ? bigify(fromTokenBase(bigify(account.balance), asset.decimal)).toFixed(4)
         : '0.0000') + asset.ticker
   }));
 

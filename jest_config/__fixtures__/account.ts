@@ -3,7 +3,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { REPV1UUID } from '@config';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
-import { bigify } from '@utils';
 
 import { fNetwork, fNetworks } from './network';
 
@@ -223,7 +222,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 0
     },
-    balance: bigify('100000000000000000000')
+    balance: '100000000000000000000'
   },
   {
     address: '0xE8C0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -237,7 +236,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('0')
+    balance: '0'
   },
   {
     address: '0xE8A0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -251,7 +250,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('1000000000000000000')
+    balance: '1000000000000000000'
   },
   {
     address: '0xE8B0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -265,7 +264,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('1500000000000000000')
+    balance: '1500000000000000000'
   },
   {
     address: '0xE8D0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -279,7 +278,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('0')
+    balance: '0'
   },
   {
     address: '0xE8E0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -293,7 +292,7 @@ export const fDWAccounts: DWAccountDisplay[] = [
       } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('12000000000000000000')
+    balance: '12000000000000000000'
   }
 ];
 

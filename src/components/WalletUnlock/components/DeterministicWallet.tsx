@@ -19,7 +19,7 @@ import {
 import { Downloader } from '@components/Downloader';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
+import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
@@ -105,7 +105,9 @@ const SInput = styled(Input)`
 `;
 
 export interface DeterministicWalletProps {
-  state: DeterministicWalletState;
+  selectedAsset: ExtendedAsset;
+  finishedAccounts: DWAccountDisplay[];
+  isCompleted: boolean;
   assets: ExtendedAsset[];
   assetToUse: ExtendedAsset;
   network: Network;
@@ -130,7 +132,9 @@ const initialFormikValues: FormValues = {
 };
 
 const DeterministicWallet = ({
-  state,
+  selectedAsset,
+  finishedAccounts,
+  isCompleted,
   assets,
   assetToUse,
   network,
@@ -158,7 +162,7 @@ const DeterministicWallet = ({
     setDpathAddView(false);
   };
 
-  const csv = accountsToCSV(state.finishedAccounts, assetToUse);
+  const csv = accountsToCSV(finishedAccounts, assetToUse);
 
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
@@ -170,7 +174,6 @@ const DeterministicWallet = ({
   });
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
-
   return dpathAddView ? (
     <MnemonicWrapper>
       <HeadingWrapper>
@@ -278,11 +281,11 @@ const DeterministicWallet = ({
         <PoweredByText provider="FINDETH" />
       </Box>
       <TableContainer>
-        {state.asset && (
+        {selectedAsset && (
           <DeterministicAccountList
-            isComplete={state.completed}
-            asset={state.asset}
-            finishedAccounts={state.finishedAccounts}
+            isCompleted={isCompleted}
+            asset={selectedAsset}
+            finishedAccounts={finishedAccounts}
             network={network}
             selectedDPath={selectedDPath}
             displayEmptyAddresses={displayEmptyAddresses}

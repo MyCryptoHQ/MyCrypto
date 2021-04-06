@@ -32,7 +32,7 @@ export interface TableAccountDisplay extends DWAccountDisplay {
 export type ITableAccounts = Record<string, TableAccountDisplay>;
 
 export interface DeterministicTableProps {
-  isComplete: boolean;
+  isCompleted: boolean;
   accounts: ITableAccounts;
   network: Network;
   asset: ExtendedAsset;
@@ -258,7 +258,7 @@ const SDownloader = styled(Downloader)`
 `;
 
 const DeterministicTable = ({
-  isComplete,
+  isCompleted,
   accounts,
   network,
   asset,
@@ -298,8 +298,8 @@ const DeterministicTable = ({
         <Label width="30px" />
         <Label width="50px" />
       </Heading>
-      {!isEmpty(accountsToDisplay) ? (
-        isComplete ? (
+      {isEmpty(accountsToDisplay) ? (
+        isCompleted ? (
           <NoAccountContainer>
             <Icon type="info" />
             <Typography bold={true}>
@@ -309,7 +309,7 @@ const DeterministicTable = ({
               <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
               <NoAccountAction
                 onClick={() => {
-                  if (!isComplete) return;
+                  if (!isCompleted) return;
                   onScanMoreAddresses({
                     ...selectedDPath,
                     offset: selectedDPathOffset,
@@ -368,7 +368,7 @@ const DeterministicTable = ({
                     <Currency
                       amount={
                         account.balance
-                          ? bigify(fromTokenBase(account.balance, asset.decimal)).toFixed(4)
+                          ? bigify(fromTokenBase(bigify(account.balance), asset.decimal)).toFixed(4)
                           : '0.0000'
                       }
                     />
@@ -390,19 +390,19 @@ const DeterministicTable = ({
           ))}
           <BottomActionButton
             onClick={() => {
-              if (!isComplete) return;
+              if (!isCompleted) return;
               onScanMoreAddresses({
                 ...selectedDPath,
                 offset: selectedDPathOffset,
                 numOfAddresses: 10
               });
             }}
-            disabled={!isComplete}
+            disabled={!isCompleted}
           >
             <Icon type="add" color="none" width="32px" />
             <STypography>
               <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
-              {!isComplete && <Spinner color="default" size={1} />}
+              {!isCompleted && <Spinner color="default" size={1} />}
             </STypography>
           </BottomActionButton>
         </Body>

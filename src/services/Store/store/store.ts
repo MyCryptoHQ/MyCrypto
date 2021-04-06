@@ -8,6 +8,13 @@ import { pollStart } from '@services/Polling';
 import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
+import {
+  connectToHDWallet,
+  getAccounts,
+  onConnectionSuccess,
+  processAccountsQueue,
+  scanMoreAddresses
+} from './hdWallet.slice';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';
@@ -32,7 +39,13 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             // @todo: Redux solve once we have selectors to deserialize.
             updateAccounts.type,
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
-            pollStart.type
+            pollStart.type,
+            // ignore onConnectionSuccess to avoid errors with the wallet session passed in the payload of the action
+            connectToHDWallet.type,
+            onConnectionSuccess.type,
+            getAccounts.type,
+            scanMoreAddresses.type,
+            processAccountsQueue.type
           ]
         }
       }),

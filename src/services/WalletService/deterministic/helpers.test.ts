@@ -1,4 +1,3 @@
-import Bignumber from 'bignumber.js';
 import { clone } from 'ramda';
 
 import { TAddress } from '@types';
@@ -27,7 +26,7 @@ const serialize = (item: TInputToSerialize): DWAccountDisplay => {
   return clone({
     ...item,
     address: item.address as TAddress,
-    balance: new Bignumber(item.balance)
+    balance: item.balance
   });
 };
 

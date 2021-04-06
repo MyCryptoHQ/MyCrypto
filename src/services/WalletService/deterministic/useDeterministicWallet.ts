@@ -1,216 +1,107 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
-import BN from 'bignumber.js';
-import { useReducer } from 'reinspect';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  BalanceMap,
-  getBaseAssetBalancesForAddresses,
-  getSingleTokenBalanceForAddresses
-} from '@services/Store/BalanceService';
-import { DPathFormat, ExtendedAsset, Network, WalletId } from '@types';
-import { bigify } from '@utils';
-import { identity } from '@vendor';
+  addCustomDPaths,
+  connectToHDWallet,
+  getAccounts,
+  getHDWalletAsset,
+  getHDWalletCustomDPaths,
+  getHDWalletFinishedAccounts,
+  getHDWalletIsCompleted,
+  getHDWalletIsConnected,
+  getHDWalletIsConnecting,
+  getHDWalletIsGettingAccounts,
+  getHDWalletNetwork,
+  getHDWalletQueuedAccounts,
+  scanMoreAddresses as scanMoreHDAddresses,
+  triggerComplete,
+  updateAsset as updateScannerAsset
+} from '@store/hdWallet.slice';
+import { DPathFormat, ExtendedAsset, Network } from '@types';
 
-import { LedgerU2F, LedgerUSB, processFinishedAccounts, Trezor, Wallet } from '..';
-import DeterministicWalletReducer, { DWActionTypes, initialState } from './reducer';
-import { DWAccountDisplay, ExtendedDPath, IUseDeterministicWallet } from './types';
-
-const selectWallet = async (walletId: WalletId) => {
-  switch (walletId) {
-    default:
-    case WalletId.LEDGER_NANO_S_NEW: {
-      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
-      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F(); // @todo - fix the walletId & type
-    }
-    case WalletId.TREZOR_NEW:
-      return new Trezor();
-  }
-};
+import { processFinishedAccounts, Wallet } from '..';
+import { ExtendedDPath, IUseDeterministicWallet } from './types';
 
 const useDeterministicWallet = (
   dpaths: ExtendedDPath[],
   walletId: DPathFormat,
   gap: number
 ): IUseDeterministicWallet => {
-  const [state, dispatch] = useReducer(
-    DeterministicWalletReducer,
-    initialState,
-    identity,
-    'DeterministicWallet'
-  );
-
-  const getAccounts = async (session: Wallet, dpaths: ExtendedDPath[]) => {
-    // Trezor wallet uses getMultipleAddresses for fetching multiple addresses at a time. Ledger doesn't have this functionality.
-    if (!session.getMultipleAddresses) {
-      console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
-      return;
-    }
-    session
-      .getMultipleAddresses(dpaths)
-      .then((accounts) => {
-        dispatch({
-          type: DWActionTypes.ENQUEUE_ADDRESSES,
-          payload: { accounts }
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: DWActionTypes.GET_ADDRESSES_FAILURE,
-          error: { code: DeterministicWalletReducer.errorCodes.GET_ACCOUNTS_FAILED, message: err }
-        });
-      });
-  };
-
-  const handleAccountsQueue = (
-    accounts: DWAccountDisplay[],
-    network: Network,
-    asset: ExtendedAsset
-  ) => {
-    const addresses = accounts.map(({ address }) => address);
-    const balanceLookup =
-      asset.type === 'base'
-        ? () => getBaseAssetBalancesForAddresses(addresses, network)
-        : () => getSingleTokenBalanceForAddresses(asset, network, addresses);
-
-    balanceLookup()
-      .then((balanceMapData: BalanceMap<BN>) => {
-        const walletsWithBalances: DWAccountDisplay[] = accounts.map((account) => {
-          const balance = balanceMapData[account.address] || 0; // @todo - better error handling for failed lookups.
-          return {
-            ...account,
-            balance: bigify(balance.toString())
-          };
-        });
-        dispatch({
-          type: DWActionTypes.UPDATE_ACCOUNTS,
-          payload: { accounts: walletsWithBalances, asset }
-        });
-      })
-      .catch(() => {
-        dispatch({
-          type: DWActionTypes.UPDATE_ACCOUNTS,
-          payload: { accounts, asset }
-        });
-      });
-  };
+  const [session, setSession] = useState((undefined as unknown) as Wallet);
+  const dispatch = useDispatch();
+  const isConnected = useSelector(getHDWalletIsConnected);
+  const isConnecting = useSelector(getHDWalletIsConnecting);
+  const customDPaths = useSelector(getHDWalletCustomDPaths);
+  const isCompleted = useSelector(getHDWalletIsCompleted);
+  const isGettingAccounts = useSelector(getHDWalletIsGettingAccounts);
+  const network = useSelector(getHDWalletNetwork);
+  const queuedAccounts = useSelector(getHDWalletQueuedAccounts);
+  const finishedAccounts = useSelector(getHDWalletFinishedAccounts);
+  const selectedAsset = useSelector(getHDWalletAsset);
 
   // On first connection && on asset update
   useEffect(() => {
-    if (
-      !state.isConnected ||
-      !state.network ||
-      !state.session ||
-      state.finishedAccounts.length !== 0
-    )
-      return;
-    getAccounts(state.session, dpaths);
-  }, [state.isConnected, state.finishedAccounts]);
+    if (!isConnected || !network || !session || finishedAccounts.length !== 0) return;
+    dispatch(getAccounts({ session, dpaths }));
+  }, [isConnected, finishedAccounts]);
 
   // On scan more
   useEffect(() => {
-    if (!state.isConnected || !state.network || !state.session || state.completed) return;
-    getAccounts(state.session, dpaths);
-  }, [state.completed]);
-
-  // On accounts added to queue
-  useEffect(() => {
-    if (
-      !state.isConnected ||
-      !state.session ||
-      !state.asset ||
-      !state.network ||
-      state.queuedAccounts.length === 0
-    ) {
-      return;
-    }
-    handleAccountsQueue(state.queuedAccounts, state.network, state.asset);
-  }, [state.queuedAccounts]);
+    if (!isConnected || !network || !session || isCompleted) return;
+    dispatch(getAccounts({ session, dpaths }));
+  }, [isCompleted]);
 
   useEffect(() => {
-    if (state.finishedAccounts.length === 0 || !state.session) {
-      return;
-    }
+    if (finishedAccounts.length === 0 || !session) return;
     const { newGapItems, customDPathItems } = processFinishedAccounts(
-      state.finishedAccounts,
-      state.customDPaths,
+      finishedAccounts,
+      customDPaths,
       gap
     );
     if (newGapItems.length !== 0) {
-      getAccounts(state.session, newGapItems);
+      dispatch(getAccounts({ session, dpaths: newGapItems }));
       return;
     }
     if (customDPathItems.length > 0) {
-      getAccounts(state.session, customDPathItems);
+      dispatch(getAccounts({ session, dpaths: customDPathItems }));
       return;
     }
     // trigger completion
-    if (!state.isGettingAccounts) {
-      dispatch({
-        type: DWActionTypes.TRIGGER_COMPLETE
-      });
+    if (!isGettingAccounts) {
+      dispatch(triggerComplete());
     }
     return;
-  }, [state.finishedAccounts, state.completed]);
+  }, [finishedAccounts, isCompleted]);
 
-  const requestConnection = (network: Network, asset: ExtendedAsset) => {
-    if (!asset || !network) return;
-
-    // initialize the wallet
-    selectWallet(walletId)
-      .then((walletSession) => {
-        return walletSession.initialize(dpaths[0]).then(() => {
-          dispatch({
-            type: DWActionTypes.CONNECTION_REQUEST
-          });
-          return walletSession;
-        });
-      })
-      .then((walletSession) => {
-        dispatch({
-          type: DWActionTypes.CONNECTION_SUCCESS,
-          payload: { session: walletSession, asset, network }
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: DWActionTypes.CONNECTION_FAILURE,
-          error: {
-            code: DeterministicWalletReducer.errorCodes.SESSION_CONNECTION_FAILED,
-            message: err
-          }
-        });
-      });
-  };
-
-  const addDPaths = (customDPaths: ExtendedDPath[]) => {
-    if (!state.isConnected || !state.network || !state.session) {
+  const addDPaths = (cstmDPaths: ExtendedDPath[]) => {
+    if (!isConnected || !network || !session) {
       return;
     }
-    dispatch({
-      type: DWActionTypes.ADD_CUSTOM_DPATHS,
-      payload: { dpaths: customDPaths }
-    });
+    dispatch(addCustomDPaths(cstmDPaths));
   };
 
-  const updateAsset = (asset: ExtendedAsset) => {
-    dispatch({
-      type: DWActionTypes.UPDATE_ASSET,
-      payload: { asset }
-    });
+  const updateAsset = (ast: ExtendedAsset) => {
+    dispatch(updateScannerAsset(ast));
   };
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
-    if (!state.isConnected || !state.network || !state.session) return;
-    dispatch({
-      type: DWActionTypes.GET_ADDRESSES_REQUEST
-    });
-    getAccounts(state.session, [dpath]);
+    if (!isConnected || !network || !session) return;
+    dispatch(scanMoreHDAddresses({ session, dpath }));
+  };
+
+  const requestConnection = (network: Network, asset: ExtendedAsset) => {
+    dispatch(connectToHDWallet({ walletId, network, asset, dpaths, setSession }));
   };
 
   return {
-    state,
+    finishedAccounts,
+    isCompleted,
+    isConnecting,
+    selectedAsset,
+    isConnected,
+    queuedAccounts,
     requestConnection,
     updateAsset,
     addDPaths,

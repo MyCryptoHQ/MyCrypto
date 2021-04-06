@@ -16,6 +16,8 @@ import {
   useDeterministicWallet,
   useNetworks
 } from '@services';
+import { useSelector } from '@store';
+import { getHDWalletConnectionError } from '@store/hdWallet.slice';
 import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
@@ -32,6 +34,7 @@ interface OwnProps {
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
+  const connectionError = useSelector(getHDWalletConnectionError);
   const network = getNetworkById(formData.network, networks);
   const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
@@ -49,7 +52,12 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
-    state,
+    selectedAsset,
+    finishedAccounts,
+    queuedAccounts,
+    isCompleted,
+    isConnected,
+    isConnecting,
     requestConnection,
     updateAsset,
     addDPaths,
@@ -63,7 +71,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
   };
-
+  connectionError && console.debug('[Ledger]: err: ', connectionError);
   if (window.location.protocol !== 'https:') {
     return (
       <div className="Panel">
@@ -83,10 +91,12 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   }
 
-  if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
+  if (isConnected && selectedAsset && (queuedAccounts || finishedAccounts)) {
     return (
       <DeterministicWallet
-        state={state}
+        finishedAccounts={finishedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
         dpaths={dpaths}
         assets={assets}
         assetToUse={assetToUse}
@@ -103,8 +113,9 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   } else {
     return (
       <HardwareWalletUI
+        isConnecting={isConnecting}
+        connectionError={connectionError}
         network={network}
-        state={state}
         handleNullConnect={handleNullConnect}
         walletId={WalletId.LEDGER_NANO_S_NEW}
       />

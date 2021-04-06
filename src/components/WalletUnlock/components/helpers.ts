@@ -1,4 +1,5 @@
 import { DPath } from '@types';
+import { bigify } from '@utils';
 
 import { TableAccountDisplay } from './DeterministicAccountTable';
 
@@ -8,8 +9,8 @@ export const sortAccounts = (
   selectedDPath: DPath
 ) => {
   const selectedAccounts = accounts
-    .filter(({ isSelected }) => isSelected)
-    .sort((a, b) => (a.balance?.isGreaterThan(b.balance!) ? -1 : 1));
+    .filter(({ isSelected, balance }) => isSelected && balance)
+    .sort((a, b) => (bigify(a.balance!).isGreaterThan(b.balance!) ? -1 : 1));
   const deselectedAccounts = accounts
     .filter(
       ({ isSelected, pathItem: { baseDPath } }) =>
