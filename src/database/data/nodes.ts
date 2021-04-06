@@ -403,5 +403,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'api.avax-test.network',
       url: 'https://api.avax-test.network/ext/bc/C/rpc'
     }
+  ],
+  EVRICE: [
+    {
+      name: NetworkUtils.makeNodeName('EVRICE', 'meta.evrice.com'),
+      type: NodeType.RPC,
+      service: 'evrice.com',
+      url: 'https://meta.evrice.com'
+    }
   ]
 };
