@@ -7,6 +7,7 @@ import {
   AssetBalanceObject,
   ExtendedContact,
   IAccount,
+  ITxReceipt,
   ITxStatus,
   ITxType,
   Network,
@@ -44,6 +45,14 @@ export const getStoreAccounts = (
       label: accountLabel ? accountLabel.label : translateRaw('NO_LABEL')
     };
   });
+};
+
+export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
+  return accounts
+    .filter(Boolean)
+    .flatMap(({ transactions: txs }: { transactions: ITxReceipt[] }) =>
+      txs.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
+    );
 };
 
 export const txIsPending = ({ status }: { status: ITxStatus }) => status === ITxStatus.PENDING;
