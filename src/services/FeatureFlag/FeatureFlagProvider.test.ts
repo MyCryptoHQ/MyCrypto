@@ -19,7 +19,9 @@ describe('useFeatureFlags', () => {
     const { result } = renderUseFeatureFlags();
     const { setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
-    act(() => setFeatureFlag(target, false));
+    act(() => {
+      setFeatureFlag(target, false);
+    });
     expect(result.current.featureFlags[target]).toEqual(false);
   });
 
@@ -27,7 +29,9 @@ describe('useFeatureFlags', () => {
     const { result } = renderUseFeatureFlags();
     const { setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
-    act(() => setFeatureFlag(target, true));
+    act(() => {
+      setFeatureFlag(target, true);
+    });
     expect(result.current.featureFlags[target]).toEqual(true);
   });
 
@@ -35,8 +39,12 @@ describe('useFeatureFlags', () => {
     const { result } = renderUseFeatureFlags();
     const { setFeatureFlag, resetFeatureFlags } = result.current;
     const target = 'DASHBOARD';
-    act(() => setFeatureFlag(target, false));
-    act(() => resetFeatureFlags());
+    act(() => {
+      setFeatureFlag(target, false);
+    });
+    act(() => {
+      resetFeatureFlags();
+    });
     expect(result.current.featureFlags[target]).toEqual(FEATURE_FLAGS[target]);
   });
 
@@ -45,7 +53,9 @@ describe('useFeatureFlags', () => {
     const { isFeatureActive, featureFlags, setFeatureFlag } = result.current;
     const target = 'DASHBOARD';
     const original = featureFlags[target];
-    act(() => setFeatureFlag(target, !original));
+    act(() => {
+      setFeatureFlag(target, !original);
+    });
     expect(isFeatureActive(target)).toEqual(!!original);
   });
 });
