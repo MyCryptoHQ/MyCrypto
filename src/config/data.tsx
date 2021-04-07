@@ -29,8 +29,6 @@ export const PROTECTED_TX_MIN_AMOUNT = 5; // 5 dollars minimum fee
 
 export const gasEstimateCacheTime = 60000;
 
-export const MINIMUM_PASSWORD_LENGTH = 12;
-
 export const SUPPORT_EMAIL = 'support@mycrypto.com';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
