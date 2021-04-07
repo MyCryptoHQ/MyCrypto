@@ -2235,7 +2235,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
             />
           </p>
           <div
-            className="Account__Content-sc-1dlxewy-1 bNXewm"
+            className="Account__Content-sc-1dlxewy-1 esYefZ"
           >
             <div
               className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -2316,7 +2316,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
             />
           </p>
           <div
-            className="Account__Content-sc-1dlxewy-1 bNXewm"
+            className="Account__Content-sc-1dlxewy-1 esYefZ"
           >
             <div
               className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3254,7 +3254,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3335,7 +3335,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3689,7 +3689,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3770,7 +3770,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4273,7 +4273,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4354,7 +4354,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4792,7 +4792,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4873,7 +4873,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -5405,7 +5405,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -5486,7 +5486,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -10797,7 +10797,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -10878,7 +10878,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11311,7 +11311,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11392,7 +11392,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11956,7 +11956,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -12037,7 +12037,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -12533,7 +12533,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -12614,7 +12614,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13148,7 +13148,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13229,7 +13229,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13712,7 +13712,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13793,7 +13793,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -14364,7 +14364,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -14445,7 +14445,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -16605,7 +16605,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
         />
       </p>
       <div
-        className="Account__Content-sc-1dlxewy-1 bNXewm"
+        className="Account__Content-sc-1dlxewy-1 esYefZ"
       >
         <div
           className="Account__Title-sc-1dlxewy-2 dScKXW"
