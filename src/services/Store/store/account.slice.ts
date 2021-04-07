@@ -101,9 +101,7 @@ export const getAccounts = createSelector([getAppState], (s) => {
 export const selectCurrentAccounts = createSelector(
   [getAccounts, getFavorites],
   (accounts, favorites) => {
-    return accounts
-      .filter((a) => a && 'uuid' in a)
-      .filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
+    return accounts.filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
   }
 );
 
