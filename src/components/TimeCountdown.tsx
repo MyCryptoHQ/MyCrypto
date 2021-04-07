@@ -4,7 +4,7 @@ import { formatTimeDuration, useInterval } from '@utils';
 
 const TimeCountdown = ({
   value,
-  format = ['days', 'hours', 'minutes']
+  format = ['days', 'hours', 'minutes', 'seconds']
 }: {
   value: number;
   format?: string[];
