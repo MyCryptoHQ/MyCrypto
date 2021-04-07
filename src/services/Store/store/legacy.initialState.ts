@@ -17,7 +17,6 @@ export const emptyState = {
   [LSKeys.NETWORKS]: [],
   [LSKeys.NOTIFICATIONS]: [],
   [LSKeys.SETTINGS]: defaultSettings,
-  [LSKeys.PASSWORD]: '',
   [LSKeys.USER_ACTIONS]: []
 };
 /**

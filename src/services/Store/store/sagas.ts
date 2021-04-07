@@ -12,7 +12,6 @@ import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
 import { settingsSaga } from './settings.slice';
 import { scanTokensSaga } from './tokenScanning.slice';
-import { vaultSaga } from './vault.slice';
 
 export default function* rootSaga() {
   yield all([
@@ -23,7 +22,6 @@ export default function* rootSaga() {
     assetSaga(),
     importSaga(),
     scanTokensSaga(),
-    vaultSaga(),
     analyticsSaga(),
     persistenceSaga(),
     pollingSaga(),

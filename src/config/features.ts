@@ -8,7 +8,6 @@ import { IS_DEV } from '@utils/environment';
 export const FEATURE_FLAGS = {
   DASHBOARD: 'core',
   BUY: 'core',
-  SCREEN_LOCK: 'core',
   SETTINGS: 'core',
   TX_HISTORY: 'core',
   MYC_MEMBERSHIP: 'core',

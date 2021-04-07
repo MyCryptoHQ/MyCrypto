@@ -10,15 +10,13 @@ import { canImport, migrateConfig } from './helpers';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
-import { createPersistReducer, createVaultReducer } from './persist.config';
+import { createPersistReducer } from './persist.config';
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
-import vaultSlice from './vault.slice';
 
 const reducers = combineReducers({
   [importSlice.name]: importSlice.reducer,
-  [vaultSlice.name]: createVaultReducer(vaultSlice.reducer),
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),

@@ -11,15 +11,14 @@ import contractSlice from './contract.slice';
 import { initialLegacyState } from './legacy.initialState';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
-import passwordSlice from './password.slice';
-import { APP_PERSIST_CONFIG, VAULT_PERSIST_CONFIG } from './persist.config';
+import { APP_PERSIST_CONFIG } from './persist.config';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
 import userActionSlice from './userAction.slice';
 
 interface IRehydrate {
-  key: typeof APP_PERSIST_CONFIG.key | typeof VAULT_PERSIST_CONFIG.key;
+  key: typeof APP_PERSIST_CONFIG.key;
   type: typeof REHYDRATE;
 }
 
@@ -34,8 +33,7 @@ const persistenceReducer = combineReducers({
   [networkSlice.name]: networkSlice.reducer,
   [notificationSlice.name]: notificationSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [userActionSlice.name]: userActionSlice.reducer,
-  [passwordSlice.name]: passwordSlice.reducer
+  [userActionSlice.name]: userActionSlice.reducer
 });
 
 const slice = {

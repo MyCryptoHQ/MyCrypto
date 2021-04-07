@@ -113,7 +113,6 @@ export function marshallState(ls: LocalStorage): DataStore {
     [LSKeys.NETWORKS]: Object.values(mergedLs[LSKeys.NETWORKS]),
     [LSKeys.NOTIFICATIONS]: objToExtendedArray(ls[LSKeys.NOTIFICATIONS]) as ExtendedNotification[],
     [LSKeys.SETTINGS]: ls[LSKeys.SETTINGS],
-    [LSKeys.PASSWORD]: ls[LSKeys.PASSWORD],
     [LSKeys.USER_ACTIONS]: ls[LSKeys.USER_ACTIONS]
       ? (objToExtendedArray(ls[LSKeys.USER_ACTIONS]) as ExtendedUserAction[])
       : []
@@ -177,7 +176,6 @@ export function deMarshallState(st: DataStore): LocalStorage {
       ),
     [LSKeys.NOTIFICATIONS]: arrayToObj('uuid')(st[LSKeys.NOTIFICATIONS]),
     [LSKeys.SETTINGS]: st[LSKeys.SETTINGS],
-    [LSKeys.PASSWORD]: st[LSKeys.PASSWORD],
     [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS]),
     [LSKeys.USER_ACTIONS]: arrayToObj('uuid')(st[LSKeys.USER_ACTIONS])
   };
