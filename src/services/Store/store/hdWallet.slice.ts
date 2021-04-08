@@ -32,7 +32,6 @@ export const initialState: DeterministicWalletState = {
   isConnected: false,
   session: undefined,
   isConnecting: false,
-  detectedChainId: undefined,
   isGettingAccounts: false,
   isCompleted: false,
   queuedAccounts: [],

@@ -71,7 +71,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
   };
-  connectionError && console.debug('[Ledger]: err: ', connectionError);
   if (window.location.protocol !== 'https:') {
     return (
       <div className="Panel">

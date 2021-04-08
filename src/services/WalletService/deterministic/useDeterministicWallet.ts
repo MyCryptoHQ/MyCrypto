@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { processFinishedAccounts, Wallet } from '@services';
 import {
   addCustomDPaths,
   connectToHDWallet,
@@ -20,7 +21,6 @@ import {
 } from '@store/hdWallet.slice';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 
-import { processFinishedAccounts, Wallet } from '..';
 import { ExtendedDPath, IUseDeterministicWallet } from './types';
 
 const useDeterministicWallet = (
@@ -45,12 +45,6 @@ const useDeterministicWallet = (
     if (!isConnected || !network || !session || finishedAccounts.length !== 0) return;
     dispatch(getAccounts({ session, dpaths }));
   }, [isConnected, finishedAccounts]);
-
-  // On scan more
-  useEffect(() => {
-    if (!isConnected || !network || !session || isCompleted) return;
-    dispatch(getAccounts({ session, dpaths }));
-  }, [isCompleted]);
 
   useEffect(() => {
     if (finishedAccounts.length === 0 || !session) return;
