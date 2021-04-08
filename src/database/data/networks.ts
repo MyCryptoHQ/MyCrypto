@@ -268,34 +268,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 20
     }
   },
-  MUSIC: {
-    id: 'MUSIC',
-    name: 'Musicoin',
-    unit: 'MUSIC' as TTicker,
-    chainId: 7762959,
-    isCustom: false,
-    color: '#ffbb00',
-    blockExplorer: makeExplorer({
-      name: 'Musicoin Explorer',
-      origin: 'https://explorer.musicoin.org',
-      addressPath: 'account'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DPaths.MUSIC_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.MUSIC_DEFAULT,
-      [WalletId.TREZOR_NEW]: DPaths.MUSIC_DEFAULT,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.MUSIC_DEFAULT,
-      default: DPaths.MUSIC_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
-
   EGEM: {
     id: 'EGEM',
     name: 'EtherGem',

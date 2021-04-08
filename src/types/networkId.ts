@@ -20,7 +20,6 @@ export type NetworkId =
   | 'GO_TESTNET'
   | 'METADIUM'
   | 'MIX'
-  | 'MUSIC'
   | 'POA'
   | 'REOSC'
   | 'RSK_TESTNET'
