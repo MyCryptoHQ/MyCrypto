@@ -675,7 +675,7 @@
     "TO_FIELD_ERROR": "Enter a valid address, ENS name, or blockchain domain",
     "TRANSACTION_BROADCASTED": "Transaction Broadcasted",
     "TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD": "Back to Dashboard",
-    "TRANSACTION_BROADCASTED_DESC": "Your transaction has sent to the network and should be confirmed within ~15 seconds—unless [the network is busy](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/why-is-gas) or there's [an error in the transaction](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending).",
+    "TRANSACTION_BROADCASTED_DESC": "Your transaction has been sent to the network and will be confirmed in the next few minutes unless [the network is busy](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/why-is-gas) or there's [an error in the transaction](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending).",
     "TRANSACTION_PERFORMED_VIA_CONTRACT": "Transaction performed via $contractName contract",
     "TRANSACTION_RELAYED": "Transaction Relayed to Network",
     "TRANSACTION_FEE": "Transaction Fee",
