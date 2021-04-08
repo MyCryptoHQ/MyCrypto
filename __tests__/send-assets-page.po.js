@@ -22,9 +22,6 @@ export default class SendAssetsPage extends BasePage {
       .typeText(Selector('input[name="amount"]').parent(), FIXTURE_SEND_AMOUNT);
   }
   async submitForm() {
-    // Lose focus before trying to click next
-    await t
-      .click(getByText(getTransValueByKey('SEND_ASSETS')))
-      .click(getByText(getTransValueByKey('ACTION_6')));
+    await t.click(getByText(getTransValueByKey('ACTION_6')));
   }
 }

@@ -50,6 +50,7 @@ test('Complete SendFlow', async (t) => {
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
   await sendAssetsPage.submitForm();
+  await t.wait(1000);
 
   // Has continued to next step with sign button
   const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
