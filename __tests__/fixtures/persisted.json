@@ -1,5 +1,5 @@
 {
-  "version": "v1.0.0",
+  "version": "v2.0.0",
   "mtime": 1606324295478,
   "accounts": {
     "ef94a882-3af7-5887-89f0-be9833c6b071": {
@@ -2049,7 +2049,6 @@
     "language": "en",
     "node": "web3"
   },
-  "password": "",
   "networkNodes": {
     "Ethereum": {
       "selectedNode": "ethereum_Emmanuel_Macron",

@@ -123,7 +123,8 @@ const customReconciler: StateReconciler<DataStore> = (inboundState, originalStat
  */
 const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   if (typeof slice === 'string') {
-    if (slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '') return slice;
+    if (slice === 'v2.0.0' || slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '')
+      return slice;
     return JSON.parse(slice);
   } else {
     return slice;

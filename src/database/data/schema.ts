@@ -4,7 +4,7 @@ import { defaultContacts } from './contacts';
 import { defaultSettings } from './settings';
 
 export const SCHEMA_BASE: LocalStorage = {
-  version: 'v1.0.0',
+  version: 'v2.0.0',
   mtime: new Date('01/01/2020').valueOf(),
   [LSKeys.ACCOUNTS]: {},
   [LSKeys.ADDRESS_BOOK]: defaultContacts,
