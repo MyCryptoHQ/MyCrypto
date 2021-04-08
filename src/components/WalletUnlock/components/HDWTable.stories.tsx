@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ProvidersWrapper } from 'test-utils';
-
 import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
@@ -36,9 +34,7 @@ const initialProps: DeterministicTableProps = {
 };
 
 export const HDWTable = () => (
-  <ProvidersWrapper>
-    <ExtendedContentPanel width="800px">
-      <DeterministicTable {...initialProps} />
-    </ExtendedContentPanel>
-  </ProvidersWrapper>
+  <ExtendedContentPanel width="800px">
+    <DeterministicTable {...initialProps} />
+  </ExtendedContentPanel>
 );

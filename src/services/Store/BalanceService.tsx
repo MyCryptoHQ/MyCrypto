@@ -264,3 +264,16 @@ export const getBaseAssetBalancesForAddresses = async (
     return bigifyBalanceMap(toBalanceMap(addresses, result));
   }
 };
+
+export const getAssetBalance = ({
+  asset,
+  network,
+  addresses
+}: {
+  asset: ExtendedAsset;
+  network: Network;
+  addresses: TAddress[];
+}) =>
+  asset.type === 'base'
+    ? getBaseAssetBalancesForAddresses(addresses, network)
+    : getSingleTokenBalanceForAddresses(asset, network, addresses);

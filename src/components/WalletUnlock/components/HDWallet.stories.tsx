@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ProvidersWrapper } from 'test-utils';
-
 import { ExtendedContentPanel } from '@components';
 import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
@@ -35,9 +33,7 @@ const initialProps: HDWalletProps = {
 };
 
 export const HDWallet = () => (
-  <ProvidersWrapper>
-    <ExtendedContentPanel width="800px">
-      <HDWalletUI {...initialProps} />
-    </ExtendedContentPanel>
-  </ProvidersWrapper>
+  <ExtendedContentPanel width="800px">
+    <HDWalletUI {...initialProps} />
+  </ExtendedContentPanel>
 );

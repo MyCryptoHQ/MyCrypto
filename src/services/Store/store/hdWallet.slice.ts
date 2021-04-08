@@ -12,11 +12,7 @@ import {
 import { Wallet } from '@services/WalletService/wallets';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 
-import {
-  BalanceMap,
-  getBaseAssetBalancesForAddresses,
-  getSingleTokenBalanceForAddresses
-} from '../BalanceService';
+import { BalanceMap, getAssetBalance } from '../BalanceService';
 import { AppState } from './root.reducer';
 
 export enum HDWalletErrors {
@@ -238,13 +234,12 @@ export function* accountsQueueWorker() {
   const network: Network = yield select(selectHDWalletNetwork);
   const accountQueue: DWAccountDisplay[] = yield select(selectHDWalletAccountQueue);
   const asset: ExtendedAsset = yield select(selectHDWalletAsset);
-  const addresses = accountQueue.map(({ address }) => address);
-  const balanceLookup =
-    asset.type === 'base'
-      ? () => getBaseAssetBalancesForAddresses(addresses, network)
-      : () => getSingleTokenBalanceForAddresses(asset, network, addresses);
   try {
-    const balances: BalanceMap<BN> = yield call(balanceLookup);
+    const balances: BalanceMap<BN> = yield call(getAssetBalance, {
+      asset,
+      network,
+      addresses: accountQueue.map(({ address }) => address)
+    });
     const walletsWithBalances: DWAccountDisplay[] = accountQueue.map((account) => {
       const balance = balances[account.address] || 0; // @todo - better error handling for failed lookups.
       return {
