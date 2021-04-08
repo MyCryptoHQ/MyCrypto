@@ -38,7 +38,6 @@ export interface DeterministicWalletState {
   finishedAccounts: DWAccountDisplay[];
   customDPaths: ExtendedDPath[];
   session: Wallet | undefined;
-  promptConnectionRetry: boolean;
   isCompleted: boolean;
   error?: TDWActionError;
 }

@@ -1,4 +1,3 @@
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
@@ -8,12 +7,10 @@ import {
   DeterministicWalletState,
   DWAccountDisplay,
   ExtendedDPath,
-  LedgerU2F,
-  LedgerUSB,
-  Trezor,
+  selectWallet,
   Wallet
 } from '@services/WalletService';
-import { DPathFormat, ExtendedAsset, Network, TAddress, WalletId } from '@types';
+import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { identity } from '@vendor';
 
 import {
@@ -36,7 +33,6 @@ export const initialState: DeterministicWalletState = {
   session: undefined,
   isConnecting: false,
   detectedChainId: undefined,
-  promptConnectionRetry: false,
   isGettingAccounts: false,
   isCompleted: false,
   queuedAccounts: [],
@@ -56,7 +52,6 @@ const slice = createSlice({
     onConnectionFailure(state, action: PayloadAction<{ code: HDWalletErrors; message: string }>) {
       state.error = action.payload;
       state.isConnecting = false;
-      state.promptConnectionRetry = true;
     },
     onConnectionSuccess(state, action: PayloadAction<{ asset: ExtendedAsset; network: Network }>) {
       const { asset, network } = action.payload;
@@ -215,18 +210,6 @@ export function* hdWalletSaga() {
   ]);
 }
 
-const selectWallet = async (walletId: WalletId) => {
-  switch (walletId) {
-    default:
-    case WalletId.LEDGER_NANO_S_NEW: {
-      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
-      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F();
-    }
-    case WalletId.TREZOR_NEW:
-      return new Trezor();
-  }
-};
-
 export function* requestConnectionWorker({
   payload
 }: PayloadAction<{
@@ -242,7 +225,7 @@ export function* requestConnectionWorker({
     const session: Wallet = yield call(selectWallet, walletId);
     yield call([session, 'initialize'], dpaths[0]);
     yield put(slice.actions.requestConnection());
-    setSession(session);
+    yield call(setSession, session);
     yield put(slice.actions.onConnectionSuccess({ asset, network }));
   } catch (err) {
     console.error(err);
