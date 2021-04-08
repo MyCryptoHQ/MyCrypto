@@ -223,15 +223,6 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
     }
   ],
 
-  MUSIC: [
-    {
-      name: NetworkUtils.makeNodeName('MUSIC', 'music'),
-      type: NodeType.RPC,
-      service: 'rpc.musicoin.org',
-      url: 'https://rpc.musicoin.org/'
-    }
-  ],
-
   POA: [
     {
       name: NetworkUtils.makeNodeName('POA', 'core'),
