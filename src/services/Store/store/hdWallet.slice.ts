@@ -182,15 +182,9 @@ export const connectToHDWallet = createAction<{
   setSession(wallet: Wallet): void;
 }>(`${slice.name}/connectToHDWallet`);
 export const addNewDPaths = createAction<{
-  walletId: DPathFormat;
-  dpaths: ExtendedDPath[];
-  network: Network;
-  asset: ExtendedAsset;
+  customDPaths: ExtendedDPath[];
 }>(`${slice.name}/addNewDPaths`);
 export const updateAnAsset = createAction<{ asset: ExtendedAsset }>(`${slice.name}/updateAnAsset`);
-export const scanMoreAddresses = createAction<{ session: Wallet; dpath: ExtendedDPath }>(
-  `${slice.name}/scanMoreAddresses`
-);
 export const getAccounts = createAction<{ session: Wallet; dpaths: ExtendedDPath[] }>(
   `${slice.name}/getAccounts`
 );
@@ -204,7 +198,6 @@ export function* hdWalletSaga() {
     takeLatest(connectToHDWallet.type, requestConnectionWorker),
     takeLatest(addNewDPaths.type, addDPathsWorker),
     takeLatest(updateAnAsset.type, updateAssetWorker),
-    takeLatest(scanMoreAddresses.type, scanMoreAddressesWorker),
     takeLatest(getAccounts.type, getAccountsWorker),
     takeLatest(processAccountsQueue.type, accountsQueueWorker)
   ]);
@@ -270,14 +263,6 @@ export function* addDPathsWorker({ payload }: PayloadAction<{ customDPaths: Exte
 export function* updateAssetWorker({ payload }: PayloadAction<{ asset: ExtendedAsset }>) {
   const { asset } = payload;
   yield put(slice.actions.updateAsset(asset));
-}
-
-export function* scanMoreAddressesWorker({
-  payload
-}: PayloadAction<{ session: Wallet; dpath: ExtendedDPath }>) {
-  const { dpath, session } = payload;
-  yield put(slice.actions.requestAddresses());
-  yield put(getAccounts({ session, dpaths: [dpath] }));
 }
 
 export function* accountsQueueWorker() {

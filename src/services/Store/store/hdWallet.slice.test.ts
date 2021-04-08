@@ -6,9 +6,10 @@ import { HardwareWalletResult } from '@services/WalletService';
 import { DPath, DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
 
-import { getBaseAssetBalancesForAddresses } from '../BalanceService';
 import {
   accountsQueueWorker,
+  addDPathsWorker,
+  addNewDPaths,
   connectToHDWallet,
   getAccounts,
   getAccountsWorker,
@@ -19,7 +20,9 @@ import {
   initialState,
   processAccountsQueue,
   requestConnectionWorker,
-  default as slice
+  default as slice,
+  updateAnAsset,
+  updateAssetWorker
 } from './hdWallet.slice';
 import { AppState } from './root.reducer';
 
@@ -33,10 +36,10 @@ const {
   onRequestAddressesFailure,
   onRequestAddressesSuccess,
   enqueueAccounts,
-  updateAccounts
-  // updateAsset,
-  // addCustomDPaths,
-  // triggerComplete
+  updateAccounts,
+  updateAsset,
+  addCustomDPaths,
+  triggerComplete
 } = slice.actions;
 const addressToTestWith = fAccount.address as TAddress;
 
@@ -116,6 +119,18 @@ describe('HD Wallet Slice', () => {
     const expected = { ...initialState, isCompleted: true, isGettingAccounts: false, error: err };
     expect(actual).toEqual(expected);
   });
+
+  it('addCustomDPaths(): Adds custom dpaths to state and sets isCompleted to false.', () => {
+    const actual = reducer(initialState, addCustomDPaths([fExtendedDPath]));
+    const expected = { ...initialState, isCompleted: false, customDPaths: [fExtendedDPath] };
+    expect(actual).toEqual(expected);
+  });
+
+  it('triggerComplete(): Sets isCompleted to true.', () => {
+    const actual = reducer(initialState, triggerComplete());
+    const expected = { ...initialState, isCompleted: true };
+    expect(actual).toEqual(expected);
+  });
 });
 
 const ledgerMock = {
@@ -181,7 +196,7 @@ jest.mock('../BalanceService.tsx', () => ({
 }));
 
 describe('accountsQueueWorker()', () => {
-  it('attempts to fetch balances for queuedAccounts in state', () => {
+  it('fetches balances for queuedAccounts in state', () => {
     const beginningState = {
       ...initialState,
       isConnected: true,
@@ -199,12 +214,47 @@ describe('accountsQueueWorker()', () => {
       .select(getHDWalletNetwork)
       .select(getHDWalletQueuedAccounts)
       .select(getHDWalletAsset)
-      .call(
-        getBaseAssetBalancesForAddresses,
-        [beginningState.queuedAccounts.map(({ address }) => address)],
-        beginningState.network
-      )
       .put(updateAccounts({ accounts: [fDWAccountDisplay], asset: beginningState.asset }))
+      .silentRun();
+  });
+});
+
+describe('updateAssetWorker()', () => {
+  it('updates the hdWallet asset', () => {
+    const beginningState = {
+      ...initialState,
+      isConnected: true,
+      queuedAccounts: [fDWAccountDisplayPreBalance],
+      network: fNetwork,
+      asset: fAssets[1]
+    };
+    return expectSaga(updateAssetWorker, updateAnAsset({ asset: fAssets[0] }))
+      .withState(({
+        networks: fNetworks,
+        assets: fAssets,
+        hdWallet: beginningState
+      } as unknown) as AppState)
+      .put(updateAsset(fAssets[0]))
+      .silentRun();
+  });
+});
+
+describe('addDPathsWorker()', () => {
+  it('adds the custom derivation path', () => {
+    const beginningState = {
+      ...initialState,
+      isConnected: true,
+      queuedAccounts: [fDWAccountDisplayPreBalance],
+      network: fNetwork,
+      asset: fAssets[1]
+    };
+    return expectSaga(addDPathsWorker, addNewDPaths({ customDPaths: [fExtendedDPath] }))
+      .withState(({
+        networks: fNetworks,
+        assets: fAssets,
+        hdWallet: beginningState
+      } as unknown) as AppState)
+      .put(addCustomDPaths([fExtendedDPath]))
       .silentRun();
   });
 });

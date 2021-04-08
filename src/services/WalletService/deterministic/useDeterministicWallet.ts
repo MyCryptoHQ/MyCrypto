@@ -15,7 +15,6 @@ import {
   getHDWalletIsGettingAccounts,
   getHDWalletNetwork,
   getHDWalletQueuedAccounts,
-  scanMoreAddresses as scanMoreHDAddresses,
   triggerComplete,
   updateAsset as updateScannerAsset
 } from '@store/hdWallet.slice';
@@ -88,7 +87,7 @@ const useDeterministicWallet = (
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
     if (!isConnected || !network || !session) return;
-    dispatch(scanMoreHDAddresses({ session, dpath }));
+    dispatch(getAccounts({ session, dpaths: [dpath] }));
   };
 
   const requestConnection = (network: Network, asset: ExtendedAsset) => {

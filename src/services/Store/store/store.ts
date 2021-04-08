@@ -12,8 +12,7 @@ import {
   connectToHDWallet,
   getAccounts,
   onConnectionSuccess,
-  processAccountsQueue,
-  scanMoreAddresses
+  processAccountsQueue
 } from './hdWallet.slice';
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer, { AppState } from './root.reducer';
@@ -40,11 +39,10 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             updateAccounts.type,
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
             pollStart.type,
-            // ignore onConnectionSuccess to avoid errors with the wallet session passed in the payload of the action
+            // ignore these actions to avoid errors with hardware wallet sessions
             connectToHDWallet.type,
             onConnectionSuccess.type,
             getAccounts.type,
-            scanMoreAddresses.type,
             processAccountsQueue.type
           ]
         }
