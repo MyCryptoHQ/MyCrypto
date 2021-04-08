@@ -10,7 +10,7 @@ import { Body } from './NewTypography';
 interface Props {
   amount: string;
   symbol?: TCurrencySymbol;
-  ticker: TTicker;
+  ticker?: TTicker;
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
@@ -35,7 +35,7 @@ function Currency({
     return new Intl.NumberFormat(navigator.language, {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
-      ...(isFiatTicker(ticker) && { style: 'currency', currency: ticker })
+      ...(ticker && isFiatTicker(ticker) && { style: 'currency', currency: ticker })
     }).format(parseFloat(value));
   };
 
@@ -44,7 +44,7 @@ function Currency({
       {icon && uuid && <AssetIcon uuid={uuid} mr="0.5ch" size="1.2em" />}
       <Body as="span" fontWeight={bold ? 'bold' : 'normal'} fontSize={'inherit'} color={color}>
         {format(amount, decimals)}
-        {!isFiatTicker(ticker) && ` ${symbol || ticker}`}
+        {ticker && !isFiatTicker(ticker) && ` ${symbol || ticker}`}
       </Body>
     </Box>
   );

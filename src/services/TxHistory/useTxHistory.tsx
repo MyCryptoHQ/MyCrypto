@@ -1,15 +1,17 @@
 import { useContext } from 'react';
 
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { getAccounts, selectAccountTxs, useSelector } from '@store';
 import { ITxReceipt, Network } from '@types';
 import { isEmpty } from '@vendor';
 
-import { getTxsFromAccount, StoreContext, useAssets, useContacts, useNetworks } from '../Store';
+import { StoreContext, useAssets, useContacts, useNetworks } from '../Store';
 import { deriveTxType, makeTxReceipt, merge } from './helpers';
 import { ITxHistoryEntry } from './types';
 
 function useTxHistory() {
-  const { accounts, txHistory } = useContext(StoreContext);
+  const accounts = useSelector(getAccounts);
+  const { txHistory } = useContext(StoreContext);
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { networks } = useNetworks();
@@ -18,8 +20,7 @@ function useTxHistory() {
   const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
   const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
-
-  const accountTxs = getTxsFromAccount(accounts);
+  const accountTxs = useSelector(selectAccountTxs);
 
   const mergedTxHistory: ITxHistoryEntry[] = merge(apiTxs, accountTxs)
     .map((tx: ITxReceipt) => {

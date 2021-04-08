@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Amount } from '@components';
+import { Currency } from '@components';
 import { default as Icon } from '@components/Icon';
 import { useAssets } from '@services';
 import { SPACING } from '@theme';
@@ -40,7 +40,7 @@ export const FaucetReceiptBanner = ({
           {translate('CONFIRM_TX_RECEIVED')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <Amount assetValue={`${formattedReceived} ${baseAsset.ticker}`} />
+          <Currency amount={formattedReceived} ticker={baseAsset.ticker} />
         </div>
       </div>
     </>

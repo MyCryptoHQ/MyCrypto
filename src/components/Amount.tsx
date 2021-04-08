@@ -8,7 +8,7 @@ import Currency from './Currency';
 import { Text } from './NewTypography';
 
 interface Props {
-  assetValue?: string; // Free string display
+  text?: string; // Allow the caller to format text. eg. SwapQuote
   asset?: {
     // Formatted Currency display
     amount: string;
@@ -34,7 +34,7 @@ interface Props {
 // - define default decimals
 export default function Amount({
   asset,
-  assetValue,
+  text,
   baseAssetValue,
   fiat,
   fiatColor = COLORS.BLUE_SKY,
@@ -53,14 +53,11 @@ export default function Amount({
         <Currency amount={asset.amount} ticker={asset.ticker} icon={true} uuid={asset.uuid} />
       )}
 
-      {
-        // @todo: Remove once all Ammounts are converted to use the the new api
-        assetValue && (
-          <Text as="span" isBold={bold}>
-            {assetValue}
-          </Text>
-        )
-      }
+      {text && (
+        <Text as="span" isBold={bold}>
+          {text}
+        </Text>
+      )}
       {baseAssetValue && (
         <Text as="span" isDiscrete={true} fontSize="0.9em">
           {baseAssetValue}

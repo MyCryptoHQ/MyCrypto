@@ -21,7 +21,10 @@ export {
   updateAccount,
   updateAccounts,
   getAccounts,
-  addAccounts
+  addAccounts,
+  selectCurrentAccounts,
+  selectAccountTxs,
+  selectTxsByStatus
 } from './account.slice';
 export {
   createContact,

@@ -15,6 +15,7 @@ import {
   fetchMemberships,
   isMyCryptoMember,
   scanTokens,
+  selectTxsByStatus,
   useDispatch,
   useSelector
 } from '@store';
@@ -58,7 +59,6 @@ import { getAccountsAssetsBalances } from './BalanceService';
 import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import {
-  getPendingTransactionsFromAccounts,
   getStoreAccounts,
   getTxsFromAccount,
   isNotExcludedAsset,
@@ -136,6 +136,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     contacts,
     networks
   ]);
+
   const currentAccounts = useMemo(
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
     [rawAccounts, settings.dashboardAccounts, assets]
@@ -170,8 +171,9 @@ export const StoreProvider: React.FC = ({ children }) => {
     dispatch(fetchMemberships());
   });
 
+  const pendingTxs = useSelector(selectTxsByStatus(ITxStatus.PENDING));
   useEffect(() => {
-    setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
+    setPendingTransactions(pendingTxs);
   }, [currentAccounts]);
 
   // fetch assets from api

@@ -2,10 +2,16 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
-import { fAccount, fAccounts, fTransaction } from '@fixtures';
+import { fAccount, fAccounts, fSettings, fTransaction } from '@fixtures';
 import { IAccount, ITxReceipt, TUuid } from '@types';
 
-import { getAccounts, initialState, default as slice } from './account.slice';
+import {
+  getAccounts,
+  initialState,
+  selectAccountTxs,
+  selectCurrentAccounts,
+  default as slice
+} from './account.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
@@ -112,6 +118,42 @@ describe('AccountSlice', () => {
             value: BigNumber.from(fTransaction.value)
           }
         ]
+      }
+    ]);
+  });
+
+  it('selectCurrentAccounts(): returns only favorite accounts', () => {
+    const state = mockAppState({
+      accounts: fAccounts,
+      settings: fSettings
+    });
+    const actual = selectCurrentAccounts(state);
+    expect(actual).toEqual([fAccounts[0]]);
+  });
+
+  it('selectAccountsTxs(): returns account transactions', () => {
+    const state = mockAppState({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [
+            ({ ...fTransaction, gasUsed: fTransaction.gasLimit } as unknown) as ITxReceipt
+          ]
+        }
+      ]
+    });
+    const actual = selectAccountTxs(state);
+    expect(actual).toEqual([
+      {
+        chainId: 3,
+        data: '0x',
+        gasLimit: { _hex: '0x5208', _isBigNumber: true },
+        gasPrice: { _hex: '0xee6b2800', _isBigNumber: true },
+        gasUsed: { _hex: '0x5208', _isBigNumber: true },
+        nonce: '0x9',
+        status: undefined,
+        to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
+        value: { _hex: '0x038d7ea4c68000', _isBigNumber: true }
       }
     ]);
   });

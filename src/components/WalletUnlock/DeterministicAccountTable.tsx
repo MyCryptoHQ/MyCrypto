@@ -4,9 +4,9 @@ import { Identicon } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';
 
 import {
-  Amount,
   Box,
   Button,
+  Currency,
   EditableAccountLabel,
   EthAddress,
   Icon,
@@ -348,8 +348,8 @@ const DeterministicTable = ({
                 </DPathContainer>
                 <ValueContainer>
                   <Typography>
-                    <Amount
-                      assetValue={
+                    <Currency
+                      amount={
                         account.balance
                           ? bigify(fromTokenBase(account.balance, asset.decimal)).toFixed(4)
                           : '0.0000'

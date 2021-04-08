@@ -2227,7 +2227,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
           className="Account__Flex-sc-1dlxewy-0 iSuoUm"
         >
           <p
-            className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+            className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
           >
             <img
               className="sc-AxmLO ehbnCY"
@@ -2235,7 +2235,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
             />
           </p>
           <div
-            className="Account__Content-sc-1dlxewy-1 bNXewm"
+            className="Account__Content-sc-1dlxewy-1 esYefZ"
           >
             <div
               className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -2308,7 +2308,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
           className="Account__Flex-sc-1dlxewy-0 iSuoUm"
         >
           <p
-            className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+            className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
           >
             <img
               className="sc-AxmLO ehbnCY"
@@ -2316,7 +2316,7 @@ exports[` Storyshots Features/ConfirmSwap EthToDai 1`] = `
             />
           </p>
           <div
-            className="Account__Content-sc-1dlxewy-1 bNXewm"
+            className="Account__Content-sc-1dlxewy-1 esYefZ"
           >
             <div
               className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3246,7 +3246,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -3254,7 +3254,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3327,7 +3327,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -3335,7 +3335,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTransaction 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3681,7 +3681,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -3689,7 +3689,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -3762,7 +3762,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -3770,7 +3770,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxDefiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4265,7 +4265,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -4273,7 +4273,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4346,7 +4346,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -4354,7 +4354,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4784,7 +4784,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -4792,7 +4792,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -4865,7 +4865,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -4873,7 +4873,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxPtx 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -5397,7 +5397,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -5405,7 +5405,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -5478,7 +5478,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -5486,7 +5486,7 @@ exports[` Storyshots Features/ConfirmTx ConfirmTxToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -7234,12 +7234,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 - Mobile 1`] = `
             className="Box-sc-1974eaf-0 dBbMCd"
             display="flex"
           >
-            <span
-              className="Text__SText-sc-14ylyin-0 Ueu"
-              fontWeight={null}
+            <div
+              className="Box-sc-1974eaf-0 hiktTj"
+              display="inline-flex"
+              style={
+                Object {
+                  "fontSize": undefined,
+                }
+              }
             >
-              0.002000 ETH
-            </span>
+              <span
+                className="Text__SText-sc-14ylyin-0 ehRNVB"
+                fontSize="inherit"
+                fontWeight="normal"
+              >
+                0.00200
+                 ETH
+              </span>
+            </div>
             <div
               className="Box-sc-1974eaf-0 hiktTj"
               display="inline-flex"
@@ -7276,12 +7288,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 - Mobile 1`] = `
             className="Box-sc-1974eaf-0 dBbMCd"
             display="flex"
           >
-            <span
-              className="Text__SText-sc-14ylyin-0 Ueu"
-              fontWeight={null}
+            <div
+              className="Box-sc-1974eaf-0 hiktTj"
+              display="inline-flex"
+              style={
+                Object {
+                  "fontSize": undefined,
+                }
+              }
             >
-              0.002000 ETH
-            </span>
+              <span
+                className="Text__SText-sc-14ylyin-0 ehRNVB"
+                fontSize="inherit"
+                fontWeight="normal"
+              >
+                0.00200
+                 ETH
+              </span>
+            </div>
             <div
               className="Box-sc-1974eaf-0 hiktTj"
               display="inline-flex"
@@ -7521,12 +7545,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 - Web 3 1`] = `
           className="Box-sc-1974eaf-0 dBbMCd"
           display="flex"
         >
-          <span
-            className="Text__SText-sc-14ylyin-0 Ueu"
-            fontWeight={null}
+          <div
+            className="Box-sc-1974eaf-0 hiktTj"
+            display="inline-flex"
+            style={
+              Object {
+                "fontSize": undefined,
+              }
+            }
           >
-            0.002000 ETH
-          </span>
+            <span
+              className="Text__SText-sc-14ylyin-0 ehRNVB"
+              fontSize="inherit"
+              fontWeight="normal"
+            >
+              0.00200
+               ETH
+            </span>
+          </div>
           <div
             className="Box-sc-1974eaf-0 hiktTj"
             display="inline-flex"
@@ -7563,12 +7599,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 - Web 3 1`] = `
           className="Box-sc-1974eaf-0 dBbMCd"
           display="flex"
         >
-          <span
-            className="Text__SText-sc-14ylyin-0 Ueu"
-            fontWeight={null}
+          <div
+            className="Box-sc-1974eaf-0 hiktTj"
+            display="inline-flex"
+            style={
+              Object {
+                "fontSize": undefined,
+              }
+            }
           >
-            0.002000 ETH
-          </span>
+            <span
+              className="Text__SText-sc-14ylyin-0 ehRNVB"
+              fontSize="inherit"
+              fontWeight="normal"
+            >
+              0.00200
+               ETH
+            </span>
+          </div>
           <div
             className="Box-sc-1974eaf-0 hiktTj"
             display="inline-flex"
@@ -7794,12 +7842,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 1`] = `
           className="Box-sc-1974eaf-0 dBbMCd"
           display="flex"
         >
-          <span
-            className="Text__SText-sc-14ylyin-0 Ueu"
-            fontWeight={null}
+          <div
+            className="Box-sc-1974eaf-0 hiktTj"
+            display="inline-flex"
+            style={
+              Object {
+                "fontSize": undefined,
+              }
+            }
           >
-            0.002000 ETH
-          </span>
+            <span
+              className="Text__SText-sc-14ylyin-0 ehRNVB"
+              fontSize="inherit"
+              fontWeight="normal"
+            >
+              0.00200
+               ETH
+            </span>
+          </div>
           <div
             className="Box-sc-1974eaf-0 hiktTj"
             display="inline-flex"
@@ -7836,12 +7896,24 @@ exports[` Storyshots Features/ProtectTransaction Step 1 1`] = `
           className="Box-sc-1974eaf-0 dBbMCd"
           display="flex"
         >
-          <span
-            className="Text__SText-sc-14ylyin-0 Ueu"
-            fontWeight={null}
+          <div
+            className="Box-sc-1974eaf-0 hiktTj"
+            display="inline-flex"
+            style={
+              Object {
+                "fontSize": undefined,
+              }
+            }
           >
-            0.002000 ETH
-          </span>
+            <span
+              className="Text__SText-sc-14ylyin-0 ehRNVB"
+              fontSize="inherit"
+              fontWeight="normal"
+            >
+              0.00200
+               ETH
+            </span>
+          </div>
           <div
             className="Box-sc-1974eaf-0 hiktTj"
             display="inline-flex"
@@ -10717,7 +10789,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -10725,7 +10797,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -10798,7 +10870,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -10806,7 +10878,7 @@ exports[` Storyshots Features/TxReceipt TxReceipt 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11231,7 +11303,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -11239,7 +11311,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11312,7 +11384,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -11320,7 +11392,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptDeFiZap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11876,7 +11948,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -11884,7 +11956,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -11957,7 +12029,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -11965,7 +12037,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -12054,14 +12126,21 @@ exports[` Storyshots Features/TxReceipt TxReceiptFaucet 1`] = `
         className="TransactionReceipt-row-column rightAligned"
       >
         <div
-          className="Box-sc-1974eaf-0 dBbMCd"
-          display="flex"
+          className="Box-sc-1974eaf-0 hiktTj"
+          display="inline-flex"
+          style={
+            Object {
+              "fontSize": undefined,
+            }
+          }
         >
           <span
-            className="Text__SText-sc-14ylyin-0 Ueu"
-            fontWeight={null}
+            className="Text__SText-sc-14ylyin-0 ehRNVB"
+            fontSize="inherit"
+            fontWeight="normal"
           >
-            1.000000 RopstenETH
+            1.00000
+             RopstenETH
           </span>
         </div>
       </div>
@@ -12446,7 +12525,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -12454,7 +12533,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -12527,7 +12606,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -12535,7 +12614,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptMembership 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13071,7 +13150,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -13079,7 +13158,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13152,7 +13231,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -13160,7 +13239,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13635,7 +13714,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -13643,7 +13722,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -13716,7 +13795,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -13724,7 +13803,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptSwap 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -14287,7 +14366,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -14295,7 +14374,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -14368,7 +14447,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
             className="Account__Flex-sc-1dlxewy-0 iSuoUm"
           >
             <p
-              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+              className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
             >
               <img
                 className="sc-AxmLO ehbnCY"
@@ -14376,7 +14455,7 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
               />
             </p>
             <div
-              className="Account__Content-sc-1dlxewy-1 bNXewm"
+              className="Account__Content-sc-1dlxewy-1 esYefZ"
             >
               <div
                 className="Box-sc-1974eaf-0 EditableText__SBox-or2ta3-3 eFmFXj"
@@ -14847,6 +14926,256 @@ exports[` Storyshots Features/TxReceipt TxReceiptToken 1`] = `
         </div>
       </button>
     </a>
+  </div>
+</div>
+`;
+
+exports[` Storyshots Molecules/ActionTable Default 1`] = `
+<table
+  className="ActionTable__STable-v53g2k-0 lbFQEt"
+>
+  <thead>
+    <tr>
+      <th
+        className="Text__SText-sc-14ylyin-0 dtOgSh"
+        fontWeight={null}
+      >
+        Address
+      </th>
+      <th
+        className="Text__SText-sc-14ylyin-0 dtOgSh"
+        fontWeight={null}
+      >
+        Balance
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>
+        <div
+          className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
+          onClick={[Function]}
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <button
+              aria-label="Copy 0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
+              className="sc-AxjAm sc-AxhUy iHFhvK"
+              onClick={[Function]}
+              type="button"
+            >
+              0xfE54…bB7c
+               
+              <span
+                aria-label="copy"
+                role="img"
+              >
+                <svg
+                  className="sc-AxhCb foSaC"
+                  id="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%20%20%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20stroke%3D%22currentColor%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.455%22%3E%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M3.91%2017H17V3.91H3.91z%22%2F%3E%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M1%2014.09V1h13.09%22%2F%3E%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E"
+                />
+              </span>
+            </button>
+          </span>
+        </div>
+      </th>
+      <th>
+        <div
+          className="Box-sc-1974eaf-0 hiktTj"
+          display="inline-flex"
+          style={
+            Object {
+              "fontSize": undefined,
+            }
+          }
+        >
+          <span
+            className="Text__SText-sc-14ylyin-0 ehRNVB"
+            fontSize="inherit"
+            fontWeight="normal"
+          >
+            1.98973
+             ETH
+          </span>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        <div
+          className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
+          onClick={[Function]}
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <button
+              aria-label="Copy 0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017"
+              className="sc-AxjAm sc-AxhUy iHFhvK"
+              onClick={[Function]}
+              type="button"
+            >
+              0xB2BB…9017
+               
+              <span
+                aria-label="copy"
+                role="img"
+              >
+                <svg
+                  className="sc-AxhCb foSaC"
+                  id="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%20%20%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20stroke%3D%22currentColor%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.455%22%3E%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M3.91%2017H17V3.91H3.91z%22%2F%3E%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M1%2014.09V1h13.09%22%2F%3E%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E"
+                />
+              </span>
+            </button>
+          </span>
+        </div>
+      </th>
+      <th>
+        <div
+          className="Box-sc-1974eaf-0 hiktTj"
+          display="inline-flex"
+          style={
+            Object {
+              "fontSize": undefined,
+            }
+          }
+        >
+          <span
+            className="Text__SText-sc-14ylyin-0 ehRNVB"
+            fontSize="inherit"
+            fontWeight="normal"
+          >
+            6.10100
+             ETH
+          </span>
+        </div>
+      </th>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[` Storyshots Molecules/Amount Default 1`] = `
+<div
+  className="Box-sc-1974eaf-0 dBbMCd"
+  display="flex"
+>
+  <span
+    className="Text__SText-sc-14ylyin-0 fKAQoI"
+    fontSize="0.9em"
+    fontWeight={null}
+  >
+    0.043
+  </span>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
+  </div>
+</div>
+`;
+
+exports[` Storyshots Molecules/Amount LeftAlign 1`] = `
+<div
+  className="Box-sc-1974eaf-0 gxdDGm"
+  display="flex"
+>
+  <span
+    className="Text__SText-sc-14ylyin-0 fKAQoI"
+    fontSize="0.9em"
+    fontWeight={null}
+  >
+    0.043
+  </span>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
+  </div>
+</div>
+`;
+
+exports[` Storyshots Molecules/Amount WithIcon 1`] = `
+<div
+  className="Box-sc-1974eaf-0 dBbMCd"
+  display="flex"
+>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": undefined,
+      }
+    }
+  >
+    <div
+      className="Box-sc-1974eaf-0 VZtpM"
+      display="inline-flex"
+      height="1.2em"
+      width="1.2em"
+    >
+      <img
+        onError={[Function]}
+        src="test-file-stub"
+      />
+    </div>
+    <span
+      className="Text__SText-sc-14ylyin-0 ehRNVB"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      0.04300
+       ETH
+    </span>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 hiktTj"
+    display="inline-flex"
+    style={
+      Object {
+        "fontSize": "0.9em",
+      }
+    }
+  >
+    <span
+      className="Text__SText-sc-14ylyin-0 kXOqLh"
+      color="#55b6e2"
+      fontSize="inherit"
+      fontWeight="normal"
+    >
+      $230.00
+    </span>
   </div>
 </div>
 `;
@@ -16278,7 +16607,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
       className="Account__Flex-sc-1dlxewy-0 iSuoUm AccountSummary__SAccount-sc-30f1dq-1 gCdGux"
     >
       <p
-        className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 dbhCOq"
+        className="sc-AxjAm sc-Axmtr gpxbZJ Account__SIdenticon-sc-1dlxewy-6 fWJjjT"
       >
         <img
           className="sc-AxmLO ehbnCY"
@@ -16286,7 +16615,7 @@ exports[` Storyshots Molecules/Selectors/AccountSelector Dropdown Item 1`] = `
         />
       </p>
       <div
-        className="Account__Content-sc-1dlxewy-1 bNXewm"
+        className="Account__Content-sc-1dlxewy-1 esYefZ"
       >
         <div
           className="Account__Title-sc-1dlxewy-2 dScKXW"
@@ -21366,6 +21695,307 @@ exports[` Storyshots Organisms/MembershipPanel Default State 1`] = `
     </div>
   </div>
 </section>
+`;
+
+exports[` Storyshots Organisms/RecentTransactionList Default 1`] = `
+<section
+  className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe RecentTransactionsList "
+>
+  <div
+    className="Box-sc-1974eaf-0 dexmhU"
+  >
+    <h1
+      className="sc-AxjAm sc-AxheI DashboardPanel__DHeading-sc-1ws9ecc-3 bpExTa"
+    >
+      Recent Transactions
+    </h1>
+  </div>
+  <div
+    className="NoTransactions__NoTransactionsWrapper-sc-1hsmfkr-0 gwEYCv"
+  >
+    <div
+      className="NoTransactions__NoTransactionsCenter-sc-1hsmfkr-1 qJVoC"
+    >
+      <img
+        className="NoTransactions__PlusIcon-sc-1hsmfkr-4 jzvXtU"
+        src="test-file-stub"
+      />
+      <div
+        className="NoTransactions__NoTransactionsHeading-sc-1hsmfkr-2 bwDBkp"
+      >
+        Your MyCrypto Transactions Will Appear Here!
+      </div>
+      <div
+        className="NoTransactions__NoTransactionsDescription-sc-1hsmfkr-3 bcMjvr"
+      >
+        
+        <a
+          className="LinkApp__SRouterLink-sc-275gt9-1 lgghVf"
+          href="/send"
+          onClick={[Function]}
+          variant="defaultLink"
+        >
+          Send
+        </a>
+         ETH or Tokens with any of your accounts on MyCrypto to see your transactions.
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[` Storyshots Organisms/SwapQuote SwapQuote 1`] = `
+<div
+  className="Box-sc-1974eaf-0 htzDqp"
+>
+  <div
+    className="Box-sc-1974eaf-0 kOdEUp"
+  >
+    <h1
+      className="Text__SText-sc-14ylyin-0 dACtyl"
+      fontWeight="bold"
+    >
+      Your Quote
+    </h1>
+    <a
+      className="LinkApp__SRouterLink-sc-275gt9-1 UZFth"
+      href="/"
+      onClick={[Function]}
+      variant="opacityLink"
+    >
+      <div
+        className="Box-sc-1974eaf-0 jQJFMv"
+        onClick={[Function]}
+      >
+        <svg
+          className="Icon__SInlineSVG-tq1i3y-0 hloZiM"
+          id="test-file-stub"
+        />
+        <p
+          className="Text__SText-sc-14ylyin-0 kiEPOn"
+          fontWeight={null}
+        >
+          Get New Quote
+        </p>
+      </div>
+    </a>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 kOdEUp"
+  >
+    <div
+      className="Box-sc-1974eaf-0 exRYr"
+    >
+      Amount
+       
+      <div
+        className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
+        display="inline-flex"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 bJYXwy"
+            id="test-file-stub"
+          />
+        </span>
+      </div>
+    </div>
+    <div
+      className="Box-sc-1974eaf-0 dBbMCd"
+      display="flex"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <span
+        className="Text__SText-sc-14ylyin-0 Ueu"
+        fontWeight={null}
+      >
+        0.500000 ETH = 100.000000 DAI
+      </span>
+      <div
+        className="Box-sc-1974eaf-0 hiktTj"
+        display="inline-flex"
+        style={
+          Object {
+            "fontSize": "0.9em",
+          }
+        }
+      >
+        <span
+          className="Text__SText-sc-14ylyin-0 kXOqLh"
+          color="#55b6e2"
+          fontSize="inherit"
+          fontWeight="normal"
+        >
+          $0.06
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 kOdEUp"
+  >
+    <div
+      className="Box-sc-1974eaf-0 exRYr"
+    >
+      Rate
+       
+      <div
+        className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
+        display="inline-flex"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 bJYXwy"
+            id="test-file-stub"
+          />
+        </span>
+      </div>
+    </div>
+    <div
+      className="Box-sc-1974eaf-0 dBbMCd"
+      display="flex"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <span
+        className="Text__SText-sc-14ylyin-0 Ueu"
+        fontWeight={null}
+      >
+        1 ETH = 123.123000 DAI
+      </span>
+      <div
+        className="Box-sc-1974eaf-0 hiktTj"
+        display="inline-flex"
+        style={
+          Object {
+            "fontSize": "0.9em",
+          }
+        }
+      >
+        <span
+          className="Text__SText-sc-14ylyin-0 kXOqLh"
+          color="#55b6e2"
+          fontSize="inherit"
+          fontWeight="normal"
+        >
+          $0.12
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 kOdEUp"
+  >
+    <div
+      className="Box-sc-1974eaf-0 exRYr"
+    >
+      Max TX Fee
+       
+      <div
+        className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
+        display="inline-flex"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 bJYXwy"
+            id="test-file-stub"
+          />
+        </span>
+      </div>
+    </div>
+    <div
+      className="Box-sc-1974eaf-0 dBbMCd"
+      display="flex"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <div
+        className="Box-sc-1974eaf-0 hiktTj"
+        display="inline-flex"
+        style={
+          Object {
+            "fontSize": undefined,
+          }
+        }
+      >
+        <span
+          className="Text__SText-sc-14ylyin-0 ehRNVB"
+          fontSize="inherit"
+          fontWeight="normal"
+        >
+          123,123.00000
+           ETH
+        </span>
+      </div>
+      <div
+        className="Box-sc-1974eaf-0 hiktTj"
+        display="inline-flex"
+        style={
+          Object {
+            "fontSize": "0.9em",
+          }
+        }
+      >
+        <span
+          className="Text__SText-sc-14ylyin-0 kXOqLh"
+          color="#55b6e2"
+          fontSize="inherit"
+          fontWeight="normal"
+        >
+          $15,144,129.00
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="Box-sc-1974eaf-0 deBkWv"
+  >
+    <div
+      className="Box-sc-1974eaf-0 exRYr"
+    >
+      Expires in
+       
+      <div
+        className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
+        display="inline-flex"
+      >
+        <span
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <svg
+            className="Icon__SInlineSVG-tq1i3y-0 bJYXwy"
+            id="test-file-stub"
+          />
+        </span>
+      </div>
+    </div>
+    <div
+      className="Box-sc-1974eaf-0 exRYr"
+    >
+      15 minutes
+    </div>
+  </div>
+</div>
 `;
 
 exports[` Storyshots Organisms/VerticalStepper Default State 1`] = `

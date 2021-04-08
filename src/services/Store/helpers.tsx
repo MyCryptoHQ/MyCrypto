@@ -7,7 +7,6 @@ import {
   AssetBalanceObject,
   ExtendedContact,
   IAccount,
-  IPendingTxReceipt,
   ITxReceipt,
   ITxStatus,
   ITxType,
@@ -48,10 +47,6 @@ export const getStoreAccounts = (
   });
 };
 
-export const txIsPending = ({ status }: { status: ITxStatus }) => status === ITxStatus.PENDING;
-export const txIsSuccessful = ({ status }: { status: ITxStatus }) => status === ITxStatus.SUCCESS;
-export const txIsFailed = ({ status }: { status: ITxStatus }) => status === ITxStatus.FAILED;
-
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
     .filter(Boolean)
@@ -60,8 +55,9 @@ export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
     );
 };
 
-export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): IPendingTxReceipt[] =>
-  getTxsFromAccount(accounts).filter(txIsPending) as IPendingTxReceipt[];
+export const txIsPending = ({ status }: { status: ITxStatus }) => status === ITxStatus.PENDING;
+export const txIsSuccessful = ({ status }: { status: ITxStatus }) => status === ITxStatus.SUCCESS;
+export const txIsFailed = ({ status }: { status: ITxStatus }) => status === ITxStatus.FAILED;
 
 export const isNotExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: StoreAsset): boolean =>
   !(excludedAssetUuids || []).includes(asset.uuid);

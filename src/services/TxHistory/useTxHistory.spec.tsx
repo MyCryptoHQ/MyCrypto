@@ -30,10 +30,11 @@ const renderUseTxHistory = ({
     <ProvidersWrapper
       initialState={mockAppState({
         addressBook: fContacts,
-        assets: fAssets
+        assets: fAssets,
+        accounts
       })}
     >
-      <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
+      <StoreContext.Provider value={{ txHistory: apiTransactions } as any}>
         {children}
       </StoreContext.Provider>
     </ProvidersWrapper>
@@ -72,6 +73,9 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxReceipt,
+        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+        value: BigNumber.from(fTxReceipt.value),
         networkId: fNetwork.id,
         timestamp: 0,
         toAddressBookEntry: undefined,
@@ -100,6 +104,9 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxReceipt,
+        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+        value: BigNumber.from(fTxReceipt.value),
         hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
         networkId: fNetwork.id,
         timestamp: 0,
