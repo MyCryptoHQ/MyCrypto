@@ -13028,15 +13028,25 @@ exports[` Storyshots Features/TxReceipt TxReceiptPending 1`] = `
       <div
         className="TransactionReceipt-row-desc"
       >
-        Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More: 
+        Your transaction has been sent to the network and will be confirmed in the next few minutes unless 
+        <a
+          className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+          href="https://support.mycrypto.com/general-knowledge/ethereum-blockchain/why-is-gas"
+          rel="noreferrer"
+          target="_blank"
+        >
+          the network is busy
+        </a>
+         or there's 
         <a
           className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
           href="https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending"
           rel="noreferrer"
           target="_blank"
         >
-          Error in Transaction, Network is Not Busy
+          an error in the transaction
         </a>
+        .
       </div>
     </div>
     <div
