@@ -22,10 +22,14 @@ export default class AddAccountPage extends BasePage {
     this.waitForPage(PAGES.ADD_ACCOUNT_VIEWONLY);
 
     await t
-      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM)
+      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
+        paste: true
+      })
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
       .click(Selector('button').withText(getTransValueByKey('ACTION_6')))
-      .typeText(Selector(`div[data-testid="selector"]`).find('input'), FIXTURE_VIEW_ONLY_ADDRESS)
+      .typeText(Selector(`div[data-testid="selector"]`).find('input'), FIXTURE_VIEW_ONLY_ADDRESS, {
+        paste: true
+      })
       // Lose focus
       .click(getByText(getTransValueByKey('INPUT_PUBLIC_ADDRESS_LABEL')))
       .click(Selector('button').withText(getTransValueByKey('ACTION_6')));
@@ -43,7 +47,9 @@ export default class AddAccountPage extends BasePage {
 
   async selectEthereumNetwork() {
     await t
-      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM)
+      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
+        paste: true
+      })
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
       .click(Selector('button').withText(getTransValueByKey('ACTION_6')));
   }
