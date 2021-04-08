@@ -6,13 +6,9 @@ import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
 
-import {
-  default as DeterministicTable,
-  DeterministicTableProps,
-  ITableAccounts
-} from './DeterministicAccountTable';
+import { default as DeterministicTable, DeterministicTableProps, ITableAccounts } from './HDWTable';
 
-export default { title: 'Organisms/DeterministicAccountTable' };
+export default { title: 'Organisms/HDWTable' };
 
 const addressMap = fDWAccounts.reduce((acc, item) => {
   acc[item.address as string] = {
@@ -39,7 +35,7 @@ const initialProps: DeterministicTableProps = {
   onScanMoreAddresses: noOp
 };
 
-export const DeterministicAccountTable = () => (
+export const HDWTable = () => (
   <ProvidersWrapper>
     <ExtendedContentPanel width="800px">
       <DeterministicTable {...initialProps} />

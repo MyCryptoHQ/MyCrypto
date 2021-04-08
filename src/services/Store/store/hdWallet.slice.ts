@@ -4,14 +4,13 @@ import { select } from 'redux-saga-test-plan/matchers';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import {
-  DeterministicWalletState,
   DWAccountDisplay,
   ExtendedDPath,
+  HDWalletState,
   selectWallet
 } from '@services/WalletService/deterministic';
 import { Wallet } from '@services/WalletService/wallets';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
-import { identity } from '@vendor';
 
 import {
   BalanceMap,
@@ -25,19 +24,15 @@ export enum HDWalletErrors {
   GET_ACCOUNTS_FAILED = 'GET_ACCOUNTS_FAILED'
 }
 
-export const initialState: DeterministicWalletState = {
-  asset: undefined,
-  network: undefined,
+export const initialState: HDWalletState = {
   isInit: false,
   isConnected: false,
-  session: undefined,
   isConnecting: false,
   isGettingAccounts: false,
   isCompleted: false,
-  queuedAccounts: [],
-  finishedAccounts: [],
-  customDPaths: [],
-  error: undefined
+  accountQueue: [],
+  scannedAccounts: [],
+  customDPaths: []
 };
 
 const slice = createSlice({
@@ -48,11 +43,17 @@ const slice = createSlice({
       state.isConnecting = true;
       state.error = undefined;
     },
-    onConnectionFailure(state, action: PayloadAction<{ code: HDWalletErrors; message: string }>) {
+    requestConnectionFailure(
+      state,
+      action: PayloadAction<{ code: HDWalletErrors; message: string }>
+    ) {
       state.error = action.payload;
       state.isConnecting = false;
     },
-    onConnectionSuccess(state, action: PayloadAction<{ asset: ExtendedAsset; network: Network }>) {
+    requestConnectionSuccess(
+      state,
+      action: PayloadAction<{ asset: ExtendedAsset; network: Network }>
+    ) {
       const { asset, network } = action.payload;
       state.isConnected = true;
       state.isConnecting = false;
@@ -64,11 +65,11 @@ const slice = createSlice({
       state.isGettingAccounts = true;
       state.isCompleted = false;
     },
-    onRequestAddressesSuccess(state) {
+    requestAddressesSuccess(state) {
       state.isGettingAccounts = false;
       state.error = undefined;
     },
-    onRequestAddressesFailure(
+    requestAddressesFailure(
       state,
       action: PayloadAction<{ code: HDWalletErrors; message: string }>
     ) {
@@ -77,8 +78,8 @@ const slice = createSlice({
       state.error = action.payload;
     },
     enqueueAccounts(state, action: PayloadAction<DWAccountDisplay[]>) {
-      const allQueuedAccounts = [...state.queuedAccounts, ...action.payload];
-      state.queuedAccounts = allQueuedAccounts;
+      const allAccountQueue = [...state.accountQueue, ...action.payload];
+      state.accountQueue = allAccountQueue;
     },
     updateAccounts(
       state,
@@ -89,22 +90,22 @@ const slice = createSlice({
       if (asset.uuid !== state.asset!.uuid) {
         return state;
       }
-      const newQueuedAccounts = [...state.queuedAccounts].filter(
+      const newAccountQueue = [...state.accountQueue].filter(
         ({ address }) => !accounts.map((a) => a.address).includes(address as TAddress)
       );
-      state.isGettingAccounts = newQueuedAccounts.length > 0;
-      state.queuedAccounts = [...newQueuedAccounts];
-      state.finishedAccounts = [...state.finishedAccounts, ...accounts];
+      state.isGettingAccounts = newAccountQueue.length > 0;
+      state.accountQueue = [...newAccountQueue];
+      state.scannedAccounts = [...state.scannedAccounts, ...accounts];
     },
     updateAsset(state, action: PayloadAction<ExtendedAsset>) {
-      const updatedQueuedAccounts = [
-        ...state.queuedAccounts,
-        ...state.finishedAccounts.map((account) => ({ ...account, balance: undefined }))
+      const updatedaccountQueue = [
+        ...state.accountQueue,
+        ...state.scannedAccounts.map((account) => ({ ...account, balance: undefined }))
       ];
       state.asset = action.payload;
       state.isCompleted = false;
-      state.queuedAccounts = updatedQueuedAccounts;
-      state.finishedAccounts = [];
+      state.accountQueue = updatedaccountQueue;
+      state.scannedAccounts = [];
     },
     addCustomDPaths(state, action: PayloadAction<ExtendedDPath[]>) {
       const customDPaths = [...state.customDPaths, ...action.payload];
@@ -119,11 +120,11 @@ const slice = createSlice({
 
 export const {
   requestConnection,
-  onConnectionFailure,
-  onConnectionSuccess,
+  requestConnectionFailure,
+  requestConnectionSuccess,
   requestAddresses,
-  onRequestAddressesFailure,
-  onRequestAddressesSuccess,
+  requestAddressesFailure,
+  requestAddressesSuccess,
   enqueueAccounts,
   updateAccounts,
   updateAsset,
@@ -136,38 +137,23 @@ export default slice;
 /**
  * Selectors
  */
-export const getWalletSession = (s: AppState) => s.hdWallet.session;
-export const getHDWalletSession = createSelector(getWalletSession, identity);
-
-export const getAsset = (s: AppState) => s.hdWallet.asset;
-export const getHDWalletAsset = createSelector(getAsset, identity);
-
-export const getNetwork = (s: AppState) => s.hdWallet.network;
-export const getHDWalletNetwork = createSelector(getNetwork, identity);
-
-export const getQueuedAccounts = (s: AppState) => s.hdWallet.queuedAccounts;
-export const getHDWalletQueuedAccounts = createSelector(getQueuedAccounts, identity);
-
-export const getFinishedAccounts = (s: AppState) => s.hdWallet.finishedAccounts;
-export const getHDWalletFinishedAccounts = createSelector(getFinishedAccounts, identity);
-
-export const getIsConnected = (s: AppState) => s.hdWallet.isConnected;
-export const getHDWalletIsConnected = createSelector(getIsConnected, identity);
-
-export const getIsConnecting = (s: AppState) => s.hdWallet.isConnecting;
-export const getHDWalletIsConnecting = createSelector(getIsConnected, identity);
-
-export const getIsCompleted = (s: AppState) => s.hdWallet.isCompleted;
-export const getHDWalletIsCompleted = createSelector(getIsCompleted, identity);
-
-export const getIsGettingAccounts = (s: AppState) => s.hdWallet.isGettingAccounts;
-export const getHDWalletIsGettingAccounts = createSelector(getIsGettingAccounts, identity);
-
-export const getCustomDPaths = (s: AppState) => s.hdWallet.customDPaths;
-export const getHDWalletCustomDPaths = createSelector(getCustomDPaths, identity);
-
-export const getConnectionError = (s: AppState) => s.hdWallet.error;
-export const getHDWalletConnectionError = createSelector(getConnectionError, identity);
+const selectHDWallet = (s: AppState) => s[slice.name];
+export const selectHDWalletAsset = createSelector(selectHDWallet, (hd) => hd.asset);
+export const selectHDWalletNetwork = createSelector(selectHDWallet, (hd) => hd.network);
+export const selectHDWalletAccountQueue = createSelector(selectHDWallet, (hd) => hd.accountQueue);
+export const selectHDWalletScannedAccounts = createSelector(
+  selectHDWallet,
+  (hd) => hd.scannedAccounts
+);
+export const selectHDWalletIsConnected = createSelector(selectHDWallet, (hd) => hd.isConnected);
+export const selectHDWalletIsConnecting = createSelector(selectHDWallet, (hd) => hd.isConnecting);
+export const selectHDWalletIsCompleted = createSelector(selectHDWallet, (hd) => hd.isCompleted);
+export const selectHDWalletIsGettingAccounts = createSelector(
+  selectHDWallet,
+  (hd) => hd.isGettingAccounts
+);
+export const selectHDWalletCustomDPaths = createSelector(selectHDWallet, (hd) => hd.customDPaths);
+export const selectHDWalletConnectionError = createSelector(selectHDWallet, (hd) => hd.error);
 
 /**
  * Actions
@@ -180,10 +166,6 @@ export const connectToHDWallet = createAction<{
   asset: ExtendedAsset;
   setSession(wallet: Wallet): void;
 }>(`${slice.name}/connectToHDWallet`);
-export const addNewDPaths = createAction<{
-  customDPaths: ExtendedDPath[];
-}>(`${slice.name}/addNewDPaths`);
-export const updateAnAsset = createAction<{ asset: ExtendedAsset }>(`${slice.name}/updateAnAsset`);
 export const getAccounts = createAction<{ session: Wallet; dpaths: ExtendedDPath[] }>(
   `${slice.name}/getAccounts`
 );
@@ -195,8 +177,6 @@ export const processAccountsQueue = createAction(`${slice.name}/processAccountsQ
 export function* hdWalletSaga() {
   yield all([
     takeLatest(connectToHDWallet.type, requestConnectionWorker),
-    takeLatest(addNewDPaths.type, addDPathsWorker),
-    takeLatest(updateAnAsset.type, updateAssetWorker),
     takeLatest(getAccounts.type, getAccountsWorker),
     takeLatest(processAccountsQueue.type, accountsQueueWorker)
   ]);
@@ -218,11 +198,11 @@ export function* requestConnectionWorker({
     yield call([session, 'initialize'], dpaths[0]);
     yield put(slice.actions.requestConnection());
     yield call(setSession, session);
-    yield put(slice.actions.onConnectionSuccess({ asset, network }));
+    yield put(slice.actions.requestConnectionSuccess({ asset, network }));
   } catch (err) {
     console.error(err);
     yield put(
-      slice.actions.onConnectionFailure({
+      slice.actions.requestConnectionFailure({
         code: HDWalletErrors.SESSION_CONNECTION_FAILED,
         message: err
       })
@@ -246,7 +226,7 @@ export function* getAccountsWorker({
     yield put(processAccountsQueue());
   } catch (err) {
     yield put(
-      slice.actions.onRequestAddressesFailure({
+      slice.actions.requestAddressesFailure({
         code: HDWalletErrors.GET_ACCOUNTS_FAILED,
         message: err
       })
@@ -254,28 +234,18 @@ export function* getAccountsWorker({
   }
 }
 
-export function* addDPathsWorker({ payload }: PayloadAction<{ customDPaths: ExtendedDPath[] }>) {
-  const { customDPaths } = payload;
-  yield put(slice.actions.addCustomDPaths(customDPaths));
-}
-
-export function* updateAssetWorker({ payload }: PayloadAction<{ asset: ExtendedAsset }>) {
-  const { asset } = payload;
-  yield put(slice.actions.updateAsset(asset));
-}
-
 export function* accountsQueueWorker() {
-  const network: Network = yield select(getHDWalletNetwork);
-  const queuedAccounts: DWAccountDisplay[] = yield select(getHDWalletQueuedAccounts);
-  const asset: ExtendedAsset = yield select(getHDWalletAsset);
-  const addresses = queuedAccounts.map(({ address }) => address);
+  const network: Network = yield select(selectHDWalletNetwork);
+  const accountQueue: DWAccountDisplay[] = yield select(selectHDWalletAccountQueue);
+  const asset: ExtendedAsset = yield select(selectHDWalletAsset);
+  const addresses = accountQueue.map(({ address }) => address);
   const balanceLookup =
     asset.type === 'base'
       ? () => getBaseAssetBalancesForAddresses(addresses, network)
       : () => getSingleTokenBalanceForAddresses(asset, network, addresses);
   try {
     const balances: BalanceMap<BN> = yield call(balanceLookup);
-    const walletsWithBalances: DWAccountDisplay[] = queuedAccounts.map((account) => {
+    const walletsWithBalances: DWAccountDisplay[] = accountQueue.map((account) => {
       const balance = balances[account.address] || 0; // @todo - better error handling for failed lookups.
       return {
         ...account,
@@ -284,6 +254,6 @@ export function* accountsQueueWorker() {
     });
     yield put(slice.actions.updateAccounts({ accounts: walletsWithBalances, asset }));
   } catch (e) {
-    yield put(slice.actions.updateAccounts({ accounts: queuedAccounts, asset }));
+    yield put(slice.actions.updateAccounts({ accounts: accountQueue, asset }));
   }
 }

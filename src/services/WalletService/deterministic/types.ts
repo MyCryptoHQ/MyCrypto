@@ -3,8 +3,6 @@ import { ValuesType } from 'utility-types';
 import { HDWalletErrors } from '@store/hdWallet.slice';
 import { DPath, ExtendedAsset, Network, TAddress, WalletId } from '@types';
 
-import { Wallet } from '..';
-
 export interface TDWActionError {
   code: ValuesType<typeof HDWalletErrors>;
   message: string;
@@ -26,29 +24,28 @@ export interface ExtendedDPath extends DPath {
   numOfAddresses: number;
 }
 
-export interface DeterministicWalletState {
+export interface HDWalletState {
   isInit: boolean;
   isConnected: boolean;
   isConnecting: boolean;
   isGettingAccounts: boolean;
   asset?: ExtendedAsset;
   network?: Network;
-  queuedAccounts: DWAccountDisplay[];
-  finishedAccounts: DWAccountDisplay[];
+  accountQueue: DWAccountDisplay[];
+  scannedAccounts: DWAccountDisplay[];
   customDPaths: ExtendedDPath[];
-  session: Wallet | undefined;
   isCompleted: boolean;
   error?: TDWActionError;
 }
 
-export interface IUseDeterministicWallet {
+export interface IUseHDWallet {
   connectionError?: TDWActionError;
   selectedAsset?: ExtendedAsset;
   isCompleted: boolean;
   isConnected: boolean;
   isConnecting: boolean;
-  queuedAccounts: DWAccountDisplay[];
-  finishedAccounts: DWAccountDisplay[];
+  accountQueue: DWAccountDisplay[];
+  scannedAccounts: DWAccountDisplay[];
   requestConnection(network: Network, asset: ExtendedAsset): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;

@@ -4,7 +4,7 @@ import { TREZOR_DERIVATION_PATHS } from '@config/dpaths';
 import { DPath, TAddress, WalletId } from '@types';
 import { flatten } from '@vendor';
 
-import { DWAccountDisplay, ExtendedDPath, getDeterministicWallets } from '../deterministic';
+import { DWAccountDisplay, ExtendedDPath, getHDWallets } from '../deterministic';
 import HardwareWallet, { KeyInfo } from './HardwareWallet';
 import { getFullPath } from './helpers';
 
@@ -49,7 +49,7 @@ export default class Trezor extends HardwareWallet {
           console.error('[getMultipleAddresses]: Could not find dpath that was expected.');
           return [] as DWAccountDisplay[];
         }
-        return getDeterministicWallets({
+        return getHDWallets({
           dPath: key,
           chainCode: value.chainCode,
           publicKey: value.publicKey,

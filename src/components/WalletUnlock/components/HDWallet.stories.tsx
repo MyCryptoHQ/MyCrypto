@@ -7,15 +7,15 @@ import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
 
-import { DeterministicWalletProps, default as DeterministicWalletUI } from './DeterministicWallet';
+import { HDWalletProps, default as HDWalletUI } from './HDWallet';
 
 export default {
-  title: 'Organisms/DeterministicWallet'
+  title: 'Organisms/HDWallet'
 };
 
-const initialProps: DeterministicWalletProps = {
+const initialProps: HDWalletProps = {
   selectedAsset: fAssets[0],
-  finishedAccounts: fDWAccounts,
+  scannedAccounts: fDWAccounts,
   isCompleted: true,
   network: fNetworks[0],
   assets: fAssets,
@@ -34,10 +34,10 @@ const initialProps: DeterministicWalletProps = {
   onUnlock: noOp
 };
 
-export const DeterministicWallet = () => (
+export const HDWallet = () => (
   <ProvidersWrapper>
     <ExtendedContentPanel width="800px">
-      <DeterministicWalletUI {...initialProps} />
+      <HDWalletUI {...initialProps} />
     </ExtendedContentPanel>
   </ProvidersWrapper>
 );

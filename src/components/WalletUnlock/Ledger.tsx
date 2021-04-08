@@ -13,16 +13,16 @@ import {
   getDPaths,
   getNetworkById,
   useAssets,
-  useDeterministicWallet,
+  useHDWallet,
   useNetworks
 } from '@services';
 import { useSelector } from '@store';
-import { getHDWalletConnectionError } from '@store/hdWallet.slice';
+import { selectHDWalletConnectionError } from '@store/hdWallet.slice';
 import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
 
-import { DeterministicWallet } from './components';
+import { HDWallet } from './components';
 
 interface OwnProps {
   formData: FormData;
@@ -34,7 +34,7 @@ interface OwnProps {
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
-  const connectionError = useSelector(getHDWalletConnectionError);
+  const connectionError = useSelector(selectHDWalletConnectionError);
   const network = getNetworkById(formData.network, networks);
   const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
@@ -53,8 +53,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
     selectedAsset,
-    finishedAccounts,
-    queuedAccounts,
+    scannedAccounts,
+    accountQueue,
     isCompleted,
     isConnected,
     isConnecting,
@@ -62,7 +62,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     addDPaths,
     scanMoreAddresses
-  } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  } = useHDWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
@@ -90,10 +90,10 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   }
 
-  if (isConnected && selectedAsset && (queuedAccounts || finishedAccounts)) {
+  if (isConnected && selectedAsset && (accountQueue || scannedAccounts)) {
     return (
-      <DeterministicWallet
-        finishedAccounts={finishedAccounts}
+      <HDWallet
+        scannedAccounts={scannedAccounts}
         isCompleted={isCompleted}
         selectedAsset={selectedAsset}
         dpaths={dpaths}

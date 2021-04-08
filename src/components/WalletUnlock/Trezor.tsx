@@ -10,7 +10,7 @@ import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import { DeterministicWallets } from './components';
+import { HDWallets } from './components';
 import './Trezor.scss';
 import UnsupportedNetwork from './UnsupportedNetwork';
 
@@ -54,7 +54,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
     if (publicKey && chainCode) {
       return (
         <div className="Mnemonic-dpath">
-          <DeterministicWallets
+          <HDWallets
             network={network}
             publicKey={publicKey}
             chainCode={chainCode}

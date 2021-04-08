@@ -21391,7 +21391,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
 </div>
 `;
 
-exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account Table 1`] = `
+exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
 <div
   className="ExtendedContentPanel__ContentPanelWrapper-k5wich-0 eXjoIC"
   width="800px"
@@ -21400,57 +21400,57 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
     className="sc-fznyAO sc-fznKkj eywbAA ExtendedContentPanel__StyledPanel-k5wich-7 jlCCCx"
   >
     <div
-      className="DeterministicAccountTable__Table-sc-4ghzvo-0 kLcocY"
+      className="HDWTable__Table-sc-1dpf7zp-0 tZCSA"
     >
       <div
-        className="DeterministicAccountTable__Heading-sc-4ghzvo-1 guMMUm"
+        className="HDWTable__Heading-sc-1dpf7zp-1 frQnHW"
       >
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kWDgHT"
+          className="HDWTable__Label-sc-1dpf7zp-2 kPjxtL"
           width="25px"
         />
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kGDeAR"
+          className="HDWTable__Label-sc-1dpf7zp-2 fXdKzV"
           width="225px"
         >
           Label
         </div>
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kGCTjT"
+          className="HDWTable__Label-sc-1dpf7zp-2 fXexkP"
           width="135px"
         >
           Address
         </div>
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kGDgAi"
+          className="HDWTable__Label-sc-1dpf7zp-2 fXdKWa"
           width="125px"
         >
           DPath
         </div>
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kWCOIg"
+          className="HDWTable__Label-sc-1dpf7zp-2 kPifOU"
           width="80px"
         >
           Asset
         </div>
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kWCRzH"
+          className="HDWTable__Label-sc-1dpf7zp-2 kPikjH"
           width="30px"
         />
         <div
-          className="DeterministicAccountTable__Label-sc-4ghzvo-2 kWCSkB"
+          className="HDWTable__Label-sc-1dpf7zp-2 kPikUB"
           width="50px"
         />
       </div>
       <div
-        className="DeterministicAccountTable__Body-sc-4ghzvo-3 frAHCC"
+        className="HDWTable__Body-sc-1dpf7zp-3 dWcGfO"
       >
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21458,13 +21458,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21491,7 +21491,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21523,15 +21523,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/0
@@ -21539,7 +21539,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21570,7 +21570,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21596,11 +21596,11 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21608,13 +21608,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21641,7 +21641,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21673,15 +21673,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/5
@@ -21689,7 +21689,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21720,7 +21720,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21746,11 +21746,11 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21758,13 +21758,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21791,7 +21791,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21823,15 +21823,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/3
@@ -21839,7 +21839,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21870,7 +21870,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21896,11 +21896,11 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21908,13 +21908,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21941,7 +21941,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21973,15 +21973,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/2
@@ -21989,7 +21989,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22020,7 +22020,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22046,11 +22046,11 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -22058,13 +22058,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -22091,7 +22091,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -22123,15 +22123,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/1
@@ -22139,7 +22139,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22170,7 +22170,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22196,11 +22196,11 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__Row-sc-4ghzvo-4 gafseR"
+          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
           onClick={[Function]}
         >
           <div
-            className="DeterministicAccountTable__SelectedContainer-sc-4ghzvo-5 cFcBxJ"
+            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 ipOWdZ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -22208,13 +22208,13 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             />
           </div>
           <div
-            className="DeterministicAccountTable__MobileColumn-sc-4ghzvo-14 difahe"
+            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
           >
             <div
-              className="DeterministicAccountTable__LabelContainer-sc-4ghzvo-6 kuQeRc"
+              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ DeterministicAccountTable__SIdenticon-sc-4ghzvo-7 lewMIg"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -22241,7 +22241,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__AddressContainer-sc-4ghzvo-8 dtIHqM"
+              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -22273,15 +22273,15 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </div>
             </div>
             <div
-              className="DeterministicAccountTable__DPathContainer-sc-4ghzvo-9 hSCbZb"
+              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathType-sc-4ghzvo-10 gSXMKI"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__DPathDisplay-sc-4ghzvo-11 eKYhNl"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 emrxoV"
               >
                 (
                 m/44'/60'/0'/4
@@ -22289,7 +22289,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
               </span>
             </div>
             <div
-              className="DeterministicAccountTable__ValueContainer-sc-4ghzvo-12 DpLjG"
+              className="HDWTable__ValueContainer-sc-1dpf7zp-12 cpJyYm"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22320,7 +22320,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             </div>
           </div>
           <div
-            className="DeterministicAccountTable__LinkContainer-sc-4ghzvo-13 iiUDzC"
+            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22346,7 +22346,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
           </div>
         </div>
         <div
-          className="DeterministicAccountTable__BottomActionButton-sc-4ghzvo-15 bGWXlx"
+          className="HDWTable__BottomActionButton-sc-1dpf7zp-15 itGPEl"
           disabled={false}
           onClick={[Function]}
         >
@@ -22356,7 +22356,7 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
             id="test-file-stub"
           />
           <span
-            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd DeterministicAccountTable__STypography-sc-4ghzvo-16 gaucfr"
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__STypography-sc-1dpf7zp-16 ZcXzH"
           >
             Scan 10 more addresses for the selected derivation path
           </span>

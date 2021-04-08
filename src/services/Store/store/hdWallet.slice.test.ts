@@ -9,21 +9,17 @@ import { bigify as mockBigify, noOp } from '@utils';
 
 import {
   accountsQueueWorker,
-  addDPathsWorker,
-  addNewDPaths,
   connectToHDWallet,
   getAccounts,
   getAccountsWorker,
-  getHDWalletAsset,
-  getHDWalletNetwork,
-  getHDWalletQueuedAccounts,
   HDWalletErrors,
   initialState,
   processAccountsQueue,
   requestConnectionWorker,
-  default as slice,
-  updateAnAsset,
-  updateAssetWorker
+  selectHDWalletAccountQueue,
+  selectHDWalletAsset,
+  selectHDWalletNetwork,
+  default as slice
 } from './hdWallet.slice';
 import { AppState } from './root.reducer';
 
@@ -31,11 +27,11 @@ const reducer = slice.reducer;
 
 const {
   requestConnection,
-  onConnectionFailure,
-  onConnectionSuccess,
+  requestConnectionFailure,
+  requestConnectionSuccess,
   requestAddresses,
-  onRequestAddressesFailure,
-  onRequestAddressesSuccess,
+  requestAddressesFailure,
+  requestAddressesSuccess,
   enqueueAccounts,
   updateAccounts,
   updateAsset,
@@ -82,16 +78,16 @@ describe('HD Wallet Slice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('onConnectionFailure(): sets isConnecting to false indicating end of connecting process, and sets an error', () => {
-    const actual = reducer(initialState, onConnectionFailure(err));
+  it('requestConnectionFailure(): sets isConnecting to false indicating end of connecting process, and sets an error', () => {
+    const actual = reducer(initialState, requestConnectionFailure(err));
     const expected = { ...initialState, isConnecting: false, error: err };
     expect(actual).toEqual(expected);
   });
 
-  it('onConnectionSuccess(): updates isConnected to true and sets network and asset params', () => {
+  it('requestConnectionSuccess(): updates isConnected to true and sets network and asset params', () => {
     const actual = reducer(
       initialState,
-      onConnectionSuccess({ asset: fAssets[0], network: fNetwork })
+      requestConnectionSuccess({ asset: fAssets[0], network: fNetwork })
     );
     const expected = {
       ...initialState,
@@ -109,14 +105,14 @@ describe('HD Wallet Slice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('onRequestAddressesSuccess(): correctly sets isGettingAccounts to false to signal end of the process.', () => {
-    const actual = reducer(initialState, onRequestAddressesSuccess());
+  it('requestAddressesSuccess(): correctly sets isGettingAccounts to false to signal end of the process.', () => {
+    const actual = reducer(initialState, requestAddressesSuccess());
     const expected = { ...initialState, isGettingAccounts: false, error: undefined };
     expect(actual).toEqual(expected);
   });
 
-  it('onRequestAddressesFailure(): handles an error when fetching addresses, sets isComplete to true and isGettingAccounts to false to signal the end of the fetch.', () => {
-    const actual = reducer(initialState, onRequestAddressesFailure(err));
+  it('requestAddressesFailure(): handles an error when fetching addresses, sets isComplete to true and isGettingAccounts to false to signal the end of the fetch.', () => {
+    const actual = reducer(initialState, requestAddressesFailure(err));
     const expected = { ...initialState, isCompleted: true, isGettingAccounts: false, error: err };
     expect(actual).toEqual(expected);
   });
@@ -124,6 +120,12 @@ describe('HD Wallet Slice', () => {
   it('addCustomDPaths(): Adds custom dpaths to state and sets isCompleted to false.', () => {
     const actual = reducer(initialState, addCustomDPaths([fExtendedDPath]));
     const expected = { ...initialState, isCompleted: false, customDPaths: [fExtendedDPath] };
+    expect(actual).toEqual(expected);
+  });
+
+  it('updateAsset(): Adds custom dpaths to state and sets isCompleted to false.', () => {
+    const actual = reducer(initialState, updateAsset(fAssets[0]));
+    const expected = { ...initialState, isCompleted: false, asset: fAssets[0] };
     expect(actual).toEqual(expected);
   });
 
@@ -168,7 +170,7 @@ describe('requestConnectionWorker()', () => {
       .call([ledgerMock, 'initialize'], inputPayload.dpaths[0])
       .call(inputPayload.setSession, ledgerMock)
       .put(requestConnection())
-      .put(onConnectionSuccess({ asset: inputPayload.asset, network: inputPayload.network }))
+      .put(requestConnectionSuccess({ asset: inputPayload.asset, network: inputPayload.network }))
       .silentRun();
   });
 });
@@ -197,11 +199,11 @@ jest.mock('../BalanceService.tsx', () => ({
 }));
 
 describe('accountsQueueWorker()', () => {
-  it('fetches balances for queuedAccounts in state', () => {
+  it('fetches balances for accountQueue in state', () => {
     const beginningState = {
       ...initialState,
       isConnected: true,
-      queuedAccounts: [fDWAccountDisplayPreBalance],
+      accountQueue: [fDWAccountDisplayPreBalance],
       network: fNetwork,
       asset: fAssets[1]
     };
@@ -212,50 +214,10 @@ describe('accountsQueueWorker()', () => {
         assets: fAssets,
         hdWallet: beginningState
       } as unknown) as AppState)
-      .select(getHDWalletNetwork)
-      .select(getHDWalletQueuedAccounts)
-      .select(getHDWalletAsset)
+      .select(selectHDWalletNetwork)
+      .select(selectHDWalletAccountQueue)
+      .select(selectHDWalletAsset)
       .put(updateAccounts({ accounts: [fDWAccountDisplay], asset: beginningState.asset }))
-      .silentRun();
-  });
-});
-
-describe('updateAssetWorker()', () => {
-  it('updates the hdWallet asset', () => {
-    const beginningState = {
-      ...initialState,
-      isConnected: true,
-      queuedAccounts: [fDWAccountDisplayPreBalance],
-      network: fNetwork,
-      asset: fAssets[1]
-    };
-    return expectSaga(updateAssetWorker, updateAnAsset({ asset: fAssets[0] }))
-      .withState(({
-        networks: fNetworks,
-        assets: fAssets,
-        hdWallet: beginningState
-      } as unknown) as AppState)
-      .put(updateAsset(fAssets[0]))
-      .silentRun();
-  });
-});
-
-describe('addDPathsWorker()', () => {
-  it('adds the custom derivation path', () => {
-    const beginningState = {
-      ...initialState,
-      isConnected: true,
-      queuedAccounts: [fDWAccountDisplayPreBalance],
-      network: fNetwork,
-      asset: fAssets[1]
-    };
-    return expectSaga(addDPathsWorker, addNewDPaths({ customDPaths: [fExtendedDPath] }))
-      .withState(({
-        networks: fNetworks,
-        assets: fAssets,
-        hdWallet: beginningState
-      } as unknown) as AppState)
-      .put(addCustomDPaths([fExtendedDPath]))
       .silentRun();
   });
 });

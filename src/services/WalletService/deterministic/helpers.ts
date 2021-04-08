@@ -6,12 +6,12 @@ import { bigify } from '@utils';
 
 import { DWAccountDisplay, ExtendedDPath } from './types';
 
-export const processFinishedAccounts = (
-  finishedAccounts: DWAccountDisplay[],
+export const processScannedAccounts = (
+  scannedAccounts: DWAccountDisplay[],
   customDPaths: ExtendedDPath[],
   desiredGap: number
 ) => {
-  const pathItems = finishedAccounts.map((acc) => ({
+  const pathItems = scannedAccounts.map((acc) => ({
     ...acc.pathItem,
     balance: acc.balance
   }));

@@ -1,6 +1,6 @@
-export { default as DeterministicAccountList } from './DeterministicAccountList';
-export { default as DeterministicAccountTable } from './DeterministicAccountTable';
-export { default as DeterministicWallet } from './DeterministicWallet';
-export { default as DeterministicWallets } from './DeterministicWallets';
+export { default as HDWList } from './HDWList';
+export { default as HDWTable } from './HDWTable';
+export { default as HDWallet } from './HDWallet';
+export { default as HDWallets } from './HDWallets';
 export { DPathOption } from './DerivationPath';
 export * from './helpers';

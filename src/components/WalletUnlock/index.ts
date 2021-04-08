@@ -6,6 +6,6 @@ export { default as Web3ProviderInstall } from './Web3ProviderInstall';
 export { default as InsecureWalletWarning } from './InsecureWalletWarning';
 export { default as WalletConnectDecrypt } from './WalletConnect';
 export { default as LedgerDecrypt } from './Ledger';
-export { DeterministicAccountList } from './components';
+export { HDWList } from './components';
 export { default as TrezorUnlock } from './NewTrezor';
 export { default as HardwareDecrypt } from './Hardware';

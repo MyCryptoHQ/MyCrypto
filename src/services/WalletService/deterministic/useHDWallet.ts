@@ -2,54 +2,50 @@ import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { processFinishedAccounts, Wallet } from '@services';
+import { processScannedAccounts, Wallet } from '@services';
 import {
   addCustomDPaths,
   connectToHDWallet,
   getAccounts,
-  getHDWalletAsset,
-  getHDWalletCustomDPaths,
-  getHDWalletFinishedAccounts,
-  getHDWalletIsCompleted,
-  getHDWalletIsConnected,
-  getHDWalletIsConnecting,
-  getHDWalletIsGettingAccounts,
-  getHDWalletNetwork,
-  getHDWalletQueuedAccounts,
+  selectHDWalletAccountQueue,
+  selectHDWalletAsset,
+  selectHDWalletCustomDPaths,
+  selectHDWalletIsCompleted,
+  selectHDWalletIsConnected,
+  selectHDWalletIsConnecting,
+  selectHDWalletIsGettingAccounts,
+  selectHDWalletNetwork,
+  selectHDWalletScannedAccounts,
   triggerComplete,
   updateAsset as updateScannerAsset
 } from '@store/hdWallet.slice';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 
-import { ExtendedDPath, IUseDeterministicWallet } from './types';
+import { ExtendedDPath, IUseHDWallet } from './types';
 
-const useDeterministicWallet = (
-  dpaths: ExtendedDPath[],
-  walletId: DPathFormat,
-  gap: number
-): IUseDeterministicWallet => {
+const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number): IUseHDWallet => {
   const [session, setSession] = useState((undefined as unknown) as Wallet);
   const dispatch = useDispatch();
-  const isConnected = useSelector(getHDWalletIsConnected);
-  const isConnecting = useSelector(getHDWalletIsConnecting);
-  const customDPaths = useSelector(getHDWalletCustomDPaths);
-  const isCompleted = useSelector(getHDWalletIsCompleted);
-  const isGettingAccounts = useSelector(getHDWalletIsGettingAccounts);
-  const network = useSelector(getHDWalletNetwork);
-  const queuedAccounts = useSelector(getHDWalletQueuedAccounts);
-  const finishedAccounts = useSelector(getHDWalletFinishedAccounts);
-  const selectedAsset = useSelector(getHDWalletAsset);
+  const isConnected = useSelector(selectHDWalletIsConnected);
+  const isConnecting = useSelector(selectHDWalletIsConnecting);
+  const customDPaths = useSelector(selectHDWalletCustomDPaths);
+  const isCompleted = useSelector(selectHDWalletIsCompleted);
+  const isGettingAccounts = useSelector(selectHDWalletIsGettingAccounts);
+  const network = useSelector(selectHDWalletNetwork);
+  const accountQueue = useSelector(selectHDWalletAccountQueue);
+  const scannedAccounts = useSelector(selectHDWalletScannedAccounts);
+  const selectedAsset = useSelector(selectHDWalletAsset);
 
   // On first connection && on asset update
   useEffect(() => {
-    if (!isConnected || !network || !session || finishedAccounts.length !== 0) return;
+    if (!isConnected || !network || !session || scannedAccounts.length !== 0) return;
     dispatch(getAccounts({ session, dpaths }));
-  }, [isConnected, finishedAccounts]);
+  }, [isConnected, scannedAccounts]);
 
   useEffect(() => {
-    if (finishedAccounts.length === 0 || !session) return;
-    const { newGapItems, customDPathItems } = processFinishedAccounts(
-      finishedAccounts,
+    if (scannedAccounts.length === 0 || !session) return;
+    const { newGapItems, customDPathItems } = processScannedAccounts(
+      scannedAccounts,
       customDPaths,
       gap
     );
@@ -66,7 +62,7 @@ const useDeterministicWallet = (
       dispatch(triggerComplete());
     }
     return;
-  }, [finishedAccounts, isCompleted]);
+  }, [scannedAccounts, isCompleted]);
 
   const addDPaths = (cstmDPaths: ExtendedDPath[]) => {
     if (!isConnected || !network || !session) {
@@ -89,12 +85,12 @@ const useDeterministicWallet = (
   };
 
   return {
-    finishedAccounts,
+    scannedAccounts,
     isCompleted,
     isConnecting,
     selectedAsset,
     isConnected,
-    queuedAccounts,
+    accountQueue,
     requestConnection,
     updateAsset,
     addDPaths,
@@ -102,4 +98,4 @@ const useDeterministicWallet = (
   };
 };
 
-export default useDeterministicWallet;
+export default useHDWallet;

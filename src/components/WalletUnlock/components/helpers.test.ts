@@ -1,6 +1,6 @@
 import { TAddress } from '@types';
 
-import { TableAccountDisplay } from './DeterministicAccountTable';
+import { TableAccountDisplay } from './HDWTable';
 import { sortAccounts } from './helpers';
 
 const inputArr = [

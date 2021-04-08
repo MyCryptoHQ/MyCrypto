@@ -1,7 +1,7 @@
 import { DPath } from '@types';
 import { bigify } from '@utils';
 
-import { TableAccountDisplay } from './DeterministicAccountTable';
+import { TableAccountDisplay } from './HDWTable';
 
 export const sortAccounts = (
   accounts: TableAccountDisplay[],

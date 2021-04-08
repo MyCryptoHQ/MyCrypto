@@ -14,12 +14,12 @@ import {
   getDPaths,
   getNetworkById,
   useAssets,
-  useDeterministicWallet,
+  useHDWallet,
   useNetworks
 } from '@services';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
-import { DeterministicWallet } from './components';
+import { HDWallet } from './components';
 import HardwareWalletUI from './Hardware';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
@@ -53,13 +53,13 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     isConnecting,
     connectionError,
     selectedAsset,
-    queuedAccounts,
-    finishedAccounts,
+    accountQueue,
+    scannedAccounts,
     requestConnection,
     updateAsset,
     addDPaths,
     scanMoreAddresses
-  } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+  } = useHDWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
@@ -70,10 +70,10 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset(newAsset);
   };
 
-  if (isConnected && selectedAsset && (queuedAccounts || finishedAccounts)) {
+  if (isConnected && selectedAsset && (accountQueue || scannedAccounts)) {
     return (
-      <DeterministicWallet
-        finishedAccounts={finishedAccounts}
+      <HDWallet
+        scannedAccounts={scannedAccounts}
         isCompleted={isCompleted}
         selectedAsset={selectedAsset}
         selectedDPath={selectedDPath}

@@ -11,10 +11,7 @@ import { accountsToCSV, bigify, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
 import { Downloader } from '../../Downloader';
-import DeterministicTable, {
-  ITableAccounts,
-  TableAccountDisplay
-} from './DeterministicAccountTable';
+import DeterministicTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
 
 const MAX_EMPTY_ADDRESSES = 5;
 
@@ -76,8 +73,8 @@ const SDownloader = styled(Downloader)`
 export const filterZeroBalanceAccounts = (accounts: DWAccountDisplay[]) =>
   accounts.filter(({ balance }) => balance && bigify(balance).isZero());
 
-interface DeterministicAccountListProps {
-  finishedAccounts: DWAccountDisplay[];
+interface HDWListProps {
+  scannedAccounts: DWAccountDisplay[];
   asset: ExtendedAsset;
   isCompleted: boolean;
   network: Network;
@@ -88,8 +85,8 @@ interface DeterministicAccountListProps {
   handleUpdate(asset: ExtendedAsset): void;
 }
 
-export default function DeterministicAccountList({
-  finishedAccounts,
+export default function HDWList({
+  scannedAccounts,
   asset,
   isCompleted,
   network,
@@ -98,12 +95,12 @@ export default function DeterministicAccountList({
   onScanMoreAddresses,
   onUnlock,
   handleUpdate
-}: DeterministicAccountListProps) {
+}: HDWListProps) {
   const { isMobile } = useScreenSize();
 
   const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
 
-  const accountsToUse = uniqBy(prop('address'), finishedAccounts);
+  const accountsToUse = uniqBy(prop('address'), scannedAccounts);
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set
   // and if accountsToUse is cleared (occurs when re-scanning all accounts or when changing asset), refresh tableAccounts
   useEffect(() => {
@@ -152,7 +149,7 @@ export default function DeterministicAccountList({
       }
     });
   };
-  const csv = accountsToCSV(finishedAccounts, asset);
+  const csv = accountsToCSV(scannedAccounts, asset);
   return (
     <Box variant="columnAlign" width="800px" justifyContent="center">
       <Box
@@ -200,7 +197,7 @@ export default function DeterministicAccountList({
                 id="DETERMINISTIC_SCANNING_STATUS_DONE"
                 variables={{
                   $asset: () => asset.ticker,
-                  $total: () => finishedAccounts.length,
+                  $total: () => scannedAccounts.length,
                   $network: () => network.name
                 }}
               />{' '}
@@ -234,7 +231,7 @@ export default function DeterministicAccountList({
               <Trans
                 id="DETERMINISTIC_SCANNING_STATUS_RUNNING"
                 variables={{
-                  $total: () => finishedAccounts.length,
+                  $total: () => scannedAccounts.length,
                   $network: () => network.name
                 }}
               />{' '}
@@ -243,7 +240,7 @@ export default function DeterministicAccountList({
                   <>
                     <Trans
                       id="DETERMINISTIC_CSV"
-                      variables={{ $total: () => finishedAccounts.length }}
+                      variables={{ $total: () => scannedAccounts.length }}
                     />{' '}
                     <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
                       <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
@@ -272,7 +269,7 @@ export default function DeterministicAccountList({
 }
 
 // @todo - sorting
-// interface ITableFullDeterministicAccountType {
+// interface ITableFullHDWType {
 //   account: DWAccountDisplay;
 //   index: number;
 //   label: string;
@@ -280,23 +277,23 @@ export default function DeterministicAccountList({
 //   addressCard: ExtendedAddressBook;
 // }
 
-// type TSortFunction = (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) => number;
+// type TSortFunction = (a: ITableFullHDWType, b: ITableFullHDWType) => number;
 // const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
 //   switch (sortKey) {
 // 		default:
 //     case 'value':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) => b.total - a.total;
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) => b.total - a.total;
 //     case 'value-reverse':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) => a.total - b.total;
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) => a.total - b.total;
 //     case 'dpath':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) => a.label.localeCompare(b.label);
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) => a.label.localeCompare(b.label);
 //     case 'dpath-reverse':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) => b.label.localeCompare(a.label);
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) => b.label.localeCompare(a.label);
 //     case 'address':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) =>
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) =>
 //         a.account.address.localeCompare(b.account.address);
 //     case 'address-reverse':
-//       return (a: ITableFullDeterministicAccountType, b: ITableFullDeterministicAccountType) =>
+//       return (a: ITableFullHDWType, b: ITableFullHDWType) =>
 //         b.account.address.localeCompare(a.account.address);
 //   }
 // };

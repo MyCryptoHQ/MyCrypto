@@ -21,7 +21,7 @@ import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
-import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
+import { getHDWallets, HDWalletData } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
@@ -184,7 +184,7 @@ const customDPath: DPath = {
   value: ''
 };
 
-export function DeterministicWalletsClass({
+export function HDWalletsClass({
   network,
   dPath,
   dPaths,
@@ -202,7 +202,7 @@ export function DeterministicWalletsClass({
   const [customPath, setCustomPath] = useState('');
   const [currentDPath, setCurrentDPath] = useState(dPath);
   const [page, setPage] = useState(0);
-  const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
+  const [wallets, setWallets] = useState([] as HDWalletData[]);
   const { contacts } = useContacts();
   const { assets } = useAssets();
 
@@ -235,7 +235,7 @@ export function DeterministicWalletsClass({
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         setWallets(
-          getDeterministicWallets({
+          getHDWallets({
             seed,
             dPath: dPath.value,
             publicKey,
@@ -258,7 +258,7 @@ export function DeterministicWalletsClass({
     try {
       return getBaseAssetBalancesForAddresses(addressesToLookup, network).then(
         (balanceMapData: BalanceMap) => {
-          const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
+          const walletsWithBalances: HDWalletData[] = wallets.map((wallet) => {
             const balance = balanceMapData[wallet.address] || 0;
             return {
               ...wallet,
@@ -317,7 +317,7 @@ export function DeterministicWalletsClass({
   };
 
   const renderWalletRow = (
-    wallet: DeterministicWalletData,
+    wallet: HDWalletData,
     // tslint:disable-next-line: no-shadowed-variable
     network: Network,
     // tslint:disable-next-line: no-shadowed-variable
@@ -434,4 +434,4 @@ export function DeterministicWalletsClass({
   );
 }
 
-export default DeterministicWalletsClass;
+export default HDWalletsClass;

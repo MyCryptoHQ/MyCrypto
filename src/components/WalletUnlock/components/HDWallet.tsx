@@ -26,7 +26,7 @@ import { DPath, ExtendedAsset, Network } from '@types';
 import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
 import { DPathOption } from './DerivationPath';
-import DeterministicAccountList from './DeterministicAccountList';
+import HDWList from './HDWList';
 
 const MnemonicWrapper = styled.div`
   display: flex;
@@ -104,9 +104,9 @@ const SInput = styled(Input)`
   margin-bottom: ${SPACING.XS};
 `;
 
-export interface DeterministicWalletProps {
+export interface HDWalletProps {
   selectedAsset: ExtendedAsset;
-  finishedAccounts: DWAccountDisplay[];
+  scannedAccounts: DWAccountDisplay[];
   isCompleted: boolean;
   assets: ExtendedAsset[];
   assetToUse: ExtendedAsset;
@@ -131,9 +131,9 @@ const initialFormikValues: FormValues = {
   value: ''
 };
 
-const DeterministicWallet = ({
+const HDWallet = ({
   selectedAsset,
-  finishedAccounts,
+  scannedAccounts,
   isCompleted,
   assets,
   assetToUse,
@@ -146,7 +146,7 @@ const DeterministicWallet = ({
   scanMoreAddresses,
   handleAssetUpdate,
   onUnlock
-}: DeterministicWalletProps) => {
+}: HDWalletProps) => {
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
@@ -162,7 +162,7 @@ const DeterministicWallet = ({
     setDpathAddView(false);
   };
 
-  const csv = accountsToCSV(finishedAccounts, assetToUse);
+  const csv = accountsToCSV(scannedAccounts, assetToUse);
 
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
@@ -282,10 +282,10 @@ const DeterministicWallet = ({
       </Box>
       <TableContainer>
         {selectedAsset && (
-          <DeterministicAccountList
+          <HDWList
             isCompleted={isCompleted}
             asset={selectedAsset}
-            finishedAccounts={finishedAccounts}
+            scannedAccounts={scannedAccounts}
             network={network}
             selectedDPath={selectedDPath}
             displayEmptyAddresses={displayEmptyAddresses}
@@ -299,4 +299,4 @@ const DeterministicWallet = ({
   );
 };
 
-export default DeterministicWallet;
+export default HDWallet;

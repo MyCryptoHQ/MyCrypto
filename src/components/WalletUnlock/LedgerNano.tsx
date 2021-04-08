@@ -9,7 +9,7 @@ import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import { DeterministicWallets } from './components';
+import { HDWallets } from './components';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 
@@ -73,7 +73,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     if (publicKey && chainCode) {
       return (
         <div className="Mnemonic-dpath">
-          <DeterministicWallets
+          <HDWallets
             network={network}
             publicKey={publicKey}
             chainCode={chainCode}

@@ -1,14 +1,14 @@
 import { UnsignedTransaction } from '@ethersproject/transactions';
 
 import { IFullWallet } from '../IWallet';
-import { DeterministicWallet } from './deterministic';
+import { HDWallet } from './deterministic';
 
 export interface ChainCodeResponse {
   chainCode: string;
   publicKey: string;
 }
 
-export abstract class HardwareWallet extends DeterministicWallet implements IFullWallet {
+export abstract class HardwareWallet extends HDWallet implements IFullWallet {
   // Static functions can't be abstract, so implement an errorous one
   // @ts-expect-error: Terrible class inheritance pattern
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
