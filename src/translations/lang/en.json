@@ -675,7 +675,7 @@
     "TO_FIELD_ERROR": "Enter a valid address, ENS name, or blockchain domain",
     "TRANSACTION_BROADCASTED": "Transaction Broadcasted",
     "TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD": "Back to Dashboard",
-    "TRANSACTION_BROADCASTED_DESC": "Your transaction has been sent to the network to be mined. Your assets will typically be sent in ~15 seconds, as long as the network is not busy and there is not an error in the transaction. Read More: [Error in Transaction, Network is Not Busy](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending)",
+    "TRANSACTION_BROADCASTED_DESC": "Your transaction has been broadcast and should be successfully sent in ~15 seconds (unless [the network is busy](https://support.mycrypto.com/general-knowledge/ethereum-blockchain/why-is-gas) or there is [an error in the transaction](https://support.mycrypto.com/troubleshooting/sending/transactions-not-showing-or-pending).)",
     "TRANSACTION_PERFORMED_VIA_CONTRACT": "Transaction performed via $contractName contract",
     "TRANSACTION_RELAYED": "Transaction Relayed to Network",
     "TRANSACTION_FEE": "Transaction Fee",
