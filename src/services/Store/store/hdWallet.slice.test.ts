@@ -1,8 +1,9 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
-import { DWAccountDisplay, ExtendedDPath, selectWallet } from '@services';
+import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { HardwareWalletResult } from '@services/WalletService';
+import { selectWallet } from '@services/WalletService/deterministic';
 import { DPath, DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
 
@@ -148,7 +149,7 @@ const ledgerMock = {
   }
 };
 
-jest.mock('../../WalletService/wallets/helpers.ts', () => ({
+jest.mock('../../WalletService/deterministic/helpers.ts', () => ({
   selectWallet: jest.fn().mockImplementation(() => Promise.resolve(ledgerMock))
 }));
 

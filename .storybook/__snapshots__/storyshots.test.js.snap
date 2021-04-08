@@ -21545,14 +21545,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    100.0000
+                    100.00000
                   </span>
                 </div>
               </span>
@@ -21689,14 +21695,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    12.0000
+                    12.00000
                   </span>
                 </div>
               </span>
@@ -21833,14 +21845,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    1.5000
+                    1.50000
                   </span>
                 </div>
               </span>
@@ -21977,14 +21995,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    1.0000
+                    1.00000
                   </span>
                 </div>
               </span>
@@ -22121,14 +22145,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    0.0000
+                    0.00000
                   </span>
                 </div>
               </span>
@@ -22265,14 +22295,20 @@ exports[` Storyshots Organisms/DeterministicAccountTable Deterministic Account T
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
               >
                 <div
-                  className="Box-sc-1974eaf-0 dBbMCd"
-                  display="flex"
+                  className="Box-sc-1974eaf-0 hiktTj"
+                  display="inline-flex"
+                  style={
+                    Object {
+                      "fontSize": undefined,
+                    }
+                  }
                 >
                   <span
-                    className="Text__SText-sc-14ylyin-0 Ueu"
-                    fontWeight={null}
+                    className="Text__SText-sc-14ylyin-0 ehRNVB"
+                    fontSize="inherit"
+                    fontWeight="normal"
                   >
-                    0.0000
+                    0.00000
                   </span>
                 </div>
               </span>

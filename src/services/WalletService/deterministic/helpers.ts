@@ -1,4 +1,7 @@
-import { DPath } from '@types';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+
+import { LedgerU2F, LedgerUSB, Trezor } from '@services';
+import { DPath, WalletId } from '@types';
 import { bigify } from '@utils';
 
 import { DWAccountDisplay, ExtendedDPath } from './types';
@@ -47,3 +50,15 @@ export const processFinishedAccounts = (
 
 export const sortAccountDisplayItems = (accounts: DWAccountDisplay[]): DWAccountDisplay[] =>
   accounts.sort((a, b) => a.pathItem.index - b.pathItem.index);
+
+export const selectWallet = async (walletId: WalletId) => {
+  switch (walletId) {
+    default:
+    case WalletId.LEDGER_NANO_S_NEW: {
+      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
+      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F();
+    }
+    case WalletId.TREZOR_NEW:
+      return new Trezor();
+  }
+};

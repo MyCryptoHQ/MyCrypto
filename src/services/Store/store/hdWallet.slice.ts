@@ -7,9 +7,9 @@ import {
   DeterministicWalletState,
   DWAccountDisplay,
   ExtendedDPath,
-  selectWallet,
-  Wallet
-} from '@services/WalletService';
+  selectWallet
+} from '@services/WalletService/deterministic';
+import { Wallet } from '@services/WalletService/wallets';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { identity } from '@vendor';
 
