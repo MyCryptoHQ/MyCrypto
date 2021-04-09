@@ -28,7 +28,6 @@ export enum LSKeys {
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
   SETTINGS = 'settings',
-  PASSWORD = 'password',
   NETWORK_NODES = 'networkNodes',
   USER_ACTIONS = 'userActions'
 }
@@ -46,7 +45,6 @@ export interface LocalStorage {
   readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
   readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
   readonly [LSKeys.SETTINGS]: ISettings;
-  readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
 }
 export interface DataStore {
@@ -60,11 +58,5 @@ export interface DataStore {
   readonly [LSKeys.NETWORKS]: Network[];
   readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
   readonly [LSKeys.SETTINGS]: ISettings;
-  readonly [LSKeys.PASSWORD]: string;
   readonly [LSKeys.USER_ACTIONS]: ExtendedUserAction[];
-}
-
-export interface EncryptedDataStore {
-  readonly data?: string;
-  readonly error?: boolean;
 }

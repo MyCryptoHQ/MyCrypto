@@ -43,7 +43,7 @@ export { NetworkId } from './networkId';
 export { NodeType } from './node';
 export { DPathFormat, DPath } from './dPath';
 export { ISettings } from './settings';
-export { LocalStorage, LSKeys, DataStore, EncryptedDataStore } from './store';
+export { LocalStorage, LSKeys, DataStore } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { IREPV2 } from './repV2';

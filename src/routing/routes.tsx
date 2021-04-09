@@ -28,14 +28,6 @@ const Export = lazy(() =>
 const DownloadApp = lazy(() =>
   import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
 );
-const ScreenLockLocked = lazy(() =>
-  import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
-);
-const ScreenLockForgotPassword = lazy(() =>
-  import(
-    /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
-  )
-);
 const RequestAssets = lazy(() =>
   import(/* webpackChunkName: "RequestAssets" */ '@features/RequestAssets/RequestAssets')
 );
@@ -166,22 +158,6 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     exact: true,
     requireAccounts: true,
     component: RequestAssets
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_LOCKED.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_LOCKED.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_LOCKED.path,
-    enabled: isTruthy(featureFlags.SCREEN_LOCK),
-    exact: true,
-    component: ScreenLockLocked
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_FORGOT.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_FORGOT.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_FORGOT.path,
-    enabled: isTruthy(featureFlags.SCREEN_LOCK),
-    exact: true,
-    component: ScreenLockForgotPassword
   },
   {
     name: ROUTE_PATHS.SEND.name,

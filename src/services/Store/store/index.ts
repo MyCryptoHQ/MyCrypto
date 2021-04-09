@@ -11,7 +11,6 @@ export {
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
 export { createNotification, updateNotification, selectNotifications } from './notification.slice';
-export { selectPassword } from './password.slice';
 export {
   createAccount,
   createAccounts,
@@ -92,13 +91,6 @@ export {
 } from './settings.slice';
 export { importSuccess, importError } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
-export {
-  decrypt,
-  clearEncryptedData,
-  getDecryptionError,
-  getEncryptedData,
-  isEncrypted
-} from './vault.slice';
 export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
 export { getMemberships, membershipExpiryDate } from './membership.slice';

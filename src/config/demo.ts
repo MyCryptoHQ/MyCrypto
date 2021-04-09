@@ -1,5 +1,5 @@
 export const DEMO_SETTINGS = {
-  version: 'v1.0.0',
+  version: 'v2.0.0',
   mtime: 1608086512738,
   accounts: {
     'f535254d-4740-5b81-a333-b2440d785991': {
@@ -2815,7 +2815,6 @@ export const DEMO_SETTINGS = {
     language: 'en',
     node: 'web3'
   },
-  password: '',
   networkNodes: {},
   userActions: {
     'a4536899-f118-4c18-bd03-defaaa12ead3': {

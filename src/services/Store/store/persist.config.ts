@@ -20,7 +20,7 @@ import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
 import { defaultContacts } from '@database';
-import { DataStore, EncryptedDataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
+import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
 import { dissoc, flatten, pipe, propEq, reject, values } from '@vendor';
 
@@ -54,7 +54,6 @@ const fromReduxStore: TransformInbound<
       return arrayToObj<NetworkId>('id')(slice);
     }
     case LSKeys.SETTINGS:
-    case LSKeys.PASSWORD:
     default:
       return slice;
   }
@@ -80,7 +79,6 @@ const fromPersistenceLayer: TransformOutbound<
     case LSKeys.NETWORKS:
       return Object.values(slice);
     case LSKeys.SETTINGS:
-    case LSKeys.PASSWORD:
     default:
       return slice;
   }
@@ -125,7 +123,8 @@ const customReconciler: StateReconciler<DataStore> = (inboundState, originalStat
  */
 const customDeserializer = (slice: ValuesType<LocalStorage>) => {
   if (typeof slice === 'string') {
-    if (slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '') return slice;
+    if (slice === 'v2.0.0' || slice === 'v1.0.0' || slice === 'v1.1.0' || slice === '')
+      return slice;
     return JSON.parse(slice);
   } else {
     return slice;
@@ -189,16 +188,3 @@ export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>
   persistReducer(APP_PERSIST_CONFIG, reducer);
-
-export const VAULT_PERSIST_CONFIG: PersistConfig<EncryptedDataStore> = {
-  key: 'Vault',
-  keyPrefix: 'MYC_',
-  blacklist: ['error'],
-  storage,
-  // @ts-expect-error: deserialize is redux-persist internal
-  deserialize: customDeserializer,
-  debug: IS_DEV
-};
-
-export const createVaultReducer = (reducer: Reducer) =>
-  persistReducer(VAULT_PERSIST_CONFIG, reducer);

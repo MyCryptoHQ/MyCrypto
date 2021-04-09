@@ -13,7 +13,7 @@ export type GenObject<T> = Record<keyof T, T> | T;
 export interface DBConfig {
   version: string;
   main: string;
-  vault: string;
+  vault?: string;
   defaultValues?: LocalStorage;
   schema: TObject;
   migrate?(prev: LocalStorage, curr: LocalStorage): LocalStorage;

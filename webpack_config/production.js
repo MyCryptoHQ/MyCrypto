@@ -3,7 +3,6 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const SriPlugin = require('webpack-subresource-integrity');
 
 const { PRODUCTION, STAGING } = require('../environment');
 const common = require('./common');
@@ -49,11 +48,6 @@ module.exports = merge.smart(common, {
 
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
-    }),
-
-    new SriPlugin({
-      hashFuncNames: ['sha256', 'sha384'],
-      enabled: true
     }),
 
     new PreloadWebpackPlugin({
