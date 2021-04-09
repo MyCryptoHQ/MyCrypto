@@ -1605,10 +1605,10 @@
     "@ethersproject/properties" "^5.0.7"
     "@ethersproject/strings" "^5.0.8"
 
-"@findeth/abi@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@findeth/abi/-/abi-0.5.2.tgz#7e619325f2ed54ecd5cafbba0178431576d680e9"
-  integrity sha512-SBov6XUWdMUcYPJCz80G0gQJwDt5sYU5g8KpBUkizNyei3367uEqFINgiB0/bm1DJ1gcv9Yjlb8/OngfbXPVPg==
+"@findeth/abi@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@findeth/abi/-/abi-0.7.1.tgz#60d0801cb252e587dc3228f00c00581bb748aebc"
+  integrity sha512-9uNu+/UxeuIibxIB7slf7BGG2PWjgBZr+rKzohhLb7VuoZjmlCcKZkenqwErROxkPdsap7OGO/o1DuYMvObMvw==
 
 "@hapi/address@^2.1.2":
   version "2.1.4"
@@ -2372,12 +2372,12 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.3.1.tgz#217f85e31998173b3ea735a276c2fc3f7db33ba0"
-  integrity sha512-DYxqRs7hL3xkNa3ZC2mtHAqDzl5fKa9Khwjgb6Ir+CCFXALR0EPZTueteSBFxgBOAer2y69sNEsM7Bbm5NyZng==
+"@mycrypto/eth-scan@3.4.3":
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.4.3.tgz#6ba16013e0177ab83661ff1d0e340655e9cdde31"
+  integrity sha512-e8kptVsr6g9M5zsNSYotE9PJUD6RjkHcAKnWOzMQHog60IXVXlyZWOZcJ6OhDUbCRcL4Zs4lVZCm/kdk88akXQ==
   dependencies:
-    "@findeth/abi" "^0.5.2"
+    "@findeth/abi" "^0.7.1"
     isomorphic-unfetch "^3.1.0"
 
 "@mycrypto/ui@0.24.1":
@@ -2394,10 +2394,12 @@
     react-inlinesvg "^2.0.0"
     react-popper-tooltip "^2.10.1"
 
-"@mycrypto/unlock-scan@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/unlock-scan/-/unlock-scan-1.1.0.tgz#f75f905e117c416395644f8dd5889a3593c55318"
-  integrity sha512-U42iH2XLLXl4SgriinyHXxKwTENuHMy8ZWt8vBPn+qDx+audCRqQ3qq8fqGIqJfshXZESBJiNLJdYRbN1bp15Q==
+"@mycrypto/unlock-scan@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/unlock-scan/-/unlock-scan-1.2.0.tgz#8009de5a7613a50106bf6852febed928307a898d"
+  integrity sha512-QryQFyJQUFJB1c29noF+2uLusKnfD1v+9W7DG8O3IsBPa38RN2bknMRFBHLt3tCmuCBfAaNqNOJEv3t1g+K91Q==
+  dependencies:
+    "@findeth/abi" "^0.7.1"
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"

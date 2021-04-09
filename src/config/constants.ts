@@ -54,7 +54,7 @@ export const EXCLUDED_ASSETS = [
   '17da00cc-4901-5e04-87e0-f7e3cf9b382a'
 ];
 
-export const ETH_SCAN_BATCH_SIZE = 100;
+export const ETH_SCAN_BATCH_SIZE = 300;
 
 export const DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN = 5;
 export const DEFAULT_GAP_TO_SCAN_FOR = 5;
