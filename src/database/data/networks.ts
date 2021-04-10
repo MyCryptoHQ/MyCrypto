@@ -1050,11 +1050,11 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
-      [WalletId.LEDGER_NANO_S]: DPaths.ETH_LEDGER,
-      [WalletId.TREZOR_NEW]: DPaths.ETH_DEFAULT,
-      [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER,
-      default: DPaths.ETH_DEFAULT
+      [WalletId.TREZOR]: DPaths.EVRICE_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.EVRICE_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.EVRICE_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.EVRICE_DEFAULT,
+      default: DPaths.EVRICE_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
