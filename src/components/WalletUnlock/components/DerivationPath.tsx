@@ -3,7 +3,7 @@ import React from 'react';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
-import { Box, Typography } from '@components';
+import { Box, Text } from '@components';
 import { monospace, SPACING } from '@theme';
 import { DPath } from '@types';
 
@@ -17,9 +17,9 @@ const DropdownDPath = styled.span`
 type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
 export const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
   <Box p={'12px'} onClick={selectOption && (() => selectOption(data))}>
-    <Typography>
+    <Text>
       {data.label}{' '}
       {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
-    </Typography>
+    </Text>
   </Box>
 );

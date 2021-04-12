@@ -11,7 +11,7 @@ import { accountsToCSV, bigify, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
 import { Downloader } from '../../Downloader';
-import DeterministicTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
+import HDTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
 
 const MAX_EMPTY_ADDRESSES = 5;
 
@@ -173,7 +173,7 @@ export default function HDWList({
         />
       </Box>
       <TableWrapper>
-        <DeterministicTable
+        <HDTable
           isCompleted={isCompleted}
           accounts={tableAccounts}
           displayEmptyAddresses={displayEmptyAddresses}

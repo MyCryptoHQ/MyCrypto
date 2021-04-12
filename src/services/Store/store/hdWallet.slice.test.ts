@@ -9,7 +9,7 @@ import { bigify as mockBigify, noOp } from '@utils';
 
 import {
   accountsQueueWorker,
-  connectToHDWallet,
+  connectHDWallet,
   getAccounts,
   getAccountsWorker,
   HDWalletErrors,
@@ -164,7 +164,7 @@ describe('requestConnectionWorker()', () => {
       asset: fAssets[0],
       setSession: noOp
     };
-    return expectSaga(requestConnectionWorker, connectToHDWallet(inputPayload))
+    return expectSaga(requestConnectionWorker, connectHDWallet(inputPayload))
       .withState(mockAppState({ networks: fNetworks }))
       .call(selectWallet, inputPayload.walletId)
       .call([ledgerMock, 'initialize'], inputPayload.dpaths[0])
@@ -192,7 +192,7 @@ describe('getAccountsWorker()', () => {
 });
 
 jest.mock('../BalanceService.tsx', () => ({
-  getBaseAssetBalancesForAddresses: jest.fn().mockImplementation(() => {
+  getAssetBalance: jest.fn().mockImplementation(() => {
     const amt = mockBigify('0');
     return Promise.resolve({ '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': amt });
   })

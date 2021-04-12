@@ -22367,6 +22367,509 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
 </div>
 `;
 
+exports[` Storyshots Organisms/HDWallet HD Wallet 1`] = `
+<div
+  className="ExtendedContentPanel__ContentPanelWrapper-k5wich-0 eXjoIC"
+  width="800px"
+>
+  <section
+    className="sc-fznyAO sc-fznKkj eywbAA ExtendedContentPanel__StyledPanel-k5wich-7 jlCCCx"
+  >
+    <div
+      className="HDWallet__MnemonicWrapper-sc-1pij7pp-0 faroTn"
+    >
+      <div
+        className="HDWallet__HeadingWrapper-sc-1pij7pp-3 eNHMMa"
+      >
+        <span
+          className="HDWallet__Title-sc-1pij7pp-1 eojYRa"
+        >
+          Select an Account
+        </span>
+      </div>
+      <div
+        className="Box-sc-1974eaf-0 gXpdai"
+      >
+        <div
+          className="Box-sc-1974eaf-0 eUbiwg"
+        >
+          <p
+            className="Text__SText-sc-14ylyin-0 Ueu"
+            fontWeight={null}
+          >
+            Scanning for assets. To scan for a specific token, select it from the dropdown:
+          </p>
+          <div
+            className="AssetSelector__Wrapper-sc-15lnjlg-0 kYeAiV"
+          >
+            <div
+              className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
+              data-testid="selector"
+            >
+              <div
+                className=" css-2b097c-container"
+                onKeyDown={[Function]}
+              >
+                <div
+                  className=" css-r290gg-control"
+                  onMouseDown={[Function]}
+                  onTouchEnd={[Function]}
+                >
+                  <div
+                    className=" css-11st0zx-ValueContainer"
+                  >
+                    <div
+                      className="css-15rv5im-Input"
+                    >
+                      <div
+                        className=""
+                        style={
+                          Object {
+                            "display": "inline-block",
+                          }
+                        }
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          autoCapitalize="none"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          disabled={false}
+                          id="asset-selector"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          spellCheck="false"
+                          style={
+                            Object {
+                              "background": 0,
+                              "border": 0,
+                              "boxSizing": "content-box",
+                              "color": "inherit",
+                              "fontSize": "inherit",
+                              "label": "input",
+                              "opacity": 1,
+                              "outline": 0,
+                              "padding": 0,
+                              "width": "1px",
+                            }
+                          }
+                          tabIndex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style={
+                            Object {
+                              "height": 0,
+                              "left": 0,
+                              "overflow": "scroll",
+                              "position": "absolute",
+                              "top": 0,
+                              "visibility": "hidden",
+                              "whiteSpace": "pre",
+                            }
+                          }
+                        >
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="Box-sc-1974eaf-0 kpXwIT"
+                      data-testid="asset-selector-option-ETH"
+                      display="flex"
+                    >
+                      <p
+                        className="Text__SText-sc-14ylyin-0 gcgvgi"
+                        fontWeight={null}
+                      >
+                        ETH - Ether
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className=" css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <div
+                      aria-hidden="true"
+                      className=" css-tlfecz-indicatorContainer"
+                      onMouseDown={[Function]}
+                      onTouchEnd={[Function]}
+                    >
+                      <svg
+                        className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 fkpmE"
+                        fill="linkAction"
+                        id="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="Box-sc-1974eaf-0 eUbiwg"
+        >
+          <p
+            className="Text__SText-sc-14ylyin-0 Ueu"
+            fontWeight={null}
+          >
+            Select a derivation path to scan with. You may also choose to
+             
+            <a
+              className="LinkApp__SRouterLink-sc-275gt9-1 kWjpkW"
+              href="/"
+              onClick={[Function]}
+              variant="defaultLink"
+            >
+              add a custom derivation path
+            </a>
+            .
+          </p>
+          <div
+            className="Selector__Wrapper-sc-1wilj6q-0 bfrvWS"
+            data-testid="selector"
+          >
+            <div
+              className=" css-2b097c-container"
+              onKeyDown={[Function]}
+            >
+              <div
+                className=" css-r290gg-control"
+                onMouseDown={[Function]}
+                onTouchEnd={[Function]}
+              >
+                <div
+                  className=" css-17b6lch-ValueContainer"
+                >
+                  <input
+                    aria-autocomplete="list"
+                    className="css-62g3xt-dummyInput"
+                    disabled={false}
+                    id="react-select-14-input"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    readOnly={true}
+                    tabIndex="0"
+                    value=""
+                  />
+                  <div
+                    className="Box-sc-1974eaf-0 kfLshg"
+                  >
+                    <p
+                      className="Text__SText-sc-14ylyin-0 Ueu"
+                      fontWeight={null}
+                    >
+                      Default ETH DPath
+                       
+                      
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className=" css-1hb7zxy-IndicatorsContainer"
+                >
+                  <div
+                    aria-hidden="true"
+                    className=" css-tlfecz-indicatorContainer"
+                    onMouseDown={[Function]}
+                    onTouchEnd={[Function]}
+                  >
+                    <svg
+                      className="Icon__SInlineSVG-tq1i3y-0 Icon__SExpandableIcon-tq1i3y-3 fkpmE"
+                      fill="linkAction"
+                      id="test-file-stub"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="Box-sc-1974eaf-0 fEfnlc"
+      >
+        <div
+          className="Box-sc-1974eaf-0 ljBdCD"
+        >
+          <label
+            className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+            htmlFor="toggle"
+          >
+            Hide Empty Addresses
+          </label>
+          <label
+            className="Switch__SliderBackground-sc-1om4h8q-2 ZRAJ"
+            htmlFor="toggle"
+          >
+            <input
+              checked={false}
+              className="input-group-input Switch__Checkbox-sc-1om4h8q-1 bhGlyh"
+              id="toggle"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <span
+              checked={false}
+              className="Switch__Slider-sc-1om4h8q-3 bkeDRE"
+            />
+          </label>
+          <label
+            className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+            htmlFor="toggle"
+          >
+            Show Empty Addresses
+          </label>
+        </div>
+        <div
+          className="PoweredByText__Wrapper-sc-1588i68-0 PoweredByText___StyledWrapper-sc-1588i68-1 cjEkbU"
+        >
+          <span
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd PoweredByText__Text-sc-1588i68-3 kHzIKo"
+          >
+            Powered by 
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="https://findeth.io"
+              rel="noreferrer"
+              target="_blank"
+            >
+              FindETH
+            </a>
+            .
+          </span>
+        </div>
+      </div>
+      <div
+        className="HDWallet__TableContainer-sc-1pij7pp-2 hjpFuv"
+      >
+        <div
+          className="Box-sc-1974eaf-0 iluMoE"
+          width="800px"
+        >
+          <div
+            className="Box-sc-1974eaf-0 kjMfcR"
+            height="32px"
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }
+            width="100%"
+          >
+            <div
+              className="Banner__Container-sc-12319m8-0 ejfdKa"
+            >
+              <div
+                className="Banner__RowContainer-sc-12319m8-3 dmVauS"
+              >
+                <span
+                  className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 efrCUX Banner__STypography-sc-12319m8-2 hxCyvs"
+                  color="#fff"
+                >
+                  You may select up to 
+                  5
+                   empty addresses to add at one time. Currently, you have 
+                  0
+                   of 
+                  5
+                   selected.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="HDWList__TableWrapper-sc-1so0j27-0 Oyivf"
+          >
+            <div
+              className="HDWTable__Table-sc-1dpf7zp-0 tZCSA"
+            >
+              <div
+                className="HDWTable__Heading-sc-1dpf7zp-1 frQnHW"
+              >
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 kPjxtL"
+                  width="25px"
+                />
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 fXdKzV"
+                  width="225px"
+                >
+                  Label
+                </div>
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 fXexkP"
+                  width="135px"
+                >
+                  Address
+                </div>
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 fXdKWa"
+                  width="125px"
+                >
+                  DPath
+                </div>
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 kPifOU"
+                  width="80px"
+                >
+                  Asset
+                </div>
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 kPikjH"
+                  width="30px"
+                />
+                <div
+                  className="HDWTable__Label-sc-1dpf7zp-2 kPikUB"
+                  width="50px"
+                />
+              </div>
+              <div
+                className="HDWTable__NoAccountContainer-sc-1dpf7zp-17 gTxsno"
+              >
+                <svg
+                  className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
+                  id="test-file-stub"
+                />
+                <span
+                  className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 LJRmn"
+                >
+                  We were unable to find any addresses that contain 
+                  ETH
+                  .
+                </span>
+                <span
+                  className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                >
+                  Alternatively, you can
+                   
+                  <span
+                    className="HDWTable__NoAccountAction-sc-1dpf7zp-18 dEBtXI"
+                    onClick={[Function]}
+                  >
+                    try to scan more addresses
+                  </span>
+                  .
+                  <br />
+                  To view a summary of the addresses we scanned, download a CSV report
+                   
+                  <a
+                    className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWTable__SDownloader-sc-1dpf7zp-19 gwZRPL"
+                    data-testid="export-json-link"
+                    download="accounts.csv"
+                    onClick={[Function]}
+                    rel="noreferrer"
+                    target="_self"
+                    width="100%"
+                  >
+                    here
+                  </a>
+                  .
+                </span>
+                <button
+                  className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <div
+                    className="Button__Wrapper-sc-1fs4nba-0 fijKrm"
+                  >
+                    <span
+                      className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                    >
+                      Scan Again
+                    </span>
+                  </div>
+                </button>
+                <span
+                  className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                >
+                  Still having trouble? 
+                  <a
+                    className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+                    href="https://support.mycrypto.com/contact-us"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Contact us!
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="HDWList__StatusBar-sc-1so0j27-1 hKvjfb"
+          >
+            <div
+              className="HDWList__StatusWrapper-sc-1so0j27-2 jnFGmW"
+            >
+              <div
+                className="HDWList__IconWrapper-sc-1so0j27-3 eOEICe"
+              >
+                <svg
+                  className="Icon__SInlineSVG-tq1i3y-0 fbIXWJ"
+                  id="test-file-stub"
+                />
+              </div>
+              <span
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+              >
+                
+                6
+                 total 
+                Ethereum
+                 addresses scanned. 
+                 
+                To see a summary of the scanned addresses, download CSV report
+                 
+                <a
+                  className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWList__SDownloader-sc-1so0j27-4 cIZIRP"
+                  data-testid="export-json-link"
+                  download="accounts.csv"
+                  onClick={[Function]}
+                  rel="noreferrer"
+                  target="_self"
+                  width="100%"
+                >
+                  here
+                </a>
+                .
+              </span>
+            </div>
+            <div>
+              <button
+                className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 lgKqaE"
+                disabled={true}
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="Button__Wrapper-sc-1fs4nba-0 fijKrm"
+                >
+                  <span
+                    className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+                  >
+                    Add 
+                    
+                     Account
+                    
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
 exports[` Storyshots Organisms/MembershipPanel Default State 1`] = `
 <section
   className="sc-fznyAO sc-fznKkj eywbAA Panel-sc-1kglh7s-0 DashboardPanel__DPanel-sc-1ws9ecc-1 kYogIe MembershipPanel__SDashboardPanel-h1muqn-0 gYJuCq"

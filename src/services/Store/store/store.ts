@@ -9,7 +9,7 @@ import { updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
 import {
-  connectToHDWallet,
+  connectHDWallet,
   getAccounts,
   processAccountsQueue,
   requestConnectionSuccess
@@ -40,7 +40,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
             pollStart.type,
             // ignore these actions to avoid errors with hardware wallet sessions
-            connectToHDWallet.type,
+            connectHDWallet.type,
             requestConnectionSuccess.type,
             getAccounts.type,
             processAccountsQueue.type

@@ -155,13 +155,13 @@ export const selectHDWalletConnectionError = createSelector(selectHDWallet, (hd)
  * Actions
  */
 
-export const connectToHDWallet = createAction<{
+export const connectHDWallet = createAction<{
   walletId: DPathFormat;
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
   setSession(wallet: Wallet): void;
-}>(`${slice.name}/connectToHDWallet`);
+}>(`${slice.name}/connectHDWallet`);
 export const getAccounts = createAction<{ session: Wallet; dpaths: ExtendedDPath[] }>(
   `${slice.name}/getAccounts`
 );
@@ -172,7 +172,7 @@ export const processAccountsQueue = createAction(`${slice.name}/processAccountsQ
  */
 export function* hdWalletSaga() {
   yield all([
-    takeLatest(connectToHDWallet.type, requestConnectionWorker),
+    takeLatest(connectHDWallet.type, requestConnectionWorker),
     takeLatest(getAccounts.type, getAccountsWorker),
     takeLatest(processAccountsQueue.type, accountsQueueWorker)
   ]);

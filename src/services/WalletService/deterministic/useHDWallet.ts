@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { processScannedAccounts, Wallet } from '@services';
 import {
   addCustomDPaths,
-  connectToHDWallet,
+  connectHDWallet,
   getAccounts,
   selectHDWalletAccountQueue,
   selectHDWalletAsset,
@@ -81,7 +81,7 @@ const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number
   };
 
   const requestConnection = (network: Network, asset: ExtendedAsset) => {
-    dispatch(connectToHDWallet({ walletId, network, asset, dpaths, setSession }));
+    dispatch(connectHDWallet({ walletId, network, asset, dpaths, setSession }));
   };
 
   return {

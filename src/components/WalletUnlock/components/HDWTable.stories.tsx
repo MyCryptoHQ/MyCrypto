@@ -4,7 +4,7 @@ import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
 
-import { default as DeterministicTable, DeterministicTableProps, ITableAccounts } from './HDWTable';
+import { default as HDTable, HDTableProps, ITableAccounts } from './HDWTable';
 
 export default { title: 'Organisms/HDWTable' };
 
@@ -16,7 +16,7 @@ const addressMap = fDWAccounts.reduce((acc, item) => {
   return acc;
 }, {} as ITableAccounts);
 
-const initialProps: DeterministicTableProps = {
+const initialProps: HDTableProps = {
   isCompleted: true,
   network: fNetworks[0],
   accounts: addressMap,
@@ -35,6 +35,6 @@ const initialProps: DeterministicTableProps = {
 
 export const HDWTable = () => (
   <ExtendedContentPanel width="800px">
-    <DeterministicTable {...initialProps} />
+    <HDTable {...initialProps} />
   </ExtendedContentPanel>
 );

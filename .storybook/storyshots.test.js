@@ -3,6 +3,7 @@ import { formatDate, toUTC } from '@utils';
 
 describe('', () => {
   beforeAll(() => {
+    window.URL.createObjectURL = jest.fn();
     // Our localhosts have a different locale than CI. Since the snapshots
     // contain localized dates (eg. TxReceipt), we stub the call and neutralize
     // localization.
@@ -29,5 +30,6 @@ describe('', () => {
     Date.toLocaleString.mockRestore();
     Date.toLocaleDateString.mockRestore();
     Date.now.mockRestore();
+    window.URL.createObjectURL.mockReset();
   });
 });

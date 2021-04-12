@@ -31,7 +31,7 @@ export interface TableAccountDisplay extends DWAccountDisplay {
 
 export type ITableAccounts = Record<string, TableAccountDisplay>;
 
-export interface DeterministicTableProps {
+export interface HDTableProps {
   isCompleted: boolean;
   accounts: ITableAccounts;
   network: Network;
@@ -257,7 +257,7 @@ const SDownloader = styled(Downloader)`
   }
 `;
 
-const DeterministicTable = ({
+const HDTable = ({
   isCompleted,
   accounts,
   network,
@@ -268,7 +268,7 @@ const DeterministicTable = ({
   onScanMoreAddresses,
   handleUpdate,
   csv
-}: DeterministicTableProps) => {
+}: HDTableProps) => {
   const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
   const allAccounts = Object.values(accounts);
@@ -411,4 +411,4 @@ const DeterministicTable = ({
   );
 };
 
-export default DeterministicTable;
+export default HDTable;
