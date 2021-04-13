@@ -5,17 +5,7 @@ import styled from 'styled-components';
 import questionSVG from '@assets/images/icn-question.svg';
 import nextIcon from '@assets/images/next-page-button.svg';
 import prevIcon from '@assets/images/previous-page-button.svg';
-import {
-  Account,
-  Box,
-  Button,
-  Icon,
-  InlineMessage,
-  Input,
-  LinkApp,
-  Selector,
-  Spinner
-} from '@components';
+import { Account, Box, Button, Icon, InlineMessage, Input, LinkApp, Spinner } from '@components';
 import { Table } from '@components/Table';
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
@@ -27,7 +17,7 @@ import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
-import { DPathOption } from './DerivationPath';
+import { DerivationPathSelector } from './DerivationPathSelector';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 
@@ -369,12 +359,10 @@ export function HDWalletsClass({
               <img width="16px" src={questionSVG} />
             </LinkApp>
           </label>
-          <Selector
-            value={currentDPath}
-            onChange={handleChangePath}
-            options={dPaths.concat([customDPath])}
-            optionComponent={DPathOption}
-            valueComponent={({ value }) => <DPathOption data={value} />}
+          <DerivationPathSelector
+            selectedDPath={currentDPath}
+            selectDPath={handleChangePath}
+            dPaths={dPaths.concat([customDPath])}
             searchable={false}
           />
         </SDropdown>

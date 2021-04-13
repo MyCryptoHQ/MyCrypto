@@ -11,7 +11,6 @@ import {
   Input,
   LinkApp,
   PoweredByText,
-  Selector,
   Switch,
   Text,
   Typography
@@ -25,7 +24,7 @@ import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
 import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
-import { DPathOption } from './DerivationPath';
+import { DerivationPathSelector } from './DerivationPathSelector';
 import HDWList from './HDWList';
 
 const MnemonicWrapper = styled.div`
@@ -260,12 +259,10 @@ const HDWallet = ({
             </LinkApp>
             {'.'}
           </Text>
-          <Selector
-            value={selectedDPath}
-            onChange={setSelectedDPath}
-            options={dpaths}
-            optionComponent={DPathOption}
-            valueComponent={({ value }) => <DPathOption data={value} />}
+          <DerivationPathSelector
+            selectedDPath={selectedDPath}
+            selectDPath={setSelectedDPath}
+            dPaths={dpaths}
             clearable={false}
             searchable={false}
           />
