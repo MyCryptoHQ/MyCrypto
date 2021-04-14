@@ -189,6 +189,13 @@
     "uuid": "710aadc0-a993-585b-9c30-47669e05d4d5"
   },
   {
+    "address": "0xB6c3DC857845a713d3531cea5ac546F6767992F4",
+    "symbol": "ADCO",
+    "decimal": 6,
+    "name": "Advertise Coin",
+    "uuid": "d6c0bb1e-0f16-55a1-a011-05f0d15af5dc"
+  },
+  {
     "address": "0xE69a353b3152Dd7b706ff7dD40fe1d18b7802d31",
     "symbol": "ADH",
     "decimal": 18,
@@ -973,6 +980,13 @@
     "uuid": "7c43e2b3-6048-5b28-b4fc-0b1ea8db1ac6"
   },
   {
+    "address": "0xD5e2A54Fef5f9E4A6b21EC646Bbed7A160a00F18",
+    "symbol": "BCMC1",
+    "decimal": 18,
+    "name": "BeforeCoinMarketCap",
+    "uuid": "8eeed337-376b-5d05-ad28-e9fd90a2d8f0"
+  },
+  {
     "address": "0x1c4481750daa5Ff521A2a7490d9981eD46465Dbd",
     "symbol": "BCPT",
     "decimal": 18,
@@ -1216,6 +1230,13 @@
     "decimal": 8,
     "name": "Blackmoon Crypto BMC Token",
     "uuid": "9da88d30-1cac-5254-8d5c-8404668b0fa7"
+  },
+  {
+    "address": "0xd945d2031b4C63C0E363304FB771F709b502DC0a",
+    "symbol": "BMC (1)",
+    "decimal": 18,
+    "name": "BountyMarketCap",
+    "uuid": "01a2ccc0-e0d9-5808-80d6-f74152f64967"
   },
   {
     "address": "0xf028ADEe51533b1B47BEaa890fEb54a457f51E89",
@@ -2247,6 +2268,13 @@
     "uuid": "c122c8ff-c58d-5e20-97c6-d42bcf2bfea6"
   },
   {
+    "address": "0xDDB3422497E61e13543BeA06989C0789117555c5",
+    "symbol": "COTI",
+    "decimal": 18,
+    "name": "COTI",
+    "uuid": "b8c20de8-5d20-5d01-9ffa-e6bfe54d995e"
+  },
+  {
     "address": "0xE2FB6529EF566a080e6d23dE0bd351311087D567",
     "symbol": "COV",
     "decimal": 18,
@@ -2380,8 +2408,15 @@
     "uuid": "b55d1825-42b5-5506-b468-bac35e585498"
   },
   {
-    "address": "0x80A7E048F37A50500351C204Cb407766fA3baE7f",
+    "address": "0x08389495D7456E1951ddF7c3a1314A4bfb646d8B",
     "symbol": "CRPT",
+    "decimal": 18,
+    "name": "Crypterium (CRPT)",
+    "uuid": "4b459317-0a6c-57fe-ad35-6e16b0ca4d00"
+  },
+  {
+    "address": "0x80A7E048F37A50500351C204Cb407766fA3baE7f",
+    "symbol": "CRPT (1)",
     "decimal": 18,
     "name": "CrypteriumToken",
     "uuid": "18bdf79a-320f-5c29-b674-78756c8d3366"
@@ -2653,10 +2688,17 @@
     "uuid": "f774001a-d201-5445-b63a-6221f63c237b"
   },
   {
-    "address": "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413",
+    "address": "0x0f51bb10119727a7e5eA3538074fb341F56B09Ad",
     "symbol": "DAO",
-    "decimal": 1,
-    "name": "DAO",
+    "decimal": 18,
+    "name": "DAO Maker",
+    "uuid": "4904bddc-8a8b-52d1-8b7d-e43368d7f3f7"
+  },
+  {
+    "address": "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413",
+    "symbol": "DAO (1)",
+    "decimal": 16,
+    "name": "TheDAO",
     "uuid": "c1f57914-1128-55ed-a79a-ae6579ede941"
   },
   {
@@ -3118,8 +3160,15 @@
     "address": "0x82b0E50478eeaFde392D45D1259Ed1071B6fDa81",
     "symbol": "DNA",
     "decimal": 18,
-    "name": "EncrypGen",
+    "name": "EncrypGen (old)",
     "uuid": "afadc44f-c589-54ef-a3d0-6cecb6d1ba58"
+  },
+  {
+    "address": "0xef6344de1fcfC5F48c30234C16c1389e8CdC572C",
+    "symbol": "DNA (1)",
+    "decimal": 18,
+    "name": "EncrypGen",
+    "uuid": "cf886c55-0450-5760-8357-ac76aecc4cb5"
   },
   {
     "address": "0x0AbdAce70D3790235af448C88547603b945604ea",
@@ -3190,6 +3239,13 @@
     "decimal": 18,
     "name": "Dmaarc",
     "uuid": "d3136e60-d05b-5875-9646-cda08d356a00"
+  },
+  {
+    "address": "0xa150Db9b1Fa65b44799d4dD949D922c0a33Ee606",
+    "symbol": "DRC (1)",
+    "decimal": 0,
+    "name": "Digital Reserve Currency",
+    "uuid": "73506779-150b-558a-ad67-afed5354eac6"
   },
   {
     "address": "0x82f4dED9Cec9B5750FBFf5C2185AEe35AfC16587",
@@ -4105,7 +4161,7 @@
     "address": "0xf3Db5Fa2C66B7aF3Eb0C0b782510816cbe4813b8",
     "symbol": "EVX",
     "decimal": 4,
-    "name": "EVX Token",
+    "name": "Everex",
     "uuid": "ddec8a8f-d456-5d36-8ac1-fe616c841b13"
   },
   {
@@ -5439,6 +5495,13 @@
     "uuid": "abaa1e8a-7362-55c6-ae97-7435a472ca89"
   },
   {
+    "address": "0xEBd9D99A3982d547C5Bb4DB7E3b1F9F14b67Eb83",
+    "symbol": "ID",
+    "decimal": 18,
+    "name": "Everest (ID)",
+    "uuid": "e39e1d82-5fea-56f4-a71b-ed6b5d9faf8f"
+  },
+  {
     "address": "0x6bC4375083D3aD563dE91caD8438F629841448a5",
     "symbol": "ID7",
     "decimal": 18,
@@ -5768,6 +5831,13 @@
     "uuid": "1402ce4c-dbaf-5265-9b49-c0e8bbda955c"
   },
   {
+    "address": "0x6Ef5febbD2A56FAb23f18a69d3fB9F4E2A70440B",
+    "symbol": "ITR",
+    "decimal": 18,
+    "name": "Intercoin",
+    "uuid": "9faf2532-9c25-59fd-a542-079fc418f1b8"
+  },
+  {
     "address": "0x406555dbF02e9E4df9AdeAeC9DA76ABeED8C1BC3",
     "symbol": "iTRX",
     "decimal": 18,
@@ -6060,6 +6130,13 @@
     "decimal": 18,
     "name": "Kryll",
     "uuid": "3c8fd655-9676-5d9c-ae89-1494de82a5e5"
+  },
+  {
+    "address": "0xAefad686f4b894ce4F9c74af755AB4651E420EbA",
+    "symbol": "KRP",
+    "decimal": 18,
+    "name": "Krisper",
+    "uuid": "26e5114f-6030-526e-aa7c-be4b1fb73622"
   },
   {
     "address": "0xbD4AB8b9C26c4888e2792cAC6d5793Efea9eBb20",
@@ -6412,10 +6489,17 @@
     "uuid": "69194ecb-e7ea-52bf-9428-f98826b0e426"
   },
   {
-    "address": "0xA4e8C3Ec456107eA67d3075bF9e3DF3A75823DB0",
+    "address": "0x42476F744292107e34519F9c357927074Ea3F75D",
     "symbol": "LOOM",
     "decimal": 18,
-    "name": "Loom Network",
+    "name": "LOOM",
+    "uuid": "0d70099a-aa81-5e9f-b9b6-01c562322ef7"
+  },
+  {
+    "address": "0xA4e8C3Ec456107eA67d3075bF9e3DF3A75823DB0",
+    "symbol": "LOOMOLD",
+    "decimal": 18,
+    "name": "LOOM",
     "uuid": "9f563cf7-f883-5459-845e-5021a2f58629"
   },
   {
@@ -6991,6 +7075,13 @@
     "decimal": 18,
     "name": "MASTER USD",
     "uuid": "246fc5a8-d542-5c5f-9574-6dbba8dc169c"
+  },
+  {
+    "address": "0xea6412Fb370e8d1605E6aEeAA21aD07C3C7e9F24",
+    "symbol": "MUSH",
+    "decimal": 18,
+    "name": "Mushroom",
+    "uuid": "3161dcc6-fb27-590f-b7f8-bdc91e289c45"
   },
   {
     "address": "0x515669d308f887Fd83a471C7764F5d084886D34D",
@@ -10269,6 +10360,13 @@
     "uuid": "b624cbe8-d9a2-53fa-84ba-00589010c840"
   },
   {
+    "address": "0xd31695a1d35E489252CE57b129FD4b1B05E6AcaC",
+    "symbol": "TKP",
+    "decimal": 18,
+    "name": "TOKPIE",
+    "uuid": "73fa1c75-2bb7-5f3b-bc0f-b9f48c80119b"
+  },
+  {
     "address": "0xB45a50545bEEAB73F38F31E5973768C421805E5E",
     "symbol": "TKR",
     "decimal": 18,
@@ -10666,6 +10764,13 @@
     "decimal": 6,
     "name": "bZx Perpetual Long ZRX 4x",
     "uuid": "6a85692e-b35d-56b3-b392-57310db4781c"
+  },
+  {
+    "address": "0x6fC13EACE26590B80cCCAB1ba5d51890577D83B2",
+    "symbol": "UMB",
+    "decimal": 18,
+    "name": "Umbrella",
+    "uuid": "b619c5b0-1163-5264-a990-4e8647e8a90c"
   },
   {
     "address": "0x105d97ef2E723f1cfb24519Bc6fF15a6D091a3F1",
@@ -13109,6 +13214,13 @@
     "decimal": 18,
     "name": "MyWish",
     "uuid": "3fd29b01-7158-5d52-88b6-27d77e423bdc"
+  },
+  {
+    "address": "0x685ED390B16Ac9Df9Ab9707294a42a107cFB62Af",
+    "symbol": "WMA",
+    "decimal": 18,
+    "name": "weeMarketplaceAccessToken",
+    "uuid": "d97dc35a-da38-5eed-9476-3679690ce40e"
   },
   {
     "address": "0xBFbe5332f172d77811bC6c272844f3e54A7B23bB",
