@@ -4942,13 +4942,6 @@
     "uuid": "eeee8964-0c9d-57dd-898a-9623ffb803d3"
   },
   {
-    "address": "0xeEAA40B28A2d1b0B08f6f97bB1DD4B75316c6107",
-    "symbol": "GOVI (1)",
-    "decimal": 18,
-    "name": "GOVI",
-    "uuid": "eeee8964-0c9d-57dd-898a-9623ffb803d3"
-  },
-  {
     "address": "0xcE593a29905951E8Fc579bC092ecA72577dA575c",
     "symbol": "GR",
     "decimal": 6,
@@ -13669,13 +13662,6 @@
     "decimal": 18,
     "name": "YAM V1",
     "uuid": "fb0cacf6-eae8-5901-96b9-8a5782e4b7b7"
-  },
-  {
-    "address": "0xAba8cAc6866B83Ae4eec97DD07ED254282f6aD8A",
-    "symbol": "YAMv2",
-    "decimal": 24,
-    "name": "YAM V2",
-    "uuid": "dd6b815e-f089-583a-8ebc-8d8469f0e0d3"
   },
   {
     "address": "0x922105fAd8153F516bCfB829f56DC097a0E1D705",
