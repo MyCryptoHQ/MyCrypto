@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ExtendedContentPanel } from '@components';
 import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
@@ -8,10 +7,11 @@ import { noOp } from '@utils';
 import { HDWalletProps, default as HDWalletUI } from './HDWallet';
 
 export default {
-  title: 'Organisms/HDWallet'
+  title: 'Organisms/HDWallet',
+  component: HDWalletUI
 };
 
-const initialProps: HDWalletProps = {
+const defaultProps: HDWalletProps = {
   selectedAsset: fAssets[0],
   scannedAccounts: fDWAccounts,
   isCompleted: true,
@@ -32,8 +32,14 @@ const initialProps: HDWalletProps = {
   onUnlock: noOp
 };
 
-export const HDWallet = () => (
-  <ExtendedContentPanel width="800px">
-    <HDWalletUI {...initialProps} />
-  </ExtendedContentPanel>
+const Template = () => (
+  <div className="sb-container" style={{ maxWidth: '800px' }}>
+    <HDWalletUI {...defaultProps} />
+  </div>
 );
+
+export const HDWallet = Template.bind({});
+HDWallet.storyName = 'HDWallet';
+HDWallet.args = {
+  ...defaultProps
+};

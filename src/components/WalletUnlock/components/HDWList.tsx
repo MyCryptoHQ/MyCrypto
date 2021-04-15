@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
+import { selectHDWalletScannedAccountsCSV } from '@store/hdWallet.slice';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { BannerType, DPath, ExtendedAsset, Network } from '@types';
-import { accountsToCSV, bigify, useScreenSize } from '@utils';
+import { hasBalance, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
 import { Downloader } from '../../Downloader';
@@ -71,7 +73,7 @@ const SDownloader = styled(Downloader)`
 `;
 
 export const filterZeroBalanceAccounts = (accounts: DWAccountDisplay[]) =>
-  accounts.filter(({ balance }) => balance && bigify(balance).isZero());
+  accounts.filter((acc) => !hasBalance(acc.balance));
 
 interface HDWListProps {
   scannedAccounts: DWAccountDisplay[];
@@ -97,7 +99,7 @@ export default function HDWList({
   handleUpdate
 }: HDWListProps) {
   const { isMobile } = useScreenSize();
-
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
   const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
 
   const accountsToUse = uniqBy(prop('address'), scannedAccounts);
@@ -110,7 +112,7 @@ export default function HDWList({
       const tableAccs = accountsToUse.reduce((acc, idx) => {
         acc[idx.address] = tableAccounts[idx.address] || {
           ...idx,
-          isSelected: (idx.balance && !bigify(idx.balance).isZero()) || false
+          isSelected: hasBalance(idx.balance) || false
         };
         return acc;
       }, tableAccounts);
@@ -136,11 +138,7 @@ export default function HDWList({
       return;
     }
     // disallows selecting an account that is empty if MAX_EMPTY_ADDRESSES is already met
-    if (
-      emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES &&
-      bigify(account.balance!).isEqualTo(0)
-    )
-      return;
+    if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES && !hasBalance(account.balance)) return;
     setTableAccounts({
       ...tableAccounts,
       [account.address]: {
@@ -149,7 +147,6 @@ export default function HDWList({
       }
     });
   };
-  const csv = accountsToCSV(scannedAccounts, asset);
   return (
     <Box variant="columnAlign" width="800px" justifyContent="center">
       <Box

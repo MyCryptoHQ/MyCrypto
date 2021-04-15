@@ -17,7 +17,7 @@ import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
-import { DerivationPathSelector } from './DerivationPathSelector';
+import { DPathSelector } from './DPathSelector';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 
@@ -359,7 +359,7 @@ export function HDWalletsClass({
               <img width="16px" src={questionSVG} />
             </LinkApp>
           </label>
-          <DerivationPathSelector
+          <DPathSelector
             selectedDPath={currentDPath}
             selectDPath={handleChangePath}
             dPaths={dPaths.concat([customDPath])}

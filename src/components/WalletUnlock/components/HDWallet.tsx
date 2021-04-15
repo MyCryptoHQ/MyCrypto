@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Formik } from 'formik';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
@@ -19,12 +20,13 @@ import { Downloader } from '@components/Downloader';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
+import { selectHDWalletScannedAccountsCSV } from '@store/hdWallet.slice';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
-import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
+import { filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
-import { DerivationPathSelector } from './DerivationPathSelector';
+import { DPathSelector } from './DPathSelector';
 import HDWList from './HDWList';
 
 const MnemonicWrapper = styled.div`
@@ -149,7 +151,7 @@ const HDWallet = ({
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
-
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
   const handleDPathAddition = (values: FormValues) => {
     addDPaths([
       {
@@ -160,8 +162,6 @@ const HDWallet = ({
     ]);
     setDpathAddView(false);
   };
-
-  const csv = accountsToCSV(scannedAccounts, assetToUse);
 
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
@@ -259,7 +259,7 @@ const HDWallet = ({
             </LinkApp>
             {'.'}
           </Text>
-          <DerivationPathSelector
+          <DPathSelector
             selectedDPath={selectedDPath}
             selectDPath={setSelectedDPath}
             dPaths={dpaths}

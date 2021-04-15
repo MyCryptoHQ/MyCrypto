@@ -19,3 +19,10 @@ export const sortAccounts = (
     .sort((a, b) => (a.pathItem.index < b.pathItem.index ? -1 : 1));
   return displayEmptyAddresses ? [...selectedAccounts, ...deselectedAccounts] : selectedAccounts;
 };
+
+export const calculateDPathOffset = (accounts: TableAccountDisplay[], selectedDPath: DPath) =>
+  Math.max(
+    ...accounts
+      .filter((acc) => acc.pathItem.baseDPath.value === selectedDPath.value)
+      .map(({ pathItem: { index } }) => index)
+  ) + 1; // Start scanning from the next index

@@ -68,7 +68,7 @@ export { withContext } from './withContext';
 export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
-export { bigify, isBigish } from './bigify';
+export { bigify, hasBalance, isBigish } from './bigify';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';

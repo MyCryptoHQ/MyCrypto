@@ -3,6 +3,7 @@ import { formatDate, toUTC } from '@utils';
 
 describe('', () => {
   beforeAll(() => {
+    // Mocks createObjectURL to address an issue with makeBlob (utilized by Downloader) in testing.
     window.URL.createObjectURL = jest.fn();
     // Our localhosts have a different locale than CI. Since the snapshots
     // contain localized dates (eg. TxReceipt), we stub the call and neutralize

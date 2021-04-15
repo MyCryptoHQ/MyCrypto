@@ -23,7 +23,7 @@ import { DPath, ExtendedAsset, Network } from '@types';
 import { bigify, buildAddressUrl, fromTokenBase, useScreenSize } from '@utils';
 import { isEmpty } from '@vendor';
 
-import { sortAccounts } from './helpers';
+import { calculateDPathOffset, sortAccounts } from './helpers';
 
 export interface TableAccountDisplay extends DWAccountDisplay {
   isSelected: boolean;
@@ -273,12 +273,16 @@ const HDTable = ({
   const { isMobile } = useScreenSize();
   const allAccounts = Object.values(accounts);
   const accountsToDisplay = sortAccounts(allAccounts, displayEmptyAddresses, selectedDPath);
-  const selectedDPathOffset =
-    Math.max(
-      ...allAccounts
-        .filter((acc) => acc.pathItem.baseDPath.value === selectedDPath.value)
-        .map(({ pathItem: { index } }) => index)
-    ) + 1; // Start scanning from the next index
+  const selectedDPathOffset = calculateDPathOffset(allAccounts, selectedDPath);
+
+  const handleClick = () => {
+    if (!isCompleted) return;
+    onScanMoreAddresses({
+      ...selectedDPath,
+      offset: selectedDPathOffset,
+      numOfAddresses: 10
+    });
+  };
   return (
     <Table>
       <Heading>
@@ -307,16 +311,7 @@ const HDTable = ({
             </Typography>
             <Typography>
               <Trans id="DETERMINISTIC_ALTERNATIVES_1" />{' '}
-              <NoAccountAction
-                onClick={() => {
-                  if (!isCompleted) return;
-                  onScanMoreAddresses({
-                    ...selectedDPath,
-                    offset: selectedDPathOffset,
-                    numOfAddresses: 10
-                  });
-                }}
-              >
+              <NoAccountAction onClick={handleClick}>
                 <Trans id="DETERMINISTIC_ALTERNATIVES_2" />
               </NoAccountAction>
               {'.'}
@@ -388,17 +383,7 @@ const HDTable = ({
               </LinkContainer>
             </Row>
           ))}
-          <BottomActionButton
-            onClick={() => {
-              if (!isCompleted) return;
-              onScanMoreAddresses({
-                ...selectedDPath,
-                offset: selectedDPathOffset,
-                numOfAddresses: 10
-              });
-            }}
-            disabled={!isCompleted}
-          >
+          <BottomActionButton onClick={handleClick} disabled={!isCompleted}>
             <Icon type="add" color="none" width="32px" />
             <STypography>
               <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />

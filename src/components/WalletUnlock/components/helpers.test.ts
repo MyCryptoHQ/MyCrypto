@@ -1,7 +1,7 @@
 import { TAddress } from '@types';
 
 import { TableAccountDisplay } from './HDWTable';
-import { sortAccounts } from './helpers';
+import { calculateDPathOffset, sortAccounts } from './helpers';
 
 const inputArr = [
   {
@@ -116,5 +116,12 @@ describe('sortAccounts', () => {
       }
     ];
     expect(actual).toStrictEqual(expected);
+  });
+});
+
+describe('calculateDPathOffset', () => {
+  it('determines the next dpath index to start scanning from based off the max dpath index for the given selectedDPath', () => {
+    const actual = calculateDPathOffset(inputArr, selectedDPath);
+    expect(actual).toStrictEqual(4);
   });
 });

@@ -11,6 +11,7 @@ import {
 } from '@services/WalletService/deterministic';
 import { Wallet } from '@services/WalletService/wallets';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
+import { accountsToCSV } from '@utils';
 
 import { BalanceMap, getAssetBalance } from '../BalanceService';
 import { AppState } from './root.reducer';
@@ -35,6 +36,9 @@ const slice = createSlice({
   name: 'hdWallet',
   initialState,
   reducers: {
+    resetState() {
+      return initialState;
+    },
     requestConnection(state) {
       state.isConnecting = true;
       state.error = undefined;
@@ -150,6 +154,10 @@ export const selectHDWalletIsGettingAccounts = createSelector(
 );
 export const selectHDWalletCustomDPaths = createSelector(selectHDWallet, (hd) => hd.customDPaths);
 export const selectHDWalletConnectionError = createSelector(selectHDWallet, (hd) => hd.error);
+export const selectHDWalletScannedAccountsCSV = createSelector(
+  selectHDWallet,
+  (hd) => hd.asset && accountsToCSV(hd.scannedAccounts, hd.asset)
+);
 
 /**
  * Actions
@@ -188,6 +196,8 @@ export function* requestConnectionWorker({
   setSession(wallet: Wallet): void;
 }>) {
   const { asset, dpaths, network, walletId, setSession } = payload;
+  // clear existing state
+  yield put(slice.actions.resetState());
   // initialize the wallet
   try {
     const session: Wallet = yield call(selectWallet, walletId);
@@ -196,7 +206,7 @@ export function* requestConnectionWorker({
     yield call(setSession, session);
     yield put(slice.actions.requestConnectionSuccess({ asset, network }));
   } catch (err) {
-    console.error(err);
+    console.error(`Connection error for ${walletId} hardware wallet: ${err}`);
     yield put(
       slice.actions.requestConnectionFailure({
         code: HDWalletErrors.SESSION_CONNECTION_FAILED,

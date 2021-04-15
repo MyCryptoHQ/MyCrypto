@@ -24,7 +24,7 @@ const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
   </Box>
 );
 
-interface DerivationPathSelectorProps {
+interface DPathSelectorProps {
   dPaths: DPath[];
   selectedDPath: DPath;
   searchable?: boolean;
@@ -32,13 +32,13 @@ interface DerivationPathSelectorProps {
   selectDPath(dpath: DPath): void;
 }
 
-export const DerivationPathSelector = ({
+export const DPathSelector = ({
   searchable = true,
   clearable = true,
   selectedDPath,
   dPaths,
   selectDPath
-}: DerivationPathSelectorProps) => (
+}: DPathSelectorProps) => (
   <Selector
     value={selectedDPath}
     onChange={selectDPath}
