@@ -221,7 +221,7 @@
     "build": "cross-env TARGET_ENV=default webpack --config webpack_config/production.js",
     "build:staging": "cross-env TARGET_ENV=staging webpack --config webpack_config/production.js",
     "prebuild": "check-node-version --package",
-    "test": "jest --config=jest_config/jest.config.json --maxWorkers=2",
+    "test": "jest --config=jest_config/jest.config.json",
     "test:coverage": "yarn test --coverage",
     "test:single": "cross-env DEBUG_PRINT_LIMIT=50000 yarn test --coverage=false --watch",
     "test:e2e": "testcafe 'chrome:headless'",
