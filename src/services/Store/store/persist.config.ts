@@ -171,6 +171,9 @@ export const migrations = {
   }
 };
 
+// @ts-expect-error: bad type for migrations
+export const migrate = createMigrate(migrations, { debug: IS_DEV });
+
 export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   version: 5,
   key: 'Storage',
@@ -182,8 +185,7 @@ export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
   // @ts-expect-error: deserialize is redux-persist internal
   deserialize: customDeserializer,
   debug: IS_DEV,
-  // @ts-expect-error: bad type for migrations
-  migrate: createMigrate(migrations, { debug: IS_DEV })
+  migrate
 };
 
 export const createPersistReducer = (reducer: Reducer<DataStore>) =>

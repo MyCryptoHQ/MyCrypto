@@ -121,12 +121,12 @@ export const selectTxsByStatus = (status: ITxStatus) =>
 export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
   a
     .flatMap((a) => a.assets)
-    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)!], [] as ExtendedAsset[])
+    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as ExtendedAsset[])
 );
 
 export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
   assets.reduce(
-    (acc, a) => ({ ...acc, [a.uuid]: a.mappings }),
+    (acc, a) => (a ? { ...acc, [a.uuid]: a.mappings } : acc),
     {} as Record<string, IProvidersMappings>
   )
 );

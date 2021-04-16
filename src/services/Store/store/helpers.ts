@@ -4,7 +4,6 @@ import {
   IAccount,
   IProvidersMappings,
   IRates,
-  LocalStorage,
   Network,
   NodeOptions,
   StoreAccount,
@@ -12,13 +11,10 @@ import {
 } from '@types';
 import { bigify, isBigish, isVoid } from '@utils';
 import {
-  difference,
-  dissoc,
   either,
   identity,
   ifElse,
   isNil,
-  keys,
   lensPath,
   lensProp,
   map,
@@ -93,30 +89,6 @@ export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[])
       return mergeRight(o, existing || {});
     })
     .concat(inbound.filter((i) => !original.find((o) => o.uuid === i.uuid)));
-
-/**
- * Compare json to import with our persist state
- */
-export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
-  if (toImport.version !== store.version) {
-    return false;
-  } else {
-    // Check that all the keys in the store exist in the file to import
-    const diff = difference(keys(store), keys(toImport));
-    return diff.length === 0;
-  }
-};
-
-export const migrateConfig = (toImport: Partial<LocalStorage>) => {
-  return {
-    ...toImport,
-    // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
-    rates: toImport.settings?.rates ? toImport.settings.rates : toImport.rates,
-    trackedAssets: toImport.trackedAssets ? toImport.trackedAssets : {},
-    // @ts-expect-error rates are present in settings on data to be migrated, want to move it at root of persistence layer
-    settings: toImport.settings?.rates ? dissoc('rates', toImport.settings) : toImport.settings
-  } as LocalStorage;
-};
 
 export const destructureCoinGeckoIds = (
   rates: IRates,

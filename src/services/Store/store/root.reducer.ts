@@ -1,16 +1,15 @@
 import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { put } from 'redux-saga-test-plan/matchers';
-import { select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
+import { LocalStorage } from '@types';
 
-import { canImport, migrateConfig } from './helpers';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
-import { createPersistReducer } from './persist.config';
+import { APP_PERSIST_CONFIG, createPersistReducer, migrate } from './persist.config';
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
@@ -59,17 +58,17 @@ export function* importSaga() {
 }
 
 function* importWorker({ payload }: PayloadAction<string>) {
-  const persistable = yield select(exportState);
   try {
-    const json = migrateConfig(JSON.parse(payload));
+    const migrated: LocalStorage = yield call(
+      // @ts-expect-error: bad type choice on call effect
+      migrate,
+      marshallState(JSON.parse(payload)),
+      APP_PERSIST_CONFIG.version!
+    );
 
-    if (!canImport(json, persistable)) {
-      throw new Error('Invalid import file');
-    }
-
-    yield put(appReset(marshallState(json)));
+    yield put(appReset(migrated));
     yield put(importSlice.actions.success());
   } catch (err) {
-    yield put(importSlice.actions.error(err));
+    yield put(importSlice.actions.error('Invalid import file'));
   }
 }
