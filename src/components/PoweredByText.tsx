@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Typography } from '@components';
-import { FONT_SIZE, SPACING } from '@theme';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 
 import Icon from './Icon';
@@ -76,6 +76,10 @@ const providers: Record<string, PoweredByProvider> = {
     css: `
     && {
       justify-content: left;
+
+    }
+    > span {
+      color: ${COLORS.BLUE_GREY}
     }`,
     text: translate('POWERED_BY_FINDETH')
   },

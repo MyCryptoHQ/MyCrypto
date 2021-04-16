@@ -174,14 +174,14 @@ const DPathType = styled(Typography)`
 `;
 
 const DPathDisplay = styled(Typography)`
-  color: ${COLORS.GREY_DARK};
+  color: ${COLORS.BLUE_GREY};
   line-height: 18px;
 `;
 
 const ValueContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 135px;
 `;
 
@@ -362,6 +362,7 @@ const HDTable = ({
                 <ValueContainer>
                   <Typography>
                     <Currency
+                      ticker={asset.ticker}
                       amount={
                         account.balance
                           ? bigify(fromTokenBase(bigify(account.balance), asset.decimal)).toFixed(4)
@@ -369,7 +370,6 @@ const HDTable = ({
                       }
                     />
                   </Typography>
-                  <Typography>{asset.ticker}</Typography>
                 </ValueContainer>
               </MobileColumn>
               <LinkContainer>

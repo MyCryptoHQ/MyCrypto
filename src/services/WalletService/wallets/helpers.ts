@@ -7,7 +7,12 @@ import { DPath } from '@types';
  */
 export const getFullPath = (derivationPath: DPath, addrIndex: number): string => {
   if (derivationPath.isHardened) {
-    return derivationPath.value.replace('addrIndex', addrIndex.toString());
+    return parseHardenedPath(derivationPath, addrIndex);
   }
   return `${derivationPath.value}/${addrIndex}`;
 };
+
+export const parseHardenedPath = (derivationPath: DPath, addrIndex: number): string =>
+  derivationPath.isHardened
+    ? derivationPath.value.replace('addrIndex', addrIndex.toString())
+    : derivationPath.value;

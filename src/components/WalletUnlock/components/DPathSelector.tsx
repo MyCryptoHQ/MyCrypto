@@ -4,6 +4,7 @@ import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import { Box, Selector, Text } from '@components';
+import { parseHardenedPath } from '@services';
 import { monospace, SPACING } from '@theme';
 import { DPath } from '@types';
 
@@ -14,12 +15,17 @@ const DropdownDPath = styled.span`
   font-family: ${monospace};
 `;
 
-type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
-const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
-  <Box p={'12px'} onClick={selectOption && (() => selectOption(data))}>
+type TDPathOptionProps = { paddingLeft: string } & (
+  | OptionProps<DPath>
+  | { data: DPath; selectOption?(): void }
+);
+const DPathOption = ({ data, paddingLeft, selectOption }: TDPathOptionProps) => (
+  <Box
+    p={`11px 10px 11px ${paddingLeft || '0px'}`}
+    onClick={selectOption && (() => selectOption(data))}
+  >
     <Text mb={SPACING.NONE}>
-      {data.label}{' '}
-      {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
+      {data.label} {data.value && <DropdownDPath>{parseHardenedPath(data, 0)}</DropdownDPath>}
     </Text>
   </Box>
 );
@@ -43,8 +49,8 @@ export const DPathSelector = ({
     value={selectedDPath}
     onChange={selectDPath}
     options={dPaths}
-    optionComponent={DPathOption}
-    valueComponent={({ value }) => <DPathOption data={value} />}
+    optionComponent={(props) => <DPathOption paddingLeft={'15px'} {...props} />}
+    valueComponent={({ value }) => <DPathOption data={value} paddingLeft={SPACING.XS} />}
     searchable={searchable}
     clearable={clearable}
   />
