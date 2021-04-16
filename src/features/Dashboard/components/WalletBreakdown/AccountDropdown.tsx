@@ -41,14 +41,13 @@ const SDropdown = styled('div')<SDropdownProps>`
   cursor: pointer;
 
   ${(props) =>
-    props.isOpen &&
-    `{
+    props.isOpen && `
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border: 2px solid ${BLUE_LIGHT};
     padding: 8px 14px;
-  }`}
+  `}
 
   & > div {
     border-top-left-radius: 0;

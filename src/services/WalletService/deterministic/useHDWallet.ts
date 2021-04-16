@@ -7,6 +7,7 @@ import {
   addCustomDPaths,
   connectHDWallet,
   getAccounts,
+  resetState,
   selectHDWalletAccountQueue,
   selectHDWalletAsset,
   selectHDWalletCustomDPaths,
@@ -20,10 +21,11 @@ import {
   updateAsset as updateScannerAsset
 } from '@store/hdWallet.slice';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
+import { useUnmount } from '@vendor';
 
 import { ExtendedDPath, IUseHDWallet } from './types';
 
-const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number): IUseHDWallet => {
+export const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number): IUseHDWallet => {
   const [session, setSession] = useState((undefined as unknown) as Wallet);
   const dispatch = useDispatch();
   const isConnected = useSelector(selectHDWalletIsConnected);
@@ -35,6 +37,9 @@ const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number
   const accountQueue = useSelector(selectHDWalletAccountQueue);
   const scannedAccounts = useSelector(selectHDWalletScannedAccounts);
   const selectedAsset = useSelector(selectHDWalletAsset);
+
+  // Reset the hdslice state on unmount
+  useUnmount(() => dispatch(resetState()));
 
   // On first connection && on asset update
   useEffect(() => {
@@ -97,5 +102,3 @@ const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number
     scanMoreAddresses
   };
 };
-
-export default useHDWallet;

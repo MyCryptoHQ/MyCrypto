@@ -17,7 +17,7 @@ const DropdownDPath = styled.span`
 type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
 const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
   <Box p={'12px'} onClick={selectOption && (() => selectOption(data))}>
-    <Text>
+    <Text mb={SPACING.NONE}>
       {data.label}{' '}
       {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
     </Text>

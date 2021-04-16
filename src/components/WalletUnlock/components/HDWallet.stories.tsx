@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ExtendedContentPanel from '@components/ExtendedContentPanel';
 import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
@@ -33,9 +34,9 @@ const defaultProps: HDWalletProps = {
 };
 
 const Template = () => (
-  <div className="sb-container" style={{ maxWidth: '800px' }}>
+  <ExtendedContentPanel width="800px">
     <HDWalletUI {...defaultProps} />
-  </div>
+  </ExtendedContentPanel>
 );
 
 export const HDWallet = Template.bind({});

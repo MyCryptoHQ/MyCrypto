@@ -114,6 +114,7 @@ const SelectedContainer = styled.div<{ isSelected: boolean }>`
   width: 25px;
   height: 60px;
   border-left: 6px solid ${COLORS.LIGHT_GREEN};
+  padding-left: ${SPACING.SM};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: absolute;
     left: 0;

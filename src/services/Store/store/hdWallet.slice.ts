@@ -119,6 +119,7 @@ const slice = createSlice({
 });
 
 export const {
+  resetState,
   requestConnection,
   requestConnectionFailure,
   requestConnectionSuccess,
@@ -196,8 +197,6 @@ export function* requestConnectionWorker({
   setSession(wallet: Wallet): void;
 }>) {
   const { asset, dpaths, network, walletId, setSession } = payload;
-  // clear existing state
-  yield put(slice.actions.resetState());
   // initialize the wallet
   try {
     const session: Wallet = yield call(selectWallet, walletId);
