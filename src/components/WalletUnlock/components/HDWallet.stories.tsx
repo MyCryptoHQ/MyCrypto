@@ -3,6 +3,7 @@ import React from 'react';
 import ExtendedContentPanel from '@components/ExtendedContentPanel';
 import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
+import { StoreProvider } from '@services';
 import { noOp } from '@utils';
 
 import { HDWalletProps, default as HDWalletUI } from './HDWallet';
@@ -34,9 +35,11 @@ const defaultProps: HDWalletProps = {
 };
 
 const Template = () => (
-  <ExtendedContentPanel width="800px">
-    <HDWalletUI {...defaultProps} />
-  </ExtendedContentPanel>
+  <StoreProvider>
+    <ExtendedContentPanel width="800px">
+      <HDWalletUI {...defaultProps} />
+    </ExtendedContentPanel>
+  </StoreProvider>
 );
 
 export const HDWallet = Template.bind({});

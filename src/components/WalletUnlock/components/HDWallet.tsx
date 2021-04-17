@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
@@ -20,7 +19,7 @@ import { Downloader } from '@components/Downloader';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
-import { selectHDWalletScannedAccountsCSV } from '@store/hdWallet.slice';
+import { selectHDWalletScannedAccountsCSV, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
@@ -148,10 +147,10 @@ const HDWallet = ({
   handleAssetUpdate,
   onUnlock
 }: HDWalletProps) => {
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
-  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
   const handleDPathAddition = (values: FormValues) => {
     addDPaths([
       {

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
+import { useSelector } from '@store';
 import { selectHDWalletScannedAccountsCSV } from '@store/hdWallet.slice';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
@@ -16,6 +16,13 @@ import { Downloader } from '../../Downloader';
 import HDTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
 
 const MAX_EMPTY_ADDRESSES = 5;
+
+const ListContainer = styled(Box)`
+  width: 800px;
+  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    width: 100%;
+  }
+`;
 
 const TableWrapper = styled.div`
   display: flex;
@@ -32,13 +39,8 @@ const StatusBar = styled.div`
   padding-top: 42px;
   border-top: 1px solid ${COLORS.GREY_ATHENS};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
     flex-direction: column;
     background: white;
-    box-shadow: 0px -1px 4px rgba(186, 186, 186, 0.25);
     border-radius: 1.32522px;
     padding: ${SPACING.SM};
     justify-content: space-between;
@@ -148,13 +150,8 @@ export default function HDWList({
     });
   };
   return (
-    <Box variant="columnAlign" width="800px" justifyContent="center">
-      <Box
-        maxHeight="32px"
-        height="32px"
-        width="100%"
-        style={{ visibility: !displayEmptyAddresses ? 'hidden' : 'visible' }}
-      >
+    <ListContainer variant="columnAlign" justifyContent="center">
+      <Box width="100%" style={{ visibility: !displayEmptyAddresses ? 'hidden' : 'visible' }}>
         <Banner
           type={BannerType.ANNOUNCEMENT}
           displayIcon={false}
@@ -261,7 +258,7 @@ export default function HDWList({
           </Button>
         </div>
       </StatusBar>
-    </Box>
+    </ListContainer>
   );
 }
 
