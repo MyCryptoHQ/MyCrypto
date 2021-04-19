@@ -1,5 +1,5 @@
 import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks } from '@fixtures';
-import { IProvidersMappings, NodeOptions, StoreAsset, TUuid } from '@types';
+import { IProvidersMappings, LocalStorage, NodeOptions, StoreAsset, TUuid } from '@types';
 
 import { deMarshallState } from '../DataManager';
 import { marshallState } from '../DataManager/utils';
@@ -151,15 +151,15 @@ describe('canImport()', () => {
     expect(actual).toBe(true);
   });
 
-  it('returns false with mismatching versions', () => {
-    const validate = () => canImport({ ...fLocalStorage, version: 'v0.0' }, persistable);
-    expect(validate()).toBe(false);
+  it('returns false with foreigner keys', () => {
+    const actual = canImport({ ...fLocalStorage, foo: 'foreigner' } as LocalStorage, persistable);
+    expect(actual).toBe(false);
   });
 
-  it('returns false with missing keys', () => {
+  it('returns true with a missing keys', () => {
     const { accounts, ...lsWithoutAccounts } = fLocalStorage;
     const actual = canImport(lsWithoutAccounts, persistable);
-    expect(actual).toBe(false);
+    expect(actual).toBe(true);
   });
 });
 
