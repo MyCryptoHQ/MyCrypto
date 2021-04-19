@@ -29,12 +29,6 @@ const slice = createSlice({
       const idx = findIndex(propEq('uuid', action.payload.uuid), state);
       state[idx] = action.payload;
     },
-    updateMany(state, action: PayloadAction<ExtendedContact[]>) {
-      action.payload.forEach((contact) => {
-        const idx = findIndex(propEq('uuid', contact.uuid), state);
-        state[idx] = contact;
-      });
-    },
     createOrUpdate(state, action: PayloadAction<ExtendedContact[]>) {
       return uniqBy(prop('uuid'), [...action.payload, ...state]);
     }
@@ -43,10 +37,8 @@ const slice = createSlice({
 
 export const {
   create: createContact,
-  createMany: createContacts,
   destroy: destroyContact,
   update: updateContact,
-  updateMany: updateContacts,
   createOrUpdate: createOrUpdateContacts
 } = slice.actions;
 
