@@ -220,7 +220,7 @@ const BottomActionButton = styled.div<{ disabled: boolean }>`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     justify-content: center;
     border-bottom: none;
-    margin-top: ${SPACING.BASE};
+    margin: ${SPACING.BASE} ${SPACING.NONE};
     padding-left: 0;
   }
 `;

@@ -236,7 +236,11 @@ const HDWallet = ({
         </Title>
       </HeadingWrapper>
 
-      <Box pb={SPACING.MD} variant="spaceBetween">
+      <Box
+        pb={SPACING.MD}
+        variant={isMobile ? 'columnAlign' : 'rowAlign'}
+        justifyContent="space-between"
+      >
         <Box variant="columnAlignLeft" m={SPACING.XS}>
           <Text>
             <Trans id="MNEMONIC_SUBTITLE" />
@@ -267,7 +271,11 @@ const HDWallet = ({
           />
         </Box>
       </Box>
-      <Box variant="rowAlign" justifyContent="space-between" pb={SPACING.SM}>
+      <Box
+        variant={isMobile ? 'columnAlign' : 'rowAlign'}
+        justifyContent="space-between"
+        pb={SPACING.SM}
+      >
         <Switch
           checked={displayEmptyAddresses}
           onChange={() => setDisplayEmptyAddresses(!displayEmptyAddresses)}

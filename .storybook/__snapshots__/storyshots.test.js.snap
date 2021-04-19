@@ -22322,7 +22322,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__BottomActionButton-sc-1dpf7zp-15 cdrXGo"
+          className="HDWTable__BottomActionButton-sc-1dpf7zp-15 cjqZpL"
           disabled={false}
           onClick={[Function]}
         >
@@ -22364,7 +22364,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
         </span>
       </div>
       <div
-        className="Box-sc-1974eaf-0 gXpdai"
+        className="Box-sc-1974eaf-0 eBlbTy"
       >
         <div
           className="Box-sc-1974eaf-0 eUbiwg"
