@@ -98,7 +98,7 @@ export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[])
  */
 export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
   const diff = difference(keys(toImport), keys(store));
-  return diff.length <= 0;
+  return diff.length === 0;
 };
 
 export const destructureCoinGeckoIds = (
