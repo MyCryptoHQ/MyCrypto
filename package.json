@@ -241,7 +241,7 @@
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "lint:styles": "stylelint ./src/**/*.tsx",
-    "lint:code": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
+    "lint:code": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx --fix",
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
     "validate": "npm-run-all --parallel lint:styles lint:code tscheck",

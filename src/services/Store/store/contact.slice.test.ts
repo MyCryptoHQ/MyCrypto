@@ -3,9 +3,9 @@ import { mockAppState } from 'test-utils';
 import { DEFAULT_NETWORK } from '@config';
 import { fContacts } from '@fixtures';
 import { ExtendedContact } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
 
 import { initialState, selectContact, default as slice } from './contact.slice';
-import { generateDeterministicAddressUUID } from '@utils';
 
 const reducer = slice.reducer;
 const { create, destroy, update, createOrUpdate } = slice.actions;

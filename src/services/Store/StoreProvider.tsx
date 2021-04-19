@@ -10,6 +10,7 @@ import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@service
 import { isEthereumAccount } from '@services/Store/Account';
 import {
   addAccounts,
+  createOrUpdateContacts,
   deleteMembership,
   fetchAssets,
   fetchMemberships,
@@ -17,8 +18,7 @@ import {
   scanTokens,
   selectTxsByStatus,
   useDispatch,
-  useSelector,
-  createOrUpdateContacts
+  useSelector
 } from '@store';
 import { translateRaw } from '@translations';
 import {

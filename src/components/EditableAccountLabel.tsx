@@ -6,9 +6,9 @@ import { connect, ConnectedProps } from 'react-redux';
 import { createOrUpdateContacts, updateUserActionStateByName } from '@store';
 import { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE, ExtendedContact, NetworkId, TAddress } from '@types';
+import { generateDeterministicAddressUUID } from '@utils';
 
 import EditableText from './EditableText';
-import { generateDeterministicAddressUUID } from '@utils';
 
 interface OwnProps {
   addressBookEntry?: ExtendedContact;
