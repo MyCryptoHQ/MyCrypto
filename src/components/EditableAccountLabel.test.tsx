@@ -45,7 +45,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.change(input, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input, enter));
     expect(defaultProps.createOrUpdateContacts).toHaveBeenCalledWith(
-      expect.objectContaining({ label: inputString })
+      expect.arrayContaining([expect.objectContaining({ label: inputString })])
     );
   });
 

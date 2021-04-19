@@ -43,6 +43,13 @@ describe('useAccounts', () => {
     expect(result.current.accounts).toEqual(fAccounts);
   });
 
+  it('createMultipleAccountsWithIDs() calls updateAll with multiple accounts', () => {
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseAccounts({ accounts: [] });
+    result.current.createMultipleAccountsWithIDs(fAccounts);
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fAccounts));
+  });
+
   it('deleteAccount() calls destroy', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseAccounts({ accounts: fAccounts });

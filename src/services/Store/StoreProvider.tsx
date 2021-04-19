@@ -116,7 +116,8 @@ export const StoreProvider: React.FC = ({ children }) => {
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccounts,
-    deleteAccount
+    deleteAccount,
+    createMultipleAccountsWithIDs
   } = useAccounts();
   const { assets } = useAssets();
   const { settings, updateSettingsAccounts } = useSettings();
@@ -417,7 +418,7 @@ export const StoreProvider: React.FC = ({ children }) => {
         return acc;
       }, [] as ExtendedContact[]);
       contactChanges.length > 0 && dispatch(createOrUpdateContacts(contactChanges));
-
+      createMultipleAccountsWithIDs(newRawAccounts);
       return newRawAccounts;
     }
   };
