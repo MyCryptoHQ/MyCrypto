@@ -38,7 +38,7 @@ describe('Import - Export', () => {
   });
 
   it('importSaga(): sets error state on failure', () => {
-    const errorMessage = 'Invalid import file';
+    const errorMessage = new Error('Invalid import file');
     const importable = JSON.stringify({ foo: 'made to fail' });
     return expectSaga(importSaga)
       .withState(mockAppState())

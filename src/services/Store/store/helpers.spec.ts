@@ -1,8 +1,11 @@
-import { fAccount, fAccounts, fAssets, fNetworks } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks } from '@fixtures';
 import { IProvidersMappings, NodeOptions, StoreAsset, TUuid } from '@types';
 
+import { deMarshallState } from '../DataManager';
+import { marshallState } from '../DataManager/utils';
 import {
   buildCoinGeckoIdMapping,
+  canImport,
   destructureCoinGeckoIds,
   mergeAssets,
   mergeNetworks,
@@ -138,6 +141,25 @@ describe('mergeAssets', () => {
     const actual = mergeAssets([detailedAsset], fAssets);
     const [, ...rest] = fAssets;
     expect(actual).toEqual([detailedAsset, ...rest]);
+  });
+});
+
+describe('canImport()', () => {
+  const persistable = deMarshallState(marshallState(fLocalStorage));
+  it('returns true with valid import file', () => {
+    const actual = canImport(fLocalStorage, persistable);
+    expect(actual).toBe(true);
+  });
+
+  it('returns false with mismatching versions', () => {
+    const validate = () => canImport({ ...fLocalStorage, version: 'v0.0' }, persistable);
+    expect(validate()).toBe(false);
+  });
+
+  it('returns false with missing keys', () => {
+    const { accounts, ...lsWithoutAccounts } = fLocalStorage;
+    const actual = canImport(lsWithoutAccounts, persistable);
+    expect(actual).toBe(false);
   });
 });
 
