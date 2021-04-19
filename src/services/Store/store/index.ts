@@ -31,7 +31,7 @@ export {
   destroyContact,
   updateContact,
   updateContacts,
-  createOrUpdateContact,
+  createOrUpdateContacts,
   selectContacts
 } from './contact.slice';
 export {

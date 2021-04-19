@@ -11,7 +11,7 @@ import { EditableAccountLabel } from './EditableAccountLabel';
 type Props = React.ComponentProps<typeof EditableAccountLabel>;
 const defaultProps: Props = {
   updateUserActionStateByName: jest.fn() as any,
-  createOrUpdateContact: jest.fn() as any,
+  createOrUpdateContacts: jest.fn() as any,
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
   networkId: DEFAULT_NETWORK,
   addressBookEntry: undefined
@@ -44,7 +44,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input, enter));
-    expect(defaultProps.createOrUpdateContact).toHaveBeenCalledWith(
+    expect(defaultProps.createOrUpdateContacts).toHaveBeenCalledWith(
       expect.objectContaining({ label: inputString })
     );
   });

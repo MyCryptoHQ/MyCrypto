@@ -5,6 +5,7 @@ import { fContacts } from '@fixtures';
 import { ExtendedContact } from '@types';
 
 import { initialState, selectContact, default as slice } from './contact.slice';
+import { generateDeterministicAddressUUID } from '@utils';
 
 const reducer = slice.reducer;
 const { create, destroy, update, createOrUpdate } = slice.actions;
@@ -50,23 +51,25 @@ describe('ContactSlice', () => {
     const entity = {
       label: 'test label',
       address: '0x0',
-      network: DEFAULT_NETWORK
+      network: DEFAULT_NETWORK,
+      notes: '',
+      uuid: generateDeterministicAddressUUID(DEFAULT_NETWORK, '0x0')
     };
-    const actual = reducer([], createOrUpdate(entity));
+    const actual = reducer([], createOrUpdate([entity]));
     expect(actual[0]).toHaveProperty('uuid');
     expect(actual[0]).toMatchObject(entity);
   });
 
   it('createOrUpdate(): updates an existing entity', () => {
     const expected = { ...fContacts[0], label: 'updated_label' };
-    const state = reducer(fContacts, createOrUpdate(expected));
+    const state = reducer(fContacts, createOrUpdate([expected]));
     const actual = selectContact(expected.uuid)(mockAppState({ [slice.name]: state }));
     expect(actual).toEqual(expected);
   });
 
   it('createOrUpdate(): returns a list of unique contacts by uuid', () => {
     const expected = { ...fContacts[0], label: 'updated_label' };
-    const state = reducer(fContacts, createOrUpdate(expected));
+    const state = reducer(fContacts, createOrUpdate([expected]));
     const actual = state.filter((c) => c.uuid === expected.uuid);
     expect(actual).toHaveLength(1);
   });

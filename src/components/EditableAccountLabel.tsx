@@ -3,11 +3,12 @@ import React from 'react';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { createOrUpdateContact, updateUserActionStateByName } from '@store';
+import { createOrUpdateContacts, updateUserActionStateByName } from '@store';
 import { translateRaw } from '@translations';
 import { ACTION_NAME, ACTION_STATE, ExtendedContact, NetworkId, TAddress } from '@types';
 
 import EditableText from './EditableText';
+import { generateDeterministicAddressUUID } from '@utils';
 
 interface OwnProps {
   addressBookEntry?: ExtendedContact;
@@ -19,17 +20,19 @@ export const EditableAccountLabel = ({
   addressBookEntry,
   address,
   networkId,
-  createOrUpdateContact,
+  createOrUpdateContacts,
   updateUserActionStateByName
 }: Props) => {
   const handleChange = (value: string) => {
     const contact = {
       address,
       network: networkId,
+      uuid: generateDeterministicAddressUUID(networkId, address),
+      notes: addressBookEntry?.notes || '',
       ...addressBookEntry,
       label: value
     };
-    createOrUpdateContact(contact);
+    createOrUpdateContacts([contact]);
     if (addressBookEntry) {
       updateUserActionStateByName({
         name: ACTION_NAME.UPDATE_LABEL,
@@ -49,7 +52,7 @@ export const EditableAccountLabel = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
-  bindActionCreators({ createOrUpdateContact, updateUserActionStateByName }, dispatch);
+  bindActionCreators({ createOrUpdateContacts, updateUserActionStateByName }, dispatch);
 
 const connector = connect(() => ({}), mapDispatchToProps);
 type Props = ConnectedProps<typeof connector> & OwnProps;

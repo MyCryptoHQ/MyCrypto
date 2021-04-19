@@ -17,7 +17,8 @@ import {
   scanTokens,
   selectTxsByStatus,
   useDispatch,
-  useSelector
+  useSelector,
+  createOrUpdateContacts
 } from '@store';
 import { translateRaw } from '@translations';
 import {
@@ -115,18 +116,12 @@ export const StoreProvider: React.FC = ({ children }) => {
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccounts,
-    deleteAccount,
-    createMultipleAccountsWithIDs
+    deleteAccount
   } = useAccounts();
   const { assets } = useAssets();
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
-  const {
-    createContacts,
-    contacts,
-    getContactByAddressAndNetworkId,
-    updateContacts
-  } = useContacts();
+  const { contacts, getContactByAddressAndNetworkId } = useContacts();
   const dispatch = useDispatch();
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
@@ -397,42 +392,32 @@ export const StoreProvider: React.FC = ({ children }) => {
         newRawAccounts[0].wallet,
         newRawAccounts.length
       )(contacts);
-      const contactChanges = newRawAccounts.reduce(
-        (acc, rawAccount, idx) => {
-          const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
-          if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
-            return {
-              ...acc,
-              updatedContacts: [
-                ...acc.updatedContacts,
-                {
-                  ...existingContact,
-                  label: newLabels[idx]
-                }
-              ]
-            };
-          } else if (!existingContact) {
-            return {
-              ...acc,
-              newContacts: [
-                ...acc.newContacts,
-                {
-                  label: newLabels[idx],
-                  address: rawAccount.address,
-                  notes: '',
-                  network: rawAccount.networkId,
-                  uuid: generateUUID()
-                }
-              ]
-            };
-          }
-          return acc;
-        },
-        { newContacts: [] as ExtendedContact[], updatedContacts: [] as ExtendedContact[] }
-      );
-      contactChanges.updatedContacts.length > 0 && updateContacts(contactChanges.updatedContacts);
-      contactChanges.newContacts.length > 0 && createContacts(contactChanges.newContacts);
-      createMultipleAccountsWithIDs(newRawAccounts);
+      const contactChanges = newRawAccounts.reduce((acc, rawAccount, idx) => {
+        const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
+        if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+          return [
+            ...acc,
+            {
+              ...existingContact,
+              label: newLabels[idx]
+            }
+          ];
+        } else if (!existingContact) {
+          return [
+            ...acc,
+            {
+              label: newLabels[idx],
+              address: rawAccount.address,
+              notes: '',
+              network: rawAccount.networkId,
+              uuid: generateUUID()
+            }
+          ];
+        }
+        return acc;
+      }, [] as ExtendedContact[]);
+      contactChanges.length > 0 && dispatch(createOrUpdateContacts(contactChanges));
+
       return newRawAccounts;
     }
   };

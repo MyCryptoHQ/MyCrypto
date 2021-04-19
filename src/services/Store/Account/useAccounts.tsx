@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 
 import {
-  addAccounts,
   destroyAccount,
   getAccounts,
   updateAccount as updateAccountRedux,
@@ -30,10 +29,6 @@ function useAccounts() {
   const accounts = useSelector(getAccounts);
 
   const dispatch = useDispatch();
-
-  const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
-    dispatch(addAccounts(newAccounts));
-  };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));
 
@@ -73,7 +68,6 @@ function useAccounts() {
 
   return {
     accounts,
-    createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,
     addTxToAccount,
