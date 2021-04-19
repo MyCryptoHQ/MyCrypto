@@ -98,7 +98,6 @@ export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[])
  */
 export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
   const diff = difference(keys(toImport), keys(store));
-  console.log(diff);
   return diff.length <= 0;
 };
 
