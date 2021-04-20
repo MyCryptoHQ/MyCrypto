@@ -1,14 +1,11 @@
-import { fAccount, fAccounts, fAssets, fLocalStorage, fNetworks, fRates } from '@fixtures';
-import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
-import { IProvidersMappings, LocalStorage, LSKeys, NodeOptions, StoreAsset, TUuid } from '@types';
+import { fAccount, fAccounts, fAssets, fNetworks } from '@fixtures';
+import { IProvidersMappings, NodeOptions, StoreAsset, TUuid } from '@types';
 
 import {
   buildCoinGeckoIdMapping,
-  canImport,
   destructureCoinGeckoIds,
   mergeAssets,
   mergeNetworks,
-  migrateConfig,
   serializeAccount,
   serializeNotification
 } from './helpers';
@@ -141,49 +138,6 @@ describe('mergeAssets', () => {
     const actual = mergeAssets([detailedAsset], fAssets);
     const [, ...rest] = fAssets;
     expect(actual).toEqual([detailedAsset, ...rest]);
-  });
-});
-
-describe('canImport()', () => {
-  const persistable = deMarshallState(marshallState(fLocalStorage));
-  it('returns true with valid import file', () => {
-    const actual = canImport(fLocalStorage, persistable);
-    expect(actual).toBe(true);
-  });
-
-  it('returns false with mismatching versions', () => {
-    const validate = () => canImport({ ...fLocalStorage, version: 'v0.0' }, persistable);
-    expect(validate()).toBe(false);
-  });
-
-  it('returns false with missing keys', () => {
-    const { accounts, ...lsWithoutAccounts } = fLocalStorage;
-    const actual = canImport(lsWithoutAccounts, persistable);
-    expect(actual).toBe(false);
-  });
-});
-
-describe('migrateConfig()', () => {
-  it('Migrate rates outside of settings', () => {
-    const toMigrate = {
-      [LSKeys.SETTINGS]: {
-        rates: fRates
-      }
-    };
-    const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
-
-    expect(result.rates).toEqual(toMigrate.settings.rates);
-    expect(result.settings).not.toContain(toMigrate.settings.rates);
-  });
-  it('Creates trackedAsset object if missing', () => {
-    const toMigrate = {
-      [LSKeys.SETTINGS]: {
-        rates: fRates
-      }
-    };
-    const result = migrateConfig((toMigrate as unknown) as Partial<LocalStorage>);
-
-    expect(result.trackedAssets).toEqual({});
   });
 });
 
