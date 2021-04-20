@@ -14,7 +14,11 @@ const nodes = [
 const createFallbackProvider = ({ nodes, chainId }: { nodes: string[]; chainId: number }) =>
   pipe(
     map((nodeUrl: string) => new StaticJsonRpcProvider(nodeUrl, chainId)),
-    (providers) => new FallbackProvider(providers)
+    (providers) =>
+      new FallbackProvider(
+        providers.map((provider, index) => ({ provider, priority: index })),
+        1
+      )
   )(nodes);
 
 describe('FallbackProvider', () => {
