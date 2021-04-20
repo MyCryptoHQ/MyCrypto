@@ -1,12 +1,11 @@
 import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { LocalStorage } from '@types';
 
-import { canImport } from './helpers';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
@@ -59,13 +58,8 @@ export function* importSaga() {
 }
 
 function* importWorker({ payload }: PayloadAction<string>) {
-  const persistable = yield select(exportState);
   try {
     const settings = JSON.parse(payload);
-
-    if (!canImport(settings, persistable)) {
-      throw new Error('Invalid import file');
-    }
 
     const migrated: LocalStorage = yield call(
       // @ts-expect-error: bad type choice on call effect

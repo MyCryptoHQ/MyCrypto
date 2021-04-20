@@ -4,7 +4,6 @@ import {
   IAccount,
   IProvidersMappings,
   IRates,
-  LocalStorage,
   Network,
   NodeOptions,
   StoreAccount,
@@ -12,12 +11,10 @@ import {
 } from '@types';
 import { bigify, isBigish, isVoid } from '@utils';
 import {
-  difference,
   either,
   identity,
   ifElse,
   isNil,
-  keys,
   lensPath,
   lensProp,
   map,
@@ -92,14 +89,6 @@ export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[])
       return mergeRight(o, existing || {});
     })
     .concat(inbound.filter((i) => !original.find((o) => o.uuid === i.uuid)));
-
-/**
- * Verify that imported settings don't contain foreigner key
- */
-export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
-  const diff = difference(keys(toImport), keys(store));
-  return diff.length === 0;
-};
 
 export const destructureCoinGeckoIds = (
   rates: IRates,
