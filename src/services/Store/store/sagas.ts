@@ -1,11 +1,11 @@
 import { all } from 'redux-saga/effects';
 
+import { hdWalletSaga } from '@components/WalletUnlock/hdWallet.slice';
 import { analyticsSaga } from '@services/Analytics';
 import { pollingSaga } from '@services/Polling';
 
 import { accountsSaga } from './account.slice';
 import { assetSaga } from './asset.slice';
-import { hdWalletSaga } from './hdWallet.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
 import { persistenceSaga } from './persistence.slice';

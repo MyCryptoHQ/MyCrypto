@@ -672,7 +672,7 @@ exports[` Storyshots Atoms/Switch Switch 1`] = `
   className="Box-sc-1974eaf-0 ljBdCD"
 >
   <label
-    className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+    className="Switch__LabelText-sc-1om4h8q-0 eJnaoE"
     htmlFor="toggle"
   >
     Off
@@ -695,7 +695,7 @@ exports[` Storyshots Atoms/Switch Switch 1`] = `
     />
   </label>
   <label
-    className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+    className="Switch__LabelText-sc-1om4h8q-0 eJnaoE"
     htmlFor="toggle"
   >
     On
@@ -22355,7 +22355,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
       className="HDWallet__MnemonicWrapper-sc-1pij7pp-0 faroTn"
     >
       <div
-        className="HDWallet__HeadingWrapper-sc-1pij7pp-3 eNHMMa"
+        className="HDWallet__HeadingWrapper-sc-1pij7pp-3 gtea-dM"
       >
         <span
           className="HDWallet__Title-sc-1pij7pp-1 eojYRa"
@@ -22364,10 +22364,10 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
         </span>
       </div>
       <div
-        className="Box-sc-1974eaf-0 eBlbTy"
+        className="Box-sc-1974eaf-0 HDWallet__SButtonContainer-sc-1pij7pp-11 kjNHvy"
       >
         <div
-          className="Box-sc-1974eaf-0 eUbiwg"
+          className="Box-sc-1974eaf-0 cxIbnO"
         >
           <p
             className="Text__SText-sc-14ylyin-0 Ueu"
@@ -22486,7 +22486,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
           </div>
         </div>
         <div
-          className="Box-sc-1974eaf-0 eUbiwg"
+          className="Box-sc-1974eaf-0 iGDaZa"
         >
           <p
             className="Text__SText-sc-14ylyin-0 Ueu"
@@ -22567,13 +22567,13 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
         </div>
       </div>
       <div
-        className="Box-sc-1974eaf-0 fEfnlc"
+        className="Box-sc-1974eaf-0 kudWL"
       >
         <div
           className="Box-sc-1974eaf-0 ljBdCD"
         >
           <label
-            className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+            className="Switch__LabelText-sc-1om4h8q-0 eJnaoE"
             htmlFor="toggle"
           >
             Hide Empty Addresses
@@ -22596,7 +22596,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
             />
           </label>
           <label
-            className="Switch__LabelText-sc-1om4h8q-0 bUHSDz"
+            className="Switch__LabelText-sc-1om4h8q-0 eJnaoE"
             htmlFor="toggle"
           >
             Show Empty Addresses
@@ -22777,16 +22777,16 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
             </div>
           </div>
           <div
-            className="HDWList__StatusBar-sc-1so0j27-2 bvSsUr"
+            className="HDWList__StatusBar-sc-1so0j27-2 eETrIH"
           >
             <div
-              className="HDWList__StatusWrapper-sc-1so0j27-3 cZbKiH"
+              className="HDWList__StatusWrapper-sc-1so0j27-3 cpxeCR"
             >
               <div
                 className="HDWList__IconWrapper-sc-1so0j27-4 jCGBCt"
               >
                 <svg
-                  className="Icon__SInlineSVG-tq1i3y-0 fbIXWJ"
+                  className="Icon__SInlineSVG-tq1i3y-0 exCAOW"
                   id="test-file-stub"
                 />
               </div>
@@ -22815,7 +22815,9 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
                 .
               </span>
             </div>
-            <div>
+            <div
+              className="HDWList__ExportBtnWrapper-sc-1so0j27-6 gLSJNF"
+            >
               <button
                 className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 lgKqaE"
                 disabled={true}

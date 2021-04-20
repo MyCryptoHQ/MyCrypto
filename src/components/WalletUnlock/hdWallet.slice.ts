@@ -3,6 +3,7 @@ import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
+import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
   DWAccountDisplay,
   ExtendedDPath,
@@ -10,11 +11,9 @@ import {
   selectWallet
 } from '@services/WalletService/deterministic';
 import { Wallet } from '@services/WalletService/wallets';
+import { AppState } from '@store/root.reducer';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV } from '@utils';
-
-import { BalanceMap, getAssetBalance } from '../BalanceService';
-import { AppState } from './root.reducer';
 
 export enum HDWalletErrors {
   SESSION_CONNECTION_FAILED = 'SESSION_CONNECTION_FAILED',

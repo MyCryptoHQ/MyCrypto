@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
+import { selectHDWalletConnectionError } from '@components/WalletUnlock/hdWallet.slice';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
@@ -17,7 +18,6 @@ import {
   useNetworks
 } from '@services';
 import { useSelector } from '@store';
-import { selectHDWalletConnectionError } from '@store/hdWallet.slice';
 import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';

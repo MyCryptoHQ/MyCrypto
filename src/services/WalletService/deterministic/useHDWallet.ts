@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { processScannedAccounts, Wallet } from '@services';
 import {
   addCustomDPaths,
   connectHDWallet,
@@ -19,13 +18,18 @@ import {
   selectHDWalletScannedAccounts,
   triggerComplete,
   updateAsset as updateScannerAsset
-} from '@store/hdWallet.slice';
+} from '@components/WalletUnlock/hdWallet.slice';
+import { processScannedAccounts, Wallet } from '@services';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 import { useUnmount } from '@vendor';
 
 import { ExtendedDPath, IUseHDWallet } from './types';
 
-export const useHDWallet = (dpaths: ExtendedDPath[], walletId: DPathFormat, gap: number): IUseHDWallet => {
+export const useHDWallet = (
+  dpaths: ExtendedDPath[],
+  walletId: DPathFormat,
+  gap: number
+): IUseHDWallet => {
   const [session, setSession] = useState((undefined as unknown) as Wallet);
   const dispatch = useDispatch();
   const isConnected = useSelector(selectHDWalletIsConnected);

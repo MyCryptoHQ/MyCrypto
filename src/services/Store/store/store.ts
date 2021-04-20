@@ -3,17 +3,17 @@ import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
-import { analyticsMiddleware } from '@services/Analytics';
-import { pollStart } from '@services/Polling';
-import { updateAccounts } from '@store';
-import { IS_DEV } from '@utils';
-
 import {
   connectHDWallet,
   getAccounts,
   processAccountsQueue,
   requestConnectionSuccess
-} from './hdWallet.slice';
+} from '@components/WalletUnlock/hdWallet.slice';
+import { analyticsMiddleware } from '@services/Analytics';
+import { pollStart } from '@services/Polling';
+import { updateAccounts } from '@store';
+import { IS_DEV } from '@utils';
+
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
 import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';

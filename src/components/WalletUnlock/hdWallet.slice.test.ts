@@ -4,6 +4,7 @@ import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { HardwareWalletResult } from '@services/WalletService';
 import { selectWallet } from '@services/WalletService/deterministic';
+import { AppState } from '@store/root.reducer';
 import { DPath, DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
 
@@ -21,7 +22,6 @@ import {
   selectHDWalletNetwork,
   default as slice
 } from './hdWallet.slice';
-import { AppState } from './root.reducer';
 
 const reducer = slice.reducer;
 
@@ -151,7 +151,7 @@ const ledgerMock = {
   }
 };
 
-jest.mock('../../WalletService/deterministic/helpers.ts', () => ({
+jest.mock('@services/WalletService/deterministic/helpers.ts', () => ({
   selectWallet: jest.fn().mockImplementation(() => Promise.resolve(ledgerMock))
 }));
 
@@ -191,7 +191,7 @@ describe('getAccountsWorker()', () => {
   });
 });
 
-jest.mock('../BalanceService.tsx', () => ({
+jest.mock('@services/Store/BalanceService.tsx', () => ({
   getAssetBalance: jest.fn().mockImplementation(() => {
     const amt = mockBigify('0');
     return Promise.resolve({ '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': amt });

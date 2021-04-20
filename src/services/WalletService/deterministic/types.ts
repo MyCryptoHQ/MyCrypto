@@ -1,6 +1,6 @@
 import { ValuesType } from 'utility-types';
 
-import { HDWalletErrors } from '@store/hdWallet.slice';
+import { HDWalletErrors } from '@components/WalletUnlock/hdWallet.slice';
 import { DPath, ExtendedAsset, Network, TAddress, WalletId } from '@types';
 
 export interface TDWActionError {

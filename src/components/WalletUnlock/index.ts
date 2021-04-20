@@ -9,3 +9,16 @@ export { default as LedgerDecrypt } from './Ledger';
 export { HDWList } from './components';
 export { default as TrezorUnlock } from './NewTrezor';
 export { default as HardwareDecrypt } from './Hardware';
+export {
+  selectHDWalletAsset,
+  selectHDWalletNetwork,
+  selectHDWalletAccountQueue,
+  selectHDWalletScannedAccounts,
+  selectHDWalletIsConnecting,
+  selectHDWalletIsConnected,
+  selectHDWalletIsCompleted,
+  selectHDWalletIsGettingAccounts,
+  selectHDWalletCustomDPaths,
+  selectHDWalletConnectionError,
+  selectHDWalletScannedAccountsCSV
+} from './hdWallet.slice';

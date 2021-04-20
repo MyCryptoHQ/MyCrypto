@@ -11,6 +11,7 @@ import {
   Input,
   LinkApp,
   PoweredByText,
+  selectHDWalletScannedAccountsCSV,
   Switch,
   Text,
   Typography
@@ -19,7 +20,7 @@ import { Downloader } from '@components/Downloader';
 import { default as Icon } from '@components/Icon';
 import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
-import { selectHDWalletScannedAccountsCSV, useSelector } from '@store';
+import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
