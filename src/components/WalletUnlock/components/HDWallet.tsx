@@ -52,9 +52,11 @@ const HeadingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: -25px;
   margin-bottom: ${SPACING.BASE};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: column;
+    margin-left: 0px;
     align-items: flex-start;
   }
 `;
@@ -102,6 +104,13 @@ const Error = styled.span`
 
 const SInput = styled(Input)`
   margin-bottom: ${SPACING.XS};
+`;
+
+const SButtonContainer = styled(Box)`
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-left: -25px;
+    margin-right: -25px;
+  }
 `;
 
 export interface HDWalletProps {
@@ -236,12 +245,12 @@ const HDWallet = ({
         </Title>
       </HeadingWrapper>
 
-      <Box
+      <SButtonContainer
         pb={SPACING.MD}
         variant={isMobile ? 'columnAlign' : 'rowAlign'}
         justifyContent="space-between"
       >
-        <Box variant="columnAlignLeft" m={SPACING.XS}>
+        <Box variant="columnAlignLeft">
           <Text>
             <Trans id="MNEMONIC_SUBTITLE" />
           </Text>
@@ -254,7 +263,7 @@ const HDWallet = ({
             onSelect={handleAssetUpdate}
           />
         </Box>
-        <Box variant="columnAlignLeft" m={SPACING.XS}>
+        <Box variant="columnAlignLeft" ml={isMobile ? SPACING.NONE : SPACING.SM}>
           <Text>
             <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
             <LinkApp href="#" onClick={() => setDpathAddView(true)}>
@@ -270,11 +279,13 @@ const HDWallet = ({
             searchable={false}
           />
         </Box>
-      </Box>
+      </SButtonContainer>
       <Box
         variant={isMobile ? 'columnAlign' : 'rowAlign'}
         justifyContent="space-between"
         pb={SPACING.SM}
+        ml={!isMobile ? '-25px' : '0px'}
+        mr={!isMobile ? '-25px' : '0px'}
       >
         <Switch
           checked={displayEmptyAddresses}

@@ -34,9 +34,10 @@ const StatusBar = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   padding-top: 42px;
+  padding-left: 45px;
+  padding-right: 45px;
   border-top: 1px solid ${COLORS.GREY_ATHENS};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: column;
@@ -51,9 +52,8 @@ const StatusWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 65%;
+  justify-content: space-between;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 100%;
     text-align: center;
     margin-bottom: ${SPACING.BASE};
   }
@@ -72,6 +72,13 @@ const SDownloader = styled(Downloader)`
   &:hover {
     color: ${COLORS.BLUE_LIGHT_DARKISH};
   }
+`;
+
+const ExportBtnWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  min-width: 185px;
+  justify-content: flex-end;
 `;
 
 export const filterZeroBalanceAccounts = (accounts: DWAccountDisplay[]) =>
@@ -184,7 +191,7 @@ export default function HDWList({
         {isCompleted && !!accountsToUse.length && (
           <StatusWrapper>
             <IconWrapper>
-              <Icon type="confirm" width="20px" />
+              <Icon type="confirm" width="32px" />
             </IconWrapper>
             <Typography>
               <Trans
@@ -246,7 +253,7 @@ export default function HDWList({
             </div>
           </StatusWrapper>
         )}
-        <div>
+        <ExportBtnWrapper>
           <Button onClick={handleSubmit} disabled={!selectedAccounts.length} fullwidth={isMobile}>
             <Trans
               id="DETERMINISTIC_ACCOUNT_LIST_ADD"
@@ -256,7 +263,7 @@ export default function HDWList({
               }}
             />
           </Button>
-        </div>
+        </ExportBtnWrapper>
       </StatusBar>
     </ListContainer>
   );
