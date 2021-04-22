@@ -21400,57 +21400,57 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
     className="sc-fznyAO sc-fznKkj eywbAA ExtendedContentPanel__StyledPanel-k5wich-7 jlCCCx"
   >
     <div
-      className="HDWTable__Table-sc-1dpf7zp-0 tZCSA"
+      className="HDWTable__Table-az91ae-0 cEWCBc"
     >
       <div
-        className="HDWTable__Heading-sc-1dpf7zp-1 frQnHW"
+        className="HDWTable__Heading-az91ae-1 gyRuqa"
       >
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 kPjxtL"
+          className="HDWTable__Label-az91ae-2 ctGYJj"
           width="25px"
         />
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 fXdKzV"
+          className="HDWTable__Label-az91ae-2 kJwbkF"
           width="225px"
         >
           Label
         </div>
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 fXexkP"
+          className="HDWTable__Label-az91ae-2 kJvPTH"
           width="135px"
         >
           Address
         </div>
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 fXdKWa"
+          className="HDWTable__Label-az91ae-2 kJwdjW"
           width="125px"
         >
           DPath
         </div>
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 kPifOU"
+          className="HDWTable__Label-az91ae-2 ctIIQc"
           width="80px"
         >
           Asset
         </div>
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 kPikjH"
+          className="HDWTable__Label-az91ae-2 ctILHD"
           width="30px"
         />
         <div
-          className="HDWTable__Label-sc-1dpf7zp-2 kPikUB"
+          className="HDWTable__Label-az91ae-2 ctIJrd"
           width="50px"
         />
       </div>
       <div
-        className="HDWTable__Body-sc-1dpf7zp-3 dWcGfO"
+        className="HDWTable__Body-az91ae-3 kcyLmy"
       >
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21458,13 +21458,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21491,7 +21491,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21523,15 +21523,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/0
@@ -21539,7 +21539,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21566,7 +21566,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21592,11 +21592,11 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21604,13 +21604,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21637,7 +21637,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21669,15 +21669,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/5
@@ -21685,7 +21685,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21712,7 +21712,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21738,11 +21738,11 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21750,13 +21750,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21783,7 +21783,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21815,15 +21815,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/3
@@ -21831,7 +21831,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -21858,7 +21858,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21884,11 +21884,11 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -21896,13 +21896,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -21929,7 +21929,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -21961,15 +21961,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/2
@@ -21977,7 +21977,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22004,7 +22004,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22030,11 +22030,11 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -22042,13 +22042,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -22075,7 +22075,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -22107,15 +22107,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/1
@@ -22123,7 +22123,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22150,7 +22150,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22176,11 +22176,11 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__Row-sc-1dpf7zp-4 komQvh"
+          className="HDWTable__Row-az91ae-4 fEieUh"
           onClick={[Function]}
         >
           <div
-            className="HDWTable__SelectedContainer-sc-1dpf7zp-5 keBOrB"
+            className="HDWTable__SelectedContainer-az91ae-5 qxCUJ"
           >
             <svg
               className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -22188,13 +22188,13 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             />
           </div>
           <div
-            className="HDWTable__MobileColumn-sc-1dpf7zp-14 cVtjpK"
+            className="HDWTable__MobileColumn-az91ae-14 klWyVO"
           >
             <div
-              className="HDWTable__LabelContainer-sc-1dpf7zp-6 ftDuow"
+              className="HDWTable__LabelContainer-az91ae-6 gsWImk"
             >
               <p
-                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-sc-1dpf7zp-7 kLWupY"
+                className="sc-AxjAm sc-Axmtr gpxbZJ HDWTable__SIdenticon-az91ae-7 eWWaRo"
               >
                 <img
                   className="sc-AxmLO ehbnCY"
@@ -22221,7 +22221,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__AddressContainer-sc-1dpf7zp-8 hvAjCM"
+              className="HDWTable__AddressContainer-az91ae-8 iblOhM"
             >
               <div
                 className="EthAddress__Overrides-z0ohmu-0 iOtPlC"
@@ -22253,15 +22253,15 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </div>
             </div>
             <div
-              className="HDWTable__DPathContainer-sc-1dpf7zp-9 hSDeST"
+              className="HDWTable__DPathContainer-az91ae-9 jjcTL"
             >
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-sc-1dpf7zp-10 crwsSY"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathType-az91ae-10 efeRJQ"
               >
                 Ledger 
               </span>
               <span
-                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-sc-1dpf7zp-11 hgryUV"
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__DPathDisplay-az91ae-11 bMXhJN"
               >
                 (
                 m/44'/60'/0'/4
@@ -22269,7 +22269,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
               </span>
             </div>
             <div
-              className="HDWTable__ValueContainer-sc-1dpf7zp-12 heBmVw"
+              className="HDWTable__ValueContainer-az91ae-12 eGdqfs"
             >
               <span
                 className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
@@ -22296,7 +22296,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             </div>
           </div>
           <div
-            className="HDWTable__LinkContainer-sc-1dpf7zp-13 epHEeG"
+            className="HDWTable__LinkContainer-az91ae-13 lebtIm"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -22322,7 +22322,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
           </div>
         </div>
         <div
-          className="HDWTable__BottomActionButton-sc-1dpf7zp-15 cjqZpL"
+          className="HDWTable__BottomActionButton-az91ae-15 crZjHr"
           disabled={false}
           onClick={[Function]}
         >
@@ -22332,7 +22332,7 @@ exports[` Storyshots Organisms/HDWTable HDW Table 1`] = `
             id="test-file-stub"
           />
           <span
-            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__STypography-sc-1dpf7zp-16 ZcXzH"
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd HDWTable__STypography-az91ae-16 fHsfwP"
           >
             Scan 10 more addresses for the selected derivation path
           </span>
@@ -22352,19 +22352,19 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
     className="sc-fznyAO sc-fznKkj eywbAA ExtendedContentPanel__StyledPanel-k5wich-7 jlCCCx"
   >
     <div
-      className="HDWallet__MnemonicWrapper-sc-1pij7pp-0 faroTn"
+      className="HDWallet__MnemonicWrapper-fcub2o-0 cpzOVk"
     >
       <div
-        className="HDWallet__HeadingWrapper-sc-1pij7pp-3 gtea-dM"
+        className="HDWallet__HeadingWrapper-fcub2o-3 dveBBz"
       >
         <span
-          className="HDWallet__Title-sc-1pij7pp-1 eojYRa"
+          className="HDWallet__Title-fcub2o-1 lgEeyB"
         >
           Select an Account
         </span>
       </div>
       <div
-        className="Box-sc-1974eaf-0 HDWallet__SButtonContainer-sc-1pij7pp-11 kjNHvy"
+        className="Box-sc-1974eaf-0 HDWallet__SButtonContainer-fcub2o-11 qqEpF"
       >
         <div
           className="Box-sc-1974eaf-0 cxIbnO"
@@ -22622,10 +22622,10 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
         </div>
       </div>
       <div
-        className="HDWallet__TableContainer-sc-1pij7pp-2 hjpFuv"
+        className="HDWallet__TableContainer-fcub2o-2 jRfXXo"
       >
         <div
-          className="Box-sc-1974eaf-0 HDWList__ListContainer-sc-1so0j27-0 bEplis"
+          className="Box-sc-1974eaf-0 HDWList__ListContainer-sc-1qfej9y-0 dyuIUH"
         >
           <div
             className="Box-sc-1974eaf-0 jQidpE"
@@ -22658,53 +22658,53 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
             </div>
           </div>
           <div
-            className="HDWList__TableWrapper-sc-1so0j27-1 jjVsAG"
+            className="HDWList__TableWrapper-sc-1qfej9y-1 dYnOYR"
           >
             <div
-              className="HDWTable__Table-sc-1dpf7zp-0 tZCSA"
+              className="HDWTable__Table-az91ae-0 cEWCBc"
             >
               <div
-                className="HDWTable__Heading-sc-1dpf7zp-1 frQnHW"
+                className="HDWTable__Heading-az91ae-1 gyRuqa"
               >
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 kPjxtL"
+                  className="HDWTable__Label-az91ae-2 ctGYJj"
                   width="25px"
                 />
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 fXdKzV"
+                  className="HDWTable__Label-az91ae-2 kJwbkF"
                   width="225px"
                 >
                   Label
                 </div>
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 fXexkP"
+                  className="HDWTable__Label-az91ae-2 kJvPTH"
                   width="135px"
                 >
                   Address
                 </div>
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 fXdKWa"
+                  className="HDWTable__Label-az91ae-2 kJwdjW"
                   width="125px"
                 >
                   DPath
                 </div>
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 kPifOU"
+                  className="HDWTable__Label-az91ae-2 ctIIQc"
                   width="80px"
                 >
                   Asset
                 </div>
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 kPikjH"
+                  className="HDWTable__Label-az91ae-2 ctILHD"
                   width="30px"
                 />
                 <div
-                  className="HDWTable__Label-sc-1dpf7zp-2 kPikUB"
+                  className="HDWTable__Label-az91ae-2 ctIJrd"
                   width="50px"
                 />
               </div>
               <div
-                className="HDWTable__NoAccountContainer-sc-1dpf7zp-17 gTxsno"
+                className="HDWTable__NoAccountContainer-az91ae-17 gdQRkU"
               >
                 <svg
                   className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
@@ -22723,7 +22723,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
                   Alternatively, you can
                    
                   <span
-                    className="HDWTable__NoAccountAction-sc-1dpf7zp-18 dEBtXI"
+                    className="HDWTable__NoAccountAction-az91ae-18 keoTfE"
                     onClick={[Function]}
                   >
                     try to scan more addresses
@@ -22733,7 +22733,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
                   To view a summary of the addresses we scanned, download a CSV report
                    
                   <a
-                    className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWTable__SDownloader-sc-1dpf7zp-19 gwZRPL"
+                    className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWTable__SDownloader-az91ae-19 gmnMzP"
                     data-testid="export-json-link"
                     download="accounts.csv"
                     onClick={[Function]}
@@ -22777,13 +22777,13 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
             </div>
           </div>
           <div
-            className="HDWList__StatusBar-sc-1so0j27-2 eETrIH"
+            className="HDWList__StatusBar-sc-1qfej9y-2 xetXE"
           >
             <div
-              className="HDWList__StatusWrapper-sc-1so0j27-3 cpxeCR"
+              className="HDWList__StatusWrapper-sc-1qfej9y-3 gDIDpK"
             >
               <div
-                className="HDWList__IconWrapper-sc-1so0j27-4 jCGBCt"
+                className="HDWList__IconWrapper-sc-1qfej9y-4 eYrBGy"
               >
                 <svg
                   className="Icon__SInlineSVG-tq1i3y-0 exCAOW"
@@ -22802,7 +22802,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
                 To see a summary of the scanned addresses, download CSV report
                  
                 <a
-                  className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWList__SDownloader-sc-1so0j27-5 lgRCsC"
+                  className="LinkApp__SLink-sc-275gt9-0 dZkshG HDWList__SDownloader-sc-1qfej9y-5 cYaazl"
                   data-testid="export-json-link"
                   download="accounts.csv"
                   onClick={[Function]}
@@ -22816,7 +22816,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
               </span>
             </div>
             <div
-              className="HDWList__ExportBtnWrapper-sc-1so0j27-6 gLSJNF"
+              className="HDWList__ExportBtnWrapper-sc-1qfej9y-6 jtCOzS"
             >
               <button
                 className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 lgKqaE"
