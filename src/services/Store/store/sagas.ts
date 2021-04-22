@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 
-import { hdWalletSaga } from '@components/WalletUnlock/hdWallet.slice';
+import { hdWalletSaga } from '@features/AddAccount/components/hdWallet.slice';
 import { analyticsSaga } from '@services/Analytics';
 import { pollingSaga } from '@services/Polling';
 

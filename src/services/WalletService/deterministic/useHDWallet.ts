@@ -18,7 +18,7 @@ import {
   selectHDWalletScannedAccounts,
   triggerComplete,
   updateAsset as updateScannerAsset
-} from '@components/WalletUnlock/hdWallet.slice';
+} from '@features/AddAccount/components/hdWallet.slice';
 import { processScannedAccounts, Wallet } from '@services';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 import { useUnmount } from '@vendor';

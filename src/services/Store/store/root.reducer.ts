@@ -2,12 +2,11 @@ import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs
 import { combineReducers } from 'redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
-import hdWalletSlice from '@components/WalletUnlock/hdWallet.slice';
+import hdWalletSlice from '@features/AddAccount/components/hdWallet.slice';
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { LocalStorage } from '@types';
 
-import hdWalletSlice from './hdWallet.slice';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';

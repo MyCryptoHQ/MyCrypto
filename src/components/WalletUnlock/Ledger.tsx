@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 
 import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
-import { selectHDWalletConnectionError } from '@components/WalletUnlock/hdWallet.slice';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
   DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
   DPathsList,
   LEDGER_DERIVATION_PATHS
 } from '@config';
+import { HDWallet } from '@features/AddAccount';
+import { selectHDWalletConnectionError } from '@features/AddAccount/components/hdWallet.slice';
 import {
   getAssetByUUID,
   getDPaths,
@@ -21,8 +22,6 @@ import { useSelector } from '@store';
 import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
-
-import { HDWallet } from './components';
 
 interface OwnProps {
   formData: FormData;

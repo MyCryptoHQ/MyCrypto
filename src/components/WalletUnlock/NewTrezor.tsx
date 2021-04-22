@@ -9,6 +9,7 @@ import {
   DPathsList,
   TREZOR_DERIVATION_PATHS
 } from '@config';
+import { HDWallet } from '@features/AddAccount';
 import {
   getAssetByUUID,
   getDPaths,
@@ -19,7 +20,6 @@ import {
 } from '@services';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
-import { HDWallet } from './components';
 import HardwareWalletUI from './Hardware';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method

@@ -8,7 +8,7 @@ import {
   getAccounts,
   processAccountsQueue,
   requestConnectionSuccess
-} from '@components/WalletUnlock/hdWallet.slice';
+} from '@features/AddAccount/components/hdWallet.slice';
 import { analyticsMiddleware } from '@services/Analytics';
 import { pollStart } from '@services/Polling';
 import { updateAccounts } from '@store';

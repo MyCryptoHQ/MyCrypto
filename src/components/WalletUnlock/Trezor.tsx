@@ -4,13 +4,13 @@ import { Button } from '@mycrypto/ui';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
 import { Box, BusyBottom, Heading, Spinner } from '@components';
+import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import { HDWallets } from './components';
 import './Trezor.scss';
 import UnsupportedNetwork from './UnsupportedNetwork';
 

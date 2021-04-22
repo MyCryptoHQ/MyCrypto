@@ -2,16 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import {
-  Banner,
-  Box,
-  Button,
-  Icon,
-  selectHDWalletScannedAccountsCSV,
-  Spinner,
-  Tooltip,
-  Typography
-} from '@components';
+import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
+import { Downloader } from '@components/Downloader';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
@@ -20,7 +12,7 @@ import { BannerType, DPath, ExtendedAsset, Network } from '@types';
 import { hasBalance, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
-import { Downloader } from '../../Downloader';
+import { selectHDWalletScannedAccountsCSV } from './hdWallet.slice';
 import HDTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
 
 const MAX_EMPTY_ADDRESSES = 5;

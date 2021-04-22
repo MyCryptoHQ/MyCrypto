@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
+import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import { HDWallets } from './components';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 

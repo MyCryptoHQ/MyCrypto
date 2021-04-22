@@ -11,7 +11,6 @@ import {
   Input,
   LinkApp,
   PoweredByText,
-  selectHDWalletScannedAccountsCSV,
   Switch,
   Text,
   Typography
@@ -27,6 +26,7 @@ import { DPath, ExtendedAsset, Network } from '@types';
 import { filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
 import { DPathSelector } from './DPathSelector';
+import { selectHDWalletScannedAccountsCSV } from './hdWallet.slice';
 import HDWList from './HDWList';
 
 const MnemonicWrapper = styled.div`
