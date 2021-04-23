@@ -112,7 +112,8 @@ export default function HardwareSignTransaction({
           setIsTxSignatureRequestDenied(false);
           onSuccess(data);
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error(err);
           // User denies tx, or tx times out.
           setIsTxSignatureRequestDenied(true);
           setIsRequestingTxSignature(false);

@@ -135,6 +135,7 @@ export const constructGasCallProps = (
       data
     };
   } catch (e) {
+    console.error(e);
     return {};
   }
 };
