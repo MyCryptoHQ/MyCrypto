@@ -132,7 +132,7 @@ export default function HDWList({
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
   const emptySelectedAccounts = filterZeroBalanceAccounts(selectedAccounts);
   const handleSubmit = () => {
-    onUnlock(selectedAccounts);
+    onUnlock(selectedAccounts.map(({ pathItem, address }) => ({ address, dPath: pathItem.path })));
   };
 
   const handleSelection = (account: TableAccountDisplay) => {
