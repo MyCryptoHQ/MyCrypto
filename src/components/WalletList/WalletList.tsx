@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BusyBottom, LinkApp } from '@components';
-import Button from '@components/Button';
+import { Box, BusyBottom, Button } from '@components';
 import { DEMO_SETTINGS, getWalletConfig, ROUTE_PATHS } from '@config';
-import { AppState, getAccounts, getIsDemoMode, importState } from '@store';
+import {
+  AppState,
+  getAccounts,
+  importComplete,
+  importRequest,
+  importState,
+  importSuccess
+} from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, IStory, WalletId } from '@types';
@@ -46,13 +53,6 @@ const WalletsContainer = styled.div`
   margin-top: 12px;
 `;
 
-const SDemoButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${SPACING.BASE};
-  margin-bottom: ${SPACING.BASE};
-`;
-
 interface WalletListProps {
   wallets: IStory[];
   showHeader?: boolean;
@@ -63,10 +63,20 @@ const WalletList = ({
   wallets,
   onSelect,
   showHeader,
-  isDemoMode,
   accounts,
-  importState
+  importRequest,
+  importSuccess,
+  importState,
+  importComplete,
+  history
 }: Props) => {
+  useEffect(() => {
+    if (importSuccess) {
+      importComplete();
+      history.push(ROUTE_PATHS.DASHBOARD.path);
+    }
+  }, [importSuccess, accounts]);
+
   const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
 
   return (
@@ -78,18 +88,15 @@ const WalletList = ({
         </>
       )}
       {accounts.length === 0 && (
-        // @todo: Refactor. use sagas to trigger redirect after import
-        <SDemoButtonContainer>
-          <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
-            <Button
-              colorScheme={'warning'}
-              disabled={isDemoMode}
-              onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
-            >
-              {translateRaw('DEMO_BUTTON_TEXT')}
-            </Button>
-          </LinkApp>
-        </SDemoButtonContainer>
+        <Box variant="rowCenter" mt={SPACING.BASE} mb={SPACING.BASE}>
+          <Button
+            colorScheme={'warning'}
+            onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
+            loading={importRequest}
+          >
+            {translateRaw('DEMO_BUTTON_TEXT')}
+          </Button>
+        </Box>
       )}
       <WalletsContainer>
         {wallets
@@ -116,19 +123,21 @@ const WalletList = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state),
-  accounts: getAccounts(state)
+  accounts: getAccounts(state),
+  importRequest: importRequest(state),
+  importSuccess: importSuccess(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
-      importState: importState
+      importState,
+      importComplete
     },
     dispatch
   );
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type Props = ConnectedProps<typeof connector> & WalletListProps;
+type Props = ConnectedProps<typeof connector> & WalletListProps & RouteComponentProps;
 
-export default connector(WalletList);
+export default withRouter(connector(WalletList));
