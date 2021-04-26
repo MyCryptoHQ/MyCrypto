@@ -58,6 +58,7 @@ export function* importSaga() {
 }
 
 function* importWorker({ payload }: PayloadAction<string>) {
+  yield put(importSlice.actions.request());
   try {
     const settings = JSON.parse(payload);
 

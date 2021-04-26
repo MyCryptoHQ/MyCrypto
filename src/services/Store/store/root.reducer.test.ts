@@ -28,12 +28,12 @@ describe('Import - Export', () => {
       .dispatch(importState(importable))
       .silentRun()
       .then(({ effects }) => {
-        expect(effects.put).toHaveLength(2);
+        expect(effects.put).toHaveLength(3);
         expect(effects.call[0]).toEqual(
           call(migrate, marshallState(JSON.parse(importable)), APP_PERSIST_CONFIG.version!)
         );
-        expect(effects.put[0]).toEqual(put(appReset(migrated)));
-        expect(effects.put[1]).toEqual(put(importSlice.actions.success()));
+        expect(effects.put[1]).toEqual(put(appReset(migrated)));
+        expect(effects.put[2]).toEqual(put(importSlice.actions.success()));
       });
   });
 

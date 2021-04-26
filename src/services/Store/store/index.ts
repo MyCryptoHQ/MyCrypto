@@ -89,7 +89,7 @@ export {
   setProductAnalyticsAuthorisation,
   getSettings
 } from './settings.slice';
-export { importSuccess, importError } from './import.slice';
+export { importSuccess, importError, importRequest, importComplete } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
 export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
