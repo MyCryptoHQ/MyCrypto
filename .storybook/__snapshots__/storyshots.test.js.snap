@@ -755,7 +755,7 @@ exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
         Please open the Ropsten app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our 
         <a
           className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-          href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto""
+          href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto"
           rel="noreferrer"
           target="_blank"
         >
@@ -843,7 +843,7 @@ exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
             </div>
             <a
               className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-              href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto""
+              href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto"
               rel="noreferrer"
               target="_blank"
             >
@@ -8096,7 +8096,7 @@ exports[` Storyshots Features/ProtectTransaction Step 2 1`] = `
               </div>
               <a
                 className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-                href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto""
+                href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto"
                 rel="noreferrer"
                 target="_blank"
               >
