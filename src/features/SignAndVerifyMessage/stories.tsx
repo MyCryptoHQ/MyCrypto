@@ -9,7 +9,7 @@ import { IStory, WalletId } from '@types';
 
 export const getStories = (): IStory[] => [
   {
-    name: WalletId.METAMASK,
+    name: WalletId.WEB3,
     steps: [Web3ProviderDecrypt]
   },
   {
