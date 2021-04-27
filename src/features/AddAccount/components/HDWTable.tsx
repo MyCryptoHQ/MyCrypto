@@ -388,7 +388,6 @@ const HDTable = ({
             <Icon type="add" color="none" width="32px" />
             <STypography>
               <Trans id="DETERMINISTIC_SCAN_MORE_ADDRESSES" />
-              {!isCompleted && <Spinner color="default" size={1} />}
             </STypography>
           </BottomActionButton>
         </Body>
