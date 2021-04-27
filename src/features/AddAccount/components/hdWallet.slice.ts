@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, race, take, takeLatest } from 'redux-saga/effects';
 
 import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
@@ -181,8 +181,8 @@ export const processAccountsQueue = createAction(`${slice.name}/processAccountsQ
 export function* hdWalletSaga() {
   yield all([
     takeLatest(connectHDWallet.type, requestConnectionWorker),
-    takeLatest(getAccounts.type, getAccountsWorker),
-    takeLatest(processAccountsQueue.type, accountsQueueWorker)
+    takeLatest(getAccounts.type, getAccountsSagaWatcher),
+    takeLatest(processAccountsQueue.type, accountsQueueSagaWatcher)
   ]);
 }
 
@@ -259,4 +259,14 @@ export function* accountsQueueWorker() {
   } catch (e) {
     yield put(slice.actions.updateAccounts({ accounts: accountQueue, asset }));
   }
+}
+
+export function* accountsQueueSagaWatcher() {
+  yield race([call(accountsQueueWorker), take(resetState.type)]);
+}
+
+export function* getAccountsSagaWatcher(
+  payload: PayloadAction<{ session: Wallet; dpaths: ExtendedDPath[] }>
+) {
+  yield race([call(getAccountsWorker, payload), take(resetState.type)]);
 }
