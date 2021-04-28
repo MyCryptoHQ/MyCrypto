@@ -261,6 +261,8 @@ export function* accountsQueueWorker() {
   }
 }
 
+// Race handles the case where accountsQueueWorker or getAccountsWorker are still running when resetState is triggered, 
+// resulting in the state being altered after resetState is triggered (and subsequent usages of hdwallet are broken).
 export function* accountsQueueSagaWatcher() {
   yield race([call(accountsQueueWorker), take(resetState.type)]);
 }
