@@ -148,6 +148,10 @@ const FLEX_RECIPES = {
   end: {
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  start: {
+    display: 'flex',
+    justifyContent: 'flex-start'
   }
 };
 
@@ -173,6 +177,10 @@ const FLEX_VARIANTS = {
   },
   alignRight: {
     ...FLEX_RECIPES.end
+  },
+  columnAlignLeft: {
+    flexDirection: 'column',
+    ...FLEX_RECIPES.start
   }
 };
 

@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
+import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import DeterministicWallets from './DeterministicWallets';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 
@@ -73,7 +73,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     if (publicKey && chainCode) {
       return (
         <div className="Mnemonic-dpath">
-          <DeterministicWallets
+          <HDWallets
             network={network}
             publicKey={publicKey}
             chainCode={chainCode}

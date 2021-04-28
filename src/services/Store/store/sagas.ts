@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 
+import { hdWalletSaga } from '@features/AddAccount/components/hdWallet.slice';
 import { analyticsSaga } from '@services/Analytics';
 import { pollingSaga } from '@services/Polling';
 
@@ -16,6 +17,7 @@ import { scanTokensSaga } from './tokenScanning.slice';
 export default function* rootSaga() {
   yield all([
     fetchMembershipsSaga(),
+    hdWalletSaga(),
     accountsSaga(),
     settingsSaga(),
     networkSaga(),

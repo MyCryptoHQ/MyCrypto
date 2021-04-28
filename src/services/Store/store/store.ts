@@ -3,6 +3,12 @@ import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
+import {
+  connectHDWallet,
+  getAccounts,
+  processAccountsQueue,
+  requestConnectionSuccess
+} from '@features/AddAccount/components/hdWallet.slice';
 import { analyticsMiddleware } from '@services/Analytics';
 import { pollStart } from '@services/Polling';
 import { updateAccounts } from '@store';
@@ -32,7 +38,12 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             // @todo: Redux solve once we have selectors to deserialize.
             updateAccounts.type,
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
-            pollStart.type
+            pollStart.type,
+            // ignore these actions to avoid errors with hardware wallet sessions
+            connectHDWallet.type,
+            requestConnectionSuccess.type,
+            getAccounts.type,
+            processAccountsQueue.type
           ]
         }
       }),

@@ -1,13 +1,15 @@
 import { FallbackProvider } from '@ethersproject/providers';
+import { getEtherBalances, getTokenBalances } from '@mycrypto/eth-scan';
 import BigNumber from 'bignumber.js';
 
-import { fNetworks, fRopDAI } from '@fixtures';
+import { fAssets, fNetworks, fRopDAI } from '@fixtures';
 import { ProviderHandler } from '@services/EthService';
 import { NetworkId, TAddress } from '@types';
 import { bigify } from '@utils';
 
 import {
   BalanceMap,
+  getAssetBalance,
   getBaseAssetBalancesForAddresses,
   getSingleTokenBalanceForAddresses,
   getTokenBalancesForAddresses
@@ -105,6 +107,34 @@ describe('getSingleTokenBalanceForAddresses', () => {
     const expected = {
       '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': bigify('150')
     } as BalanceMap<BigNumber>;
+    expect(balances).toStrictEqual(expected);
+  });
+});
+
+describe('getAssetBalance', () => {
+  it('gets result for getAssetBalance when asset type is base', async () => {
+    const balances = await getAssetBalance({
+      asset: fAssets[1],
+      network: fNetworks[1],
+      addresses: ['0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress]
+    });
+    const expected = {
+      '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': bigify('1000000000000000000')
+    } as BalanceMap<BigNumber>;
+    expect(getEtherBalances).toHaveBeenCalledTimes(2);
+    expect(balances).toStrictEqual(expected);
+  });
+
+  it('gets result for getAssetBalance when asset type is erc20', async () => {
+    const balances = await getAssetBalance({
+      asset: fRopDAI,
+      network: fNetworks[1],
+      addresses: ['0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress]
+    });
+    const expected = {
+      '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c': bigify('1000000000000000000')
+    } as BalanceMap<BigNumber>;
+    expect(getTokenBalances).toHaveBeenCalledTimes(2);
     expect(balances).toStrictEqual(expected);
   });
 });

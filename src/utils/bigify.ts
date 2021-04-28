@@ -32,3 +32,7 @@ export const isBigish = (v: any): boolean => {
     return false;
   }
 };
+
+export const hasBalance = (
+  balance: BigNumber.Value | BigNumber | BigNumberish | bigint | BN | undefined
+) => (balance ? !bigify(balance).isZero() : false);

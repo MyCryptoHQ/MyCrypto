@@ -7,6 +7,7 @@ import { Box, Input, Text } from '@components';
 const LabelText = styled(Text)`
   color: ${(props) => props.theme.text};
   cursor: pointer;
+  font-weight: 400;
 `;
 const Checkbox = styled(Input)<{
   $greyable?: boolean;

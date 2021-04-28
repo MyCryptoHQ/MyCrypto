@@ -2,7 +2,8 @@ import EthereumApp from '@ledgerhq/hw-app-eth';
 import Transport from '@ledgerhq/hw-transport';
 
 import { LEDGER_DERIVATION_PATHS } from '@config/dpaths';
-import { DPath, WalletId } from '@types';
+import { DWAccountDisplay, ExtendedDPath, WalletResult } from '@services';
+import { DPath, TAddress, WalletId } from '@types';
 
 import HardwareWallet, { KeyInfo } from '../HardwareWallet';
 import { getFullPath } from '../helpers';
@@ -49,5 +50,34 @@ export default abstract class Ledger extends HardwareWallet {
     const response = await this.app!.getAddress(getFullPath(dPath, index));
 
     return response.address;
+  }
+
+  public async getMultipleAddresses(dpaths: ExtendedDPath[]): Promise<DWAccountDisplay[]> {
+    if (dpaths.length === 0) {
+      throw new Error('Derivation paths not found');
+    }
+    const outputAddresses: DWAccountDisplay[] = [];
+    for (const dpath of dpaths) {
+      try {
+        for (let idx = 0; idx < dpath.numOfAddresses; idx++) {
+          const data = (await this.getAddress(dpath, idx + dpath.offset)) as WalletResult;
+          const outputObject = {
+            address: data.address as TAddress,
+            pathItem: {
+              path: data.path,
+              baseDPath: dpath,
+              index: idx + dpath.offset
+            },
+            balance: undefined
+          };
+          outputAddresses.push(outputObject);
+        }
+        // eslint-disable-next-line no-empty
+      } catch (e) {
+        console.error('[getMultipleAddresses]: Error', e);
+        throw new Error(e);
+      }
+    }
+    return outputAddresses;
   }
 }

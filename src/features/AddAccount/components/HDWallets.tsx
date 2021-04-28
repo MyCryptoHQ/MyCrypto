@@ -1,34 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
-import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import questionSVG from '@assets/images/icn-question.svg';
 import nextIcon from '@assets/images/next-page-button.svg';
 import prevIcon from '@assets/images/previous-page-button.svg';
-import {
-  Account,
-  Box,
-  Button,
-  Icon,
-  InlineMessage,
-  Input,
-  LinkApp,
-  Selector,
-  Spinner,
-  Typography
-} from '@components';
+import { Account, Box, Button, Icon, InlineMessage, Input, LinkApp, Spinner } from '@components';
+import { Table } from '@components/Table';
 import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
-import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
-import { BREAK_POINTS, COLORS, FONT_SIZE, monospace, SPACING } from '@theme';
+import { getHDWallets, HDWalletData } from '@services/WalletService';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { DPath, Network, TAddress, TTicker } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
-import { Table } from '../Table';
+import { DPathSelector } from './DPathSelector';
 
 const { GREY_LIGHTEST, BLUE_LIGHTEST, GREY_DARK } = COLORS;
 
@@ -66,19 +55,6 @@ const SDropdown = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     width: 100%;
   }
-`;
-
-const DropdownDPath = styled.span`
-  padding-left: ${SPACING.XS};
-  opacity: 0.5;
-  font-size: 11px;
-  font-family: ${monospace};
-`;
-
-const SContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  padding: 12px 12px 12px 0px;
 `;
 
 const CustomDPath = styled.div`
@@ -198,7 +174,7 @@ const customDPath: DPath = {
   value: ''
 };
 
-export function DeterministicWalletsClass({
+export function HDWalletsClass({
   network,
   dPath,
   dPaths,
@@ -216,7 +192,7 @@ export function DeterministicWalletsClass({
   const [customPath, setCustomPath] = useState('');
   const [currentDPath, setCurrentDPath] = useState(dPath);
   const [page, setPage] = useState(0);
-  const [wallets, setWallets] = useState([] as DeterministicWalletData[]);
+  const [wallets, setWallets] = useState([] as HDWalletData[]);
   const { contacts } = useContacts();
   const { assets } = useAssets();
 
@@ -249,7 +225,7 @@ export function DeterministicWalletsClass({
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         setWallets(
-          getDeterministicWallets({
+          getHDWallets({
             seed,
             dPath: dPath.value,
             publicKey,
@@ -272,7 +248,7 @@ export function DeterministicWalletsClass({
     try {
       return getBaseAssetBalancesForAddresses(addressesToLookup, network).then(
         (balanceMapData: BalanceMap) => {
-          const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
+          const walletsWithBalances: HDWalletData[] = wallets.map((wallet) => {
             const balance = balanceMapData[wallet.address] || 0;
             return {
               ...wallet,
@@ -330,18 +306,8 @@ export function DeterministicWalletsClass({
     setPage(Math.max(page - 1, 0));
   };
 
-  type TDPathOptionProps = OptionProps<DPath> | { data: DPath; selectOption?(): void };
-  const DPathOption = ({ data, selectOption }: TDPathOptionProps) => (
-    <SContainer onClick={selectOption && (() => selectOption(data))}>
-      <Typography>
-        {data.label}{' '}
-        {data.value && <DropdownDPath>{data.value.toString().replace(' ', '')}</DropdownDPath>}
-      </Typography>
-    </SContainer>
-  );
-
   const renderWalletRow = (
-    wallet: DeterministicWalletData,
+    wallet: HDWalletData,
     // tslint:disable-next-line: no-shadowed-variable
     network: Network,
     // tslint:disable-next-line: no-shadowed-variable
@@ -393,12 +359,10 @@ export function DeterministicWalletsClass({
               <img width="16px" src={questionSVG} />
             </LinkApp>
           </label>
-          <Selector
-            value={currentDPath}
-            onChange={handleChangePath}
-            options={dPaths.concat([customDPath])}
-            optionComponent={DPathOption}
-            valueComponent={({ value }) => <DPathOption data={value} />}
+          <DPathSelector
+            selectedDPath={currentDPath}
+            selectDPath={handleChangePath}
+            dPaths={dPaths.concat([customDPath])}
             searchable={false}
           />
         </SDropdown>
@@ -458,4 +422,4 @@ export function DeterministicWalletsClass({
   );
 }
 
-export default DeterministicWalletsClass;
+export default HDWalletsClass;

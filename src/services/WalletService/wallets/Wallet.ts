@@ -1,6 +1,7 @@
 import { DPath } from '@types';
 
-import { ExtendedDPath } from '../deterministic/types';
+import { DWAccountDisplay, ExtendedDPath } from '../deterministic/types';
+import { KeyInfo } from './HardwareWallet';
 import { WalletResult } from './types';
 
 export default interface Wallet {
@@ -15,7 +16,15 @@ export default interface Wallet {
    * @param {DPath[]} paths The derivation paths to prefetch.
    * @return {Promise<any>} Can return the pre-fetched info for unit tests.
    */
-  prefetch?(paths: ExtendedDPath[]): Promise<any>;
+  prefetch?(paths: DPath[]): Promise<{ [key: string]: KeyInfo }>;
+
+  /**
+   * Optional function that can be used to getMultipleAddresses from a device.
+   *
+   * @param {ExtendedDPath[]} paths The derivation paths to getMultipleAddresses.
+   * @return {Promise<any>} Can return an array of deterministic wallet's account display objects.
+   */
+  getMultipleAddresses(paths: ExtendedDPath[]): Promise<DWAccountDisplay[]>;
 
   /**
    * Get an address or multiple addresses for a derivation path at a specific index.

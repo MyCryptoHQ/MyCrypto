@@ -4,17 +4,30 @@ import { Formik } from 'formik';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
-import { AssetSelector, Button, Input, Typography } from '@components';
-import Icon from '@components/Icon';
-import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
-import { DeterministicWalletState, ExtendedDPath, isValidPath } from '@services';
+import {
+  AssetSelector,
+  Box,
+  Button,
+  Input,
+  LinkApp,
+  PoweredByText,
+  Switch,
+  Text,
+  Typography
+} from '@components';
+import { Downloader } from '@components/Downloader';
+import { default as Icon } from '@components/Icon';
+import { DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
+import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
+import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPath, ExtendedAsset, Network } from '@types';
-import { accountsToCSV, filterValidAssets, sortByTicker, useScreenSize } from '@utils';
+import { filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
-import { Downloader } from '../Downloader';
-import DeterministicAccountList from './DeterministicAccountList';
+import { DPathSelector } from './DPathSelector';
+import { selectHDWalletScannedAccountsCSV } from './hdWallet.slice';
+import HDWList from './HDWList';
 
 const MnemonicWrapper = styled.div`
   display: flex;
@@ -30,20 +43,6 @@ const Title = styled.span`
   }
 `;
 
-const Parameters = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: ${SPACING.LG};
-  margin-top: ${SPACING.SM};
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_XS}) {
-    flex-direction: column;
-    & > div:first-child {
-      margin-bottom: ${SPACING.BASE};
-    }
-  }
-`;
-
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -54,9 +53,11 @@ const HeadingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: -25px;
   margin-bottom: ${SPACING.BASE};
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: column;
+    margin-left: 0px;
     align-items: flex-start;
   }
 `;
@@ -106,15 +107,26 @@ const SInput = styled(Input)`
   margin-bottom: ${SPACING.XS};
 `;
 
-interface DeterministicWalletProps {
-  state: DeterministicWalletState;
-  defaultDPath: DPath;
+const SButtonContainer = styled(Box)`
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-left: -25px;
+    margin-right: -25px;
+  }
+`;
+
+export interface HDWalletProps {
+  selectedAsset: ExtendedAsset;
+  scannedAccounts: DWAccountDisplay[];
+  isCompleted: boolean;
   assets: ExtendedAsset[];
   assetToUse: ExtendedAsset;
   network: Network;
+  dpaths: DPath[];
+  selectedDPath: DPath;
+  setSelectedDPath(dpath: DPath): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;
-  generateFreshAddress(defaultDPath: ExtendedDPath): boolean;
+  scanMoreAddresses(dpath: ExtendedDPath): void;
   handleAssetUpdate(asset: ExtendedAsset): void;
   onUnlock(param: any): void;
 }
@@ -129,23 +141,26 @@ const initialFormikValues: FormValues = {
   value: ''
 };
 
-const DeterministicWallet = ({
-  state,
-  defaultDPath,
+const HDWallet = ({
+  selectedAsset,
+  scannedAccounts,
+  isCompleted,
   assets,
   assetToUse,
   network,
+  dpaths,
+  selectedDPath,
+  setSelectedDPath,
   updateAsset,
   addDPaths,
-  generateFreshAddress,
+  scanMoreAddresses,
   handleAssetUpdate,
   onUnlock
-}: DeterministicWalletProps) => {
+}: HDWalletProps) => {
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
   const { isMobile } = useScreenSize();
-
   const [dpathAddView, setDpathAddView] = useState(false);
-  const [freshAddressIndex, setFreshAddressIndex] = useState(0);
-
+  const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
   const handleDPathAddition = (values: FormValues) => {
     addDPaths([
       {
@@ -157,22 +172,6 @@ const DeterministicWallet = ({
     setDpathAddView(false);
   };
 
-  const handleFreshAddressGeneration = () => {
-    if (freshAddressIndex >= DEFAULT_GAP_TO_SCAN_FOR || !state.completed) {
-      return;
-    }
-    const freshAddressGenerationSuccess = generateFreshAddress({
-      ...defaultDPath,
-      offset: freshAddressIndex,
-      numOfAddresses: 1
-    });
-    if (freshAddressGenerationSuccess) {
-      setFreshAddressIndex(freshAddressIndex + 1);
-    }
-  };
-
-  const csv = accountsToCSV(state.finishedAccounts, assetToUse);
-
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
     value: string()
@@ -183,7 +182,6 @@ const DeterministicWallet = ({
   });
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
-
   return dpathAddView ? (
     <MnemonicWrapper>
       <HeadingWrapper>
@@ -247,35 +245,69 @@ const DeterministicWallet = ({
           <Trans id="MNEMONIC_TITLE" />
         </Title>
       </HeadingWrapper>
-      <Typography>
-        <Trans id="MNEMONIC_SUBTITLE" />
-      </Typography>
-      <Parameters>
-        <AssetSelector
-          selectedAsset={assetToUse}
-          showAssetIcon={false}
-          showAssetName={true}
-          searchable={true}
-          assets={filteredAssets}
-          onSelect={(option: ExtendedAsset) => {
-            handleAssetUpdate(option);
-          }}
+
+      <SButtonContainer
+        pb={SPACING.MD}
+        variant={isMobile ? 'columnAlign' : 'rowAlign'}
+        justifyContent="space-between"
+      >
+        <Box variant="columnAlignLeft">
+          <Text>
+            <Trans id="MNEMONIC_SUBTITLE" />
+          </Text>
+          <AssetSelector
+            selectedAsset={assetToUse}
+            showAssetIcon={false}
+            showAssetName={true}
+            searchable={true}
+            assets={filteredAssets}
+            onSelect={handleAssetUpdate}
+          />
+        </Box>
+        <Box variant="columnAlignLeft" ml={isMobile ? SPACING.NONE : SPACING.SM}>
+          <Text>
+            <Trans id="MNEMONIC_DPATH_SELECT" />{' '}
+            <LinkApp href="#" onClick={() => setDpathAddView(true)}>
+              <Trans id="DETERMINISTIC_CUSTOM_LINK_TEXT" />
+            </LinkApp>
+            {'.'}
+          </Text>
+          <DPathSelector
+            selectedDPath={selectedDPath}
+            selectDPath={setSelectedDPath}
+            dPaths={dpaths}
+            clearable={false}
+            searchable={false}
+          />
+        </Box>
+      </SButtonContainer>
+      <Box
+        variant={isMobile ? 'columnAlign' : 'rowAlign'}
+        justifyContent="space-between"
+        pb={SPACING.SM}
+        ml={!isMobile ? '-25px' : '0px'}
+        mr={!isMobile ? '-25px' : '0px'}
+      >
+        <Switch
+          checked={displayEmptyAddresses}
+          onChange={() => setDisplayEmptyAddresses(!displayEmptyAddresses)}
+          labelLeft={translateRaw('HIDE_EMPTY_ADDRESSES')}
+          labelRight={translateRaw('SHOW_EMPTY_ADDRESSES')}
         />
-        <Button onClick={() => setDpathAddView(true)} colorScheme={'inverted'}>
-          <Trans id="MNEMONIC_ADD_CUSTOM_DPATH" />
-        </Button>
-      </Parameters>
+        <PoweredByText provider="FINDETH" />
+      </Box>
       <TableContainer>
-        {state.asset && (
-          <DeterministicAccountList
-            isComplete={state.completed}
-            asset={state.asset}
-            finishedAccounts={state.finishedAccounts}
-            onUnlock={onUnlock}
+        {selectedAsset && (
+          <HDWList
+            isCompleted={isCompleted}
+            asset={selectedAsset}
+            scannedAccounts={scannedAccounts}
             network={network}
-            generateFreshAddress={handleFreshAddressGeneration}
+            selectedDPath={selectedDPath}
+            displayEmptyAddresses={displayEmptyAddresses}
+            onUnlock={onUnlock}
+            onScanMoreAddresses={scanMoreAddresses}
             handleUpdate={updateAsset}
-            freshAddressIndex={freshAddressIndex}
           />
         )}
       </TableContainer>
@@ -283,4 +315,4 @@ const DeterministicWallet = ({
   );
 };
 
-export default DeterministicWallet;
+export default HDWallet;

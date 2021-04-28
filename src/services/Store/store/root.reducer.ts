@@ -2,6 +2,7 @@ import { AnyAction, createAction, createSelector, PayloadAction } from '@reduxjs
 import { combineReducers } from 'redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
+import hdWalletSlice from '@features/AddAccount/components/hdWallet.slice';
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { LocalStorage } from '@types';
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   [importSlice.name]: importSlice.reducer,
   [membershipSlice.name]: membershipSlice.reducer,
   [tokenScanningSlice.name]: tokenScanningSlice.reducer,
+  [hdWalletSlice.name]: hdWalletSlice.reducer,
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
   [featureFlagSlice.name]: featureFlagSlice.reducer
 });
