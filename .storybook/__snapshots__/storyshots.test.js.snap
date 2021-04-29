@@ -762,10 +762,18 @@ exports[` Storyshots Features/AddAccount/Hardware Ledger Unlock UI 1`] = `
           comprehensive troubleshooting guide
         </a>
         .
-        <svg
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM Hardware__HardwareImage-sc-1sopyir-0 koDDvq"
-          id="test-file-stub"
-        />
+      </p>
+      <svg
+        className="Icon__SInlineSVG-tq1i3y-0 eyLbcM Hardware__HardwareImage-sc-1sopyir-0 koDDvq"
+        id="test-file-stub"
+      />
+      <p
+        className="Text__SText-sc-14ylyin-0 duJURA"
+        color="#282d32"
+        fontSize="18px"
+        fontWeight={null}
+        letterSpacing="normal"
+      >
         <br />
         <button
           className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm Hardware__HardwareConnectBtn-sc-1sopyir-3 bxAHdO"
@@ -882,10 +890,18 @@ exports[` Storyshots Features/AddAccount/Hardware Trezor Unlock UI 1`] = `
         letterSpacing="normal"
       >
         After you've connected, follow the instructions on screen to access your account.
-        <svg
-          className="Icon__SInlineSVG-tq1i3y-0 eyLbcM Hardware__HardwareImage-sc-1sopyir-0 koDDvq"
-          id="test-file-stub"
-        />
+      </p>
+      <svg
+        className="Icon__SInlineSVG-tq1i3y-0 eyLbcM Hardware__HardwareImage-sc-1sopyir-0 koDDvq"
+        id="test-file-stub"
+      />
+      <p
+        className="Text__SText-sc-14ylyin-0 duJURA"
+        color="#282d32"
+        fontSize="18px"
+        fontWeight={null}
+        letterSpacing="normal"
+      >
         <br />
         <button
           className="sc-AxjAm sc-AxhUy sc-AxgMl jUWfvp Button__SButton-sc-1fs4nba-2 GguFm Hardware__HardwareConnectBtn-sc-1sopyir-3 bxAHdO"

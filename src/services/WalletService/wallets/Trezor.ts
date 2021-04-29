@@ -41,7 +41,7 @@ export default class Trezor extends HardwareWallet {
   }
 
   public async getMultipleAddresses(paths: ExtendedDPath[]): Promise<DWAccountDisplay[]> {
-    const keyInfo = this.prefetch(paths);
+    const keyInfo = await this.prefetch(paths);
     return flatten(
       Object.entries(keyInfo).map(([key, value]) => {
         const dpath = paths.find((x) => x.value === key);
