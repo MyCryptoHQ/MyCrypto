@@ -6,7 +6,7 @@ import { stripHexPrefix } from '@utils';
 
 export const createSignerProvider = (privateKey: string, publicKey: string) => {
   // @ts-expect-error This is a valid constructor, not sure why it's failing
-  const ws = new WebsocketProvider('ws://localhost:8000', { headers: { publicKey } });
+  const ws = new WebsocketProvider(`ws://localhost:8000?publicKey=${publicKey}`);
 
   const customProvider = {
     ...ws,
