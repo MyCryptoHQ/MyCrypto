@@ -11,7 +11,7 @@ export const createSignerProvider = (privateKey: string, publicKey: string) => {
   const customProvider = {
     ...ws,
     send: async (payload: any, callback: any) => {
-      const encoded = new TextEncoder().encode(JSON.stringify(payload));
+      const encoded = Buffer.from(JSON.stringify(payload), 'utf-8');
       const hash = stripHexPrefix(hexlify(await utils.sha512(encoded)));
       const sig = await sign(hash, privateKey);
       const newPayload = { ...payload, hash, sig };
