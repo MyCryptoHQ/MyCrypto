@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
-import WebsocketProvider from 'web3-providers-ws';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { WALLETS_CONFIG } from '@config';
 import { getNetworkByChainId, useNetworks } from '@services/Store';
+import { getKeyPair, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
 import { isVoid } from '@utils';
+import { createSignerProvider } from '@utils/signerProvider';
 
 enum WalletSigningState {
   READY, //when signerWallet is ready to sendTransaction
@@ -22,14 +23,15 @@ const SignTransactionDesktopSigner = ({
   onSuccess
 }: ISignComponentProps) => {
   const { networks } = useNetworks();
+  const { publicKey, privateKey } = useSelector(getKeyPair);
   const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
 
   const [submitting, setSubmitting] = useState(false);
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
   const [error, setError] = useState('');
 
-  // @ts-expect-error This is a valid constructor, not sure why it's failing
-  const ws = new WebsocketProvider('ws://localhost:8000');
+  const ws = createSignerProvider(privateKey, publicKey);
+
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 
   useEffect(() => {

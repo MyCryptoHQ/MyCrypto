@@ -37,7 +37,7 @@ export const signerInit = createAction(`${slice.name}/init`);
  * Selectors
  */
 // @ts-expect-error @todo fix typing here
-export const getState = createSelector(getAppState, (s) => s[slice.name]);
+const getState = createSelector(getAppState, (s) => s[slice.name]);
 export const getKeyPair = createSelector(getState, (signer) => signer.keyPair);
 
 /**
