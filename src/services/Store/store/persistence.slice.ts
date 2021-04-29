@@ -17,6 +17,7 @@ import notificationSlice from './notification.slice';
 import { APP_PERSIST_CONFIG } from './persist.config';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
+import signerSlice, { signerInit } from './signer.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
 import { fetchHistory, fetchSchemaMeta } from './txHistory.slice';
 import userActionSlice from './userAction.slice';
@@ -37,7 +38,8 @@ const persistenceReducer = combineReducers({
   [networkSlice.name]: networkSlice.reducer,
   [notificationSlice.name]: notificationSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [userActionSlice.name]: userActionSlice.reducer
+  [userActionSlice.name]: userActionSlice.reducer,
+  [signerSlice.name]: signerSlice.reducer
 });
 
 const slice = {
@@ -66,5 +68,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(startBalancesPolling());
     yield put(fetchENS());
     yield put(fetchClaims());
+    yield put(signerInit());
   }
 }
