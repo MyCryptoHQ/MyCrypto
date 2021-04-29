@@ -327,7 +327,7 @@
     "LEDGER_REFERRAL_2": "Don’t have a Ledger? [Get one now!](https://www.ledgerwallet.com/r/1985?path=/products/)",
     "LEDGER_TIMEOUT": "The request timed out",
     "GENERIC_HARDWARE_ERROR": "Error connecting to device.",
-    "LEDGER_TIP": "Please open the $network app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our [comprehensive troubleshooting guide](https://support.mycrypto.com/troubleshooting/accessing-wallet/ledger-hardware-wallet-unable-to-connect-on-mycrypto).",
+    "LEDGER_TIP": "Please open the $network app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our [comprehensive troubleshooting guide](https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto).",
     "LEDGER_WRONG_APP": "Incorrect network application selected on your Ledger device. Please select the application for the correct network.",
     "LOADING_ADDRESS": "Loading address...",
     "MANAGE_MEMBERSHIP": "View Membership",
