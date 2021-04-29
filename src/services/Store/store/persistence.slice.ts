@@ -20,6 +20,7 @@ import { APP_PERSIST_CONFIG } from './persist.config';
 import promoPoapsSlice, { checkForPromos } from './promoPoaps.slice';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
+import signerSlice, { signerInit } from './signer.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
 import { fetchHistory, fetchSchemaMeta } from './txHistory.slice';
 import userActionSlice from './userAction.slice';
@@ -43,7 +44,8 @@ const persistenceReducer = combineReducers({
   [userActionSlice.name]: userActionSlice.reducer,
   [promoPoapsSlice.name]: promoPoapsSlice.reducer,
   [connectionsSlice.name]: connectionsSlice.reducer,
-  [claimsSlice.name]: claimsSlice.reducer
+  [claimsSlice.name]: claimsSlice.reducer,
+  [signerSlice.name]: signerSlice.reducer
 });
 
 const slice = {
@@ -74,5 +76,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(fetchClaims());
     yield put(startGasPolling());
     yield put(checkForPromos());
+    yield put(signerInit());
   }
 }
