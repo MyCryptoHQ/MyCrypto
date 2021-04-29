@@ -107,7 +107,16 @@ const HardwareWalletUI = ({
         textAlign="center"
       >
         {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
-        <HardwareImage type={hardwareConfigs[walletId].iconId} />
+      </Text>
+      <HardwareImage type={hardwareConfigs[walletId].iconId} />
+      <Text
+        lineHeight="1.5"
+        letterSpacing="normal"
+        fontSize={FONT_SIZE.MD}
+        paddingTop={SPACING.BASE}
+        color={COLORS.GREY_DARKEST}
+        textAlign="center"
+      >
         {connectionError && (
           <ErrorMessageContainer>
             <InlineMessage
