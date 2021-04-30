@@ -7,4 +7,5 @@ export type TAnalyticEvents =
   | 'Newsletter subscription'
   | 'Total Account Count'
   | 'Deactivate analytics'
-  | 'Export AppState';
+  | 'Export AppState'
+  | 'Import AppState';
