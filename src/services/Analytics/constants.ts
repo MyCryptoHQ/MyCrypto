@@ -1,10 +1,9 @@
-// Analytic Events
 export type TAnalyticEvents =
   | 'App Load'
   | 'Add Account'
   | 'Add Asset'
   | 'Link clicked'
-  | 'Donate clicked'
+  | 'Donate clicked' // User copies ETH or BTC address to clipboard.
   | 'Newsletter subscription'
   | 'Total Account Count'
-  | 'Deactivate analytics';
+  | 'Deactivate analytics'; // User chooses to stop tracking.
