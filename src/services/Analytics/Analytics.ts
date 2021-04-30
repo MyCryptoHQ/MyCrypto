@@ -39,7 +39,7 @@ const clearAnonymousID = () => {
 const setAnonymousID = () => getConfig();
 
 const track = ({ name, params }: TrackParams) => {
-  return event({ name, ...params });
+  return event({ ...params, name });
 };
 
 const trackPage = ({ name, title }: PageParams) => {
