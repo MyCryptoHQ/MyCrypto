@@ -6,4 +6,5 @@ export type TAnalyticEvents =
   | 'Link clicked'
   | 'Donate clicked'
   | 'Newsletter subscription'
-  | 'Total Account Count';
+  | 'Total Account Count'
+  | 'Deactivate analytics';

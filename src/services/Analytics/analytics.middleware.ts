@@ -1,6 +1,6 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
-import { addAccounts, createAsset } from '@store';
+import { addAccounts, createAsset, setProductAnalyticsAuthorisation } from '@store';
 
 import { trackEvent } from './saga';
 
@@ -26,6 +26,15 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
         trackEvent({
           name: 'Add Asset',
           params: action.payload
+        })
+      );
+      break;
+    }
+
+    case setProductAnalyticsAuthorisation.type: {
+      state.dispatch(
+        trackEvent({
+          name: 'Deactivate analytics'
         })
       );
       break;
