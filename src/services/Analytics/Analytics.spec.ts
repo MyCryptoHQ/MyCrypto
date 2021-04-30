@@ -15,6 +15,18 @@ describe('AnalyticsService', () => {
     });
   });
 
+  it('track() ensures params may not override event name', async () => {
+    const data: TrackParams = {
+      name: 'Add Asset',
+      params: { qty: 3, name: 'Double whooper' }
+    };
+    AnalyticsService.track(data);
+    expect(event).toHaveBeenCalledWith({
+      ...data.params,
+      name: data.name
+    });
+  });
+
   it('page() contains a name and a title', async () => {
     const data = { name: 'Send', title: 'Send any crypto' };
     AnalyticsService.trackPage(data);
