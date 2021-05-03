@@ -117,6 +117,198 @@ const TxTypeConfig: ITxTypeConfig = {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: inbound
+  },
+  [ITxHistoryType.ONE_INCH_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('ONE_INCH_EXCHANGE'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.AAVE_BORROW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('AAVE'),
+      $action: translateRaw('PLATFORM_TAKE_LOAN')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.AAVE_DEPOSIT]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('AAVE'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.AAVE_REPAY]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('AAVE'),
+      $action: translateRaw('PLATFORM_REPAY_LOAN')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.AAVE_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('AAVE'),
+      $action: translateRaw('PLATFORM_WITHDRAW')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.COMPOUND_V2_BORROW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('COMPOUND'),
+      $action: translateRaw('PLATFORM_TAKE_LOAN')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.COMPOUND_V2_DEPOSIT]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('COMPOUND'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.COMPOUND_V2_REPAY]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('COMPOUND'),
+      $action: translateRaw('PLATFORM_REPAY_LOAN')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.COMPOUND_V2_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('COMPOUND'),
+      $action: translateRaw('PLATFORM_WITHDRAW')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.DEX_AG_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('DEX_AG'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.ETHERMINE_MINING_PAYOUT]: {
+    label: () =>
+      translateRaw('RECENT_TX_LIST_LABEL_MINING_PAYOUT', {
+        $poolName: translateRaw('ETHERMINE_POOL')
+      }),
+    icon: inbound
+  },
+  [ITxHistoryType.GNOSIS_SAFE_APPROVE_TX]: {
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_GNOSIS_APPROVAL'),
+    icon: approval
+  },
+  [ITxHistoryType.GNOSIS_SAFE_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
+    icon: contractInteract
+  },
+  [ITxHistoryType.IDEX_DEPOSIT_ETH]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('IDEX'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.IDEX_DEPOSIT_TOKEN]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('IDEX'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.IDEX_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('IDEX'),
+      $action: translateRaw('PLATFORM_WITHDRAW')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.KYBER_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('KYBER'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.MININGPOOLHUB_MINING_PAYOUT]: {
+    label: () =>
+      translateRaw('RECENT_TX_LIST_LABEL_MINING_PAYOUT', {
+        $poolName: translateRaw('MININGPOOLHUB_POOL')
+      }),
+    icon: inbound
+  },
+  [ITxHistoryType.PARASWAP_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('PARASWAP'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.SPARKPOOL_MINING_PAYOUT]: {
+    label: () =>
+      translateRaw('RECENT_TX_LIST_LABEL_MINING_PAYOUT', {
+        $poolName: translateRaw('SPARK_POOL')
+      }),
+    icon: inbound
+  },
+  [ITxHistoryType.UNISWAP_V1_DEPOSIT]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.UNISWAP_V1_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.UNISWAP_V1_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_WITHDRAW')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.UNISWAP_V2_DEPOSIT]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_DEPOSIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.UNISWAP_V2_EXCHANGE]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_ASSETS_SWAPPED')
+    }),
+    icon: swap
+  },
+  [ITxHistoryType.UNISWAP_V2_ROUTER_TO]: {
+    label: () => translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT'),
+    icon: contractInteract
+  },
+  [ITxHistoryType.UNISWAP_V2_WITHDRAW]: {
+    label: () => translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+      $platform: translateRaw('UNISWAP'),
+      $action: translateRaw('PLATFORM_WITHDRAW')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.WETH_UNWRAP]: {
+    label: () => translateRaw('RECENT_TX_LIST_UNWRAP', {
+      $asset: translateRaw('BASE_UNIT')
+    }),
+    icon: contractInteract
+  },
+  [ITxHistoryType.WETH_WRAP]: {
+    label: () => translateRaw('RECENT_TX_LIST_WRAP', {
+      $asset: translateRaw('BASE_UNIT')
+    }),
+    icon: contractInteract
   }
 };
 

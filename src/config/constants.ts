@@ -18,7 +18,7 @@ export const TOKEN_INFO_URL = 'https://api.mycryptoapi.com/tokens';
 // The URL for MYC api.
 export const MYC_API = 'https://mycryptoapi.com/api/v1';
 
-export const HISTORY_API = 'https://history.mycryptoapi.com/history';
+export const HISTORY_API = 'https://history.mycryptodev.com/history';
 
 export const NANSEN_API = 'https://nansen.mycryptoapi.com/v1';
 

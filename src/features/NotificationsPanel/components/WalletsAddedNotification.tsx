@@ -9,7 +9,6 @@ import questionsIcon from '@assets/images/icn-questions.svg';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
-import { StoreAccount } from '@types';
 
 import NotificationWrapper from './NotificationWrapper';
 
@@ -76,10 +75,10 @@ const getResources = () => {
 };
 
 interface NotificationProps {
-  accounts: StoreAccount[];
+  numOfAccounts: number;
 }
 
-export default function WalletsAdded({ accounts }: NotificationProps) {
+export default function WalletsAdded({ numOfAccounts }: NotificationProps) {
   return (
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
@@ -90,7 +89,7 @@ export default function WalletsAdded({ accounts }: NotificationProps) {
         transform: 'rotateY(180deg)',
         hideOnMobile: true
       }}
-      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', { $numNewAccounts: accounts.length })}
+      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', { $numNewAccounts: numOfAccounts })}
       additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
     />
