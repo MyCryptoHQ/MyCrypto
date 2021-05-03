@@ -44,6 +44,7 @@
     "date-fns": "2.16.1",
     "ethereumjs-abi": "0.6.8",
     "ethereumjs-util": "6.0.0",
+    "fast-json-stable-stringify": "2.1.0",
     "font-awesome": "4.7.0",
     "formik": "2.1.4",
     "graphql": "15.0.0",
