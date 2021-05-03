@@ -13,8 +13,8 @@ export const createSignerProvider = (privateKey: string, publicKey: string) => {
     send: async (payload: any, callback: any) => {
       const encoded = Buffer.from(JSON.stringify(payload), 'utf-8');
       const hash = stripHexPrefix(hexlify(await utils.sha512(encoded)));
-      const sig = await sign(hash, privateKey);
-      const newPayload = { ...payload, sig, publicKey };
+      const signature = await sign(hash, privateKey);
+      const newPayload = { ...payload, signature, publicKey };
       ws.send(newPayload, callback);
     }
   };
