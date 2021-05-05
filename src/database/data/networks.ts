@@ -468,7 +468,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     color: '#0093c5',
     blockExplorer: makeExplorer({
       name: 'Atheios Explorer',
-      origin: 'https://explorer.atheios.com'
+      origin: 'https://explorer.atheios.org'
     }),
     tokens: [],
     contracts: [],
