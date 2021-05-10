@@ -96,7 +96,8 @@ export default class DexService {
           : undefined,
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
-        takerAddress: account ? account : undefined
+        takerAddress: account ? account : undefined,
+        skipValidation: true
       },
       cancelToken: new CancelToken(function executor(c) {
         // An executor function receives a cancel function as a parameter
