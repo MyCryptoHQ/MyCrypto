@@ -145,18 +145,29 @@ const SwapAssets = (props: Props) => {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
+  const estimatedGasFee =
+    gasPrice &&
+    tradeGasLimit &&
+    totalTxFeeToString(
+      gasPrice,
+      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
+    );
+
+  // Accounts with a balance of the chosen asset and base asset
+  const filteredAccounts = fromAsset
+    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
+    : [];
+
   useEffect(() => {
     if (
       fromAmount &&
       fromAsset &&
       account &&
-      !getAccountsWithAssetBalance(accounts, fromAsset, fromAmount).find(
-        (a) => a.uuid === account.uuid
-      )
+      !filteredAccounts.find((a) => a.uuid === account.uuid)
     ) {
       handleAccountSelected(undefined);
     }
-  }, [fromAsset, fromAmount]);
+  }, [fromAsset, fromAmount, gasPrice, tradeGasLimit, approvalGasLimit]);
 
   useEffect(() => {
     handleRefreshQuote();
@@ -165,14 +176,6 @@ const SwapAssets = (props: Props) => {
   useEffect(() => {
     handleGasLimitEstimation();
   }, [approvalTx, account]);
-
-  const estimatedGasFee =
-    gasPrice &&
-    tradeGasLimit &&
-    totalTxFeeToString(
-      gasPrice,
-      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
-    );
 
   useInterval(
     () => {
@@ -188,11 +191,6 @@ const SwapAssets = (props: Props) => {
     false,
     [expiration]
   );
-
-  // Accounts with a balance of the chosen asset
-  const filteredAccounts = fromAsset
-    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
-    : [];
 
   return (
     <>
