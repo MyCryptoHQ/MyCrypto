@@ -18,6 +18,10 @@ const defaultProps: React.ComponentProps<typeof MembershipPurchaseForm> = {
   handleUserInputFormSubmit: noOp
 };
 
+jest.mock('@services/EthService', () => ({
+  getNonce: jest.fn().mockReturnValue(1)
+}));
+
 function getComponent(props: React.ComponentProps<typeof MembershipPurchaseForm>) {
   return simpleRender(
     <StoreContext.Provider
