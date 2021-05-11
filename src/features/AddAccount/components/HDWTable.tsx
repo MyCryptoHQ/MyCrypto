@@ -365,8 +365,8 @@ const HDTable = ({
                       ticker={asset.ticker}
                       amount={
                         account.balance
-                          ? bigify(fromTokenBase(bigify(account.balance), asset.decimal)).toFixed(4)
-                          : '0.0000'
+                          ? bigify(fromTokenBase(bigify(account.balance), asset.decimal)).toFixed(5)
+                          : '0.00000'
                       }
                     />
                   </Typography>
