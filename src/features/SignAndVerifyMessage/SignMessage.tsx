@@ -90,6 +90,27 @@ interface SignProps {
   setShowSubtitle(show: boolean): void;
 }
 
+const attemptSign = async (
+  wallet: IFullWallet,
+  walletName: WalletId,
+  message: string
+): Promise<ISignedMessage> => {
+  const address = toChecksumAddress(wallet.getAddressString());
+
+  let lib: Web3Node | undefined = undefined;
+  if (walletName && walletName !== WalletId.WALLETCONNECT && isWeb3Wallet(walletName)) {
+    lib = (await setupWeb3Node()).lib;
+  }
+
+  const sig = await wallet.signMessage(message, lib);
+  return {
+    address,
+    msg: message,
+    sig: addHexPrefix(sig),
+    version: '2'
+  };
+};
+
 function SignMessage(props: Props) {
   const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
@@ -103,27 +124,11 @@ function SignMessage(props: Props) {
   const handleSignMessage = async () => {
     setSignStatus(SignStatus.SIGNING);
     try {
-      if (!wallet) {
-        throw Error;
-      }
+      if (!wallet || !walletName) throw Error;
 
-      const address = toChecksumAddress(wallet.getAddressString());
-      let sig = '';
-
-      let lib: Web3Node | undefined = undefined;
-      if (walletName && walletName !== WalletId.WALLETCONNECT && isWeb3Wallet(walletName)) {
-        lib = (await setupWeb3Node()).lib;
-      }
-      sig = await wallet.signMessage(message, lib);
-
-      const combined = {
-        address,
-        msg: message,
-        sig: addHexPrefix(sig),
-        version: '2'
-      };
+      const signedMessage = await attemptSign(wallet, walletName, message);
       setError(undefined);
-      setSignedMessage(combined);
+      setSignedMessage(signedMessage);
       setSignStatus(SignStatus.SIGNED);
     } catch (err) {
       setSignStatus(SignStatus.NOT_SIGNED);
