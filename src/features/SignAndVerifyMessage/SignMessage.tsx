@@ -9,13 +9,12 @@ import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { WalletConnectWallet } from '@services';
-import { setupWeb3Node, Web3Node } from '@services/EthService';
 import { IFullWallet } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, ISignedMessage, WalletId } from '@types';
-import { addHexPrefix, isWeb3Wallet } from '@utils';
+import { addHexPrefix } from '@utils';
 import { useUnmount } from '@vendor';
 
 import { getStories } from './stories';
@@ -90,27 +89,6 @@ interface SignProps {
   setShowSubtitle(show: boolean): void;
 }
 
-const attemptSign = async (
-  wallet: IFullWallet,
-  walletName: WalletId,
-  message: string
-): Promise<ISignedMessage> => {
-  const address = toChecksumAddress(wallet.getAddressString());
-
-  let lib: Web3Node | undefined = undefined;
-  if (walletName && walletName !== WalletId.WALLETCONNECT && isWeb3Wallet(walletName)) {
-    lib = (await setupWeb3Node()).lib;
-  }
-
-  const sig = await wallet.signMessage(message, lib);
-  return {
-    address,
-    msg: message,
-    sig: addHexPrefix(sig),
-    version: '2'
-  };
-};
-
 function SignMessage(props: Props) {
   const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
@@ -126,7 +104,15 @@ function SignMessage(props: Props) {
     try {
       if (!wallet || !walletName) throw Error;
 
-      const signedMessage = await attemptSign(wallet, walletName, message);
+      const address = toChecksumAddress(wallet.getAddressString());
+
+      const sig = await wallet.signMessage(message);
+      const signedMessage = {
+        address,
+        msg: message,
+        sig: addHexPrefix(sig),
+        version: '2'
+      };
       setError(undefined);
       setSignedMessage(signedMessage);
       setSignStatus(SignStatus.SIGNED);

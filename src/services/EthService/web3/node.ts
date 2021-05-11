@@ -58,6 +58,11 @@ export class Web3Node {
       .then(isValidGetChainId)
       .then(({ result }) => bigify(result).toString());
   }
+
+  // requestAccounts will prompt user to unlock when necessary, but will not request permissions.
+  public requestAccounts() {
+    return this.client.send(this.requests.requestAccounts());
+  }
 }
 
 export async function getChainIdAndLib() {
