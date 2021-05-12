@@ -25,7 +25,7 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
             qty: action.payload.length,
             // multiple add accounts are always of the same type and network
             walletId: action.payload[0].wallet,
-            networkId: action.payload[0].wallet
+            networkId: action.payload[0].networkId
           }
         })
       );
