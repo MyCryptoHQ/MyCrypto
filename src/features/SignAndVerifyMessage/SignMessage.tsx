@@ -24,7 +24,6 @@ import {
   selectSignMessageError,
   selectSignMessageStatus,
   selectWalletId,
-  selectWalletInfo,
   signMessageFailure,
   signMessageRequest,
   signMessageReset,
@@ -113,8 +112,7 @@ function SignMessage({
   signMessageReset,
   walletSelect,
   walletUnlock,
-  walletId,
-  walletInfo
+  walletId
 }: Props) {
   const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
   const handleSignMessage = async () => {
@@ -145,8 +143,12 @@ function SignMessage({
   };
 
   const onUnlock = (w: IFullWallet) => {
-    setWallet(Array.isArray(w) ? w[0] : w);
-    walletUnlock({ address: toChecksumAddress(w.getAddressString()), network: w.network });
+    const selectedWallet = Array.isArray(w) ? w[0] : w;
+    setWallet(selectedWallet);
+    walletUnlock({
+      address: toChecksumAddress(selectedWallet.getAddressString()),
+      network: selectedWallet.network
+    });
   };
 
   const reset = () => {
@@ -223,7 +225,6 @@ const mapStateToProps = (state: AppState) => ({
   error: selectSignMessageError(state),
   signedMessage: selectSignedMessage(state),
   message: selectMessage(state),
-  walletInfo: selectWalletInfo(state),
   walletId: selectWalletId(state)
 });
 
