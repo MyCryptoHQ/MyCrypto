@@ -48,7 +48,6 @@ export interface ReserveAsset extends Asset {
 export interface AssetBalanceObject {
   readonly uuid: TUuid;
   balance: BigNumber | string;
-  mtime: number;
 }
 
 export type StoreAsset = ExtendedAsset & {

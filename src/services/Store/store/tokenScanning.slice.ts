@@ -118,8 +118,7 @@ export const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
     if (baseAssetBalance) {
       newAssets.push({
         uuid: generateAssetUUID(network.chainId),
-        balance: baseAssetBalance.toString(10),
-        mtime: Date.now()
+        balance: baseAssetBalance.toString(10)
       });
     }
 

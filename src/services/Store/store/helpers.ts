@@ -1,4 +1,5 @@
 import {
+  AssetBalanceObject,
   ExtendedAsset,
   ExtendedNotification,
   IAccount,
@@ -7,6 +8,7 @@ import {
   Network,
   NodeOptions,
   StoreAccount,
+  StoreAsset,
   TTicker
 } from '@types';
 import { bigify, isBigish, isVoid } from '@utils';
@@ -114,3 +116,27 @@ export const buildCoinGeckoIdMapping = (assets: Record<string, IProvidersMapping
     }
     return acc;
   }, {} as Record<string, string>);
+
+// Ensure that we don't push unnecessary data to the store
+export const sanitizeAccount = (a: IAccount) => ({
+  uuid: a.uuid,
+  label: a.label,
+  address: a.address,
+  networkId: a.networkId,
+  assets: a.assets.map((a: AssetBalanceObject | StoreAsset) => ({
+    uuid: a.uuid,
+    balance: a.balance
+  })),
+  wallet: a.wallet,
+  transactions: a.transactions?.map((t) => ({
+    ...t,
+    value: t.value,
+    gasLimit: t.gasLimit,
+    gasPrice: t.gasPrice,
+    gasUsed: t.gasUsed && t.gasUsed
+  })),
+  dPath: a.dPath,
+  mtime: a.mtime,
+  favorite: a.favorite,
+  isPrivate: a.isPrivate
+});
