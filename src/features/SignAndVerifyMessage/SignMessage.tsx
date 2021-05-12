@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
+import { Box, Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { WalletConnectWallet } from '@services';
 import type { IFullWallet } from '@services/WalletService';
@@ -37,12 +37,6 @@ export const defaultFormData: Pick<FormData, 'network'> = {
   network: DEFAULT_NETWORK
 };
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 interface SignButtonProps {
   disabled?: boolean;
 }
@@ -54,11 +48,6 @@ const SignButton = styled(Button)<SignButtonProps>`
   }
 `;
 
-const SignedMessage = styled.div`
-  margin-top: 10px;
-  width: 100%;
-`;
-
 const SignedMessageLabel = styled.p`
   font-size: 18px;
   width: 100%;
@@ -67,10 +56,6 @@ const SignedMessageLabel = styled.p`
   font-weight: normal;
   margin-bottom: 9px;
   color: ${(props) => props.theme.text};
-`;
-
-const CodeBlockWrapper = styled.div`
-  width: 100%;
 `;
 
 interface BackButtonProps {
@@ -148,7 +133,7 @@ function SignMessage({
   });
 
   return (
-    <Content>
+    <Box variant="columnAlign">
       {isDemoMode && <DemoGatewayBanner />}
       {walletId ? (
         <>
@@ -187,16 +172,16 @@ function SignMessage({
             {status === 'SIGN_REQUEST' ? translate('SUBMITTING') : translate('NAV_SIGNMSG')}
           </SignButton>
           {status === 'SIGN_SUCCESS' && (
-            <SignedMessage>
+            <Box mt="10px" width="100%">
               <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
-              <CodeBlockWrapper>
+              <Box width="100%">
                 <CodeBlock>{JSON.stringify(signedMessage, null, 2)}</CodeBlock>
-              </CodeBlockWrapper>
-            </SignedMessage>
+              </Box>
+            </Box>
           )}
         </>
       )}
-    </Content>
+    </Box>
   );
 }
 
