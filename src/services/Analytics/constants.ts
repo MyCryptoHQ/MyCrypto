@@ -8,4 +8,5 @@ export type TAnalyticEvents =
   | 'Total Account Count'
   | 'Deactivate analytics'
   | 'Export AppState'
-  | 'Import AppState';
+  | 'Import AppState'
+  | 'Set Demo Mode';
