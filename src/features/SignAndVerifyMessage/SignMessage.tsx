@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -9,14 +10,29 @@ import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { WalletConnectWallet } from '@services';
-import { IFullWallet } from '@services/WalletService';
+import type { IFullWallet } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { FormData, ISignedMessage, WalletId } from '@types';
+import { FormData, WalletId } from '@types';
 import { addHexPrefix } from '@utils';
 import { useUnmount } from '@vendor';
 
+import {
+  selectMessage,
+  selectSignedMessage,
+  selectSignMessageError,
+  selectSignMessageStatus,
+  selectWalletId,
+  selectWalletInfo,
+  signMessageFailure,
+  signMessageRequest,
+  signMessageReset,
+  signMessageSuccess,
+  updateMessage,
+  walletSelect,
+  walletUnlock
+} from './signMessage.slice';
 import { getStories } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
@@ -79,80 +95,71 @@ const BackButton = styled(ButtonUI)<BackButtonProps>`
   }
 `;
 
-enum SignStatus {
-  NOT_SIGNED,
-  SIGNING,
-  SIGNED
-}
-
 interface SignProps {
   setShowSubtitle(show: boolean): void;
 }
 
-function SignMessage(props: Props) {
-  const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
-  const [wallet, setWallet] = useState<IFullWallet | null>(null);
-  const [signStatus, setSignStatus] = useState<SignStatus>(SignStatus.NOT_SIGNED);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
-
-  const { setShowSubtitle, isDemoMode } = props;
-
+function SignMessage({
+  setShowSubtitle,
+  isDemoMode,
+  signedMessage,
+  signMessageRequest,
+  signMessageSuccess,
+  signMessageFailure,
+  message,
+  updateMessage,
+  status,
+  error,
+  signMessageReset,
+  walletSelect,
+  walletUnlock,
+  walletId,
+  walletInfo
+}: Props) {
+  const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
   const handleSignMessage = async () => {
-    setSignStatus(SignStatus.SIGNING);
+    signMessageRequest();
     try {
-      if (!wallet || !walletName) throw Error;
+      if (!wallet || !walletId || !message) throw Error;
 
       const address = toChecksumAddress(wallet.getAddressString());
 
       const sig = await wallet.signMessage(message);
-      const signedMessage = {
+      const final = {
         address,
         msg: message,
         sig: addHexPrefix(sig),
         version: '2'
       };
-      setError(undefined);
-      setSignedMessage(signedMessage);
-      setSignStatus(SignStatus.SIGNED);
+      signMessageSuccess(final);
     } catch (err) {
-      setSignStatus(SignStatus.NOT_SIGNED);
-      setError(translateRaw('SIGN_MESSAGE_ERROR'));
+      // setError(translateRaw('SIGN_MESSAGE_ERROR'));
+      signMessageFailure(err);
       console.debug('[SignMessage]', err);
     }
   };
 
-  const handleOnChange = (msg: string) => {
-    setMessage(msg);
-    setError(undefined);
-    setSignStatus(SignStatus.NOT_SIGNED);
-  };
-
-  const onSelect = (selectedWalletName: WalletId) => {
-    setWalletName(selectedWalletName);
+  const onSelect = (walletId: WalletId) => {
+    walletSelect(walletId);
     setShowSubtitle(false);
   };
 
-  const onUnlock = (selectedWallet: IFullWallet | [IFullWallet]) => {
-    setWallet(Array.isArray(selectedWallet) ? selectedWallet[0] : selectedWallet);
+  const onUnlock = (w: IFullWallet) => {
+    setWallet(Array.isArray(w) ? w[0] : w);
+    walletUnlock({ address: toChecksumAddress(w.getAddressString()), network: w.network });
   };
 
-  const resetWalletSelectionAndForm = () => {
-    setMessage('');
-    setError(undefined);
-    setWalletName(undefined);
-    setSignStatus(SignStatus.NOT_SIGNED);
+  const reset = () => {
+    signMessageReset();
     setShowSubtitle(true);
-    setWallet(null);
   };
 
-  const story = getStories().find((x) => x.name === walletName);
+  const story = getStories().find((x) => x.name === walletId);
   const Step = story && story.steps[0];
 
   useUnmount(() => {
     // Kill WalletConnect session
-    if (wallet && walletName === WalletId.WALLETCONNECT) {
+    if (wallet && walletId === WalletId.WALLETCONNECT) {
       (wallet as WalletConnectWallet).kill();
     }
   });
@@ -160,15 +167,15 @@ function SignMessage(props: Props) {
   return (
     <Content>
       {isDemoMode && <DemoGatewayBanner />}
-      {walletName ? (
+      {walletId ? (
         <>
-          <BackButton marginBottom={!!wallet} basic={true} onClick={resetWalletSelectionAndForm}>
+          <BackButton marginBottom={!!wallet} basic={true} onClick={reset}>
             <img src={backArrowIcon} alt="Back arrow" />
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
           {!wallet && (
             <Step
-              wallet={WALLETS_CONFIG[walletName]}
+              wallet={WALLETS_CONFIG[walletId]}
               onUnlock={onUnlock}
               formData={defaultFormData}
             />
@@ -185,18 +192,18 @@ function SignMessage(props: Props) {
             label={translate('MSG_MESSAGE')}
             placeholder={translateRaw('SIGN_MSG_PLACEHOLDER')}
             textarea={true}
-            onChange={(event) => handleOnChange(event.target.value)}
+            onChange={(event) => updateMessage(event.target.value)}
             height="150px"
             inputError={error}
           />
           <SignButton
             disabled={!message || isDemoMode}
             onClick={handleSignMessage}
-            loading={signStatus === SignStatus.SIGNING}
+            loading={status === 'SIGN_REQUEST'}
           >
-            {signStatus === SignStatus.SIGNING ? translate('SUBMITTING') : translate('NAV_SIGNMSG')}
+            {status === 'SIGN_REQUEST' ? translate('SUBMITTING') : translate('NAV_SIGNMSG')}
           </SignButton>
-          {signStatus === SignStatus.SIGNED && (
+          {status === 'SIGN_SUCCESS' && (
             <SignedMessage>
               <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
               <CodeBlockWrapper>
@@ -211,10 +218,30 @@ function SignMessage(props: Props) {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
+  isDemoMode: getIsDemoMode(state),
+  status: selectSignMessageStatus(state),
+  error: selectSignMessageError(state),
+  signedMessage: selectSignedMessage(state),
+  message: selectMessage(state),
+  walletInfo: selectWalletInfo(state),
+  walletId: selectWalletId(state)
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      walletUnlock,
+      signMessageRequest,
+      signMessageReset,
+      signMessageSuccess,
+      signMessageFailure,
+      updateMessage,
+      walletSelect
+    },
+    dispatch
+  );
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector> & SignProps;
 
 export default connector(SignMessage);
