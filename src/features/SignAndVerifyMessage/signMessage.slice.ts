@@ -1,7 +1,10 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { IFullWallet } from '@services/WalletService';
 import type { AppState } from '@store';
 import { ISignedMessage, NetworkId, TAddress, WalletId } from '@types';
+import { addHexPrefix } from '@utils';
 
 interface State {
   status: 'SIGN_SUCCESS' | 'SIGN_REQUEST' | 'SIGN_FAILURE' | 'INIT';
@@ -50,6 +53,8 @@ export const signMessageSlice = createSlice({
   }
 });
 
+export default signMessageSlice;
+
 export const {
   walletUnlock,
   updateMessage,
@@ -68,4 +73,32 @@ export const selectMessage = createSelector(selectSlice, (s) => s.message);
 export const selectWalletId = createSelector(selectSlice, (s) => s.walletId);
 export const selectWalletInfo = createSelector(selectSlice, (s) => s.walletInfo);
 
-export default signMessageSlice;
+export const signMessage = createAction<{ message: string; wallet: IFullWallet }>(
+  `${signMessageSlice.name}/signMessage`
+);
+
+export function* signMessageSaga() {
+  yield all([yield takeLatest(signMessage.type, signMessageWorker)]);
+}
+
+function* signMessageWorker({ payload }: PayloadAction<{ message: string; wallet: IFullWallet }>) {
+  const { message, wallet } = payload;
+  const walletInfo = yield select(selectWalletInfo);
+
+  yield put(signMessageRequest());
+
+  try {
+    const sig: string = yield call({ context: wallet, fn: wallet.signMessage }, message);
+
+    yield put(
+      signMessageSuccess({
+        address: walletInfo.address,
+        msg: message,
+        sig: addHexPrefix(sig),
+        version: '2'
+      })
+    );
+  } catch (err) {
+    yield put(signMessageFailure(err));
+  }
+}

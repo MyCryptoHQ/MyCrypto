@@ -15,7 +15,6 @@ import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { FormData, WalletId } from '@types';
-import { addHexPrefix } from '@utils';
 import { useUnmount } from '@vendor';
 
 import {
@@ -24,10 +23,8 @@ import {
   selectSignMessageError,
   selectSignMessageStatus,
   selectWalletId,
-  signMessageFailure,
-  signMessageRequest,
+  signMessage,
   signMessageReset,
-  signMessageSuccess,
   updateMessage,
   walletSelect,
   walletUnlock
@@ -102,9 +99,6 @@ function SignMessage({
   setShowSubtitle,
   isDemoMode,
   signedMessage,
-  signMessageRequest,
-  signMessageSuccess,
-  signMessageFailure,
   message,
   updateMessage,
   status,
@@ -112,34 +106,20 @@ function SignMessage({
   signMessageReset,
   walletSelect,
   walletUnlock,
-  walletId
+  walletId,
+  signMessage
 }: Props) {
   const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
   const handleSignMessage = async () => {
-    signMessageRequest();
-    try {
-      if (!wallet || !walletId || !message) throw Error;
-
-      const address = toChecksumAddress(wallet.getAddressString());
-
-      const sig = await wallet.signMessage(message);
-      const final = {
-        address,
-        msg: message,
-        sig: addHexPrefix(sig),
-        version: '2'
-      };
-      signMessageSuccess(final);
-    } catch (err) {
-      // setError(translateRaw('SIGN_MESSAGE_ERROR'));
-      signMessageFailure(err);
-      console.debug('[SignMessage]', err);
+    if (!wallet || !message) {
+      throw Error('[signMessageWorker]: Missing arguments'); // Error is handled in catch
     }
+    signMessage({ message, wallet });
   };
 
   const onSelect = (walletId: WalletId) => {
-    walletSelect(walletId);
     setShowSubtitle(false);
+    walletSelect(walletId);
   };
 
   const onUnlock = (w: IFullWallet) => {
@@ -153,6 +133,7 @@ function SignMessage({
 
   const reset = () => {
     signMessageReset();
+    setWallet(undefined);
     setShowSubtitle(true);
   };
 
@@ -232,12 +213,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       walletUnlock,
-      signMessageRequest,
       signMessageReset,
-      signMessageSuccess,
-      signMessageFailure,
       updateMessage,
-      walletSelect
+      walletSelect,
+      signMessage
     },
     dispatch
   );
