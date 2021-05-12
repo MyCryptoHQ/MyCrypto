@@ -11,6 +11,10 @@ import { truncate } from '@utils';
 
 import TokenMigrationStepper from '../TokenMigrationStepper';
 
+jest.mock('@services/EthService', () => ({
+  getNonce: jest.fn().mockReturnValue(1)
+}));
+
 /* Test components */
 describe('TokenMigrationStepper', () => {
   const StepperComponent = (
