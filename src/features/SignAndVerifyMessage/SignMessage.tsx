@@ -25,6 +25,7 @@ import { WalletId } from '@types';
 import { useUnmount } from '@vendor';
 
 import {
+  messageUpdate,
   selectMessage,
   selectSignedMessage,
   selectSignMessageError,
@@ -32,7 +33,6 @@ import {
   selectWalletId,
   signMessage,
   signMessageReset,
-  updateMessage,
   walletSelect
 } from './signMessage.slice';
 import { getStories } from './stories';
@@ -68,7 +68,7 @@ function SignMessage({
   isDemoMode,
   signedMessage,
   message,
-  updateMessage,
+  messageUpdate,
   status,
   error,
   walletSelect,
@@ -143,7 +143,7 @@ function SignMessage({
             label={translate('MSG_MESSAGE')}
             placeholder={translateRaw('SIGN_MSG_PLACEHOLDER')}
             textarea={true}
-            onChange={(event) => updateMessage(event.target.value)}
+            onChange={(event) => messageUpdate(event.target.value)}
             height="150px"
             inputError={error && translateRaw('SIGN_MESSAGE_ERROR')}
           />
@@ -181,7 +181,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       walletSelect,
-      updateMessage,
+      messageUpdate,
       signMessageReset,
       signMessage
     },

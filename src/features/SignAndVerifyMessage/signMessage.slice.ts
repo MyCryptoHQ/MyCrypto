@@ -23,10 +23,10 @@ export const signMessageSlice = createSlice({
   name: 'signMessage',
   initialState,
   reducers: {
-    walletSelect(state, action) {
+    walletSelect(state, action: PayloadAction<WalletId>) {
       state.walletId = action.payload;
     },
-    updateMessage(state, action) {
+    messageUpdate(state, action: PayloadAction<string>) {
       state.message = action.payload;
       state.status = 'INIT';
       delete state.error;
@@ -35,7 +35,7 @@ export const signMessageSlice = createSlice({
       state.status = 'SIGN_REQUEST';
       delete state.error;
     },
-    success(state, action) {
+    success(state, action: PayloadAction<ISignedMessage>) {
       state.status = 'SIGN_SUCCESS';
       state.signedMessage = action.payload;
       delete state.error;
@@ -53,7 +53,7 @@ export const signMessageSlice = createSlice({
 export default signMessageSlice;
 
 export const {
-  updateMessage,
+  messageUpdate,
   walletSelect,
   request: signMessageRequest,
   success: signMessageSuccess,

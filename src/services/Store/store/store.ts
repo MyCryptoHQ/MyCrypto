@@ -9,7 +9,7 @@ import {
   processAccountsQueue,
   requestConnectionSuccess
 } from '@features/AddAccount/components/hdWallet.slice';
-import { signMessage, updateMessage } from '@features/SignAndVerifyMessage';
+import { messageUpdate, signMessage } from '@features/SignAndVerifyMessage';
 import { analyticsMiddleware } from '@services/Analytics';
 import { pollStart } from '@services/Polling';
 import { updateAccounts } from '@store';
@@ -48,7 +48,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             // We pass an IFullWallet instance to signMessageSaga
             signMessage.type,
             // Skip check when typing in form
-            updateMessage.type
+            messageUpdate.type
           ]
         }
       }),
