@@ -1,15 +1,15 @@
+import { getAddress } from '@ethersproject/address';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { IFullWallet } from '@services/WalletService';
 import type { AppState } from '@store';
-import { ISignedMessage, NetworkId, TAddress, WalletId } from '@types';
+import { ISignedMessage, WalletId } from '@types';
 import { addHexPrefix } from '@utils';
 
 interface State {
   status: 'SIGN_SUCCESS' | 'SIGN_REQUEST' | 'SIGN_FAILURE' | 'INIT';
   walletId?: WalletId;
-  walletInfo?: { address: TAddress; network: NetworkId };
   error?: true;
   message?: string;
   signedMessage?: ISignedMessage;
@@ -25,9 +25,6 @@ export const signMessageSlice = createSlice({
   reducers: {
     walletSelect(state, action) {
       state.walletId = action.payload;
-    },
-    walletUnlock(state, action) {
-      state.walletInfo = action.payload; // Array.isArray(selectedWallet) ? selectedWallet[0] : selectedWallet
     },
     updateMessage(state, action) {
       state.message = action.payload;
@@ -56,7 +53,6 @@ export const signMessageSlice = createSlice({
 export default signMessageSlice;
 
 export const {
-  walletUnlock,
   updateMessage,
   walletSelect,
   request: signMessageRequest,
@@ -71,7 +67,6 @@ export const selectSignMessageError = createSelector(selectSlice, (s) => s.error
 export const selectSignedMessage = createSelector(selectSlice, (s) => s.signedMessage);
 export const selectMessage = createSelector(selectSlice, (s) => s.message);
 export const selectWalletId = createSelector(selectSlice, (s) => s.walletId);
-export const selectWalletInfo = createSelector(selectSlice, (s) => s.walletInfo);
 
 export const signMessage = createAction<{ message: string; wallet: IFullWallet }>(
   `${signMessageSlice.name}/signMessage`
@@ -83,8 +78,6 @@ export function* signMessageSaga() {
 
 function* signMessageWorker({ payload }: PayloadAction<{ message: string; wallet: IFullWallet }>) {
   const { message, wallet } = payload;
-  const walletInfo = yield select(selectWalletInfo);
-
   yield put(signMessageRequest());
 
   try {
@@ -92,7 +85,7 @@ function* signMessageWorker({ payload }: PayloadAction<{ message: string; wallet
 
     yield put(
       signMessageSuccess({
-        address: walletInfo.address,
+        address: getAddress(wallet.getAddressString()),
         msg: message,
         sig: addHexPrefix(sig),
         version: '2'

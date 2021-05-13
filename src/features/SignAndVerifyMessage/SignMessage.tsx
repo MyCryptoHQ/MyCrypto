@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { getAddress } from '@ethersproject/address';
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
@@ -34,8 +33,7 @@ import {
   signMessage,
   signMessageReset,
   updateMessage,
-  walletSelect,
-  walletUnlock
+  walletSelect
 } from './signMessage.slice';
 import { getStories } from './stories';
 
@@ -73,10 +71,9 @@ function SignMessage({
   updateMessage,
   status,
   error,
-  signMessageReset,
   walletSelect,
-  walletUnlock,
   walletId,
+  signMessageReset,
   signMessage
 }: Props) {
   const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
@@ -97,10 +94,6 @@ function SignMessage({
   const onUnlock = (w: IFullWallet) => {
     const selectedWallet = Array.isArray(w) ? w[0] : w;
     setWallet(selectedWallet);
-    walletUnlock({
-      address: getAddress(selectedWallet.getAddressString()),
-      network: selectedWallet.network
-    });
   };
 
   const handleSignMessage = () => {
@@ -187,7 +180,6 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
-      walletUnlock,
       walletSelect,
       updateMessage,
       signMessageReset,
