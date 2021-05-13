@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
+import { getAddress } from '@ethersproject/address';
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
@@ -98,7 +98,7 @@ function SignMessage({
     const selectedWallet = Array.isArray(w) ? w[0] : w;
     setWallet(selectedWallet);
     walletUnlock({
-      address: toChecksumAddress(selectedWallet.getAddressString()),
+      address: getAddress(selectedWallet.getAddressString()),
       network: selectedWallet.network
     });
   };
