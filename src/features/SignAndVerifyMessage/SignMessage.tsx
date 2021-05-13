@@ -7,7 +7,15 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
-import { Box, Button, CodeBlock, DemoGatewayBanner, InputField, WalletList } from '@components';
+import {
+  Box,
+  Button,
+  CodeBlock,
+  DemoGatewayBanner,
+  InputField,
+  Text,
+  WalletList
+} from '@components';
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { WalletConnectWallet } from '@services';
 import type { IFullWallet } from '@services/WalletService';
@@ -31,34 +39,15 @@ import {
 } from './signMessage.slice';
 import { getStories } from './stories';
 
-const { SCREEN_XS } = BREAK_POINTS;
-
-interface SignButtonProps {
-  disabled?: boolean;
-}
-const SignButton = styled(Button)<SignButtonProps>`
+const SignButton = styled(Button)<{ disabled?: boolean }>`
   ${(props) => props.disabled && 'opacity: 0.4;'}
 
-  @media (max-width: ${SCREEN_XS}) {
+  @media (max-width: ${BREAK_POINTS.SCREEN_XS}) {
     width: 100%;
   }
 `;
 
-const SignedMessageLabel = styled.p`
-  font-size: 18px;
-  width: 100%;
-  line-height: 1;
-  text-align: left;
-  font-weight: normal;
-  margin-bottom: 9px;
-  color: ${(props) => props.theme.text};
-`;
-
-interface BackButtonProps {
-  marginBottom: boolean;
-}
-
-const BackButton = styled(ButtonUI)<BackButtonProps>`
+const BackButton = styled(ButtonUI)<{ marginBottom: boolean }>`
   align-self: flex-start;
   color: #007a99;
   font-weight: bold;
@@ -72,7 +61,7 @@ const BackButton = styled(ButtonUI)<BackButtonProps>`
   }
 `;
 
-interface SignProps {
+interface OwnProps {
   setShowSubtitle(show: boolean): void;
 }
 
@@ -97,6 +86,7 @@ function SignMessage({
     if (wallet && walletId === WalletId.WALLETCONNECT) {
       (wallet as WalletConnectWallet).kill();
     }
+    signMessageReset();
   });
 
   const onSelect = (walletId: WalletId) => {
@@ -113,9 +103,9 @@ function SignMessage({
     });
   };
 
-  const handleSignMessage = async () => {
+  const handleSignMessage = () => {
     if (!wallet || !message) {
-      throw Error('[signMessageWorker]: Missing arguments'); // Error is handled in catch
+      throw Error('[signMessageWorker]: Missing arguments');
     }
     signMessage({ message, wallet });
   };
@@ -138,6 +128,7 @@ function SignMessage({
             <img src={backArrowIcon} alt="Back arrow" />
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
+
           {!wallet && (
             <Step
               wallet={WALLETS_CONFIG[walletId]}
@@ -172,7 +163,7 @@ function SignMessage({
           </SignButton>
           {status === 'SIGN_SUCCESS' && (
             <Box mt="10px" width="100%">
-              <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
+              <Text variant="label">{translate('MSG_SIGNATURE')}</Text>
               <Box width="100%">
                 <CodeBlock>{JSON.stringify(signedMessage, null, 2)}</CodeBlock>
               </Box>
@@ -206,6 +197,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   );
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type Props = ConnectedProps<typeof connector> & SignProps;
+type Props = ConnectedProps<typeof connector> & OwnProps;
 
 export default connector(SignMessage);
