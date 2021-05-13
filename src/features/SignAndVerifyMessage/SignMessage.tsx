@@ -152,7 +152,7 @@ function SignMessage({
             textarea={true}
             onChange={(event) => updateMessage(event.target.value)}
             height="150px"
-            inputError={error}
+            inputError={error && translateRaw('SIGN_MESSAGE_ERROR')}
           />
           <SignButton
             disabled={!message || isDemoMode}
@@ -188,9 +188,9 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       walletUnlock,
-      signMessageReset,
-      updateMessage,
       walletSelect,
+      updateMessage,
+      signMessageReset,
       signMessage
     },
     dispatch

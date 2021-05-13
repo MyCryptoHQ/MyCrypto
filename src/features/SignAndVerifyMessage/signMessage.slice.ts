@@ -10,7 +10,7 @@ interface State {
   status: 'SIGN_SUCCESS' | 'SIGN_REQUEST' | 'SIGN_FAILURE' | 'INIT';
   walletId?: WalletId;
   walletInfo?: { address: TAddress; network: NetworkId };
-  error?: string;
+  error?: true;
   message?: string;
   signedMessage?: ISignedMessage;
 }
@@ -43,9 +43,9 @@ export const signMessageSlice = createSlice({
       state.signedMessage = action.payload;
       delete state.error;
     },
-    failure(state, action: PayloadAction<State['error']>) {
+    failure(state) {
       state.status = 'SIGN_FAILURE';
-      state.error = action.payload;
+      state.error = true;
     },
     reset() {
       return initialState;
@@ -99,6 +99,6 @@ function* signMessageWorker({ payload }: PayloadAction<{ message: string; wallet
       })
     );
   } catch (err) {
-    yield put(signMessageFailure(err));
+    yield put(signMessageFailure());
   }
 }
