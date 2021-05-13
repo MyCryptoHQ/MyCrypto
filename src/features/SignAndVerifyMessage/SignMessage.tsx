@@ -14,7 +14,7 @@ import type { IFullWallet } from '@services/WalletService';
 import { AppState, getIsDemoMode } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { FormData, WalletId } from '@types';
+import { WalletId } from '@types';
 import { useUnmount } from '@vendor';
 
 import {
@@ -32,10 +32,6 @@ import {
 import { getStories } from './stories';
 
 const { SCREEN_XS } = BREAK_POINTS;
-
-export const defaultFormData: Pick<FormData, 'network'> = {
-  network: DEFAULT_NETWORK
-};
 
 interface SignButtonProps {
   disabled?: boolean;
@@ -95,12 +91,13 @@ function SignMessage({
   signMessage
 }: Props) {
   const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
-  const handleSignMessage = async () => {
-    if (!wallet || !message) {
-      throw Error('[signMessageWorker]: Missing arguments'); // Error is handled in catch
+
+  useUnmount(() => {
+    // Kill WalletConnect session
+    if (wallet && walletId === WalletId.WALLETCONNECT) {
+      (wallet as WalletConnectWallet).kill();
     }
-    signMessage({ message, wallet });
-  };
+  });
 
   const onSelect = (walletId: WalletId) => {
     setShowSubtitle(false);
@@ -116,6 +113,13 @@ function SignMessage({
     });
   };
 
+  const handleSignMessage = async () => {
+    if (!wallet || !message) {
+      throw Error('[signMessageWorker]: Missing arguments'); // Error is handled in catch
+    }
+    signMessage({ message, wallet });
+  };
+
   const reset = () => {
     signMessageReset();
     setWallet(undefined);
@@ -124,13 +128,6 @@ function SignMessage({
 
   const story = getStories().find((x) => x.name === walletId);
   const Step = story && story.steps[0];
-
-  useUnmount(() => {
-    // Kill WalletConnect session
-    if (wallet && walletId === WalletId.WALLETCONNECT) {
-      (wallet as WalletConnectWallet).kill();
-    }
-  });
 
   return (
     <Box variant="columnAlign">
@@ -145,7 +142,9 @@ function SignMessage({
             <Step
               wallet={WALLETS_CONFIG[walletId]}
               onUnlock={onUnlock}
-              formData={defaultFormData}
+              formData={{
+                network: DEFAULT_NETWORK
+              }}
             />
           )}
         </>
