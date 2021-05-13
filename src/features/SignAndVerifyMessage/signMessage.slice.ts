@@ -76,7 +76,9 @@ export function* signMessageSaga() {
   yield all([yield takeLatest(signMessage.type, signMessageWorker)]);
 }
 
-function* signMessageWorker({ payload }: PayloadAction<{ message: string; wallet: IFullWallet }>) {
+export function* signMessageWorker({
+  payload
+}: PayloadAction<{ message: string; wallet: IFullWallet }>) {
   const { message, wallet } = payload;
   yield put(signMessageRequest());
 
