@@ -3,7 +3,6 @@ import axios, { AxiosInstance } from 'axios';
 
 import {
   DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK_CHAINID,
   DEX_BASE_URL,
   DEX_FEE_RECIPIENT,
   DEX_TRADE_EXPIRATION,
@@ -17,6 +16,7 @@ import {
   ITxObject,
   ITxType,
   ITxValue,
+  Network,
   TAddress,
   TTicker
 } from '@types';
@@ -60,20 +60,23 @@ export default class DexService {
   };
 
   public getOrderDetailsFrom = async (
+    network: Network,
     account: string | null,
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
-  ) => this.getOrderDetails(account, from, to, fromAmount);
+  ) => this.getOrderDetails(network, account, from, to, fromAmount);
 
   public getOrderDetailsTo = async (
+    network: Network,
     account: string | null,
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
-  ) => this.getOrderDetails(account, from, to, undefined, toAmount);
+  ) => this.getOrderDetails(network, account, from, to, undefined, toAmount);
 
   private getOrderDetails = async (
+    network: Network,
     account: string | null,
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
@@ -113,13 +116,15 @@ export default class DexService {
               spenderAddress: data.allowanceTarget,
               hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
               baseTokenAmount: bigify(data.sellAmount),
-              chainId: DEFAULT_NETWORK_CHAINID
+              chainId: network.chainId
             }),
             type: ITxType.APPROVAL
           }
         : undefined;
 
-    const tradeGasLimit = addHexPrefix(bigify(data.gas).toString(16)) as ITxGasLimit;
+    const tradeGasLimit = addHexPrefix(
+      bigify(data.gas).multipliedBy(1.2).toString(16)
+    ) as ITxGasLimit;
 
     return {
       price: bigify(data.price),
@@ -138,8 +143,9 @@ export default class DexService {
         to: data.to,
         data: data.data,
         gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-        gasLimit: tradeGasLimit,
-        value: data.value
+        //gasLimit: tradeGasLimit,
+        value: data.value,
+        chainId: network.chainId
       })
     };
   };
@@ -150,15 +156,14 @@ export const formatTradeTx = ({
   data,
   value,
   gasPrice,
-  gasLimit
-}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'gasLimit'>) => {
+  chainId
+}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'>) => {
   return {
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
-    chainId: DEFAULT_NETWORK_CHAINID,
+    chainId,
     gasPrice,
-    gasLimit,
     type: ITxType.SWAP
   };
 };

@@ -22,7 +22,8 @@ import {
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
-  selectDefaultNetwork
+  selectNetwork,
+  useSelector
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -89,9 +90,12 @@ const SwapAssets = (props: Props) => {
     isEstimatingGas,
     expiration,
     isDemoMode,
-    baseAsset,
     settings
   } = props;
+
+  const selectedNetwork = 'Ethereum';
+  const network = useSelector(selectNetwork(selectedNetwork)) as Network;
+  const baseAsset = useSelector(getBaseAssetByNetwork(network)) as ExtendedAsset;
 
   const [isExpired, setIsExpired] = useState(false);
   const { accounts, userAssets } = useContext(StoreContext);
@@ -319,11 +323,8 @@ const SwapAssets = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => {
-  const network = selectDefaultNetwork(state) as Network;
-
   return {
     isDemoMode: getIsDemoMode(state),
-    baseAsset: getBaseAssetByNetwork(network)(state) as ExtendedAsset,
     settings: getSettings(state)
   };
 };

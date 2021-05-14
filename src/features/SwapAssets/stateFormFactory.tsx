@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
-import { selectDefaultNetwork, useSelector } from '@store';
+import { selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, StoreAccount } from '@types';
 import {
@@ -34,7 +34,7 @@ const swapFormInitialState = {
 };
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const network = useSelector(selectDefaultNetwork) as Network;
+  const network = useSelector(selectNetwork('Ethereum')) as Network;
 
   const fetchSwapAssets = async () => {
     try {
@@ -57,7 +57,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
-      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === network.baseUnit);
+      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === DEFAULT_NETWORK_TICKER);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
     } catch (e) {
@@ -128,6 +128,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
+        network,
         account?.address,
         fromAsset,
         toAsset,
@@ -197,6 +198,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
+        network,
         account?.address,
         fromAsset,
         toAsset,
