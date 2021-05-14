@@ -143,7 +143,6 @@ export default class DexService {
         to: data.to,
         data: data.data,
         gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-        //gasLimit: tradeGasLimit,
         value: data.value,
         chainId: network.chainId
       })
