@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
+import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
 import { selectNetwork, useSelector } from '@store';
@@ -33,6 +33,8 @@ const swapFormInitialState = {
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
 };
 
+const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const network = useSelector(selectNetwork('Ethereum')) as Network;
 
@@ -42,22 +44,20 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       if (assets.length < 1) return;
       // sort assets alphabetically
       const newAssets = assets
-        .map(
-          ({ symbol, decimals, ...asset }: DexAsset): ISwapAsset => ({
-            ...asset,
-            ticker: symbol,
-            decimal: decimals,
-            uuid:
-              symbol === DEFAULT_NETWORK_TICKER
-                ? generateAssetUUID(network.chainId)
-                : generateAssetUUID(network.chainId, asset.address)
-          })
-        )
+        .map(({ symbol, decimals, ...asset }: DexAsset) => ({
+          ...asset,
+          ticker: symbol,
+          decimal: decimals,
+          uuid:
+            asset.address === BASE_ASSET_ADDRESS
+              ? generateAssetUUID(network.chainId)
+              : generateAssetUUID(network.chainId, asset.address)
+        }))
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
-      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === DEFAULT_NETWORK_TICKER);
+      const fromAsset = newAssets.find((x) => x.address === BASE_ASSET_ADDRESS);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
     } catch (e) {
