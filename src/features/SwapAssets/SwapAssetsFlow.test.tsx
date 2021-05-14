@@ -40,10 +40,9 @@ describe('SwapAssetsFlow', () => {
     mockAxios.reset();
   });
   it('selects default tokens', async () => {
-    const { getAllByText, container } = getComponent();
+    const { getAllByText } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
     mockAxios.mockResponse(tokenResponse);
-    console.log(container.innerHTML);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
     await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
   });
