@@ -1,6 +1,14 @@
 import { BigNumber } from 'bignumber.js';
 
-import { ISwapAsset, ITxGasLimit, ITxGasPrice, ITxObject, ITxStatus, StoreAccount } from '@types';
+import {
+  ISwapAsset,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxObject,
+  ITxStatus,
+  ITxType,
+  StoreAccount
+} from '@types';
 
 export enum LAST_CHANGED_AMOUNT {
   FROM = 'FROM_AMOUNT',
@@ -42,9 +50,11 @@ export interface SwapFormState {
   gasPrice?: ITxGasPrice;
   approvalGasLimit?: ITxGasLimit;
   tradeGasLimit?: ITxGasLimit;
-  approvalTx?: Partial<ITxObject>;
+  approvalTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId' | 'from'> & {
+    type: ITxType;
+  };
   expiration?: number;
-  tradeTx?: Partial<ITxObject>;
+  tradeTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & { type: ITxType };
 }
 
 export interface IAssetPair {

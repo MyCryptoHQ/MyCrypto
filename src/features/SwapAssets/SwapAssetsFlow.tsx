@@ -133,7 +133,9 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
           initWith(
             () =>
               Promise.resolve(
-                (approvalTx ? [approvalTx, tradeTx] : [tradeTx]).map(appendSender(account.address))
+                (approvalTx ? [approvalTx, tradeTx!] : [tradeTx!]).map(
+                  appendSender(account.address)
+                )
               ),
             account,
             account.network
