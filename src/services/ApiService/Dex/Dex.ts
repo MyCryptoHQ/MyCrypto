@@ -123,7 +123,7 @@ export default class DexService {
         : undefined;
 
     const tradeGasLimit = addHexPrefix(
-      bigify(data.gas).multipliedBy(1.2).toString(16)
+      bigify(data.gas).multipliedBy(1.2).integerValue(7).toString(16)
     ) as ITxGasLimit;
 
     return {

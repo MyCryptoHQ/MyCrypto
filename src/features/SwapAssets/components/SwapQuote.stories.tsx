@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { sub } from 'date-fns';
-
-import { DAIUUID, ETHUUID } from '@config';
+import { DAIUUID, DEX_TRADE_EXPIRATION, ETHUUID } from '@config';
 import { fAssets, fSettings } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';
 import { bigify, noOp } from '@utils';
@@ -30,7 +28,6 @@ const defaultProps = {
   baseAssetRate: bigify('123'),
   settings: fSettings,
   isExpired: false,
-  expiration: sub(new Date(), { minutes: 15 }), // Component displays a time-from so we provide a relative date.
   estimatedGasFee: '123123',
   handleRefreshQuote: noOp
 };
@@ -38,7 +35,7 @@ const defaultProps = {
 export default { title: 'Organisms/SwapQuote', component: SwapQuote };
 
 const Template = (args: React.ComponentProps<typeof SwapQuote>) => {
-  return <SwapQuote {...args} />;
+  return <SwapQuote {...args} expiration={Date.now() / 1000 + DEX_TRADE_EXPIRATION} />;
 };
 
 export const Hello = Template.bind({});

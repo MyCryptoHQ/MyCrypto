@@ -25,14 +25,25 @@ function getComponent() {
   );
 }
 
+const tokenResponse = {
+  data: {
+    records: [fAssets[0], fAssets[13]].map((a) => ({
+      ...a,
+      symbol: a.ticker,
+      address: a.type === 'base' ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : a.contractAddress
+    }))
+  }
+};
+
 describe('SwapAssetsFlow', () => {
   afterEach(() => {
     mockAxios.reset();
   });
   it('selects default tokens', async () => {
-    const { getAllByText } = getComponent();
+    const { getAllByText, container } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
-    mockAxios.mockResponse({ data: { records: fAssets.map((a) => ({ ...a, symbol: a.ticker })) } });
+    mockAxios.mockResponse(tokenResponse);
+    console.log(container.innerHTML);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
     await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
   });
@@ -40,7 +51,7 @@ describe('SwapAssetsFlow', () => {
   it('calculates and shows to amount', async () => {
     const { getAllByText, getAllByDisplayValue, container } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
-    mockAxios.mockResponse({ data: { records: fAssets.map((a) => ({ ...a, symbol: a.ticker })) } });
+    mockAxios.mockResponse(tokenResponse);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
     await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
     mockAxios.reset();

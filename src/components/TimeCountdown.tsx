@@ -9,7 +9,7 @@ const TimeCountdown = ({
   value: number;
   format?: string[];
 }) => {
-  const timeSince = (v: number) => formatTimeDuration(v, undefined, undefined, { format });
+  const timeSince = (v: number) => formatTimeDuration(v, Date.now() / 1000, false, { format });
   const [countdown, setCountdown] = useState(timeSince(value));
 
   useInterval(
