@@ -7,6 +7,7 @@ import {
   ITxObject,
   ITxStatus,
   ITxType,
+  NetworkId,
   StoreAccount
 } from '@types';
 
@@ -33,6 +34,7 @@ export interface SwapState {
 }
 
 export interface SwapFormState {
+  selectedNetwork: NetworkId;
   account: StoreAccount;
   assets: ISwapAsset[];
   fromAsset: ISwapAsset;

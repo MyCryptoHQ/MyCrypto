@@ -20,6 +20,7 @@ import {
 import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
 const swapFormInitialState = {
+  selectedNetwork: 'Ethereum',
   assets: [],
   account: undefined,
   fromAsset: undefined,
@@ -36,7 +37,7 @@ const swapFormInitialState = {
 const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const network = useSelector(selectNetwork('Ethereum')) as Network;
+  const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
 
   const fetchSwapAssets = async () => {
     try {

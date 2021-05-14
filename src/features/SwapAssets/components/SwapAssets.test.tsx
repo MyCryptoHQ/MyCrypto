@@ -10,6 +10,7 @@ import { LAST_CHANGED_AMOUNT } from '../types';
 import SwapAssets from './SwapAssets';
 
 const defaultProps: React.ComponentProps<typeof SwapAssets> = {
+  selectedNetwork: 'Ethereum',
   account: fAccounts[0],
   assets: fAssets,
   fromAsset: fAssets[0],

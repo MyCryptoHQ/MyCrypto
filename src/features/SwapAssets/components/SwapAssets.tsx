@@ -60,6 +60,7 @@ type ISwapProps = SwapFormState & {
 
 const SwapAssets = (props: Props) => {
   const {
+    selectedNetwork,
     account,
     fromAmount,
     toAmount,
@@ -93,7 +94,6 @@ const SwapAssets = (props: Props) => {
     settings
   } = props;
 
-  const selectedNetwork = 'Ethereum';
   const network = useSelector(selectNetwork(selectedNetwork)) as Network;
   const baseAsset = useSelector(getBaseAssetByNetwork(network)) as ExtendedAsset;
 
