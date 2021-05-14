@@ -115,7 +115,7 @@ export const SwapQuote = ({
       </Box>
       <Box>
         {!isExpired ? (
-          <TimeCountdown value={expiration} format={['days', 'hours', 'minutes']} />
+          <TimeCountdown value={expiration} />
         ) : (
           <Body m="0" color="ERROR_RED" textTransform="uppercase">
             {translateRaw('EXPIRED')}
