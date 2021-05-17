@@ -3,7 +3,7 @@ import React from 'react';
 import mockAxios from 'jest-mock-axios';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fSwapQuote } from '@fixtures';
+import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
 import { StoreContext } from '@services/Store';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
@@ -64,6 +64,26 @@ describe('SwapAssetsFlow', () => {
     await waitFor(() => expect(getAllByDisplayValue('1', { exact: false })).toBeDefined());
     await waitFor(() =>
       expect(getAllByDisplayValue('0.000642566300455615', { exact: false })).toBeDefined()
+    );
+  });
+
+  it('calculates and shows from amount', async () => {
+    const { getAllByText, getAllByDisplayValue, container } = getComponent();
+    expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
+    mockAxios.mockResponse(tokenResponse);
+    await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
+    await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
+    mockAxios.reset();
+    fireEvent.change(container.querySelector('input[name="swap-to"]')!, {
+      target: { value: '1' }
+    });
+    await waitFor(() =>
+      expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/quote', expect.anything())
+    );
+    mockAxios.mockResponse({ data: fSwapQuoteReverse });
+    await waitFor(() => expect(getAllByDisplayValue('1', { exact: false })).toBeDefined());
+    await waitFor(() =>
+      expect(getAllByDisplayValue('1.305248867560021093', { exact: false })).toBeDefined()
     );
   });
 });

@@ -75,5 +75,5 @@ export { fUserActions, fActionTemplates } from './userActions';
 export { membershipApiResponse, accountWithMembership } from './membership';
 export { default as APP_STATE } from './appState';
 
-export { fSwapQuote } from './swapQuote';
+export * from './swapQuote';
 export { fBalances } from './balances';

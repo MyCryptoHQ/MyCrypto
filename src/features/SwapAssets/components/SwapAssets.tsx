@@ -244,6 +244,7 @@ const SwapAssets = (props: Props) => {
         <Box display="flex">
           <Box mr="1em" flex="1">
             <InputField
+              name="swap-to"
               label={translateRaw('SWAP_RECEIVE_AMOUNT')}
               value={toAmount}
               placeholder="0.00"
