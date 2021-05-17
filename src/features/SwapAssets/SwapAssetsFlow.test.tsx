@@ -5,6 +5,7 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
 import { StoreContext } from '@services/Store';
+import { truncate } from '@utils';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
 
@@ -16,7 +17,7 @@ function getComponent() {
           assets: () => fAssets,
           accounts: fAccounts,
           userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => undefined
+          getDefaultAccount: () => fAccounts[0]
         } as any) as any
       }
     >
@@ -45,6 +46,15 @@ describe('SwapAssetsFlow', () => {
     mockAxios.mockResponse(tokenResponse);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
     await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
+  });
+
+  it('selects default account', async () => {
+    const { getByText } = getComponent();
+    expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens');
+    mockAxios.mockResponse(tokenResponse);
+    await waitFor(() =>
+      expect(getByText(truncate(fAccounts[0].address), { exact: false })).toBeDefined()
+    );
   });
 
   it('calculates and shows to amount', async () => {
