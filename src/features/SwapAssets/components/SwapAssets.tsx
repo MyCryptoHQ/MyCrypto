@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
@@ -18,7 +17,6 @@ import {
 import { useRates } from '@services/Rates';
 import { StoreContext } from '@services/Store';
 import {
-  AppState,
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
@@ -43,7 +41,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-type ISwapProps = SwapFormState & {
+type Props = SwapFormState & {
   isSubmitting: boolean;
   txError?: CustomError;
   onSuccess(): void;
@@ -89,11 +87,11 @@ const SwapAssets = (props: Props) => {
     tradeGasLimit,
     gasPrice,
     isEstimatingGas,
-    expiration,
-    isDemoMode,
-    settings
+    expiration
   } = props;
 
+  const settings = useSelector(getSettings);
+  const isDemoMode = useSelector(getIsDemoMode);
   const network = useSelector(selectNetwork(selectedNetwork)) as Network;
   const baseAsset = useSelector(getBaseAssetByNetwork(network)) as ExtendedAsset;
 
@@ -323,14 +321,4 @@ const SwapAssets = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    isDemoMode: getIsDemoMode(state),
-    settings: getSettings(state)
-  };
-};
-
-const connector = connect(mapStateToProps);
-type Props = ConnectedProps<typeof connector> & ISwapProps;
-
-export default connector(SwapAssets);
+export default SwapAssets;
