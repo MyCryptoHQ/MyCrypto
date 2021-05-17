@@ -240,7 +240,8 @@ export const StoreProvider: React.FC = ({ children }) => {
             addTxToAccount(senderAccount, finishedTxReceipt);
             if (
               finishedTxReceipt.txType === ITxType.DEFIZAP ||
-              isTokenMigration(finishedTxReceipt.txType)
+              isTokenMigration(finishedTxReceipt.txType) ||
+              finishedTxReceipt.txType === ITxType.SWAP
             ) {
               dispatch(scanTokens({ accounts: [storeAccount] }));
             } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
