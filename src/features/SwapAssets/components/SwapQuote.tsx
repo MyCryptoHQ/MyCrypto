@@ -94,7 +94,7 @@ export const SwapQuote = ({
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Box>
-        {translateRaw('MAX_TX_FEE')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
+        {translateRaw('ESTIMATED_COST')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}

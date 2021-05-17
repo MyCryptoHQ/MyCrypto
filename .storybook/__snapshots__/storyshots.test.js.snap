@@ -23125,7 +23125,7 @@ exports[` Storyshots Organisms/SwapQuote SwapQuote 1`] = `
     <div
       className="Box-sc-1974eaf-0 exRYr"
     >
-      Max TX Fee
+      Estimated Cost
        
       <div
         className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
