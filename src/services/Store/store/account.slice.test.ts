@@ -193,5 +193,18 @@ describe('AccountSlice', () => {
         .put(fetchMemberships([fAccount]))
         .silentRun();
     });
+
+    it('overwrites existing tx', () => {
+      const tx = { ...fTxReceipt, status: ITxStatus.SUCCESS };
+      return expectSaga(
+        addTxToAccountWorker,
+        addTxToAccount({
+          account: { ...fAccount, transactions: [fTxReceipt] },
+          tx
+        })
+      )
+        .put(updateAccount({ ...fAccount, transactions: [tx] }))
+        .silentRun();
+    });
   });
 });
