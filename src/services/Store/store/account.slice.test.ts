@@ -1,17 +1,22 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { mockAppState } from 'test-utils';
+import { expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
-import { fAccount, fAccounts, fSettings, fTransaction } from '@fixtures';
-import { IAccount, ITxReceipt, TUuid } from '@types';
+import { fAccount, fAccounts, fSettings, fTransaction, fTxReceipt } from '@fixtures';
+import { IAccount, ITxReceipt, ITxStatus, ITxType, TUuid } from '@types';
 
 import {
+  addTxToAccount,
+  addTxToAccountWorker,
   getAccounts,
   initialState,
   selectAccountTxs,
   selectCurrentAccounts,
-  default as slice
+  default as slice,
+  updateAccount
 } from './account.slice';
+import { fetchMemberships } from './membership.slice';
+import { scanTokens } from './tokenScanning.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
@@ -156,5 +161,37 @@ describe('AccountSlice', () => {
         value: { _hex: '0x038d7ea4c68000', _isBigNumber: true }
       }
     ]);
+  });
+
+  describe('addTxToAccountWorker', () => {
+    it('updates account with tx', () => {
+      return expectSaga(addTxToAccountWorker, addTxToAccount({ account: fAccount, tx: fTxReceipt }))
+        .put(updateAccount({ ...fAccount, transactions: [fTxReceipt] }))
+        .silentRun();
+    });
+
+    it('scans for tokens if tx is a swap', () => {
+      return expectSaga(
+        addTxToAccountWorker,
+        addTxToAccount({
+          account: fAccount,
+          tx: { ...fTxReceipt, txType: ITxType.SWAP, status: ITxStatus.SUCCESS }
+        })
+      )
+        .put(scanTokens({ accounts: [fAccount] }))
+        .silentRun();
+    });
+
+    it('scans for membership if tx is a membership purchase', () => {
+      return expectSaga(
+        addTxToAccountWorker,
+        addTxToAccount({
+          account: fAccount,
+          tx: { ...fTxReceipt, txType: ITxType.PURCHASE_MEMBERSHIP, status: ITxStatus.SUCCESS }
+        })
+      )
+        .put(fetchMemberships([fAccount]))
+        .silentRun();
+    });
   });
 });
