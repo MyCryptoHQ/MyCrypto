@@ -193,17 +193,15 @@ describe('useTxMulti', () => {
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
         actionWithPayload({
-          ...fAccount,
-          transactions: expect.arrayContaining([
-            expect.objectContaining({
-              amount: '0.0',
-              asset: fAssets[1],
-              baseAsset: fAssets[1],
-              hash: '0x1',
-              txType: ITxType.APPROVAL,
-              status: ITxStatus.PENDING
-            })
-          ])
+          account: fAccount,
+          tx: expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x1',
+            txType: ITxType.APPROVAL,
+            status: ITxStatus.PENDING
+          })
         })
       )
     );
@@ -211,17 +209,15 @@ describe('useTxMulti', () => {
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
         actionWithPayload({
-          ...fAccount,
-          transactions: expect.arrayContaining([
-            expect.objectContaining({
-              amount: '0.0',
-              asset: fAssets[1],
-              baseAsset: fAssets[1],
-              hash: '0x2',
-              txType: ITxType.PURCHASE_MEMBERSHIP,
-              status: ITxStatus.PENDING
-            })
-          ])
+          account: fAccount,
+          tx: expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x2',
+            txType: ITxType.PURCHASE_MEMBERSHIP,
+            status: ITxStatus.PENDING
+          })
         })
       )
     );

@@ -31,7 +31,8 @@ const PAGES = {
   ADD_ACCOUNT_WEB3: `${FIXTURES_CONST.BASE_URL}/add-account/web3`,
   SEND: `${FIXTURES_CONST.BASE_URL}/send`,
   ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`,
-  TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`
+  TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`,
+  SWAP: `${FIXTURES_CONST.BASE_URL}/swap`
 };
 
 const FIXTURE_ETHEREUM = 'Ethereum';

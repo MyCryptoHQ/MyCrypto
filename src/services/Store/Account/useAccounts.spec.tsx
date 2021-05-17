@@ -70,8 +70,8 @@ describe('useAccounts', () => {
     result.current.addTxToAccount(fAccounts[0], fTxReceipt);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        ...fAccounts[0],
-        transactions: [fTxReceipt]
+        account: fAccounts[0],
+        tx: fTxReceipt
       })
     );
   });

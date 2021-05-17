@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
@@ -18,15 +17,15 @@ import {
 import { useRates } from '@services/Rates';
 import { StoreContext } from '@services/Store';
 import {
-  AppState,
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
-  selectDefaultNetwork
+  selectNetwork,
+  useSelector
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ExtendedAsset, ISwapAsset, Network, StoreAccount } from '@types';
+import { Asset, ISwapAsset, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
@@ -42,7 +41,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-type ISwapProps = SwapFormState & {
+type Props = SwapFormState & {
   isSubmitting: boolean;
   txError?: CustomError;
   onSuccess(): void;
@@ -59,6 +58,7 @@ type ISwapProps = SwapFormState & {
 
 const SwapAssets = (props: Props) => {
   const {
+    selectedNetwork,
     account,
     fromAmount,
     toAmount,
@@ -87,11 +87,13 @@ const SwapAssets = (props: Props) => {
     tradeGasLimit,
     gasPrice,
     isEstimatingGas,
-    expiration,
-    isDemoMode,
-    baseAsset,
-    settings
+    expiration
   } = props;
+
+  const settings = useSelector(getSettings);
+  const isDemoMode = useSelector(getIsDemoMode);
+  const network = useSelector(selectNetwork(selectedNetwork));
+  const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
   const [isExpired, setIsExpired] = useState(false);
   const { accounts, userAssets } = useContext(StoreContext);
@@ -145,18 +147,29 @@ const SwapAssets = (props: Props) => {
     calculateNewToAmount(fromAmount);
   }, [toAsset]);
 
+  const estimatedGasFee =
+    gasPrice &&
+    tradeGasLimit &&
+    totalTxFeeToString(
+      gasPrice,
+      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
+    );
+
+  // Accounts with a balance of the chosen asset and base asset
+  const filteredAccounts = fromAsset
+    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
+    : [];
+
   useEffect(() => {
     if (
       fromAmount &&
       fromAsset &&
       account &&
-      !getAccountsWithAssetBalance(accounts, fromAsset, fromAmount).find(
-        (a) => a.uuid === account.uuid
-      )
+      !filteredAccounts.find((a) => a.uuid === account.uuid)
     ) {
       handleAccountSelected(undefined);
     }
-  }, [fromAsset, fromAmount]);
+  }, [fromAsset, fromAmount, gasPrice, tradeGasLimit, approvalGasLimit]);
 
   useEffect(() => {
     handleRefreshQuote();
@@ -165,14 +178,6 @@ const SwapAssets = (props: Props) => {
   useEffect(() => {
     handleGasLimitEstimation();
   }, [approvalTx, account]);
-
-  const estimatedGasFee =
-    gasPrice &&
-    tradeGasLimit &&
-    totalTxFeeToString(
-      gasPrice,
-      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
-    );
 
   useInterval(
     () => {
@@ -188,11 +193,6 @@ const SwapAssets = (props: Props) => {
     false,
     [expiration]
   );
-
-  // Accounts with a balance of the chosen asset
-  const filteredAccounts = fromAsset
-    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
-    : [];
 
   return (
     <>
@@ -242,6 +242,7 @@ const SwapAssets = (props: Props) => {
         <Box display="flex">
           <Box mr="1em" flex="1">
             <InputField
+              name="swap-to"
               label={translateRaw('SWAP_RECEIVE_AMOUNT')}
               value={toAmount}
               placeholder="0.00"
@@ -320,17 +321,4 @@ const SwapAssets = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  const network = selectDefaultNetwork(state) as Network;
-
-  return {
-    isDemoMode: getIsDemoMode(state),
-    baseAsset: getBaseAssetByNetwork(network)(state) as ExtendedAsset,
-    settings: getSettings(state)
-  };
-};
-
-const connector = connect(mapStateToProps);
-type Props = ConnectedProps<typeof connector> & ISwapProps;
-
-export default connector(SwapAssets);
+export default SwapAssets;

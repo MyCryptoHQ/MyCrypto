@@ -94,7 +94,7 @@ export const SwapQuote = ({
     </Box>
     <Box variant="rowAlign" justifyContent="space-between" mb="3">
       <Box>
-        {translateRaw('MAX_TX_FEE')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
+        {translateRaw('ESTIMATED_COST')} <Tooltip tooltip={translateRaw('SWAP_TX_FEE_TOOLTIP')} />
       </Box>
       <Amount
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
@@ -115,7 +115,7 @@ export const SwapQuote = ({
       </Box>
       <Box>
         {!isExpired ? (
-          <TimeCountdown value={expiration} format={['days', 'hours', 'minutes']} />
+          <TimeCountdown value={expiration} />
         ) : (
           <Body m="0" color="ERROR_RED" textTransform="uppercase">
             {translateRaw('EXPIRED')}

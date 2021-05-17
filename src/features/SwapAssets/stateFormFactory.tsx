@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { DEFAULT_NETWORK_TICKER, MYC_DEX_COMMISSION_RATE } from '@config';
+import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
-import { selectDefaultNetwork, useSelector } from '@store';
+import { selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, StoreAccount } from '@types';
 import {
@@ -20,6 +20,7 @@ import {
 import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
 const swapFormInitialState = {
+  selectedNetwork: 'Ethereum',
   assets: [],
   account: undefined,
   fromAsset: undefined,
@@ -33,8 +34,10 @@ const swapFormInitialState = {
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
 };
 
+const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const network = useSelector(selectDefaultNetwork) as Network;
+  const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
 
   const fetchSwapAssets = async () => {
     try {
@@ -42,22 +45,20 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       if (assets.length < 1) return;
       // sort assets alphabetically
       const newAssets = assets
-        .map(
-          ({ symbol, decimals, ...asset }: DexAsset): ISwapAsset => ({
-            ...asset,
-            ticker: symbol,
-            decimal: decimals,
-            uuid:
-              symbol === DEFAULT_NETWORK_TICKER
-                ? generateAssetUUID(network.chainId)
-                : generateAssetUUID(network.chainId, asset.address)
-          })
-        )
+        .map(({ symbol, decimals, ...asset }: DexAsset) => ({
+          ...asset,
+          ticker: symbol,
+          decimal: decimals,
+          uuid:
+            asset.address === BASE_ASSET_ADDRESS
+              ? generateAssetUUID(network.chainId)
+              : generateAssetUUID(network.chainId, asset.address)
+        }))
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
-      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === network.baseUnit);
+      const fromAsset = newAssets.find((x) => x.address === BASE_ASSET_ADDRESS);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
     } catch (e) {
@@ -128,6 +129,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
+        network,
         account?.address,
         fromAsset,
         toAsset,
@@ -197,6 +199,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       }));
 
       const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
+        network,
         account?.address,
         fromAsset,
         toAsset,
@@ -274,8 +277,10 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           approvalTx &&
           (await checkRequiresApproval(network, approvalTx.to!, account.address, approvalTx.data!));
 
+        const { type, ...tx } = approvalTx;
+
         const approvalGasLimit = inputGasLimitToHex(
-          requiresApproval ? await getGasEstimate(network, approvalTx!) : '0'
+          requiresApproval ? await getGasEstimate(network, tx!) : '0'
         ) as ITxGasLimit;
 
         setState((prevState: SwapFormState) => ({
