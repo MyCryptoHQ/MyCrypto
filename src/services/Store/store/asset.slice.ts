@@ -4,7 +4,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { EXCLUDED_ASSETS } from '@config';
 import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, Network, TUuid } from '@types';
-import { filter, find, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
+import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { appReset } from './root.reducer';
@@ -80,7 +80,7 @@ export default slice;
 
 export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
 export const getBaseAssetByNetwork = (network: Network) =>
-  createSelector(getAssets, find(propEq('uuid', network.baseAsset)));
+  createSelector(getAssets, (assets) => assets.find((asset) => asset.uuid === network.baseAsset)!);
 export const getAssetByUUID = (uuid: TUuid) =>
   createSelector([getAssets], (a) => a.find((asset) => asset.uuid === uuid));
 

@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { DEFAULT_NETWORK } from '@config';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { LSKeys, Network, NetworkId } from '@types';
-import { find, findIndex, propEq } from '@vendor';
+import { findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -88,9 +88,7 @@ export default slice;
  * Selectors
  */
 
-// @ts-expect-error: TS fails to infer correct type from find
-const findNetwork: (id: NetworkId) => (n: Network[]) => Network = (id: NetworkId) =>
-  find(propEq('id', id));
+const findNetwork = (id: NetworkId) => (networks: Network[]) => networks.find((n) => n.id === id)!;
 
 export const selectNetworks = createSelector([getAppState], (s) => s[slice.name]);
 

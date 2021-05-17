@@ -25,7 +25,7 @@ import {
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ExtendedAsset, ISwapAsset, Network, StoreAccount } from '@types';
+import { Asset, ISwapAsset, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
@@ -92,8 +92,8 @@ const SwapAssets = (props: Props) => {
 
   const settings = useSelector(getSettings);
   const isDemoMode = useSelector(getIsDemoMode);
-  const network = useSelector(selectNetwork(selectedNetwork)) as Network;
-  const baseAsset = useSelector(getBaseAssetByNetwork(network)) as ExtendedAsset;
+  const network = useSelector(selectNetwork(selectedNetwork));
+  const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
   const [isExpired, setIsExpired] = useState(false);
   const { accounts, userAssets } = useContext(StoreContext);
