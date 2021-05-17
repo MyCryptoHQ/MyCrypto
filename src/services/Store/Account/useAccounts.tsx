@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 
 import {
   addAccounts,
+  addTxToAccount as addTxToAccountRedux,
   destroyAccount,
   getAccounts,
   updateAccount as updateAccountRedux,
@@ -39,13 +40,8 @@ function useAccounts() {
 
   const updateAccount = (_: TUuid, account: IAccount) => dispatch(updateAccountRedux(account));
 
-  const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
-    const newAccountData = {
-      ...accountData,
-      transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
-    };
-    updateAccount(accountData.uuid, newAccountData);
-  };
+  const addTxToAccount = (account: IAccount, tx: ITxReceipt) =>
+    dispatch(addTxToAccountRedux({ account, tx }));
 
   const removeTxFromAccount = (accountData: IAccount, tx: ITxReceipt) => {
     const newAccountData = {

@@ -23,7 +23,8 @@ export {
   addAccounts,
   selectCurrentAccounts,
   selectAccountTxs,
-  selectTxsByStatus
+  selectTxsByStatus,
+  addTxToAccount
 } from './account.slice';
 export {
   createContact,

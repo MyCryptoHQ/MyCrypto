@@ -14,7 +14,6 @@ import {
   fetchAssets,
   fetchMemberships,
   isMyCryptoMember,
-  scanTokens,
   selectTxsByStatus,
   useDispatch,
   useSelector
@@ -28,7 +27,6 @@ import {
   IAccountAdditionData,
   IPendingTxReceipt,
   ITxStatus,
-  ITxType,
   Network,
   NetworkId,
   StoreAccount,
@@ -58,12 +56,7 @@ import { getNewDefaultAssetTemplateByNetwork, getTotalByAsset, useAssets } from 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
-import {
-  getStoreAccounts,
-  getTxsFromAccount,
-  isNotExcludedAsset,
-  isTokenMigration
-} from './helpers';
+import { getStoreAccounts, getTxsFromAccount, isNotExcludedAsset } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
 
@@ -238,15 +231,6 @@ export const StoreProvider: React.FC = ({ children }) => {
               txResponse.blockNumber
             );
             addTxToAccount(senderAccount, finishedTxReceipt);
-            if (
-              finishedTxReceipt.txType === ITxType.DEFIZAP ||
-              isTokenMigration(finishedTxReceipt.txType) ||
-              finishedTxReceipt.txType === ITxType.SWAP
-            ) {
-              dispatch(scanTokens({ accounts: [storeAccount] }));
-            } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
-              dispatch(fetchMemberships([storeAccount]));
-            }
           });
         });
       });

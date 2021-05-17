@@ -1,21 +1,26 @@
 import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { put, select, takeLatest } from 'redux-saga/effects';
+import { all, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   AssetBalanceObject,
   ExtendedAsset,
   IAccount,
   IProvidersMappings,
+  ITxReceipt,
   ITxStatus,
+  ITxType,
   LSKeys,
   TUuid
 } from '@types';
 import { findIndex, propEq } from '@vendor';
 
+import { isTokenMigration } from '../helpers';
 import { getAssetByUUID } from './asset.slice';
+import { fetchMemberships } from './membership.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
+import { scanTokens } from './tokenScanning.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -135,12 +140,18 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
  * Actions
  */
 export const addAccounts = createAction<IAccount[]>(`${slice.name}/addAccounts`);
+export const addTxToAccount = createAction<{ account: IAccount; tx: ITxReceipt }>(
+  `${slice.name}/addTxToAccount`
+);
 
 /**
  * Sagas
  */
 export function* accountsSaga() {
-  yield takeLatest(addAccounts.type, handleAddAccounts);
+  yield all([
+    takeLatest(addAccounts.type, handleAddAccounts),
+    takeLatest(addTxToAccount.type, addTxToAccountWorker)
+  ]);
 }
 
 export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
@@ -152,5 +163,29 @@ export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
   } else {
     yield put(slice.actions.createMany(payload));
     yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+  }
+}
+
+export function* addTxToAccountWorker({
+  payload: { account, tx: newTx }
+}: PayloadAction<{ account: IAccount; tx: ITxReceipt }>) {
+  const newAccountData = {
+    ...account,
+    transactions: [...account.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
+  };
+  yield put(updateAccount(newAccountData));
+
+  if (newTx.status !== ITxStatus.SUCCESS) {
+    return;
+  }
+
+  if (
+    newTx.txType === ITxType.DEFIZAP ||
+    isTokenMigration(newTx.txType) ||
+    newTx.txType === ITxType.SWAP
+  ) {
+    yield put(scanTokens({ accounts: [account] }));
+  } else if (newTx.txType === ITxType.PURCHASE_MEMBERSHIP) {
+    yield put(fetchMemberships([account]));
   }
 }
