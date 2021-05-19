@@ -1,9 +1,4 @@
-import {
-  queryAllByTestId,
-  queryByText,
-  getByTestId,
-  getAllByTestId
-} from '@testing-library/testcafe';
+import { getByTestId, queryAllByTestId, queryByText } from '@testing-library/testcafe';
 
 import { injectLS } from './clientScripts';
 import { FIXTURE_HARDHAT, FIXTURES_CONST, PAGES } from './fixtures';
@@ -15,18 +10,6 @@ const swapPage = new SwapPage();
 fixture('Swap')
   .clientScripts({ content: injectLS(FIXTURE_HARDHAT) })
   .page(PAGES.SWAP);
-
-// test("Can get swap quote", async (t) => {
-//   await swapPage.waitPageLoaded();
-//
-//   /* Fill out form */
-//   await swapPage.fillForm();
-//   await t.wait(FIXTURES_CONST.TIMEOUT);
-//
-//   // Has received swap quote
-//   const quote = await getByText(findByTKey("YOUR_QUOTE"));
-//   await t.expect(quote).ok();
-// });
 
 test('can do a swap', async (t) => {
   await swapPage.waitPageLoaded();

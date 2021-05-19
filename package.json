@@ -230,7 +230,7 @@
     "test:single": "cross-env DEBUG_PRINT_LIMIT=50000 yarn test --coverage=false --watch",
     "test:e2e": "testcafe 'chrome:headless'",
     "test:e2e:dev": "testcafe --live",
-    "test:e2e:ci": "concurrently -s -k \"yarn hardhat:node\" \"yarn test:e2e\"",
+    "test:e2e:ci": "concurrently -s first -k \"yarn hardhat:node\" \"yarn test:e2e\"",
     "hardhat:node": "yarn hardhat node --port 8546",
     "pretest": "check-node-version --package",
     "predev": "check-node-version --package",
