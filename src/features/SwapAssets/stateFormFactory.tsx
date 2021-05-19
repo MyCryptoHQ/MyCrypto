@@ -48,7 +48,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
   const fetchSwapAssets = async () => {
     try {
-      const assets = await DexService.instance.getTokenList();
+      const assets = await DexService.instance.getTokenList(network.id);
       if (assets.length < 1) return;
       // sort assets alphabetically
       const newAssets = assets
