@@ -37,6 +37,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.INFURA,
       service: 'Infura',
       url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`
+    },
+    {
+      name: NetworkUtils.makeNodeName('Ropsten', 'ethscan'),
+      type: NodeType.ETHERSCAN,
+      service: 'Etherscan',
+      url: 'https://api-ropsten.etherscan.io/api'
     }
   ],
 
@@ -46,6 +52,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://api-kovan.etherscan.io/api'
+    },
+    {
+      name: NetworkUtils.makeNodeName('Kovan', 'infura'),
+      type: NodeType.INFURA,
+      service: 'Infura',
+      url: `https://kovan.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
@@ -76,6 +88,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://api-goerli.etherscan.io/api'
+    },
+    {
+      name: NetworkUtils.makeNodeName('Goerli', 'infura'),
+      type: NodeType.INFURA,
+      service: 'Infura',
+      url: `https://goerli.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
