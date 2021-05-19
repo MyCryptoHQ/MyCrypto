@@ -50,11 +50,10 @@ test('Complete SendFlow', async (t) => {
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
   await sendAssetsPage.submitForm();
-  await t.wait(1000);
 
   // Has continued to next step with sign button
   const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
-  await t.expect(signBtn.exists).ok();
+  await t.expect(signBtn.exists).ok({ timeout: FIXTURES_CONST.TIMEOUT });
 
   // Expect to reach confirm tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE')).exists).ok();
