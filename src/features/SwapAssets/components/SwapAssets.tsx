@@ -206,7 +206,7 @@ const SwapAssets = (props: Props) => {
           <NetworkSelector
             network={selectedNetwork}
             filter={(n) => DEX_NETWORKS.includes(n.id)}
-            onChange={(n) => setNetwork(n)}
+            onChange={setNetwork}
           />
         </Box>
         <Box mb="15px">
