@@ -3,7 +3,13 @@ import { Selector, t } from 'testcafe';
 
 import BasePage from './base-page.po';
 import { setupEthereumMock } from './ethereum-mock';
-import { ENV, FIXTURE_ETHEREUM, FIXTURE_VIEW_ONLY_ADDRESS, PAGES } from './fixtures';
+import {
+  ENV,
+  FIXTURE_ETHEREUM,
+  FIXTURE_HARDHAT_PRIVATE_KEY,
+  FIXTURE_VIEW_ONLY_ADDRESS,
+  PAGES
+} from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
 export default class AddAccountPage extends BasePage {
@@ -38,7 +44,7 @@ export default class AddAccountPage extends BasePage {
   async addWeb3() {
     await this.navigateToPage();
     await this.waitPageLoaded();
-    await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 5);
+    await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
     await t.click(getByText(getTransValueByKey('X_WEB3_DEFAULT')));
     this.waitForPage(PAGES.ADD_ACCOUNT_WEB3);
 

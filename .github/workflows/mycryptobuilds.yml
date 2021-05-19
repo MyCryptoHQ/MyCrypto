@@ -190,7 +190,6 @@ jobs:
       - name: E2E - run
         run: yarn test:e2e:ci
         env:
-          E2E_PRIVATE_KEY: ${{ secrets.E2E_PRIVATE_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 
       - name: Update PR status

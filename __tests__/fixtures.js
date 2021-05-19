@@ -1,9 +1,6 @@
 require('dotenv').config();
 
 const ENV = {
-  // Should be set in order to use PrivateKey in AddAccount flow
-  E2E_PRIVATE_KEY: process.env.E2E_PRIVATE_KEY,
-
   // Defined in github/workflow to run against mycryptobuilds
   E2E_BASE_URL: process.env.E2E_BASE_URL
 };
@@ -51,7 +48,7 @@ const FIXTURE_SEND_ADDRESS = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
 
 const FIXTURE_SEND_AMOUNT = '0.001';
 
-const FIXTURE_WEB3_ADDRESS = '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3 ';
+const FIXTURE_WEB3_ADDRESS = '0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf ';
 
 const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
 
