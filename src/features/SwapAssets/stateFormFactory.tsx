@@ -5,7 +5,7 @@ import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
 import { selectNetwork, useSelector } from '@store';
 import translate from '@translations';
-import { ISwapAsset, ITxGasLimit, Network, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
@@ -38,6 +38,13 @@ const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
+
+  const setNetwork = (network: NetworkId) => {
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      selectedNetwork: network
+    }));
+  };
 
   const fetchSwapAssets = async () => {
     try {
@@ -311,6 +318,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   return {
+    setNetwork,
     fetchSwapAssets,
     setSwapAssets,
     handleFromAssetSelected,

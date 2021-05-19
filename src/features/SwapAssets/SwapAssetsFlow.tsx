@@ -10,7 +10,7 @@ import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
 import { bigify, useStateReducer } from '@utils';
-import { useEffectOnce, usePromise } from '@vendor';
+import { usePromise } from '@vendor';
 
 import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
@@ -29,6 +29,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
   const { getDefaultAccount } = useContext(StoreContext);
   const defaultAccount = getDefaultAccount();
   const {
+    setNetwork,
     fetchSwapAssets,
     setSwapAssets,
     handleFromAssetSelected,
@@ -123,6 +124,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         handleAccountSelected,
         handleGasLimitEstimation,
         handleRefreshQuote,
+        setNetwork,
         onSuccess: () => {
           const pair: IAssetPair = {
             fromAsset,
@@ -212,12 +214,12 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
   }, [canYield]);
 
   const mounted = usePromise();
-  useEffectOnce(() => {
+  useEffect(() => {
     (async () => {
       const [fetchedAssets, fetchedFromAsset, fetchedToAsset] = await mounted(fetchSwapAssets());
       setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset);
     })();
-  });
+  }, [selectedNetwork]);
 
   return (
     <ExtendedContentPanel

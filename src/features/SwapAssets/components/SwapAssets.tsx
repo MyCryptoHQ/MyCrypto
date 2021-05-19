@@ -11,9 +11,11 @@ import {
   DemoGatewayBanner,
   InlineMessage,
   InputField,
+  NetworkSelector,
   PoweredByText,
   Tooltip
 } from '@components';
+import { DEX_NETWORKS } from '@config';
 import { useRates } from '@services/Rates';
 import { StoreContext } from '@services/Store';
 import {
@@ -25,7 +27,7 @@ import {
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ISwapAsset, StoreAccount } from '@types';
+import { Asset, ISwapAsset, NetworkId, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
@@ -54,6 +56,7 @@ type Props = SwapFormState & {
   handleAccountSelected(account?: StoreAccount): void;
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
+  setNetwork(network: NetworkId): void;
 };
 
 const SwapAssets = (props: Props) => {
@@ -87,7 +90,8 @@ const SwapAssets = (props: Props) => {
     tradeGasLimit,
     gasPrice,
     isEstimatingGas,
-    expiration
+    expiration,
+    setNetwork
   } = props;
 
   const settings = useSelector(getSettings);
@@ -198,6 +202,13 @@ const SwapAssets = (props: Props) => {
     <>
       <Box mt="20px" mb="1em">
         {isDemoMode && <DemoGatewayBanner />}
+        <Box mb="15px">
+          <NetworkSelector
+            network={selectedNetwork}
+            filter={(n) => DEX_NETWORKS.includes(n.id)}
+            onChange={(n) => setNetwork(n)}
+          />
+        </Box>
         <Box mb="15px">
           <Box>
             <Body>

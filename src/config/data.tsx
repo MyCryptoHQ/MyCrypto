@@ -36,6 +36,7 @@ export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const DEX_BASE_URL = 'https://swap.mycryptoapi.com/';
 export const DEX_FEE_RECIPIENT = '0xD8D46494e200Fa585FC98f86e6A5Ea0DC1F18aD0';
 export const DEX_TRADE_EXPIRATION = 31; // in seconds
+export const DEX_NETWORKS = ['Ethereum', 'Kovan', 'SmartChain'];
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
 export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
