@@ -18,7 +18,7 @@ test('Should redirect to add-account', async (t) => {
   await addAccountPage.waitPageLoaded();
 
   const title = getByText(getTransValueByKey('DECRYPT_ACCESS'));
-  await t.expect(title).ok();
+  await t.expect(title.exists).ok();
 });
 
 /**

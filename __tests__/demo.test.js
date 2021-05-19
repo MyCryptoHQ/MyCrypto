@@ -10,7 +10,7 @@ fixture('Demo Mode').page(PAGES.ADD_ACCOUNT);
 
 test('Can prompt to use demo mode', async (t) => {
   const button = getByText(findByTKey('DEMO_BUTTON_TEXT'));
-  await t.expect(button).ok();
+  await t.expect(button.exists).ok();
 });
 
 test('Can redirect to dashboard when activated', async (t) => {

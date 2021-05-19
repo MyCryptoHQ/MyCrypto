@@ -15,15 +15,15 @@ test('Can fetch status of a successful TX', async (t) => {
   await txStatusPage.waitPageLoaded();
 
   const title = getByText(getTransValueByKey('TX_STATUS'));
-  await t.expect(title).ok();
+  await t.expect(title.exists).ok();
 
   await txStatusPage.fillForm();
 
   await t.wait(FIXTURES_CONST.TIMEOUT);
 
   await t.expect(Selector('button').withText(getTransValueByKey('FETCH')).exists).eql(false);
-  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false })).ok();
-  await t.expect(getAllByTestId('SUCCESS')).ok();
+  await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false }).exists).ok();
+  await t.expect(getAllByTestId('SUCCESS').exists).ok();
 
   await resetFeatureFlags();
 });
