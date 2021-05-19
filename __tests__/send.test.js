@@ -1,4 +1,4 @@
-import { getAllByText, getByText } from '@testing-library/testcafe';
+import { getAllByText, getByText, queryByText } from '@testing-library/testcafe';
 import { Selector } from 'testcafe';
 
 import { injectLS } from './clientScripts';
@@ -54,7 +54,7 @@ test('Complete SendFlow', async (t) => {
   await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
 
   // Has continued to next step with sign button
-  const signBtn = getByText(findByTKey('CONFIRM_AND_SEND')).with({
+  const signBtn = queryByText(findByTKey('CONFIRM_AND_SEND')).with({
     timeout: FIXTURES_CONST.HARDHAT_TIMEOUT
   });
   await t.expect(signBtn.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
