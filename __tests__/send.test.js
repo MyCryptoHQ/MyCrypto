@@ -5,12 +5,13 @@ import { injectLS } from './clientScripts';
 import { setupEthereumMock } from './ethereum-mock';
 import { setFeatureFlag } from './featureflag-utils';
 import {
-  FIXTURE_HARDHAT, FIXTURE_HARDHAT_PRIVATE_KEY,
+  FIXTURE_HARDHAT,
+  FIXTURE_HARDHAT_PRIVATE_KEY,
   FIXTURE_SEND_AMOUNT,
   FIXTURE_SEND_CONTACT,
   FIXTURES_CONST,
   PAGES
-} from "./fixtures";
+} from './fixtures';
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
 
