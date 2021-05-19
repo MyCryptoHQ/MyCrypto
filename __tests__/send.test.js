@@ -49,11 +49,9 @@ test('Complete SendFlow', async (t) => {
 
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
+  await t.wait(FIXTURES_CONST.TIMEOUT);
   await sendAssetsPage.submitForm();
-
-  // Due to weird issues, we have to wait 60s here for CI to properly work. This should be looked into further and fixed
-  // so we don't have to wait 60s for a single test.
-  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
+  await t.wait(FIXTURES_CONST.TIMEOUT);
 
   // Has continued to next step with sign button
   const signBtn = queryByText(findByTKey('CONFIRM_AND_SEND')).with({
