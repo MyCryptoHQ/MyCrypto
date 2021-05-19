@@ -51,7 +51,7 @@ test('Complete SendFlow', async (t) => {
   await sendAssetsPage.fillForm();
   await sendAssetsPage.submitForm();
 
-  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
+  await t.wait(FIXTURES_CONST.TIMEOUT);
 
   // Has continued to next step with sign button
   const signBtn = queryByText(findByTKey('CONFIRM_AND_SEND')).with({
