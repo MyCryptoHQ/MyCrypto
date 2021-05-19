@@ -4,7 +4,6 @@ import { Selector, t } from 'testcafe';
 import BasePage from './base-page.po';
 import { setupEthereumMock } from './ethereum-mock';
 import {
-  ENV,
   FIXTURE_ETHEREUM,
   FIXTURE_HARDHAT_PRIVATE_KEY,
   FIXTURE_VIEW_ONLY_ADDRESS,

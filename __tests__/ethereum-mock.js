@@ -4,8 +4,7 @@ import { FIXTURES_CONST } from './fixtures';
 import { waitForProperty } from './helpers';
 
 const NETWORKS = {
-  1: 'http://127.0.0.1:8546/',
-  5: 'https://goerli.mycryptoapi.com'
+  1: 'http://127.0.0.1:8546/'
 };
 
 const _setupEthereumMock = ClientFunction((privateKey, chainId, rpcUrl) => {
