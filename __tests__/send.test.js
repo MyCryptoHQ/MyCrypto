@@ -53,7 +53,7 @@ test('Complete SendFlow', async (t) => {
 
   // Has continued to next step with sign button
   const signBtn = getByText(findByTKey('CONFIRM_AND_SEND'));
-  await t.expect(signBtn.exists).ok({ timeout: FIXTURES_CONST.TIMEOUT });
+  await t.expect(signBtn.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
 
   // Expect to reach confirm tx
   await t.expect(getByText(findByTKey('CONFIRM_TX_MODAL_TITLE')).exists).ok();

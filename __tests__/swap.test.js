@@ -21,11 +21,13 @@ test('can do a swap', async (t) => {
   const button = await getByTestId('confirm-swap');
   await t.click(button);
 
-  const send = await queryByText(findByTKey('CONFIRM_AND_SEND')).with({ timeout: 60000 });
-  await t.expect(send.exists).ok({ timeout: 60000 });
+  const send = await queryByText(findByTKey('CONFIRM_AND_SEND')).with({
+    timeout: FIXTURES_CONST.HARDHAT_TIMEOUT
+  });
+  await t.expect(send.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(send);
 
   await t
-    .expect(queryAllByTestId('SUCCESS').with({ timeout: 60000 }).exists)
-    .ok({ timeout: 60000 });
+    .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).exists)
+    .ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
 });
