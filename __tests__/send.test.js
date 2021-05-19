@@ -5,13 +5,12 @@ import { injectLS } from './clientScripts';
 import { setupEthereumMock } from './ethereum-mock';
 import { setFeatureFlag } from './featureflag-utils';
 import {
-  ENV,
-  FIXTURE_HARDHAT,
+  FIXTURE_HARDHAT, FIXTURE_HARDHAT_PRIVATE_KEY,
   FIXTURE_SEND_AMOUNT,
   FIXTURE_SEND_CONTACT,
   FIXTURES_CONST,
   PAGES
-} from './fixtures';
+} from "./fixtures";
 import SendAssetsPage from './send-assets-page.po';
 import { findByTKey } from './translation-utils';
 
@@ -45,7 +44,7 @@ test('Complete SendFlow', async (t) => {
   await t.click(Selector('.close-icon'));
   await setFeatureFlag('PROTECT_TX', false);
 
-  await setupEthereumMock(ENV.E2E_PRIVATE_KEY, 1);
+  await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
 
   /* Can complete form and send tx */
   await sendAssetsPage.fillForm();
