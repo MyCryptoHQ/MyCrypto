@@ -1,7 +1,8 @@
 import { Selector, t } from 'testcafe';
 
 import BasePage from './base-page.po';
-import { FIXTURE_SEND_AMOUNT, PAGES } from './fixtures';
+import { setupEthereumMock } from './ethereum-mock';
+import { FIXTURE_HARDHAT_PRIVATE_KEY, FIXTURE_SEND_AMOUNT, PAGES } from './fixtures';
 
 export default class SwapPage extends BasePage {
   async navigateToPage() {
@@ -14,5 +15,9 @@ export default class SwapPage extends BasePage {
 
   async fillForm() {
     await t.typeText(Selector('input[name="swap-from"]').parent(), FIXTURE_SEND_AMOUNT);
+  }
+
+  async setupMock() {
+    await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
   }
 }

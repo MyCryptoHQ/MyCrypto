@@ -44,11 +44,11 @@ test('Can export AppState to file', async (t) => {
     });
 
   // Assert the json is displayed in a code block
-  await t.expect(getByTestId('export-json-display')).ok();
+  await t.expect(getByTestId('export-json-display').exists).ok();
 
   // Download file
   const downloadBtn = getByTestId('export-json-link'); // Button is inside link, so to acess attr we use data-testid
-  await t.expect(downloadBtn).ok();
+  await t.expect(downloadBtn.exists).ok();
   await t.click(downloadBtn);
 
   // Check for file download every x seconds and assert it actual contents match fixture

@@ -303,6 +303,7 @@ const SwapAssets = (props: Props) => {
             !!toAmountError
           }
           loading={isSubmitting}
+          data-testid="confirm-swap"
         >
           {fromAsset && toAsset
             ? translate('SWAP_FOR', { $from: fromAsset.ticker, $to: toAsset.ticker })
