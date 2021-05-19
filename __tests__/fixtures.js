@@ -184,10 +184,10 @@ const FIXTURE_HARDHAT = {
     },
     'b6260cfc-c6ff-b385-af20-1cc95e308b33': {
       label: 'Web3 Account 1',
-      address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
+      address: '0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf',
       notes: '',
-      network: 'Goerli',
-      uuid: 'b6260cfc-c6ff-b385-af20-1cc95e308b33'
+      network: 'Ethereum',
+      uuid: '4a236c90-b722-5e26-8718-659db6b5d302'
     }
   },
   assets: {},
