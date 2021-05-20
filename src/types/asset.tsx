@@ -52,6 +52,5 @@ export interface AssetBalanceObject {
 
 export type StoreAsset = ExtendedAsset & {
   balance: BigNumber;
-  mtime: number;
   rate?: number;
 };

@@ -22,7 +22,6 @@ const defaultAsset = {
   uuid: 'FakeTokenUUID',
   type: 'erc20',
   ticker: 'FTKN',
-  mtime: new Date().valueOf(),
   balance: BigNumber.from('1'),
   decimal: 18,
   networkId: DEFAULT_NETWORK

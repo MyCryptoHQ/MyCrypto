@@ -2,19 +2,29 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
-import { fAccount, fAccounts, fSettings, fTransaction, fTxReceipt } from '@fixtures';
+import {
+  fAccount,
+  fAccounts,
+  fAssets,
+  fNetworks,
+  fSettings,
+  fTransaction,
+  fTxReceipt
+} from '@fixtures';
 import { IAccount, ITxReceipt, ITxStatus, ITxType, TUuid } from '@types';
 
 import {
   addTxToAccount,
   addTxToAccountWorker,
   getAccounts,
+  getStoreAccounts,
   initialState,
   selectAccountTxs,
   selectCurrentAccounts,
   default as slice,
   updateAccount
 } from './account.slice';
+import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { scanTokens } from './tokenScanning.slice';
 
@@ -125,6 +135,19 @@ describe('AccountSlice', () => {
         ]
       }
     ]);
+  });
+
+  it('getStoreAccounts(): Adds assets, network and label to selected accounts', () => {
+    const accounts = fAccounts.map((a) => sanitizeAccount(a));
+    const state = mockAppState({
+      accounts: accounts,
+      assets: fAssets,
+      networks: fNetworks
+    });
+
+    const actual = getStoreAccounts([accounts[0]])(state);
+
+    expect(actual).toEqual([fAccounts[0]]);
   });
 
   it('selectCurrentAccounts(): returns only favorite accounts', () => {
