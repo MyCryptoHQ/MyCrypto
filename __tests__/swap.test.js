@@ -58,7 +58,7 @@ test('can do an ERC20 swap', async (t) => {
   await t.expect(approve.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(approve);
 
-  await t.wait(FIXTURES_CONST.TIMEOUT);
+  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
 
   const send = await queryByText(findByTKey('CONFIRM_TRANSACTION')).with({
     timeout: FIXTURES_CONST.HARDHAT_TIMEOUT
