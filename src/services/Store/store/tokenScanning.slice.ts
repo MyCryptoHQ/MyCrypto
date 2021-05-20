@@ -103,8 +103,7 @@ export const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
             ? [
                 {
                   uuid: tempAsset.uuid,
-                  balance: balance.toString(10),
-                  mtime: Date.now()
+                  balance: balance.toString(10)
                 }
               ]
             : [])
@@ -118,8 +117,7 @@ export const formatBalances = (assets: Asset[], accounts: IAccount[]) => ({
     if (baseAssetBalance) {
       newAssets.push({
         uuid: generateAssetUUID(network.chainId),
-        balance: baseAssetBalance.toString(10),
-        mtime: Date.now()
+        balance: baseAssetBalance.toString(10)
       });
     }
 
@@ -148,6 +146,7 @@ export function* scanTokensWorker({
 
   try {
     const newAssets = yield call(getBalances, networks, accounts, assets);
+
     yield put(updateAccountAssets(newAssets));
     yield put(finishTokenScan());
   } catch (err) {

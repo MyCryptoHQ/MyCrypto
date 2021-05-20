@@ -18523,7 +18523,7 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
               truncate={true}
             />,
             <Network
-              color="#adc101"
+              color="#007896"
             >
               Ethereum
             </Network>,
@@ -19120,8 +19120,8 @@ exports[` Storyshots Organisms/AccountList Desktop 1`] = `
               className="Box-sc-1974eaf-0 jQJFMv"
             >
               <div
-                className="Network__Color-sc-17zm9dm-0 fklPNX"
-                color="#adc101"
+                className="Network__Color-sc-17zm9dm-0 VZdyR"
+                color="#007896"
               />
               <span
                 className="Text__SText-sc-14ylyin-0 Ueu"

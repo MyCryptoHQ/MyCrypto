@@ -187,8 +187,7 @@ export const fStoreAssets = [
     ticker: 'WETH' as TTicker,
     contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     decimal: DEFAULT_ASSET_DECIMAL,
-    balance: BigNumber.from(1),
-    mtime: Date.now()
+    balance: BigNumber.from(1)
   },
   {
     uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
@@ -197,8 +196,7 @@ export const fStoreAssets = [
     type: 'base',
     ticker: 'ETH',
     decimal: DEFAULT_ASSET_DECIMAL,
-    balance: BigNumber.from(1),
-    mtime: Date.now()
+    balance: BigNumber.from(1)
   },
   {
     uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
@@ -207,8 +205,7 @@ export const fStoreAssets = [
     type: 'base',
     ticker: 'GoerliETH',
     decimal: DEFAULT_ASSET_DECIMAL,
-    balance: BigNumber.from(1),
-    mtime: Date.now()
+    balance: BigNumber.from(1)
   },
   {
     uuid: '01f2d4ec-c263-6ba8-de38-01d66c86f309',
@@ -217,12 +214,10 @@ export const fStoreAssets = [
     type: 'base',
     ticker: 'RopstenETH',
     decimal: DEFAULT_ASSET_DECIMAL,
-    balance: BigNumber.from(21),
-    mtime: Date.now()
+    balance: BigNumber.from(21)
   }
 ] as StoreAsset[];
 
 export const fAsset: StoreAsset = Object.assign({}, fAssets[2], {
-  balance: BigNumber.from('0x1b9ced41465be000'),
-  mtime: 1581530607024
+  balance: BigNumber.from('0x1b9ced41465be000')
 });

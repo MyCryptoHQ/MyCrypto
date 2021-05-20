@@ -2,22 +2,25 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, put, select, takeLatest } from 'redux-saga/effects';
 
+import { translateRaw } from '@translations';
 import {
   AssetBalanceObject,
-  ExtendedAsset,
   IAccount,
   IProvidersMappings,
   ITxReceipt,
   ITxStatus,
   ITxType,
   LSKeys,
+  StoreAsset,
   TUuid
 } from '@types';
 import { findIndex, propEq } from '@vendor';
 
 import { isTokenMigration } from '../helpers';
 import { getAssetByUUID } from './asset.slice';
+import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
+import { getNetwork } from './network.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
@@ -31,18 +34,20 @@ const slice = createSlice({
   initialState,
   reducers: {
     create(state, action: PayloadAction<IAccount>) {
-      state.push(action.payload);
+      state.push(sanitizeAccount(action.payload));
     },
     createMany(state, action: PayloadAction<IAccount[]>) {
       action.payload.forEach((a) => {
-        state.push(a);
+        state.push(sanitizeAccount(a));
       });
     },
     resetAndCreate(_, action: PayloadAction<IAccount>) {
-      return [action.payload];
+      return [sanitizeAccount(action.payload)];
     },
-    resetAndCreateMany(_, action: PayloadAction<IAccount[]>) {
-      return action.payload;
+    resetAndCreateMany(state, action: PayloadAction<IAccount[]>) {
+      action.payload.forEach((a) => {
+        state.push(sanitizeAccount(a));
+      });
     },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);
@@ -50,13 +55,13 @@ const slice = createSlice({
     },
     update(state, action: PayloadAction<IAccount>) {
       const idx = findIndex(propEq('uuid', action.payload.uuid), state);
-      state[idx] = action.payload;
+      state[idx] = sanitizeAccount(action.payload);
     },
     updateMany(state, action: PayloadAction<IAccount[]>) {
       const accounts = action.payload;
       accounts.forEach((account) => {
         const idx = findIndex(propEq('uuid', account.uuid), state);
-        state[idx] = account;
+        state[idx] = sanitizeAccount(account);
       });
     },
     updateAssets(state, action: PayloadAction<Record<string, AssetBalanceObject[]>>) {
@@ -126,7 +131,7 @@ export const selectTxsByStatus = (status: ITxStatus) =>
 export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
   a
     .flatMap((a) => a.assets)
-    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as ExtendedAsset[])
+    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as StoreAsset[])
 );
 
 export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
@@ -135,6 +140,25 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
     {} as Record<string, IProvidersMappings>
   )
 );
+
+export const getStoreAccounts = createSelector([getAccounts, (s) => s], (accounts, s) => {
+  return accounts.map((a) => {
+    const accountAssets: StoreAsset[] = a.assets.reduce(
+      (acc, asset) => [
+        ...acc,
+        // @todo: Switch BN from ethers to unified BN
+        { ...asset, balance: EthersBN.from(asset.balance), ...getAssetByUUID(asset.uuid)(s)! }
+      ],
+      []
+    );
+    return {
+      ...a,
+      assets: accountAssets,
+      network: getNetwork(a.networkId)(s),
+      label: a.label ? a.label : translateRaw('NO_LABEL')
+    };
+  });
+});
 
 /**
  * Actions

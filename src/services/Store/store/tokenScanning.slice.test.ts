@@ -60,16 +60,14 @@ describe('scanTokensWorker()', () => {
   it('calls getTokens and puts result', () => {
     const result = {
       [fAccounts[0].uuid]: [
-        { uuid: REPV1UUID, balance: '1000000000000000000', mtime: 1607602775360 },
+        { uuid: REPV1UUID, balance: '1000000000000000000' },
         {
           uuid: REPV2UUID,
-          balance: '1000000000000000000',
-          mtime: 1607602775360
+          balance: '1000000000000000000'
         },
         {
           uuid: ETHUUID as TUuid,
-          balance: '2000000000000000000',
-          mtime: 1607602775360
+          balance: '2000000000000000000'
         }
       ]
     };
@@ -80,7 +78,7 @@ describe('scanTokensWorker()', () => {
       .call(getBalances, fNetworks, fAccounts, assets)
       .put(updateAccountAssets(result))
       .put(finishTokenScan())
-      .silentRun();
+      .run(false);
   });
 
   it('updates only passed assets', () => {
@@ -88,13 +86,11 @@ describe('scanTokensWorker()', () => {
       [fAccounts[0].uuid]: [
         {
           uuid: REPV2UUID,
-          balance: '1000000000000000000',
-          mtime: 1607602775360
+          balance: '1000000000000000000'
         },
         {
           uuid: ETHUUID as TUuid,
-          balance: '2000000000000000000',
-          mtime: 1607602775360
+          balance: '2000000000000000000'
         },
         fAccounts[0].assets[1]
       ]
@@ -129,13 +125,11 @@ describe('formatBalances()', () => {
       [fAccounts[0].uuid]: [
         {
           uuid: REPV2UUID,
-          balance: '1000000000000000000',
-          mtime: 1607602775360
+          balance: '1000000000000000000'
         },
         {
           uuid: ETHUUID as TUuid,
-          balance: '2000000000000000000',
-          mtime: 1607602775360
+          balance: '2000000000000000000'
         },
         fAccounts[0].assets[1]
       ]

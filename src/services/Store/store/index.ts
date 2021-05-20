@@ -24,7 +24,8 @@ export {
   selectCurrentAccounts,
   selectAccountTxs,
   selectTxsByStatus,
-  addTxToAccount
+  addTxToAccount,
+  getStoreAccounts
 } from './account.slice';
 export {
   createContact,
