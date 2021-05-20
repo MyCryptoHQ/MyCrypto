@@ -1,51 +1,5 @@
-import { BigNumber } from '@ethersproject/bignumber';
-
 import { TOKEN_MIGRATIONS } from '@config';
-import { translateRaw } from '@translations';
-import {
-  Asset,
-  AssetBalanceObject,
-  ExtendedContact,
-  IAccount,
-  ITxReceipt,
-  ITxStatus,
-  ITxType,
-  Network,
-  StoreAccount,
-  StoreAsset,
-  TUuid
-} from '@types';
-
-import { getLabelByAccount } from './Contact';
-import { getNetworkById } from './Network';
-
-const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
-  accountAssets
-    .map((asset) => {
-      const refAsset = assets.find((a) => a.uuid === asset.uuid)!;
-      return {
-        ...refAsset,
-        ...asset
-      };
-    })
-    .map((asset) => ({ ...asset, balance: BigNumber.from(asset.balance), mtime: Date.now() }));
-
-export const getStoreAccounts = (
-  accounts: IAccount[],
-  assets: Asset[],
-  networks: Network[],
-  contacts: ExtendedContact[]
-): StoreAccount[] => {
-  return accounts.map((a) => {
-    const accountLabel = getLabelByAccount(a, contacts);
-    return {
-      ...a,
-      assets: getAssetsByUuid(a.assets, assets),
-      network: getNetworkById(a.networkId, networks),
-      label: accountLabel ? accountLabel.label : translateRaw('NO_LABEL')
-    };
-  });
-};
+import { ITxReceipt, ITxStatus, ITxType, StoreAccount, StoreAsset, TUuid } from '@types';
 
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
