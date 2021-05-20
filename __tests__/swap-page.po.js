@@ -1,16 +1,17 @@
+import { Contract } from '@ethersproject/contracts';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { getByTestId } from '@testing-library/testcafe';
 import { Selector, t } from 'testcafe';
 
+//import { default as hardhatConfig } from '../hardhat.config';
 import BasePage from './base-page.po';
 import { setupEthereumMock } from './ethereum-mock';
 import {
   FIXTURE_HARDHAT_PRIVATE_KEY,
   FIXTURE_SEND_AMOUNT,
-  PAGES,
-  FIXTURE_WEB3_ADDRESS
+  FIXTURE_WEB3_ADDRESS,
+  PAGES
 } from './fixtures';
-
-const ethers = require('ethers');
 
 export default class SwapPage extends BasePage {
   async navigateToPage() {
@@ -31,12 +32,25 @@ export default class SwapPage extends BasePage {
     await t.typeText(Selector('input[name="swap-from"]').parent(), FIXTURE_SEND_AMOUNT);
   }
 
+  async resetFork() {
+    const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
+
+    await provider.send('hardhat_reset', [
+      {
+        forking: {
+          jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`
+        }
+      }
+    ]);
+  }
+
   async setupMock() {
     await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
   }
 
+  // Transfers DAI to the test address
   async setupERC20() {
-    const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8546/');
+    const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
 
     await provider.send('hardhat_impersonateAccount', [
       '0xf977814e90da44bfa03b6295a0616a897441acec'
@@ -58,19 +72,14 @@ export default class SwapPage extends BasePage {
     ];
 
     // send ERC20
-    console.log('Create contract');
-    const erc20 = new ethers.Contract('0x6b175474e89094c44da98b954eedeac495271d0f', abi, signer);
-    console.log('Generate tx');
+    const erc20 = new Contract('0x6b175474e89094c44da98b954eedeac495271d0f', abi, signer);
     const tx = await erc20.populateTransaction.transfer(
       FIXTURE_WEB3_ADDRESS,
       '100000000000000000000'
     );
-    console.log('Sending tx', tx);
     const sent = await signer.sendTransaction(tx);
-    console.log('Sent tx', tx);
 
-    const result = await sent.wait();
-    console.log('Result', result.transactionHash, result.status);
+    await sent.wait();
 
     await provider.send('hardhat_stopImpersonatingAccount', [
       '0xf977814e90da44bfa03b6295a0616a897441acec'

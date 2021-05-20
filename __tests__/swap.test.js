@@ -1,8 +1,8 @@
 import {
   getByTestId,
   queryAllByTestId,
-  queryByText,
-  queryAllByText
+  queryAllByText,
+  queryByText
 } from '@testing-library/testcafe';
 
 import { injectLS } from './clientScripts';
@@ -19,6 +19,7 @@ fixture('Swap')
 test('can do an ETH swap', async (t) => {
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
+  await swapPage.resetFork();
 
   await swapPage.fillForm();
   await t.wait(FIXTURES_CONST.TIMEOUT);
@@ -40,6 +41,7 @@ test('can do an ETH swap', async (t) => {
 test('can do an ERC20 swap', async (t) => {
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
+  await swapPage.resetFork();
   await swapPage.setupERC20();
 
   await swapPage.fillFormERC20();
@@ -64,7 +66,9 @@ test('can do an ERC20 swap', async (t) => {
   await t.expect(send.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(send);
 
+  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
+
   await t
-    .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).exists)
-    .ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
+    .expect(queryAllByTestId('SUCCESS').count)
+    .eql(2, { timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
 });
