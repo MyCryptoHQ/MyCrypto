@@ -102,8 +102,7 @@ export const StoreContext = createContext({} as State);
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider: React.FC = ({ children }) => {
   const {
-    accounts: rawAccounts,
-    storeAccounts: accounts,
+    accounts,
     addTxToAccount,
     removeTxFromAccount,
     getAccountByAddressAndNetworkName,
@@ -125,7 +124,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const currentAccounts = useMemo(
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
-    [rawAccounts, settings.dashboardAccounts, assets]
+    [accounts, settings.dashboardAccounts, assets]
   );
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.

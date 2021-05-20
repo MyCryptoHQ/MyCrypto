@@ -140,12 +140,12 @@ describe('AccountSlice', () => {
   it('getStoreAccounts(): Adds assets, network and label to selected accounts', () => {
     const accounts = fAccounts.map((a) => sanitizeAccount(a));
     const state = mockAppState({
-      accounts: accounts,
+      accounts: [accounts[0]],
       assets: fAssets,
       networks: fNetworks
     });
 
-    const actual = getStoreAccounts([accounts[0]])(state);
+    const actual = getStoreAccounts(state);
 
     expect(actual).toEqual([fAccounts[0]]);
   });

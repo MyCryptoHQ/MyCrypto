@@ -141,27 +141,24 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
   )
 );
 
-export const getStoreAccounts = (accounts: IAccount[]) =>
-  createSelector([(s) => s], (s) => {
-    return accounts.map((a) => {
-      const accountAssets = a.assets.reduce(
-        (acc, asset) =>
-          [
-            ...acc,
-            // @ts-expect-error why tf are you crying ?
-            { ...asset, balance: EthersBN.from(asset.balance), ...getAssetByUUID(asset.uuid)(s)! }
-          ] as StoreAsset[],
-        [] as StoreAsset[]
-      );
-      return {
-        ...a,
-        assets: accountAssets,
-        // @ts-expect-error why tf are you crying ?
-        network: getNetwork(a.networkId)(s),
-        label: a.label ? a.label : translateRaw('NO_LABEL')
-      };
-    });
+export const getStoreAccounts = createSelector([getAccounts, (s) => s], (accounts, s) => {
+  return accounts.map((a) => {
+    const accountAssets: StoreAsset[] = a.assets.reduce(
+      (acc, asset) => [
+        ...acc,
+        // @todo: Switch BN from ethers to unified BN
+        { ...asset, balance: EthersBN.from(asset.balance), ...getAssetByUUID(asset.uuid)(s)! }
+      ],
+      []
+    );
+    return {
+      ...a,
+      assets: accountAssets,
+      network: getNetwork(a.networkId)(s),
+      label: a.label ? a.label : translateRaw('NO_LABEL')
+    };
   });
+});
 
 /**
  * Actions
