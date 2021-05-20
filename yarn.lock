@@ -2443,10 +2443,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.4.3.tgz#6ba16013e0177ab83661ff1d0e340655e9cdde31"
-  integrity sha512-e8kptVsr6g9M5zsNSYotE9PJUD6RjkHcAKnWOzMQHog60IXVXlyZWOZcJ6OhDUbCRcL4Zs4lVZCm/kdk88akXQ==
+"@mycrypto/eth-scan@3.4.4":
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.4.4.tgz#c91de9f818cc7a1f1c74b65c6c39d5dc5c1f4a57"
+  integrity sha512-eSV91zlRXYn3EqdNEyy+wzP7R+St0ZbN4UxLhLuZGTYig/ZZkwygsfR2nAdOih/gNvGtrUcqaj/yOyBCRdz2vg==
   dependencies:
     "@findeth/abi" "^0.7.1"
     isomorphic-unfetch "^3.1.0"
