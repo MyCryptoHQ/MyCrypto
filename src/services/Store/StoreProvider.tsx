@@ -123,8 +123,6 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   const [pendingTransactions, setPendingTransactions] = useState([] as IPendingTxReceipt[]);
 
-  // We transform rawAccounts into StoreAccount
-
   const currentAccounts = useMemo(
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
     [rawAccounts, settings.dashboardAccounts, assets]
