@@ -142,10 +142,9 @@ export function* scanTokensWorker({
   yield put(startTokenScan());
 
   const networks = yield select(selectNetworks);
-  const allAssets = yield select(getAssets);
 
   const accounts: IAccount[] = requestedAccounts ? requestedAccounts : yield select(getAccounts);
-  const assets = requestedAssets ? [...allAssets, ...requestedAssets] : allAssets;
+  const assets: Asset[] = requestedAssets ? requestedAssets : yield select(getAssets);
 
   try {
     const newAssets = yield call(getBalances, networks, accounts, assets);
