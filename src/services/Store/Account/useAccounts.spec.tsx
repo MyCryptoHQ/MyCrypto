@@ -9,7 +9,7 @@ import {
   waitFor
 } from 'test-utils';
 
-import { fAccounts, fTxReceipt } from '@fixtures';
+import { fAccounts, fNetworks, fTxReceipt } from '@fixtures';
 import { IAccount } from '@types';
 
 import useAccounts from './useAccounts';
@@ -32,7 +32,9 @@ jest.mock('@mycrypto/eth-scan', () => {
 
 const renderUseAccounts = ({ accounts = [] as IAccount[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper initialState={mockAppState({ accounts })}>{children}</ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ accounts, networks: fNetworks })}>
+      {children}
+    </ProvidersWrapper>
   );
   return renderHook(() => useAccounts(), { wrapper });
 };

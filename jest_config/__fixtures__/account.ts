@@ -4,7 +4,7 @@ import { REPV1UUID } from '@config';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 
-import { fNetwork, fNetworks } from './network';
+import { Ethereum, fNetwork } from './network';
 
 export const fAccounts: StoreAccount[] = [
   {
@@ -39,7 +39,7 @@ export const fAccounts: StoreAccount[] = [
     favorite: false,
     mtime: 0,
     uuid: '15d5e8f3-c595-5206-b5f3-86c180eb7119' as TUuid,
-    network: fNetworks[0],
+    network: Ethereum,
     label: 'WalletConnect Account 1'
   },
   {
@@ -194,7 +194,7 @@ export const fAccounts: StoreAccount[] = [
     favorite: false,
     mtime: 0,
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70y' as TUuid,
-    network: fNetwork,
+    network: Ethereum,
     label: 'WalletConnect Account 2'
   }
 ];

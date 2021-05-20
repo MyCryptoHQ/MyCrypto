@@ -2,7 +2,7 @@ import { XDAIUUID } from '@config';
 import { Network, NodeType, TTicker, TUuid } from '@types';
 import { makeExplorer } from '@utils';
 
-const Ethereum: Network = {
+export const Ethereum: Network = {
   id: 'Ethereum',
   name: 'Ethereum',
   chainId: 1,
@@ -50,7 +50,7 @@ const Ethereum: Network = {
   })
 };
 
-const Ropsten: Network = {
+export const Ropsten: Network = {
   id: 'Ropsten',
   name: 'Ropsten',
   chainId: 3,
@@ -92,7 +92,7 @@ const Ropsten: Network = {
   })
 };
 
-const xDAI: Network = {
+export const xDAI: Network = {
   id: 'xDAI',
   name: 'xDAI',
   chainId: 100,
