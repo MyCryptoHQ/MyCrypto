@@ -93,6 +93,7 @@ export {
 } from './settings.slice';
 export { importSuccess, importError, importRequest, importComplete } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
+export * from './tokenScanning.sagas';
 export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
