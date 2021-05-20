@@ -5,6 +5,7 @@ import {
   addTxToAccount as addTxToAccountRedux,
   destroyAccount,
   getAccounts,
+  getStoreAccounts,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
@@ -29,6 +30,7 @@ export interface IAccountContext {
 
 function useAccounts() {
   const accounts = useSelector(getAccounts);
+  const storeAccounts = useSelector(getStoreAccounts(accounts));
 
   const dispatch = useDispatch();
 
@@ -69,6 +71,7 @@ function useAccounts() {
 
   return {
     accounts,
+    storeAccounts,
     createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,

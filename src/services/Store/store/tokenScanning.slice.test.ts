@@ -134,8 +134,7 @@ describe('formatBalances()', () => {
         },
         {
           uuid: ETHUUID as TUuid,
-          balance: '2000000000000000000',
-          mtime: 1607602775360
+          balance: '2000000000000000000'
         },
         fAccounts[0].assets[1]
       ]

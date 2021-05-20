@@ -123,7 +123,7 @@ export const sanitizeAccount = (a: IAccount) => ({
   label: a.label,
   address: a.address,
   networkId: a.networkId,
-  assets: a.assets.map((a: AssetBalanceObject | StoreAsset) => ({
+  assets: a.assets?.map((a: AssetBalanceObject | StoreAsset) => ({
     uuid: a.uuid,
     balance: a.balance
   })),
