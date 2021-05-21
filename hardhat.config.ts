@@ -1,6 +1,7 @@
-require('@nomiclabs/hardhat-ethers');
+import { HardhatUserConfig } from 'hardhat/config';
+import '@nomiclabs/hardhat-ethers';
 
-module.exports = {
+const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       chainId: 1,
@@ -13,3 +14,5 @@ module.exports = {
     }
   }
 };
+
+export default config;
