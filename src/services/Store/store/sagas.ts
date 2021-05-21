@@ -12,7 +12,7 @@ import { persistenceSaga } from './persistence.slice';
 import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
 import { settingsSaga } from './settings.slice';
-import { scanTokensSaga } from './tokenScanning.slice';
+import { scanTokensSaga } from './tokenScanning.sagas';
 
 export default function* rootSaga() {
   yield all([
