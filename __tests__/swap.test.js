@@ -7,6 +7,7 @@ import {
 
 import { injectLS } from './clientScripts';
 import { FIXTURE_HARDHAT, FIXTURES_CONST, PAGES } from './fixtures';
+import { resetFork, setupDAI } from './hardhat-utils';
 import SwapPage from './swap-page.po';
 import { findByTKey } from './translation-utils';
 
@@ -19,7 +20,7 @@ fixture('Swap')
 test('can do an ETH swap', async (t) => {
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
-  await swapPage.resetFork();
+  await resetFork();
 
   await swapPage.fillForm();
   await t.wait(FIXTURES_CONST.TIMEOUT);
@@ -41,8 +42,8 @@ test('can do an ETH swap', async (t) => {
 test('can do an ERC20 swap', async (t) => {
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
-  await swapPage.resetFork();
-  await swapPage.setupERC20();
+  await resetFork();
+  await setupDAI();
 
   await swapPage.fillFormERC20();
   await t.wait(FIXTURES_CONST.TIMEOUT);
