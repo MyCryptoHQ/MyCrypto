@@ -1,3 +1,4 @@
+import { getByTestId } from '@testing-library/testcafe';
 import { Selector, t } from 'testcafe';
 
 import BasePage from './base-page.po';
@@ -14,6 +15,12 @@ export default class SwapPage extends BasePage {
   }
 
   async fillForm() {
+    await t.typeText(Selector('input[name="swap-from"]').parent(), FIXTURE_SEND_AMOUNT);
+  }
+
+  async fillFormERC20() {
+    await t.click(getByTestId('asset-selector-option-ETH'));
+    await t.click(getByTestId('asset-selector-option-DAI'));
     await t.typeText(Selector('input[name="swap-from"]').parent(), FIXTURE_SEND_AMOUNT);
   }
 

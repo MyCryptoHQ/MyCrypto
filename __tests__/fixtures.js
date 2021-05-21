@@ -49,7 +49,7 @@ const FIXTURE_SEND_ADDRESS = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
 
 const FIXTURE_SEND_AMOUNT = '0.001';
 
-const FIXTURE_WEB3_ADDRESS = '0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf ';
+const FIXTURE_WEB3_ADDRESS = '0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf';
 
 const FIXTURE_MYC_STORAGE_KEY = 'MYC_Storage';
 
@@ -161,6 +161,20 @@ const FIXTURE_HARDHAT = {
           },
           isCustom: false,
           uuid: '356a192b-7913-504c-9457-4d18c28d46e6',
+          balance: '9998866308480000000000',
+          mtime: 1621347441875
+        },
+        {
+          ticker: 'DAI',
+          name: 'DAI Stablecoin',
+          decimal: 18,
+          support: {},
+          social: {},
+          networkId: 'Ethereum',
+          type: 'erc20',
+          isCustom: false,
+          contractAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+          uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1',
           balance: '9998866308480000000000',
           mtime: 1621347441875
         }

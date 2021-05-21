@@ -17,6 +17,7 @@
     "@ethersproject/bignumber": "5.1.1",
     "@ethersproject/bytes": "5.1.0",
     "@ethersproject/constants": "5.1.0",
+    "@ethersproject/contracts": "5.1.1",
     "@ethersproject/providers": "5.1.2",
     "@ethersproject/transactions": "5.1.1",
     "@ethersproject/units": "5.1.0",
