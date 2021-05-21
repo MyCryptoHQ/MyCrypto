@@ -1,7 +1,6 @@
 import { getByTestId } from '@testing-library/testcafe';
 import { Selector, t } from 'testcafe';
 
-//import { default as hardhatConfig } from '../hardhat.config';
 import BasePage from './base-page.po';
 import { setupEthereumMock } from './ethereum-mock';
 import { FIXTURE_HARDHAT_PRIVATE_KEY, FIXTURE_SEND_AMOUNT, PAGES } from './fixtures';
