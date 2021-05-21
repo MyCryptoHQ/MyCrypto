@@ -151,7 +151,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
 
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
   const ercType = guessERC20Type(i.data);
-  const isERC20 = ercType !== ERCType.NONE;
+  const isERC20 = ercType === ERCType.TRANSFER;
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
     ercType,
