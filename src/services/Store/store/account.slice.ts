@@ -12,9 +12,11 @@ import {
   ITxType,
   LSKeys,
   StoreAsset,
-  TUuid
+  TUuid,
+  WalletId
 } from '@types';
-import { findIndex, propEq } from '@vendor';
+import { sortByLabel } from '@utils';
+import { cond, findIndex, head, identity, pipe, prop, propEq, reject, T } from '@vendor';
 
 import { isTokenMigration } from '../helpers';
 import { getAssetByUUID } from './asset.slice';
@@ -93,6 +95,10 @@ export default slice;
 /**
  * Selectors
  */
+const selectOptions = {
+  includeViewOnly: false
+};
+
 export const getAccounts = createSelector([getAppState], (s) => {
   const accounts = s[slice.name];
   return accounts?.map((a) => ({
@@ -106,6 +112,17 @@ export const getAccounts = createSelector([getAppState], (s) => {
     }))
   }));
 });
+
+export const selectAccounts = (options = selectOptions) =>
+  createSelector([getAccounts], (accounts) => {
+    return cond([
+      [() => prop('includeViewOnly')(options), identity],
+      [T, reject(propEq('wallet', WalletId.VIEW_ONLY))]
+    ])(accounts);
+  });
+
+export const selectDefaultAccount = (options = selectOptions) =>
+  createSelector([selectAccounts(options)], (accounts) => pipe(sortByLabel, head)(accounts));
 
 export const selectCurrentAccounts = createSelector(
   [getAccounts, getFavorites],
