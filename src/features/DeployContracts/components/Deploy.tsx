@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
@@ -16,7 +16,7 @@ import {
   NetworkSelector,
   Typography
 } from '@components';
-import { StoreContext } from '@services';
+import { useAccounts } from '@services/Store';
 import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
@@ -99,7 +99,7 @@ export const Deploy = (props: Props) => {
   } = props;
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
-  const { accounts } = useContext(StoreContext);
+  const { accounts } = useAccounts();
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
   const filteredAccounts = pipe(

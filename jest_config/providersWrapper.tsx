@@ -27,6 +27,7 @@ export const ProvidersWrapper = ({
     reducer: rootReducer,
     preloadedState: (initialState as unknown) as DeepPartial<AppState>
   });
+
   return (
     <Router initialEntries={initialRoute ? [initialRoute] : undefined}>
       <Provider store={store}>

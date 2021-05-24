@@ -24,7 +24,7 @@ import { getAssetByUUID } from './asset.slice';
 import { selectAccountContact } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
-import { getNetwork } from './network.slice';
+import { selectNetwork } from './network.slice';
 import type { AppState } from './root.reducer';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
@@ -161,7 +161,7 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
     return {
       ...a,
       assets: accountAssets,
-      network: getNetwork(a.networkId)(s),
+      network: selectNetwork(a.networkId)(s),
       label: selectAccountContact(a)(s)?.label || a.label || translateRaw('NO_LABEL')
     };
   });

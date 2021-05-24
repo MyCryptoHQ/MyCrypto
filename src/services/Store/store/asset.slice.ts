@@ -82,7 +82,7 @@ export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
 export const getBaseAssetByNetwork = (network: Network) =>
   createSelector(getAssets, (assets) => assets.find((asset) => asset.uuid === network.baseAsset)!);
 export const getAssetByUUID = (uuid: TUuid) =>
-  createSelector([getAssets], (a) => a.find((asset) => asset.uuid === uuid));
+  createSelector([getAssets], (a) => a?.find((asset) => asset.uuid === uuid));
 
 export const getCoinGeckoAssetManifest = createSelector(getAssets, (assets) =>
   assets.reduce((manifest, asset) => {

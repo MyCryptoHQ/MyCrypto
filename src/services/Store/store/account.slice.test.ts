@@ -160,19 +160,19 @@ describe('AccountSlice', () => {
   });
 
   it('selectAccounts(): default removes viewOnly accounts', () => {
-    const state = mockAppState({ accounts: fAccounts });
+    const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
     const actual = selectAccounts()(state);
     expect(actual).toHaveLength(fAccounts.length - 1);
   });
 
   it('selectAccounts(): option includeViewOnly returns all accounts', () => {
-    const state = mockAppState({ accounts: fAccounts });
+    const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
     const actual = selectAccounts({ includeViewOnly: true })(state);
     expect(actual).toHaveLength(fAccounts.length);
   });
 
   it('selectDefaultAccount(): returns the first account by label', () => {
-    const state = mockAppState({ accounts: fAccounts });
+    const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
     const actual = selectDefaultAccount()(state);
     expect(actual).toEqual(fAccounts[1]);
   });

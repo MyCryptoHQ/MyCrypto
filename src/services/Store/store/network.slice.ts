@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { DEFAULT_NETWORK } from '@config';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { LSKeys, Network, NetworkId } from '@types';
-import { findIndex, propEq } from '@vendor';
+import { find, findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -88,12 +88,10 @@ export default slice;
  * Selectors
  */
 
-const findNetwork = (id: NetworkId) => (networks: Network[]) => networks.find((n) => n.id === id)!;
-
 export const selectNetworks = createSelector([getAppState], (s) => s[slice.name]);
 
 export const getNetwork = (networkId: NetworkId) =>
-  createSelector(selectNetworks, findNetwork(networkId));
+  createSelector(selectNetworks, (n) => find<Network>(propEq('id', networkId), n)!);
 
 // Create alias in anticipation of renaming
 // @todo: Remove original in favor of alias.
