@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { StoreContext } from '@services';
+import { AppState, selectDefaultAccount } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { IPendingTxReceipt, ISignedTx, Tab } from '@types';
@@ -46,10 +47,8 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-export const DeployContractsFlow = ({ history, location }: RouteComponentProps) => {
+export const DeployContractsFlow = ({ history, location, defaultAccount }: Props) => {
   const [step, setStep] = useState(0);
-  const { getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
   const {
     handleNetworkSelected,
     handleDeploySubmit,
@@ -172,4 +171,11 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
   );
 };
 
-export default withRouter(DeployContractsFlow);
+const mapStateToProps = (state: AppState) => ({
+  defaultAccount: selectDefaultAccount()(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & RouteComponentProps;
+
+export default withRouter(connector(DeployContractsFlow));

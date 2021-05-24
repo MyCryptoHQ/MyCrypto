@@ -4,8 +4,7 @@ import selectEvent from 'react-select-event';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { fAccounts, fAssets } from '@fixtures';
-import { StoreContext } from '@services/Store';
+import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import DeployContractsFlow from './DeployContractsFlow';
@@ -23,23 +22,9 @@ jest.mock('@vendor', () => {
 });
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => undefined
-        } as any) as any
-      }
-    >
-      <DeployContractsFlow />
-    </StoreContext.Provider>,
-    {
-      initialRoute: '/deploy-contracts'
-    }
-  );
+  return simpleRender(<DeployContractsFlow />, {
+    initialRoute: '/deploy-contracts'
+  });
 }
 
 describe('DeployContractsFlow', () => {

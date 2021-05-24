@@ -209,7 +209,7 @@ const mapStateToProps = (state: AppState) => ({
   defaultAccount: selectDefaultAccount({ includeViewOnly: true })(state)
 });
 
-const connector = connect(mapStateToProps, null);
+const connector = connect(mapStateToProps);
 
 type Props = ConnectedProps<typeof connector>;
 
