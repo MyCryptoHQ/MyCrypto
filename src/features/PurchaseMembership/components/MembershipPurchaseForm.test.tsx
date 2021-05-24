@@ -4,7 +4,6 @@ import { simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { fAccounts } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { noOp } from '@utils';
 
@@ -23,18 +22,7 @@ jest.mock('@services/EthService', () => ({
 }));
 
 function getComponent(props: React.ComponentProps<typeof MembershipPurchaseForm>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts,
-          getDefaultAccount: () => fAccounts[0]
-        } as any) as any
-      }
-    >
-      <MembershipPurchaseForm {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<MembershipPurchaseForm {...props} />);
 }
 
 describe('MembershipPurchaseForm', () => {
