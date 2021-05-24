@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { number, object } from 'yup';
@@ -19,7 +20,8 @@ import {
 } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { validateAmountField } from '@features/SendAssets/components';
-import { getNetworkById, StoreContext, useAssets } from '@services/Store';
+import { getNetworkById, useAssets } from '@services/Store';
+import { AppState, selectAccounts, selectDefaultAccount, selectNetworks } from '@store';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, IAccount as IIAccount } from '@types';
 import {
@@ -103,11 +105,9 @@ const CodeHeading = styled(Heading)`
   margin-top: 8px;
 `;
 
-export function RequestAssets({ history }: RouteComponentProps) {
-  const { accounts, getDefaultAccount, networks } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount(true);
+export function RequestAssets({ history, defaultAccount, accounts, networks }: Props) {
   const { assets } = useAssets();
-  const [networkId, setNetworkId] = useState(defaultAccount!.networkId);
+  const [networkId, setNetworkId] = useState(defaultAccount?.networkId);
   const network = getNetworkById(networkId, networks);
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
@@ -289,4 +289,13 @@ export function RequestAssets({ history }: RouteComponentProps) {
   );
 }
 
-export default withRouter(RequestAssets);
+const mapStateToProps = (state: AppState) => ({
+  defaultAccount: selectDefaultAccount({ includeViewOnly: true })(state),
+  accounts: selectAccounts({ includeViewOnly: true })(state),
+  networks: selectNetworks(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & RouteComponentProps;
+
+export default withRouter(connector(RequestAssets));
