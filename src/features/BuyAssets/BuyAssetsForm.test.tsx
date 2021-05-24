@@ -3,24 +3,12 @@ import React from 'react';
 import { simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import BuyAssetsForm from './BuyAssetsForm';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts,
-          getDefaultAccount: () => fAccounts[0]
-        } as any) as any
-      }
-    >
-      <BuyAssetsForm />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<BuyAssetsForm />);
 }
 
 describe('BuyAssetsForm', () => {

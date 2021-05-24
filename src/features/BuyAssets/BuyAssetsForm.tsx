@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Button, Icon } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { object } from 'yup';
@@ -21,9 +22,10 @@ import {
   ROUTE_PATHS
 } from '@config';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
+import { useAccounts } from '@services/Store';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { getAssetByUUID, useAssets } from '@services/Store/Asset';
-import { StoreContext } from '@services/Store/StoreProvider';
+import { AppState, selectDefaultAccount } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
@@ -77,14 +79,14 @@ enum SubmissionType {
   SEND_TO_OTHER
 }
 
-export const BuyAssetsForm = () => {
+export const BuyAssetsForm = ({ defaultAccount }: Props) => {
   const history = useHistory();
-  const { accounts, getDefaultAccount } = useContext(StoreContext);
   const { assets } = useAssets();
+  const { accounts } = useAccounts();
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
 
   const initialFormikValues: IBuyFormState = {
-    account: getDefaultAccount(true)!,
+    account: defaultAccount,
     asset: ethAsset
   };
 
@@ -203,4 +205,12 @@ export const BuyAssetsForm = () => {
   );
 };
 
-export default BuyAssetsForm;
+const mapStateToProps = (state: AppState) => ({
+  defaultAccount: selectDefaultAccount({ includeViewOnly: true })(state)
+});
+
+const connector = connect(mapStateToProps, null);
+
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(BuyAssetsForm);
