@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { parseEther } from '@ethersproject/units';
 import { Field, FieldProps, Form, Formik } from 'formik';
@@ -20,11 +20,9 @@ import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { getAccountBalance, useAssets } from '@services/Store';
+import { getAccountBalance, useAccounts, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { useNetworks } from '@services/Store/Network';
-import { StoreContext } from '@services/Store/StoreProvider';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getIsDemoMode, selectDefaultAccount } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
@@ -73,9 +71,8 @@ const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
 
-const ZapForm = ({ onComplete, zapSelected, isDemoMode }: Props) => {
-  const { accounts, getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
+const ZapForm = ({ onComplete, zapSelected, isDemoMode, defaultAccount }: Props) => {
+  const { accounts } = useAccounts();
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
@@ -217,7 +214,8 @@ export const ZapFormUI = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
+  isDemoMode: getIsDemoMode(state),
+  defaultAccount: selectDefaultAccount()(state)
 });
 
 const connector = connect(mapStateToProps);

@@ -11,6 +11,7 @@ import {
   ITxStatus,
   ITxType,
   LSKeys,
+  StoreAccount,
   StoreAsset,
   TUuid,
   WalletId
@@ -24,6 +25,7 @@ import { selectAccountContact } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { getNetwork } from './network.slice';
+import type { AppState } from './root.reducer';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
@@ -113,17 +115,6 @@ export const getAccounts = createSelector([getAppState], (s) => {
   }));
 });
 
-export const selectAccounts = (options = selectOptions) =>
-  createSelector([getAccounts], (accounts) => {
-    return cond([
-      [() => prop('includeViewOnly')(options), identity],
-      [T, reject(propEq('wallet', WalletId.VIEW_ONLY))]
-    ])(accounts);
-  });
-
-export const selectDefaultAccount = (options = selectOptions) =>
-  createSelector([selectAccounts(options)], (accounts) => pipe(sortByLabel, head)(accounts));
-
 export const selectCurrentAccounts = createSelector(
   [getAccounts, getFavorites],
   (accounts, favorites) => {
@@ -175,6 +166,22 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
     };
   });
 });
+
+export const selectAccounts: (
+  options?: typeof selectOptions
+) => (state: AppState) => StoreAccount[] = (options = selectOptions) =>
+  createSelector([getStoreAccounts], (accounts) => {
+    return cond([
+      [() => prop('includeViewOnly')(options), identity],
+      [T, reject(propEq('wallet', WalletId.VIEW_ONLY))]
+    ])(accounts);
+  });
+
+export const selectDefaultAccount: (
+  options?: typeof selectOptions
+) => (state: AppState) => StoreAccount = (options = selectOptions) =>
+  // @ts-expect-error: pipe & TS
+  createSelector([selectAccounts(options)], (accounts) => pipe(sortByLabel, head)(accounts));
 
 /**
  * Actions
