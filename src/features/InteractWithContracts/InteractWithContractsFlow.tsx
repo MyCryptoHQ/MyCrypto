@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
-import { getNetworkById, StoreContext, useNetworks } from '@services/Store';
+import { getNetworkById, useNetworks } from '@services/Store';
+import { AppState, selectDefaultAccount } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { ISignedTx, ITxReceipt, Tab } from '@types';
@@ -47,16 +49,16 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const InteractWithContractsFlow = () => {
+const InteractWithContractsFlow = ({ defaultAccount }: Props) => {
   const [step, setStep] = useState(0);
-  const { getDefaultAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
-  const defaultAccount = getDefaultAccount();
+
   const initialState = {
     ...interactWithContractsInitialState,
     account: defaultAccount,
     network: getNetworkById(DEFAULT_NETWORK, networks)
   };
+
   const {
     interactWithContractsState,
     handleNetworkSelected,
@@ -214,4 +216,11 @@ const InteractWithContractsFlow = () => {
   );
 };
 
-export default InteractWithContractsFlow;
+const mapStateToProps = (state: AppState) => ({
+  defaultAccount: selectDefaultAccount()(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(InteractWithContractsFlow);
