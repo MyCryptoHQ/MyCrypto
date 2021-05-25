@@ -215,10 +215,11 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
 
   const mounted = usePromise();
   useEffect(() => {
-    (async () => {
-      const [fetchedAssets, fetchedFromAsset, fetchedToAsset] = await mounted(fetchSwapAssets());
-      setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset);
-    })();
+    mounted(fetchSwapAssets())
+      .then(([fetchedAssets, fetchedFromAsset, fetchedToAsset]) =>
+        setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset)
+      )
+      .catch(console.error);
   }, [selectedNetwork]);
 
   return (
