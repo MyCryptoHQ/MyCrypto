@@ -26,7 +26,6 @@ import {
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK,
   ETHUUID,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
@@ -53,12 +52,19 @@ import {
   getAccountBalance,
   getAccountsByAsset,
   getBaseAssetByNetwork,
-  getNetworkById,
-  StoreContext,
   useAssets,
   useSettings
 } from '@services/Store';
-import { AppState, getIsDemoMode, selectAccounts, selectAsset, selectDefaultAccount } from '@store';
+import {
+  AppState,
+  getIsDemoMode,
+  selectAccounts,
+  selectAsset,
+  selectDefaultAccount,
+  selectDefaultNetwork,
+  selectNetwork,
+  selectUserAssets
+} from '@store';
 import translate, { translateRaw } from '@translations';
 import {
   Asset,
@@ -258,9 +264,10 @@ const SendAssetsForm = ({
   updateFormAsset,
   currentAccount,
   currentAsset,
-  ETHAsset
+  currentNetwork,
+  ETHAsset,
+  userAssets
 }: Props) => {
-  const { userAssets, networks } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { assets } = useAssets();
   const { settings } = useSettings();
@@ -282,14 +289,10 @@ const SendAssetsForm = ({
     return ETHAsset;
   })();
 
-  const getDefaultNetwork = (account?: StoreAccount) =>
-    networks.find((n) => n.id === (account !== undefined ? account.networkId : DEFAULT_NETWORK));
-
-  const defaultNetwork = getDefaultNetwork(currentAccount);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
+      (currentNetwork && getBaseAssetByNetwork({ network: currentNetwork, assets: userAssets })) ||
       ({} as Asset)
   );
 
@@ -412,7 +415,7 @@ const SendAssetsForm = ({
         s: txConfig,
         defaultAccount: currentAccount,
         defaultAsset,
-        defaultNetwork
+        defaultNetwork: currentNetwork
       }),
     []
   );
@@ -466,19 +469,20 @@ const SendAssetsForm = ({
       s: txConfig,
       defaultAccount: currentAccount,
       defaultAsset: currentAsset,
-      defaultNetwork: getDefaultNetwork(currentAccount)
+      defaultNetwork: currentNetwork
     });
     //@todo get assetType onChange
     resetForm({ values: { ...newInitialValues, asset: currentAsset } });
     if (currentAsset && currentAsset.networkId) {
-      const network = getNetworkById(currentAsset.networkId, networks);
-      fetchGasPriceEstimates(network).then((data) => {
+      fetchGasPriceEstimates(currentNetwork).then((data) => {
         setFieldValue('gasEstimates', data);
         setFieldValue('gasPriceSlider', data.fast.toString());
       });
-      setFieldValue('network', network || {});
-      if (network) {
-        setBaseAsset(getBaseAssetByNetwork({ network, assets: userAssets }) || ({} as Asset));
+      setFieldValue('network', currentNetwork);
+      if (currentNetwork) {
+        setBaseAsset(
+          getBaseAssetByNetwork({ network: currentNetwork, assets: userAssets }) || ({} as Asset)
+        );
       }
     }
   }, [currentAccount]);
@@ -842,8 +846,12 @@ const mapStateToProps = (state: AppState) => ({
   isDemoMode: getIsDemoMode(state),
   accounts: selectAccounts()(state),
   currentAccount: selectDefaultAccount({ assetUUID: selectFormAsset(state)?.uuid })(state),
+  currentNetwork: selectNetwork(
+    selectFormAsset(state)?.networkId || selectDefaultNetwork(state).id
+  )(state),
   currentAsset: selectFormAsset(state),
-  ETHAsset: selectAsset(ETHUUID)(state)!
+  ETHAsset: selectAsset(ETHUUID)(state)!,
+  userAssets: selectUserAssets(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

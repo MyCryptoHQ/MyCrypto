@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { StoreContext } from '@services/Store';
-import { WalletId } from '@types';
+import { fAccounts, fAssets, fNetworks } from '@fixtures';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('@vendor', () => {
@@ -20,21 +19,9 @@ jest.mock('@vendor', () => {
 /* Test components */
 describe('SendAssetsFlow', () => {
   const renderComponent = () => {
-    return simpleRender(
-      <StoreContext.Provider
-        value={
-          ({
-            userAssets: [],
-            accounts: [],
-            getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
-            getAccount: jest.fn(),
-            networks: [{ nodes: [] }]
-          } as unknown) as any
-        }
-      >
-        <SendAssets />
-      </StoreContext.Provider>
-    );
+    return simpleRender(<SendAssets />, {
+      initialState: mockAppState({ accounts: fAccounts, assets: fAssets, networks: fNetworks })
+    });
   };
 
   test('Can render the first step (Send Assets Form) in the flow.', () => {

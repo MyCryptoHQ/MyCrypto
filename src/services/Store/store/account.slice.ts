@@ -5,6 +5,7 @@ import { all, put, select, takeLatest } from 'redux-saga/effects';
 import { translateRaw } from '@translations';
 import {
   AssetBalanceObject,
+  ExtendedAsset,
   IAccount,
   IProvidersMappings,
   ITxReceipt,
@@ -19,6 +20,7 @@ import {
 } from '@types';
 import { sortByLabel } from '@utils';
 import {
+  chain,
   cond,
   filter,
   find,
@@ -29,7 +31,9 @@ import {
   prop,
   propEq,
   reject,
+  sortBy,
   T,
+  uniqBy,
   where
 } from '@vendor';
 
@@ -211,6 +215,14 @@ export const selectDefaultAccount: (
 ) => (state: AppState) => StoreAccount = (filters = selectFilters) =>
   // @ts-expect-error: pipe & TS
   createSelector([selectAccounts(filters)], (accounts) => pipe(sortByLabel, head)(accounts));
+
+export const selectUserAssets = createSelector([selectAccounts()], (a) =>
+  pipe(
+    chain<StoreAccount, ExtendedAsset>(prop('assets')),
+    uniqBy(prop('uuid')),
+    sortBy(prop('ticker'))
+  )(a)
+);
 
 /**
  * Actions
