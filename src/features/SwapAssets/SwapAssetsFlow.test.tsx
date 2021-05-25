@@ -45,7 +45,7 @@ describe('SwapAssetsFlow', () => {
   it('selects default tokens', async () => {
     const { getAllByText } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
-      baseURL: DEX_BASE_URLS['Ethereum']
+      baseURL: DEX_BASE_URLS.Ethereum
     });
     mockAxios.mockResponse(tokenResponse);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
@@ -55,7 +55,7 @@ describe('SwapAssetsFlow', () => {
   it('selects default account', async () => {
     const { getByText } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
-      baseURL: DEX_BASE_URLS['Ethereum']
+      baseURL: DEX_BASE_URLS.Ethereum
     });
     mockAxios.mockResponse(tokenResponse);
     await waitFor(() =>
@@ -66,7 +66,7 @@ describe('SwapAssetsFlow', () => {
   it('calculates and shows to amount', async () => {
     const { getAllByText, getAllByDisplayValue, container } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
-      baseURL: DEX_BASE_URLS['Ethereum']
+      baseURL: DEX_BASE_URLS.Ethereum
     });
     mockAxios.mockResponse(tokenResponse);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
@@ -78,7 +78,7 @@ describe('SwapAssetsFlow', () => {
     await waitFor(() =>
       expect(mockAxios.get).toHaveBeenCalledWith(
         'swap/v1/quote',
-        expect.objectContaining({ baseURL: DEX_BASE_URLS['Ethereum'] })
+        expect.objectContaining({ baseURL: DEX_BASE_URLS.Ethereum })
       )
     );
     mockAxios.mockResponse({ data: fSwapQuote });
@@ -91,7 +91,7 @@ describe('SwapAssetsFlow', () => {
   it('calculates and shows from amount', async () => {
     const { getAllByText, getAllByDisplayValue, container } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
-      baseURL: DEX_BASE_URLS['Ethereum']
+      baseURL: DEX_BASE_URLS.Ethereum
     });
     mockAxios.mockResponse(tokenResponse);
     await waitFor(() => expect(getAllByText(fAssets[0].ticker, { exact: false })).toBeDefined());
@@ -103,7 +103,7 @@ describe('SwapAssetsFlow', () => {
     await waitFor(() =>
       expect(mockAxios.get).toHaveBeenCalledWith(
         'swap/v1/quote',
-        expect.objectContaining({ baseURL: DEX_BASE_URLS['Ethereum'] })
+        expect.objectContaining({ baseURL: DEX_BASE_URLS.Ethereum })
       )
     );
     mockAxios.mockResponse({ data: fSwapQuoteReverse });
@@ -125,7 +125,7 @@ describe('SwapAssetsFlow', () => {
     fireEvent.click(getByTestId('network-selector-option-SmartChain'));
     await waitFor(() =>
       expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
-        baseURL: DEX_BASE_URLS['SmartChain']
+        baseURL: DEX_BASE_URLS.SmartChain
       })
     );
     mockAxios.mockResponse(tokenResponse);
@@ -138,7 +138,7 @@ describe('SwapAssetsFlow', () => {
     await waitFor(() =>
       expect(mockAxios.get).toHaveBeenCalledWith(
         'swap/v1/quote',
-        expect.objectContaining({ baseURL: DEX_BASE_URLS['SmartChain'] })
+        expect.objectContaining({ baseURL: DEX_BASE_URLS.SmartChain })
       )
     );
     mockAxios.mockResponse({ data: fSwapQuote });

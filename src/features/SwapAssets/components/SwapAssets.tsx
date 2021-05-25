@@ -27,7 +27,7 @@ import {
 } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, ISwapAsset, NetworkId, StoreAccount } from '@types';
+import { Asset, ISwapAsset, Network, NetworkId, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
@@ -198,16 +198,14 @@ const SwapAssets = (props: Props) => {
     [expiration]
   );
 
+  const checkNetwork = (n: Network) => DEX_NETWORKS.includes(n.id);
+
   return (
     <>
       <Box mt="20px" mb="1em">
         {isDemoMode && <DemoGatewayBanner />}
         <Box mb="15px">
-          <NetworkSelector
-            network={selectedNetwork}
-            filter={(n) => DEX_NETWORKS.includes(n.id)}
-            onChange={setNetwork}
-          />
+          <NetworkSelector network={selectedNetwork} filter={checkNetwork} onChange={setNetwork} />
         </Box>
         <Box mb="15px">
           <Box>
