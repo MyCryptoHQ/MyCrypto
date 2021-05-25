@@ -1,6 +1,6 @@
 import { TUuid } from '@types';
 
-export const ETHUUID = '356a192b-7913-504c-9457-4d18c28d46e6';
+export const ETHUUID = '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid;
 export const DAIUUID = 'e1f698bf-cb85-5405-b563-14774af14bf1';
 export const BATUUID = 'e34bb9ff-47be-503b-956b-30d4b3f3507b';
 export const ETCUUID = '6c1e671f-9af5-546d-9c1a-52067bdf0e53';

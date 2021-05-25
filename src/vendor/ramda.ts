@@ -72,3 +72,5 @@ export { default as append } from 'ramda/src/append';
 export { default as dissoc } from 'ramda/src/dissoc';
 export { default as T } from 'ramda/src/T';
 export { default as cond } from 'ramda/src/cond';
+export { default as where } from 'ramda/src/where';
+export { default as includes } from 'ramda/src/includes';

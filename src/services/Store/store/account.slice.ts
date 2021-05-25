@@ -11,13 +11,27 @@ import {
   ITxStatus,
   ITxType,
   LSKeys,
+  NetworkId,
   StoreAccount,
   StoreAsset,
   TUuid,
   WalletId
 } from '@types';
 import { sortByLabel } from '@utils';
-import { cond, findIndex, head, identity, pipe, prop, propEq, reject, T } from '@vendor';
+import {
+  cond,
+  filter,
+  find,
+  findIndex,
+  head,
+  identity,
+  pipe,
+  prop,
+  propEq,
+  reject,
+  T,
+  where
+} from '@vendor';
 
 import { isTokenMigration } from '../helpers';
 import { getAssetByUUID } from './asset.slice';
@@ -97,9 +111,6 @@ export default slice;
 /**
  * Selectors
  */
-const selectOptions = {
-  includeViewOnly: false
-};
 
 export const getAccounts = createSelector([getAppState], (s) => {
   const accounts = s[slice.name];
@@ -167,21 +178,39 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
   });
 });
 
-export const selectAccounts: (
-  options?: typeof selectOptions
-) => (state: AppState) => StoreAccount[] = (options = selectOptions) =>
+interface SelectFilters {
+  includeViewOnly?: boolean;
+  network?: NetworkId;
+  assetUUID?: TUuid;
+}
+
+const selectFilters: SelectFilters = {
+  includeViewOnly: false
+};
+
+export const selectAccounts: (filters?: SelectFilters) => (state: AppState) => StoreAccount[] = (
+  filters = selectFilters
+) =>
   createSelector([getStoreAccounts], (accounts) => {
     return cond([
-      [() => prop('includeViewOnly')(options), identity],
+      [() => !!prop('includeViewOnly', filters), identity],
+      [
+        () => !!prop('assetUUID', filters),
+        filter(
+          where({
+            assets: find(propEq('uuid', filters.assetUUID))
+          })
+        )
+      ],
       [T, reject(propEq('wallet', WalletId.VIEW_ONLY))]
     ])(accounts);
   });
 
 export const selectDefaultAccount: (
-  options?: typeof selectOptions
-) => (state: AppState) => StoreAccount = (options = selectOptions) =>
+  filters?: SelectFilters
+) => (state: AppState) => StoreAccount = (filters = selectFilters) =>
   // @ts-expect-error: pipe & TS
-  createSelector([selectAccounts(options)], (accounts) => pipe(sortByLabel, head)(accounts));
+  createSelector([selectAccounts(filters)], (accounts) => pipe(sortByLabel, head)(accounts));
 
 /**
  * Actions

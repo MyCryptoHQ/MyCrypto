@@ -84,6 +84,9 @@ export const getBaseAssetByNetwork = (network: Network) =>
 export const getAssetByUUID = (uuid: TUuid) =>
   createSelector([getAssets], (a) => a?.find((asset) => asset.uuid === uuid));
 
+// Temp alias to avoid renaming.
+export const selectAsset = getAssetByUUID;
+
 export const getCoinGeckoAssetManifest = createSelector(getAssets, (assets) =>
   assets.reduce((manifest, asset) => {
     if (asset && asset.mappings && asset.mappings.coinGeckoId) {

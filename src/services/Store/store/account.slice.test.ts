@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { ETHUUID, REPV2UUID } from '@config';
+import { ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import {
   fAccount,
   fAccounts,
@@ -159,16 +159,23 @@ describe('AccountSlice', () => {
     ]);
   });
 
-  it('selectAccounts(): default removes viewOnly accounts', () => {
+  it('selectAccounts(): removes viewOnly accounts by default', () => {
     const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
     const actual = selectAccounts()(state);
     expect(actual).toHaveLength(fAccounts.length - 1);
   });
 
-  it('selectAccounts(): option includeViewOnly returns all accounts', () => {
+  it('selectAccounts({ includeViewOnly: true }): filter returns all accounts', () => {
     const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
     const actual = selectAccounts({ includeViewOnly: true })(state);
     expect(actual).toHaveLength(fAccounts.length);
+  });
+
+  it('selectAccounts({ assetUUID: uuid  }): filter returns accounts with specified asset', () => {
+    const state = mockAppState({ accounts: fAccounts, networks: fNetworks });
+    const actual = selectAccounts({ assetUUID: REPV1UUID })(state);
+    const expected = [fAccounts[0]];
+    expect(actual).toEqual(expected);
   });
 
   it('selectDefaultAccount(): returns the first account by label', () => {

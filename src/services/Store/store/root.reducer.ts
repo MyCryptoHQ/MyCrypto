@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import hdWalletSlice from '@features/AddAccount/components/hdWallet.slice';
+import sendAssetsSlice from '@features/SendAssets/sendAssets.slice';
 import { signMessageSlice } from '@features/SignAndVerifyMessage';
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
@@ -23,7 +24,8 @@ const reducers = combineReducers({
   [hdWalletSlice.name]: hdWalletSlice.reducer,
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
   [featureFlagSlice.name]: featureFlagSlice.reducer,
-  [signMessageSlice.name]: signMessageSlice.reducer
+  [signMessageSlice.name]: signMessageSlice.reducer,
+  [sendAssetsSlice.name]: sendAssetsSlice.reducer
 });
 
 /**

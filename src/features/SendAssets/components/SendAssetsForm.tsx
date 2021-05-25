@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
+import { bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
@@ -57,7 +58,7 @@ import {
   useAssets,
   useSettings
 } from '@services/Store';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getIsDemoMode, selectAccounts, selectAsset, selectDefaultAccount } from '@store';
 import translate, { translateRaw } from '@translations';
 import {
   Asset,
@@ -72,7 +73,6 @@ import {
   StoreAccount,
   StoreAsset,
   TAddress,
-  TUuid,
   TxQueryTypes,
   WalletId
 } from '@types';
@@ -87,12 +87,12 @@ import {
   gasStringsToMaxGasBN,
   isSameAddress,
   isVoid,
-  sortByLabel,
   toTokenBase
 } from '@utils';
 import { path, useDebounce } from '@vendor';
 
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
+import { selectFormAsset, updateFormAsset } from '../sendAssets.slice';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
@@ -249,13 +249,22 @@ interface ISendFormProps extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: Props) => {
-  const { accounts, userAssets, networks, getDefaultAccount: getDefaultStoreAccount } = useContext(
-    StoreContext
-  );
+const SendAssetsForm = ({
+  accounts,
+  txConfig,
+  onComplete,
+  protectTxButton,
+  isDemoMode,
+  updateFormAsset,
+  currentAccount,
+  currentAsset,
+  ETHAsset
+}: Props) => {
+  const { userAssets, networks } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
-  const { getAssetByUUID, assets } = useAssets();
+  const { assets } = useAssets();
   const { settings } = useSettings();
+
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -263,9 +272,6 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
 
-  const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
-
-  const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
   const defaultAsset = (() => {
     if (userAccountEthAsset) {
@@ -273,30 +279,13 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     } else if (userAssets.length > 0) {
       return userAssets[0];
     }
-    return EthAsset;
+    return ETHAsset;
   })();
 
-  const getDefaultAccount = (asset?: Asset) => {
-    const storeDefaultAccount = getDefaultStoreAccount(false, asset?.networkId);
-    if (
-      storeDefaultAccount !== undefined &&
-      asset !== undefined &&
-      !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)
-    ) {
-      const accountsWithDefaultAsset = validAccounts.filter((account) =>
-        account.assets.some((a) => a.uuid === asset.uuid)
-      );
-      if (accountsWithDefaultAsset.length > 0) {
-        return sortByLabel(accountsWithDefaultAsset)[0];
-      }
-    }
-    return storeDefaultAccount;
-  };
   const getDefaultNetwork = (account?: StoreAccount) =>
     networks.find((n) => n.id === (account !== undefined ? account.networkId : DEFAULT_NETWORK));
 
-  const defaultAccount = getDefaultAccount(defaultAsset);
-  const defaultNetwork = getDefaultNetwork(defaultAccount);
+  const defaultNetwork = getDefaultNetwork(currentAccount);
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
@@ -421,7 +410,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     () =>
       getInitialFormikValues({
         s: txConfig,
-        defaultAccount,
+        defaultAccount: currentAccount,
         defaultAsset,
         defaultNetwork
       }),
@@ -464,17 +453,25 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
 
   useEffect(() => {
     const asset = values.asset;
-    const newAccount = getDefaultAccount(asset);
+    // Update slice.
+    updateFormAsset(asset);
+  }, [values.asset]);
+
+  useEffect(() => {
+    // Continue legacy code
+    if (!currentAsset || !currentAccount) {
+      return;
+    }
     const newInitialValues = getInitialFormikValues({
       s: txConfig,
-      defaultAccount: newAccount,
-      defaultAsset: asset,
-      defaultNetwork: getDefaultNetwork(newAccount)
+      defaultAccount: currentAccount,
+      defaultAsset: currentAsset,
+      defaultNetwork: getDefaultNetwork(currentAccount)
     });
     //@todo get assetType onChange
-    resetForm({ values: { ...newInitialValues, asset } });
-    if (asset && asset.networkId) {
-      const network = getNetworkById(asset.networkId, networks);
+    resetForm({ values: { ...newInitialValues, asset: currentAsset } });
+    if (currentAsset && currentAsset.networkId) {
+      const network = getNetworkById(currentAsset.networkId, networks);
       fetchGasPriceEstimates(network).then((data) => {
         setFieldValue('gasEstimates', data);
         setFieldValue('gasPriceSlider', data.fast.toString());
@@ -484,7 +481,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         setBaseAsset(getBaseAssetByNetwork({ network, assets: userAssets }) || ({} as Asset));
       }
     }
-  }, [values.asset]);
+  }, [currentAccount]);
 
   useEffect(() => {
     if (ptxState.protectTxShow) {
@@ -558,7 +555,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     setIsEstimatingNonce(false);
   };
 
-  const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
+  const accountsWithAsset = getAccountsByAsset(accounts, values.asset);
 
   const userCanAffordTX = canAffordTX(baseAsset, values);
   const formHasErrors = !checkFormValid(errors);
@@ -574,7 +571,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     isERC20Asset(values.asset),
     values.gasLimitField.toString(),
     values.advancedTransaction ? values.gasPriceField.toString() : values.gasPriceSlider.toString(),
-    getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
+    getAssetRateInCurrency(ETHAsset, Fiats.USD.ticker)
   );
 
   useEffect(() => {
@@ -842,10 +839,22 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
 };
 
 const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
+  isDemoMode: getIsDemoMode(state),
+  accounts: selectAccounts()(state),
+  currentAccount: selectDefaultAccount({ assetUUID: selectFormAsset(state)?.uuid })(state),
+  currentAsset: selectFormAsset(state),
+  ETHAsset: selectAsset(ETHUUID)(state)!
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      updateFormAsset
+    },
+    dispatch
+  );
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector> & ISendFormProps;
 
 export default connector(SendAssetsForm);
