@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import {
   DEFAULT_ASSET_DECIMAL,
-  DEX_BASE_URL,
+  DEX_BASE_URLS,
   DEX_FEE_RECIPIENT,
   DEX_TRADE_EXPIRATION,
   MYC_DEX_COMMISSION_RATE
@@ -17,6 +17,7 @@ import {
   ITxType,
   ITxValue,
   Network,
+  NetworkId,
   TAddress,
   TTicker
 } from '@types';
@@ -40,9 +41,7 @@ export interface DexAsset {
 export default class DexService {
   public static instance = new DexService();
 
-  private service: AxiosInstance = ApiService.generateInstance({
-    baseURL: DEX_BASE_URL
-  });
+  private service: AxiosInstance = ApiService.generateInstance();
 
   constructor() {
     if (instantiated) {
@@ -52,10 +51,16 @@ export default class DexService {
     }
   }
 
-  public getTokenList = async (): Promise<DexAsset[]> => {
+  private getBaseURL = (network: NetworkId) => {
+    return DEX_BASE_URLS[network];
+  };
+
+  public getTokenList = async (network: NetworkId): Promise<DexAsset[]> => {
     const {
       data: { records: tokenList }
-    }: { data: { records: DexAsset[] } } = await this.service.get('swap/v1/tokens');
+    }: { data: { records: DexAsset[] } } = await this.service.get('swap/v1/tokens', {
+      baseURL: this.getBaseURL(network)
+    });
     return tokenList;
   };
 
@@ -88,6 +93,7 @@ export default class DexService {
     }
 
     const { data }: { data: DexTrade } = await this.service.get('swap/v1/quote', {
+      baseURL: this.getBaseURL(network.id),
       params: {
         sellToken: sellToken.ticker,
         buyToken: buyToken.ticker,
