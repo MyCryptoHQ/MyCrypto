@@ -9,7 +9,6 @@ import {
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import { getUserAssets } from '@store/account.slice';
 import { Asset, IAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
 import { eqBy, prop, unionWith } from '@vendor';
 
@@ -30,8 +29,6 @@ export interface IAccountContext {
 
 function useAccounts() {
   const accounts = useSelector(getStoreAccounts);
-
-  const userAssets = useSelector(getUserAssets);
 
   const dispatch = useDispatch();
 
@@ -72,7 +69,6 @@ function useAccounts() {
 
   return {
     accounts,
-    userAssets,
     createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,

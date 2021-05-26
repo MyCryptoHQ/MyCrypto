@@ -37,7 +37,7 @@ function getComponent({
           trackedAssets: fAssets.reduce(
             (acc, a) => ({
               ...acc,
-              [a.uuid]: { coinGeckoId: 'ethereum' }
+              [a.uuid]: { ...a, coinGeckoId: 'ethereum' }
             }),
             {}
           )
