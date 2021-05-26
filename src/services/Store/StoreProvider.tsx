@@ -1,23 +1,13 @@
 import React, { createContext, useMemo, useState } from 'react';
 
 import { addAccounts, deleteMembership, useDispatch } from '@store';
-import {
-  Asset,
-  Bigish,
-  IAccount,
-  Network,
-  StoreAccount,
-  StoreAsset,
-  TUuid,
-  WalletId
-} from '@types';
+import { Asset, Bigish, IAccount, Network, StoreAccount, StoreAsset, TUuid } from '@types';
 import { bigify, convertToFiatFromAsset, isArrayEqual, useInterval } from '@utils';
-import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy } from '@vendor';
+import { isEmpty, isEmpty as isVoid } from '@vendor';
 
 import { getDashboardAccounts, useAccounts } from './Account';
 import { getTotalByAsset, useAssets } from './Asset';
 import { getAccountsAssetsBalances } from './BalanceService';
-import { isNotExcludedAsset } from './helpers';
 import { useNetworks } from './Network';
 import { useSettings } from './Settings';
 
@@ -25,7 +15,6 @@ export interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   readonly currentAccounts: StoreAccount[];
-  readonly userAssets: Asset[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -85,14 +74,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     networks,
     currentAccounts,
     accountRestore,
-    get userAssets() {
-      const userAssets = state.accounts
-        .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
-        .flatMap((a: StoreAccount) => a.assets)
-        .filter(isNotExcludedAsset(settings.excludedAssets));
-      const uniq = uniqBy(prop('uuid'), userAssets);
-      return sortBy(prop('ticker'), uniq);
-    },
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     totals: (selectedAccounts = state.accounts) =>
