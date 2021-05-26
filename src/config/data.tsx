@@ -37,6 +37,7 @@ export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const DEX_BASE_URLS: Partial<Record<NetworkId, string>> = {
   Ethereum: 'https://swap.mycryptoapi.com/',
   SmartChain: 'https://bsc.swap.mycryptoapi.com',
+  MATIC: 'https://polygon.swap.mycryptoapi.com',
   ...(IS_DEV ? { Kovan: 'https://kovan.swap.mycryptoapi.com' } : {})
 };
 export const DEX_NETWORKS = Object.keys(DEX_BASE_URLS);
