@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fRopDAI } from '@fixtures';
-import { StoreContext } from '@services';
 import { noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -38,18 +37,9 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets)
-        } as any) as any
-      }
-    >
-      <SwapAssets {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<SwapAssets {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts })
+  });
 }
 
 describe('SwapAssets', () => {

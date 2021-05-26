@@ -1,6 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import debounce from 'lodash/debounce';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
@@ -18,12 +19,14 @@ import {
 } from '@components';
 import { DEX_NETWORKS } from '@config';
 import { useRates } from '@services/Rates';
-import { StoreContext } from '@services/Store';
 import {
+  AppState,
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
+  selectAccounts,
   selectNetwork,
+  selectUserAssets,
   useSelector
 } from '@store';
 import { SPACING } from '@theme';
@@ -43,7 +46,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-type Props = SwapFormState & {
+type OwnProps = SwapFormState & {
   isSubmitting: boolean;
   txError?: CustomError;
   onSuccess(): void;
@@ -91,7 +94,10 @@ const SwapAssets = (props: Props) => {
     gasPrice,
     isEstimatingGas,
     expiration,
-    setNetwork
+    setNetwork,
+    /* connected */
+    accounts,
+    userAssets
   } = props;
 
   const settings = useSelector(getSettings);
@@ -100,7 +106,6 @@ const SwapAssets = (props: Props) => {
   const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
   const [isExpired, setIsExpired] = useState(false);
-  const { accounts, userAssets } = useContext(StoreContext);
   const { getAssetRate } = useRates();
 
   const baseAssetRate = getAssetRate(baseAsset);
@@ -207,7 +212,7 @@ const SwapAssets = (props: Props) => {
         </Box>
         <Box mb="15px">
           <Box>
-            <Body>
+            <Body as="label">
               {translateRaw('ACCOUNT_SELECTION_PLACEHOLDER')}{' '}
               <Tooltip tooltip={translateRaw('SWAP_SELECT_ACCOUNT_TOOLTIP')} />
             </Body>
@@ -329,4 +334,12 @@ const SwapAssets = (props: Props) => {
   );
 };
 
-export default SwapAssets;
+const mapStateToProps = (state: AppState) => ({
+  accounts: selectAccounts()(state),
+  userAssets: selectUserAssets(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export default connector(SwapAssets);
