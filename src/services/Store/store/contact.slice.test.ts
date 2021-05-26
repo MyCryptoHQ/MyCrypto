@@ -1,10 +1,15 @@
 import { mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { fContacts } from '@fixtures';
+import { fAccounts, fContacts } from '@fixtures';
 import { ExtendedContact } from '@types';
 
-import { initialState, selectContact, default as slice } from './contact.slice';
+import {
+  initialState,
+  selectAccountContact,
+  selectContact,
+  default as slice
+} from './contact.slice';
 
 const reducer = slice.reducer;
 const { create, destroy, update, createOrUpdate } = slice.actions;
@@ -69,5 +74,15 @@ describe('ContactSlice', () => {
     const state = reducer(fContacts, createOrUpdate(expected));
     const actual = state.filter((c) => c.uuid === expected.uuid);
     expect(actual).toHaveLength(1);
+  });
+
+  it('selectAccountContact(): Selects a contact based on an account', () => {
+    const state = mockAppState({
+      addressBook: fContacts
+    });
+
+    const actual = selectAccountContact(fAccounts[0])(state);
+
+    expect(actual).toEqual(fContacts[1]);
   });
 });
