@@ -873,7 +873,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   },
   MATIC: {
     id: 'MATIC',
-    name: 'MATIC',
+    name: 'Polygon',
     unit: 'MATIC' as TTicker,
     chainId: 137,
     isCustom: false,

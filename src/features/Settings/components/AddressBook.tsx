@@ -251,7 +251,7 @@ export default function AddressBook({
             />
           </Label>,
           <EthAddress address={address} truncate={true} isCopyable={true} />,
-          <Network color={color}>{network}</Network>,
+          <Network color={color}>{networkData.name || network}</Network>,
           <EditableText
             maxWidth="260px"
             placeholder="(empty)"

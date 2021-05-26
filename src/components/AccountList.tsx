@@ -27,6 +27,7 @@ import {
   StoreContext,
   useAccounts,
   useContacts,
+  useNetworks,
   useSettings
 } from '@services/Store';
 import { isScanning as isScanningSelector, useSelector } from '@store';
@@ -301,6 +302,7 @@ const BuildAccountTable = (
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { contacts } = useContacts();
+  const { getNetworkById } = useNetworks();
   const { toggleAccountPrivacy } = useAccounts();
   const overlayRowsFlat = [...overlayRows![0], ...overlayRows![1].map((row) => row[0])];
 
@@ -498,7 +500,7 @@ const BuildAccountTable = (
         </Label>,
         <EthAddress key={index} address={account.address} truncate={true} isCopyable={copyable} />,
         <Network key={index} color={account?.network?.color || COLORS.LIGHT_PURPLE}>
-          {account.networkId}
+          {getNetworkById(account.networkId)?.name || account.networkId}
         </Network>,
         isScanning ? (
           <SkeletonLoader type="account-list-value" />
