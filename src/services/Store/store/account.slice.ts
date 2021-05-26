@@ -156,7 +156,7 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
       ...a,
       assets: accountAssets,
       network: getNetwork(a.networkId)(s),
-      label: selectAccountContact(a)(s)?.label ?? translateRaw('NO_LABEL')
+      label: selectAccountContact(a)(s)?.label || a.label || translateRaw('NO_LABEL')
     };
   });
 });

@@ -6,6 +6,7 @@ import {
   fAccount,
   fAccounts,
   fAssets,
+  fContacts,
   fNetworks,
   fSettings,
   fTransaction,
@@ -142,12 +143,13 @@ describe('AccountSlice', () => {
     const state = mockAppState({
       accounts: [accounts[0]],
       assets: fAssets,
-      networks: fNetworks
+      networks: fNetworks,
+      addressBook: fContacts
     });
 
     const actual = getStoreAccounts(state);
 
-    expect(actual).toEqual([fAccounts[0]]);
+    expect(actual).toEqual([{ ...fAccounts[0], label: fContacts[1].label }]);
   });
 
   it('selectCurrentAccounts(): returns only favorite accounts', () => {
