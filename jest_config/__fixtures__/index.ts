@@ -4,7 +4,7 @@ import { default as txConfig } from './txConfig.json';
 export { fAssets, fStoreAssets, fRopDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
-export { fNetwork, fNetworks } from './network';
+export { fNetwork, fNetworks, fValidNetworks } from './network';
 export {
   fTransaction,
   fETHNonWeb3TxResponse,

@@ -174,6 +174,14 @@ export const fAssets = [
     isCustom: false,
     ticker: 'xDAI'
   },
+  {
+    uuid: '54ceb912-56e8-590e-874a-a752a6e0650a',
+    name: 'Smart Chain (Smart Chain)',
+    ticker: 'BNB',
+    type: 'base',
+    networkId: 'SmartChain',
+    isCustom: false
+  },
   fDAI,
   fRopDAI
 ] as ExtendedAsset[];

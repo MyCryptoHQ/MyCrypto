@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { appendSender } from '@helpers';
 import { useTxMulti } from '@hooks';
-import { StoreContext } from '@services';
+import { AppState, selectDefaultAccount } from '@store';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
 import { bigify, useStateReducer } from '@utils';
@@ -25,9 +26,7 @@ interface TStep {
   backBtnText: string;
 }
 
-const SwapAssetsFlow = (props: RouteComponentProps) => {
-  const { getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
+const SwapAssetsFlow = ({ history, defaultAccount }: Props) => {
   const {
     setNetwork,
     fetchSwapAssets,
@@ -43,6 +42,11 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     handleRefreshQuote,
     formState
   } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
+
+  useEffect(() => {
+    handleAccountSelected(defaultAccount);
+  }, [defaultAccount]);
+
   const {
     assets,
     account,
@@ -79,7 +83,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
   };
 
   const goToPreviousStep = () => {
-    const { history } = props;
     if (step === 0) {
       history.push(ROUTE_PATHS.DASHBOARD.path);
     } else {
@@ -240,4 +243,12 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
   );
 };
 
-export default withRouter(SwapAssetsFlow);
+const mapStateToProps = (state: AppState) => ({
+  defaultAccount: selectDefaultAccount()(state)
+});
+
+const connector = connect(mapStateToProps);
+
+type Props = ConnectedProps<typeof connector> & RouteComponentProps;
+
+export default withRouter(connector(SwapAssetsFlow));

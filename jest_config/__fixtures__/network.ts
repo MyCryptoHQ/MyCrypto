@@ -1,6 +1,10 @@
+import { APP_STATE } from 'test-utils';
+
 import { XDAIUUID } from '@config';
 import { Network, NodeType, TTicker, TUuid } from '@types';
 import { makeExplorer } from '@utils';
+
+export const fValidNetworks = APP_STATE.networks;
 
 export const Ethereum: Network = {
   id: 'Ethereum',

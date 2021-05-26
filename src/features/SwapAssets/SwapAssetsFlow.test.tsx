@@ -2,30 +2,22 @@ import React from 'react';
 
 import mockAxios from 'jest-mock-axios';
 import selectEvent from 'react-select-event';
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { DEX_BASE_URLS } from '@config';
-import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
-import { StoreContext } from '@services/Store';
+import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse, fValidNetworks } from '@fixtures';
 import { truncate } from '@utils';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => fAccounts[0]
-        } as any) as any
-      }
-    >
-      <SwapAssetsFlow />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<SwapAssetsFlow />, {
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: fValidNetworks
+    })
+  });
 }
 
 const tokenResponse = {

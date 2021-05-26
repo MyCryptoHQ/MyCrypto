@@ -105,6 +105,7 @@ const SwapAssets = (props: Props) => {
   const network = useSelector(selectNetwork(selectedNetwork));
   const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
+  const [filteredAccounts, setFilteredAccounts] = useState(accounts);
   const [isExpired, setIsExpired] = useState(false);
   const { getAssetRate } = useRates();
 
@@ -163,9 +164,19 @@ const SwapAssets = (props: Props) => {
     );
 
   // Accounts with a balance of the chosen asset and base asset
-  const filteredAccounts = fromAsset
-    ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
-    : [];
+  useEffect(() => {
+    setFilteredAccounts(
+      fromAsset
+        ? getAccountsWithAssetBalance(
+            accounts,
+            fromAsset,
+            fromAmount,
+            baseAsset.uuid,
+            estimatedGasFee
+          )
+        : []
+    );
+  }, [accounts, fromAsset]);
 
   useEffect(() => {
     if (

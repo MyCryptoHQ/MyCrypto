@@ -5,7 +5,7 @@ import { checkRequiresApproval } from '@helpers';
 import { DexAsset, DexService, getGasEstimate } from '@services';
 import { selectNetwork, useSelector } from '@store';
 import translate from '@translations';
-import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, NetworkId, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
@@ -37,7 +37,7 @@ const swapFormInitialState = {
 const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
+  const network = useSelector(selectNetwork(state.selectedNetwork));
 
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
