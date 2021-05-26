@@ -36,5 +36,15 @@ export const fRates: IRates = {
     inr: 75.38,
     cny: 6.93,
     try: 7.74
+  },
+  /** BNB */
+  '54ceb912-56e8-590e-874a-a752a6e0650a': {
+    usd: 380.57,
+    eur: 311.26,
+    gbp: 268.81,
+    rub: 28007,
+    inr: 27689,
+    cny: 2432.13,
+    try: 3213.75
   }
 };
