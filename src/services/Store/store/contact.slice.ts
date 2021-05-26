@@ -54,7 +54,7 @@ export const selectContact = (uuid: TUuid) =>
   createSelector(selectContacts, find(propEq('uuid', uuid)));
 
 export const selectAccountContact = (account: IAccount) =>
-  createSelector(selectContacts, (contacts) =>
+  createSelector(selectContacts, (contacts = []) =>
     contacts.find(
       (contact) =>
         isSameAddress(account.address, contact.address as TAddress) &&

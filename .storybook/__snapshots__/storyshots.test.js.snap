@@ -17297,6 +17297,34 @@ exports[` Storyshots Molecules/Selectors/AssetSelector Selector 1`] = `
                   >
                     <div
                       className="Box-sc-1974eaf-0 eEYLqu"
+                      data-testid="asset-selector-option-BNB"
+                      display="flex"
+                      onPointerDown={[Function]}
+                    >
+                      <div
+                        className="Box-sc-1974eaf-0 gYGPPS"
+                        display="inline-flex"
+                        height="1.5rem"
+                        width="1.5rem"
+                      >
+                        <img
+                          onError={[Function]}
+                          src="test-file-stub"
+                        />
+                      </div>
+                      <p
+                        className="Text__SText-sc-14ylyin-0 iGNoNy"
+                        fontWeight={null}
+                      >
+                        BNB
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className="Selector__OptionWrapper-sc-1wilj6q-1 gHeDPP"
+                  >
+                    <div
+                      className="Box-sc-1974eaf-0 eEYLqu"
                       data-testid="asset-selector-option-DAI"
                       display="flex"
                       onPointerDown={[Function]}
