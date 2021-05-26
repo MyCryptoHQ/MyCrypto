@@ -20,6 +20,8 @@ import {
   getAccounts,
   getStoreAccounts,
   initialState,
+  resetAndCreateAccount,
+  resetAndCreateManyAccounts,
   selectAccountTxs,
   selectCurrentAccounts,
   default as slice,
@@ -64,6 +66,23 @@ describe('AccountSlice', () => {
     const modifiedEntity = { ...entity, address: '0x1' } as IAccount;
     const actual = reducer(state, update(modifiedEntity));
     const expected = [modifiedEntity];
+    expect(actual).toEqual(expected);
+  });
+
+  it('resetAndCreate(): reset state and add an entities', () => {
+    const a1 = { uuid: 'first' } as IAccount;
+    const a2 = { uuid: 'second' } as IAccount;
+    const actual = reducer([a1], resetAndCreateAccount(a2));
+    const expected = [a2];
+    expect(actual).toEqual(expected);
+  });
+
+  it('resetAndCreateMany(): reset state and adds multiple entities', () => {
+    const a1 = { uuid: 'first' } as IAccount;
+    const a2 = { uuid: 'second' } as IAccount;
+    const a3 = { uuid: 'third' } as IAccount;
+    const actual = reducer([a1], resetAndCreateManyAccounts([a2, a3]));
+    const expected = [a2, a3];
     expect(actual).toEqual(expected);
   });
 

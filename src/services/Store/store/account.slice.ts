@@ -45,10 +45,8 @@ const slice = createSlice({
     resetAndCreate(_, action: PayloadAction<IAccount>) {
       return [sanitizeAccount(action.payload)];
     },
-    resetAndCreateMany(state, action: PayloadAction<IAccount[]>) {
-      action.payload.forEach((a) => {
-        state.push(sanitizeAccount(a));
-      });
+    resetAndCreateMany(_, action: PayloadAction<IAccount[]>) {
+      return action.payload.map((a) => sanitizeAccount(a));
     },
     destroy(state, action: PayloadAction<TUuid>) {
       const idx = findIndex(propEq('uuid', action.payload), state);
