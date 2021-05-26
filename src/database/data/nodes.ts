@@ -355,9 +355,33 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
   ],
   MATIC: [
     {
+      name: NetworkUtils.makeNodeName('MATIC', 'maticvigil'),
+      type: NodeType.RPC,
+      service: 'Maticvigil',
+      url: 'https://rpc-mainnet.maticvigil.com'
+    },
+    {
+      name: NetworkUtils.makeNodeName('MATIC', 'quiknode'),
+      type: NodeType.RPC,
+      service: 'Quiknode',
+      url: 'https://rpc-mainnet.matic.quiknode.pro'
+    },
+    {
+      name: NetworkUtils.makeNodeName('MATIC', 'chainstacklabs'),
+      type: NodeType.RPC,
+      service: 'Chainstacklabs',
+      url: 'https://matic-mainnet.chainstacklabs.com'
+    },
+    {
+      name: NetworkUtils.makeNodeName('MATIC', 'bwarelabs'),
+      type: NodeType.RPC,
+      service: 'Bwarelabs',
+      url: 'https://matic-mainnet-full-rpc.bwarelabs.com'
+    },
+    {
       name: NetworkUtils.makeNodeName('MATIC', 'matic'),
       type: NodeType.RPC,
-      service: 'matic',
+      service: 'Matic',
       url: 'https://rpc-mainnet.matic.network'
     }
   ],
