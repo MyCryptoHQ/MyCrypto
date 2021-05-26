@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ExtendedContact, LSKeys, TUuid } from '@types';
-import { generateUUID } from '@utils';
+import { ExtendedContact, IAccount, LSKeys, TAddress, TUuid } from '@types';
+import { generateUUID, isSameAddress } from '@utils';
 import { find, findIndex, prop, propEq, uniqBy } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
@@ -52,5 +52,14 @@ export const {
 export const selectContacts = createSelector(getAppState, (s) => s[slice.name]);
 export const selectContact = (uuid: TUuid) =>
   createSelector(selectContacts, find(propEq('uuid', uuid)));
+
+export const selectAccountContact = (account: IAccount) =>
+  createSelector(selectContacts, (contacts) =>
+    contacts.find(
+      (contact) =>
+        isSameAddress(account.address, contact.address as TAddress) &&
+        account.networkId === contact.network
+    )
+  );
 
 export default slice;

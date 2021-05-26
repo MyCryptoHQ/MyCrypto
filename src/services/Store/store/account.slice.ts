@@ -18,6 +18,7 @@ import { findIndex, propEq } from '@vendor';
 
 import { isTokenMigration } from '../helpers';
 import { getAssetByUUID } from './asset.slice';
+import { selectAccountContact } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { getNetwork } from './network.slice';
@@ -155,7 +156,7 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
       ...a,
       assets: accountAssets,
       network: getNetwork(a.networkId)(s),
-      label: a.label ? a.label : translateRaw('NO_LABEL')
+      label: selectAccountContact(a)(s)?.label ?? translateRaw('NO_LABEL')
     };
   });
 });
