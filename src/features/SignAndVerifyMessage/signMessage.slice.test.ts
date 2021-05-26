@@ -1,12 +1,18 @@
+import { expectSaga } from 'redux-saga-test-plan';
+
+import { fAccount } from '@fixtures';
+import { IFullWallet } from '@services';
 import { ISignedMessage, WalletId } from '@types';
 
 import {
   initialState,
   messageUpdate,
+  signMessage,
   signMessageFailure,
   signMessageRequest,
   signMessageReset,
   signMessageSuccess,
+  signMessageWorker,
   default as slice,
   walletSelect
 } from './signMessage.slice';
@@ -49,5 +55,27 @@ describe('SignMesasge slice', () => {
     const actual = slice.reducer({ ...initialState }, walletSelect(target));
     const expected = { ...initialState, walletId: target };
     expect(actual).toEqual(expected);
+  });
+});
+
+describe('signMessageWorker()', () => {
+  it('calls the signMessage method for the provided wallet', () => {
+    const mockMessage = 'Vitalik';
+    const mockWallet = ({
+      getAddressString: jest.fn(() => fAccount.address),
+      signMessage: jest.fn(() => Promise.resolve(`signed${mockMessage}`))
+    } as unknown) as IFullWallet;
+    return expectSaga(signMessageWorker, signMessage({ message: mockMessage, wallet: mockWallet }))
+      .put(signMessageRequest())
+      .call([mockWallet, mockWallet.signMessage], mockMessage)
+      .put(
+        signMessageSuccess({
+          address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+          msg: 'Vitalik',
+          sig: '0xsignedVitalik',
+          version: '2'
+        })
+      )
+      .silentRun();
   });
 });

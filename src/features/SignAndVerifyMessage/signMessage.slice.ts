@@ -84,7 +84,6 @@ export function* signMessageWorker({
 
   try {
     const sig: string = yield call({ context: wallet, fn: wallet.signMessage }, message);
-
     yield put(
       signMessageSuccess({
         address: getAddress(wallet.getAddressString()),
