@@ -4,7 +4,7 @@ import selectEvent from 'react-select-event';
 import { fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
-import { fAccounts, fNetworks } from '@fixtures';
+import { fAccounts, fValidNetworks } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import DeployContractsFlow from './DeployContractsFlow';
@@ -24,7 +24,7 @@ jest.mock('@vendor', () => {
 function getComponent() {
   return simpleRender(<DeployContractsFlow />, {
     initialRoute: '/deploy-contracts',
-    initialState: mockAppState({ accounts: fAccounts, networks: fNetworks })
+    initialState: mockAppState({ accounts: fAccounts, networks: fValidNetworks })
   });
 }
 

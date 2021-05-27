@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { Amount, Button, InlineMessage, PoweredByText } from '@components';
@@ -8,7 +9,8 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
-import { StoreContext, useContacts, useSettings } from '@services/Store';
+import { useContacts, useSettings } from '@services/Store';
+import { AppState, selectAccounts } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
@@ -88,21 +90,22 @@ const PTXHeader = styled.p`
   margin-bottom: ${SPACING.BASE};
 `;
 
-export default function ConfirmTransaction({
+function ConfirmTransaction({
   txType = ITxType.STANDARD,
   txConfig,
   onComplete,
   signedTx,
   error,
   protectTxButton,
-  customComponent
-}: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
+  customComponent,
+  accounts
+}: IStepComponentProps &
+  Props & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
   const { asset, baseAsset, receiverAddress, network, from, rawTransaction } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
   const { assets } = useAssets();
-  const { accounts } = useContext(StoreContext);
   const { settings } = useSettings();
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
@@ -149,6 +152,15 @@ export default function ConfirmTransaction({
     />
   );
 }
+
+const mapStateToProps = (state: AppState) => ({
+  accounts: selectAccounts()(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(ConfirmTransaction);
 
 interface DataProps {
   settings: ISettings;
