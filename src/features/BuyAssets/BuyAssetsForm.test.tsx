@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
@@ -8,7 +8,7 @@ import { translateRaw } from '@translations';
 import BuyAssetsForm from './BuyAssetsForm';
 
 function getComponent() {
-  return simpleRender(<BuyAssetsForm />);
+  return simpleRender(<BuyAssetsForm />, { initialState: mockAppState({ accounts: fAccounts }) });
 }
 
 describe('BuyAssetsForm', () => {

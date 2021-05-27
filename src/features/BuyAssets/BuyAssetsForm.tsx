@@ -206,7 +206,7 @@ export const BuyAssetsForm = ({ defaultAccount }: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  defaultAccount: selectDefaultAccount({ includeViewOnly: true })(state)
+  defaultAccount: selectDefaultAccount({ assetUUID: ETHUUID })(state)
 });
 
 const connector = connect(mapStateToProps);
