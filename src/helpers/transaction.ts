@@ -34,6 +34,7 @@ import {
   ITxGasPrice,
   ITxHash,
   ITxHistoryStatus,
+  ITxMetadata,
   ITxNonce,
   ITxObject,
   ITxReceipt,
@@ -76,7 +77,8 @@ type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
-  txConfig: ITxConfig
+  txConfig: ITxConfig,
+  metadata?: ITxMetadata
 ): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
   const { data, asset, baseAsset, amount, gasPrice, gasLimit, nonce } = txConfig;
 
@@ -97,22 +99,25 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     asset,
     baseAsset,
     blockNumber: 0,
-    timestamp: 0
+    timestamp: 0,
+    metadata
   };
   return txReceipt;
 };
 
 export const makePendingTxReceipt = (txHash: ITxHash) => (
   txType: ITxType,
-  txConfig: ITxConfig
+  txConfig: ITxConfig,
+  metadata?: ITxMetadata
 ): IPendingTxReceipt =>
-  toTxReceipt(txHash, ITxStatus.PENDING)(txType, txConfig) as IPendingTxReceipt;
+  toTxReceipt(txHash, ITxStatus.PENDING)(txType, txConfig, metadata) as IPendingTxReceipt;
 
 export const makeUnknownTxReceipt = (txHash: ITxHash) => (
   txType: ITxType,
-  txConfig: ITxConfig
+  txConfig: ITxConfig,
+  metadata?: ITxMetadata
 ): IPendingTxReceipt =>
-  toTxReceipt(txHash, ITxStatus.UNKNOWN)(txType, txConfig) as IPendingTxReceipt;
+  toTxReceipt(txHash, ITxStatus.UNKNOWN)(txType, txConfig, metadata) as IPendingTxReceipt;
 
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,

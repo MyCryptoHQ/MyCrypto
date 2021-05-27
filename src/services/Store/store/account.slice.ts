@@ -163,9 +163,10 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
  * Actions
  */
 export const addAccounts = createAction<IAccount[]>(`${slice.name}/addAccounts`);
-export const addTxToAccount = createAction<{ account: IAccount; tx: ITxReceipt }>(
-  `${slice.name}/addTxToAccount`
-);
+export const addTxToAccount = createAction<{
+  account: IAccount;
+  tx: ITxReceipt;
+}>(`${slice.name}/addTxToAccount`);
 
 /**
  * Sagas
@@ -207,7 +208,15 @@ export function* addTxToAccountWorker({
     isTokenMigration(newTx.txType) ||
     newTx.txType === ITxType.SWAP
   ) {
-    yield put(scanTokens({ accounts: [account] }));
+    const receivingAsset =
+      newTx.metadata?.receivingAsset &&
+      (yield select(getAssetByUUID(newTx.metadata.receivingAsset)));
+    yield put(
+      scanTokens({
+        accounts: [account],
+        assets: receivingAsset && [receivingAsset]
+      })
+    );
   } else if (newTx.txType === ITxType.PURCHASE_MEMBERSHIP) {
     yield put(fetchMemberships([account]));
   }

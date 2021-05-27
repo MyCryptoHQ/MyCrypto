@@ -16,6 +16,7 @@ import {
   ITxType,
   ITxValue
 } from './transactionFlow';
+import { TUuid } from './uuid';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
@@ -79,6 +80,12 @@ export interface ITxReceipt {
 
   readonly gasUsed?: BigNumber;
   readonly confirmations?: number;
+
+  // Metadata
+  readonly metadata?: ITxMetadata;
+}
+export interface ITxMetadata {
+  receivingAsset?: TUuid;
 }
 
 export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
