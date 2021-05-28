@@ -41,7 +41,8 @@ describe('SwapFlow', () => {
         gasPrice: '0x23db1d8400',
         to: '0xdef1c0ded9bec7f1a1670819833240f027b25eff',
         type: 'SWAP',
-        value: '0x0'
+        value: '0x0',
+        metadata: { receivingAsset: ETHUUID }
       });
     });
   });
@@ -64,7 +65,7 @@ describe('SwapFlow', () => {
         gasPrice: '0x23db1d8400' as ITxGasPrice,
         chainId: 1,
         type: ITxType.SWAP,
-        metadata: ETHUUID
+        metadata: { receivingAsset: ETHUUID }
       });
     });
   });
