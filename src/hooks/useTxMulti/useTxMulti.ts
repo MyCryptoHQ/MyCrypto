@@ -58,7 +58,11 @@ export const useTxMulti: TUseTxMulti = () => {
     ) {
       const type = currentTx.type ? currentTx.type : ITxType.UNKNOWN;
       const txConfig = makeTxConfigFromTxResponse(currentTx.txResponse, assets, network, accounts);
-      const pendingTxReceipt = makePendingTxReceipt(currentTx.txHash)(type, txConfig);
+      const pendingTxReceipt = makePendingTxReceipt(currentTx.txHash)(
+        type,
+        txConfig,
+        currentTx.metadata
+      );
       addTxToAccount(account, pendingTxReceipt);
     }
   }, [currentTx]);

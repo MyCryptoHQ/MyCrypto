@@ -95,14 +95,16 @@ describe('makeTx', () => {
         gasPrice: '0x012a05f200'
       }
     });
-    expect(result.receipt).toStrictEqual({
-      ...fETHNonWeb3TxReceipt,
-      asset: fAssets[1],
-      txType: ITxType.UNKNOWN,
-      status: ITxStatus.UNKNOWN,
-      to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
-      from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
-      receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
-    });
+    expect(result.receipt).toStrictEqual(
+      expect.objectContaining({
+        ...fETHNonWeb3TxReceipt,
+        asset: fAssets[1],
+        txType: ITxType.UNKNOWN,
+        status: ITxStatus.UNKNOWN,
+        to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
+        from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
+        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
+      })
+    );
   });
 });

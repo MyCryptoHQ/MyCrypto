@@ -4,6 +4,7 @@ import {
   ISwapAsset,
   ITxGasLimit,
   ITxGasPrice,
+  ITxMetadata,
   ITxObject,
   ITxStatus,
   ITxType,
@@ -56,7 +57,10 @@ export interface SwapFormState {
     type: ITxType;
   };
   expiration?: number;
-  tradeTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & { type: ITxType };
+  tradeTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+    type: ITxType;
+    metadata: ITxMetadata;
+  };
 }
 
 export interface IAssetPair {

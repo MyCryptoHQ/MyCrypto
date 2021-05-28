@@ -49,6 +49,7 @@ const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
   };
   return {
     ...result,
+    metadata: result.metadata ?? undefined,
     ...(fixtureTxReceipt.gasUsed && { gasUsed: BigNumber.from(fixtureTxReceipt.gasUsed) })
   };
 };

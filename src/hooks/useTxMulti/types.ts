@@ -1,6 +1,15 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 
-import { ITxHash, ITxObject, ITxStatus, ITxType, Network, StoreAccount, TUuid } from '@types';
+import {
+  ITxHash,
+  ITxMetadata,
+  ITxObject,
+  ITxStatus,
+  ITxType,
+  Network,
+  StoreAccount,
+  TUuid
+} from '@types';
 
 export interface TxParcel {
   readonly _uuid: TUuid;
@@ -12,6 +21,7 @@ export interface TxParcel {
   readonly txResponse?: TransactionResponse;
   readonly type?: ITxType;
   readonly minedAt?: number; // timestamp of block that included tx
+  readonly metadata?: ITxMetadata;
 }
 
 export interface TxMultiState {

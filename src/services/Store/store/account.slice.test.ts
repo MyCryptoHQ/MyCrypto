@@ -219,10 +219,16 @@ describe('AccountSlice', () => {
         addTxToAccountWorker,
         addTxToAccount({
           account: fAccount,
-          tx: { ...fTxReceipt, txType: ITxType.SWAP, status: ITxStatus.SUCCESS }
+          tx: {
+            ...fTxReceipt,
+            txType: ITxType.SWAP,
+            status: ITxStatus.SUCCESS,
+            metadata: { receivingAsset: ETHUUID }
+          }
         })
       )
-        .put(scanTokens({ accounts: [fAccount] }))
+        .withState(mockAppState({ assets: fAssets }))
+        .put(scanTokens({ accounts: [fAccount], assets: [fAssets[0]] }))
         .silentRun();
     });
 

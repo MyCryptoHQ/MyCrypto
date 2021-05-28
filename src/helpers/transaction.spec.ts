@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
-import { donationAddressMap } from '@config';
+import { donationAddressMap, ETHUUID } from '@config';
 import {
   fAccounts,
   fAssets,
@@ -31,7 +31,8 @@ import {
   ITxToAddress,
   ITxType,
   ITxValue,
-  TAddress
+  TAddress,
+  TUuid
 } from '@types';
 
 import {
@@ -46,6 +47,7 @@ import {
   makeFinishedTxReceipt,
   makePendingTxReceipt,
   makeTxConfigFromTxResponse,
+  makeUnknownTxReceipt,
   toTxReceipt,
   verifyTransaction
 } from './transaction';
@@ -94,6 +96,16 @@ describe('toTxReceipt', () => {
     );
     expect(txReceipt).toStrictEqual(fERC20Web3TxReceipt);
   });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
 });
 
 describe('makePendingTxReceipt', () => {
@@ -114,7 +126,7 @@ describe('makePendingTxReceipt', () => {
   });
 
   it('creates pending tx receipt for non-web3 erc20 tx', () => {
-    const txReceipt = toTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+    const txReceipt = makePendingTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash)(
       ITxType.STANDARD,
       fERC20NonWeb3TxConfig
     );
@@ -122,11 +134,69 @@ describe('makePendingTxReceipt', () => {
   });
 
   it('creates pending tx receipt for web3 erc20 tx', () => {
-    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+    const txReceipt = makePendingTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
       ITxType.STANDARD,
       fERC20Web3TxConfig
     );
     expect(txReceipt).toStrictEqual(fERC20Web3TxReceipt);
+  });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = makePendingTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
+});
+
+describe('makeUnknownTxReceipt', () => {
+  it('creates pending tx receipt for non-web3 eth tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fETHNonWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fETHNonWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fETHNonWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for web3 eth tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fETHWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fETHWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fETHWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for non-web3 erc20 tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20NonWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20NonWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for web3 erc20 tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = makeUnknownTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({
+      ...fERC20Web3TxReceipt,
+      status: ITxStatus.UNKNOWN,
+      metadata
+    });
   });
 });
 

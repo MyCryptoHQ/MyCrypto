@@ -150,7 +150,8 @@ export default class DexService {
         data: data.data,
         gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
         value: data.value,
-        chainId: network.chainId
+        chainId: network.chainId,
+        buyToken
       })
     };
   };
@@ -161,14 +162,18 @@ export const formatTradeTx = ({
   data,
   value,
   gasPrice,
-  chainId
-}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'>) => {
+  chainId,
+  buyToken
+}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+  buyToken: ISwapAsset;
+}) => {
   return {
     to,
     data,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId,
     gasPrice,
-    type: ITxType.SWAP
+    type: ITxType.SWAP,
+    metadata: { receivingAsset: buyToken.uuid }
   };
 };
