@@ -31,9 +31,9 @@ const tokenResponse = {
 };
 
 describe('SwapAssetsFlow', () => {
-  afterEach(() => {
-    mockAxios.reset();
-  });
+  beforeEach(() => mockAxios.reset());
+  afterAll(() => mockAxios.reset());
+
   it('selects default tokens', async () => {
     const { getAllByText } = getComponent();
     expect(mockAxios.get).toHaveBeenCalledWith('swap/v1/tokens', {
