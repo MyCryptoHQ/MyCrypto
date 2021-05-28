@@ -241,7 +241,7 @@ const FIXTURE_HARDHAT = {
     canTrackProductAnalytics: true,
     fiatCurrency: 'USD',
     darkMode: false,
-    dashboardAccounts: ['1782c060-8bc0-55d6-8078-ff255b4aae90'],
+    dashboardAccounts: ['4a236c90-b722-5e26-8718-659db6b5d302'],
     excludedAssets: [],
     language: 'en',
     isDemoMode: false
