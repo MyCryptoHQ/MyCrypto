@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
+import { parse as parseTransaction } from '@ethersproject/transactions';
 
 import { donationAddressMap, ETHUUID } from '@config';
 import {
