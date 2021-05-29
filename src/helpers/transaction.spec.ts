@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 
 import { donationAddressMap, ETHUUID } from '@config';
 import {
@@ -20,7 +21,8 @@ import {
   fFinishedERC20Web3TxReceipt,
   fNetwork,
   fNetworks,
-  fRopDAI
+  fRopDAI,
+  fSignedTx
 } from '@fixtures';
 import {
   ITxData,
@@ -514,6 +516,10 @@ describe('verifyTransaction', () => {
         v: 37
       })
     ).toBe(true);
+  });
+
+  it('verifies a parsed signed transaction', () => {
+    expect(verifyTransaction(parseTransaction(fSignedTx))).toBe(true);
   });
 
   it('returns false for transactions with an invalid s value', () => {
