@@ -66,7 +66,7 @@ export default class DexService {
 
   public getOrderDetailsFrom = async (
     network: Network,
-    account: string | null,
+    account: string | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
@@ -74,7 +74,7 @@ export default class DexService {
 
   public getOrderDetailsTo = async (
     network: Network,
-    account: string | null,
+    account: string | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
@@ -82,7 +82,7 @@ export default class DexService {
 
   private getOrderDetails = async (
     network: Network,
-    account: string | null,
+    account: string | undefined,
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
     sellAmount?: string,
@@ -105,7 +105,7 @@ export default class DexService {
           : undefined,
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
-        takerAddress: account ? account : undefined,
+        takerAddress: account,
         skipValidation: true
       },
       cancelToken: new CancelToken(function executor(c) {
@@ -118,7 +118,7 @@ export default class DexService {
       data.allowanceTarget !== AddressZero
         ? {
             ...formatApproveTx({
-              fromAddress: (account as TAddress) ?? undefined,
+              fromAddress: account as TAddress | undefined,
               contractAddress: data.sellTokenAddress,
               spenderAddress: data.allowanceTarget,
               hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
