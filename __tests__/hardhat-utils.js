@@ -19,9 +19,9 @@ export const resetFork = async () => {
 export const setupDAI = async () => {
   const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
 
-  await provider.send('hardhat_impersonateAccount', ['0xf977814e90da44bfa03b6295a0616a897441acec']);
+  await provider.send('hardhat_impersonateAccount', ['0x28c6c06298d514db089934071355e5743bf21d60']);
 
-  const signer = await provider.getSigner('0xf977814e90da44bfa03b6295a0616a897441acec');
+  const signer = await provider.getSigner('0x28c6c06298d514db089934071355e5743bf21d60');
 
   const abi = [
     // Read-Only Functions
@@ -47,6 +47,6 @@ export const setupDAI = async () => {
   await sent.wait();
 
   await provider.send('hardhat_stopImpersonatingAccount', [
-    '0xf977814e90da44bfa03b6295a0616a897441acec'
+    '0x28c6c06298d514db089934071355e5743bf21d60'
   ]);
 };
