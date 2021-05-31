@@ -39,4 +39,5 @@ export type NetworkId =
   | 'Avalanche'
   | 'AvalancheTestnet'
   | 'EVRICE'
-  | 'Fantom';
+  | 'Fantom'
+  | 'HECO';
