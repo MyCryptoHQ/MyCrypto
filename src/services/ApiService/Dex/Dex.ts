@@ -118,6 +118,7 @@ export default class DexService {
       data.allowanceTarget !== AddressZero
         ? {
             ...formatApproveTx({
+              fromAddress: (account as TAddress) ?? undefined,
               contractAddress: data.sellTokenAddress,
               spenderAddress: data.allowanceTarget,
               hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
