@@ -1,7 +1,7 @@
 import mockAxios from 'jest-mock-axios';
 
 import { ETHUUID } from '@config';
-import { fAssets, fNetwork, fRopDAI, fSwapQuote } from '@fixtures';
+import { fAccount, fAssets, fNetwork, fRopDAI, fSwapQuote } from '@fixtures';
 import { ITxData, ITxGasPrice, ITxToAddress, ITxType, ITxValue, TTicker, TUuid } from '@types';
 
 import { DexService } from '.';
@@ -15,7 +15,7 @@ describe('SwapFlow', () => {
     it('returns the expected two transactions for a multi tx swap', async () => {
       const promise = DexService.instance.getOrderDetailsFrom(
         fNetwork,
-        null,
+        fAccount.address,
         fRopDAI,
         fAssets[0],
         '1'
@@ -28,7 +28,7 @@ describe('SwapFlow', () => {
         chainId: fNetwork.chainId,
         data:
           '0x095ea7b3000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff0000000000000000000000000000000000000000000000000de0b6b3a7640000',
-        from: undefined,
+        from: fAccount.address,
         gasPrice: '0x23db1d8400',
         to: '0x6b175474e89094c44da98b954eedeac495271d0f',
         type: 'APPROVAL',
