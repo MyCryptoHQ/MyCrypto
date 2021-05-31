@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
+import debounce from 'lodash/debounce';
 import styled from 'styled-components';
 
 import {
@@ -29,7 +30,6 @@ import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, NetworkId, StoreAccount } from '@types';
 import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
-import { useDebounce } from '@vendor';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -112,34 +112,32 @@ const SwapAssets = (props: Props) => {
     userAssets.find((userAsset) => a.uuid === userAsset.uuid)
   );
 
-  const [, , calculateNewToAmountDebounced] = useDebounce(
-    useCallback(() => {
-      calculateNewToAmount(fromAmount);
-    }, [fromAmount, account]),
-    500
-  );
+  const calculateNewToAmountDebounced = useCallback(debounce(calculateNewToAmount, 500), [
+    account,
+    fromAsset,
+    toAsset
+  ]);
 
   // SEND AMOUNT CHANGED
   const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleFromAmountChanged(value);
 
-    calculateNewToAmountDebounced();
+    calculateNewToAmountDebounced(value);
   };
 
-  const [, , calculateNewFromAmountDebounced] = useDebounce(
-    useCallback(() => {
-      calculateNewFromAmount(toAmount);
-    }, [toAmount, account]),
-    500
-  );
+  const calculateNewFromAmountDebounced = useCallback(debounce(calculateNewFromAmount, 500), [
+    account,
+    fromAsset,
+    toAsset
+  ]);
 
   // RECEIVE AMOUNT CHANGED
   const handleToAmountChangedEvent = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleToAmountChanged(value);
 
-    calculateNewFromAmountDebounced();
+    calculateNewFromAmountDebounced(value);
   };
 
   // Calculate new "to amount" after "to asset" is selected
