@@ -467,7 +467,8 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   }
 
   try {
-    const { r, s, v, from, hash, ...unsignedTransaction } = transaction;
+    // Temporarily remove 'type' from transaction, until bug is fixed https://github.com/ethers-io/ethers.js/issues/1627
+    const { r, s, v, from, hash, type, ...unsignedTransaction } = transaction;
     const serializedTransaction = serializeTransaction(unsignedTransaction, { r, s, v });
     return !!recoverAddress(serializedTransaction, { r, s, v });
   } catch (e) {
