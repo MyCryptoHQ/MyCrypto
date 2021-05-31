@@ -66,7 +66,7 @@ export default class DexService {
 
   public getOrderDetailsFrom = async (
     network: Network,
-    account: string | undefined,
+    account: TAddress | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
@@ -74,7 +74,7 @@ export default class DexService {
 
   public getOrderDetailsTo = async (
     network: Network,
-    account: string | undefined,
+    account: TAddress | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
@@ -82,7 +82,7 @@ export default class DexService {
 
   private getOrderDetails = async (
     network: Network,
-    account: string | undefined,
+    account: TAddress | undefined,
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
     sellAmount?: string,
@@ -118,7 +118,7 @@ export default class DexService {
       data.allowanceTarget !== AddressZero
         ? {
             ...formatApproveTx({
-              fromAddress: account as TAddress | undefined,
+              fromAddress: account,
               contractAddress: data.sellTokenAddress,
               spenderAddress: data.allowanceTarget,
               hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
