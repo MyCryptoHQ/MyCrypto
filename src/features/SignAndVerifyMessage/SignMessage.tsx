@@ -91,7 +91,7 @@ function SignMessage({
     walletSelect(walletId);
   };
 
-  const onUnlock = (w: IFullWallet) => {
+  const onUnlock = (w: IFullWallet | IFullWallet[]) => {
     const selectedWallet = Array.isArray(w) ? w[0] : w;
     setWallet(selectedWallet);
   };
