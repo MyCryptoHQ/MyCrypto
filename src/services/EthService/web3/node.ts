@@ -37,7 +37,7 @@ export async function setupWeb3Node() {
     if (legacyConnect) {
       return { lib, chainId };
     }
-    throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
+    throw new Error(ethereum.isMetaMask && translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
     const { web3 } = window as any;

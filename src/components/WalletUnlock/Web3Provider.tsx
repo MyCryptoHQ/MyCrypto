@@ -148,10 +148,11 @@ export const Web3UnlockUI = ({
 
       {web3Unlocked === false && (
         <>
-          {web3UnlockError && web3UnlockError.error && (
+          {web3UnlockError && web3UnlockError.error && web3UnlockError.message.length > 0 ? (
             <InlineMessage>{web3UnlockError.message}</InlineMessage>
+          ) : (
+            <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
           )}
-          <InlineMessage>{translate('WEB3_ONUNLOCK_NOT_FOUND_ERROR', transProps)}</InlineMessage>
         </>
       )}
     </Box>
