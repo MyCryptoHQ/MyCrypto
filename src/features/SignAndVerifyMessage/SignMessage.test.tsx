@@ -52,11 +52,15 @@ describe('SignMessage', () => {
   });
 
   test('it displays form after connect', async () => {
-    const { getByText, getByRole } = renderComponent({ walletId: WalletId.WEB3 });
+    const { getByText, container, getByRole } = renderComponent({ walletId: WalletId.WEB3 });
 
     fireEvent.click(getByRole('button', { name: /Connect via Web3 Provider/i }));
 
     expect(getByText(/unlocking/i)).toBeDefined();
     await waitFor(() => expect(getByText(/Sign Message/i)).toBeDefined());
+
+    const input = container.querySelector('textarea')!;
+    fireEvent.change(input, { target: { value: 'foo bar' } });
+    expect(input.value).toBe('foo bar');
   });
 });
