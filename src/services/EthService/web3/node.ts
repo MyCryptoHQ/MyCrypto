@@ -1,6 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
 
-import { isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
@@ -75,8 +74,7 @@ const requestLegacyConnect = async (ethereum: any) => {
 export const getApprovedAccounts = (web3: Web3Provider): Promise<TAddress[] | undefined> => {
   return web3
     .send('wallet_getPermissions', [])
-    .then(isValidRequestPermissions)
-    .then(({ result }) => result && result[0] && result[0].caveats)
+    .then((result) => result && result[0] && result[0].caveats)
     .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
 };
 
@@ -87,8 +85,7 @@ export const requestPermissions = (web3: Web3Provider): Promise<Web3RequestPermi
         eth_accounts: {}
       }
     ])
-    .then(isValidRequestPermissions)
-    .then(({ result }) => result);
+    .then((result) => result);
 };
 
 export const requestAccounts = (web3: Web3Provider): Promise<Web3RequestPermissionsResult[]> => {

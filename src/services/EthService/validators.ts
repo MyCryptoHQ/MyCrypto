@@ -2,7 +2,6 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import BigNumber from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { Validator } from 'jsonschema';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 
 import {
@@ -16,7 +15,7 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
 import translate, { translateRaw } from '@translations';
-import { InlineMessageType, JsonRPCResponse, Web3RequestPermissionsResponse } from '@types';
+import { InlineMessageType } from '@types';
 import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
 
 import { isValidENSName } from './ens/validators';
@@ -344,87 +343,6 @@ export const gasPriceValidator = (gasPrice: BigNumber | string): boolean => {
     getLength(decimalLength) <= 6
   );
 };
-
-// JSONSchema Validations for Rpc responses
-const v = new Validator();
-
-export const schema = {
-  RpcNode: {
-    type: 'object',
-    additionalProperties: true,
-    properties: {
-      jsonrpc: { type: 'string' },
-      id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: {
-        oneOf: [{ type: 'string' }, { type: 'array' }, { type: 'object' }]
-      },
-      status: { type: 'string' },
-      message: { type: 'string', maxLength: 2 }
-    }
-  }
-};
-
-function isValidResult(response: JsonRPCResponse, schemaFormat: typeof schema.RpcNode): boolean {
-  return v.validate(response, schemaFormat).valid;
-}
-
-function formatErrors(response: JsonRPCResponse, apiType: string) {
-  if (response.error) {
-    // Metamask errors are sometimes full-blown stacktraces, no bueno. Instead,
-    // We'll just take the first line of it, and the last thing after all of
-    // the colons. An example error message would be:
-    // "Error: Metamask Sign Tx Error: User rejected the signature."
-    const lines = response.error.message.split('\n');
-    if (lines.length > 2) {
-      return lines[0].split(':').pop();
-    } else {
-      return `${response.error.message} ${response.error.data || ''}`;
-    }
-  }
-  return `Invalid ${apiType} Error`;
-}
-
-enum API_NAME {
-  Sign_Message = 'Sign Message',
-  Get_Accounts = 'Get Accounts',
-  Request_Permissions = 'Request_Permissions',
-  Get_Permissions = 'Get_Permissions',
-  Get_ChainId = 'Get_ChainId'
-}
-
-const isValidEthServiceResponse = (
-  response: JsonRPCResponse,
-  schemaType: typeof schema.RpcNode
-) => (apiName: API_NAME, cb?: (res: JsonRPCResponse) => any) => {
-  if (!isValidResult(response, schemaType)) {
-    if (cb) {
-      return cb(response);
-    }
-    throw new Error(formatErrors(response, apiName));
-  }
-  return response;
-};
-
-export const isValidSignMessage = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Sign_Message);
-
-export const isValidGetAccounts = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_Accounts);
-
-export const isValidGetChainId = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(response, schema.RpcNode)(API_NAME.Get_ChainId);
-
-export const isValidRequestPermissions = (response: Web3RequestPermissionsResponse) =>
-  isValidEthServiceResponse(
-    (response as unknown) as JsonRPCResponse,
-    schema.RpcNode
-  )(API_NAME.Request_Permissions) as Web3RequestPermissionsResponse;
-
-export const isValidGetPermissions = (response: JsonRPCResponse) =>
-  isValidEthServiceResponse(
-    response,
-    schema.RpcNode
-  )(API_NAME.Get_Permissions) as Web3RequestPermissionsResponse;
 
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

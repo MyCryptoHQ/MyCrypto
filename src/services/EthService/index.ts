@@ -19,13 +19,10 @@ export {
   isValidNonZeroInteger,
   gasPriceValidator,
   gasLimitValidator,
-  isValidSignMessage,
-  isValidGetAccounts,
   isValidAddress,
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidRequestPermissions,
   isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
