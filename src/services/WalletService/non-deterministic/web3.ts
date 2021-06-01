@@ -1,6 +1,4 @@
-import { bufferToHex } from 'ethereumjs-util';
-
-import { Web3Node } from '@services/EthService';
+import { requestAccounts, setupWeb3Node } from '@services/EthService';
 
 import { IFullWallet } from '../IWallet';
 
@@ -23,10 +21,8 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   public async signMessage(msg: string): Promise<string> {
-    const msgHex = bufferToHex(Buffer.from(msg));
-    const walletProvider = new Web3Node();
-    return walletProvider
-      .requestAccounts()
-      .then(() => walletProvider.signMessage(msgHex, this.address));
+    const { lib: web3 } = await setupWeb3Node();
+
+    return requestAccounts(web3).then(() => web3.getSigner(this.address).signMessage(msg));
   }
 }

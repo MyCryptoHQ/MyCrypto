@@ -1,81 +1,28 @@
-import { isValidGetAccounts, isValidSignMessage } from '@services/EthService';
-import { isValidGetChainId, isValidRequestPermissions } from '@services/EthService/validators';
+import { Web3Provider } from '@ethersproject/providers';
+
+import { isValidRequestPermissions } from '@services/EthService/validators';
 import { translateRaw } from '@translations';
 import {
   IExposedAccountsPermission,
   IWeb3Permission,
   TAddress,
-  Web3RequestPermissionsResponse,
   Web3RequestPermissionsResult
 } from '@types';
-import { bigify } from '@utils';
-
-import Web3Client from './client';
-import Web3Requests from './requests';
-
-export class Web3Node {
-  public client: Web3Client;
-  public requests: Web3Requests;
-
-  constructor() {
-    this.client = new Web3Client();
-    this.requests = new Web3Requests();
-  }
-
-  public signMessage(msgHex: string, fromAddr: string): Promise<string> {
-    return this.client
-      .send(this.requests.signMessage(msgHex, fromAddr))
-      .then(isValidSignMessage)
-      .then(({ result }) => result);
-  }
-
-  public getAccounts(): Promise<TAddress[] | undefined> {
-    return this.client
-      .send(this.requests.getAccounts())
-      .then(isValidGetAccounts)
-      .then(({ result }) => result && result.length > 0 && result)
-      .catch(undefined);
-  }
-
-  public requestPermissions(): Promise<Web3RequestPermissionsResult[]> {
-    return this.client
-      .send<Web3RequestPermissionsResponse>(this.requests.requestPermissions())
-      .then(isValidRequestPermissions)
-      .then(({ result }) => result);
-  }
-
-  public getApprovedAccounts(): Promise<TAddress[] | undefined> {
-    return this.client
-      .send<Web3RequestPermissionsResponse>(this.requests.getPermissions())
-      .then(isValidRequestPermissions)
-      .then(({ result }) => result && result[0] && result[0].caveats)
-      .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
-  }
-
-  public getChainId(): Promise<string> {
-    return this.client
-      .send(this.requests.getChainId())
-      .then(isValidGetChainId)
-      .then(({ result }) => bigify(result).toString());
-  }
-
-  // requestAccounts will prompt user to unlock when necessary, but will not request permissions.
-  public requestAccounts() {
-    return this.client.send(this.requests.requestAccounts());
-  }
-}
 
 export async function getChainIdAndLib() {
-  const lib = new Web3Node();
-  const chainId = await lib.getChainId();
-  const accounts = await lib.getAccounts();
+  const lib = new Web3Provider(
+    (window as CustomWindow).ethereum || (window as CustomWindow).web3.currentProvider
+  );
+  const network = await lib.getNetwork();
+  const chainId = network.chainId;
+  /**const accounts = await lib.listAccounts();
   if (!accounts || !accounts.length) {
     throw new Error('No accounts found in MetaMask / Web3.');
-  }
+  }**/
 
-  if (chainId === 'loading') {
+  /**if (chainId === 'loading') {
     throw new Error('MetaMask / Web3 is still loading. Please refresh the page and try again.');
-  }
+  }**/
 
   return { chainId, lib };
 }
@@ -89,16 +36,16 @@ export async function setupWeb3Node() {
     if ((window as any).Web3) {
       (window as CustomWindow).web3 = new (window as any).Web3(ethereum);
     }
-    const web3Node = new Web3Node();
+    const { lib, chainId } = await getChainIdAndLib();
 
-    const requestedPermissions = await requestPermission(web3Node);
+    const requestedPermissions = await requestPermission(lib);
     if (requestedPermissions) {
-      return await getChainIdAndLib();
+      return { lib, chainId };
     }
 
     const legacyConnect = await requestLegacyConnect(ethereum);
     if (legacyConnect) {
-      return await getChainIdAndLib();
+      return { lib, chainId };
     }
     throw new Error(translateRaw('METAMASK_PERMISSION_DENIED'));
   } else if ((window as any).web3) {
@@ -115,9 +62,9 @@ export async function setupWeb3Node() {
   }
 }
 
-const requestPermission = async (web3Node: Web3Node) => {
+const requestPermission = async (web3: Web3Provider) => {
   try {
-    return await web3Node.requestPermissions();
+    return await requestPermissions(web3);
   } catch (e) {
     console.debug('[requestPermission]: ERROR:', e);
     return;
@@ -132,6 +79,29 @@ const requestLegacyConnect = async (ethereum: any) => {
     console.debug('[requestLegacyConnect]: ERROR', e);
     return;
   }
+};
+
+export const getApprovedAccounts = (web3: Web3Provider): Promise<TAddress[] | undefined> => {
+  return web3
+    .send('wallet_getPermissions', [])
+    .then(isValidRequestPermissions)
+    .then(({ result }) => result && result[0] && result[0].caveats)
+    .then((permissions: IWeb3Permission[] | undefined) => deriveApprovedAccounts(permissions));
+};
+
+export const requestPermissions = (web3: Web3Provider): Promise<Web3RequestPermissionsResult[]> => {
+  return web3
+    .send('wallet_requestPermissions', [
+      {
+        eth_accounts: {}
+      }
+    ])
+    .then(isValidRequestPermissions)
+    .then(({ result }) => result);
+};
+
+export const requestAccounts = (web3: Web3Provider): Promise<Web3RequestPermissionsResult[]> => {
+  return web3.send('eth_requestAccounts', []);
 };
 
 const deriveApprovedAccounts = (walletPermissions: IWeb3Permission[] | undefined) => {
