@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
 
 import { hdWalletSaga } from '@features/AddAccount/components/hdWallet.slice';
+import { signMessageSaga } from '@features/SignAndVerifyMessage';
 import { analyticsSaga } from '@services/Analytics';
 import { pollingSaga } from '@services/Polling';
 
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     analyticsSaga(),
     persistenceSaga(),
     pollingSaga(),
-    ratesSaga()
+    ratesSaga(),
+    signMessageSaga()
   ]);
 }

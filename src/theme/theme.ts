@@ -121,6 +121,9 @@ const TEXT_VARIANTS = {
   },
   discrete: {
     color: 'BLUE_GREY'
+  },
+  label: {
+    marginBottom: '0.5em'
   }
 };
 

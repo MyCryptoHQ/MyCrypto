@@ -29,12 +29,17 @@ export interface RequestPermissionsRequest extends RPCRequestBase {
   method: 'wallet_requestPermissions';
 }
 
+export interface RequestAccounts extends RPCRequestBase {
+  method: 'eth_requestAccounts';
+}
+
 export type Web3Request =
   | SignMessageRequest
   | GetAccountsRequest
   | GetChainIdRequest
   | GetPermissionsRequest
-  | RequestPermissionsRequest;
+  | RequestPermissionsRequest
+  | RequestAccounts;
 
 type TWeb3ProviderCallback = (error: string, result: JsonRPCResponse) => any;
 type TSendAsync = (request: Web3Request, callback: TWeb3ProviderCallback) => void;

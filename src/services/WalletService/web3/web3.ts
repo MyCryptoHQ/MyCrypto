@@ -1,4 +1,4 @@
-import { isWeb3Node, setupWeb3Node, Web3Node } from '@services/EthService';
+import { setupWeb3Node, Web3Node } from '@services/EthService';
 import { getNetworkByChainId } from '@services/Store';
 import { Network } from '@types';
 
@@ -11,7 +11,7 @@ export const unlockWeb3 = async (networks: Network[]) => {
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }
-  if (!isWeb3Node(nodeLib)) {
+  if (!(nodeLib instanceof Web3Node)) {
     throw new Error('Cannot use Web3 wallet without a Web3 node.');
   }
   try {

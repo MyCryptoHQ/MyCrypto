@@ -58,10 +58,11 @@ export class Web3Node {
       .then(isValidGetChainId)
       .then(({ result }) => bigify(result).toString());
   }
-}
 
-export function isWeb3Node(nodeLib: Web3Node): nodeLib is Web3Node {
-  return nodeLib instanceof Web3Node;
+  // requestAccounts will prompt user to unlock when necessary, but will not request permissions.
+  public requestAccounts() {
+    return this.client.send(this.requests.requestAccounts());
+  }
 }
 
 export async function getChainIdAndLib() {

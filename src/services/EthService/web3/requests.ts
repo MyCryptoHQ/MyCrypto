@@ -2,6 +2,7 @@ import {
   GetAccountsRequest,
   GetChainIdRequest,
   GetPermissionsRequest,
+  RequestAccounts,
   RequestPermissionsRequest,
   SignMessageRequest
 } from './types';
@@ -40,6 +41,12 @@ export default class Web3Requests {
           eth_accounts: {}
         }
       ]
+    };
+  }
+
+  public requestAccounts(): RequestAccounts {
+    return {
+      method: 'eth_requestAccounts'
     };
   }
 }
