@@ -25,7 +25,7 @@ jest.mock('@ledgerhq/hw-transport-u2f');
 jest.mock('@ledgerhq/hw-app-eth', () => {
   // Must be imported here to prevent issues with jest
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
-  const { mockFactory } = require('../__mocks__/ledger');
+  const { mockFactory } = require('../../../../jest_config/__mocks__/ledger');
   return mockFactory('', 3, { v: '0x29', r: '0x2', s: '0x4' });
 });
 

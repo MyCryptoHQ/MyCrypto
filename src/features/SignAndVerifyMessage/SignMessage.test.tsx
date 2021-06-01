@@ -29,8 +29,3 @@ describe('SignMessage', () => {
     expect(getByText(/Web3/)).toBeDefined();
   });
 });
-
-// onUnlock(
-//     wallet: IWallet | IWallet[],
-//     config?: WalletServiceInitArgs & { walletId: WalletId }
-//   ): void;
