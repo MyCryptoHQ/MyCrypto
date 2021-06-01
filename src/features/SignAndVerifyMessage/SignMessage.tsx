@@ -75,7 +75,7 @@ function SignMessage({
   walletId,
   signMessageReset,
   signMessage
-}: Props) {
+}: Props & OwnProps) {
   const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
 
   useUnmount(() => {
@@ -189,6 +189,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   );
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type Props = ConnectedProps<typeof connector> & OwnProps;
+type Props = ConnectedProps<typeof connector>;
 
 export default connector(SignMessage);
