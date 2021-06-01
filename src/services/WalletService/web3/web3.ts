@@ -13,9 +13,7 @@ export const unlockWeb3 = async (networks: Network[]) => {
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }
-  /**if (!isWeb3Node(nodeLib)) {
-    throw new Error('Cannot use Web3 wallet without a Web3 node.');
-  }**/
+
   try {
     // try to get modern web3 permissions using wallet_getPermissions
     const accounts = await getApprovedAccounts(nodeLib);

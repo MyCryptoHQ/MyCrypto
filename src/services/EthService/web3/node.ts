@@ -15,15 +15,6 @@ export async function getChainIdAndLib() {
   );
   const network = await lib.getNetwork();
   const chainId = network.chainId;
-  /**const accounts = await lib.listAccounts();
-  if (!accounts || !accounts.length) {
-    throw new Error('No accounts found in MetaMask / Web3.');
-  }**/
-
-  /**if (chainId === 'loading') {
-    throw new Error('MetaMask / Web3 is still loading. Please refresh the page and try again.');
-  }**/
-
   return { chainId, lib };
 }
 
