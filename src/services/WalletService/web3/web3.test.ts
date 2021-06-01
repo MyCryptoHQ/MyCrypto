@@ -93,4 +93,52 @@ describe('unlockWeb3', () => {
     });
     expect(wallets.map((w) => w.getAddressString())).toEqual([fAccount.address]);
   });
+
+  it('supports legacy web3', async () => {
+    customWindow.ethereum = null;
+    customWindow.web3 = {
+      currentProvider: {
+        sendAsync: jest.fn().mockImplementation(async ({ method }, callback) => {
+          console.log(method);
+          if (method === 'eth_chainId') {
+            return callback(null, { result: 1 });
+          } else if (method === 'eth_accounts') {
+            return callback(null, { result: [fAccount.address] });
+          }
+          return callback('Not supported');
+        })
+      }
+    };
+    const wallets = await unlockWeb3(fNetworks);
+    expect(customWindow.web3.currentProvider.sendAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: 'eth_chainId',
+        params: []
+      }),
+      expect.any(Function)
+    );
+    expect(customWindow.web3.currentProvider.sendAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: 'wallet_getPermissions',
+        params: []
+      }),
+      expect.any(Function)
+    );
+    expect(customWindow.web3.currentProvider.sendAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: 'eth_accounts',
+        params: []
+      }),
+      expect.any(Function)
+    );
+    expect(wallets.map((w) => w.getAddressString())).toEqual([fAccount.address]);
+  });
+
+  it('fails if window.ethereum is null', async () => {
+    customWindow.ethereum = null;
+    customWindow.web3 = null;
+    await expect(unlockWeb3(fNetworks)).rejects.toEqual(
+      new Error('Web3 not found. Please check that MetaMask is installed')
+    );
+  });
 });
