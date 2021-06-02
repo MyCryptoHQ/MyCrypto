@@ -64,7 +64,8 @@ export {
   addAssetsFromAPI,
   fetchAssets,
   getAssets,
-  getBaseAssetByNetwork
+  getBaseAssetByNetwork,
+  getCoinGeckoAssetManifest
 } from './asset.slice';
 export {
   fetchMemberships,
