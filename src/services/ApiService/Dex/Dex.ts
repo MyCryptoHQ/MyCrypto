@@ -105,6 +105,7 @@ export default class DexService {
           : undefined,
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
+        affiliateAddress: DEX_FEE_RECIPIENT,
         takerAddress: account,
         skipValidation: true
       },
