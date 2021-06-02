@@ -30,7 +30,8 @@ const PAGES = {
   SEND: `${FIXTURES_CONST.BASE_URL}/send`,
   ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`,
   TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`,
-  SWAP: `${FIXTURES_CONST.BASE_URL}/swap`
+  SWAP: `${FIXTURES_CONST.BASE_URL}/swap`,
+  BUY_MEMBERSHIP: `${FIXTURES_CONST.BASE_URL}/membership/buy`
 };
 
 const FIXTURE_ETHEREUM = 'Ethereum';
