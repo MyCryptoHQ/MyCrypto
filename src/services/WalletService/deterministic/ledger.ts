@@ -7,8 +7,8 @@ import LedgerEth from '@ledgerhq/hw-app-eth';
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
 import { translateRaw } from '@translations';

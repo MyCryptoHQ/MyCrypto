@@ -1,12 +1,12 @@
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 import { LedgerU2F, LedgerUSB, Trezor } from '@services';
 import { DPath, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { DWAccountDisplay, ExtendedDPath } from './types';
 import { LedgerHID } from '../wallets/ledger';
+import { DWAccountDisplay, ExtendedDPath } from './types';
 
 export const processScannedAccounts = (
   scannedAccounts: DWAccountDisplay[],
