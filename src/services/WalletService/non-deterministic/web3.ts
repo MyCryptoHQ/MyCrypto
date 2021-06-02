@@ -1,4 +1,4 @@
-import { requestAccounts, setupWeb3Node } from '@services/EthService';
+import { getChainIdAndLib, requestAccounts } from '@services/EthService/web3';
 
 import { IFullWallet } from '../IWallet';
 
@@ -21,7 +21,7 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   public async signMessage(msg: string): Promise<string> {
-    const { lib: web3 } = await setupWeb3Node();
+    const { lib: web3 } = await getChainIdAndLib();
 
     if (!web3) {
       throw new Error('');
