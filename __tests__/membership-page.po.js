@@ -1,9 +1,9 @@
-import { getByTestId, getByText, queryAllByText } from '@testing-library/testcafe';
-import { Selector, t } from 'testcafe';
+import { getByText, queryAllByText } from '@testing-library/testcafe';
+import { t } from 'testcafe';
 
 import BasePage from './base-page.po';
 import { setupEthereumMock } from './ethereum-mock';
-import { FIXTURE_HARDHAT_PRIVATE_KEY, FIXTURE_SEND_AMOUNT, PAGES } from './fixtures';
+import { FIXTURE_HARDHAT_PRIVATE_KEY, PAGES } from './fixtures';
 import { findByTKey } from './translation-utils';
 
 export default class MembershipPage extends BasePage {

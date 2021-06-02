@@ -1,5 +1,4 @@
 import {
-  getByTestId,
   getByText,
   queryAllByTestId,
   queryAllByText,
