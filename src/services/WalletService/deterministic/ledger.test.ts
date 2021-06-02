@@ -9,7 +9,8 @@ import { LedgerWallet } from './ledger';
 jest.mock('@ledgerhq/hw-transport-webusb', () => ({
   ...jest.requireActual('@ledgerhq/hw-transport-webusb').TransportWebUSB,
   isSupported: jest.fn().mockImplementation(() => Promise.resolve(true)),
-  create: jest.fn()
+  openConnected: jest.fn(),
+  request: jest.fn()
 }));
 
 describe('Ledger', () => {
@@ -19,7 +20,7 @@ describe('Ledger', () => {
     <= 292bd827ea378f4856ff2ea5997f48ea63045da64bb09ce494c886c1934d29d6270af001168b5e8db5cc47ff1f985629ddad535b334060846facb8a7c43cf9c6f19000
     `);
     const transport = await createTransportReplayer(store).open();
-    (TransportWebUSB.create as jest.Mock).mockImplementation(() => transport);
+    (TransportWebUSB.request as jest.Mock).mockImplementation(() => transport);
     const wallet = new LedgerWallet(fAccount.address, DPathsList.ETH_LEDGER.value, 0);
     const result = await wallet.signRawTransaction(fTxConfig.rawTransaction);
     expect(result).toStrictEqual(
@@ -36,7 +37,7 @@ describe('Ledger', () => {
     <= 102bd827ea378f4856ff2ea5997f48ea63045da64bb09ce494c886c1934d29d6270af001168b5e8db5cc47ff1f985629ddad535b334060846facb8a7c43cf9c6f19000
     `);
     const transport = await createTransportReplayer(store).open();
-    (TransportWebUSB.create as jest.Mock).mockImplementation(() => transport);
+    (TransportWebUSB.request as jest.Mock).mockImplementation(() => transport);
     const wallet = new LedgerWallet(fAccount.address, DPathsList.EWC_DEFAULT.value, 0);
     const result = await wallet.signRawTransaction({ ...fTxConfig.rawTransaction, chainId: 246 });
     expect(result).toStrictEqual(
