@@ -8,6 +8,7 @@ import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
 import { translateRaw } from '@translations';
@@ -123,10 +124,9 @@ export class LedgerWallet extends HardwareWallet {
 
 const getTransport = async (): Promise<Transport<any>> => {
   try {
-    // @todo - fix this import
-    // if (await TransportWebHID.isSupported()) {
-    //   return TransportWebHID.create();
-    // }
+    if (await TransportWebHID.isSupported()) {
+      return TransportWebHID.create();
+    }
 
     if (await TransportWebUSB.isSupported()) {
       return TransportWebUSB.create();
