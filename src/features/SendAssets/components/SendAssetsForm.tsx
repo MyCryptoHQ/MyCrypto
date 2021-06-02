@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
@@ -98,7 +98,7 @@ import {
 import { path, useDebounce } from '@vendor';
 
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
-import { selectFormAsset, updateFormAsset } from '../sendAssets.slice';
+import { resetFormSlice, selectFormAsset, updateFormAsset } from '../sendAssets.slice';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
@@ -279,16 +279,6 @@ const SendAssetsForm = ({
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
 
-  const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
-  const defaultAsset = (() => {
-    if (userAccountEthAsset) {
-      return userAccountEthAsset;
-    } else if (userAssets.length > 0) {
-      return userAssets[0];
-    }
-    return ETHAsset;
-  })();
-
   const [baseAsset, setBaseAsset] = useState(
     (txConfig.network &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
@@ -371,7 +361,9 @@ const SendAssetsForm = ({
           return {
             name: 'ValidationError',
             type: InlineMessageType.INFO_CIRCLE,
-            message: translateRaw('SENDING_TO_TOKEN_ADDRESS', { $token: token.ticker })
+            message: translateRaw('SENDING_TO_TOKEN_ADDRESS', {
+              $token: token.ticker
+            })
           };
         }
         return true;
@@ -397,7 +389,9 @@ const SendAssetsForm = ({
       .test(
         'check-nonce',
         // @ts-expect-error Hack to allow for returning of Markdown
-        translate('NONCE_ERROR', { $link: formatSupportEmail('Send Page: Nonce Error') }),
+        translate('NONCE_ERROR', {
+          $link: formatSupportEmail('Send Page: Nonce Error')
+        }),
         async function (value) {
           const account = this.parent.account;
           if (!isEmpty(account)) {
@@ -409,17 +403,6 @@ const SendAssetsForm = ({
     dataField: string().test(validateDataField())
   });
 
-  const initialValues = useMemo(
-    () =>
-      getInitialFormikValues({
-        s: txConfig,
-        defaultAccount: currentAccount,
-        defaultAsset,
-        defaultNetwork: currentNetwork
-      }),
-    []
-  );
-
   const {
     values,
     setFieldValue,
@@ -429,7 +412,12 @@ const SendAssetsForm = ({
     errors,
     touched
   } = useFormik({
-    initialValues,
+    initialValues: getInitialFormikValues({
+      s: txConfig,
+      defaultAccount: currentAccount,
+      defaultAsset: currentAsset,
+      defaultNetwork: currentNetwork
+    }),
     validationSchema: SendAssetsSchema,
     onSubmit: (fields) => {
       onComplete(fields);
@@ -454,36 +442,29 @@ const SendAssetsForm = ({
     [values.account, values.address, values.amount]
   );
 
+  // We keep a copy of the asset in the slice in order to
+  // use network selectors.
   useEffect(() => {
-    const asset = values.asset;
-    // Update slice.
-    updateFormAsset(asset);
-  }, [values.asset]);
+    if (currentAsset?.uuid === values.asset?.uuid) return;
+    updateFormAsset(values.asset);
+  }, [currentAsset, values.asset]);
 
   useEffect(() => {
-    // Continue legacy code
-    if (!currentAsset || !currentAccount) {
-      return;
+    if (currentNetwork) {
+      resetForm({ values });
+      resetFormSlice();
+      setBaseAsset(
+        getBaseAssetByNetwork({ network: currentNetwork, assets: userAssets }) || ({} as Asset)
+      );
     }
-    const newInitialValues = getInitialFormikValues({
-      s: txConfig,
-      defaultAccount: currentAccount,
-      defaultAsset: currentAsset,
-      defaultNetwork: currentNetwork
-    });
-    //@todo get assetType onChange
-    resetForm({ values: { ...newInitialValues, asset: currentAsset } });
+  }, [currentNetwork]);
+
+  useEffect(() => {
     if (currentAsset && currentAsset.networkId) {
       fetchGasPriceEstimates(currentNetwork).then((data) => {
         setFieldValue('gasEstimates', data);
         setFieldValue('gasPriceSlider', data.fast.toString());
       });
-      setFieldValue('network', currentNetwork);
-      if (currentNetwork) {
-        setBaseAsset(
-          getBaseAssetByNetwork({ network: currentNetwork, assets: userAssets }) || ({} as Asset)
-        );
-      }
     }
   }, [currentAccount]);
 
@@ -822,7 +803,9 @@ const SendAssetsForm = ({
       </Button>
       {gasEstimationError && (
         <InlineMessage
-          value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: gasEstimationError })}
+          value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+            $error: gasEstimationError
+          })}
         />
       )}
       {!formHasErrors && !gasEstimationError && !userCanAffordTX && (
@@ -857,7 +840,8 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      updateFormAsset
+      updateFormAsset,
+      resetFormSlice
     },
     dispatch
   );
