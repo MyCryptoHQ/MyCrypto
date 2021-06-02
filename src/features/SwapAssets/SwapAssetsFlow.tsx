@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { ETHUUID, ROUTE_PATHS } from '@config';
 import { appendSender } from '@helpers';
 import { useTxMulti } from '@hooks';
 import { AppState, selectDefaultAccount } from '@store';
@@ -244,7 +244,7 @@ const SwapAssetsFlow = ({ history, defaultAccount }: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  defaultAccount: selectDefaultAccount()(state)
+  defaultAccount: selectDefaultAccount({ assetUUID: ETHUUID })(state)
 });
 
 const connector = connect(mapStateToProps);
