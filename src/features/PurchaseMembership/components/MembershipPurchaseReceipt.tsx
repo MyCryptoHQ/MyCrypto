@@ -2,7 +2,7 @@ import React from 'react';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { makeTxItem } from '@helpers';
+import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
 import { useAssets, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 
@@ -23,14 +23,16 @@ export default function MembershipReceipt({
   flowConfig,
   onComplete
 }: IMembershipPurchaseReceiptProps) {
-  const { getAssetByUUID } = useAssets();
+  const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
 
-  const txItems = transactions.map((tx, idx) => {
-    const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig);
-    const txType = idx === transactions.length - 1 ? ITxType.PURCHASE_MEMBERSHIP : ITxType.APPROVAL;
-    return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
+  const txItems = transactions.map((tx) => {
+    const txConfig =
+      tx.type === ITxType.PURCHASE_MEMBERSHIP
+        ? makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig)
+        : makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account]);
+    return makeTxItem(tx.type!, txConfig, tx.txHash!, tx.txReceipt);
   });
 
   const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
