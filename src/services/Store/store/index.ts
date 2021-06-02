@@ -97,5 +97,5 @@ export * from './tokenScanning.sagas';
 export { getAppState, useSelector } from './selectors';
 export { default as persistenceSlice } from './persistence.slice';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
-export { setRates, getRates } from './rates.slice';
+export { setRates, getRates, startRatesPolling } from './rates.slice';
 export { trackAsset, getTrackedAssets } from './trackedAssets.slice';

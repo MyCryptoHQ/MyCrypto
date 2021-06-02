@@ -1,11 +1,11 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { mergeRight } from 'ramda';
 import { select } from 'redux-saga-test-plan/matchers';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put } from 'redux-saga/effects';
 
 import { Fiats } from '@config';
 import { RatesService } from '@services/ApiService/Rates';
-import { IPollingPayload, pollStart } from '@services/Polling';
+import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { IRates, LSKeys } from '@types';
 
 import { getAccountsAssetsMappings } from './account.slice';
@@ -47,13 +47,26 @@ export const getCoingeckoIdsMapping = createSelector(
  */
 
 export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`);
+export const stopRatesPolling = createAction(`${slice.name}/stopRatesPolling`);
 
 /**
  * Sagas
  */
 
+const payload: IPollingPayload = {
+  startAction: startRatesPolling,
+  stopAction: stopRatesPolling,
+  params: {
+    interval: 90000,
+    retryOnFailure: true,
+    retries: 3,
+    retryAfter: 3000
+  },
+  saga: fetchRates
+};
+
 export function* ratesSaga() {
-  yield takeLatest(startRatesPolling.type, pollRates);
+  yield all([pollingSaga(payload)]);
 }
 
 export function* fetchRates() {
@@ -66,18 +79,4 @@ export function* fetchRates() {
   );
 
   yield put(setRates(destructureCoinGeckoIds(res, coinGeckoIdsMapping)));
-}
-
-export function* pollRates() {
-  const payload: IPollingPayload = {
-    params: {
-      interval: 90000,
-      retryOnFailure: true,
-      retries: 3,
-      retryAfter: 3000
-    },
-    saga: fetchRates
-  };
-
-  yield put(pollStart(payload));
 }

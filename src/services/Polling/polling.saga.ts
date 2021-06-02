@@ -1,7 +1,9 @@
-import { createAction, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadActionCreator } from '@reduxjs/toolkit';
 import { call, delay, put, race, take, takeLatest } from 'redux-saga/effects';
 
 export interface IPollingPayload {
+  startAction: PayloadActionCreator;
+  stopAction: PayloadActionCreator;
   params: {
     interval: number;
     retryOnFailure?: boolean;
@@ -12,18 +14,11 @@ export interface IPollingPayload {
 }
 
 /**
- * Actions
- */
-
-export const pollStart = createAction<IPollingPayload>(`polling/start`);
-export const pollStop = createAction(`polling/stop`);
-
-/**
  * Sagas
  */
 
-export function* pollingSaga() {
-  yield takeLatest(pollStart.type, pollingSagaWatcher);
+export function* pollingSaga(payload: IPollingPayload) {
+  yield takeLatest(payload.startAction.type, pollingSagaWatcher, payload);
 }
 
 // @todo: Figure out multiple polling instances
@@ -54,13 +49,13 @@ export function* pollingWorker(payload: IPollingPayload) {
       } else if (!shouldRetry) {
         // Stop polling if an error is encounterd without retry
         console.debug(`[Polling Saga]: Polling encounterd an error, stopping with error: `, err);
-        yield put(pollStop());
+        yield put(payload.stopAction());
       } else
         console.debug(`[Polling Saga]: Polling encounterd an error, retrying now. Error: `, err);
     }
   }
 }
 
-export default function* pollingSagaWatcher({ payload }: PayloadAction<IPollingPayload>) {
-  yield race([call(pollingWorker, payload), take(pollStop.type)]);
+export default function* pollingSagaWatcher(payload: IPollingPayload) {
+  yield race([call(pollingWorker, payload), take(payload.stopAction.type)]);
 }

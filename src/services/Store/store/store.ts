@@ -11,8 +11,7 @@ import {
 } from '@features/AddAccount/components/hdWallet.slice';
 import { messageUpdate, signMessage } from '@features/SignAndVerifyMessage';
 import { analyticsMiddleware } from '@services/Analytics';
-import { pollStart } from '@services/Polling';
-import { updateAccounts } from '@store';
+import { startRatesPolling, updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
@@ -39,7 +38,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             // @todo: Redux solve once we have selectors to deserialize.
             updateAccounts.type,
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
-            pollStart.type,
+            startRatesPolling.type,
             // ignore these actions to avoid errors with hardware wallet sessions
             connectHDWallet.type,
             requestConnectionSuccess.type,
