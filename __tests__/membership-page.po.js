@@ -15,7 +15,6 @@ export default class MembershipPage extends BasePage {
     await this.waitForPage(PAGES.BUY_MEMBERSHIP, timeout);
   }
 
-  // todo
   async useETH() {
     await t.click(getByText('12 months', { exact: false }));
     await t.click(queryAllByText(findByTKey('MEMBERSHIP_LIFETIME_EMOJI')).nth(0));
