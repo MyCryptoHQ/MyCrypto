@@ -58,12 +58,15 @@ import {
 import {
   AppState,
   getIsDemoMode,
+  resetFormSlice,
   selectAccounts,
   selectAsset,
   selectDefaultAccount,
   selectDefaultNetwork,
+  selectFormAsset,
   selectNetwork,
-  selectUserAssets
+  selectUserAssets,
+  updateFormAsset
 } from '@store';
 import translate, { translateRaw } from '@translations';
 import {
@@ -98,7 +101,6 @@ import {
 import { path, useDebounce } from '@vendor';
 
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
-import { resetFormSlice, selectFormAsset, updateFormAsset } from '../sendAssets.slice';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {

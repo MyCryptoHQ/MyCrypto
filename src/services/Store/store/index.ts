@@ -99,3 +99,4 @@ export { default as persistenceSlice } from './persistence.slice';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
 export { setRates, getRates, startRatesPolling } from './rates.slice';
 export { trackAsset, getTrackedAssets } from './trackedAssets.slice';
+export { resetFormSlice, selectFormAsset, updateFormAsset } from './sendAssets.slice';

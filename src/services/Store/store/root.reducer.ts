@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import hdWalletSlice from '@features/AddAccount/components/hdWallet.slice';
-import sendAssetsSlice from '@features/SendAssets/sendAssets.slice';
 import { signMessageSlice } from '@features/SignAndVerifyMessage';
 import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
@@ -15,6 +14,7 @@ import membershipSlice from './membership.slice';
 import { APP_PERSIST_CONFIG, createPersistReducer, migrate } from './persist.config';
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
+import sendAssetsSlice from './sendAssets.slice';
 import tokenScanningSlice from './tokenScanning.slice';
 
 const reducers = combineReducers({

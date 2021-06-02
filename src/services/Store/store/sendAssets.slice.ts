@@ -1,10 +1,11 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ETHUUID } from '@config';
-import { selectUserAssets } from '@store/account.slice';
-import { selectAsset } from '@store/asset.slice';
-import type { AppState } from '@store/root.reducer';
 import type { ExtendedAsset } from '@types';
+
+import { selectUserAssets } from './account.slice';
+import { selectAsset } from './asset.slice';
+import type { AppState } from './root.reducer';
 
 interface State {
   selectedAsset?: ExtendedAsset;
