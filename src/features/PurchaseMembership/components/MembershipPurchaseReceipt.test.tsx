@@ -5,7 +5,7 @@ import { simpleRender } from 'test-utils';
 import { fAccount, fAccounts, fTxParcels } from '@fixtures';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
-import { TAddress } from '@types';
+import { ITxType, TAddress } from '@types';
 import { noOp, truncate } from '@utils';
 
 import { IMembershipId, MEMBERSHIP_CONFIG } from '../config';
@@ -16,7 +16,8 @@ const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
   transactions: [
     {
       ...fTxParcels[0],
-      txRaw: { ...fTxParcels[0].txRaw, to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress }
+      txRaw: { ...fTxParcels[0].txRaw, to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress },
+      type: ITxType.PURCHASE_MEMBERSHIP
     }
   ],
   flowConfig: MEMBERSHIP_CONFIG[IMembershipId.lifetime],
