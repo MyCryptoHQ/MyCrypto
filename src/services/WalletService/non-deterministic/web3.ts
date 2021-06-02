@@ -23,10 +23,6 @@ export default class Web3Wallet implements IFullWallet {
   public async signMessage(msg: string): Promise<string> {
     const { lib: web3 } = await getChainIdAndLib();
 
-    if (!web3) {
-      throw new Error('');
-    }
-
     return requestAccounts(web3).then(() => web3.getSigner(this.address).signMessage(msg));
   }
 }

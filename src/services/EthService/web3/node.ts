@@ -88,6 +88,7 @@ export const requestPermissions = (web3: Web3Provider): Promise<Web3RequestPermi
     .then((result) => result);
 };
 
+// requestAccounts will prompt user to unlock when necessary, but will not request permissions.
 export const requestAccounts = (web3: Web3Provider): Promise<Web3RequestPermissionsResult[]> => {
   return web3.send('eth_requestAccounts', []);
 };
