@@ -7,6 +7,7 @@ import LedgerEth from '@ledgerhq/hw-app-eth';
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
@@ -82,6 +83,7 @@ export class LedgerWallet extends HardwareWallet {
 
       return Buffer.from(stripHexPrefix(serializedTx), 'hex');
     } catch (err) {
+      console.error(err);
       throw Error(err + '. Check to make sure contract data is on');
     }
   }
@@ -123,15 +125,22 @@ export class LedgerWallet extends HardwareWallet {
 
 const getTransport = async (): Promise<Transport<any>> => {
   try {
-    // @todo - fix this import
-    // if (await TransportWebHID.isSupported()) {
-    //   return TransportWebHID.create();
-    // }
+    if (await TransportWebHID.isSupported()) {
+      const list = await TransportWebHID.list();
+      if (list.length > 0 && list[0].opened) {
+        return new TransportWebHID(list[0]);
+      }
+
+      const existing = await TransportWebHID.openConnected().catch(() => null);
+      return existing ?? TransportWebHID.request();
+    }
 
     if (await TransportWebUSB.isSupported()) {
-      return TransportWebUSB.create();
+      const existing = await TransportWebUSB.openConnected();
+      return existing ?? TransportWebUSB.request();
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     // Fallback to U2F
   }
 

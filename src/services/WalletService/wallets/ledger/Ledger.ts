@@ -20,6 +20,7 @@ export default abstract class Ledger extends HardwareWallet {
       // Fetch a random address to ensure the connection works
       await this.getAddress(dpath, 50);
     } catch (err) {
+      console.error(err);
       throw ledgerErrToMessage(err.message);
     }
   }

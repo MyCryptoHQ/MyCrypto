@@ -1,9 +1,11 @@
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
 import { LedgerU2F, LedgerUSB, Trezor } from '@services';
 import { DPath, WalletId } from '@types';
 import { bigify } from '@utils';
 
+import { LedgerHID } from '../wallets/ledger';
 import { DWAccountDisplay, ExtendedDPath } from './types';
 
 export const processScannedAccounts = (
@@ -55,6 +57,10 @@ export const selectWallet = async (walletId: WalletId) => {
   switch (walletId) {
     default:
     case WalletId.LEDGER_NANO_S_NEW: {
+      const isWebHIDSupported = await TransportWebHID.isSupported().catch(() => false);
+      if (isWebHIDSupported) {
+        return new LedgerHID();
+      }
       const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
       return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F();
     }
