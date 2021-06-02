@@ -14,8 +14,18 @@ export default class LedgerUSB extends Ledger {
     }
   }
 
+  private async openTransport(): Promise<TransportWebHID> {
+    const list = await TransportWebHID.list();
+    if (list.length > 0 && list[0].opened) {
+      return new TransportWebHID(list[0]);
+    }
+
+    const existing = await TransportWebHID.openConnected().catch(() => null);
+    return existing ?? TransportWebHID.request();
+  }
+
   private async getTransport(): Promise<TransportWebHID> {
-    const transport = await TransportWebHID.request();
+    const transport = await this.openTransport();
 
     transport.on('disconnect', () => {
       this.transport = null;
