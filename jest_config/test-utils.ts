@@ -17,7 +17,7 @@ import { noOp } from '@utils';
 import { ProvidersWrapper, withOptions } from './providersWrapper';
 
 // Workaround due to circular dependency issues
-const APP_STATE = marshallState(SCHEMA_BASE);
+export const APP_STATE = marshallState(SCHEMA_BASE);
 
 // Mock features used by react-slider
 window.matchMedia =
