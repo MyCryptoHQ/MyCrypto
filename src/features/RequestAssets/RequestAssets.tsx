@@ -20,6 +20,7 @@ import {
 import { ROUTE_PATHS } from '@config';
 import { validateAmountField } from '@features/SendAssets/components';
 import { getNetworkById, StoreContext, useAssets } from '@services/Store';
+import { getDefaultAccount, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, IAccount as IIAccount } from '@types';
 import {
@@ -104,8 +105,8 @@ const CodeHeading = styled(Heading)`
 `;
 
 export function RequestAssets({ history }: RouteComponentProps) {
-  const { accounts, getDefaultAccount, networks } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount(true);
+  const { accounts, networks } = useContext(StoreContext);
+  const defaultAccount = useSelector(getDefaultAccount(true));
   const { assets } = useAssets();
   const [networkId, setNetworkId] = useState(defaultAccount!.networkId);
   const network = getNetworkById(networkId, networks);

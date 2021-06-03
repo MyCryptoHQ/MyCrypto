@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -6,7 +6,8 @@ import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { appendSender } from '@helpers';
 import { useTxMulti } from '@hooks';
-import { StoreContext } from '@services';
+import { getDefaultAccount } from '@store/account.slice';
+import { useSelector } from '@store/selectors';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
 import { bigify, useStateReducer } from '@utils';
@@ -26,8 +27,7 @@ interface TStep {
 }
 
 const SwapAssetsFlow = (props: RouteComponentProps) => {
-  const { getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
+  const defaultAccount = useSelector(getDefaultAccount());
   const {
     setNetwork,
     fetchSwapAssets,

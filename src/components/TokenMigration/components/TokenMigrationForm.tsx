@@ -24,7 +24,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -73,11 +73,11 @@ const TokenMigrationForm = ({
   isDemoMode,
   onComplete
 }: Props) => {
-  const { accounts, getDefaultAccount: getDefaultStoreAccount } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
-  const defaultStoreAccount = getDefaultStoreAccount();
+  const defaultStoreAccount = useSelector(getDefaultAccount());
   const relevantAccounts = accounts.filter(isEthereumAccount);
   const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
   const defaultAccount = accounts.find((a) =>
