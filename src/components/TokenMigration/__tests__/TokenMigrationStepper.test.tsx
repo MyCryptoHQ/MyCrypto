@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mockAppState, simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
@@ -22,7 +22,6 @@ describe('TokenMigrationStepper', () => {
       value={
         ({
           accounts: [fAccounts[0]],
-          getDefaultAccount: () => fAccounts[0],
           getAccount: jest.fn(),
           networks: fNetworks,
           getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
@@ -34,7 +33,12 @@ describe('TokenMigrationStepper', () => {
   );
   const renderComponent = () =>
     simpleRender(StepperComponent, {
-      initialState: mockAppState({ assets: fAssets, settings: fSettings, networks: fNetworks })
+      initialState: mockAppState({
+        assets: fAssets,
+        settings: fSettings,
+        networks: APP_STATE.networks,
+        accounts: fAccounts
+      })
     });
 
   it('renders the first step in the flow', () => {

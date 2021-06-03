@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccount, fAssets, fNetwork } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
 import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
@@ -30,15 +30,19 @@ function getComponent(props: TokenMigrationProps) {
       value={
         ({
           userAssets: [],
-          accounts: [],
-          getDefaultAccount: () => ({ assets: [] }),
-          getAccount: jest.fn(),
-          networks: [{ nodes: [] }]
+          accounts: fAccounts
         } as unknown) as any
       }
     >
       <TokenMigrationForm {...((props as unknown) as any)} />
-    </StoreContext.Provider>
+    </StoreContext.Provider>,
+    {
+      initialState: mockAppState({
+        accounts: fAccounts,
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    }
   );
 }
 
