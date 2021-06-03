@@ -25,7 +25,7 @@ describe('SendAssetsFlow', () => {
         value={
           ({
             userAssets: [],
-            accounts: [],
+            accounts: fAccounts,
             getAccount: jest.fn()
           } as unknown) as any
         }
@@ -46,5 +46,6 @@ describe('SendAssetsFlow', () => {
     const { getByText } = renderComponent();
     const selector = 'Send Assets';
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(fAccounts[0].label)).toBeInTheDocument();
   });
 });
