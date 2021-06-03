@@ -1,6 +1,6 @@
 import { mockStore } from 'test-utils';
 
-import { fAssets } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fDAI, fValidNetworks } from '@fixtures';
 
 import {
   initialState,
@@ -24,11 +24,33 @@ describe('sendAssets.slice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('selectFormAsset(): retreives the correct key', () => {
-    const stateSlice = reducer({ selectedAsset: fAssets[0] }, { type: null });
+  it('selectFormAsset(): if exists returns the asset from slice', () => {
+    const stateSlice = reducer({ selectedAsset: fDAI }, { type: null });
     const state = mockStore({ storeSlice: { [slice.name]: stateSlice } });
     const actual = selectFormAsset(state);
-    const expected = fAssets[0];
+    const expected = fDAI;
     expect(actual).toEqual(expected);
+  });
+
+  it('selectFormAsset(): else retrieves the first user asset', () => {
+    const stateSlice = reducer(undefined, { type: null });
+    const state = mockStore({
+      storeSlice: { [slice.name]: stateSlice },
+      dataStoreState: { accounts: [fAccount], networks: fValidNetworks }
+    });
+    const actual = selectFormAsset(state);
+    const expected = fAccount.assets[0];
+    expect(actual).toEqual(expected);
+  });
+
+  it('selectFormAsset(): otherwise returns ETH', () => {
+    const stateSlice = reducer(undefined, { type: null });
+    const state = mockStore({
+      storeSlice: { [slice.name]: stateSlice },
+      dataStoreState: { accounts: fAccounts, networks: fValidNetworks }
+    });
+    const actual = selectFormAsset(state);
+    const expected = fAssets[0];
+    expect(actual).toMatchObject(expected);
   });
 });

@@ -1,7 +1,7 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
 
-export { fAssets, fStoreAssets, fRopDAI } from './assets';
+export { fAssets, fStoreAssets, fRopDAI, fDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
 export { fNetwork, fNetworks, fValidNetworks } from './network';

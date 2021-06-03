@@ -74,3 +74,5 @@ export { default as T } from 'ramda/src/T';
 export { default as cond } from 'ramda/src/cond';
 export { default as where } from 'ramda/src/where';
 export { default as includes } from 'ramda/src/includes';
+export { default as has } from 'ramda/src/has';
+export { default as length } from 'ramda/src/length';

@@ -1,7 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { head } from 'lodash';
 
 import { ETHUUID } from '@config';
 import type { ExtendedAsset } from '@types';
+import { cond, has, length, prop, T } from '@vendor';
 
 import { selectUserAssets } from './account.slice';
 import { selectAsset } from './asset.slice';
@@ -39,16 +41,10 @@ export const selectSendAssetForm = (s: AppState) => s[slice.name];
 export const selectFormAsset = createSelector(
   [selectSendAssetForm, selectUserAssets, selectAsset(ETHUUID)],
   (slice, userAssets, ETHAsset) => {
-    const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
-    const defaultAsset = (() => {
-      if (userAccountEthAsset) {
-        return userAccountEthAsset;
-      } else if (userAssets.length > 0) {
-        return userAssets[0];
-      } else {
-        return ETHAsset;
-      }
-    })();
-    return slice.selectedAsset ? slice.selectedAsset : defaultAsset;
+    return cond([
+      [has('selectedAsset'), prop('selectedAsset')],
+      [() => length(userAssets) >= 0, () => head(userAssets)],
+      [T, () => ETHAsset]
+    ])(slice);
   }
 );
