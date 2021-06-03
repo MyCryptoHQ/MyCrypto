@@ -453,5 +453,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'evrice.com',
       url: 'https://meta.evrice.com'
     }
+  ],
+  Excelon: [
+    {
+      name: NetworkUtils.makeNodeName('Excelon', 'wallet2.xlon.org'),
+      type: NodeType.RPC,
+      service: 'wallet2.xlon.org',
+      url: 'https://wallet2.xlon.org'
+    }
   ]
 };

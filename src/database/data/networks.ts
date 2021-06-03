@@ -1061,5 +1061,31 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 60,
       initial: 1
     }
+  },
+  Excelon: {
+    id: 'Excelon',
+    name: 'Excelon Chain',
+    unit: 'XLON' as TTicker,
+    chainId: 22052002,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'Excelon Explorer',
+      origin: 'https://explorer.excelon.io/'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DPaths.XLON_DEFAULT,
+      [WalletId.LEDGER_NANO_S]: DPaths.XLON_DEFAULT,
+      [WalletId.TREZOR_NEW]: DPaths.XLON_DEFAULT,
+      [WalletId.LEDGER_NANO_S_NEW]: DPaths.XLON_DEFAULT,
+      default: DPaths.XLON_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 1
+    }
   }
 };
