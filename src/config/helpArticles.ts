@@ -31,7 +31,8 @@ export enum KB_HELP_ARTICLE {
   LEDGER_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto',
   WHAT_ARE_PROTECTED_TRANSACTIONS = 'general-knowledge/about-mycrypto/what-are-protected-transactions',
   HOW_DOES_VIEW_ADDRESS_WORK = 'how-to/accessing-wallet/how-does-view-address-work',
-  WHY_IS_GAS = 'general-knowledge/ethereum-blockchain/why-is-gas'
+  WHY_IS_GAS = 'general-knowledge/ethereum-blockchain/why-is-gas',
+  HOW_TO_USE_MYCRYPTO_MORE_PRIVATELY = 'staying-safe/how-to-use-mycrypto-more-privately'
 }
 
 export enum HELP_ARTICLE {

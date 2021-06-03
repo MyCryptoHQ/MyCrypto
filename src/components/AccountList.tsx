@@ -19,7 +19,7 @@ import {
   Text,
   UndoDeleteOverlay
 } from '@components';
-import { getWalletConfig, ROUTE_PATHS } from '@config';
+import { getKBHelpArticle, getWalletConfig, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { useFeatureFlags, useRates } from '@services';
 import {
@@ -32,7 +32,7 @@ import {
 } from '@services/Store';
 import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 import { Bigish, ExtendedContact, IAccount, StoreAccount, TUuid, WalletId } from '@types';
 import { truncate, useScreenSize } from '@utils';
 
@@ -373,7 +373,9 @@ const BuildAccountTable = (
           isMobile ? '0' : '4px'
         } /* Hack to get the tooltip to align with text of a different size. */
         paddingLeft={SPACING.XS}
-        tooltip={translateRaw('ACCOUNT_LIST_PRIVATE_TOOLTIP')}
+        tooltip={translate('ACCOUNT_LIST_PRIVATE_TOOLTIP', {
+          $link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_TO_USE_MYCRYPTO_MORE_PRIVATELY)
+        })}
       />
     </Box>,
     isMobile ? (
