@@ -9,6 +9,15 @@ import { translateRaw } from '@translations';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
 
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      getTransactionCount: () => 10
+    }))
+  };
+});
+
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
   tokenMigrationConfig: repTokenMigrationConfig,
