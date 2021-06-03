@@ -84,7 +84,7 @@
     "uuid-by-string": "MyCryptoHQ/uuid-by-string#36afddc",
     "what-input": "5.2.6",
     "whatwg-fetch": "2.0.3",
-    "ws": "7.2.0",
+    "ws": "7.4.6",
     "yup": "0.28.2"
   },
   "devDependencies": {
@@ -253,7 +253,8 @@
     "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate"
   },
   "resolutions": {
-    "@storybook/**/@emotion/sheet": "1.0.1"
+    "@storybook/**/@emotion/sheet": "1.0.1",
+    "@walletconnect/client/**/ws": "7.4.6"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
