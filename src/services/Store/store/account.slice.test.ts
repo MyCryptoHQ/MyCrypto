@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { expectSaga, mockAppState } from 'test-utils';
+import { call } from 'redux-saga-test-plan/matchers';
+import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
 import {
@@ -12,6 +13,8 @@ import {
   fTransaction,
   fTxReceipt
 } from '@fixtures';
+import { makeFinishedTxReceipt } from '@helpers';
+import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { IAccount, ITxReceipt, ITxStatus, ITxType, TUuid } from '@types';
 
 import {
@@ -20,6 +23,7 @@ import {
   getAccounts,
   getStoreAccounts,
   initialState,
+  pendingTxPolling,
   resetAndCreateAccount,
   resetAndCreateManyAccounts,
   selectAccountTxs,
@@ -254,6 +258,46 @@ describe('AccountSlice', () => {
         })
       )
         .put(updateAccount({ ...fAccount, transactions: [tx] }))
+        .silentRun();
+    });
+  });
+
+  describe('pendingTxPolling', () => {
+    it('updates pending tx to be successful', () => {
+      const blockNum = 12568779;
+      const timestamp = 1622817966;
+      ProviderHandler.prototype.getTransactionByHash = jest
+        .fn()
+        .mockResolvedValue({ blockNumber: blockNum });
+      const pendingTx = {
+        ...fTxReceipt,
+        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+        gasUsed: BigNumber.from(fTxReceipt.gasLimit),
+        value: BigNumber.from(fTxReceipt.value),
+        asset: fAssets[0],
+        baseAsset: fAssets[0]
+      };
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .provide([
+          [call.fn(getTxStatus), ITxStatus.SUCCESS],
+          [call.fn(getTimestampFromBlockNum), timestamp]
+        ])
+        .put(
+          addTxToAccount({
+            account: sanitizeAccount(account),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
         .silentRun();
     });
   });

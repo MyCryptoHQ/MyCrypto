@@ -15,6 +15,7 @@ import {
   ITxStatus,
   ITxType,
   LSKeys,
+  Network,
   NetworkId,
   StoreAccount,
   StoreAsset,
@@ -260,7 +261,7 @@ export function* pendingTxPolling() {
     selectTxsByStatus(ITxStatus.PENDING)
   );
   const accounts: StoreAccount[] = yield select(getStoreAccounts);
-  const networks = yield select(selectNetworks);
+  const networks: Network[] = yield select(selectNetworks);
 
   for (const pendingTxReceipt of pendingTransactions) {
     const senderAccount = getAccountByAddressAndNetworkName(accounts)(
@@ -282,9 +283,7 @@ export function* pendingTxPolling() {
     if (overwritingTx) {
       const updatedAccount = {
         ...senderAccount,
-        transactions: [
-          ...senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
-        ]
+        transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
       };
       yield put(updateAccount(updatedAccount));
       continue;
@@ -313,6 +312,6 @@ export function* pendingTxPolling() {
       txTimestamp,
       txResponse.blockNumber
     );
-    yield put(addTxToAccount({ account: senderAccount, tx: finishedTxReceipt }));
+    yield put(addTxToAccount({ account: sanitizeAccount(senderAccount), tx: finishedTxReceipt }));
   }
 }
