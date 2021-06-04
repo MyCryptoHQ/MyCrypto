@@ -1,4 +1,6 @@
-import { setupWeb3Node, Web3Node } from '@services/EthService';
+import { Web3Provider } from '@ethersproject/providers';
+
+import { getApprovedAccounts, setupWeb3Node } from '@services/EthService';
 import { getNetworkByChainId } from '@services/Store';
 import { Network } from '@types';
 
@@ -6,17 +8,15 @@ import { Web3Wallet } from '../non-deterministic';
 
 export const unlockWeb3 = async (networks: Network[]) => {
   const { lib: nodeLib, chainId } = await setupWeb3Node();
-  const network: Network | undefined = getNetworkByChainId(parseInt(chainId, 10), networks);
+  const network: Network | undefined = getNetworkByChainId(chainId, networks);
 
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }
-  if (!(nodeLib instanceof Web3Node)) {
-    throw new Error('Cannot use Web3 wallet without a Web3 node.');
-  }
+
   try {
     // try to get modern web3 permissions using wallet_getPermissions
-    const accounts = await getAccounts(nodeLib);
+    const accounts = await getApprovedAccounts(nodeLib);
     if (accounts) {
       return accounts.map((address) => new Web3Wallet(address, network.id));
     } else {
@@ -37,6 +37,4 @@ export const unlockWeb3 = async (networks: Network[]) => {
   }
 };
 
-const getAccounts = async (nodeLib: Web3Node) => await nodeLib.getApprovedAccounts();
-
-const getLegacyAccounts = async (nodeLib: Web3Node) => await nodeLib.getAccounts();
+const getLegacyAccounts = async (nodeLib: Web3Provider) => await nodeLib.listAccounts();
