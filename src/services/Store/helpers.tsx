@@ -4,9 +4,7 @@ import { ITxReceipt, ITxStatus, ITxType, StoreAccount, StoreAsset, TUuid } from 
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
     .filter(Boolean)
-    .flatMap(({ transactions: txs }: { transactions: ITxReceipt[] }) =>
-      txs.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
-    );
+    .flatMap(({ transactions: txs }: { transactions: ITxReceipt[] }) => txs);
 };
 
 export const txIsPending = ({ status }: { status: ITxStatus }) => status === ITxStatus.PENDING;

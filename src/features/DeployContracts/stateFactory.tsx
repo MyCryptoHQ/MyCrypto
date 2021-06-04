@@ -107,7 +107,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
         txType: ITxType.DEPLOY_CONTRACT,
-        stage: ITxStatus.PENDING
+        status: ITxStatus.PENDING
       };
       addTxToAccount(state.txConfig.senderAccount, txReceipt);
       setState((prevState: DeployContractsState) => ({
