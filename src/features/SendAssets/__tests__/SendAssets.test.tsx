@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
+import { fAccounts, fAssets } from '@fixtures';
 import { StoreContext } from '@services/Store';
-import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('@vendor', () => {
@@ -25,15 +25,20 @@ describe('SendAssetsFlow', () => {
         value={
           ({
             userAssets: [],
-            accounts: [],
-            getDefaultAccount: () => ({ assets: [], wallet: WalletId.WEB3 }),
-            getAccount: jest.fn(),
-            networks: [{ nodes: [] }]
+            accounts: fAccounts,
+            getAccount: jest.fn()
           } as unknown) as any
         }
       >
         <SendAssets />
-      </StoreContext.Provider>
+      </StoreContext.Provider>,
+      {
+        initialState: mockAppState({
+          accounts: fAccounts,
+          assets: fAssets,
+          networks: APP_STATE.networks
+        })
+      }
     );
   };
 
@@ -41,5 +46,6 @@ describe('SendAssetsFlow', () => {
     const { getByText } = renderComponent();
     const selector = 'Send Assets';
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(fAccounts[0].label)).toBeInTheDocument();
   });
 });

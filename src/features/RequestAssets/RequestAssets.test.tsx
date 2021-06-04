@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
-import { fAccounts } from '@fixtures';
+import { APP_STATE, fAccounts, fAssets } from '@fixtures';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
@@ -13,13 +13,19 @@ function getComponent() {
     <StoreContext.Provider
       value={
         ({
-          accounts: fAccounts,
-          getDefaultAccount: () => fAccounts[0]
+          accounts: fAccounts
         } as any) as any
       }
     >
       <RequestAssets />
-    </StoreContext.Provider>
+    </StoreContext.Provider>,
+    {
+      initialState: mockAppState({
+        accounts: [fAccounts[0]],
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    }
   );
 }
 

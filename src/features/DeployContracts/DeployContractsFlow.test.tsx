@@ -1,7 +1,7 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
@@ -29,15 +29,19 @@ function getComponent() {
         ({
           assets: () => fAssets,
           accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => undefined
+          userAssets: fAccounts.flatMap((a) => a.assets)
         } as any) as any
       }
     >
       <DeployContractsFlow />
     </StoreContext.Provider>,
     {
-      initialRoute: '/deploy-contracts'
+      initialRoute: '/deploy-contracts',
+      initialState: mockAppState({
+        accounts: fAccounts,
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
     }
   );
 }

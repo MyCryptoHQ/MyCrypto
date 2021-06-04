@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { StoreContext } from '@services';
+import { getDefaultAccount, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
 import { IPendingTxReceipt, ISignedTx, Tab } from '@types';
@@ -48,8 +48,7 @@ const TabsWrapper = styled.div`
 
 export const DeployContractsFlow = ({ history, location }: RouteComponentProps) => {
   const [step, setStep] = useState(0);
-  const { getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
+  const defaultAccount = useSelector(getDefaultAccount());
   const {
     handleNetworkSelected,
     handleDeploySubmit,

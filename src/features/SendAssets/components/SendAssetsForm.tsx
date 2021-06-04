@@ -5,7 +5,6 @@ import { Button as UIBtn } from '@mycrypto/ui';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
-import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { ValuesType } from 'utility-types';
 import { number, object, string } from 'yup';
@@ -55,9 +54,10 @@ import {
   getNetworkById,
   StoreContext,
   useAssets,
+  useNetworks,
   useSettings
 } from '@services/Store';
-import { AppState, getIsDemoMode } from '@store';
+import { getIsDemoMode, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import {
   Asset,
@@ -249,13 +249,13 @@ interface ISendFormProps extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: Props) => {
-  const { accounts, userAssets, networks, getDefaultAccount: getDefaultStoreAccount } = useContext(
-    StoreContext
-  );
+export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
+  const { accounts, userAssets } = useContext(StoreContext);
+  const { networks } = useNetworks();
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
+  const isDemoMode = useSelector(getIsDemoMode);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -277,12 +277,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
   })();
 
   const getDefaultAccount = (asset?: Asset) => {
-    const storeDefaultAccount = getDefaultStoreAccount(false, asset?.networkId);
-    if (
-      storeDefaultAccount !== undefined &&
-      asset !== undefined &&
-      !storeDefaultAccount.assets.some((a) => a.uuid === asset.uuid)
-    ) {
+    if (asset) {
       const accountsWithDefaultAsset = validAccounts.filter((account) =>
         account.assets.some((a) => a.uuid === asset.uuid)
       );
@@ -290,7 +285,7 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
         return sortByLabel(accountsWithDefaultAsset)[0];
       }
     }
-    return storeDefaultAccount;
+    return undefined;
   };
   const getDefaultNetwork = (account?: StoreAccount) =>
     networks.find((n) => n.id === (account !== undefined ? account.networkId : DEFAULT_NETWORK));
@@ -840,12 +835,3 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton, isDemoMode }: P
     </div>
   );
 };
-
-const mapStateToProps = (state: AppState) => ({
-  isDemoMode: getIsDemoMode(state)
-});
-
-const connector = connect(mapStateToProps);
-type Props = ConnectedProps<typeof connector> & ISendFormProps;
-
-export default connector(SendAssetsForm);

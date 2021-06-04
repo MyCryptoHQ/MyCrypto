@@ -2,7 +2,7 @@ import React from 'react';
 
 import mockAxios from 'jest-mock-axios';
 import selectEvent from 'react-select-event';
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { DEX_BASE_URLS } from '@config';
 import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
@@ -18,13 +18,19 @@ function getComponent() {
         ({
           assets: () => fAssets,
           accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => fAccounts[0]
+          userAssets: fAccounts.flatMap((a) => a.assets)
         } as any) as any
       }
     >
       <SwapAssetsFlow />
-    </StoreContext.Provider>
+    </StoreContext.Provider>,
+    {
+      initialState: mockAppState({
+        accounts: fAccounts.filter((a) => a.networkId === 'Ethereum'),
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    }
   );
 }
 

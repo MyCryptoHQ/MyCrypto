@@ -21,7 +21,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isAccountInNetwork, isEthereumAccount } from '@services/Store/Account/helpers';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
@@ -99,8 +99,7 @@ export const MembershipFormUI = ({
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useAssets();
-  const { getDefaultAccount } = useContext(StoreContext);
-  const defaultAccount = getDefaultAccount();
+  const defaultAccount = useSelector(getDefaultAccount());
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
   const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
   const initialFormikValues: Overwrite<MembershipSimpleTxFormFull, { account?: StoreAccount }> = {

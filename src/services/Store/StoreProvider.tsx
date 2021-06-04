@@ -40,15 +40,12 @@ import {
   convertToFiatFromAsset,
   generateDeterministicAddressUUID,
   generateUUID,
-  getAccountsByNetwork,
-  getAccountsByViewOnly,
   getWeb3Config,
   isArrayEqual,
   isSameAddress,
-  sortByLabel,
   useInterval
 } from '@utils';
-import { isEmpty, isEmpty as isVoid, pipe, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
+import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
@@ -77,7 +74,6 @@ export interface State {
   readonly ensOwnershipRecords: DomainNameRecord[];
   readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
-  getDefaultAccount(includeViewOnly?: boolean, networkId?: NetworkId): StoreAccount | undefined;
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
@@ -290,12 +286,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       const uniq = uniqBy(prop('uuid'), userAssets);
       return sortBy(prop('ticker'), uniq);
     },
-    getDefaultAccount: (includeViewOnly?: boolean, networkId?: NetworkId) =>
-      pipe(
-        (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
-        (a) => getAccountsByViewOnly(a, includeViewOnly),
-        sortByLabel
-      )(accounts)[0],
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     totals: (selectedAccounts = state.accounts) =>

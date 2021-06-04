@@ -1,7 +1,7 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fContracts } from '@fixtures';
 import { StoreContext } from '@services/Store';
@@ -23,13 +23,19 @@ function getComponent() {
         ({
           assets: () => fAssets,
           accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets),
-          getDefaultAccount: () => undefined
+          userAssets: fAccounts.flatMap((a) => a.assets)
         } as any) as any
       }
     >
       <InteractWithContractsFlow />
-    </StoreContext.Provider>
+    </StoreContext.Provider>,
+    {
+      initialState: mockAppState({
+        accounts: fAccounts,
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    }
   );
 }
 

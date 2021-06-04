@@ -11,9 +11,11 @@ import {
   ITxStatus,
   ITxType,
   LSKeys,
+  NetworkId,
   StoreAsset,
   TUuid
 } from '@types';
+import { isViewOnlyWallet, sortByLabel } from '@utils';
 import { findIndex, propEq } from '@vendor';
 
 import { isTokenMigration } from '../helpers';
@@ -158,6 +160,17 @@ export const getStoreAccounts = createSelector([getAccounts, (s) => s], (account
     };
   });
 });
+
+export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>
+  createSelector(
+    getStoreAccounts,
+    (accounts) =>
+      sortByLabel(
+        accounts
+          .filter((a) => a.networkId === networkId || networkId === undefined)
+          .filter((a) => !isViewOnlyWallet(a.wallet) || includeViewOnly)
+      )[0]
+  );
 
 /**
  * Actions
