@@ -263,21 +263,22 @@ describe('AccountSlice', () => {
   });
 
   describe('pendingTxPolling', () => {
+    const blockNum = 12568779;
+    const timestamp = 1622817966;
+    ProviderHandler.prototype.getTransactionByHash = jest
+      .fn()
+      .mockResolvedValue({ blockNumber: blockNum });
+    const pendingTx = {
+      ...fTxReceipt,
+      gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+      gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+      gasUsed: BigNumber.from(fTxReceipt.gasLimit),
+      value: BigNumber.from(fTxReceipt.value),
+      asset: fAssets[0],
+      baseAsset: fAssets[0]
+    };
+
     it('updates pending tx to be successful', () => {
-      const blockNum = 12568779;
-      const timestamp = 1622817966;
-      ProviderHandler.prototype.getTransactionByHash = jest
-        .fn()
-        .mockResolvedValue({ blockNumber: blockNum });
-      const pendingTx = {
-        ...fTxReceipt,
-        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
-        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
-        gasUsed: BigNumber.from(fTxReceipt.gasLimit),
-        value: BigNumber.from(fTxReceipt.value),
-        asset: fAssets[0],
-        baseAsset: fAssets[0]
-      };
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
         .withState(
@@ -293,6 +294,80 @@ describe('AccountSlice', () => {
           [call.fn(getTimestampFromBlockNum), timestamp]
         ])
         .put(
+          addTxToAccount({
+            account: sanitizeAccount(account),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
+        .silentRun();
+    });
+
+    it('handles pending overwritten transaction', () => {
+      const overwrittenTx = makeFinishedTxReceipt(
+        { ...pendingTx, hash: 'bla' },
+        ITxStatus.SUCCESS,
+        timestamp,
+        blockNum
+      );
+      const account = { ...fAccounts[0], transactions: [pendingTx, overwrittenTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .put(
+          updateAccount({
+            ...sanitizeAccount(account),
+            transactions: [overwrittenTx]
+          })
+        )
+        .silentRun();
+    });
+
+    it('skips if pending tx not mined', () => {
+      ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .not.put(
+          addTxToAccount({
+            account: sanitizeAccount(account),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
+        .silentRun();
+    });
+
+    it('skips if fails to lookup timestamp or status', () => {
+      ProviderHandler.prototype.getTransactionByHash = jest
+        .fn()
+        .mockResolvedValue({ blockNumber: blockNum });
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .provide([
+          [call.fn(getTxStatus), undefined],
+          [call.fn(getTimestampFromBlockNum), undefined]
+        ])
+        .not.put(
           addTxToAccount({
             account: sanitizeAccount(account),
             tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)

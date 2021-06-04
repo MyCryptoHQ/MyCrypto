@@ -269,7 +269,7 @@ export function* pendingTxPolling() {
       pendingTxReceipt.asset.networkId
     ) as StoreAccount;
 
-    if (!senderAccount) return;
+    if (!senderAccount) continue;
 
     const txs = getTxsFromAccount([senderAccount]);
     const overwritingTx = txs.find(
@@ -285,7 +285,7 @@ export function* pendingTxPolling() {
         ...senderAccount,
         transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
       };
-      yield put(updateAccount(updatedAccount));
+      yield put(updateAccount(sanitizeAccount(updatedAccount)));
       continue;
     }
 
