@@ -15,6 +15,7 @@ import { APP_PERSIST_CONFIG, createPersistReducer, migrate } from './persist.con
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
 import tokenScanningSlice from './tokenScanning.slice';
+import txHistorySlice from './txHistory.slice';
 
 const reducers = combineReducers({
   [importSlice.name]: importSlice.reducer,
@@ -23,7 +24,8 @@ const reducers = combineReducers({
   [hdWalletSlice.name]: hdWalletSlice.reducer,
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
   [featureFlagSlice.name]: featureFlagSlice.reducer,
-  [signMessageSlice.name]: signMessageSlice.reducer
+  [signMessageSlice.name]: signMessageSlice.reducer,
+  [txHistorySlice.name]: txHistorySlice.reducer
 });
 
 /**
