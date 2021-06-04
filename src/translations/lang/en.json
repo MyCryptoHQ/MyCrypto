@@ -12,7 +12,7 @@
     "ACCOUNT_LIST_LABEL": "Label",
     "ACCOUNT_LIST_NETWORK": "Network",
     "ACCOUNT_LIST_PRIVATE": "Private",
-    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" which will provide you some tips on how to keep this account pseudonymous.",
+    "ACCOUNT_LIST_PRIVATE_TOOLTIP": "This will label an account as \"Private\" to serve as a reminder for you to be careful about where you're using it. Click [here]($link) for tips on how to use MyCrypto more privately.",
     "ACCOUNT_LIST_REMOVE": "Remove",
     "ACCOUNT_LIST_REMOVE_OVERLAY_TEXT": "Are you sure you want to remove the “$label” account with address: “$address”?",
     "ACCOUNT_LIST_TABLE_ACCOUNTS": "Accounts",
