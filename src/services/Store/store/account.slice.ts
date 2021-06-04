@@ -4,6 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { translateRaw } from '@translations';
 import {
   AssetBalanceObject,
@@ -183,13 +184,30 @@ export const addTxToAccount = createAction<{
   tx: ITxReceipt;
 }>(`${slice.name}/addTxToAccount`);
 
+export const startTxPolling = createAction(`${slice.name}/startTxPolling`);
+export const stopTxPolling = createAction(`${slice.name}/stopTxPolling`);
+
+// Polling Config
+const payload: IPollingPayload = {
+  startAction: startTxPolling,
+  stopAction: stopTxPolling,
+  params: {
+    interval: 5000,
+    retryOnFailure: true,
+    retries: 3,
+    retryAfter: 3000
+  },
+  saga: pendingTxPolling
+};
+
 /**
  * Sagas
  */
 export function* accountsSaga() {
   yield all([
     takeLatest(addAccounts.type, handleAddAccounts),
-    takeLatest(addTxToAccount.type, addTxToAccountWorker)
+    takeLatest(addTxToAccount.type, addTxToAccountWorker),
+    pollingSaga(payload)
   ]);
 }
 
