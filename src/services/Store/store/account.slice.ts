@@ -40,6 +40,7 @@ import { findIndex, isEmpty, prop, propEq, sortBy, uniqBy } from '@vendor';
 
 import { getAccountByAddressAndNetworkName } from '../Account';
 import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
+import { getAccountsAssetsBalances } from '../BalanceService';
 import {
   findMultipleNextUnusedDefaultLabels,
   getContactByAddressAndNetworkId
@@ -148,15 +149,8 @@ export const getAccounts = createSelector([getAppState], (s) => {
       gasPrice: EthersBN.from(t.gasPrice),
       gasUsed: t.gasUsed && EthersBN.from(t.gasUsed)
     }))
-  }));
+  })) as StoreAccount[];
 });
-
-export const selectCurrentAccounts = createSelector(
-  [getAccounts, getFavorites],
-  (accounts, favorites) => {
-    return accounts.filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
-  }
-);
 
 export const selectAccountTxs = createSelector([getAccounts], (accounts) =>
   accounts.filter(Boolean).flatMap(({ transactions }) => transactions)
@@ -266,6 +260,13 @@ export const getMergedTxHistory = createSelector(
   }
 );
 
+export const selectCurrentAccounts = createSelector(
+  [getStoreAccounts, getFavorites],
+  (accounts, favorites) => {
+    return accounts.filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
+  }
+);
+
 /**
  * Actions
  */
@@ -278,8 +279,24 @@ export const addTxToAccount = createAction<{
 export const startTxPolling = createAction(`${slice.name}/startTxPolling`);
 export const stopTxPolling = createAction(`${slice.name}/stopTxPolling`);
 
+export const startBalancesPolling = createAction(`${slice.name}/startPolling`);
+export const stopBalancesPolling = createAction(`${slice.name}/stopPolling`);
+
+/**
+ * Sagas
+ */
+export function* accountsSaga() {
+  yield all([
+    takeLatest(addAccounts.type, handleAddAccounts),
+    takeLatest(addTxToAccount.type, addTxToAccountWorker),
+    takeLatest(addNewAccounts.type, addNewAccountsWorker),
+    pollingSaga(pendingTxPollingPayload),
+    pollingSaga(balancesPollingPayload)
+  ]);
+}
+
 // Polling Config
-const payload: IPollingPayload = {
+const pendingTxPollingPayload: IPollingPayload = {
   startAction: startTxPolling,
   stopAction: stopTxPolling,
   params: {
@@ -290,18 +307,6 @@ const payload: IPollingPayload = {
   },
   saga: pendingTxPolling
 };
-
-/**
- * Sagas
- */
-export function* accountsSaga() {
-  yield all([
-    takeLatest(addAccounts.type, handleAddAccounts),
-    takeLatest(addTxToAccount.type, addTxToAccountWorker),
-    takeLatest(addNewAccounts.type, addNewAccountsWorker),
-    pollingSaga(payload)
-  ]);
-}
 
 export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
   const isDemoMode: boolean = yield select(getIsDemoMode);
@@ -499,4 +504,24 @@ export function* pendingTxPolling() {
     );
     yield put(addTxToAccount({ account: senderAccount, tx: finishedTxReceipt }));
   }
+}
+
+const balancesPollingPayload: IPollingPayload = {
+  startAction: startBalancesPolling,
+  stopAction: stopBalancesPolling,
+  params: {
+    interval: 60000,
+    retryOnFailure: true,
+    retries: 3,
+    retryAfter: 3000
+  },
+  saga: fetchBalances
+};
+
+export function* fetchBalances() {
+  const accounts: StoreAccount[] = yield select(selectCurrentAccounts);
+
+  const accountsWithBalances: StoreAccount[] = yield call(getAccountsAssetsBalances, accounts);
+
+  yield put(updateAccounts(accountsWithBalances));
 }

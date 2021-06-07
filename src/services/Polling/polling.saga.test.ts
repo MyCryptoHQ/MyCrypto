@@ -4,7 +4,7 @@ import { expectSaga } from 'test-utils';
 
 import { IPollingPayload, default as pollingSagaWatcher } from './polling.saga';
 
-const testAction = createAction(`test/test`);
+const testAction = createAction(`fake/action`);
 
 function* falseSaga() {
   yield put(testAction);

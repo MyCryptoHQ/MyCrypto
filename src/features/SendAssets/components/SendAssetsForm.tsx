@@ -56,10 +56,9 @@ import {
   getNetworkById,
   StoreContext,
   useAssets,
-  useNetworks,
   useSettings
 } from '@services/Store';
-import { getIsDemoMode, useSelector } from '@store';
+import { getIsDemoMode, getUserAssets, useSelector } from '@store';
 import translate, { Trans, translateRaw } from '@translations';
 import {
   Asset,
@@ -252,19 +251,20 @@ interface ISendFormProps extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
-  const { accounts, userAssets } = useContext(StoreContext);
-  const { networks } = useNetworks();
+const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
+  const { accounts, networks } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
-  const isDemoMode = useSelector(getIsDemoMode);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
+
+  const userAssets = useSelector(getUserAssets);
+  const isDemoMode = useSelector(getIsDemoMode);
 
   const EthAsset = getAssetByUUID(ETHUUID as TUuid)!;
 
@@ -868,3 +868,5 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     </div>
   );
 };
+
+export default SendAssetsForm;

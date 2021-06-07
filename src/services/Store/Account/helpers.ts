@@ -2,15 +2,6 @@ import { DEFAULT_NETWORK } from '@config';
 import { Asset, IAccount, NetworkId, StoreAccount, TAddress } from '@types';
 import { isSameAddress } from '@utils';
 
-export const getDashboardAccounts = (
-  accounts: StoreAccount[],
-  currentAccounts: string[]
-): StoreAccount[] => {
-  return accounts
-    .filter((account) => account && 'uuid' in account)
-    .filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
-};
-
 export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   address: string,
   networkId: NetworkId

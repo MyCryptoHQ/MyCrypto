@@ -33,7 +33,9 @@ export {
   getStoreAccounts,
   getDefaultAccount,
   getMergedTxHistory,
-  getUserAssets
+  getUserAssets,
+  startBalancesPolling,
+  stopBalancesPolling
 } from './account.slice';
 export {
   createContact,

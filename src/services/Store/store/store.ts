@@ -11,7 +11,7 @@ import {
 } from '@features/AddAccount/components/hdWallet.slice';
 import { messageUpdate, signMessage } from '@features/SignAndVerifyMessage';
 import { analyticsMiddleware } from '@services/Analytics';
-import { startRatesPolling, updateAccounts } from '@store';
+import { startBalancesPolling, startRatesPolling, updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
@@ -39,6 +39,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             updateAccounts.type,
             // ignore pollStart to avoid errors with the methods passed in the payload of the action
             startRatesPolling.type,
+            startBalancesPolling.type,
             // ignore these actions to avoid errors with hardware wallet sessions
             connectHDWallet.type,
             requestConnectionSuccess.type,
