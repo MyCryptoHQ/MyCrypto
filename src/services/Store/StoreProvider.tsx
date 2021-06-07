@@ -4,7 +4,6 @@ import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ENSService } from '@services/ApiService';
-import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { isEthereumAccount } from '@services/Store/Account';
@@ -69,7 +68,6 @@ export interface State {
   readonly memberships?: MembershipStatus[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
-  readonly txHistory: ITxHistoryApiResponse[];
   readonly uniClaims: UniClaimResult[];
   readonly ensOwnershipRecords: DomainNameRecord[];
   readonly isEnsFetched: boolean;
@@ -224,9 +222,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     };
   }, [pendingTransactions]);
 
-  // TX HISTORY
-  const [txHistory, setTxHistory] = useState<ITxHistoryApiResponse[]>([]);
-
   const mainnetAccounts = accounts
     .filter((a) => a.networkId === DEFAULT_NETWORK)
     .map((a) => a.address);
@@ -236,12 +231,6 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (mainnetAccounts.length > 0) {
-      HistoryService.instance.getHistory(mainnetAccounts).then((history) => {
-        if (history !== null) {
-          setTxHistory(history);
-        }
-      });
-
       UniswapService.instance.getClaims(mainnetAccounts).then((rawClaims) => {
         if (rawClaims !== null) {
           UniswapService.instance
@@ -274,7 +263,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     isMyCryptoMember: useSelector(isMyCryptoMember),
     currentAccounts,
     accountRestore,
-    txHistory,
     uniClaims,
     ensOwnershipRecords,
     isEnsFetched,

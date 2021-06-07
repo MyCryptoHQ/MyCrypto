@@ -13,6 +13,7 @@ import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
 import { settingsSaga } from './settings.slice';
 import { scanTokensSaga } from './tokenScanning.sagas';
+import { txHistorySaga } from './txHistory.slice';
 
 export default function* rootSaga() {
   yield all([
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     analyticsSaga(),
     persistenceSaga(),
     ratesSaga(),
-    signMessageSaga()
+    signMessageSaga(),
+    txHistorySaga()
   ]);
 }

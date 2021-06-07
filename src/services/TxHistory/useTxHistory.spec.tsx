@@ -16,7 +16,6 @@ import {
   fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
-import { StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { fromWei, Wei } from '@utils';
 
@@ -28,15 +27,16 @@ const renderUseTxHistory = ({
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
     <ProvidersWrapper
-      initialState={mockAppState({
-        addressBook: fContacts,
-        assets: fAssets,
-        accounts
-      })}
+      initialState={{
+        ...mockAppState({
+          addressBook: fContacts,
+          assets: fAssets,
+          accounts
+        }),
+        txHistory: { history: apiTransactions, error: false }
+      }}
     >
-      <StoreContext.Provider value={{ txHistory: apiTransactions } as any}>
-        {children}
-      </StoreContext.Provider>
+      {children}
     </ProvidersWrapper>
   );
   return renderHook(() => useTxHistory(), { wrapper });

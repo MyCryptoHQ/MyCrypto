@@ -1,17 +1,15 @@
-import { useContext } from 'react';
-
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { getAccounts, selectAccountTxs, useSelector } from '@store';
+import { getAccounts, getTxHistory, selectAccountTxs, useSelector } from '@store';
 import { ITxReceipt, Network } from '@types';
 import { isEmpty } from '@vendor';
 
-import { StoreContext, useAssets, useContacts, useNetworks } from '../Store';
+import { useAssets, useContacts, useNetworks } from '../Store';
 import { deriveTxType, makeTxReceipt, merge } from './helpers';
 import { ITxHistoryEntry } from './types';
 
 function useTxHistory() {
   const accounts = useSelector(getAccounts);
-  const { txHistory } = useContext(StoreContext);
+  const txHistory = useSelector(getTxHistory);
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { networks } = useNetworks();
