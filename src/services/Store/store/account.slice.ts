@@ -5,7 +5,6 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
-import { translateRaw } from '@translations';
 import {
   AssetBalanceObject,
   IAccount,
@@ -27,7 +26,8 @@ import { findIndex, propEq } from '@vendor';
 import { getAccountByAddressAndNetworkName } from '../Account';
 import { getTxsFromAccount, isTokenMigration } from '../helpers';
 import { getNetworkById } from '../Network';
-import { getAssetByUUID } from './asset.slice';
+import { toStoreAccount } from '../utils';
+import { getAssetByUUID, getAssets } from './asset.slice';
 import { selectAccountContact } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
@@ -148,20 +148,10 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
 
 export const getStoreAccounts = createSelector([getAccounts, (s) => s], (accounts, s) => {
   return accounts.map((a) => {
-    const accountAssets: StoreAsset[] = a.assets.reduce(
-      (acc, asset) => [
-        ...acc,
-        // @todo: Switch BN from ethers to unified BN
-        { ...asset, balance: EthersBN.from(asset.balance), ...getAssetByUUID(asset.uuid)(s)! }
-      ],
-      []
-    );
-    return {
-      ...a,
-      assets: accountAssets,
-      network: getNetwork(a.networkId)(s),
-      label: selectAccountContact(a)(s)?.label || a.label || translateRaw('NO_LABEL')
-    };
+    const contact = selectAccountContact(a)(s);
+    const network = getNetwork(a.networkId)(s);
+    const assets = getAssets(s);
+    return toStoreAccount(a, assets, network, contact);
   });
 });
 
@@ -285,7 +275,7 @@ export function* pendingTxPolling() {
         ...senderAccount,
         transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
       };
-      yield put(updateAccount(sanitizeAccount(updatedAccount)));
+      yield put(updateAccount(updatedAccount));
       continue;
     }
 
@@ -313,6 +303,6 @@ export function* pendingTxPolling() {
       txTimestamp,
       txResponse.blockNumber
     );
-    yield put(addTxToAccount({ account: sanitizeAccount(senderAccount), tx: finishedTxReceipt }));
+    yield put(addTxToAccount({ account: senderAccount, tx: finishedTxReceipt }));
   }
 }

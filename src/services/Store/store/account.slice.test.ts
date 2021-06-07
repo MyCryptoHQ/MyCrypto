@@ -15,8 +15,9 @@ import {
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
-import { IAccount, ITxReceipt, ITxStatus, ITxType, TUuid } from '@types';
+import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid } from '@types';
 
+import { toStoreAccount } from '../utils';
 import {
   addTxToAccount,
   addTxToAccountWorker,
@@ -280,13 +281,14 @@ describe('AccountSlice', () => {
 
     it('updates pending tx to be successful', () => {
       const account = { ...fAccounts[0], transactions: [pendingTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
         .withState(
           mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+            addressBook: []
           })
         )
         .provide([
@@ -295,7 +297,12 @@ describe('AccountSlice', () => {
         ])
         .put(
           addTxToAccount({
-            account: sanitizeAccount(account),
+            account: toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
             tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
           })
         )
@@ -310,18 +317,24 @@ describe('AccountSlice', () => {
         blockNum
       );
       const account = { ...fAccounts[0], transactions: [pendingTx, overwrittenTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
         .withState(
           mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+            addressBook: [contact]
           })
         )
         .put(
           updateAccount({
-            ...sanitizeAccount(account),
+            ...toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
             transactions: [overwrittenTx]
           })
         )
