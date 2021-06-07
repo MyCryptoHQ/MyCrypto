@@ -294,7 +294,8 @@ export function* pendingTxPolling() {
     if (!network) continue;
     const provider = new ProviderHandler(network);
 
-    const txResponse = yield call(provider.getTransactionByHash, pendingTxReceipt.hash);
+    // Special notation for calling class functions that reference `this`
+    const txResponse = yield call([provider, provider.getTransactionByHash], pendingTxReceipt.hash);
     // Fail out if tx receipt cant be found.
     // This initial check stops us from spamming node for data before there is data to fetch.
     if (!txResponse || !txResponse.blockNumber) continue;
