@@ -1,8 +1,6 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import '@nomiclabs/hardhat-ethers';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
+import 'dotenv/config';
 
 const config: HardhatUserConfig = {
   networks: {
