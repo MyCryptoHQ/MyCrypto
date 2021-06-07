@@ -47,6 +47,8 @@ export function* fetchHistoryWorker() {
 
   const filteredAccounts = accounts.filter((a) => a.networkId === 'Ethereum');
 
+  if (filteredAccounts.length === 0) return;
+
   try {
     const history = yield call(
       HistoryService.instance.getHistory,

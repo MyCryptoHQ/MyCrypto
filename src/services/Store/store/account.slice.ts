@@ -25,6 +25,7 @@ import { getNetwork } from './network.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
+import { fetchHistory } from './txHistory.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -173,9 +174,22 @@ export const addTxToAccount = createAction<{
  */
 export function* accountsSaga() {
   yield all([
+    takeLatest(
+      [slice.actions.createMany.type, slice.actions.resetAndCreate, destroyAccount.type],
+      handleAccountsLengthChange
+    ),
     takeLatest(addAccounts.type, handleAddAccounts),
     takeLatest(addTxToAccount.type, addTxToAccountWorker)
   ]);
+}
+
+export function* handleAccountsLengthChange() {
+  const accounts: IAccount[] = yield select(getAccounts);
+
+  // Hardcoded since we only support Mainnet for the TX History API
+  if (accounts.some((a) => a.networkId === 'Ethereum')) {
+    yield put(fetchHistory());
+  }
 }
 
 export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {

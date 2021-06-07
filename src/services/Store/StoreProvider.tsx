@@ -11,7 +11,6 @@ import {
   addAccounts,
   deleteMembership,
   fetchAssets,
-  fetchHistory,
   fetchMemberships,
   isMyCryptoMember,
   selectTxsByStatus,
@@ -236,8 +235,6 @@ export const StoreProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (mainnetAccounts.length > 0) {
-      dispatch(fetchHistory());
-
       UniswapService.instance.getClaims(mainnetAccounts).then((rawClaims) => {
         if (rawClaims !== null) {
           UniswapService.instance
