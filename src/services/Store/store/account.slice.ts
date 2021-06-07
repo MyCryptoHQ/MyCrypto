@@ -146,14 +146,16 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
   )
 );
 
-export const getStoreAccounts = createSelector([getAccounts, (s) => s], (accounts, s) => {
-  return accounts.map((a) => {
-    const contact = selectAccountContact(a)(s);
-    const network = getNetwork(a.networkId)(s);
-    const assets = getAssets(s);
-    return toStoreAccount(a, assets, network, contact);
-  });
-});
+export const getStoreAccounts = createSelector(
+  [getAccounts, (s) => s, getAssets],
+  (accounts, s, assets) => {
+    return accounts.map((a) => {
+      const contact = selectAccountContact(a)(s);
+      const network = getNetwork(a.networkId)(s);
+      return toStoreAccount(a, assets, network, contact);
+    });
+  }
+);
 
 export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>
   createSelector(
