@@ -2,10 +2,8 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
-import { makeFinishedTxReceipt } from '@helpers';
 import { ENSService } from '@services/ApiService';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
-import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { isEthereumAccount } from '@services/Store/Account';
 import {
   addAccounts,
@@ -13,7 +11,6 @@ import {
   fetchAssets,
   fetchMemberships,
   isMyCryptoMember,
-  selectTxsByStatus,
   useDispatch,
   useSelector
 } from '@store';
@@ -24,8 +21,6 @@ import {
   DomainNameRecord,
   IAccount,
   IAccountAdditionData,
-  IPendingTxReceipt,
-  ITxStatus,
   Network,
   NetworkId,
   StoreAccount,
@@ -41,7 +36,6 @@ import {
   generateUUID,
   getWeb3Config,
   isArrayEqual,
-  isSameAddress,
   useInterval
 } from '@utils';
 import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
@@ -52,7 +46,7 @@ import { getNewDefaultAssetTemplateByNetwork, getTotalByAsset, useAssets } from 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { useContacts } from './Contact';
 import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
-import { getTxsFromAccount, isNotExcludedAsset } from './helpers';
+import { isNotExcludedAsset } from './helpers';
 import { getNetworkById, useNetworks } from './Network';
 import { useSettings } from './Settings';
 
@@ -92,8 +86,6 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider: React.FC = ({ children }) => {
   const {
     accounts,
-    addTxToAccount,
-    removeTxFromAccount,
     getAccountByAddressAndNetworkName,
     updateAccounts,
     deleteAccount,
@@ -108,8 +100,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
     {}
   );
-
-  const [pendingTransactions, setPendingTransactions] = useState([] as IPendingTxReceipt[]);
 
   const currentAccounts = useMemo(
     () => getDashboardAccounts(accounts, settings.dashboardAccounts),
@@ -145,82 +135,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     dispatch(fetchMemberships());
   });
 
-  const pendingTxs = useSelector(selectTxsByStatus(ITxStatus.PENDING));
-  useEffect(() => {
-    setPendingTransactions(pendingTxs);
-  }, [currentAccounts]);
-
   // fetch assets from api
   useEffectOnce(() => {
     dispatch(fetchAssets());
   });
-
-  // A change to pending txs is detected
-  useEffect(() => {
-    if (pendingTransactions.length === 0) return;
-    // A pending transaction is detected.
-    let isMounted = true;
-    // This interval is used to poll for status of txs.
-    const txStatusLookupInterval = setInterval(() => {
-      pendingTransactions.forEach((pendingTxReceipt) => {
-        const senderAccount = getAccountByAddressAndNetworkName(
-          pendingTxReceipt.from,
-          pendingTxReceipt.asset.networkId
-        );
-        if (!senderAccount) return;
-
-        const storeAccount = accounts.find((acc) =>
-          isSameAddress(senderAccount.address, acc.address)
-        ) as StoreAccount;
-
-        const txs = getTxsFromAccount([storeAccount]);
-        const overwritingTx = txs.find(
-          (t) =>
-            t.nonce === pendingTxReceipt.nonce &&
-            t.asset.networkId === pendingTxReceipt.asset.networkId &&
-            t.hash !== pendingTxReceipt.hash &&
-            t.status === ITxStatus.SUCCESS
-        );
-
-        if (overwritingTx) {
-          removeTxFromAccount(senderAccount, pendingTxReceipt);
-          return;
-        }
-
-        const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
-        // If network is not found in the pendingTransactionObject, we cannot continue.
-        if (!network) return;
-        const provider = new ProviderHandler(network);
-
-        provider.getTransactionByHash(pendingTxReceipt.hash).then((txResponse) => {
-          // Fail out if tx receipt cant be found.
-          // This initial check stops us from spamming node for data before there is data to fetch.
-          if (!txResponse || !txResponse.blockNumber) return;
-
-          // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
-          Promise.all([
-            getTxStatus(provider, pendingTxReceipt.hash),
-            getTimestampFromBlockNum(txResponse.blockNumber, provider)
-          ]).then(([txStatus, txTimestamp]) => {
-            // txStatus and txTimestamp return undefined on failed lookups.
-            if (!isMounted || !txStatus || !txTimestamp) return;
-
-            const finishedTxReceipt = makeFinishedTxReceipt(
-              pendingTxReceipt,
-              txStatus,
-              txTimestamp,
-              txResponse.blockNumber
-            );
-            addTxToAccount(senderAccount, finishedTxReceipt);
-          });
-        });
-      });
-    }, 5 * 1000); // Period to reset interval on
-    return () => {
-      isMounted = false;
-      clearInterval(txStatusLookupInterval);
-    };
-  }, [pendingTransactions]);
 
   const mainnetAccounts = accounts
     .filter((a) => a.networkId === DEFAULT_NETWORK)

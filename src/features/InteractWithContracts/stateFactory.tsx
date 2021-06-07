@@ -332,7 +332,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
         txType: ITxType.CONTRACT_INTERACT,
-        stage: ITxStatus.PENDING
+        status: ITxStatus.PENDING
       });
       setState((prevState: InteractWithContractState) => ({
         ...prevState,

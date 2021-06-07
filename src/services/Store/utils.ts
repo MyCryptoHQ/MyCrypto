@@ -1,6 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
-import { Asset, NetworkId, StoreAccount, TAddress } from '@types';
+import { translateRaw } from '@translations';
+import {
+  Asset,
+  Contact,
+  IAccount,
+  Network,
+  NetworkId,
+  StoreAccount,
+  StoreAsset,
+  TAddress
+} from '@types';
 import { isSameAddress } from '@utils';
 
 // Assume StoreAccount baseAsset balance to be 0 if asset does not exist.
@@ -21,3 +31,29 @@ export const getStoreAccount = (accounts: StoreAccount[]) => (
   address: TAddress,
   networkId: NetworkId
 ) => accounts.find((a) => isSameAddress(a.address, address) && a.networkId === networkId);
+
+export const toStoreAccount = (
+  account: IAccount,
+  assets: Asset[],
+  network: Network,
+  contact?: Contact
+): StoreAccount => {
+  const accountAssets: StoreAsset[] = account.assets.reduce(
+    (acc, asset) => [
+      ...acc,
+      // @todo: Switch BN from ethers to unified BN
+      {
+        ...asset,
+        balance: BigNumber.from(asset.balance),
+        ...assets.find((a) => a.uuid === asset.uuid)!
+      }
+    ],
+    []
+  );
+  return {
+    ...account,
+    assets: accountAssets,
+    network,
+    label: contact?.label || account.label || translateRaw('NO_LABEL')
+  };
+};

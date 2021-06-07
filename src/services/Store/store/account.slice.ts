@@ -1,29 +1,37 @@
 import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { all, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { translateRaw } from '@translations';
+import { makeFinishedTxReceipt } from '@helpers';
+import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { IPollingPayload, pollingSaga } from '@services/Polling';
 import {
   AssetBalanceObject,
   IAccount,
+  IPendingTxReceipt,
   IProvidersMappings,
   ITxReceipt,
   ITxStatus,
   ITxType,
   LSKeys,
+  Network,
   NetworkId,
+  StoreAccount,
   StoreAsset,
   TUuid
 } from '@types';
 import { isViewOnlyWallet, sortByLabel } from '@utils';
 import { findIndex, propEq } from '@vendor';
 
-import { isTokenMigration } from '../helpers';
-import { getAssetByUUID } from './asset.slice';
+import { getAccountByAddressAndNetworkName } from '../Account';
+import { getTxsFromAccount, isTokenMigration } from '../helpers';
+import { getNetworkById } from '../Network';
+import { toStoreAccount } from '../utils';
+import { getAssetByUUID, getAssets } from './asset.slice';
 import { selectAccountContact } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
-import { getNetwork } from './network.slice';
+import { getNetwork, selectNetworks } from './network.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
@@ -116,13 +124,9 @@ export const selectCurrentAccounts = createSelector(
   }
 );
 
-export const selectAccountTxs = createSelector([getAccounts], (accounts) => {
-  return accounts
-    .filter(Boolean)
-    .flatMap(({ transactions }) =>
-      transactions.map((tx: any) => ({ ...tx, status: tx.status || tx.stage }))
-    );
-});
+export const selectAccountTxs = createSelector([getAccounts], (accounts) =>
+  accounts.filter(Boolean).flatMap(({ transactions }) => transactions)
+);
 
 export const selectTxsByStatus = (status: ITxStatus) =>
   createSelector([selectAccountTxs], (txs) => {
@@ -142,24 +146,16 @@ export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (as
   )
 );
 
-export const getStoreAccounts = createSelector([getAccounts, (s) => s], (accounts, s) => {
-  return accounts.map((a) => {
-    const accountAssets: StoreAsset[] = a.assets.reduce(
-      (acc, asset) => [
-        ...acc,
-        // @todo: Switch BN from ethers to unified BN
-        { ...asset, balance: EthersBN.from(asset.balance), ...getAssetByUUID(asset.uuid)(s)! }
-      ],
-      []
-    );
-    return {
-      ...a,
-      assets: accountAssets,
-      network: getNetwork(a.networkId)(s),
-      label: selectAccountContact(a)(s)?.label || a.label || translateRaw('NO_LABEL')
-    };
-  });
-});
+export const getStoreAccounts = createSelector(
+  [getAccounts, (s) => s, getAssets],
+  (accounts, s, assets) => {
+    return accounts.map((a) => {
+      const contact = selectAccountContact(a)(s);
+      const network = getNetwork(a.networkId)(s);
+      return toStoreAccount(a, assets, network, contact);
+    });
+  }
+);
 
 export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>
   createSelector(
@@ -181,13 +177,30 @@ export const addTxToAccount = createAction<{
   tx: ITxReceipt;
 }>(`${slice.name}/addTxToAccount`);
 
+export const startTxPolling = createAction(`${slice.name}/startTxPolling`);
+export const stopTxPolling = createAction(`${slice.name}/stopTxPolling`);
+
+// Polling Config
+const payload: IPollingPayload = {
+  startAction: startTxPolling,
+  stopAction: stopTxPolling,
+  params: {
+    interval: 5000,
+    retryOnFailure: true,
+    retries: 3,
+    retryAfter: 3000
+  },
+  saga: pendingTxPolling
+};
+
 /**
  * Sagas
  */
 export function* accountsSaga() {
   yield all([
     takeLatest(addAccounts.type, handleAddAccounts),
-    takeLatest(addTxToAccount.type, addTxToAccountWorker)
+    takeLatest(addTxToAccount.type, addTxToAccountWorker),
+    pollingSaga(payload)
   ]);
 }
 
@@ -232,5 +245,66 @@ export function* addTxToAccountWorker({
     );
   } else if (newTx.txType === ITxType.PURCHASE_MEMBERSHIP) {
     yield put(fetchMemberships([account]));
+  }
+}
+
+export function* pendingTxPolling() {
+  const pendingTransactions: IPendingTxReceipt[] = yield select(
+    selectTxsByStatus(ITxStatus.PENDING)
+  );
+  const accounts: StoreAccount[] = yield select(getStoreAccounts);
+  const networks: Network[] = yield select(selectNetworks);
+
+  for (const pendingTxReceipt of pendingTransactions) {
+    const senderAccount = getAccountByAddressAndNetworkName(accounts)(
+      pendingTxReceipt.from,
+      pendingTxReceipt.asset.networkId
+    ) as StoreAccount;
+
+    if (!senderAccount) continue;
+
+    const txs = getTxsFromAccount([senderAccount]);
+    const overwritingTx = txs.find(
+      (t) =>
+        t.nonce === pendingTxReceipt.nonce &&
+        t.asset.networkId === pendingTxReceipt.asset.networkId &&
+        t.hash !== pendingTxReceipt.hash &&
+        t.status === ITxStatus.SUCCESS
+    );
+
+    if (overwritingTx) {
+      const updatedAccount = {
+        ...senderAccount,
+        transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
+      };
+      yield put(updateAccount(updatedAccount));
+      continue;
+    }
+
+    const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
+    // If network is not found in the pendingTransactionObject, we cannot continue.
+    if (!network) continue;
+    const provider = new ProviderHandler(network);
+
+    // Special notation for calling class functions that reference `this`
+    const txResponse = yield call([provider, provider.getTransactionByHash], pendingTxReceipt.hash);
+    // Fail out if tx receipt cant be found.
+    // This initial check stops us from spamming node for data before there is data to fetch.
+    if (!txResponse || !txResponse.blockNumber) continue;
+
+    const txStatus = yield call(getTxStatus, provider, pendingTxReceipt.hash);
+    const txTimestamp = yield call(getTimestampFromBlockNum, txResponse.blockNumber, provider);
+
+    // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
+    // txStatus and txTimestamp return undefined on failed lookups.
+    if (!txStatus || !txTimestamp) continue;
+
+    const finishedTxReceipt = makeFinishedTxReceipt(
+      pendingTxReceipt,
+      txStatus,
+      txTimestamp,
+      txResponse.blockNumber
+    );
+    yield put(addTxToAccount({ account: senderAccount, tx: finishedTxReceipt }));
   }
 }

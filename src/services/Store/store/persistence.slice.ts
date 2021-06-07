@@ -4,7 +4,7 @@ import { all, put, takeLatest } from 'redux-saga/effects';
 
 import { trackInit } from '@services';
 
-import accountSlice from './account.slice';
+import accountSlice, { startTxPolling } from './account.slice';
 import assetSlice from './asset.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
@@ -56,5 +56,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(trackInit());
     yield put(startRatesPolling());
     yield put(fetchHistory());
+    yield put(startTxPolling());
   }
 }

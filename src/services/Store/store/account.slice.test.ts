@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { expectSaga, mockAppState } from 'test-utils';
+import { call } from 'redux-saga-test-plan/matchers';
+import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
 import {
@@ -12,14 +13,18 @@ import {
   fTransaction,
   fTxReceipt
 } from '@fixtures';
-import { IAccount, ITxReceipt, ITxStatus, ITxType, TUuid } from '@types';
+import { makeFinishedTxReceipt } from '@helpers';
+import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid } from '@types';
 
+import { toStoreAccount } from '../utils';
 import {
   addTxToAccount,
   addTxToAccountWorker,
   getAccounts,
   getStoreAccounts,
   initialState,
+  pendingTxPolling,
   resetAndCreateAccount,
   resetAndCreateManyAccounts,
   selectAccountTxs,
@@ -254,6 +259,133 @@ describe('AccountSlice', () => {
         })
       )
         .put(updateAccount({ ...fAccount, transactions: [tx] }))
+        .silentRun();
+    });
+  });
+
+  describe('pendingTxPolling', () => {
+    const blockNum = 12568779;
+    const timestamp = 1622817966;
+    ProviderHandler.prototype.getTransactionByHash = jest
+      .fn()
+      .mockResolvedValue({ blockNumber: blockNum });
+    const pendingTx = {
+      ...fTxReceipt,
+      gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+      gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+      gasUsed: BigNumber.from(fTxReceipt.gasLimit),
+      value: BigNumber.from(fTxReceipt.value),
+      asset: fAssets[0],
+      baseAsset: fAssets[0]
+    };
+
+    it('updates pending tx to be successful', () => {
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: []
+          })
+        )
+        .provide([
+          [call.fn(getTxStatus), ITxStatus.SUCCESS],
+          [call.fn(getTimestampFromBlockNum), timestamp]
+        ])
+        .put(
+          addTxToAccount({
+            account: toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
+        .silentRun();
+    });
+
+    it('handles pending overwritten transaction', () => {
+      const overwrittenTx = makeFinishedTxReceipt(
+        { ...pendingTx, hash: 'bla' },
+        ITxStatus.SUCCESS,
+        timestamp,
+        blockNum
+      );
+      const account = { ...fAccounts[0], transactions: [pendingTx, overwrittenTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [contact]
+          })
+        )
+        .put(
+          updateAccount({
+            ...toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
+            transactions: [overwrittenTx]
+          })
+        )
+        .silentRun();
+    });
+
+    it('skips if pending tx not mined', () => {
+      ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .not.put(
+          addTxToAccount({
+            account: sanitizeAccount(account),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
+        .silentRun();
+    });
+
+    it('skips if fails to lookup timestamp or status', () => {
+      ProviderHandler.prototype.getTransactionByHash = jest
+        .fn()
+        .mockResolvedValue({ blockNumber: blockNum });
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      return expectSaga(pendingTxPolling)
+        .withState(
+          mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
+          })
+        )
+        .provide([
+          [call.fn(getTxStatus), undefined],
+          [call.fn(getTimestampFromBlockNum), undefined]
+        ])
+        .not.put(
+          addTxToAccount({
+            account: sanitizeAccount(account),
+            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+          })
+        )
         .silentRun();
     });
   });

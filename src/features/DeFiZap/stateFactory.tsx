@@ -36,7 +36,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
         txType: ITxType.DEFIZAP,
-        stage: ITxStatus.PENDING
+        status: ITxStatus.PENDING
       });
       setState((prevState: ZapInteractionState) => ({
         ...prevState,
