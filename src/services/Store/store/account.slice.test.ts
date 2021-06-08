@@ -226,7 +226,10 @@ describe('AccountSlice', () => {
   it('selectCurrentAccounts(): returns only favorite accounts', () => {
     const state = mockAppState({
       accounts: fAccounts,
-      settings: fSettings
+      settings: fSettings,
+      networks: fNetworks,
+      assets: fAssets,
+      addressBook: []
     });
     const actual = selectCurrentAccounts(state);
     expect(actual).toEqual([fAccounts[0]]);
@@ -791,20 +794,20 @@ describe('AccountSlice', () => {
   });
 
   it('fetchBalances(): fetch assets balances from accounts', () => {
-    const result = [fAccounts[0]];
+    const result = [fAccounts[1]];
     const initialState = mockAppState({
-      accounts: [fAccounts[0]],
+      accounts: [fAccounts[1]],
       assets: fAssets,
       networks: fNetworks,
-      addressBook: fContacts,
-      settings: { dashboardAccounts: [fAccounts[0].uuid] } as ISettings
+      addressBook: [],
+      settings: { dashboardAccounts: [fAccounts[1].uuid] } as ISettings
     });
 
     return expectSaga(fetchBalances)
       .withState(initialState)
       .provide([[call.fn(getAccountsAssetsBalances), result]])
       .select(selectCurrentAccounts)
-      .call(getAccountsAssetsBalances, fAccounts[0])
+      .call(getAccountsAssetsBalances, [fAccounts[1]])
       .put(updateAccounts(result))
       .silentRun();
   });

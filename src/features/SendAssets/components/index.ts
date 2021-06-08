@@ -2,7 +2,7 @@ import ConfirmTransaction from '@components/TransactionFlow/ConfirmTransaction';
 import { withProtectTx } from '@features/ProtectTransaction/components/WithProtectTx';
 import { translateRaw } from '@translations';
 
-import { SendAssetsForm } from './SendAssetsForm';
+import { default as SendAssetsForm } from './SendAssetsForm';
 import SignTransaction from './SignTransaction';
 
 export * from './validators';
