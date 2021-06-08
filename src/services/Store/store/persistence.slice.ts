@@ -8,6 +8,7 @@ import accountSlice, { startTxPolling } from './account.slice';
 import assetSlice from './asset.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
+import { fetchENS } from './ens.slice';
 import { initialLegacyState } from './legacy.initialState';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
@@ -57,5 +58,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(startRatesPolling());
     yield put(fetchHistory());
     yield put(startTxPolling());
+    yield put(fetchENS());
   }
 }

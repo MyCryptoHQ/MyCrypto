@@ -78,3 +78,4 @@ export { default as APP_STATE } from './appState';
 
 export * from './swapQuote';
 export { fBalances } from './balances';
+export * from './ens';

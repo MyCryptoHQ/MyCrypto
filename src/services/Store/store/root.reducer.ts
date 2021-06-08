@@ -8,6 +8,7 @@ import { featureFlagSlice } from '@services/FeatureFlag';
 import { deMarshallState, marshallState } from '@services/Store/DataManager/utils';
 import { LocalStorage } from '@types';
 
+import ensSlice from './ens.slice';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
@@ -25,7 +26,8 @@ const reducers = combineReducers({
   [persistenceSlice.name as 'database']: createPersistReducer(persistenceSlice.reducer),
   [featureFlagSlice.name]: featureFlagSlice.reducer,
   [signMessageSlice.name]: signMessageSlice.reducer,
-  [txHistorySlice.name]: txHistorySlice.reducer
+  [txHistorySlice.name]: txHistorySlice.reducer,
+  [ensSlice.name]: ensSlice.reducer
 });
 
 /**

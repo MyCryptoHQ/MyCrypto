@@ -2,9 +2,7 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
 import { MembershipStatus } from '@features/PurchaseMembership/config';
-import { ENSService } from '@services/ApiService';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
-import { isEthereumAccount } from '@services/Store/Account';
 import {
   addAccounts,
   deleteMembership,
@@ -18,7 +16,6 @@ import { translateRaw } from '@translations';
 import {
   Asset,
   Bigish,
-  DomainNameRecord,
   IAccount,
   IAccountAdditionData,
   Network,
@@ -63,8 +60,6 @@ export interface State {
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly uniClaims: UniClaimResult[];
-  readonly ensOwnershipRecords: DomainNameRecord[];
-  readonly isEnsFetched: boolean;
   readonly accountRestore: { [name: string]: IAccount | undefined };
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -161,20 +156,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     }
   }, [mainnetAccounts.length]);
 
-  const [ensOwnershipRecords, setEnsOwnershipRecords] = useState<DomainNameRecord[]>(
-    [] as DomainNameRecord[]
-  );
-  const [isEnsFetched, setIsEnsFetched] = useState<boolean>(false);
-
-  useEffect(() => {
-    (async () => {
-      setEnsOwnershipRecords(
-        await ENSService.fetchOwnershipRecords(accounts.filter(isEthereumAccount))
-      );
-      setIsEnsFetched(true);
-    })();
-  }, [accounts.length]);
-
   const state: State = {
     accounts,
     networks,
@@ -182,8 +163,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     currentAccounts,
     accountRestore,
     uniClaims,
-    ensOwnershipRecords,
-    isEnsFetched,
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
