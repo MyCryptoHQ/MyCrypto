@@ -34,6 +34,7 @@ import {
 } from '@types';
 import { fromWei, Wei } from '@utils';
 
+import { getAccountsAssetsBalances } from '../BalanceService';
 import { toStoreAccount } from '../utils';
 import {
   addAccounts,
@@ -41,6 +42,7 @@ import {
   addNewAccountsWorker,
   addTxToAccount,
   addTxToAccountWorker,
+  fetchBalances,
   getAccounts,
   getMergedTxHistory,
   getStoreAccounts,
@@ -52,7 +54,8 @@ import {
   selectAccountTxs,
   selectCurrentAccounts,
   default as slice,
-  updateAccount
+  updateAccount,
+  updateAccounts
 } from './account.slice';
 import { createOrUpdateContacts } from './contact.slice';
 import { sanitizeAccount } from './helpers';
@@ -785,5 +788,24 @@ describe('AccountSlice', () => {
         )
         .silentRun();
     });
+  });
+
+  it('fetchBalances(): fetch assets balances from accounts', () => {
+    const result = [fAccounts[0]];
+    const initialState = mockAppState({
+      accounts: [fAccounts[0]],
+      assets: fAssets,
+      networks: fNetworks,
+      addressBook: fContacts,
+      settings: { dashboardAccounts: [fAccounts[0].uuid] } as ISettings
+    });
+
+    return expectSaga(fetchBalances)
+      .withState(initialState)
+      .provide([[call.fn(getAccountsAssetsBalances), result]])
+      .select(selectCurrentAccounts)
+      .call(getAccountsAssetsBalances, fAccounts[0])
+      .put(updateAccounts(result))
+      .silentRun();
   });
 });
