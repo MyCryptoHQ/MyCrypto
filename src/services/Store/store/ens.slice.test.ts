@@ -2,8 +2,9 @@ import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { fAccounts, fEnsApiResponse, fEnsRecords } from '@fixtures';
+import { fAccounts, fEnsRecords, fEnsApiResponse as mockEnsResponse } from '@fixtures';
 import { ENSService } from '@services/ApiService/Ens';
+import { TAddress } from '@types';
 
 import slice, { ensSaga, fetchENS, initialState } from './ens.slice';
 
@@ -11,7 +12,10 @@ const reducer = slice.reducer;
 const { fetchError, setRecords } = slice.actions;
 
 jest.mock('apollo-boost', () => ({
-  query: jest.fn().mockImplementation(() => Promise.resolve(fEnsApiResponse))
+  ...jest.requireActual('apollo-boost'),
+  default: jest.fn().mockImplementation(() => ({
+    query: jest.fn().mockImplementation(() => Promise.resolve(mockEnsResponse))
+  }))
 }));
 
 describe('EnsSlice', () => {
@@ -37,7 +41,17 @@ describe('EnsSlice', () => {
 describe('ensSaga()', () => {
   it('fetches ens', () => {
     return expectSaga(ensSaga)
-      .withState(mockAppState({ accounts: fAccounts }))
+      .withState(
+        mockAppState({
+          accounts: [
+            {
+              ...fAccounts[0],
+              address: fEnsRecords[0].owner as TAddress,
+              label: fEnsRecords[0].ownerLabel
+            }
+          ]
+        })
+      )
       .put(setRecords(fEnsRecords))
       .dispatch(fetchENS())
       .silentRun();
