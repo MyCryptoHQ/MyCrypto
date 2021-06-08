@@ -30,7 +30,7 @@
     "@ledgerhq/hw-transport-webusb": "5.51.1",
     "@metamask/inpage-provider": "6.0.1",
     "@mycrypto/eth-scan": "3.4.4",
-    "@mycrypto/ui": "0.24.1",
+    "@mycrypto/ui": "1.0.0",
     "@mycrypto/unlock-scan": "1.2.0",
     "@reduxjs/toolkit": "1.5.0",
     "@styled-system/should-forward-prop": "5.1.5",
