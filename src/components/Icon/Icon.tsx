@@ -126,7 +126,6 @@ import linkOutIcon from '@assets/images/link-out.svg';
 import membership from '@assets/images/membership/membership-none.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
-import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -263,7 +262,6 @@ const svgIcons = {
 
 const pngIcons = {
   /* Partner Icons */
-  'uni-logo': uniLogo,
   'lend-logo': lendLogo,
   'ant-logo': antLogo,
   'gol-logo': golemLogo

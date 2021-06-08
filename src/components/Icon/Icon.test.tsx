@@ -13,7 +13,7 @@ describe('Icon', () => {
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
   it('renders a PNG Icon by type', () => {
-    const { container } = renderComponent({ type: 'uni-logo' });
+    const { container } = renderComponent({ type: 'lend-logo' });
     expect(container.querySelector('img')).toBeInTheDocument();
   });
   it('throws an Error when type is invalid', () => {
