@@ -11,22 +11,13 @@ import {
   REPV1UUID,
   ROUTE_PATHS,
   socialMediaLinks,
-  SUBSCRIBE_NEWSLETTER_LINK,
-  UNISWAP_LINK
+  SUBSCRIBE_NEWSLETTER_LINK
 } from '@config';
-import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import translate, { translateRaw } from '@translations';
 import { ACTION_CATEGORIES, ACTION_NAME, ActionFilters, ActionTemplate } from '@types';
 import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@utils';
 
-import {
-  ActionButton,
-  ActionButtonProps,
-  MigrationSubHead,
-  MigrationTable,
-  UniClaimSubHead,
-  UniClaimTable
-} from './components';
+import { ActionButton, ActionButtonProps, MigrationSubHead, MigrationTable } from './components';
 
 interface IHwWalletElement {
   icon: TIcon;
@@ -97,26 +88,6 @@ export const actionTemplates: ActionTemplate[] = [
       }
     },
     category: ACTION_CATEGORIES.MIGRATION
-  },
-  {
-    name: ACTION_NAME.CLAIM_UNI,
-    heading: translateRaw('CLAIM_UNI_ACTION_HEADING'),
-    icon: 'uni-logo',
-    subHeading: UniClaimSubHead,
-    body: [translate('CLAIM_UNI_ACTION_BODY')],
-    filter: ({ uniClaims }: ActionFilters) =>
-      uniClaims.some((c) => c.state === ClaimState.UNCLAIMED),
-    priority: 30,
-    Component: UniClaimTable,
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('CLAIM_UNI_ACTION_BUTTON'),
-        to: UNISWAP_LINK,
-        external: true
-      }
-    },
-    category: ACTION_CATEGORIES.THIRD_PARTY
   },
   {
     name: ACTION_NAME.MIGRATE_LEND,

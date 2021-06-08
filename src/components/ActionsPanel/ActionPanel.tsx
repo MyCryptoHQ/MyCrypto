@@ -51,7 +51,7 @@ const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFil
   });
 
 export const ActionPanel = () => {
-  const { assets, uniClaims, accounts, isMyCryptoMember } = useContext(StoreContext);
+  const { assets, accounts, isMyCryptoMember } = useContext(StoreContext);
   const ensOwnershipRecords = useSelector(getENSRecords);
   const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
@@ -62,14 +62,13 @@ export const ActionPanel = () => {
         (a: ActionTemplate[]) =>
           filterUserActions(a, {
             assets,
-            uniClaims,
             ensOwnershipRecords,
             accounts,
             isMyCryptoMember
           }),
         filter((a: ActionTemplate) => (a.time ? dateIsBetween(a.time.start, a.time.end) : true))
       )(actionTemplates),
-    [assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember]
+    [assets, ensOwnershipRecords, accounts, isMyCryptoMember]
   );
 
   const dismiss = () => {
