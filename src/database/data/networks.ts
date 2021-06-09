@@ -947,9 +947,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S_NEW]: DPaths.ETH_LEDGER
     },
     gasPriceSettings: {
-      min: 20,
-      max: 60,
-      initial: 20
+      min: 1,
+      max: 20,
+      initial: 5
     }
   },
   SmartChainTestNetwork: {
