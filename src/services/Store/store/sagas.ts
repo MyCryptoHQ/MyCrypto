@@ -9,6 +9,7 @@ import { assetSaga } from './asset.slice';
 import { ensSaga } from './ens.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
+import { notificationSaga } from './notification.slice';
 import { persistenceSaga } from './persistence.slice';
 import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
@@ -31,6 +32,7 @@ export default function* rootSaga() {
     ratesSaga(),
     signMessageSaga(),
     txHistorySaga(),
-    ensSaga()
+    ensSaga(),
+    notificationSaga()
   ]);
 }

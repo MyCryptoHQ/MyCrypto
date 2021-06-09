@@ -10,7 +10,12 @@ export {
 } from './root.reducer';
 export { initialLegacyState } from './legacy.initialState';
 export { useDispatch };
-export { createNotification, updateNotification, selectNotifications } from './notification.slice';
+export {
+  createNotification,
+  updateNotification,
+  selectNotifications,
+  displayNotification
+} from './notification.slice';
 export {
   createAccount,
   createAccounts,

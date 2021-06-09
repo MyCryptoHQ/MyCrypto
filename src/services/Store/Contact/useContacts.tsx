@@ -23,6 +23,10 @@ import {
 import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 import { useContracts } from '../Contract';
+import {
+  getContactByAddressAndNetworkId as getContactByAddressAndNetworkIdFunc,
+  getContactFromContracts
+} from './helpers';
 
 export interface IAddressBookContext {
   contacts: ExtendedContact[];
@@ -42,23 +46,11 @@ export interface IAddressBookContext {
 
 function useContacts() {
   const contacts = useSelector(selectContacts);
-  const { getContractByAddress } = useContracts();
+  const { contracts } = useContracts();
   const dispatch = useDispatch();
   const [contactRestore, setContactRestore] = useState<{
     [name: string]: ExtendedContact | undefined;
   }>({});
-
-  const getContactFromContracts = (address: string): ExtendedContact | undefined => {
-    const contract = getContractByAddress(address as TAddress);
-    const contact: ExtendedContact | undefined = contract && {
-      address,
-      label: contract.name,
-      network: contract.networkId,
-      notes: '',
-      uuid: contract.uuid
-    };
-    return contact;
-  };
 
   const createContact = (item: Contact) => {
     const uuid = generateDeterministicAddressUUID(item.network, item.address);
@@ -83,17 +75,12 @@ function useContacts() {
     return (
       [...contacts, ...STATIC_CONTACTS].find((contact: ExtendedContact) =>
         isSameAddress(contact.address as TAddress, address)
-      ) || getContactFromContracts(address)
+      ) || getContactFromContracts(contracts)(address)
     );
   };
 
   const getContactByAddressAndNetworkId = (address: TAddress, networkId: NetworkId) => {
-    return (
-      [...contacts, ...STATIC_CONTACTS]
-        .filter((contact: ExtendedContact) => contact.network === networkId)
-        .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ||
-      getContactFromContracts(address)
-    );
+    return getContactByAddressAndNetworkIdFunc(contacts, contracts)(address, networkId);
   };
 
   const getAccountLabel = ({ address, networkId }: { address: TAddress; networkId: NetworkId }) => {

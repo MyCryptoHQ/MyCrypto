@@ -24,6 +24,6 @@ const slice = createSlice({
 });
 
 export const { create: createContract, destroy: destroyContract } = slice.actions;
-export const selectContracts = createSelector(getAppState, (s) => s[slice.name]);
+export const selectContracts = createSelector(getAppState, (s) => s.contracts);
 
 export default slice;

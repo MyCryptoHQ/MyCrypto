@@ -2,12 +2,17 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
+import { translateRaw } from '@translations';
 import {
+  Asset,
   AssetBalanceObject,
+  ExtendedContact,
   IAccount,
+  IAccountAdditionData,
   IPendingTxReceipt,
   IProvidersMappings,
   ITxReceipt,
@@ -18,20 +23,34 @@ import {
   NetworkId,
   StoreAccount,
   StoreAsset,
-  TUuid
+  TUuid,
+  WalletId
 } from '@types';
-import { isViewOnlyWallet, sortByLabel } from '@utils';
+import {
+  generateDeterministicAddressUUID,
+  generateUUID,
+  getWeb3Config,
+  isViewOnlyWallet,
+  sortByLabel
+} from '@utils';
 import { findIndex, propEq } from '@vendor';
 
 import { getAccountByAddressAndNetworkName } from '../Account';
+import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
+import {
+  findMultipleNextUnusedDefaultLabels,
+  getContactByAddressAndNetworkId
+} from '../Contact/helpers';
 import { getTxsFromAccount, isTokenMigration } from '../helpers';
 import { getNetworkById } from '../Network';
 import { toStoreAccount } from '../utils';
 import { getAssetByUUID, getAssets } from './asset.slice';
-import { selectAccountContact } from './contact.slice';
+import { createOrUpdateContacts, selectAccountContact, selectContacts } from './contact.slice';
+import { selectContracts } from './contract.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { getNetwork, selectNetworks } from './network.slice';
+import { displayNotification } from './notification.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
@@ -99,6 +118,12 @@ export const {
 } = slice.actions;
 
 export default slice;
+
+export const addNewAccounts = createAction<{
+  networkId: NetworkId;
+  accountType?: WalletId;
+  newAccounts: IAccountAdditionData[];
+}>(`${slice.name}/addNewAccounts`);
 
 /**
  * Selectors
@@ -200,6 +225,7 @@ export function* accountsSaga() {
   yield all([
     takeLatest(addAccounts.type, handleAddAccounts),
     takeLatest(addTxToAccount.type, addTxToAccountWorker),
+    takeLatest(addNewAccounts.type, addNewAccountsWorker),
     pollingSaga(payload)
   ]);
 }
@@ -213,6 +239,93 @@ export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
   } else {
     yield put(slice.actions.createMany(payload));
     yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+  }
+}
+
+export function* addNewAccountsWorker({
+  payload: { networkId, accountType, newAccounts }
+}: PayloadAction<{
+  networkId: NetworkId;
+  accountType?: WalletId;
+  newAccounts: IAccountAdditionData[];
+}>) {
+  const accounts: StoreAccount[] = yield select(getStoreAccounts);
+  const networks: Network[] = yield select(selectNetworks);
+  const assets: Asset[] = yield select(getAssets);
+  const contacts = yield select(selectContacts);
+  const contracts = yield select(selectContracts);
+
+  const network = getNetworkById(networkId, networks);
+  if (!network || newAccounts.length === 0) return;
+  const accountsToAdd = newAccounts.filter(
+    ({ address }) => !getAccountByAddressAndNetworkName(accounts)(address, networkId)
+  );
+  const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
+  const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
+  const newRawAccounts = accountsToAdd.map(({ address, dPath }) => ({
+    address,
+    networkId,
+    wallet: walletType,
+    dPath,
+    assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+    transactions: [],
+    favorite: false,
+    mtime: 0,
+    uuid: generateDeterministicAddressUUID(networkId, address)
+  }));
+  if (newRawAccounts.length === 0) {
+    yield put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }));
+    return;
+  }
+  const newLabels = findMultipleNextUnusedDefaultLabels(
+    newRawAccounts[0].wallet,
+    newRawAccounts.length
+  )(contacts);
+  const newContacts = newRawAccounts
+    .map((rawAccount, idx) => {
+      const existingContact = getContactByAddressAndNetworkId(contacts, contracts)(
+        rawAccount.address,
+        networkId
+      );
+      if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+        return {
+          ...existingContact,
+          label: newLabels[idx]
+        };
+      } else if (!existingContact) {
+        return {
+          label: newLabels[idx],
+          address: rawAccount.address,
+          notes: '',
+          network: rawAccount.networkId,
+          uuid: generateUUID()
+        };
+      }
+      return undefined;
+    })
+    .filter((a) => a !== undefined) as ExtendedContact[];
+  yield put(createOrUpdateContacts(newContacts));
+  yield put(addAccounts(newRawAccounts));
+  yield put(scanTokens({ accounts: newRawAccounts }));
+  yield put(fetchMemberships(newRawAccounts));
+  if (newRawAccounts.length > 1) {
+    yield put(
+      displayNotification({
+        templateName: NotificationTemplates.walletsAdded,
+        templateData: {
+          accounts: newAccounts
+        }
+      })
+    );
+  } else {
+    yield put(
+      displayNotification({
+        templateName: NotificationTemplates.walletAdded,
+        templateData: {
+          address: newAccounts[0].address
+        }
+      })
+    );
   }
 }
 
