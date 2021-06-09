@@ -933,7 +933,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#6d2eae',
     isTestnet: false,
     blockExplorer: makeExplorer({
-      name: 'Enenrgy Web VOLTA Explorer',
+      name: 'Energy Web VOLTA Explorer',
       origin: 'https://volta-explorer.energyweb.org',
       addressPath: 'address',
       blockPath: 'blocks'
@@ -960,7 +960,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'Enenrgy Web Chain Explorer',
+      name: 'Energy Web Chain Explorer',
       origin: 'https://explorer.energyweb.org',
       addressPath: 'address',
       blockPath: 'blocks'
