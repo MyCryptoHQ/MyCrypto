@@ -263,15 +263,16 @@ export function* addNewAccountsWorker({
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
   const newRawAccounts = accountsToAdd.map(({ address, dPath }) => ({
+    uuid: generateDeterministicAddressUUID(networkId, address),
     address,
     networkId,
     wallet: walletType,
     dPath,
     assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
     transactions: [],
-    favorite: false,
     mtime: 0,
-    uuid: generateDeterministicAddressUUID(networkId, address)
+    favorite: false,
+    isPrivate: undefined
   }));
   if (newRawAccounts.length === 0) {
     yield put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }));
@@ -304,7 +305,9 @@ export function* addNewAccountsWorker({
       return undefined;
     })
     .filter((a) => a !== undefined) as ExtendedContact[];
-  yield put(createOrUpdateContacts(newContacts));
+  if (newContacts.length > 0) {
+    yield put(createOrUpdateContacts(newContacts));
+  }
   yield put(addAccounts(newRawAccounts));
   yield put(scanTokens({ accounts: newRawAccounts }));
   yield put(fetchMemberships(newRawAccounts));
