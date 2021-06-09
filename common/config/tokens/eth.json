@@ -2954,6 +2954,13 @@
     "uuid": "66e28eb6-b405-5440-a277-bd4450f94537"
   },
   {
+    "address": "0x4faB740779C73aA3945a5CF6025bF1b0e7F6349C",
+    "symbol": "DIRTY",
+    "decimal": 18,
+    "name": "dirty.finance",
+    "uuid": "f3bc4e07-55e9-5fe7-962f-ae887a119dba"
+  },
+  {
     "address": "0xf14922001A2FB8541a433905437ae954419C2439",
     "symbol": "DIT",
     "decimal": 8,
@@ -4396,8 +4403,15 @@
     "uuid": "d3f04278-ab3d-5dd0-8423-8086536bbebe"
   },
   {
-    "address": "0x70b147E01E9285E7cE68B9BA437Fe3a9190E756a",
+    "address": "0x6243d8CEA23066d098a15582d81a598b4e8391F4",
     "symbol": "FLX",
+    "decimal": 18,
+    "name": "Reflexer Ungovernance Token",
+    "uuid": "cf505125-6a72-5f22-8dba-10c99cd0f833"
+  },
+  {
+    "address": "0x70b147E01E9285E7cE68B9BA437Fe3a9190E756a",
+    "symbol": "FLX (1)",
     "decimal": 18,
     "name": "BitFlux",
     "uuid": "684a2ad4-2dda-5265-ab67-50978ac5e6bd"
@@ -4716,6 +4730,13 @@
     "decimal": 18,
     "name": "Global Awards Token",
     "uuid": "b10b026b-19b7-5686-b1bf-e42a61ee1bd7"
+  },
+  {
+    "address": "0x9d7630aDF7ab0b0CB00Af747Db76864df0EC82E4",
+    "symbol": "GATE",
+    "decimal": 18,
+    "name": "GATE Token",
+    "uuid": "08527948-0da5-5956-b61a-e1053723a533"
   },
   {
     "address": "0x708876f486e448Ee89eB332bFbC8E593553058b9",
@@ -5129,6 +5150,13 @@
     "decimal": 2,
     "name": "Happiness",
     "uuid": "28e8a17c-3320-57e1-9783-3e2bb1161a74"
+  },
+  {
+    "address": "0x2B89D32CfB9b28DFCc7FAcC22453c812F9097655",
+    "symbol": "HAREM",
+    "decimal": 18,
+    "name": "Harem Token",
+    "uuid": "1c56213f-2c48-5336-b71a-a03dea2bf6f5"
   },
   {
     "address": "0x9002D4485b7594e3E850F0a206713B305113f69e",
@@ -7168,6 +7196,13 @@
     "uuid": "9c2900ab-8300-5c14-9eb5-0255c28af552"
   },
   {
+    "address": "0x4a615bB7166210CCe20E6642a6f8Fb5d4D044496",
+    "symbol": "NAOS",
+    "decimal": 18,
+    "name": "NAOS Finance",
+    "uuid": "1997bb1d-6b37-54e4-8bc5-687211652e61"
+  },
+  {
     "address": "0x5d65D971895Edc438f465c17DB6992698a52318D",
     "symbol": "NAS",
     "decimal": 18,
@@ -8043,6 +8078,13 @@
     "uuid": "a64fb791-ab33-5cee-8c3f-34d685bd7b86"
   },
   {
+    "address": "0x46760d2BF2F4dd5405646D9b2cE7B723EFE74a48",
+    "symbol": "PFB",
+    "decimal": 18,
+    "name": "Penny For Bit",
+    "uuid": "5ba4c6f4-fa11-560f-8794-bb596a166691"
+  },
+  {
     "address": "0x2FA32a39fc1c399E0Cc7B2935868f5165De7cE97",
     "symbol": "PFR",
     "decimal": 8,
@@ -8573,6 +8615,13 @@
     "decimal": 18,
     "name": "RAE Token",
     "uuid": "30cec1ed-09ec-5a8f-8b81-d9a36c2ee5ce"
+  },
+  {
+    "address": "0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919",
+    "symbol": "RAI",
+    "decimal": 18,
+    "name": "Rai Reflex Index",
+    "uuid": "91066124-2562-5b9d-a461-9c2b5c07cfbd"
   },
   {
     "address": "0x45eDb535942a8C84D9f4b5D37e1b25F91Ea4804c",
@@ -9597,6 +9646,13 @@
     "uuid": "e223afeb-0c63-5b78-a59a-00781527fb01"
   },
   {
+    "address": "0xcc7ab8d78dBA187dC95bF3bB86e65E0C26d0041f",
+    "symbol": "SPACE",
+    "decimal": 18,
+    "name": "Spacelens",
+    "uuid": "9cef2ca3-00be-5bb8-ac48-b99e9ac21955"
+  },
+  {
     "address": "0x42d6622deCe394b54999Fbd73D108123806f6a18",
     "symbol": "SPANK",
     "decimal": 18,
@@ -10407,6 +10463,13 @@
     "decimal": 18,
     "name": "Time Bank",
     "uuid": "6d410c20-211f-5603-b135-5387d91f91c3"
+  },
+  {
+    "address": "0xAD6683b7f3618c44F5CA6040902812Dd890DdE4d",
+    "symbol": "TNO",
+    "decimal": 18,
+    "name": "TNOS COIN",
+    "uuid": "92b46c0f-39b8-57a8-af73-ef9e21f53c94"
   },
   {
     "address": "0xb0280743b44bF7db4B6bE482b2Ba7b75E5dA096C",
