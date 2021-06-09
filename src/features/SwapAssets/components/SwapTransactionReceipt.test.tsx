@@ -3,7 +3,7 @@ import React from 'react';
 import { mockAppState, simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
-import { fAccount, fAccounts, fAssets, fRopDAI, fTxParcels } from '@fixtures';
+import { fAccount, fAccounts, fAssets, fDAI, fTxParcels } from '@fixtures';
 import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { bigify, noOp, truncate } from '@utils';
@@ -12,10 +12,10 @@ import { SwapTransactionReceipt } from '.';
 import { LAST_CHANGED_AMOUNT } from '../types';
 
 const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
-  account: fAccount,
+  account: fAccounts[0],
   assetPair: {
     fromAsset: fAssets[0],
-    toAsset: fRopDAI,
+    toAsset: fDAI,
     lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
     fromAmount: bigify(1),
     toAmount: bigify(100),
@@ -38,7 +38,10 @@ function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>
       <SwapTransactionReceipt {...props} />
     </StoreContext.Provider>,
     {
-      intialState: mockAppState({ assets: fAssets, accounts: fAccounts })
+      intialState: mockAppState({
+        assets: fAssets,
+        accounts: fAccounts
+      })
     }
   );
 }
