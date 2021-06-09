@@ -3,7 +3,15 @@ import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
-import { updateAccounts } from '@store';
+import {
+  connectHDWallet,
+  getAccounts,
+  processAccountsQueue,
+  requestConnectionSuccess
+} from '@features/AddAccount/components/hdWallet.slice';
+import { messageUpdate, signMessage } from '@features/SignAndVerifyMessage';
+import { analyticsMiddleware } from '@services/Analytics';
+import { startRatesPolling, updateAccounts } from '@store';
 import { IS_DEV } from '@utils';
 
 import { REDUX_PERSIST_ACTION_TYPES } from './persist.config';
@@ -28,11 +36,23 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
             ...REDUX_PERSIST_ACTION_TYPES,
             // ignore updateAccounts to avoid errors for transaction gasPrice, gasLimit, value etc
             // @todo: Redux solve once we have selectors to deserialize.
-            updateAccounts.type
+            updateAccounts.type,
+            // ignore pollStart to avoid errors with the methods passed in the payload of the action
+            startRatesPolling.type,
+            // ignore these actions to avoid errors with hardware wallet sessions
+            connectHDWallet.type,
+            requestConnectionSuccess.type,
+            getAccounts.type,
+            processAccountsQueue.type,
+            // We pass an IFullWallet instance to signMessageSaga
+            signMessage.type,
+            // Skip check when typing in form
+            messageUpdate.type
           ]
         }
       }),
       sagaMiddleware,
+      analyticsMiddleware,
       // Logger MUST be last in chain.
       // https://github.com/LogRocket/redux-logger#usage
       ...(IS_DEV ? [createLogger({ collapsed: true })] : [])

@@ -5,9 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { ExtendedContentPanel, WalletList } from '@components';
 import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { StoreContext } from '@services/Store';
+import { StoreContext } from '@services';
 import { fetchMemberships, scanTokens, useDispatch } from '@store';
 import { IStory, StoreAccount, WalletId } from '@types';
 import { isSameAddress } from '@utils';
@@ -47,10 +45,6 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
   const { addMultipleAccounts, accounts } = useContext(StoreContext);
   const { displayNotification } = useNotifications();
-  const trackNewAccountAdded = useAnalytics({
-    category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
-    actionName: 'New Account Added'
-  });
 
   const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
   const isDefaultView = storyName === undefined;
@@ -74,14 +68,6 @@ const AddAccountFlow = withRouter(({ history, match }) => {
         const newAccount = accounts.find(
           (account) => isSameAddress(account.address, address) && account.networkId === network
         );
-        if (newAccount) {
-          trackNewAccountAdded({
-            eventParams: {
-              newAccountAddedType: newAccount.wallet,
-              newAccountAddedNumOfAccounts: accounts.length
-            }
-          });
-        }
         return newAccount;
       })
       .filter((a) => a !== undefined) as StoreAccount[];
@@ -149,19 +135,12 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
   };
 
-  const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
-
   const renderDefault = () => {
     return (
       <ExtendedContentPanel width="800px">
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
-            <WalletList
-              wallets={getStories()}
-              onSelect={onWalletSelection}
-              showHeader={true}
-              calculateMargin={calculateMargin}
-            />
+            <WalletList wallets={getStories()} onSelect={onWalletSelection} showHeader={true} />
           </CSSTransition>
         </TransitionGroup>
       </ExtendedContentPanel>

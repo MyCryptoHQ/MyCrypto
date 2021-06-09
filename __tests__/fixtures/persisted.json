@@ -1,5 +1,5 @@
 {
-  "version": "v1.0.0",
+  "version": "v2.0.0",
   "mtime": 1606324295478,
   "accounts": {
     "ef94a882-3af7-5887-89f0-be9833c6b071": {
@@ -874,9 +874,9 @@
       "uuid": "6748daca-1715-450a-b042-d750a465e568"
     },
     "a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe": {
-      "label": "MyCrypto Tip Jar",
+      "label": "MyCrypto Team Tip Jar",
       "address": "0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520",
-      "notes": "Toss us a coin!",
+      "notes": "This is MyCrypto's Donate address. Feel free to delete it!",
       "network": "Ethereum",
       "uuid": "a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe"
     },
@@ -1936,7 +1936,6 @@
       "4a236c90-b722-5e26-8718-659db6b5d302"
     ],
     "excludedAssets": [],
-    "inactivityTimer": 43200000,
     "rates": {
       "e1f698bf-cb85-5405-b563-14774af14bf1": {
         "usd": 0.996893,
@@ -2050,7 +2049,6 @@
     "language": "en",
     "node": "web3"
   },
-  "password": "",
   "networkNodes": {
     "Ethereum": {
       "selectedNode": "ethereum_Emmanuel_Macron",

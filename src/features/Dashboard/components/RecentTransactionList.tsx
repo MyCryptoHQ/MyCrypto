@@ -20,21 +20,20 @@ import {
   EditableAccountLabel,
   FixedSizeCollapsibleTable,
   Icon,
-  RouterLink
+  LinkApp
 } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
-import { ITxHistoryEntry, useContacts, useRates, useSettings, useTxHistory } from '@services';
+import { ITxHistoryEntry, useRates, useSettings, useTxHistory } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount } from '@types';
-import { convertToFiat, isSameAddress } from '@utils';
+import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 
 import { ITxHistoryType } from '../types';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
-import './RecentTransactionList.scss';
 
 interface Props {
   className?: string;
@@ -154,8 +153,8 @@ const makeTxIcon = (type: ITxHistoryType, asset: Asset) => {
     <Box mr="16px" position="relative">
       <img
         src={TxTypeConfig[type] ? TxTypeConfig[type].icon : transfer}
-        width="45px"
-        height="45px"
+        width="36px"
+        height="36px"
       />
       {greyscaleIcon}
     </Box>
@@ -167,7 +166,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
   const { txHistory } = useTxHistory();
-  const { createContact, updateContact } = useContacts();
+  const { isMobile } = useScreenSize();
 
   const accountTxs = txHistory.filter((tx) =>
     accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
@@ -193,20 +192,17 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         networkId,
         txType
       }) => {
-        const editableFromLabel = EditableAccountLabel({
+        const labelFromProps = {
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId,
-          createContact,
-          updateContact
-        });
-        const editableToLabel = EditableAccountLabel({
+          networkId
+        };
+
+        const labelToProps = {
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId,
-          createContact,
-          updateContact
-        });
+          networkId
+        };
 
         return [
           <TransactionLabel
@@ -216,30 +212,48 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             stage={status}
             date={timestamp}
           />,
-          <Account key={1} title={editableFromLabel} truncate={true} address={from} />,
+          <Account
+            key={1}
+            title={<EditableAccountLabel {...labelFromProps} />}
+            truncate={true}
+            address={from}
+          />,
           to && (
             <Account
               key={2}
-              title={editableToLabel}
+              title={<EditableAccountLabel {...labelToProps} />}
               truncate={true}
               address={receiverAddress || to}
             />
           ),
-          <Amount
-            key={3}
-            assetValue={`${parseFloat(amount).toFixed(4)} ${asset.ticker}`}
-            fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(amount), getAssetRate(asset)).toFixed(2)
-            }}
-          />,
-          <RouterLink
-            key={4}
-            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}
-          >
-            <Icon type="more" alt="View more information about this transaction" height="24px" />
-          </RouterLink>
+          <Box key={3}>
+            <Amount
+              // Adapt alignment for mobile display
+              alignLeft={isMobile}
+              asset={{
+                amount: bigify(amount).toFixed(5),
+                ticker: asset.ticker
+              }}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
+              }}
+            />
+          </Box>,
+          <Box key={4} variant="rowCenter">
+            <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
+              {isMobile ? (
+                translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')
+              ) : (
+                <Icon
+                  type="more"
+                  alt="View more information about this transaction"
+                  height="24px"
+                />
+              )}
+            </LinkApp>
+          </Box>
         ];
       }
     );
@@ -275,16 +289,12 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       sortableColumn: translateRaw('RECENT_TRANSACTIONS_DATE'),
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
-      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')]
+      iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
+      reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
     }
   };
   return (
-    <DashboardPanel
-      heading="Recent Transactions"
-      //headingRight="Export"
-      //actionLink="/dashboard/recent-transactions"
-      className={`RecentTransactionsList ${className}`}
-    >
+    <DashboardPanel heading="Recent Transactions" className={`RecentTransactionsList ${className}`}>
       {filteredGroups.length >= 1 ? (
         <FixedSizeCollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
       ) : (

@@ -1,10 +1,8 @@
-import { State as StoreContextState } from '@services/Store/StoreProvider';
-
 import { Action } from './types';
 
-export const filterDashboardActions = (actions: Action[], state: StoreContextState) =>
+export const filterDashboardActions = (actions: Action[], isMobile: boolean) =>
   actions.filter((action) => {
     const filter = action.filter;
     if (!filter) return true;
-    return filter(state);
+    return filter(isMobile);
   });

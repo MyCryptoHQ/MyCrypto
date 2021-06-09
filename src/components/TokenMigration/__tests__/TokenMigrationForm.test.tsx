@@ -1,15 +1,22 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
-import { simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccount, fAssets, fNetwork, fSettings } from '@fixtures';
-import { FeatureFlagProvider } from '@services';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
+import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
+import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
+
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      getTransactionCount: () => 10
+    }))
+  };
+});
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
@@ -28,33 +35,23 @@ const defaultProps: TokenMigrationProps = {
 
 function getComponent(props: TokenMigrationProps) {
   return simpleRender(
-    <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: [{ uuid: fNetwork.baseAsset }],
-            settings: fSettings,
-            networks: [fNetwork]
-          } as unknown) as IDataContext
-        }
-      >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [] },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <TokenMigrationForm {...((props as unknown) as any)} />
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
-      </DataContext.Provider>
-    </MemoryRouter>
+    <StoreContext.Provider
+      value={
+        ({
+          userAssets: [],
+          accounts: fAccounts
+        } as unknown) as any
+      }
+    >
+      <TokenMigrationForm {...((props as unknown) as any)} />
+    </StoreContext.Provider>,
+    {
+      initialState: mockAppState({
+        accounts: fAccounts,
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    }
   );
 }
 

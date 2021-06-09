@@ -1,22 +1,36 @@
 import { all } from 'redux-saga/effects';
 
-import { watchIncrement } from '@features/DevTools/slice';
+import { hdWalletSaga } from '@features/AddAccount/components/hdWallet.slice';
+import { signMessageSaga } from '@features/SignAndVerifyMessage';
+import { analyticsSaga } from '@services/Analytics';
 
+import { accountsSaga } from './account.slice';
 import { assetSaga } from './asset.slice';
+import { ensSaga } from './ens.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
+import { persistenceSaga } from './persistence.slice';
+import { ratesSaga } from './rates.slice';
 import { importSaga } from './root.reducer';
-import { scanTokensSaga } from './tokenScanning.slice';
-import { vaultSaga } from './vault.slice';
+import { settingsSaga } from './settings.slice';
+import { scanTokensSaga } from './tokenScanning.sagas';
+import { txHistorySaga } from './txHistory.slice';
 
 export default function* rootSaga() {
   yield all([
-    watchIncrement(),
     fetchMembershipsSaga(),
+    hdWalletSaga(),
+    accountsSaga(),
+    settingsSaga(),
     networkSaga(),
     assetSaga(),
     importSaga(),
     scanTokensSaga(),
-    vaultSaga()
+    analyticsSaga(),
+    persistenceSaga(),
+    ratesSaga(),
+    signMessageSaga(),
+    txHistorySaga(),
+    ensSaga()
   ]);
 }

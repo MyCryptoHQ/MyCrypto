@@ -1,8 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 
-import { bigNumberify, formatUnits } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits } from '@ethersproject/units';
 import { useFormik } from 'formik';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 import { number, object } from 'yup';
 
 import {
@@ -10,6 +13,7 @@ import {
   AmountInput,
   Box,
   Button,
+  DemoGatewayBanner,
   InlineMessage,
   Label,
   Tooltip
@@ -20,6 +24,7 @@ import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { StoreContext, useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -44,11 +49,12 @@ export interface TokenMigrationProps extends ISimpleTxFormFull {
 interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
-  storeDefaultAccount: StoreAccount;
+  storeDefaultAccount?: StoreAccount;
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
-  error?: Error;
+  error?: CustomError;
   tokenMigrationConfig: ITokenMigrationConfig;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -64,12 +70,14 @@ const TokenMigrationForm = ({
   tokenMigrationConfig,
   isSubmitting,
   error,
+  isDemoMode,
   onComplete
-}: TokenMigrationProps) => {
-  const { accounts, defaultAccount: defaultStoreAccount } = useContext(StoreContext);
+}: Props) => {
+  const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
+  const defaultStoreAccount = useSelector(getDefaultAccount());
   const relevantAccounts = accounts.filter(isEthereumAccount);
   const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
   const defaultAccount = accounts.find((a) =>
@@ -85,6 +93,7 @@ const TokenMigrationForm = ({
       error={error}
       tokenMigrationConfig={tokenMigrationConfig}
       onComplete={onComplete}
+      isDemoMode={isDemoMode}
     />
   );
 };
@@ -97,9 +106,12 @@ export const TokenMigrationFormUI = ({
   storeDefaultAccount,
   defaultAsset,
   tokenMigrationConfig,
-  onComplete
+  onComplete,
+  isDemoMode
 }: UIProps) => {
-  const getInitialFormikValues = (storeDefaultAcc: StoreAccount): ISimpleTxFormFull => ({
+  const getInitialFormikValues = (
+    storeDefaultAcc?: StoreAccount
+  ): Overwrite<ISimpleTxFormFull, { account?: StoreAccount }> => ({
     account: storeDefaultAcc,
     amount: '0',
     asset: defaultAsset,
@@ -134,12 +146,12 @@ export const TokenMigrationFormUI = ({
   useEffect(() => {
     if (!values.account) return;
     const accountAssetAmt = values.account.assets.find(
-      (a) => a.uuid === tokenMigrationConfig.fromAssetUuid
+      (a: Asset) => a.uuid === tokenMigrationConfig.fromAssetUuid
     );
     if (!accountAssetAmt || !asset.decimal) {
       return;
     }
-    setFieldValue('amount', formatUnits(bigNumberify(accountAssetAmt.balance), asset.decimal)); // this would be better as a reducer imo.
+    setFieldValue('amount', formatUnits(BigNumber.from(accountAssetAmt.balance), asset.decimal)); // this would be better as a reducer imo.
     setFieldValue('account', values.account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
 
     handleNonceEstimate(values.account);
@@ -167,11 +179,12 @@ export const TokenMigrationFormUI = ({
 
   return (
     <>
+      {isDemoMode && <DemoGatewayBanner />}
       <Box mb={SPACING.LG}>
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector
           name={'account'}
-          value={values.account}
+          value={values.account || null}
           accounts={filteredAccounts}
           asset={values.asset}
           onSelect={(option: IAccount) => {
@@ -183,22 +196,22 @@ export const TokenMigrationFormUI = ({
         )}
       </Box>
       <Box mb={SPACING.LG} display="flex" flexDirection="column">
-        <Label htmlFor="amount">{translate('SEND_ASSETS_AMOUNT_LABEL')}</Label>
         <Tooltip tooltip={tokenMigrationConfig.formAmountTooltip}>
-          <AmountInput
-            disabled={true}
-            asset={values.asset}
-            value={values.amount || '0'}
-            onChange={noOp}
-            onBlur={() => {
-              setFieldTouched('amount');
-            }}
-            placeholder={'0.00'}
-          />
-          {errors && errors.amount && touched && touched.amount ? (
-            <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
-          ) : null}
+          <Label htmlFor="amount">{translate('SEND_ASSETS_AMOUNT_LABEL')}</Label>
         </Tooltip>
+        <AmountInput
+          disabled={true}
+          asset={values.asset}
+          value={values.amount || '0'}
+          onChange={noOp}
+          onBlur={() => {
+            setFieldTouched('amount');
+          }}
+          placeholder={'0.00'}
+        />
+        {errors && errors.amount && touched && touched.amount ? (
+          <InlineMessage className="SendAssetsForm-errors">{errors.amount}</InlineMessage>
+        ) : null}
       </Box>
       <FormFieldSubmitButton
         type="submit"
@@ -210,15 +223,26 @@ export const TokenMigrationFormUI = ({
             });
           }
         }}
-        disabled={!isFormValid}
+        disabled={!isFormValid || isDemoMode}
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>
       {error && (
-        <InlineMessage value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })} />
+        <InlineMessage
+          value={translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', {
+            $error: error.reason ? error.reason : error.message
+          })}
+        />
       )}
     </>
   );
 };
 
-export default TokenMigrationForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & TokenMigrationProps;
+
+export default connector(TokenMigrationForm);

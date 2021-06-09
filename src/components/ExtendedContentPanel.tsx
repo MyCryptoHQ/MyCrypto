@@ -88,11 +88,6 @@ const ContentPanelTop = styled.div<ContentPanelTopProps>`
   align-items: center;
   justify-content: ${(props) => (props.stepperOnly ? 'flex-end' : 'space-between')};
   margin-bottom: 10px;
-  padding: 0 30px;
-
-  @media (min-width: 700px) {
-    padding: 0;
-  }
 `;
 
 const StyledPanel = styled(Panel)`

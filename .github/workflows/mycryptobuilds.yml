@@ -18,6 +18,7 @@ on:
 
 jobs:
   myc-build:
+    environment: STAGING
     runs-on: ubuntu-latest
 
     steps:
@@ -81,8 +82,33 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+
       - name: yarn build:staging
         run: yarn build:staging
+        if: github.event_name == 'pull_request'
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${{ github.event.pull_request.head.sha }}
+
+      - name: yarn build:staging
+        run: yarn build:staging
+        if: github.event_name == 'repository_dispatch'
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${{ github.event.client_payload.pull_request.head.sha }}
+
+      - name: yarn build:staging
+        run: yarn build:staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${{ steps.vars.outputs.sha }}
 
       - name: S3 Sync - Downloadable Branch - push
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -162,9 +188,9 @@ jobs:
 
       # Launch E2E tests. When in pull request it runs against the PR's mycryptobuilds url.
       - name: E2E - run
-        run: yarn test:e2e
+        run: yarn test:e2e:ci
         env:
-          E2E_PRIVATE_KEY: ${{ secrets.E2E_PRIVATE_KEY }}
+          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 
       - name: Update PR status
         uses: actions/github-script@v1

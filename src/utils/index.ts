@@ -10,7 +10,10 @@ export {
   IS_DEV,
   IS_STAGING,
   IS_PROD,
-  USE_HASH_ROUTER
+  USE_HASH_ROUTER,
+  SEGMENT_WRITE_KEY,
+  ANALYTICS_API_URL,
+  COMMIT_HASH
 } from './environment';
 export { getFeaturedOS } from './getFeaturedOS';
 export {
@@ -32,7 +35,6 @@ export {
   addBNFloats,
   subtractBNFloats,
   trimBN,
-  calculateMarkup,
   withCommission
 } from './convert';
 export { isArrayEqual } from './isArrayEqual';
@@ -48,7 +50,6 @@ export {
 } from './queries';
 export { noOp } from './noOp';
 export {
-  hexToNumber,
   formatMnemonic,
   toChecksumAddressByChainId,
   buildEIP681EtherRequest,
@@ -67,11 +68,10 @@ export { withContext } from './withContext';
 export { getWeb3Config, isWeb3Wallet } from './web3';
 export { toArray } from './toArray';
 export { objToString } from './objToString';
-export { bigify, isBigish } from './bigify';
+export { bigify, hasBalance, isBigish } from './bigify';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';
-export * from './encryption';
 export { openLink } from './openLink';
 export { isSameAddress } from './isSameAddress';
 export { default as isFiatTicker } from './isFiatTicker';
@@ -81,7 +81,7 @@ export { accountsToCSV } from './csv';
 export { getRootDomain } from './getRootDomain';
 export * from './wallets';
 export { isTruthy } from './isTruthy';
-export { filterDropdownAssets, filterValidAssets } from './filterAssets';
+export { filterValidAssets } from './filterAssets';
 export * from './date';
 export {
   makeExplorer,
@@ -128,10 +128,10 @@ export {
   bigNumGasPriceToViewableGwei,
   bigNumValueToViewableEther
 } from './makeTransaction';
-export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
+export { hexEncodeQuantity } from './hexEncode';
 export { randomElementFromArray } from './random';
 export { generateTweet } from './generateTweet';
 export { arrayToObj } from './toObject';
-export { default as log } from './log';
 export { mapAsync, filterAsync } from './asyncFilter';
-export { isValidJSON } from './isValidJSON';
+export { goBack } from './navigation';
+export { addHexPrefix } from './addHexPrefix';

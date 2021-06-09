@@ -1,28 +1,22 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAssets } from '@fixtures';
 import { Asset, ExtendedAsset } from '@types';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useAssets from './useAssets';
 
 const renderUseAssets = ({ assets = [] as ExtendedAsset[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ assets } as unknown) as IDataContext}>
-        {' '}
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ assets })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useAssets(), { wrapper });
 };
 
 describe('useAssets', () => {
-  it('uses get assets from DataContext', () => {
+  it('uses get assets from store', () => {
     const { result } = renderUseAssets({ assets: fAssets });
     expect(result.current.assets).toEqual(fAssets);
   });

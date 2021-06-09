@@ -1,70 +1,53 @@
-import React, { ReactNode } from 'react';
-
-import { storiesOf } from '@storybook/react';
-import { ThemeProvider } from 'styled-components';
-import { ProvidersWrapper } from 'test-utils';
+import React from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
-import { customNodeConfig, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext } from '@services/Store';
-import { theme } from '@theme';
+import { customNodeConfig } from '@fixtures';
 import { noOp } from '@utils';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 
 const networkId = DEFAULT_NETWORK;
 
-const wrapInProvider = (component: ReactNode) => (
-  <ProvidersWrapper>
-    <DataContext.Provider
-      value={
-        ({
-          userActions: [],
-          networks: fNetworks,
-          settings: fSettings
-        } as unknown) as IDataContext
-      }
-    >
-      {component}
-    </DataContext.Provider>
-  </ProvidersWrapper>
-);
+export default { title: 'Features/AddorEditNetworkNode', component: AddOrEditNetworkNode };
 
-const addNetworkNode = wrapInProvider(
+const Template = (args: React.ComponentProps<typeof AddOrEditNetworkNode>) => (
   <div className="sb-container" style={{ maxWidth: '800px' }}>
-    <AddOrEditNetworkNode
-      networkId={networkId}
-      editNode={undefined}
-      onComplete={noOp}
-      isAddingCustomNetwork={false}
-    />
+    <AddOrEditNetworkNode {...args} />
   </div>
 );
 
-const editNetworkNode = wrapInProvider(
-  <div className="sb-container" style={{ maxWidth: '800px' }}>
-    <AddOrEditNetworkNode
-      networkId={networkId}
-      editNode={customNodeConfig}
-      onComplete={noOp}
-      isAddingCustomNetwork={false}
-    />
-  </div>
-);
+const defaultProps = {
+  networkId,
+  editNode: undefined,
+  onComplete: noOp,
+  isAddingCustomNetwork: false
+};
 
-storiesOf('NetworkNodeForm', module)
-  .addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
-  .add('Add node', () => addNetworkNode, {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
-    }
-  })
-  .add('Edit node', () => editNetworkNode, {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
-    }
-  });
+export const AddNetworkNode = Template.bind({});
+AddNetworkNode.storyName = 'AddNetworkNode';
+AddNetworkNode.args = {
+  ...defaultProps
+};
+
+export const EditNetworkNode = Template.bind({});
+EditNetworkNode.storyName = 'EditNetworkNode';
+EditNetworkNode.args = {
+  ...defaultProps,
+  editNode: customNodeConfig
+};
+
+// storiesOf('Features/NetworkNodeForm', module)
+//   .add('Add node', () => addNetworkNode, {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
+//     }
+//   })
+//   .add('Edit node', () => editNetworkNode, {
+//     design: {
+//       type: 'figma',
+//       url:
+//         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
+//     }
+//   });

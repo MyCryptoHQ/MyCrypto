@@ -1,21 +1,21 @@
 import { default as customDPaths } from './customDPaths.json';
 import { default as customDPathsDone } from './customDPathsDone.json';
 import { default as customDPathsPending } from './customDPathsPending.json';
-import { default as finishedAccountsDone } from './finishedAccountsDone.json';
-import { default as finishedAccountsPending } from './finishedAccountsPending.json';
-import { default as processFinishedAccountsCustomDPathsDone } from './processFinishedAccountsCustomDPathsDone.json';
-import { default as processFinishedAccountsCustomDPathsPending } from './processFinishedAccountsCustomDPathsPending.json';
-import { default as processFinishedAccountsDone } from './processFinishedAccountsDone.json';
-import { default as processFinishedAccountsPending } from './processFinishedAccountsPending.json';
+import { default as processScannedAccountsCustomDPathsDone } from './processScannedAccountsCustomDPathsDone.json';
+import { default as processScannedAccountsCustomDPathsPending } from './processScannedAccountsCustomDPathsPending.json';
+import { default as processScannedAccountsDone } from './processScannedAccountsDone.json';
+import { default as processScannedAccountsPending } from './processScannedAccountsPending.json';
+import { default as scannedAccountsDone } from './scannedAccountsDone.json';
+import { default as scannedAccountsPending } from './scannedAccountsPending.json';
 
 export const fixtures = {
   customDPaths,
   customDPathsPending,
   customDPathsDone,
-  finishedAccountsPending,
-  finishedAccountsDone,
-  processFinishedAccountsCustomDPathsDone,
-  processFinishedAccountsCustomDPathsPending,
-  processFinishedAccountsDone,
-  processFinishedAccountsPending
+  scannedAccountsPending,
+  scannedAccountsDone,
+  processScannedAccountsCustomDPathsDone,
+  processScannedAccountsCustomDPathsPending,
+  processScannedAccountsDone,
+  processScannedAccountsPending
 };

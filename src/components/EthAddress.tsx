@@ -31,8 +31,10 @@ const Overrides = styled.div`
     vertical-align: middle;
     margin-top: -0.1ch;
     line-height: 24px;
+    width: auto;
   }
   & button svg {
+    margin-left: -0.5ch;
     height: 0.8em;
     color: ${COLORS.BLUE_GREY};
   }

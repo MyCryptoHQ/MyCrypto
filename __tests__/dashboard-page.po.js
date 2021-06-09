@@ -14,7 +14,7 @@ export default class DashboardPage extends BasePage {
   }
 
   async expectAddressToBePresent(address) {
-    await t.expect(getAllByText(address.substring(0, 6), { exact: false })).ok();
+    await t.expect(getAllByText(address.substring(0, 6), { exact: false }).exists).ok();
   }
 
   async expectAccountTableToMatchCount(count) {

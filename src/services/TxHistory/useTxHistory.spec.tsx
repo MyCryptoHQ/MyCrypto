@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
+import { parseEther } from '@ethersproject/units';
 import { renderHook } from '@testing-library/react-hooks';
-import { bigNumberify, parseEther } from 'ethers/utils';
-import { ProvidersWrapper } from 'test-utils';
+import { mockAppState, ProvidersWrapper } from 'test-utils';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
@@ -11,13 +12,10 @@ import {
   fAccounts,
   fAssets,
   fContacts,
-  fContracts,
   fNetwork,
-  fNetworks,
   fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { fromWei, Wei } from '@utils';
 
@@ -28,22 +26,17 @@ const renderUseTxHistory = ({
   accounts = fAccounts
 } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            addressBook: fContacts,
-            contracts: fContracts,
-            networks: fNetworks,
-            assets: fAssets
-          } as unknown) as IDataContext
-        }
-      >
-        <StoreContext.Provider value={{ accounts, txHistory: apiTransactions } as any}>
-          {' '}
-          {children}
-        </StoreContext.Provider>
-      </DataContext.Provider>
+    <ProvidersWrapper
+      initialState={{
+        ...mockAppState({
+          addressBook: fContacts,
+          assets: fAssets,
+          accounts
+        }),
+        txHistory: { history: apiTransactions, error: false }
+      }}
+    >
+      {children}
     </ProvidersWrapper>
   );
   return renderHook(() => useTxHistory(), { wrapper });
@@ -56,19 +49,19 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxHistoryAPI,
-        amount: fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'),
+        amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'),
         asset: fAssets[0],
         baseAsset: fAssets[0],
         fromAddressBookEntry: undefined,
         toAddressBookEntry: undefined,
         receiverAddress: fTxHistoryAPI.recipientAddress,
-        nonce: bigNumberify(fTxHistoryAPI.nonce).toString(),
+        nonce: BigNumber.from(fTxHistoryAPI.nonce).toString(),
         networkId: DEFAULT_NETWORK,
-        blockNumber: bigNumberify(fTxHistoryAPI.blockNumber!).toNumber(),
-        gasLimit: bigNumberify(fTxHistoryAPI.gasLimit),
-        gasPrice: bigNumberify(fTxHistoryAPI.gasPrice),
-        gasUsed: bigNumberify(fTxHistoryAPI.gasUsed || 0),
-        value: parseEther(fromWei(Wei(bigNumberify(fTxHistoryAPI.value).toString()), 'ether'))
+        blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
+        gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
+        gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
+        gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
+        value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
       }
     ]);
   });
@@ -80,6 +73,9 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxReceipt,
+        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+        value: BigNumber.from(fTxReceipt.value),
         networkId: fNetwork.id,
         timestamp: 0,
         toAddressBookEntry: undefined,
@@ -108,6 +104,9 @@ describe('useTxHistory', () => {
     expect(result.current.txHistory).toEqual([
       {
         ...fTxReceipt,
+        gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+        gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+        value: BigNumber.from(fTxReceipt.value),
         hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
         networkId: fNetwork.id,
         timestamp: 0,

@@ -1,13 +1,21 @@
 import React, { useContext } from 'react';
 
-import { Button } from '@mycrypto/ui';
-import { parseEther } from 'ethers/utils';
+import { parseEther } from '@ethersproject/units';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
 import { number, object } from 'yup';
 
-import { AccountSelector, AmountInput, InlineMessage, PoweredByText } from '@components';
+import {
+  AccountSelector,
+  AmountInput,
+  Button,
+  DemoGatewayBanner,
+  InlineMessage,
+  PoweredByText
+} from '@components';
 import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { fetchGasPriceEstimates } from '@services/ApiService';
@@ -16,6 +24,7 @@ import { getAccountBalance, useAssets } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
 import { useNetworks } from '@services/Store/Network';
 import { StoreContext } from '@services/Store/StoreProvider';
+import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
@@ -24,7 +33,7 @@ import { IZapConfig } from '../config';
 import { ZapInteractionState } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
 
-interface Props extends ZapInteractionState {
+interface ZapProps extends ZapInteractionState {
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -34,7 +43,8 @@ interface UIProps {
   network: Network;
   zapSelected: IZapConfig;
   relevantAccounts: StoreAccount[];
-  defaultAccount: StoreAccount;
+  defaultAccount?: StoreAccount;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -63,8 +73,9 @@ const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
 
-const ZapForm = ({ onComplete, zapSelected }: Props) => {
-  const { accounts, defaultAccount } = useContext(StoreContext);
+const ZapForm = ({ onComplete, zapSelected, isDemoMode }: Props) => {
+  const { accounts } = useContext(StoreContext);
+  const defaultAccount = useSelector(getDefaultAccount());
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
@@ -78,6 +89,7 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
       zapSelected={zapSelected as IZapConfig}
       relevantAccounts={relevantAccounts}
       defaultAccount={defaultAccount}
+      isDemoMode={isDemoMode}
       onComplete={onComplete}
     />
   );
@@ -89,9 +101,10 @@ export const ZapFormUI = ({
   zapSelected,
   relevantAccounts,
   defaultAccount,
+  isDemoMode,
   onComplete
 }: UIProps) => {
-  const initialFormikValues: ISimpleTxFormFull = {
+  const initialFormikValues: Overwrite<ISimpleTxFormFull, { account?: StoreAccount }> = {
     account: defaultAccount,
     amount: '',
     asset: ethAsset,
@@ -127,6 +140,7 @@ export const ZapFormUI = ({
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner />}
       <Formik
         initialValues={initialFormikValues}
         validationSchema={ZapFormSchema}
@@ -188,7 +202,7 @@ export const ZapFormUI = ({
                   )}
                 </Field>
               </FormFieldItem>
-              <FormFieldSubmitButton type="submit">
+              <FormFieldSubmitButton disabled={isDemoMode} type="submit">
                 {translateRaw('ACTION_6')}
               </FormFieldSubmitButton>
               <DeFiZapLogoContainer>
@@ -202,4 +216,11 @@ export const ZapFormUI = ({
   );
 };
 
-export default ZapForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & ZapProps;
+
+export default connector(ZapForm);

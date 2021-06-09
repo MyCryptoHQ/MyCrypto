@@ -1,6 +1,7 @@
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { parse as parseTransaction } from '@ethersproject/transactions';
 
-import { donationAddressMap } from '@config';
+import { donationAddressMap, ETHUUID } from '@config';
 import {
   fAccounts,
   fAssets,
@@ -20,7 +21,8 @@ import {
   fFinishedERC20Web3TxReceipt,
   fNetwork,
   fNetworks,
-  fRopDAI
+  fRopDAI,
+  fSignedTx
 } from '@fixtures';
 import {
   ITxData,
@@ -31,10 +33,12 @@ import {
   ITxToAddress,
   ITxType,
   ITxValue,
-  TAddress
+  TAddress,
+  TUuid
 } from '@types';
 
 import {
+  appendGasLimit,
   appendGasPrice,
   appendNonce,
   appendSender,
@@ -45,16 +49,19 @@ import {
   makeFinishedTxReceipt,
   makePendingTxReceipt,
   makeTxConfigFromTxResponse,
+  makeUnknownTxReceipt,
   toTxReceipt,
   verifyTransaction
 } from './transaction';
 
 jest.mock('@services/ApiService/Gas', () => ({
-  fetchGasPriceEstimates: () => new Promise((resolve, _) => resolve({ fast: 20 }))
+  ...jest.requireActual('@services/ApiService/Gas'),
+  fetchGasPriceEstimates: () => Promise.resolve({ fast: 20 }),
+  getGasEstimate: () => Promise.resolve(21000)
 }));
 
 jest.mock('@services/EthService/nonce', () => ({
-  getNonce: () => new Promise((resolve, _) => resolve(1))
+  getNonce: () => Promise.resolve(1)
 }));
 
 const senderAddr = donationAddressMap.ETH as TAddress;
@@ -91,6 +98,16 @@ describe('toTxReceipt', () => {
     );
     expect(txReceipt).toStrictEqual(fERC20Web3TxReceipt);
   });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
 });
 
 describe('makePendingTxReceipt', () => {
@@ -111,7 +128,7 @@ describe('makePendingTxReceipt', () => {
   });
 
   it('creates pending tx receipt for non-web3 erc20 tx', () => {
-    const txReceipt = toTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+    const txReceipt = makePendingTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash)(
       ITxType.STANDARD,
       fERC20NonWeb3TxConfig
     );
@@ -119,11 +136,69 @@ describe('makePendingTxReceipt', () => {
   });
 
   it('creates pending tx receipt for web3 erc20 tx', () => {
-    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+    const txReceipt = makePendingTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
       ITxType.STANDARD,
       fERC20Web3TxConfig
     );
     expect(txReceipt).toStrictEqual(fERC20Web3TxReceipt);
+  });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = makePendingTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
+});
+
+describe('makeUnknownTxReceipt', () => {
+  it('creates pending tx receipt for non-web3 eth tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fETHNonWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fETHNonWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fETHNonWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for web3 eth tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fETHWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fETHWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fETHWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for non-web3 erc20 tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fERC20NonWeb3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20NonWeb3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20NonWeb3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('creates pending tx receipt for web3 erc20 tx', () => {
+    const txReceipt = makeUnknownTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig
+    );
+    expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, status: ITxStatus.UNKNOWN });
+  });
+
+  it('adds metadata if present', () => {
+    const metadata = { receivingAsset: ETHUUID as TUuid };
+    const txReceipt = makeUnknownTxReceipt(fERC20Web3TxResponse.hash as ITxHash)(
+      ITxType.STANDARD,
+      fERC20Web3TxConfig,
+      metadata
+    );
+    expect(txReceipt).toStrictEqual({
+      ...fERC20Web3TxReceipt,
+      status: ITxStatus.UNKNOWN,
+      metadata
+    });
   });
 });
 
@@ -257,8 +332,8 @@ describe('deriveTxFields', () => {
     expect(result).toStrictEqual({
       to: toAddress,
       receiverAddress: toAddress,
-      amount: '0',
-      asset: fRopDAI
+      amount: '0.0',
+      asset: fAssets[1]
     });
   });
   it("interprets an eth tx's fields correctly", () => {
@@ -317,6 +392,49 @@ describe('appendSender', () => {
   });
 });
 
+describe('appendGasLimit', () => {
+  it('appends gas limit to transaction input', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice
+    };
+    const actual = await appendGasLimit(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasLimit: '0x6270',
+      gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('respects gas limit if present', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      chainId: 1,
+      gasPrice: '0x4a817c800' as ITxGasPrice,
+      gasLimit: '0x5208' as ITxGasLimit
+    };
+    const actual = await appendGasLimit(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasLimit: '0x5208',
+      gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+});
+
 describe('appendGasPrice', () => {
   it('appends gas price to transaction input', async () => {
     const input = {
@@ -332,6 +450,25 @@ describe('appendGasPrice', () => {
       data: '0x0',
       chainId: 1,
       gasPrice: '0x4a817c800'
+    };
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('respects gas price if present', async () => {
+    const input = {
+      to: senderAddr,
+      value: '0x0' as ITxValue,
+      data: '0x0' as ITxData,
+      gasPrice: '0x2540be400' as ITxGasPrice,
+      chainId: 1
+    };
+    const actual = await appendGasPrice(fNetworks[0])(input);
+    const expected = {
+      to: senderAddr,
+      value: '0x0',
+      data: '0x0',
+      chainId: 1,
+      gasPrice: '0x2540be400'
     };
     expect(actual).toStrictEqual(expected);
   });
@@ -368,11 +505,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x49634f1e439e3760265888434a2f9782928362412030db1429458ddc9dcee995',
@@ -381,15 +518,19 @@ describe('verifyTransaction', () => {
     ).toBe(true);
   });
 
+  it('verifies a parsed signed transaction', () => {
+    expect(verifyTransaction(parseTransaction(fSignedTx))).toBe(true);
+  });
+
   it('returns false for transactions with an invalid s value', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a1',
@@ -402,11 +543,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x7e833413ead52b8c538001b12ab5a85bac88db0b34b61251bb0fc81573ca093f',
         s: '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a1',
@@ -419,11 +560,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1,
         r: '0x12345',
         s: '0x12345',
@@ -436,11 +577,11 @@ describe('verifyTransaction', () => {
     expect(
       verifyTransaction({
         to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: new BigNumber('0x0'),
+        value: BigNumber.from('0x0'),
         data: '0x',
         chainId: 1,
-        gasLimit: new BigNumber('0x5208'),
-        gasPrice: new BigNumber('0x1'),
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0x1'),
         nonce: 1
       })
     ).toBe(false);

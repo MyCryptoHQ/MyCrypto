@@ -1,11 +1,10 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import { REPV1UUID } from '@config';
-import { DWAccountDisplay } from '@services';
-import { DPath, StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
-import { bigify } from '@utils';
+import { DWAccountDisplay, ExtendedDPath } from '@services';
+import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
 
-import { fNetwork, fNetworks } from './network';
+import { Ethereum, fNetwork } from './network';
 
 export const fAccounts: StoreAccount[] = [
   {
@@ -22,8 +21,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'ETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x1b9ced41465be000')
       },
       {
         uuid: REPV1UUID,
@@ -34,15 +32,14 @@ export const fAccounts: StoreAccount[] = [
         decimal: 18,
         contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
         isCustom: false,
-        balance: bigNumberify('0x3782dace9d900000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x3782dace9d900000')
       }
     ],
     transactions: [],
     favorite: false,
     mtime: 0,
     uuid: '15d5e8f3-c595-5206-b5f3-86c180eb7119' as TUuid,
-    network: fNetworks[0],
+    network: Ethereum,
     label: 'WalletConnect Account 1'
   },
   {
@@ -59,8 +56,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x1b9ced41465be000')
       }
     ],
 
@@ -86,8 +82,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x54ab1b2ceea88000')
       },
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -97,8 +92,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x0e2347cb6425dc00')
       }
     ],
     transactions: [],
@@ -123,8 +117,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x54ab1b2ceea88000')
       },
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -134,8 +127,7 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x0e2347cb6425dc00')
       }
     ],
     transactions: [],
@@ -160,8 +152,7 @@ export const fAccounts: StoreAccount[] = [
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x54ab1b2ceea88000')
       },
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -172,8 +163,7 @@ export const fAccounts: StoreAccount[] = [
         decimal: 18,
 
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x0e2347cb6425dc00')
       }
     ],
     transactions: [],
@@ -197,15 +187,14 @@ export const fAccounts: StoreAccount[] = [
         ticker: 'ETH' as TTicker,
         decimal: 18,
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x1b9ced41465be000')
       }
     ],
     transactions: [],
     favorite: false,
     mtime: 0,
     uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70y' as TUuid,
-    network: fNetwork,
+    network: Ethereum,
     label: 'WalletConnect Account 2'
   }
 ];
@@ -220,10 +209,10 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 0
     },
-    balance: bigify('0')
+    balance: '100000000000000000000'
   },
   {
     address: '0xE8C0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
@@ -234,10 +223,66 @@ export const fDWAccounts: DWAccountDisplay[] = [
         value: "m/44'/60'/0'",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('0')
+    balance: '0'
+  },
+  {
+    address: '0xE8A0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/2",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '1000000000000000000'
+  },
+  {
+    address: '0xE8B0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/3",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '1500000000000000000'
+  },
+  {
+    address: '0xE8D0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/4",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '0'
+  },
+  {
+    address: '0xE8E0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/5",
+      baseDPath: {
+        label: 'Ledger (ETH)',
+        value: "m/44'/60'/0'",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '12000000000000000000'
   }
 ];
 

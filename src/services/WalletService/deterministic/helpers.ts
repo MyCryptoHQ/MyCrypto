@@ -1,14 +1,19 @@
-import { DPath } from '@types';
-import { bigify } from '@utils/bigify';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 
+import { LedgerU2F, LedgerUSB, Trezor } from '@services';
+import { DPath, WalletId } from '@types';
+import { bigify } from '@utils';
+
+import { LedgerHID } from '../wallets/ledger';
 import { DWAccountDisplay, ExtendedDPath } from './types';
 
-export const processFinishedAccounts = (
-  finishedAccounts: DWAccountDisplay[],
+export const processScannedAccounts = (
+  scannedAccounts: DWAccountDisplay[],
   customDPaths: ExtendedDPath[],
   desiredGap: number
 ) => {
-  const pathItems = finishedAccounts.map((acc) => ({
+  const pathItems = scannedAccounts.map((acc) => ({
     ...acc.pathItem,
     balance: acc.balance
   }));
@@ -17,7 +22,7 @@ export const processFinishedAccounts = (
     const curLastIndex = acc[idx]?.lastIndex;
     const curLastInhabitedIndex = acc[idx]?.lastInhabitedIndex || 0;
     const newLastInhabitedIndex =
-      curLastInhabitedIndex < item.index && item.balance && !item.balance.isZero()
+      curLastInhabitedIndex < item.index && item.balance && !bigify(item.balance).isZero()
         ? item.index
         : curLastInhabitedIndex;
     acc[idx] = {
@@ -48,9 +53,18 @@ export const processFinishedAccounts = (
 export const sortAccountDisplayItems = (accounts: DWAccountDisplay[]): DWAccountDisplay[] =>
   accounts.sort((a, b) => a.pathItem.index - b.pathItem.index);
 
-export const findFinishedZeroBalanceAccounts = (
-  accounts: DWAccountDisplay[]
-): DWAccountDisplay[] => {
-  const sortedAccounts = sortAccountDisplayItems(accounts);
-  return sortedAccounts.filter(({ balance }) => balance && bigify(balance.toString()).isZero());
+export const selectWallet = async (walletId: WalletId) => {
+  switch (walletId) {
+    default:
+    case WalletId.LEDGER_NANO_S_NEW: {
+      const isWebHIDSupported = await TransportWebHID.isSupported().catch(() => false);
+      if (isWebHIDSupported) {
+        return new LedgerHID();
+      }
+      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
+      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F();
+    }
+    case WalletId.TREZOR_NEW:
+      return new Trezor();
+  }
 };

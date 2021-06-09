@@ -1,22 +1,18 @@
-import { formatEther } from 'ethers/utils';
+import axios from 'axios';
 
-import {
-  DEFAULT_NETWORK,
-  DEFAULT_NETWORK_CHAINID,
-  DEFAULT_NETWORK_TICKER,
-  MYC_DEXAG_COMMISSION_RATE
-} from '@config';
-import { DexAsset, DexService, getNetworkById, useNetworks } from '@services';
+import { MYC_DEX_COMMISSION_RATE } from '@config';
+import { checkRequiresApproval } from '@helpers';
+import { DexAsset, DexService, getGasEstimate } from '@services';
+import { selectNetwork, useSelector } from '@store';
 import translate from '@translations';
-import { ISwapAsset, StoreAccount } from '@types';
+import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
 import {
-  calculateMarkup,
-  convertToBN,
+  bigify,
   divideBNFloats,
   formatErrorEmailMarkdown,
   generateAssetUUID,
+  inputGasLimitToHex,
   multiplyBNFloats,
-  trimBN,
   TUseStateReducerFactory,
   withCommission
 } from '@utils';
@@ -24,6 +20,7 @@ import {
 import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
 const swapFormInitialState = {
+  selectedNetwork: 'Ethereum',
   assets: [],
   account: undefined,
   fromAsset: undefined,
@@ -37,31 +34,38 @@ const swapFormInitialState = {
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
 };
 
+const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
-  const { networks } = useNetworks();
+  const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
+
+  const setNetwork = (network: NetworkId) => {
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      selectedNetwork: network
+    }));
+  };
 
   const fetchSwapAssets = async () => {
     try {
-      const assets = await DexService.instance.getTokenList();
+      const assets = await DexService.instance.getTokenList(network.id);
       if (assets.length < 1) return;
       // sort assets alphabetically
       const newAssets = assets
-        .map(
-          ({ symbol, ...asset }: DexAsset): ISwapAsset => ({
-            ...asset,
-            ticker: symbol,
-            uuid:
-              symbol === DEFAULT_NETWORK_TICKER
-                ? generateAssetUUID(DEFAULT_NETWORK_CHAINID)
-                : generateAssetUUID(DEFAULT_NETWORK_CHAINID, asset.address)
-          })
-        )
+        .map(({ symbol, decimals, ...asset }: DexAsset) => ({
+          ...asset,
+          ticker: symbol,
+          decimal: decimals,
+          uuid:
+            asset.address === BASE_ASSET_ADDRESS
+              ? generateAssetUUID(network.chainId)
+              : generateAssetUUID(network.chainId, asset.address)
+        }))
         .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
           (asset1.ticker as string).localeCompare(asset2.ticker)
         );
       // set fromAsset to default (ETH)
-      const network = getNetworkById(DEFAULT_NETWORK, networks);
-      const fromAsset = newAssets.find((x: ISwapAsset) => x.ticker === network.baseUnit);
+      const fromAsset = newAssets.find((x) => x.address === BASE_ASSET_ADDRESS);
       const toAsset = newAssets[0];
       return [newAssets, fromAsset, toAsset];
     } catch (e) {
@@ -102,8 +106,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   };
 
   const calculateNewFromAmount = async (value: string) => {
-    const { fromAsset, toAsset } = state;
-    if (!fromAsset || !toAsset) {
+    const { fromAsset, toAsset, isCalculatingFromAmount, account } = state;
+    if (!fromAsset || !toAsset || isCalculatingFromAmount) {
       return;
     }
 
@@ -116,7 +120,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       return;
     }
 
-    if (parseFloat(value) <= 0) {
+    if (bigify(value).lte(0)) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
@@ -131,51 +135,48 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         isCalculatingFromAmount: true
       }));
 
-      const commissionIncreasedAmount = trimBN(
-        withCommission({
-          amount: convertToBN(Number(value)),
-          rate: MYC_DEXAG_COMMISSION_RATE
-        }).toString()
-      );
-
-      const { price, costBasis } = await DexService.instance.getTokenPriceTo(
-        fromAsset.ticker,
-        toAsset.ticker,
-        commissionIncreasedAmount.toString()
+      const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
+        network,
+        account?.address,
+        fromAsset,
+        toAsset,
+        value
       );
 
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingFromAmount: false,
-        fromAmount: trimBN(
-          formatEther(multiplyBNFloats(commissionIncreasedAmount, price).toString())
-        ),
+        fromAmount: sellAmount.toString(),
         fromAmountError: '',
         toAmountError: '',
-        initialToAmount: commissionIncreasedAmount,
-        exchangeRate: trimBN(formatEther(divideBNFloats(1, price).toString())),
-        markup: calculateMarkup(
-          parseFloat(trimBN(formatEther(divideBNFloats(1, price).toString()))),
-          parseFloat(trimBN(formatEther(divideBNFloats(1, costBasis).toString())))
-        )
+        exchangeRate: withCommission({
+          amount: divideBNFloats(1, price),
+          rate: MYC_DEX_COMMISSION_RATE
+        }).toString(),
+        ...rest
       }));
     } catch (e) {
-      if (!e.isCancel) {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingFromAmount: false,
-          toAmountError: translate('UNEXPECTED_ERROR', {
-            $link: formatErrorEmailMarkdown('Swap Error', e)
-          })
-        }));
-        console.error(e);
+      if (axios.isCancel(e)) {
+        return;
       }
+      console.error(e);
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isCalculatingFromAmount: false,
+        fromAmount: '',
+        toAmountError:
+          e.response?.data?.code && e.response.data.code === 109
+            ? translate('SWAP_INSUFFICIENT_FUNDS')
+            : translate('UNEXPECTED_ERROR', {
+                $link: formatErrorEmailMarkdown('Swap Error', e)
+              })
+      }));
     }
   };
 
   const calculateNewToAmount = async (value: string) => {
-    const { fromAsset, toAsset } = state;
-    if (!fromAsset || !toAsset) {
+    const { fromAsset, toAsset, isCalculatingToAmount, account } = state;
+    if (!fromAsset || !toAsset || isCalculatingToAmount) {
       return;
     }
 
@@ -188,7 +189,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       return;
     }
 
-    if (parseFloat(value) <= 0) {
+    if (bigify(value).lte(0)) {
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,
@@ -204,37 +205,42 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
         lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
       }));
 
-      const { price, costBasis } = await DexService.instance.getTokenPriceFrom(
-        fromAsset.ticker,
-        toAsset.ticker,
+      const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
+        network,
+        account?.address,
+        fromAsset,
+        toAsset,
         value
       );
 
       setState((prevState: SwapFormState) => ({
         ...prevState,
         isCalculatingToAmount: false,
-        toAmount: withCommission({
-          amount: multiplyBNFloats(value, price),
-          rate: MYC_DEXAG_COMMISSION_RATE,
-          subtract: true
-        }).toString(),
+        toAmount: buyAmount.toString(),
         fromAmountError: '',
         toAmountError: '',
-        initialToAmount: trimBN(formatEther(multiplyBNFloats(value, price).toString())),
-        exchangeRate: price.toString(),
-        markup: calculateMarkup(price, costBasis)
+        exchangeRate: withCommission({
+          amount: multiplyBNFloats(1, price), // @todo Fix this
+          rate: MYC_DEX_COMMISSION_RATE
+        }).toString(),
+        ...rest
       }));
     } catch (e) {
-      if (!e.isCancel) {
-        setState((prevState: SwapFormState) => ({
-          ...prevState,
-          isCalculatingToAmount: false,
-          fromAmountError: translate('UNEXPECTED_ERROR', {
-            $link: formatErrorEmailMarkdown('Swap Error', e)
-          })
-        }));
-        console.error(e);
+      if (axios.isCancel(e)) {
+        return;
       }
+      console.error(e);
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isCalculatingToAmount: false,
+        toAmount: '',
+        fromAmountError:
+          e.response?.data?.code && e.response.data.code === 109
+            ? e.response.data.reason
+            : translate('UNEXPECTED_ERROR', {
+                $link: formatErrorEmailMarkdown('Swap Error', e)
+              })
+      }));
     }
   };
 
@@ -265,7 +271,54 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     }));
   };
 
+  const handleGasLimitEstimation = async () => {
+    const { approvalTx, account } = state;
+    if (approvalTx && account) {
+      setState((prevState: SwapFormState) => ({
+        ...prevState,
+        isEstimatingGas: true
+      }));
+
+      try {
+        const requiresApproval =
+          approvalTx &&
+          (await checkRequiresApproval(network, approvalTx.to!, account.address, approvalTx.data!));
+
+        const { type, ...tx } = approvalTx;
+
+        const approvalGasLimit = inputGasLimitToHex(
+          requiresApproval ? await getGasEstimate(network, tx!) : '0'
+        ) as ITxGasLimit;
+
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isEstimatingGas: false,
+          approvalGasLimit
+        }));
+      } catch (err) {
+        console.error(err);
+        setState((prevState: SwapFormState) => ({
+          ...prevState,
+          isEstimatingGas: false,
+          fromAmountError: translate('UNEXPECTED_ERROR', {
+            $link: formatErrorEmailMarkdown('Swap Error', err)
+          })
+        }));
+      }
+    }
+  };
+
+  const handleRefreshQuote = () => {
+    const { fromAmount, toAmount, lastChangedAmount } = state;
+    if (lastChangedAmount === LAST_CHANGED_AMOUNT.FROM) {
+      calculateNewToAmount(fromAmount);
+    } else {
+      calculateNewFromAmount(toAmount);
+    }
+  };
+
   return {
+    setNetwork,
     fetchSwapAssets,
     setSwapAssets,
     handleFromAssetSelected,
@@ -275,6 +328,8 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
+    handleRefreshQuote,
     formState: state
   };
 };

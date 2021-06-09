@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import {
   BalanceMap as EthScanBalanceMap,
   getEtherBalances,
@@ -8,16 +9,26 @@ import {
   toBalanceMap
 } from '@mycrypto/eth-scan';
 import { default as BN } from 'bignumber.js';
-import { bigNumberify } from 'ethers/utils';
 import partition from 'lodash/partition';
 
 import { ETH_SCAN_BATCH_SIZE, ETHSCAN_NETWORKS } from '@config';
 import { ProviderHandler } from '@services/EthService';
-import { Asset, ExtendedAsset, Network, StoreAccount, StoreAsset, TAddress, TBN } from '@types';
+import {
+  Asset,
+  Bigish,
+  ExtendedAsset,
+  Network,
+  NetworkId,
+  StoreAccount,
+  StoreAsset,
+  TAddress
+} from '@types';
 import { bigify, mapAsync } from '@utils';
 import { mapObjIndexed } from '@vendor';
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
+
+const isEthScanCompatible = (networkId: NetworkId) => ETHSCAN_NETWORKS.includes(networkId);
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
@@ -59,7 +70,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
           return asset;
       }
     })
-    .map((asset) => ({ ...asset, balance: bigNumberify(asset.balance) }))
+    .map((asset) => ({ ...asset, balance: BigNumber.from(asset.balance) }))
 });
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
@@ -102,48 +113,27 @@ const tokenBalanceFetchWrapper = async (
   }
 };
 
-export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
-  if (!network) {
-    return {};
-  }
-  const provider = ProviderHandler.fetchProvider(network);
-  if (ETHSCAN_NETWORKS.includes(network.id)) {
-    return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
-      .then(bigifyBalanceMap)
-      .catch(() => ({} as BalanceMap));
-  } else {
-    const result = await mapAsync(addresses, (address) => provider.getBalance(address));
-    return bigifyBalanceMap(toBalanceMap(addresses, result));
-  }
-};
-
-export const getTokenAssetBalances = async (
-  addresses: string[],
-  network: Network | undefined,
-  asset: ExtendedAsset
-) => {
-  if (!network) {
-    return {};
-  }
-  const provider = ProviderHandler.fetchProvider(network);
-  return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress!)
-    .then(bigifyBalanceMap)
-    .catch(() => ({} as BalanceMap));
-};
-
-const getTokenBalances = (
+const getAddressTokenBalancesWithJsonRpc = async (
   provider: ProviderHandler,
   address: TAddress,
-  tokens: StoreAsset[]
-): Promise<BalanceMap> => {
-  return tokens
-    .reduce<Promise<BalanceMap<bigint>>>(async (balances, token) => {
+  tokens: Asset[]
+): Promise<BalanceMap<BN>> => {
+  const tokenBalances = await mapAsync(tokens, async (token) => {
+    const balance = await provider.getRawTokenBalance(address, token);
+    return {
+      contractAddress: token.contractAddress!,
+      balance
+    };
+  });
+  const out = bigifyBalanceMap(
+    tokenBalances.reduce<BalanceMap<bigint>>((balances, tokenOutput) => {
       return {
         ...balances,
-        [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
+        [tokenOutput.contractAddress as TAddress]: tokenOutput.balance
       };
-    }, Promise.resolve<EthScanBalanceMap>({}))
-    .then(bigifyBalanceMap);
+    }, {})
+  );
+  return out;
 };
 
 const getAccountAssetsBalancesWithJsonRPC = async (
@@ -158,7 +148,7 @@ const getAccountAssetsBalancesWithJsonRPC = async (
       .getRawBalance(account.address)
       .then(bigify)
       .then((balance) => ({ [address]: balance })),
-    getTokenBalances(provider, address, tokens)
+    getAddressTokenBalancesWithJsonRpc(provider, address, tokens)
   ])
     .then(addBalancesToAccount(account))
     .catch(() => account);
@@ -181,7 +171,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
     // filter before continuing.
   ).then((res) => res.filter(Boolean));
 
-  const filterZeroBN = (n: TBN) => n.isZero();
+  const filterZeroBN = (n: Bigish) => n.isZero();
 
   return updatedAccounts.map((updatedAccount) => ({
     ...updatedAccount,
@@ -189,26 +179,101 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
       (updatedAccount &&
         updatedAccount.assets &&
         updatedAccount.assets.filter(
-          ({ balance, type }) => !filterZeroBN(balance) || type === 'base'
+          ({ balance, type }) => !filterZeroBN(bigify(balance)) || type === 'base'
         )) ||
       []
   }));
 };
 
-export const getAllTokensBalancesOfAccounts = async (
-  network: Network,
-  addresses: string[],
-  assets: Asset[]
-) => {
-  const provider = new ProviderHandler(network);
-  const assetsInNetwork = assets.filter((x) => x.networkId === network.id);
-  const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
+export const getSingleTokenBalanceForAddresses = async (
+  asset: Asset | ExtendedAsset | StoreAsset,
+  network: Network | undefined,
+  addresses: TAddress[]
+): Promise<BalanceMap<BN>> => {
+  if (!network || !asset.contractAddress) {
+    return {};
+  }
+  const providerSingleton = new ProviderHandler(network);
 
-  return getTokensBalances(provider, addresses, assetAddresses, {
-    batchSize: ETH_SCAN_BATCH_SIZE
-  })
-    .then(bigifyNestedBalanceMap)
-    .catch((_) => {
-      return {} as BalanceMap<BalanceMap<BN>>;
-    });
+  if (isEthScanCompatible(network.id)) {
+    const provider = ProviderHandler.fetchProvider(network);
+    return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress, {
+      batchSize: ETH_SCAN_BATCH_SIZE
+    })
+      .then(bigifyBalanceMap)
+      .catch(() => ({} as BalanceMap));
+  } else {
+    const result = await mapAsync(addresses, (address) =>
+      providerSingleton.getTokenBalance(address, asset)
+    );
+    return bigifyBalanceMap(toBalanceMap(addresses, result));
+  }
 };
+
+export const getTokenBalancesForAddresses = async (
+  assets: ExtendedAsset[],
+  network: Network | undefined,
+  addresses: TAddress[]
+): Promise<BalanceMap<BalanceMap<BN>>> => {
+  if (!network) {
+    return {};
+  }
+  const provider = new ProviderHandler(network);
+  const assetsInNetwork = assets
+    .filter((x) => x.networkId === network.id)
+    .filter(({ contractAddress }) => contractAddress);
+  const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
+  if (isEthScanCompatible(network.id)) {
+    return getTokensBalances(provider, addresses, assetAddresses, {
+      batchSize: ETH_SCAN_BATCH_SIZE
+    })
+      .then(bigifyNestedBalanceMap)
+      .catch((_) => {
+        return {} as BalanceMap<BalanceMap<BN>>;
+      });
+  } else {
+    return await mapAsync(addresses, (address) =>
+      getAddressTokenBalancesWithJsonRpc(provider, address, assetsInNetwork).then((d) => ({
+        address,
+        data: d
+      }))
+    ).then((d) =>
+      d.reduce((acc, item) => {
+        acc[item.address] = { ...acc[item.address], ...item.data };
+        return acc;
+      }, {} as BalanceMap<BalanceMap<BigNumber>>)
+    );
+  }
+};
+
+export const getBaseAssetBalancesForAddresses = async (
+  addresses: string[],
+  network: Network | undefined
+) => {
+  if (!network) {
+    return {};
+  }
+  const providerHandler = new ProviderHandler(network);
+  if (isEthScanCompatible(network.id)) {
+    const provider = ProviderHandler.fetchProvider(network);
+    return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
+      .then(bigifyBalanceMap)
+      .catch(() => ({} as BalanceMap));
+  } else {
+    const result = await mapAsync(addresses, (address) => providerHandler.getRawBalance(address));
+    return bigifyBalanceMap(toBalanceMap(addresses, result));
+  }
+};
+
+export const getAssetBalance = ({
+  asset,
+  network,
+  addresses
+}: {
+  asset: ExtendedAsset;
+  network: Network;
+  addresses: TAddress[];
+}) =>
+  asset.type === 'base'
+    ? getBaseAssetBalancesForAddresses(addresses, network)
+    : getSingleTokenBalanceForAddresses(asset, network, addresses);

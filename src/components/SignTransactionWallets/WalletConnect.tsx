@@ -3,14 +3,21 @@ import React from 'react';
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
-import { Button, CodeBlock, Overlay, QRCodeContainer, Spinner, Typography } from '@components';
-import { getWalletConfig } from '@config';
+import {
+  BusyBottom,
+  Button,
+  CodeBlock,
+  Overlay,
+  QRCodeContainer,
+  Spinner,
+  Typography
+} from '@components';
 import { getNetworkByChainId } from '@services';
 import { useNetworks } from '@services/Store';
 import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISignComponentProps, ITxHash, TAddress, WalletId } from '@types';
+import { BusyBottomConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
 import { noOp, objToString } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
@@ -53,12 +60,6 @@ const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
   text-overflow: ellipsis;
 `;
 
-const SFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
-`;
-
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,7 +70,9 @@ const SContainer = styled.div`
   }
 `;
 
-const helpLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
+const SFooter = styled.div`
+  margin: 1em 0;
+`;
 
 interface ErrorProps {
   address: TAddress;
@@ -215,7 +218,7 @@ export function SignTransactionWalletConnect({
         </SSection>
       </SContent>
       <SFooter>
-        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: helpLink })}</Typography>
+        <BusyBottom type={BusyBottomConfig.WALLETCONNECT} />
       </SFooter>
     </>
   );

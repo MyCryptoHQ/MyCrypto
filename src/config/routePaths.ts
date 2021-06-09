@@ -1,9 +1,11 @@
 import { translateRaw } from '@translations';
 import { IRoutePath, IRoutePaths } from '@types';
+import { filter, head, pipe, whereEq } from '@vendor';
 
 const PATHS: IRoutePath[] = [
   {
     name: 'ROOT',
+    title: translateRaw('NAVIGATION_HOME'),
     path: '/'
   },
   {
@@ -52,21 +54,6 @@ const PATHS: IRoutePath[] = [
     path: '/request'
   },
   {
-    name: 'SCREEN_LOCK_NEW',
-    title: translateRaw('SCREEN_LOCK_NEW'),
-    path: '/screen-lock/new'
-  },
-  {
-    name: 'SCREEN_LOCK_LOCKED',
-    title: translateRaw('SCREEN_LOCK_LOCKED'),
-    path: '/screen-lock/locked'
-  },
-  {
-    name: 'SCREEN_LOCK_FORGOT',
-    title: translateRaw('SCREEN_LOCK_FORGOT'),
-    path: '/screen-lock/forgot-password'
-  },
-  {
     name: 'SEND',
     title: translateRaw('SEND_ASSETS'),
     path: '/send'
@@ -93,7 +80,7 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: translateRaw('SWAP_ROUTE_TITLE'),
+    title: translateRaw('SWAP'),
     path: '/swap'
   },
   {
@@ -176,3 +163,7 @@ function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
 }
 
 export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
+
+export const getRouteConfigByPath = (path: IRoutePath['path']): IRoutePath =>
+  // @ts-expect-error: pipe and TS
+  pipe(filter(whereEq({ path: path })), head)(PATHS);

@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { fAccount, fAccounts, fAssets, fRopDAI, fTxParcels } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
-import { TAddress } from '@types';
 import { bigify, noOp, truncate } from '@utils';
 
 import { SwapTransactionReceipt } from '.';
@@ -21,8 +19,7 @@ const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
     lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
     fromAmount: bigify(1),
     toAmount: bigify(100),
-    rate: bigify(0),
-    markup: bigify(0)
+    rate: bigify(0)
   },
   transactions: fTxParcels,
   onSuccess: noOp
@@ -30,33 +27,19 @@ const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
 
 function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>) {
   return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            settings: fSettings
-          } as unknown) as IDataContext
-        }
-      >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts
-              } as any) as any
-            }
-          >
-            <SwapTransactionReceipt {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
-      </DataContext.Provider>
-    </Router>
+    <StoreContext.Provider
+      value={
+        ({
+          assets: () => fAssets,
+          accounts: fAccounts
+        } as any) as any
+      }
+    >
+      <SwapTransactionReceipt {...props} />
+    </StoreContext.Provider>,
+    {
+      intialState: mockAppState({ assets: fAssets, accounts: fAccounts })
+    }
   );
 }
 
@@ -75,19 +58,11 @@ describe('SwapTransactionReceipt', () => {
   });
 
   test('it displays contract information', async () => {
-    const { getByText } = getComponent({
-      ...defaultProps,
-      transactions: [
-        {
-          ...fTxParcels[0],
-          txRaw: { ...fTxParcels[0].txRaw, to: fRopDAI.contractAddress as TAddress }
-        }
-      ]
-    });
+    const { getByText } = getComponent(defaultProps);
     expect(
       getByText(
         translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
-          $contractName: fRopDAI.name
+          $contractName: 'DexAG'
         }),
         { exact: false }
       )

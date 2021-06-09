@@ -2,11 +2,12 @@ import React, { useContext, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { DashboardPanel } from '@components';
+import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
 import { StoreContext } from '@services/Store/StoreProvider';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { getENSRecords, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
 import { dateIsBetween } from '@utils';
@@ -17,7 +18,9 @@ import { ActionDetails, ActionsList } from './components';
 import { actionTemplates } from './constants';
 
 const SDashboardPanel = styled(DashboardPanel)`
-  min-height: 280px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    min-height: 280px;
+  }
 `;
 
 const DetailsHeading = styled.div`
@@ -25,10 +28,12 @@ const DetailsHeading = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
+  justify-content: center;
 `;
 
 const SIcon = styled(Icon)`
   cursor: pointer;
+  min-width: 20px;
 `;
 
 const HeadingText = styled.span`
@@ -46,9 +51,8 @@ const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFil
   });
 
 export const ActionPanel = () => {
-  const { assets, uniClaims, ensOwnershipRecords, accounts, isMyCryptoMember } = useContext(
-    StoreContext
-  );
+  const { assets, uniClaims, accounts, isMyCryptoMember } = useContext(StoreContext);
+  const ensOwnershipRecords = useSelector(getENSRecords);
   const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();
 
@@ -78,20 +82,21 @@ export const ActionPanel = () => {
     <SDashboardPanel
       heading={
         currentAction ? (
-          <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
+          <Box variant="rowAlign">
+            <SIcon type="back" width={20} onClick={() => setCurrentAction(undefined)} />
+            <DetailsHeading>
+              <Icon width={20} minWidth={20} marginX={SPACING.XS} type={currentAction.icon} />
+              <HeadingText>{currentAction.heading}</HeadingText>
+            </DetailsHeading>
+            <SIcon width={20} type="closed-eye" onClick={dismiss} />
+          </Box>
         ) : (
           <Trans id="ACTION_PANEL_HEADING" />
         )
       }
       headingRight={
-        currentAction ? (
-          <DetailsHeading>
-            <Icon width={20} type={currentAction.icon} />
-            <HeadingText>{currentAction.heading}</HeadingText>
-            <SIcon width={20} type="closed-eye" onClick={dismiss} />
-          </DetailsHeading>
-        ) : (
-          <Text color="GREY" fontSize={0} mb={0}>
+        currentAction ? undefined : (
+          <Text color="GREY" fontSize={1} mb={0}>
             <Trans
               id="ACTION_PANEL_COMPLETED_COUNT"
               variables={{

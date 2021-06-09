@@ -1,22 +1,26 @@
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import { PromiseType } from 'utility-types';
+import { getUnlockTimestamps, TimestampMap } from '@mycrypto/unlock-scan';
 
 import {
+  MEMBERSHIP_CONFIG,
   MEMBERSHIP_CONTRACTS,
-  MEMBERSHIP_CONTRACTS_ADDRESSES,
   MembershipStatus
 } from '@features/PurchaseMembership/config';
 import { ProviderHandler } from '@services/EthService/';
-import { Bigish, Network, TAddress } from '@types';
+import { Bigish, Network, NetworkId, TAddress } from '@types';
 import { bigify } from '@utils';
 import { mapObjIndexed, pickBy, pipe, toString } from '@vendor';
 
+export const getMembershipContracts = (membershipNetworkId: NetworkId) =>
+  Object.values(MEMBERSHIP_CONFIG)
+    .filter(({ networkId }) => networkId === membershipNetworkId)
+    .map((membership) => membership.contractAddress);
+
 const isSafeInt = (bn: Bigish) => bn.isLessThanOrEqualTo(bigify(Number.MAX_SAFE_INTEGER));
 
-export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlockTimestamps>>) => {
+export const formatResponse = (networkId: NetworkId) => (timestamps: TimestampMap) => {
   // We receive timestamps in the form of hex values.
   // Convert to Bigies so we can determine their expiry date.
-  // @todo: prefer date-fns for time comparaisons.
+  // @todo: prefer date-fns for time comparisons.
   const expiries = pipe(
     mapObjIndexed(mapObjIndexed(bigify)),
     mapObjIndexed(pickBy(isSafeInt)),
@@ -26,6 +30,7 @@ export const formatResponse = (timestamps: PromiseType<ReturnType<typeof getUnlo
   return Object.keys(expiries)
     .map((address: TAddress) => ({
       address,
+      networkId,
       memberships: Object.keys(expiries[address])
         .filter((contract) => expiries[address][contract] !== '0')
         .map((contract) => ({
@@ -40,8 +45,8 @@ const MembershipApi = {
   getMemberships(addresses: TAddress[] = [], network: Network): Promise<MembershipStatus[]> {
     const provider = new ProviderHandler(network);
     return getUnlockTimestamps(provider, addresses, {
-      contracts: MEMBERSHIP_CONTRACTS_ADDRESSES
-    }).then(formatResponse);
+      contracts: getMembershipContracts(network.id)
+    }).then(formatResponse(network.id));
   }
 };
 

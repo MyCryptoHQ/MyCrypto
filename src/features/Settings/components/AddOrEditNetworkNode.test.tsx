@@ -1,17 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router-dom';
-import {
-  actionWithPayload,
-  fireEvent,
-  mockUseDispatch,
-  ProvidersWrapper,
-  simpleRender,
-  waitFor
-} from 'test-utils';
+import { actionWithPayload, fireEvent, mockUseDispatch, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fAssets, fContacts, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, NetworkUtils, ProviderHandler, StoreProvider } from '@services';
+import { fNetwork, fNetworks } from '@fixtures';
+import { NetworkUtils, ProviderHandler } from '@services';
 import { translateRaw } from '@translations';
 import { NodeType } from '@types';
 import { noOp } from '@utils';
@@ -28,35 +20,8 @@ const defaultProps: React.ComponentProps<typeof AddOrEditNetworkNode> = {
   onComplete: noOp
 };
 
-function getComponent(
-  props: React.ComponentProps<typeof AddOrEditNetworkNode>,
-  networks = fNetworks,
-  accounts = fAccounts,
-  contacts = fContacts
-) {
-  return simpleRender(
-    <ProvidersWrapper>
-      <MemoryRouter>
-        <DataContext.Provider
-          value={
-            ({
-              addressBook: contacts,
-              accounts,
-              assets: fAssets,
-              contracts: [],
-              networks,
-              userActions: [],
-              settings: fSettings
-            } as unknown) as IDataContext
-          }
-        >
-          <StoreProvider>
-            <AddOrEditNetworkNode {...props} />
-          </StoreProvider>
-        </DataContext.Provider>
-      </MemoryRouter>
-    </ProvidersWrapper>
-  );
+function getComponent(props: React.ComponentProps<typeof AddOrEditNetworkNode>) {
+  return simpleRender(<AddOrEditNetworkNode {...props} />);
 }
 
 describe('Settings', () => {
@@ -99,16 +64,17 @@ describe('Settings', () => {
 
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload({
-          ...fNetworks[0],
-          selectedNode: NetworkUtils.makeNodeName('ethereum', nodeName),
-          nodes: expect.arrayContaining([
-            expect.objectContaining({
-              service: nodeName,
-              url: nodeURL
-            })
-          ])
-        })
+        actionWithPayload(
+          expect.objectContaining({
+            selectedNode: NetworkUtils.makeNodeName('ethereum', nodeName),
+            nodes: expect.arrayContaining([
+              expect.objectContaining({
+                service: nodeName,
+                url: nodeURL
+              })
+            ])
+          })
+        )
       )
     );
   });
@@ -139,16 +105,11 @@ describe('Settings', () => {
 
   it('supports deleting networks', async () => {
     const mockDispatch = mockUseDispatch();
-    const { getByText, getByTestId } = getComponent(
-      {
-        ...defaultProps,
-        networkId: fNetwork.id,
-        editNode: { ...fNetwork.nodes[0], isCustom: true, type: NodeType.MYC_CUSTOM }
-      },
-      [{ ...fNetwork, isCustom: true, nodes: [fNetwork.nodes[0]] }],
-      [],
-      []
-    );
+    const { getByText, getByTestId } = getComponent({
+      ...defaultProps,
+      networkId: fNetwork.id,
+      editNode: { ...fNetwork.nodes[0], isCustom: true, type: NodeType.MYC_CUSTOM }
+    });
 
     expect(getByText(translateRaw('CUSTOM_NODE_REMOVE_NODE'))).toBeDefined();
 

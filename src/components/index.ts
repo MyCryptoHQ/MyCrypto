@@ -6,6 +6,7 @@ export { default as AccountList } from './AccountList';
 export { default as AmountInput } from './AmountInput';
 export { default as AssetIcon } from './AssetIcon';
 export { default as AssetSelector } from './AssetSelector';
+export { default as Box } from './Box';
 export { default as Button } from './Button';
 export { default as Checkbox } from './Checkbox';
 export { default as CopyableCodeBlock } from './CopyableCodeBlock';
@@ -13,23 +14,20 @@ export { default as ContentPanel } from './ContentPanel';
 export { default as Currency } from './Currency';
 export { default as RowDeleteOverlay } from './RowDeleteOverlay';
 export { default as Divider } from './Divider';
-export { default as Selector, SelectorProps } from './Selector';
+export { default as Selector } from './Selector';
 export { default as ExtendedContentPanel, ExtendedControlPanelProps } from './ExtendedContentPanel';
-export { default as Link } from './Link';
+export { default as LinkApp } from './LinkApp';
 export { default as Typography } from './Typography';
 export { default as Modal } from './Modal';
 export { IButton, LegacyModal } from './LegacyModal';
-export { default as NewAppReleaseModal } from './NewAppReleaseModal';
 export { default as InputField } from './InputField';
 export { default as NetworkSelector } from './NetworkSelector';
 export { default as Overlay } from './Overlay';
 export { default as QRCode, QRCodeContainer } from './QRCode';
-export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
-export { default as TimeElapsedCounter } from './TimeElapsedCounter';
+export { default as TimeCountdown } from './TimeCountdown';
 export { default as Spinner } from './Spinner';
 export { default as Input } from './Input';
-export { default as NewTabLink } from './NewTabLink';
 export { Panel } from './Panel';
 export { DashboardPanel } from './DashboardPanel';
 export { Desktop, Mobile } from './ResponsiveLayout';
@@ -48,10 +46,8 @@ export { Banner } from './Banner';
 export * from './SignTransactionWallets';
 export { WhenQueryExists, Query } from './Query';
 export { default as DisclaimerModal } from './DisclaimerModal';
-export { default as HelpLink } from './HelpLink';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
-export { default as LinkOut } from './LinkOut';
 export { default as EthAddress } from './EthAddress';
 export { default as EditableText } from './EditableText';
 export { default as Account } from './Account';
@@ -73,21 +69,15 @@ export { AddIcon, SubtractIcon } from './icons';
 export { default as PoweredByText } from './PoweredByText';
 export { default as EditableAccountLabel } from './EditableAccountLabel';
 export { default as TimeElapsed } from './TimeElapsed';
-export { default as Icon, TIcon } from './Icon';
+export { default as Icon, TIcon, getSVGIcon } from './Icon';
 export { default as IFrame } from './IFrame';
-export { default as Downloader } from './Downloader';
+export { Downloader } from './Downloader';
 export { TokenMigrationStepper } from './TokenMigration';
-export { default as Box } from './Box';
-export {
-  Heading,
-  SubHeading,
-  Body,
-  InlineLink,
-  Link as NewLink,
-  Label,
-  Text,
-  TextProps
-} from './NewTypography';
-export { ActionPanel, TweetButtonProps, ActionButtonProps, ActionButton } from './ActionsPanel';
+export { Heading, SubHeading, Body, Label, Text, TextProps } from './NewTypography';
+export { ActionPanel, ActionButtonProps, ActionButton } from './ActionsPanel';
 export { default as AppLoading } from './AppLoading';
 export { SkeletonLoader } from './SkeletonLoader';
+export { DemoGatewayBanner } from './DemoBanner';
+export { AnnouncementBanner } from './AnnouncementBanner';
+export { Switch } from './Switch';
+export { BusyBottom } from './BusyBottom';

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-import prop from 'ramda/src/prop';
-import uniqBy from 'ramda/src/uniqBy';
-
-import { NewTabLink } from '@components';
+import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
 import {
   DEFAULT_GAP_TO_SCAN_FOR,
@@ -11,19 +8,20 @@ import {
   DPathsList,
   LEDGER_DERIVATION_PATHS
 } from '@config';
+import { HDWallet } from '@features/AddAccount';
+import { selectHDWalletConnectionError } from '@features/AddAccount/components/hdWallet.slice';
 import {
   getAssetByUUID,
   getDPaths,
   getNetworkById,
   useAssets,
-  useDeterministicWallet,
+  useHDWallet,
   useNetworks
 } from '@services';
-import { Trans, translateRaw } from '@translations';
+import { useSelector } from '@store';
+import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
-
-import DeterministicWallet from './DeterministicWallet';
-import UnsupportedNetwork from './UnsupportedNetwork';
+import { prop, uniqBy } from '@vendor';
 
 interface OwnProps {
   formData: FormData;
@@ -35,12 +33,15 @@ interface OwnProps {
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
+  const connectionError = useSelector(selectHDWalletConnectionError);
   const network = getNetworkById(formData.network, networks);
+  const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
+  const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
+  // @todo: LEDGER_DERIVATION_PATHS are not available on all networks. Fix this to only display DPaths relevant to the specified network.
   const dpaths = uniqBy(prop('value'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
     ...LEDGER_DERIVATION_PATHS
   ]);
-  const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
@@ -50,13 +51,17 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
-    state,
+    selectedAsset,
+    scannedAccounts,
+    accountQueue,
+    isCompleted,
+    isConnected,
+    isConnecting,
     requestConnection,
     updateAsset,
     addDPaths,
-    generateFreshAddress
-  } = useDeterministicWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
-
+    scanMoreAddresses
+  } = useHDWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
     updateAsset(newAsset);
@@ -65,12 +70,6 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
   };
-
-  if (!network) {
-    // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
-  }
-
   if (window.location.protocol !== 'https:') {
     return (
       <div className="Panel">
@@ -78,7 +77,11 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
           <Trans
             id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
             variables={{
-              $newTabLink: () => <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+              $link: () => (
+                <LinkApp href="https://mycrypto.com" isExternal={true}>
+                  MyCrypto.com
+                </LinkApp>
+              )
             }}
           />
         </div>
@@ -86,17 +89,21 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     );
   }
 
-  if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
+  if (isConnected && selectedAsset && (accountQueue || scannedAccounts)) {
     return (
-      <DeterministicWallet
-        state={state}
-        defaultDPath={defaultDPath}
+      <HDWallet
+        scannedAccounts={scannedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
+        dpaths={dpaths}
         assets={assets}
         assetToUse={assetToUse}
         network={network}
+        selectedDPath={selectedDPath}
+        setSelectedDPath={setSelectedDPath}
         updateAsset={updateAsset}
         addDPaths={addDPaths}
-        generateFreshAddress={generateFreshAddress}
+        scanMoreAddresses={scanMoreAddresses}
         handleAssetUpdate={handleAssetUpdate}
         onUnlock={onUnlock}
       />
@@ -104,8 +111,9 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   } else {
     return (
       <HardwareWalletUI
+        isConnecting={isConnecting}
+        connectionError={connectionError}
         network={network}
-        state={state}
         handleNullConnect={handleNullConnect}
         walletId={WalletId.LEDGER_NANO_S_NEW}
       />

@@ -39,7 +39,7 @@ describe('createFallbackNetworkProviders', () => {
   // Fallback provider includes a list of providers to fallback to,
   // which is the main difference between fallback provider and typical ethers.js provider
   it('extends the baseProvider to be a valid fallbackProvider', () => {
-    expect(fallbackProvider.providers).toHaveLength(2);
+    expect(fallbackProvider.providerConfigs).toHaveLength(2);
   });
 });
 

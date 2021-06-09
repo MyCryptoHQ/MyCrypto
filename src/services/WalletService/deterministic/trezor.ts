@@ -1,9 +1,13 @@
-import { hexlify, serializeTransaction, Signature, UnsignedTransaction } from 'ethers/utils';
+import { hexlify, SignatureLike } from '@ethersproject/bytes';
+import {
+  serialize as serializeTransaction,
+  UnsignedTransaction
+} from '@ethersproject/transactions';
 import mapValues from 'lodash/mapValues';
 import TrezorConnect from 'trezor-connect';
 
 import { translateRaw } from '@translations';
-import { padLeftEven, stripHexPrefix, stripHexPrefixAndLower } from '@utils';
+import { bigify, padLeftEven, stripHexPrefix, stripHexPrefixAndLower } from '@utils';
 
 import { ChainCodeResponse, HardwareWallet } from './hardware';
 
@@ -25,7 +29,7 @@ export class TrezorWallet extends HardwareWallet {
             chainCode: res.payload.chainCode
           });
         } else {
-          throw new Error(`[TrezorConnect] Error: ${res.id}`);
+          throw new Error(`[TrezorConnect] Error: ${res.payload.error}`);
         }
       });
     });
@@ -34,7 +38,7 @@ export class TrezorWallet extends HardwareWallet {
   public signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, nonce, ...rest } = tx;
-      if (!chainId || !nonce) {
+      if (chainId === undefined || nonce === undefined) {
         return reject(Error('Missing chainId or nonce on tx'));
       }
       const formattedTx = { ...rest, nonce: hexlify(nonce) };
@@ -44,28 +48,30 @@ export class TrezorWallet extends HardwareWallet {
         path: this.getPath(),
         transaction: {
           nonce: cleanedTx.nonce,
-          gasPrice: cleanedTx.gasPrice,
-          gasLimit: cleanedTx.gasLimit,
-          to: cleanedTx.to,
-          value: cleanedTx.value,
+          gasPrice: cleanedTx.gasPrice!,
+          gasLimit: cleanedTx.gasLimit!,
+          to: cleanedTx.to!,
+          value: cleanedTx.value!,
           data: cleanedTx.data,
           chainId
         }
-      }).then((res: any) => {
+      }).then((res) => {
         if (!res.success) {
-          return reject(Error(res.error));
+          return reject(Error(res.payload.error));
         }
         // check the returned signature_v and recalc signature_v if it needed
         // see also https://github.com/trezor/trezor-mcu/pull/399
-        if (Number(res.payload.v) <= 1) {
+        if (parseInt(res.payload.v, 16) <= 1) {
           //  for larger chainId, only signature_v returned. simply recalc signature_v
-          res.payload.v += 2 * chainId + 35;
+          res.payload.v = bigify(res.payload.v)
+            .plus(2 * chainId + 35)
+            .toString(16);
         }
 
         // @todo: Explain what's going on here? Add tests? Adapted from:
         // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-        const signature: Signature = {
-          v: res.payload.v,
+        const signature: SignatureLike = {
+          v: parseInt(res.payload.v, 16),
           r: res.payload.r,
           s: res.payload.s
         };

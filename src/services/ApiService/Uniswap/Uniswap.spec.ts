@@ -7,19 +7,17 @@ import { ITxValue } from '@types';
 import { UniswapService } from '.';
 import { ClaimState } from './Uniswap';
 
-jest.mock('ethers/providers', () => {
-  return {
-    // Mock return value of isClaimed()
-    FallbackProvider: () => ({
-      call: jest
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve('0x0000000000000000000000000000000000000000000000000000000000000001')
-        )
-    }),
-    InfuraProvider: () => ({})
-  };
-});
+jest.mock('@vendor', () => ({
+  ...jest.requireActual('@vendor'),
+  // Mock return value of isClaimed()
+  FallbackProvider: jest.fn().mockImplementation(() => ({
+    call: jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve('0x0000000000000000000000000000000000000000000000000000000000000001')
+      )
+  }))
+}));
 
 const mockClaim = {
   [fAccount.address]: {

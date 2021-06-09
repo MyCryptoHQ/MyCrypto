@@ -1,7 +1,8 @@
+import { XDAIUUID } from '@config';
 import { Network, NodeType, TTicker, TUuid } from '@types';
 import { makeExplorer } from '@utils';
 
-const Ethereum: Network = {
+export const Ethereum: Network = {
   id: 'Ethereum',
   name: 'Ethereum',
   chainId: 1,
@@ -46,11 +47,10 @@ const Ethereum: Network = {
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://etherscan.io'
-  }),
-  selectedNode: 'eth_mycrypto'
+  })
 };
 
-const Ropsten: Network = {
+export const Ropsten: Network = {
   id: 'Ropsten',
   name: 'Ropsten',
   chainId: 3,
@@ -92,6 +92,50 @@ const Ropsten: Network = {
   })
 };
 
-export const fNetworks = [Ethereum, Ropsten];
+export const xDAI: Network = {
+  id: 'xDAI',
+  name: 'xDAI',
+  chainId: 100,
+  isCustom: false,
+  color: '#15bba6',
+  blockExplorer: makeExplorer({
+    name: 'xDai',
+    origin: 'https://blockscout.com/poa/xdai',
+    addressPath: 'address',
+    blockPath: 'blocks'
+  }),
+  dPaths: {
+    TREZOR: {
+      label: 'Trezor (ETH)',
+      value: "m/44'/60'/0'/0"
+    },
+    LEDGER_NANO_S: {
+      label: 'Ledger (ETH)',
+      value: "m/44'/60'/0'"
+    },
+    default: {
+      label: 'Default (ETH)',
+      value: "m/44'/60'/0'/0"
+    }
+  },
+  gasPriceSettings: {
+    min: 0.01,
+    max: 30,
+    initial: 1
+  },
+  shouldEstimateGasPrice: false,
+  baseAsset: XDAIUUID as TUuid,
+  baseUnit: 'xDAI' as TTicker,
+  nodes: [
+    {
+      name: 'Blockscout',
+      type: NodeType.RPC,
+      service: 'Blockscout',
+      url: 'https://blockscout.com/poa/xdai'
+    }
+  ]
+};
+
+export const fNetworks = [Ethereum, Ropsten, xDAI];
 
 export const fNetwork = fNetworks[1];

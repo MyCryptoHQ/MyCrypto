@@ -1,10 +1,11 @@
-import { bigNumberify, parseEther } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { parseEther } from '@ethersproject/units';
 
 import { ITxHistoryType } from '@features/Dashboard/types';
 import { deriveTxFields, guessERC20Type } from '@helpers';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
-import { Asset, ITxReceipt, ITxType, Network, StoreAccount } from '@types';
+import { Asset, IAccount, ITxReceipt, ITxType, Network } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
 
 export const makeTxReceipt = (
@@ -18,7 +19,7 @@ export const makeTxReceipt = (
     assets
   })!;
 
-  const value = fromWei(Wei(bigNumberify(tx.value).toString()), 'ether');
+  const value = fromWei(Wei(BigNumber.from(tx.value).toString()), 'ether');
 
   // Use this for now to improve quality of receipts
   // @todo: Use erc20 transfer array
@@ -39,12 +40,12 @@ export const makeTxReceipt = (
     receiverAddress: tx.recipientAddress,
     amount,
     data: tx.data,
-    gasPrice: bigNumberify(tx.gasPrice),
-    gasLimit: bigNumberify(tx.gasLimit),
-    gasUsed: !isVoid(tx.gasUsed) ? bigNumberify(tx.gasUsed!) : undefined,
+    gasPrice: BigNumber.from(tx.gasPrice),
+    gasLimit: BigNumber.from(tx.gasLimit),
+    gasUsed: !isVoid(tx.gasUsed) ? BigNumber.from(tx.gasUsed!) : undefined,
     value: parseEther(value),
-    nonce: bigNumberify(tx.nonce).toString(),
-    blockNumber: !isVoid(tx.blockNumber) ? bigNumberify(tx.blockNumber!).toNumber() : undefined
+    nonce: BigNumber.from(tx.nonce).toString(),
+    blockNumber: !isVoid(tx.blockNumber) ? BigNumber.from(tx.blockNumber!).toNumber() : undefined
   };
 };
 
@@ -57,7 +58,7 @@ export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceip
 // Mapping from TX API types to our current types
 const TYPE_MAPPING = { ERC_20_APPROVE: ITxType.APPROVAL } as { [key: string]: ITxHistoryType };
 
-export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt): ITxHistoryType => {
+export const deriveTxType = (accountsList: IAccount[], tx: ITxReceipt): ITxHistoryType => {
   const fromAccount =
     tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
   const toAddress = tx.receiverAddress || tx.to;

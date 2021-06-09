@@ -1,5 +1,6 @@
-import { TransactionResponse } from 'ethers/providers';
-import { bigNumberify } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
+import { BigNumber } from '@ethersproject/bignumber';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   IFailedTxReceipt,
@@ -30,22 +31,26 @@ import { default as ethWeb3TxResponse } from './ethWeb3TxResponse.json';
 
 const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
   ...fixtureTxResponse,
-  gasPrice: bigNumberify(fixtureTxResponse.gasPrice),
-  gasLimit: bigNumberify(fixtureTxResponse.gasLimit),
-  value: bigNumberify(fixtureTxResponse.value)
+  gasPrice: BigNumber.from(fixtureTxResponse.gasPrice),
+  gasLimit: BigNumber.from(fixtureTxResponse.gasLimit),
+  value: BigNumber.from(fixtureTxResponse.value)
 });
 
 const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
   const result = {
     ...fixtureTxReceipt,
-    gasPrice: bigNumberify(fixtureTxReceipt.gasPrice),
-    gasLimit: bigNumberify(fixtureTxReceipt.gasLimit),
-    value: bigNumberify(fixtureTxReceipt.value),
+    to: getAddress(fixtureTxReceipt.to),
+    from: getAddress(fixtureTxReceipt.from),
+    receiverAddress: getAddress(fixtureTxReceipt.receiverAddress),
+    gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice),
+    gasLimit: BigNumber.from(fixtureTxReceipt.gasLimit),
+    value: BigNumber.from(fixtureTxReceipt.value),
     status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
   };
   return {
     ...result,
-    ...(fixtureTxReceipt.gasUsed && { gasUsed: bigNumberify(fixtureTxReceipt.gasUsed) })
+    metadata: result.metadata ?? undefined,
+    ...(fixtureTxReceipt.gasUsed && { gasUsed: BigNumber.from(fixtureTxReceipt.gasUsed) })
   };
 };
 
@@ -101,3 +106,6 @@ export const fDerivedGolemMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
   gasPrice: '0x12a05f200' as ITxGasPrice,
   chainId: 1
 };
+
+export const fSignedTx =
+  '0xf86b0685012a05f20082520894b2bb2b958afa2e96dab3f3ce7162b87daea39017872386f26fc10000802aa0686df061021262b4e75eb1608c8baaf043cca2b5ac68fb24420ede62d13a8a7fa035389237414433ac06a33d95c863b8221fe2c797a9c650c47a555255be0234f3';

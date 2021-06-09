@@ -33,13 +33,13 @@ export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
 
+export const XDAI_NETWORK: NetworkId = 'xDAI';
+
 export const DEFAULT_NETWORK_TICKER = 'ETH' as TTicker;
 
 export const DEFAULT_ASSET_DECIMAL = 18;
 
-export const MYC_DEXAG_COMMISSION_RATE = 0.75;
-
-export const MYC_DEXAG_MARKUP_THRESHOLD = 1.5;
+export const MYC_DEX_COMMISSION_RATE = 0.0025;
 
 export const CREATION_ADDRESS = '0x0000000000000000000000000000000000000000';
 

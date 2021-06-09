@@ -1,22 +1,12 @@
 import React, { useRef } from 'react';
 
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-
-import { Box, Icon, Text } from '@components';
+import { Box, Icon, LinkApp, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { useClickAway } from '@vendor';
 
 import { LinkSet, Subscribe } from './components';
-
-const SIcon = styled(Icon)`
-  &:hover {
-    transform: rotate(90deg);
-  }
-  transition: all 300ms ease;
-`;
 
 export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTray(): void }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,7 +24,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
       width={{ _: '100vw', sm: '375px' }}
       top={{ _: 0, sm: 'unset' }}
       bottom={{ sm: 0 }}
-      left={{ _: 0, sm: '65px' }}
+      left={{ _: 0, sm: '6.8vh', xxl: '67px' }}
       height={{ sm: 'auto' }}
       boxShadow={{ sm: '3px 3px 20px rgba(0, 0, 0, 0.15);' }}
       ref={ref}
@@ -52,18 +42,13 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
             <Text fontSize={3} color="WHITE" fontWeight={700} mb={0}>
               {translateRaw('NAVIGATION_EXTRAS')}
             </Text>
-            <SIcon
-              type="nav-close"
-              width="16px"
-              style={{ cursor: 'pointer' }}
-              onClick={closeTray}
-            />
+            <Icon type="nav-close" color="WHITE" width="16px" mr="15px" onClick={closeTray} />
           </Box>
         )}
         <Subscribe />
       </Box>
       <LinkSet isMobile={isMobile} />
-      <Link to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} style={{ width: '100%' }}>
+      <LinkApp href={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path}>
         <Box backgroundColor="BLUE_DARK_SLATE" variant="rowCenter" py={SPACING.BASE}>
           <Text
             fontSize="14px"
@@ -77,7 +62,7 @@ export const ExtrasTray = ({ isMobile, closeTray }: { isMobile: boolean; closeTr
           </Text>
           <Icon type="nav-desktop" width="20px" />
         </Box>
-      </Link>
+      </LinkApp>
     </Box>
   );
 };

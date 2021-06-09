@@ -1,12 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { useHistory } from 'react-router-dom';
-
-import { Box } from '@components';
+import { AnnouncementBanner, Box, Icon } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
-import { ScreenLockContext } from '@features/ScreenLock';
 import { COLORS, SPACING } from '@theme';
-import { openLink } from '@utils';
 
 import { TopItem } from './components';
 
@@ -21,10 +17,9 @@ export const TopNav = ({
   isTrayOpen: boolean;
   openTray(): void;
 }) => {
-  const { locked, startLockCountdown } = useContext(ScreenLockContext);
-  const { push } = useHistory();
-
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
+  const currentPath = isMobile && isTrayOpen ? undefined : current;
+
   return (
     <Box
       variant="rowAlign"
@@ -44,32 +39,40 @@ export const TopNav = ({
           onClick={openTray}
         />
       )}
-      <TopItem
-        title="NAVIGATION_LOCK"
-        icon="nav-lock"
-        onClick={() => startLockCountdown(true)}
-        current={locked}
-        color={color}
-      />
+      {!isMobile && (
+        <>
+          {/* Center Banner by adding left margin */}
+          <Box mr="auto" ml={{ _: '0', xxl: 'calc(50% - 462px)' }}>
+            <AnnouncementBanner />
+          </Box>
+          <Icon
+            type="logo-mycrypto-text-blue"
+            width="147px"
+            style={{ marginRight: '35px', marginLeft: '35px' }}
+          />
+        </>
+      )}
       <TopItem
         title="NAVIGATION_JOIN"
         icon="nav-membership"
-        onClick={() => push(ROUTE_PATHS.MYC_MEMBERSHIP.path)}
-        current={current === ROUTE_PATHS.MYC_MEMBERSHIP.path}
+        href={ROUTE_PATHS.MYC_MEMBERSHIP.path}
+        current={currentPath === ROUTE_PATHS.MYC_MEMBERSHIP.path}
         color={color}
       />
       <TopItem
+        isExternal={true}
         title="NAVIGATION_HELP"
         icon="nav-help"
-        onClick={() => openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME))}
+        href={getKBHelpArticle(KB_HELP_ARTICLE.HOME)}
         color={color}
       />
       {!isMobile && (
         <TopItem
+          isExternal={true}
           color={color}
           title="NAVIGATION_NEW"
           icon="nav-new"
-          onClick={() => openLink(LATEST_NEWS_URL)}
+          href={LATEST_NEWS_URL}
         />
       )}
     </Box>

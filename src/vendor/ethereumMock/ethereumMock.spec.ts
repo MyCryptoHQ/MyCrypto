@@ -3,20 +3,20 @@ import { fTransaction } from '@fixtures';
 /* eslint-disable jest/no-done-callback */
 import { ethereumMock } from './ethereumMock';
 
-jest.mock('ethers', () => ({
+jest.mock('@ethersproject/wallet', () => ({
   Wallet: jest.fn().mockImplementation(() => ({
     address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
     sendTransaction: jest.fn().mockImplementation(() => ({
       hash: '0xb04887c8b6cb3c19edb88940d6f5f64a1df8100cd61e15012dda3047892eface'
     }))
-  })),
-  ethers: {
-    providers: {
-      JsonRpcProvider: jest.fn().mockImplementation(() => ({
-        send: jest.fn()
-      }))
-    }
-  }
+  }))
+}));
+
+jest.mock('@ethersproject/providers', () => ({
+  ...jest.requireActual('@ethersproject/providers'),
+  JsonRpcProvider: jest.fn().mockImplementation(() => ({
+    send: jest.fn()
+  }))
 }));
 
 const renderMock = () => {

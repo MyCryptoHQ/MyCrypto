@@ -9,9 +9,9 @@ jest.mock('trezor-connect');
 describe('Trezor', () => {
   it('generates an address from a derivation path', async () => {
     const wallet = new Trezor();
-    await wallet.initialize();
+    await wallet.initialize(DPathsList.ETH_DEFAULT);
 
-    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(1);
+    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(2);
 
     await expect(wallet.getAddress(DPathsList.ETH_DEFAULT, 10)).resolves.toMatchSnapshot();
     await expect(wallet.getAddress(DPathsList.ETH_DEFAULT, 15)).resolves.toMatchSnapshot();
@@ -19,9 +19,9 @@ describe('Trezor', () => {
 
   it('generates an address from a hardened derivation path', async () => {
     const wallet = new Trezor();
-    await wallet.initialize();
+    await wallet.initialize(DPathsList.ETH_DEFAULT);
 
-    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(2);
+    expect(TrezorConnect.manifest).toHaveBeenCalledTimes(3);
 
     await expect(wallet.getAddress(DPathsList.ETH_LEDGER_LIVE, 10)).resolves.toMatchSnapshot();
     await expect(wallet.getAddress(DPathsList.ETH_LEDGER_LIVE, 15)).resolves.toMatchSnapshot();
@@ -29,7 +29,7 @@ describe('Trezor', () => {
 
   it('pre-fetches multiple addresses', async () => {
     const wallet = new Trezor();
-    await wallet.initialize();
+    await wallet.initialize(DPathsList.ETH_DEFAULT);
 
     const paths = [DPathsList.ETH_DEFAULT, DPathsList.ETH_TESTNET];
 

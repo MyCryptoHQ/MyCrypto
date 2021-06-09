@@ -2,8 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import styled from 'styled-components';
 
-import IconArrow from '@components/IconArrow';
-import { Text } from '@components/NewTypography';
+import { Box, Icon, Text } from '@components';
 import { useUserActions } from '@services';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
@@ -17,13 +16,8 @@ interface ActionsListProps {
   onActionClick: Dispatch<SetStateAction<ActionTemplate | undefined>>;
 }
 
-const ActionsContainer = styled.div`
-  height: 240px;
-  overflow-y: scroll;
-`;
-
 const DismissedButton = styled.div`
-  height: 80px;
+  height: ${SPACING.XL};
   width: 100%;
   display: flex;
   align-items: center;
@@ -68,20 +62,25 @@ export const ActionsList = ({ actionTemplates, onActionClick }: ActionsListProps
   );
 
   return (
-    <ActionsContainer>
-      {actions.map((action: ActionTemplate, i) => (
-        <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
-      ))}
+    <>
+      <Box maxHeight={{ md: '180px' }} overflowY="auto">
+        {actions.map((action: ActionTemplate, i) => (
+          <ActionItem key={i} actionTemplate={action} onActionClick={onActionClick} />
+        ))}
+      </Box>
       <DismissedButton onClick={() => setShowHidden(!showHidden)}>
         <Text mb={0} fontSize={2}>
           {translateRaw('ACTIONS_LIST_SHOW_HIDDEN')}
         </Text>
-        <IconArrow isFlipped={showHidden} fillColor={COLORS.BLUE_BRIGHT} size={'lg'} />
+        <Icon type="expandable" isExpanded={showHidden} height="1em" fill="linkAction" />
       </DismissedButton>
-      {showHidden &&
-        hiddenActions.map((action: ActionTemplate, i) => (
-          <ActionItem key={i} actionTemplate={action} hidden={true} />
-        ))}
-    </ActionsContainer>
+      {showHidden && (
+        <Box maxHeight="240px" overflowY="auto">
+          {hiddenActions.map((action: ActionTemplate, i) => (
+            <ActionItem key={i} actionTemplate={action} hidden={true} />
+          ))}
+        </Box>
+      )}
+    </>
   );
 };

@@ -1,46 +1,54 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther, parseEther } from '@ethersproject/units';
 import BigNumberJs from 'bignumber.js';
-import BN from 'bn.js';
-import { BigNumber, bigNumberify, formatEther, parseEther } from 'ethers/utils';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { StoreAsset } from '@types';
 
+import { bigify } from './bigify';
 import { fromTokenBase } from './units';
 
 export const convertToFiatFromAsset = (asset: StoreAsset, rate: number = 1): string => {
   const splitRate = rate.toString().split('.');
   const decimals = splitRate.length > 1 ? splitRate[1].length : 0;
   const rateDivisor = Math.pow(10, decimals);
-  const rateBN = bigNumberify(Math.round(rate * rateDivisor));
+  const rateBN = BigNumber.from(Math.round(rate * rateDivisor));
 
   const convertedFloat = weiToFloat(asset.balance.mul(rateBN), asset.decimal);
-  return (convertedFloat / rateDivisor).toString();
+  return convertedFloat.dividedBy(rateDivisor).toString();
 };
 
-export const convertToFiat = (userViewableBalance: number, rate: number = 1): number => {
-  return userViewableBalance * rate;
+export const convertToFiat = (
+  userViewableBalance: BigNumberJs | string,
+  rate: number = 1
+): BigNumberJs => {
+  return bigify(userViewableBalance).multipliedBy(bigify(rate));
 };
 
 // Converts a decimal to an ethers.js BN
-export const convertToBN = (asset: number): BigNumber => {
+export const convertToBN = (asset: number | string): BigNumber => {
   const assetBN = parseEther(asset.toString());
   return assetBN;
 };
 
 // Multiply a floating-point BN by another floating-point BN
-export const multiplyBNFloats = (asset: number | string, rate: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const rateBN = new BigNumberJs(rate);
-  return bigNumberify(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
+export const multiplyBNFloats = (
+  asset: number | string | BigNumberJs,
+  rate: number | string | BigNumberJs
+): BigNumber => {
+  const assetBN = bigify(asset);
+  const rateBN = bigify(rate);
+  return BigNumber.from(parseEther(trimBN(assetBN.times(rateBN).toFixed(DEFAULT_ASSET_DECIMAL))));
 };
 
 // Divide a floating-point BNs by another floating-point BN
-export const divideBNFloats = (asset: number | string, divisor: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const divisorBN = new BigNumberJs(divisor);
-  return bigNumberify(
+export const divideBNFloats = (
+  asset: number | string | BigNumberJs,
+  divisor: number | string | BigNumberJs
+): BigNumber => {
+  const assetBN = bigify(asset);
+  const divisorBN = bigify(divisor);
+  return BigNumber.from(
     parseEther(trimBN(assetBN.dividedBy(divisorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
 };
@@ -50,10 +58,9 @@ export const subtractBNFloats = (
   asset: number | string,
   subtractor: number | string
 ): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const subtractorBN = new BigNumberJs(subtractor);
-  return bigNumberify(
+  const assetBN = bigify(asset);
+  const subtractorBN = bigify(subtractor);
+  return BigNumber.from(
     parseEther(
       trimBN(BigNumberJs.sum(assetBN, subtractorBN.negated()).toFixed(DEFAULT_ASSET_DECIMAL))
     )
@@ -62,10 +69,9 @@ export const subtractBNFloats = (
 
 // Add a floating-point BNs to another floating-point BN
 export const addBNFloats = (asset: number | string, additor: number | string): BigNumber => {
-  BigNumberJs.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL });
-  const assetBN = new BigNumberJs(asset);
-  const additorBN = new BigNumberJs(additor);
-  return bigNumberify(
+  const assetBN = bigify(asset);
+  const additorBN = bigify(additor);
+  return BigNumber.from(
     parseEther(trimBN(BigNumberJs.sum(assetBN, additorBN).toFixed(DEFAULT_ASSET_DECIMAL)))
   );
 };
@@ -80,8 +86,8 @@ export const trimBN = (
 };
 
 // Note: This can in some cases remove useful decimals
-export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
-  parseFloat(fromTokenBase(new BN(wei.toString()), decimal));
+export const weiToFloat = (wei: BigNumber, decimal?: number): BigNumberJs =>
+  bigify(fromTokenBase(bigify(wei), decimal));
 
 export const withCommission = ({
   amount,
@@ -91,14 +97,8 @@ export const withCommission = ({
   amount: BigNumber;
   rate: number;
   subtract?: boolean;
-}): number => {
-  const commission = subtract ? (100 - rate) / 100 : (100 + rate) / 100;
+}): BigNumberJs => {
+  const commission = subtract ? 1.0 - rate : 1.0 + rate;
   const outputBN = multiplyBNFloats(weiToFloat(amount), commission);
-  return parseFloat(trimBN(formatEther(outputBN)));
+  return bigify(trimBN(formatEther(outputBN)));
 };
-
-export const calculateMarkup = (exchangeRate: number, costBasis: number): string =>
-  (
-    (1 - parseFloat(trimBN(formatEther(divideBNFloats(exchangeRate, costBasis).toString()), 10))) *
-    100
-  ).toString();

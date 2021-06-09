@@ -2,21 +2,21 @@ import React from 'react';
 
 import Select, {
   FocusEventHandler,
-  IndicatorProps,
   InputActionMeta,
   OptionProps,
+  OptionTypeBase,
   components as ReactSelectComponents,
+  SelectComponentsConfig,
   Styles,
   ValueContainerProps
 } from 'react-select';
 import styled from 'styled-components';
 
-import crossIcon from '@assets/images/icn-cross.svg';
 import { COLORS, FONT_SIZE } from '@theme';
 
-import { CenteredIconArrow } from './IconArrow';
+import Icon from './Icon';
 
-export interface SelectorProps<T> {
+interface SelectorProps<T extends OptionTypeBase> {
   options: T[];
   // We prefer controlled components so `value` is required prop. When it is `null`, React-Select will display the placeholder
   value: T | null | undefined;
@@ -25,7 +25,6 @@ export interface SelectorProps<T> {
   searchable?: boolean;
   clearable?: boolean;
   name?: string;
-  dropdownIcon?: JSX.Element;
   optionComponent: React.ComponentType<OptionProps<T>>;
   valueComponent?: React.ComponentClass<{ value: T }> | React.StatelessComponent<{ value: T }>;
   inputId?: string;
@@ -34,6 +33,8 @@ export interface SelectorProps<T> {
   onBlurResetsInput?: boolean;
   onBlur?: FocusEventHandler;
   optionDivider?: boolean;
+  isClearable?: boolean;
+  components?: SelectComponentsConfig<T>;
   getOptionLabel?(option: T): string;
   onChange?(option: T): void;
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
@@ -43,10 +44,9 @@ export interface SelectorProps<T> {
 // Fixes weird placement issues for react-select
 const Wrapper = styled('div')`
   cursor: pointer;
-`;
-
-const IconWrapper = styled('div')`
-  width: 30px;
+  &:hover {
+    cursor: default;
+  }
 `;
 
 const OptionWrapper = styled.div`
@@ -65,24 +65,8 @@ const OptionWrapper = styled.div`
   }
 `;
 
-const DropdownIndicator: (icon?: JSX.Element) => React.FC<IndicatorProps<any>> = (icon) => (
-  props
-) => {
-  const {
-    selectProps: { menuIsOpen }
-  } = props;
-  return (
-    <ReactSelectComponents.DropdownIndicator {...props}>
-      {icon ? <IconWrapper>{icon}</IconWrapper> : <CenteredIconArrow isFlipped={menuIsOpen} />}
-    </ReactSelectComponents.DropdownIndicator>
-  );
-};
-
-const ClearIndicator: React.FC<IndicatorProps<any>> = ({ clearValue }) => (
-  <IconWrapper onClick={clearValue}>
-    <img src={crossIcon} />
-  </IconWrapper>
-);
+export const DropdownIndicatorWrapper = ReactSelectComponents.DropdownIndicator;
+export const ClearIndicatorWrapper = ReactSelectComponents.ClearIndicator;
 
 const getValueContainer: <T = any>(
   props: ValueContainerProps<T> & OptionProps<T>,
@@ -133,7 +117,7 @@ const customStyles: Styles = {
   },
   menuList: (provided) => ({
     ...provided,
-    padding: 0
+    padding: '0px'
   }),
   control: (provided, state) => ({
     ...provided,
@@ -153,21 +137,23 @@ const customStyles: Styles = {
     display: 'inline-block'
   }),
   // Allow the valueComponent to handle it's own padding when present.
+  // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    ...(state && state.hasValue && { paddingLeft: 0 })
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px'
   })
 };
 
-const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorProps<T>> = ({
+const Selector: <T extends OptionTypeBase>(
+  p: SelectorProps<T>
+) => React.ReactElement<SelectorProps<T>> = ({
   options,
   value,
   disabled = false,
   placeholder,
   searchable = true,
-  clearable = false,
+  isClearable = false,
   name,
-  dropdownIcon,
   optionComponent,
   valueComponent,
   inputId,
@@ -179,6 +165,7 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
   onInputChange,
   onInputKeyDown,
   optionDivider,
+  components,
   ...props
 }) => (
   <Wrapper data-testid="selector">
@@ -189,7 +176,7 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
       isDisabled={disabled}
       placeholder={placeholder}
       isSearchable={searchable}
-      isClearable={clearable}
+      isClearable={isClearable}
       name={name}
       // We use inputId for aria concerns, and to target the react-select component with getByLabelText
       inputId={inputId || name}
@@ -202,11 +189,20 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
       openMenuOnClick={true}
       styles={customStyles}
       components={{
-        DropdownIndicator: DropdownIndicator(dropdownIcon),
+        DropdownIndicator: (props) => {
+          const {
+            selectProps: { menuIsOpen }
+          } = props;
+          return (
+            <DropdownIndicatorWrapper {...props}>
+              <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
+            </DropdownIndicatorWrapper>
+          );
+        },
         Option: (oProps: any) => getOption({ ...oProps, optionDivider }, optionComponent),
-        ClearIndicator,
         ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
-        IndicatorSeparator: () => null
+        IndicatorSeparator: () => null,
+        ...components
       }}
       {...props}
     />

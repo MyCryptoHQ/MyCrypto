@@ -2,15 +2,14 @@ import React, { PureComponent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 
-import { Box, Heading, Icon, NewTabLink, Spinner } from '@components';
-import { EXT_URLS } from '@config';
+import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
+import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, FormData, WalletId } from '@types';
+import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
-import DeterministicWallets from './DeterministicWallets';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 
@@ -30,7 +29,7 @@ interface State {
 
 type Props = OwnProps;
 
-const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
+const WalletService = WalletFactory[WalletId.LEDGER_NANO_S];
 
 class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
@@ -59,7 +58,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             <Trans
               id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
               variables={{
-                $newTabLink: () => <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+                $link: () => (
+                  <LinkApp href="https://mycrypto.com" isExternal={true}>
+                    MyCrypto.com
+                  </LinkApp>
+                )
               }}
             />
           </div>
@@ -70,7 +73,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     if (publicKey && chainCode) {
       return (
         <div className="Mnemonic-dpath">
-          <DeterministicWallets
+          <HDWallets
             network={network}
             publicKey={publicKey}
             chainCode={chainCode}
@@ -91,7 +94,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
           </Heading>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">
-              {translate('LEDGER_TIP')}
+              {translate('LEDGER_TIP', { $network: network.id })}
               <div className="LedgerPanel-image">
                 <Icon type="ledger-icon-lg" />
               </div>
@@ -110,7 +113,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
               )}
             </div>
             <div className="LedgerPanel-footer">
-              {translate('LEDGER_REFERRAL_2', { $url: EXT_URLS.LEDGER_REFERRAL.url })}
+              <BusyBottom type={BusyBottomConfig.LEDGER} />
             </div>
           </div>
         </Box>
@@ -151,8 +154,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     this.reset();
   };
 
-  private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
+  private handleUnlock = (address: TAddress, index: number) => {
+    this.props.onUnlock(WalletService.init({ address, dPath: this.state.dPath.value, index }));
   };
 
   private handleNullConnect = (): void => {

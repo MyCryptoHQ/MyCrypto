@@ -1,27 +1,22 @@
 import React from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { customNodeConfig, fNetwork, fNetworks } from '@fixtures';
 import { Network } from '@types';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useNetworks from './useNetworks';
 
 const renderUseNetworks = ({ networks = [] as Network[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ networks } as any) as IDataContext}>
-        {children}
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ProvidersWrapper initialState={mockAppState({ networks })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useNetworks(), { wrapper });
 };
 
 describe('useNetworks', () => {
-  it('uses get networks from DataContext', () => {
+  it('uses get networks from store', () => {
     const { result } = renderUseNetworks({ networks: [fNetwork] });
     expect(result.current.networks).toEqual([fNetwork]);
   });

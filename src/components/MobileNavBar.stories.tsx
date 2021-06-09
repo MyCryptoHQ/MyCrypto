@@ -24,7 +24,7 @@ const mobileNavBar = () => (
   </div>
 );
 
-storiesOf('MobileNavBar', module).add('Settings nav bar', () => mobileNavBar(), {
+storiesOf('Molecules/MobileNavBar', module).add('Settings nav bar', () => mobileNavBar(), {
   design: {
     type: 'figma',
     url:

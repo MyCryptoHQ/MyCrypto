@@ -24,7 +24,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-export default { title: 'ContractLookupField' };
+export default { title: 'Molecules/ContractLookupField', component: ContractLookupField };
 
 export const defaultState = () => (
   <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>

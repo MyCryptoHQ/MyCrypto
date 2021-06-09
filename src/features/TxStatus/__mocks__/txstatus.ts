@@ -6,10 +6,10 @@ export const mockFactory = (validHash: string) => {
     transactionIndex: null,
     confirmations: 0,
     from: '0x5197B5b062288Bbf29008C92B08010a92Dd677CD',
-    gasPrice: '0x12a05f200',
-    gasLimit: '0x5208',
+    gasPrice: '0x012a05f200',
+    gasLimit: '0x7d3c',
     to: '0x5197B5b062288Bbf29008C92B08010a92Dd677CD',
-    value: '0x2386f26fc10000',
+    value: '0x00',
     nonce: 24,
     data: '0x',
     r: '0xf59ba7d53009466f5acc79fc76a51818107c3ff3d8340ce91a1c99f272854104',
@@ -22,17 +22,18 @@ export const mockFactory = (validHash: string) => {
     chainId: 3
   };
   return {
-    InfuraProvider: () => ({}),
-    FallbackProvider: () => ({
-      providers: [
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      providerConfigs: [
         {
-          getTransaction: jest
-            .fn()
-            .mockImplementation((hash) =>
-              hash === validHash ? Promise.resolve(txResponse) : Promise.resolve(undefined)
-            )
+          provider: {
+            getTransaction: jest
+              .fn()
+              .mockImplementation((hash) =>
+                hash === validHash ? Promise.resolve(txResponse) : Promise.resolve(undefined)
+              )
+          }
         }
       ]
-    })
+    }))
   };
 };

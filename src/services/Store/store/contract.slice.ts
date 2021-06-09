@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedContract, LSKeys, TUuid } from '@types';
 import { findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
+import { getAppState } from './selectors';
 
 const sliceName = LSKeys.CONTRACTS;
 export const initialState = initialLegacyState[sliceName];
@@ -23,5 +24,6 @@ const slice = createSlice({
 });
 
 export const { create: createContract, destroy: destroyContract } = slice.actions;
+export const selectContracts = createSelector(getAppState, (s) => s[slice.name]);
 
 export default slice;

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import { translateRaw } from '@translations';
 import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
-import { convertToFiatFromAsset, weiToFloat } from '@utils';
+import { bigify, convertToFiatFromAsset, weiToFloat } from '@utils';
 
 const buildAccountDisplayBalances = (
   accounts: StoreAccount[],
@@ -53,7 +53,7 @@ export const buildBalances = (
   totals(accounts)
     .filter(assetFilter(settings.excludedAssets))
     .map(buildBalance(accounts, getAssetRate))
-    .sort((a, b) => parseFloat(b.fiatValue) - parseFloat(a.fiatValue));
+    .sort((a, b) => bigify(b.fiatValue).comparedTo(a.fiatValue));
 
 export const buildTotalFiatValue = (balances: Balance[]) =>
   balances

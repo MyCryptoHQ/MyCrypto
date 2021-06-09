@@ -17,7 +17,7 @@ test('Should apply empty storage', async (t) => {
   await addAccountPage.waitPageLoaded();
 
   const title = getByText(getTransValueByKey('DECRYPT_ACCESS'));
-  await t.expect(title).ok();
+  await t.expect(title.exists).ok();
 });
 
 test.clientScripts({ content: injectLS(FIXTURE_LOCALSTORAGE_WITH_ONE_ACC) })(

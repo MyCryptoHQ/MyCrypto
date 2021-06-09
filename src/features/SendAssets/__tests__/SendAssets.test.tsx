@@ -1,65 +1,51 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
-import { simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import SendAssets from '@features/SendAssets/SendAssets';
-import { fAssets, fSettings } from '@fixtures';
-import { FeatureFlagProvider, RatesContext } from '@services';
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
-import { WalletId } from '@types';
+import { fAccounts, fAssets } from '@fixtures';
+import { StoreContext } from '@services/Store';
 
 // SendFlow makes RPC calls to get nonce and gas.
-jest.mock('ethers/providers', () => {
+jest.mock('@vendor', () => {
   return {
+    ...jest.requireActual('@vendor'),
     // Since there are no nodes in our StoreContext,
     // ethers will default to FallbackProvider
-    FallbackProvider: () => ({
+    FallbackProvider: jest.fn().mockImplementation(() => ({
       getTransactionCount: () => 10
-    })
+    }))
   };
 });
 /* Test components */
 describe('SendAssetsFlow', () => {
-  const component = (path?: string) => (
-    <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
+  const renderComponent = () => {
+    return simpleRender(
+      <StoreContext.Provider
         value={
           ({
-            addressBook: [],
-            settings: fSettings,
-            assets: fAssets
-          } as unknown) as IDataContext
+            userAssets: [],
+            accounts: fAccounts,
+            getAccount: jest.fn()
+          } as unknown) as any
         }
       >
-        <FeatureFlagProvider>
-          <StoreContext.Provider
-            value={
-              ({
-                userAssets: [],
-                accounts: [],
-                defaultAccount: { assets: [], wallet: WalletId.WEB3 },
-                getAccount: jest.fn(),
-                networks: [{ nodes: [] }]
-              } as unknown) as any
-            }
-          >
-            <RatesContext.Provider value={{ rates: {}, trackAsset: jest.fn() } as any}>
-              <SendAssets />
-            </RatesContext.Provider>
-          </StoreContext.Provider>
-        </FeatureFlagProvider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
-
-  const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(component(pathToLoad));
+        <SendAssets />
+      </StoreContext.Provider>,
+      {
+        initialState: mockAppState({
+          accounts: fAccounts,
+          assets: fAssets,
+          networks: APP_STATE.networks
+        })
+      }
+    );
   };
 
   test('Can render the first step (Send Assets Form) in the flow.', () => {
     const { getByText } = renderComponent();
     const selector = 'Send Assets';
     expect(getByText(selector)).toBeInTheDocument();
+    expect(getByText(fAccounts[0].label)).toBeInTheDocument();
   });
 });

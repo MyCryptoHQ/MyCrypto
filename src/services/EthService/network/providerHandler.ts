@@ -1,17 +1,19 @@
-import any from '@ungap/promise-any';
+import { BigNumber } from '@ethersproject/bignumber';
 import {
   BaseProvider,
   Block,
-  FallbackProvider,
   TransactionReceipt,
+  TransactionRequest,
   TransactionResponse
-} from 'ethers/providers';
-import { BigNumber, formatEther } from 'ethers/utils';
+} from '@ethersproject/providers';
+import { formatEther } from '@ethersproject/units';
+import any from '@ungap/promise-any';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { ERC20, RPCRequests } from '@services/EthService';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TxObj } from '@types';
+import { ERC20 } from '@services/EthService';
+import { Asset, IHexStrTransaction, ITxSigned, Network } from '@types';
 import { baseToConvertedUnit } from '@utils';
+import { FallbackProvider } from '@vendor';
 
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
@@ -27,16 +29,14 @@ export class ProviderHandler {
   }
 
   public network: Network;
-  public requests: RPCRequests;
   private isFallbackProvider: boolean;
 
   constructor(network: Network, isFallbackProvider = true) {
     this.network = network;
-    this.requests = new RPCRequests();
     this.isFallbackProvider = isFallbackProvider;
   }
 
-  public call(txObj: TxObj): Promise<string> {
+  public call(txObj: TransactionRequest): Promise<string> {
     return this.injectClient((client) => {
       return client.call(txObj);
     });
@@ -62,8 +62,8 @@ export class ProviderHandler {
     return this.injectClient((client) =>
       client
         .call({
-          to: this.requests.getTokenBalance(address, token).params[0].to,
-          data: this.requests.getTokenBalance(address, token).params[0].data
+          to: token.contractAddress,
+          data: ERC20.balanceOf.encodeInput({ _owner: address })
         })
         .then((data) => ERC20.balanceOf.decodeOutput(data))
         .then(({ balance }) => balance)
@@ -91,13 +91,13 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        const providers = (client as FallbackProvider).providers;
+        const providers = (client as FallbackProvider).providerConfigs;
         return any(
           providers.map((p) => {
             // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
             // Instead, we reject if the tx is undefined such that we keep searching in other nodes
             return new Promise((resolve, reject) =>
-              p
+              p.provider
                 .getTransaction(txhash)
                 .then((tx) => (tx ? resolve(tx) : reject()))
                 .catch((err) => reject(err))
@@ -114,11 +114,11 @@ export class ProviderHandler {
   }
 
   public getBlockByHash(blockHash: string): Promise<Block> {
-    return this.injectClient((client) => client.getBlock(blockHash, false));
+    return this.injectClient((client) => client.getBlock(blockHash));
   }
 
   public getBlockByNumber(blockNumber: number): Promise<Block> {
-    return this.injectClient((client) => client.getBlock(blockNumber, false));
+    return this.injectClient((client) => client.getBlock(blockNumber));
   }
 
   /* Tested */

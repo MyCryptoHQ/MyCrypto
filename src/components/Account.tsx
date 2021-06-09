@@ -4,7 +4,7 @@ import { Avatar, Identicon, scale } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, FONT_SIZE } from '@theme';
+import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 import EthAddress from './EthAddress';
@@ -17,7 +17,7 @@ const Flex = styled.div`
 `;
 
 const Content = styled.div`
-  padding-left: 1em;
+  padding-left: ${SPACING.SM};
 `;
 
 const Title = styled(Typography)`
@@ -44,15 +44,15 @@ const Address = styled(EthAddress)`
 
 const SAvatar = styled(Avatar)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
   }
 `;
 
 const SIdenticon = styled(Identicon)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
     max-width: none;
   }
 `;

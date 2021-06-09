@@ -8,7 +8,7 @@ import { bigify } from '@utils';
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 
-export default { title: 'ConfirmSwapMultiTx' };
+export default { title: 'Features/ConfirmSwapMultiTx', component: ConfirmSwapMultiTx };
 
 const DAI: ISwapAsset = {
   name: 'DAI Stablecoin v2.0',

@@ -1,3 +1,5 @@
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
@@ -34,10 +36,6 @@ module.exports = merge.smart(common, {
     filename: '[name].js'
   },
 
-  resolve: {
-    alias: { 'react-dom': '@hot-loader/react-dom' }
-  },
-
   module: {
     rules: [
       {
@@ -66,11 +64,16 @@ module.exports = merge.smart(common, {
       clearConsole: false
     }),
 
-    new webpack.HotModuleReplacementPlugin(),
-
+    new ReactRefreshWebpackPlugin(),
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
-    new BundleAnalyzerPlugin({ openAnalyzer: false })
+    new BundleAnalyzerPlugin({ openAnalyzer: false }),
+
+    // Make .env variables available to react code.
+    // We use Github secrets for production, so this is only defined in development.
+    new Dotenv({
+      safe: true // loads .env.example to sure all values are defined in .env
+    })
   ],
 
   performance: {

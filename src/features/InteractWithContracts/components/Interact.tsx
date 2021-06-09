@@ -390,7 +390,12 @@ function Interact(props: CombinedProps) {
             </FieldWrapper>
 
             <ButtonWrapper>
-              <Button color={WHITE} disabled={wasContractInteracted} onClick={submitInteract}>
+              <Button
+                color={WHITE}
+                disabled={wasContractInteracted}
+                onClick={submitInteract}
+                fullwidth={true}
+              >
                 {translateRaw('INTERACT_WITH_CONTRACT')}
               </Button>
             </ButtonWrapper>

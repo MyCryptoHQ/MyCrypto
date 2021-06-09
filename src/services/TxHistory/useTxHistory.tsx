@@ -1,14 +1,15 @@
-import { useContext } from 'react';
-
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { getAccounts, getTxHistory, selectAccountTxs, useSelector } from '@store';
 import { ITxReceipt, Network } from '@types';
+import { isEmpty } from '@vendor';
 
-import { getTxsFromAccount, StoreContext, useAssets, useContacts, useNetworks } from '../Store';
+import { useAssets, useContacts, useNetworks } from '../Store';
 import { deriveTxType, makeTxReceipt, merge } from './helpers';
 import { ITxHistoryEntry } from './types';
 
 function useTxHistory() {
-  const { accounts, txHistory } = useContext(StoreContext);
+  const accounts = useSelector(getAccounts);
+  const txHistory = useSelector(getTxHistory);
   const { assets } = useAssets();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { networks } = useNetworks();
@@ -17,25 +18,31 @@ function useTxHistory() {
   const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
   const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
+  const accountTxs = useSelector(selectAccountTxs);
 
-  const accountTxs = getTxsFromAccount(accounts);
+  const mergedTxHistory: ITxHistoryEntry[] = merge(apiTxs, accountTxs)
+    .map((tx: ITxReceipt) => {
+      const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
 
-  const mergedTxHistory: ITxHistoryEntry[] = merge(apiTxs, accountTxs).map((tx: ITxReceipt) => {
-    const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-    const toAddressBookEntry = getContactByAddressAndNetworkId(
-      tx.receiverAddress || tx.to,
-      network.id
-    );
-    const fromAddressBookEntry = getContactByAddressAndNetworkId(tx.from, network.id);
-    return {
-      ...tx,
-      timestamp: tx.timestamp || 0,
-      txType: deriveTxType(accounts, tx) || ITxHistoryType.UNKNOWN,
-      toAddressBookEntry,
-      fromAddressBookEntry,
-      networkId: network.id
-    };
-  });
+      // if Txhistory contains a deleted network ie. MATIC remove from history.
+      if (!network) return {} as ITxHistoryEntry;
+
+      const toAddressBookEntry = getContactByAddressAndNetworkId(
+        tx.receiverAddress || tx.to,
+        network.id
+      );
+      const fromAddressBookEntry = getContactByAddressAndNetworkId(tx.from, network.id);
+      return {
+        ...tx,
+        timestamp: tx.timestamp || 0,
+        txType: deriveTxType(accounts, tx) || ITxHistoryType.UNKNOWN,
+        toAddressBookEntry,
+        fromAddressBookEntry,
+        networkId: network.id
+      };
+    })
+    // Remove eventual empty items from list
+    .filter((item) => !isEmpty(item));
 
   return { txHistory: mergedTxHistory };
 }

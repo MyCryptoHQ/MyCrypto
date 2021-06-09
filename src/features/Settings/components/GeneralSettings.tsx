@@ -3,23 +3,20 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { DashboardPanel, SubHeading, Tooltip } from '@components';
+import { DashboardPanel, Divider, LinkApp, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, ROUTE_PATHS } from '@config';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
-import { AppState, getFiat, getInactivityTimer, setFiat, setInactivityTimer } from '@store';
+import {
+  AppState,
+  canTrackProductAnalytics,
+  getFiat,
+  setFiat,
+  setProductAnalyticsAuthorisation
+} from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import translate, { translateRaw } from '@translations';
+import translate from '@translations';
 import { TFiatTicker } from '@types';
-
-const Divider = styled.div`
-  height: 2px;
-  margin-bottom: ${SPACING.BASE};
-  background: ${COLORS.GREY_ATHENS};
-`;
 
 const SettingsField = styled.div`
   display: flex;
@@ -36,6 +33,9 @@ const SettingsControl = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-top: ${SPACING.SM};
     width: 100%;
+    div {
+      justify-content: flex-start;
+    }
   }
 `;
 
@@ -57,35 +57,14 @@ const SelectContainer = styled.div`
   }
 `;
 
-const timerOptions = [
-  { name: translateRaw('ELAPSED_TIME_MINUTE', { $value: '1' }), value: '60000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '3' }), value: '180000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '5' }), value: '300000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '10' }), value: '600000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '15' }), value: '900000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '30' }), value: '1800000' },
-  { name: translateRaw('ELAPSED_TIME_MINUTES', { $value: '45' }), value: '2700000' },
-  { name: translateRaw('ELAPSED_TIME_HOUR', { $value: '1' }), value: '3600000' },
-  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '3' }), value: '10800000' },
-  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '6' }), value: '21600000' },
-  { name: translateRaw('ELAPSED_TIME_HOURS', { $value: '12' }), value: '43200000' }
-];
-
-const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, setFiat }: Props) => {
-  const trackSetInacticityTimer = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SETTINGS
-  });
-
-  const changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
-    const target = event.target as HTMLSelectElement;
-    setInactivityTimer(Number(target.value));
-
-    const selectedTimer = timerOptions.find((selection) => selection.value === target.value);
-    if (selectedTimer) {
-      trackSetInacticityTimer({
-        actionName: `User set inactivity timer to ${selectedTimer.name}`
-      });
-    }
+const GeneralSettings = ({
+  fiatCurrency,
+  setFiat,
+  canTrackProductAnalytics,
+  setProductAnalyticsAuthorisation
+}: Props) => {
+  const toggleAnalytics = () => {
+    setProductAnalyticsAuthorisation(!canTrackProductAnalytics);
   };
 
   const changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -95,42 +74,28 @@ const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, se
 
   return (
     <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
-      <Divider />
+      <Divider mb={SPACING.BASE} />
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_HANDLING_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
+          <Tooltip width="16px" tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>} />
         </SubHeading>
         <SettingsControl>
-          <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
+          <LinkApp href={ROUTE_PATHS.SETTINGS_IMPORT.path}>
             <SettingsButton secondary={true}>{translate('SETTINGS_IMPORT_LABEL')}</SettingsButton>
-          </Link>
-          <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path} style={{ marginLeft: SPACING.SM }}>
+          </LinkApp>
+          <LinkApp href={ROUTE_PATHS.SETTINGS_EXPORT.path} ml={SPACING.SM}>
             <SettingsButton secondary={true}>{translate('SETTINGS_EXPORT_LABEL')}</SettingsButton>
-          </Link>
-        </SettingsControl>
-      </SettingsField>
-      <SettingsField>
-        <SubHeading fontWeight="initial">
-          {translate('SETTINGS_INACTIVITY_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_INACTIVITY_TOOLTIP')}</span>} />
-        </SubHeading>
-        <SettingsControl>
-          <SelectContainer>
-            <select onChange={changeTimer} value={String(inactivityTimer)}>
-              {timerOptions.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </SelectContainer>
+          </LinkApp>
         </SettingsControl>
       </SettingsField>
       <SettingsField>
         <SubHeading fontWeight="initial">
           {translate('SETTINGS_FIAT_SELECTION_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>} />
+          <Tooltip
+            width="16px"
+            tooltip={<span>{translate('SETTINGS_FIAT_SELECTION_TOOLTIP')}</span>}
+          />
         </SubHeading>
         <SettingsControl>
           <SelectContainer>
@@ -144,20 +109,38 @@ const GeneralSettings = ({ inactivityTimer, fiatCurrency, setInactivityTimer, se
           </SelectContainer>
         </SettingsControl>
       </SettingsField>
+      <SettingsField>
+        <SubHeading fontWeight="initial">
+          {translate('SETTINGS_PRODUCT_ANALYTICS')}{' '}
+          <Tooltip
+            width="16px"
+            tooltip={<span>{translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP')}</span>}
+          />
+        </SubHeading>
+        <SettingsControl>
+          <Switch
+            $greyable={true}
+            checked={canTrackProductAnalytics}
+            onChange={toggleAnalytics}
+            labelLeft="OFF"
+            labelRight="ON"
+          />
+        </SettingsControl>
+      </SettingsField>
     </DashboardPanel>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
-  inactivityTimer: getInactivityTimer(state),
-  fiatCurrency: getFiat(state)
+  fiatCurrency: getFiat(state),
+  canTrackProductAnalytics: canTrackProductAnalytics(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
-      setInactivityTimer,
-      setFiat
+      setFiat,
+      setProductAnalyticsAuthorisation
     },
     dispatch
   );

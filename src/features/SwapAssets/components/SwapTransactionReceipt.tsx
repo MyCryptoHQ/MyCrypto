@@ -5,7 +5,7 @@ import pick from 'ramda/src/pick';
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
-import { makeTxItem } from '@helpers';
+import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
 import { StoreContext, useAssets, useRates, useSettings } from '@services';
 import { translateRaw } from '@translations';
 import { ITxType, StoreAccount, TxParcel } from '@types';
@@ -28,7 +28,7 @@ export default function SwapTransactionReceipt({
   onSuccess
 }: Props) {
   const { assets: getAssets } = useContext(StoreContext);
-  const { getAssetByUUID } = useAssets();
+  const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
   const swapDisplay: SwapDisplayData = pick(
@@ -38,13 +38,16 @@ export default function SwapTransactionReceipt({
   const currentAssets = getAssets();
   // @todo: refactor this to be based on status of tx from StoreProvider
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeSwapTxConfig(currentAssets)(
-      tx.txRaw,
-      account,
-      assetPair.fromAsset,
-      assetPair.fromAmount.toString()
-    );
     const txType = idx === transactions.length - 1 ? ITxType.SWAP : ITxType.APPROVAL;
+    const txConfig =
+      txType === ITxType.SWAP
+        ? makeSwapTxConfig(currentAssets)(
+            tx.txRaw,
+            account,
+            assetPair.fromAsset,
+            assetPair.fromAmount.toString()
+          )
+        : makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account]);
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
@@ -69,6 +72,7 @@ export default function SwapTransactionReceipt({
 
   return txReceipts.length === 1 ? (
     <TxReceipt
+      disableDynamicTxReceiptDisplay={true}
       txReceipt={txItems[0].txReceipt}
       txConfig={txItems[0].txConfig}
       completeButton={translateRaw('SWAP_START_ANOTHER')}

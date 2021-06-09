@@ -9,19 +9,18 @@ import {
   DPathsList,
   TREZOR_DERIVATION_PATHS
 } from '@config';
+import { HDWallet } from '@features/AddAccount';
 import {
   getAssetByUUID,
+  getDPaths,
   getNetworkById,
   useAssets,
-  useDeterministicWallet,
+  useHDWallet,
   useNetworks
 } from '@services';
-import { translateRaw } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 
-import DeterministicWallet from './DeterministicWallet';
 import HardwareWalletUI from './Hardware';
-import UnsupportedNetwork from './UnsupportedNetwork';
 
 //@todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -30,26 +29,37 @@ interface OwnProps {
 }
 
 const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
-  const dpaths = uniqBy(prop('value'), TREZOR_DERIVATION_PATHS);
+  const { networks } = useNetworks();
+  const { assets } = useAssets();
+  const network = getNetworkById(formData.network, networks);
+  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const dpaths = uniqBy(prop('value'), [
+    ...getDPaths([network], WalletId.TREZOR_NEW),
+    ...TREZOR_DERIVATION_PATHS
+  ]);
+  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
+  const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
     ...dpath,
     offset: 0,
     numOfAddresses: numOfAccountsToCheck
   }));
-  const { networks } = useNetworks();
-  const { assets } = useAssets();
-  const network = getNetworkById(formData.network, networks);
-  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
-  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
+
   const [assetToUse, setAssetToUse] = useState(baseAsset);
   const {
-    state,
+    isCompleted,
+    isConnected,
+    isConnecting,
+    connectionError,
+    selectedAsset,
+    accountQueue,
+    scannedAccounts,
     requestConnection,
     updateAsset,
-    generateFreshAddress,
-    addDPaths
-  } = useDeterministicWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
+    addDPaths,
+    scanMoreAddresses
+  } = useHDWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleNullConnect = () => {
     requestConnection(network, assetToUse);
@@ -60,22 +70,21 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset(newAsset);
   };
 
-  if (!network) {
-    // @todo: make this better.
-    return <UnsupportedNetwork walletType={translateRaw('X_TREZOR')} network={network} />;
-  }
-
-  if (state.isConnected && state.asset && (state.queuedAccounts || state.finishedAccounts)) {
+  if (isConnected && selectedAsset && (accountQueue || scannedAccounts)) {
     return (
-      <DeterministicWallet
-        state={state}
-        defaultDPath={defaultDPath}
+      <HDWallet
+        scannedAccounts={scannedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
+        selectedDPath={selectedDPath}
         assets={assets}
         assetToUse={assetToUse}
         network={network}
+        dpaths={dpaths}
+        setSelectedDPath={setSelectedDPath}
         updateAsset={updateAsset}
         addDPaths={addDPaths}
-        generateFreshAddress={generateFreshAddress}
+        scanMoreAddresses={scanMoreAddresses}
         handleAssetUpdate={handleAssetUpdate}
         onUnlock={onUnlock}
       />
@@ -83,8 +92,9 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   } else {
     return (
       <HardwareWalletUI
+        isConnecting={isConnecting}
+        connectionError={connectionError}
         network={network}
-        state={state}
         handleNullConnect={handleNullConnect}
         walletId={WalletId.TREZOR_NEW}
       />

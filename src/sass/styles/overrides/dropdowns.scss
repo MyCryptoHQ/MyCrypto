@@ -11,37 +11,3 @@
 span.dropdown {
   display: inline-block;
 }
-
-.dropdown-menu {
-  padding: 0;
-  border: none;
-  background: color(control-bg);
-  box-shadow: $dropdown-shadow;
-
-  > li {
-    margin: 0;
-
-    &:first-child {
-      padding-top: 4px;
-    }
-
-    &:last-child {
-      padding-bottom: 4px;
-    }
-
-    > a {
-      color: color(control-color);
-      font-weight: 300;
-      transition: none;
-
-      &.active {
-        color: color(link-color);
-      }
-
-      &:hover {
-        background-color: color(brand-primary);
-        color: color(text-color-inverted);
-      }
-    }
-  }
-}

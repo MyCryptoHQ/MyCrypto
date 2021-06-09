@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Icon, InlineMessage, Text, TIcon } from '@components';
+import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { HardwareWallet, WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { IAccount, IPendingTxReceipt, ISignedTx, ITxObject, WalletId } from '@types';
+import {
+  BusyBottomConfig,
+  HardwareWalletId,
+  HardwareWalletService,
+  IAccount,
+  IPendingTxReceipt,
+  ISignedTx,
+  ITxObject,
+  WalletId
+} from '@types';
 import { makeTransaction, useInterval } from '@utils';
 
 export interface IDestructuredDPath {
@@ -61,7 +70,9 @@ export default function HardwareSignTransaction({
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
   const [wallet, setWallet] = useState<HardwareWallet | undefined>();
-  const SigningWalletService = WalletFactory(senderAccount.wallet);
+  const SigningWalletService = WalletFactory[
+    senderAccount.wallet as HardwareWalletId
+  ] as HardwareWalletService;
 
   useInterval(
     async () => {
@@ -69,11 +80,11 @@ export default function HardwareSignTransaction({
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
         const dpathObject = splitDPath(senderAccount.dPath);
-        const walletObject = SigningWalletService.init(
-          senderAccount.address,
-          dpathObject.dpath,
-          dpathObject.index
-        );
+        const walletObject = SigningWalletService.init({
+          address: senderAccount.address,
+          dPath: dpathObject.dpath,
+          index: dpathObject.index
+        });
         try {
           await SigningWalletService.getChainCode(dpathObject.dpath);
           setIsRequestingWalletUnlock(false);
@@ -109,25 +120,14 @@ export default function HardwareSignTransaction({
     }
   }, [wallet, isRequestingTxSignature]);
 
-  const helpCopy = (() => {
+  const walletType = (() => {
     switch (senderAccount.wallet) {
       case WalletId.TREZOR:
       case WalletId.TREZOR_NEW:
-        return 'TREZOR_HELP';
+        return BusyBottomConfig.TREZOR;
 
       default:
-        return 'LEDGER_HELP';
-    }
-  })();
-
-  const referralCopy = (() => {
-    switch (senderAccount.wallet) {
-      case WalletId.TREZOR:
-      case WalletId.TREZOR_NEW:
-        return 'TREZOR_REFERRAL';
-
-      default:
-        return 'LEDGER_REFERRAL';
+        return BusyBottomConfig.LEDGER;
     }
   })();
 
@@ -136,8 +136,7 @@ export default function HardwareSignTransaction({
       walletIconType={walletIconType}
       signerDescription={signerDescription}
       isTxSignatureRequestDenied={isTxSignatureRequestDenied}
-      helpCopy={helpCopy}
-      referralCopy={referralCopy}
+      wallet={walletType}
       senderAccount={senderAccount}
     />
   );
@@ -147,8 +146,7 @@ interface UIProps {
   walletIconType: TIcon;
   signerDescription: string;
   isTxSignatureRequestDenied: boolean;
-  helpCopy: string;
-  referralCopy: string;
+  wallet: BusyBottomConfig;
   senderAccount: IAccount;
 }
 
@@ -156,36 +154,32 @@ export const SignTxHardwareUI = ({
   walletIconType,
   signerDescription,
   isTxSignatureRequestDenied,
-  helpCopy,
-  referralCopy,
+  wallet,
   senderAccount
 }: UIProps) => (
   <>
-    <Text textAlign="center" fontWeight="bold" marginTop={SPACING.LG} fontSize={FONT_SIZE.XXL}>
+    <Heading textAlign="center" fontWeight="bold" fontSize={FONT_SIZE.XXL}>
       {translate('SIGN_TX_TITLE', {
         $walletName: WALLETS_CONFIG[senderAccount.wallet].name
       })}
-    </Text>
-    <Text fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
+    </Heading>
+    <Body fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
       {signerDescription}
-    </Text>
+    </Body>
     <div>
       <SImgContainer>
         <Icon type={walletIconType} />
       </SImgContainer>
-      <Text textAlign="center">
+      <Body textAlign="center">
         {isTxSignatureRequestDenied && (
           <ErrorMessageContainer>
             <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
           </ErrorMessageContainer>
         )}
         {translateRaw('SIGN_TX_EXPLANATION')}
-      </Text>
+      </Body>
       <SFooter>
-        <Text textAlign="center" marginTop={SPACING.MD}>
-          {translate(helpCopy)}
-        </Text>
-        <Text textAlign="center">{translate(referralCopy)}</Text>
+        <BusyBottom type={wallet} />
       </SFooter>
     </div>
   </>

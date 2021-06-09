@@ -35,7 +35,7 @@ const BackIcon = styled(Icon)`
 interface Props {
   setShowDetailsView(setShowDetailsView: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
-  scanTokens(asset?: ExtendedAsset): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): void;
 }
 
 export function AddToken(props: Props) {
@@ -51,6 +51,8 @@ export function AddToken(props: Props) {
   const { createAsset } = useAssets();
   const { getNetworkById } = useNetworks();
 
+  const network = getNetworkById(networkId);
+
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 
   const validateForm = () => {
@@ -59,8 +61,6 @@ export function AddToken(props: Props) {
     setDecimalsError('');
 
     let isValid = true;
-
-    const network = getNetworkById(networkId);
 
     if (ticker.length === 0) {
       setSymbolError(translateRaw('ADD_TOKEN_NO_SYMBOL'));
@@ -87,7 +87,7 @@ export function AddToken(props: Props) {
       address as TAddress,
       networkId
     );
-    const uuid = generateAssetUUID(networkId, address);
+    const uuid = generateAssetUUID(network.chainId, address);
 
     const newAsset: ExtendedAsset = {
       name: ticker,

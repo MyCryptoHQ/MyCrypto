@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
 import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
@@ -66,7 +65,7 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
     data: bufferToHex(
       encodeTransfer(
         Address(formData.address.value),
-        formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
+        formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue('0')
       )
     ) as ITxData,
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
@@ -152,7 +151,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
 
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
   const ercType = guessERC20Type(i.data);
-  const isERC20 = ercType !== ERCType.NONE;
+  const isERC20 = ercType === ERCType.TRANSFER;
 
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
     ercType,

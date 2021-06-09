@@ -1,8 +1,8 @@
+import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import Bignumber from 'bignumber.js';
 import BN from 'bn.js';
-import { bigNumberify } from 'ethers/utils';
 
-import { isBigish } from './bigify';
+import { bigify, isBigish } from './bigify';
 
 describe('isBigish()', () => {
   test('a string is not bigish', () => {
@@ -28,7 +28,18 @@ describe('isBigish()', () => {
   });
 
   test('a BigNumberish is a bigish', () => {
-    const value = bigNumberify('42');
+    const value = EthersBN.from('42');
     expect(isBigish(value)).toEqual(true);
+  });
+});
+
+describe('bigify', () => {
+  test('bigify supports very big numbers and decimals', () => {
+    const input = '99999999999999999999999999999999999.999999999999999999999999999999';
+    expect(bigify(input).toString()).toEqual(input);
+  });
+  test('bigify supports very big numbers with e notation', () => {
+    const input = '2.297630401626e+22';
+    expect(bigify(input).toString()).toEqual('22976304016260000000000');
   });
 });

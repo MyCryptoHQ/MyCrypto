@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-
 import {
   createUserAction as createAUserAction,
   destroyUserAction,
+  selectUserActions,
   updateUserAction as updateAUserAction,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 import {
   ACTION_NAME,
@@ -16,8 +16,6 @@ import {
 } from '@types';
 import { generateUUID } from '@utils';
 
-import { DataContext } from '../DataManager';
-
 export interface IUserActionContext {
   userActions: UserAction[];
   createUserAction(actionTemplate: UserAction): void;
@@ -28,7 +26,7 @@ export interface IUserActionContext {
 
 function useUserActions() {
   const dispatch = useDispatch();
-  const { userActions } = useContext(DataContext);
+  const userActions = useSelector(selectUserActions);
 
   const createUserAction = (actionTemplate: ActionTemplate) => {
     const userAction: UserAction = {

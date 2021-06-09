@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
 import { Button, Network } from '@mycrypto/ui';
-import { BigNumber, bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress } from '@components';
@@ -11,6 +11,7 @@ import translate, { translateRaw } from '@translations';
 import { Asset, Fiat, ITxObject, ITxStatus, TAddress } from '@types';
 import {
   baseToConvertedUnit,
+  bigify,
   calculateGasUsedPercentage,
   convertToFiat,
   fromWei,
@@ -89,7 +90,7 @@ function TransactionDetailsDisplay({
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend
-    ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal).toFixed(6)
+    ? weiToFloat(BigNumber.from(userAssetToSend.balance), asset.decimal).toFixed(6)
     : translateRaw('UNKNOWN_BALANCE');
 
   const gasUsedPercentage = gasUsed && calculateGasUsedPercentage(gasLimit, gasUsed.toString());
@@ -97,17 +98,17 @@ function TransactionDetailsDisplay({
   const actualTxFeeBase = gasUsed && totalTxFeeToString(gasPrice, gasUsed.toString());
 
   const actualTxFeeFiat =
-    actualTxFeeBase && convertToFiat(parseFloat(actualTxFeeBase), baseAssetRate).toFixed(2);
+    actualTxFeeBase && convertToFiat(actualTxFeeBase, baseAssetRate).toFixed(2);
 
-  const maxTxFeeFiat = convertToFiat(parseFloat(maxTxFeeBase), baseAssetRate).toFixed(2);
+  const maxTxFeeFiat = convertToFiat(maxTxFeeBase, baseAssetRate).toFixed(2);
 
   const feeWei = toWei(actualTxFeeBase ? actualTxFeeBase : maxTxFeeBase, DEFAULT_ASSET_DECIMAL);
 
   const valueWei = Wei(value);
 
-  const totalWei = feeWei.add(valueWei);
+  const totalWei = feeWei.plus(valueWei);
 
-  const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
+  const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
 
   return (
     <>
@@ -148,17 +149,19 @@ function TransactionDetailsDisplay({
                 <EthAddress address={sender.address} truncate={true} disableTooltip={true} />
               </div>
             </div>
-            <div className="TransactionDetails-row border">
-              <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
-              <div className="TransactionDetails-row-column">
-                <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+            {recipient && (
+              <div className="TransactionDetails-row border">
+                <div className="TransactionDetails-row-column">{translateRaw('X_RECIPIENT')}:</div>
+                <div className="TransactionDetails-row-column">
+                  <EthAddress address={recipient} truncate={true} disableTooltip={true} />
+                </div>
               </div>
-            </div>
+            )}
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('SEND_AMOUNT')}:</div>
-              <div className="TransactionDetails-row-column">{`${parseFloat(assetAmount).toFixed(
-                6
-              )} ${asset.ticker}`}</div>
+              <div className="TransactionDetails-row-column">{`${bigify(assetAmount).toFixed(6)} ${
+                asset.ticker
+              }`}</div>
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">

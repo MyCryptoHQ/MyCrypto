@@ -5,6 +5,7 @@ import { fireEvent, screen, simpleRender } from 'test-utils';
 
 import { ETHUUID } from '@config';
 import { fAssets } from '@fixtures';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, TTicker, TUuid } from '@types';
 
@@ -35,14 +36,14 @@ describe('AssetSelector', () => {
   test('it displays asset name when selectedAsset is provided', async () => {
     const props = Object.assign({}, defaultProps, { selectedAsset: fAssets[0] });
     getComponent(props);
-    expect(screen.getByText(fAssets[0].ticker)).toBeInTheDocument();
+    expect(screen.getByText(`${fAssets[0].ticker} - ${fAssets[0].name}`)).toBeInTheDocument();
   });
 
   test('it is searchable by name', async () => {
-    const props = Object.assign({}, defaultProps, { searchable: true });
+    const props = Object.assign({}, defaultProps, { searchable: true, showAssetName: true });
     const { container } = getComponent(props);
     fireEvent.change(container.querySelector('input')!, { target: { value: fAssets[0].name } });
-    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(2);
+    expect(screen.getAllByText(fAssets[0].name)).toHaveLength(1);
   });
 
   test('it is searchable by symbol', async () => {
@@ -88,7 +89,13 @@ function getComponentItem({
   onClick
 }: React.ComponentProps<typeof AssetSelectorItem>) {
   return simpleRender(
-    <AssetSelectorItem ticker={ticker} uuid={uuid} name={name} onClick={onClick} />
+    <AssetSelectorItem
+      ticker={ticker}
+      uuid={uuid}
+      name={name}
+      onClick={onClick}
+      paddingLeft={SPACING.SM}
+    />
   );
 }
 
@@ -100,8 +107,7 @@ describe('AssetSelectorItem', () => {
 
   test('it displays the asset ticker and name', async () => {
     const { getByText } = getComponentItem(itemProps);
-    expect(getByText(itemProps.ticker)).toBeDefined();
-    expect(getByText(itemProps.name!)).toBeDefined();
+    expect(getByText(`${itemProps.ticker} - ${itemProps.name}`)).toBeDefined();
   });
 
   test('it triggers handler on click', async () => {

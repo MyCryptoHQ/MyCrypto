@@ -17,9 +17,8 @@ const ETH_LEDGER: DPath = {
 
 const ETH_LEDGER_LIVE: DPath = {
   label: 'Ledger Live (ETH)',
-  value: "m/44'/60'/0'/0/0",
-  isHardened: true,
-  getIndex: (addressIndex): string => `m/44'/60'/${addressIndex}'/0/0`
+  value: `m/44'/60'/addrIndex'/0/0`,
+  isHardened: true
 };
 
 const ETC_LEDGER: DPath = {
@@ -57,11 +56,6 @@ const TOMO_DEFAULT: DPath = {
   value: "m/44'/889'/0'/0"
 };
 
-const MUSIC_DEFAULT: DPath = {
-  label: 'Default (MUSIC)',
-  value: "m/44'/184'/0'/0"
-};
-
 const EGEM_DEFAULT: DPath = {
   label: 'Default (EGEM)',
   value: "m/44'/1987'/0'/0"
@@ -90,21 +84,6 @@ const RSK_MAINNET: DPath = {
 const GO_DEFAULT: DPath = {
   label: 'Default (GO)',
   value: "m/44'/6060'/0'/0"
-};
-
-const ESN_DEFAULT: DPath = {
-  label: 'Default (ESN)',
-  value: "m/44'/31102'/0'/0"
-};
-
-const AKA_DEFAULT: DPath = {
-  label: 'Default (AKA)',
-  value: "m/44'/200625'/0'/0"
-};
-
-const PIRL_DEFAULT: DPath = {
-  label: 'Default (PIRL)',
-  value: "m/44'/164'/0'/0"
 };
 
 const ATH_DEFAULT: DPath = {
@@ -191,6 +170,16 @@ const EWC_DEFAULT: DPath = {
   value: "m/44'/246'/0'/0"
 };
 
+const AVAX_DEFAULT: DPath = {
+  label: 'Default (AVAX)',
+  value: "m/44'/60'/0'/0"
+};
+
+const EVRICE_DEFAULT: DPath = {
+  label: 'Default (EVC)',
+  value: "m/44'/1020'/0'/0"
+};
+
 export const DPathsList = {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -203,15 +192,11 @@ export const DPathsList = {
   UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  MUSIC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
   RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
-  ESN_DEFAULT,
-  AKA_DEFAULT,
-  PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
   MIX_DEFAULT,
@@ -229,7 +214,9 @@ export const DPathsList = {
   ETH_SINGULAR,
   ERE_DEFAULT,
   VOLTA_DEFAULT,
-  EWC_DEFAULT
+  EWC_DEFAULT,
+  AVAX_DEFAULT,
+  EVRICE_DEFAULT
 };
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

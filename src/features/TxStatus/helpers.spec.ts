@@ -1,5 +1,5 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { bigNumberify } from 'ethers/utils';
 
 import {
   fAccounts,
@@ -15,10 +15,13 @@ import { ITxStatus, ITxType } from '@types';
 
 import { fetchTxStatus, makeTx } from './helpers';
 
-jest.mock('ethers/providers', () => {
+jest.mock('@vendor', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('./__mocks__/txstatus');
-  return mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d');
+  return {
+    ...jest.requireActual('@vendor'),
+    ...mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d')
+  };
 });
 
 describe('fetchTxStatus', () => {
@@ -42,10 +45,14 @@ describe('fetchTxStatus', () => {
     expect(result?.cachedTx).toBeUndefined();
     expect({
       ...result?.fetchedTx,
-      gasLimit: bigNumberify(result?.fetchedTx?.gasLimit || 0),
-      gasPrice: bigNumberify(result?.fetchedTx?.gasPrice || 0),
-      value: bigNumberify(result?.fetchedTx?.value || 0)
-    }).toStrictEqual(fETHWeb3TxResponse);
+      gasLimit: BigNumber.from(result?.fetchedTx?.gasLimit || 0),
+      gasPrice: BigNumber.from(result?.fetchedTx?.gasPrice || 0),
+      value: BigNumber.from(result?.fetchedTx?.value || 0)
+    }).toStrictEqual({
+      ...fETHWeb3TxResponse,
+      gasLimit: BigNumber.from('0x7d3c'),
+      value: BigNumber.from('0x00')
+    });
   });
 });
 
@@ -88,14 +95,16 @@ describe('makeTx', () => {
         gasPrice: '0x012a05f200'
       }
     });
-    expect(result.receipt).toStrictEqual({
-      ...fETHNonWeb3TxReceipt,
-      asset: fAssets[1],
-      txType: ITxType.UNKNOWN,
-      status: ITxStatus.UNKNOWN,
-      to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
-      from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
-      receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
-    });
+    expect(result.receipt).toStrictEqual(
+      expect.objectContaining({
+        ...fETHNonWeb3TxReceipt,
+        asset: fAssets[1],
+        txType: ITxType.UNKNOWN,
+        status: ITxStatus.UNKNOWN,
+        to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
+        from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
+        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
+      })
+    );
   });
 });

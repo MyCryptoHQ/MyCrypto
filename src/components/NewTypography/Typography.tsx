@@ -36,26 +36,6 @@ export const Body = ({
   </Text>
 );
 
-export const InlineLink = ({
-  children,
-  as = 'a',
-  ...props
-}: TypographyProps & Omit<TextProps, 'variant'>) => (
-  <Text as={as} variant="inlineLink" {...props}>
-    {children}
-  </Text>
-);
-
-export const Link = ({
-  children,
-  as = 'a',
-  ...props
-}: TypographyProps & Omit<TextProps, 'variant'>) => (
-  <Text as={as} variant="link" {...props}>
-    {children}
-  </Text>
-);
-
 export const Label = ({
   children,
   htmlFor,

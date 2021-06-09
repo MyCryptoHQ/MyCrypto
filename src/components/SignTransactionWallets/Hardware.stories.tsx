@@ -3,19 +3,18 @@ import React from 'react';
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
-import { WalletId } from '@types';
+import { BusyBottomConfig, WalletId } from '@types';
 
 import { SignTxHardwareUI } from './Hardware';
 
-export default { title: 'SignTransaction' };
+export default { title: 'Features/SignTransaction/Hardware', component: SignTxHardwareUI };
 
 const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
   walletIconType: 'ledger-icon-lg',
   signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
     $network: DEFAULT_NETWORK
   }),
-  helpCopy: 'LEDGER_HELP',
-  referralCopy: 'LEDGER_REFERRAL',
+  wallet: BusyBottomConfig.LEDGER,
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
   isTxSignatureRequestDenied: true
 };

@@ -1,4 +1,3 @@
-import { State as StoreContextState } from '@services/Store/StoreProvider';
 import { ITxType, TURL } from '@types';
 
 export interface Action {
@@ -7,7 +6,7 @@ export interface Action {
   title: string;
   description: string;
   link: string | TURL;
-  filter?(state: StoreContextState): boolean;
+  filter?(isMobile: boolean): boolean;
 }
 
 enum IStandardTxType {

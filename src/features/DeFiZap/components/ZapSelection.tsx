@@ -167,22 +167,6 @@ const ZapEducation = withRouter(({ history, location }) => {
         <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
         <Typography>{translate('DEFI_DESC_THIRD')}</Typography>
         <Typography>{translate('VISIT_DEFIZAP')}</Typography>
-        {/* To re-activate later when we have content
-        <LinkContainer>
-          <RowContainer>
-            <Typography bold={true}>More from the Knowledgebase:</Typography>
-          </RowContainer>
-          <RowContainer>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-          </RowContainer>
-          <RowContainer>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-          </RowContainer>
-        </LinkContainer> */}
       </SpacedPanelSection>
       <SpacedPanelSection>
         <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>

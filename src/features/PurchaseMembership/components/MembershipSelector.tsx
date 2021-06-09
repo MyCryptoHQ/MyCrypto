@@ -9,10 +9,25 @@ import { translateRaw } from '@translations';
 
 import { IMembershipConfig, MEMBERSHIP_CONFIG } from '../config';
 
-const SContainer = styled('div')`
+interface StyleProps {
+  paddingLeft?: string;
+}
+
+interface MembershipItemProps {
+  option: IMembershipConfig;
+  onClick?(option: IMembershipConfig): void;
+}
+
+const SContainer = styled('div')<StyleProps>`
   display: flex;
   flex-direction: row;
-  padding: 12px;
+  padding: 12px 12px 12px 0px;
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
+`;
+
+const NetworkName = styled(Typography)`
+  margin-left: ${SPACING.XS};
+  font-weight: 300;
 `;
 
 const DiscountTypography = styled(Typography)`
@@ -23,14 +38,13 @@ const DiscountTypography = styled(Typography)`
 
 export const MembershipSelectorItem = ({
   option,
+  paddingLeft,
   onClick
-}: {
-  option: IMembershipConfig;
-  onClick?(option: IMembershipConfig): void;
-}) => {
+}: MembershipItemProps & StyleProps) => {
   return (
-    <SContainer onClick={() => onClick && onClick(option)}>
+    <SContainer paddingLeft={paddingLeft} onClick={() => onClick && onClick(option)}>
       <Typography value={option.title} />
+      <NetworkName value={` (${option.networkId.toLowerCase()})`} />
       <DiscountTypography value={option.discountNotice} />
     </SContainer>
   );
@@ -55,7 +69,7 @@ export default function MembershipSelector({ name, value, onSelect }: Membership
       onChange={(option) => onSelect(option)}
       getOptionLabel={(option) => option.title}
       optionComponent={({ data, selectOption }: OptionProps<IMembershipConfig>) => (
-        <MembershipSelectorItem option={data} onClick={selectOption} />
+        <MembershipSelectorItem option={data} onClick={selectOption} paddingLeft={SPACING.SM} />
       )}
       valueComponent={({ value: option }) => <MembershipSelectorItem option={option} />}
       value={value}

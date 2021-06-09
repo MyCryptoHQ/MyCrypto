@@ -66,8 +66,9 @@ function TxIntermediaryDisplay({ address, contractName }: Props) {
               </IntermediaryDisplayLabel>
               <IntermediaryDisplayContract text={address} isCopyable={true} />
             </div>
-            <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')} />
-            <Icon type="questionWhite" />
+            <Tooltip tooltip={translateRaw('TOKEN_SEND_TOOLTIP')}>
+              <Icon type="questionWhite" />
+            </Tooltip>
           </Wrapper>
         </IntermediaryDisplay>
       )}

@@ -23,9 +23,9 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('BROADCAST_TX_TITLE'),
       component: BroadcastTx,
-      props: (({ signedTx, network }) => ({
+      props: (({ signedTx, network: networkId }) => ({
         signedTx,
-        network,
+        networkId,
         handleNetworkChanged
       }))(broadcastTxState),
       actions: (signedTx: ISignedTx, cb: any) => handleSendClicked(signedTx, cb)
@@ -33,7 +33,7 @@ const BroadcastTransactionFlow = () => {
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransaction,
-      props: (({ txConfig }) => ({ txConfig }))(broadcastTxState),
+      props: (({ txConfig, error }) => ({ txConfig, error }))(broadcastTxState),
       actions: (_: any, cb: any) => handleConfirmClick(cb)
     },
     {

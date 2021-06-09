@@ -1,0 +1,1 @@
+export { DemoGatewayBanner } from './DemoGatewayBanner';

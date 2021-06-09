@@ -19,7 +19,8 @@ export {
   fFinishedERC20Web3TxReceipt,
   fDerivedApprovalTx,
   fDerivedRepMigrationTx,
-  fDerivedGolemMigrationTx
+  fDerivedGolemMigrationTx,
+  fSignedTx
 } from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };
@@ -74,3 +75,7 @@ export { default as fApproveERC20TxResponse } from './approveErc20TxResponse.jso
 export { fUserActions, fActionTemplates } from './userActions';
 export { membershipApiResponse, accountWithMembership } from './membership';
 export { default as APP_STATE } from './appState';
+
+export * from './swapQuote';
+export { fBalances } from './balances';
+export * from './ens';

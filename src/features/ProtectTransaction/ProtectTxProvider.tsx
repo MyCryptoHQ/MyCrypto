@@ -3,7 +3,6 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import BigNumber from 'bignumber.js';
 
 import { WALLETS_CONFIG } from '@config';
-import { useFeatureFlags } from '@services';
 import {
   EtherscanService,
   GetBalanceResponse,
@@ -11,6 +10,7 @@ import {
   GetTxResponse
 } from '@services/ApiService';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
+import { useFeatureFlags } from '@services/FeatureFlag';
 import { getAssetByUUID, StoreContext, useAssets } from '@services/Store';
 import { Asset, IFormikFields, ITxReceipt, Network, TAddress, WalletId } from '@types';
 
@@ -295,9 +295,9 @@ const ProtectTxProvider: React.FC = ({ children }) => {
     }));
   }, [state.protectTxShow, state.stepIndex, state.nansenAddressReport, state.enabled]);
 
-  const { featureFlags } = useFeatureFlags();
+  const { isFeatureActive } = useFeatureFlags();
 
-  const protectTxFeatureFlag = featureFlags.PROTECT_TX;
+  const protectTxFeatureFlag = isFeatureActive('PROTECT_TX');
 
   const providerState: ProtectTxContext = {
     protectTxFeatureFlag,

@@ -1,10 +1,16 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper, waitFor } from 'test-utils';
+import {
+  actionWithPayload,
+  mockAppState,
+  mockUseDispatch,
+  ProvidersWrapper,
+  waitFor
+} from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, StoreContext } from '@services';
+import { StoreContext } from '@services';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -16,67 +22,60 @@ const createTxRaw = (idx: number): Partial<ITxObject> => ({
   data: 'empty' as ITxData
 });
 
-jest.mock('ethers/providers', () => {
-  return {
-    // Since there are no nodes in our StoreContext,
-    // ethers will default to FallbackProvider
-    FallbackProvider: () => ({
-      sendTransaction: jest
-        .fn()
-        .mockImplementationOnce(() =>
-          Promise.resolve({
-            hash: '0x1',
-            value: '0x',
-            gasLimit: '0x',
-            gasPrice: '0x',
-            nonce: '0x',
-            to: '0x',
-            from: '0x',
-            data: '0x'
-          })
-        )
-        .mockImplementationOnce(() =>
-          Promise.resolve({
-            hash: '0x2',
-            value: '0x',
-            gasLimit: '0x',
-            gasPrice: '0x',
-            nonce: '0x',
-            to: '0x',
-            from: '0x',
-            data: '0x'
-          })
-        ),
-      waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
-      getBlock: jest.fn().mockImplementation(() => Promise.resolve({})),
-      call: jest
-        .fn()
-        .mockImplementation(() =>
-          Promise.resolve('0x000000000000000000000000000000000000000000000000016345785d8a0000')
-        )
-    }),
-    InfuraProvider: () => ({})
-  };
-});
+jest.mock('@vendor', () => ({
+  ...jest.requireActual('@vendor'),
+  // Since there are no nodes in our StoreContext,
+  // ethers will default to FallbackProvider
+  FallbackProvider: jest.fn().mockImplementation(() => ({
+    sendTransaction: jest
+      .fn()
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          hash: '0x1',
+          value: '0x00',
+          gasLimit: '0x7d3c',
+          gasPrice: '0x012a05f200',
+          nonce: '0x',
+          to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          data: '0x'
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          hash: '0x2',
+          value: '0x00',
+          gasLimit: '0x7d3c',
+          gasPrice: '0x012a05f200',
+          nonce: '0x',
+          to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+          data: '0x'
+        })
+      ),
+    waitForTransaction: jest.fn().mockImplementation(() => Promise.resolve({})),
+    getBlock: jest.fn().mockImplementation(() => Promise.resolve({})),
+    call: jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve('0x000000000000000000000000000000000000000000000000016345785d8a0000')
+      )
+  }))
+}));
 
 const renderUseTxMulti = () => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            accounts: fAccounts,
-            networks: fNetworks,
-            assets: fAssets,
-            settings: fSettings
-          } as any) as IDataContext
-        }
-      >
-        <StoreContext.Provider value={{ accounts: fAccounts } as any}>
-          {' '}
-          {children}
-        </StoreContext.Provider>
-      </DataContext.Provider>
+    <ProvidersWrapper
+      initialState={mockAppState({
+        accounts: fAccounts,
+        networks: fNetworks,
+        assets: fAssets,
+        settings: fSettings
+      })}
+    >
+      <StoreContext.Provider value={{ accounts: fAccounts } as any}>
+        {children}
+      </StoreContext.Provider>
     </ProvidersWrapper>
   );
   return renderHook(() => useTxMulti(), { wrapper });
@@ -165,7 +164,7 @@ describe('useTxMulti', () => {
 
     const rawTx = {
       to: 'address' as ITxToAddress,
-      value: '0x' as ITxValue,
+      value: '0x00' as ITxValue,
       data: '0x' as ITxData,
       chainId: 3
     };
@@ -194,17 +193,15 @@ describe('useTxMulti', () => {
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
         actionWithPayload({
-          ...fAccount,
-          transactions: expect.arrayContaining([
-            expect.objectContaining({
-              amount: '0.0',
-              asset: fAssets[1],
-              baseAsset: fAssets[1],
-              hash: '0x1',
-              txType: ITxType.APPROVAL,
-              status: ITxStatus.PENDING
-            })
-          ])
+          account: fAccount,
+          tx: expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x1',
+            txType: ITxType.APPROVAL,
+            status: ITxStatus.PENDING
+          })
         })
       )
     );
@@ -212,17 +209,15 @@ describe('useTxMulti', () => {
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
         actionWithPayload({
-          ...fAccount,
-          transactions: expect.arrayContaining([
-            expect.objectContaining({
-              amount: '0.0',
-              asset: fAssets[1],
-              baseAsset: fAssets[1],
-              hash: '0x2',
-              txType: ITxType.PURCHASE_MEMBERSHIP,
-              status: ITxStatus.PENDING
-            })
-          ])
+          account: fAccount,
+          tx: expect.objectContaining({
+            amount: '0.0',
+            asset: fAssets[1],
+            baseAsset: fAssets[1],
+            hash: '0x2',
+            txType: ITxType.PURCHASE_MEMBERSHIP,
+            status: ITxStatus.PENDING
+          })
         })
       )
     );

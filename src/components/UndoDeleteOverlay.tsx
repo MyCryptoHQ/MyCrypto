@@ -3,8 +3,9 @@ import React, { FC } from 'react';
 import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Button } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+
+import Button from './Button';
 
 const TableOverlay = styled.div`
   height: 100%;
@@ -80,7 +81,7 @@ const UndoDeleteOverlay: FC<Props> = ({ overlayText, restoreAccount, address }) 
       <OverlayText>{overlayText}</OverlayText>
     </ContentOverlay>
     <OverlayButtons>
-      <Button inverted={true} onClick={restoreAccount}>
+      <Button colorScheme={'inverted'} onClick={restoreAccount}>
         Undo
       </Button>
     </OverlayButtons>

@@ -2,7 +2,8 @@ import React, { lazy } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
-import { IFeatureFlags, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS } from '@config';
+import { FeatureFlags } from '@services/FeatureFlag';
 import { IAppRoute } from '@types';
 import { isTruthy } from '@utils';
 
@@ -26,17 +27,6 @@ const Export = lazy(() =>
 );
 const DownloadApp = lazy(() =>
   import(/* webpackChunkName: "DownloadApp" */ '@features/DownloadApp/DownloadApp')
-);
-const ScreenLockNew = lazy(() =>
-  import(/* webpackChunkName: "ScreenLockNew" */ '@features/ScreenLock/ScreenLockNew')
-);
-const ScreenLockLocked = lazy(() =>
-  import(/* webpackChunkName: "ScreenLockLocked" */ '@features/ScreenLock/ScreenLockLocked')
-);
-const ScreenLockForgotPassword = lazy(() =>
-  import(
-    /* webpackChunkName: "ScreenLockForgotPassword" */ '@features/ScreenLock/ScreenLockForgotPassword'
-  )
 );
 const RequestAssets = lazy(() =>
   import(/* webpackChunkName: "RequestAssets" */ '@features/RequestAssets/RequestAssets')
@@ -110,7 +100,7 @@ export interface IAppRoutes {
 
 const DownloadAppRedirect = () => <Redirect to={ROUTE_PATHS.DOWNLOAD_DESKTOP_APP.path} />;
 
-export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => [
+export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
   {
     name: ROUTE_PATHS.DASHBOARD.name,
     title: ROUTE_PATHS.DASHBOARD.title,
@@ -168,30 +158,6 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
     exact: true,
     requireAccounts: true,
     component: RequestAssets
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_NEW.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_NEW.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_NEW.path,
-    enabled: isTruthy(featureFlags.DASHBOARD),
-    exact: true,
-    component: ScreenLockNew
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_LOCKED.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_LOCKED.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_LOCKED.path,
-    enabled: isTruthy(featureFlags.SCREEN_LOCK),
-    exact: true,
-    component: ScreenLockLocked
-  },
-  {
-    name: ROUTE_PATHS.SCREEN_LOCK_FORGOT.name,
-    title: ROUTE_PATHS.SCREEN_LOCK_FORGOT.title,
-    path: ROUTE_PATHS.SCREEN_LOCK_FORGOT.path,
-    enabled: isTruthy(featureFlags.SCREEN_LOCK),
-    exact: true,
-    component: ScreenLockForgotPassword
   },
   {
     name: ROUTE_PATHS.SEND.name,
@@ -373,7 +339,7 @@ export const getStaticAppRoutes = (featureFlags: IFeatureFlags): IAppRoute[] => 
 ];
 
 // Enabled Routes
-export const getAppRoutes = (featureFlags: IFeatureFlags) =>
+export const getAppRoutes = (featureFlags: FeatureFlags) =>
   getStaticAppRoutes(featureFlags).filter((APP_ROUTE) => APP_ROUTE.enabled);
 
 export const createAppRoutesObject = (paths: IAppRoute[]) => {
@@ -384,5 +350,5 @@ export const createAppRoutesObject = (paths: IAppRoute[]) => {
 };
 
 // APP_ROUTE_OBJECT is for ALL routes, even disabled ones.
-export const getAppRoutesObject = (featureFlags: IFeatureFlags) =>
+export const getAppRoutesObject = (featureFlags: FeatureFlags) =>
   createAppRoutesObject(getStaticAppRoutes(featureFlags));

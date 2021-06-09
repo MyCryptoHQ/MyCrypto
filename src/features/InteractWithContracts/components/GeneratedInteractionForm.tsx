@@ -17,8 +17,7 @@ import {
 } from '../helpers';
 import { ABIField, ABIItem } from '../types';
 import { BooleanOutputField, BooleanSelector, FieldLabel } from './fields';
-import FunctionDropdownOption from './FunctionDropdownOption';
-import FunctionDropdownValue from './FunctionDropdownValue';
+import FunctionDropdownItem from './FunctionDropdownItem';
 import WriteForm from './WriteForm';
 
 const { GREY_LIGHTER, WHITE } = COLORS;
@@ -80,7 +79,6 @@ const HorizontalLine = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  width: fit-content;
 `;
 
 const WriteFormWrapper = styled.div`
@@ -166,7 +164,7 @@ export default function GeneratedInteractionForm({
       const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
       setCurrentFunction(functionWithOutputValues);
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     } finally {
       setIsLoading(false);
     }
@@ -180,7 +178,7 @@ export default function GeneratedInteractionForm({
       setIsLoading(true);
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     } finally {
       setIsLoading(false);
     }
@@ -227,8 +225,10 @@ export default function GeneratedInteractionForm({
           onChange={(selectedFunction) => {
             handleFunctionSelected(selectedFunction);
           }}
-          optionComponent={FunctionDropdownOption}
-          valueComponent={FunctionDropdownValue}
+          optionComponent={({ data, selectOption }) => (
+            <FunctionDropdownItem option={data} onSelect={selectOption} paddingLeft={SPACING.SM} />
+          )}
+          valueComponent={({ value }) => <FunctionDropdownItem option={value} />}
           searchable={true}
         />
       </DropdownWrapper>
@@ -299,7 +299,11 @@ export default function GeneratedInteractionForm({
             )}
             <ActionWrapper>
               {isRead && inputs.length > 0 && (
-                <ActionButton color={WHITE} onClick={() => submitFormRead(currentFunction)}>
+                <ActionButton
+                  color={WHITE}
+                  onClick={() => submitFormRead(currentFunction)}
+                  fullwidth={true}
+                >
                   {translateRaw('ACTION_16')}
                 </ActionButton>
               )}

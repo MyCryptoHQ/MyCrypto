@@ -2,26 +2,16 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  InlineMessage,
-  RouterLink,
-  Spinner,
-  Text,
-  TIcon
-} from '@components';
+import { Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text, TIcon } from '@components';
+import Icon from '@components/Icon';
 import { EXT_URLS } from '@config';
-import { DeterministicWalletState } from '@services';
+import { TDWActionError } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import translate, { Trans, translateRaw } from '@translations';
-import { InlineMessageType, Network, WalletId } from '@types';
+import translate, { translateRaw } from '@translations';
+import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
 
 interface HWConfig {
   walletTypeTransKey: string;
-  oldInterfaceRoute: string;
 
   unlockTipTransKey: string;
 
@@ -35,7 +25,7 @@ type THardwareConfigs = {
   [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW]: HWConfig;
 };
 
-const HardwareImageContainer = styled.div`
+const HardwareImage = styled(Icon)`
   vertical-align: center;
   margin: 2em;
 
@@ -67,7 +57,8 @@ const HardwareConnectBtn = styled(Button)`
 
 export interface HardwareUIProps {
   network: Network;
-  state: DeterministicWalletState;
+  isConnecting: boolean;
+  connectionError?: TDWActionError;
   walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
 
   handleNullConnect(): void;
@@ -80,7 +71,6 @@ const hardwareConfigs: THardwareConfigs = {
     referralTransKey: 'LEDGER_REFERRAL_2',
     referralURL: EXT_URLS.LEDGER_REFERRAL.url,
     unlockTipTransKey: 'LEDGER_TIP',
-    oldInterfaceRoute: '/add-account/ledger',
     iconId: 'ledger-icon-lg'
   },
   [WalletId.TREZOR_NEW]: {
@@ -89,12 +79,17 @@ const hardwareConfigs: THardwareConfigs = {
     referralTransKey: 'ORDER_TREZOR',
     referralURL: EXT_URLS.TREZOR_REFERRAL.url,
     unlockTipTransKey: 'TREZOR_TIP',
-    oldInterfaceRoute: '/add-account/trezor',
     iconId: 'trezor-icon-lg'
   }
 };
 
-const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: HardwareUIProps) => (
+const HardwareWalletUI = ({
+  network,
+  connectionError,
+  isConnecting,
+  walletId,
+  handleNullConnect
+}: HardwareUIProps) => (
   <Box p="2.5em">
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('UNLOCK_WALLET')}{' '}
@@ -112,41 +107,42 @@ const HardwareWalletUI = ({ network, state, walletId, handleNullConnect }: Hardw
         textAlign="center"
       >
         {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
-        <HardwareImageContainer>
-          <Icon type={hardwareConfigs[walletId].iconId} />
-        </HardwareImageContainer>
-        {state.error && (
+      </Text>
+      <HardwareImage type={hardwareConfigs[walletId].iconId} />
+      <Text
+        lineHeight="1.5"
+        letterSpacing="normal"
+        fontSize={FONT_SIZE.MD}
+        paddingTop={SPACING.BASE}
+        color={COLORS.GREY_DARKEST}
+        textAlign="center"
+      >
+        {connectionError && (
           <ErrorMessageContainer>
             <InlineMessage
               type={InlineMessageType.ERROR}
-              value={`${translateRaw('GENERIC_HARDWARE_ERROR')} ${state.error.message}`}
+              value={`${translateRaw('GENERIC_HARDWARE_ERROR')} ${connectionError.message}`}
             />
           </ErrorMessageContainer>
         )}
-        {state.isConnecting ? (
-          <div className="HardwarePanel-loading">
+        <br />
+        {isConnecting ? (
+          <>
             <Spinner /> {translate('WALLET_UNLOCKING')}
-          </div>
+          </>
         ) : (
-          <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={state.isConnecting}>
+          <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={isConnecting}>
             {translate(hardwareConfigs[walletId].scanTransKey)}
           </HardwareConnectBtn>
         )}
       </Text>
       <HardwareFooter>
-        {translate(hardwareConfigs[walletId].referralTransKey, {
-          $url: hardwareConfigs[walletId].referralURL
-        })}
-        <br />
-        <Trans
-          id="USE_OLD_INTERFACE"
-          variables={{
-            $link: () => (
-              <RouterLink to={hardwareConfigs[walletId].oldInterfaceRoute}>
-                {translateRaw('TRY_OLD_INTERFACE')}
-              </RouterLink>
-            )
-          }}
+        <BusyBottom
+          type={
+            walletId === WalletId.LEDGER_NANO_S_NEW
+              ? BusyBottomConfig.LEDGER
+              : BusyBottomConfig.TREZOR
+          }
         />
       </HardwareFooter>
     </Box>

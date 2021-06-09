@@ -13,7 +13,7 @@ import {
 
 type DateObject = Date | number | string;
 
-const toUTC = (date: Date) => {
+export const toUTC = (date: Date) => {
   return new Date(date.toUTCString().substring(0, 25));
 };
 
@@ -63,13 +63,15 @@ export const formatTimeDifference = (
 export const formatTimeDuration = (
   a: DateObject,
   b: DateObject = new Date(),
-  utc: boolean = false
+  utc: boolean = false,
+  options?: { format: string[] }
 ): string => {
   return formatDuration(
     intervalToDuration({
       start: getDate(a, utc),
       end: getDate(b, utc)
-    })
+    }),
+    options
   );
 };
 

@@ -1,4 +1,4 @@
-import WalletConnect from '@walletconnect/browser';
+import WalletConnect from '@walletconnect/client';
 import { ITxData, IWalletConnectSession } from '@walletconnect/types';
 
 import { TAddress } from '@types';
@@ -65,14 +65,18 @@ export default function WalletConnectService({
 
   // Subscribe to connection events
   connector.on('connect', (error, payload) => {
-    if (error) handleError(error);
+    if (error) {
+      return handleError(error);
+    }
 
     const { accounts, chainId } = payload.params[0];
     handleConnect({ address: accounts[0] as TAddress, chainId, session: connector.session });
   });
 
   connector.on('session_update', (error, payload) => {
-    if (error) handleError(error);
+    if (error) {
+      return handleError(error);
+    }
 
     // Get updated accounts and chainId
     const { accounts, chainId } = payload.params[0];
@@ -80,7 +84,9 @@ export default function WalletConnectService({
   });
 
   connector.on('disconnect', (error, payload) => {
-    if (error) handleError(error);
+    if (error) {
+      return handleError(error);
+    }
 
     // Call handler when it exists and we are dealing with a normal disconnect
     if (handleReject && getMessage(payload) === 'Session Rejected') {

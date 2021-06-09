@@ -2,13 +2,19 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { fromUnixTime, isAfter, max } from 'date-fns';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { MembershipState, MembershipStatus } from '@features/PurchaseMembership/config';
+import { XDAI_NETWORK } from '@config';
+import {
+  MEMBERSHIP_CONFIG,
+  MembershipState,
+  MembershipStatus
+} from '@features/PurchaseMembership/config';
 import { MembershipApi } from '@services/ApiService';
-import { IAccount, Network, StoreAccount, TAddress } from '@types';
+import { IAccount, Network, NetworkId, StoreAccount, TAddress } from '@types';
 import { flatten } from '@vendor';
 
-import { getWalletAccountsOnDefaultNetwork } from './account.slice';
-import { getDefaultNetwork } from './network.slice';
+import { isAccountInNetwork, isEthereumAccount } from '../Account/helpers';
+import { getAccounts } from './account.slice';
+import { selectDefaultNetwork, selectNetwork } from './network.slice';
 import { AppState } from './root.reducer';
 
 export const initialState = {
@@ -30,8 +36,11 @@ const slice = createSlice({
     setMembership(state, action: PayloadAction<MembershipStatus>) {
       state.record.push(action.payload);
     },
-    deleteMembership(state, action: PayloadAction<TAddress>) {
-      const idx = state.record.findIndex((item) => item.address === action.payload);
+    deleteMembership(state, action: PayloadAction<{ address: TAddress; networkId: NetworkId }>) {
+      const idx = state.record.findIndex(
+        (item) =>
+          item.address === action.payload.address && item.networkId === action.payload.networkId
+      );
       state.record.splice(idx, 1);
     },
     fetchError(state) {
@@ -87,14 +96,33 @@ export function* fetchMembershipsSaga() {
 }
 
 export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | undefined>) {
-  const accounts: StoreAccount[] = yield select(getWalletAccountsOnDefaultNetwork);
-  const network: Network = yield select(getDefaultNetwork);
+  const accounts: StoreAccount[] = yield select(getAccounts);
+  const membershipNetworkIds = [
+    ...new Set(Object.values(MEMBERSHIP_CONFIG).map(({ networkId }) => networkId))
+  ];
+  const membershipNetworkAccounts = accounts.filter(({ networkId }) =>
+    membershipNetworkIds.includes(networkId)
+  );
+  const ethereumNetwork: Network = yield select(selectDefaultNetwork);
+  const xdaiNetwork: Network = yield select(selectNetwork(XDAI_NETWORK));
+  const xdaiAccounts = (payload || membershipNetworkAccounts).filter((a) =>
+    isAccountInNetwork(a, XDAI_NETWORK)
+  );
 
-  const relevantAccounts = (payload ?? accounts).map((a) => a.address);
+  const ethereumAccounts = (payload || membershipNetworkAccounts).filter(isEthereumAccount);
 
   try {
-    const memberships = yield call(MembershipApi.getMemberships, relevantAccounts, network);
-    yield put(slice.actions.setMemberships(memberships));
+    const ethereumMemberships = yield call(
+      MembershipApi.getMemberships,
+      ethereumAccounts.map(({ address }) => address as TAddress),
+      ethereumNetwork
+    );
+    const xdaiMemberships = yield call(
+      MembershipApi.getMemberships,
+      xdaiAccounts.map(({ address }) => address as TAddress),
+      xdaiNetwork
+    );
+    yield put(slice.actions.setMemberships([...ethereumMemberships, ...xdaiMemberships]));
   } catch (err) {
     yield put(slice.actions.fetchError());
   }

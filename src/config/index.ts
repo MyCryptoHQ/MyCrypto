@@ -1,4 +1,5 @@
 export * from './data';
+export { DEMO_SETTINGS } from './demo';
 export * from './donations';
 export * from './addressMessages';
 export {
@@ -11,7 +12,8 @@ export {
   UNISWAP_LINK,
   MYC_WINTER_LINK,
   TWEET_LINK,
-  MYCRYPTO_FAUCET_LINK
+  MYCRYPTO_FAUCET_LINK,
+  MYCRYPTO_PROD_LINK
 } from './links';
 export * from './dpaths';
 export * from './constants';
@@ -39,8 +41,8 @@ export {
 } from './wallets';
 export { KB_HELP_ARTICLE, HELP_ARTICLE, getKBHelpArticle } from './helpArticles';
 export { Fiats } from './fiats';
-export { FEATURE_FLAGS, IFeatureFlags } from './features';
-export { ROUTE_PATHS } from './routePaths';
+export { FEATURE_FLAGS } from './features';
+export { ROUTE_PATHS, getRouteConfigByPath } from './routePaths';
 export { IWalletConfig } from './wallets';
 export {
   SUPPORTED_TRANSACTION_QUERY_PARAMS,
@@ -48,3 +50,4 @@ export {
 } from './queryParams';
 export * from './txTypes';
 export { STATIC_CONTACTS } from './staticContacts';
+export { getFiat } from './fiats';

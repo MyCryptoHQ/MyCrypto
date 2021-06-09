@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Account, FixedSizeCollapsibleTable, LinkOut, Tooltip } from '@components';
+import { Account, Box, FixedSizeCollapsibleTable, Icon, LinkApp, Tooltip } from '@components';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
 import { BREAK_POINTS, breakpointToNumber } from '@theme';
 import { translateRaw } from '@translations';
@@ -47,7 +47,14 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           {formatDateTime(unixTimestamp)}
         </RowAlignment>,
         <RowAlignment key={5} align="left">
-          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`} />
+          <LinkApp
+            isExternal={true}
+            href={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`}
+          >
+            <Box display={'inline-flex'} alignItems={'center'}>
+              <Icon type="link-out" width="1em" />
+            </Box>
+          </LinkApp>
         </RowAlignment>
       ];
     }),

@@ -1,19 +1,29 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
+import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { Banner } from '@components';
-import { DrawerContext, ErrorContext } from '@features';
+import { AnnouncementBanner, Banner, LinkApp } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { ErrorContext } from '@features';
 import { getAppRoutesObject } from '@routing';
 import { useFeatureFlags } from '@services';
-import { BREAK_POINTS, COLORS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
-import translate from '@translations';
+import { AppState, getIsDemoMode } from '@store';
+import {
+  BREAK_POINTS,
+  COLORS,
+  LINE_HEIGHT,
+  MAX_CONTENT_WIDTH,
+  MIN_CONTENT_PADDING,
+  SPACING
+} from '@theme';
+import { Trans, translateRaw } from '@translations';
 import { BannerType } from '@types';
 import { useScreenSize } from '@utils';
+import { useTimeoutFn } from '@vendor';
 
-import Footer from './Footer';
-import Header from './Header';
+import { DemoBanner } from './Banners';
 import { DesktopNav, ExtrasTray, MobileNav, TopNav } from './Navigation';
 
 export interface LayoutConfig {
@@ -24,7 +34,7 @@ export interface LayoutConfig {
   bgColor?: string;
   paddingV?: string;
 }
-interface Props {
+interface LayoutProps {
   config?: LayoutConfig;
   className?: string;
   children: any;
@@ -32,17 +42,17 @@ interface Props {
 
 // Homepage 'home' creates an unidentified overflow on the x axis.
 // We use layout to disable it here.
-const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
-  ${(p) =>
-    p.newNav &&
-    css`
-      @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-        margin-left: 64px;
-      }
-      @media only screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-        margin-bottom: 57px;
-      }
-    `}
+const SMain = styled('main')<{ bgColor?: string; isDemoMode?: boolean }>`
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    margin-left: 6.4vh;
+  }
+  @media screen and (min-width: ${BREAK_POINTS.SCREEN_XXL}) {
+    margin-left: 64px;
+  }
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    padding-bottom: 57px;
+  }
+
   overflow-x: hidden;
   min-width: 350px;
   background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
@@ -51,18 +61,24 @@ const SMain = styled('main')<{ newNav: boolean; bgColor?: string }>`
   flex-direction: column;
 `;
 
-const STop = styled.div<{ newNav: boolean }>`
+const DemoLayoutWrapper = styled.div<{ isDemoMode?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  ${({ isDemoMode }) =>
+    isDemoMode &&
+    `
+    border: ${LINE_HEIGHT.XXS} solid ${COLORS.WARNING_ORANGE};
+    box-sizing: border-box;
+  `}
+`;
+
+const STop = styled.div`
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     background: ${COLORS.GREY_LIGHTER};
     position: fixed;
     top: 0;
     z-index: 11;
-    ${(p) =>
-      !p.newNav &&
-      css`
-        width: 100%;
-        height: 77px;
-      `}
   }
 `;
 
@@ -94,125 +110,109 @@ const SContainer = styled.div`
     `}
 `;
 
-const BannerWrapper = styled.div<{ newNav: boolean }>`
+const BannerWrapper = styled.div`
   max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 25px;
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    position: sticky;
-    top: ${(p) => (p.newNav ? '15px' : '77px')};
-    left: 0;
-    ${(p) =>
-      p.newNav &&
-      css`
-        margin: 0 15px;
-      `}
-  }
+  position: sticky;
+  top: '15px';
+  left: 0;
+  margin: 0 15px;
 `;
 
-const SBanner = styled(Banner)`
-  background-color: ${COLORS.LIGHT_PURPLE};
-  border-radius: 16px;
-`;
-
-const CenteredBannerText = styled.div`
-  text-align: center;
-  & a {
-    &:hover {
-      font-weight: normal;
-    }
-  }
-`;
-
-export const ANNOUNCEMENT_MSG = () => (
-  <CenteredBannerText>{translate('BETA_ANNOUNCEMENT')}</CenteredBannerText>
-);
-
-const announcementMessage = ANNOUNCEMENT_MSG();
-
-export default function Layout({ config = {}, className = '', children }: Props) {
+const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) => {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { featureFlags } = useFeatureFlags();
-  const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
   const { isMobile } = useScreenSize();
   const { pathname } = useLocation();
 
-  const [topHeight, setTopHeight] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const topRef = useRef<any>(null);
+  const [isReady, clear, set] = useTimeoutFn(() => setIsOpen(!isOpen), 100);
 
-  useLayoutEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      // Wrap with requestAnimationFrame to avoir loop limit exceeded error
-      // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
-      window.requestAnimationFrame(() => {
-        for (const entry of entries) {
-          setTopHeight(entry.contentRect.height);
-        }
-      });
-    });
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
-    resizeObserver.observe(topRef.current);
-
-    return () => resizeObserver.disconnect();
-  }, [topRef.current]);
+  useEffect(() => clear());
 
   const APP_ROUTES = getAppRoutesObject(featureFlags);
-
   return (
     <>
-      {featureFlags.NEW_NAVIGATION && isMobile && (
-        <MobileNav appRoutes={APP_ROUTES} current={pathname} />
+      {isMobile && <MobileNav appRoutes={APP_ROUTES} current={pathname} />}
+      {!isMobile && (
+        <DesktopNav
+          appRoutes={APP_ROUTES}
+          current={pathname}
+          openTray={() => isReady() !== false && set()}
+        />
       )}
-      {featureFlags.NEW_NAVIGATION && !isMobile && (
-        <DesktopNav appRoutes={APP_ROUTES} current={pathname} openTray={() => setIsOpen(!isOpen)} />
+      {!isMobile && isOpen && (
+        <ExtrasTray isMobile={isMobile} closeTray={() => isReady() !== false && set()} />
       )}
-      {featureFlags.NEW_NAVIGATION && !isMobile && isOpen && (
-        <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
-      )}
-      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION}>
-        <STop newNav={featureFlags.NEW_NAVIGATION}>
+      <SMain className={className} bgColor={bgColor}>
+        <STop>
           {shouldShowError() && error && (
             <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
           )}
-
-          {featureFlags.OLD_NAVIGATION && (
-            <Header
-              drawerVisible={visible}
-              toggleDrawerVisible={toggleVisible}
-              setDrawerScreen={setScreen}
-            />
-          )}
         </STop>
-        {featureFlags.NEW_NAVIGATION && (
-          <TopNav
-            current={pathname}
-            isMobile={isMobile}
-            isTrayOpen={isOpen}
-            openTray={() => setIsOpen(!isOpen)}
-          />
-        )}
-        <BannerWrapper ref={topRef} newNav={featureFlags.NEW_NAVIGATION}>
-          <SBanner type={BannerType.ANNOUNCEMENT} value={announcementMessage} />
-        </BannerWrapper>
-        {featureFlags.NEW_NAVIGATION && isMobile && isOpen ? (
-          <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+        {isMobile && isOpen ? (
+          <>
+            <ExtrasTray isMobile={isMobile} closeTray={() => setIsOpen(false)} />
+            <TopNav
+              current={pathname}
+              isMobile={isMobile}
+              isTrayOpen={isOpen}
+              openTray={() => setIsOpen(!isOpen)}
+            />
+          </>
         ) : (
-          <SContainer
-            centered={centered}
-            fluid={fluid}
-            fullW={fullW}
-            paddingV={paddingV}
-            marginTop={featureFlags.OLD_NAVIGATION ? topHeight : 0}
-          >
-            {children}
-          </SContainer>
+          <DemoLayoutWrapper isDemoMode={isDemoMode}>
+            {isDemoMode && (
+              <DemoBanner>
+                <Trans
+                  id="DEMO_BANNER"
+                  variables={{
+                    $link: () => (
+                      <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="underlineLink">
+                        {translateRaw('DEMO_BANNER_LINK_TEXT')}
+                      </LinkApp>
+                    )
+                  }}
+                />
+              </DemoBanner>
+            )}
+            <TopNav
+              current={pathname}
+              isMobile={isMobile}
+              isTrayOpen={isOpen}
+              openTray={() => setIsOpen(!isOpen)}
+            />
+            {isMobile && pathname === ROUTE_PATHS.DASHBOARD.path && (
+              <BannerWrapper>
+                <AnnouncementBanner />
+              </BannerWrapper>
+            )}
+            <SContainer
+              centered={centered}
+              fluid={fluid}
+              fullW={fullW}
+              paddingV={paddingV}
+              marginTop={0}
+            >
+              {children}
+            </SContainer>
+          </DemoLayoutWrapper>
         )}
-
-        {featureFlags.OLD_NAVIGATION && <Footer />}
       </SMain>
     </>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & LayoutProps;
+
+export default connector(Layout);

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { makeTxItem } from '@helpers';
+import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
 import { useAssets, useRates, useSettings } from '@services';
-import { ITokenMigrationConfig, StoreAccount, TxParcel } from '@types';
+import { ITokenMigrationConfig, ITxType, StoreAccount, TxParcel } from '@types';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
@@ -24,11 +24,14 @@ export default function TokenMigrationReceipt({
   onComplete
 }: TokenMigrationReceiptProps) {
   const { settings } = useSettings();
-  const { getAssetByUUID } = useAssets();
+  const { getAssetByUUID, assets } = useAssets();
   const { getAssetRate } = useRates();
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account, amount)(flowConfig);
     const txType = flowConfig.txConstructionConfigs[idx].txType;
+    const txConfig =
+      txType === ITxType.APPROVAL
+        ? makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account])
+        : makeTokenMigrationTxConfig(tx.txRaw, account, amount)(flowConfig);
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 

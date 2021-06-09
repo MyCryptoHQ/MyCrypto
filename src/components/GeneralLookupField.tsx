@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { FocusEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
 
@@ -12,7 +12,7 @@ import { getBaseAssetByNetwork, useAssets } from '@services/Store';
 import UnstoppableResolution from '@services/UnstoppableService';
 import { ErrorObject, IReceiverAddress, Network } from '@types';
 
-import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
+import AddressLookupSelector, { LabeledAddress } from './AddressLookupSelector';
 
 export interface IGeneralLookupFieldComponentProps {
   error?: string | ErrorObject;
@@ -22,7 +22,7 @@ export interface IGeneralLookupFieldComponentProps {
   value: IReceiverAddress;
   options: LabeledAddress[];
   placeholder?: string;
-  onBlur?(): void;
+  onBlur?: FocusEventHandler;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress?(inputString: string): IReceiverAddress;
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
@@ -30,7 +30,7 @@ export interface IGeneralLookupFieldComponentProps {
   onChange?(input: string): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
-  setFieldError?(field: string, value: string | undefined): void;
+  setFieldError?(field: string, value: string | JSX.Element | undefined): void;
 }
 
 const GeneralLookupField = ({
@@ -52,7 +52,10 @@ const GeneralLookupField = ({
   setFieldError
 }: IGeneralLookupFieldComponentProps) => {
   const { assets } = useAssets();
-  const errorMessage = typeof error === 'object' ? error.message : error;
+  const errorMessage =
+    error && Object.prototype.hasOwnProperty.call(error, 'message')
+      ? (error as ErrorObject).message
+      : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
 
@@ -167,7 +170,7 @@ const GeneralLookupField = ({
       return input;
     };
 
-    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
       if (e.keyCode === 13) {
         handleNewInput(inputValue.current);
         if (onChange) onChange(inputValue.current);
@@ -176,7 +179,7 @@ const GeneralLookupField = ({
 
     return (
       <>
-        <GeneralLookupDropdown
+        <AddressLookupSelector
           name={name}
           value={value}
           options={options}
@@ -196,12 +199,12 @@ const GeneralLookupField = ({
               onSelect(option);
             }
           }}
-          onBlur={() => {
+          onBlur={(e) => {
             handleNewInput(inputValue.current);
             if (setFieldTouched) {
               setFieldTouched(name, true, false);
             }
-            if (onBlur) onBlur();
+            if (onBlur) onBlur(e);
             if (onChange) onChange(inputValue.current);
           }}
           onEnterKeyDown={handleEnterKeyDown}

@@ -1,22 +1,26 @@
 import {
+  AssetBalanceObject,
+  ExtendedAsset,
   ExtendedNotification,
   IAccount,
-  LocalStorage,
+  IProvidersMappings,
+  IRates,
   Network,
   NodeOptions,
-  StoreAccount
+  StoreAccount,
+  StoreAsset,
+  TTicker
 } from '@types';
-import { bigify, isBigish } from '@utils';
+import { bigify, isBigish, isVoid } from '@utils';
 import {
-  difference,
   either,
   identity,
   ifElse,
   isNil,
-  keys,
   lensPath,
   lensProp,
   map,
+  mapObjIndexed,
   mergeRight,
   over,
   pipe,
@@ -26,8 +30,10 @@ import {
 const balanceLens = lensProp('balance');
 const txValueLens = lensProp('value');
 const assetLens = lensProp('assets');
+const transactionsLens = lensProp('transactions');
 
-export const stringifyBalance = over(balanceLens, ifElse(isBigish, toString, identity));
+const stringifyBigish = ifElse(isBigish, toString, identity);
+export const stringifyBalance = over(balanceLens, stringifyBigish);
 export const stringifyValue = over(txValueLens, toString);
 export const bigifyBalnce = over(balanceLens, bigify);
 
@@ -42,7 +48,8 @@ export const stringifyDate = ifElse(
 );
 
 export const serializeAccount: (a: IAccount | StoreAccount) => IAccount | StoreAccount = pipe(
-  over(assetLens, map(stringifyBalance))
+  over(assetLens, map(stringifyBalance)),
+  over(transactionsLens, map(mapObjIndexed(stringifyBigish)))
 );
 
 export const serializeNotification: (n: ExtendedNotification) => ExtendedNotification = (n) => {
@@ -68,26 +75,68 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
       const existing = inbound.find((i) => i.id === o.id);
       const existingNodes = existing ? existing.nodes : [];
       const selectedNode = existing ? existing.selectedNode : o.selectedNode;
-      const autoNode = existing ? existing.autoNode : o.autoNode;
 
       return {
         ...o,
         nodes: mergeNodes(o.nodes, existingNodes),
-        selectedNode,
-        autoNode
+        selectedNode
       } as Network;
     })
     .concat(inbound.filter((i) => !original.find((o) => o.id === i.id)));
 
-/**
- * Compare json to import with our persist state
- */
-export const canImport = (toImport: Partial<LocalStorage>, store: LocalStorage) => {
-  if (toImport.version !== store.version) {
-    return false;
-  } else {
-    // Check that all the keys in the store exist in the file to import
-    const diff = difference(keys(store), keys(toImport));
-    return diff.length === 0;
-  }
+export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[]) =>
+  original
+    .map((o) => {
+      const existing = inbound.find((i) => i.uuid === o.uuid);
+      return mergeRight(o, existing || {});
+    })
+    .concat(inbound.filter((i) => !original.find((o) => o.uuid === i.uuid)));
+
+export const destructureCoinGeckoIds = (
+  rates: IRates,
+  coinGeckoIdMapping: Record<string, string>
+): IRates => {
+  // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
+  // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
+  const updateRateObj = (acc: IRates, curValue: TTicker): IRates =>
+    Object.entries(coinGeckoIdMapping).reduce((accum, [assetUuid, coinGeckoId]) => {
+      if (coinGeckoId === curValue) {
+        accum[assetUuid] = rates[curValue];
+      }
+      return accum;
+    }, acc);
+
+  return Object.keys(rates).reduce(updateRateObj, {} as IRates);
 };
+
+export const buildCoinGeckoIdMapping = (assets: Record<string, IProvidersMappings | undefined>) =>
+  Object.keys(assets).reduce((acc, a) => {
+    if (!isVoid(assets[a]) && assets[a]?.coinGeckoId) {
+      return { ...acc, [a]: assets[a]!.coinGeckoId! };
+    }
+    return acc;
+  }, {} as Record<string, string>);
+
+// Ensure that we don't push unnecessary data to the store
+export const sanitizeAccount = (a: IAccount) => ({
+  uuid: a.uuid,
+  label: a.label,
+  address: a.address,
+  networkId: a.networkId,
+  assets: a.assets?.map((a: AssetBalanceObject | StoreAsset) => ({
+    uuid: a.uuid,
+    balance: a.balance
+  })),
+  wallet: a.wallet,
+  transactions: a.transactions?.map((t) => ({
+    ...t,
+    value: t.value,
+    gasLimit: t.gasLimit,
+    gasPrice: t.gasPrice,
+    gasUsed: t.gasUsed && t.gasUsed
+  })),
+  dPath: a.dPath,
+  mtime: a.mtime,
+  favorite: a.favorite,
+  isPrivate: a.isPrivate
+});

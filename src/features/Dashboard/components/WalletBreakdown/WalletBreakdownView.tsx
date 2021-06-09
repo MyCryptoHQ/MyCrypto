@@ -7,6 +7,7 @@ import {
   AssetIcon,
   Currency,
   Icon,
+  LinkApp,
   PoweredByText,
   SkeletonLoader,
   Tooltip,
@@ -18,6 +19,7 @@ import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Balance, TTicker, TUuid } from '@types';
+import { bigify } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
 import { calculateShownIndex } from './helpers';
@@ -60,7 +62,7 @@ const BreakDownChartWrapper = styled.div`
   padding-left: ${SPACING.BASE};
   padding-top: ${SPACING.BASE};
   padding-bottom: ${SPACING.BASE};
-  height: 530px;
+  height: 544px;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     padding-right: ${SPACING.BASE};
@@ -205,10 +207,6 @@ const BreakDownBalanceTotal = styled.div`
   font-weight: normal;
 `;
 
-const ViewDetailsLink = styled.a`
-  color: ${COLORS.BLUE_BRIGHT};
-`;
-
 const PoweredBy = styled.div`
   position: absolute;
   bottom: 20px;
@@ -230,7 +228,7 @@ export default function WalletBreakdownView({
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
   const [previousTickers, setPreviousTickers] = useState(balances.map((x) => x.ticker));
-  const chartBalances = createChartBalances(balances, parseFloat(totalFiatValue));
+  const chartBalances = createChartBalances(balances, totalFiatValue);
   const breakdownBalances = createBreakdownBalances(balances);
 
   const handleMouseOver = (index: number) => {
@@ -288,8 +286,8 @@ export default function WalletBreakdownView({
           {translate('WALLET_BREAKDOWN_TITLE')}
           <BreakDownLabel>({label})</BreakDownLabel>
         </BreakDownHeading>
-        {!isScanning && parseFloat(totalFiatValue) === 0 ? (
-          <NoAssets />
+        {!isScanning && bigify(totalFiatValue).eq(0) ? (
+          <NoAssets numOfAssets={balances.length} />
         ) : (
           <>
             <BreakdownChart
@@ -388,17 +386,14 @@ export default function WalletBreakdownView({
                       <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
                       <BreakDownBalanceAssetAmount silent={true}>
                         {!isOther && (
-                          <Currency
-                            amount={parseFloat(amount).toFixed(4)}
-                            ticker={ticker as TTicker}
-                          />
+                          <Currency amount={bigify(amount).toFixed(4)} ticker={ticker as TTicker} />
                         )}
                       </BreakDownBalanceAssetAmount>
                     </div>
                   </BreakDownBalanceAssetInfo>
                   <Tooltip
                     tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-                      $exchangeRate: parseFloat(exchangeRate).toFixed(3),
+                      $exchangeRate: bigify(exchangeRate).toFixed(3),
                       $fiatTicker: fiat.ticker,
                       $cryptoTicker: ticker
                     })}
@@ -418,9 +413,9 @@ export default function WalletBreakdownView({
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
           {!isScanning && (
-            <ViewDetailsLink onClick={toggleShowChart}>
+            <LinkApp href="#" onClick={toggleShowChart}>
               {translate('WALLET_BREAKDOWN_MORE')}
-            </ViewDetailsLink>
+            </LinkApp>
           )}
           <PanelDivider />
           {isScanning ? (
@@ -444,17 +439,17 @@ export default function WalletBreakdownView({
   );
 }
 
-const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
+const createChartBalances = (balances: Balance[], totalFiatValue: string) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
   const balancesVisibleInChart = balances.filter((balanceObject) =>
-    new BigNumber(balanceObject.fiatValue)
-      .dividedBy(new BigNumber(totalFiatValue))
+    bigify(balanceObject.fiatValue)
+      .dividedBy(bigify(totalFiatValue))
       .isGreaterThanOrEqualTo(SMALLEST_CHART_SHARE_SUPPORTED)
   );
   const otherBalances = balances.filter((balanceObject) =>
-    new BigNumber(balanceObject.fiatValue)
-      .dividedBy(new BigNumber(totalFiatValue))
+    bigify(balanceObject.fiatValue)
+      .dividedBy(bigify(totalFiatValue))
       .isLessThan(SMALLEST_CHART_SHARE_SUPPORTED)
   );
   const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);

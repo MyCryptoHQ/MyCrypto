@@ -4,7 +4,6 @@ import { storiesOf } from '@storybook/react';
 
 import { DEFAULT_NETWORK } from '@config';
 
-import AppProviders from '../AppProviders';
 import NetworkNodeDropdown from './NetworkNodeDropdown';
 
 const onEdit = () => undefined;
@@ -21,8 +20,7 @@ const withAdd = () => (
   </div>
 );
 
-storiesOf('NetworkNodesDropdown', module)
-  .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
+storiesOf('Molecules/Selectors/NetworkNodesDropdown', module)
   .add('Select', () => selectOnly(), {
     design: {
       type: 'figma',

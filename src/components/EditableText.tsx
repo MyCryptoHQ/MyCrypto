@@ -2,29 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import editIcon from '@assets/images/icn-edit.svg';
-import { Typography } from '@components';
 import { COLORS, SPACING } from '@theme';
+import { isVoid } from '@utils';
 
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-  align-items: center;
-`;
-
-const EditIcon = styled.img`
-  display: inline-flex;
-  align-self: flex-start;
-  cursor: pointer;
-  margin: ${SPACING.XS} ${SPACING.SM};
-  opacity: 1;
-  height: 0.9em;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
+import Box from './Box';
+import Icon from './Icon';
+import { Text } from './NewTypography';
 
 const SInputField = styled.input`
   border-radius: 6px;
@@ -34,24 +17,43 @@ const SInputField = styled.input`
   padding: ${SPACING.XS};
 `;
 
-const STypography = styled(Typography)`
-  border-color: transparent;
-  line-height: 1.4;
+const SText = styled(Text)<React.ComponentProps<typeof Text>>`
+  /* Create space for hover border to avoid screen jump */
+  border-bottom: 1px transparent solid;
+`;
+
+const SIcon = styled(Icon)`
+  margin: ${SPACING.XS};
+`;
+
+const SBox = styled(Box)`
+  cursor: pointer;
   &:hover {
-    border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
-    cursor: pointer;
+    ${SText} {
+      border-bottom: 1px ${COLORS.BLUE_GREY} dashed;
+    }
+    ${SIcon} {
+      transition: 200ms ease all;
+      transform: scale(1.02);
+      opacity: 0.7;
+    }
   }
 `;
 
 export interface Props {
   value: string;
-  className?: string;
-  bold?: boolean;
+  placeholder?: string;
   truncate?: boolean;
-  saveValue(value: string): void;
+  onChange(value: string): void;
 }
 
-function EditableText({ saveValue, value, className, bold, truncate }: Props) {
+function EditableText({
+  onChange,
+  value,
+  truncate,
+  placeholder,
+  ...props
+}: Props & React.ComponentProps<typeof Box>) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
@@ -78,14 +80,17 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
   };
 
   const save = () => {
-    saveValue(editValue);
+    onChange(editValue);
     setEditMode(false);
   };
 
+  const hasValue = !isVoid(value);
+
   return (
-    <Wrapper className={className}>
+    <SBox variant="rowAlign" height="100%" {...props}>
       {editMode ? (
         <SInputField
+          placeholder={placeholder}
           autoFocus={true}
           value={editValue}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
@@ -95,13 +100,13 @@ function EditableText({ saveValue, value, className, bold, truncate }: Props) {
         />
       ) : (
         <>
-          <STypography bold={bold} truncate={truncate} inheritFontWeight={true} onClick={edit}>
-            {value}
-          </STypography>
-          <EditIcon onClick={edit} src={editIcon} />
+          <SText forwardedAs="span" isDiscrete={!hasValue} onClick={edit}>
+            {hasValue ? value : placeholder}
+          </SText>
+          <SIcon type="edit" onClick={edit} height="0.8rem" color="discrete" />
         </>
       )}
-    </Wrapper>
+    </SBox>
   );
 }
 

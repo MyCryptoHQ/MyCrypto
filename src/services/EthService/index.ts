@@ -9,7 +9,7 @@ export {
   AntMigrator,
   GolemV2Migration
 } from './contracts';
-export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
+export { setupWeb3Node, getApprovedAccounts, requestAccounts } from './web3';
 export {
   isValidPath,
   isValidETHAddress,
@@ -19,24 +19,10 @@ export {
   isValidNonZeroInteger,
   gasPriceValidator,
   gasLimitValidator,
-  isValidGetBalance,
-  isValidEstimateGas,
-  isValidCallRequest,
-  isValidTokenBalance,
-  isValidTransactionCount,
-  isValidTransactionByHash,
-  isValidTransactionReceipt,
-  isValidCurrentBlock,
-  isValidRawTxApi,
-  isValidSendTransaction,
-  isValidSignMessage,
-  isValidGetAccounts,
-  isValidGetNetVersion,
   isValidAddress,
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidRequestPermissions,
   isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';

@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
 import { fAccount, fContacts, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
 import { translateRaw } from '@translations';
 import { ExtendedContact, ITxStatus } from '@types';
-import { noOp, truncate } from '@utils';
+import { bigify, noOp, truncate } from '@utils';
 
 import { constructSenderFromTxConfig } from '../helpers';
 import { TxReceiptUI } from '../TxReceipt';
@@ -34,15 +32,7 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
-  return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={({ addressBook: [], contracts: [], userActions: [] } as unknown) as IDataContext}
-      >
-        <TxReceiptUI {...props} />
-      </DataContext.Provider>
-    </Router>
-  );
+  return simpleRender(<TxReceiptUI {...props} />);
 }
 
 describe('TxReceipt', () => {
@@ -76,7 +66,7 @@ describe('TxReceipt', () => {
 
   test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
-    expect(getByText(parseFloat(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
+    expect(getByText(bigify(fTxConfig.amount).toFixed(5), { exact: false })).toBeDefined();
   });
 
   test('it displays pending state', async () => {

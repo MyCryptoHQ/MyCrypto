@@ -1,29 +1,25 @@
 import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import { actionWithPayload, mockUseDispatch, ProvidersWrapper } from 'test-utils';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fContacts } from '@fixtures';
-import { ExtendedContact, TAddress } from '@types';
+import { ExtendedContact, LSKeys, TAddress } from '@types';
 import { generateDeterministicAddressUUID } from '@utils';
 
-import { DataContext, IDataContext } from '../DataManager';
 import useContacts from './useContacts';
 
 const renderUseContacts = ({ contacts = [] as ExtendedContact[] } = {}) => {
   const wrapper: React.FC = ({ children }) => (
-    <ProvidersWrapper>
-      <DataContext.Provider value={({ addressBook: contacts } as any) as IDataContext}>
-        {' '}
-        {children}
-      </DataContext.Provider>
+    <ProvidersWrapper initialState={mockAppState({ [LSKeys.ADDRESS_BOOK]: contacts })}>
+      {children}
     </ProvidersWrapper>
   );
   return renderHook(() => useContacts(), { wrapper });
 };
 
 describe('useContacts', () => {
-  it('uses get addressbook from DataContext', () => {
+  it('uses get addressbook from store', () => {
     const { result } = renderUseContacts({ contacts: fContacts });
     expect(result.current.contacts).toEqual(fContacts);
   });
@@ -61,7 +57,9 @@ describe('useContacts', () => {
     const { result } = renderUseContacts({
       contacts: fContacts
     });
-    result.current.deleteContact(fContacts[0].uuid);
+    act(() => {
+      result.current.deleteContact(fContacts[0].uuid);
+    });
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(fContacts[0].uuid));
   });
 

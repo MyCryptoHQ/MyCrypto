@@ -29,15 +29,19 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [config.path.src, config.path.modules, config.path.root],
+    modules: [config.path.src, 'node_modules'],
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
-      '@fixtures': `${config.path.root}/jest_config/__fixtures__`
+      '@fixtures': `${config.path.root}/jest_config/__fixtures__`,
+      // recharts 1.8.5 relies on core-js@2. Allow it to resolve to core-js@3
+      // https://github.com/recharts/recharts/issues/1673#issuecomment-499680671
+      'core-js/es6': 'core-js/es'
     },
     plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
   },
 
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         default: false,
@@ -100,7 +104,11 @@ module.exports = {
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
               // allow babel-plugin-recharts to reduce recharts size.
-              plugins: ['lodash', 'recharts']
+              plugins: [
+                'lodash',
+                'recharts',
+                IS_DEV && require.resolve('react-refresh/babel')
+              ].filter(Boolean)
             }
           }
         ],
@@ -243,7 +251,7 @@ module.exports = {
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin()
+    new LodashModuleReplacementPlugin({ flattening: true })
   ],
 
   stats: {

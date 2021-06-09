@@ -18,7 +18,6 @@ export const COLORS = {
   ERROR_RED: '#ff5050',
   PASTEL_RED: '#ef4747',
   ERROR_RED_LIGHT: '#dd544e',
-  GOLD: '#ffd166',
 
   WHITE: '#fff',
   GREY_LIGHTEST: '#f7f7f7',
@@ -63,6 +62,7 @@ export const FONT_SIZE = {
 };
 
 export const LINE_HEIGHT = {
+  XXS: '8px',
   XS: '12px',
   SM: '14px',
   BASE: '16px',
@@ -83,5 +83,5 @@ export const SPACING = {
   XXL: '100px'
 };
 
-export const MAX_CONTENT_WIDTH = '1200px';
+export const MAX_CONTENT_WIDTH = '1700px';
 export const MIN_CONTENT_PADDING = '15px';

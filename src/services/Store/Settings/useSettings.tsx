@@ -1,45 +1,32 @@
-import { useContext } from 'react';
-
 import {
   addExcludedAsset,
-  addFavorite,
-  addFavorites,
+  getSettings,
   removeExcludedAsset,
   resetFavoritesTo,
   setFiat,
   setLanguage,
   setRates,
-  useDispatch
+  useDispatch,
+  useSelector
 } from '@store';
 import { IRates, ISettings, TFiatTicker, TUuid } from '@types';
-
-import { DataContext } from '../DataManager';
 
 export interface ISettingsContext {
   settings: ISettings;
   language: string;
-  addAccountToFavorites(uuid: TUuid): void;
-  addMultipleAccountsToFavorites(uuids: TUuid[]): void;
   addAssetToExclusionList(uuid: TUuid): void;
   removeAssetfromExclusionList(uuid: TUuid): void;
   updateSettingsAccounts(accounts: TUuid[]): void;
   updateSettingsRates(rates: IRates): void;
   updateLanguageSelection(language: string): void;
   updateFiatCurrency(fiatTicker: TFiatTicker): void;
+  setDemoMode(isDemoMode: boolean): void;
 }
 
 function useSettings() {
-  const { settings } = useContext(DataContext);
+  const settings = useSelector(getSettings);
   const dispatch = useDispatch();
   const language = settings.language || '';
-
-  const addAccountToFavorites = (account: TUuid) => {
-    dispatch(addFavorite(account));
-  };
-
-  const addMultipleAccountsToFavorites = (accounts: TUuid[]) => {
-    dispatch(addFavorites(accounts));
-  };
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {
     dispatch(resetFavoritesTo(accounts));
@@ -68,8 +55,6 @@ function useSettings() {
   return {
     settings,
     language,
-    addAccountToFavorites,
-    addMultipleAccountsToFavorites,
     addAssetToExclusionList,
     removeAssetfromExclusionList,
     updateSettingsAccounts,

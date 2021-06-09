@@ -11,7 +11,8 @@ import {
   Network,
   NetworkId,
   NetworkLegacy,
-  NodeOptions
+  NodeOptions,
+  NodeType
 } from '@types';
 import { generateAssetUUID, generateDeterministicAddressUUID } from '@utils/generateUUID';
 import { chain, filter, map, mapObjIndexed, mergeRight, pipe, reduce } from '@vendor';
@@ -26,39 +27,14 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
     // add custom nodes from local storage
     const nodes: NodeOptions[] = [...(NODES_CONFIG[n.id] || []), ...(n.nodes || [])];
-    const [firstNode] = nodes;
-
-    return Object.assign(
-      {
-        // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
-        id: n.id,
-        name: n.name,
-        chainId: n.chainId,
-        isCustom: n.isCustom,
-        isTestnet: n.isTestnet,
-        color: n.color,
-        gasPriceSettings: n.gasPriceSettings,
-        shouldEstimateGasPrice: n.shouldEstimateGasPrice,
-        dPaths: {
-          ...n.dPaths,
-          default: n.dPaths.default // Set default dPath
-        },
-        blockExplorer: n.blockExplorer,
-        tokenExplorer: n.tokenExplorer,
-        contracts: [],
-        assets: [],
-        baseAsset: baseAssetUuid, // Set baseAssetUuid
-        baseUnit: n.unit,
-        nodes
-      },
-      firstNode
-        ? {
-            // Extend network if nodes are defined
-            autoNode: firstNode.name, // Select first node as auto
-            selectedNode: n.selectedNode || firstNode.name // Select first node as default
-          }
-        : {}
-    );
+    const { unit, ...rest } = n;
+    return {
+      // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
+      ...rest,
+      baseAsset: baseAssetUuid, // Set baseAssetUuid
+      baseUnit: unit,
+      nodes: nodes.filter(({ type }) => type !== NodeType.WEB3)
+    };
   };
 
   return mapObjIndexed(formatNetwork, networks);
@@ -102,10 +78,11 @@ const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
   const formatAsset = (n: Network): Asset => ({
     uuid: n.baseAsset,
     ticker: n.baseUnit,
-    name: n.name,
+    name: n.baseUnitName ? n.baseUnitName : n.name,
     networkId: n.id,
     type: 'base',
-    decimal: DEFAULT_ASSET_DECIMAL
+    decimal: DEFAULT_ASSET_DECIMAL,
+    isCustom: n.isCustom
   });
 
   // From { <networkId>: { baseAsset: <asset_uui> } }

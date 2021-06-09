@@ -3,12 +3,11 @@ import React from 'react';
 import { simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
-import { fNetwork, fTxConfig } from '@fixtures';
-import { DataContext, IDataContext } from '@services';
+import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
 
 // eslint-disable-next-line jest/no-mocks-import
-import { mockWindow } from '../__mocks__/web3';
+import { mockWindow } from '../../../../jest_config/__mocks__/web3';
 import { getHeader } from './helper';
 
 const defaultProps: React.ComponentProps<typeof SignTransaction> = {
@@ -17,18 +16,18 @@ const defaultProps: React.ComponentProps<typeof SignTransaction> = {
 };
 
 const getComponent = () => {
-  return simpleRender(
-    <DataContext.Provider value={({ networks: [fNetwork] } as unknown) as IDataContext}>
-      <SignTransaction {...defaultProps} />
-    </DataContext.Provider>
-  );
+  return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
-jest.mock('ethers/providers/web3-provider', () => {
+jest.mock('@ethersproject/providers', () => {
   // Must be imported here to prevent issues with jest
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
-  const { mockFactory } = require('../__mocks__/web3');
-  return mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 3, 'txhash');
+  const { mockFactory } = require('../../../../jest_config/__mocks__/web3');
+  return {
+    // MockFactory only mocks Web3, but other providers are instantiated elsewhere, therefore the symbols are required to be there
+    ...jest.requireActual('@ethersproject/providers'),
+    ...mockFactory('0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c', 3, 'txhash')
+  };
 });
 
 describe('SignTransactionWallets: Web3', () => {

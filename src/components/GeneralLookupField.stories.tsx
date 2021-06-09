@@ -28,7 +28,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-export default { title: 'GeneralLookupField' };
+export default { title: 'Molecules/GeneralLookupField', component: GeneralLookupField };
 
 export const defaultState = () => {
   return (

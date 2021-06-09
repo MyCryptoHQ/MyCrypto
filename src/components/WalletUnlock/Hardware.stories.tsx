@@ -6,26 +6,11 @@ import { noOp } from '@utils';
 
 import HardwareWalletUI, { HardwareUIProps } from './Hardware';
 
-export default { title: 'WalletUnlock/Hardware' };
+export default { title: 'Features/AddAccount/Hardware', components: HardwareWalletUI };
 
 const initialProps: Omit<HardwareUIProps, 'walletId'> = {
   network: fNetwork,
-  state: {
-    isInit: false,
-    isConnected: false,
-    isConnecting: false,
-    isGettingAccounts: false,
-    queuedAccounts: [],
-    finishedAccounts: [],
-    customDPaths: [],
-    session: undefined,
-    promptConnectionRetry: false,
-    completed: false,
-    error: {
-      code: '0x1111',
-      message: 'A looooooong error message used to test the output of ledger connections.'
-    }
-  },
+  isConnecting: false,
   handleNullConnect: noOp
 };
 

@@ -5,7 +5,7 @@ export const defaultSettings = {
   darkMode: false,
   dashboardAccounts: [],
   excludedAssets: [],
-  inactivityTimer: 1800000,
-  rates: {},
-  language: 'en'
+  language: 'en',
+  isDemoMode: false,
+  canTrackProductAnalytics: true
 };

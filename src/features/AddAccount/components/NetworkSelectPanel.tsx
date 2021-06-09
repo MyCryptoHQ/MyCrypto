@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Body, Box, Heading, NetworkSelector } from '@components';
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services';
+import { Body, Box, Button, Heading, NetworkSelector } from '@components';
 import { useNetworks } from '@services/Store';
 import { SPACING } from '@theme';
 import translate from '@translations';
@@ -40,17 +37,11 @@ interface Props {
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const { networks } = useNetworks();
   const [network, setNetwork] = useState<NetworkId>(formData.network);
-  const trackSelectNetwork = useAnalytics({
-    category: ANALYTICS_CATEGORIES.SELECT_NETWORK
-  });
 
   const onSubmit = () => {
     formDispatch({
       type: ActionType.SELECT_NETWORK,
       payload: { network }
-    });
-    trackSelectNetwork({
-      actionName: network
     });
     goToNextStep();
   };
@@ -58,7 +49,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const validNetwork = networks.some((n) => n.id === network);
 
   return (
-    <Box p="2.5em" height="629px" position="relative">
+    <Box m="2.5em" height="629px" position="relative">
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translate('ADD_ACCOUNT_NETWORK_TITLE')}
       </Heading>

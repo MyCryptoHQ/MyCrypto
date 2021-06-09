@@ -2,14 +2,22 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Amount, AssetIcon } from '@components';
-import { default as Icon } from '@components/Icon';
-import { getFiat } from '@config/fiats';
-import { COLORS, SPACING } from '@theme';
+import { Amount } from '@components';
+import Icon from '@components/Icon';
+import { getFiat } from '@config';
+import { BREAK_POINTS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings } from '@types';
-import { convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
+import { bigify, convertToFiat, fromWei, totalTxFeeToWei, Wei } from '@utils';
 
+const SIcon = styled(Icon)`
+  height: 25px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: none;
+  }
+`;
 interface Props {
   asset: ExtendedAsset;
   assetAmount: string;
@@ -21,13 +29,6 @@ interface Props {
   assetRate?: number;
   baseAssetRate?: number;
 }
-
-const SIcon = styled(Icon)`
-  width: 30px;
-  height: 30px;
-  margin-right: ${SPACING.SM};
-  vertical-align: middle;
-`;
 
 export const TxReceiptTotals = ({
   asset,
@@ -41,14 +42,11 @@ export const TxReceiptTotals = ({
   baseAssetRate
 }: Props) => {
   const feeWei = totalTxFeeToWei(gasPrice, gasUsed);
-
-  const feeFormatted = parseFloat(fromWei(feeWei, 'ether')).toFixed(6);
-
+  const feeFormatted = bigify(fromWei(feeWei, 'ether')).toFixed(6);
   const valueWei = Wei(value);
-
-  const totalWei = feeWei.add(valueWei);
-
-  const totalEtherFormatted = parseFloat(fromWei(totalWei, 'ether')).toFixed(6);
+  const totalWei = feeWei.plus(valueWei);
+  const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
+  const fiat = getFiat(settings);
 
   return (
     <>
@@ -58,14 +56,16 @@ export const TxReceiptTotals = ({
           {translate('CONFIRM_TX_SENT')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
-            fiatColor={COLORS.BLUE_SKY}
-            assetValue={`${parseFloat(assetAmount).toFixed(6)} ${asset.ticker}`}
+            asset={{
+              amount: bigify(assetAmount).toFixed(6),
+              ticker: asset.ticker,
+              uuid: asset.uuid
+            }}
             fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(assetAmount), assetRate).toFixed(2)
+              symbol: fiat.symbol,
+              ticker: fiat.ticker,
+              amount: convertToFiat(assetAmount, assetRate).toFixed(2)
             }}
           />
         </div>
@@ -75,14 +75,16 @@ export const TxReceiptTotals = ({
           <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
           <Amount
-            fiatColor={COLORS.BLUE_SKY}
-            assetValue={`${feeFormatted} ${baseAsset.ticker}`}
+            asset={{
+              amount: feeFormatted,
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid
+            }}
             fiat={{
-              symbol: getFiat(settings).symbol,
-              ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(feeFormatted), baseAssetRate).toFixed(2)
+              symbol: fiat.symbol,
+              ticker: fiat.ticker,
+              amount: convertToFiat(feeFormatted, baseAssetRate).toFixed(2)
             }}
           />
         </div>
@@ -96,31 +98,35 @@ export const TxReceiptTotals = ({
           {translate('TOTAL')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <AssetIcon uuid={asset.uuid} size={'24px'} />
           {asset.type === 'base' ? (
             <Amount
-              fiatColor={COLORS.BLUE_SKY}
-              assetValue={`${totalEtherFormatted} ${asset.ticker}`}
+              asset={{
+                amount: totalEtherFormatted,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
               fiat={{
-                symbol: getFiat(settings).symbol,
-                ticker: getFiat(settings).ticker,
-                amount: convertToFiat(parseFloat(totalEtherFormatted), assetRate).toFixed(2)
+                symbol: fiat.symbol,
+                ticker: fiat.ticker,
+                amount: convertToFiat(totalEtherFormatted, assetRate).toFixed(2)
               }}
             />
           ) : (
             <Amount
-              fiatColor={COLORS.BLUE_SKY}
-              assetValue={`${assetAmount} ${asset.ticker}`}
+              asset={{
+                amount: assetAmount,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
+              fiat={{
+                symbol: fiat.symbol,
+                ticker: fiat.ticker,
+                amount: convertToFiat(assetAmount, assetRate)
+                  .plus(convertToFiat(totalEtherFormatted, baseAssetRate))
+                  .toFixed(2)
+              }}
               bold={true}
               baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
-              fiat={{
-                symbol: getFiat(settings).symbol,
-                ticker: getFiat(settings).ticker,
-                amount: (
-                  convertToFiat(parseFloat(assetAmount), assetRate) +
-                  convertToFiat(parseFloat(totalEtherFormatted), baseAssetRate)
-                ).toFixed(2)
-              }}
             />
           )}
         </div>

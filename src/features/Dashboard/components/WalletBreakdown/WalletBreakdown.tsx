@@ -50,8 +50,8 @@ const WalletBreakdownPanel = styled(Panel)`
   display: flex;
   flex-direction: column;
   margin-top: ${SPACING.XS};
+  margin-bottom: ${SPACING.BASE};
   padding: 0;
-
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     flex-direction: row;
     margin-top: 0;

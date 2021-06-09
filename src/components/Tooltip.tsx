@@ -30,27 +30,31 @@ const Override = styled.div<SpaceProps & VerticalAlignProps & DisplayProps>`
   }
 `;
 
-function Tooltip({
+const Tooltip: React.FC<
+  {
+    tooltip: React.ReactNode;
+    type?: ToolTipIcon;
+    children?: React.ReactNode;
+    width?: string;
+  } & SpaceProps &
+    VerticalAlignProps &
+    DisplayProps
+> = ({
   type = 'questionBlack',
   tooltip,
   children,
   display = 'inline-flex',
   verticalAlign = 'middle',
+  width = '1em',
   ...props
-}: {
-  tooltip: React.ReactNode;
-  type?: ToolTipIcon;
-  children?: React.ReactNode;
-} & SpaceProps &
-  VerticalAlignProps &
-  DisplayProps) {
+}) => {
   return (
     <Override verticalAlign={verticalAlign} display={display} {...props}>
       <UITooltip tooltip={tooltip}>
-        {children ? children : <Icon type={type} width="1em" />}
+        {children ? children : <Icon type={type} width={width} />}
       </UITooltip>
     </Override>
   );
-}
+};
 
 export default Tooltip;

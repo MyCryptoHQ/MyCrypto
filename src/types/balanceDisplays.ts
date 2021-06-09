@@ -1,13 +1,4 @@
-import { Fiat, IAccount, TAddress, TUuid } from '@types';
-
-export interface BalanceDetailsTableProps {
-  balances: Balance[];
-  totalFiatValue: string;
-  fiat: Fiat;
-  accounts: IAccount[];
-  selected: string[];
-  createFirstButton({ uuid, key }: { uuid: TUuid; key: string }): JSX.Element;
-}
+import { TAddress, TUuid } from '@types';
 
 export interface BalanceAccount {
   address: TAddress;

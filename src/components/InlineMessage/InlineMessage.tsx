@@ -3,12 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import arrowSVG from '@assets/images/icn-arrow-purple.svg';
+import purpleInfoSVG from '@assets/images/icn-info-purple.svg';
 import infoSVG from '@assets/images/icn-info.svg';
 import warningSVG from '@assets/images/icn-warning.svg';
+import { Body } from '@components/NewTypography';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { InlineMessageType } from '@types';
-
-import Typography from '../Typography';
 
 interface Props {
   type?: InlineMessageType;
@@ -33,19 +33,9 @@ interface BannerTypographyProps {
   color: string;
 }
 
-const STypography = styled(Typography)<BannerTypographyProps>`
+const STypography = styled(Body)<BannerTypographyProps>`
   color: ${(props) => props.color};
-
-  a {
-    color: ${(props) => props.color};
-    text-decoration: underline;
-    font-weight: normal;
-  }
-
-  a:hover {
-    color: ${(props) => props.color};
-    font-weight: bold;
-  }
+  vertical-align: middle;
 `;
 
 const Icon = styled.img`
@@ -72,6 +62,11 @@ const messageConfig = (type: InlineMessageType): Config => {
         color: COLORS.ORANGE,
         icon: infoSVG
       };
+    case InlineMessageType.INDICATOR_INFO_CIRCLE:
+      return {
+        color: COLORS.PURPLE,
+        icon: purpleInfoSVG
+      };
     case InlineMessageType.INFO_ARROW:
       return {
         color: COLORS.PURPLE,
@@ -90,7 +85,9 @@ export default function InlineMessage({
   return (
     <Wrapper className={className}>
       <Icon src={config.icon} color={config.color} alt={type} />
-      <STypography value={value || children} color={config.color} />
+      <STypography as="span" color={config.color}>
+        {value || children}
+      </STypography>
     </Wrapper>
   );
 }

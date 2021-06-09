@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { Heading, Icon, Input, Tooltip } from '@mycrypto/ui';
+import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,8 +12,7 @@ import {
   Button,
   ExtendedContentPanel,
   InlineMessage,
-  NewTabLink,
-  RouterLink,
+  LinkApp,
   TxReceipt
 } from '@components';
 import { FaucetReceiptBanner } from '@components/TransactionFlow/displays';
@@ -55,25 +54,8 @@ const CodeHeading = styled(Heading)`
   margin-top: ${SPACING.SM};
 `;
 
-const LearnMoreArrowWrapper = styled.span`
-  vertical-align: middle;
-  margin-left: ${SPACING.XS};
-`;
-
-const LearnMoreArrow = styled(Icon)`
-  transform: rotate(180deg);
-  width: 14px;
-  height: 14px;
-`;
-
 const NoTestnetAccounts = styled(InlineMessage)`
   margin-bottom: ${SPACING.BASE};
-  a,
-  a:hover {
-    color: ${COLORS.BLUE_MYC};
-    text-decoration: none;
-    font-weight: bold;
-  }
 `;
 
 const IncorrectResponse = styled(InlineMessage)`
@@ -156,14 +138,14 @@ export default function Faucet() {
                 id="FAUCET_NO_ACCOUNTS"
                 variables={{
                   $link_add_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_ADD_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   ),
                   $link_create_account: () => (
-                    <RouterLink to={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
                       {translateRaw('FAUCET_CREATE_ACCOUNT_LINK')}
-                    </RouterLink>
+                    </LinkApp>
                   )
                 }}
               />
@@ -177,13 +159,14 @@ export default function Faucet() {
             {translate('REQUEST')}
           </RequestButton>
           <CenterText>
-            {translate('FAUCET_NOT_SURE')}{' '}
-            <NewTabLink href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}>
-              {translate('LEARN_MORE')}{' '}
-              <LearnMoreArrowWrapper>
-                <LearnMoreArrow icon="backArrow" />
-              </LearnMoreArrowWrapper>
-            </NewTabLink>
+            {translate('FAUCET_NOT_SURE')}
+            <br />
+            <LinkApp
+              href={getKBHelpArticle(KB_HELP_ARTICLE.WHERE_TO_GET_TESTNET_ETHER)}
+              isExternal={true}
+            >
+              {translate('VISIT_KB')}
+            </LinkApp>
           </CenterText>
         </Form>
       )}
@@ -242,18 +225,23 @@ export default function Faucet() {
             <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
           )}
           completeButton={() => (
-            <NewTabLink
+            <LinkApp
               href={generateTweet(
                 translateRaw('FAUCET_TWEET', {
                   $faucet_url: MYCRYPTO_FAUCET_LINK
                 })
               )}
+              isExternal={true}
             >
-              <Button inverted={true} fullwidth={true} className="TransactionReceipt-tweet">
+              <Button
+                colorScheme={'inverted'}
+                fullwidth={true}
+                className="TransactionReceipt-tweet"
+              >
                 <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
                 <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
               </Button>
-            </NewTabLink>
+            </LinkApp>
           )}
         />
       )}

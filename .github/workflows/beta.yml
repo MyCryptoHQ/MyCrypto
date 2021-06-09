@@ -13,6 +13,7 @@ on:
 
 jobs:
   beta-build:
+    environment: PRODUCTION
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +30,16 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+
       - name: yarn build
         run: yarn build
+        env:
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
+          COMMIT_HASH: ${{ steps.vars.outputs.sha }}
 
       - name: Zip standalone build folder
         run: zip -r dist/web/standalone_mycrypto.zip dist/web/

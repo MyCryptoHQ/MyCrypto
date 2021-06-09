@@ -20,7 +20,6 @@ export interface IExternalLink {
   type: 'external';
   title: string;
   link: TURL;
-  analyticsEvent: string;
   icon: TIcon;
 }
 

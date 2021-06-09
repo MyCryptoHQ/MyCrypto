@@ -4,7 +4,7 @@ import { screen, simpleRender } from 'test-utils';
 
 import { ETHUUID } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
-import { DataContext, getAccountsByAsset, IDataContext, StoreContext } from '@services/Store';
+import { getAccountsByAsset, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 import { TUuid } from '@types';
 
@@ -14,25 +14,16 @@ type Props = React.ComponentProps<typeof MigrationSubHead>;
 
 function getComponent(props: Props) {
   return simpleRender(
-    <DataContext.Provider
+    <StoreContext.Provider
       value={
         ({
           accounts: fAccounts,
           assets: fAssets
-        } as unknown) as IDataContext
+        } as any) as any
       }
     >
-      <StoreContext.Provider
-        value={
-          ({
-            accounts: fAccounts,
-            assets: fAssets
-          } as any) as any
-        }
-      >
-        <MigrationSubHead {...props} />
-      </StoreContext.Provider>
-    </DataContext.Provider>
+      <MigrationSubHead {...props} />
+    </StoreContext.Provider>
   );
 }
 

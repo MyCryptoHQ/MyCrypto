@@ -1,19 +1,20 @@
 // Application styles must come first in order, to allow for overrides
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
-import '@babel/polyfill';
 
 import 'whatwg-fetch'; // @todo: Investigate utility of dependency
 import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
 import React from 'react';
 
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { consoleAdvertisement, getRootDomain, IS_E2E, IS_PROD, IS_STAGING } from '@utils';
+import { FeatureFlagProvider } from '@services';
+import { createStore } from '@store';
+import { consoleAdvertisement, getRootDomain, IS_DEV, IS_E2E } from '@utils';
 import { ethereumMock } from '@vendor';
-
-import Root from './Root';
 
 /**
  * Ensure landing and app have the same domain to handle cross-origin policy.
@@ -42,8 +43,29 @@ if (IS_E2E) {
   (window as CustomWindow).ethereum = ethereumMock();
 }
 
-render(<Root />, document.getElementById('app'));
-
-if (IS_PROD || IS_STAGING) {
+if (!IS_DEV) {
   consoleAdvertisement();
+}
+
+const { store, persistor } = createStore();
+
+export const render = () => {
+  /* eslint-disable-next-line  @typescript-eslint/no-var-requires */
+  const App = require('./App').default;
+  ReactDOM.render(
+    <Provider store={store}>
+      <FeatureFlagProvider>
+        <PersistGate persistor={persistor}>
+          {(isHydrated: boolean) => <App storeReady={isHydrated} />}
+        </PersistGate>
+      </FeatureFlagProvider>
+    </Provider>,
+    document.getElementById('root')
+  );
+};
+
+render();
+
+if (IS_DEV && module.hot) {
+  module.hot.accept('./App', render);
 }

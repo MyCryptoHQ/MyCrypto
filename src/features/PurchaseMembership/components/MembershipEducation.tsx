@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Accordion } from '@mycrypto/ui';
-import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
@@ -11,8 +10,8 @@ import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor
 import membershipShirt from '@assets/images/membership/membership-shirt.svg';
 import membershipStickers from '@assets/images/membership/membership-stickers.svg';
 import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
-import { Button, FullSizeContentPanel, Typography } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { Button, FullSizeContentPanel, LinkApp, Typography } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate from '@translations';
 
@@ -124,19 +123,19 @@ const ListImg = styled.img`
 const PlanContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  width: 90%;
   margin-bottom: ${SPACING.LG};
+  & div {
+    margin-bottom: 15px;
+  }
+  div:nth-child(odd) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `;
 
-const Disclaimer = styled(Typography)`
-  color: ${COLORS.GREY};
-  width: 80%;
-  text-align: center;
-`;
-
-const MembershipEducation = withRouter(({ history }) => {
-  const handleSubmit = () => history.push(`${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`);
+const MembershipEducation = () => {
   return (
     <FullSizeContentPanel width={'1100px'}>
       <Heading>{translate('MEMBERSHIP')}</Heading>
@@ -145,7 +144,9 @@ const MembershipEducation = withRouter(({ history }) => {
         <DescriptionColumn>
           <Typography as="div">{translate('MEMBERSHIP_DESC_FIRST')}</Typography>
           <Typography as="div">{translate('MEMBERSHIP_DESC_SECOND')}</Typography>
-          <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
+          <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
+            <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
+          </LinkApp>
         </DescriptionColumn>
       </RowPanelSection>
       <SpacedPanelSection color={COLORS.GREY_LIGHTEST}>
@@ -163,7 +164,12 @@ const MembershipEducation = withRouter(({ history }) => {
             <ListItem>
               <ListImg src={membershipUnlimited} />
               <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>&nbsp;
-              <Link to={ROUTE_PATHS.DASHBOARD.path}>{translate('MEMBERSHIP_LIST_THIRD_2')}</Link>
+              <LinkApp
+                href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_ARE_PROTECTED_TRANSACTIONS)}
+                isExternal={true}
+              >
+                {translate('MEMBERSHIP_LIST_THIRD_2')}
+              </LinkApp>
             </ListItem>
             <ListItem>
               <ListImg src={membershipNoAds} />
@@ -196,17 +202,20 @@ const MembershipEducation = withRouter(({ history }) => {
               />
             ))}
         </PlanContainer>
-        <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
-        <Disclaimer>{translate('MEMBERSHIP_NOTE')}</Disclaimer>
+        <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
+          <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
+        </LinkApp>
       </SpacedPanelSection>
       <SpacedPanelSection>
         <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>
         <Accordion items={accordionContent} />
         <Typography as="div">{translate('MEMBERSHIP_MORE_FAQ')}</Typography>
-        <SButton onClick={handleSubmit}>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
+        <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
+          <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
+        </LinkApp>
       </SpacedPanelSection>
     </FullSizeContentPanel>
   );
-});
+};
 
 export default MembershipEducation;

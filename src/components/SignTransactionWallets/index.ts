@@ -8,6 +8,7 @@ import { default as SignTransactionWeb3 } from './Web3';
 export const WALLET_STEPS: SigningComponents = {
   [WalletId.WEB3]: SignTransactionWeb3,
   [WalletId.METAMASK]: SignTransactionWeb3,
+  [WalletId.STATUS]: SignTransactionWeb3,
   [WalletId.TRUST]: SignTransactionWeb3,
   [WalletId.FRAME]: SignTransactionWeb3,
   [WalletId.COINBASE]: SignTransactionWeb3,

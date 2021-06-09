@@ -3,15 +3,14 @@ import React from 'react';
 import {
   actionWithPayload,
   fireEvent,
+  mockAppState,
   mockUseDispatch,
-  ProvidersWrapper,
   simpleRender,
   waitFor
 } from 'test-utils';
 
-import { fContacts, fNetwork } from '@fixtures';
-import { DataContext } from '@services/Store';
-import { Contact, ExtendedContact, IReceiverAddress, TUuid } from '@types';
+import { fAssets, fContacts, fNetwork } from '@fixtures';
+import { ExtendedContact, IReceiverAddress, LSKeys, TUuid } from '@types';
 import { generateDeterministicAddressUUID } from '@utils';
 
 import ContactLookupField from '../ContactLookupField';
@@ -40,7 +39,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
 
 function getComponent(
   props: any,
-  contacts: Contact[] = [],
+  contacts: ExtendedContact[] = [],
   output: FormValues = { data: { address: { value: '', display: '' } } }
 ) {
   const setFormValue = (address: IReceiverAddress) => {
@@ -48,23 +47,17 @@ function getComponent(
   };
 
   return simpleRender(
-    <ProvidersWrapper>
-      <DataContext.Provider
-        value={
-          ({
-            assets: [{ uuid: fNetwork.baseAsset }],
-            addressBook: contacts,
-            contracts: []
-          } as unknown) as any
-        }
-      >
-        <ContactLookupField
-          {...props}
-          value={output.data.address}
-          setFieldValue={(_, value) => setFormValue(value)}
-        />
-      </DataContext.Provider>
-    </ProvidersWrapper>
+    <ContactLookupField
+      {...props}
+      value={output.data.address}
+      setFieldValue={(_, value) => setFormValue(value)}
+    />,
+    {
+      initialState: mockAppState({
+        assets: fAssets,
+        [LSKeys.ADDRESS_BOOK]: contacts
+      })
+    }
   );
 }
 
@@ -157,7 +150,7 @@ describe('ContactLookupField', () => {
     fireEvent.change(input!, { target: { value: inputString } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
-    expect(contacts).toHaveLength(2);
+    expect(contacts).toHaveLength(3);
     expect(output.data.address).toStrictEqual({
       display: contact.label,
       value: contact.address

@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-import { utils } from 'ethers';
-import { Web3Provider } from 'ethers/providers/web3-provider';
+import { getAddress } from '@ethersproject/address';
+import { Web3Provider } from '@ethersproject/providers';
+import styled from 'styled-components';
 
-import { WALLETS_CONFIG } from '@config';
+import { Body, Box, BusyBottom, Heading, InlineMessage } from '@components';
+import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
+import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ISignComponentProps, TAddress } from '@types';
+import {
+  BusyBottomConfig,
+  InlineMessageType,
+  ISignComponentProps,
+  StoreAccount,
+  TAddress,
+  WalletId
+} from '@types';
 import { getWeb3Config, isSameAddress } from '@utils';
 
-import './Web3.scss';
-
-enum WalletSigningState {
+export enum WalletSigningState {
   SUBMITTING,
   REJECTED,
   ADDRESS_MISMATCH,
@@ -27,7 +35,7 @@ export default function SignTransactionWeb3({
 }: ISignComponentProps) {
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
 
-  const desiredAddress = utils.getAddress(senderAccount.address);
+  const desiredAddress = getAddress(senderAccount.address);
 
   const { getNetworkByChainId } = useNetworks();
   const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
@@ -62,7 +70,7 @@ export default function SignTransactionWeb3({
 
     const web3Signer = web3Provider.getSigner();
     const web3Address = await web3Signer.getAddress();
-    const checksumAddress = utils.getAddress(web3Address);
+    const checksumAddress = getAddress(web3Address);
 
     const web3Network = await web3Provider.getNetwork();
     const addressMatches = isSameAddress(checksumAddress as TAddress, desiredAddress as TAddress);
@@ -106,59 +114,114 @@ export default function SignTransactionWeb3({
   };
 
   return (
-    <>
-      <div className="SignTransactionWeb3-title">
-        {translate('SIGN_TX_TITLE', {
-          $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
-        })}
-      </div>
-      <div className="SignTransactionWeb3-instructions">
-        {translate('SIGN_TX_WEB3_PROMPT', {
-          $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
-        })}
-      </div>
-      <div className="SignTransactionWeb3-img">
-        <img src={walletConfig.icon} />
-      </div>
-
-      <div className="SignTransactionWeb3-input">
-        <div className="SignTransactionWeb3-errors">
-          {walletState === WalletSigningState.REJECTED && (
-            <div className="SignTransactionWeb3-rejection">
-              {translate('SIGN_TX_WEB3_REJECTED')}
-            </div>
-          )}
-          {walletState === WalletSigningState.NETWORK_MISMATCH && (
-            <div className="SignTransactionWeb3-wrong-network">
-              {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
-                $walletName: walletConfig.name,
-                $networkName: networkName
-              })}
-            </div>
-          )}
-          {walletState === WalletSigningState.ADDRESS_MISMATCH && (
-            <div className="SignTransactionWeb3-wrong-address">
-              {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
-                $walletName: walletConfig.name,
-                $address: senderAccount.address
-              })}
-            </div>
-          )}
-          {walletState === WalletSigningState.SUBMITTING && (
-            <div className="SignTransactionWeb3-submitting">
-              {translate('SIGN_TX_SUBMITTING_PENDING')}
-            </div>
-          )}
-        </div>
-        <div className="SignTransactionWeb3-description">{translateRaw('SIGN_TX_EXPLANATION')}</div>
-        <div className="SignTransactionWeb3-footer">
-          {walletConfig.helpLink && (
-            <div className="SignTransactionWeb3-help">
-              {translate('SIGN_TX_HELP_LINK', { $helpLink: walletConfig.helpLink })}
-            </div>
-          )}
-        </div>
-      </div>
-    </>
+    <SignTransactionWeb3UI
+      walletConfig={walletConfig}
+      walletState={walletState}
+      networkName={networkName}
+      senderAccount={senderAccount}
+    />
   );
 }
+
+const Footer = styled.div`
+  width: 100%;
+  margin-top: 2em;
+`;
+
+const Web3ImgContainer = styled.div`
+  margin: 2em;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    padding-bottom: 1em;
+  }
+`;
+
+const Web3Img = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 150px;
+  & img {
+    width: 150px;
+  }
+`;
+
+const SInlineMessage = styled(InlineMessage)`
+  text-align: center;
+`;
+
+export interface UIProps {
+  walletConfig: IWalletConfig;
+  walletState: WalletSigningState;
+  networkName: string;
+  senderAccount: StoreAccount;
+}
+
+export const SignTransactionWeb3UI = ({
+  walletConfig,
+  walletState,
+  networkName,
+  senderAccount
+}: UIProps) => (
+  <Box>
+    <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+      {translate('SIGN_TX_TITLE', {
+        $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+      })}
+    </Heading>
+    <Body textAlign="center" lineHeight="1.5" fontSize={FONT_SIZE.MD} paddingTop={SPACING.LG}>
+      {translate('SIGN_TX_WEB3_PROMPT', {
+        $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
+      })}
+    </Body>
+    <Web3ImgContainer>
+      <Web3Img>
+        <img src={walletConfig.icon} />
+      </Web3Img>
+    </Web3ImgContainer>
+
+    <>
+      <Box variant="columnCenter" pt={SPACING.SM}>
+        {walletState === WalletSigningState.REJECTED && (
+          <SInlineMessage>{translate('SIGN_TX_WEB3_REJECTED')}</SInlineMessage>
+        )}
+        {walletState === WalletSigningState.NETWORK_MISMATCH && (
+          <SInlineMessage>
+            {translate('SIGN_TX_WEB3_FAILED_NETWORK', {
+              $walletName: walletConfig.name,
+              $networkName: networkName
+            })}
+          </SInlineMessage>
+        )}
+        {walletState === WalletSigningState.ADDRESS_MISMATCH && (
+          <SInlineMessage>
+            {translate('SIGN_TX_WEB3_FAILED_ACCOUNT', {
+              $walletName: walletConfig.name,
+              $address: senderAccount.address
+            })}
+          </SInlineMessage>
+        )}
+        {walletState === WalletSigningState.SUBMITTING && (
+          <SInlineMessage type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
+            {translate('SIGN_TX_SUBMITTING_PENDING')}
+          </SInlineMessage>
+        )}
+      </Box>
+      <Body textAlign="center" lineHeight="1.5" fontSize={FONT_SIZE.MD} marginTop="16px">
+        {translateRaw('SIGN_TX_EXPLANATION')}
+      </Body>
+      <Footer>
+        <BusyBottom
+          type={
+            walletConfig.id === WalletId.METAMASK
+              ? BusyBottomConfig.METAMASK_SIGN
+              : BusyBottomConfig.GENERIC_WEB3
+          }
+        />
+      </Footer>
+    </>
+  </Box>
+);

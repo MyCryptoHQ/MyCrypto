@@ -1,5 +1,6 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
+import { DEFAULT_NETWORK } from '@config';
 import { fAccount, fAccounts, fContacts, fContracts, fNetwork, fNetworks } from '@fixtures';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { ExtendedContact, ExtendedContract, Network, NetworkId, NodeOptions } from '@types';
@@ -11,6 +12,9 @@ import {
   deleteNodeOrNetworkWorker,
   deleteNodeWorker,
   initialState,
+  selectDefaultNetwork,
+  selectNetwork,
+  selectNetworks,
   default as slice
 } from './network.slice';
 
@@ -75,7 +79,7 @@ describe('NetworkSlice', () => {
 
   it('deleteNode(): deletes node', () => {
     const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_mycrypto' };
-    const state = [fNetworks[0]];
+    const state = [{ ...fNetworks[0], selectedNode: payload.nodeName }];
     const expected = [
       { ...fNetworks[0], nodes: [fNetworks[0].nodes[1]], selectedNode: 'eth_ethscan' }
     ];
@@ -85,13 +89,12 @@ describe('NetworkSlice', () => {
 
   it('deleteNode(): deletes node and sets selected node to autoNode', () => {
     const payload = { network: 'Ethereum' as NetworkId, nodeName: 'eth_ethscan' };
-    const state = [{ ...fNetworks[0], selectedNode: 'eth_ethscan', autoNode: 'eth_mycrypto' }];
+    const state = [{ ...fNetworks[0], selectedNode: 'eth_ethscan' }];
     const expected = [
       {
         ...fNetworks[0],
         nodes: [fNetworks[0].nodes[0]],
-        selectedNode: 'eth_mycrypto',
-        autoNode: 'eth_mycrypto'
+        selectedNode: 'eth_mycrypto'
       }
     ];
     const actual = reducer(state, deleteNode(payload));
@@ -155,6 +158,24 @@ describe('NetworkSlice', () => {
 
     const actual = canDeleteNode(networkId)(state);
     expect(actual).toEqual(true);
+  });
+});
+
+describe('Network Selectors', () => {
+  it('selectNetworks(): selects correct slice', () => {
+    const actual = selectNetworks(mockAppState({ networks: fNetworks }));
+    expect(actual).toEqual(fNetworks);
+  });
+
+  it('selectNetwork(): finds a network by id', () => {
+    const actual = selectNetwork(fNetworks[0].id)(mockAppState({ networks: fNetworks }));
+    const expected = fNetworks[0];
+    expect(actual).toEqual(expected);
+  });
+
+  it('selectDefaultNetwork(): returns the default network', () => {
+    const actual = selectDefaultNetwork(mockAppState({ networks: fNetworks }));
+    expect(actual.id).toEqual(DEFAULT_NETWORK);
   });
 });
 

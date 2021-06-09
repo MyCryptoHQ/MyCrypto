@@ -4,12 +4,13 @@ import { Form, Formik } from 'formik';
 import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
-import { Box, Button, ContactLookupField, Heading } from '@components';
+import { Body, Box, Button, ContactLookupField, Heading } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
 import { COLORS } from '@theme';
-import { translateRaw } from '@translations';
-import { ErrorObject, FormData, IReceiverAddress, WalletId } from '@types';
+import translate, { translateRaw } from '@translations';
+import { ErrorObject, FormData, IReceiverAddress, TAddress, WalletId } from '@types';
 import { isFormValid, toChecksumAddressByChainId } from '@utils';
 
 const FormWrapper = styled(Form)`
@@ -25,7 +26,7 @@ interface Props {
   onUnlock(param: any): void;
 }
 
-const WalletService = WalletFactory(WalletId.VIEW_ONLY);
+const WalletService = WalletFactory[WalletId.VIEW_ONLY];
 
 interface FormValues {
   address: IReceiverAddress;
@@ -45,7 +46,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
 
   const onSubmit = (fields: FormValues) => {
     if (equals(fields, initialFormikValues)) return;
-    onUnlock(WalletService.init(toChecksumAddressByChainId(fields.address.value, network.chainId)));
+    onUnlock(
+      WalletService.init({
+        address: toChecksumAddressByChainId(fields.address.value, network.chainId) as TAddress
+      })
+    );
   };
 
   return (
@@ -53,6 +58,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
+      <Body textAlign="center" fontSize="18px" paddingTop="16px">
+        {translate('VIEW_ONLY_ADDR_DISCLAIMER', {
+          $link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)
+        })}
+      </Body>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
           <FormWrapper>

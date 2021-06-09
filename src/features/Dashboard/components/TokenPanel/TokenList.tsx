@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { Button, Typography } from '@mycrypto/ui';
+import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import {
   AssetIcon,
   Body,
+  Box,
   DashboardPanel,
   Heading,
   Icon,
-  RouterLink,
+  LinkApp,
   SkeletonLoader,
+  Text,
   Tooltip
 } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { StoreAsset } from '@types';
 import { convertToFiatFromAsset } from '@utils';
@@ -61,16 +63,12 @@ const MoreIcon = styled(Icon)`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
-  padding: 9px 16px;
-  font-size: ${FONT_SIZE.MD};
-  margin-left: 8px;
-`;
-
 const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
-  height: 95vh;
-  min-height: 430px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    min-height: 430px;
+    height: 652px;
+  }
 `;
 
 interface TokenListProps {
@@ -80,7 +78,7 @@ interface TokenListProps {
   setShowDetailsView(show: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
   setCurrentToken(token: StoreAsset): void;
-  handleScanTokens(): Promise<void>;
+  handleScanTokens(): void;
 }
 
 export function TokenList(props: TokenListProps) {
@@ -98,18 +96,29 @@ export function TokenList(props: TokenListProps) {
     <TokenDashboardPanel
       heading={
         <>
-          {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
+          {translateRaw('TOKENS')}{' '}
+          <Tooltip width="1rem" tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
         </>
       }
       headingRight={
-        <div style={{ minWidth: '170px', textAlign: 'right' }}>
-          <StyledButton onClick={() => handleScanTokens()}>
-            {translateRaw('SCAN_TOKENS_SHORT')}
-          </StyledButton>
-          <StyledButton onClick={() => setShowAddToken(true)}>
-            + {translateRaw('ADD_TOKEN_SHORT')}
-          </StyledButton>
-        </div>
+        <Box variant="rowAlign">
+          <LinkApp href="#" variant="opacityLink" onClick={() => handleScanTokens()}>
+            <Box variant="rowAlign" mr={SPACING.BASE}>
+              <Icon type="refresh" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('SCAN_TOKENS_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
+          <LinkApp href="#" variant="opacityLink" onClick={() => setShowAddToken(true)}>
+            <Box variant="rowAlign">
+              <Icon type="add-bold" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('ADD_TOKEN_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
+        </Box>
       }
       padChildren={false}
     >
@@ -121,7 +130,7 @@ export function TokenList(props: TokenListProps) {
         <TokenListWrapper>
           {sortedTokens.length > 0 ? (
             sortedTokens.map((token) => (
-              <Token key={token.uuid}>
+              <Token key={token.uuid} data-testid={`token-${token.uuid}`}>
                 <Asset>
                   <AssetIcon uuid={token.uuid} size={'26px'} />
                   <AssetName>{token.name}</AssetName>
@@ -152,9 +161,9 @@ export function TokenList(props: TokenListProps) {
                   id="NO_TOKENS_CONTENT"
                   variables={{
                     $link: () => (
-                      <RouterLink to={ROUTE_PATHS.SWAP.path}>
+                      <LinkApp href={ROUTE_PATHS.SWAP.path}>
                         {translateRaw('GET_SOME_HERE')}
-                      </RouterLink>
+                      </LinkApp>
                     )
                   }}
                 />

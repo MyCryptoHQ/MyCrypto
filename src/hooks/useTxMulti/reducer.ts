@@ -1,6 +1,6 @@
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 
-import { ITxHash, ITxObject, ITxStatus, ITxType } from '@types';
+import { ITxHash, ITxMetadata, ITxObject, ITxStatus, ITxType } from '@types';
 import { getUUID } from '@utils';
 import { adjust, map, mergeLeft } from '@vendor';
 
@@ -14,12 +14,18 @@ export const initialState = {
   transactions: []
 };
 
-const formatTx = ({ label, type, ...txRaw }: ITxObject & { type: ITxType; label: string }) => ({
+const formatTx = ({
+  label,
+  type,
+  metadata,
+  ...txRaw
+}: ITxObject & { type: ITxType; label: string; metadata: ITxMetadata }) => ({
   txRaw,
   _uuid: getUUID(JSON.stringify(txRaw)),
   status: ITxStatus.PREPARING,
   type,
-  label
+  label,
+  metadata
 });
 
 export function TxMultiReducer(state: TxMultiState, action: TxMultiAction): TxMultiState {

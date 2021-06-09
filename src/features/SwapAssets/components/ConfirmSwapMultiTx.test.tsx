@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { MemoryRouter as Router } from 'react-router-dom';
 import { simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
-import { fAccount, fAccounts, fAssets, fRopDAI, fSettings, fTxParcels } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { fAccount, fAssets, fRopDAI, fTxParcels } from '@fixtures';
 import { bigify, noOp } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -18,8 +16,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
     lastChangedAmount: LAST_CHANGED_AMOUNT.FROM,
     fromAmount: bigify(1),
     toAmount: bigify(100),
-    rate: bigify(0),
-    markup: bigify(0)
+    rate: bigify(0)
   },
   account: fAccount,
   onComplete: noOp,
@@ -28,35 +25,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmSwapMultiTx>) {
-  return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={
-          ({
-            assets: fAssets,
-            accounts: fAccounts,
-            addressBook: [],
-            contracts: [],
-            userActions: [],
-            settings: fSettings
-          } as unknown) as IDataContext
-        }
-      >
-        <RatesContext.Provider value={({ rates: {}, trackAsset: jest.fn() } as unknown) as any}>
-          <StoreContext.Provider
-            value={
-              ({
-                assets: () => fAssets,
-                accounts: fAccounts
-              } as any) as any
-            }
-          >
-            <ConfirmSwapMultiTx {...props} />
-          </StoreContext.Provider>
-        </RatesContext.Provider>
-      </DataContext.Provider>
-    </Router>
-  );
+  return simpleRender(<ConfirmSwapMultiTx {...props} />);
 }
 
 describe('ConfirmSwapMultiTx', () => {

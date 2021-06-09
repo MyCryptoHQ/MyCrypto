@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NewTabLink } from '@components';
+import { LinkApp } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK } from '@config';
 import translate, { translateRaw } from '@translations';
 import { IS_DEV } from '@utils';
@@ -34,12 +34,13 @@ class InsecureWalletWarning extends React.Component<Props> {
         </p>
 
         <div className="WalletWarning-buttons">
-          <NewTabLink
+          <LinkApp
             href={DOWNLOAD_MYCRYPTO_LINK}
+            isExternal={true}
             className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
           >
             {translate('WALLET_SUGGESTION_DESKTOP_APP')}
-          </NewTabLink>
+          </LinkApp>
           <button className="WalletWarning-buttons-btn is-cancel" onClick={onCancel}>
             <i className="fa fa-arrow-left" />
             {translate('INSECURE_WALLET_GO_BACK')}

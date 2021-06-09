@@ -2,16 +2,15 @@ import {
   LedgerNanoSDecrypt,
   TrezorDecrypt,
   WalletConnectDecrypt,
-  Web3ProviderDecrypt,
-  Web3ProviderInstall
+  Web3ProviderDecrypt
 } from '@components';
+import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
-import { hasWeb3Provider } from '@utils';
 
 export const getStories = (): IStory[] => [
   {
-    name: WalletId.METAMASK,
-    steps: hasWeb3Provider() ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
+    name: WalletId.WEB3,
+    steps: [Web3ProviderDecrypt]
   },
   {
     name: WalletId.LEDGER_NANO_S_NEW,
@@ -23,6 +22,6 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.WALLETCONNECT,
-    steps: [WalletConnectDecrypt]
+    steps: [withWalletConnect(WalletConnectDecrypt, false)]
   }
 ];

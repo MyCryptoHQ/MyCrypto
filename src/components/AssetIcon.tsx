@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import styled from 'styled-components';
-
-import genericIcon from '@assets/generic.svg';
 import { MYC_API } from '@config';
-import { StoreContext } from '@services';
-import { CoinGeckoManifest } from '@services/Store/StoreProvider';
+import { getCoinGeckoAssetManifest, useSelector } from '@store';
 import { TUuid } from '@types';
+
+import Box from './Box';
+import { getSVGIcon } from './Icon';
 
 const baseURL = `${MYC_API}/images`;
 
@@ -14,17 +13,10 @@ function buildUrl(uuid: TUuid) {
   return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(uuid: TUuid, assetIconsManifest: CoinGeckoManifest) {
-  const assetIconsManifestEntry = assetIconsManifest && assetIconsManifest[uuid];
-
-  const curr = assetIconsManifestEntry || false;
-  return curr ? buildUrl(uuid) : genericIcon;
+function getIconUrl(uuid: TUuid, assetIconsManifest: Record<string, string>) {
+  const assetIconExists = assetIconsManifest && !!assetIconsManifest[uuid];
+  return assetIconExists ? buildUrl(uuid) : getSVGIcon('generic-asset-icon');
 }
-
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
 
 interface Props {
   uuid: TUuid;
@@ -32,17 +24,22 @@ interface Props {
   className?: string;
 }
 
-function AssetIcon({ uuid, size = '32px', className }: Props) {
-  const { coinGeckoAssetManifest } = useContext(StoreContext);
+const AssetIcon = ({ uuid, size, ...props }: Props & React.ComponentProps<typeof Box>) => {
+  const coinGeckoAssetManifest = useSelector(getCoinGeckoAssetManifest);
   const iconUrl = getIconUrl(uuid, coinGeckoAssetManifest);
 
+  // Replace src in the eventuality the server fails to reply with the requested icon.
   const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const elem = event.currentTarget;
     elem.onerror = null;
-    elem.src = genericIcon;
+    elem.src = getSVGIcon('generic-asset-icon');
   };
 
-  return <SImg src={iconUrl} size={size} className={className} onError={handleError} />;
-}
+  return (
+    <Box display="inline-flex" height={size} width={size} {...props}>
+      <img src={iconUrl} onError={handleError} />
+    </Box>
+  );
+};
 
 export default AssetIcon;

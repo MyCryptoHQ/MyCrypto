@@ -6,10 +6,8 @@ import EditableText, { Props } from '../EditableText';
 
 const defaultProps: Props = {
   value: 'Editable',
-  className: '',
-  bold: false,
   truncate: false,
-  saveValue: jest.fn()
+  onChange: jest.fn()
 };
 
 function getComponent(props: Props) {
@@ -35,7 +33,7 @@ describe('EditableText', () => {
     expect(input).toBeDefined();
     fireEvent.change(input, { target: { value: 'test' } });
     fireEvent.keyDown(input, { key: 'Enter' });
-    expect(defaultProps.saveValue).toHaveBeenCalledWith('test');
+    expect(defaultProps.onChange).toHaveBeenCalledWith('test');
     expect(getByText('Editable')).toBeDefined();
   });
 

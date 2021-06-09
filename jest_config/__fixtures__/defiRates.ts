@@ -1,4 +1,15 @@
-import { ReserveMapping } from '@services/Rates/RatesProvider';
+interface ReserveMappingRate {
+  assetId: string;
+  rate: string; // Is a BigNumberJS float string
+}
+
+interface ReserveMappingObject {
+  type: string;
+  lastUpdated: number;
+  reserveRates: ReserveMappingRate[];
+}
+
+export type ReserveMapping = Record<string, ReserveMappingObject>;
 
 export const fDefiReserveRates: ReserveMapping = {
   ['0039e50a-bab5-52fc-a48f-43f36410a87a']: {

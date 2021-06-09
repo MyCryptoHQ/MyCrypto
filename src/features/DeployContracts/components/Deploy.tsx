@@ -3,11 +3,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
   AccountSelector,
   Button,
+  DemoGatewayBanner,
   GasSelector,
   InlineMessage,
   InputField,
@@ -15,12 +17,20 @@ import {
   Typography
 } from '@components';
 import { StoreContext } from '@services';
-import { COLORS } from '@theme';
+import { AppState, getIsDemoMode } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, NetworkId, StoreAccount } from '@types';
-import { baseToConvertedUnit, hexToString, hexWeiToString, inputGasPriceToHex } from '@utils';
+import {
+  baseToConvertedUnit,
+  getAccountsByNetwork,
+  getAccountsByViewOnly,
+  hexToString,
+  hexWeiToString,
+  inputGasPriceToHex
+} from '@utils';
+import { pipe } from '@vendor';
 
-import { constructGasCallProps, getAccountsInNetwork } from '../helpers';
+import { constructGasCallProps } from '../helpers';
 
 const NetworkSelectorWrapper = styled.div`
   margin-bottom: 12px;
@@ -62,7 +72,7 @@ const CustomLabel = styled(Typography)`
 const formatGasPrice = (gasPrice: string) =>
   gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
 
-interface Props {
+interface DeployProps {
   networkId: NetworkId;
   byteCode: string;
   account: StoreAccount;
@@ -74,7 +84,7 @@ interface Props {
   handleByteCodeChanged(byteCode: string): void;
 }
 
-export default function Deploy(props: Props) {
+export const Deploy = (props: Props) => {
   const {
     networkId,
     byteCode,
@@ -84,14 +94,18 @@ export default function Deploy(props: Props) {
     handleDeploySubmit,
     handleAccountSelected,
     handleGasSelectorChange,
-    handleByteCodeChanged
+    handleByteCodeChanged,
+    isDemoMode
   } = props;
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
   const { accounts } = useContext(StoreContext);
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
-  const filteredAccounts = getAccountsInNetwork(accounts, networkId);
+  const filteredAccounts = pipe(
+    (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
+    (a) => getAccountsByViewOnly(a, false)
+  )(accounts);
 
   useEffect(() => {
     if (!account) return;
@@ -111,7 +125,7 @@ export default function Deploy(props: Props) {
     try {
       await handleDeploySubmit();
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     }
   };
 
@@ -124,15 +138,16 @@ export default function Deploy(props: Props) {
   };
 
   const handleGasLimitChange = (val: string) => {
-    handleGasSelectorChange({ gasLimit: Number(val) });
+    handleGasSelectorChange({ gasLimit: val });
   };
 
   const handleNonceChange = (val: string) => {
-    handleGasSelectorChange({ nonce: Number(val) });
+    handleGasSelectorChange({ nonce: val });
   };
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner />}
       <NetworkSelectorWrapper>
         <NetworkSelector
           network={networkId}
@@ -186,10 +201,19 @@ export default function Deploy(props: Props) {
       )}
 
       <ButtonWrapper>
-        <Button color={COLORS.WHITE} onClick={deploySubmit}>
+        <Button disabled={isDemoMode} onClick={deploySubmit} fullwidth={true}>
           {translateRaw('NAV_DEPLOYCONTRACT')}
         </Button>
       </ButtonWrapper>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & DeployProps;
+
+export default connector(Deploy);

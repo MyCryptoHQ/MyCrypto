@@ -19,7 +19,9 @@ export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
 export const SUBSCRIBE_NEWSLETTER_LINK = 'http://eepurl.com/ggh4r5';
 
-export const MYCRYPTO_FAUCET_LINK = 'https://app.mycrypto.com/faucet';
+export const MYCRYPTO_PROD_LINK = 'https://app.mycrypto.com';
+
+export const MYCRYPTO_FAUCET_LINK = `${MYCRYPTO_PROD_LINK}/faucet`;
 
 export const socialMediaLinks: Link[] = [
   {

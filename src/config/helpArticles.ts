@@ -18,12 +18,21 @@ export enum KB_HELP_ARTICLE {
   SECURING_YOUR_ETH = 'staying-safe/protecting-yourself-and-your-funds',
   WHAT_IS_NONCE = 'general-knowledge/ethereum-blockchain/what-is-nonce',
   WHAT_IS_GAS = 'general-knowledge/ethereum-blockchain/what-is-gas',
-  WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
+  WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto',
   STAYING_SAFE = 'staying-safe',
   BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
   MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
+  MEMBERSHIP_REQUEST_REWARDS = 'general-knowledge/about-mycrypto/membership-information#how-to-receive-your-physical-rewards',
   HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper',
-  WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether'
+  WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether',
+  WHAT_IS_WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
+  HOW_TO_USE_WALLETCONNECT = 'how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto',
+  TREZOR_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/trezor/unable-to-connect-trezor-hardware-wallet-on-mycrypto',
+  LEDGER_TROUBLESHOOTING = 'troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto',
+  WHAT_ARE_PROTECTED_TRANSACTIONS = 'general-knowledge/about-mycrypto/what-are-protected-transactions',
+  HOW_DOES_VIEW_ADDRESS_WORK = 'how-to/accessing-wallet/how-does-view-address-work',
+  WHY_IS_GAS = 'general-knowledge/ethereum-blockchain/why-is-gas',
+  HOW_TO_USE_MYCRYPTO_MORE_PRIVATELY = 'staying-safe/how-to-use-mycrypto-more-privately'
 }
 
 export enum HELP_ARTICLE {

@@ -15,9 +15,11 @@ export default class TxStatusPage extends BasePage {
 
   async fillForm() {
     await t
-      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM)
+      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
+        paste: true
+      })
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
-      .typeText(Selector(`input[name="txhash"]`), FIXTURE_INCOMING_TX_HASH)
+      .typeText(Selector(`input[name="txhash"]`), FIXTURE_INCOMING_TX_HASH, { paste: true })
       .click(Selector('button').withText(getTransValueByKey('FETCH')));
   }
 }

@@ -29,7 +29,7 @@ describe('MembershipSelector', () => {
 
   test('it displays the list of membership plans on click', async () => {
     const props = Object.assign({}, defaultProps);
-    const { getByText, getByLabelText } = getComponent(props);
+    const { getAllByText, getByLabelText } = getComponent(props);
 
     await selectEvent.openMenu(getByLabelText('Membership'));
 
@@ -37,7 +37,7 @@ describe('MembershipSelector', () => {
     Object.values(MEMBERSHIP_CONFIG)
       .filter(({ disabled }) => !disabled)
       .map((p) => p.title)
-      .forEach((t) => expect(getByText(t)).toBeInTheDocument());
+      .forEach((t) => expect(getAllByText(t)).toHaveLength(2));
   });
 
   test('it calls the success handler with the correct value', async () => {
@@ -45,7 +45,7 @@ describe('MembershipSelector', () => {
     const { getByRole, getByLabelText } = getComponent(props);
 
     expect(getByRole('form')).toHaveFormValues({ [defaultProps.name]: '' });
-    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.onemonth.title);
-    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.onemonth);
+    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.xdaionemonth.title);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.xdaionemonth);
   });
 });

@@ -1,4 +1,4 @@
-import { bigNumberify } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import {
   ITxConfig,
@@ -108,18 +108,17 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
 export const fApproveErc20TxConfig = {
   amount: '5',
   asset: {
-    balance: bigNumberify('0x3782dace9d900000'),
+    balance: BigNumber.from('0x3782dace9d900000'),
     contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
     decimal: 18,
     isCustom: false,
-    mtime: 1581530607024,
     name: 'REPv1',
     networkId: 'Ethereum',
     ticker: 'REPv1',
     type: 'erc20',
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
-  baseAsset: { ...fAssets[0], balance: bigNumberify('0x1b9ced41465be000'), mtime: 1581530607024 },
+  baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
   data:
     '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
@@ -132,7 +131,7 @@ export const fApproveErc20TxConfig = {
     data:
       '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
     from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-    gasLimit: '0x0249f0',
+    gasLimit: '0x249f0',
     gasPrice: '0x12a05f200',
     nonce: '0x1',
     to: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
@@ -146,18 +145,18 @@ export const fApproveErc20TxConfig = {
 export const fTokenMigrationTxConfig = {
   amount: '5',
   asset: {
-    balance: bigNumberify('0x3782dace9d900000'),
+    balance: BigNumber.from('0x3782dace9d900000'),
     contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
     decimal: 18,
     isCustom: false,
-    mtime: 1581530607024,
+
     name: 'REPv1',
     networkId: 'Ethereum',
     ticker: 'REPv1',
     type: 'erc20',
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
-  baseAsset: { ...fAssets[0], balance: bigNumberify('0x1b9ced41465be000'), mtime: 1581530607024 },
+  baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
   data: '0x75d9aa1a',
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   gasLimit: '150000',
@@ -168,7 +167,7 @@ export const fTokenMigrationTxConfig = {
     chainId: 1,
     data: '0x75d9aa1a',
     from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-    gasLimit: '0x0249f0',
+    gasLimit: '0x249f0',
     gasPrice: '0x12a05f200',
     nonce: '0x1',
     to: '0x221657776846890989a759BA2973e427DfF5C9bB',

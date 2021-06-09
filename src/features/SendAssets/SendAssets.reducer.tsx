@@ -1,4 +1,4 @@
-import { hexlify } from 'ethers/utils';
+import { hexlify } from '@ethersproject/bytes';
 import { ValuesType } from 'utility-types';
 
 import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@helpers';

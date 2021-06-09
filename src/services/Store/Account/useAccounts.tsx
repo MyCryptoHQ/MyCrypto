@@ -1,38 +1,21 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
-import eqBy from 'ramda/src/eqBy';
-import prop from 'ramda/src/prop';
-import unionWith from 'ramda/src/unionWith';
-
-import { useAnalytics } from '@hooks';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService/Analytics';
 import {
-  createAccount,
-  createAccounts,
+  addAccounts,
+  addTxToAccount as addTxToAccountRedux,
   destroyAccount,
+  getStoreAccounts,
   updateAccount as updateAccountRedux,
   updateAccounts as updateAccountsRedux,
   useDispatch
 } from '@store';
-import {
-  Asset,
-  IAccount,
-  IRawAccount,
-  ITxReceipt,
-  ITxStatus,
-  ITxType,
-  NetworkId,
-  StoreAccount,
-  TUuid
-} from '@types';
+import { Asset, IAccount, ITxReceipt, NetworkId, StoreAccount, TUuid } from '@types';
+import { eqBy, prop, unionWith } from '@vendor';
 
-import { DataContext } from '../DataManager';
-import { useSettings } from '../Settings';
 import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameFunc } from './helpers';
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createAccountWithID(uuid: TUuid, accountData: IRawAccount): void;
   createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
@@ -45,44 +28,20 @@ export interface IAccountContext {
 }
 
 function useAccounts() {
-  const { accounts } = useContext(DataContext);
-  const { addAccountToFavorites, addMultipleAccountsToFavorites } = useSettings();
+  const accounts = useSelector(getStoreAccounts);
 
   const dispatch = useDispatch();
-  const trackTxHistory = useAnalytics({
-    category: ANALYTICS_CATEGORIES.TX_HISTORY,
-    actionName: 'Tx Made'
-  });
-
-  const createAccountWithID = (uuid: TUuid, item: IRawAccount) => {
-    addAccountToFavorites(uuid);
-    dispatch(createAccount({ ...item, uuid }));
-  };
 
   const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
-    addMultipleAccountsToFavorites(newAccounts.map(({ uuid }) => uuid));
-    dispatch(createAccounts(newAccounts));
+    dispatch(addAccounts(newAccounts));
   };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));
 
   const updateAccount = (_: TUuid, account: IAccount) => dispatch(updateAccountRedux(account));
 
-  const addTxToAccount = (accountData: IAccount, newTx: ITxReceipt) => {
-    if ('status' in newTx && [ITxStatus.SUCCESS, ITxStatus.FAILED].includes(newTx.status)) {
-      trackTxHistory({
-        eventParams: {
-          txType: (newTx && newTx.txType) || ITxType.UNKNOWN,
-          txStatus: newTx.status
-        }
-      });
-    }
-    const newAccountData = {
-      ...accountData,
-      transactions: [...accountData.transactions.filter((tx) => tx.hash !== newTx.hash), newTx]
-    };
-    updateAccount(accountData.uuid, newAccountData);
-  };
+  const addTxToAccount = (account: IAccount, tx: ITxReceipt) =>
+    dispatch(addTxToAccountRedux({ account, tx }));
 
   const removeTxFromAccount = (accountData: IAccount, tx: ITxReceipt) => {
     const newAccountData = {
@@ -110,7 +69,6 @@ function useAccounts() {
 
   return {
     accounts,
-    createAccountWithID,
     createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,

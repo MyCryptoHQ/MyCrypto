@@ -10,7 +10,7 @@ import { makePendingTxReceipt } from '@helpers';
 import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
-import { isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { inputGasLimitToHex, inputNonceToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
 import { DeployContractsState } from './types';
@@ -68,9 +68,11 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       chainId: network.chainId,
       nonce
     });
+
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = gasLimit;
+    transaction.gasLimit = inputGasLimitToHex(gasLimit);
+    transaction.nonce = inputNonceToHex(nonce);
     delete transaction.from;
 
     const txConfig = makeDeployContractTxConfig(transaction, account, '0');
@@ -105,7 +107,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
         from: state.txConfig.senderAccount.address,
         amount: state.txConfig.amount,
         txType: ITxType.DEPLOY_CONTRACT,
-        stage: ITxStatus.PENDING
+        status: ITxStatus.PENDING
       };
       addTxToAccount(state.txConfig.senderAccount, txReceipt);
       setState((prevState: DeployContractsState) => ({
@@ -118,8 +120,6 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       const provider = new ProviderHandler(account.network);
       provider
         .sendRawTx(signResponse)
-        .then((retrievedTxReceipt) => retrievedTxReceipt)
-        .catch((hash) => provider.getTransactionByHash(hash))
         .then((retrievedTransactionReceipt) => {
           const pendingTxReceipt = makePendingTxReceipt(
             retrievedTransactionReceipt.hash as ITxHash

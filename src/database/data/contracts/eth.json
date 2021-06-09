@@ -173,5 +173,10 @@
     "name": "DexAG",
     "address": "0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456",
     "abi": "[]"
+  },
+  {
+    "name": "0x: Exchange Proxy",
+    "address": "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+    "abi": "[]"
   }
 ]

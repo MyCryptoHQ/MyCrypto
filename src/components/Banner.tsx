@@ -12,12 +12,13 @@ import { default as Typography } from './Typography';
 interface Props {
   value: string | React.ReactElement<any>;
   type: BannerType;
+  displayIcon?: boolean;
 }
 
 interface Config {
   bgColor: string;
   color: string;
-  icon: string;
+  icon?: string;
 }
 
 interface BannerTypographyProps {
@@ -93,15 +94,20 @@ const bannerConfig = (type: BannerType): Config => {
         bgColor: COLORS.ERROR_RED,
         icon: errorSVG
       };
+    case BannerType.NOTIFICATION:
+      return {
+        color: COLORS.WHITE,
+        bgColor: COLORS.WARNING_ORANGE
+      };
   }
 };
 
-export const Banner = ({ value, type, ...props }: Props) => {
+export const Banner = ({ value, type, displayIcon = true, ...props }: Props) => {
   const config = bannerConfig(type);
   return (
     <Container config={config} {...props}>
       <RowContainer>
-        <Icon src={config.icon} alt={type} />
+        {config.icon && displayIcon && <Icon src={config.icon} alt={type} />}
 
         <STypography color={config.color} fontSize={FONT_SIZE.SM}>
           {value}

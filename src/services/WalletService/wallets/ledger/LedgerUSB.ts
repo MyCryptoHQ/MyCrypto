@@ -15,7 +15,8 @@ export default class LedgerUSB extends Ledger {
   }
 
   private async getTransport(): Promise<TransportWebUSB> {
-    const transport = await TransportWebUSB.request();
+    const existing = await TransportWebUSB.openConnected();
+    const transport = existing ?? (await TransportWebUSB.request());
 
     transport.on('disconnect', () => {
       this.transport = null;

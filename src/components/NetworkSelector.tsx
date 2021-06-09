@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
+import styled from 'styled-components';
 import { Overwrite } from 'utility-types';
 
 import { Body, Box, Selector, Tooltip } from '@components';
 import { DEFAULT_NETWORK } from '@config';
 import { isWalletSupported, useNetworks } from '@services/Store';
+import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import { Network, NetworkId, WalletId } from '@types';
 import { curry, filter, isNil, pipe, when } from '@vendor';
@@ -19,6 +21,9 @@ interface Props {
   onChange(network: NetworkId): void;
   filter?(network: Network): boolean;
 }
+interface StyleProps extends OptionProps<Network> {
+  paddingLeft?: string;
+}
 
 type UIProps = Overwrite<
   Omit<Props, 'filter' | 'accountType' | 'onChange'>,
@@ -30,10 +35,12 @@ type UIProps = Overwrite<
 
 const NetworkOption = ({
   data,
+  paddingLeft,
   selectOption
-}: OptionProps<Network> | { data: Network; selectOption?(): void }) => (
+}: StyleProps | { data: Network; selectOption?(): void; paddingLeft?: string }) => (
   <Box
-    padding={'12px'}
+    padding="12px"
+    pl={paddingLeft || '0px'}
     display="flex"
     flexDirection="row"
     data-testid={`network-selector-option-${data.id}`}
@@ -42,6 +49,11 @@ const NetworkOption = ({
     <Body as="span">{data.name}</Body>
   </Box>
 );
+
+const SLabel = styled.label`
+  color: ${COLORS.GREY_DARKEST};
+  font-weight: normal;
+`;
 
 const NetworkSelectorUI = ({
   network,
@@ -53,10 +65,10 @@ const NetworkSelectorUI = ({
 }: UIProps) => {
   return (
     <div {...props}>
-      <label htmlFor="network">
+      <SLabel htmlFor="network">
         {translate('SELECT_NETWORK_LABEL')}{' '}
         {showTooltip && <Tooltip tooltip={translate('NETWORK_TOOLTIP')} />}
-      </label>
+      </SLabel>
       <Selector
         name={'network'}
         placeholder={'Select Network'}
@@ -65,7 +77,7 @@ const NetworkSelectorUI = ({
         searchable={true}
         onChange={(option) => onSelect(option.id)}
         getOptionLabel={(option) => option.name}
-        optionComponent={NetworkOption}
+        optionComponent={(props) => <NetworkOption paddingLeft={SPACING.SM} {...props} />}
         valueComponent={({ value }) => <NetworkOption data={value} />}
         disabled={disabled}
       />

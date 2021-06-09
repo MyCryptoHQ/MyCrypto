@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { DEFAULT_NETWORK } from '@config';
 import { EthersJS } from '@services/EthService/network/ethersJsProvider';
 import { LSKeys, Network, NetworkId } from '@types';
-import { find, findIndex, propEq } from '@vendor';
+import { findIndex, propEq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -50,13 +50,8 @@ const slice = createSlice({
       const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
 
       const newSelectedNode = (() => {
-        if (
-          network.selectedNode === nodeName &&
-          (network.selectedNode === network.autoNode || network.autoNode === undefined)
-        ) {
+        if (network.selectedNode === nodeName) {
           return newNodes[0]?.name;
-        } else if (network.selectedNode === nodeName) {
-          return network.autoNode;
         }
         return network.selectedNode;
       })();
@@ -93,10 +88,18 @@ export default slice;
  * Selectors
  */
 
-export const getNetworks = createSelector([getAppState], (s) => s[slice.name]);
-export const getDefaultNetwork = createSelector(getNetworks, find(propEq('id', DEFAULT_NETWORK)));
-export const getNetwork = (network: NetworkId) =>
-  createSelector(getNetworks, find(propEq('id', network)));
+const findNetwork = (id: NetworkId) => (networks: Network[]) => networks.find((n) => n.id === id)!;
+
+export const selectNetworks = createSelector([getAppState], (s) => s[slice.name]);
+
+export const getNetwork = (networkId: NetworkId) =>
+  createSelector(selectNetworks, findNetwork(networkId));
+
+// Create alias in anticipation of renaming
+// @todo: Remove original in favor of alias.
+export const selectNetwork = getNetwork;
+export const selectDefaultNetwork = selectNetwork(DEFAULT_NETWORK);
+
 export const canDeleteNode = (networkId: NetworkId) =>
   createSelector([getAppState], (state) => {
     const network = state.networks.find((n) => n.id === networkId)!;

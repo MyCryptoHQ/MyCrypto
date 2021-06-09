@@ -1,6 +1,7 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
-import { IRates, LSKeys, TFiatTicker, TUuid } from '@types';
+import { LSKeys, TFiatTicker, TUuid } from '@types';
 import { equals, findIndex } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
@@ -9,6 +10,7 @@ import { getAppState } from './selectors';
 const sliceName = LSKeys.SETTINGS;
 export const initialState = initialLegacyState[sliceName];
 
+// @todo: Get rates out of settings
 const slice = createSlice({
   name: sliceName,
   initialState,
@@ -35,11 +37,11 @@ const slice = createSlice({
     setFiat(state, action: PayloadAction<TFiatTicker>) {
       state.fiatCurrency = action.payload;
     },
-    setRates(state, action: PayloadAction<IRates>) {
-      state.rates = action.payload;
+    setDemoMode(state, action: PayloadAction<boolean>) {
+      state.isDemoMode = action.payload;
     },
-    setInactivityTimer(state, action: PayloadAction<number>) {
-      state.inactivityTimer = action.payload;
+    setProductAnalyticsAuthorisation(state, action: PayloadAction<boolean>) {
+      state.canTrackProductAnalytics = action.payload;
     }
   }
 });
@@ -52,8 +54,8 @@ export const {
   setFiat,
   addExcludedAsset,
   removeExcludedAsset,
-  setRates,
-  setInactivityTimer
+  setDemoMode,
+  setProductAnalyticsAuthorisation
 } = slice.actions;
 
 export default slice;
@@ -66,9 +68,29 @@ export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccoun
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
-export const getRates = createSelector(getSettings, (s) => s.rates);
-export const getInactivityTimer = createSelector(getSettings, (s) => s.inactivityTimer);
+export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
+export const canTrackProductAnalytics = createSelector(
+  getSettings,
+  (s) => s.canTrackProductAnalytics
+);
+/**
+ * Actions
+ */
+export const addAccountsToFavorites = createAction<TUuid[]>(`${slice.name}/addAccountsToFavorites`);
 
 /**
  * Sagas
  */
+export function* settingsSaga() {
+  yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
+}
+
+export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]>) {
+  const isDemoMode = yield select(getIsDemoMode);
+  if (isDemoMode) {
+    yield put(slice.actions.setDemoMode(false));
+    yield put(slice.actions.resetFavoritesTo(payload));
+  } else {
+    yield put(slice.actions.addFavorites(payload));
+  }
+}

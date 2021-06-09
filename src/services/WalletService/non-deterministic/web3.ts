@@ -1,7 +1,4 @@
-import { bufferToHex } from 'ethereumjs-util';
-
-import { Web3Node } from '@services/EthService';
-import { INode } from '@types';
+import { getChainIdAndLib, requestAccounts } from '@services/EthService/web3';
 
 import { IFullWallet } from '../IWallet';
 
@@ -23,17 +20,9 @@ export default class Web3Wallet implements IFullWallet {
     return Promise.reject(new Error('Web3 wallets cannot sign raw transactions.'));
   }
 
-  public async signMessage(msg: string, nodeLib: Web3Node | INode): Promise<string> {
-    const msgHex = bufferToHex(Buffer.from(msg));
+  public async signMessage(msg: string): Promise<string> {
+    const { lib: web3 } = await getChainIdAndLib();
 
-    if (!nodeLib) {
-      throw new Error('');
-    }
-    /*
-    if (!isWeb3Node(nodeLib)) {
-      throw new Error('Web3 wallets can only be used with a Web3 node.');
-    }*/
-
-    return (nodeLib as Web3Node).signMessage(msgHex, this.address);
+    return requestAccounts(web3).then(() => web3.getSigner(this.address).signMessage(msg));
   }
 }

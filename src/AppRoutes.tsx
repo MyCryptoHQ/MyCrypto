@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import { AppLoading } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { Dashboard, DrawerProvider, PageNotFound, ScreenLockProvider } from '@features';
+import { Dashboard, PageNotFound } from '@features';
 import { Layout, LayoutConfig } from '@features/Layout';
 import {
   DefaultHomeHandler,
@@ -14,7 +14,7 @@ import {
   PrivateRoute
 } from '@routing';
 import { useFeatureFlags } from '@services';
-import { COLORS, SPACING } from '@theme';
+import { SPACING } from '@theme';
 import { ScrollToTop, useScreenSize } from '@utils';
 
 const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
@@ -23,8 +23,7 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
       return {
         centered: false,
         fluid: true,
-        fullW: true,
-        bgColor: COLORS.WHITE
+        fullW: true
       };
     case ROUTE_PATHS.DASHBOARD.path:
       return {
@@ -36,7 +35,6 @@ const layoutConfig = (path: string, isMobile: boolean): LayoutConfig => {
         centered: true,
         fluid: true,
         fullW: true,
-        bgColor: COLORS.WHITE,
         paddingV: isMobile ? '0px' : SPACING.MD
       };
     default:
@@ -58,37 +56,32 @@ export const AppRoutes = () => {
   return (
     <>
       <ScrollToTop />
-      <ScreenLockProvider>
-        <DrawerProvider>
-          <PageVisitsAnalytics>
-            <DefaultHomeHandler>
-              <Suspense
-                fallback={
-                  <Layout>
-                    <AppLoading />
-                  </Layout>
-                }
-              >
-                <Switch>
-                  {/* To avoid fiddling with layout we provide a complete route to home */}
-                  <LayoutWithLocation>
-                    <Switch>
-                      <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
-                      {getAppRoutes(featureFlags)
-                        .filter((route) => !route.seperateLayout)
-                        .map((config, idx) => (
-                          <PrivateRoute key={idx} {...config} />
-                        ))}
-                      <Route component={PageNotFound} />
-                    </Switch>
-                  </LayoutWithLocation>
-                </Switch>
-              </Suspense>
-            </DefaultHomeHandler>
-          </PageVisitsAnalytics>
-          <LegacyRoutesHandler />
-        </DrawerProvider>
-      </ScreenLockProvider>
+      <PageVisitsAnalytics />
+      <DefaultHomeHandler>
+        <Suspense
+          fallback={
+            <Layout>
+              <AppLoading />
+            </Layout>
+          }
+        >
+          <Switch>
+            {/* To avoid fiddling with layout we provide a complete route to home */}
+            <LayoutWithLocation>
+              <Switch>
+                <Route path={ROUTE_PATHS.ROOT.path} component={Dashboard} exact={true} />
+                {getAppRoutes(featureFlags)
+                  .filter((route) => !route.seperateLayout)
+                  .map((config, idx) => (
+                    <PrivateRoute key={idx} {...config} />
+                  ))}
+                <Route component={PageNotFound} />
+              </Switch>
+            </LayoutWithLocation>
+          </Switch>
+        </Suspense>
+      </DefaultHomeHandler>
+      <LegacyRoutesHandler />
     </>
   );
 };

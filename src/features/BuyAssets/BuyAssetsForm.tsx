@@ -6,7 +6,13 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { object } from 'yup';
 
-import { AccountSelector, AssetSelector, ContentPanel, InlineMessage } from '@components';
+import {
+  AccountSelector,
+  AssetSelector,
+  BusyBottom,
+  ContentPanel,
+  InlineMessage
+} from '@components';
 import {
   BUY_MYCRYPTO_WEBSITE,
   ETHUUID,
@@ -18,9 +24,10 @@ import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { getAssetByUUID, useAssets } from '@services/Store/Asset';
 import { StoreContext } from '@services/Store/StoreProvider';
+import { getDefaultAccount, useSelector } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, IAccount, StoreAccount, TURL } from '@types';
+import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
 import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`
@@ -73,12 +80,13 @@ enum SubmissionType {
 
 export const BuyAssetsForm = () => {
   const history = useHistory();
-  const { accounts, defaultAccount } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { assets } = useAssets();
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
+  const defaultAccount = useSelector(getDefaultAccount(true));
 
   const initialFormikValues: IBuyFormState = {
-    account: defaultAccount,
+    account: defaultAccount!,
     asset: ethAsset
   };
 
@@ -192,6 +200,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
+      <BusyBottom type={BusyBottomConfig.SUPPORT} />
     </ContentPanel>
   );
 };

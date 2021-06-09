@@ -1,20 +1,25 @@
-import BN from 'bn.js';
-
 import { DEFAULT_NETWORK_CHAINID } from '@config';
-import { ERC20 } from '@services';
-import { ITxData, ITxFromAddress, ITxGasPrice, ITxObject, ITxToAddress, TAddress } from '@types';
+import { ERC20 } from '@services/EthService';
+import {
+  Bigish,
+  ITxData,
+  ITxFromAddress,
+  ITxGasPrice,
+  ITxObject,
+  ITxToAddress,
+  TAddress
+} from '@types';
 import { inputValueToHex } from '@utils';
 
 interface IFormatApproveTxInputs {
   contractAddress: ITxToAddress;
-  baseTokenAmount: BN;
-  fromAddress: ITxFromAddress;
+  baseTokenAmount: Bigish;
+  fromAddress?: ITxFromAddress;
   spenderAddress: TAddress;
-  chainId: number;
+  chainId?: number;
   hexGasPrice: ITxGasPrice;
 }
 
-// @todo: merge with `formatApproveTx` in ApiService/Dex ?
 export const formatApproveTx = ({
   contractAddress,
   baseTokenAmount,

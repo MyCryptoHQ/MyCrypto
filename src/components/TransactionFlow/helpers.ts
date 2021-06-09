@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import isEmpty from 'ramda/src/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import pick from 'ramda/src/pick';
@@ -9,6 +10,7 @@ import { CONTRACT_INTERACTION_TYPES } from '@config';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {
+  Bigish,
   IFlowConfig,
   ISimpleTxFormFull,
   ITxConfig,
@@ -18,7 +20,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigNumGasPriceToViewableGwei } from '@utils';
+import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
 
 import { ISender } from './types';
 
@@ -135,8 +137,11 @@ export const constructSenderFromTxConfig = (
 };
 
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
-export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: number) =>
-  Math.max(fastGasPrice, parseFloat(bigNumGasPriceToViewableGwei(txConfig.gasPrice)) * 1.101);
+export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: Bigish) =>
+  BigNumber.max(
+    fastGasPrice,
+    bigify(bigNumGasPriceToViewableGwei(txConfig.gasPrice)).multipliedBy(1.101)
+  );
 
 export const isContractInteraction = (data: string, type?: ITxType) => {
   if (type) {

@@ -4,7 +4,7 @@ import HDKey from 'hdkey';
 import { TAddress } from '@types';
 import { TokenValue } from '@utils';
 
-export class DeterministicWallet {
+export class HDWallet {
   protected address: string;
   protected dPath: string;
   protected index: number;
@@ -23,7 +23,7 @@ export class DeterministicWallet {
     return `${this.dPath}/${this.index}`;
   }
 }
-export interface GetDeterministicWalletsArgs {
+export interface GetHDWalletsArgs {
   seed?: string;
   dPath: string;
   publicKey?: string;
@@ -32,7 +32,7 @@ export interface GetDeterministicWalletsArgs {
   offset: number;
 }
 
-export interface DeterministicWalletData {
+export interface HDWalletData {
   index: number;
   address: string;
   value?: TokenValue;
@@ -47,9 +47,7 @@ export interface ITokenValues {
   [key: string]: ITokenData | null;
 }
 
-export const getDeterministicWallets = (
-  args: GetDeterministicWalletsArgs
-): DeterministicWalletData[] => {
+export const getHDWallets = (args: GetHDWalletsArgs): HDWalletData[] => {
   const { seed, dPath, publicKey, chainCode, limit, offset } = args;
   let pathBase;
   let hdk;
@@ -57,17 +55,17 @@ export const getDeterministicWallets = (
   // if seed present, treat as mnemonic
   // if pubKey & chainCode present, treat as HW wallet
   if (seed) {
-    hdk = HDKey.fromMasterSeed(new Buffer(seed, 'hex'));
+    hdk = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'));
     pathBase = dPath;
   } else if (publicKey && chainCode) {
     hdk = new HDKey();
-    hdk.publicKey = new Buffer(publicKey, 'hex');
-    hdk.chainCode = new Buffer(chainCode, 'hex');
+    hdk.publicKey = Buffer.from(publicKey, 'hex');
+    hdk.chainCode = Buffer.from(chainCode, 'hex');
     pathBase = 'm';
   } else {
     return [];
   }
-  const wallets: DeterministicWalletData[] = [];
+  const wallets: HDWalletData[] = [];
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);

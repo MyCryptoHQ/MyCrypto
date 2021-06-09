@@ -1,10 +1,9 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, screen, simpleRender } from 'test-utils';
+import { fireEvent, mockAppState, screen, simpleRender } from 'test-utils';
 
 import { fNetworks } from '@fixtures';
-import { DataContext, IDataContext } from '@services/Store';
 
 import NetworkSelector from './NetworkSelector';
 
@@ -15,11 +14,10 @@ const defaultProps: Props = {
 
 function getComponent(props = defaultProps) {
   return simpleRender(
-    <DataContext.Provider value={({ networks: fNetworks } as unknown) as IDataContext}>
-      <form role="form">
-        <NetworkSelector {...props} />
-      </form>
-    </DataContext.Provider>
+    <form role="form">
+      <NetworkSelector {...props} />
+    </form>,
+    { initialState: mockAppState({ networks: fNetworks }) }
   );
 }
 

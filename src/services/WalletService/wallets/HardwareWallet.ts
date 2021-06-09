@@ -1,6 +1,7 @@
-import { computeAddress } from 'ethers/utils';
+import { computeAddress } from '@ethersproject/transactions';
 import HDKey from 'hdkey';
 
+import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { DPath, WalletId } from '@types';
 
 import { getFullPath } from './helpers';
@@ -34,9 +35,17 @@ export default abstract class HWWallet implements Wallet {
     };
   }
 
-  public abstract initialize(): Promise<void>;
+  public abstract initialize(dpath?: DPath): Promise<void>;
 
   public abstract getDPaths(): DPath[];
+
+  /**
+   * Optional function that can be used to getMultipleAddresses from a device.
+   *
+   * @param {ExtendedDPath[]} paths The derivation paths to getMultipleAddresses.
+   * @return {Promise<any>} Can return an array of deterministic wallet's account display objects.
+   */
+  public abstract getMultipleAddresses(paths: ExtendedDPath[]): Promise<DWAccountDisplay[]>;
 
   /**
    * Get the wallet type for the implementation.

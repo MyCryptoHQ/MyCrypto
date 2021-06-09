@@ -3,25 +3,15 @@ import React, { useContext } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Checkbox, Link } from '@components';
-import { IFeatureFlags } from '@config';
+import { Checkbox, LinkApp } from '@components';
 import { useDevTools, useFeatureFlags } from '@services';
-import { DataContext } from '@services/Store';
-import { useDispatch, useSelector } from '@store';
+import { FeatureFlag } from '@services/FeatureFlag';
+import { appReset, useDispatch } from '@store';
 import { BREAK_POINTS } from '@theme';
 import { IS_PROD } from '@utils';
 
 import { ErrorContext } from '../ErrorHandling';
-import { getCount, getGreeting, increment, reset } from './slice';
 import ToolsNotifications from './ToolsNotifications';
-
-const SLink = styled(Link)`
-  font-weight: 600;
-`;
-
-const SCheckbox = styled(Checkbox)`
-  margin-bottom: 0;
-`;
 
 const SToggle = styled.button`
   position: fixed;
@@ -61,11 +51,20 @@ const Wrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const DBTools = () => {
-  const { resetAppDb } = useContext(DataContext);
+  const dispatch = useDispatch();
   return (
     <div style={{ marginBottom: '1em' }}>
       You can choose to
-      <SLink onClick={() => resetAppDb()}> Reset</SLink> the database to it's default values.
+      <LinkApp
+        href="#"
+        onClick={() => {
+          dispatch(appReset());
+        }}
+      >
+        {' '}
+        Reset
+      </LinkApp>{' '}
+      the database to it's default values.
     </div>
   );
 };
@@ -84,13 +83,21 @@ const ErrorTools = () => {
   );
 };
 
+const SCheckbox = styled(Checkbox)`
+  margin-bottom: 0;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.GREY_LIGHT};
+  }
+`;
+
 const FeatureFlags = () => {
   const { featureFlags, setFeatureFlag } = useFeatureFlags();
+
   return (
     <div style={{ marginBottom: '1em' }}>
       {Object.entries(featureFlags)
         .filter(([, v]) => v !== 'core')
-        .map(([k, v]: [keyof IFeatureFlags, boolean]) => (
+        .map(([k, v]: [FeatureFlag, boolean]) => (
           <SCheckbox
             key={k}
             name={k}
@@ -99,24 +106,6 @@ const FeatureFlags = () => {
             onChange={() => setFeatureFlag(k, !v)}
           />
         ))}
-    </div>
-  );
-};
-
-const DemoRedux = () => {
-  const greeting = useSelector(getGreeting);
-  const count = useSelector(getCount);
-  const dispatch = useDispatch();
-  const handleIncrement = () => dispatch(increment());
-  const handleReset = () => dispatch(reset());
-
-  return (
-    <div style={{ marginBottom: '1em' }}>
-      <div>
-        {greeting} {count}
-      </div>
-      <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleReset}>Reset</button>
     </div>
   );
 };
@@ -147,9 +136,6 @@ const DevToolsManager = () => {
           {/* DB tools*/}
           <p style={{ fontWeight: 600 }}>DB Tools</p>
           <DBTools />
-          {/* Redux Demo */}
-          <p style={{ fontWeight: 600 }}>Redux Demo</p>
-          <DemoRedux />
         </Panel>
       )}
     </Wrapper>

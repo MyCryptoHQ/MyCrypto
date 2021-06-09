@@ -1,7 +1,25 @@
 import { fAccounts } from '@fixtures';
 import { TAddress, WalletId } from '@types';
 
-import { isHardwareWallet, isSenderAccountPresent, isViewOnlyWallet } from './wallets';
+import {
+  getAccountsByNetwork,
+  getAccountsByViewOnly,
+  isHardwareWallet,
+  isSenderAccountPresent,
+  isViewOnlyWallet
+} from './wallets';
+
+describe('getAccountsByNetwork', () => {
+  it('filters correctly by default', () => {
+    expect(getAccountsByNetwork(fAccounts, 'Ropsten')).toHaveLength(4);
+  });
+});
+
+describe('getAccountsByViewOnly', () => {
+  it('filters view only when expected', () => {
+    expect(getAccountsByViewOnly(fAccounts, false)).toHaveLength(5);
+  });
+});
 
 describe('isViewOnlyWallet', () => {
   it('correctly identifies a viewOnly wallet', () => {

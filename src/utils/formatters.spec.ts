@@ -4,7 +4,6 @@ import {
   buildEIP681EtherRequest,
   buildEIP681TokenRequest,
   formatMnemonic,
-  hexToNumber,
   toChecksumAddressByChainId
 } from './formatters';
 
@@ -77,12 +76,6 @@ describe('formatMnemonic', () => {
         'first catalog   away faculty  jelly    now life kingdom pigeon raise gain accident      '
       )
     ).toEqual(formattedPhrase);
-  });
-});
-
-describe('hexToNumber', () => {
-  it("should correctly format a hex value to it's decimal equivalent", () => {
-    expect(hexToNumber('0x21000')).toEqual(21000);
   });
 });
 

@@ -20,6 +20,7 @@ const SContainer = styled('div')`
   height: 31px;
   margin-bottom: 15px;
   font-size: 1em;
+  cursor: pointer;
 `;
 
 // Styling Checkbox Starts

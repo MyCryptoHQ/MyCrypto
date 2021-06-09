@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router';
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { DataContext, IDataContext, RatesContext, StoreContext } from '@services';
+import { fAccount, fAssets, fNetwork } from '@fixtures';
+import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import TxStatus from './TxStatus';
@@ -14,39 +13,33 @@ const TX_HASH = '0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ed
 const NON_EXISTANT_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc4df7';
 const INVALID_TX_HASH = '0xb324e6630491f89aff0e8e30228741cbccc7ddfdb94c91eedc02141b1acc';
 
-jest.mock('ethers/providers', () => {
+jest.mock('@vendor', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('./__mocks__/txstatus');
-  return mockFactory('0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a');
+  return {
+    ...jest.requireActual('@vendor'),
+    ...mockFactory('0x6a705a2943f19079dd712fa0b2ae1f7b036454ca6df881afc9e17573ee6ede8a')
+  };
 });
 
 /* Test components */
 describe('TxStatus', () => {
-  const component = (path?: string) => (
-    <MemoryRouter initialEntries={path ? [path] : undefined}>
-      <DataContext.Provider
+  const renderComponent = (pathToLoad?: string) => {
+    return simpleRender(
+      <StoreContext.Provider
         value={
-          ({
-            assets: fAssets,
-            networks: fNetworks,
-            addressBook: [],
-            contracts: [],
-            settings: fSettings,
+          {
+            accounts: [fAccount],
             userActions: []
-          } as unknown) as IDataContext
+          } as any
         }
       >
-        <StoreContext.Provider value={{ accounts: [fAccount], userActions: [] } as any}>
-          <RatesContext.Provider value={{ rates: fSettings.rates, trackAsset: jest.fn() } as any}>
-            <TxStatus />
-          </RatesContext.Provider>
-        </StoreContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
-
-  const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(component(pathToLoad));
+        <TxStatus />
+      </StoreContext.Provider>,
+      {
+        initialRoute: pathToLoad
+      }
+    );
   };
 
   test('Can render', () => {

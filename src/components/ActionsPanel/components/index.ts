@@ -7,4 +7,3 @@ export { MigrationTable } from './MigrationTable';
 export { UniClaimTable } from './UniClaimTable';
 export { GeneralSubHead } from './GeneralSubHead';
 export { ActionButton, ActionButtonProps } from './ActionButton';
-export { TweetButton, TweetButtonProps } from './TweetButton';

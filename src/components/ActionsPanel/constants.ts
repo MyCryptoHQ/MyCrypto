@@ -8,7 +8,6 @@ import {
   FAUCET_NETWORKS,
   GOLEMV1UUID,
   LENDUUID,
-  MYC_WINTER_LINK,
   REPV1UUID,
   ROUTE_PATHS,
   socialMediaLinks,
@@ -23,10 +22,8 @@ import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@u
 import {
   ActionButton,
   ActionButtonProps,
-  GeneralSubHead,
   MigrationSubHead,
   MigrationTable,
-  TweetButton,
   UniClaimSubHead,
   UniClaimTable
 } from './components';
@@ -348,99 +345,6 @@ export const actionTemplates: ActionTemplate[] = [
       }
     },
     category: ACTION_CATEGORIES.OTHER
-  },
-  {
-    name: ACTION_NAME.MYC_WINTER_START,
-    icon: 'myc-winter',
-    heading: translateRaw('MYC_WINTER_START_ACTION_HEADING'),
-    body: [
-      translate('MYC_WINTER_START_ACTION_BODY_1'),
-      translate('MYC_WINTER_START_ACTION_BODY_2')
-    ],
-    priority: 0,
-    time: {
-      start: new Date('2020-12-01'),
-      end: new Date('2020-12-12')
-    },
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('MYC_WINTER_START_ACTION_BUTTON'),
-        shouldComplete: true,
-        to: MYC_WINTER_LINK,
-        external: true
-      }
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
-  },
-  {
-    name: ACTION_NAME.MYC_WINTER_MID,
-    icon: 'myc-winter',
-    heading: translateRaw('MYC_WINTER_MID_ACTION_HEADING'),
-    subHeading: GeneralSubHead,
-    props: {
-      content: translateRaw('MYC_WINTER_MID_ACTION_SUBHEAD')
-    },
-    body: [translate('MYC_WINTER_MID_ACTION_BODY_1'), translate('MYC_WINTER_MID_ACTION_BODY_2')],
-    priority: 0,
-    time: {
-      start: new Date('2020-12-12'),
-      end: new Date('2020-12-20')
-    },
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('MYC_WINTER_MID_ACTION_BUTTON'),
-        shouldComplete: true,
-        to: MYC_WINTER_LINK,
-        external: true
-      }
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
-  },
-  {
-    name: ACTION_NAME.MYC_WINTER_END,
-    icon: 'myc-winter',
-    heading: translateRaw('MYC_WINTER_END_ACTION_HEADING'),
-    body: [translate('MYC_WINTER_END_ACTION_BODY_1'), translate('MYC_WINTER_END_ACTION_BODY_2')],
-    priority: 0,
-    time: {
-      start: new Date('2020-12-20'),
-      end: new Date('2021-01-01')
-    },
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('MYC_WINTER_END_ACTION_BUTTON'),
-        shouldComplete: true,
-        to: MYC_WINTER_LINK,
-        external: true
-      }
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
-  },
-  {
-    name: ACTION_NAME.MYC_WINTER_BONUS,
-    icon: 'myc-winter-membership',
-    heading: translateRaw('MYC_WINTER_BONUS_ACTION_HEADING'),
-    subHeading: GeneralSubHead,
-    props: {
-      content: translateRaw('MYC_WINTER_BONUS_ACTION_SUBHEAD')
-    },
-    body: [
-      translate('MYC_WINTER_BONUS_ACTION_BODY_1'),
-      translate('MYC_WINTER_BONUS_ACTION_BODY_2')
-    ],
-    priority: 0,
-    filter: ({ isMyCryptoMember }: ActionFilters) => isMyCryptoMember,
-    time: {
-      start: new Date('2020-12-01'),
-      end: new Date('2021-01-01')
-    },
-    button: {
-      component: TweetButton
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
   },
   {
     name: ACTION_NAME.TESTNET_FAUCET,

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import { Selector } from '@components';
-import { Contract } from '@types';
+import { SPACING } from '@theme';
 
 import FieldLabel from './FieldLabel';
 
@@ -29,39 +28,39 @@ interface Props {
 
 const ContractDropdownItem = ({
   option,
+  paddingLeft,
   onSelect
 }: {
-  option: Contract;
-  onSelect?(option: Contract): void;
+  option: { name: string };
+  paddingLeft?: string;
+  onSelect?(option: { name: string }): void;
 }) => (
-  <div style={{ padding: '12px 15px' }} onClick={() => onSelect && onSelect(option)}>
+  <div
+    style={{ padding: `12px 15px 12px ${paddingLeft || '0px'}` }}
+    onClick={() => onSelect && onSelect(option)}
+  >
     {option.name}
   </div>
 );
 
-const ContractDropdownOption = ({ data, selectOption }: OptionProps<Contract>) => (
-  <ContractDropdownItem option={data} onSelect={selectOption} />
-);
-
-const ContractDropdownValue = ({ value }: { value: Contract }) => (
-  <ContractDropdownItem option={value} />
-);
-
 export default function BooleanSelector(props: Props) {
   const { fieldName, fieldType, fieldDisplayName, value, handleInputChange } = props;
+  const options = [
+    { label: 'true', name: 'true', value: true },
+    { label: 'false', name: 'false', value: false }
+  ];
   return (
     <Wrapper>
       <FieldLabel fieldName={fieldDisplayName} fieldType={fieldType} />
       <DropdownWrapper>
         <Selector
-          value={value}
-          options={[
-            { label: 'true', name: 'true', value: true },
-            { label: 'false', name: 'false', value: false }
-          ]}
+          value={options.find((o) => o.value === value)}
+          options={options}
           onChange={(option) => handleInputChange(fieldName, option.value)}
-          optionComponent={ContractDropdownOption}
-          valueComponent={ContractDropdownValue}
+          optionComponent={({ data, selectOption }) => (
+            <ContractDropdownItem option={data} onSelect={selectOption} paddingLeft={SPACING.SM} />
+          )}
+          valueComponent={({ value }) => <ContractDropdownItem option={value} />}
           searchable={true}
         />
       </DropdownWrapper>

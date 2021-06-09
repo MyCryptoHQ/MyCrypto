@@ -21,6 +21,8 @@ export function getWeb3Config(): IWalletConfig {
 
   if (provider.isToshi) return WALLETS_CONFIG.COINBASE;
 
+  if (provider.isStatus) return WALLETS_CONFIG.STATUS;
+
   return WALLETS_CONFIG.WEB3;
 }
 

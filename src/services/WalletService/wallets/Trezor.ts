@@ -1,15 +1,17 @@
 import TrezorConnect from 'trezor-connect';
 
-import { DPathsList, TREZOR_DERIVATION_PATHS } from '@config/dpaths';
-import { DPath, WalletId } from '@types';
+import { TREZOR_DERIVATION_PATHS } from '@config/dpaths';
+import { DPath, TAddress, WalletId } from '@types';
+import { flatten } from '@vendor';
 
+import { DWAccountDisplay, ExtendedDPath, getHDWallets } from '../deterministic';
 import HardwareWallet, { KeyInfo } from './HardwareWallet';
 import { getFullPath } from './helpers';
 
 export default class Trezor extends HardwareWallet {
   private cache: { [key: string]: KeyInfo } = {};
 
-  public async initialize(): Promise<void> {
+  public async initialize(dpath: DPath): Promise<void> {
     TrezorConnect.manifest({
       email: 'support@mycrypto.com',
       appUrl: 'https://beta.mycrypto.com'
@@ -19,7 +21,7 @@ export default class Trezor extends HardwareWallet {
 
     // Fetch a random address to ensure the connection works
     try {
-      await this.getAddress(DPathsList.ETH_DEFAULT, 50);
+      await this.getAddress(dpath, 50);
     } catch (err) {
       console.debug('[Trezor]: Error connecting to device');
       throw err;
@@ -38,6 +40,34 @@ export default class Trezor extends HardwareWallet {
     return this.cache;
   }
 
+  public async getMultipleAddresses(paths: ExtendedDPath[]): Promise<DWAccountDisplay[]> {
+    const keyInfo = await this.prefetch(paths);
+    return flatten(
+      Object.entries(keyInfo).map(([key, value]) => {
+        const dpath = paths.find((x) => x.value === key);
+        if (!dpath) {
+          console.error('[getMultipleAddresses]: Could not find dpath that was expected.');
+          return [] as DWAccountDisplay[];
+        }
+        return getHDWallets({
+          dPath: key,
+          chainCode: value.chainCode,
+          publicKey: value.publicKey,
+          limit: dpath.numOfAddresses,
+          offset: dpath.offset
+        }).map((item) => ({
+          address: item.address as TAddress,
+          pathItem: {
+            path: `${key}/${item.index}`,
+            baseDPath: dpath,
+            index: item.index
+          },
+          balance: undefined
+        }));
+      })
+    );
+  }
+
   public getDPaths(): DPath[] {
     return TREZOR_DERIVATION_PATHS;
   }
@@ -53,6 +83,10 @@ export default class Trezor extends HardwareWallet {
 
     const response = await TrezorConnect.getPublicKey({ path: path.value });
 
+    if (!response.success) {
+      throw Error(response.payload.error);
+    }
+
     return {
       publicKey: response.payload.publicKey,
       chainCode: response.payload.chainCode
@@ -65,6 +99,10 @@ export default class Trezor extends HardwareWallet {
      * https://github.com/trezor/connect/blob/develop/docs/methods/ethereumGetAddress.md
      */
     const response = await TrezorConnect.ethereumGetAddress({ path: getFullPath(path, index) });
+
+    if (!response.success) {
+      throw Error(response.payload.error);
+    }
 
     return response.payload.address;
   }

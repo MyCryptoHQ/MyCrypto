@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { Link } from '@components';
+import { LinkApp } from '@components';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { COLORS, FONT_SIZE } from '@theme';
 import { translateRaw } from '@translations';
@@ -68,10 +68,6 @@ const TransactionReceiptHeaderGlobal = createGlobalStyle<RelayedToNetworkProps>`
   }
 `;
 
-const AbortTransactionLink = styled(Link)`
-  margin-left: auto;
-`;
-
 interface AbortTransactionProps {
   onTxSent(txReceipt: ITxReceipt): void;
 }
@@ -124,9 +120,9 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
       {isCanceled && (
         <>
           <p>{translateRaw('PROTECTED_TX_ABORTED_TX')}</p>
-          <AbortTransactionLink type="white-black" underline={true} onClick={onSendClick}>
+          <LinkApp href="#" onClick={onSendClick} ml={'auto'}>
             {translateRaw('PROTECTED_TX_RESEND')}
-          </AbortTransactionLink>
+          </LinkApp>
         </>
       )}
       {!isCanceled && protectTxCountdown > 0 && (
@@ -136,9 +132,9 @@ export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
               $sec: `0:${protectTxCountdown.toString().padStart(2, '0')}`
             })}
           </p>
-          <AbortTransactionLink type="white-black" underline={true} onClick={onCancelClick}>
+          <LinkApp href="#" onClick={onCancelClick} ml={'auto'}>
             {translateRaw('PROTECTED_TX_CANCEL')}
-          </AbortTransactionLink>
+          </LinkApp>
         </>
       )}
       {!isCanceled && protectTxCountdown === 0 && (

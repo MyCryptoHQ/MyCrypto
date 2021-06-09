@@ -1,45 +1,14 @@
 import React from 'react';
 
-import { MemoryRouter } from 'react-router-dom';
-import {
-  actionWithPayload,
-  fireEvent,
-  mockUseDispatch,
-  ProvidersWrapper,
-  screen,
-  simpleRender
-} from 'test-utils';
+import { actionWithPayload, fireEvent, mockUseDispatch, screen, simpleRender } from 'test-utils';
 
-import { DataContext, IDataContext, StoreContext } from '@services/Store';
-import { ACTION_STATE, ActionTemplate, ExtendedUserAction } from '@types';
+import { ACTION_STATE, ActionTemplate } from '@types';
 
 import { ActionItem } from '../components/ActionItem';
 import { actionTemplates } from '../constants';
 
 function getComponent(props: { actionTemplate: ActionTemplate; onActionClick(): void }) {
-  return simpleRender(
-    <MemoryRouter initialEntries={undefined}>
-      <ProvidersWrapper>
-        <DataContext.Provider
-          value={
-            ({
-              userActions: [] as ExtendedUserAction[]
-            } as unknown) as IDataContext
-          }
-        >
-          <StoreContext.Provider
-            value={
-              ({
-                userActions: [] as ExtendedUserAction[]
-              } as any) as any
-            }
-          >
-            <ActionItem {...props} />
-          </StoreContext.Provider>
-        </DataContext.Provider>
-      </ProvidersWrapper>
-    </MemoryRouter>
-  );
+  return simpleRender(<ActionItem {...props} />);
 }
 
 const onActionClick = jest.fn();

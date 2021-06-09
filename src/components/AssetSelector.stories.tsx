@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import { fAssets } from '@fixtures';
+import { SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 import AssetSelector, { AssetSelectorItem, TAssetOption } from './AssetSelector';
 
-export default { title: 'Selectors/AssetSelector' };
+export default { title: 'Molecules/Selectors/AssetSelector', component: AssetSelector };
 
 const initialProps = {
   assets: fAssets,
@@ -56,10 +57,15 @@ export const Selector = () => {
         }}
       >
         <div>
-          <AssetSelectorItem ticker={asset.ticker} uuid={asset.uuid} name={asset.name} />
+          <AssetSelectorItem
+            ticker={asset.ticker}
+            uuid={asset.uuid}
+            name={asset.name}
+            paddingLeft={SPACING.SM}
+          />
         </div>
         <div>
-          <AssetSelectorItem ticker={asset.ticker} uuid={asset.uuid} />
+          <AssetSelectorItem ticker={asset.ticker} uuid={asset.uuid} paddingLeft={SPACING.SM} />
         </div>
       </div>
       <div

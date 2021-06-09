@@ -8,18 +8,22 @@ import { COLORS, SPACING } from '@theme';
 import Spinner from './Spinner';
 import Typography from './Typography';
 
+const ButtonColorSchemes = { default: 'default', inverted: 'inverted', warning: 'warning' };
+
+type TButtonColorScheme = keyof typeof ButtonColorSchemes;
+
 interface ButtonProps {
   children: React.ReactNode | string;
   fullwidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  inverted?: boolean;
+  colorScheme?: TButtonColorScheme;
 }
 
 interface StyledButtonProps {
   fullwidth?: boolean;
   disabled?: boolean;
-  inverted?: boolean;
+  colorScheme?: TButtonColorScheme;
   // Since using 'loading' causes warnings from React
   _loading?: boolean;
 }
@@ -49,22 +53,56 @@ const SButton = styled(Button)<StyledButtonProps>`
   }
 
   ${(props) =>
-    !props.inverted &&
+    props.disabled &&
+    `
+      cursor: default;
+    `}
+
+  ${(props) =>
+    props.colorScheme === 'default' &&
     `
       background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT};
 
-      :hover {
+      &:hover {
         background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
       }
   `}
 
   ${(props) =>
-    props.inverted &&
+    props.colorScheme === 'inverted' &&
     `
-      background-color: ${COLORS.WHITE};
+      background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
 
       div > span {
-        color: ${COLORS.BLUE_LIGHT_DARKISH};
+        color:  ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
+      }
+
+      &:hover {
+        div > span {
+          color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+        }
+      }
+
+      border: 2px solid ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
+      border-radius: 3px;
+
+      &:hover {
+        background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.BLUE_LIGHT_DARKISH};
+      }
+      &:focus {
+        div > span {
+          color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+        }
+      }
+  `}
+
+  ${(props) =>
+    props.colorScheme === 'warning' &&
+    `
+      background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+
+      div > span {
+        color: ${props.disabled ? COLORS.WHITE : COLORS.WARNING_ORANGE};
       }
 
       &:hover {
@@ -73,11 +111,11 @@ const SButton = styled(Button)<StyledButtonProps>`
         }
       }
 
-      border: 2px solid ${COLORS.BLUE_LIGHT_DARKISH};
+      border: 2px solid ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WARNING_ORANGE};
       border-radius: 3px;
 
       &:hover {
-        background-color: ${COLORS.BLUE_LIGHT_DARKISH};
+        background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WARNING_ORANGE};
       }
       &:focus {
         div > span {
@@ -94,9 +132,9 @@ const SButton = styled(Button)<StyledButtonProps>`
     `}
 `;
 
-function StyledButton({ children, disabled, loading, ...props }: Props) {
+function StyledButton({ children, disabled, loading, colorScheme = 'default', ...props }: Props) {
   return (
-    <SButton disabled={disabled || loading} _loading={loading} {...props}>
+    <SButton disabled={disabled || loading} _loading={loading} colorScheme={colorScheme} {...props}>
       <Wrapper>
         {loading && (
           <LoadingSpinnerWrapper>
