@@ -3,11 +3,11 @@ import React from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Box, DashboardPanel, PoweredByText } from '@components';
+import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
+import { ROUTE_PATHS } from '@config';
 import { getENSFetched, getENSRecords, useSelector } from '@store';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { useScreenSize } from '@utils';
 
 import { EnsTable } from './EnsTable';
 
@@ -34,7 +34,6 @@ const StyledLayout = styled.div`
 export default function EnsDashboard() {
   const ensOwnershipRecords = useSelector(getENSRecords);
   const isEnsFetched = useSelector(getENSFetched);
-  const { isMobile } = useScreenSize();
 
   return (
     <StyledLayout>
@@ -44,16 +43,31 @@ export default function EnsDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
-          headingRight={!isMobile ? <PoweredByText provider="ENS" /> : <></>}
+          headingRight={
+            <Box variant="rowAlign">
+              <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
+                <Box variant="rowAlign">
+                  <Icon type="edit" width="1em" />
+                  <Text ml={SPACING.XS} mb={0}>
+                    {translateRaw('EDIT')}
+                  </Text>
+                </Box>
+              </LinkApp>
+              <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="opacityLink">
+                <Box variant="rowAlign">
+                  <Icon type="add-bold" width="1em" />
+                  <Text ml={SPACING.XS} mb={0}>
+                    {translateRaw('ADD')}
+                  </Text>
+                </Box>
+              </LinkApp>
+            </Box>
+          }
         >
           <EnsTable records={ensOwnershipRecords} isFetched={isEnsFetched} />
-          {isMobile && (
-            <Box display="flex" justifyContent="flex-start" pl={SPACING.MD} pb={SPACING.BASE}>
-              <PoweredByText provider="ENS" />
-            </Box>
-          )}
         </DashboardPanel>
       </DashboardWrapper>
+      {<PoweredByText provider="ENS" />}
     </StyledLayout>
   );
 }

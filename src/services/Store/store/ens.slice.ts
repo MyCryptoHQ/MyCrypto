@@ -62,7 +62,10 @@ export function* fetchENSWorker() {
 
   const filteredAccounts = accounts.filter((a) => a.networkId === 'Ethereum');
 
-  if (filteredAccounts.length === 0) return;
+  if (filteredAccounts.length === 0) {
+    yield put(slice.actions.setRecords([]));
+    return;
+  }
 
   try {
     const records = yield call(ENSService.fetchOwnershipRecords, filteredAccounts);
