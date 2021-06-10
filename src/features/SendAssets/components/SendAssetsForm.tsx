@@ -85,6 +85,7 @@ import {
   formatSupportEmail,
   fromTokenBase,
   gasStringsToMaxGasBN,
+  getDecimals,
   isSameAddress,
   isVoid,
   sortByLabel,
@@ -318,6 +319,14 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             const asset = this.parent.asset;
             if (!isEmpty(account)) {
               const balance = getAccountBalance(account, asset.type === 'base' ? undefined : asset);
+              const decimals = getDecimals(value);
+              if (decimals > asset.decimal) {
+                return this.createError({
+                  message: translateRaw('TOO_MANY_DECIMALS', {
+                    $decimals: asset.decimal
+                  })
+                });
+              }
               const amount = BigNumber.from(toTokenBase(value, asset.decimal).toString());
               if (balance.lt(amount)) {
                 return this.createError({

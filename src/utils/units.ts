@@ -101,6 +101,9 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
 
+export const getDecimals = (value: string) =>
+  value.includes('.') ? value.split('.')[1].length : 0;
+
 const calculateGasUsedPercentage = (gasLimit: string, gasUsed: string) => {
   const gasLimitBN = bigify(gasLimit);
   const gasUsedBN = bigify(gasUsed);
