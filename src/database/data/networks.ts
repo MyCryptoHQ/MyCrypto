@@ -879,10 +879,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isCustom: false,
     color: '#60da9a',
     blockExplorer: makeExplorer({
-      name: 'Matic',
-      origin: 'https://explorer.matic.network/',
-      addressPath: 'address',
-      blockPath: 'blocks'
+      name: 'PolygonScan Explorer',
+      origin: 'https://polygonscan.com'
     }),
     tokens: [],
     contracts: [],
