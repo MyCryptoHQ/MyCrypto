@@ -980,6 +980,7 @@
     "EXPIRED": "Expired",
     "SWAP_INSUFFICIENT_FUNDS": "Insufficient funds for transaction",
     "ESTIMATED_COST": "Estimated Cost",
-    "TOO_MANY_DECIMALS": "The asset you have selected supports a maximum of $decimals decimals"
+    "TOO_MANY_DECIMALS": "The asset you have selected supports a maximum of $decimals decimals.",
+    "NO_NON_VIEW_ONLY_ACCOUNTS": "You currently only have View-Only accounts added to MyCrypto, which you cannot take action from. In order to Send, please $link_add_account that's not View-Only. Learn more about View-Only accounts $support_link."
   }
 }
