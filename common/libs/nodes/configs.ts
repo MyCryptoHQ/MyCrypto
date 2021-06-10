@@ -23,7 +23,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETH', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: 'https://mainnet.infura.io/v3/ea3f0cf8fd3342a9870cdec2d1ee5381'
     }
   ],
 
@@ -32,7 +32,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Ropsten', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: 'https://ropsten.infura.io/v3/ea3f0cf8fd3342a9870cdec2d1ee5381'
     }
   ],
 
@@ -50,7 +50,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Rinkeby', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: 'https://rinkeby.infura.io/v3/ea3f0cf8fd3342a9870cdec2d1ee5381'
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
