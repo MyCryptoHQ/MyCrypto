@@ -2,10 +2,13 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { ITxHistoryType } from '@features/Dashboard/types';
 import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
+import { deriveTxType, makeTxReceipt, merge } from '@services/TxHistory/helpers';
+import { ITxHistoryEntry } from '@services/TxHistory/types';
 import { translateRaw } from '@translations';
 import {
   Asset,
@@ -30,10 +33,11 @@ import {
   generateDeterministicAddressUUID,
   generateUUID,
   getWeb3Config,
+  isSameAddress,
   isViewOnlyWallet,
   sortByLabel
 } from '@utils';
-import { findIndex, propEq } from '@vendor';
+import { findIndex, isEmpty, propEq } from '@vendor';
 
 import { getAccountByAddressAndNetworkName } from '../Account';
 import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
@@ -41,7 +45,7 @@ import {
   findMultipleNextUnusedDefaultLabels,
   getContactByAddressAndNetworkId
 } from '../Contact/helpers';
-import { getTxsFromAccount, isTokenMigration } from '../helpers';
+import { isTokenMigration } from '../helpers';
 import { getNetworkById } from '../Network';
 import { toStoreAccount } from '../utils';
 import { getAssetByUUID, getAssets } from './asset.slice';
@@ -54,6 +58,7 @@ import { displayNotification } from './notification.slice';
 import { getAppState } from './selectors';
 import { addAccountsToFavorites, getFavorites, getIsDemoMode } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
+import { getTxHistory } from './txHistory.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -192,6 +197,53 @@ export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: Network
           .filter((a) => !isViewOnlyWallet(a.wallet) || includeViewOnly)
       )[0]
   );
+
+export const getMergedTxHistory = createSelector(
+  [
+    getStoreAccounts,
+    selectNetworks,
+    getAssets,
+    selectAccountTxs,
+    getTxHistory,
+    selectContacts,
+    selectContracts
+  ],
+  (accounts, networks, assets, accountTxs, txHistory, contacts, contracts) => {
+    // Constant for now since we only support mainnet for tx history
+    const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
+
+    const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
+
+    return (
+      merge(apiTxs, accountTxs)
+        .map((tx: ITxReceipt) => {
+          const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
+
+          // if Txhistory contains a deleted network ie. MATIC remove from history.
+          if (!network) return {} as ITxHistoryEntry;
+
+          const toAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
+            tx.receiverAddress || tx.to,
+            network.id
+          );
+          const fromAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
+            tx.from,
+            network.id
+          );
+          return {
+            ...tx,
+            timestamp: tx.timestamp || 0,
+            txType: deriveTxType(accounts, tx) || ITxHistoryType.UNKNOWN,
+            toAddressBookEntry,
+            fromAddressBookEntry,
+            networkId: network.id
+          };
+        })
+        // Remove eventual empty items from list
+        .filter((item) => !isEmpty(item))
+    );
+  }
+);
 
 /**
  * Actions
@@ -379,8 +431,11 @@ export function* pendingTxPolling() {
 
     if (!senderAccount) continue;
 
-    const txs = getTxsFromAccount([senderAccount]);
-    const overwritingTx = txs.find(
+    const txs: ITxHistoryEntry[] = yield select(getMergedTxHistory);
+    const userTxs = txs.filter(
+      (t) => t.networkId === senderAccount.networkId && isSameAddress(t.from, senderAccount.address)
+    );
+    const overwritingTx = userTxs.find(
       (t) =>
         t.nonce === pendingTxReceipt.nonce &&
         t.asset.networkId === pendingTxReceipt.asset.networkId &&
