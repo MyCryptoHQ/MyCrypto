@@ -92,27 +92,7 @@ export {
 } from './makeExplorer';
 export { verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
-export {
-  Units,
-  toWei,
-  handleValues,
-  gasPriceToBase,
-  fromWei,
-  toTokenBase,
-  Wei,
-  TokenValue,
-  Address,
-  baseToConvertedUnit,
-  fromTokenBase,
-  totalTxFeeToString,
-  totalTxFeeToWei,
-  gasStringsToMaxGasNumber,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  getDecimalFromEtherUnit,
-  convertTokenBase,
-  calculateGasUsedPercentage
-} from './units';
+export * from './units';
 export { padLeftEven } from './padLeftEven';
 export { normalize } from './normalize';
 export {

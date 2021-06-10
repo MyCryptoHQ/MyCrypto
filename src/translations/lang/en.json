@@ -979,6 +979,7 @@
     "SWAP_EXPIRY_TOOLTIP": "Your quoted amount and rate will expire after a time. To refresh this, select \"Get New Quote.\"",
     "EXPIRED": "Expired",
     "SWAP_INSUFFICIENT_FUNDS": "Insufficient funds for transaction",
-    "ESTIMATED_COST": "Estimated Cost"
+    "ESTIMATED_COST": "Estimated Cost",
+    "TOO_MANY_DECIMALS": "The token you have selected supports a maximum of $decimals decimals"
   }
 }
