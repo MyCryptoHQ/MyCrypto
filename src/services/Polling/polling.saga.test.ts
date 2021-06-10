@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { expectSaga } from 'test-utils';
 
 import { IPollingPayload, default as pollingSagaWatcher } from './polling.saga';
@@ -41,5 +41,32 @@ describe('PollingSaga', () => {
         expect(effects.call).toHaveLength(4);
         expect(effects.put).toBeUndefined();
       });
+  });
+
+  it('pollingSaga(): Retries on failure', () => {
+    function* failingSaga() {
+      yield call(() => new Promise());
+    }
+
+    const pollStart = createAction('fake/start');
+    const pollStop = createAction('fake/stop');
+
+    const failingPollingParams: IPollingPayload = {
+      startAction: pollStart,
+      stopAction: pollStop,
+      params: {
+        interval: 10000,
+        retryOnFailure: true,
+        retries: 2,
+        retryAfter: 200
+      },
+      saga: failingSaga
+    };
+    return expectSaga(pollingSagaWatcher, pollingParams)
+      .call(failingPollingParams.saga)
+      .delay(failingPollingParams.params.retryAfter!)
+      .call(failingPollingParams.saga)
+      .delay(failingPollingParams.params.retryAfter!)
+      .silentRun();
   });
 });
