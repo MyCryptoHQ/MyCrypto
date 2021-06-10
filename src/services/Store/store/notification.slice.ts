@@ -1,6 +1,5 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { select } from 'redux-saga-test-plan/matchers';
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, put, select, takeLatest } from 'redux-saga/effects';
 
 import { notificationsConfigs } from '@features/NotificationsPanel/constants';
 import { ExtendedNotification, LSKeys } from '@types';
