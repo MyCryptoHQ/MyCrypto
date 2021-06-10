@@ -980,6 +980,6 @@
     "EXPIRED": "Expired",
     "SWAP_INSUFFICIENT_FUNDS": "Insufficient funds for transaction",
     "ESTIMATED_COST": "Estimated Cost",
-    "TOO_MANY_DECIMALS": "The token you have selected supports a maximum of $decimals decimals"
+    "TOO_MANY_DECIMALS": "The asset you have selected supports a maximum of $decimals decimals"
   }
 }
