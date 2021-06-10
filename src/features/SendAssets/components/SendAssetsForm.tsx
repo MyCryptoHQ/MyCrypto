@@ -640,7 +640,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
               variables={{
                 $link_add_account: () => (
                   <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
-                    {translateRaw('DEMO_BANNER_LINK_TEXT')}
+                    {translateRaw('ADD_AN_ACCOUNT')}
                   </LinkApp>
                 ),
                 $support_link: () => (
@@ -648,7 +648,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                     href={getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)}
                     isExternal={true}
                   >
-                    {translateRaw('DETERMINISTIC_ALTERNATIVES_5')}
+                    {translateRaw('HERE')}
                   </LinkApp>
                 )
               }}

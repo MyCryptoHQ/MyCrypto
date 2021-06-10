@@ -24,7 +24,7 @@ const BannerText = (
     variables={{
       $link: () => (
         <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="underlineLink">
-          {translateRaw('DEMO_BANNER_LINK_TEXT')}
+          {translateRaw('ADD_AN_ACCOUNT')}
         </LinkApp>
       )
     }}

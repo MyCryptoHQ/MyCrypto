@@ -204,7 +204,7 @@ export default function HDWList({
               />{' '}
               <Trans id="DETERMINISTIC_SEE_SUMMARY" />{' '}
               <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
-                <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+                <Trans id="HERE" />
               </SDownloader>
               .
             </Typography>
@@ -244,7 +244,7 @@ export default function HDWList({
                       variables={{ $total: () => scannedAccounts.length }}
                     />{' '}
                     <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
-                      <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+                      <Trans id="HERE" />
                     </SDownloader>
                     .
                   </>
