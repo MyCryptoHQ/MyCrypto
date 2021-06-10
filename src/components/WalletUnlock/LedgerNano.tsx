@@ -3,9 +3,11 @@ import React, { PureComponent } from 'react';
 import { Button } from '@mycrypto/ui';
 
 import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
+import { Text } from '@components/NewTypography';
 import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
+import { SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
@@ -92,16 +94,20 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
             {translate('UNLOCK_WALLET')}{' '}
             {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
           </Heading>
-          <div className="LedgerPanel-description-content">
-            <div className="LedgerPanel-description">
-              {translate('LEDGER_TIP', { $network: network.id })}
-              <div className="LedgerPanel-image">
-                <Icon type="ledger-icon-lg" />
-              </div>
+          <Box variant="columnCenter">
+            <Box pt={SPACING.BASE} height={{ _: '350px', SM: 'inherit' }}>
+              <Text>{translate('LEDGER_TIP', { $network: network.id })}</Text>
+              <Box
+                variant="columnCenter"
+                m={{ _: '0.25em', sm: '4em' }}
+                pt={{ _: '0.5em', sm: '2em' }}
+              >
+                <Icon type="ledger-icon-lg" width="100%" />
+              </Box>
               {isLoading ? (
-                <div className="LedgerPanel-loading">
+                <Box pb="2em">
                   <Spinner /> {translate('WALLET_UNLOCKING')}
-                </div>
+                </Box>
               ) : (
                 <Button
                   className="LedgerPanel-description-button"
@@ -111,11 +117,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
                   {translate('ADD_LEDGER_SCAN')}
                 </Button>
               )}
-            </div>
-            <div className="LedgerPanel-footer">
+            </Box>
+            <Box mb={{ _: '20px', sm: 0 }}>
               <BusyBottom type={BusyBottomConfig.LEDGER} />
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Box>
       );
     }
