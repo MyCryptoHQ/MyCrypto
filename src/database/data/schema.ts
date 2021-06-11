@@ -1,13 +1,12 @@
 import { LocalStorage, LSKeys } from '@types';
 
-import { defaultContacts } from './contacts';
 import { defaultSettings } from './settings';
 
 export const SCHEMA_BASE: LocalStorage = {
   version: 'v2.0.0',
   mtime: new Date('01/01/2020').valueOf(),
   [LSKeys.ACCOUNTS]: {},
-  [LSKeys.ADDRESS_BOOK]: defaultContacts,
+  [LSKeys.ADDRESS_BOOK]: {},
   [LSKeys.ASSETS]: {},
   [LSKeys.RATES]: {},
   [LSKeys.TRACKED_ASSETS]: {},
