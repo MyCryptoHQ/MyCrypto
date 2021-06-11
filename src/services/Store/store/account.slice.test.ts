@@ -1,8 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { parseEther } from '@ethersproject/units';
 import { call } from 'redux-saga-test-plan/matchers';
 import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
-import { ETHUUID, REPV2UUID } from '@config';
+import { DEFAULT_NETWORK, ETHUUID, REPV2UUID } from '@config';
+import { ITxHistoryType } from '@features/Dashboard/types';
 import { NotificationTemplates } from '@features/NotificationsPanel';
 import {
   fAccount,
@@ -10,6 +12,7 @@ import {
   fAssets,
   fContacts,
   fContracts,
+  fNetwork,
   fNetworks,
   fSettings,
   fTransaction,
@@ -20,6 +23,7 @@ import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
 import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid, WalletId } from '@types';
+import { fromWei, Wei } from '@utils';
 
 import { toStoreAccount } from '../utils';
 import {
@@ -29,6 +33,7 @@ import {
   addTxToAccount,
   addTxToAccountWorker,
   getAccounts,
+  getMergedTxHistory,
   getStoreAccounts,
   initialState,
   pendingTxPolling,
@@ -223,6 +228,120 @@ describe('AccountSlice', () => {
         value: { _hex: '0x038d7ea4c68000', _isBigNumber: true }
       }
     ]);
+  });
+
+  describe('getMergedTxHistory', () => {
+    const defaultAppState = {
+      accounts: fAccounts,
+      networks: APP_STATE.networks,
+      addressBook: fContacts,
+      contracts: fContracts,
+      assets: fAssets
+    };
+    it('uses tx history from store', () => {
+      const state = {
+        ...mockAppState(defaultAppState),
+        txHistory: { history: [fTxHistoryAPI], error: false }
+      };
+      const actual = getMergedTxHistory(state);
+
+      expect(actual).toEqual([
+        {
+          ...fTxHistoryAPI,
+          amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'),
+          asset: fAssets[0],
+          baseAsset: fAssets[0],
+          fromAddressBookEntry: undefined,
+          toAddressBookEntry: undefined,
+          receiverAddress: fTxHistoryAPI.recipientAddress,
+          nonce: BigNumber.from(fTxHistoryAPI.nonce).toString(),
+          networkId: DEFAULT_NETWORK,
+          blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
+          gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
+          gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
+          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
+          value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
+        }
+      ]);
+    });
+
+    it('uses transactions from Account', () => {
+      const state = {
+        ...mockAppState({
+          ...defaultAppState,
+          accounts: [{ ...fAccount, transactions: [fTxReceipt] }]
+        }),
+        txHistory: { history: [], error: false }
+      };
+      const actual = getMergedTxHistory(state);
+
+      expect(actual).toEqual([
+        {
+          ...fTxReceipt,
+          gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+          gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+          value: BigNumber.from(fTxReceipt.value),
+          networkId: fNetwork.id,
+          timestamp: 0,
+          toAddressBookEntry: undefined,
+          txType: ITxHistoryType.OUTBOUND,
+          fromAddressBookEntry: fContacts[0]
+        }
+      ]);
+    });
+
+    it('merges transactions and prioritizes account txs', () => {
+      const state = {
+        ...mockAppState({
+          ...defaultAppState,
+          accounts: [
+            {
+              ...fAccount,
+              transactions: [
+                {
+                  ...fTxReceipt,
+                  hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40'
+                }
+              ]
+            }
+          ]
+        }),
+        txHistory: { history: [fTxHistoryAPI], error: false }
+      };
+      const actual = getMergedTxHistory(state);
+      expect(actual).toHaveLength(1);
+      expect(actual).toEqual([
+        {
+          ...fTxReceipt,
+          gasLimit: BigNumber.from(fTxReceipt.gasLimit),
+          gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+          value: BigNumber.from(fTxReceipt.value),
+          hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
+          networkId: fNetwork.id,
+          timestamp: 0,
+          toAddressBookEntry: undefined,
+          txType: ITxHistoryType.OUTBOUND,
+          fromAddressBookEntry: fContacts[0]
+        }
+      ]);
+    });
+
+    it('merges transactions', () => {
+      const state = {
+        ...mockAppState({
+          ...defaultAppState,
+          accounts: [
+            {
+              ...fAccount,
+              transactions: [fTxReceipt]
+            }
+          ]
+        }),
+        txHistory: { history: [fTxHistoryAPI], error: false }
+      };
+      const actual = getMergedTxHistory(state);
+      expect(actual).toHaveLength(2);
+    });
   });
 
   describe('addNewAccountsWorker', () => {
