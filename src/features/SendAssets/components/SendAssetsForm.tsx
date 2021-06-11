@@ -18,6 +18,7 @@ import {
   ContactLookupField,
   DemoGatewayBanner,
   InlineMessage,
+  LinkApp,
   Tooltip,
   WhenQueryExists
 } from '@components';
@@ -32,7 +33,8 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND,
   getKBHelpArticle,
   getWalletConfig,
-  KB_HELP_ARTICLE
+  KB_HELP_ARTICLE,
+  ROUTE_PATHS
 } from '@config';
 import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
@@ -58,7 +60,7 @@ import {
   useSettings
 } from '@services/Store';
 import { getIsDemoMode, useSelector } from '@store';
-import translate, { translateRaw } from '@translations';
+import translate, { Trans, translateRaw } from '@translations';
 import {
   Asset,
   ErrorObject,
@@ -552,7 +554,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   };
 
   const handleNonceEstimate = async (account: IAccount) => {
-    if (!values || !values.network || !account) {
+    if (!values || !values.network || isVoid(account)) {
       return;
     }
     setIsEstimatingNonce(true);
@@ -631,6 +633,28 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           }}
           asset={values.asset}
         />
+        {accountsWithAsset.length === 0 && (
+          <InlineMessage type={InlineMessageType.WARNING}>
+            <Trans
+              id="NO_NON_VIEW_ONLY_ACCOUNTS"
+              variables={{
+                $link_add_account: () => (
+                  <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path}>
+                    {translateRaw('ADD_AN_ACCOUNT')}
+                  </LinkApp>
+                ),
+                $link_support: () => (
+                  <LinkApp
+                    href={getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)}
+                    isExternal={true}
+                  >
+                    {translateRaw('VIEW_ONLY_ADDRESSES')}
+                  </LinkApp>
+                )
+              }}
+            />
+          </InlineMessage>
+        )}
       </fieldset>
       <fieldset className="SendAssetsForm-fieldset">
         <label htmlFor="address" className="input-group-header">

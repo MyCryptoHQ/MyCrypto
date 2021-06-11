@@ -35,7 +35,6 @@
     "DETERMINISTIC_ALTERNATIVES_1": "Alternatively, you can",
     "DETERMINISTIC_ALTERNATIVES_2": "try to scan more addresses",
     "DETERMINISTIC_ALTERNATIVES_4": "To view a summary of the addresses we scanned, download a CSV report",
-    "DETERMINISTIC_ALTERNATIVES_5": "here",
     "DETERMINISTIC_CONTACT_US": "Still having trouble? [Contact us!](https://support.mycrypto.com/contact-us)",
     "DETERMINISTIC_SCAN_AGAIN": "Scan Again",
     "DETERMINISTIC_SCANNING": "Scanning your hardware wallet for addresses with $asset balance.",
@@ -948,7 +947,6 @@
     "NAVIGATION_FAUCET": "Use Testnet Faucet",
     "BROADCAST_TX_RAW_TOOLTIP": "This is the decoded values of your signed transaction input.",
     "DEMO_BANNER": "Viewing in DEMO MODE. Play around in this test environment and $link of your own to get started.",
-    "DEMO_BANNER_LINK_TEXT": "add an account",
     "DEMO_BUTTON_TEXT": "View Demo Mode",
     "DEMO_GATEWAY_BANNER": "You are currently in DEMO MODE. To continue with sending a transaction, please $link to exit demo mode.",
     "EDIT": "Edit",
@@ -980,6 +978,10 @@
     "EXPIRED": "Expired",
     "SWAP_INSUFFICIENT_FUNDS": "Insufficient funds for transaction",
     "ESTIMATED_COST": "Estimated Cost",
-    "TOO_MANY_DECIMALS": "The asset you have selected supports a maximum of $decimals decimals"
+    "TOO_MANY_DECIMALS": "The asset you have selected supports a maximum of $decimals decimals.",
+    "NO_NON_VIEW_ONLY_ACCOUNTS": "You currently only have $link_support addresses added to MyCrypto, which you cannot send from. Please $link_add_account.",
+    "HERE": "here",
+    "ADD_AN_ACCOUNT": "add an account",
+    "VIEW_ONLY_ADDRESSES": "View-Only addresses"
   }
 }

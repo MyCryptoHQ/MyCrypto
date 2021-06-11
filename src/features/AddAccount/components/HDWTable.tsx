@@ -319,7 +319,7 @@ const HDTable = ({
               <br />
               <Trans id="DETERMINISTIC_ALTERNATIVES_4" />{' '}
               <SDownloader data={csv} fileName="accounts.csv" mime="text/csv">
-                <Trans id="DETERMINISTIC_ALTERNATIVES_5" />
+                <Trans id="HERE" />
               </SDownloader>
               .
             </Typography>
