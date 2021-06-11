@@ -7,6 +7,7 @@ import { AccountList, ActionPanel, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
 import { useFeatureFlags } from '@services';
 import { StoreContext, useAccounts } from '@services/Store';
+import { getIsMyCryptoMember, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
 
@@ -36,7 +37,8 @@ const DashboardWrapper = styled.div`
 export default function Dashboard() {
   const { featureFlags } = useFeatureFlags();
   const storeContextState = useContext(StoreContext);
-  const { isMyCryptoMember, currentAccounts } = storeContextState;
+  const { currentAccounts } = storeContextState;
+  const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   const { accounts } = useAccounts();
   const { isMobile } = useScreenSize();
   const relevantActions = filterDashboardActions(actions, isMobile);

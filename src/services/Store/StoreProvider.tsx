@@ -1,17 +1,8 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
-import { MembershipStatus } from '@features/PurchaseMembership/config';
 import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
-import {
-  addAccounts,
-  deleteMembership,
-  fetchAssets,
-  fetchMemberships,
-  isMyCryptoMember,
-  useDispatch,
-  useSelector
-} from '@store';
+import { addAccounts, deleteMembership, useDispatch } from '@store';
 import {
   Asset,
   Bigish,
@@ -23,7 +14,7 @@ import {
   WalletId
 } from '@types';
 import { bigify, convertToFiatFromAsset, isArrayEqual, useInterval } from '@utils';
-import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
+import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy } from '@vendor';
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
@@ -36,8 +27,6 @@ import { useSettings } from './Settings';
 export interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly isMyCryptoMember: boolean;
-  readonly memberships?: MembershipStatus[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly uniClaims: UniClaimResult[];
@@ -95,15 +84,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     [networks]
   );
 
-  useEffectOnce(() => {
-    dispatch(fetchMemberships());
-  });
-
-  // fetch assets from api
-  useEffectOnce(() => {
-    dispatch(fetchAssets());
-  });
-
   const mainnetAccounts = accounts
     .filter((a) => a.networkId === DEFAULT_NETWORK)
     .map((a) => a.address);
@@ -128,7 +108,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isMyCryptoMember: useSelector(isMyCryptoMember),
     currentAccounts,
     accountRestore,
     uniClaims,
