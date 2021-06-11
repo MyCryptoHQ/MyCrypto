@@ -674,6 +674,40 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
+    it('handles pending overwritten transaction via tx history api', () => {
+      const overwrittenTx = {
+        ...fTxHistoryAPI,
+        nonce: pendingTx.nonce,
+        from: pendingTx.from,
+        hash: 'bla'
+      };
+      const account = { ...fAccounts[0], transactions: [pendingTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
+      return expectSaga(pendingTxPolling)
+        .withState({
+          ...mockAppState({
+            accounts: [account],
+            assets: fAssets,
+            networks: APP_STATE.networks,
+            addressBook: [contact],
+            contracts: fContracts
+          }),
+          txHistory: { history: [overwrittenTx] }
+        })
+        .put(
+          updateAccount({
+            ...toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
+            transactions: []
+          })
+        )
+        .silentRun();
+    });
+
     it('skips if pending tx not mined', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
