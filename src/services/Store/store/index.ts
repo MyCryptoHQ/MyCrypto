@@ -31,7 +31,8 @@ export {
   selectTxsByStatus,
   addTxToAccount,
   getStoreAccounts,
-  getDefaultAccount
+  getDefaultAccount,
+  getMergedTxHistory
 } from './account.slice';
 export {
   createContact,
