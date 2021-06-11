@@ -643,12 +643,12 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                     {translateRaw('ADD_AN_ACCOUNT')}
                   </LinkApp>
                 ),
-                $support_link: () => (
+                $link_support: () => (
                   <LinkApp
                     href={getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)}
                     isExternal={true}
                   >
-                    {translateRaw('HERE')}
+                    {translateRaw('VIEW_ONLY_ADDRESSES')}
                   </LinkApp>
                 )
               }}
