@@ -9,9 +9,11 @@ import {
   fAccounts,
   fAssets,
   fContacts,
+  fContracts,
   fNetworks,
   fSettings,
   fTransaction,
+  fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
@@ -491,14 +493,16 @@ describe('AccountSlice', () => {
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
-        .withState(
-          mockAppState({
+        .withState({
+          ...mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: []
-          })
-        )
+            addressBook: [],
+            contracts: fContracts
+          }),
+          txHistory: { history: [fTxHistoryAPI] }
+        })
         .provide([
           [call.fn(getTxStatus), ITxStatus.SUCCESS],
           [call.fn(getTimestampFromBlockNum), timestamp]
@@ -527,14 +531,16 @@ describe('AccountSlice', () => {
       const account = { ...fAccounts[0], transactions: [pendingTx, overwrittenTx] };
       const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
-        .withState(
-          mockAppState({
+        .withState({
+          ...mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: [contact]
-          })
-        )
+            addressBook: [contact],
+            contracts: fContracts
+          }),
+          txHistory: { history: [fTxHistoryAPI] }
+        })
         .put(
           updateAccount({
             ...toStoreAccount(
@@ -553,14 +559,16 @@ describe('AccountSlice', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
-        .withState(
-          mockAppState({
+        .withState({
+          ...mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
-          })
-        )
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
+            contracts: fContracts
+          }),
+          txHistory: { history: [fTxHistoryAPI] }
+        })
         .not.put(
           addTxToAccount({
             account: sanitizeAccount(account),
@@ -576,14 +584,16 @@ describe('AccountSlice', () => {
         .mockResolvedValue({ blockNumber: blockNum });
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
-        .withState(
-          mockAppState({
+        .withState({
+          ...mockAppState({
             accounts: [account],
             assets: fAssets,
             networks: APP_STATE.networks,
-            addressBook: [{ ...fContacts[0], network: 'Ethereum' }]
-          })
-        )
+            addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
+            contracts: fContracts
+          }),
+          txHistory: { history: [fTxHistoryAPI] }
+        })
         .provide([
           [call.fn(getTxStatus), undefined],
           [call.fn(getTimestampFromBlockNum), undefined]
