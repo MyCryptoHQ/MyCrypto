@@ -14,9 +14,8 @@ import {
   SUBSCRIBE_NEWSLETTER_LINK,
   UNISWAP_LINK
 } from '@config';
-import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import translate, { translateRaw } from '@translations';
-import { ACTION_CATEGORIES, ACTION_NAME, ActionFilters, ActionTemplate } from '@types';
+import { ACTION_CATEGORIES, ACTION_NAME, ActionFilters, ActionTemplate, ClaimState } from '@types';
 import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@utils';
 
 import {

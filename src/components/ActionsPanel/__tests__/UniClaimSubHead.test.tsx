@@ -4,8 +4,8 @@ import { screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
 import { StoreContext } from '@services';
-import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
 import { translateRaw } from '@translations';
+import { ClaimState } from '@types';
 
 import { UniClaimSubHead } from '../components/UniClaimSubHead';
 

@@ -109,3 +109,4 @@ export { setRates, getRates, startRatesPolling } from './rates.slice';
 export { trackAsset, getTrackedAssets } from './trackedAssets.slice';
 export { fetchHistory, getTxHistory } from './txHistory.slice';
 export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
+export { getUniClaims } from './claims.slice';

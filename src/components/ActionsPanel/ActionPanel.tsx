@@ -6,7 +6,7 @@ import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
 import { StoreContext } from '@services/Store/StoreProvider';
-import { getENSRecords, getIsMyCryptoMember, useSelector } from '@store';
+import { getENSRecords, getIsMyCryptoMember, getUniClaims, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
@@ -51,8 +51,9 @@ const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFil
   });
 
 export const ActionPanel = () => {
-  const { assets, uniClaims, accounts } = useContext(StoreContext);
+  const { assets, accounts } = useContext(StoreContext);
   const isMyCryptoMember = useSelector(getIsMyCryptoMember);
+  const uniClaims = useSelector(getUniClaims);
   const ensOwnershipRecords = useSelector(getENSRecords);
   const { userActions, updateUserAction, findUserAction } = useUserActions();
   const [currentAction, setCurrentAction] = useState<ActionTemplate | undefined>();

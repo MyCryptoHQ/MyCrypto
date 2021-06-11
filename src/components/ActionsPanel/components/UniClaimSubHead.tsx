@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Text } from '@components/NewTypography';
-import { StoreContext } from '@services';
-import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
+import { getUniClaims, useSelector } from '@store';
 import { translateRaw } from '@translations';
+import { ClaimState } from '@types';
 
 export const UniClaimSubHead = () => {
-  const { uniClaims } = useContext(StoreContext);
+  const uniClaims = useSelector(getUniClaims);
 
   const relevantAccounts = uniClaims.filter((a) => a.state === ClaimState.UNCLAIMED);
   return (

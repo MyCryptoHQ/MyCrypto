@@ -1,7 +1,5 @@
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useMemo, useState } from 'react';
 
-import { DEFAULT_NETWORK } from '@config';
-import { UniClaimResult } from '@services/ApiService/Uniswap/Uniswap';
 import { addAccounts, deleteMembership, useDispatch } from '@store';
 import {
   Asset,
@@ -16,7 +14,6 @@ import {
 import { bigify, convertToFiatFromAsset, isArrayEqual, useInterval } from '@utils';
 import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy } from '@vendor';
 
-import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
 import { getTotalByAsset, useAssets } from './Asset';
 import { getAccountsAssetsBalances } from './BalanceService';
@@ -29,7 +26,6 @@ export interface State {
   readonly networks: Network[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
-  readonly uniClaims: UniClaimResult[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -84,33 +80,11 @@ export const StoreProvider: React.FC = ({ children }) => {
     [networks]
   );
 
-  const mainnetAccounts = accounts
-    .filter((a) => a.networkId === DEFAULT_NETWORK)
-    .map((a) => a.address);
-
-  // Uniswap UNI token claims
-  const [uniClaims, setUniClaims] = useState<UniClaimResult[]>([]);
-
-  useEffect(() => {
-    if (mainnetAccounts.length > 0) {
-      UniswapService.instance.getClaims(mainnetAccounts).then((rawClaims) => {
-        if (rawClaims !== null) {
-          UniswapService.instance
-            .isClaimed(networks.find((n) => n.id === DEFAULT_NETWORK)!, rawClaims)
-            .then((claims) => {
-              setUniClaims(claims);
-            });
-        }
-      });
-    }
-  }, [mainnetAccounts.length]);
-
   const state: State = {
     accounts,
     networks,
     currentAccounts,
     accountRestore,
-    uniClaims,
     get userAssets() {
       const userAssets = state.accounts
         .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
