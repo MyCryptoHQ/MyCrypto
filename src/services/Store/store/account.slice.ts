@@ -7,8 +7,7 @@ import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
-import { deriveTxType, makeTxReceipt, merge } from '@services/TxHistory/helpers';
-import { ITxHistoryEntry } from '@services/TxHistory/types';
+import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
 import { translateRaw } from '@translations';
 import {
   Asset,
