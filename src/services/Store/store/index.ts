@@ -79,7 +79,7 @@ export {
   setMembership,
   deleteMembership,
   fetchError,
-  isMyCryptoMember,
+  getIsMyCryptoMember,
   getMembershipState
 } from './membership.slice';
 export {

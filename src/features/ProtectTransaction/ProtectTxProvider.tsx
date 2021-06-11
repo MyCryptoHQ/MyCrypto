@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 
 import BigNumber from 'bignumber.js';
 
@@ -11,7 +11,8 @@ import {
 } from '@services/ApiService';
 import { NansenService, NansenServiceEntry } from '@services/ApiService/Nansen';
 import { useFeatureFlags } from '@services/FeatureFlag';
-import { getAssetByUUID, StoreContext, useAssets } from '@services/Store';
+import { getAssetByUUID, useAssets } from '@services/Store';
+import { getIsMyCryptoMember, useSelector } from '@store';
 import { Asset, IFormikFields, ITxReceipt, Network, TAddress, WalletId } from '@types';
 
 import { PTXReport } from './types';
@@ -81,7 +82,7 @@ export const protectTxProviderInitialState: ProtectTxState = {
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
-  const { isMyCryptoMember } = useContext(StoreContext);
+  const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   // FREE FOR NOW
   const isPTXFree = isMyCryptoMember || true;
   const numOfSteps = isPTXFree ? 2 : 3;

@@ -5,11 +5,12 @@ import { all, put, takeLatest } from 'redux-saga/effects';
 import { trackInit } from '@services';
 
 import accountSlice, { startTxPolling } from './account.slice';
-import assetSlice from './asset.slice';
+import assetSlice, { fetchAssets } from './asset.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
 import { fetchENS } from './ens.slice';
 import { initialLegacyState } from './legacy.initialState';
+import { fetchMemberships } from './membership.slice';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import { APP_PERSIST_CONFIG } from './persist.config';
@@ -55,6 +56,8 @@ export function* persistenceSaga() {
 function* handleRehydrateSuccess(action: IRehydrate) {
   if (action.key === APP_PERSIST_CONFIG.key) {
     yield put(trackInit());
+    yield put(fetchAssets());
+    yield put(fetchMemberships());
     yield put(startRatesPolling());
     yield put(fetchHistory());
     yield put(startTxPolling());

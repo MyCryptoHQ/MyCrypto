@@ -81,7 +81,7 @@ export const getMembershipState = createSelector(
     }
   }
 );
-export const isMyCryptoMember = createSelector(
+export const getIsMyCryptoMember = createSelector(
   [getMembershipState],
   (status) => status === MembershipState.MEMBER
 );
