@@ -3,6 +3,7 @@ import { call } from 'redux-saga-test-plan/matchers';
 import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { ETHUUID, REPV2UUID } from '@config';
+import { NotificationTemplates } from '@features/NotificationsPanel';
 import {
   fAccount,
   fAccounts,
@@ -15,10 +16,14 @@ import {
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
-import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid } from '@types';
+import { translateRaw } from '@translations';
+import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid, WalletId } from '@types';
 
 import { toStoreAccount } from '../utils';
 import {
+  addAccounts,
+  addNewAccounts,
+  addNewAccountsWorker,
   addTxToAccount,
   addTxToAccountWorker,
   getAccounts,
@@ -32,12 +37,18 @@ import {
   default as slice,
   updateAccount
 } from './account.slice';
+import { createOrUpdateContacts } from './contact.slice';
 import { sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
+import { displayNotification } from './notification.slice';
 import { scanTokens } from './tokenScanning.slice';
 
 const reducer = slice.reducer;
 const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
+
+jest.mock('uuid/v4', () => jest.fn().mockImplementation(() => 'foo'));
+
+Date.now = jest.fn().mockImplementation(() => 1623248693738);
 
 describe('AccountSlice', () => {
   it('create(): adds an entity by uuid', () => {
@@ -210,6 +221,203 @@ describe('AccountSlice', () => {
         value: { _hex: '0x038d7ea4c68000', _isBigNumber: true }
       }
     ]);
+  });
+
+  describe('addNewAccountsWorker', () => {
+    const appState = mockAppState({
+      accounts: [],
+      networks: APP_STATE.networks,
+      assets: fAssets,
+      addressBook: [],
+      contracts: []
+    });
+
+    const { label, ...newAccount } = sanitizeAccount(fAccounts[0]);
+    const newAccounts = [
+      {
+        ...newAccount,
+        assets: fAccounts[0].assets
+          .slice(0, 1)
+          .map((a) => ({ uuid: a.uuid, balance: '0', mtime: 1623248693738 }))
+      }
+    ];
+
+    it('adds new accounts', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(appState)
+        .put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .put(addAccounts(newAccounts))
+        .put(fetchMemberships(newAccounts))
+        .put(scanTokens({ accounts: newAccounts }))
+        .put(
+          displayNotification({
+            templateName: NotificationTemplates.walletAdded,
+            templateData: { address: newAccounts[0].address }
+          })
+        )
+        .silentRun();
+    });
+
+    it('doesnt run if no accounts passed', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts: []
+        })
+      )
+        .withState(appState)
+        .not.put(addAccounts(newAccounts))
+        .silentRun();
+    });
+
+    it('displays notification if accounts failed to add', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: newAccounts,
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [],
+            contracts: []
+          })
+        )
+        .put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }))
+        .silentRun();
+    });
+
+    it('shows different notification for multiple accounts', () => {
+      const accounts = [newAccounts[0], newAccounts[0]];
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts: accounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [],
+            contracts: []
+          })
+        )
+        .put(
+          displayNotification({
+            templateName: NotificationTemplates.walletsAdded,
+            templateData: { accounts }
+          })
+        )
+        .silentRun();
+    });
+
+    it('updates unknown labels', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [
+              {
+                uuid: 'foo' as TUuid,
+                address: fAccounts[0].address,
+                label: translateRaw('NO_LABEL'),
+                notes: '',
+                network: 'Ethereum'
+              }
+            ],
+            contracts: []
+          })
+        )
+        .put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .silentRun();
+    });
+
+    it('doesnt update labels if no updates are needed', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [
+              {
+                uuid: 'foo' as TUuid,
+                address: fAccounts[0].address,
+                label: 'Foobar',
+                notes: '',
+                network: 'Ethereum'
+              }
+            ],
+            contracts: []
+          })
+        )
+        .not.put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .silentRun();
+    });
   });
 
   describe('addTxToAccountWorker', () => {

@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ExtendedContact, IAccount, LSKeys, TAddress, TUuid } from '@types';
 import { generateUUID, isSameAddress } from '@utils';
-import { find, findIndex, prop, propEq, uniqBy } from '@vendor';
+import { findIndex, prop, propEq, uniqBy } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -38,6 +38,9 @@ const slice = createSlice({
           }
         };
       }
+    },
+    createOrUpdateMultiple(state, action: PayloadAction<ExtendedContact[]>) {
+      return uniqBy(prop('uuid'), [...action.payload, ...state]);
     }
   }
 });
@@ -46,12 +49,13 @@ export const {
   create: createContact,
   destroy: destroyContact,
   update: updateContact,
-  createOrUpdate: createOrUpdateContact
+  createOrUpdate: createOrUpdateContact,
+  createOrUpdateMultiple: createOrUpdateContacts
 } = slice.actions;
 
-export const selectContacts = createSelector(getAppState, (s) => s[slice.name]);
+export const selectContacts = createSelector(getAppState, (s) => s.addressBook);
 export const selectContact = (uuid: TUuid) =>
-  createSelector(selectContacts, find(propEq('uuid', uuid)));
+  createSelector(selectContacts, (contacts) => contacts.find((c) => c.uuid === uuid));
 
 export const selectAccountContact = (account: IAccount) =>
   createSelector(selectContacts, (contacts) =>

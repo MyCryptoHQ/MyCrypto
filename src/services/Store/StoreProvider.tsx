@@ -12,45 +12,26 @@ import {
   useDispatch,
   useSelector
 } from '@store';
-import { translateRaw } from '@translations';
 import {
   Asset,
   Bigish,
   IAccount,
-  IAccountAdditionData,
   Network,
-  NetworkId,
   StoreAccount,
   StoreAsset,
-  TAddress,
   TUuid,
   WalletId
 } from '@types';
-import {
-  bigify,
-  convertToFiatFromAsset,
-  generateDeterministicAddressUUID,
-  generateUUID,
-  getWeb3Config,
-  isArrayEqual,
-  useInterval
-} from '@utils';
+import { bigify, convertToFiatFromAsset, isArrayEqual, useInterval } from '@utils';
 import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy, useEffectOnce } from '@vendor';
 
 import { UniswapService } from '../ApiService';
 import { getDashboardAccounts, useAccounts } from './Account';
-import { getNewDefaultAssetTemplateByNetwork, getTotalByAsset, useAssets } from './Asset';
+import { getTotalByAsset, useAssets } from './Asset';
 import { getAccountsAssetsBalances } from './BalanceService';
-import { useContacts } from './Contact';
-import { findMultipleNextUnusedDefaultLabels } from './Contact/helpers';
 import { isNotExcludedAsset } from './helpers';
-import { getNetworkById, useNetworks } from './Network';
+import { useNetworks } from './Network';
 import { useSettings } from './Settings';
-
-interface IAddAccount {
-  address: TAddress;
-  dPath: string;
-}
 
 export interface State {
   readonly accounts: StoreAccount[];
@@ -68,28 +49,16 @@ export interface State {
   ): (getAssetRate: (asset: Asset) => number | undefined) => Bigish;
   deleteAccountFromCache(account: IAccount): void;
   restoreDeletedAccount(accountId: TUuid): void;
-  addMultipleAccounts(
-    networkId: NetworkId,
-    walletId: WalletId | undefined,
-    accounts: IAccountAdditionData[]
-  ): IAccount[] | undefined;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider: React.FC = ({ children }) => {
-  const {
-    accounts,
-    getAccountByAddressAndNetworkName,
-    updateAccounts,
-    deleteAccount,
-    createMultipleAccountsWithIDs
-  } = useAccounts();
+  const { accounts, updateAccounts, deleteAccount } = useAccounts();
   const { assets } = useAssets();
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
-  const { createContact, contacts, getContactByAddressAndNetworkId, updateContact } = useContacts();
   const dispatch = useDispatch();
 
   const [accountRestore, setAccountRestore] = useState<{ [name: string]: IAccount | undefined }>(
@@ -199,56 +168,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
       dispatch(addAccounts([account!]));
       setAccountRestore((prevState) => ({ ...prevState, [account!.uuid]: undefined }));
-    },
-    addMultipleAccounts: (
-      networkId: NetworkId,
-      accountType: WalletId | undefined,
-      newAccounts: IAddAccount[]
-    ) => {
-      const network: Network | undefined = getNetworkById(networkId, networks);
-      if (!network || newAccounts.length === 0) return;
-      const accountsToAdd = newAccounts.filter(
-        ({ address }) => !getAccountByAddressAndNetworkName(address, networkId)
-      );
-      const walletType =
-        accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
-      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-      const newRawAccounts = accountsToAdd.map(({ address, dPath }) => ({
-        address,
-        networkId,
-        wallet: walletType,
-        dPath,
-        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
-        transactions: [],
-        favorite: false,
-        mtime: 0,
-        uuid: generateDeterministicAddressUUID(networkId, address)
-      }));
-      if (newRawAccounts.length === 0) return;
-      const newLabels = findMultipleNextUnusedDefaultLabels(
-        newRawAccounts[0].wallet,
-        newRawAccounts.length
-      )(contacts);
-      newRawAccounts.forEach((rawAccount, idx) => {
-        const existingContact = getContactByAddressAndNetworkId(rawAccount.address, networkId);
-        if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
-          updateContact({
-            ...existingContact,
-            label: newLabels[idx]
-          });
-        } else if (!existingContact) {
-          const newLabel = {
-            label: newLabels[idx],
-            address: rawAccount.address,
-            notes: '',
-            network: rawAccount.networkId,
-            uuid: generateUUID()
-          };
-          createContact(newLabel);
-        }
-      });
-      createMultipleAccountsWithIDs(newRawAccounts);
-      return newRawAccounts;
     }
   };
 

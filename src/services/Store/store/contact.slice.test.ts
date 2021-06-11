@@ -12,7 +12,7 @@ import {
 } from './contact.slice';
 
 const reducer = slice.reducer;
-const { create, destroy, update, createOrUpdate } = slice.actions;
+const { create, destroy, update, createOrUpdate, createOrUpdateMultiple } = slice.actions;
 
 describe('ContactSlice', () => {
   it('has an initial state', () => {
@@ -74,6 +74,16 @@ describe('ContactSlice', () => {
     const state = reducer(fContacts, createOrUpdate(expected));
     const actual = state.filter((c) => c.uuid === expected.uuid);
     expect(actual).toHaveLength(1);
+  });
+
+  it('createOrUpdateMultiple(): returns a list of unique contacts by uuid', () => {
+    const input = [
+      { ...fContacts[0], label: 'updated_label' },
+      { ...fContacts[1], label: 'updated_label2' }
+    ];
+    const actual = reducer(fContacts, createOrUpdateMultiple(input));
+    const expected = [...input, fContacts[2]];
+    expect(actual).toStrictEqual(expected);
   });
 
   it('selectAccountContact(): Selects a contact based on an account', () => {

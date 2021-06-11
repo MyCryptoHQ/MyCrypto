@@ -28,7 +28,7 @@ describe('useNotifications', () => {
     expect(result.current.currentNotification).toBe(notification);
   });
 
-  it('displayNotification() dispatches create action', () => {
+  it('displayNotification() dispatches display action', () => {
     const mockDispatch = mockUseDispatch();
     const { result } = renderUseNotifications({ notifications: [] });
     act(() =>
@@ -38,12 +38,8 @@ describe('useNotifications', () => {
     );
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
-        template: NotificationTemplates.walletCreated,
-        templateData: { address: fAccount.address },
-        dismissed: false,
-        dateDismissed: undefined,
-        dateDisplayed: expect.any(Date),
-        uuid: expect.any(String)
+        templateName: NotificationTemplates.walletCreated,
+        templateData: { address: fAccount.address }
       })
     );
   });

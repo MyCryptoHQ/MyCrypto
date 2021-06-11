@@ -1,5 +1,14 @@
-import { DEFAULT_NETWORK, getWalletConfig } from '@config';
-import { Contact, ExtendedContact, IAccount, Network, TAddress, WalletId } from '@types';
+import { DEFAULT_NETWORK, getWalletConfig, STATIC_CONTACTS } from '@config';
+import {
+  Contact,
+  ExtendedContact,
+  ExtendedContract,
+  IAccount,
+  Network,
+  NetworkId,
+  TAddress,
+  WalletId
+} from '@types';
 import { isSameAddress } from '@utils';
 
 export const getLabelByAccount = (
@@ -68,3 +77,32 @@ export const findMultipleNextUnusedDefaultLabels = (wallet: WalletId, numOfLabel
 
 export const findNextRecipientLabel = (contacts: Contact[]) =>
   getUnusedLabel(contacts, (index) => `Recipient ${index}`);
+
+export const getContactFromContracts = (contracts: ExtendedContract[]) => (
+  address: TAddress,
+  networkId?: NetworkId
+): ExtendedContact | undefined => {
+  const contract = contracts.find(
+    (c) => c.address === address && (c.networkId === networkId || !networkId)
+  );
+  const contact: ExtendedContact | undefined = contract && {
+    address,
+    label: contract.name,
+    network: contract.networkId,
+    notes: '',
+    uuid: contract.uuid
+  };
+  return contact;
+};
+
+export const getContactByAddressAndNetworkId = (
+  contacts: ExtendedContact[],
+  contracts: ExtendedContract[]
+) => (address: TAddress, networkId: NetworkId) => {
+  return (
+    [...contacts, ...STATIC_CONTACTS]
+      .filter((contact: ExtendedContact) => contact.network === networkId)
+      .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ||
+    getContactFromContracts(contracts)(address, networkId)
+  );
+};
