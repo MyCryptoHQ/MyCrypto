@@ -1,15 +1,12 @@
-import { defaultContacts, defaultSettings, getCurrentDBConfig } from '@database';
-import { LSKeys, TUuid } from '@types';
+import { defaultSettings, getCurrentDBConfig } from '@database';
+import { LSKeys } from '@types';
 
 import { deMarshallState, marshallState } from '../DataManager/utils';
 
 export const emptyState = {
   version: getCurrentDBConfig().version,
   [LSKeys.ACCOUNTS]: [],
-  [LSKeys.ADDRESS_BOOK]: Object.entries(defaultContacts).map(([k, v]) => ({
-    ...v,
-    uuid: k as TUuid
-  })),
+  [LSKeys.ADDRESS_BOOK]: [],
   [LSKeys.ASSETS]: [],
   [LSKeys.RATES]: {},
   [LSKeys.TRACKED_ASSETS]: {},
