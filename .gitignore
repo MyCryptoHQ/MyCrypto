@@ -69,3 +69,4 @@ node-scripts/**/*.js
 /node-scripts/translations/__mocks__/sample.json
 
 .env
+.cache
