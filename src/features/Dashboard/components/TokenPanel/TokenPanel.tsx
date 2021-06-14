@@ -2,7 +2,13 @@ import React, { useContext, useState } from 'react';
 
 import { StoreContext, useRates, useSettings } from '@services';
 import { isNotExcludedAsset } from '@services/Store/helpers';
-import { isScanning as isScanningSelector, scanTokens, useDispatch, useSelector } from '@store';
+import {
+  isScanning as isScanningSelector,
+  scanTokens,
+  selectCurrentAccounts,
+  useDispatch,
+  useSelector
+} from '@store';
 import { ExtendedAsset, StoreAsset } from '@types';
 
 import { AddToken } from './AddToken';
@@ -10,7 +16,8 @@ import { TokenDetails } from './TokenDetails';
 import { TokenList } from './TokenList';
 
 export function TokenPanel() {
-  const { totals, currentAccounts } = useContext(StoreContext);
+  const { totals } = useContext(StoreContext);
+  const currentAccounts = useSelector(selectCurrentAccounts);
   const isScanning = useSelector(isScanningSelector);
   const dispatch = useDispatch();
   const { settings } = useSettings();
