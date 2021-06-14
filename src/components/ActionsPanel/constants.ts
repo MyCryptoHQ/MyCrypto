@@ -15,16 +15,23 @@ import {
   UNISWAP_LINK
 } from '@config';
 import translate, { translateRaw } from '@translations';
-import { ACTION_CATEGORIES, ACTION_NAME, ActionFilters, ActionTemplate, ClaimState } from '@types';
+import {
+  ACTION_CATEGORIES,
+  ACTION_NAME,
+  ActionFilters,
+  ActionTemplate,
+  ClaimState,
+  ClaimType
+} from '@types';
 import { formatSupportEmail, isHardwareWallet, randomElementFromArray } from '@utils';
 
 import {
   ActionButton,
   ActionButtonProps,
+  ClaimSubHead,
+  ClaimTable,
   MigrationSubHead,
-  MigrationTable,
-  UniClaimSubHead,
-  UniClaimTable
+  MigrationTable
 } from './components';
 
 interface IHwWalletElement {
@@ -101,12 +108,15 @@ export const actionTemplates: ActionTemplate[] = [
     name: ACTION_NAME.CLAIM_UNI,
     heading: translateRaw('CLAIM_UNI_ACTION_HEADING'),
     icon: 'uni-logo',
-    subHeading: UniClaimSubHead,
+    subHeading: ClaimSubHead,
     body: [translate('CLAIM_UNI_ACTION_BODY')],
-    filter: ({ uniClaims }: ActionFilters) =>
-      uniClaims.some((c) => c.state === ClaimState.UNCLAIMED),
+    filter: ({ claims }: ActionFilters) =>
+      claims[ClaimType.UNI]?.some((c) => c.state === ClaimState.UNCLAIMED),
     priority: 30,
-    Component: UniClaimTable,
+    Component: ClaimTable,
+    props: {
+      type: ClaimType.UNI
+    },
     button: {
       component: ActionButton,
       props: {

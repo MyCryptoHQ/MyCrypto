@@ -3,33 +3,35 @@ import React from 'react';
 import { screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
-import { ClaimState } from '@types';
+import { ClaimState, ClaimType } from '@types';
 import { truncate } from '@utils';
 
-import { UniClaimTable } from '../components/UniClaimTable';
+import { ClaimTable } from '../components/ClaimTable';
 
 function getComponent() {
-  return simpleRender(<UniClaimTable />, {
+  return simpleRender(<ClaimTable type={ClaimType.UNI} />, {
     initialState: {
       claims: {
-        uniClaims: [
-          {
-            address: fAccounts[0].address,
-            state: ClaimState.UNCLAIMED,
-            amount: '403'
-          },
-          {
-            address: fAccounts[2].address,
-            state: ClaimState.CLAIMED,
-            amount: '403'
-          }
-        ]
+        claims: {
+          [ClaimType.UNI]: [
+            {
+              address: fAccounts[0].address,
+              state: ClaimState.UNCLAIMED,
+              amount: '403'
+            },
+            {
+              address: fAccounts[2].address,
+              state: ClaimState.CLAIMED,
+              amount: '403'
+            }
+          ]
+        }
       }
     }
   });
 }
 
-describe('UniClaimTable', () => {
+describe('ClaimTable', () => {
   test('render the table', async () => {
     getComponent();
 

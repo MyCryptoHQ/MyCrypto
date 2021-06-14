@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { Text } from '@components/NewTypography';
-import { getUniClaims, useSelector } from '@store';
+import { getClaims, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import { ClaimState } from '@types';
+import { ClaimState, ClaimType } from '@types';
 
-export const UniClaimSubHead = () => {
-  const uniClaims = useSelector(getUniClaims);
+export const ClaimSubHead = ({ type }: { type: ClaimType }) => {
+  const claims = useSelector(getClaims(type));
 
-  const relevantAccounts = uniClaims.filter((a) => a.state === ClaimState.UNCLAIMED);
+  const relevantAccounts = claims.filter((a) => a.state === ClaimState.UNCLAIMED);
   return (
     <Text mb={0} color="GREY">
       {translateRaw(

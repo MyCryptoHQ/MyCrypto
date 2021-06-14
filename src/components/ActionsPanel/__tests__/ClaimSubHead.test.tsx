@@ -4,27 +4,29 @@ import { screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
-import { ClaimState } from '@types';
+import { ClaimState, ClaimType } from '@types';
 
-import { UniClaimSubHead } from '../components/UniClaimSubHead';
+import { ClaimSubHead } from '../components/ClaimSubHead';
 
 function getComponent() {
-  return simpleRender(<UniClaimSubHead />, {
+  return simpleRender(<ClaimSubHead type={ClaimType.UNI} />, {
     initialState: {
       claims: {
-        uniClaims: [
-          {
-            address: fAccounts[0].address,
-            state: ClaimState.UNCLAIMED,
-            amount: '403'
-          }
-        ]
+        claims: {
+          [ClaimType.UNI]: [
+            {
+              address: fAccounts[0].address,
+              state: ClaimState.UNCLAIMED,
+              amount: '403'
+            }
+          ]
+        }
       }
     }
   });
 }
 
-describe('UniClaimSubHead', () => {
+describe('ClaimSubHead', () => {
   test('Render the subHeading', async () => {
     getComponent();
 

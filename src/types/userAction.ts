@@ -4,7 +4,7 @@ import { ActionButtonProps, TIcon } from '@components';
 
 import { StoreAccount } from './account';
 import { StoreAsset } from './asset';
-import { ClaimResult } from './claims';
+import { ClaimResult, ClaimType } from './claims';
 import { DomainNameRecord } from './ens';
 import { TUuid } from './uuid';
 
@@ -47,7 +47,7 @@ export enum ACTION_STATE {
 
 export interface ActionFilters {
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
-  uniClaims: ClaimResult[];
+  claims: Record<ClaimType, ClaimResult[]>;
   ensOwnershipRecords: DomainNameRecord[];
   accounts: StoreAccount[];
   isMyCryptoMember: boolean;

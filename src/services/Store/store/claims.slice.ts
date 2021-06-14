@@ -2,7 +2,7 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { UniswapService } from '@services/ApiService/Uniswap';
-import { ClaimResult, IAccount, Network, StoreAccount } from '@types';
+import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
 
 import {
   createAccounts,
@@ -14,7 +14,7 @@ import { selectDefaultNetwork } from './network.slice';
 import { AppState } from './root.reducer';
 
 export const initialState = {
-  uniClaims: [] as ClaimResult[],
+  claims: {} as Record<ClaimType, ClaimResult[]>,
   error: false
 };
 
@@ -22,8 +22,8 @@ const slice = createSlice({
   name: 'claims',
   initialState,
   reducers: {
-    setUniClaims(state, action: PayloadAction<ClaimResult[]>) {
-      state.uniClaims = action.payload;
+    setClaims(state, action: PayloadAction<{ type: ClaimType; claims: ClaimResult[] }>) {
+      state.claims[action.payload.type] = action.payload.claims;
     },
     fetchError(state) {
       state.error = true;
@@ -31,7 +31,7 @@ const slice = createSlice({
   }
 });
 
-export const fetchClaims = createAction<IAccount[] | undefined>(`${slice.name}/fetchClaims`);
+export const fetchClaims = createAction(`${slice.name}/fetchClaims`);
 
 /**
  * Selectors
@@ -40,7 +40,9 @@ export const getSlice = createSelector(
   (s: AppState) => s.claims,
   (s) => s
 );
-export const getUniClaims = createSelector([getSlice], (s) => s.uniClaims);
+export const getAllClaims = createSelector([getSlice], (s) => s.claims);
+export const getClaims = (type: ClaimType) =>
+  createSelector([getAllClaims], (claims) => claims[type]);
 /**
  * Sagas
  */
@@ -71,12 +73,12 @@ export function* fetchUniClaimsWorker() {
 
     const claims = yield call(UniswapService.instance.isClaimed, network, rawClaims);
 
-    yield put(slice.actions.setUniClaims(claims));
+    yield put(slice.actions.setClaims({ type: ClaimType.UNI, claims }));
   } catch (err) {
     yield put(slice.actions.fetchError());
   }
 }
 
-export const { setUniClaims } = slice.actions;
+export const { setClaims } = slice.actions;
 
 export default slice;
