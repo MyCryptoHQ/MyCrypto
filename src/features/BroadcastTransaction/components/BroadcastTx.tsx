@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
-import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import {
+  Box,
   Button,
   CodeBlock,
   InlineMessage,
@@ -15,8 +15,9 @@ import {
   Tooltip
 } from '@components';
 import { verifyTransaction } from '@helpers';
-import { AppState } from '@store';
-import { getNetwork } from '@store/network.slice';
+import { getNetworkByChainId } from '@services/Store/Network';
+import { useSelector } from '@store';
+import { selectNetworks } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
 
@@ -94,17 +95,13 @@ interface Props {
   handleNetworkChanged(network: NetworkId): void;
 }
 
-const BroadcastTx = ({
-  signedTx,
-  networkId,
-  onComplete,
-  handleNetworkChanged
-}: Props & ConnectedProps<typeof connector>) => {
+export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChanged }: Props) => {
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
   const [transaction, setTransaction] = useState<Transaction | undefined>(
     makeTxFromSignedTx(signedTx)
   );
+  const networks = useSelector(selectNetworks);
 
   useEffect(() => {
     if (transaction && verifyTransaction(transaction)) {
@@ -122,30 +119,37 @@ const BroadcastTx = ({
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
 
-  const isValid = transaction !== undefined && inputError.length === 0;
+  const validNetwork =
+    transaction && transaction.chainId ? getNetworkByChainId(transaction?.chainId, networks) : true;
+  const isValid = transaction !== undefined && inputError.length === 0 && validNetwork;
 
   return (
     <ContentWrapper>
       <Description>{translate('BROADCAST_TX_DESCRIPTION')}</Description>
-      <InputWrapper>
-        <InputField
-          label={translateRaw('SEND_SIGNED')}
-          value={userInput}
-          textarea={true}
-          height={'250px'}
-          placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
-          onChange={handleChange}
-          inputError={userInput.length > 0 ? inputError : ''}
-        />
-      </InputWrapper>
+      <Box pb="15px" width="100%">
+        <InputWrapper>
+          <InputField
+            label={translateRaw('SEND_SIGNED')}
+            value={userInput}
+            textarea={true}
+            height={'250px'}
+            placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
+            onChange={handleChange}
+            inputError={userInput.length > 0 ? inputError : ''}
+            marginBottom="0"
+          />
+        </InputWrapper>
+        {!validNetwork && (
+          <InlineMessage>
+            {translate('BROADCAST_TX_INVALID_CHAIN_ID', { $chain_id: transaction?.chainId })}
+          </InlineMessage>
+        )}
+      </Box>
       {isValid && (
         <React.Fragment>
           {!transaction!.chainId && (
             <NetworkSelectWrapper>
               <NetworkSelector network={networkId} onChange={handleNetworkChanged} />
-              {!networkId && (
-                <InlineMessage>{translate('BROADCAST_TX_INVALID_CHAIN_ID')}</InlineMessage>
-              )}
             </NetworkSelectWrapper>
           )}
           <StyledLabel>
@@ -163,11 +167,3 @@ const BroadcastTx = ({
     </ContentWrapper>
   );
 };
-
-const mapStateToProps = (state: AppState) => ({
-  getNetwork: (n: NetworkId) => getNetwork(n)(state)
-});
-
-const connector = connect(mapStateToProps);
-
-export default connector(BroadcastTx);

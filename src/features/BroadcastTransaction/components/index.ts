@@ -1,1 +1,1 @@
-export { default as BroadcastTx } from './BroadcastTx';
+export { BroadcastTx } from './BroadcastTx';
