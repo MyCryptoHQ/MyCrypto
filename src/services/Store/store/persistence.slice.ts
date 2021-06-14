@@ -62,10 +62,8 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(startRatesPolling());
     yield put(fetchHistory());
     yield put(startTxPolling());
+    yield put(startBalancesPolling());
     yield put(fetchENS());
     yield put(fetchClaims());
-    yield put(startBalancesPolling());
-    yield put(fetchMemberships());
-    yield put(fetchAssets());
   }
 }

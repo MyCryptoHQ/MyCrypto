@@ -25,9 +25,7 @@ describe('SendAssetsFlow', () => {
       <StoreContext.Provider
         value={
           ({
-            userAssets: fAssets,
             accounts: fAccounts,
-            getAccount: jest.fn(),
             networks: APP_STATE.networks
           } as unknown) as any
         }

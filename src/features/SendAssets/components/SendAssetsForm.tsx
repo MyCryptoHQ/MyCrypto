@@ -251,7 +251,7 @@ interface ISendFormProps extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
+export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
   const { accounts, networks } = useContext(StoreContext);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
@@ -868,5 +868,3 @@ const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProp
     </div>
   );
 };
-
-export default SendAssetsForm;

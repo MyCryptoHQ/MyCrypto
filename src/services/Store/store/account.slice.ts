@@ -279,8 +279,8 @@ export const addTxToAccount = createAction<{
 export const startTxPolling = createAction(`${slice.name}/startTxPolling`);
 export const stopTxPolling = createAction(`${slice.name}/stopTxPolling`);
 
-export const startBalancesPolling = createAction(`${slice.name}/startPolling`);
-export const stopBalancesPolling = createAction(`${slice.name}/stopPolling`);
+export const startBalancesPolling = createAction(`${slice.name}/startBalancesPolling`);
+export const stopBalancesPolling = createAction(`${slice.name}/stopBalancesPolling`);
 
 /**
  * Sagas
