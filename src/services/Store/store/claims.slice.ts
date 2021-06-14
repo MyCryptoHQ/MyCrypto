@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { UniswapService } from '@services/ApiService/Uniswap';
+import { UniswapService } from '@services/ApiService';
 import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
 
 import {
@@ -67,11 +67,15 @@ export function* fetchUniClaimsWorker() {
 
   try {
     const rawClaims = yield call(
-      UniswapService.instance.getClaims,
+      [UniswapService.instance, UniswapService.instance.getClaims],
       filteredAccounts.map((a) => a.address)
     );
 
-    const claims = yield call(UniswapService.instance.isClaimed, network, rawClaims);
+    const claims = yield call(
+      [UniswapService.instance, UniswapService.instance.isClaimed],
+      network,
+      rawClaims
+    );
 
     yield put(slice.actions.setClaims({ type: ClaimType.UNI, claims }));
   } catch (err) {
