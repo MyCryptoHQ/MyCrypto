@@ -57,9 +57,9 @@ import { getNetwork, selectNetworks } from './network.slice';
 import { displayNotification } from './notification.slice';
 import { getAppState } from './selectors';
 import {
-  addAccountsToFavorites,
+  addAccountsToDefaults,
+  getDefaults,
   getExcludedAssets,
-  getFavorites,
   getIsDemoMode
 } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
@@ -261,9 +261,9 @@ export const getMergedTxHistory = createSelector(
 );
 
 export const selectCurrentAccounts = createSelector(
-  [getStoreAccounts, getFavorites],
-  (accounts, favorites) => {
-    return accounts.filter(({ uuid }) => favorites.indexOf(uuid) >= 0);
+  [getStoreAccounts, getDefaults],
+  (accounts, Defaults) => {
+    return accounts.filter(({ uuid }) => Defaults.indexOf(uuid) >= 0);
   }
 );
 
@@ -313,10 +313,10 @@ export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
   // This is where demo mode is disabled when adding new accounts.
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(payload));
-    yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+    yield put(addAccountsToDefaults(payload.map(({ uuid }) => uuid)));
   } else {
     yield put(slice.actions.createMany(payload));
-    yield put(addAccountsToFavorites(payload.map(({ uuid }) => uuid)));
+    yield put(addAccountsToDefaults(payload.map(({ uuid }) => uuid)));
   }
 }
 

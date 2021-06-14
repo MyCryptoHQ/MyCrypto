@@ -15,13 +15,13 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    addFavorite(state, action: PayloadAction<TUuid>) {
+    addDefault(state, action: PayloadAction<TUuid>) {
       state.dashboardAccounts.push(action.payload);
     },
-    addFavorites(state, action: PayloadAction<TUuid[]>) {
+    addDefaults(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = [...state.dashboardAccounts, ...action.payload];
     },
-    resetFavoritesTo(state, action: PayloadAction<TUuid[]>) {
+    resetDefaultsTo(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = action.payload;
     },
     addExcludedAsset(state, action: PayloadAction<TUuid>) {
@@ -47,9 +47,9 @@ const slice = createSlice({
 });
 
 export const {
-  addFavorite,
-  addFavorites,
-  resetFavoritesTo,
+  addDefault,
+  addDefaults,
+  resetDefaultsTo,
   setLanguage,
   setFiat,
   addExcludedAsset,
@@ -64,7 +64,7 @@ export default slice;
  * Selectors
  */
 export const getSettings = createSelector(getAppState, (s) => s[slice.name]);
-export const getFavorites = createSelector(getSettings, (s) => s.dashboardAccounts);
+export const getDefaults = createSelector(getSettings, (s) => s.dashboardAccounts);
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
@@ -76,21 +76,21 @@ export const canTrackProductAnalytics = createSelector(
 /**
  * Actions
  */
-export const addAccountsToFavorites = createAction<TUuid[]>(`${slice.name}/addAccountsToFavorites`);
+export const addAccountsToDefaults = createAction<TUuid[]>(`${slice.name}/addAccountsToDefaults`);
 
 /**
  * Sagas
  */
 export function* settingsSaga() {
-  yield takeLatest(addAccountsToFavorites.type, handleAddAccountsToFavorites);
+  yield takeLatest(addAccountsToDefaults.type, handleAddAccountsToDefaults);
 }
 
-export function* handleAddAccountsToFavorites({ payload }: PayloadAction<TUuid[]>) {
+export function* handleAddAccountsToDefaults({ payload }: PayloadAction<TUuid[]>) {
   const isDemoMode = yield select(getIsDemoMode);
   if (isDemoMode) {
     yield put(slice.actions.setDemoMode(false));
-    yield put(slice.actions.resetFavoritesTo(payload));
+    yield put(slice.actions.resetDefaultsTo(payload));
   } else {
-    yield put(slice.actions.addFavorites(payload));
+    yield put(slice.actions.addDefaults(payload));
   }
 }

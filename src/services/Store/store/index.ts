@@ -87,9 +87,9 @@ export {
   getMembershipState
 } from './membership.slice';
 export {
-  resetFavoritesTo,
-  addFavorites,
-  addFavorite,
+  resetDefaultsTo,
+  addDefaults,
+  addDefault,
   addExcludedAsset,
   removeExcludedAsset,
   setLanguage,
@@ -97,7 +97,7 @@ export {
   setFiat,
   setDemoMode,
   getIsDemoMode,
-  addAccountsToFavorites,
+  addAccountsToDefaults,
   canTrackProductAnalytics,
   setProductAnalyticsAuthorisation,
   getSettings

@@ -4,18 +4,18 @@ import { mockAppState } from 'test-utils';
 import { TFiatTicker, TUuid } from '@types';
 
 import {
+  addDefault,
+  addDefaults,
   addExcludedAsset,
-  addFavorite,
-  addFavorites,
   canTrackProductAnalytics,
+  getDefaults,
   getExcludedAssets,
-  getFavorites,
   getFiat,
   getIsDemoMode,
   getLanguage,
   initialState,
   removeExcludedAsset,
-  resetFavoritesTo,
+  resetDefaultsTo,
   setDemoMode,
   setFiat,
   setLanguage,
@@ -34,29 +34,26 @@ describe('settingsSlice', () => {
     expect(actual).toEqual(mockAppState({ [slice.name]: expected }));
   });
 
-  it('addFavorite(): adds an account uuid to favorites', () => {
+  it('addDefault(): adds an account uuid to Defaults', () => {
     const uuid = 'uuid1' as TUuid;
-    const actual = reducer(initialState, addFavorite(uuid));
+    const actual = reducer(initialState, addDefault(uuid));
     const expected = [uuid];
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getDefaults(actual)).toEqual(expected);
   });
 
-  it('addFavorites(): adds multiple account uuids to favorites', () => {
+  it('addDefaults(): adds multiple account uuids to Defaults', () => {
     const toAdd = ['uuid1', 'uuid2'] as TUuid[];
-    const actual = reducer(initialState, addFavorites(toAdd));
+    const actual = reducer(initialState, addDefaults(toAdd));
     const expected = toAdd;
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getDefaults(actual)).toEqual(expected);
   });
 
-  it('resetFavoritesTo(): replaces favorites with new accounts', () => {
+  it('resetDefaultsTo(): replaces Defaults with new accounts', () => {
     const current = ['uuid1', 'uuid2'] as TUuid[];
     const toAdd = ['uuid3', 'uuid4'] as TUuid[];
-    const actual = reducer(
-      { ...initialState, dashboardAccounts: current },
-      resetFavoritesTo(toAdd)
-    );
+    const actual = reducer({ ...initialState, dashboardAccounts: current }, resetDefaultsTo(toAdd));
     const expected = toAdd;
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getDefaults(actual)).toEqual(expected);
   });
 
   it('setLanguage(): sets users language preference', () => {
