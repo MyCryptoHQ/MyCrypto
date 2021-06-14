@@ -28,7 +28,6 @@ interface DomainRegistration {
 
 interface OwnershipRecord {
   address: string;
-  label: string;
   registrations: DomainRegistration[];
 }
 
@@ -43,13 +42,7 @@ const fetchOwnershipRecords = (accounts: StoreAccount[]): Promise<DomainNameReco
     .then(flatten);
 };
 
-const fetchOwnershipRecord = ({
-  label,
-  address
-}: {
-  label: string;
-  address: string;
-}): Promise<OwnershipRecord> => {
+const fetchOwnershipRecord = ({ address }: { address: string }): Promise<OwnershipRecord> => {
   return service
     .query({
       query: QUERY_GET_ENS_DOMAINS,
@@ -58,24 +51,20 @@ const fetchOwnershipRecord = ({
     .then((res) => res.data)
     .then((data) => ({
       address,
-      label,
       registrations: recordRegistrations(data) as DomainRegistration[]
     }));
 };
 
 const processRecord = ({
   address,
-  label,
   registrations = []
 }: {
   address: string;
-  label: string;
   registrations: DomainRegistration[];
 }) => {
   return map(
     ({ expiryDate, domain: { name } }) => ({
       owner: address,
-      ownerLabel: label,
       domainName: name,
       readableDomainName: !isENSLabelHash(name) ? name : translateRaw('ENS_DOMAIN_UNKNOWN_NAME'),
       expiryDate

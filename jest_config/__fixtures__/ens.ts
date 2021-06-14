@@ -25,7 +25,6 @@ export const fEnsRecords = [
     domainName: 'mycrypto.eth',
     expiryDate: '1754111315',
     owner: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-    ownerLabel: 'MyCrypto Team Tip Jar',
     readableDomainName: 'mycrypto.eth'
   }
 ];
