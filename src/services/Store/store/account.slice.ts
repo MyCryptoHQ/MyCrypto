@@ -57,8 +57,8 @@ import { getNetwork, selectNetworks } from './network.slice';
 import { displayNotification } from './notification.slice';
 import { getAppState } from './selectors';
 import {
-  addAccountsToDefaults,
-  getDefaults,
+  addAccountsToCurrents,
+  getCurrents,
   getExcludedAssets,
   getIsDemoMode
 } from './settings.slice';
@@ -261,9 +261,9 @@ export const getMergedTxHistory = createSelector(
 );
 
 export const selectCurrentAccounts = createSelector(
-  [getStoreAccounts, getDefaults],
-  (accounts, Defaults) => {
-    return accounts.filter(({ uuid }) => Defaults.indexOf(uuid) >= 0);
+  [getStoreAccounts, getCurrents],
+  (accounts, currents) => {
+    return accounts.filter(({ uuid }) => currents.indexOf(uuid) >= 0);
   }
 );
 
@@ -313,10 +313,10 @@ export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
   // This is where demo mode is disabled when adding new accounts.
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(payload));
-    yield put(addAccountsToDefaults(payload.map(({ uuid }) => uuid)));
+    yield put(addAccountsToCurrents(payload.map(({ uuid }) => uuid)));
   } else {
     yield put(slice.actions.createMany(payload));
-    yield put(addAccountsToDefaults(payload.map(({ uuid }) => uuid)));
+    yield put(addAccountsToCurrents(payload.map(({ uuid }) => uuid)));
   }
 }
 

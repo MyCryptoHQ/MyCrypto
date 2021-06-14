@@ -15,13 +15,13 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    addDefault(state, action: PayloadAction<TUuid>) {
+    addCurrent(state, action: PayloadAction<TUuid>) {
       state.dashboardAccounts.push(action.payload);
     },
-    addDefaults(state, action: PayloadAction<TUuid[]>) {
+    addCurrents(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = [...state.dashboardAccounts, ...action.payload];
     },
-    resetDefaultsTo(state, action: PayloadAction<TUuid[]>) {
+    resetCurrentsTo(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = action.payload;
     },
     addExcludedAsset(state, action: PayloadAction<TUuid>) {
@@ -47,9 +47,9 @@ const slice = createSlice({
 });
 
 export const {
-  addDefault,
-  addDefaults,
-  resetDefaultsTo,
+  addCurrent,
+  addCurrents,
+  resetCurrentsTo,
   setLanguage,
   setFiat,
   addExcludedAsset,
@@ -64,7 +64,7 @@ export default slice;
  * Selectors
  */
 export const getSettings = createSelector(getAppState, (s) => s[slice.name]);
-export const getDefaults = createSelector(getSettings, (s) => s.dashboardAccounts);
+export const getCurrents = createSelector(getSettings, (s) => s.dashboardAccounts);
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
@@ -76,21 +76,21 @@ export const canTrackProductAnalytics = createSelector(
 /**
  * Actions
  */
-export const addAccountsToDefaults = createAction<TUuid[]>(`${slice.name}/addAccountsToDefaults`);
+export const addAccountsToCurrents = createAction<TUuid[]>(`${slice.name}/addAccountsToCurrents`);
 
 /**
  * Sagas
  */
 export function* settingsSaga() {
-  yield takeLatest(addAccountsToDefaults.type, handleAddAccountsToDefaults);
+  yield takeLatest(addAccountsToCurrents.type, handleAddAccountsToCurrents);
 }
 
-export function* handleAddAccountsToDefaults({ payload }: PayloadAction<TUuid[]>) {
+export function* handleAddAccountsToCurrents({ payload }: PayloadAction<TUuid[]>) {
   const isDemoMode = yield select(getIsDemoMode);
   if (isDemoMode) {
     yield put(slice.actions.setDemoMode(false));
-    yield put(slice.actions.resetDefaultsTo(payload));
+    yield put(slice.actions.resetCurrentsTo(payload));
   } else {
-    yield put(slice.actions.addDefaults(payload));
+    yield put(slice.actions.addCurrents(payload));
   }
 }

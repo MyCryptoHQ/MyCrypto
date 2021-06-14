@@ -4,18 +4,18 @@ import { mockAppState } from 'test-utils';
 import { TFiatTicker, TUuid } from '@types';
 
 import {
-  addDefault,
-  addDefaults,
+  addCurrent,
+  addCurrents,
   addExcludedAsset,
   canTrackProductAnalytics,
-  getDefaults,
+  getCurrents,
   getExcludedAssets,
   getFiat,
   getIsDemoMode,
   getLanguage,
   initialState,
   removeExcludedAsset,
-  resetDefaultsTo,
+  resetCurrentsTo,
   setDemoMode,
   setFiat,
   setLanguage,
@@ -34,26 +34,26 @@ describe('settingsSlice', () => {
     expect(actual).toEqual(mockAppState({ [slice.name]: expected }));
   });
 
-  it('addDefault(): adds an account uuid to Defaults', () => {
+  it('addCurrent(): adds an account uuid to Currents', () => {
     const uuid = 'uuid1' as TUuid;
-    const actual = reducer(initialState, addDefault(uuid));
+    const actual = reducer(initialState, addCurrent(uuid));
     const expected = [uuid];
-    expect(getDefaults(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
-  it('addDefaults(): adds multiple account uuids to Defaults', () => {
+  it('addCurrents(): adds multiple account uuids to Currents', () => {
     const toAdd = ['uuid1', 'uuid2'] as TUuid[];
-    const actual = reducer(initialState, addDefaults(toAdd));
+    const actual = reducer(initialState, addCurrents(toAdd));
     const expected = toAdd;
-    expect(getDefaults(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
-  it('resetDefaultsTo(): replaces Defaults with new accounts', () => {
+  it('resetCurrentsTo(): replaces Currents with new accounts', () => {
     const current = ['uuid1', 'uuid2'] as TUuid[];
     const toAdd = ['uuid3', 'uuid4'] as TUuid[];
-    const actual = reducer({ ...initialState, dashboardAccounts: current }, resetDefaultsTo(toAdd));
+    const actual = reducer({ ...initialState, dashboardAccounts: current }, resetCurrentsTo(toAdd));
     const expected = toAdd;
-    expect(getDefaults(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
   it('setLanguage(): sets users language preference', () => {
