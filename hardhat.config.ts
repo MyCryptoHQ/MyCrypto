@@ -16,7 +16,7 @@ const config: HardhatUserConfig = {
     }
   },
   paths: {
-    cache: './cache/hardhat'
+    cache: './.cache/hardhat'
   }
 };
 
