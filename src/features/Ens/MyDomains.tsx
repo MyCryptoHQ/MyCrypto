@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 import { Account, Box, FixedSizeCollapsibleTable, Icon, LinkApp, Tooltip } from '@components';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
+import { useContacts } from '@services/Store';
 import { BREAK_POINTS, breakpointToNumber } from '@theme';
 import { translateRaw } from '@translations';
-import { DomainNameRecord } from '@types';
+import { DomainNameRecord, TAddress } from '@types';
 import { formatDateTime, getTimeDifference } from '@utils';
 
 import { MyDomainsProps } from './types';
@@ -21,6 +22,7 @@ const RowAlignment = styled.div`
 `;
 
 export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
+  const { getContactByAddressAndNetworkId } = useContacts();
   const domainTable = {
     head: [
       '',
@@ -38,7 +40,11 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
           )}
         </RowAlignment>,
         <Label key={2}>
-          <Account title={record.ownerLabel} address={record.owner} truncate={true} />
+          <Account
+            title={getContactByAddressAndNetworkId(record.owner as TAddress, 'Ethereum')?.label}
+            address={record.owner}
+            truncate={true}
+          />
         </Label>,
         <RowAlignment key={3} align="left">
           {record.readableDomainName}

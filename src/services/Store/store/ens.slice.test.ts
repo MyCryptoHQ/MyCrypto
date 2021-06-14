@@ -46,8 +46,7 @@ describe('ensSaga()', () => {
           accounts: [
             {
               ...fAccounts[0],
-              address: fEnsRecords[0].owner as TAddress,
-              label: fEnsRecords[0].ownerLabel
+              address: fEnsRecords[0].owner as TAddress
             }
           ]
         })

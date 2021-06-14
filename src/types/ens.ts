@@ -19,7 +19,6 @@ export interface DomainParent {
 
 export interface DomainNameRecord {
   owner: string;
-  ownerLabel: string;
   domainName: string;
   expiryDate: string;
   readableDomainName: string;
