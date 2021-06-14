@@ -2,10 +2,9 @@ import { waitFor } from '@testing-library/react';
 import mockAxios from 'jest-mock-axios';
 
 import { fAccount, fNetwork } from '@fixtures';
-import { ITxValue } from '@types';
+import { ClaimState, ITxValue } from '@types';
 
 import { UniswapService } from '.';
-import { ClaimState } from './Uniswap';
 
 jest.mock('@vendor', () => ({
   ...jest.requireActual('@vendor'),

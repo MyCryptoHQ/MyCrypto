@@ -2,7 +2,7 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
-import { IAccount, StoreAccount } from '@types';
+import { StoreAccount } from '@types';
 
 import {
   createAccounts,
@@ -30,7 +30,7 @@ const slice = createSlice({
   }
 });
 
-export const fetchHistory = createAction<IAccount[] | undefined>(`${slice.name}/fetchHistory`);
+export const fetchHistory = createAction(`${slice.name}/fetchHistory`);
 
 /**
  * Selectors

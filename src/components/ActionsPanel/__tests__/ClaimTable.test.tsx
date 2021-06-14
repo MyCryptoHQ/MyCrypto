@@ -3,18 +3,17 @@ import React from 'react';
 import { screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
-import { StoreContext } from '@services';
-import { ClaimState } from '@services/ApiService/Uniswap/Uniswap';
+import { ClaimState, ClaimType } from '@types';
 import { truncate } from '@utils';
 
-import { UniClaimTable } from '../components/UniClaimTable';
+import { ClaimTable } from '../components/ClaimTable';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          uniClaims: [
+  return simpleRender(<ClaimTable type={ClaimType.UNI} />, {
+    initialState: {
+      claims: {
+        claims: {
+          [ClaimType.UNI]: [
             {
               address: fAccounts[0].address,
               state: ClaimState.UNCLAIMED,
@@ -26,15 +25,13 @@ function getComponent() {
               amount: '403'
             }
           ]
-        } as any) as any
+        }
       }
-    >
-      <UniClaimTable />
-    </StoreContext.Provider>
-  );
+    }
+  });
 }
 
-describe('UniClaimTable', () => {
+describe('ClaimTable', () => {
   test('render the table', async () => {
     getComponent();
 

@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 
 import { ActionButtonProps, TIcon } from '@components';
-import { UniClaimResult } from '@services';
 
 import { StoreAccount } from './account';
 import { StoreAsset } from './asset';
+import { ClaimResult, ClaimType } from './claims';
 import { DomainNameRecord } from './ens';
 import { TUuid } from './uuid';
 
@@ -47,7 +47,7 @@ export enum ACTION_STATE {
 
 export interface ActionFilters {
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
-  uniClaims: UniClaimResult[];
+  claims: Record<ClaimType, ClaimResult[]>;
   ensOwnershipRecords: DomainNameRecord[];
   accounts: StoreAccount[];
   isMyCryptoMember: boolean;

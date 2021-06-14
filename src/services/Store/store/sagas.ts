@@ -6,6 +6,7 @@ import { analyticsSaga } from '@services/Analytics';
 
 import { accountsSaga } from './account.slice';
 import { assetSaga } from './asset.slice';
+import { claimsSaga } from './claims.slice';
 import { ensSaga } from './ens.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
@@ -33,6 +34,7 @@ export default function* rootSaga() {
     signMessageSaga(),
     txHistorySaga(),
     ensSaga(),
-    notificationSaga()
+    notificationSaga(),
+    claimsSaga()
   ]);
 }

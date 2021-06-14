@@ -6,6 +6,7 @@ import { trackInit } from '@services';
 
 import accountSlice, { startTxPolling } from './account.slice';
 import assetSlice, { fetchAssets } from './asset.slice';
+import { fetchClaims } from './claims.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
 import { fetchENS } from './ens.slice';
@@ -62,5 +63,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(fetchHistory());
     yield put(startTxPolling());
     yield put(fetchENS());
+    yield put(fetchClaims());
   }
 }

@@ -136,3 +136,4 @@ export { IGolemMigration } from './golemV2Migration';
 export { IRouteLink, IExternalLink, TTrayItem, INavTray, INavigationProps } from './navigation';
 export { Bigish } from '@utils/bigify';
 export { BusyBottomConfig } from './busyBottom';
+export * from './claims';

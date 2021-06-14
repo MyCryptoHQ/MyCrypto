@@ -5,7 +5,7 @@ import { UNISWAP_TOKEN_DISTRIBUTOR, UNISWAP_UNI_CLAIM_API } from '@config/data';
 import { ApiService } from '@services/ApiService';
 import { ProviderHandler } from '@services/EthService';
 import { UniDistributor } from '@services/EthService/contracts';
-import { ITxValue, Network, TAddress } from '@types';
+import { ClaimResult, ClaimState, ITxValue, Network, TAddress } from '@types';
 import { mapAsync } from '@utils/asyncFilter';
 
 let instantiated = false;
@@ -24,18 +24,6 @@ interface UniClaim {
     ISLP: boolean;
     IsUser: boolean;
   };
-}
-
-export enum ClaimState {
-  NO_CLAIM = 'NO_CLAIM',
-  UNCLAIMED = 'UNCLAIMED',
-  CLAIMED = 'CLAIMED'
-}
-
-export interface UniClaimResult {
-  address: TAddress;
-  state: ClaimState;
-  amount: ITxValue;
 }
 
 export default class UniswapService {
@@ -72,7 +60,7 @@ export default class UniswapService {
   public isClaimed(
     network: Network,
     claims: Record<string, UniClaim | null>
-  ): Promise<UniClaimResult[]> {
+  ): Promise<ClaimResult[]> {
     const provider = new ProviderHandler(network);
     return mapAsync(Object.entries(claims), async ([address, claim]) => {
       if (claim !== null) {
@@ -89,7 +77,7 @@ export default class UniswapService {
           amount: claim.Amount
         };
       }
-      return { address, state: ClaimState.NO_CLAIM, amount: '0x0' };
+      return { address, state: ClaimState.NO_CLAIM, amount: '0x00' };
     });
   }
 }
