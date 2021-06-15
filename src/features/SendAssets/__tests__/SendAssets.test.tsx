@@ -25,8 +25,8 @@ describe('SendAssetsFlow', () => {
       <StoreContext.Provider
         value={
           ({
-            userAssets: fAssets,
-            accounts: fAccounts
+            accounts: fAccounts,
+            networks: APP_STATE.networks
           } as unknown) as any
         }
       >

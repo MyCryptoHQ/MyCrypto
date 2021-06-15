@@ -46,8 +46,8 @@ export const getCoingeckoIdsMapping = createSelector(
  * Actions
  */
 
-export const startRatesPolling = createAction(`${slice.name}/startRatesPolling`);
-export const stopRatesPolling = createAction(`${slice.name}/stopRatesPolling`);
+export const startRatesPolling = createAction(`${slice.name}/startPolling`);
+export const stopRatesPolling = createAction(`${slice.name}/stopPolling`);
 
 /**
  * Sagas

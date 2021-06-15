@@ -23,11 +23,11 @@ export function* pollingSaga(payload: IPollingPayload) {
 
 // @todo: Figure out multiple polling instances
 export function* pollingWorker(payload: IPollingPayload) {
-  const { saga, params } = payload;
+  const { startAction, stopAction, saga, params } = payload;
 
   let retriesCount = 0;
 
-  console.debug(`[Polling Saga]: Initialising polling every ${params.interval}ms `);
+  console.debug(`[${startAction.type}]: Initialising polling for every ${params.interval}ms `);
   while (true) {
     try {
       yield call(saga); // Fetch requested content
@@ -39,7 +39,7 @@ export function* pollingWorker(payload: IPollingPayload) {
       if (shouldRetry && params.retryAfter) {
         ++retriesCount;
         console.debug(
-          `[Polling Saga]: Polling encounterd an error, retrying the ${
+          `[${startAction.type}]: Polling encounterd an error, retrying the ${
             retriesCount + 1
           } time after ${params.retryAfter}ms. Error: `,
           err
@@ -48,10 +48,16 @@ export function* pollingWorker(payload: IPollingPayload) {
         yield delay(params.retryAfter);
       } else if (!shouldRetry) {
         // Stop polling if an error is encounterd without retry
-        console.debug(`[Polling Saga]: Polling encounterd an error, stopping with error: `, err);
-        yield put(payload.stopAction());
+        console.debug(
+          `[${startAction.type}]: Polling encounterd an error, stopping with error: `,
+          err
+        );
+        yield put(stopAction());
       } else
-        console.debug(`[Polling Saga]: Polling encounterd an error, retrying now. Error: `, err);
+        console.debug(
+          `[${startAction.type}]: Polling encounterd an error, retrying now. Error: `,
+          err
+        );
     }
   }
 }

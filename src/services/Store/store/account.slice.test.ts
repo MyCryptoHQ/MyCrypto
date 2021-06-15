@@ -3,7 +3,7 @@ import { parseEther } from '@ethersproject/units';
 import { call } from 'redux-saga-test-plan/matchers';
 import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
-import { DEFAULT_NETWORK, ETHUUID, REPV2UUID } from '@config';
+import { DEFAULT_NETWORK, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
 import { NotificationTemplates } from '@features/NotificationsPanel';
 import {
@@ -22,9 +22,19 @@ import {
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
-import { IAccount, ITxReceipt, ITxStatus, ITxType, NetworkId, TUuid, WalletId } from '@types';
+import {
+  IAccount,
+  ISettings,
+  ITxReceipt,
+  ITxStatus,
+  ITxType,
+  NetworkId,
+  TUuid,
+  WalletId
+} from '@types';
 import { fromWei, Wei } from '@utils';
 
+import { getAccountsAssetsBalances } from '../BalanceService';
 import { toStoreAccount } from '../utils';
 import {
   addAccounts,
@@ -32,9 +42,11 @@ import {
   addNewAccountsWorker,
   addTxToAccount,
   addTxToAccountWorker,
+  fetchBalances,
   getAccounts,
   getMergedTxHistory,
   getStoreAccounts,
+  getUserAssets,
   initialState,
   pendingTxPolling,
   resetAndCreateAccount,
@@ -42,7 +54,8 @@ import {
   selectAccountTxs,
   selectCurrentAccounts,
   default as slice,
-  updateAccount
+  updateAccount,
+  updateAccounts
 } from './account.slice';
 import { createOrUpdateContacts } from './contact.slice';
 import { sanitizeAccount } from './helpers';
@@ -194,10 +207,29 @@ describe('AccountSlice', () => {
     expect(actual).toEqual([{ ...fAccounts[0], label: fContacts[1].label }]);
   });
 
+  it('getUserAssets(): gets user accounts assets and filter excluded assets', () => {
+    const walletConnectAccount = fAccounts.filter((a) => a.wallet === WalletId.WALLETCONNECT)[0];
+    const viewOnlyAccount = fAccounts.filter((a) => a.wallet === WalletId.VIEW_ONLY)[0];
+
+    const state = mockAppState({
+      accounts: [sanitizeAccount(walletConnectAccount), sanitizeAccount(viewOnlyAccount)],
+      assets: fAssets,
+      networks: fNetworks,
+      addressBook: fContacts,
+      settings: { excludedAssets: [REPV1UUID] } as ISettings
+    });
+
+    const actual = getUserAssets(state);
+    expect(actual).toEqual(walletConnectAccount.assets.filter((a) => a.uuid !== REPV1UUID));
+  });
+
   it('selectCurrentAccounts(): returns only favorite accounts', () => {
     const state = mockAppState({
       accounts: fAccounts,
-      settings: fSettings
+      settings: fSettings,
+      networks: fNetworks,
+      assets: fAssets,
+      addressBook: []
     });
     const actual = selectCurrentAccounts(state);
     expect(actual).toEqual([fAccounts[0]]);
@@ -759,5 +791,24 @@ describe('AccountSlice', () => {
         )
         .silentRun();
     });
+  });
+
+  it('fetchBalances(): fetch assets balances from accounts', () => {
+    const result = [fAccounts[1]];
+    const initialState = mockAppState({
+      accounts: [fAccounts[1]],
+      assets: fAssets,
+      networks: fNetworks,
+      addressBook: [],
+      settings: { dashboardAccounts: [fAccounts[1].uuid] } as ISettings
+    });
+
+    return expectSaga(fetchBalances)
+      .withState(initialState)
+      .provide([[call.fn(getAccountsAssetsBalances), result]])
+      .select(selectCurrentAccounts)
+      .call(getAccountsAssetsBalances, [fAccounts[1]])
+      .put(updateAccounts(result))
+      .silentRun();
   });
 });

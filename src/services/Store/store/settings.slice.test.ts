@@ -4,18 +4,18 @@ import { mockAppState } from 'test-utils';
 import { TFiatTicker, TUuid } from '@types';
 
 import {
+  addCurrent,
+  addCurrents,
   addExcludedAsset,
-  addFavorite,
-  addFavorites,
   canTrackProductAnalytics,
+  getCurrents,
   getExcludedAssets,
-  getFavorites,
   getFiat,
   getIsDemoMode,
   getLanguage,
   initialState,
   removeExcludedAsset,
-  resetFavoritesTo,
+  resetCurrentsTo,
   setDemoMode,
   setFiat,
   setLanguage,
@@ -34,29 +34,26 @@ describe('settingsSlice', () => {
     expect(actual).toEqual(mockAppState({ [slice.name]: expected }));
   });
 
-  it('addFavorite(): adds an account uuid to favorites', () => {
+  it('addCurrent(): adds an account uuid to Currents', () => {
     const uuid = 'uuid1' as TUuid;
-    const actual = reducer(initialState, addFavorite(uuid));
+    const actual = reducer(initialState, addCurrent(uuid));
     const expected = [uuid];
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
-  it('addFavorites(): adds multiple account uuids to favorites', () => {
+  it('addCurrents(): adds multiple account uuids to Currents', () => {
     const toAdd = ['uuid1', 'uuid2'] as TUuid[];
-    const actual = reducer(initialState, addFavorites(toAdd));
+    const actual = reducer(initialState, addCurrents(toAdd));
     const expected = toAdd;
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
-  it('resetFavoritesTo(): replaces favorites with new accounts', () => {
+  it('resetCurrentsTo(): replaces Currents with new accounts', () => {
     const current = ['uuid1', 'uuid2'] as TUuid[];
     const toAdd = ['uuid3', 'uuid4'] as TUuid[];
-    const actual = reducer(
-      { ...initialState, dashboardAccounts: current },
-      resetFavoritesTo(toAdd)
-    );
+    const actual = reducer({ ...initialState, dashboardAccounts: current }, resetCurrentsTo(toAdd));
     const expected = toAdd;
-    expect(getFavorites(actual)).toEqual(expected);
+    expect(getCurrents(actual)).toEqual(expected);
   });
 
   it('setLanguage(): sets users language preference', () => {

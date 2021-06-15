@@ -32,7 +32,10 @@ export {
   addTxToAccount,
   getStoreAccounts,
   getDefaultAccount,
-  getMergedTxHistory
+  getMergedTxHistory,
+  getUserAssets,
+  startBalancesPolling,
+  stopBalancesPolling
 } from './account.slice';
 export {
   createContact,
@@ -84,9 +87,9 @@ export {
   getMembershipState
 } from './membership.slice';
 export {
-  resetFavoritesTo,
-  addFavorites,
-  addFavorite,
+  resetCurrentsTo,
+  addCurrents,
+  addCurrent,
   addExcludedAsset,
   removeExcludedAsset,
   setLanguage,
@@ -94,7 +97,7 @@ export {
   setFiat,
   setDemoMode,
   getIsDemoMode,
-  addAccountsToFavorites,
+  addAccountsToCurrents,
   canTrackProductAnalytics,
   setProductAnalyticsAuthorisation,
   getSettings

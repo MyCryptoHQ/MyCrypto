@@ -1,31 +1,18 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
 import { addAccounts, deleteMembership, useDispatch } from '@store';
-import {
-  Asset,
-  Bigish,
-  IAccount,
-  Network,
-  StoreAccount,
-  StoreAsset,
-  TUuid,
-  WalletId
-} from '@types';
-import { bigify, convertToFiatFromAsset, isArrayEqual, useInterval } from '@utils';
-import { isEmpty, isEmpty as isVoid, prop, sortBy, uniqBy } from '@vendor';
+import { Asset, Bigish, IAccount, Network, StoreAccount, StoreAsset, TUuid } from '@types';
+import { bigify, convertToFiatFromAsset } from '@utils';
+import { isEmpty } from '@vendor';
 
-import { getDashboardAccounts, useAccounts } from './Account';
-import { getTotalByAsset, useAssets } from './Asset';
-import { getAccountsAssetsBalances } from './BalanceService';
-import { isNotExcludedAsset } from './helpers';
+import { useAccounts } from './Account';
+import { getTotalByAsset } from './Asset';
 import { useNetworks } from './Network';
 import { useSettings } from './Settings';
 
 export interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly currentAccounts: StoreAccount[];
-  readonly userAssets: Asset[];
   readonly accountRestore: { [name: string]: IAccount | undefined };
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
@@ -40,8 +27,8 @@ export const StoreContext = createContext({} as State);
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider: React.FC = ({ children }) => {
-  const { accounts, updateAccounts, deleteAccount } = useAccounts();
-  const { assets } = useAssets();
+  const { accounts, deleteAccount } = useAccounts();
+
   const { settings, updateSettingsAccounts } = useSettings();
   const { networks } = useNetworks();
   const dispatch = useDispatch();
@@ -50,49 +37,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     {}
   );
 
-  const currentAccounts = useMemo(
-    () => getDashboardAccounts(accounts, settings.dashboardAccounts),
-    [accounts, settings.dashboardAccounts, assets]
-  );
-
-  // Naive polling to get the Balances of baseAsset and tokens for each account.
-  useInterval(
-    () => {
-      // Pattern to cancel setState call if ever the component is unmounted
-      // before the async requests completes.
-      // @todo: extract into seperate hook e.g. react-use
-      // https://www.robinwieruch.de/react-hooks-fetch-data
-      if (isVoid(networks)) return;
-      let isMounted = true;
-      getAccountsAssetsBalances(currentAccounts).then((accountsWithBalances: StoreAccount[]) => {
-        // Avoid the state change if the balances are identical.
-        if (isMounted && !isArrayEqual(currentAccounts, accountsWithBalances.filter(Boolean))) {
-          updateAccounts(accountsWithBalances);
-        }
-      });
-
-      return () => {
-        isMounted = false;
-      };
-    },
-    60000,
-    true,
-    [networks]
-  );
-
   const state: State = {
     accounts,
     networks,
-    currentAccounts,
     accountRestore,
-    get userAssets() {
-      const userAssets = state.accounts
-        .filter((a: StoreAccount) => a.wallet !== WalletId.VIEW_ONLY)
-        .flatMap((a: StoreAccount) => a.assets)
-        .filter(isNotExcludedAsset(settings.excludedAssets));
-      const uniq = uniqBy(prop('uuid'), userAssets);
-      return sortBy(prop('ticker'), uniq);
-    },
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
     totals: (selectedAccounts = state.accounts) =>

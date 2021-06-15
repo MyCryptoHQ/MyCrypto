@@ -23,6 +23,7 @@ import {
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
+  getUserAssets,
   selectNetwork,
   useSelector
 } from '@store';
@@ -100,8 +101,10 @@ const SwapAssets = (props: Props) => {
   const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
   const [isExpired, setIsExpired] = useState(false);
-  const { accounts, userAssets } = useContext(StoreContext);
+  const { accounts } = useContext(StoreContext);
   const { getAssetRate } = useRates();
+
+  const userAssets = useSelector(getUserAssets);
 
   const baseAssetRate = getAssetRate(baseAsset);
   const fromAssetRate = fromAsset && getAssetRate(fromAsset as Asset);

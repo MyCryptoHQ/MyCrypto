@@ -2,7 +2,7 @@ import {
   addExcludedAsset,
   getSettings,
   removeExcludedAsset,
-  resetFavoritesTo,
+  resetCurrentsTo,
   setFiat,
   setLanguage,
   setRates,
@@ -29,7 +29,7 @@ function useSettings() {
   const language = settings.language || '';
 
   const updateSettingsAccounts = (accounts: TUuid[]) => {
-    dispatch(resetFavoritesTo(accounts));
+    dispatch(resetCurrentsTo(accounts));
   };
 
   const updateLanguageSelection = (lang: string) => {

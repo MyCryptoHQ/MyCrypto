@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Button, LinkApp, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { getTotalByAsset, StoreContext, useRates } from '@services';
+import { selectCurrentAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ReserveAsset, StoreAsset } from '@types';
@@ -231,7 +232,8 @@ const getDeFiAssetReserveAssets = (poolAsset: StoreAsset, assets: StoreAsset[]) 
 
 const ZapCard = ({ config }: Props) => {
   const { getPoolAssetReserveRate } = useRates();
-  const { currentAccounts, assets } = useContext(StoreContext);
+  const { assets } = useContext(StoreContext);
+  const currentAccounts = useSelector(selectCurrentAccounts);
   const IndicatorItem = config.positionDetails;
   const defiPoolBalances = assets(currentAccounts).filter(
     ({ uuid }) => uuid === config.poolTokenUUID
