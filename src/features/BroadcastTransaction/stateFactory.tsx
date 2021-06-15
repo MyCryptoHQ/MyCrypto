@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-
 import { makePendingTxReceipt, makeTxConfigFromSignedTx } from 'helpers';
 
 import { DEFAULT_NETWORK } from '@config';
 import { ProviderHandler } from '@services/EthService';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { useAssets, useNetworks } from '@services/Store';
+import { getStoreAccounts, useSelector } from '@store';
 import { ISignedTx, ITxConfig, ITxHash, ITxReceipt, ITxType, NetworkId } from '@types';
 import { TUseStateReducerFactory } from '@utils';
 
@@ -27,7 +26,7 @@ interface State {
 const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
 
   const handleNetworkChanged = (network: NetworkId) => {
     setState((prevState: State) => ({

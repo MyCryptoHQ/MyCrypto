@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Button, Icon } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
@@ -23,8 +23,7 @@ import {
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { getAssetByUUID, useAssets } from '@services/Store/Asset';
-import { StoreContext } from '@services/Store/StoreProvider';
-import { getDefaultAccount, useSelector } from '@store';
+import { getDefaultAccount, getStoreAccounts, useSelector } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
@@ -80,7 +79,7 @@ enum SubmissionType {
 
 export const BuyAssetsForm = () => {
   const history = useHistory();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { assets } = useAssets();
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
   const defaultAccount = useSelector(getDefaultAccount(true));

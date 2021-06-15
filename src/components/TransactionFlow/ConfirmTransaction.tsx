@@ -8,7 +8,8 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
-import { StoreContext, useContacts, useSettings } from '@services/Store';
+import { useContacts, useSettings } from '@services/Store';
+import { getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
@@ -102,7 +103,7 @@ export default function ConfirmTransaction({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
   const { assets } = useAssets();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {

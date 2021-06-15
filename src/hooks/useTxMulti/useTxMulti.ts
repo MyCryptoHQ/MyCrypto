@@ -1,9 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
+import { useSelector } from 'react-redux';
 import { useReducer } from 'reinspect';
 
 import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@helpers';
-import { StoreContext, useAccounts, useAssets } from '@services';
+import { useAccounts, useAssets } from '@services';
+import { getStoreAccounts } from '@store';
 import { ITxObject, ITxStatus, ITxType } from '@types';
 import { identity, lensIndex, view } from '@vendor';
 
@@ -37,7 +39,7 @@ export type TUseTxMulti = () => {
 export const useTxMulti: TUseTxMulti = () => {
   const [state, dispatch] = useReducer(TxMultiReducer, initialState, identity, 'TxMulti');
   const getState = () => state;
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { addTxToAccount, getAccountByAddressAndNetworkName } = useAccounts();
   const { assets } = useAssets();
   const { network, account: stateAccount } = state;

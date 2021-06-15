@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
 import { AssetIcon, Box, Currency, DashboardPanel, Icon, LinkApp } from '@components';
 import { getFiat } from '@config/fiats';
-import { getNetworkById, StoreContext, useSettings } from '@services/Store';
+import { getNetworkById, useSettings } from '@services/Store';
+import { selectNetworks } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Social, StoreAsset, TAddress } from '@types';
@@ -121,7 +122,7 @@ export function TokenDetails(props: Props) {
     ticker,
     contractAddress
   } = currentToken;
-  const { networks } = useContext(StoreContext);
+  const networks = useSelector(selectNetworks);
   const { settings } = useSettings();
   const network = getNetworkById(networkId, networks);
 

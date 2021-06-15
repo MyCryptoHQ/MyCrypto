@@ -54,11 +54,16 @@ import {
   getAccountsByAsset,
   getBaseAssetByNetwork,
   getNetworkById,
-  StoreContext,
   useAssets,
   useSettings
 } from '@services/Store';
-import { getIsDemoMode, getUserAssets, useSelector } from '@store';
+import {
+  getIsDemoMode,
+  getStoreAccounts,
+  getUserAssets,
+  selectNetworks,
+  useSelector
+} from '@store';
 import translate, { Trans, translateRaw } from '@translations';
 import {
   Asset,
@@ -252,7 +257,8 @@ interface ISendFormProps extends IStepComponentProps {
 }
 
 export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
-  const { accounts, networks } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
+  const networks = useSelector(selectNetworks);
   const { getAssetRate, getAssetRateInCurrency } = useRates();
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();

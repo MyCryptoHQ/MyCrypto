@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
@@ -18,11 +18,11 @@ import {
 } from '@components';
 import { DEX_NETWORKS } from '@config';
 import { useRates } from '@services/Rates';
-import { StoreContext } from '@services/Store';
 import {
   getBaseAssetByNetwork,
   getIsDemoMode,
   getSettings,
+  getStoreAccounts,
   getUserAssets,
   selectNetwork,
   useSelector
@@ -101,7 +101,7 @@ const SwapAssets = (props: Props) => {
   const baseAsset = useSelector(getBaseAssetByNetwork(network));
 
   const [isExpired, setIsExpired] = useState(false);
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { getAssetRate } = useRates();
 
   const userAssets = useSelector(getUserAssets);

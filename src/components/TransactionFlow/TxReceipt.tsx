@@ -38,13 +38,8 @@ import {
   getTransactionReceiptFromHash,
   ProviderHandler
 } from '@services/EthService';
-import {
-  getStoreAccount,
-  StoreContext,
-  useAccounts,
-  useContacts,
-  useSettings
-} from '@services/Store';
+import { getStoreAccount, useAccounts, useContacts, useSettings } from '@services/Store';
+import { getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -76,6 +71,7 @@ import {
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
+
 import './TxReceipt.scss';
 
 interface PendingBtnAction {
@@ -117,7 +113,7 @@ const TxReceipt = ({
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addTxToAccount } = useAccounts();
   const { assets } = useAssets();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
   const [txStatus, setTxStatus] = useState(
     txReceipt ? txReceipt.status : (ITxStatus.PENDING as ITxHistoryStatus)
