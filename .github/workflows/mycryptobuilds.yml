@@ -77,6 +77,12 @@ jobs:
           ## Check cache based on yarn.lock hashfile
           key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Cache Hardhat network
+        uses: actions/cache@v2
+        with:
+          path: .cache/hardhat
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/hardhat.config.ts') }}
+
       - name: Install Dependencies
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'

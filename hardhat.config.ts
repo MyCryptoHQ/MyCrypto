@@ -7,12 +7,16 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1,
       forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`
+        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        blockNumber: 12630000
       },
       accounts: {
         mnemonic: 'test test test test test test test test test test test ball'
       }
     }
+  },
+  paths: {
+    cache: './.cache/hardhat'
   }
 };
 
