@@ -1,5 +1,8 @@
 import { TOKEN_MIGRATIONS } from '@config';
-import { ITxReceipt, ITxStatus, ITxType, StoreAccount, StoreAsset, TUuid } from '@types';
+import { Asset, ITxReceipt, ITxStatus, ITxType, StoreAccount, StoreAsset, TUuid } from '@types';
+import { bigify, convertToFiatFromAsset } from '@utils';
+
+import { getTotalByAsset } from './Asset';
 
 export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
   return accounts
@@ -18,3 +21,16 @@ export const isExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: StoreAss
   (excludedAssetUuids || []).includes(asset.uuid);
 
 export const isTokenMigration = (type: ITxType) => TOKEN_MIGRATIONS.includes(type);
+
+export const getAccountsAssets = (accounts: StoreAccount[]) => accounts.flatMap((a) => a.assets);
+
+export const calculateTotals = (accounts: StoreAccount[]) =>
+  Object.values(getTotalByAsset(getAccountsAssets(accounts)));
+
+export const calculateTotalFiat = (accounts: StoreAccount[]) => (
+  getAssetRate: (asset: Asset) => number | undefined
+) =>
+  calculateTotals(accounts).reduce(
+    (sum, asset) => sum.plus(bigify(convertToFiatFromAsset(asset, getAssetRate(asset)))),
+    bigify(0)
+  );

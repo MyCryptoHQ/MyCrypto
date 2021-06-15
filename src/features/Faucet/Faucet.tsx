@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
@@ -23,7 +23,8 @@ import {
   MYCRYPTO_FAUCET_LINK,
   ROUTE_PATHS
 } from '@config';
-import { StoreContext, useAssets, useContacts, useNetworks } from '@services/Store';
+import { useAssets, useContacts, useNetworks } from '@services/Store';
+import { getStoreAccounts, useSelector } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
 import { IAccount as IIAccount, InlineMessageType, Network, StoreAccount } from '@types';
@@ -93,7 +94,7 @@ export default function Faucet() {
     initialFaucetState
   );
 
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
 
   const initialValues = {
     recipientAddress: {} as StoreAccount

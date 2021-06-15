@@ -8,14 +8,8 @@ import { IStepperPath } from '@components/GeneralStepper/types';
 import { MANDATORY_TRANSACTION_QUERY_PARAMS, ROUTE_PATHS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { withProtectTxProvider } from '@helpers';
-import {
-  ProviderHandler,
-  StoreContext,
-  useAccounts,
-  useAssets,
-  useFeatureFlags,
-  useNetworks
-} from '@services';
+import { ProviderHandler, useAccounts, useAssets, useFeatureFlags, useNetworks } from '@services';
+import { getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { IFormikFields, ISignedTx, ITxConfig, ITxReceipt, TxQueryTypes } from '@types';
 import { getParam, isWeb3Wallet } from '@utils';
@@ -35,7 +29,7 @@ function SendAssets({ location }: RouteComponentProps) {
     state: { enabled, protectTxShow, isPTXFree },
     setProtectTxTimeoutFunction
   } = useContext(ProtectTxContext);
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const { isFeatureActive } = useFeatureFlags();

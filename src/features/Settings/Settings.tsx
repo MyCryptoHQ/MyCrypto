@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -10,9 +10,9 @@ import { getFiat } from '@config/fiats';
 import FlippablePanel from '@features/Settings/components/FlippablePanel';
 import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useFeatureFlags, useRates } from '@services';
-import { NetworkUtils, StoreContext, useContacts, useNetworks, useSettings } from '@services/Store';
+import { NetworkUtils, useContacts, useNetworks, useSettings } from '@services/Store';
 import { isExcludedAsset } from '@services/Store/helpers';
-import { selectCurrentAccounts, useSelector } from '@store';
+import { getStoreAccounts, selectCurrentAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate from '@translations';
 import { Balance, CustomNodeConfig, NetworkId } from '@types';
@@ -44,12 +44,11 @@ const StyledLayout = styled.div`
 `;
 
 function RendedExcludedAssetsPanel() {
-  const { accounts, totals } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
   const currentAccounts = useSelector(selectCurrentAccounts);
   const balances: Balance[] = buildBalances(
-    totals,
     currentAccounts,
     settings,
     getAssetRate,
@@ -73,7 +72,7 @@ function RendedExcludedAssetsPanel() {
 
 function RenderAccountPanel() {
   const { isFeatureActive } = useFeatureFlags();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   return (
     <AccountList
       accounts={accounts}

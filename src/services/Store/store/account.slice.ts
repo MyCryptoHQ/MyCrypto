@@ -139,7 +139,7 @@ export const addNewAccounts = createAction<{
  * Selectors
  */
 export const getAccounts = createSelector([getAppState], (s) => {
-  const accounts = s[slice.name];
+  const accounts = s.accounts;
   return accounts?.map((a) => ({
     ...a,
     transactions: a.transactions?.map((t) => ({
@@ -161,7 +161,7 @@ export const selectTxsByStatus = (status: ITxStatus) =>
     return txs.filter(({ status: s }) => s === status);
   });
 
-export const getAccountsAssets = createSelector([getAccounts, (s) => s], (a, s) =>
+const getAccountsAssetsInfo = createSelector([getAccounts, (s) => s], (a, s) =>
   a
     .flatMap((a) => a.assets)
     .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as StoreAsset[])
@@ -184,7 +184,7 @@ export const getUserAssets = createSelector(
   }
 );
 
-export const getAccountsAssetsMappings = createSelector([getAccountsAssets], (assets) =>
+export const getAccountsAssetsMappings = createSelector([getAccountsAssetsInfo], (assets) =>
   assets.reduce(
     (acc, a) => (a ? { ...acc, [a.uuid]: a.mappings } : acc),
     {} as Record<string, IProvidersMappings>
@@ -200,6 +200,10 @@ export const getStoreAccounts = createSelector(
       return toStoreAccount(a, assets, network, contact);
     });
   }
+);
+
+export const getAccountsAssets = createSelector([getStoreAccounts], (a) =>
+  a.flatMap((a) => a.assets)
 );
 
 export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>

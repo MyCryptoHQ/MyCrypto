@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -7,9 +7,9 @@ import { Tooltip } from '@components';
 import { getFiat } from '@config/fiats';
 import { buildBalances, buildTotalFiatValue } from '@helpers';
 import { useRates } from '@services';
-import { StoreContext, useSettings } from '@services/Store';
+import { useSettings } from '@services/Store';
 import { isNotExcludedAsset } from '@services/Store/helpers';
-import { selectCurrentAccounts, useSelector } from '@store';
+import { getStoreAccounts, selectCurrentAccounts, useSelector } from '@store';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { Balance, TUuid } from '@types';
@@ -61,14 +61,13 @@ const WalletBreakdownPanel = styled(Panel)`
 
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
-  const { accounts, totals } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { settings, updateSettingsAccounts } = useSettings();
   const { getAssetRate } = useRates();
   const currentAccounts = useSelector(selectCurrentAccounts);
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = buildBalances(
-    totals,
     currentAccounts,
     settings,
     getAssetRate,

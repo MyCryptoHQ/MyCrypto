@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { mockAppState, simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import { stepsContent } from '@features/SwapAssets/config';
 import { fAccount, fAccounts, fAssets, fDAI, fTxParcels } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { bigify, noOp, truncate } from '@utils';
 
@@ -26,24 +25,13 @@ const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts
-        } as any) as any
-      }
-    >
-      <SwapTransactionReceipt {...props} />
-    </StoreContext.Provider>,
-    {
-      intialState: mockAppState({
-        assets: fAssets,
-        accounts: fAccounts
-      })
-    }
-  );
+  return simpleRender(<SwapTransactionReceipt {...props} />, {
+    initialState: mockAppState({
+      assets: fAssets,
+      accounts: fAccounts,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 describe('SwapTransactionReceipt', () => {

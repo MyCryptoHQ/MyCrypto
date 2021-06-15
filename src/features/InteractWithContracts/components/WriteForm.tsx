@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
@@ -6,8 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
-import { StoreContext } from '@services';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { ITxConfig, Network, StoreAccount } from '@types';
 import {
@@ -66,7 +65,7 @@ export const WriteForm = (props: Props) => {
 
   const { gasPrice, gasLimit, nonce } = rawTransaction;
 
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const filteredAccounts = pipe(
     (a: StoreAccount[]) => getAccountsByNetwork(a, network.id),
     (a) => getAccountsByViewOnly(a, false)

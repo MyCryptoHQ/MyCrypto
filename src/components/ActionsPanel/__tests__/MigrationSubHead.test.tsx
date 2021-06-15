@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { screen, simpleRender } from 'test-utils';
+import { mockAppState, screen, simpleRender } from 'test-utils';
 
 import { ETHUUID } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
-import { getAccountsByAsset, StoreContext } from '@services/Store';
+import { getAccountsByAsset } from '@services/Store';
 import { translateRaw } from '@translations';
 import { TUuid } from '@types';
 
@@ -13,18 +13,9 @@ import { MigrationSubHead } from '../components/MigrationSubHead';
 type Props = React.ComponentProps<typeof MigrationSubHead>;
 
 function getComponent(props: Props) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts,
-          assets: fAssets
-        } as any) as any
-      }
-    >
-      <MigrationSubHead {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<MigrationSubHead {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts, assets: fAssets })
+  });
 }
 
 const defaultProps = {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
@@ -22,9 +22,9 @@ import { ETHUUID } from '@config';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
+import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -73,7 +73,7 @@ const TokenMigrationForm = ({
   isDemoMode,
   onComplete
 }: Props) => {
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { networks } = useNetworks();
   const { getAssetByUUID } = useAssets();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;

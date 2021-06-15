@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
@@ -19,9 +19,9 @@ import { validateAmountField } from '@features/SendAssets/components/validators/
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { useAssets, useNetworks } from '@services/Store';
 import { isAccountInNetwork, isEthereumAccount } from '@services/Store/Account/helpers';
-import { AppState, getDefaultAccount, getIsDemoMode, useSelector } from '@store';
+import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
@@ -69,7 +69,7 @@ const FormFieldSubmitButton = styled(Button)`
 `;
 
 const MembershipForm = ({ isSubmitting, error, isDemoMode, onComplete }: Props) => {
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { networks } = useNetworks();
   const relevantNetworks = networks.filter((n) =>
     [ETHUUID, XDAIUUID].includes(n.baseAsset)

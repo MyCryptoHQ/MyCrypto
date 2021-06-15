@@ -19611,11 +19611,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <Currency
               amount="0.000000"
@@ -19623,13 +19623,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <Tooltip
               tooltip="1.000 USD/RopstenETH"
             >
               <Currency
-                amount="0.000000000000000042"
+                amount="0.000000000000000021"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -19681,11 +19681,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -19693,13 +19693,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/WETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -19751,11 +19751,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -19763,13 +19763,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/ETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -19821,11 +19821,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -19833,13 +19833,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/GoerliETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -20036,7 +20036,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -20046,7 +20046,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -20074,7 +20074,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -20185,7 +20185,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -20195,7 +20195,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -20223,7 +20223,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -20334,7 +20334,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -20344,7 +20344,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -20372,7 +20372,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -20483,7 +20483,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -20493,7 +20493,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -20521,7 +20521,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Desktop 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -20623,11 +20623,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <Currency
               amount="0.000000"
@@ -20635,13 +20635,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <Tooltip
               tooltip="1.000 USD/RopstenETH"
             >
               <Currency
-                amount="0.000000000000000042"
+                amount="0.000000000000000021"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -20675,11 +20675,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -20687,13 +20687,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/WETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -20727,11 +20727,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -20739,13 +20739,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/ETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -20779,11 +20779,11 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             <Text
               as="span"
             >
-              0 Account
+              1 Account
             </Text>
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Currency
               amount="0.000000"
@@ -20791,13 +20791,13 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
             />
           </Box>,
           <Box
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <Tooltip
               tooltip="1.000 USD/GoerliETH"
             >
               <Currency
-                amount="0.000000000000000002"
+                amount="0.000000000000000001"
                 decimals={2}
                 symbol="$"
                 ticker="USD"
@@ -20976,7 +20976,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -20986,7 +20986,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -21014,7 +21014,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21100,7 +21100,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -21110,7 +21110,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -21138,7 +21138,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21224,7 +21224,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -21234,7 +21234,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -21262,7 +21262,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000042"
+            data-sortkey="0.000000000000000021"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"
@@ -21348,7 +21348,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
               className="Text__SText-sc-14ylyin-0 Ueu"
               fontWeight={null}
             >
-              0 Account
+              1 Account
             </span>
           </div>
         </td>
@@ -21358,7 +21358,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Box-sc-1974eaf-0 hiktTj"
@@ -21386,7 +21386,7 @@ exports[` Storyshots Organisms/BalanceDetailsTable Mobile 1`] = `
         >
           <div
             className="Box-sc-1974eaf-0 exRYr"
-            data-sortkey="0.000000000000000002"
+            data-sortkey="0.000000000000000001"
           >
             <div
               className="Tooltip__Override-sc-1ccnnqh-0 kUkHVt"

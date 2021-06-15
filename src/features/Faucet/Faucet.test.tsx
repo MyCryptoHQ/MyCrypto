@@ -1,10 +1,9 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, mockAppState, screen, simpleRender, waitFor } from 'test-utils';
 
 import { fAccount } from '@fixtures';
-import { StoreContext } from '@services';
 import { FaucetService } from '@services/ApiService/Faucet';
 import { translateRaw } from '@translations';
 
@@ -51,12 +50,10 @@ FaucetService.solveChallenge = jest.fn(() =>
 /* Test components */
 describe('Faucet', () => {
   const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(
-      <StoreContext.Provider value={{ accounts: [fAccount] } as any}>
-        <Faucet />
-      </StoreContext.Provider>,
-      { initialRoute: pathToLoad }
-    );
+    return simpleRender(<Faucet />, {
+      initialRoute: pathToLoad,
+      initialState: mockAppState({ accounts: [fAccount] })
+    });
   };
 
   beforeEach(() => jest.clearAllMocks());

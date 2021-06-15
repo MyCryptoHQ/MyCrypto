@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import pick from 'ramda/src/pick';
 
@@ -6,7 +6,8 @@ import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
 import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
-import { StoreContext, useAssets, useRates, useSettings } from '@services';
+import { useAssets, useRates, useSettings } from '@services';
+import { getAccountsAssets, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 
@@ -27,7 +28,6 @@ export default function SwapTransactionReceipt({
   account,
   onSuccess
 }: Props) {
-  const { assets: getAssets } = useContext(StoreContext);
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
@@ -35,7 +35,7 @@ export default function SwapTransactionReceipt({
     ['fromAsset', 'toAsset', 'fromAmount', 'toAmount'],
     assetPair
   );
-  const currentAssets = getAssets();
+  const currentAssets = useSelector(getAccountsAssets);
   // @todo: refactor this to be based on status of tx from StoreProvider
   const txItems = transactions.map((tx, idx) => {
     const txType = idx === transactions.length - 1 ? ITxType.SWAP : ITxType.APPROVAL;

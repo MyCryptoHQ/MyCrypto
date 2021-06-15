@@ -1,12 +1,18 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
 import { useUserActions } from '@services';
-import { StoreContext } from '@services/Store/StoreProvider';
-import { getAllClaims, getENSRecords, getIsMyCryptoMember, useSelector } from '@store';
+import {
+  getAccountsAssets,
+  getAllClaims,
+  getENSRecords,
+  getIsMyCryptoMember,
+  getStoreAccounts,
+  useSelector
+} from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { ACTION_STATE, ActionFilters, ActionTemplate } from '@types';
@@ -51,7 +57,8 @@ const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFil
   });
 
 export const ActionPanel = () => {
-  const { assets, accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
+  const assets = useSelector(getAccountsAssets);
   const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   const claims = useSelector(getAllClaims);
   const ensOwnershipRecords = useSelector(getENSRecords);
