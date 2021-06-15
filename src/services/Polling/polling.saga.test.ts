@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga-test-plan/matchers';
-import { expectSaga } from 'test-utils';
+import { expectSaga, testSaga } from 'test-utils';
 
-import { IPollingPayload, default as pollingSagaWatcher } from './polling.saga';
+import { IPollingPayload, default as pollingSagaWatcher, pollingWorker } from './polling.saga';
 
 const testAction = createAction(`fake/action`);
 
@@ -41,5 +41,45 @@ describe('PollingSaga', () => {
         expect(effects.call).toHaveLength(4);
         expect(effects.put).toBeUndefined();
       });
+  });
+
+  it('pollingWorker(): stops on error', () => {
+    const err = new Error('error');
+    testSaga(pollingWorker, pollingParams)
+      .next()
+      .throw(err)
+      .put(pollStop())
+      .next()
+      .finish()
+      .isDone();
+  });
+
+  it('pollingWorker(): retries on error', () => {
+    const retryPollingParams: IPollingPayload = {
+      startAction: pollStart,
+      stopAction: pollStop,
+      params: {
+        interval: 1000,
+        retryOnFailure: true,
+        retries: 2,
+        retryAfter: 100
+      },
+      saga: falseSaga
+    };
+
+    const err = new Error('error');
+    testSaga(pollingWorker, retryPollingParams)
+      .next()
+      .throw(err)
+      .delay(100)
+      .next()
+      .throw(err)
+      .delay(100)
+      .next()
+      .throw(err)
+      .put(pollStop())
+      .next()
+      .finish()
+      .isDone();
   });
 });
