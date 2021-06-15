@@ -53,11 +53,13 @@ export function* pollingWorker(payload: IPollingPayload) {
           err
         );
         yield put(stopAction());
-      } else
+      } else {
+        ++retriesCount;
         console.debug(
           `[${startAction.type}]: Polling encounterd an error, retrying now. Error: `,
           err
         );
+      }
     }
   }
 }
