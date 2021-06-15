@@ -1,11 +1,12 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { Box, DashboardPanel } from '@components';
 import Icon from '@components/Icon';
-import { StoreContext, useUserActions } from '@services';
+import { useUserActions } from '@services';
 import {
+  getAccountsAssets,
   getAllClaims,
   getENSRecords,
   getIsMyCryptoMember,
@@ -57,7 +58,7 @@ const filterUserActions = (actionTemplates: ActionTemplate[], filters: ActionFil
 
 export const ActionPanel = () => {
   const accounts = useSelector(getStoreAccounts);
-  const { assets } = useContext(StoreContext);
+  const assets = useSelector(getAccountsAssets);
   const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   const claims = useSelector(getAllClaims);
   const ensOwnershipRecords = useSelector(getENSRecords);

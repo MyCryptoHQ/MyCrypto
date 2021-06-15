@@ -46,7 +46,7 @@ export enum ACTION_STATE {
 }
 
 export interface ActionFilters {
-  assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  assets: StoreAsset[];
   claims: Record<ClaimType, ClaimResult[]>;
   ensOwnershipRecords: DomainNameRecord[];
   accounts: StoreAccount[];

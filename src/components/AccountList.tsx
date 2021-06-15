@@ -30,6 +30,7 @@ import {
   useNetworks,
   useSettings
 } from '@services/Store';
+import { calculateTotalFiat } from '@services/Store/helpers';
 import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, breakpointToNumber, COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -297,7 +298,6 @@ const BuildAccountTable = (
   const { isMobile } = useScreenSize();
   const { featureFlags } = useFeatureFlags();
   const [sortingState, setSortingState] = useState(initialSortingState);
-  const { totalFiat } = useContext(StoreContext);
   const isScanning = useSelector(isScanningSelector);
   const { getAssetRate } = useRates();
   const { settings } = useSettings();
@@ -392,7 +392,7 @@ const BuildAccountTable = (
   const getFullTableData = accounts
     .map((account, index) => {
       const addressCard: ExtendedContact | undefined = getLabelByAccount(account, contacts);
-      const total = totalFiat([account])(getAssetRate);
+      const total = calculateTotalFiat([account])(getAssetRate);
       return {
         account,
         index,

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 
+import { calculateTotals } from '@services/Store/helpers';
 import { translateRaw } from '@translations';
 import { Asset, Balance, BalanceAccount, ISettings, StoreAccount, StoreAsset, TUuid } from '@types';
 import { bigify, convertToFiatFromAsset, weiToFloat } from '@utils';
@@ -44,13 +45,12 @@ const buildBalance = (
 };
 
 export const buildBalances = (
-  totals: (selectedAccounts?: StoreAccount[]) => StoreAsset[],
   accounts: StoreAccount[],
   settings: ISettings,
   getAssetRate: (asset: Asset) => number | undefined,
   assetFilter: (excludedAssetUuids: TUuid[]) => (asset: StoreAsset) => boolean
 ): Balance[] =>
-  totals(accounts)
+  calculateTotals(accounts)
     .filter(assetFilter(settings.excludedAssets))
     .map(buildBalance(accounts, getAssetRate))
     .sort((a, b) => bigify(b.fiatValue).comparedTo(a.fiatValue));
