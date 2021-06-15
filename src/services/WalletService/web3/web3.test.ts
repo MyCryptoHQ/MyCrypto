@@ -99,7 +99,6 @@ describe('unlockWeb3', () => {
     customWindow.web3 = {
       currentProvider: {
         sendAsync: jest.fn().mockImplementation(async ({ method }, callback) => {
-          console.log(method);
           if (method === 'eth_chainId') {
             return callback(null, { result: 1 });
           } else if (method === 'eth_accounts') {

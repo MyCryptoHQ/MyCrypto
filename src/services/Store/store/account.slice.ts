@@ -161,10 +161,10 @@ export const selectTxsByStatus = (status: ITxStatus) =>
     return txs.filter(({ status: s }) => s === status);
   });
 
-export const getAccountsAssets = createSelector([getAccounts], (a) => a.flatMap((a) => a.assets));
-
-const getAccountsAssetsInfo = createSelector([getAccountsAssets, (s) => s], (a, s) =>
-  a.reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as StoreAsset[])
+const getAccountsAssetsInfo = createSelector([getAccounts, (s) => s], (a, s) =>
+  a
+    .flatMap((a) => a.assets)
+    .reduce((acc, asset) => [...acc, getAssetByUUID(asset.uuid)(s)], [] as StoreAsset[])
 );
 
 export const getUserAssets = createSelector(
@@ -200,6 +200,10 @@ export const getStoreAccounts = createSelector(
       return toStoreAccount(a, assets, network, contact);
     });
   }
+);
+
+export const getAccountsAssets = createSelector([getStoreAccounts], (a) =>
+  a.flatMap((a) => a.assets)
 );
 
 export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>

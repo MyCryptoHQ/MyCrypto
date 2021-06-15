@@ -7,8 +7,7 @@ import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
 import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
 import { useAssets, useRates, useSettings } from '@services';
-import { useSelector } from '@store';
-import { getAccountsAssets } from '@store/account.slice';
+import { getAccountsAssets, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 

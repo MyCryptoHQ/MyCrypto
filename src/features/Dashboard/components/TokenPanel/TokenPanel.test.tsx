@@ -1,27 +1,21 @@
 import React from 'react';
 
-import { fireEvent, simpleRender, waitFor } from 'test-utils';
+import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts, fNetworks } from '@fixtures';
-import { StoreContext } from '@services';
+import { fAccounts, fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import { TokenPanel } from './TokenPanel';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          currentAccounts: fAccounts,
-          totals: () => fAccounts[0].assets,
-          networks: fNetworks
-        } as any) as any
-      }
-    >
-      <TokenPanel />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<TokenPanel />, {
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: APP_STATE.networks,
+      settings: { ...APP_STATE.settings, dashboardAccounts: fAccounts.map((a) => a.uuid) }
+    })
+  });
 }
 
 describe('TokenPanel', () => {

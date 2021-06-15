@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fRopDAI, fTxParcels } from '@fixtures';
-import { StoreContext } from '@services';
 import { bigify, noOp, truncate } from '@utils';
 
 import { LAST_CHANGED_AMOUNT } from '../types';
@@ -25,18 +24,9 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmSwap>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts
-        } as unknown) as any
-      }
-    >
-      <ConfirmSwap {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<ConfirmSwap {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts, assets: fAssets })
+  });
 }
 
 describe('ConfirmSwap', () => {
