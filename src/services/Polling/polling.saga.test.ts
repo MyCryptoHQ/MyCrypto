@@ -54,8 +54,8 @@ describe('PollingSaga', () => {
       .isDone();
   });
 
-  it('pollingWorker(): retries on error', () => {
-    const retryPollingParams: IPollingPayload = {
+  it('pollingWorker(): retries after a certain time on error', () => {
+    const retryAfterParams: IPollingPayload = {
       startAction: pollStart,
       stopAction: pollStop,
       params: {
@@ -68,7 +68,7 @@ describe('PollingSaga', () => {
     };
 
     const err = new Error('error');
-    testSaga(pollingWorker, retryPollingParams)
+    testSaga(pollingWorker, retryAfterParams)
       .next()
       .throw(err)
       .delay(100)
@@ -76,6 +76,30 @@ describe('PollingSaga', () => {
       .throw(err)
       .delay(100)
       .next()
+      .throw(err)
+      .put(pollStop())
+      .next()
+      .finish()
+      .isDone();
+  });
+
+  it('pollingWorker(): retries instantly on error', () => {
+    const instantRetryParams: IPollingPayload = {
+      startAction: pollStart,
+      stopAction: pollStop,
+      params: {
+        interval: 1000,
+        retryOnFailure: true,
+        retries: 2
+      },
+      saga: falseSaga
+    };
+
+    const err = new Error('error');
+    testSaga(pollingWorker, instantRetryParams)
+      .next()
+      .throw(err)
+      .throw(err)
       .throw(err)
       .put(pollStop())
       .next()
