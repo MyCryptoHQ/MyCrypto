@@ -63,7 +63,7 @@ export default slice;
 /**
  * Selectors
  */
-export const getSettings = createSelector(getAppState, (s) => s[slice.name]);
+export const getSettings = createSelector(getAppState, (s) => s.settings);
 export const getCurrents = createSelector(getSettings, (s) => s.dashboardAccounts);
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);

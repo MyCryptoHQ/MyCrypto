@@ -274,7 +274,6 @@ export const selectCurrentAccounts = createSelector(
 /**
  * Actions
  */
-export const addAccounts = createAction<IAccount[]>(`${slice.name}/addAccounts`);
 export const addTxToAccount = createAction<{
   account: IAccount;
   tx: ITxReceipt;
@@ -291,7 +290,6 @@ export const stopBalancesPolling = createAction(`${slice.name}/stopBalancesPolli
  */
 export function* accountsSaga() {
   yield all([
-    takeLatest(addAccounts.type, handleAddAccounts),
     takeLatest(addTxToAccount.type, addTxToAccountWorker),
     takeLatest(addNewAccounts.type, addNewAccountsWorker),
     pollingSaga(pendingTxPollingPayload),
@@ -311,18 +309,6 @@ const pendingTxPollingPayload: IPollingPayload = {
   },
   saga: pendingTxPolling
 };
-
-export function* handleAddAccounts({ payload }: PayloadAction<IAccount[]>) {
-  const isDemoMode: boolean = yield select(getIsDemoMode);
-  // This is where demo mode is disabled when adding new accounts.
-  if (isDemoMode) {
-    yield put(slice.actions.resetAndCreateMany(payload));
-    yield put(addAccountsToCurrents(payload.map(({ uuid }) => uuid)));
-  } else {
-    yield put(slice.actions.createMany(payload));
-    yield put(addAccountsToCurrents(payload.map(({ uuid }) => uuid)));
-  }
-}
 
 export function* addNewAccountsWorker({
   payload: { networkId, accountType, newAccounts }
@@ -390,7 +376,14 @@ export function* addNewAccountsWorker({
   if (newContacts.length > 0) {
     yield put(createOrUpdateContacts(newContacts));
   }
-  yield put(addAccounts(newRawAccounts));
+  const isDemoMode: boolean = yield select(getIsDemoMode);
+  // This is where demo mode is disabled when adding new accounts.
+  if (isDemoMode) {
+    yield put(slice.actions.resetAndCreateMany(newRawAccounts));
+  } else {
+    yield put(slice.actions.createMany(newRawAccounts));
+  }
+  yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   yield put(scanTokens({ accounts: newRawAccounts }));
   yield put(fetchMemberships(newRawAccounts));
   if (newRawAccounts.length > 1) {

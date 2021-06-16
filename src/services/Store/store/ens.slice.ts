@@ -5,6 +5,7 @@ import { ENSService } from '@services/ApiService/Ens';
 import { DomainNameRecord, StoreAccount } from '@types';
 
 import {
+  createAccount,
   createAccounts,
   destroyAccount,
   getAccounts,
@@ -50,7 +51,12 @@ export const getENSFetched = createSelector([getSlice], (s) => s.fetched);
 export function* ensSaga() {
   yield all([
     takeLatest(
-      [createAccounts.type, resetAndCreateManyAccounts.type, destroyAccount.type],
+      [
+        createAccount.type,
+        createAccounts.type,
+        resetAndCreateManyAccounts.type,
+        destroyAccount.type
+      ],
       fetchENSWorker
     ),
     takeLatest(fetchENS.type, fetchENSWorker)

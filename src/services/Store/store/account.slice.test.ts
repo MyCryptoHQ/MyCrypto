@@ -37,7 +37,6 @@ import { fromWei, Wei } from '@utils';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import { toStoreAccount } from '../utils';
 import {
-  addAccounts,
   addNewAccounts,
   addNewAccountsWorker,
   addTxToAccount,
@@ -382,7 +381,8 @@ describe('AccountSlice', () => {
       networks: APP_STATE.networks,
       assets: fAssets,
       addressBook: [],
-      contracts: []
+      contracts: [],
+      settings: fSettings
     });
 
     const { label, ...newAccount } = sanitizeAccount(fAccounts[0]);
@@ -416,7 +416,49 @@ describe('AccountSlice', () => {
             }
           ])
         )
-        .put(addAccounts(newAccounts))
+        .put(createMany(newAccounts))
+        .put(fetchMemberships(newAccounts))
+        .put(scanTokens({ accounts: newAccounts }))
+        .put(
+          displayNotification({
+            templateName: NotificationTemplates.walletAdded,
+            templateData: { address: newAccounts[0].address }
+          })
+        )
+        .silentRun();
+    });
+
+    it('exits demo mode if needed', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [],
+            contracts: [],
+            settings: { ...fSettings, isDemoMode: true }
+          })
+        )
+        .put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .put(resetAndCreateManyAccounts(newAccounts))
         .put(fetchMemberships(newAccounts))
         .put(scanTokens({ accounts: newAccounts }))
         .put(
@@ -438,7 +480,7 @@ describe('AccountSlice', () => {
         })
       )
         .withState(appState)
-        .not.put(addAccounts(newAccounts))
+        .not.put(createMany(newAccounts))
         .silentRun();
     });
 
@@ -457,7 +499,8 @@ describe('AccountSlice', () => {
             networks: APP_STATE.networks,
             assets: fAssets,
             addressBook: [],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }))
@@ -480,7 +523,8 @@ describe('AccountSlice', () => {
             networks: APP_STATE.networks,
             assets: fAssets,
             addressBook: [],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(
@@ -515,7 +559,8 @@ describe('AccountSlice', () => {
                 network: 'Ethereum'
               }
             ],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(
@@ -555,7 +600,8 @@ describe('AccountSlice', () => {
                 network: 'Ethereum'
               }
             ],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .not.put(
