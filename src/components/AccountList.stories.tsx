@@ -3,7 +3,6 @@ import React from 'react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 import { fAccounts } from '@fixtures';
-import { StoreProvider } from '@services';
 
 import AccountListComponent from './AccountList';
 
@@ -18,9 +17,7 @@ export default {
 };
 
 const Template = (args: React.ComponentProps<typeof AccountListComponent>) => (
-  <StoreProvider>
-    <AccountListComponent {...args} />
-  </StoreProvider>
+  <AccountListComponent {...args} />
 );
 
 // displayAccounts, className, deletable, copyable, (privacyCheckboxEnabled = false), dashboard;

@@ -1,10 +1,9 @@
 import React from 'react';
 
 import selectEvent from 'react-select-event';
-import { fireEvent, screen, simpleRender, waitFor } from 'test-utils';
+import { fireEvent, mockAppState, screen, simpleRender, waitFor } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 
 import TxStatus from './TxStatus';
@@ -25,21 +24,10 @@ jest.mock('@vendor', () => {
 /* Test components */
 describe('TxStatus', () => {
   const renderComponent = (pathToLoad?: string) => {
-    return simpleRender(
-      <StoreContext.Provider
-        value={
-          {
-            accounts: [fAccount],
-            userActions: []
-          } as any
-        }
-      >
-        <TxStatus />
-      </StoreContext.Provider>,
-      {
-        initialRoute: pathToLoad
-      }
-    );
+    return simpleRender(<TxStatus />, {
+      initialRoute: pathToLoad,
+      initialState: mockAppState({ accounts: [fAccount] })
+    });
   };
 
   test('Can render', () => {

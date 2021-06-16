@@ -10,7 +10,6 @@ import {
 } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { StoreContext } from '@services';
 import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
 import { isEmpty } from '@vendor';
 
@@ -24,8 +23,6 @@ const createTxRaw = (idx: number): Partial<ITxObject> => ({
 
 jest.mock('@vendor', () => ({
   ...jest.requireActual('@vendor'),
-  // Since there are no nodes in our StoreContext,
-  // ethers will default to FallbackProvider
   FallbackProvider: jest.fn().mockImplementation(() => ({
     sendTransaction: jest
       .fn()
@@ -73,9 +70,7 @@ const renderUseTxMulti = () => {
         settings: fSettings
       })}
     >
-      <StoreContext.Provider value={{ accounts: fAccounts } as any}>
-        {children}
-      </StoreContext.Provider>
+      {children}
     </ProvidersWrapper>
   );
   return renderHook(() => useTxMulti(), { wrapper });

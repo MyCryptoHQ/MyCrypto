@@ -6,32 +6,18 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 
 import { DEX_BASE_URLS } from '@config';
 import { fAccounts, fAssets, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { truncate } from '@utils';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets)
-        } as any) as any
-      }
-    >
-      <SwapAssetsFlow />
-    </StoreContext.Provider>,
-    {
-      initialState: mockAppState({
-        accounts: fAccounts.filter((a) => a.networkId === 'Ethereum'),
-        assets: fAssets,
-        networks: APP_STATE.networks
-      })
-    }
-  );
+  return simpleRender(<SwapAssetsFlow />, {
+    initialState: mockAppState({
+      accounts: fAccounts.filter((a) => a.networkId === 'Ethereum'),
+      assets: fAssets,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 const tokenResponse = {

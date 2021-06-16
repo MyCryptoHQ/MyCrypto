@@ -2,8 +2,7 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fTxConfig } from '@fixtures';
-import { StoreContext } from '@services';
+import { fAccount, fTxConfig } from '@fixtures';
 import { noOp, truncate } from '@utils';
 
 import { ZAPS_CONFIG } from '../config';
@@ -21,18 +20,7 @@ const defaultProps: React.ComponentProps<typeof ZapConfirm> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ZapConfirm>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts
-        } as any) as any
-      }
-    >
-      <ZapConfirm {...props} />,
-    </StoreContext.Provider>
-  );
+  return simpleRender(<ZapConfirm {...props} />);
 }
 
 describe('ZapConfirm', () => {

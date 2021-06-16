@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { fAccount, fAccounts, fTxParcels } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { ITxType, TAddress } from '@types';
 import { noOp, truncate } from '@utils';
@@ -25,17 +24,9 @@ const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof MembershipReceipt>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts
-        } as any) as any
-      }
-    >
-      <MembershipReceipt {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<MembershipReceipt {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts })
+  });
 }
 
 describe('MembershipReceipt', () => {

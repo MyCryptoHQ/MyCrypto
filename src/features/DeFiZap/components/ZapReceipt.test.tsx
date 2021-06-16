@@ -2,8 +2,7 @@ import React from 'react';
 
 import { simpleRender } from 'test-utils';
 
-import { fAccount, fAccounts, fAssets, fTxConfig, fTxReceipt } from '@fixtures';
-import { StoreContext } from '@services';
+import { fAccount, fTxConfig, fTxReceipt } from '@fixtures';
 import { ITxType } from '@types';
 import { noOp, truncate } from '@utils';
 
@@ -24,18 +23,7 @@ const defaultProps: React.ComponentProps<typeof ZapReceipt> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ZapReceipt>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts
-        } as any) as any
-      }
-    >
-      <ZapReceipt {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<ZapReceipt {...props} />);
 }
 
 describe('ZapReceipt', () => {
