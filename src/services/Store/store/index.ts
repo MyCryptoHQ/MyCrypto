@@ -17,6 +17,7 @@ export {
   displayNotification
 } from './notification.slice';
 export {
+  addNewAccounts,
   createAccount,
   createAccounts,
   resetAndCreateAccount,
@@ -25,7 +26,6 @@ export {
   updateAccount,
   updateAccounts,
   getAccounts,
-  addAccounts,
   selectCurrentAccounts,
   selectAccountTxs,
   selectTxsByStatus,
@@ -114,3 +114,4 @@ export { trackAsset, getTrackedAssets } from './trackedAssets.slice';
 export { fetchHistory, getTxHistory } from './txHistory.slice';
 export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
 export { getClaims, getAllClaims } from './claims.slice';
+export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUndo.slice';

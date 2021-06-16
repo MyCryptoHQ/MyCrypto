@@ -5,6 +5,7 @@ import { signMessageSaga } from '@features/SignAndVerifyMessage';
 import { analyticsSaga } from '@services/Analytics';
 
 import { accountsSaga } from './account.slice';
+import { accountUndoSaga } from './accountUndo.slice';
 import { assetSaga } from './asset.slice';
 import { claimsSaga } from './claims.slice';
 import { ensSaga } from './ens.slice';
@@ -35,6 +36,7 @@ export default function* rootSaga() {
     txHistorySaga(),
     ensSaga(),
     notificationSaga(),
-    claimsSaga()
+    claimsSaga(),
+    accountUndoSaga()
   ]);
 }

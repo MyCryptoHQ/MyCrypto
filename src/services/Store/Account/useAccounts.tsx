@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 
 import {
-  addAccounts,
   addTxToAccount as addTxToAccountRedux,
   destroyAccount,
   getStoreAccounts,
@@ -16,7 +15,6 @@ import { getAccountByAddressAndNetworkName as getAccountByAddressAndNetworkNameF
 
 export interface IAccountContext {
   accounts: IAccount[];
-  createMultipleAccountsWithIDs(accountData: IAccount[]): void;
   deleteAccount(account: IAccount): void;
   updateAccount(uuid: TUuid, accountData: IAccount): void;
   addTxToAccount(account: IAccount, transaction: ITxReceipt): void;
@@ -31,10 +29,6 @@ function useAccounts() {
   const accounts = useSelector(getStoreAccounts);
 
   const dispatch = useDispatch();
-
-  const createMultipleAccountsWithIDs = (newAccounts: IAccount[]) => {
-    dispatch(addAccounts(newAccounts));
-  };
 
   const deleteAccount = (account: IAccount) => dispatch(destroyAccount(account.uuid));
 
@@ -69,7 +63,6 @@ function useAccounts() {
 
   return {
     accounts,
-    createMultipleAccountsWithIDs,
     deleteAccount,
     updateAccount,
     addTxToAccount,

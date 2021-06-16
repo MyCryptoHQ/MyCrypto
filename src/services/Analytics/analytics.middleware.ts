@@ -1,7 +1,7 @@
 import { Action, Dispatch, Middleware } from '@reduxjs/toolkit';
 
 import {
-  addAccounts,
+  addNewAccounts,
   createAsset,
   importState,
   setDemoMode,
@@ -17,15 +17,15 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
   next
 ) => (action) => {
   switch (action.type) {
-    case addAccounts.type: {
+    case addNewAccounts.type: {
       state.dispatch(
         trackEvent({
           name: 'Add Account',
           params: {
-            qty: action.payload.length,
+            qty: action.payload.newAccounts.length,
             // multiple add accounts are always of the same type and network
-            walletId: action.payload[0].wallet,
-            networkId: action.payload[0].networkId
+            walletId: action.payload.accountType,
+            networkId: action.payload.networkId
           }
         })
       );

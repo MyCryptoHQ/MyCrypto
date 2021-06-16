@@ -37,7 +37,6 @@ import { fromWei, Wei } from '@utils';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import { toStoreAccount } from '../utils';
 import {
-  addAccounts,
   addNewAccounts,
   addNewAccountsWorker,
   addTxToAccount,
@@ -416,7 +415,7 @@ describe('AccountSlice', () => {
             }
           ])
         )
-        .put(addAccounts(newAccounts))
+        .put(createMany(newAccounts))
         .put(fetchMemberships(newAccounts))
         .put(scanTokens({ accounts: newAccounts }))
         .put(
@@ -438,7 +437,7 @@ describe('AccountSlice', () => {
         })
       )
         .withState(appState)
-        .not.put(addAccounts(newAccounts))
+        .not.put(createMany(newAccounts))
         .silentRun();
     });
 
