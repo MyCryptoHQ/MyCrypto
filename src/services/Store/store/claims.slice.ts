@@ -5,6 +5,7 @@ import { UniswapService } from '@services/ApiService';
 import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
 
 import {
+  createAccount,
   createAccounts,
   destroyAccount,
   getAccounts,
@@ -49,7 +50,12 @@ export const getClaims = (type: ClaimType) =>
 export function* claimsSaga() {
   yield all([
     takeLatest(
-      [createAccounts.type, resetAndCreateManyAccounts.type, destroyAccount.type],
+      [
+        createAccount.type,
+        createAccounts.type,
+        resetAndCreateManyAccounts.type,
+        destroyAccount.type
+      ],
       fetchUniClaimsWorker
     ),
     takeLatest(fetchClaims.type, fetchUniClaimsWorker)

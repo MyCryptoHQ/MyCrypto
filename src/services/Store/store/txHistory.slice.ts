@@ -5,6 +5,7 @@ import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/Hist
 import { StoreAccount } from '@types';
 
 import {
+  createAccount,
   createAccounts,
   destroyAccount,
   getAccounts,
@@ -46,7 +47,12 @@ export const getTxHistory = createSelector([getSlice], (s) => s.history);
 export function* txHistorySaga() {
   yield all([
     takeLatest(
-      [createAccounts.type, resetAndCreateManyAccounts.type, destroyAccount.type],
+      [
+        createAccount.type,
+        createAccounts.type,
+        resetAndCreateManyAccounts.type,
+        destroyAccount.type
+      ],
       fetchHistoryWorker
     ),
     takeLatest(fetchHistory.type, fetchHistoryWorker)
