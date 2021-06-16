@@ -381,7 +381,8 @@ describe('AccountSlice', () => {
       networks: APP_STATE.networks,
       assets: fAssets,
       addressBook: [],
-      contracts: []
+      contracts: [],
+      settings: fSettings
     });
 
     const { label, ...newAccount } = sanitizeAccount(fAccounts[0]);
@@ -456,7 +457,8 @@ describe('AccountSlice', () => {
             networks: APP_STATE.networks,
             assets: fAssets,
             addressBook: [],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }))
@@ -479,7 +481,8 @@ describe('AccountSlice', () => {
             networks: APP_STATE.networks,
             assets: fAssets,
             addressBook: [],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(
@@ -514,7 +517,8 @@ describe('AccountSlice', () => {
                 network: 'Ethereum'
               }
             ],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .put(
@@ -554,7 +558,8 @@ describe('AccountSlice', () => {
                 network: 'Ethereum'
               }
             ],
-            contracts: []
+            contracts: [],
+            settings: fSettings
           })
         )
         .not.put(
