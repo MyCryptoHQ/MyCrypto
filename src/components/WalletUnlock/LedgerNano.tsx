@@ -4,7 +4,8 @@ import { Button } from '@mycrypto/ui';
 
 import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
 import { HDWallets } from '@features/AddAccount';
-import { getDPath, getDPaths, INetworkContext, useNetworks } from '@services';
+import { getDPath, getDPaths } from '@services/EthService';
+import { INetworkContext, useNetworks } from '@services/Store';
 import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
 import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
