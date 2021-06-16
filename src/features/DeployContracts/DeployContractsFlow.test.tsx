@@ -5,7 +5,6 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import DeployContractsFlow from './DeployContractsFlow';
@@ -13,8 +12,6 @@ import DeployContractsFlow from './DeployContractsFlow';
 jest.mock('@vendor', () => {
   return {
     ...jest.requireActual('@vendor'),
-    // Since there are no nodes in our StoreContext,
-    // ethers will default to FallbackProvider
     FallbackProvider: jest.fn().mockImplementation(() => ({
       estimateGas: jest.fn().mockImplementation(() => Promise.resolve(21000)),
       getTransactionCount: jest.fn().mockImplementation(() => Promise.resolve(10))
@@ -23,27 +20,14 @@ jest.mock('@vendor', () => {
 });
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets)
-        } as any) as any
-      }
-    >
-      <DeployContractsFlow />
-    </StoreContext.Provider>,
-    {
-      initialRoute: '/deploy-contracts',
-      initialState: mockAppState({
-        accounts: fAccounts,
-        assets: fAssets,
-        networks: APP_STATE.networks
-      })
-    }
-  );
+  return simpleRender(<DeployContractsFlow />, {
+    initialRoute: '/deploy-contracts',
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 describe('DeployContractsFlow', () => {

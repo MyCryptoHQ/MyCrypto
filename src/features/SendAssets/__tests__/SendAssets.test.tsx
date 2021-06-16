@@ -4,15 +4,12 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 
 import SendAssets from '@features/SendAssets/SendAssets';
 import { fAccounts, fAssets } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('@vendor', () => {
   return {
     ...jest.requireActual('@vendor'),
-    // Since there are no nodes in our StoreContext,
-    // ethers will default to FallbackProvider
     FallbackProvider: jest.fn().mockImplementation(() => ({
       getTransactionCount: () => 10
     }))
@@ -21,25 +18,13 @@ jest.mock('@vendor', () => {
 /* Test components */
 describe('SendAssetsFlow', () => {
   const renderComponent = () => {
-    return simpleRender(
-      <StoreContext.Provider
-        value={
-          ({
-            accounts: fAccounts,
-            networks: APP_STATE.networks
-          } as unknown) as any
-        }
-      >
-        <SendAssets />
-      </StoreContext.Provider>,
-      {
-        initialState: mockAppState({
-          accounts: fAccounts,
-          assets: fAssets,
-          networks: APP_STATE.networks
-        })
-      }
-    );
+    return simpleRender(<SendAssets />, {
+      initialState: mockAppState({
+        accounts: fAccounts,
+        assets: fAssets,
+        networks: APP_STATE.networks
+      })
+    });
   };
 
   test('Can render the first step (Send Assets Form) in the flow.', () => {

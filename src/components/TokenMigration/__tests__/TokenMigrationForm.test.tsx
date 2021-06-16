@@ -4,7 +4,6 @@ import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
@@ -34,25 +33,13 @@ const defaultProps: TokenMigrationProps = {
 };
 
 function getComponent(props: TokenMigrationProps) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          userAssets: [],
-          accounts: fAccounts
-        } as unknown) as any
-      }
-    >
-      <TokenMigrationForm {...((props as unknown) as any)} />
-    </StoreContext.Provider>,
-    {
-      initialState: mockAppState({
-        accounts: fAccounts,
-        assets: fAssets,
-        networks: APP_STATE.networks
-      })
-    }
-  );
+  return simpleRender(<TokenMigrationForm {...((props as unknown) as any)} />, {
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 /* Test components */

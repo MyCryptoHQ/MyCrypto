@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
 import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { fAccount, fAccounts, fTxParcels } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
 import { noOp, truncate } from '@utils';
 
@@ -19,17 +18,9 @@ const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmMembershipPurchase>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: fAccounts
-        } as any) as any
-      }
-    >
-      <ConfirmMembershipPurchase {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<ConfirmMembershipPurchase {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts })
+  });
 }
 
 describe('ConfirmMembershipPurchase', () => {

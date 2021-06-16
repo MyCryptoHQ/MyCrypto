@@ -2,10 +2,8 @@ import React from 'react';
 
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
-import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccounts, fAssets, fNetworks, fSettings } from '@fixtures';
-import { StoreContext } from '@services/Store';
+import { fAccounts, fAssets, fSettings } from '@fixtures';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
 
@@ -17,22 +15,8 @@ jest.mock('@services/EthService', () => ({
 
 /* Test components */
 describe('TokenMigrationStepper', () => {
-  const StepperComponent = (
-    <StoreContext.Provider
-      value={
-        ({
-          accounts: [fAccounts[0]],
-          getAccount: jest.fn(),
-          networks: fNetworks,
-          getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID)
-        } as unknown) as any
-      }
-    >
-      <TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />
-    </StoreContext.Provider>
-  );
   const renderComponent = () =>
-    simpleRender(StepperComponent, {
+    simpleRender(<TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />, {
       initialState: mockAppState({
         assets: fAssets,
         settings: fSettings,

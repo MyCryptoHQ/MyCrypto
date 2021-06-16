@@ -2,30 +2,12 @@ import React from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
-import { fAssets } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import { ActionPanel } from '../ActionPanel';
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          userAssets: [],
-          accounts: [],
-          uniClaims: [],
-          assets: () => [fAssets[1]],
-          ensOwnershipRecords: [],
-          userActions: [{ name: 'update_label', state: 'new' }],
-          createUserAction: jest.fn()
-        } as any) as any
-      }
-    >
-      <ActionPanel />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<ActionPanel />);
 }
 
 describe('ActionsPanel Component', () => {

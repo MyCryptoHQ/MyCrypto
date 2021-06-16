@@ -5,7 +5,6 @@ import { mockAppState, simpleRender } from 'test-utils';
 import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetworks, fSettings, fTokenMigrationTxs } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationConfirm';
@@ -23,24 +22,9 @@ const defaultProps: ITxMultiConfirmProps & {
 };
 
 function getComponent(props: React.ComponentProps<typeof ConfirmTokenMigration>) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          userAssets: [],
-          accounts: [],
-          defaultAccount: { assets: [] },
-          getAccount: jest.fn(),
-          networks: [{ nodes: [] }]
-        } as unknown) as any
-      }
-    >
-      <ConfirmTokenMigration {...props} />
-    </StoreContext.Provider>,
-    {
-      initialState: mockAppState({ settings: fSettings, networks: fNetworks })
-    }
-  );
+  return simpleRender(<ConfirmTokenMigration {...props} />, {
+    initialState: mockAppState({ settings: fSettings, networks: fNetworks })
+  });
 }
 
 /* Test components */

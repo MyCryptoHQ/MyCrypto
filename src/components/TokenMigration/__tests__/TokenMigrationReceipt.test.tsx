@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { simpleRender } from 'test-utils';
+import { mockAppState, simpleRender } from 'test-utils';
 
-import { REPV1UUID } from '@config';
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { fAccounts, fAssets, fTokenMigrationTxs } from '@fixtures';
-import { StoreContext } from '@services/Store';
+import { fAccounts, fTokenMigrationTxs } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import TokenMigrationReceipt, {
@@ -21,22 +19,9 @@ const defaultProps: TokenMigrationReceiptProps = {
 };
 
 function getComponent(props: TokenMigrationReceiptProps) {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          userAssets: [],
-          accounts: fAccounts,
-          defaultAccount: { assets: [] },
-          getAccount: jest.fn(),
-          getAssetByUUID: () => fAssets.find(({ uuid }) => uuid === REPV1UUID),
-          networks: [{ nodes: [] }]
-        } as unknown) as any
-      }
-    >
-      <TokenMigrationReceipt {...props} />
-    </StoreContext.Provider>
-  );
+  return simpleRender(<TokenMigrationReceipt {...props} />, {
+    initialState: mockAppState({ accounts: fAccounts })
+  });
 }
 
 /* Test components */

@@ -4,7 +4,6 @@ import selectEvent from 'react-select-event';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fContracts } from '@fixtures';
-import { StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import InteractWithContractsFlow from './InteractWithContractsFlow';
@@ -17,26 +16,13 @@ jest.mock('react-router-dom', () => ({
 }));
 
 function getComponent() {
-  return simpleRender(
-    <StoreContext.Provider
-      value={
-        ({
-          assets: () => fAssets,
-          accounts: fAccounts,
-          userAssets: fAccounts.flatMap((a) => a.assets)
-        } as any) as any
-      }
-    >
-      <InteractWithContractsFlow />
-    </StoreContext.Provider>,
-    {
-      initialState: mockAppState({
-        accounts: fAccounts,
-        assets: fAssets,
-        networks: APP_STATE.networks
-      })
-    }
-  );
+  return simpleRender(<InteractWithContractsFlow />, {
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 describe('InteractWithContractsFlow', () => {

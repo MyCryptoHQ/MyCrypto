@@ -4,28 +4,14 @@ import { Context as ResponsiveContext } from 'react-responsive';
 import { mockAppState, simpleRender } from 'test-utils';
 
 import { fAccounts, fAssets, fContacts, fNetworks, fSettings } from '@fixtures';
-import { StoreContext } from '@services';
 import { translateRaw } from '@translations';
-import { bigify } from '@utils';
 
 import Settings from './Settings';
 
 function getComponent() {
   return simpleRender(
     <ResponsiveContext.Provider value={{ width: 900 }}>
-      <StoreContext.Provider
-        value={
-          ({
-            accounts: fAccounts,
-            currentAccounts: fAccounts,
-            totals: () => fAccounts[0].assets,
-            networks: fNetworks,
-            totalFiat: () => () => bigify(0)
-          } as any) as any
-        }
-      >
-        <Settings />
-      </StoreContext.Provider>
+      <Settings />
     </ResponsiveContext.Provider>,
     {
       initialState: mockAppState({
