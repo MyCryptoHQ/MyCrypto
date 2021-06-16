@@ -380,11 +380,10 @@ export function* addNewAccountsWorker({
   // This is where demo mode is disabled when adding new accounts.
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(newRawAccounts));
-    yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   } else {
     yield put(slice.actions.createMany(newRawAccounts));
-    yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   }
+  yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   yield put(scanTokens({ accounts: newRawAccounts }));
   yield put(fetchMemberships(newRawAccounts));
   if (newRawAccounts.length > 1) {
