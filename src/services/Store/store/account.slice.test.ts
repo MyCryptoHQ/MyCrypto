@@ -428,6 +428,48 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
+    it('exits demo mode if needed', () => {
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [],
+            contracts: [],
+            settings: { ...fSettings, isDemoMode: true }
+          })
+        )
+        .put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .put(resetAndCreateManyAccounts(newAccounts))
+        .put(fetchMemberships(newAccounts))
+        .put(scanTokens({ accounts: newAccounts }))
+        .put(
+          displayNotification({
+            templateName: NotificationTemplates.walletAdded,
+            templateData: { address: newAccounts[0].address }
+          })
+        )
+        .silentRun();
+    });
+
     it('doesnt run if no accounts passed', () => {
       return expectSaga(
         addNewAccountsWorker,
