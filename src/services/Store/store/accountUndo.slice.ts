@@ -5,9 +5,9 @@ import { IAccount, TUuid } from '@types';
 import { findIndex, isEmpty, propEq } from '@vendor';
 
 import { createAccounts, destroyAccount } from './account.slice';
-import { deleteMembership } from './membership.slice';
+import { deleteMembership, fetchMemberships } from './membership.slice';
 import { AppState } from './root.reducer';
-import { getCurrents, resetCurrentsTo } from './settings.slice';
+import { addCurrent, getCurrents, resetCurrentsTo } from './settings.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -49,11 +49,13 @@ export function* accountUndoSaga() {
 }
 
 export function* restoreAccountWorker({ payload }: PayloadAction<TUuid>) {
-  const cache = yield select(getAccountUndoCache);
+  const cache: Record<string, IAccount> = yield select(getAccountUndoCache);
 
   const account = cache[payload];
   if (!isEmpty(account)) {
-    yield put(createAccounts([account!]));
+    yield put(createAccounts([account]));
+    yield put(addCurrent(payload));
+    yield put(fetchMemberships([account]));
     yield put(slice.actions.remove(payload));
   }
 }
