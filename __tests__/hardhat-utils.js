@@ -9,7 +9,8 @@ export const resetFork = async () => {
   await provider.send('hardhat_reset', [
     {
       forking: {
-        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`
+        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        blockNumber: 12630000
       }
     }
   ]);
