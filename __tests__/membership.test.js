@@ -71,8 +71,6 @@ test('can buy with DAI', async (t) => {
   await t.expect(send.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(send);
 
-  await t.wait(FIXTURES_CONST.TIMEOUT);
-
   await t
     .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).count)
     .eql(2, { timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
