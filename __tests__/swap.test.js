@@ -42,7 +42,7 @@ test('can do an ETH swap', async (t) => {
 });
 
 test('can do an ERC20 swap', async (t) => {
-  await resetFork(false);
+  await resetFork();
   await setupDAI();
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
