@@ -48,7 +48,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       fromAsset: baseAsset,
       toAsset: sortedAssets.filter((a) => a.uuid !== baseAsset.uuid)[0]
     }));
-  }, [network]);
+  }, [assets.length, network]);
 
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
