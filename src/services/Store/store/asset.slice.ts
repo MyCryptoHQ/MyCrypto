@@ -3,7 +3,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { EXCLUDED_ASSETS } from '@config';
 import { MyCryptoApiService } from '@services';
-import { ExtendedAsset, LSKeys, Network, TUuid } from '@types';
+import { ExtendedAsset, LSKeys, Network, NetworkId, TUuid } from '@types';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
@@ -79,6 +79,8 @@ export default slice;
  */
 
 export const getAssets = createSelector([getAppState], (s) => s[slice.name]);
+export const getAssetsByNetwork = (network: NetworkId) =>
+  createSelector(getAssets, (assets) => assets.filter((asset) => asset.networkId === network));
 export const getBaseAssetByNetwork = (network: Network) =>
   createSelector(getAssets, (assets) => assets.find((asset) => asset.uuid === network.baseAsset)!);
 export const getAssetByUUID = (uuid: TUuid) =>

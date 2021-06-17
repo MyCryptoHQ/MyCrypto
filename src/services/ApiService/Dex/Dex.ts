@@ -95,8 +95,8 @@ export default class DexService {
     const { data }: { data: DexTrade } = await this.service.get('swap/v1/quote', {
       baseURL: this.getBaseURL(network.id),
       params: {
-        sellToken: sellToken.ticker,
-        buyToken: buyToken.ticker,
+        sellToken: sellToken.contractAddress ?? sellToken.ticker,
+        buyToken: buyToken.contractAddress ?? buyToken.ticker,
         buyAmount: buyAmount
           ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
           : undefined,

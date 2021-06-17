@@ -11,7 +11,6 @@ import { useSelector } from '@store/selectors';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
 import { bigify, useStateReducer } from '@utils';
-import { usePromise } from '@vendor';
 
 import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
@@ -30,8 +29,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
   const defaultAccount = useSelector(getDefaultAccount());
   const {
     setNetwork,
-    fetchSwapAssets,
-    setSwapAssets,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -212,15 +209,6 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     }
     stopYield();
   }, [canYield]);
-
-  const mounted = usePromise();
-  useEffect(() => {
-    mounted(fetchSwapAssets())
-      .then(([fetchedAssets, fetchedFromAsset, fetchedToAsset]) =>
-        setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset)
-      )
-      .catch(console.error);
-  }, [selectedNetwork]);
 
   return (
     <ExtendedContentPanel

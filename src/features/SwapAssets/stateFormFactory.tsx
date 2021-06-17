@@ -2,15 +2,14 @@ import axios from 'axios';
 
 import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
-import { DexAsset, DexService, getGasEstimate } from '@services';
-import { selectNetwork, useSelector } from '@store';
+import { DexService, getGasEstimate } from '@services';
+import { getAssetsByNetwork, selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
   formatErrorEmailMarkdown,
-  generateAssetUUID,
   inputGasLimitToHex,
   multiplyBNFloats,
   TUseStateReducerFactory,
@@ -21,7 +20,6 @@ import { LAST_CHANGED_AMOUNT, SwapFormState } from './types';
 
 const swapFormInitialState = {
   selectedNetwork: 'Ethereum',
-  assets: [],
   account: undefined,
   fromAsset: undefined,
   fromAmount: '',
@@ -34,51 +32,14 @@ const swapFormInitialState = {
   lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
 };
 
-const BASE_ASSET_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
-
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
+  const assets = useSelector(getAssetsByNetwork(state.selectedNetwork));
 
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
       ...prevState,
       selectedNetwork: network
-    }));
-  };
-
-  const fetchSwapAssets = async () => {
-    try {
-      const assets = await DexService.instance.getTokenList(network.id);
-      if (assets.length < 1) return;
-      // sort assets alphabetically
-      const newAssets = assets
-        .map(({ symbol, decimals, ...asset }: DexAsset) => ({
-          ...asset,
-          ticker: symbol,
-          decimal: decimals,
-          uuid:
-            asset.address === BASE_ASSET_ADDRESS
-              ? generateAssetUUID(network.chainId)
-              : generateAssetUUID(network.chainId, asset.address)
-        }))
-        .sort((asset1: ISwapAsset, asset2: ISwapAsset) =>
-          (asset1.ticker as string).localeCompare(asset2.ticker)
-        );
-      // set fromAsset to default (ETH)
-      const fromAsset = newAssets.find((x) => x.address === BASE_ASSET_ADDRESS);
-      const toAsset = newAssets[0];
-      return [newAssets, fromAsset, toAsset];
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const setSwapAssets = (assets: ISwapAsset[], fromAsset: ISwapAsset, toAsset: ISwapAsset) => {
-    setState((prevState: SwapFormState) => ({
-      ...prevState,
-      assets,
-      fromAsset,
-      toAsset
     }));
   };
 
@@ -319,8 +280,6 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
   return {
     setNetwork,
-    fetchSwapAssets,
-    setSwapAssets,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -330,7 +289,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
-    formState: state
+    formState: { ...state, assets }
   };
 };
 
