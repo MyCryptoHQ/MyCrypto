@@ -3,14 +3,14 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 
 import { FIXTURE_WEB3_ADDRESS } from './fixtures';
 
-export const resetFork = async () => {
+export const resetFork = async (stickyBlockNumber = true) => {
   const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
 
   await provider.send('hardhat_reset', [
     {
       forking: {
         jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-        blockNumber: 12630000
+        blockNumber: stickyBlockNumber ? 12630000 : undefined
       }
     }
   ]);
