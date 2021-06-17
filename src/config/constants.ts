@@ -62,3 +62,5 @@ export const DEFAULT_GAP_TO_SCAN_FOR = 5;
 export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';
 
 export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
+
+export const PRIVACY_POLICY_LINK = 'https://mycrypto.com/privacy/';

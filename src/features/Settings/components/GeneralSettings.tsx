@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { DashboardPanel, Divider, LinkApp, SubHeading, Switch, Tooltip } from '@components';
-import { Fiats, ROUTE_PATHS } from '@config';
+import { Fiats, PRIVACY_POLICY_LINK, ROUTE_PATHS } from '@config';
 import {
   AppState,
   canTrackProductAnalytics,
@@ -114,7 +114,11 @@ const GeneralSettings = ({
           {translate('SETTINGS_PRODUCT_ANALYTICS')}{' '}
           <Tooltip
             width="16px"
-            tooltip={<span>{translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP')}</span>}
+            tooltip={
+              <span>
+                {translate('SETTINGS_PRODUCT_ANALYTICS_TOOLTIP', { $link: PRIVACY_POLICY_LINK })}
+              </span>
+            }
           />
         </SubHeading>
         <SettingsControl>
