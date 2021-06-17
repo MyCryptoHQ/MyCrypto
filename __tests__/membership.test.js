@@ -61,7 +61,7 @@ test('can buy with DAI', async (t) => {
   await t.expect(approve.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(approve);
 
-  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
+  await t.wait(FIXTURES_CONST.TIMEOUT);
 
   const send = await queryAllByText(findByTKey('CONFIRM_TRANSACTION'))
     .with({
