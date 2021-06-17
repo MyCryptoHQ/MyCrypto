@@ -584,7 +584,7 @@
     "SETTINGS_IMPORT_SUCCESS": "You will see the imported files in settings!",
     "SETTINGS_IMPORT_SUCCESS_HEADING": "Import Complete",
     "SETTINGS_PRODUCT_ANALYTICS": "Product Analytics",
-    "SETTINGS_PRODUCT_ANALYTICS_TOOLTIP": "Help us improve MyCrypto by allowing us to collect basic product analytics. We do not collect any identifiable information like IP address, transaction hash, or address. Read our privacy policy for more information.",
+    "SETTINGS_PRODUCT_ANALYTICS_TOOLTIP": "Help us improve MyCrypto by allowing us to collect basic product analytics. We do not collect any identifiable information like IP address, transaction hash, or address. Read our [privacy policy]($link) for more information.",
     "SETTINGS_TOOLTIP": "Your MyCrypto Settings include the Accounts in your MyCrypto Wallet, your Saved Address, and other preferences. We will only export or import your MyCrypto Settings. This does not include private keys and exporting is not a way to backup private keys.",
     "SHOW": "Show",
     "SIGNED_TRANSACTION": "Signed Transaction",
