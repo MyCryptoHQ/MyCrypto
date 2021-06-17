@@ -61,7 +61,7 @@ test('can buy with DAI', async (t) => {
   await t.expect(approve.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(approve);
 
-  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
+  await t.wait(FIXTURES_CONST.TIMEOUT);
 
   const send = await queryAllByText(findByTKey('CONFIRM_TRANSACTION'))
     .with({
@@ -71,10 +71,8 @@ test('can buy with DAI', async (t) => {
   await t.expect(send.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(send);
 
-  await t.wait(FIXTURES_CONST.HARDHAT_TIMEOUT);
-
   await t
-    .expect(queryAllByTestId('SUCCESS').count)
+    .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).count)
     .eql(2, { timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
 
   const home = await queryByText(findByTKey('NAVIGATION_HOME'));
