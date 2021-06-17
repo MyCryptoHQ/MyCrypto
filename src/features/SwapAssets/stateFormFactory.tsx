@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import axios from 'axios';
 
 import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexService, getGasEstimate } from '@services';
-import { getAssetsByNetwork, selectNetwork, useSelector } from '@store';
+import { getAssetsByNetwork, getBaseAssetByNetwork, selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
 import {
@@ -34,7 +36,19 @@ const swapFormInitialState = {
 
 const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setState }) => {
   const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
+  const baseAsset = useSelector(getBaseAssetByNetwork(network));
   const assets = useSelector(getAssetsByNetwork(state.selectedNetwork));
+  const sortedAssets = assets.sort((asset1, asset2) =>
+    (asset1.ticker as string).localeCompare(asset2.ticker)
+  );
+
+  useEffect(() => {
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      fromAsset: baseAsset,
+      toAsset: sortedAssets.filter((a) => a.uuid !== baseAsset.uuid)[0]
+    }));
+  }, [network]);
 
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
@@ -289,7 +303,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
-    formState: { ...state, assets }
+    formState: { ...state, assets: sortedAssets }
   };
 };
 
