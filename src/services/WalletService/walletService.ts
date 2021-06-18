@@ -8,10 +8,14 @@ import {
   Web3WalletInitArgs
 } from '@types';
 
-import { ChainCodeResponse } from './deterministic';
 import { AddressOnlyWallet } from './non-deterministic';
 import { WalletConnectWallet } from './walletconnect';
 import { unlockWeb3 } from './web3';
+
+const trezorManifest = {
+  email: 'support@mycrypto.com',
+  appUrl: 'https://app.mycrypto.com'
+};
 
 export const WalletFactory = {
   [WalletId.WEB3]: {
@@ -39,10 +43,12 @@ export const WalletFactory = {
     init: ({ dPath, index }: HardwareWalletInitArgs) => new LedgerWallet().getWallet(dPath, index)
   },
   [WalletId.TREZOR_NEW]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) => new TrezorWallet().getWallet(dPath, index)
+    init: ({ dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(trezorManifest).getWallet(dPath, index)
   },
   [WalletId.TREZOR]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) => new TrezorWallet().getWallet(dPath, index)
+    init: ({ dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(trezorManifest).getWallet(dPath, index)
   },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
@@ -60,6 +66,6 @@ export const getWallet = (wallet: WalletId) => {
       return new LedgerWallet();
     case WalletId.TREZOR_NEW:
     case WalletId.TREZOR:
-      return new TrezorWallet();
+      return new TrezorWallet(trezorManifest);
   }
 };

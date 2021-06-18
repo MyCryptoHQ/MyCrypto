@@ -1,4 +1,4 @@
-import { DPath } from '@types';
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 
 import { DWAccountDisplay, ExtendedDPath } from '../deterministic/types';
 import { KeyInfo } from './HardwareWallet';

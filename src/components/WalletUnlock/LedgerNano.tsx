@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 
-import { Button } from '@mycrypto/ui';
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 
-import { Box, BusyBottom, Heading, Icon, LinkApp, Spinner } from '@components';
+import { Box, BusyBottom, Button, Heading, Icon, LinkApp, Spinner } from '@components';
 import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths } from '@services/EthService';
 import { INetworkContext, useNetworks } from '@services/Store';
-import { ChainCodeResponse, WalletFactory } from '@services/WalletService';
+import { getWallet, WalletFactory } from '@services/WalletService';
 import translate, { Trans, translateRaw } from '@translations';
-import { BusyBottomConfig, DPath, FormData, TAddress, WalletId } from '@types';
+import { BusyBottomConfig, FormData, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
@@ -21,30 +21,29 @@ interface OwnProps {
 }
 
 interface State {
-  publicKey: string;
-  chainCode: string;
   dPath: DPath;
   error: string | null;
+  isConnected: boolean;
   isLoading: boolean;
 }
 
 type Props = OwnProps;
 
 const WalletService = WalletFactory[WalletId.LEDGER_NANO_S];
+const wallet = getWallet(WalletId.LEDGER_NANO_S);
 
 class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
-    publicKey: '',
-    chainCode: '',
     dPath:
       getDPath(this.props.getNetworkById(this.props.formData.network), WalletId.LEDGER_NANO_S) ||
       getDPaths(this.props.networks, WalletId.LEDGER_NANO_S)[0],
     error: null,
-    isLoading: false
+    isLoading: false,
+    isConnected: false
   };
 
   public render() {
-    const { dPath, publicKey, chainCode, isLoading } = this.state;
+    const { dPath, isLoading, isConnected } = this.state;
     const networks = this.props.networks;
     const network = this.props.getNetworkById(this.props.formData.network);
 
@@ -71,7 +70,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
       );
     }
 
-    if (publicKey && chainCode) {
+    if (isConnected) {
       return (
         <div className="Mnemonic-dpath">
           <HDWallets
@@ -130,37 +129,30 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
 
   private handleConnect = (dPath: DPath) => {
     this.setState({
-      publicKey: 'bla',
-      chainCode: 'bla',
-      isLoading: false
-    });
-    /**this.setState({
       isLoading: true,
       error: null
     });
 
-    WalletService.getChainCode(dPath.value)
-      .then((res: ChainCodeResponse) => {
-        this.setState({
-          publicKey: res.publicKey,
-          chainCode: res.chainCode,
-          isLoading: false
-        });
+    wallet!
+      .getAddress(dPath, 0)
+      .then(() => {
+        this.setState({ isLoading: false, isConnected: true });
       })
-      .catch((err: any) => {
+      .catch((err) => {
+        console.error(err);
         this.setState({
           error: translateRaw(err.message),
           isLoading: false
         });
-      });**/
+      });
   };
 
   private handleCancel = () => {
     this.reset();
   };
 
-  private handleUnlock = (address: TAddress, index: number) => {
-    this.props.onUnlock(WalletService.init({ address, dPath: this.state.dPath.value, index }));
+  private handleUnlock = async (address: TAddress, index: number) => {
+    this.props.onUnlock(await WalletService.init({ address, dPath: this.state.dPath, index }));
   };
 
   private handleNullConnect = (): void => {
@@ -171,8 +163,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     const networks = this.props.networks;
     const network = this.props.getNetworkById(this.props.formData.network);
     this.setState({
-      publicKey: '',
-      chainCode: '',
       dPath:
         getDPath(network, WalletId.LEDGER_NANO_S) || getDPaths(networks, WalletId.LEDGER_NANO_S)[0]
     });
