@@ -76,8 +76,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
         <div className="Mnemonic-dpath">
           <HDWallets
             network={network}
-            publicKey={publicKey}
-            chainCode={chainCode}
+            walletId={WalletId.LEDGER_NANO_S}
             dPath={dPath}
             dPaths={getDPaths(networks, WalletId.LEDGER_NANO_S)}
             onCancel={this.handleCancel}
@@ -131,6 +130,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
 
   private handleConnect = (dPath: DPath) => {
     this.setState({
+      publicKey: 'bla',
+      chainCode: 'bla',
+      isLoading: false
+    });
+    /**this.setState({
       isLoading: true,
       error: null
     });
@@ -148,7 +152,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
           error: translateRaw(err.message),
           isLoading: false
         });
-      });
+      });**/
   };
 
   private handleCancel = () => {

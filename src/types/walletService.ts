@@ -1,3 +1,5 @@
+import { DerivationPath } from '@mycrypto/wallets';
+
 import { IUseWalletConnect } from '@services';
 import { Network, TAddress } from '@types';
 
@@ -5,9 +7,7 @@ export interface WalletService {
   init(initArgs: WalletServiceInitArgs): any;
 }
 
-export interface HardwareWalletService extends WalletService {
-  getChainCode(dPath: string): Promise<any>;
-}
+export type HardwareWalletService = WalletService;
 
 type WalletServiceInitArgs =
   | Web3WalletInitArgs
@@ -21,7 +21,7 @@ export interface Web3WalletInitArgs {
 
 export interface HardwareWalletInitArgs {
   address: TAddress;
-  dPath: string;
+  dPath: DerivationPath;
   index: number;
 }
 

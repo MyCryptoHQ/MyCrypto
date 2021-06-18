@@ -1,183 +1,183 @@
-import { DPath } from '@types';
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 
 const ETH_DEFAULT: DPath = {
-  label: 'Default (ETH)',
-  value: "m/44'/60'/0'/0"
+  name: 'Default (ETH)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const ETH_TREZOR: DPath = {
-  label: 'TREZOR (ETH)',
-  value: "m/44'/60'/0'/0"
+  name: 'TREZOR (ETH)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const ETH_LEDGER: DPath = {
-  label: 'Ledger (ETH)',
-  value: "m/44'/60'/0'"
+  name: 'Ledger (ETH)',
+  path: "m/44'/60'/0'/<account>"
 };
 
 const ETH_LEDGER_LIVE: DPath = {
-  label: 'Ledger Live (ETH)',
-  value: `m/44'/60'/addrIndex'/0/0`,
+  name: 'Ledger Live (ETH)',
+  path: `m/44'/60'/<account>'/0/0`,
   isHardened: true
 };
 
 const ETC_LEDGER: DPath = {
-  label: 'Ledger (ETC)',
-  value: "m/44'/60'/160720'/0'"
+  name: 'Ledger (ETC)',
+  path: "m/44'/60'/160720'/0'/<account>"
 };
 
 const ETC_TREZOR: DPath = {
-  label: 'TREZOR (ETC)',
-  value: "m/44'/61'/0'/0"
+  name: 'TREZOR (ETC)',
+  path: "m/44'/61'/0'/0/<account>"
 };
 
 const ETH_TESTNET: DPath = {
-  label: 'Testnet (ETH)',
-  value: "m/44'/1'/0'/0"
+  name: 'Testnet (ETH)',
+  path: "m/44'/1'/0'/0/<account>"
 };
 
 const EXP_DEFAULT: DPath = {
-  label: 'Default (EXP)',
-  value: "m/44'/40'/0'/0"
+  name: 'Default (EXP)',
+  path: "m/44'/40'/0'/0/<account>"
 };
 
 const UBQ_DEFAULT: DPath = {
-  label: 'Default (UBQ)',
-  value: "m/44'/108'/0'/0"
+  name: 'Default (UBQ)',
+  path: "m/44'/108'/0'/0/<account>"
 };
 
 const POA_DEFAULT: DPath = {
-  label: 'Default (POA)',
-  value: "m/44'/60'/0'/0"
+  name: 'Default (POA)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const TOMO_DEFAULT: DPath = {
-  label: 'Default (TOMO)',
-  value: "m/44'/889'/0'/0"
+  name: 'Default (TOMO)',
+  path: "m/44'/889'/0'/0/<account>"
 };
 
 const EGEM_DEFAULT: DPath = {
-  label: 'Default (EGEM)',
-  value: "m/44'/1987'/0'/0"
+  name: 'Default (EGEM)',
+  path: "m/44'/1987'/0'/0/<account>"
 };
 
 const CLO_DEFAULT: DPath = {
-  label: 'Default (CLO)',
-  value: "m/44'/820'/0'/0"
+  name: 'Default (CLO)',
+  path: "m/44'/820'/0'/0/<account>"
 };
 
 const ETH_SINGULAR: DPath = {
-  label: 'SingularDTV',
-  value: "m/0'/0'/0'"
+  name: 'SingularDTV',
+  path: "m/0'/0'/0'/<account>"
 };
 
 const RSK_TESTNET: DPath = {
-  label: 'Testnet (RSK)',
-  value: "m/44'/37310'/0'/0"
+  name: 'Testnet (RSK)',
+  path: "m/44'/37310'/0'/0/<account>"
 };
 
 const RSK_MAINNET: DPath = {
-  label: 'Mainnet (RSK)',
-  value: "m/44'/137'/0'/0"
+  name: 'Mainnet (RSK)',
+  path: "m/44'/137'/0'/0/<account>"
 };
 
 const GO_DEFAULT: DPath = {
-  label: 'Default (GO)',
-  value: "m/44'/6060'/0'/0"
+  name: 'Default (GO)',
+  path: "m/44'/6060'/0'/0/<account>"
 };
 
 const ATH_DEFAULT: DPath = {
-  label: 'Default (ATH)',
-  value: "m/44'/1620'/0'/0"
+  name: 'Default (ATH)',
+  path: "m/44'/1620'/0'/0/<account>"
 };
 
 const ETHO_DEFAULT: DPath = {
-  label: 'Default (ETHO)',
-  value: "m/44'/1313114'/0'/0"
+  name: 'Default (ETHO)',
+  path: "m/44'/1313114'/0'/0/<account>"
 };
 
 const MIX_DEFAULT: DPath = {
-  label: 'Default (MIX)',
-  value: "m/44'/76'/0'/0"
+  name: 'Default (MIX)',
+  path: "m/44'/76'/0'/0/<account>"
 };
 
 const REOSC_DEFAULT: DPath = {
-  label: 'Default (REOSC)',
-  value: "m/44'/2894'/0'/0"
+  name: 'Default (REOSC)',
+  path: "m/44'/2894'/0'/0/<account>"
 };
 
 const ARTIS_SIGMA1: DPath = {
-  label: 'Sigma1 (ATS)',
-  value: "m/44'/60'/0'/0"
+  name: 'Sigma1 (ATS)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const ARTIS_TAU1: DPath = {
-  label: 'Tau1 (ATS)',
-  value: "m/44'/60'/0'/0"
+  name: 'Tau1 (ATS)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const THUNDERCORE_DEFAULT: DPath = {
-  label: 'Default (THUNDERCORE)',
-  value: "m/44'/1001'/0'/0"
+  name: 'Default (THUNDERCORE)',
+  path: "m/44'/1001'/0'/0/<account>"
 };
 
 const ETI_DEFAULT: DPath = {
-  label: 'Default (ETI)',
-  value: "m/44'/464'/0'/0"
+  name: 'Default (ETI)',
+  path: "m/44'/464'/0'/0/<account>"
 };
 const WEB_DEFAULT: DPath = {
-  label: 'Default (WEB)',
-  value: "m/44'/227'/0'/0"
+  name: 'Default (WEB)',
+  path: "m/44'/227'/0'/0/<account>"
 };
 
 const METADIUM_DEFAULT: DPath = {
-  label: 'Default (METADIUM)',
-  value: "m/44'/916'/0'/0"
+  name: 'Default (METADIUM)',
+  path: "m/44'/916'/0'/0/<account>"
 };
 
 const DEXON_DEFAULT: DPath = {
-  label: 'Default (DEXON)',
-  value: "m/44'/237'/0'/0"
+  name: 'Default (DEXON)',
+  path: "m/44'/237'/0'/0/<account>"
 };
 
 const ASK_DEFAULT: DPath = {
-  label: 'Default (ASK)',
-  value: "m/44'/2221'/0'/0"
+  name: 'Default (ASK)',
+  path: "m/44'/2221'/0'/0/<account>"
 };
 
 const ASK_TREZOR: DPath = {
-  label: 'TREZOR (ASK)',
-  value: "m/44'/2221'/0'/0"
+  name: 'TREZOR (ASK)',
+  path: "m/44'/2221'/0'/0/<account>"
 };
 
 const AUX_DEFAULT: DPath = {
-  label: 'Default (AUX)',
-  value: "m/44'/344'/0'/0"
+  name: 'Default (AUX)',
+  path: "m/44'/344'/0'/0/<account>"
 };
 
 const ERE_DEFAULT: DPath = {
-  label: 'Default (ERE)',
-  value: "m/44'/466'/0'/0"
+  name: 'Default (ERE)',
+  path: "m/44'/466'/0'/0/<account>"
 };
 
 const VOLTA_DEFAULT: DPath = {
-  label: 'Default (VOLTA)',
-  value: "m/44'/73799'/0'/0"
+  name: 'Default (VOLTA)',
+  path: "m/44'/73799'/0'/0/<account>"
 };
 
 const EWC_DEFAULT: DPath = {
-  label: 'Default (EWC)',
-  value: "m/44'/246'/0'/0"
+  name: 'Default (EWC)',
+  path: "m/44'/246'/0'/0/<account>"
 };
 
 const AVAX_DEFAULT: DPath = {
-  label: 'Default (AVAX)',
-  value: "m/44'/60'/0'/0"
+  name: 'Default (AVAX)',
+  path: "m/44'/60'/0'/0/<account>"
 };
 
 const EVRICE_DEFAULT: DPath = {
-  label: 'Default (EVC)',
-  value: "m/44'/1020'/0'/0"
+  name: 'Default (EVC)',
+  path: "m/44'/1020'/0'/0/<account>"
 };
 
 export const DPathsList = {

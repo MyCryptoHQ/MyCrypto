@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import questionSVG from '@assets/images/icn-question.svg';
@@ -11,10 +12,10 @@ import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
-import { getHDWallets, HDWalletData } from '@services/WalletService';
+import { getWallet, HDWalletData } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { DPath, Network, TAddress, TTicker } from '@types';
+import { Network, TAddress, TTicker, WalletId } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
 import { DPathSelector } from './DPathSelector';
@@ -153,12 +154,10 @@ const FooterLink = styled.div`
 const WALLETS_PER_PAGE = 5;
 
 interface OwnProps {
+  walletId: WalletId;
   network: Network | undefined;
   dPath: DPath;
   dPaths: DPath[];
-  publicKey?: string;
-  chainCode?: string;
-  seed?: string;
 }
 
 interface DispatchProps {
@@ -170,17 +169,15 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps;
 
 const customDPath: DPath = {
-  label: translateRaw('X_CUSTOM'),
-  value: ''
+  name: translateRaw('X_CUSTOM'),
+  path: ''
 };
 
 export function HDWalletsClass({
+  walletId,
   network,
   dPath,
   dPaths,
-  publicKey,
-  chainCode,
-  seed,
   onCancel,
   onConfirmAddress,
   onPathChange
@@ -196,16 +193,11 @@ export function HDWalletsClass({
   const { contacts } = useContacts();
   const { assets } = useAssets();
 
+  const wallet = getWallet(walletId);
+
   /* Used to update addresses displayed */
   useEffect(() => {
-    getAddresses({
-      network,
-      dPath: currentDPath,
-      dPaths,
-      publicKey,
-      chainCode,
-      seed
-    });
+    getAddresses();
     return () => setRequestingBalanceCheck(true);
   }, [page, currentDPath]);
 
@@ -218,28 +210,21 @@ export function HDWalletsClass({
     return;
   }, [requestingBalanceCheck]);
 
-  const getAddresses = (props: OwnProps) => {
+  const getAddresses = async () => {
     setRequestingWallets(true);
     // tslint:disable-next-line: no-shadowed-variable
-    const { dPath, publicKey, chainCode, seed } = props;
-    if (dPath && ((publicKey && chainCode) || seed)) {
-      if (isValidPath(dPath.value)) {
-        setWallets(
-          getHDWallets({
-            seed,
-            dPath: dPath.value,
-            publicKey,
-            chainCode,
-            limit: WALLETS_PER_PAGE,
-            offset: WALLETS_PER_PAGE * page
-          })
-        );
-        setRequestingWallets(false);
-        setRequestingBalanceCheck(true);
-      } else {
-        setRequestingWallets(false);
-        setRequestingBalanceCheck(false);
-      }
+    if (dPath) {
+      const result = await wallet!.getAddresses({
+        path: dPath,
+        limit: WALLETS_PER_PAGE,
+        offset: WALLETS_PER_PAGE * page
+      });
+      setWallets(result);
+      setRequestingWallets(false);
+      setRequestingBalanceCheck(true);
+    } else {
+      setRequestingWallets(false);
+      setRequestingBalanceCheck(false);
     }
   };
 
@@ -272,7 +257,7 @@ export function HDWalletsClass({
 
   const handleChangePath = (newPath: DPath) => {
     resetTable();
-    if (newPath.label === customDPath.label) {
+    if (newPath.name === customDPath.name) {
       setCurrentDPath(newPath);
       setCustomPath('');
     } else {
@@ -346,7 +331,7 @@ export function HDWalletsClass({
     baseAssetTicker = getBaseAssetByNetwork({ network, assets })!.ticker;
   }
   const ticker: TTicker = baseAssetTicker ? baseAssetTicker : DEFAULT_NETWORK_TICKER;
-  const isCustom = currentDPath.label === customDPath.label;
+  const isCustom = currentDPath.name === customDPath.name;
 
   return (
     <>
@@ -393,7 +378,7 @@ export function HDWalletsClass({
       )}
 
       <DWTable
-        disabled={isCustom && !currentDPath.value}
+        disabled={isCustom && !currentDPath.name}
         selected={selectedAddressIndex}
         page={page}
         head={['#', translateRaw('ADDRESS'), ticker, translateRaw('ACTION_5')]}
@@ -403,7 +388,7 @@ export function HDWalletsClass({
         }}
       />
       <Bottom>
-        <Nav disabled={isCustom && !currentDPath.value}>
+        <Nav disabled={isCustom && !currentDPath.name}>
           <img src={prevIcon} onClick={prevPage} />
           {translate('PAGE_OF', { $page: (page + 1).toString(), $all: '∞' })}
           <img src={nextIcon} onClick={nextPage} />

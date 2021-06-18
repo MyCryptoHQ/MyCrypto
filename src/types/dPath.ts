@@ -1,10 +1,6 @@
-import { WalletId } from './walletId';
+import { DerivationPath } from '@mycrypto/wallets';
 
-export interface DPath {
-  label: string;
-  value: string; // @todo determine method for more precise typing for path
-  isHardened?: boolean;
-}
+import { WalletId } from './walletId';
 
 // We really want to use "keyof typeof HD_WALLETS" but it gives 'never'
 export type DPathFormat =
@@ -13,4 +9,4 @@ export type DPathFormat =
   | WalletId.LEDGER_NANO_S_NEW
   | WalletId.TREZOR_NEW;
 
-export type DPathFormats = Partial<Record<DPathFormat | 'default', DPath>>;
+export type DPathFormats = Partial<Record<DPathFormat | 'default', DerivationPath>>;

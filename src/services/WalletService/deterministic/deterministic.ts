@@ -47,6 +47,7 @@ export interface ITokenValues {
   [key: string]: ITokenData | null;
 }
 
+// @todo delete
 export const getHDWallets = (args: GetHDWalletsArgs): HDWalletData[] => {
   const { seed, dPath, publicKey, chainCode, limit, offset } = args;
   let pathBase;
