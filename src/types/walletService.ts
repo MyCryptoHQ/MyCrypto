@@ -1,4 +1,4 @@
-import { DerivationPath } from '@mycrypto/wallets';
+import { DerivationPath, Wallet } from '@mycrypto/wallets';
 
 import { IUseWalletConnect } from '@services';
 import { Network, TAddress } from '@types';
@@ -7,7 +7,9 @@ export interface WalletService {
   init(initArgs: WalletServiceInitArgs): any;
 }
 
-export type HardwareWalletService = WalletService;
+export interface HardwareWalletService {
+  init(initArgs: HardwareWalletInitArgs): Wallet;
+}
 
 type WalletServiceInitArgs =
   | Web3WalletInitArgs

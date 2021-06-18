@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
@@ -69,10 +70,10 @@ export default function HardwareSignTransaction({
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
-  const [wallet, setWallet] = useState<HardwareWallet | undefined>();
-  const SigningWalletService = WalletFactory[
+  const [wallet, setWallet] = useState<Wallet | undefined>();
+  const SigningWalletService = (WalletFactory[
     senderAccount.wallet as HardwareWalletId
-  ] as HardwareWalletService;
+  ] as unknown) as HardwareWalletService;
 
   useInterval(
     async () => {
@@ -80,13 +81,13 @@ export default function HardwareSignTransaction({
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
         const dpathObject = splitDPath(senderAccount.dPath);
-        const walletObject = SigningWalletService.init({
+        const walletObject = await SigningWalletService.init({
           address: senderAccount.address,
           dPath: dpathObject.dpath,
           index: dpathObject.index
         });
         try {
-          await SigningWalletService.getChainCode(dpathObject.dpath);
+          await walletObject.getChainCode(dpathObject.dpath);
           setIsRequestingWalletUnlock(false);
           setIsWalletUnlocked(true);
           setWallet(walletObject);
@@ -102,11 +103,11 @@ export default function HardwareSignTransaction({
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.
-    if (wallet && 'signRawTransaction' in wallet && !isRequestingTxSignature) {
+    if (wallet && 'signTransaction' in wallet && !isRequestingTxSignature) {
       setIsRequestingTxSignature(true);
       const madeTx = makeTransaction(rawTransaction);
       wallet
-        .signRawTransaction(madeTx)
+        .signTransaction(madeTx)
         .then((data: any) => {
           // User approves tx.
           setIsTxSignatureRequestDenied(false);

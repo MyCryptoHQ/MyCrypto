@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
@@ -8,7 +9,7 @@ import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { BannerType, DPath, ExtendedAsset, Network } from '@types';
+import { BannerType, ExtendedAsset, Network } from '@types';
 import { hasBalance, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 

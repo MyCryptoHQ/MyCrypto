@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { Wallet } from '@mycrypto/wallets';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -19,7 +20,7 @@ import {
   triggerComplete,
   updateAsset as updateScannerAsset
 } from '@features/AddAccount/components/hdWallet.slice';
-import { processScannedAccounts, Wallet } from '@services';
+import { processScannedAccounts } from '@services';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 import { useUnmount } from '@vendor';
 

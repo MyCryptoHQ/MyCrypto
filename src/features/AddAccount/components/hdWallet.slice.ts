@@ -1,16 +1,16 @@
+import { Wallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
 import { all, call, put, race, take, takeLatest } from 'redux-saga/effects';
 
+import { getWallet } from '@services';
 import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
   DWAccountDisplay,
   ExtendedDPath,
-  HDWalletState,
-  selectWallet
+  HDWalletState
 } from '@services/WalletService/deterministic';
-import { Wallet } from '@services/WalletService/wallets';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV } from '@utils';
@@ -198,7 +198,7 @@ export function* requestConnectionWorker({
   const { asset, dpaths, network, walletId, setSession } = payload;
   // initialize the wallet
   try {
-    const session: Wallet = yield call(selectWallet, walletId);
+    const session: Wallet = yield call(getWallet, walletId);
     yield call([session, 'initialize'], dpaths[0]);
     yield put(slice.actions.requestConnection());
     yield call(setSession, session);
@@ -261,7 +261,7 @@ export function* accountsQueueWorker() {
   }
 }
 
-// Race handles the case where accountsQueueWorker or getAccountsWorker are still running when resetState is triggered, 
+// Race handles the case where accountsQueueWorker or getAccountsWorker are still running when resetState is triggered,
 // resulting in the state being altered after resetState is triggered (and subsequent usages of hdwallet are broken).
 export function* accountsQueueSagaWatcher() {
   yield race([call(accountsQueueWorker), take(resetState.type)]);

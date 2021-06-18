@@ -9,7 +9,7 @@ export const sortAccounts = (
   selectedDPath: DPath
 ) => {
   const selectedAccounts = accounts
-    .filter(({ isSelected, balance }) => (isSelected && balance) || hasBalance(balance) )
+    .filter(({ isSelected, balance }) => (isSelected && balance) || hasBalance(balance))
     .sort((a, b) => (bigify(a.balance!).isGreaterThan(b.balance!) ? -1 : 1));
   const deselectedAccounts = accounts
     .filter(

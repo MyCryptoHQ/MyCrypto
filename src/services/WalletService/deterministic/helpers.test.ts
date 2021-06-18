@@ -12,8 +12,8 @@ interface TInputToSerialize {
   pathItem: {
     path: string;
     baseDPath: {
-      label: string;
-      value: string;
+      name: string;
+      path: string;
       offset: number;
       numOfAddresses: number;
     };
