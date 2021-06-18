@@ -1,4 +1,4 @@
-import { Wallet } from '@mycrypto/wallets';
+import { DeterministicAddress, DeterministicWallet, Wallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
@@ -193,13 +193,13 @@ export function* requestConnectionWorker({
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: Wallet): void;
+  setSession(wallet: DeterministicWallet): void;
 }>) {
   const { asset, dpaths, network, walletId, setSession } = payload;
   // initialize the wallet
   try {
-    const session: Wallet = yield call(getWallet, walletId);
-    yield call([session, 'initialize'], dpaths[0]);
+    const session: DeterministicWallet = yield call(getWallet, walletId);
+    yield call([session, session.getAddress], dpaths[0], 0);
     yield put(slice.actions.requestConnection());
     yield call(setSession, session);
     yield put(slice.actions.requestConnectionSuccess({ asset, network }));
@@ -216,16 +216,28 @@ export function* requestConnectionWorker({
 
 export function* getAccountsWorker({
   payload
-}: PayloadAction<{ session: Wallet; dpaths: ExtendedDPath[] }>) {
+}: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>) {
   const { dpaths, session } = payload;
   yield put(slice.actions.requestAddresses());
-  if (!('getMultipleAddresses' in session)) {
+  if (!('getAddressesWithMultipleDPaths' in session)) {
     console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
     return;
   }
   try {
-    const dwaccounts: DWAccountDisplay[] = yield call([session, 'getMultipleAddresses'], dpaths);
-    if (dwaccounts.length === 0) return;
+    const addresses: DeterministicAddress[] = yield call(
+      [session, session.getAddressesWithMultipleDPaths],
+      dpaths.map(({ numOfAddresses, offset, ...path }) => ({
+        limit: numOfAddresses,
+        offset,
+        path
+      }))
+    );
+    if (addresses.length === 0) return;
+    const dwaccounts = addresses.map((a) => ({
+      address: a.address,
+      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo },
+      balance: undefined
+    }));
     yield put(slice.actions.enqueueAccounts(dwaccounts));
     yield put(processAccountsQueue());
   } catch (err) {

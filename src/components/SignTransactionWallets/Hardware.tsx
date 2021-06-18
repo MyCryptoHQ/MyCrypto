@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
-import { HardwareWallet, WalletFactory } from '@services/WalletService';
+import { WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -108,7 +108,7 @@ export default function HardwareSignTransaction({
       const madeTx = makeTransaction(rawTransaction);
       wallet
         .signTransaction(madeTx)
-        .then((data: any) => {
+        .then((data) => {
           // User approves tx.
           setIsTxSignatureRequestDenied(false);
           onSuccess(data);

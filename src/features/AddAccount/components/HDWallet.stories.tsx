@@ -22,8 +22,8 @@ const defaultProps: HDWalletProps = {
   assetToUse: fAssets[0],
   selectedDPath: {
     ...fDWAccounts[0].pathItem,
-    label: 'Default ETH DPath',
-    value: ''
+    name: 'Default ETH DPath',
+    path: ''
   },
   setSelectedDPath: noOp,
   updateAsset: noOp,

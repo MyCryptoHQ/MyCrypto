@@ -1,3 +1,4 @@
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
@@ -5,7 +6,7 @@ import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { HardwareWalletResult } from '@services/WalletService';
 import { selectWallet } from '@services/WalletService/deterministic';
 import { AppState } from '@store/root.reducer';
-import { DPath, DPathFormat, TAddress, WalletId } from '@types';
+import { DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
 
 import {
@@ -41,8 +42,8 @@ const {
 const addressToTestWith = fAccount.address as TAddress;
 
 const fExtendedDPath: ExtendedDPath = {
-  label: 'Ledger (ETH)',
-  value: "m/44'/60'/0'",
+  name: 'Ledger (ETH)',
+  path: "m/44'/60'/0'",
   offset: 0,
   numOfAddresses: 1
 };
