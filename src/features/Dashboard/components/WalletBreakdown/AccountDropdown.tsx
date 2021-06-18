@@ -96,7 +96,7 @@ const SCheckbox = styled(Checkbox)`
 `;
 
 const ItemContainer = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
   max-height: 450px;
 `;
 
