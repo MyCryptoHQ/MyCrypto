@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
+import { Wallet } from '@mycrypto/wallets';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -76,7 +77,7 @@ function SignMessage({
   signMessageReset,
   signMessage
 }: Props & OwnProps) {
-  const [wallet, setWallet] = useState<IFullWallet | undefined>(undefined);
+  const [wallet, setWallet] = useState<Wallet | IFullWallet | undefined>(undefined);
 
   useUnmount(() => {
     // Kill WalletConnect session
@@ -91,7 +92,7 @@ function SignMessage({
     walletSelect(walletId);
   };
 
-  const onUnlock = (w: IFullWallet | IFullWallet[]) => {
+  const onUnlock = (w: Wallet | IFullWallet | IFullWallet[]) => {
     const selectedWallet = Array.isArray(w) ? w[0] : w;
     setWallet(selectedWallet);
   };

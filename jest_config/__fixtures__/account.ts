@@ -205,8 +205,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/0",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -219,8 +219,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/1",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -233,8 +233,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/2",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -247,8 +247,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/3",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -261,8 +261,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/4",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -275,8 +275,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/5",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,

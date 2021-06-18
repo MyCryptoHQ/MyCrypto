@@ -69,7 +69,7 @@ export const selectSignedMessage = createSelector(selectSlice, (s) => s.signedMe
 export const selectMessage = createSelector(selectSlice, (s) => s.message);
 export const selectWalletId = createSelector(selectSlice, (s) => s.walletId);
 
-export const signMessage = createAction<{ message: string; wallet: Wallet }>(
+export const signMessage = createAction<{ message: string; wallet: Wallet | IFullWallet }>(
   `${signMessageSlice.name}/signMessage`
 );
 
@@ -79,7 +79,7 @@ export function* signMessageSaga() {
 
 export function* signMessageWorker({
   payload
-}: PayloadAction<{ message: string; wallet: Wallet }>) {
+}: PayloadAction<{ message: string; wallet: Wallet | IFullWallet }>) {
   const { message, wallet } = payload;
   yield put(signMessageRequest());
 

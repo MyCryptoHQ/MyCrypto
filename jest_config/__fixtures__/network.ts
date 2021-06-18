@@ -16,16 +16,16 @@ export const Ethereum: Network = {
   },
   dPaths: {
     TREZOR: {
-      label: 'Trezor (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Trezor (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
     },
     default: {
-      label: 'Default (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Default (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     }
   },
   baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
@@ -64,16 +64,16 @@ export const Ropsten: Network = {
   },
   dPaths: {
     TREZOR: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
+      name: 'Testnet (ETH)',
+      path: "m/44'/1'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
     },
     default: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
+      name: 'Testnet (ETH)',
+      path: "m/44'/1'/0'/0/<account>"
     }
   },
   baseAsset: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -106,16 +106,16 @@ export const xDAI: Network = {
   }),
   dPaths: {
     TREZOR: {
-      label: 'Trezor (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Trezor (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
     },
     default: {
-      label: 'Default (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Default (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     }
   },
   gasPriceSettings: {

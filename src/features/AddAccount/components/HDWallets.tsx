@@ -271,7 +271,7 @@ export function HDWalletsClass({
 
   const handleSubmitCustomPath = () => {
     resetTable();
-    const submittedDPath: DPath = { ...customDPath, value: customPath };
+    const submittedDPath: DPath = { ...customDPath, path: customPath };
     setCurrentDPath(submittedDPath);
     onPathChange(submittedDPath);
   };
