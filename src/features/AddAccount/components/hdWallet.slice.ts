@@ -4,13 +4,13 @@ import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
 import { all, call, put, race, take, takeLatest } from 'redux-saga/effects';
 
-import { getWallet } from '@services';
 import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
   DWAccountDisplay,
   ExtendedDPath,
   HDWalletState
 } from '@services/WalletService/deterministic';
+import { getWallet } from '@services/WalletService/walletService';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV } from '@utils';

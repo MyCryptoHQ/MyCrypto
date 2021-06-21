@@ -2,7 +2,7 @@ import { UnsignedTransaction } from '@ethersproject/transactions';
 
 interface IBaseWallet {
   isReadOnly?: boolean;
-  getAddressString(): string;
+  getAddress(): string;
   getPrivateKeyString?(): string;
 }
 

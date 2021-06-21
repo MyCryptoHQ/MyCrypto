@@ -52,7 +52,7 @@ describe('Validator', () => {
   });
   it('should validate hardcoded DPaths as true', () => {
     Object.values(DPathsList).forEach((DPath) => {
-      expect(isValidPath(DPath.value)).toBeTruthy();
+      expect(isValidPath(DPath.path)).toBeTruthy();
     });
   });
   it('should validate BIP49 DPaths as true', () => {

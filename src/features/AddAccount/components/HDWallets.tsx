@@ -213,7 +213,7 @@ export function HDWalletsClass({
   const getAddresses = async () => {
     setRequestingWallets(true);
     // tslint:disable-next-line: no-shadowed-variable
-    if (dPath) {
+    if (dPath && isValidPath(dPath.path)) {
       const result = await wallet!.getAddresses({
         path: dPath,
         limit: WALLETS_PER_PAGE,

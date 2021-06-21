@@ -22,11 +22,7 @@ const initialProps: HDTableProps = {
   accounts: addressMap,
   asset: fAssets[0],
   displayEmptyAddresses: true,
-  selectedDPath: {
-    ...fDWAccounts[0].pathItem,
-    label: 'Default ETH DPath',
-    value: '0.001'
-  },
+  selectedDPath: fDWAccounts[0].pathItem.baseDPath,
   csv: '',
   onSelect: noOp,
   handleUpdate: noOp,

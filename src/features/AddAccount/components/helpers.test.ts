@@ -55,9 +55,7 @@ const inputArr = [
       path: "m/44'/60'/0'/3",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        path: "m/44'/60'/0'"
       },
       index: 3
     },

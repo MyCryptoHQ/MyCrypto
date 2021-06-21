@@ -15,7 +15,7 @@ export class HDWallet {
     this.index = index;
   }
 
-  public getAddressString(): string {
+  public getAddress(): string {
     return this.address;
   }
 

@@ -12,7 +12,7 @@ export default class Web3Wallet implements IFullWallet {
     this.network = network;
   }
 
-  public getAddressString(): string {
+  public getAddress(): string {
     return this.address;
   }
 

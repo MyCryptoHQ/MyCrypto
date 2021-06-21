@@ -18,5 +18,5 @@ export default class WalletConnectWallet implements IFullWallet {
 
   public kill = async () => this.killHandler();
 
-  public getAddressString = () => this.address;
+  public getAddress = () => this.address;
 }

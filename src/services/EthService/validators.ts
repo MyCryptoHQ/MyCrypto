@@ -8,7 +8,7 @@ import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL,
   dPathRegex,
-  DPathsList as DPaths,
+  DPathsList,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
@@ -169,18 +169,7 @@ export function isValidHex(str: string): boolean {
 }
 
 export function isValidPath(dPath: string) {
-  // ETC Ledger is incorrect up due to an extra ' at the end of it
-  if (dPath === DPaths.ETC_LEDGER.value) {
-    return true;
-  }
-
-  // SingularDTV is incorrect due to using a 0 instead of a 44 as the purpose
-  if (dPath === DPaths.ETH_SINGULAR.value) {
-    return true;
-  }
-
-  // Ledger Live is incorrect due to using the full path instead of a prefix and overwriting the index.
-  if (dPath === DPaths.ETH_LEDGER_LIVE.value) {
+  if (Object.values(DPathsList).some((d) => d.path === dPath)) {
     return true;
   }
 

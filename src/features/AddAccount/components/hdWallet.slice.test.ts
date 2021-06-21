@@ -4,7 +4,7 @@ import { expectSaga, mockAppState } from 'test-utils';
 import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { HardwareWalletResult } from '@services/WalletService';
-import { selectWallet } from '@services/WalletService/deterministic';
+import { getWallet } from '@services/WalletService/walletService';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
@@ -144,7 +144,7 @@ const ledgerMock = {
   getAddress() {
     return Promise.resolve({} as HardwareWalletResult);
   },
-  getMultipleAddresses() {
+  getAddressesWithMultipleDPaths() {
     return Promise.resolve([fDWAccountDisplayPreBalance]);
   },
   getDPaths() {
@@ -152,8 +152,8 @@ const ledgerMock = {
   }
 };
 
-jest.mock('@services/WalletService/deterministic/helpers.ts', () => ({
-  selectWallet: jest.fn().mockImplementation(() => Promise.resolve(ledgerMock))
+jest.mock('@services/WalletService/walletService', () => ({
+  getWallet: jest.fn().mockImplementation(() => Promise.resolve(ledgerMock))
 }));
 
 describe('requestConnectionWorker()', () => {
@@ -167,7 +167,7 @@ describe('requestConnectionWorker()', () => {
     };
     return expectSaga(requestConnectionWorker, connectHDWallet(inputPayload))
       .withState(mockAppState({ networks: fNetworks }))
-      .call(selectWallet, inputPayload.walletId)
+      .call(getWallet, inputPayload.walletId)
       .call([ledgerMock, 'initialize'], inputPayload.dpaths[0])
       .call(inputPayload.setSession, ledgerMock)
       .put(requestConnection())
@@ -185,7 +185,7 @@ describe('getAccountsWorker()', () => {
     return expectSaga(getAccountsWorker, getAccounts(inputPayload))
       .withState(mockAppState({ networks: fNetworks }))
       .put(requestAddresses())
-      .call([ledgerMock, 'getMultipleAddresses'], inputPayload.dpaths)
+      .call([ledgerMock, 'getAddressesWithMultipleDPaths'], inputPayload.dpaths)
       .put(enqueueAccounts([fDWAccountDisplayPreBalance]))
       .put(processAccountsQueue())
       .silentRun();
