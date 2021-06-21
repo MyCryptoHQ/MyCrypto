@@ -33,7 +33,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
-  const dpaths = uniqBy(prop('value'), [
+  const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.TREZOR_NEW),
     ...TREZOR_DERIVATION_PATHS
   ]);

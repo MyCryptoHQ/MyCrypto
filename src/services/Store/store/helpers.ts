@@ -136,6 +136,8 @@ export const sanitizeAccount = (a: IAccount) => ({
     gasUsed: t.gasUsed && t.gasUsed
   })),
   dPath: a.dPath,
+  path: a.path,
+  index: a.index,
   mtime: a.mtime,
   favorite: a.favorite,
   isPrivate: a.isPrivate

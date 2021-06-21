@@ -39,18 +39,6 @@ const ErrorMessageContainer = styled.div`
   margin: 2em;
 `;
 
-export const splitDPath = (fullDPath: string): IDestructuredDPath => {
-  /*
-    m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'", index: "0" }
-  */
-  const dPathArray = fullDPath.split('/');
-  const index = dPathArray.pop() as string;
-  return {
-    dpath: dPathArray.join('/'),
-    index: parseInt(index, 10)
-  };
-};
-
 export interface IProps {
   walletIconType: TIcon;
   signerDescription: string;
@@ -80,14 +68,13 @@ export default function HardwareSignTransaction({
       // Unlock Wallet
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
-        const dpathObject = splitDPath(senderAccount.dPath);
         const walletObject = await SigningWalletService.init({
           address: senderAccount.address,
-          dPath: dpathObject.dpath,
-          index: dpathObject.index
+          dPath: senderAccount.path!,
+          index: senderAccount.index!
         });
         try {
-          await walletObject.getChainCode(dpathObject.dpath);
+          await walletObject.getAddress();
           setIsRequestingWalletUnlock(false);
           setIsWalletUnlocked(true);
           setWallet(walletObject);

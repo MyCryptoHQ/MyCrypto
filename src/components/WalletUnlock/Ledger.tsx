@@ -38,7 +38,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   // @todo: LEDGER_DERIVATION_PATHS are not available on all networks. Fix this to only display DPaths relevant to the specified network.
-  const dpaths = uniqBy(prop('value'), [
+  const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
     ...LEDGER_DERIVATION_PATHS
   ]);

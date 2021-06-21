@@ -1,3 +1,4 @@
+import { DerivationPath } from '@../../wallets/typings/src';
 import { Overwrite } from 'utility-types';
 
 import { TAddress } from './address';
@@ -16,7 +17,13 @@ export interface IAccount {
   assets: AssetBalanceObject[];
   wallet: WalletId;
   transactions: ITxReceipt[];
-  dPath: string;
+
+  // @todo Write migration to remove this and convert to below
+  dPath?: string;
+  // Replaces dPath
+  path?: DerivationPath;
+  index?: number;
+
   mtime: number;
   favorite: boolean;
   isPrivate?: boolean;
