@@ -138,10 +138,7 @@ const GeneralLookupField = ({
     setResolutionError(undefined);
     try {
       const provider = new ProviderHandler(network);
-      const resolvedAddress = await provider.resolveENSName(
-        domain
-        //getBaseAssetByNetwork({ network, assets })!.ticker
-      );
+      const resolvedAddress = await provider.resolveENSName(domain);
       if (!resolvedAddress) {
         throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, { domain });
       }
