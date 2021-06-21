@@ -163,12 +163,6 @@ export class ProviderHandler {
     });
   }
 
-  public reverseLookupENS(address: string): Promise<string | undefined> {
-    return this.injectClient((client) => {
-      return client.lookupAddress(address);
-    });
-  }
-
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {
     if (clientInjectCb) {
       if (this.isFallbackProvider) {
