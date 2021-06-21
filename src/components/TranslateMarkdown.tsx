@@ -11,11 +11,11 @@ interface Props {
 const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
-      disallowedTypes={['html']}
-      renderers={{
-        root: React.Fragment,
-        link: (props) => <LinkApp isExternal={true} {...props} />,
-        paragraph: React.Fragment // Remove <p> added by react-markdown.
+      disallowedElements={['html']}
+      components={{
+        //@ts-expect-error bad typing on props
+        a: (props) => <LinkApp isExternal={true} {...props} />,
+        p: React.Fragment // Remove <p> added by react-markdown.
       }}
     >
       {source}
