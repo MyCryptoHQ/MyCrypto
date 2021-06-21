@@ -39,7 +39,7 @@ describe('DomainStatus', () => {
         domain,
         rawAddress: domain,
         isError: true,
-        resolutionError: new ResolutionError(ResolutionErrorCode.UnspecifiedCurrency, {
+        resolutionError: new ResolutionError(ResolutionErrorCode.UnsupportedCurrency, {
           domain,
           recordName: 'ETH',
           currencyTicker: 'ETH'

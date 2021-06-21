@@ -4,6 +4,7 @@ import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import GeneralLookupField from '@components/GeneralLookupField';
 import { fContacts, fNetwork } from '@fixtures';
+import { ProviderHandler } from '@services/EthService';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
@@ -59,9 +60,9 @@ const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([ke
 }));
 
 // mock domain resolving function
-jest.mock('@services/UnstoppableService', () => ({
-  getResolvedAddress: () => mockMappedContacts[0].address
-}));
+ProviderHandler.prototype.resolveENSName = jest
+  .fn()
+  .mockResolvedValue(mockMappedContacts[0].address);
 
 describe('GeneralLookupField', () => {
   test('it renders the placeholder when no value', async () => {
