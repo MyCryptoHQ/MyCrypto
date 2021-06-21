@@ -1,4 +1,4 @@
-import { DerivationPath } from '@../../wallets/typings/src';
+import { DerivationPath } from '@mycrypto/wallets';
 import { Overwrite } from 'utility-types';
 
 import { TAddress } from './address';
