@@ -1,9 +1,8 @@
-import { DerivationPath as DPath } from '@mycrypto/wallets';
+import { DeterministicWallet } from '@mycrypto/wallets';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
-import { HardwareWalletResult } from '@services/WalletService';
 import { getWallet } from '@services/WalletService/walletService';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, TAddress, WalletId } from '@types';
@@ -141,14 +140,8 @@ const ledgerMock = {
   initialize() {
     return Promise.resolve();
   },
-  getAddress() {
-    return Promise.resolve({} as HardwareWalletResult);
-  },
   getAddressesWithMultipleDPaths() {
     return Promise.resolve([fDWAccountDisplayPreBalance]);
-  },
-  getDPaths() {
-    return [] as DPath[];
   }
 };
 
@@ -179,7 +172,7 @@ describe('requestConnectionWorker()', () => {
 describe('getAccountsWorker()', () => {
   it('attempts to fetch a collection of account addresses given specified dpaths extendedDPaths', () => {
     const inputPayload = {
-      session: ledgerMock,
+      session: (ledgerMock as unknown) as DeterministicWallet,
       dpaths: [fExtendedDPath]
     };
     return expectSaga(getAccountsWorker, getAccounts(inputPayload))

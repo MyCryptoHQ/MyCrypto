@@ -1,4 +1,4 @@
-import { DeterministicAddress, DeterministicWallet, Wallet } from '@mycrypto/wallets';
+import { DeterministicAddress, DeterministicWallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
@@ -168,9 +168,9 @@ export const connectHDWallet = createAction<{
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: Wallet): void;
+  setSession(wallet: DeterministicWallet): void;
 }>(`${slice.name}/connectHDWallet`);
-export const getAccounts = createAction<{ session: Wallet; dpaths: ExtendedDPath[] }>(
+export const getAccounts = createAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>(
   `${slice.name}/getAccounts`
 );
 export const processAccountsQueue = createAction(`${slice.name}/processAccountsQueue`);
@@ -280,7 +280,7 @@ export function* accountsQueueSagaWatcher() {
 }
 
 export function* getAccountsSagaWatcher(
-  payload: PayloadAction<{ session: Wallet; dpaths: ExtendedDPath[] }>
+  payload: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>
 ) {
   yield race([call(getAccountsWorker, payload), take(resetState.type)]);
 }

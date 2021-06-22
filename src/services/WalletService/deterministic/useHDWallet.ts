@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Wallet } from '@mycrypto/wallets';
+import { DeterministicWallet } from '@mycrypto/wallets';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -31,7 +31,7 @@ export const useHDWallet = (
   walletId: DPathFormat,
   gap: number
 ): IUseHDWallet => {
-  const [session, setSession] = useState((undefined as unknown) as Wallet);
+  const [session, setSession] = useState((undefined as unknown) as DeterministicWallet);
   const dispatch = useDispatch();
   const isConnected = useSelector(selectHDWalletIsConnected);
   const isConnecting = useSelector(selectHDWalletIsConnecting);
