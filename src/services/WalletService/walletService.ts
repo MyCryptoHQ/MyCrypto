@@ -37,18 +37,20 @@ export const WalletFactory = {
     init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
   },
   [WalletId.LEDGER_NANO_S_NEW]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) => new LedgerWallet().getWallet(dPath, index)
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new LedgerWallet().getWallet(dPath, index, address)
   },
   [WalletId.LEDGER_NANO_S]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) => new LedgerWallet().getWallet(dPath, index)
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new LedgerWallet().getWallet(dPath, index, address)
   },
   [WalletId.TREZOR_NEW]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(trezorManifest).getWallet(dPath, index)
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
   [WalletId.TREZOR]: {
-    init: ({ dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(trezorManifest).getWallet(dPath, index)
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
