@@ -226,16 +226,16 @@ export function* getAccountsWorker({
   try {
     const addresses: DeterministicAddress[] = yield call(
       [session, session.getAddressesWithMultipleDPaths],
-      dpaths.map(({ numOfAddresses, offset, ...path }) => ({
-        limit: numOfAddresses,
-        offset,
+      dpaths.map((path) => ({
+        limit: path.numOfAddresses,
+        offset: path.offset,
         path
       }))
     );
     if (addresses.length === 0) return;
     const dwaccounts = addresses.map((a) => ({
       address: a.address,
-      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo },
+      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo as ExtendedDPath },
       balance: undefined
     }));
     yield put(slice.actions.enqueueAccounts(dwaccounts));

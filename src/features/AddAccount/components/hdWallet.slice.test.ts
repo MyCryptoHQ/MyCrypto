@@ -3,7 +3,7 @@ import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
 import { DWAccountDisplay, ExtendedDPath } from '@services';
-import { getWallet } from '@services/WalletService/walletService';
+import { getWallet } from '@services/WalletService';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, TAddress, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';

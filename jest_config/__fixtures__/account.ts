@@ -230,7 +230,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/0",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 0
     },
@@ -242,7 +244,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/1",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 1
     },
@@ -254,7 +258,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/2",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 1
     },
@@ -266,7 +272,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/3",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 1
     },
@@ -278,7 +286,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/4",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 1
     },
@@ -290,7 +300,9 @@ export const fDWAccounts: DWAccountDisplay[] = [
       path: "m/44'/60'/0'/5",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'/<account>"
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
       } as ExtendedDPath,
       index: 1
     },

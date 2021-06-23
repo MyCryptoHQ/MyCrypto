@@ -10,9 +10,7 @@ const inputArr = [
       path: "m/44'/60'/0'/0",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        path: "m/44'/60'/0'"
       },
       index: 0
     },
@@ -25,9 +23,7 @@ const inputArr = [
       path: "m/44'/60'/0'/1",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        path: "m/44'/60'/0'"
       },
       index: 1
     },
@@ -40,9 +36,7 @@ const inputArr = [
       path: "m/44'/60'/0'/2",
       baseDPath: {
         name: 'Ledger (ETH)',
-        path: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        path: "m/44'/60'/0'"
       },
       index: 2
     },
@@ -68,7 +62,7 @@ const selectedDPath = {
   name: 'Ledger (ETH)',
   path: "m/44'/60'/0'"
 };
-const baseDPath = { name: 'Ledger (ETH)', path: "m/44'/60'/0'", offset: 0, numOfAddresses: 5 };
+const baseDPath = { name: 'Ledger (ETH)', path: "m/44'/60'/0'" };
 
 describe('sortAccounts', () => {
   it('sorts selected accounts to the front of the array when displayEmptyAddresses === true', () => {

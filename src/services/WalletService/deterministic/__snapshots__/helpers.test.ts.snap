@@ -7,10 +7,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 0,
       "path": "m/44'/60'/0'/0/0",
@@ -63,10 +63,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 1,
       "path": "m/44'/60'/0'/0/1",

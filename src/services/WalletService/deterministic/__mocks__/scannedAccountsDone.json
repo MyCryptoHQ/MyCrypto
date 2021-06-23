@@ -4,8 +4,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/0",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -18,8 +18,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/1",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
