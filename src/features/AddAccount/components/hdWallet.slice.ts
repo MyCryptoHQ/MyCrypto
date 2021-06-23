@@ -235,8 +235,7 @@ export function* getAccountsWorker({
     if (addresses.length === 0) return;
     const dwaccounts = addresses.map((a) => ({
       address: a.address,
-      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo as ExtendedDPath },
-      balance: undefined
+      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo as ExtendedDPath }
     }));
     yield put(slice.actions.enqueueAccounts(dwaccounts));
     yield put(processAccountsQueue());

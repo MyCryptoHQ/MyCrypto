@@ -8000,95 +8000,145 @@ exports[` Storyshots Features/ProtectTransaction Step 2 1`] = `
           fill="#a086f7"
         />
       </svg>
-      <h1
-        className="Text__SText-sc-14ylyin-0 chJPgm"
-        fontSize="36px"
-        fontWeight="bold"
+      <div
+        className="WalletConnect__SHeader-sc-1f9juaf-0 ZdsNK"
       >
-        Sign the Transaction with your Ledger wallet
-      </h1>
-      <p
-        className="Text__SText-sc-14ylyin-0 hkhusL"
-        fontSize="18px"
-        fontWeight={null}
+        Connect and Unlock your WalletConnect App
+      </div>
+      <div
+        className="WalletConnect__SContent-sc-1f9juaf-1 hJFNDy"
       >
-        Connect your Ledger to your computer and select the Ropsten application to sign your transaction.
-      </p>
-      <div>
         <div
-          className="Hardware__SImgContainer-z7db9c-1 ppLjq"
-        >
-          <svg
-            className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
-            id="test-file-stub"
-          />
-        </div>
-        <p
-          className="Text__SText-sc-14ylyin-0 eBAGCJ"
-          fontWeight={null}
-        >
-          Because we never save, store, or transmit your secret, you need to sign each transaction in order to send it. MyCrypto puts YOU in control of your assets.
-        </p>
-        <div
-          className="Hardware__SFooter-z7db9c-0 bWKkuF"
+          className="WalletConnect__SSection-sc-1f9juaf-2 iIwiVN"
         >
           <div
-            className="Box-sc-1974eaf-0 eAygVn"
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+          >
+            1. Open the wallet containing the account
+             
+            0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c
+          </div>
+          <div
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+          >
+            2. Select the Ethereum network
+          </div>
+          <div
+            className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+          >
+            3. Scan the QRCode below
+          </div>
+        </div>
+        <div
+          className="WalletConnect__SSection-sc-1f9juaf-2 NhSOH"
+        >
+          <div
+            className="Overlay__SOverlay-sc-1bvo3cm-0 cOrPtp"
           >
             <div
-              className="Box-sc-1974eaf-0 Jagjq"
-              style={
-                Object {
-                  "textAlign": "center",
+              className="WalletConnect__SContainer-sc-1f9juaf-3 bkfJYm"
+            >
+              <span
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+              >
+                Pending Confirmation
+              </span>
+              <div
+                style={
+                  Object {
+                    "margin": "1em 0",
+                  }
                 }
+              >
+                <svg
+                  aria-busy="true"
+                  className="Spinner__Svg-zka97z-0 icHZKu"
+                  color="#7c9ec3"
+                  data-testid="spinner"
+                  viewBox="0 0 50 50"
+                >
+                  <circle
+                    className="path"
+                    cx="25"
+                    cy="25"
+                    fill="none"
+                    r="20"
+                    strokeWidth="5"
+                  />
+                </svg>
+              </div>
+              <span
+                className="sc-AxjAm Typography__STypography-sc-1y5jt0y-0 cPnuhd"
+              >
+                Please confirm the transaction on your wallet
+              </span>
+            </div>
+          </div>
+          <div
+            className="QRCode__SQRCodeContainer-bsoy10-0 iDQbRc"
+            size="415px"
+          />
+        </div>
+      </div>
+      <div
+        className="WalletConnect__SFooter-sc-1f9juaf-4 hnXlEl"
+      >
+        <div
+          className="Box-sc-1974eaf-0 eAygVn"
+        >
+          <div
+            className="Box-sc-1974eaf-0 Jagjq"
+            style={
+              Object {
+                "textAlign": "center",
               }
+            }
+          >
+            Can't find what you're looking for?
+          </div>
+          <div
+            className="Box-sc-1974eaf-0 eZpmOD"
+          >
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-walletconnect"
+              rel="noreferrer"
+              target="_blank"
             >
-              Can't find what you're looking for?
-            </div>
+              What is WalletConnect
+            </a>
             <div
-              className="Box-sc-1974eaf-0 eZpmOD"
+              className="Box-sc-1974eaf-0 jaZMBg"
             >
-              <a
-                className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-                href="https://www.ledgerwallet.com/r/1985?path=/products/"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Get a Ledger
-              </a>
-              <div
-                className="Box-sc-1974eaf-0 jaZMBg"
-              >
-                <svg
-                  className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
-                  id="test-file-stub"
-                />
-              </div>
-              <a
-                className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-                href="https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Troubleshooting Tips
-              </a>
-              <div
-                className="Box-sc-1974eaf-0 jaZMBg"
-              >
-                <svg
-                  className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
-                  id="test-file-stub"
-                />
-              </div>
-              <a
-                className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
-                href="mailto:support@mycrypto.com"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Contact Support
-              </a>
+              <svg
+                className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
+                id="test-file-stub"
+              />
             </div>
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="https://support.mycrypto.com/how-to/accessing-wallet/how-to-use-walletconnect-with-mycrypto"
+              rel="noreferrer"
+              target="_blank"
+            >
+              WalletConnect Instructions
+            </a>
+            <div
+              className="Box-sc-1974eaf-0 jaZMBg"
+            >
+              <svg
+                className="Icon__SInlineSVG-tq1i3y-0 eyLbcM"
+                id="test-file-stub"
+              />
+            </div>
+            <a
+              className="LinkApp__SLink-sc-275gt9-0 oOPlZ"
+              href="mailto:support@mycrypto.com"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Contact Support
+            </a>
           </div>
         </div>
       </div>
