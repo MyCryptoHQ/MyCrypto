@@ -135,7 +135,6 @@ export const sanitizeAccount = (a: IAccount) => ({
     gasPrice: t.gasPrice,
     gasUsed: t.gasUsed && t.gasUsed
   })),
-  dPath: a.dPath,
   path: a.path,
   index: a.index,
   mtime: a.mtime,

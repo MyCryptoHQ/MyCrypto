@@ -42,53 +42,9 @@ describe('SignTransactionWallets: Ledger', () => {
     const selector = getHeader(WalletId.LEDGER_NANO_S);
     expect(getByText(selector)).toBeInTheDocument();
 
-    // Expect signed payload to be the following buffer given the v,r,s
     await waitFor(() =>
       expect(defaultProps.onComplete).toHaveBeenCalledWith(
-        Buffer.from([
-          233,
-          50,
-          132,
-          238,
-          107,
-          40,
-          0,
-          130,
-          82,
-          8,
-          148,
-          144,
-          159,
-          116,
-          255,
-          220,
-          34,
-          53,
-          134,
-          208,
-          211,
-          14,
-          120,
-          1,
-          110,
-          112,
-          123,
-          111,
-          90,
-          69,
-          226,
-          134,
-          90,
-          243,
-          16,
-          122,
-          64,
-          0,
-          128,
-          41,
-          2,
-          4
-        ])
+        '0xe93284ee6b280082520894909f74ffdc223586d0d30e78016e707b6f5a45e2865af3107a400080290204'
       )
     );
   });

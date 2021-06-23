@@ -62,7 +62,7 @@ describe('signMessageWorker()', () => {
   it('calls the signMessage method for the provided wallet', () => {
     const mockMessage = 'Vitalik';
     const mockWallet = ({
-      getAddressString: jest.fn(() => fAccount.address),
+      getAddress: jest.fn(() => fAccount.address),
       signMessage: jest.fn(() => Promise.resolve(`signed${mockMessage}`))
     } as unknown) as IFullWallet;
     return expectSaga(signMessageWorker, signMessage({ message: mockMessage, wallet: mockWallet }))
