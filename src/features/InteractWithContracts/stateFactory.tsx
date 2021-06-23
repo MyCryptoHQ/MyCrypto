@@ -8,7 +8,6 @@ import {
   EtherscanService,
   getGasEstimate,
   getNetworkById,
-  getResolvedENSAddress,
   isValidETHAddress,
   ProviderHandler,
   useAccounts,
@@ -148,8 +147,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       resolvingDomain: true
     }));
 
-    const resolvedAddress =
-      (await getResolvedENSAddress(state.network, domain)) || CREATION_ADDRESS;
+    const provider = new ProviderHandler(state.network);
+    const resolvedAddress = (await provider.resolveENSName(domain)) || CREATION_ADDRESS;
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,

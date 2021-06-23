@@ -26,5 +26,5 @@ export {
   isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export { getResolvedENSAddress, isValidENSName } from './ens';
+export { isValidENSName } from './ens';
 export * from './utils';

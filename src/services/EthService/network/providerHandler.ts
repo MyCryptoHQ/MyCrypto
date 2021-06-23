@@ -8,6 +8,7 @@ import {
 } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
 import any from '@ungap/promise-any';
+import Resolution from '@unstoppabledomains/resolution';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
@@ -148,6 +149,18 @@ export class ProviderHandler {
         .then((data) => ERC20.allowance.decodeOutput(data))
         .then(({ allowance }) => allowance)
     );
+  }
+
+  public resolveENSName(name: string): Promise<string | null> {
+    return this.injectClient((client) => {
+      // Use Unstoppable if supported, otherwise is probably an ENS name
+      const unstoppable = Resolution.fromEthersProvider(client);
+      if (unstoppable.isSupportedDomain(name)) {
+        return unstoppable.addr(name, this.network.baseUnit);
+      }
+
+      return client.resolveName(name);
+    });
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

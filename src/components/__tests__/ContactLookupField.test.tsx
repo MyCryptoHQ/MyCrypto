@@ -10,6 +10,7 @@ import {
 } from 'test-utils';
 
 import { fAssets, fContacts, fNetwork } from '@fixtures';
+import { ProviderHandler } from '@services/EthService';
 import { ExtendedContact, IReceiverAddress, LSKeys, TUuid } from '@types';
 import { generateDeterministicAddressUUID } from '@utils';
 
@@ -68,9 +69,9 @@ const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([ke
 }));
 
 // mock domain resolving function
-jest.mock('@services/UnstoppableService', () => ({
-  getResolvedAddress: () => mockMappedContacts[0].address
-}));
+ProviderHandler.prototype.resolveENSName = jest
+  .fn()
+  .mockResolvedValue(mockMappedContacts[0].address);
 
 describe('ContactLookupField', () => {
   test('it renders the placeholder when no value', async () => {

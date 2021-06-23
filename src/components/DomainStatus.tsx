@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  ResolutionError,
-  ResolutionErrorCode
-} from '@unstoppabledomains/resolution/build/resolutionError';
+import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from '@translations';

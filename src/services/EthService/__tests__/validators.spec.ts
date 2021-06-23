@@ -1,4 +1,4 @@
-import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import { ResolutionError } from '@unstoppabledomains/resolution';
 
 import {
   isENSLabelHash,
