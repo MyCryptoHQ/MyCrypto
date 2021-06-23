@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { findNextRecipientLabel, useContacts } from '@services/Store';
 import { IReceiverAddress, Network, TAddress } from '@types';
 import { useEffectOnce } from '@vendor';

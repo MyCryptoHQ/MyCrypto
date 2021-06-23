@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { ComponentType, useCallback, useContext, useEffect, useState } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -81,7 +81,7 @@ interface Props extends IStepComponentProps {
 }
 
 export function withProtectTx(
-  WrappedComponent: React.ComponentType<Props>,
+  WrappedComponent: ComponentType<Props>,
   heading: string = '',
   showButton?: boolean
 ) {

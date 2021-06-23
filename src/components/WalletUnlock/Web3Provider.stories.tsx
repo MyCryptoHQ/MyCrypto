@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { WALLETS_CONFIG } from '@config';
 import { WalletId } from '@types';
 import { noOp } from '@utils';

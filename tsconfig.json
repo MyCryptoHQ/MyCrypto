@@ -4,7 +4,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "module": "commonjs",
-    "jsx": "react",
+    "jsx": "react-jsxdev",
     "target": "es2015",
     "allowJs": true,
     "baseUrl": "./src",

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -9,7 +9,7 @@ import { Network } from '@types';
 import useNetworks from './useNetworks';
 
 const renderUseNetworks = ({ networks = [] as Network[] } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ networks })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useNetworks(), { wrapper });

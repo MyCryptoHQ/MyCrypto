@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { simpleRender, waitFor } from 'test-utils';
 
@@ -10,7 +10,7 @@ import { WalletId } from '@types';
 import { mockWindow } from '../../../../jest_config/__mocks__/web3';
 import { getHeader } from './helper';
 
-const defaultProps: React.ComponentProps<typeof SignTransaction> = {
+const defaultProps: ComponentProps<typeof SignTransaction> = {
   txConfig: { ...fTxConfig, senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.WEB3 } },
   onComplete: jest.fn()
 };

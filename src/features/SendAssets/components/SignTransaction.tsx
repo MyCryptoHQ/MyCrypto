@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { ComponentType, FC } from 'react';
 
 import { WALLET_STEPS } from '@components';
 import { ISignComponentProps, ISignedTx, IStepComponentProps, ITxReceipt, WalletId } from '@types';
@@ -17,7 +17,7 @@ const SignTransaction: FC<Props> = ({ txConfig, onComplete, protectTxButton }: P
     return WALLET_STEPS[walletType];
   };
 
-  const WalletComponent: React.ComponentType<ISignComponentProps> = getWalletComponent(walletName)!;
+  const WalletComponent: ComponentType<ISignComponentProps> = getWalletComponent(walletName)!;
 
   return (
     <>

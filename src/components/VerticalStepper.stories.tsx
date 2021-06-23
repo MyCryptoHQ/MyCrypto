@@ -1,5 +1,3 @@
-import React from 'react';
-
 import step1SVG from '@assets/images/icn-unlock-wallet.svg';
 import { COLORS } from '@theme';
 

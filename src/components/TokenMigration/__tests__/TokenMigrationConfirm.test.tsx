@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, simpleRender } from 'test-utils';
 
@@ -21,7 +21,7 @@ const defaultProps: ITxMultiConfirmProps & {
   onComplete: jest.fn()
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmTokenMigration>) {
+function getComponent(props: ComponentProps<typeof ConfirmTokenMigration>) {
   return simpleRender(<ConfirmTokenMigration {...props} />, {
     initialState: mockAppState({ settings: fSettings, networks: fNetworks })
   });

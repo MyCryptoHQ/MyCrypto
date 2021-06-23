@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 
 import styled from 'styled-components';
 
@@ -102,11 +102,11 @@ const Resources = styled.div`
 
 interface NotificationWrapperProps {
   leftImg?: LeftImageProps;
-  tagline?: React.ReactElement<any>;
-  title: React.ReactElement<any> | string;
-  description?: React.ReactElement<any>;
-  additionalDescription?: React.ReactElement<any>;
-  resources: React.ReactElement<any>;
+  tagline?: ReactElement<any>;
+  title: ReactElement<any> | string;
+  description?: ReactElement<any>;
+  additionalDescription?: ReactElement<any>;
+  resources: ReactElement<any>;
   alignCenterOnSmallScreen?: boolean;
   children?: any;
 }

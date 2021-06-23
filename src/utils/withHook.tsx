@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function withHook<T>(hook: () => T) {
   return (Component: any) => (ownProps: any) => {
     const contextProps: T = hook();

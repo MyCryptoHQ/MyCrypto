@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
 import SignTransaction from '@features/SendAssets/components/SignTransaction';

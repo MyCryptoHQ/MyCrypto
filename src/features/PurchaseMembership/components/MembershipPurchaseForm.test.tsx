@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
@@ -9,7 +9,7 @@ import { noOp } from '@utils';
 
 import MembershipPurchaseForm from './MembershipPurchaseForm';
 
-const defaultProps: React.ComponentProps<typeof MembershipPurchaseForm> = {
+const defaultProps: ComponentProps<typeof MembershipPurchaseForm> = {
   account: fAccounts[0],
   membershipSelected: MEMBERSHIP_CONFIG.twelvemonths,
   isSubmitting: false,
@@ -21,7 +21,7 @@ jest.mock('@services/EthService', () => ({
   getNonce: jest.fn().mockReturnValue(1)
 }));
 
-function getComponent(props: React.ComponentProps<typeof MembershipPurchaseForm>) {
+function getComponent(props: ComponentProps<typeof MembershipPurchaseForm>) {
   return simpleRender(<MembershipPurchaseForm {...props} />, {
     initialState: mockAppState({
       accounts: fAccounts,

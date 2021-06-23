@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -169,7 +169,7 @@ function RenderGeneralSettingsPanel() {
 }
 
 interface TabOptions {
-  [key: string]: React.ReactNode;
+  [key: string]: ReactNode;
 }
 
 export default function Settings() {

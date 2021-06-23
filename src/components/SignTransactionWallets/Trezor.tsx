@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
 

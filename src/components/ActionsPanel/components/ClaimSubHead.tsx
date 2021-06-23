@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Text } from '@components/NewTypography';
 import { getClaims, useSelector } from '@store';
 import { translateRaw } from '@translations';

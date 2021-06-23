@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { DAIUUID, DEX_TRADE_EXPIRATION, ETHUUID } from '@config';
 import { fAssets, fSettings } from '@fixtures';
@@ -34,7 +34,7 @@ const defaultProps = {
 
 export default { title: 'Organisms/SwapQuote', component: SwapQuote };
 
-const Template = (args: React.ComponentProps<typeof SwapQuote>) => {
+const Template = (args: ComponentProps<typeof SwapQuote>) => {
   return <SwapQuote {...args} expiration={Date.now() / 1000 + DEX_TRADE_EXPIRATION} />;
 };
 

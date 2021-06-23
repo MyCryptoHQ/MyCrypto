@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import { Box, CollapsibleTable, DashboardPanel, Icon, LinkApp, Network, Text } from '@components';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';

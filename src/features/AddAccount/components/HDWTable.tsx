@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Identicon } from '@mycrypto/ui';
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled, { css } from 'styled-components';

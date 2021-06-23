@@ -1,0 +1,20 @@
+diff a/src/components/TokenMigration/components/TokenMigrationMultiTx.tsx b/src/components/TokenMigration/components/TokenMigrationMultiTx.tsx	(rejected hunks)
+@@ -15,8 +15,10 @@ export default function ConfirmTokenMigrationMultiTx({
+-  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map((txConstructionConfig, index) => ({
+-    title: txConstructionConfig.stepTitle,
+-    icon: txConstructionConfig.stepSvg,
+-    content: txConstructionConfig.stepContent,
+-    buttonText: txConstructionConfig.actionBtnText,
+-    loading: status[index] === ITxStatus.BROADCASTED,
+-    onClick: onComplete
+-  }));
++  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map(
++    (txConstructionConfig, index) => ({
++      title: txConstructionConfig.stepTitle,
++      icon: txConstructionConfig.stepSvg,
++      content: txConstructionConfig.stepContent,
++      buttonText: txConstructionConfig.actionBtnText,
++      loading: status[index] === ITxStatus.BROADCASTED,
++      onClick: onComplete
++    })
++  );

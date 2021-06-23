@@ -27,23 +27,23 @@
 
 ## Providers
 
-* `Providers` are special React components that are used to provide functionality potentially many layers deep, while avoiding prop-drilling.
-* Each Provider file exports a constant (e.g. `const ExampleContext = React.createContext()`), as well as a class.
-* The class contains a state variable that includes all variables and functions to be accessed down the hierarchy. _Functions are placed in state._
-* In the render method of the class, `this.props.children` is returned inside of (e.g. `<ExampleContext.Provider value={this.state} />).
-* When `Service` modules need to interact with UI across features, they should use a `Provider`, and communicate changes through state (e.g. ExampleProvider should use an ExampleContext).
-* Providers should be placed in the `Layout` feature, wrapping all other components.
+- `Providers` are special React components that are used to provide functionality potentially many layers deep, while avoiding prop-drilling.
+- Each Provider file exports a constant (e.g. `const ExampleContext = createContext()`), as well as a class.
+- The class contains a state variable that includes all variables and functions to be accessed down the hierarchy. _Functions are placed in state._
+- In the render method of the class, `this.props.children` is returned inside of (e.g. `<ExampleContext.Provider value={this.state} />).
+- When `Service` modules need to interact with UI across features, they should use a `Provider`, and communicate changes through state (e.g. ExampleProvider should use an ExampleContext).
+- Providers should be placed in the `Layout` feature, wrapping all other components.
 
 ## Services
 
-* `Service` modules are business-layer-logic classes that encapsulate interactions with a particular entity.
-* The API service module is used to interact with external servers to gather information.
-* The Storage and Cache service modules are used to interact with local storage, to aid in persisting data.
-* Services should export an abstract class, containing the functionality, as a named export.
-* Services should default-export a singleton class which prevents other classes from being instantiated.
+- `Service` modules are business-layer-logic classes that encapsulate interactions with a particular entity.
+- The API service module is used to interact with external servers to gather information.
+- The Storage and Cache service modules are used to interact with local storage, to aid in persisting data.
+- Services should export an abstract class, containing the functionality, as a named export.
+- Services should default-export a singleton class which prevents other classes from being instantiated.
 
 ## Indexing
 
-* Every level of directory should contain an `index.ts` file which re-exports everything in the directory, recursively.
-* Externally interfacing with a directory should always be done with the most senior index file (e.g. `import { Foo } from '@components';` vs. `import Foo from '@components/Foo/Foo';`)
-* Internally interfacing with a directory should always be done with relative pathing `../../`.
+- Every level of directory should contain an `index.ts` file which re-exports everything in the directory, recursively.
+- Externally interfacing with a directory should always be done with the most senior index file (e.g. `import { Foo } from '@components';` vs. `import Foo from '@components/Foo/Foo';`)
+- Internally interfacing with a directory should always be done with relative pathing `../../`.

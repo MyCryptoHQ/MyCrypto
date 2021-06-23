@@ -90,6 +90,7 @@
         "react/display-name": "off",
         "react/no-unescaped-entities": "off",
         "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
         "react-hooks/exhaustive-deps": "off",
         // Configure Jest to recognise react-saga-test-plan assertions
         // https://github.com/jfairbank/redux-saga-test-plan/issues/329

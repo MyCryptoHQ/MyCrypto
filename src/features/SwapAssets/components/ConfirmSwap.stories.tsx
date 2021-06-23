@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, ProvidersWrapper } from 'test-utils';
 
@@ -12,7 +12,7 @@ import ConfirmSwapComponent from './ConfirmSwap';
 
 export default { title: 'Features/ConfirmSwap', component: ConfirmSwapComponent };
 
-const Template = (args: React.ComponentProps<typeof ConfirmSwapComponent>) => (
+const Template = (args: ComponentProps<typeof ConfirmSwapComponent>) => (
   <ProvidersWrapper initialState={mockAppState({ accounts: fAccounts, assets: fAssets })}>
     <ConfirmSwapComponent {...args} />
   </ProvidersWrapper>

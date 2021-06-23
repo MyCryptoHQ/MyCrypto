@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { screen, simpleRender } from 'test-utils';
 
@@ -6,7 +6,7 @@ import { fActionTemplates } from '@fixtures';
 
 import { ActionsList, sortActions } from '../components/ActionsList';
 
-type Props = React.ComponentProps<typeof ActionsList>;
+type Props = ComponentProps<typeof ActionsList>;
 
 function getComponent(props: Props) {
   return simpleRender(<ActionsList {...props} />);

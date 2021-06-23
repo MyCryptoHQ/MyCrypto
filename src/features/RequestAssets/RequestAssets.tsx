@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';

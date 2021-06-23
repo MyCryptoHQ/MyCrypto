@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { simpleRender } from 'test-utils';
 
@@ -11,7 +11,7 @@ import ZapReceipt from './ZapReceipt';
 
 const zapSelected = ZAPS_CONFIG.compounddai;
 
-const defaultProps: React.ComponentProps<typeof ZapReceipt> = {
+const defaultProps: ComponentProps<typeof ZapReceipt> = {
   txConfig: {
     ...fTxConfig,
     rawTransaction: { ...fTxConfig.rawTransaction, to: ZAPS_CONFIG.compounddai.contractAddress }
@@ -22,7 +22,7 @@ const defaultProps: React.ComponentProps<typeof ZapReceipt> = {
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof ZapReceipt>) {
+function getComponent(props: ComponentProps<typeof ZapReceipt>) {
   return simpleRender(<ZapReceipt {...props} />);
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button, Network } from '@mycrypto/ui';

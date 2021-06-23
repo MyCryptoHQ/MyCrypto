@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import { isHexString } from '@ethersproject/bytes';
 import { Input } from '@mycrypto/ui';

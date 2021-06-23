@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import TextComponent from './Text';
 
 export default { title: 'Atoms/Text', component: TextComponent };
 
-const Template = (args: React.ComponentProps<typeof TextComponent>) => <TextComponent {...args} />;
+const Template = (args: ComponentProps<typeof TextComponent>) => <TextComponent {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

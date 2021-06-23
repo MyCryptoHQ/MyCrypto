@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { Avatar, Identicon, scale } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';

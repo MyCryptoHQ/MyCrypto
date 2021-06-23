@@ -1,11 +1,11 @@
-import React, { CSSProperties } from 'react';
+import { Component, CSSProperties, ReactNode } from 'react';
 
 import closeIcon from '@assets/images/close.svg';
 import { IButton } from '@components';
 
 interface Props {
-  title?: React.ReactNode;
-  children: React.ReactNode;
+  title?: ReactNode;
+  children: ReactNode;
   modalStyle?: CSSProperties;
   hasButtons?: number;
   buttons?: IButton[];
@@ -14,7 +14,7 @@ interface Props {
   handleClose(): void;
 }
 
-export default class ModalBody extends React.Component<Props> {
+export default class ModalBody extends Component<Props> {
   public firstTabStop: HTMLElement;
   private modal: HTMLElement;
   private modalContent: HTMLElement;

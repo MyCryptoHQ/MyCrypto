@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Body, Box } from '@components';
 import { ITxStatus } from '@types';
 import { formatDateTime } from '@utils';

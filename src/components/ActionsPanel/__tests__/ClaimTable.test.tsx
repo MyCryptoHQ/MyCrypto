@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
@@ -80,7 +80,7 @@ interface ErrorProps {
   onClick(): void;
 }
 
-const ErrorHandlers: { [K in TActionError]: React.FC<ErrorProps> } = {
+const ErrorHandlers: { [K in TActionError]: FC<ErrorProps> } = {
   WRONG_ADDRESS: ({ address }) => (
     <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {

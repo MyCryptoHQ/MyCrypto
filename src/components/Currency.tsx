@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TCurrencySymbol, TTicker, TUuid } from '@types';
 import { isFiatTicker } from '@utils';
 

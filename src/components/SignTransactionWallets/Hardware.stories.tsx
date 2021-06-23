@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts } from '@fixtures';
@@ -9,7 +9,7 @@ import { SignTxHardwareUI } from './Hardware';
 
 export default { title: 'Features/SignTransaction/Hardware', component: SignTxHardwareUI };
 
-const initialProps: React.ComponentProps<typeof SignTxHardwareUI> = {
+const initialProps: ComponentProps<typeof SignTxHardwareUI> = {
   walletIconType: 'ledger-icon-lg',
   signerDescription: translateRaw('SIGN_TX_LEDGER_DESCRIPTION', {
     $network: DEFAULT_NETWORK

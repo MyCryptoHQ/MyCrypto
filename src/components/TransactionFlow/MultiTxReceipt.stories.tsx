@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { DAIUUID, ETHUUID, Fiats } from '@config';
 import { stepsContent } from '@features/SwapAssets/config';
@@ -29,7 +29,7 @@ const transactionsConfigs: ITxConfig[] = fTxConfigs;
 const baseAssetRate = 250;
 
 export default { title: 'Features/MultiTxReceipt', components: MultiTxReceiptComponent };
-const Template = (args: React.ComponentProps<typeof MultiTxReceiptComponent>) => (
+const Template = (args: ComponentProps<typeof MultiTxReceiptComponent>) => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <MultiTxReceiptComponent {...args} />
   </div>

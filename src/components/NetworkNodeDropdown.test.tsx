@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import selectEvent from 'react-select-event';
 import {
@@ -15,7 +15,7 @@ import { fNetworks } from '@fixtures';
 
 import NetworkNodeDropdown from './NetworkNodeDropdown';
 
-type Props = React.ComponentProps<typeof NetworkNodeDropdown>;
+type Props = ComponentProps<typeof NetworkNodeDropdown>;
 const defaultProps: Props = {
   networkId: 'Ethereum'
 };

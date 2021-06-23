@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { WALLETS_CONFIG } from '@config';
 import { fAccounts } from '@fixtures';
 import { WalletId } from '@types';

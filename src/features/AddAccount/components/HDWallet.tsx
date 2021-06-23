@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import { Formik } from 'formik';

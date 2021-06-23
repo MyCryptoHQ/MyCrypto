@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -9,7 +9,7 @@ import { IRates } from '@types';
 import useRates from './useRates';
 
 const renderUseRates = ({ rates = {} as IRates } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ settings: fSettings, rates })}>
       {children}
     </ProvidersWrapper>

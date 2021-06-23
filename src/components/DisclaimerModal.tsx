@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { IButton, LegacyModal, LinkApp } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
@@ -11,7 +11,7 @@ interface Props {
   handleClose(): void;
 }
 
-const DisclaimerModal: React.FC<Props> = ({ isOpen, handleClose }) => {
+const DisclaimerModal: FC<Props> = ({ isOpen, handleClose }) => {
   const buttons: IButton[] = [
     { text: translate('ACTION_10'), type: 'default', onClick: handleClose }
   ];

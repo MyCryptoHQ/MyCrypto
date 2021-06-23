@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 
 // Setup react-testing-library
 // https://testing-library.com/docs/react-testing-library/setup#custom-render
@@ -53,7 +53,7 @@ export const actionWithPayload = (payload: any) => expect.objectContaining({ pay
 expectSaga.DEFAULT_TIMEOUT = 100;
 
 // wrapper option : Wrap renders with our providers so components can consume it
-export const simpleRender = (ui: React.ReactElement, options?: any) => {
+export const simpleRender = (ui: ReactElement, options?: any) => {
   if (options?.initialState || options?.initialRoute) {
     return render(ui, {
       wrapper: withOptions(options.initialState, options.initialRoute),

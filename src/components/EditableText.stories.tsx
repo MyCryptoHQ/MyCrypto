@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import EditableTextComponent from './EditableText';
 
 export default { title: 'Molecules/EditableText', component: EditableTextComponent };
 
-const Template = (args: React.ComponentProps<typeof EditableTextComponent>) => (
+const Template = (args: ComponentProps<typeof EditableTextComponent>) => (
   <EditableTextComponent {...args} />
 );
 

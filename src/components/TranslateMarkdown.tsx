@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import Markdown from 'react-markdown';
 
@@ -15,7 +15,7 @@ const TranslateMarkdown = ({ source }: Props) => {
       components={{
         //@ts-expect-error bad typing on props
         a: (props) => <LinkApp isExternal={true} {...props} />,
-        p: React.Fragment // Remove <p> added by react-markdown.
+        p: Fragment // Remove <p> added by react-markdown.
       }}
     >
       {source}

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from 'react';
+import { createContext, FC, useContext, useEffect } from 'react';
 
 import { useDispatch, useSelector } from '@store';
 
@@ -18,7 +18,7 @@ export interface IFeatureFlagContext {
 
 export const FeatureFlagContext = createContext({} as IFeatureFlagContext);
 
-export const FeatureFlagProvider: React.FC = ({ children }) => {
+export const FeatureFlagProvider: FC = ({ children }) => {
   const dispatch = useDispatch();
   const featureFlags = useSelector(getFeatureFlags);
 
@@ -47,7 +47,7 @@ export const FeatureFlagProvider: React.FC = ({ children }) => {
 };
 
 export function useFeatureFlags() {
-  const context = React.useContext(FeatureFlagContext);
+  const context = useContext(FeatureFlagContext);
   if (context === undefined) {
     throw new Error('useFeatureFlags must be used with a Feature Flag Provider');
   }

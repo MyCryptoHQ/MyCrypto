@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DAIUUID, ETHUUID } from '@config';
 import { fAccount } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';

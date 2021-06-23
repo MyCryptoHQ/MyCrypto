@@ -5,8 +5,6 @@ import 'sass/styles.scss';
 import 'whatwg-fetch'; // @todo: Investigate utility of dependency
 import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
-import React from 'react';
-
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';

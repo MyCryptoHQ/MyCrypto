@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getClaims, useSelector } from '@store';
 import { Asset, ClaimResult, ClaimState, ClaimType } from '@types';
 import { filter, map, pick, pipe, propEq } from '@vendor';

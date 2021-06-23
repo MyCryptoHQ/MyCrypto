@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
 import {
@@ -61,7 +61,7 @@ jest.mock('@vendor', () => ({
 }));
 
 const renderUseTxMulti = () => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper
       initialState={mockAppState({
         accounts: fAccounts,

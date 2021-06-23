@@ -1,0 +1,5 @@
+diff a/src/features/Dashboard/components/WalletBreakdown/AccountDropdown.tsx b/src/features/Dashboard/components/WalletBreakdown/AccountDropdown.tsx	(rejected hunks)
+@@ -44 +44,2 @@ const SDropdown = styled('div')<SDropdownProps>`
+-    props.isOpen && `
++    props.isOpen &&
++    `

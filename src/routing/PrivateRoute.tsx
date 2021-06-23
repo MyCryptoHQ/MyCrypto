@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType } from 'react';
 
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ interface PrivateRouteProps extends IAppRoute {
 }
 
 interface PageTitleProps extends RouteComponentProps {
-  pageComponent: React.ComponentType<any>;
+  pageComponent: ComponentType<any>;
   title?: string;
 }
 

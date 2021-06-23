@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';

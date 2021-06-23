@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { scale } from '@mycrypto/ui';
 import { size } from 'polished';
@@ -16,7 +16,7 @@ const Color = styled.div`
   ${size(scale(-1))};
 `;
 
-export const Network: React.FC<{ color: string }> = ({ children, color }) => (
+export const Network: FC<{ color: string }> = ({ children, color }) => (
   <Box variant="rowAlign">
     <Color color={color} />
     <Text as="span">{children}</Text>

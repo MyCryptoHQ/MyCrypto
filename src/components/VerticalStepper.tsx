@@ -1,5 +1,5 @@
 import 'rc-steps/assets/index.css';
-import React from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 import Steps, { Step } from 'rc-steps';
 import styled from 'styled-components';
@@ -13,8 +13,8 @@ import Typography from './Typography';
 
 export interface StepData {
   icon?: string;
-  title: React.ReactNode | string;
-  content: React.ReactNode | string;
+  title: ReactNode | string;
+  content: ReactNode | string;
   buttonText?: string;
   loading?: boolean;
   onClick?(): void;
@@ -36,7 +36,7 @@ interface StepProps {
 
 // Can't use the usual way since the Step component adds all props to an underlying div which React doesn't like
 const SStep = styled(
-  ({ active, finished, size, color, ...rest }: StepProps & React.ComponentProps<typeof Step>) => (
+  ({ active, finished, size, color, ...rest }: StepProps & ComponentProps<typeof Step>) => (
     <Step {...rest} />
   )
 )`
@@ -138,7 +138,7 @@ function VerticalStepper({
 
 interface TitleProps {
   icon?: string;
-  title: React.ReactNode | string;
+  title: ReactNode | string;
   finished: boolean;
   size?: 'sm' | 'lg';
 }
@@ -183,7 +183,7 @@ function StepperTitle({ icon, title, finished, size }: TitleProps) {
 
 interface DescriptionProps {
   active: boolean;
-  content: React.ReactNode | string;
+  content: ReactNode | string;
   buttonText?: string;
   loading?: boolean;
   size?: 'sm' | 'lg';

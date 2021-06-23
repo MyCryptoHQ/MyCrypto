@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { INavigationProps } from '@types';
 
 import { Navbar, NavLink, NavTray, TrayItem } from './components';

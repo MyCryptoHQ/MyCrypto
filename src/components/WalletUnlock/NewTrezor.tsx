@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { DEFAULT_ETH, TREZOR_DERIVATION_PATHS } from '@mycrypto/wallets';
 import prop from 'ramda/src/prop';

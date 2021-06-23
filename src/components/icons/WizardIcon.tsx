@@ -1,10 +1,10 @@
-import React from 'react';
+import { FC } from 'react';
 
 interface WizardIconProps {
   size?: 'sm' | 'lg';
 }
 
-const WizardIcon: React.FC<WizardIconProps> = ({ size }) => (
+const WizardIcon: FC<WizardIconProps> = ({ size }) => (
   <svg
     width={(size || 'sm') === 'sm' ? '61' : '186'}
     height={(size || 'sm') === 'sm' ? '54' : '169'}

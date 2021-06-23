@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Box, Icon, LinkApp, Text, TIcon } from '@components';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';

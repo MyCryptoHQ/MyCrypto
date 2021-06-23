@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { actionWithPayload, fireEvent, mockUseDispatch, screen, simpleRender } from 'test-utils';
 
 import { ACTION_STATE, ActionTemplate } from '@types';

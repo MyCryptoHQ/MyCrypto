@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -74,7 +74,7 @@ interface AbortTransactionProps {
 
 export const ProtectTxAbort: FC<AbortTransactionProps> = ({ onTxSent }) => {
   const [isCanceled, setIsCanceled] = useState(false);
-  const [protectTxCountdown, setProtectTxCountdown] = React.useState(20);
+  const [protectTxCountdown, setProtectTxCountdown] = useState(20);
 
   const { invokeProtectTxTimeoutFunction } = useContext(ProtectTxContext);
 

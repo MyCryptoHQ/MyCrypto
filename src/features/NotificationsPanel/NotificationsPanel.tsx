@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -85,7 +85,7 @@ const NotificationsPanel = ({ accounts }: Props) => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       {currentNotification && (
         <MainPanel>
           <CloseButton basic={true} onClick={handleCloseClick}>
@@ -94,7 +94,7 @@ const NotificationsPanel = ({ accounts }: Props) => {
           {getNotificationBody()}
         </MainPanel>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

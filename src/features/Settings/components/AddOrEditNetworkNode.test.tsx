@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { actionWithPayload, fireEvent, mockUseDispatch, simpleRender, waitFor } from 'test-utils';
 
@@ -13,14 +13,14 @@ import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 // Mock getCurrentBlock
 ProviderHandler.prototype.getCurrentBlock = jest.fn().mockResolvedValue(11386255);
 
-const defaultProps: React.ComponentProps<typeof AddOrEditNetworkNode> = {
+const defaultProps: ComponentProps<typeof AddOrEditNetworkNode> = {
   networkId: 'Ethereum',
   editNode: undefined,
   isAddingCustomNetwork: false,
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof AddOrEditNetworkNode>) {
+function getComponent(props: ComponentProps<typeof AddOrEditNetworkNode>) {
   return simpleRender(<AddOrEditNetworkNode {...props} />);
 }
 

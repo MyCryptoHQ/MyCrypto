@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { simpleRender } from 'test-utils';
 
 import { loadingReport, scamReport, unknownReport, verifiedReport } from '@fixtures';

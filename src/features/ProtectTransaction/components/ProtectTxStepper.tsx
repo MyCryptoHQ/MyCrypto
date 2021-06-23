@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 
 export interface ProtectTxStep {
   component: any;
@@ -14,7 +14,5 @@ interface Props {
 export const ProtectTxStepper: FC<Props> = ({ steps, currentStepIndex }) => {
   const { component: Component, props, actions } = steps[currentStepIndex % steps.length];
 
-  return (
-    <Component {...props} {...actions} onClick={(e: React.MouseEvent) => e.stopPropagation()} />
-  );
+  return <Component {...props} {...actions} onClick={(e: MouseEvent) => e.stopPropagation()} />;
 };

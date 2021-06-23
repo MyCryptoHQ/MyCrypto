@@ -1,5 +1,3 @@
-import React from 'react';
-
 import selectEvent from 'react-select-event';
 import { screen, simpleRender } from 'test-utils';
 

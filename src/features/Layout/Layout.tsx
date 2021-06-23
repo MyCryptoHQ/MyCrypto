@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';

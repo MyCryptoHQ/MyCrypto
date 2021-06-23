@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useRates, useSettings } from '@services';
 import { calculateTotals, isNotExcludedAsset } from '@services/Store/helpers';

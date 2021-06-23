@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';

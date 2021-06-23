@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ComponentProps, MouseEvent, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ const SInputField = styled.input`
   padding: ${SPACING.XS};
 `;
 
-const SText = styled(Text)<React.ComponentProps<typeof Text>>`
+const SText = styled(Text)<ComponentProps<typeof Text>>`
   /* Create space for hover border to avoid screen jump */
   border-bottom: 1px transparent solid;
 `;
@@ -53,7 +53,7 @@ function EditableText({
   truncate,
   placeholder,
   ...props
-}: Props & React.ComponentProps<typeof Box>) {
+}: Props & ComponentProps<typeof Box>) {
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
 
@@ -69,7 +69,7 @@ function EditableText({
     setEditValue(value);
   }, [value]);
 
-  const edit = (e: React.MouseEvent) => {
+  const edit = (e: MouseEvent) => {
     e.stopPropagation();
     setEditMode(true);
   };
@@ -93,7 +93,7 @@ function EditableText({
           placeholder={placeholder}
           autoFocus={true}
           value={editValue}
-          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          onClick={(e: MouseEvent) => e.stopPropagation()}
           onChange={(e) => setEditValue(e.currentTarget.value)}
           onBlur={save}
           onKeyDown={handleKeyDown}

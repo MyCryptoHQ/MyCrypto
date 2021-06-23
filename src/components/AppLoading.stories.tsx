@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { ErrorProvider } from '@features';
 import { Layout } from '@features/Layout';
@@ -9,7 +9,7 @@ export default {
   title: 'Atoms/AppLoading',
   component: AppLoading,
   decorators: [
-    (Story: React.FC) => (
+    (Story: FC) => (
       <ErrorProvider>
         <Story />
       </ErrorProvider>

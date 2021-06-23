@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';

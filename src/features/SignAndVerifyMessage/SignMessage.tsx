@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Button as ButtonUI } from '@mycrypto/ui';
 import { Wallet } from '@mycrypto/wallets';

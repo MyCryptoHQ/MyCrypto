@@ -1,13 +1,10 @@
-import React from 'react';
+import { ComponentProps, ComponentType } from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
 import { Downloader } from './Downloader';
 
-const getComponent = (
-  props: React.ComponentProps<typeof Downloader>,
-  children?: React.ComponentType<any>
-) => {
+const getComponent = (props: ComponentProps<typeof Downloader>, children?: ComponentType<any>) => {
   const Component = children;
   return Component
     ? simpleRender(

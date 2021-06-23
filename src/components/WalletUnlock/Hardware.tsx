@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text, TIcon } from '@components';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, Icon } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender } from 'test-utils';
@@ -11,7 +11,7 @@ import { Asset, TTicker, TUuid } from '@types';
 
 import AssetSelector, { AssetSelectorItem } from './AssetSelector';
 
-const defaultProps: React.ComponentProps<typeof AssetSelector> = {
+const defaultProps: ComponentProps<typeof AssetSelector> = {
   assets: fAssets as Asset[],
   selectedAsset: null,
   showAssetName: true,
@@ -19,7 +19,7 @@ const defaultProps: React.ComponentProps<typeof AssetSelector> = {
   onSelect: jest.fn()
 };
 
-function getComponent(props: React.ComponentProps<typeof AssetSelector>) {
+function getComponent(props: ComponentProps<typeof AssetSelector>) {
   return simpleRender(
     <form role="form">
       <AssetSelector {...props} />
@@ -75,7 +75,7 @@ describe('AssetSelector', () => {
   });
 });
 
-const itemProps: React.ComponentProps<typeof AssetSelectorItem> = {
+const itemProps: ComponentProps<typeof AssetSelectorItem> = {
   ticker: 'ETH' as TTicker,
   name: 'Ether',
   uuid: ETHUUID as TUuid,
@@ -87,7 +87,7 @@ function getComponentItem({
   uuid,
   name,
   onClick
-}: React.ComponentProps<typeof AssetSelectorItem>) {
+}: ComponentProps<typeof AssetSelectorItem>) {
   return simpleRender(
     <AssetSelectorItem
       ticker={ticker}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FallbackProvider } from '@ethersproject/providers';
 import Resolution, { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';

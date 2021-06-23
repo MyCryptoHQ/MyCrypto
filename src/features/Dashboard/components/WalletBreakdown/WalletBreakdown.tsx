@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';

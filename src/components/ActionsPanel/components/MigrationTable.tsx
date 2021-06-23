@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getAccountBalance, getAccountsByAsset, useAssets } from '@services';
 import { getStoreAccounts, useSelector } from '@store';
 import { Asset, TUuid } from '@types';

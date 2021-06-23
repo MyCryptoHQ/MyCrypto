@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { History } from 'history';
 import { RouteComponentProps, withRouter } from 'react-router-dom';

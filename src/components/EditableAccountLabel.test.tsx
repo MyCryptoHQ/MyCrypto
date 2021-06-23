@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { TAddress } from '@types';
 
 import { EditableAccountLabel } from './EditableAccountLabel';
 
-type Props = React.ComponentProps<typeof EditableAccountLabel>;
+type Props = ComponentProps<typeof EditableAccountLabel>;
 const defaultProps: Props = {
   updateUserActionStateByName: jest.fn() as any,
   createOrUpdateContact: jest.fn() as any,

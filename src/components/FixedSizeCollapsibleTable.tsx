@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import Box from './Box';
 import CollapsibleTable from './CollapsibleTable';
@@ -6,7 +6,7 @@ import CollapsibleTable from './CollapsibleTable';
 const FixedSizeCollapsibleTable = ({
   maxHeight = '650px',
   ...props
-}: React.ComponentProps<typeof CollapsibleTable> & { maxHeight?: string }) => (
+}: ComponentProps<typeof CollapsibleTable> & { maxHeight?: string }) => (
   <Box maxHeight={maxHeight} overflow="auto">
     <CollapsibleTable {...props} />
   </Box>

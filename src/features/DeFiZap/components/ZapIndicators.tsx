@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import bearishIndicator from '@assets/images/defizap/indicators/bearishIndicator.svg';

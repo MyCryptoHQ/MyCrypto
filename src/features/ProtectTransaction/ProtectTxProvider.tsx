@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import BigNumber from 'bignumber.js';
 
@@ -81,7 +81,7 @@ export const protectTxProviderInitialState: ProtectTxState = {
 
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
-const ProtectTxProvider: React.FC = ({ children }) => {
+const ProtectTxProvider: FC = ({ children }) => {
   const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   // FREE FOR NOW
   const isPTXFree = isMyCryptoMember || true;

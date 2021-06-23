@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { DashboardPanel, PoweredByText, Typography } from '@components';

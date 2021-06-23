@@ -1,4 +1,4 @@
-import React from 'react';
+import { MouseEvent } from 'react';
 
 import { Copyable } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
@@ -55,7 +55,7 @@ function EthAddress({
   disableTooltip = false
 }: Props) {
   return (
-    <Overrides inline={inline} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+    <Overrides inline={inline} onClick={(e: MouseEvent) => e.stopPropagation()}>
       <Copyable
         text={toChecksumAddress(address)}
         isCopyable={isCopyable}

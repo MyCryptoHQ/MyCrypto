@@ -1,5 +1,3 @@
-import React from 'react';
-
 import toast from 'toasted-notes';
 
 import { default as ToastComponent } from './components/Toast';

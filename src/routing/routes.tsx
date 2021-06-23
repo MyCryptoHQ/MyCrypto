@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 
 import { Redirect } from 'react-router-dom';
 

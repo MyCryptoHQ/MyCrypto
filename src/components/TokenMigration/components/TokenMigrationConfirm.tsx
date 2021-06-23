@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ConfirmTransaction } from '@components';
 import { ITokenMigrationConfig, ITxMultiConfirmProps, ITxType, StoreAccount } from '@types';
 

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';

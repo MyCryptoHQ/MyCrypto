@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, screen, simpleRender } from 'test-utils';
 
@@ -10,7 +10,7 @@ import { TUuid } from '@types';
 
 import { MigrationSubHead } from '../components/MigrationSubHead';
 
-type Props = React.ComponentProps<typeof MigrationSubHead>;
+type Props = ComponentProps<typeof MigrationSubHead>;
 
 function getComponent(props: Props) {
   return simpleRender(<MigrationSubHead {...props} />, {

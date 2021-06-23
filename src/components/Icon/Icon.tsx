@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import InlineSVG from 'react-inlinesvg';
@@ -337,7 +337,7 @@ const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
 `;
 
 interface Props
-  extends Omit<React.ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
+  extends Omit<ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
   type: TIcon | 'sort' | 'delete';
 }
 

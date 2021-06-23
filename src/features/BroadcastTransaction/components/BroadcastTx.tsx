@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { FormEvent, Fragment, useEffect, useState } from 'react';
 
 import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
@@ -111,7 +111,7 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
     }
   }, [transaction]);
 
-  const handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = ({ currentTarget }: FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
     const trimmedValue = value.trim();
     setUserInput(value);
@@ -146,7 +146,7 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
         )}
       </Box>
       {isValid && (
-        <React.Fragment>
+        <Fragment>
           {!transaction!.chainId && (
             <NetworkSelectWrapper>
               <NetworkSelector network={networkId} onChange={handleNetworkChanged} />
@@ -159,7 +159,7 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
           <CodeBlockWrapper>
             <CodeBlock>{getStringifiedTx(transaction!)}</CodeBlock>
           </CodeBlockWrapper>
-        </React.Fragment>
+        </Fragment>
       )}
       <SendButton disabled={!isValid} onClick={() => onComplete(userInput.trim())}>
         {translateRaw('SEND_TRANS')}

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 
@@ -16,5 +16,5 @@ export const DefaultHomeHandler = withRouter(({ history, children }) => {
       history.push(ROUTE_PATHS.ADD_ACCOUNT.path);
     }
   }
-  return <React.Fragment>{children}</React.Fragment>;
+  return <Fragment>{children}</Fragment>;
 });

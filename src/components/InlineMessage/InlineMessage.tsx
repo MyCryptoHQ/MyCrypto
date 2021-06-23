@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import arrowSVG from '@assets/images/icn-arrow-purple.svg';

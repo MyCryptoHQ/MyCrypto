@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { MouseEventHandler, useCallback, useState } from 'react';
 
 import { Tooltip, Button as UIButton } from '@mycrypto/ui';
 import { DEFAULT_ETH } from '@mycrypto/wallets';
@@ -210,7 +210,7 @@ export default function AddOrEditNetworkNode({
     };
   }, []);
 
-  const onDeleteNodeClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onDeleteNodeClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
     deleteNodeOrNetwork(networkId, editNode!.name);

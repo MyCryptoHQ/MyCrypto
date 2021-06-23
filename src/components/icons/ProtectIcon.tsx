@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import { COLORS } from '@theme';
 
@@ -7,7 +7,7 @@ interface ProtectIconProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const ProtectIcon: React.FC<ProtectIconProps> = ({ fillColor, size }) => {
+const ProtectIcon: FC<ProtectIconProps> = ({ fillColor, size }) => {
   const getSize = useCallback((): { width: number; height: number } => {
     if (size === 'lg') {
       return {

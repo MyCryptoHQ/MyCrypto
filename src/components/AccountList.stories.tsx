@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
@@ -16,7 +16,7 @@ export default {
   }
 };
 
-const Template = (args: React.ComponentProps<typeof AccountListComponent>) => (
+const Template = (args: ComponentProps<typeof AccountListComponent>) => (
   <AccountListComponent {...args} />
 );
 

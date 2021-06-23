@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react';
+import { FC, MouseEventHandler, useCallback, useContext } from 'react';
 
 import styled from 'styled-components';
 
@@ -119,8 +119,8 @@ export const ProtectTxReport: FC = () => {
     getReport
   } = useContext(ProtectTxContext);
 
-  const onHideModel = useCallback(
-    (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const onHideModel: MouseEventHandler<SVGSVGElement> = useCallback(
+    (e) => {
       e.preventDefault();
 
       if (showHideProtectTx) {
@@ -138,7 +138,7 @@ export const ProtectTxReport: FC = () => {
 interface Props {
   report: PTXReport;
   isWeb3: boolean;
-  onHide(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onHide: MouseEventHandler<SVGSVGElement>;
 }
 
 export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {

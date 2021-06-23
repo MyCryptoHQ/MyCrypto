@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import sadWallet from '@assets/images/icn-sad-wallet.svg';

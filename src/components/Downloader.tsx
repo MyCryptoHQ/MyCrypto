@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { COLORS } from '@theme';
 import translate from '@translations';
@@ -7,7 +7,7 @@ import { makeBlob } from '@utils';
 import { default as Button } from './Button';
 import { default as LinkApp } from './LinkApp';
 
-export const Downloader: React.FC<{
+export const Downloader: FC<{
   data: string | TObject;
   onClick?(): void;
   fileName: string;

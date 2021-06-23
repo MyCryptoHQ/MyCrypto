@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 

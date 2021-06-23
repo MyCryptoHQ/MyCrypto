@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MANDATORY_TRANSACTION_QUERY_PARAMS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { TxQueryTypes } from '@types';
 

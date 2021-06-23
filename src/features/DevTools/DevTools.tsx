@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';

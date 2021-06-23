@@ -1,4 +1,4 @@
-import React from 'react';
+import { FormEvent } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
@@ -67,7 +67,7 @@ const GeneralSettings = ({
     setProductAnalyticsAuthorisation(!canTrackProductAnalytics);
   };
 
-  const changeCurrencySelection = (event: React.FormEvent<HTMLSelectElement>) => {
+  const changeCurrencySelection = (event: FormEvent<HTMLSelectElement>) => {
     const target = event.target as HTMLSelectElement;
     setFiat(target.value as TFiatTicker);
   };

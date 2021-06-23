@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Accordion } from '@mycrypto/ui';
 import queryString from 'query-string';

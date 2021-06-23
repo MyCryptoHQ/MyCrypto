@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { simpleRender } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { noOp } from '@utils';
 
 import ConfirmMembershipPurchase from './ConfirmMembershipPurchaseMultiTx';
 
-const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
+const defaultProps: ComponentProps<typeof ConfirmMembershipPurchase> = {
   transactions: fTxParcels,
   currentTxIdx: 0,
   account: fAccount,
@@ -16,7 +16,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmMembershipPurchase>) {
+function getComponent(props: ComponentProps<typeof ConfirmMembershipPurchase>) {
   return simpleRender(<ConfirmMembershipPurchase {...props} />);
 }
 

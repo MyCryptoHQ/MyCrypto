@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, simpleRender } from 'test-utils';
 
@@ -13,7 +13,7 @@ import { constructSenderFromTxConfig } from '../helpers';
 const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 
-const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
+const defaultProps: ComponentProps<typeof ConfirmTransactionUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
   onComplete: jest.fn(),
@@ -24,7 +24,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmTransactionUI> = {
   recipientContact
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmTransactionUI>) {
+function getComponent(props: ComponentProps<typeof ConfirmTransactionUI>) {
   return simpleRender(<ConfirmTransactionUI {...props} />);
 }
 

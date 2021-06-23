@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ interface Props {
   onChange(network: NetworkId): void;
   filter?(network: Network): boolean;
 }
-interface StyleProps extends OptionProps<Network> {
+interface StyleProps extends OptionProps<Network, false> {
   paddingLeft?: string;
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -90,7 +90,7 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const PageNotFound: React.FC = () => (
+const PageNotFound: FC = () => (
   <PageNotFoundContainer>
     <PageNotFoundContent>
       <ImgIcon src={cryingWallet} />

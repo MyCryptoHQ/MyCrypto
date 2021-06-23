@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -10,7 +10,7 @@ import { generateDeterministicAddressUUID } from '@utils';
 import useContacts from './useContacts';
 
 const renderUseContacts = ({ contacts = [] as ExtendedContact[] } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ [LSKeys.ADDRESS_BOOK]: contacts })}>
       {children}
     </ProvidersWrapper>

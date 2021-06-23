@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fAccounts } from '@fixtures';
 
 import RecentTransactionList from './RecentTransactionList';
 
-const defaultProps: React.ComponentProps<typeof RecentTransactionList> = {
+const defaultProps: ComponentProps<typeof RecentTransactionList> = {
   accountsList: fAccounts
 };
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { Box, Icon, LinkApp, Text } from '@components';
 import { ROUTE_PATHS } from '@config';

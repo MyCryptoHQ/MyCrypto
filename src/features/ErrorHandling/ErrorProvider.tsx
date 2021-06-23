@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react';
+import { Component, createContext, ReactElement } from 'react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ interface ProviderState {
   suppressErrors: boolean;
   toggleSuppressErrors(): void;
   shouldShowError(): boolean;
-  getErrorMessage(error: IError): React.ReactElement<any>;
+  getErrorMessage(error: IError): ReactElement<any>;
 }
 
 const ERROR_TIMEOUT_MS = 30 * 1000;

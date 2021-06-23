@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';

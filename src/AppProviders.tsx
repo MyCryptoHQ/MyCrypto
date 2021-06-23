@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ErrorProvider } from '@features';
 import { DevToolsProvider } from '@services';
 

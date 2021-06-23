@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ConfirmTransaction, GeneralStepper, TxReceipt } from '@components';
 import { IStepperPath } from '@components/GeneralStepper/types';
 import { ROUTE_PATHS } from '@config';

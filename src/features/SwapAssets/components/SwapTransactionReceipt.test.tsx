@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
@@ -10,7 +10,7 @@ import { bigify, noOp, truncate } from '@utils';
 import { SwapTransactionReceipt } from '.';
 import { LAST_CHANGED_AMOUNT } from '../types';
 
-const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
+const defaultProps: ComponentProps<typeof SwapTransactionReceipt> = {
   account: fAccounts[0],
   assetPair: {
     fromAsset: fAssets[0],
@@ -24,7 +24,7 @@ const defaultProps: React.ComponentProps<typeof SwapTransactionReceipt> = {
   onSuccess: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof SwapTransactionReceipt>) {
+function getComponent(props: ComponentProps<typeof SwapTransactionReceipt>) {
   return simpleRender(<SwapTransactionReceipt {...props} />, {
     initialState: mockAppState({
       assets: fAssets,

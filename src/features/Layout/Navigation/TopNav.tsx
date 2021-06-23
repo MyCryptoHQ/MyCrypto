@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AnnouncementBanner, Box, Icon } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
 import { COLORS, SPACING } from '@theme';

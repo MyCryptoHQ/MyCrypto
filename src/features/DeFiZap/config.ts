@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import compoundDaiBreakdown from '@assets/images/defizap/breakdowns/cdaiBreakdown.svg';
 import unipoolDaiBreakdown from '@assets/images/defizap/breakdowns/unidaiBreakdown.svg';
 import unipoolSethBreakdown from '@assets/images/defizap/breakdowns/unisethBreakdown.svg';
@@ -44,7 +46,7 @@ export interface IZapConfig {
   poolTokenUUID: string;
   breakdownImage: any;
   breakdownTooltip: string;
-  withdrawTooltip?: React.ReactElement | string;
+  withdrawTooltip?: ReactElement | string;
   positionDetails(): JSX.Element;
 }
 

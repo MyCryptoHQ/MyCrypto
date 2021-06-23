@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType, FC } from 'react';
 
 import styled from 'styled-components';
 import {
@@ -34,12 +34,12 @@ export type TextProps = SpaceProps &
   LayoutProps &
   TypographyProps & {
     variant?: TextVariants;
-    as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
+    as?: keyof JSX.IntrinsicElements | ComponentType<any>;
   } & {
     textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
   };
 
-const SText: React.FC<TextProps> = styled.p<TextProps>`
+const SText: FC<TextProps> = styled.p<TextProps>`
   ${textVariants}
   ${space}
   ${fontStyle}
@@ -53,7 +53,7 @@ const SText: React.FC<TextProps> = styled.p<TextProps>`
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
 `;
 
-const Text: React.FC<TextProps & { isDiscrete?: boolean; isBold?: boolean }> = ({
+const Text: FC<TextProps & { isDiscrete?: boolean; isBold?: boolean }> = ({
   isDiscrete,
   isBold = false,
   ...props

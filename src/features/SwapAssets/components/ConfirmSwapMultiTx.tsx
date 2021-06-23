@@ -1,5 +1,3 @@
-import React from 'react';
-
 import path from 'ramda/src/path';
 
 import { Typography, VerticalStepper } from '@components';

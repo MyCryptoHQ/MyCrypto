@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TagsList } from '@components';
 
 import { getPlatformColor } from '../helpers';

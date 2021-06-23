@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fAccounts, fAssets } from '@fixtures';
 
 import { ActionTable } from './ActionTable';
 
-const defaultProps: React.ComponentProps<typeof ActionTable> = {
+const defaultProps: ComponentProps<typeof ActionTable> = {
   accounts: [
     {
       address: fAccounts[0].address,

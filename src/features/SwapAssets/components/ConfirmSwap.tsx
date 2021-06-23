@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ConfirmTransaction, SwapFromToDiagram } from '@components';
 import { getAccountsAssets, useSelector } from '@store';
 import { ITxMultiConfirmProps, ITxType } from '@types';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType, CSSProperties, FC, MouseEvent, ReactElement } from 'react';
 
 import { Typography as UITypography } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -7,14 +7,14 @@ import { BREAK_POINTS } from '@theme';
 import { useScreenSize } from '@utils';
 
 export interface Props {
-  as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
-  value?: string | React.ReactElement;
+  as?: keyof JSX.IntrinsicElements | ComponentType<any>;
+  value?: string | ReactElement;
   bold?: boolean;
   fontSize?: string;
   truncate?: boolean;
   inheritFontWeight?: boolean;
-  style?: React.CSSProperties;
-  onClick?(e: React.MouseEvent): void;
+  style?: CSSProperties;
+  onClick?(e: MouseEvent): void;
 }
 
 interface SProps {
@@ -72,7 +72,7 @@ const STypography = styled(UITypography)`
   }}
 `;
 
-const Typography: React.FC<Props> = ({
+const Typography: FC<Props> = ({
   as = 'span',
   fontSize = '1rem',
   value,

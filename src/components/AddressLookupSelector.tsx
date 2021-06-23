@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FocusEventHandler, KeyboardEventHandler } from 'react-select';
 
 import { AccountSummary, Icon } from '@components';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { simpleRender } from 'test-utils';
 
@@ -9,7 +9,7 @@ import { bigify, noOp } from '@utils';
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
 
-const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
+const defaultProps: ComponentProps<typeof ConfirmSwapMultiTx> = {
   flowConfig: {
     fromAsset: fAssets[0],
     toAsset: fRopDAI,
@@ -24,7 +24,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwapMultiTx> = {
   currentTxIdx: 0
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmSwapMultiTx>) {
+function getComponent(props: ComponentProps<typeof ConfirmSwapMultiTx>) {
   return simpleRender(<ConfirmSwapMultiTx {...props} />);
 }
 
