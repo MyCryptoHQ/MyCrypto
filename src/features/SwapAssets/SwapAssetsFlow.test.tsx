@@ -6,6 +6,7 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 
 import { DEX_BASE_URLS } from '@config';
 import { fAccounts, fAssets, fDAI, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
+import { NetworkId } from '@types';
 import { truncate } from '@utils';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
@@ -14,7 +15,10 @@ function getComponent() {
   return simpleRender(<SwapAssetsFlow />, {
     initialState: mockAppState({
       accounts: fAccounts.filter((a) => a.networkId === 'Ethereum'),
-      assets: [...fAssets, { ...fDAI, networkId: 'SmartChain' }],
+      assets: [...fAssets, { ...fDAI, networkId: 'SmartChain' as NetworkId }].map((a) => ({
+        ...a,
+        isSwapRelevant: true
+      })),
       networks: APP_STATE.networks
     })
   });
