@@ -31,6 +31,7 @@ export interface Asset {
   readonly contractAddress?: TAddress | string;
   readonly decimal?: number;
   readonly isCustom?: boolean;
+  readonly isSwapRelevant?: boolean;
 }
 
 export interface ExtendedAsset extends Asset {

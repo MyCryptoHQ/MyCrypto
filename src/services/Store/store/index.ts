@@ -77,7 +77,9 @@ export {
   getAssets,
   getBaseAssetByNetwork,
   getCoinGeckoAssetManifest,
-  getAssetsByNetwork
+  getAssetsByNetwork,
+  getSwapAssets,
+  getSwapAssetsByNetwork
 } from './asset.slice';
 export {
   fetchMemberships,
