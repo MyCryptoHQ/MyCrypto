@@ -18,9 +18,6 @@ export interface IAccount {
   wallet: WalletId;
   transactions: ITxReceipt[];
 
-  // @todo Write migration to remove this and convert to below
-  dPath?: string;
-  // Replaces dPath
   path?: DerivationPath;
   index?: number;
 

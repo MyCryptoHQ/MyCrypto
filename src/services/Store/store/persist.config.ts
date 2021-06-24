@@ -1,3 +1,4 @@
+import { getDerivationPath } from '@mycrypto/wallets';
 import { Reducer } from '@reduxjs/toolkit';
 import {
   createMigrate,
@@ -19,6 +20,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
+import { DPathsList } from '@config';
 import { defaultContacts } from '@database';
 import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
@@ -168,6 +170,23 @@ export const migrations = {
       ...state,
       settings: dissoc('inactivityTimer', state.settings)
     };
+  },
+  6: (state: DataStore) => {
+    return {
+      ...state,
+      // @ts-expect-error dPath is present on data to be migrated, want to remove it
+      accounts: state.accounts.map(({ dPath, ...account }) => {
+        if (!dPath) {
+          return account;
+        }
+        const [path, index] = getDerivationPath(dPath, Object.values(DPathsList))!;
+        return {
+          ...account,
+          path,
+          index
+        };
+      })
+    };
   }
 };
 
@@ -175,7 +194,7 @@ export const migrations = {
 export const migrate = createMigrate(migrations, { debug: IS_DEV });
 
 export const APP_PERSIST_CONFIG: PersistConfig<DataStore> = {
-  version: 5,
+  version: 6,
   key: 'Storage',
   keyPrefix: 'MYC_',
   storage,
