@@ -2,7 +2,16 @@ import React, { PureComponent } from 'react';
 
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 
-import { Box, BusyBottom, Button, Heading, Icon, LinkApp, Spinner } from '@components';
+import {
+  Box,
+  BusyBottom,
+  Button,
+  Heading,
+  Icon,
+  InlineMessage,
+  LinkApp,
+  Spinner
+} from '@components';
 import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths } from '@services/EthService';
 import { INetworkContext, useNetworks } from '@services/Store';
@@ -43,7 +52,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
   };
 
   public render() {
-    const { dPath, isLoading, isConnected } = this.state;
+    const { dPath, isLoading, isConnected, error } = this.state;
     const networks = this.props.networks;
     const network = this.props.getNetworkById(this.props.formData.network);
 
@@ -110,6 +119,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
                   {translate('ADD_LEDGER_SCAN')}
                 </Button>
               )}
+              {error && <InlineMessage>{error}</InlineMessage>}
             </div>
             <div className="LedgerPanel-footer">
               <BusyBottom type={BusyBottomConfig.LEDGER} />
@@ -141,7 +151,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
       .catch((err) => {
         console.error(err);
         this.setState({
-          error: translateRaw(err.message),
+          error: err.message,
           isLoading: false
         });
       });
@@ -163,6 +173,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     const networks = this.props.networks;
     const network = this.props.getNetworkById(this.props.formData.network);
     this.setState({
+      isConnected: false,
       dPath:
         getDPath(network, WalletId.LEDGER_NANO_S) || getDPaths(networks, WalletId.LEDGER_NANO_S)[0]
     });
