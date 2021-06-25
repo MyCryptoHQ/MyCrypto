@@ -93,7 +93,6 @@ export {
 export { verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './stripHexPrefix';
 export * from './units';
-export { padLeftEven } from './padLeftEven';
 export { normalize } from './normalize';
 export {
   hexNonceToViewable,
