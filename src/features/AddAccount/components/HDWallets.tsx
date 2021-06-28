@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
@@ -193,7 +193,7 @@ export function HDWalletsClass({
   const { contacts } = useContacts();
   const { assets } = useAssets();
 
-  const wallet = getWallet(walletId);
+  const wallet = useMemo(() => getWallet(walletId), [walletId]);
 
   /* Used to update addresses displayed */
   useEffect(() => {
@@ -377,16 +377,23 @@ export function HDWalletsClass({
         </CustomDPath>
       )}
 
-      <DWTable
-        disabled={isCustom && !currentDPath.name}
-        selected={selectedAddressIndex}
-        page={page}
-        head={['#', translateRaw('ADDRESS'), ticker, translateRaw('ACTION_5')]}
-        body={wallets.map((wallet) => renderWalletRow(wallet, network!, ticker))}
-        config={{
-          handleRowClicked: selectAddress
-        }}
-      />
+      {requestingWallets && wallets.length === 0 ? (
+        <Box variant="rowCenter">
+          <Spinner size={2} />
+        </Box>
+      ) : (
+        <DWTable
+          disabled={isCustom && !currentDPath.name}
+          selected={selectedAddressIndex}
+          page={page}
+          head={['#', translateRaw('ADDRESS'), ticker, translateRaw('ACTION_5')]}
+          body={wallets.map((wallet) => renderWalletRow(wallet, network!, ticker))}
+          config={{
+            handleRowClicked: selectAddress
+          }}
+        />
+      )}
+
       <Bottom>
         <Nav disabled={isCustom && !currentDPath.name}>
           <img src={prevIcon} onClick={prevPage} />
