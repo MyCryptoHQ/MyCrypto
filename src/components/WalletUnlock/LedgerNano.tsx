@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { DeterministicWallet, DerivationPath as DPath, Wallet } from '@mycrypto/wallets';
+import { DeterministicWallet, DerivationPath as DPath } from '@mycrypto/wallets';
 
 import {
   Box,
