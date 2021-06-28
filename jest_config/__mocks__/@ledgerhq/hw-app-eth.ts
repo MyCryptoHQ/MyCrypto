@@ -31,22 +31,6 @@ const EthereumApp = jest.fn().mockImplementation(() => ({
       r,
       s
     };
-  }),
-
-  signPersonalMessage: jest.fn().mockImplementation(async (path, message) => {
-    const childNode = hdNode.derivePath(path);
-    const wallet = new Wallet(childNode.privateKey);
-
-    const address = await wallet.getAddress();
-    const signature = await wallet.signMessage(message);
-
-    return {
-      success: true,
-      payload: {
-        signature,
-        address
-      }
-    };
   })
 }));
 
