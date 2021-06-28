@@ -212,16 +212,19 @@ export function HDWalletsClass({
 
   const getAddresses = async () => {
     setRequestingWallets(true);
-    // tslint:disable-next-line: no-shadowed-variable
     if (dPath && isValidPath(dPath.path)) {
-      const result = await wallet!.getAddresses({
-        path: dPath,
-        limit: WALLETS_PER_PAGE,
-        offset: WALLETS_PER_PAGE * page
-      });
-      setWallets(result);
-      setRequestingWallets(false);
-      setRequestingBalanceCheck(true);
+      try {
+        const result = await wallet!.getAddresses({
+          path: dPath,
+          limit: WALLETS_PER_PAGE,
+          offset: WALLETS_PER_PAGE * page
+        });
+        setWallets(result);
+        setRequestingWallets(false);
+        setRequestingBalanceCheck(true);
+      } catch (err) {
+        console.error(err);
+      }
     } else {
       setRequestingWallets(false);
       setRequestingBalanceCheck(false);

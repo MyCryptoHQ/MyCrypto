@@ -58,14 +58,14 @@ describe('LedgerNano', () => {
   });
 
   it('shows error message', async () => {
-    const { getByText } = getComponent();
-    expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
-    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
-
     // @ts-expect-error Not overwriting all functions
     (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementationOnce(() => ({
       getAddress: jest.fn().mockRejectedValue(new Error('foo'))
     }));
+
+    const { getByText } = getComponent();
+    expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
+    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
 
     fireEvent.click(button);
 

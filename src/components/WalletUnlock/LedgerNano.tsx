@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { DerivationPath as DPath } from '@mycrypto/wallets';
+import { DeterministicWallet, DerivationPath as DPath, Wallet } from '@mycrypto/wallets';
 
 import {
   Box,
@@ -34,12 +34,12 @@ interface State {
   error: string | null;
   isConnected: boolean;
   isLoading: boolean;
+  wallet: DeterministicWallet;
 }
 
 type Props = OwnProps;
 
 const WalletService = WalletFactory[WalletId.LEDGER_NANO_S];
-const wallet = getWallet(WalletId.LEDGER_NANO_S);
 
 class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
@@ -48,7 +48,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
       getDPaths(this.props.networks, WalletId.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false,
-    isConnected: false
+    isConnected: false,
+    wallet: getWallet(WalletId.LEDGER_NANO_S)!
   };
 
   public render() {
@@ -143,9 +144,10 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
       error: null
     });
 
-    wallet!
+    this.state.wallet
       .getAddress(dPath, 0)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         this.setState({ isLoading: false, isConnected: true });
       })
       .catch((err) => {
