@@ -684,6 +684,7 @@ exports[` Storyshots Atoms/Switch Switch 1`] = `
     <input
       checked={false}
       className="input-group-input Switch__Checkbox-sc-1om4h8q-1 bhGlyh"
+      data-testid="switch-checkbox"
       id="toggle"
       onBlur={[Function]}
       onChange={[Function]}
@@ -22679,6 +22680,7 @@ exports[` Storyshots Organisms/HDWallet HDWallet 1`] = `
             <input
               checked={false}
               className="input-group-input Switch__Checkbox-sc-1om4h8q-1 bhGlyh"
+              data-testid="switch-checkbox"
               id="toggle"
               onBlur={[Function]}
               onChange={[Function]}
