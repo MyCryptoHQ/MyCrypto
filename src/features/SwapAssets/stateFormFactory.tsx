@@ -38,9 +38,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   const network = useSelector(selectNetwork(state.selectedNetwork)) as Network;
   const baseAsset = useSelector(getBaseAssetByNetwork(network));
   const assets = useSelector(getSwapAssetsByNetwork(state.selectedNetwork));
-  const sortedAssets = assets.sort((asset1, asset2) =>
-    (asset1.ticker as string).localeCompare(asset2.ticker)
-  );
+  const sortedAssets = assets.sort((asset1, asset2) => asset1.ticker.localeCompare(asset2.ticker));
 
   useEffect(() => {
     setState((prevState: SwapFormState) => ({
