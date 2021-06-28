@@ -64,7 +64,11 @@ const FIXTURE_LOCALSTORAGE_WITH_ONE_ACC = {
       address: '0x32F08711dC8ca3EB239e01f427AE3713DB1f6Be3',
       networkId: 'Goerli',
       wallet: 'WEB3',
-      dPath: "m/44'/60'/0'/0/0",
+      path: {
+        name: 'Default (ETH)',
+        path: "m/44'/60'/0'/0/<account>"
+      },
+      index: 0,
       assets: [
         {
           ticker: 'GoerliETH',
@@ -143,7 +147,11 @@ const FIXTURE_HARDHAT = {
       address: '0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf',
       networkId: 'Ethereum',
       wallet: 'WEB3',
-      dPath: "m/44'/60'/0'/0/0",
+      path: {
+        name: 'Default (ETH)',
+        path: "m/44'/60'/0'/0/<account>"
+      },
+      index: 0,
       assets: [
         {
           ticker: 'ETH',
