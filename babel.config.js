@@ -12,13 +12,19 @@ module.exports = {
         // babel defaults to core-js@2.
         // https://github.com/babel/babel/issues/9713#issuecomment-474828830
         useBuiltIns: 'usage',
-        corejs: 3
+        corejs: 3,
+        loose: true
       }
     ]
   ],
   plugins: [
     'babel-plugin-styled-components',
-    '@babel/plugin-proposal-class-properties',
+    [
+      '@babel/plugin-proposal-class-properties',
+      {
+        loose: true
+      }
+    ],
     '@babel/plugin-proposal-object-rest-spread',
     '@babel/plugin-syntax-dynamic-import',
     // Fix warnings with TS "export '...' was not found in '...' "
