@@ -10,6 +10,7 @@ import {
   resetState,
   selectHDWalletAccountQueue,
   selectHDWalletAsset,
+  selectHDWalletConnectionError,
   selectHDWalletCustomDPaths,
   selectHDWalletIsCompleted,
   selectHDWalletIsConnected,
@@ -42,6 +43,7 @@ export const useHDWallet = (
   const accountQueue = useSelector(selectHDWalletAccountQueue);
   const scannedAccounts = useSelector(selectHDWalletScannedAccounts);
   const selectedAsset = useSelector(selectHDWalletAsset);
+  const connectionError = useSelector(selectHDWalletConnectionError);
 
   // Reset the hdslice state on unmount
   useUnmount(() => dispatch(resetState()));
@@ -104,6 +106,7 @@ export const useHDWallet = (
     requestConnection,
     updateAsset,
     addDPaths,
-    scanMoreAddresses
+    scanMoreAddresses,
+    connectionError
   };
 };

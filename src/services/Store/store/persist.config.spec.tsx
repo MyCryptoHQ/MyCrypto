@@ -1,5 +1,5 @@
 import { defaultContacts } from '@database';
-import { fAccount, fContacts } from '@fixtures';
+import { fAccount, fAccounts, fContacts } from '@fixtures';
 import { DataStore, LSKeys } from '@types';
 import { values } from '@vendor';
 
@@ -19,10 +19,11 @@ describe('Persist Migrations', () => {
   it('6: Updates the DPath format on accounts', () => {
     const migration = migrations['6'];
     const { path, index, ...account } = fAccount;
+    const { path: unusedPath, index: unusedIndex, ...account2 } = fAccounts[0];
     const actual = migration(({
-      [LSKeys.ACCOUNTS]: [{ ...account, dPath: "m/44'/60'/0'/0" }]
+      [LSKeys.ACCOUNTS]: [{ ...account, dPath: "m/44'/60'/0'/0" }, account2]
     } as unknown) as DataStore);
-    const expected = { [LSKeys.ACCOUNTS]: [fAccount] };
+    const expected = { [LSKeys.ACCOUNTS]: [fAccount, account2] };
     expect(actual).toEqual(expected);
   });
 });

@@ -9,7 +9,6 @@ import {
   LEDGER_DERIVATION_PATHS
 } from '@config';
 import { HDWallet } from '@features/AddAccount';
-import { selectHDWalletConnectionError } from '@features/AddAccount/components/hdWallet.slice';
 import {
   getAssetByUUID,
   getDPaths,
@@ -18,7 +17,6 @@ import {
   useHDWallet,
   useNetworks
 } from '@services';
-import { useSelector } from '@store';
 import { Trans } from '@translations';
 import { ExtendedAsset, FormData, WalletId } from '@types';
 import { prop, uniqBy } from '@vendor';
@@ -33,7 +31,6 @@ interface OwnProps {
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
-  const connectionError = useSelector(selectHDWalletConnectionError);
   const network = getNetworkById(formData.network, networks);
   const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
@@ -60,7 +57,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     requestConnection,
     updateAsset,
     addDPaths,
-    scanMoreAddresses
+    scanMoreAddresses,
+    connectionError
   } = useHDWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);

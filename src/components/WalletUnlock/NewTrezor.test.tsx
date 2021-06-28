@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Provider } from 'react-redux';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
+import TrezorConnect from 'trezor-connect';
 
 import { createStore } from '@store';
 import { translateRaw } from '@translations';
@@ -67,5 +68,19 @@ describe('NewTrezor', () => {
         ).toBeInTheDocument(),
       { timeout: 10000 }
     );
+  });
+
+  it('shows error message', async () => {
+    const { getByText } = getComponent();
+    expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
+    const button = getByText(translateRaw('ADD_TREZOR_SCAN'), { exact: false });
+
+    (TrezorConnect.ethereumGetAddress as jest.MockedFunction<
+      typeof TrezorConnect.ethereumGetAddress
+    >).mockRejectedValueOnce(new Error('foo'));
+
+    fireEvent.click(button);
+
+    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument());
   });
 });

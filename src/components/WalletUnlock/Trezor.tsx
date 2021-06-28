@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 
 import ConnectTrezor from '@assets/images/icn-connect-trezor-new.svg';
-import { Box, BusyBottom, Button, Heading, Spinner } from '@components';
+import { Box, BusyBottom, Button, Heading, InlineMessage, Spinner } from '@components';
 import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths } from '@services/EthService';
 import { INetworkContext, useNetworks } from '@services/Store';
@@ -43,7 +43,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
   };
 
   public render() {
-    const { dPath, isLoading, isConnected } = this.state;
+    const { dPath, isLoading, isConnected, error } = this.state;
     const networks = this.props.networks;
     const network = this.props.getNetworkById(this.props.formData.network);
 
@@ -79,9 +79,6 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
                 <img src={ConnectTrezor} />
               </div>
             </div>
-            {/* <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
-              {error || '-'}
-            </div> */}
 
             {isLoading ? (
               <div className="TrezorDecrypt-loading">
@@ -96,6 +93,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
                 {translate('ADD_TREZOR_SCAN')}
               </Button>
             )}
+            {error && <InlineMessage>{error}</InlineMessage>}
             <div className="TrezorDecrypt-footer">
               <BusyBottom type={BusyBottomConfig.TREZOR} />
             </div>
@@ -124,7 +122,7 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
       .catch((err) => {
         console.error(err);
         this.setState({
-          error: translateRaw(err.message),
+          error: err.message,
           isLoading: false
         });
       });
