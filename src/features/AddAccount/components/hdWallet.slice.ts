@@ -208,7 +208,7 @@ export function* requestConnectionWorker({
     yield put(
       slice.actions.requestConnectionFailure({
         code: HDWalletErrors.SESSION_CONNECTION_FAILED,
-        message: err
+        message: err.message
       })
     );
   }

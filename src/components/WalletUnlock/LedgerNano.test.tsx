@@ -1,5 +1,6 @@
 import React from 'react';
 
+import EthereumApp from '@ledgerhq/hw-app-eth';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import { translateRaw } from '@translations';
@@ -54,5 +55,20 @@ describe('LedgerNano', () => {
     await waitFor(() =>
       expect(getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))).toBeInTheDocument()
     );
+  });
+
+  it('shows error message', async () => {
+    const { getByText } = getComponent();
+    expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
+    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
+
+    // @ts-expect-error Not overwriting all functions
+    (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementationOnce(() => ({
+      getAddress: jest.fn().mockRejectedValue(new Error('foo'))
+    }));
+
+    fireEvent.click(button);
+
+    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument());
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import EthereumApp from '@ledgerhq/hw-app-eth';
 import { Provider } from 'react-redux';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
@@ -33,7 +34,8 @@ const defaultProps = {
 };
 
 const getComponent = () => {
-  const { store } = createStore(mockAppState({ networks: APP_STATE.networks }) as any);
+  // @ts-expect-error Not mocking out all of store
+  const { store } = createStore(mockAppState({ networks: APP_STATE.networks }));
   return simpleRender(
     <Provider store={store}>
       <LedgerDecrypt {...defaultProps} />
@@ -79,5 +81,20 @@ describe('Ledger', () => {
         ).toBeInTheDocument(),
       { timeout: 10000 }
     );
+  });
+
+  it('shows error message', async () => {
+    const { getByText } = getComponent();
+    expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
+    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
+
+    // @ts-expect-error Not overwriting all functions
+    (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementationOnce(() => ({
+      getAddress: jest.fn().mockRejectedValueOnce(new Error('foo'))
+    }));
+
+    fireEvent.click(button);
+
+    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument());
   });
 });
