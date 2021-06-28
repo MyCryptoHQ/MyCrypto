@@ -87,7 +87,7 @@
     "ADD_ACCOUNT_WEB3_TITLE_DEFAULT": "Connect and unlock with your Web3 Provider",
     "ADD_CUSTOM_TOKEN": "Add Custom Token",
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
-    "ADD_LEDGER_SCAN": "Connect to Ledger Wallet ",
+    "ADD_LEDGER_SCAN": "Connect to Ledger Wallet",
     "ADD_TOKEN": "Add Token",
     "ADD_TOKEN_ADDRESS_PLACEHOLDER": "Enter Your Token Address",
     "ADD_TOKEN_INVALID_ADDRESS": "Invalid address",
