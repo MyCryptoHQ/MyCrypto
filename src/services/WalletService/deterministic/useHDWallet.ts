@@ -32,7 +32,7 @@ export const useHDWallet = (
   walletId: DPathFormat,
   gap: number
 ): IUseHDWallet => {
-  const [session, setSession] = useState((undefined as unknown) as DeterministicWallet);
+  const [session, setSession] = useState<DeterministicWallet | undefined>(undefined);
   const dispatch = useDispatch();
   const isConnected = useSelector(selectHDWalletIsConnected);
   const isConnecting = useSelector(selectHDWalletIsConnecting);

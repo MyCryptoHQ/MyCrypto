@@ -146,17 +146,13 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
 
     this.state.wallet
       .getAddress(dPath, 0)
-      .then((res) => {
-        console.log(res);
-        this.setState({ isLoading: false, isConnected: true });
-      })
-      .catch((err) => {
-        console.error(err);
+      .then(() => this.setState({ isLoading: false, isConnected: true }))
+      .catch((err) =>
         this.setState({
           error: err.message,
           isLoading: false
-        });
-      });
+        })
+      );
   };
 
   private handleCancel = () => {

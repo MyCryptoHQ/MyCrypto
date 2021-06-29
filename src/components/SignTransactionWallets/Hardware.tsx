@@ -59,9 +59,9 @@ export default function HardwareSignTransaction({
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
   const [wallet, setWallet] = useState<Wallet | undefined>();
-  const SigningWalletService = (WalletFactory[
+  const SigningWalletService = WalletFactory[
     senderAccount.wallet as HardwareWalletId
-  ] as unknown) as HardwareWalletService;
+  ] as HardwareWalletService;
 
   useInterval(
     async () => {

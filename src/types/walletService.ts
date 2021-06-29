@@ -8,7 +8,7 @@ export interface WalletService {
 }
 
 export interface HardwareWalletService {
-  init(initArgs: HardwareWalletInitArgs): Wallet;
+  init(initArgs: HardwareWalletInitArgs): Promise<Wallet>;
 }
 
 type WalletServiceInitArgs =

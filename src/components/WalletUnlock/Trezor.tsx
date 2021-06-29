@@ -120,7 +120,6 @@ class TrezorDecryptClass extends PureComponent<OwnProps & INetworkContext, State
         this.setState({ isLoading: false, isConnected: true });
       })
       .catch((err) => {
-        console.error(err);
         this.setState({
           error: err.message,
           isLoading: false
