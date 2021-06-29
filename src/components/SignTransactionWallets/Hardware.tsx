@@ -90,7 +90,7 @@ export default function HardwareSignTransaction({
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.
-    if (wallet && 'signTransaction' in wallet && !isRequestingTxSignature) {
+    if (wallet && !isRequestingTxSignature) {
       setIsRequestingTxSignature(true);
       const madeTx = makeTransaction(rawTransaction);
       wallet
