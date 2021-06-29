@@ -41,7 +41,11 @@ import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getNonce, useRates } from '@services';
-import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
+import {
+  fetchEIP1559PriceEstimates,
+  fetchGasPriceEstimates,
+  getGasEstimate
+} from '@services/ApiService';
 import {
   isBurnAddress,
   isValidETHAddress,
@@ -456,6 +460,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     }
   });
 
+  const network = values.network;
+
   useEffect(() => {
     if (updateFormValues) {
       updateFormValues(values);
@@ -487,10 +493,24 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     resetForm({ values: { ...newInitialValues, asset } });
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
-      fetchGasPriceEstimates(network).then((data) => {
-        setFieldValue('gasEstimates', data);
-        setFieldValue('gasPriceSlider', data.fast.toString());
-      });
+      if (!network.supportsEIP1559) {
+        fetchGasPriceEstimates(network).then((data) => {
+          setFieldValue('gasEstimates', data);
+          setFieldValue('gasPriceSlider', data.fast.toString());
+          setFieldValue('gasPriceField', data.fast.toString());
+        });
+      } else {
+        fetchEIP1559PriceEstimates(network).then((data) => {
+          setFieldValue(
+            'maxGasFeePerGasField',
+            data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
+          );
+          setFieldValue(
+            'maxPriorityFeePerGasField',
+            data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
+          );
+        });
+      }
       setFieldValue('network', network || {});
       if (network) {
         setBaseAsset(getBaseAssetByNetwork({ network, assets: userAssets }) || ({} as Asset));
@@ -777,22 +797,61 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                 />
               </div>
             </div>
-            <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-              <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                <label htmlFor="gasPrice">
-                  {translate('OFFLINE_STEP2_LABEL_3')}
-                  <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
-                </label>
-                <GasPriceField
-                  onChange={(option: string) => {
-                    setFieldValue('gasPriceField', option);
-                  }}
-                  name="gasPriceField"
-                  value={values.gasPriceField}
-                  error={errors && errors.gasPriceField}
-                />
+
+            {!network.supportsEIP1559 && (
+              <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
+                  <label htmlFor="gasPrice">
+                    {translate('OFFLINE_STEP2_LABEL_3')}
+                    <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                  </label>
+                  <GasPriceField
+                    onChange={(option: string) => {
+                      setFieldValue('gasPriceField', option);
+                    }}
+                    name="gasPriceField"
+                    value={values.gasPriceField}
+                    error={errors && errors.gasPriceField}
+                  />
+                </div>
               </div>
-            </div>
+            )}
+            {network.supportsEIP1559 && (
+              <>
+                <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                  <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
+                    <label htmlFor="maxGasFeePerGasField">
+                      {translate('MAX_FEE_PER_GAS')}
+                      <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                    </label>
+                    <GasPriceField
+                      onChange={(option: string) => {
+                        setFieldValue('maxGasFeePerGasField', option);
+                      }}
+                      name="maxGasFeePerGasField"
+                      value={values.maxGasFeePerGasField}
+                      error={errors && errors.maxGasFeePerGasField}
+                    />
+                  </div>
+                </div>
+                <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                  <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
+                    <label htmlFor="maxGasFeePerGasField">
+                      {translate('MAX_PRIORITY_FEE')}
+                      <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                    </label>
+                    <GasPriceField
+                      onChange={(option: string) => {
+                        setFieldValue('maxPriorityFeePerGasField', option);
+                      }}
+                      name="maxPriorityFeePerGasField"
+                      value={values.maxPriorityFeePerGasField}
+                      error={errors && errors.maxPriorityFeePerGasField}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
               <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                 <label htmlFor="nonce">

@@ -1,6 +1,12 @@
 import { InputField } from '@components';
 
-export function GasPriceField({ value, name, onChange, error }: IGasPriceField) {
+export function GasPriceField({
+  value,
+  name,
+  onChange,
+  error,
+  placeholder = '20'
+}: IGasPriceField) {
   return (
     <div>
       <InputField
@@ -9,7 +15,7 @@ export function GasPriceField({ value, name, onChange, error }: IGasPriceField) 
         value={value}
         maxLength={6}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="20"
+        placeholder={placeholder}
         className="SendAssetsForm-fieldset-input"
         inputError={error}
         inputMode="decimal"
@@ -23,6 +29,7 @@ interface IGasPriceField {
   name: string;
   error?: string | JSX.Element | undefined;
   onChange(entry: string): void;
+  placeholder?: string;
 }
 
 export default GasPriceField;

@@ -1,3 +1,4 @@
+import { FeeData } from '@ethersproject/abstract-provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import {
@@ -180,6 +181,10 @@ export class ProviderHandler {
 
       return client.resolveName(name);
     });
+  }
+
+  public getFeeData(): Promise<FeeData> {
+    return this.injectClient((client) => client.getFeeData());
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

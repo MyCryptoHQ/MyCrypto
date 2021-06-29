@@ -61,34 +61,7 @@ export {
   IUnknownTxReceipt,
   ITxMetadata
 } from './transaction';
-export {
-  ISignedTx,
-  ITxObject,
-  ITxToAddress,
-  ITxValue,
-  ITxGasLimit,
-  ITxGasPrice,
-  ITxData,
-  ITxNonce,
-  ITxFromAddress,
-  ITxConfig,
-  ITxStatus,
-  ITxHistoryStatus,
-  ITxType,
-  IFormikFields,
-  ISignComponentProps,
-  IStepComponentProps,
-  SigningComponents,
-  IReceiverAddress,
-  ITxReceiptStepProps,
-  ISimpleTxForm,
-  IDefaultStepComponentProps,
-  ISimpleTxFormFull,
-  TStepAction,
-  TxQueryTypes,
-  ITxMultiConfirmProps,
-  IFlowConfig
-} from './transactionFlow';
+export * from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';

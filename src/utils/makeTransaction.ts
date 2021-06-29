@@ -7,7 +7,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';
 
-import { bigify, Bigish } from './bigify';
+import { bigify, BigifySupported, Bigish } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
@@ -43,7 +43,7 @@ export const hexWeiToString = (hexWeiValue: string): string => Wei(hexWeiValue).
 
 /* region:start BigNum to User Viewable */
 export const bigNumGasPriceToViewableGwei = (
-  gasPriceWeiBigNum: Bigish | string
+  gasPriceWeiBigNum: BigifySupported | string
 ): string /* Converts to wei from gwei */ =>
   fromWei(toWei(bigify(gasPriceWeiBigNum).toString(), 0), 'gwei');
 

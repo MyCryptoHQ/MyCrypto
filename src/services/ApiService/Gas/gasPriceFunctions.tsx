@@ -4,7 +4,7 @@ import { GasEstimates, ITxObject, Network } from '@types';
 
 import { fetchGasEstimates } from './gas';
 
-export function getDefaultEstimates(network: Network | undefined) {
+export function getDefaultEstimates(network?: Network) {
   // Must yield time for testability
   const time = Date.now();
   if (!network) {
@@ -33,28 +33,36 @@ export function getDefaultEstimates(network: Network | undefined) {
   }
 }
 
-export async function fetchGasPriceEstimates(network: Network): Promise<GasEstimates> {
+export async function fetchGasPriceEstimates(network?: Network): Promise<GasEstimates> {
   // Don't try on non-estimating network
   if (!network || network.isCustom || !network.shouldEstimateGasPrice) {
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;
   }
-  // Don't try while offline
-  /*const isOffline: boolean = yield select(configMetaSelectors.getOffline);
-  if (isOffline) {
-    yield call(setDefaultEstimates, network);
-    return;
-  }*/
 
   // Try to fetch new estimates
   try {
-    const estimates: GasEstimates = await fetchGasEstimates();
-    return estimates;
+    return fetchGasEstimates();
   } catch (err) {
     console.error(err);
-    const defaultEstimates: GasEstimates = getDefaultEstimates(network);
-    return defaultEstimates;
+    return getDefaultEstimates(network);
   }
+}
+
+export async function fetchEIP1559PriceEstimates(network: Network) {
+  const provider = new ProviderHandler(network);
+  const { gasPrice, ...rest } = await provider.getFeeData();
+  return rest;
+}
+
+export async function fetchUniversalGasPriceEstimate(network?: Network) {
+  if (network && network.supportsEIP1559) {
+    return fetchEIP1559PriceEstimates(network);
+  }
+
+  const { fast } = await fetchGasPriceEstimates(network);
+
+  return { gasPrice: fast };
 }
 
 export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {

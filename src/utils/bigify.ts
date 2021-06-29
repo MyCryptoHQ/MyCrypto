@@ -5,8 +5,9 @@ import BN from 'bn.js';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 
 export type Bigish = BigNumber;
+export type BigifySupported = BigNumber.Value | BigNumber | BigNumberish | bigint | BN;
 
-export const bigify = (v: BigNumber.Value | BigNumber | BigNumberish | bigint | BN): BigNumber => {
+export const bigify = (v: BigifySupported): BigNumber => {
   BigNumber.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL, EXPONENTIAL_AT: 1e9 });
   if (BigNumberish.isBigNumber(v) && 'toHexString' in v) {
     return new BigNumber(v.toHexString());

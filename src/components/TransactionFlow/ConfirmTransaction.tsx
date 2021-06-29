@@ -8,12 +8,20 @@ import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
-import { useContacts, useSettings } from '@services/Store';
+import { useContacts, useNetworks, useSettings } from '@services/Store';
 import { getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
-import { bigify, convertToFiat, fromWei, totalTxFeeToString, totalTxFeeToWei, Wei } from '@utils';
+import {
+  bigify,
+  convertToFiat,
+  fromWei,
+  isTypedTx,
+  totalTxFeeToString,
+  totalTxFeeToWei,
+  Wei
+} from '@utils';
 
 import { FromToAccount } from './displays';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
@@ -98,13 +106,15 @@ export default function ConfirmTransaction({
   protectTxButton,
   customComponent
 }: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
-  const { asset, baseAsset, receiverAddress, network, from, rawTransaction } = txConfig;
+  const { asset, baseAsset, receiverAddress, networkId, from, rawTransaction } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
   const { assets } = useAssets();
   const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
+  const { getNetworkById } = useNetworks();
+  const network = getNetworkById(networkId);
   const { state: ptxState } = useContext(ProtectTxContext);
   const ptxFee = (() => {
     if (ptxState && ptxState.enabled && !ptxState.isPTXFree) {
@@ -183,17 +193,8 @@ export const ConfirmTransactionUI = ({
   protectTxButton,
   customComponent
 }: UIProps) => {
-  const {
-    asset,
-    gasPrice,
-    gasLimit,
-    amount,
-    receiverAddress,
-    nonce,
-    data,
-    baseAsset,
-    rawTransaction
-  } = txConfig;
+  const { asset, amount, receiverAddress, baseAsset, rawTransaction } = txConfig;
+  const { nonce, data, gasLimit } = rawTransaction;
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
     setIsBroadcastingTx(true);
@@ -206,12 +207,13 @@ export const ConfirmTransactionUI = ({
 
   const assetType = asset.type;
 
+  const gasPrice = isTypedTx(rawTransaction)
+    ? rawTransaction.maxFeePerGas
+    : rawTransaction.gasPrice;
+
   /* Calculate Transaction Fee */
-  const transactionFeeWei = totalTxFeeToWei(rawTransaction.gasPrice, rawTransaction.gasLimit);
-  const maxTransactionFeeBase: string = totalTxFeeToString(
-    rawTransaction.gasPrice,
-    rawTransaction.gasLimit
-  );
+  const transactionFeeWei = totalTxFeeToWei(gasPrice, rawTransaction.gasLimit);
+  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, rawTransaction.gasLimit);
 
   /* Calculate total base asset amount */
   const valueWei = Wei(rawTransaction.value);
@@ -387,7 +389,6 @@ export const ConfirmTransactionUI = ({
         data={data}
         sender={sender}
         gasLimit={gasLimit}
-        gasPrice={gasPrice}
         nonce={nonce}
         signedTransaction={signedTx}
         fiat={fiat}

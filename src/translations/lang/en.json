@@ -976,6 +976,9 @@
     "NO_NON_VIEW_ONLY_ACCOUNTS": "You currently only have $link_support addresses added to MyCrypto, which you cannot send from. Please $link_add_account.",
     "HERE": "here",
     "ADD_AN_ACCOUNT": "add an account",
-    "VIEW_ONLY_ADDRESSES": "View-Only addresses"
+    "VIEW_ONLY_ADDRESSES": "View-Only addresses",
+    "TX_TYPE": "Transaction Type",
+    "MAX_FEE_PER_GAS": "Max Fee Per Gas",
+    "MAX_PRIORITY_FEE": "Max Priority Fee"
   }
 }

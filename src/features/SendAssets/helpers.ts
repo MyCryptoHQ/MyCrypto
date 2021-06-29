@@ -42,22 +42,34 @@ import { IFullTxParam } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network } = formData;
+  const gas = network.supportsEIP1559
+    ? {
+        maxFeePerGas: inputGasPriceToHex(formData.maxGasFeePerGasField),
+        maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),
+        // @todo Perhaps needs to be settable by user?
+        type: 2 as const
+      }
+    : {
+        gasPrice: formData.advancedTransaction
+          ? inputGasPriceToHex(formData.gasPriceField)
+          : inputGasPriceToHex(formData.gasPriceSlider)
+      };
   return {
+    ...gas,
     to: formData.address.value as ITxToAddress,
     value: formData.amount ? inputValueToHex(formData.amount) : ('0x0' as ITxValue),
     data: formData.txDataField ? (formData.txDataField as ITxData) : ('0x0' as ITxData),
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
-    gasPrice: formData.advancedTransaction
-      ? inputGasPriceToHex(formData.gasPriceField)
-      : inputGasPriceToHex(formData.gasPriceSlider),
     nonce: inputNonceToHex(formData.nonceField),
     chainId: network.chainId ? network.chainId : 1
   };
 };
 
 const createERC20TxObject = (formData: IFormikFields): ITxObject => {
-  const { asset, network } = formData;
+  const baseTx = createBaseTxObject(formData);
+  const { asset } = formData;
   return {
+    ...baseTx,
     to: asset.contractAddress! as ITxToAddress,
     value: '0x0' as ITxValue,
     data: bufferToHex(
@@ -65,13 +77,7 @@ const createERC20TxObject = (formData: IFormikFields): ITxObject => {
         Address(formData.address.value),
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue('0')
       )
-    ) as ITxData,
-    gasLimit: inputGasLimitToHex(formData.gasLimitField),
-    gasPrice: formData.advancedTransaction
-      ? inputGasPriceToHex(formData.gasPriceField)
-      : inputGasPriceToHex(formData.gasPriceSlider),
-    nonce: inputNonceToHex(formData.nonceField),
-    chainId: network.chainId ? network.chainId : 1
+    ) as ITxData
   };
 };
 
