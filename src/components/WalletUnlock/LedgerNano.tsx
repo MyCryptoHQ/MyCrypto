@@ -160,7 +160,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
   };
 
   private handleUnlock = async (address: TAddress, index: number) => {
-    this.props.onUnlock(await WalletService.init({ address, dPath: this.state.dPath, index }));
+    try {
+      this.props.onUnlock(await WalletService.init({ address, dPath: this.state.dPath, index }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   private handleNullConnect = (): void => {
