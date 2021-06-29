@@ -231,10 +231,10 @@ const getInitialFormikValues = ({
     account: !isVoid(s.senderAccount) ? s.senderAccount : defaultAccount,
     network: !isVoid(s.network) ? s.network : defaultNetwork,
     asset: !isVoid(s.asset) ? s.asset : defaultAsset,
-    nonceField: s.nonce,
-    txDataField: s.data,
+    nonceField: s.rawTransaction?.nonce,
+    txDataField: s.rawTransaction?.data,
     address: { value: s.receiverAddress, display: s.receiverAddress },
-    gasLimitField: s.gasLimit && bigify(s.gasLimit).toString(),
+    gasLimitField: s.rawTransaction?.gasLimit && bigify(s.rawTransaction?.gasLimit).toString(),
     gasPriceSlider: gasPriceInGwei as string,
     gasPriceField: gasPriceInGwei as string
   };
@@ -302,7 +302,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const defaultAccount = getDefaultAccount(defaultAsset);
   const defaultNetwork = getDefaultNetwork(defaultAccount);
   const [baseAsset, setBaseAsset] = useState(
-    (txConfig.network &&
+    (txConfig.networkId &&
       getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
       (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
       ({} as Asset)

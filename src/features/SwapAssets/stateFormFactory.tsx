@@ -257,7 +257,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           approvalTx &&
           (await checkRequiresApproval(network, approvalTx.to!, account.address, approvalTx.data!));
 
-        const { type, ...tx } = approvalTx;
+        const { txType, ...tx } = approvalTx;
 
         const approvalGasLimit = inputGasLimitToHex(
           requiresApproval ? await getGasEstimate(network, tx!) : '0'

@@ -101,12 +101,8 @@ describe('SendAssetsReducer', () => {
       expect(signedTx).toBe(payload.signedTx);
       expect(txConfig.asset.uuid).toBe(prevState.txConfig.asset.uuid);
       expect(txConfig.baseAsset.uuid).toBe(prevState.txConfig.baseAsset.uuid);
-      expect(txConfig.data).toBe(prevState.txConfig.data);
       expect(txConfig.receiverAddress).toBe(fAccount.address);
       expect(txConfig.from).toBe(fAccount.address);
-      expect(txConfig.gasLimit).toEqual(prevState.txConfig.gasLimit);
-      expect(txConfig.gasPrice).toEqual(prevState.txConfig.gasPrice);
-      expect(txConfig.value).toEqual('10000000000000');
 
       expect(newState.txReceipt).toBe(prevState.txReceipt);
     });

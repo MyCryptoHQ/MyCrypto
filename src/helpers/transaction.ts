@@ -80,7 +80,8 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txConfig: ITxConfig,
   metadata?: ITxMetadata
 ): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
-  const { data, asset, baseAsset, amount, gasPrice, gasLimit, nonce } = txConfig;
+  const { rawTransaction, asset, baseAsset, amount } = txConfig;
+  const { data, gasPrice, gasLimit, nonce } = rawTransaction;
 
   const txReceipt = {
     hash: txHash,
@@ -191,7 +192,7 @@ export const makeTxConfigFromSignedTx = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : decodedTx.value,
-    network: networkDetected || oldTxConfig.network,
+    networkId: networkDetected?.id || oldTxConfig.networkId,
     value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
     asset: contractAsset || oldTxConfig.asset || baseAsset,
     baseAsset: baseAsset || oldTxConfig.baseAsset,
@@ -244,7 +245,7 @@ export const makeTxConfigFromTxResponse = (
     },
     receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
-    network,
+    networkId: network.id,
     value: BigNumber.from(decodedTx.value).toString(),
     asset,
     baseAsset,

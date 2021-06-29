@@ -31,7 +31,7 @@ function SendAssets({ location }: RouteComponentProps) {
   } = useContext(ProtectTxContext);
   const accounts = useSelector(getStoreAccounts);
   const { assets } = useAssets();
-  const { networks } = useNetworks();
+  const { networks, getNetworkById } = useNetworks();
   const { isFeatureActive } = useFeatureFlags();
 
   const query = parse(location.search);
@@ -182,7 +182,7 @@ function SendAssets({ location }: RouteComponentProps) {
       !isWeb3Wallet(reducerState.txConfig!.senderAccount.wallet)
     ) {
       const { txConfig, signedTx } = reducerState;
-      const provider = new ProviderHandler(txConfig!.network);
+      const provider = new ProviderHandler(getNetworkById(txConfig!.networkId));
 
       provider
         .sendRawTx(signedTx)

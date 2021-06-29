@@ -5,11 +5,11 @@ export const mockFactory = (txConfig: ITxConfig) => {
   return {
     ...ethersTransactions,
     parse: () => ({
-      gasPrice: txConfig.gasPrice,
-      gasLimit: txConfig.gasLimit,
-      value: txConfig.value,
-      nonce: txConfig.nonce,
-      data: txConfig.data,
+      gasPrice: txConfig.rawTransaction.gasPrice,
+      gasLimit: txConfig.rawTransaction.gasLimit,
+      value: txConfig.rawTransaction.value,
+      nonce: txConfig.rawTransaction.nonce,
+      data: txConfig.rawTransaction.data,
       to: txConfig.receiverAddress
     })
   };

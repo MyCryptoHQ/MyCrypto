@@ -62,7 +62,7 @@ export const makePurchaseMembershipTxConfig = (
     amount: membershipSelected.price,
     receiverAddress: to,
     senderAccount: account,
-    network,
+    networkId: network.id,
     asset,
     baseAsset,
     gasPrice: hexToString(gasPrice),

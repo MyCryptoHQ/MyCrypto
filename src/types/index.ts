@@ -52,8 +52,6 @@ export { IUNLOCKLOCK } from './unlockProtocolToken';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
 export {
   ITransaction,
-  IHexStrTransaction,
-  IHexStrWeb3Transaction,
   ITxReceipt,
   ITxHash,
   ITxSigned,

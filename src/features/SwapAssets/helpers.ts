@@ -1,23 +1,7 @@
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
-
 import { WALLET_STEPS } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getAssetByTicker, getAssetByUUID } from '@services';
-import {
-  IHexStrTransaction,
-  ISwapAsset,
-  ITxConfig,
-  ITxData,
-  ITxGasLimit,
-  ITxGasPrice,
-  ITxNonce,
-  ITxObject,
-  ITxValue,
-  StoreAccount,
-  StoreAsset,
-  TUuid
-} from '@types';
+import { ISwapAsset, ITxConfig, ITxObject, StoreAccount, StoreAsset, TUuid } from '@types';
 import { hexToString, toTokenBase, weiToFloat } from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
@@ -36,7 +20,7 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
     amount: fromAmount,
     receiverAddress: address,
     senderAccount: account,
-    network,
+    networkId: network.id,
     asset,
     baseAsset,
     gasPrice: hexToString(gasPrice),
@@ -48,18 +32,6 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   };
 
   return txConfig;
-};
-
-export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
-  return {
-    to: config.receiverAddress,
-    chainId: config.network.chainId,
-    data: config.data as ITxData,
-    value: addHexPrefix(new BN(config.amount).toString(16)) as ITxValue,
-    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)) as ITxGasPrice,
-    gasLimit: config.gasLimit as ITxGasLimit,
-    nonce: config.nonce as ITxNonce
-  };
 };
 
 // filter accounts based on wallet type and sufficient balance

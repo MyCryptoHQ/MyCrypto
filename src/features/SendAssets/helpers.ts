@@ -8,8 +8,6 @@ import {
   Asset,
   ExtendedAsset,
   IFormikFields,
-  IHexStrTransaction,
-  IHexStrWeb3Transaction,
   ITxConfig,
   ITxData,
   ITxObject,
@@ -42,7 +40,7 @@ import { isEmpty } from '@vendor';
 import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
 
-const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network } = formData;
   return {
     to: formData.address.value as ITxToAddress,
@@ -57,7 +55,7 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
   };
 };
 
-const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
+const createERC20TxObject = (formData: IFormikFields): ITxObject => {
   const { asset, network } = formData;
   return {
     to: asset.contractAddress! as ITxToAddress,
@@ -81,20 +79,16 @@ export const isERC20Asset = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
   const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
-export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
-  // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
-  // then we add the extra properties required.
-  const { gasLimit, ...tx } = transform(formData);
+export const processFormForEstimateGas = (formData: IFormikFields): ITxObject => {
+  const tx = processFormDataToTx(formData);
   return {
     ...tx,
-    from: formData.account.address,
-    gas: inputGasLimitToHex(formData.gasLimitField)
+    from: formData.account.address
   };
 };
 

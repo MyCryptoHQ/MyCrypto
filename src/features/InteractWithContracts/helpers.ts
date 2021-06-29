@@ -94,7 +94,7 @@ export const makeContractInteractionTxConfig = (
     amount,
     receiverAddress: to,
     senderAccount: account,
-    network,
+    networkId: network.id,
     asset: baseAsset,
     baseAsset,
     gasPrice: hexToString(gasPrice),

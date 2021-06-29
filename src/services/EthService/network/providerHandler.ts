@@ -14,7 +14,7 @@ import Resolution from '@unstoppabledomains/resolution';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TAddress, TokenInformation } from '@types';
+import { Asset, ITxSigned, Network, TAddress, TokenInformation } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
@@ -55,7 +55,7 @@ export class ProviderHandler {
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<string> {
+  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
     return this.injectClient((client) =>
       client.estimateGas(transaction).then((data) => data.toString())
     );

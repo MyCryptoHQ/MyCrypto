@@ -47,7 +47,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         amount: form.amount,
         senderAccount: form.account,
         receiverAddress: form.address.value as TAddress,
-        network: form.network,
+        networkId: form.network.id,
         asset: form.asset,
         baseAsset: baseAsset || ({} as Asset),
         from: form.account.address,

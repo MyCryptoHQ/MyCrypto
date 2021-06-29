@@ -6,16 +6,7 @@ import { Address, Wei } from '@utils';
 
 import { TAddress } from './address';
 import { Asset } from './asset';
-import {
-  ITxData,
-  ITxFromAddress,
-  ITxGasPrice,
-  ITxNonce,
-  ITxStatus,
-  ITxToAddress,
-  ITxType,
-  ITxValue
-} from './transactionFlow';
+import { ITxStatus, ITxType } from './transactionFlow';
 import { TUuid } from './uuid';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
@@ -31,27 +22,6 @@ export interface ITransaction {
   v: Buffer;
   r: Buffer;
   s: Buffer;
-}
-
-export interface IHexStrTransaction {
-  to: ITxToAddress;
-  value: ITxValue;
-  data: ITxData;
-  gasLimit: any; // number? string?
-  gasPrice: ITxGasPrice;
-  nonce: ITxNonce;
-  chainId: number;
-}
-
-export interface IHexStrWeb3Transaction {
-  from: ITxFromAddress;
-  to: ITxToAddress;
-  value: ITxValue;
-  data: ITxData;
-  gas: string; // 21000 - not hex
-  gasPrice: ITxGasPrice;
-  nonce: ITxNonce;
-  chainId: number;
 }
 
 export type ITxHash = Brand<string, 'TxHash'>;

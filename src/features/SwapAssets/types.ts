@@ -54,11 +54,11 @@ export interface SwapFormState {
   approvalGasLimit?: ITxGasLimit;
   tradeGasLimit?: ITxGasLimit;
   approvalTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId' | 'from'> & {
-    type: ITxType;
+    txType: ITxType;
   };
   expiration?: number;
   tradeTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
-    type: ITxType;
+    txType: ITxType;
     metadata: ITxMetadata;
   };
 }
