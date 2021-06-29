@@ -26,17 +26,28 @@ export type ITxGasPrice = Brand<string, 'GasPrice'>; // Hex - wei
 export type ITxData = Brand<string, 'Data'>; // Hex
 export type ITxNonce = Brand<string, 'Nonce'>; // Hex
 
-export interface ITxObject {
-  /* Raw Transaction Object */
+export interface IBaseTxObject {
   readonly to: ITxToAddress;
   readonly value: ITxValue;
   readonly gasLimit: ITxGasLimit;
   readonly data: ITxData;
-  readonly gasPrice: ITxGasPrice;
   readonly nonce: ITxNonce;
   readonly chainId: number;
   readonly from?: ITxFromAddress;
 }
+
+export interface ILegacyTxObject extends IBaseTxObject {
+  readonly gasPrice: ITxGasPrice;
+}
+
+// @todo Rename?
+export interface ITxObject1559 extends IBaseTxObject {
+  readonly maxFeePerGas: ITxGasPrice;
+  readonly maxPriorityFeePerGas: ITxGasPrice;
+  readonly type: 2;
+}
+
+export type ITxObject = ILegacyTxObject | ITxObject1559;
 
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
@@ -46,12 +57,13 @@ export interface ITxConfig {
   readonly from: TAddress;
   readonly asset: Asset;
   readonly baseAsset: Asset;
-  readonly network: INetwork;
+  // Removing since it can be derived from rawTx
+  /**readonly network: INetwork;
   readonly gasPrice: string;
   readonly gasLimit: string;
   readonly nonce: string;
   readonly data: string;
-  readonly value: string;
+  readonly value: string;**/
 }
 
 export interface IFormikFields {
