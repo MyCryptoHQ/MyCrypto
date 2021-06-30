@@ -28,7 +28,6 @@ const defaultProps: ComponentProps<typeof TransactionDetailsDisplay> = {
   nonce: '50',
   data: '0x',
   gasLimit: '21000',
-  gasPrice: '4',
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   fiat: Fiats.USD,
   baseAssetRate: 400,

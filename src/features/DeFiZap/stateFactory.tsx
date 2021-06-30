@@ -1,5 +1,5 @@
 import { makePendingTxReceipt } from '@helpers';
-import { useAccounts } from '@services';
+import { useAccounts, useNetworks } from '@services';
 import { ProviderHandler } from '@services/EthService';
 import {
   Asset,
@@ -11,7 +11,7 @@ import {
   TAddress,
   TStepAction
 } from '@types';
-import { hexWeiToString, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';
@@ -21,6 +21,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   setState
 }) => {
   const { addTxToAccount } = useAccounts();
+  const { getNetworkById } = useNetworks();
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -45,7 +46,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       }));
       cb();
     } else {
-      const provider = new ProviderHandler(txConfig.network);
+      const provider = new ProviderHandler(getNetworkById(txConfig.networkId));
       provider
         .sendRawTx(signResponse)
         .then((txResponse) => txResponse.hash as ITxHash)

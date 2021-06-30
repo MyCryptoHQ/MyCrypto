@@ -111,11 +111,11 @@ export const constructSenderFromTxConfig = (
   txConfig: ITxConfig,
   accounts: StoreAccount[]
 ): ISender => {
-  const { network, senderAccount, from } = txConfig;
+  const { senderAccount, from, networkId } = txConfig;
   const defaultSender: ISender = {
     address: from,
     assets: [],
-    network
+    networkId
   };
 
   const sender: ISender = mergeDeepWith(
@@ -127,7 +127,7 @@ export const constructSenderFromTxConfig = (
   );
 
   // if account exists in store add it to sender
-  const account = getStoreAccount(accounts)(sender.address, sender.network.id);
+  const account = getStoreAccount(accounts)(sender.address, networkId);
   if (account) {
     sender.account = account;
     sender.accountBalance = getAccountBalance(senderAccount);

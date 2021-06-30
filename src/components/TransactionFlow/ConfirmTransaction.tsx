@@ -227,7 +227,7 @@ export const ConfirmTransactionUI = ({
   return (
     <ConfirmTransactionWrapper>
       <FromToAccount
-        networkId={sender.network.id}
+        networkId={sender.networkId}
         fromAccount={{
           address: sender.address,
           addressBookEntry: senderContact

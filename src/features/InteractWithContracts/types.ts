@@ -1,4 +1,4 @@
-import { Contract, ITxConfig, ITxReceipt, Network, StoreAccount } from '@types';
+import { Contract, ITxConfig, ITxObject, ITxReceipt, Network, StoreAccount } from '@types';
 
 export enum ABIItemType {
   FUNCTION = 'function',
@@ -53,7 +53,7 @@ export interface InteractWithContractState {
   submitedFunction: ABIItem;
   data: string;
   account: StoreAccount | undefined;
-  rawTransaction: ITxConfig;
+  rawTransaction: ITxObject;
   txConfig: ITxConfig;
   txReceipt: ITxReceipt | undefined;
   addressOrDomainInput: string;

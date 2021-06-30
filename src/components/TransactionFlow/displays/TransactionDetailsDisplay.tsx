@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { useNetworks } from '@services';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, Fiat, ITxObject, ITxStatus, TAddress } from '@types';
@@ -87,9 +88,9 @@ function TransactionDetailsDisplay({
     : rawTransaction.gasPrice;
 
   const maxTxFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
-  const {
-    network: { name: networkName, color: networkColor }
-  } = sender;
+  const { networkId } = sender;
+  const { getNetworkById } = useNetworks();
+  const network = getNetworkById(networkId);
   const userAssetToSend = sender.assets.find((accountAsset) => {
     return accountAsset.uuid === asset.uuid;
   });
@@ -228,7 +229,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
-                <Network color={networkColor || 'blue'}>{networkName}</Network>
+                <Network color={network.color || 'blue'}>{network.name}</Network>
               </div>
             </div>
             <div className="TransactionDetails-row border">

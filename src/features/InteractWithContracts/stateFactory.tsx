@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { CREATION_ADDRESS } from '@config';
-import { makePendingTxReceipt } from '@helpers';
+import { makeBasicTxConfig, makePendingTxReceipt } from '@helpers';
 import {
   EtherscanService,
   getGasEstimate,
@@ -31,11 +31,7 @@ import {
 import { addHexPrefix, bigify, isSameAddress, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
-import {
-  constructGasCallProps,
-  makeContractInteractionTxConfig,
-  reduceInputParams
-} from './helpers';
+import { constructGasCallProps, reduceInputParams } from './helpers';
 import { ABIItem, InteractWithContractState } from './types';
 
 const interactWithContractsInitialState = {
@@ -293,11 +289,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     transaction.gasLimit = hexlify(gasLimit);
     delete transaction.from;
 
-    const txConfig = makeContractInteractionTxConfig(
-      transaction,
-      account,
-      submitedFunction.payAmount
-    );
+    const txConfig = makeBasicTxConfig(transaction, account, submitedFunction.payAmount);
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,

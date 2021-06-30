@@ -1,8 +1,8 @@
-import { ITxConfig, ITxReceipt, NetworkId, StoreAccount } from '@types';
+import { ITxConfig, ITxObject, ITxReceipt, NetworkId, StoreAccount } from '@types';
 
 export interface DeployContractsState {
   account: StoreAccount | undefined;
-  rawTransaction: ITxConfig;
+  rawTransaction: ITxObject;
   txConfig: ITxConfig;
   txReceipt: ITxReceipt | undefined;
   byteCode: string;

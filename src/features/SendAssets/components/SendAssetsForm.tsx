@@ -96,12 +96,13 @@ import {
   fromTokenBase,
   gasStringsToMaxGasBN,
   getDecimals,
+  isLegacyTx,
   isSameAddress,
   isVoid,
   sortByLabel,
   toTokenBase
 } from '@utils';
-import { path, useDebounce } from '@vendor';
+import { useDebounce } from '@vendor';
 
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
@@ -207,6 +208,8 @@ const initialFormikValues: IFormikFields = {
   },
   gasPriceSlider: '20',
   gasPriceField: '20',
+  maxGasFeePerGasField: '20',
+  maxPriorityFeePerGasField: '1',
   gasLimitField: '21000',
   advancedTransaction: false,
   nonceField: '0',
@@ -228,7 +231,8 @@ const getInitialFormikValues = ({
   defaultNetwork: Network | undefined;
 }): IFormikFields => {
   const gasPriceInGwei =
-    path(['rawTransaction', 'gasPrice'], s) &&
+    isLegacyTx(s.rawTransaction) &&
+    s.rawTransaction.gasPrice &&
     bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
