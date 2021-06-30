@@ -1,14 +1,14 @@
 import { DEFAULT_NETWORK_CHAINID } from '@config';
 import { COLORS } from '@theme';
-import { IHexStrTransaction, ISimpleTxForm, ITxData, ITxObject, ITxToAddress } from '@types';
-import { inputGasPriceToHex, inputNonceToHex, inputValueToHex } from '@utils';
+import { ISimpleTxForm, ITxData, ITxObject, ITxToAddress } from '@types';
+import { inputGasLimitToHex, inputGasPriceToHex, inputNonceToHex, inputValueToHex } from '@utils';
 
-export const createSimpleTxObject = (formData: ISimpleTxForm): IHexStrTransaction | ITxObject => {
+export const createSimpleTxObject = (formData: ISimpleTxForm): ITxObject => {
   return {
     to: formData.address as ITxToAddress,
     value: inputValueToHex(formData.amount),
     data: '0x' as ITxData,
-    gasLimit: formData.gasLimit,
+    gasLimit: inputGasLimitToHex(formData.gasLimit),
     gasPrice: inputGasPriceToHex(formData.gasPrice),
     nonce: inputNonceToHex(formData.nonce),
     chainId: DEFAULT_NETWORK_CHAINID

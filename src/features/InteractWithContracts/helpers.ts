@@ -2,10 +2,9 @@ import { bufferToHex } from 'ethereumjs-util';
 import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 
-import { getAssetByUUID } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
-import { ITxConfig, ITxObject, StoreAccount } from '@types';
-import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
+import { StoreAccount } from '@types';
+import { inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
 
@@ -79,34 +78,6 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
     pAbi.filter((x) => x.type === ABIItemType.FUNCTION),
     (item) => item.name.toLowerCase()
   ).map((x) => Object.assign(x, { label: x.name }));
-
-export const makeContractInteractionTxConfig = (
-  rawTransaction: ITxObject,
-  account: StoreAccount,
-  amount: string
-): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
-  const { address, network } = account;
-  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
-
-  const txConfig: ITxConfig = {
-    from: address,
-    amount,
-    receiverAddress: to,
-    senderAccount: account,
-    networkId: network.id,
-    asset: baseAsset,
-    baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit,
-    value: hexWeiToString(value),
-    nonce,
-    data,
-    rawTransaction
-  };
-
-  return txConfig;
-};
 
 export const reduceInputParams = (submitedFunction: ABIItem) =>
   submitedFunction.inputs.reduce((accu, input) => {

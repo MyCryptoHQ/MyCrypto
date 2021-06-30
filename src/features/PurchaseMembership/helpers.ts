@@ -5,7 +5,7 @@ import { formatApproveTx } from '@helpers';
 import { getAssetByUUID } from '@services';
 import { UnlockToken } from '@services/EthService/contracts';
 import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } from '@types';
-import { hexToString, hexWeiToString, inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from './config';
@@ -52,7 +52,7 @@ export const makePurchaseMembershipTxConfig = (
   account: StoreAccount,
   membershipSelected: IMembershipConfig
 ): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
+  const { to } = rawTransaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
   const asset = getAssetByUUID(account.assets)(membershipSelected.assetUUID)!;
@@ -65,11 +65,6 @@ export const makePurchaseMembershipTxConfig = (
     networkId: network.id,
     asset,
     baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit: hexToString(gasLimit),
-    value: hexWeiToString(value),
-    nonce: hexToString(nonce),
-    data,
     rawTransaction
   };
 

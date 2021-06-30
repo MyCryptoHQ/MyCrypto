@@ -75,8 +75,7 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
   },
   receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
   amount: '0.01',
-  network: fNetwork,
-  value: '10000000000000000',
+  networkId: fNetwork.id,
   asset: {
     ticker: 'RopstenETH' as TTicker,
     name: 'Ropsten',
@@ -98,10 +97,6 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)
   ) as StoreAccount,
-  gasPrice: '5000000000',
-  gasLimit: '21000',
-  data: '0x',
-  nonce: '6',
   from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress
 };
 

@@ -1,7 +1,7 @@
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
 import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
-import { useAssets, useRates, useSettings } from '@services';
+import { useAssets, useNetworks, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 
 import { IMembershipConfig, stepsContent } from '../config';
@@ -24,6 +24,7 @@ export default function MembershipReceipt({
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
+  const { getNetworkById } = useNetworks();
 
   const txItems = transactions.map((tx) => {
     const txConfig =
@@ -33,7 +34,9 @@ export default function MembershipReceipt({
     return makeTxItem(tx.type!, txConfig, tx.txHash!, tx.txReceipt);
   });
 
-  const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
+  const network = getNetworkById(txItems[0].txConfig.networkId);
+
+  const baseAsset = getAssetByUUID(network.baseAsset)!;
 
   const baseAssetRate = getAssetRate(baseAsset);
 

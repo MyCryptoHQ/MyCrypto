@@ -2,7 +2,7 @@ import { WALLET_STEPS } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getAssetByTicker, getAssetByUUID } from '@services';
 import { ISwapAsset, ITxConfig, ITxObject, StoreAccount, StoreAsset, TUuid } from '@types';
-import { hexToString, toTokenBase, weiToFloat } from '@utils';
+import { toTokenBase, weiToFloat } from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
@@ -10,7 +10,6 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   fromAsset: ISwapAsset,
   fromAmount: string
 ): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data } = transaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(assets)(network.baseAsset)!;
   const asset = getAssetByTicker(assets)(fromAsset.ticker) || baseAsset;
@@ -23,11 +22,6 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
     networkId: network.id,
     asset,
     baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit: hexToString(gasLimit),
-    value: fromAmount,
-    nonce: hexToString(nonce),
-    data,
     rawTransaction: Object.assign({}, transaction, { chainId: network.chainId })
   };
 

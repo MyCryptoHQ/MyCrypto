@@ -52,6 +52,7 @@ import {
   ITxReceiptStepProps,
   ITxStatus,
   ITxType,
+  Network,
   TAddress,
   TxQueryTypes,
   WalletId
@@ -170,7 +171,7 @@ const TxReceipt = ({
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
           if (txReceipt && txReceipt.txType === ITxType.FAUCET) {
-            const recipientAccount = getStoreAccount(accounts)(txReceipt.to, txConfig.network.id);
+            const recipientAccount = getStoreAccount(accounts)(txReceipt.to, network.id);
             if (recipientAccount) {
               addTxToAccount(recipientAccount, {
                 ...displayTxReceipt,
@@ -364,7 +365,7 @@ export const TxReceiptUI = ({
     if (displayTxReceipt && path(['gasUsed'], displayTxReceipt)) {
       return displayTxReceipt.gasUsed!.toString();
     } else {
-      return txConfig.gasLimit;
+      return txConfig.rawTransaction.gasLimit;
     }
   }, [displayTxReceipt]);
 
@@ -488,7 +489,6 @@ export const TxReceiptUI = ({
           data={data}
           sender={sender}
           gasLimit={gasLimit}
-          gasPrice={gasPrice}
           nonce={nonce}
           rawTransaction={txConfig.rawTransaction}
           value={rawTransaction.value}

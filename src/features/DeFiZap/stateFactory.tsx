@@ -4,6 +4,7 @@ import { ProviderHandler } from '@services/EthService';
 import {
   Asset,
   ISimpleTxFormFull,
+  ITxConfig,
   ITxHash,
   ITxStatus,
   ITxType,
@@ -68,20 +69,15 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       gasLimit: state.zapSelected!.minimumGasLimit
     });
 
-    const txConfig = {
+    const txConfig: ITxConfig = {
       rawTransaction,
       amount: payload.amount,
       senderAccount: payload.account,
       receiverAddress: state.zapSelected!.contractAddress as TAddress,
-      network: payload.network,
+      networkId: payload.network.id,
       asset: payload.asset,
       baseAsset: payload.asset || ({} as Asset),
-      from: payload.account.address,
-      gasPrice: hexWeiToString(rawTransaction.gasPrice),
-      gasLimit: state.zapSelected!.minimumGasLimit.toString(),
-      nonce: payload.nonce,
-      data: '0x',
-      value: hexWeiToString(rawTransaction.value)
+      from: payload.account.address
     };
     setState({
       ...state,

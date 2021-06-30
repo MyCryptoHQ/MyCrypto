@@ -60,13 +60,6 @@ export interface ITxConfig {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly networkId: NetworkId;
-  // Removing since it can be derived from rawTx
-  /**readonly network: INetwork;
-  readonly gasPrice: string;
-  readonly gasLimit: string;
-  readonly nonce: string;
-  readonly data: string;
-  readonly value: string;**/
 }
 
 export interface IFormikFields {

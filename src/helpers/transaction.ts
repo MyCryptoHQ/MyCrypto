@@ -17,6 +17,7 @@ import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthS
 import { decodeApproval } from '@services/EthService/contracts/token';
 import {
   getAssetByContractAndNetwork,
+  getAssetByUUID,
   getBaseAssetByNetwork,
   getNetworkByChainId,
   getStoreAccount
@@ -164,6 +165,29 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   } as unknown) as ITxObject;
 };
 
+export const makeBasicTxConfig = (
+  rawTransaction: ITxObject,
+  account: StoreAccount,
+  amount: string
+): ITxConfig => {
+  const { to } = rawTransaction;
+  const { address, network } = account;
+  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
+
+  const txConfig: ITxConfig = {
+    from: address,
+    amount,
+    receiverAddress: to,
+    senderAccount: account,
+    networkId: network.id,
+    asset: baseAsset,
+    baseAsset,
+    rawTransaction
+  };
+
+  return txConfig;
+};
+
 // needs testing
 export const makeTxConfigFromSignedTx = (
   signedTx: BytesLike,
@@ -232,7 +256,7 @@ export const makeTxConfigFromTxResponse = (
     contractAsset
   );
 
-  const txConfig = {
+  const txConfig: ITxConfig = {
     rawTransaction: {
       to: getAddress(to) as ITxToAddress,
       value: hexlify(decodedTx.value) as ITxValue,
@@ -246,14 +270,9 @@ export const makeTxConfigFromTxResponse = (
     receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
     networkId: network.id,
-    value: BigNumber.from(decodedTx.value).toString(),
     asset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, network.id)!,
-    gasPrice: decodedTx.gasPrice.toString(),
-    gasLimit: decodedTx.gasLimit.toString(),
-    data: decodedTx.data,
-    nonce: decodedTx.nonce.toString(),
     from: getAddress(decodedTx.from) as TAddress
   };
   return txConfig;

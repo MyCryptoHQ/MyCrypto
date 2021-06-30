@@ -20,7 +20,8 @@ export {
   makeTxItem,
   verifyTransaction,
   deriveTxFields,
-  checkRequiresApproval
+  checkRequiresApproval,
+  makeBasicTxConfig
 } from './transaction';
 export { formatApproveTx } from './erc20';
 export { withProtectTxProvider } from './withProtectTxProvider';

@@ -3,6 +3,7 @@ import { fAssets } from '@../jest_config/__fixtures__/assets';
 import { fAccount, fERC20NonWeb3TxConfig, fNetwork } from '@fixtures';
 import { getDefaultEstimates } from '@services';
 import { IFormikFields, ITxStatus, TxQueryTypes } from '@types';
+import { inputGasLimitToHex, inputNonceToHex } from '@utils';
 
 import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
@@ -71,9 +72,10 @@ describe('SendAssetsReducer', () => {
       expect(txConfig.receiverAddress).toBe(form.address.value);
       expect(txConfig.amount).toBe(form.amount);
       expect(txConfig.asset.uuid).toBe(form.asset.uuid);
-      expect(txConfig.network.id).toBe(form.network.id);
+      expect(txConfig.networkId).toBe(form.network.id);
       expect(txConfig.baseAsset.uuid).toBe(fNetwork.baseAsset);
-      expect(txConfig.nonce).toBe(form.nonceField);
+      expect(txConfig.rawTransaction.nonce).toBe(inputNonceToHex(form.nonceField));
+      expect(txConfig.rawTransaction.gasLimit).toBe(inputGasLimitToHex(form.gasLimitField));
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txReceipt).toBe(prevState.txReceipt);

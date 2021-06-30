@@ -6,13 +6,13 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
-import { makePendingTxReceipt } from '@helpers';
+import { makeBasicTxConfig, makePendingTxReceipt } from '@helpers';
 import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
 import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
 import { inputGasLimitToHex, inputNonceToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
-import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
+import { constructGasCallProps } from './helpers';
 import { DeployContractsState } from './types';
 
 const deployContractsInitialState = {
@@ -75,7 +75,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     transaction.nonce = inputNonceToHex(nonce);
     delete transaction.from;
 
-    const txConfig = makeDeployContractTxConfig(transaction, account, '0');
+    const txConfig = makeBasicTxConfig(transaction, account, '0');
 
     setState((prevState: DeployContractsState) => ({
       ...prevState,

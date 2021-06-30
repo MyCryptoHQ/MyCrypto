@@ -69,12 +69,7 @@ export const makeTxConfig = (
     from: txResult.from,
     asset: baseAsset,
     baseAsset,
-    network,
-    gasPrice: txResult.gasPrice,
-    gasLimit: txResult.gasLimit,
-    nonce: txResult.nonce.toString() as ITxNonce,
-    data: txResult.data,
-    value: txResult.value
+    networkId: network.id
   };
 };
 
