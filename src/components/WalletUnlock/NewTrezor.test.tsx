@@ -11,8 +11,8 @@ import { truncate } from '@utils';
 
 import TrezorDecrypt from './NewTrezor';
 
-jest.mock('@config', () => ({
-  ...jest.requireActual('@config'),
+jest.mock('@mycrypto/wallets', () => ({
+  ...jest.requireActual('@mycrypto/wallets'),
   TREZOR_DERIVATION_PATHS: [
     {
       name: 'Default (ETH)',

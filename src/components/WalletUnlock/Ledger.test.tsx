@@ -13,8 +13,8 @@ import LedgerDecrypt from './Ledger';
 
 jest.mock('@ledgerhq/hw-transport-u2f');
 
-jest.mock('@config', () => ({
-  ...jest.requireActual('@config'),
+jest.mock('@mycrypto/wallets', () => ({
+  ...jest.requireActual('@mycrypto/wallets'),
   LEDGER_DERIVATION_PATHS: [
     {
       name: 'Default (ETH)',
