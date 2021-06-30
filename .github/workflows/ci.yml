@@ -51,7 +51,7 @@ jobs:
         run: yarn validate
 
       - name: yarn test:coverage
-        run: yarn test:coverage --maxWorkers=2 --detectOpenHandles --forceExit
+        run: yarn test:coverage --maxWorkers=2
 
       - name: CodeCov
         uses: codecov/codecov-action@v1
