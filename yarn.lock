@@ -2889,10 +2889,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallets@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.2.1.tgz#31998730a622fda9446d42520a72137512f162f0"
-  integrity sha512-JuSXHDY7zgj/TX0/88h9oSxt7tH0UaBzXRMAKkTu/VLiGNgMzSWqz6JItUg+7OamW6fa20Sqr6VMCTpwzaRy4w==
+"@mycrypto/wallets@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.2.2.tgz#42f4b6b7b97aaf3137a8c8616a0d6e729b972815"
+  integrity sha512-16V4QboWNg3xqCQJVxQAXjNz07SxjC86cwy56nbSySFmJIykmrM1DtIf9PFRMxpKd1xQxUxSqwUDFMPOG2capw==
   dependencies:
     "@ethersproject/abstract-provider" "5.3.0"
     "@ethersproject/address" "5.3.0"

@@ -20,12 +20,14 @@ import {
   DEFAULT_METADIUM,
   DEFAULT_MIX,
   DEFAULT_POA,
+  DEFAULT_POLYGON,
   DEFAULT_REOSC,
   DEFAULT_THUNDERCORE,
   DEFAULT_TOMO,
   DEFAULT_UBQ,
   DEFAULT_VOLTA,
   DEFAULT_WEB,
+  DEFAULT_XDAI,
   LEDGER_ETC,
   LEDGER_ETH,
   MAINNET_RSK,
@@ -927,9 +929,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_POLYGON,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_POLYGON,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
     },
     gasPriceSettings: {
@@ -955,9 +957,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_XDAI,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_XDAI,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
     },
     gasPriceSettings: {

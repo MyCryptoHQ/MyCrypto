@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { TREZOR_DERIVATION_PATHS, TREZOR_ETH } from '@mycrypto/wallets';
+import { DEFAULT_ETH, TREZOR_DERIVATION_PATHS } from '@mycrypto/wallets';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
@@ -33,7 +33,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     ...getDPaths([network], WalletId.TREZOR_NEW),
     ...TREZOR_DERIVATION_PATHS
   ]);
-  const defaultDPath = network.dPaths[WalletId.TREZOR] || TREZOR_ETH;
+  const defaultDPath = network.dPaths[WalletId.TREZOR] || DEFAULT_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
