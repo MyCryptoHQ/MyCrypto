@@ -20,7 +20,6 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { OmitByValue, ValuesType } from 'utility-types';
 
-import { DPathsList } from '@config';
 import { defaultContacts } from '@database';
 import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
@@ -179,7 +178,7 @@ export const migrations = {
         if (!dPath) {
           return account;
         }
-        const [path, index] = getDerivationPath(dPath, Object.values(DPathsList))!;
+        const [path, index] = getDerivationPath(dPath)!;
         return {
           ...account,
           path,

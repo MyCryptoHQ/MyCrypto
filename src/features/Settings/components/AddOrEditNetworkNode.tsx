@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { Tooltip, Button as UIButton } from '@mycrypto/ui';
+import { DEFAULT_ETH } from '@mycrypto/wallets';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
 import { boolean, lazy, object, string } from 'yup';
@@ -16,7 +17,6 @@ import {
 } from '@components';
 import {
   DEFAULT_NETWORK,
-  DPathsList as DPaths,
   ETHPLORER_URL,
   EXT_URLS,
   GITHUB_RELEASE_NOTES_URL,
@@ -315,9 +315,9 @@ export default function AddOrEditNetworkNode({
                   isCustom: true,
                   nodes: [node],
                   dPaths: {
-                    [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
-                    [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
-                    default: DPaths.ETH_DEFAULT
+                    [WalletId.TREZOR]: DEFAULT_ETH,
+                    [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
+                    default: DEFAULT_ETH
                   },
                   gasPriceSettings: {
                     min: 1,

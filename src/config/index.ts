@@ -15,7 +15,6 @@ export {
   MYCRYPTO_FAUCET_LINK,
   MYCRYPTO_PROD_LINK
 } from './links';
-export * from './dpaths';
 export * from './constants';
 export * from './uuids';
 export { ETHSCAN_NETWORKS } from './ethScan';

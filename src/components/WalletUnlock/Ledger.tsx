@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
+import { LEDGER_DERIVATION_PATHS, LEDGER_ETH } from '@mycrypto/wallets';
+
 import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
-import {
-  DEFAULT_GAP_TO_SCAN_FOR,
-  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DPathsList,
-  LEDGER_DERIVATION_PATHS
-} from '@config';
+import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { HDWallet } from '@features/AddAccount';
 import {
   getAssetByUUID,
@@ -32,7 +29,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
-  const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || DPathsList.ETH_LEDGER;
+  const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || LEDGER_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   // @todo: LEDGER_DERIVATION_PATHS are not available on all networks. Fix this to only display DPaths relevant to the specified network.
   const dpaths = uniqBy(prop('path'), [

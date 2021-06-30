@@ -1,4 +1,5 @@
-import { DPathsList } from '@config/dpaths';
+import { ALL_DERIVATION_PATHS } from '@mycrypto/wallets';
+
 import { isValidAddress, isValidETHAddress, isValidPath } from '@services/EthService/validators';
 
 import { invalid, valid } from '../utils/testStrings';
@@ -51,7 +52,7 @@ describe('Validator', () => {
     });
   });
   it('should validate hardcoded DPaths as true', () => {
-    Object.values(DPathsList).forEach((DPath) => {
+    ALL_DERIVATION_PATHS.forEach((DPath) => {
       expect(isValidPath(DPath.path)).toBeTruthy();
     });
   });

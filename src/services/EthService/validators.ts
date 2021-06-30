@@ -1,4 +1,5 @@
 import { BigNumber as EthersBN } from '@ethersproject/bignumber';
+import { ALL_DERIVATION_PATHS } from '@mycrypto/wallets';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import BigNumber from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
@@ -7,8 +8,6 @@ import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util'
 import {
   CREATION_ADDRESS,
   DEFAULT_ASSET_DECIMAL,
-  dPathRegex,
-  DPathsList,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
@@ -168,8 +167,10 @@ export function isValidHex(str: string): boolean {
   return re.test(str);
 }
 
+const dPathRegex = /m\/4[4,9]'\/[0-9]+'\/[0-9]+('+$|'+(\/[0-1]+$))/;
+
 export function isValidPath(dPath: string) {
-  if (Object.values(DPathsList).some((d) => d.path === dPath)) {
+  if (ALL_DERIVATION_PATHS.some((d) => d.path === dPath)) {
     return true;
   }
 
