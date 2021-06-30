@@ -104,7 +104,7 @@
     "@storybook/addon-actions": "6.3.1",
     "@storybook/addon-essentials": "6.3.1",
     "@storybook/addon-links": "6.3.1",
-    "@storybook/addon-storyshots": "6.3.1",
+    "@storybook/addon-storyshots": "6.3.2",
     "@storybook/react": "6.3.1",
     "@testing-library/jest-dom": "5.0.2",
     "@testing-library/react": "9.4.0",
