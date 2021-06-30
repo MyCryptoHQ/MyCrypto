@@ -233,7 +233,7 @@ const getInitialFormikValues = ({
   const state: Partial<IFormikFields> = {
     amount: s.amount,
     account: !isVoid(s.senderAccount) ? s.senderAccount : defaultAccount,
-    network: !isVoid(s.network) ? s.network : defaultNetwork,
+    network: !isVoid(s.networkId) ? s.network : defaultNetwork,
     asset: !isVoid(s.asset) ? s.asset : defaultAsset,
     nonceField: s.rawTransaction?.nonce,
     txDataField: s.rawTransaction?.data,
@@ -305,12 +305,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const defaultAccount = getDefaultAccount(defaultAsset);
   const defaultNetwork = getDefaultNetwork(defaultAccount);
-  const [baseAsset, setBaseAsset] = useState(
-    (txConfig.networkId &&
-      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
-      ({} as Asset)
-  );
 
   const {
     protectTxFeatureFlag,
@@ -461,6 +455,9 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   });
 
   const network = values.network;
+  const baseAsset = !isVoid(network)
+    ? getBaseAssetByNetwork({ network, assets: userAssets })!
+    : getBaseAssetByNetwork({ network: defaultNetwork!, assets: userAssets })!;
 
   useEffect(() => {
     if (updateFormValues) {
@@ -512,9 +509,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         });
       }
       setFieldValue('network', network || {});
-      if (network) {
-        setBaseAsset(getBaseAssetByNetwork({ network, assets: userAssets }) || ({} as Asset));
-      }
     }
   }, [values.asset]);
 
@@ -745,7 +739,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             }}
           />
         </label>
-        {!values.advancedTransaction && (
+        {!values.advancedTransaction && !network.supportsEIP1559 && (
           <GasPriceSlider
             network={values.network}
             gasPrice={values.gasPriceSlider}
