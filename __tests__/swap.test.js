@@ -77,7 +77,7 @@ test('can do an ERC20 swap', async (t) => {
   await t.click(home);
 
   await dashboard.waitPageLoaded();
-  const balance = await queryByText('0xBTC', { exact: false });
+  const balance = await queryAllByText('1INCH', { exact: false });
 
   await t.expect(balance.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });**/
 });

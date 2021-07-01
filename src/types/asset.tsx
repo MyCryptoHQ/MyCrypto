@@ -7,7 +7,7 @@ export type TTicker = Brand<string, 'Ticker'>;
 export type TFiatTicker = Brand<TTicker, 'FiatTicker'>;
 export type TCurrencySymbol = Brand<string, 'Symbol'>;
 export type TAssetType = 'base' | 'erc20' | 'fiat';
-export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid' | 'decimal'>;
+export type ISwapAsset = Pick<Asset, 'name' | 'ticker' | 'uuid' | 'decimal' | 'contractAddress'>;
 
 export interface Fiat {
   name: string;
@@ -31,6 +31,7 @@ export interface Asset {
   readonly contractAddress?: TAddress | string;
   readonly decimal?: number;
   readonly isCustom?: boolean;
+  readonly isSwapRelevant?: boolean;
 }
 
 export interface ExtendedAsset extends Asset {
