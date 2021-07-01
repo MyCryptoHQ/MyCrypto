@@ -50,17 +50,17 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@7.14.6", "@babel/core@^7.12.10":
-  version "7.14.6"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.6.tgz#e0814ec1a950032ff16c13a2721de39a8416fcab"
-  integrity sha512-gJnOEWSqTk96qG5BoIrl5bVtc23DCycmIePPYnamY9RboYdI4nFy5vAQMSl81O5K/W0sLDWfGysnOECC+KUUCA==
+"@babel/core@7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.5.tgz#d281f46a9905f07d1b3bf71ead54d9c7d89cb1e3"
+  integrity sha512-RN/AwP2DJmQTZSfiDaD+JQQ/J99KsIpOCfBE5pL+5jJSt7nI3nYGoAXZu+ffYSQ029NLs2DstZb+eR81uuARgg==
   dependencies:
     "@babel/code-frame" "^7.14.5"
     "@babel/generator" "^7.14.5"
     "@babel/helper-compilation-targets" "^7.14.5"
     "@babel/helper-module-transforms" "^7.14.5"
-    "@babel/helpers" "^7.14.6"
-    "@babel/parser" "^7.14.6"
+    "@babel/helpers" "^7.14.5"
+    "@babel/parser" "^7.14.5"
     "@babel/template" "^7.14.5"
     "@babel/traverse" "^7.14.5"
     "@babel/types" "^7.14.5"
@@ -90,6 +90,27 @@
     json5 "^2.1.2"
     lodash "^4.17.19"
     semver "^5.4.1"
+    source-map "^0.5.0"
+
+"@babel/core@^7.12.10":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.14.6.tgz#e0814ec1a950032ff16c13a2721de39a8416fcab"
+  integrity sha512-gJnOEWSqTk96qG5BoIrl5bVtc23DCycmIePPYnamY9RboYdI4nFy5vAQMSl81O5K/W0sLDWfGysnOECC+KUUCA==
+  dependencies:
+    "@babel/code-frame" "^7.14.5"
+    "@babel/generator" "^7.14.5"
+    "@babel/helper-compilation-targets" "^7.14.5"
+    "@babel/helper-module-transforms" "^7.14.5"
+    "@babel/helpers" "^7.14.6"
+    "@babel/parser" "^7.14.6"
+    "@babel/template" "^7.14.5"
+    "@babel/traverse" "^7.14.5"
+    "@babel/types" "^7.14.5"
+    convert-source-map "^1.7.0"
+    debug "^4.1.0"
+    gensync "^1.0.0-beta.2"
+    json5 "^2.1.2"
+    semver "^6.3.0"
     source-map "^0.5.0"
 
 "@babel/generator@^7.12.11", "@babel/generator@^7.14.5":
@@ -451,7 +472,7 @@
     "@babel/traverse" "^7.12.17"
     "@babel/types" "^7.12.17"
 
-"@babel/helpers@^7.14.6":
+"@babel/helpers@^7.14.5", "@babel/helpers@^7.14.6":
   version "7.14.6"
   resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.14.6.tgz#5b58306b95f1b47e2a0199434fa8658fa6c21635"
   integrity sha512-yesp1ENQBiLI+iYHSJdoZKUtRpfTlL1grDIX9NRlAVppljLw/4tTyYupIB7uIYmC3stW/imAv8EqaKaS/ibmeA==
@@ -659,6 +680,14 @@
     "@babel/helper-skip-transparent-expression-wrappers" "^7.14.5"
     "@babel/plugin-syntax-optional-chaining" "^7.8.3"
 
+"@babel/plugin-proposal-private-methods@7.14.5", "@babel/plugin-proposal-private-methods@^7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-methods/-/plugin-proposal-private-methods-7.14.5.tgz#37446495996b2945f30f5be5b60d5e2aa4f5792d"
+  integrity sha512-838DkdUA1u+QTCplatfq4B7+1lnDa/+QMI89x5WZHBcnNv+47N8QEj2k9I2MUU9xIv8XJ4XvPCviM/Dj7Uwt9g==
+  dependencies:
+    "@babel/helper-create-class-features-plugin" "^7.14.5"
+    "@babel/helper-plugin-utils" "^7.14.5"
+
 "@babel/plugin-proposal-private-methods@^7.12.1":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-methods/-/plugin-proposal-private-methods-7.12.13.tgz#ea78a12554d784ecf7fc55950b752d469d9c4a71"
@@ -666,14 +695,6 @@
   dependencies:
     "@babel/helper-create-class-features-plugin" "^7.12.13"
     "@babel/helper-plugin-utils" "^7.12.13"
-
-"@babel/plugin-proposal-private-methods@^7.14.5":
-  version "7.14.5"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-methods/-/plugin-proposal-private-methods-7.14.5.tgz#37446495996b2945f30f5be5b60d5e2aa4f5792d"
-  integrity sha512-838DkdUA1u+QTCplatfq4B7+1lnDa/+QMI89x5WZHBcnNv+47N8QEj2k9I2MUU9xIv8XJ4XvPCviM/Dj7Uwt9g==
-  dependencies:
-    "@babel/helper-create-class-features-plugin" "^7.14.5"
-    "@babel/helper-plugin-utils" "^7.14.5"
 
 "@babel/plugin-proposal-private-property-in-object@^7.14.5":
   version "7.14.5"
