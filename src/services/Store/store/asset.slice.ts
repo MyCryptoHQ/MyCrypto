@@ -41,10 +41,12 @@ const slice = createSlice({
       });
     },
     addFromAPI(state, action: PayloadAction<Record<string, ExtendedAsset>>) {
-      const currentAssets = state.reduce(
-        (acc, a: ExtendedAsset) => ({ ...acc, [a.uuid]: a }),
-        {} as Record<string, ExtendedAsset>
-      );
+      const currentAssets = state
+        .filter((a) => a.isCustom || a.type === 'base')
+        .reduce(
+          (acc, a: ExtendedAsset) => ({ ...acc, [a.uuid]: a }),
+          {} as Record<string, ExtendedAsset>
+        );
       const mergeAssets = pipe(
         (assets: Record<TUuid, ExtendedAsset>) => mergeRight(currentAssets, assets),
         toPairs,
