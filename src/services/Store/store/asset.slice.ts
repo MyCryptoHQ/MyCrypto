@@ -4,6 +4,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { EXCLUDED_ASSETS } from '@config';
 import { MyCryptoApiService } from '@services';
 import { ExtendedAsset, LSKeys, Network, NetworkId, TUuid } from '@types';
+import { arrayToObj } from '@utils';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
@@ -41,12 +42,9 @@ const slice = createSlice({
       });
     },
     addFromAPI(state, action: PayloadAction<Record<string, ExtendedAsset>>) {
-      const currentAssets = state
-        .filter((a) => a.isCustom || a.type === 'base')
-        .reduce(
-          (acc, a: ExtendedAsset) => ({ ...acc, [a.uuid]: a }),
-          {} as Record<string, ExtendedAsset>
-        );
+      const currentAssets = arrayToObj('uuid')(
+        state.filter((a) => a.isCustom || a.type === 'base')
+      );
       const mergeAssets = pipe(
         (assets: Record<TUuid, ExtendedAsset>) => mergeRight(currentAssets, assets),
         toPairs,
