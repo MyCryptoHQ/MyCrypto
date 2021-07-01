@@ -20,7 +20,7 @@ fixture('Swap')
 test('can do an ETH swap', async (t) => {
   await swapPage.waitPageLoaded();
   await swapPage.setupMock();
-  await resetFork();
+  await resetFork(false);
 
   await swapPage.fillForm();
   await t.wait(FIXTURES_CONST.TIMEOUT);
