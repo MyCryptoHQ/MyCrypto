@@ -1,6 +1,5 @@
 import initStoryshots from '@storybook/addon-storyshots';
 import { formatDate, toUTC } from '@utils';
-import { render } from '@testing-library/react';
 
 describe('', () => {
   beforeAll(() => {
@@ -26,15 +25,7 @@ describe('', () => {
       );
   });
 
-  const reactTestingLibrarySerializer = {
-    print: (val, serialize, indent) => serialize(val.container.firstChild),
-    test: (val) => val && val.hasOwnProperty('container')
-  };
-
-  initStoryshots({
-    renderer: render,
-    snapshotSerializers: [reactTestingLibrarySerializer]
-  });
+  initStoryshots();
 
   afterAll(() => {
     Date.toLocaleString.mockRestore();
