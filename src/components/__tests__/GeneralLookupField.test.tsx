@@ -94,7 +94,6 @@ describe('GeneralLookupField', () => {
     fireEvent.click(input!);
     input!.focus();
     fireEvent.change(input!, { target: { value: ens } });
-
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(output.data.address.value).toBe(address);

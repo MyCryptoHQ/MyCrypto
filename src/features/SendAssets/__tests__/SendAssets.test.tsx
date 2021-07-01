@@ -35,6 +35,7 @@ describe('SendAssetsFlow', () => {
   test('Can render too many decimals error.', async () => {
     const { getByText, container } = renderComponent();
     const amount = container.querySelector('input[name="amount"]')! as HTMLElement;
+    amount.focus();
     fireEvent.change(amount, {
       target: { value: '0.00000000000000000001' }
     });

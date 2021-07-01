@@ -1,7 +1,4 @@
-import {
-  ResolutionError,
-  ResolutionErrorCode
-} from '@unstoppabledomains/resolution/build/resolutionError';
+import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { simpleRender } from 'test-utils';
 
 import { DomainStatus, DomainStatusProps } from '../DomainStatus';
