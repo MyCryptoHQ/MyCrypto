@@ -19,6 +19,7 @@ describe('EditableText', () => {
     fireEvent.click(text);
     const input = container.querySelector('input') as HTMLElement;
     expect(input).toBeDefined();
+    input.focus();
     fireEvent.keyDown(input, { key: 'Escape' });
     expect(getByText('Editable')).toBeDefined();
   });
@@ -30,6 +31,7 @@ describe('EditableText', () => {
     const input = container.querySelector('input') as HTMLElement;
     expect(input).toBeDefined();
     fireEvent.change(input, { target: { value: 'test' } });
+    input.focus();
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(defaultProps.onChange).toHaveBeenCalledWith('test');
     expect(getByText('Editable')).toBeDefined();
@@ -41,7 +43,7 @@ describe('EditableText', () => {
     fireEvent.click(text);
     const input = container.querySelector('input') as HTMLElement;
     expect(input).toBeDefined();
-    fireEvent.blur(input);
+    input.blur();
     expect(getByText('Editable')).toBeDefined();
   });
 });

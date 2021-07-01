@@ -86,8 +86,9 @@ describe('ContactLookupField', () => {
     const { container } = getComponent(getDefaultProps(), contacts, output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: address } });
-    fireEvent.blur(input!);
+    input!.blur();
     const uuid = generateDeterministicAddressUUID('Ropsten', address);
     expect(mockDispatch).toHaveBeenCalledWith(
       actionWithPayload({
@@ -130,8 +131,9 @@ describe('ContactLookupField', () => {
     const { container } = getComponent(getDefaultProps(), contacts, output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: inputString } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(contacts).toHaveLength(0);
     expect(output.data.address.value).toBe(inputString);
@@ -147,6 +149,7 @@ describe('ContactLookupField', () => {
     const input = container.querySelector('input');
     fireEvent.click(input!);
     fireEvent.change(input!, { target: { value: inputString } });
+    input!.focus();
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(contacts).toHaveLength(3);
