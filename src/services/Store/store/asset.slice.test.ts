@@ -72,6 +72,27 @@ describe('AccountSlice', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('addFromAPI(): merges current assets with new assets', () => {
+    const a1 = { uuid: 'random', contractAddress: '0x0', type: 'erc20' } as ExtendedAsset;
+    const a2 = { uuid: 'random1', contractAddress: '0x1', type: 'erc20' } as ExtendedAsset;
+    const a3 = {
+      uuid: 'random2',
+      contractAddress: '0x2',
+      type: 'erc20',
+      isCustom: true
+    } as ExtendedAsset;
+    const a4 = { uuid: 'random3', type: 'base' } as ExtendedAsset;
+    const state = [a1, a2, a3, a4];
+    const modifiedEntities = [
+      { ...a1, contractAddress: '0xchanged' } as ExtendedAsset,
+      { ...a2, contractAddress: '0xchanged1' } as ExtendedAsset
+    ];
+    const newAssets = modifiedEntities.reduce((acc, cur) => ({ ...acc, [cur.uuid]: cur }), {});
+    const actual = reducer(state, addAssetsFromAPI(newAssets));
+    const expected = [a3, a4, ...modifiedEntities];
+    expect(actual).toEqual(expected);
+  });
+
   it('reset(): can reset', () => {
     const entity = { uuid: 'random', contractAddress: '0x0' } as ExtendedAsset;
     const state = [entity];
