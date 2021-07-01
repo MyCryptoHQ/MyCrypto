@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
-import { fAccount, fContacts, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
+import { fAccount, fContacts, fNetwork, fSettings, fTxConfig, fTxReceipt } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ExtendedContact, ITxStatus } from '@types';
 import { bigify, noOp, truncate } from '@utils';
@@ -28,7 +28,8 @@ const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   handleTxCancelRedirect: noOp,
   handleTxSpeedUpRedirect: noOp,
   baseAssetRate: 250,
-  fiat: Fiats.USD
+  fiat: Fiats.USD,
+  network: fNetwork
 };
 
 function getComponent(props: ComponentProps<typeof TxReceiptUI>) {
@@ -58,9 +59,11 @@ describe('TxReceipt', () => {
     const { getByText, container } = getComponent(defaultProps);
     const btn = container.querySelector('.TransactionDetails > div > div > button');
     fireEvent.click(btn!);
-    expect(getByText(defaultProps.txConfig.gasLimit)).toBeDefined();
-    expect(getByText(defaultProps.txConfig.nonce)).toBeDefined();
-    expect(getByText(defaultProps.txConfig.network.name)).toBeDefined();
+    expect(
+      getByText(bigify(defaultProps.txConfig.rawTransaction.gasLimit).toString())
+    ).toBeDefined();
+    expect(getByText(bigify(defaultProps.txConfig.rawTransaction.nonce).toString())).toBeDefined();
+    expect(getByText(defaultProps.txConfig.networkId)).toBeDefined();
     expect(getByText(JSON.stringify(defaultProps.txConfig.rawTransaction))).toBeDefined();
   });
 

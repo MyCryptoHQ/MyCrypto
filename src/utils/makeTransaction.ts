@@ -50,6 +50,6 @@ export const bigNumGasPriceToViewableGwei = (
 export const bigNumGasLimitToViewable = (gasLimitBigNum: Bigish | string): string =>
   bigify(gasLimitBigNum).toString();
 
-export const bigNumValueToViewableEther = (valueWeiBigNum: Bigish | string): string =>
+export const bigNumValueToViewableEther = (valueWeiBigNum: BigifySupported | string): string =>
   formatEther(EthersBigNumber.from(valueWeiBigNum.toString()));
 /* region:end BigNum to User Viewable */

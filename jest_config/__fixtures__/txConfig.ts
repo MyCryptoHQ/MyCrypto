@@ -31,8 +31,7 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
   },
   receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
   amount: '0.01',
-  network: fNetwork,
-  value: '0',
+  networkId: fNetwork.id,
   asset: {
     uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
     name: 'RopDAI',
@@ -55,11 +54,6 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)
   ) as StoreAccount,
-  gasPrice: '5000000000',
-  gasLimit: '32060',
-  data:
-    '0xa9059cbb000000000000000000000000b2bb2b958AFa2e96dab3f3Ce7162b87daEa39017000000000000000000000000000000000000000000000000002386f26fc10000',
-  nonce: '7',
   from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress
 };
 

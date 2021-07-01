@@ -2,15 +2,14 @@ import { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { Button, Network } from '@mycrypto/ui';
+import { Button, Network as UINetwork } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { useNetworks } from '@services';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, Fiat, ITxObject, ITxStatus, TAddress } from '@types';
+import { Asset, Fiat, ITxObject, ITxStatus, Network, TAddress } from '@types';
 import {
   bigify,
   calculateGasUsedPercentage,
@@ -51,6 +50,7 @@ interface Props {
   status?: ITxStatus;
   timestamp?: number;
   recipient: TAddress;
+  network: Network;
 }
 
 const SeeMoreDetailsButton = styled(Button)`
@@ -79,7 +79,8 @@ function TransactionDetailsDisplay({
   assetRate,
   status,
   timestamp,
-  recipient
+  recipient,
+  network
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -88,9 +89,6 @@ function TransactionDetailsDisplay({
     : rawTransaction.gasPrice;
 
   const maxTxFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
-  const { networkId } = sender;
-  const { getNetworkById } = useNetworks();
-  const network = getNetworkById(networkId);
   const userAssetToSend = sender.assets.find((accountAsset) => {
     return accountAsset.uuid === asset.uuid;
   });
@@ -229,7 +227,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
-                <Network color={network.color || 'blue'}>{network.name}</Network>
+                <UINetwork color={network.color || 'blue'}>{network.name}</UINetwork>
               </div>
             </div>
             <div className="TransactionDetails-row border">

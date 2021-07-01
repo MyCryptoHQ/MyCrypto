@@ -12,7 +12,7 @@ import { useContacts, useNetworks, useSettings } from '@services/Store';
 import { getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ExtendedContact, ISettings, IStepComponentProps, ITxType } from '@types';
+import { ExtendedContact, ISettings, IStepComponentProps, ITxType, Network } from '@types';
 import {
   bigify,
   convertToFiat,
@@ -157,6 +157,7 @@ export default function ConfirmTransaction({
       protectTxButton={protectTxButton}
       customComponent={customComponent}
       error={error}
+      network={network}
     />
   );
 }
@@ -172,6 +173,7 @@ interface DataProps {
   ptxFee?: IFeeAmount;
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
+  network: Network;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -191,7 +193,8 @@ export const ConfirmTransactionUI = ({
   ptxFee,
   error,
   protectTxButton,
-  customComponent
+  customComponent,
+  network
 }: UIProps) => {
   const { asset, amount, receiverAddress, baseAsset, rawTransaction } = txConfig;
   const { nonce, data, gasLimit } = rawTransaction;
@@ -396,6 +399,7 @@ export const ConfirmTransactionUI = ({
         assetRate={assetRate}
         rawTransaction={rawTransaction}
         recipient={rawTransaction.to}
+        network={network}
       />
       {txType === ITxType.DEFIZAP && (
         <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>

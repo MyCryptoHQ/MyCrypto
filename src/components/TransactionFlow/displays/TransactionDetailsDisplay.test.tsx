@@ -10,6 +10,7 @@ import {
   fApproveERC20TxResponse,
   fAssets,
   fETHWeb3TxResponse,
+  fNetwork,
   fRopDAI,
   fTxConfig
 } from '@fixtures';
@@ -33,7 +34,9 @@ const defaultProps: ComponentProps<typeof TransactionDetailsDisplay> = {
   baseAssetRate: 400,
   assetRate: 250,
   status: ITxStatus.PENDING,
-  recipient: fAccounts[1].address
+  recipient: fAccounts[1].address,
+  rawTransaction: fTxConfig.rawTransaction,
+  network: fNetwork
 };
 
 function getComponent(props: ComponentProps<typeof TransactionDetailsDisplay>) {
