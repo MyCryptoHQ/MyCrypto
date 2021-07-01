@@ -8,7 +8,7 @@ module.exports = {
         // Enable lodash tree shaking
         // https://www.azavea.com/blog/2019/03/07/lessons-on-tree-shaking-lodash/
         modules: false,
-        targets: { node: 8 },
+        targets: { node: 12 },
         // babel defaults to core-js@2.
         // https://github.com/babel/babel/issues/9713#issuecomment-474828830
         useBuiltIns: 'usage',
