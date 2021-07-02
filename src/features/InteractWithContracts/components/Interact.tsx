@@ -124,7 +124,8 @@ interface Props {
   showGeneratedForm: boolean;
   account: StoreAccount;
   customContractName: string;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -140,6 +141,8 @@ interface Props {
   handleSaveContractSubmit(): void;
   handleGasSelectorChange(payload: ITxConfig): void;
   handleDeleteContract(contractUuid: string): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 const FormSchema = object().shape({
@@ -175,9 +178,12 @@ function Interact(props: CombinedProps) {
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
     handleSaveContractSubmit,
-    rawTransaction,
+    nonce,
+    gasLimit,
     handleGasSelectorChange,
-    handleDeleteContract
+    handleDeleteContract,
+    handleGasLimitChange,
+    handleNonceChange
   } = props;
 
   const [error, setError] = useState<string | undefined>(undefined);
@@ -408,10 +414,13 @@ function Interact(props: CombinedProps) {
                 handleAccountSelected={handleAccountSelected}
                 handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
                 network={network}
-                rawTransaction={rawTransaction}
                 handleGasSelectorChange={handleGasSelectorChange}
                 contractAddress={contractAddress}
                 interactionDataFromURL={interactionDataFromURL}
+                nonce={nonce}
+                gasLimit={gasLimit}
+                handleNonceChange={handleNonceChange}
+                handleGasLimitChange={handleGasLimitChange}
               />
             )}
           </>

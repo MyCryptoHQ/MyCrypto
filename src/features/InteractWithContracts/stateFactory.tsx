@@ -28,7 +28,14 @@ import {
   TAddress,
   TUuid
 } from '@types';
-import { addHexPrefix, bigify, isSameAddress, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import {
+  addHexPrefix,
+  bigify,
+  inputGasLimitToHex,
+  isSameAddress,
+  isWeb3Wallet,
+  TUseStateReducerFactory
+} from '@utils';
 
 import { CUSTOM_CONTRACT_ADDRESS, customContract } from './constants';
 import { constructGasCallProps, reduceInputParams } from './helpers';
@@ -47,11 +54,9 @@ const interactWithContractsInitialState = {
   submitedFunction: undefined,
   data: undefined,
   account: undefined,
-  rawTransaction: {
-    gasPrice: '0xee6b2800',
-    gasLimit: 21000,
-    nonce: 0
-  },
+  gasPrice: '0xee6b2800',
+  gasLimit: '21000',
+  nonce: '0',
   txConfig: undefined,
   txReceipt: undefined
 };
@@ -266,7 +271,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   };
 
   const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
-    const { contractAddress, account, rawTransaction } = state;
+    const { contractAddress, account, nonce, gasLimit } = state;
 
     if (!account) {
       throw new Error(translateRaw('INTERACT_WRITE_ERROR_NO_ACCOUNT'));
@@ -275,21 +280,18 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     const hexlify = (str: string) => addHexPrefix(bigify(str).toString(16));
 
     const { network } = account;
-    const { gasPrice, gasLimit, nonce } = rawTransaction;
-    const transaction: any = Object.assign(
-      constructGasCallProps(contractAddress, submitedFunction, account),
-      {
-        gasPrice: hexlify(gasPrice),
-        chainId: network.chainId,
-        nonce: hexlify(nonce)
-      }
-    );
+    const transaction = {
+      ...constructGasCallProps(contractAddress, submitedFunction, account),
+      gasPrice: hexlify(gasPrice),
+      chainId: network.chainId,
+      nonce: hexlify(nonce)
+    };
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = hexlify(gasLimit);
-    delete transaction.from;
 
-    const txConfig = makeBasicTxConfig(transaction, account, submitedFunction.payAmount);
+    const tx = { ...transaction, gasLimit: inputGasLimitToHex(gasLimit) };
+
+    const txConfig = makeBasicTxConfig(tx, account, submitedFunction.payAmount);
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
@@ -359,6 +361,20 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
   };
 
+  const handleGasLimitChange = (gasLimit: string) => {
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      gasLimit
+    }));
+  };
+
+  const handleNonceChange = (nonce: string) => {
+    setState((prevState: InteractWithContractState) => ({
+      ...prevState,
+      nonce
+    }));
+  };
+
   return {
     handleNetworkSelected,
     handleAddressOrDomainChanged,
@@ -374,6 +390,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     handleTxSigned,
     handleGasSelectorChange,
     handleDeleteContract,
+    handleGasLimitChange,
+    handleNonceChange,
     interactWithContractsState: state
   };
 };

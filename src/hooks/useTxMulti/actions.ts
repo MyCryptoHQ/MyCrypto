@@ -38,7 +38,7 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
   try {
     const txs = await getTxs();
     const filteredTxs = await filterAsync(txs, async (tx) => {
-      if (network && tx.txType === ITxType.APPROVAL && tx.from) {
+      if (network && tx.txType === ITxType.APPROVAL && tx.from && tx.to) {
         try {
           return checkRequiresApproval(network, tx.to, tx.from, tx.data);
         } catch (err) {

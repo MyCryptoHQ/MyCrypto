@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import BN from 'bn.js';
-import { Brand, Overwrite } from 'utility-types';
+import { Brand } from 'utility-types';
 
 import { Address, Wei } from '@utils';
 
@@ -28,7 +28,7 @@ export type ITxHash = Brand<string, 'TxHash'>;
 
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
-export interface ITxReceipt {
+export interface IBaseTxReceipt {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
@@ -38,7 +38,6 @@ export interface ITxReceipt {
   readonly amount: string;
   readonly data: string;
 
-  readonly gasPrice: BigNumber;
   readonly gasLimit: BigNumber;
   readonly to: TAddress;
   readonly from: TAddress;
@@ -54,20 +53,48 @@ export interface ITxReceipt {
   // Metadata
   readonly metadata?: ITxMetadata;
 }
+
+export interface ILegacyTxReceipt extends IBaseTxReceipt {
+  readonly gasPrice: BigNumber;
+}
+
+// @todo Rename?
+export interface ITxType2Receipt extends IBaseTxReceipt {
+  readonly maxFeePerGas: BigNumber;
+  readonly maxPriorityFeePerGas: BigNumber;
+  readonly type: 2;
+}
+
+export type ITxReceipt = ILegacyTxReceipt | ITxType2Receipt;
+
 export interface ITxMetadata {
   receivingAsset?: TUuid;
 }
 
-export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
+type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
-export type IUnknownTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.UNKNOWN }>;
+export type IPendingTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
+  status: ITxStatus.PENDING;
+};
 
-export type ISuccessfulTxReceipt = Overwrite<
+export type IUnknownTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
+  status: ITxStatus.UNKNOWN;
+};
+
+export type ISuccessfulTxReceipt = DistributiveOmit<
   ITxReceipt,
-  { status: ITxStatus.SUCCESS; timestamp: number; blockNumber: number }
->;
+  'status' | 'timestamp' | 'blockNumber'
+> & {
+  status: ITxStatus.SUCCESS;
+  timestamp: number;
+  blockNumber: number;
+};
 
-export type IFailedTxReceipt = Overwrite<
+export type IFailedTxReceipt = DistributiveOmit<
   ITxReceipt,
-  { status: ITxStatus.FAILED; timestamp: number; blockNumber: number }
->;
+  'status' | 'timestamp' | 'blockNumber'
+> & {
+  status: ITxStatus.FAILED;
+  timestamp: number;
+  blockNumber: number;
+};

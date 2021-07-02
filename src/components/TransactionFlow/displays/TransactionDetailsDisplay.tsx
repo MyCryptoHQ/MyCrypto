@@ -49,7 +49,7 @@ interface Props {
   assetRate: number | undefined;
   status?: ITxStatus;
   timestamp?: number;
-  recipient: TAddress;
+  recipient?: TAddress;
   network: Network;
 }
 

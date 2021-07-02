@@ -54,6 +54,7 @@ import {
   bigNumValueToViewableEther,
   fromTokenBase,
   isTransactionDataEmpty,
+  isTypedTx,
   toWei
 } from '@utils';
 import {
@@ -67,10 +68,24 @@ const N_DIV_2 = BigNumber.from(
   '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0'
 );
 
+type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
+
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
-type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
-type TxBeforeNonce = Optional<ITxObject, 'nonce'>;
+type TxBeforeGasLimit = DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
+  nonce?: ITxNonce;
+  gasLimit?: ITxGasLimit;
+};
+type TxBeforeNonce = DistributiveOmit<ITxObject, 'nonce'> & { nonce?: ITxNonce };
+
+const formatGas = (tx: ITxObject) =>
+  isTypedTx(tx)
+    ? {
+        maxFeePerGas: BigNumber.from(tx.maxFeePerGas),
+        maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas),
+        type: tx.type
+      }
+    : { gasPrice: BigNumber.from(tx.gasPrice) };
 
 export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
@@ -78,14 +93,16 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   metadata?: ITxMetadata
 ): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
   const { rawTransaction, asset, baseAsset, amount } = txConfig;
-  const { data, gasPrice, gasLimit, nonce } = rawTransaction;
+  const { data, gasLimit, nonce } = rawTransaction;
+
+  const gas = formatGas(rawTransaction);
 
   const txReceipt = {
+    ...gas,
     hash: txHash,
     from: getAddress(txConfig.from) as TAddress,
     receiverAddress: (txConfig.receiverAddress && getAddress(txConfig.receiverAddress)) as TAddress,
     gasLimit: BigNumber.from(gasLimit),
-    gasPrice: BigNumber.from(gasPrice),
     value: BigNumber.from(txConfig.rawTransaction.value),
     to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
 
@@ -281,14 +298,9 @@ export const makeTxConfigFromTxReceipt = (
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,
     network,
-    value: BigNumber.from(txReceipt.value).toString(),
     asset: contractAsset || baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id),
-    gasPrice: BigNumber.from(txReceipt.gasPrice).toString(),
-    gasLimit: BigNumber.from(txReceipt.gasLimit).toString(),
-    data: txReceipt.data,
-    nonce: txReceipt.nonce,
     from: getAddress(txReceipt.from)
   };
   // @ts-expect-error Ignore possible missing senderAccount for now

@@ -29,7 +29,7 @@ export type ITxData = Brand<string, 'Data'>; // Hex
 export type ITxNonce = Brand<string, 'Nonce'>; // Hex
 
 export interface IBaseTxObject {
-  readonly to: ITxToAddress;
+  readonly to?: ITxToAddress;
   readonly value: ITxValue;
   readonly gasLimit: ITxGasLimit;
   readonly data: ITxData;
@@ -54,7 +54,7 @@ export type ITxObject = ILegacyTxObject | ITxType2Object;
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
-  readonly receiverAddress: TAddress; // Recipient of the send. NOT the tx's `to` address
+  readonly receiverAddress?: TAddress; // Recipient of the send. NOT always the tx's `to` address
   readonly senderAccount: StoreAccount;
   readonly from: TAddress;
   readonly asset: Asset;

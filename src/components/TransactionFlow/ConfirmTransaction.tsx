@@ -123,7 +123,8 @@ export default function ConfirmTransaction({
     return undefined;
   })();
   /* Get contact info */
-  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
+  const recipientContact =
+    receiverAddress && getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
@@ -132,7 +133,8 @@ export default function ConfirmTransaction({
   const baseAssetRate = getAssetRate(baseAsset);
 
   const contractName = (() => {
-    const contact = getContactByAddressAndNetworkId(rawTransaction.to, network.id);
+    const contact =
+      rawTransaction.to && getContactByAddressAndNetworkId(rawTransaction.to, network.id);
     if (contact) {
       return contact.label;
     }
@@ -236,14 +238,14 @@ export const ConfirmTransactionUI = ({
           addressBookEntry: senderContact
         }}
         toAccount={{
-          address: receiverAddress,
+          address: receiverAddress!,
           addressBookEntry: recipientContact
         }}
-        displayToAddress={txType !== ITxType.DEPLOY_CONTRACT}
+        displayToAddress={receiverAddress && txType !== ITxType.DEPLOY_CONTRACT}
       />
       {/* CONTRACT BOX */}
 
-      {isContractCall && (
+      {rawTransaction.to && isContractCall && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
         </div>

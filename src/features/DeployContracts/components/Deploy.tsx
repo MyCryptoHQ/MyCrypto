@@ -75,12 +75,15 @@ interface DeployProps {
   networkId: NetworkId;
   byteCode: string;
   account: StoreAccount;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
   handleNetworkSelected(networkId: string): void;
   handleDeploySubmit(): void;
   handleAccountSelected(account: StoreAccount): void;
   handleGasSelectorChange(payload: any): void;
   handleByteCodeChanged(byteCode: string): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 export const Deploy = (props: Props) => {
@@ -88,10 +91,13 @@ export const Deploy = (props: Props) => {
     networkId,
     byteCode,
     account,
-    rawTransaction,
+    nonce,
+    gasLimit,
     handleNetworkSelected,
     handleDeploySubmit,
     handleAccountSelected,
+    handleNonceChange,
+    handleGasLimitChange,
     handleGasSelectorChange,
     handleByteCodeChanged,
     isDemoMode
@@ -100,7 +106,6 @@ export const Deploy = (props: Props) => {
   const [gasCallProps, setGasCallProps] = useState({});
   const accounts = useSelector(getStoreAccounts);
 
-  const { gasPrice, gasLimit, nonce } = rawTransaction;
   const filteredAccounts = pipe(
     (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
     (a) => getAccountsByViewOnly(a, false)
@@ -134,14 +139,6 @@ export const Deploy = (props: Props) => {
       val = addHexPrefix(new BN(val).toString(16));
     }
     handleGasSelectorChange({ gasPrice: val } as ITxConfig);
-  };
-
-  const handleGasLimitChange = (val: string) => {
-    handleGasSelectorChange({ gasLimit: val });
-  };
-
-  const handleNonceChange = (val: string) => {
-    handleGasSelectorChange({ nonce: val });
   };
 
   return (

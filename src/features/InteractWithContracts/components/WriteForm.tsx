@@ -41,11 +41,14 @@ interface WriteProps {
   account: StoreAccount;
   network: Network;
   currentFunction: ABIItem;
-  rawTransaction: ITxConfig;
+  gasLimit: string;
+  nonce: string;
   estimateGasCallProps: TObject;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
   handleGasSelectorChange(payload: any): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 export const WriteForm = (props: Props) => {
@@ -53,15 +56,16 @@ export const WriteForm = (props: Props) => {
     account,
     network,
     currentFunction,
-    rawTransaction,
+    gasLimit,
+    nonce,
     estimateGasCallProps,
     handleAccountSelected,
     handleSubmit,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     isDemoMode
   } = props;
-
-  const { gasPrice, gasLimit, nonce } = rawTransaction;
 
   const accounts = useSelector(getStoreAccounts);
   const filteredAccounts = pipe(
@@ -79,14 +83,6 @@ export const WriteForm = (props: Props) => {
 
   const formatGasPrice = () =>
     gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
-
-  const handleGasLimitChange = (val: string) => {
-    handleGasSelectorChange({ gasLimit: val });
-  };
-
-  const handleNonceChange = (val: string) => {
-    handleGasSelectorChange({ nonce: val });
-  };
 
   return (
     <WriteActionWrapper>

@@ -44,7 +44,9 @@ describe('SendAssetsReducer', () => {
         nonceField: '10',
         advancedTransaction: false,
         gasEstimates: getDefaultEstimates(fNetwork),
-        isAutoGasSet: true
+        isAutoGasSet: true,
+        maxGasFeePerGasField: '20',
+        maxPriorityFeePerGasField: '1'
       };
 
       const payload = { form, assets: fAssets };

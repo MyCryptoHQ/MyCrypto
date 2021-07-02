@@ -51,7 +51,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   };
 
   const handleDeploySubmit = async (after: () => void) => {
-    const { account, rawTransaction, byteCode } = state;
+    const { account, byteCode, nonce, gasLimit } = state;
 
     if (!byteCode || !isHexString(byteCode)) {
       throw new Error(translateRaw('DEPLOY_ERROR_INVALID_DATA'));
@@ -62,20 +62,19 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     }
 
     const { network } = account;
-    const { gasPrice, gasLimit, nonce } = rawTransaction;
-    const transaction: any = Object.assign(constructGasCallProps(byteCode, account), {
-      gasPrice,
+    const transaction = {
+      ...constructGasCallProps(byteCode, account),
+      gasPrice: hexlify(gasPrice),
       chainId: network.chainId,
-      nonce
-    });
+      nonce: inputNonceToHex(nonce)
+    };
 
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = inputGasLimitToHex(gasLimit);
-    transaction.nonce = inputNonceToHex(nonce);
-    delete transaction.from;
 
-    const txConfig = makeBasicTxConfig(transaction, account, '0');
+    const tx = { ...transaction, gasLimit: inputGasLimitToHex(gasLimit) };
+
+    const txConfig = makeBasicTxConfig(tx, account, '0');
 
     setState((prevState: DeployContractsState) => ({
       ...prevState,
@@ -134,10 +133,24 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     }
   };
 
-  const handleGasSelectorChange = (payload: any) => {
+  const handleGasSelectorChange = (payload: string) => {
     setState((prevState: DeployContractsState) => ({
       ...prevState,
       rawTransaction: { ...prevState.rawTransaction, ...payload }
+    }));
+  };
+
+  const handleGasLimitChange = (gasLimit: string) => {
+    setState((prevState: DeployContractsState) => ({
+      ...prevState,
+      gasLimit
+    }));
+  };
+
+  const handleNonceChange = (nonce: string) => {
+    setState((prevState: DeployContractsState) => ({
+      ...prevState,
+      nonce
     }));
   };
 
@@ -148,6 +161,8 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     handleAccountSelected,
     handleTxSigned,
     handleGasSelectorChange,
+    handleNonceChange,
+    handleGasLimitChange,
     deployContractsState: state
   };
 };

@@ -95,13 +95,17 @@ interface Props {
   abi: ABIItem[];
   account: StoreAccount;
   network: Network;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
+
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
   handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 export default function GeneratedInteractionForm({
@@ -109,11 +113,14 @@ export default function GeneratedInteractionForm({
   handleInteractionFormSubmit,
   account,
   network,
-  rawTransaction,
+  nonce,
+  gasLimit,
   contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
   handleGasSelectorChange,
+  handleNonceChange,
+  handleGasLimitChange,
   interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -330,9 +337,12 @@ export default function GeneratedInteractionForm({
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}
-                    rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
+                    handleGasLimitChange={handleGasLimitChange}
+                    handleNonceChange={handleNonceChange}
                     estimateGasCallProps={gasCallProps}
+                    nonce={nonce}
+                    gasLimit={gasLimit}
                   />
                 </WriteFormWrapper>
               )}

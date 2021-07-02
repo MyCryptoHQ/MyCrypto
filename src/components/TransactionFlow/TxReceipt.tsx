@@ -236,10 +236,14 @@ const TxReceipt = ({
 
   const senderContact = getContactByAddressAndNetworkId(sender.address, network.id);
 
-  const recipientContact = getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id);
+  const recipientContact =
+    txConfig.receiverAddress &&
+    getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id);
 
   const contractName = (() => {
-    const contact = getContactByAddressAndNetworkId(txConfig.rawTransaction.to, network.id);
+    const contact =
+      txConfig.rawTransaction.to &&
+      getContactByAddressAndNetworkId(txConfig.rawTransaction.to, network.id);
     if (contact) {
       return contact.label;
     }
@@ -405,7 +409,7 @@ export const TxReceiptUI = ({
 
       {/* CONTRACT BOX */}
 
-      {isContractCall && (
+      {rawTransaction.to && isContractCall && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
         </div>
