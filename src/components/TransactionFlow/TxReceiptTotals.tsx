@@ -6,7 +6,7 @@ import { getFiat } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
 import translate from '@translations';
 import { ExtendedAsset, ISettings, ITxObject } from '@types';
-import { bigify, convertToFiat, fromWei, isTypedTx, totalTxFeeToWei, Wei } from '@utils';
+import { bigify, convertToFiat, fromWei, isType2Tx, totalTxFeeToWei, Wei } from '@utils';
 
 const SIcon = styled(Icon)`
   height: 25px;
@@ -39,7 +39,7 @@ export const TxReceiptTotals = ({
   assetRate,
   baseAssetRate
 }: Props) => {
-  const gasPrice = isTypedTx(rawTransaction)
+  const gasPrice = isType2Tx(rawTransaction)
     ? rawTransaction.maxFeePerGas
     : rawTransaction.gasPrice;
 

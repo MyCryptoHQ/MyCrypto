@@ -17,6 +17,7 @@ import {
   fromWei,
   isLegacyTx,
   isTransactionDataEmpty,
+  isType2Tx,
   isTypedTx,
   totalTxFeeToString,
   toWei,
@@ -84,7 +85,7 @@ function TransactionDetailsDisplay({
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const gasPrice = isTypedTx(rawTransaction)
+  const gasPrice = isType2Tx(rawTransaction)
     ? rawTransaction.maxFeePerGas
     : rawTransaction.gasPrice;
 
@@ -263,7 +264,7 @@ function TransactionDetailsDisplay({
             )}
             {baseAsset &&
               rawTransaction &&
-              isTypedTx(rawTransaction) &&
+              isType2Tx(rawTransaction) &&
               rawTransaction.maxFeePerGas && (
                 <div className="TransactionDetails-row border">
                   <div className="TransactionDetails-row-column">
@@ -279,7 +280,7 @@ function TransactionDetailsDisplay({
               )}
             {baseAsset &&
               rawTransaction &&
-              isTypedTx(rawTransaction) &&
+              isType2Tx(rawTransaction) &&
               rawTransaction.maxPriorityFeePerGas && (
                 <div className="TransactionDetails-row border">
                   <div className="TransactionDetails-row-column">
@@ -329,6 +330,14 @@ function TransactionDetailsDisplay({
                 </div>
               )}
             </div>
+            {isTypedTx(rawTransaction) && (
+              <div className="TransactionDetails-row border">
+                <div className="TransactionDetails-row-column">{translateRaw('TX_TYPE')}:</div>
+                <div className="TransactionDetails-row-column">
+                  {rawTransaction.type.toString(10)}
+                </div>
+              </div>
+            )}
             {rawTransaction && (
               <>
                 <div className="TransactionDetails-row border stacked">

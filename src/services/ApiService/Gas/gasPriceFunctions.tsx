@@ -1,6 +1,7 @@
 import { GAS_PRICE_DEFAULT } from '@config';
 import { ProviderHandler } from '@services/EthService';
 import { GasEstimates, ITxObject, Network } from '@types';
+import { bigNumGasPriceToViewableGwei } from '@utils';
 
 import { fetchGasEstimates } from './gas';
 
@@ -55,14 +56,20 @@ export async function fetchEIP1559PriceEstimates(network: Network) {
   return rest;
 }
 
+// Returns fast gasPrice or EIP1559 gas params in gwei
 export async function fetchUniversalGasPriceEstimate(network?: Network) {
   if (network && network.supportsEIP1559) {
-    return fetchEIP1559PriceEstimates(network);
+    const { maxFeePerGas, maxPriorityFeePerGas } = await fetchEIP1559PriceEstimates(network);
+    return {
+      maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+    };
   }
 
   const { fast } = await fetchGasPriceEstimates(network);
 
-  return { gasPrice: fast };
+  return { gasPrice: fast.toString() };
 }
 
 export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {

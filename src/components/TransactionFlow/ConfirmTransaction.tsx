@@ -17,7 +17,7 @@ import {
   bigify,
   convertToFiat,
   fromWei,
-  isTypedTx,
+  isType2Tx,
   totalTxFeeToString,
   totalTxFeeToWei,
   Wei
@@ -212,7 +212,7 @@ export const ConfirmTransactionUI = ({
 
   const assetType = asset.type;
 
-  const gasPrice = isTypedTx(rawTransaction)
+  const gasPrice = isType2Tx(rawTransaction)
     ? rawTransaction.maxFeePerGas
     : rawTransaction.gasPrice;
 

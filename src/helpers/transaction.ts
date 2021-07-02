@@ -9,10 +9,9 @@ import {
   Transaction
 } from '@ethersproject/transactions';
 import { formatEther } from '@ethersproject/units';
-import { Optional } from 'utility-types';
 
 import { CREATION_ADDRESS } from '@config';
-import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
+import { fetchUniversalGasPriceEstimate, getGasEstimate } from '@services/ApiService';
 import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthService';
 import { decodeApproval } from '@services/EthService/contracts/token';
 import {
@@ -51,28 +50,36 @@ import {
   TAddress
 } from '@types';
 import {
-  addHexPrefix,
   bigify,
   bigNumValueToViewableEther,
   fromTokenBase,
   isTransactionDataEmpty,
-  isTypedTx,
+  isType2Tx,
   toWei
 } from '@utils';
 import {
-  hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
   inputNonceToHex,
   inputValueToHex
 } from '@utils/makeTransaction';
+import { mapObjIndexed } from '@vendor';
 
 const N_DIV_2 = BigNumber.from(
   '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0'
 );
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
-type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
+type TxBeforeGasPrice = DistributiveOmit<
+  ITxObject,
+  'nonce' | 'gasLimit' | 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'
+> & {
+  nonce?: ITxNonce;
+  gasLimit?: ITxGasLimit;
+  gasPrice?: ITxGasPrice;
+  maxFeePerGas?: ITxGasPrice;
+  maxPriorityFeePerGas?: ITxGasPrice;
+};
 type TxBeforeGasLimit = DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
   nonce?: ITxNonce;
   gasLimit?: ITxGasLimit;
@@ -80,7 +87,7 @@ type TxBeforeGasLimit = DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
 type TxBeforeNonce = DistributiveOmit<ITxObject, 'nonce'> & { nonce?: ITxNonce };
 
 const formatGas = (tx: ITxObject) =>
-  isTypedTx(tx)
+  isType2Tx(tx)
     ? {
         maxFeePerGas: BigNumber.from(tx.maxFeePerGas),
         maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas),
@@ -151,14 +158,23 @@ export const makeFinishedTxReceipt = (
   confirmations
 });
 
+const getGasPriceFromEthersTx = (tx: Transaction) =>
+  tx.type && tx.type > 0
+    ? {
+        maxFeePerGas: tx.maxFeePerGas!.toHexString() as ITxGasPrice,
+        maxPriorityFeePerGas: tx.maxPriorityFeePerGas!.toHexString() as ITxGasPrice
+      }
+    : { gasPrice: tx.gasPrice!.toHexString() as ITxGasPrice };
+
 const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   const decodedTx = parseTransaction(signedTx);
-  return ({
+
+  return {
     ...decodedTx,
+    ...getGasPriceFromEthersTx(decodedTx),
     value: decodedTx.value.toHexString() as ITxValue,
-    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
-    gasPrice: decodedTx.gasPrice.toHexString() as ITxGasPrice
-  } as unknown) as ITxObject;
+    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit
+  };
 };
 
 export const makeBasicTxConfig = (
@@ -253,10 +269,11 @@ export const makeTxConfigFromTxResponse = (
       value: hexlify(decodedTx.value) as ITxValue,
       gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
       data: decodedTx.data as ITxData,
-      gasPrice: hexlify(decodedTx.gasPrice) as ITxGasPrice,
       nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
-      from: getAddress(decodedTx.from) as ITxFromAddress
+      from: getAddress(decodedTx.from) as ITxFromAddress,
+      ...getGasPriceFromEthersTx(decodedTx),
+      type: decodedTx.type
     },
     receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
@@ -406,22 +423,18 @@ export const appendGasPrice = (network: Network) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
   // Respect gas price if present
-  if (tx.gasPrice) {
+  if (tx.gasPrice || (tx.maxFeePerGas && tx.maxPriorityFeePerGas)) {
     return tx as TxBeforeGasLimit;
   }
-  const gasPrice = await fetchGasPriceEstimates(network)
-    .then(({ fast }) => fast.toString())
-    .then(inputGasPriceToHex)
-    .then(hexWeiToString)
-    .then((v) => bigify(v).toString(16))
-    .then(addHexPrefix)
+  const gas = await fetchUniversalGasPriceEstimate(network)
+    .then((r) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
     .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
     });
 
   return {
     ...tx,
-    gasPrice: gasPrice as ITxGasPrice
+    ...gas
   };
 };
 

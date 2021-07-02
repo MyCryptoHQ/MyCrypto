@@ -20,7 +20,7 @@ import {
 } from '@components';
 import { ETHUUID } from '@config';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
-import { fetchGasPriceEstimates } from '@services/ApiService';
+import { fetchUniversalGasPriceEstimate } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
@@ -218,8 +218,8 @@ export const TokenMigrationFormUI = ({
         loading={isSubmitting}
         onClick={() => {
           if (isFormValid) {
-            fetchGasPriceEstimates(values.network).then(({ fast }) => {
-              onComplete({ ...values, gasPrice: fast.toString() });
+            fetchUniversalGasPriceEstimate(values.network).then((gas) => {
+              onComplete({ ...values, ...gas });
             });
           }
         }}
