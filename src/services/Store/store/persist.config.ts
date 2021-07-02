@@ -179,7 +179,7 @@ export const migrations = {
           return account;
         }
         const result = getDerivationPath(dPath);
-        const [path, index] = result || generateCustomDPath(dPath);
+        const [path, index] = result ?? generateCustomDPath(dPath);
         return {
           ...account,
           path,
