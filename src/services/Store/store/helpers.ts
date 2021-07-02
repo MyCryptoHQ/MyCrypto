@@ -141,3 +141,13 @@ export const sanitizeAccount = (a: IAccount) => ({
   favorite: a.favorite,
   isPrivate: a.isPrivate
 });
+
+export const generateCustomDPath = (dPath: string) => {
+  const dPathArray = dPath.split('/');
+  const index = parseInt(dPathArray.pop()!, 10);
+  const path = {
+    name: 'Custom DPath',
+    path: `${dPathArray.join('/')}/<account>`
+  };
+  return [path, index];
+};

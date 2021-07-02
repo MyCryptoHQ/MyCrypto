@@ -26,4 +26,22 @@ describe('Persist Migrations', () => {
     const expected = { [LSKeys.ACCOUNTS]: [fAccount, account2] };
     expect(actual).toEqual(expected);
   });
+
+  it('6: Handles edge case of unknown DPath', () => {
+    const migration = migrations['6'];
+    const { path, index, ...account } = fAccounts[0];
+    const actual = migration(({
+      [LSKeys.ACCOUNTS]: [{ ...account, dPath: "m/44'/4242424242'/0'/0" }]
+    } as unknown) as DataStore);
+    const expected = {
+      [LSKeys.ACCOUNTS]: [
+        {
+          ...account,
+          path: { name: 'Custom DPath', path: "m/44'/4242424242'/0'/<account>" },
+          index: 0
+        }
+      ]
+    };
+    expect(actual).toEqual(expected);
+  });
 });

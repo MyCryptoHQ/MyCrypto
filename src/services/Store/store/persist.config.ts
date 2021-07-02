@@ -25,7 +25,7 @@ import { DataStore, LocalStorage, LSKeys, NetworkId, TUuid } from '@types';
 import { arrayToObj, IS_DEV } from '@utils';
 import { dissoc, flatten, pipe, propEq, reject, values } from '@vendor';
 
-import { mergeAssets, mergeNetworks } from './helpers';
+import { generateCustomDPath, mergeAssets, mergeNetworks } from './helpers';
 
 export const REDUX_PERSIST_ACTION_TYPES = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
@@ -178,7 +178,8 @@ export const migrations = {
         if (!dPath) {
           return account;
         }
-        const [path, index] = getDerivationPath(dPath)!;
+        const result = getDerivationPath(dPath);
+        const [path, index] = result || generateCustomDPath(dPath);
         return {
           ...account,
           path,
