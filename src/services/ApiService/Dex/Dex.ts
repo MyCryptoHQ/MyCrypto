@@ -126,7 +126,7 @@ export default class DexService {
               baseTokenAmount: bigify(data.sellAmount),
               chainId: network.chainId
             }),
-            type: ITxType.APPROVAL
+            txType: ITxType.APPROVAL
           }
         : undefined;
 

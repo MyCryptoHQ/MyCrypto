@@ -128,13 +128,7 @@ export const sanitizeAccount = (a: IAccount) => ({
     balance: a.balance
   })),
   wallet: a.wallet,
-  transactions: a.transactions?.map((t) => ({
-    ...t,
-    value: t.value,
-    gasLimit: t.gasLimit,
-    gasPrice: t.gasPrice,
-    gasUsed: t.gasUsed && t.gasUsed
-  })),
+  transactions: a.transactions,
   path: a.path,
   index: a.index,
   mtime: a.mtime,

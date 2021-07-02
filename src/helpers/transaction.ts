@@ -24,9 +24,11 @@ import {
 } from '@services/Store';
 import {
   Asset,
+  DistributiveOmit,
   ExtendedAsset,
   IFailedTxReceipt,
   IPendingTxReceipt,
+  ISimpleTxFormFull,
   ISuccessfulTxReceipt,
   ITxConfig,
   ITxData,
@@ -61,14 +63,13 @@ import {
   hexWeiToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
-  inputNonceToHex
+  inputNonceToHex,
+  inputValueToHex
 } from '@utils/makeTransaction';
 
 const N_DIV_2 = BigNumber.from(
   '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0'
 );
-
-type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
 type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
@@ -492,4 +493,31 @@ export const checkRequiresApproval = async (
   const allowance = await provider.getTokenAllowance(token, owner, _spender);
   // If allowance is less than the value being sent, the approval is needed
   return bigify(allowance).lt(bigify(_value));
+};
+
+export const makeTxFromForm = (
+  form: ISimpleTxFormFull,
+  value: string,
+  data: ITxData
+): ITxObject => {
+  const gas = form.network.supportsEIP1559
+    ? {
+        maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
+        maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
+        type: 2 as const
+      }
+    : {
+        gasPrice: inputGasPriceToHex(form.gasPrice)
+      };
+
+  return {
+    ...gas,
+    from: form.account.address,
+    to: form.address as ITxToAddress,
+    value: inputValueToHex(value),
+    data: data,
+    gasLimit: inputGasLimitToHex(form.gasLimit),
+    nonce: inputNonceToHex(form.nonce),
+    chainId: form.network.chainId
+  };
 };

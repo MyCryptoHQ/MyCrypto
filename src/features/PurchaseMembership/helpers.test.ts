@@ -7,20 +7,22 @@ import { IMembershipId, MEMBERSHIP_CONFIG } from './config';
 import { createApproveTx, createPurchaseTx } from './helpers';
 import { MembershipSimpleTxFormFull } from './types';
 
+const payload: MembershipSimpleTxFormFull = {
+  membershipSelected: MEMBERSHIP_CONFIG['twelvemonths'],
+  asset: fAssets.find(({ uuid }) => uuid === DAIUUID)!,
+  network: fNetworks[0],
+  address: fAccounts[0].address,
+  amount: '30',
+  gasLimit: 500000,
+  gasPrice: '1',
+  nonce: '1',
+  account: fAccounts[0],
+  maxFeePerGas: '20',
+  maxPriorityFeePerGas: '1'
+};
+
 describe('createApproveTx()', () => {
   it('can create valid approveTx from membership tx params created from the purchase membership form', () => {
-    const membershipId = 'twelvemonths' as IMembershipId;
-    const payload: MembershipSimpleTxFormFull = {
-      membershipSelected: MEMBERSHIP_CONFIG[membershipId],
-      asset: fAssets.find(({ uuid }) => uuid === DAIUUID)!,
-      network: fNetworks[0],
-      address: fAccounts[0].address,
-      amount: '30',
-      gasLimit: 500000,
-      gasPrice: '1',
-      nonce: '1',
-      account: fAccounts[0]
-    };
     const expected = {
       chainId: 1,
       data:
@@ -36,18 +38,6 @@ describe('createApproveTx()', () => {
 
 describe('createPurchaseTx()', () => {
   it('can create valid purchaseTx for a 12 month dai membership', () => {
-    const membershipId = 'twelvemonths' as IMembershipId;
-    const payload: MembershipSimpleTxFormFull = {
-      membershipSelected: MEMBERSHIP_CONFIG[membershipId],
-      asset: fAssets.find(({ uuid }) => uuid === DAIUUID)!,
-      network: fNetworks[0],
-      address: fAccounts[0].address,
-      amount: '30',
-      gasLimit: 500000,
-      gasPrice: '1',
-      nonce: '1',
-      account: fAccounts[0]
-    };
     const expected = {
       chainId: 1,
       data:
@@ -62,16 +52,11 @@ describe('createPurchaseTx()', () => {
 
   it('can create valid purchaseTx for a 12 month xdai membership', () => {
     const membershipId = 'xdaitwelvemonths' as IMembershipId;
-    const payload: MembershipSimpleTxFormFull = {
-      membershipSelected: MEMBERSHIP_CONFIG[membershipId],
+    const p: MembershipSimpleTxFormFull = {
+      ...payload,
       asset: fAssets.find(({ uuid }) => uuid === XDAIUUID)!,
-      network: fNetworks[2],
-      address: fAccounts[0].address,
-      amount: '30',
-      gasLimit: 500000,
-      gasPrice: '1',
-      nonce: '1',
-      account: fAccounts[0]
+      membershipSelected: MEMBERSHIP_CONFIG[membershipId],
+      network: fNetworks[2]
     };
     const expected = {
       chainId: 100,
@@ -82,6 +67,6 @@ describe('createPurchaseTx()', () => {
       to: '0xf97f516Cc0700a4Ce9Ee64D488F744f631e1525d',
       value: '0x1a055690d9db80000'
     };
-    expect(createPurchaseTx(payload)).toStrictEqual(expected);
+    expect(createPurchaseTx(p)).toStrictEqual(expected);
   });
 });

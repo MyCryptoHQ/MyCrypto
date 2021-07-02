@@ -167,6 +167,8 @@ export interface ISimpleTxForm {
   amount: string; // in ether - ex: 1
   gasLimit: string | number; // number - ex: 1,500,000
   gasPrice: string; // gwei
+  maxFeePerGas: string; // gwei
+  maxPriorityFeePerGas: string; // gwei
   nonce: string; // number - ex: 55
   account: StoreAccount;
 }

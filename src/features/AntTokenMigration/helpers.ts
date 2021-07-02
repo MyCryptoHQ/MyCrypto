@@ -1,8 +1,14 @@
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
-import { formatApproveTx } from '@helpers';
+import { formatApproveTx, makeTxFromForm } from '@helpers';
 import { AntMigrator } from '@services/EthService';
-import { ITokenMigrationFormFull, ITxData, ITxObject, ITxToAddress } from '@types';
-import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import {
+  DistributiveOmit,
+  ITokenMigrationFormFull,
+  ITxData,
+  ITxObject,
+  ITxToAddress
+} from '@types';
+import { inputGasPriceToHex, toWei } from '@utils';
 
 import { MIGRATION_CONTRACT } from './config';
 
@@ -20,16 +26,9 @@ export const createApproveTx = (
 
 export const createMigrationTx = (
   payload: ITokenMigrationFormFull
-): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
+): DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> => {
   const data = AntMigrator.migrate.encodeInput({
     _amount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
-  });
-  return {
-    from: payload.account.address,
-    to: MIGRATION_CONTRACT,
-    value: inputValueToHex('0'),
-    data: data as ITxData,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    chainId: DEFAULT_NETWORK_CHAINID
-  };
+  }) as ITxData;
+  return makeTxFromForm({ ...payload, address: MIGRATION_CONTRACT }, '0', data);
 };

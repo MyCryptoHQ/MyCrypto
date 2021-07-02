@@ -15,7 +15,9 @@ const defaultProps: ITokenMigrationFormFull = {
   gasLimit: '50000',
   gasPrice: '5',
   nonce: '',
-  account: fAccount
+  account: fAccount,
+  maxFeePerGas: '20',
+  maxPriorityFeePerGas: '1'
 };
 
 describe('it creates token migration transactions', () => {

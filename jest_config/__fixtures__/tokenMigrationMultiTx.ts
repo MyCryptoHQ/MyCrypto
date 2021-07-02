@@ -5,7 +5,6 @@ import { fApproveERC20TxResponse, fREPTokenMigrationTxResponse } from '@fixtures
 import { ITokenMigrationFormFull, ITxStatus, ITxType, TxParcel } from '@types';
 import { generateUUID, inputGasLimitToHex, inputNonceToHex } from '@utils';
 
-
 import { fAccount } from './account';
 import { fAssets } from './assets';
 import { fNetwork } from './network';
@@ -20,7 +19,9 @@ export const fTokenMigrationTxs = (): TxParcel[] => {
     gasLimit: 500000,
     gasPrice: '20',
     nonce: '1',
-    account: fAccount
+    account: fAccount,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   };
   const approveTx = createApproveTx(tokenMigrationPayload);
   const approveTxParcel: TxParcel = {

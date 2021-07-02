@@ -6,6 +6,7 @@ import { Address, Wei } from '@utils';
 
 import { TAddress } from './address';
 import { Asset } from './asset';
+import { DistributiveOmit } from './omit';
 import { ITxStatus, ITxType } from './transactionFlow';
 import { TUuid } from './uuid';
 
@@ -70,8 +71,6 @@ export type ITxReceipt = ILegacyTxReceipt | ITxType2Receipt;
 export interface ITxMetadata {
   receivingAsset?: TUuid;
 }
-
-type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
 export type IPendingTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
   status: ITxStatus.PENDING;

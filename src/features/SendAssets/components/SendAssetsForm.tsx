@@ -241,7 +241,7 @@ const getInitialFormikValues = ({
     asset: !isVoid(s.asset) ? s.asset : defaultAsset,
     nonceField: s.rawTransaction?.nonce,
     txDataField: s.rawTransaction?.data,
-    address: { value: s.receiverAddress, display: s.receiverAddress },
+    address: { value: s.receiverAddress!, display: s.receiverAddress! },
     gasLimitField: s.rawTransaction?.gasLimit && bigify(s.rawTransaction?.gasLimit).toString(),
     gasPriceSlider: gasPriceInGwei as string,
     gasPriceField: gasPriceInGwei as string
