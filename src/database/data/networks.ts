@@ -95,9 +95,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET
@@ -118,9 +118,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_DEFAULT
@@ -141,9 +141,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET
@@ -164,9 +164,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     isTestnet: true,
     dPaths: {
       [WalletId.TREZOR]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET
