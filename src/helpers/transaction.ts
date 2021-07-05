@@ -50,6 +50,7 @@ import {
   TAddress
 } from '@types';
 import {
+  addHexPrefix,
   bigify,
   bigNumValueToViewableEther,
   fromTokenBase,
@@ -158,7 +159,12 @@ export const makeFinishedTxReceipt = (
   confirmations
 });
 
-const getGasPriceFromEthersTx = (tx: Transaction) =>
+const getGasPriceFromTx = (tx: {
+  type?: number | null;
+  maxFeePerGas?: BigNumber;
+  maxPriorityFeePerGas?: BigNumber;
+  gasPrice?: BigNumber;
+}) =>
   tx.type && tx.type > 0
     ? {
         maxFeePerGas: tx.maxFeePerGas!.toHexString() as ITxGasPrice,
@@ -171,9 +177,15 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
 
   return {
     ...decodedTx,
-    ...getGasPriceFromEthersTx(decodedTx),
+    to: decodedTx.to as ITxToAddress | undefined,
+    from: decodedTx.from as TAddress,
+    data: decodedTx.data as ITxData,
+    ...getGasPriceFromTx(decodedTx),
     value: decodedTx.value.toHexString() as ITxValue,
-    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit
+    nonce: addHexPrefix(decodedTx.nonce.toString(16)) as ITxNonce,
+    gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
+    // @todo Cleaner way of doing this?
+    type: decodedTx.type as 2
   };
 };
 
@@ -272,8 +284,9 @@ export const makeTxConfigFromTxResponse = (
       nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
       from: getAddress(decodedTx.from) as ITxFromAddress,
-      ...getGasPriceFromEthersTx(decodedTx),
-      type: decodedTx.type
+      ...getGasPriceFromTx(decodedTx),
+      // @todo Cleaner way of doing this?
+      type: decodedTx.type as 2
     },
     receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
@@ -306,7 +319,7 @@ export const makeTxConfigFromTxReceipt = (
       value: BigNumber.from(txReceipt.value).toHexString(),
       gasLimit: BigNumber.from(txReceipt.gasLimit).toHexString(),
       data: txReceipt.data,
-      gasPrice: BigNumber.from(txReceipt.gasPrice).toHexString(),
+      ...getGasPriceFromTx(txReceipt),
       nonce: BigNumber.from(txReceipt.nonce).toHexString(),
       chainId: network.chainId,
       from: getAddress(txReceipt.from)

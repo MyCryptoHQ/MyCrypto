@@ -231,6 +231,7 @@ const getInitialFormikValues = ({
   defaultNetwork: Network | undefined;
 }): IFormikFields => {
   const gasPriceInGwei =
+    s.rawTransaction &&
     isLegacyTx(s.rawTransaction) &&
     s.rawTransaction.gasPrice &&
     bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.gasPrice));
