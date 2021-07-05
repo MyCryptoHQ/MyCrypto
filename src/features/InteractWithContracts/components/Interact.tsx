@@ -126,6 +126,9 @@ interface Props {
   customContractName: string;
   nonce: string;
   gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -180,6 +183,9 @@ function Interact(props: CombinedProps) {
     handleSaveContractSubmit,
     nonce,
     gasLimit,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     handleGasSelectorChange,
     handleDeleteContract,
     handleGasLimitChange,
@@ -419,6 +425,9 @@ function Interact(props: CombinedProps) {
                 interactionDataFromURL={interactionDataFromURL}
                 nonce={nonce}
                 gasLimit={gasLimit}
+                gasPrice={gasPrice}
+                maxFeePerGas={maxFeePerGas}
+                maxPriorityFeePerGas={maxPriorityFeePerGas}
                 handleNonceChange={handleNonceChange}
                 handleGasLimitChange={handleGasLimitChange}
               />

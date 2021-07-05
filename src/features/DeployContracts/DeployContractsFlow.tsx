@@ -56,6 +56,8 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     handleAccountSelected,
     handleTxSigned,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     deployContractsState
   } = useStateReducer(DeployContractsFactory, {
     ...deployContractsInitialState,
@@ -104,18 +106,15 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     {
       title: translateRaw('DEPLOY_CONTRACTS'),
       component: Deploy,
-      props: (({ networkId, byteCode, rawTransaction }) => ({
-        account,
-        networkId,
-        byteCode,
-        rawTransaction
-      }))(deployContractsState),
+      props: deployContractsState,
       actions: {
         handleByteCodeChanged,
         handleNetworkSelected,
         handleDeploySubmit: () => handleDeploySubmit(goToNextStep),
         handleAccountSelected,
-        handleGasSelectorChange
+        handleGasSelectorChange,
+        handleNonceChange,
+        handleGasLimitChange
       }
     },
     {

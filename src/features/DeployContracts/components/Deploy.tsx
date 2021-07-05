@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 import debounce from 'lodash/debounce';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
@@ -16,17 +14,10 @@ import {
   NetworkSelector,
   Typography
 } from '@components';
-import { AppState, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
+import { AppState, getIsDemoMode, getStoreAccounts, selectNetwork, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import { ITxConfig, NetworkId, StoreAccount } from '@types';
-import {
-  baseToConvertedUnit,
-  getAccountsByNetwork,
-  getAccountsByViewOnly,
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex
-} from '@utils';
+import { NetworkId, StoreAccount } from '@types';
+import { getAccountsByNetwork, getAccountsByViewOnly } from '@utils';
 import { pipe } from '@vendor';
 
 import { constructGasCallProps } from '../helpers';
@@ -68,15 +59,15 @@ const CustomLabel = styled(Typography)`
   font-size: 1em;
 `;
 
-const formatGasPrice = (gasPrice: string) =>
-  gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
-
 interface DeployProps {
   networkId: NetworkId;
   byteCode: string;
   account: StoreAccount;
   nonce: string;
   gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
   handleNetworkSelected(networkId: string): void;
   handleDeploySubmit(): void;
   handleAccountSelected(account: StoreAccount): void;
@@ -93,6 +84,9 @@ export const Deploy = (props: Props) => {
     account,
     nonce,
     gasLimit,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     handleNetworkSelected,
     handleDeploySubmit,
     handleAccountSelected,
@@ -105,6 +99,8 @@ export const Deploy = (props: Props) => {
   const [error, setError] = useState(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
   const accounts = useSelector(getStoreAccounts);
+
+  const network = useSelector(selectNetwork(networkId));
 
   const filteredAccounts = pipe(
     (a: StoreAccount[]) => getAccountsByNetwork(a, networkId),
@@ -131,14 +127,6 @@ export const Deploy = (props: Props) => {
     } catch (e) {
       setError(e.reason ? e.reason : e.message);
     }
-  };
-
-  const handleGasPriceChange = (val: string) => {
-    if (val.length) {
-      val = hexWeiToString(inputGasPriceToHex(val));
-      val = addHexPrefix(new BN(val).toString(16));
-    }
-    handleGasSelectorChange({ gasPrice: val } as ITxConfig);
   };
 
   return (
@@ -179,14 +167,17 @@ export const Deploy = (props: Props) => {
         />
         {account && (
           <GasSelector
-            gasPrice={formatGasPrice(gasPrice)}
+            gasPrice={gasPrice}
             gasLimit={gasLimit}
             nonce={nonce}
+            maxFeePerGas={maxFeePerGas}
+            maxPriorityFeePerGas={maxPriorityFeePerGas}
             account={account}
-            setGasPrice={handleGasPriceChange}
+            setGasPrice={handleGasSelectorChange}
             setGasLimit={handleGasLimitChange}
             setNonce={handleNonceChange}
             estimateGasCallProps={gasCallProps}
+            network={network}
           />
         )}
       </MarginWrapper>

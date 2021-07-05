@@ -1,20 +1,11 @@
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
 import { AppState, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import { ITxConfig, Network, StoreAccount } from '@types';
-import {
-  baseToConvertedUnit,
-  getAccountsByNetwork,
-  getAccountsByViewOnly,
-  hexToString,
-  hexWeiToString,
-  inputGasPriceToHex
-} from '@utils';
+import { Network, StoreAccount } from '@types';
+import { getAccountsByNetwork, getAccountsByViewOnly } from '@utils';
 import { pipe } from '@vendor';
 
 import { ABIItem } from '../types';
@@ -43,6 +34,9 @@ interface WriteProps {
   currentFunction: ABIItem;
   gasLimit: string;
   nonce: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
   estimateGasCallProps: TObject;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
@@ -57,6 +51,9 @@ export const WriteForm = (props: Props) => {
     network,
     currentFunction,
     gasLimit,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     nonce,
     estimateGasCallProps,
     handleAccountSelected,
@@ -73,17 +70,6 @@ export const WriteForm = (props: Props) => {
     (a) => getAccountsByViewOnly(a, false)
   )(accounts);
 
-  const handleGasPriceChange = (val: string) => {
-    if (val.length) {
-      val = hexWeiToString(inputGasPriceToHex(val));
-      val = addHexPrefix(new BN(val).toString(16));
-    }
-    handleGasSelectorChange({ gasPrice: val } as ITxConfig);
-  };
-
-  const formatGasPrice = () =>
-    gasPrice.length ? baseToConvertedUnit(hexToString(gasPrice), 9) : gasPrice;
-
   return (
     <WriteActionWrapper>
       {isDemoMode && <DemoGatewayBanner />}
@@ -99,14 +85,17 @@ export const WriteForm = (props: Props) => {
         />
         {account && (
           <GasSelector
-            gasPrice={formatGasPrice()}
+            gasPrice={gasPrice}
+            maxFeePerGas={maxFeePerGas}
+            maxPriorityFeePerGas={maxPriorityFeePerGas}
             gasLimit={gasLimit}
             nonce={nonce}
             account={account}
-            setGasPrice={handleGasPriceChange}
+            setGasPrice={handleGasSelectorChange}
             setGasLimit={handleGasLimitChange}
             setNonce={handleNonceChange}
             estimateGasCallProps={estimateGasCallProps}
+            network={network}
           />
         )}
       </AccountSelectorWrapper>

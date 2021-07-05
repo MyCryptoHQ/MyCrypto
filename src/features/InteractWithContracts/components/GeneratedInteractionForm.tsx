@@ -97,6 +97,9 @@ interface Props {
   network: Network;
   nonce: string;
   gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
 
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
@@ -115,6 +118,9 @@ export default function GeneratedInteractionForm({
   network,
   nonce,
   gasLimit,
+  gasPrice,
+  maxFeePerGas,
+  maxPriorityFeePerGas,
   contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
@@ -343,6 +349,9 @@ export default function GeneratedInteractionForm({
                     estimateGasCallProps={gasCallProps}
                     nonce={nonce}
                     gasLimit={gasLimit}
+                    gasPrice={gasPrice}
+                    maxFeePerGas={maxFeePerGas}
+                    maxPriorityFeePerGas={maxPriorityFeePerGas}
                   />
                 </WriteFormWrapper>
               )}

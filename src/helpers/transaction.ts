@@ -522,7 +522,17 @@ export const checkRequiresApproval = async (
 };
 
 export const makeTxFromForm = (
-  form: ISimpleTxFormFull,
+  form: Pick<
+    ISimpleTxFormFull,
+    | 'network'
+    | 'gasPrice'
+    | 'maxFeePerGas'
+    | 'maxPriorityFeePerGas'
+    | 'account'
+    | 'address'
+    | 'gasLimit'
+    | 'nonce'
+  >,
   value: string,
   data: ITxData
 ): ITxObject => {

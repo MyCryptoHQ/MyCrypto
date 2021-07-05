@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
-import { StoreAccount } from '@types';
+import { ITxData, StoreAccount } from '@types';
 import { inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
@@ -94,18 +94,14 @@ export const constructGasCallProps = (
   currentFunction: ABIItem,
   account: StoreAccount
 ) => {
-  try {
-    const { encodeInput } = new AbiFunction(currentFunction, []);
-    const parsedInputs = reduceInputParams(currentFunction);
-    const data = encodeInput(parsedInputs);
+  const { encodeInput } = new AbiFunction(currentFunction, []);
+  const parsedInputs = reduceInputParams(currentFunction);
+  const data = encodeInput(parsedInputs) as ITxData;
 
-    return {
-      from: account.address,
-      to: contractAddress,
-      value: inputValueToHex(currentFunction.payAmount),
-      data
-    };
-  } catch (e) {
-    return {};
-  }
+  return {
+    from: account.address,
+    to: contractAddress,
+    value: inputValueToHex(currentFunction.payAmount),
+    data
+  };
 };
