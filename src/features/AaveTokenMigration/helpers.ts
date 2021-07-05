@@ -28,5 +28,10 @@ export const createMigrationTx = (
   const data = AaveMigrator.migrateFromLEND.encodeInput({
     amount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
   }) as ITxData;
-  return makeTxFromForm({ ...payload, address: MIGRATION_CONTRACT }, '0', data);
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
+    { ...payload, address: MIGRATION_CONTRACT },
+    '0',
+    data
+  );
+  return tx;
 };

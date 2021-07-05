@@ -2,7 +2,7 @@ import { fAssets } from '@../jest_config/__fixtures__/assets';
 
 import { fAccount, fAccounts, fERC20NonWeb3TxConfig, fNetwork, fSignedTx } from '@fixtures';
 import { getDefaultEstimates } from '@services';
-import { IFormikFields, ITxStatus, TxQueryTypes } from '@types';
+import { IFormikFields, ILegacyTxReceipt, ITxStatus, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputNonceToHex } from '@utils';
 
 import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
@@ -109,7 +109,7 @@ describe('SendAssetsReducer', () => {
         payload
       })(prevState);
       const txConfig = prevState.txConfig;
-      const txReceipt = newState.txReceipt!;
+      const txReceipt = newState.txReceipt! as ILegacyTxReceipt;
       expect(txReceipt.hash).toBe(payload);
       expect(txReceipt.amount).toBe(txConfig.amount);
       expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
@@ -119,7 +119,7 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.to).toBe(fAccount.address);
       expect(txReceipt.from).toBe(fAccount.address);
       expect(txReceipt.gasLimit.toHexString()).toEqual(txConfig.rawTransaction.gasLimit);
-      expect(txReceipt.gasPrice.toString()).toEqual(txConfig.gasPrice);
+      expect(txReceipt.gasPrice.toHexString()).toEqual(txConfig.rawTransaction.gasPrice);
       expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
@@ -153,7 +153,7 @@ describe('SendAssetsReducer', () => {
         payload
       })(prevState);
       const txConfig = prevState.txConfig;
-      const txReceipt = newState.txReceipt!;
+      const txReceipt = newState.txReceipt! as ILegacyTxReceipt;
       expect(txReceipt.hash).toBe(payload.hash);
       expect(txReceipt.amount).toBe(txConfig.amount);
       expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
@@ -163,7 +163,7 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.to).toBe(fAccount.address);
       expect(txReceipt.from).toBe(fAccount.address);
       expect(txReceipt.gasLimit.toHexString()).toEqual(txConfig.rawTransaction.gasLimit);
-      expect(txReceipt.gasPrice.toString()).toEqual(txConfig.gasPrice);
+      expect(txReceipt.gasPrice.toHexString()).toEqual(txConfig.rawTransaction.gasPrice);
       expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
       expect(newState.send).toBe(false);
 

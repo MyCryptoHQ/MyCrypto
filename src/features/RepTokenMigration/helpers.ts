@@ -26,9 +26,10 @@ export const createRepMigrationTx = (
   payload: ITokenMigrationFormFull
 ): DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> => {
   const data = RepV2Token.migrateFromLegacyReputationToken.encodeInput({}) as ITxData;
-  return makeTxFromForm(
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
     { ...payload, address: repTokenMigrationConfig.toContractAddress },
     '0',
     data
   );
+  return tx;
 };

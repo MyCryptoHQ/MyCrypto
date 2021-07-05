@@ -1,5 +1,5 @@
 import { ANTv1UUID } from '@config';
-import { fAccount, fAssets, fNetwork } from '@fixtures';
+import { fAccount, fAssets, fNetworks } from '@fixtures';
 import { ITokenMigrationFormFull } from '@types';
 
 import { tokenMigrationConfig } from './config';
@@ -8,7 +8,7 @@ import { createApproveTx, createMigrationTx } from './helpers';
 const defaultProps: ITokenMigrationFormFull = {
   tokenConfig: tokenMigrationConfig,
   asset: fAssets.find(({ uuid }) => uuid === ANTv1UUID)!,
-  network: fNetwork,
+  network: fNetworks[0],
   address: '',
   amount: '5',
   gasLimit: '50000',

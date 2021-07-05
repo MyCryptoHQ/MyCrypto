@@ -12,9 +12,10 @@ export const createGolemMigrationTx = (
   const data = GolemV2Migration.migrate.encodeInput({
     _value: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
   }) as ITxData;
-  return makeTxFromForm(
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
     { ...payload, address: golemTokenMigrationConfig.fromContractAddress },
     '0',
     data
   );
+  return tx;
 };

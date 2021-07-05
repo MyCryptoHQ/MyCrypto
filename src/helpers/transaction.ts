@@ -161,16 +161,16 @@ export const makeFinishedTxReceipt = (
 
 const getGasPriceFromTx = (tx: {
   type?: number | null;
-  maxFeePerGas?: BigNumber;
-  maxPriorityFeePerGas?: BigNumber;
-  gasPrice?: BigNumber;
+  maxFeePerGas?: BigNumber | string;
+  maxPriorityFeePerGas?: BigNumber | string;
+  gasPrice?: BigNumber | string;
 }) =>
   tx.type && tx.type > 0
     ? {
-        maxFeePerGas: tx.maxFeePerGas!.toHexString() as ITxGasPrice,
-        maxPriorityFeePerGas: tx.maxPriorityFeePerGas!.toHexString() as ITxGasPrice
+        maxFeePerGas: BigNumber.from(tx.maxFeePerGas!).toHexString() as ITxGasPrice,
+        maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas!).toHexString() as ITxGasPrice
       }
-    : { gasPrice: tx.gasPrice!.toHexString() as ITxGasPrice };
+    : { gasPrice: BigNumber.from(tx.gasPrice!).toHexString() as ITxGasPrice };
 
 const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   const decodedTx = parseTransaction(signedTx);
@@ -328,7 +328,7 @@ export const makeTxConfigFromTxReceipt = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,
-    network,
+    networkId: network.id,
     asset: contractAsset || baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id),

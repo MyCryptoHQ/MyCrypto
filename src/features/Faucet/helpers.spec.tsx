@@ -38,12 +38,8 @@ describe('Faucet helpers', () => {
         amount: '0.000000000000000001',
         asset: fAssets[1],
         baseAsset: fAssets[1],
-        data: '0x',
         from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-        gasLimit: '21000',
-        gasPrice: '1000000000',
-        network: fNetworks[1],
-        nonce: '39',
+        networkId: 'Ropsten',
         rawTransaction: {
           chainId: 3,
           data: '0x',

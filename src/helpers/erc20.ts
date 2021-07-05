@@ -23,21 +23,16 @@ export const formatApproveTx = ({
   baseTokenAmount,
   spenderAddress,
   form
-}: IFormatApproveTxInputs): DistributiveOmit<ITxObject, 'gasLimit' | 'nonce'> & {
-  gasLimit: undefined;
-  nonce: undefined;
-} => {
+}: IFormatApproveTxInputs): DistributiveOmit<ITxObject, 'gasLimit' | 'nonce'> => {
   const data = ERC20.approve.encodeInput({
     _spender: spenderAddress,
     _value: baseTokenAmount
   }) as ITxData;
 
-  const tx = makeTxFromForm(form, '0', data);
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(form, '0', data);
 
   return {
     to: contractAddress as ITxToAddress,
-    ...tx,
-    nonce: undefined,
-    gasLimit: undefined
+    ...tx
   };
 };
