@@ -20,10 +20,8 @@ export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<IT
   formatApproveTx({
     contractAddress: payload.asset.contractAddress as ITxToAddress,
     baseTokenAmount: toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL),
-    fromAddress: payload.account.address,
     spenderAddress: payload.membershipSelected.contractAddress as TAddress,
-    chainId: payload.network.chainId,
-    hexGasPrice: inputGasPriceToHex(payload.gasPrice)
+    form: payload
   });
 
 export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {

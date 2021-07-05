@@ -3,6 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 
 import {
+  DistributiveOmit,
   IFailedTxReceipt,
   IPendingTxReceipt,
   ISuccessfulTxReceipt,
@@ -80,7 +81,7 @@ export const fFinishedERC20Web3TxReceipt = toTxReceipt(erc20Web3TxReceiptFinishe
   | ISuccessfulTxReceipt
   | IFailedTxReceipt;
 
-export const fDerivedApprovalTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
+export const fDerivedApprovalTx: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> = {
   chainId: 1,
   data: '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000' as ITxData,
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as ITxFromAddress,
@@ -89,7 +90,7 @@ export const fDerivedApprovalTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
   value: '0x0' as ITxValue
 };
 
-export const fDerivedRepMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
+export const fDerivedRepMigrationTx: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> = {
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as ITxFromAddress,
   to: '0x221657776846890989a759BA2973e427DfF5C9bB' as ITxToAddress,
   value: '0x0' as ITxValue,
@@ -98,7 +99,7 @@ export const fDerivedRepMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
   chainId: 1
 };
 
-export const fDerivedGolemMigrationTx: Omit<ITxObject, 'nonce' | 'gasLimit'> = {
+export const fDerivedGolemMigrationTx: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> = {
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as ITxFromAddress,
   to: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d' as ITxToAddress,
   value: '0x0' as ITxValue,

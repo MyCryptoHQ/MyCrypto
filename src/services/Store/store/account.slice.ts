@@ -33,6 +33,7 @@ import {
   generateUUID,
   getWeb3Config,
   isSameAddress,
+  isType2Receipt,
   isViewOnlyWallet,
   sortByLabel
 } from '@utils';
@@ -142,13 +143,22 @@ export const getAccounts = createSelector([getAppState], (s) => {
   const accounts = s.accounts;
   return accounts?.map((a) => ({
     ...a,
-    transactions: a.transactions?.map((t) => ({
-      ...t,
-      value: EthersBN.from(t.value),
-      gasLimit: EthersBN.from(t.gasLimit),
-      gasPrice: EthersBN.from(t.gasPrice),
-      gasUsed: t.gasUsed && EthersBN.from(t.gasUsed)
-    }))
+    transactions: a.transactions?.map((t) => {
+      const gas = isType2Receipt(t)
+        ? {
+            maxFeePerGas: EthersBN.from(t.maxFeePerGas),
+            maxPriorityFeePerGas: EthersBN.from(t.maxPriorityFeePerGas)
+          }
+        : { gasPrice: EthersBN.from(t.gasPrice) };
+
+      return {
+        ...t,
+        value: EthersBN.from(t.value),
+        gasLimit: EthersBN.from(t.gasLimit),
+        ...gas,
+        gasUsed: t.gasUsed && EthersBN.from(t.gasUsed)
+      };
+    })
   })) as StoreAccount[];
 });
 

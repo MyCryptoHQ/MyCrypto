@@ -119,7 +119,9 @@ export const TokenMigrationFormUI = ({
     gasPrice: '20',
     address: '',
     gasLimit: '',
-    network
+    network,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   });
 
   const convertedAsset = {

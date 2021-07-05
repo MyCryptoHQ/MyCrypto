@@ -50,17 +50,7 @@ export { IREPV2 } from './repV2';
 export { IAntMigrator } from './antMigrator';
 export { IUNLOCKLOCK } from './unlockProtocolToken';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
-export {
-  ITransaction,
-  ITxReceipt,
-  ITxHash,
-  ITxSigned,
-  IFailedTxReceipt,
-  ISuccessfulTxReceipt,
-  IPendingTxReceipt,
-  IUnknownTxReceipt,
-  ITxMetadata
-} from './transaction';
+export * from './transaction';
 export * from './transactionFlow';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';

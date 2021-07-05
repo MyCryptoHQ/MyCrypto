@@ -1,4 +1,4 @@
-import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { formatApproveTx, makeTxFromForm } from '@helpers';
 import { RepV2Token } from '@services/EthService';
 import {
@@ -8,20 +8,18 @@ import {
   ITxObject,
   ITxToAddress
 } from '@types';
-import { inputGasPriceToHex, toWei } from '@utils';
+import { toWei } from '@utils';
 
 import { repTokenMigrationConfig } from './config';
 
 export const createApproveTx = (
   payload: ITokenMigrationFormFull
-): Omit<ITxObject, 'nonce' | 'gasLimit'> =>
+): DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> =>
   formatApproveTx({
     contractAddress: payload.asset.contractAddress as ITxToAddress,
     baseTokenAmount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL),
-    fromAddress: payload.account.address,
     spenderAddress: repTokenMigrationConfig.toContractAddress,
-    chainId: DEFAULT_NETWORK_CHAINID,
-    hexGasPrice: inputGasPriceToHex(payload.gasPrice)
+    form: payload
   });
 
 export const createRepMigrationTx = (
