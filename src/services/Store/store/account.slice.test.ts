@@ -24,6 +24,7 @@ import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@service
 import { translateRaw } from '@translations';
 import {
   IAccount,
+  ILegacyTxObject,
   ISettings,
   ITxReceipt,
   ITxStatus,
@@ -183,7 +184,7 @@ describe('AccountSlice', () => {
           {
             ...fTransaction,
             gasLimit: BigNumber.from(fTransaction.gasLimit),
-            gasPrice: BigNumber.from(fTransaction.gasPrice),
+            gasPrice: BigNumber.from((fTransaction as ILegacyTxObject).gasPrice),
             gasUsed: BigNumber.from(fTransaction.gasLimit),
             value: BigNumber.from(fTransaction.value)
           }

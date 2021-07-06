@@ -108,13 +108,6 @@ export const fApproveErc20TxConfig = {
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
   baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
-  data:
-    '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
-  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-  gasLimit: '150000',
-  gasPrice: '5000000000',
-  network: fNetworks[0],
-  nonce: '1',
   rawTransaction: {
     chainId: 1,
     data:
@@ -128,7 +121,8 @@ export const fApproveErc20TxConfig = {
   },
   receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   senderAccount: fAccounts[0],
-  value: '0'
+  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+  networkId: 'Ethereum'
 };
 
 export const fTokenMigrationTxConfig = {
@@ -146,12 +140,7 @@ export const fTokenMigrationTxConfig = {
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
   baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
-  data: '0x75d9aa1a',
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-  gasLimit: '150000',
-  gasPrice: '5000000000',
-  network: fNetworks[0],
-  nonce: '1',
   rawTransaction: {
     chainId: 1,
     data: '0x75d9aa1a',
@@ -164,5 +153,5 @@ export const fTokenMigrationTxConfig = {
   },
   receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   senderAccount: fAccounts[0],
-  value: '0'
+  networkId: 'Ethereum'
 };

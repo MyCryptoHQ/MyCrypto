@@ -110,7 +110,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
       const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
         network,
-        account?.address,
+        account,
         fromAsset,
         toAsset,
         value
@@ -180,7 +180,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
       const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
         network,
-        account?.address,
+        account,
         fromAsset,
         toAsset,
         value

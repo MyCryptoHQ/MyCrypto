@@ -51,8 +51,7 @@ describe('Faucet helpers', () => {
           value: '1'
         },
         receiverAddress: fAccount.address,
-        senderAccount: undefined,
-        value: '1'
+        senderAccount: undefined
       });
     });
   });

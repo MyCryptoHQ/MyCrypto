@@ -115,7 +115,11 @@ export default function GasSelector({
     try {
       const { network } = account;
       const gas = await fetchUniversalGasPriceEstimate(network);
-      setGasPrice(gas);
+      setGasPrice({
+        gasPrice: gas.gasPrice ?? '',
+        maxFeePerGas: gas.maxFeePerGas ?? '',
+        maxPriorityFeePerGas: gas.maxPriorityFeePerGas ?? ''
+      });
       const txGas = mapObjIndexed((v) => v && inputGasPriceToHex(v), gas);
       const fetchedNonce = await getNonce(network, account.address);
       setNonce(fetchedNonce.toString());

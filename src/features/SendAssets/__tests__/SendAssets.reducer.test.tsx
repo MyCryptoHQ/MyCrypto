@@ -14,9 +14,9 @@ const defaultTxConfig = {
   baseAsset: fAssets[0],
   amount: '1',
   rawTransaction: {
-    value: '0xde0b6b3a7640000',
+    value: '0x0de0b6b3a7640000',
     to: fAccount.address,
-    gasPrice: '0x12a05f200',
+    gasPrice: '0x012a05f200',
     data: '0x00',
     gasLimit: '0x7d3c',
     nonce: '0x7',
@@ -120,7 +120,7 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.from).toBe(fAccount.address);
       expect(txReceipt.gasLimit.toHexString()).toEqual(txConfig.rawTransaction.gasLimit);
       expect(txReceipt.gasPrice.toHexString()).toEqual(txConfig.rawTransaction.gasPrice);
-      expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
+      expect(txReceipt.value.toHexString()).toEqual(txConfig.rawTransaction.value);
 
       expect(newState.signedTx).toBe(prevState.signedTx);
       expect(newState.txConfig).toBe(prevState.txConfig);
@@ -164,7 +164,7 @@ describe('SendAssetsReducer', () => {
       expect(txReceipt.from).toBe(fAccount.address);
       expect(txReceipt.gasLimit.toHexString()).toEqual(txConfig.rawTransaction.gasLimit);
       expect(txReceipt.gasPrice.toHexString()).toEqual(txConfig.rawTransaction.gasPrice);
-      expect(txReceipt.value.toString()).toEqual(txConfig.rawTransaction.value);
+      expect(txReceipt.value.toHexString()).toEqual(txConfig.rawTransaction.value);
       expect(newState.send).toBe(false);
 
       expect(newState.signedTx).toBe(prevState.signedTx);

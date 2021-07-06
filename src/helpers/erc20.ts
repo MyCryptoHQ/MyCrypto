@@ -15,7 +15,17 @@ interface IFormatApproveTxInputs {
   contractAddress: ITxToAddress;
   baseTokenAmount: Bigish;
   spenderAddress: TAddress;
-  form: ISimpleTxFormFull;
+  form: Pick<
+    ISimpleTxFormFull,
+    | 'network'
+    | 'gasPrice'
+    | 'maxFeePerGas'
+    | 'maxPriorityFeePerGas'
+    | 'account'
+    | 'address'
+    | 'gasLimit'
+    | 'nonce'
+  >;
 }
 
 export const formatApproveTx = ({
@@ -32,7 +42,7 @@ export const formatApproveTx = ({
   const { gasLimit, nonce, ...tx } = makeTxFromForm(form, '0', data);
 
   return {
-    to: contractAddress as ITxToAddress,
-    ...tx
+    ...tx,
+    to: contractAddress as ITxToAddress
   };
 };
