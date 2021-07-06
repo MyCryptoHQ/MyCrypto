@@ -223,12 +223,14 @@ const getInitialFormikValues = ({
   s,
   defaultAccount,
   defaultAsset,
-  defaultNetwork
+  defaultNetwork,
+  networks
 }: {
   s: ITxConfig;
   defaultAccount: StoreAccount | undefined;
   defaultAsset: Asset | undefined;
   defaultNetwork: Network | undefined;
+  networks: Network[];
 }): IFormikFields => {
   const gasPriceInGwei =
     s.rawTransaction &&
@@ -238,7 +240,7 @@ const getInitialFormikValues = ({
   const state: Partial<IFormikFields> = {
     amount: s.amount,
     account: !isVoid(s.senderAccount) ? s.senderAccount : defaultAccount,
-    network: !isVoid(s.networkId) ? s.network : defaultNetwork,
+    network: !isVoid(s.networkId) ? networks.find((n) => n.id === s.networkId) : defaultNetwork,
     asset: !isVoid(s.asset) ? s.asset : defaultAsset,
     nonceField: s.rawTransaction?.nonce,
     txDataField: s.rawTransaction?.data,
@@ -438,7 +440,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         s: txConfig,
         defaultAccount,
         defaultAsset,
-        defaultNetwork
+        defaultNetwork,
+        networks
       }),
     []
   );
@@ -489,7 +492,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       s: txConfig,
       defaultAccount: newAccount,
       defaultAsset: asset,
-      defaultNetwork: getDefaultNetwork(newAccount)
+      defaultNetwork: getDefaultNetwork(newAccount),
+      networks
     });
     //@todo get assetType onChange
     resetForm({ values: { ...newInitialValues, asset } });

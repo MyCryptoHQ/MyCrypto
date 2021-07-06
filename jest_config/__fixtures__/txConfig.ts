@@ -17,7 +17,7 @@ import { isSameAddress } from '@utils';
 
 import { fAccounts } from './account';
 import { fAssets } from './assets';
-import { fNetwork, fNetworks } from './network';
+import { fNetwork } from './network';
 
 export const fERC20NonWeb3TxConfig: ITxConfig = {
   rawTransaction: {
