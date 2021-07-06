@@ -45,7 +45,7 @@ import {
   fetchEIP1559PriceEstimates,
   fetchGasPriceEstimates,
   getGasEstimate
-} from '@services/ApiService';
+} from '@services/ApiService/Gas';
 import {
   isBurnAddress,
   isValidETHAddress,

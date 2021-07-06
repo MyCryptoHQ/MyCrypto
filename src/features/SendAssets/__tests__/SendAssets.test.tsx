@@ -13,6 +13,13 @@ jest.mock('@vendor', () => {
     }))
   };
 });
+
+jest.mock('@services/ApiService/Gas', () => ({
+  ...jest.requireActual('@services/ApiService/Gas'),
+  fetchGasPriceEstimates: () => Promise.resolve({ fast: 20 }),
+  getGasEstimate: () => Promise.resolve(21000)
+}));
+
 /* Test components */
 describe('SendAssetsFlow', () => {
   const renderComponent = () => {
