@@ -67,7 +67,7 @@ describe('Faucet helpers', () => {
         gasLimit: BigNumber.from(21000),
         gasPrice: BigNumber.from(1000000000),
         hash: '0x5049c0847681402db2c303847f2f66ac7f3a6caf63119b676374d5781b8d11e9',
-        nonce: '39',
+        nonce: BigNumber.from(39),
         receiverAddress: fAccount.address,
         status: ITxStatus.PENDING,
         to: fAccount.address,

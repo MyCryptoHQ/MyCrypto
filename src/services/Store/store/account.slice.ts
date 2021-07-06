@@ -156,7 +156,8 @@ export const getAccounts = createSelector([getAppState], (s) => {
         value: EthersBN.from(t.value),
         gasLimit: EthersBN.from(t.gasLimit),
         ...gas,
-        gasUsed: t.gasUsed && EthersBN.from(t.gasUsed)
+        gasUsed: t.gasUsed && EthersBN.from(t.gasUsed),
+        nonce: EthersBN.from(t.nonce)
       };
     })
   })) as StoreAccount[];

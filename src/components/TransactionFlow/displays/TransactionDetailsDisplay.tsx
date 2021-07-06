@@ -239,9 +239,9 @@ function TransactionDetailsDisplay({
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
-              <div className="TransactionDetails-row-column">{`${bigify(
-                gasLimit
-              ).toString()}`}</div>
+              <div className="TransactionDetails-row-column">{`${bigify(gasLimit).toString(
+                10
+              )}`}</div>
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
@@ -312,7 +312,7 @@ function TransactionDetailsDisplay({
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
-              <div className="TransactionDetails-row-column">{nonce}</div>
+              <div className="TransactionDetails-row-column">{bigify(nonce).toString(10)}</div>
             </div>
             <div
               className={`TransactionDetails-row border ${

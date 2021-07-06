@@ -12,6 +12,7 @@ import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {
   Bigish,
   IFlowConfig,
+  ILegacyTxObject,
   ISimpleTxFormFull,
   ITxConfig,
   ITxMultiConfirmProps,
@@ -137,10 +138,13 @@ export const constructSenderFromTxConfig = (
 };
 
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
+// @todo Handle EIP 1559 gas params
 export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: Bigish) =>
   BigNumber.max(
     fastGasPrice,
-    bigify(bigNumGasPriceToViewableGwei(txConfig.gasPrice)).multipliedBy(1.101)
+    bigify(
+      bigNumGasPriceToViewableGwei((txConfig.rawTransaction as ILegacyTxObject).gasPrice)
+    ).multipliedBy(1.101)
   );
 
 export const isContractInteraction = (data: string, type?: ITxType) => {

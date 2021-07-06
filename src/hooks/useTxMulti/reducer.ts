@@ -16,14 +16,14 @@ export const initialState = {
 
 const formatTx = ({
   label,
-  type,
+  txType,
   metadata,
   ...txRaw
-}: ITxObject & { type: ITxType; label: string; metadata: ITxMetadata }) => ({
+}: ITxObject & { txType: ITxType; label: string; metadata: ITxMetadata }) => ({
   txRaw,
   _uuid: getUUID(JSON.stringify(txRaw)),
   status: ITxStatus.PREPARING,
-  type,
+  txType,
   label,
   metadata
 });

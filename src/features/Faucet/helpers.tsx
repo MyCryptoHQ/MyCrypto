@@ -97,7 +97,7 @@ export const makeTxReceipt = (
     to: txResult.to,
     from: txResult.from,
     value: BigNumber.from(txResult.value),
-    nonce: txResult.nonce.toString(),
+    nonce: BigNumber.from(txResult.nonce),
     hash: txResult.hash
   };
 };

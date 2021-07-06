@@ -44,6 +44,7 @@ const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
     receiverAddress: getAddress(fixtureTxReceipt.receiverAddress),
     gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice),
     gasLimit: BigNumber.from(fixtureTxReceipt.gasLimit),
+    nonce: BigNumber.from(fixtureTxReceipt.nonce),
     value: BigNumber.from(fixtureTxReceipt.value),
     status: fixtureTxReceipt.status as ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED
   };

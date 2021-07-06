@@ -43,7 +43,7 @@ export interface IBaseTxReceipt {
   readonly to: TAddress;
   readonly from: TAddress;
   readonly value: BigNumber;
-  readonly nonce: string;
+  readonly nonce: BigNumber;
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;

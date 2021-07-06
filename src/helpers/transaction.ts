@@ -112,10 +112,10 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     gasLimit: BigNumber.from(gasLimit),
     value: BigNumber.from(txConfig.rawTransaction.value),
     to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
+    nonce: BigNumber.from(nonce),
 
     status,
     amount,
-    nonce,
     data,
     txType,
     asset,
@@ -443,10 +443,11 @@ export const appendGasPrice = (network: Network) => async (
       throw new Error(`getGasPriceEstimate: ${err}`);
     });
 
+  // @todo Remove type cast if possible?
   return {
     ...tx,
     ...gas
-  };
+  } as TxBeforeGasLimit;
 };
 
 export const appendGasLimit = (network: Network) => async (
