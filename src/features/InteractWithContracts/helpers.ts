@@ -94,14 +94,18 @@ export const constructGasCallProps = (
   currentFunction: ABIItem,
   account: StoreAccount
 ) => {
-  const { encodeInput } = new AbiFunction(currentFunction, []);
-  const parsedInputs = reduceInputParams(currentFunction);
-  const data = encodeInput(parsedInputs) as ITxData;
+  try {
+    const { encodeInput } = new AbiFunction(currentFunction, []);
+    const parsedInputs = reduceInputParams(currentFunction);
+    const data = encodeInput(parsedInputs) as ITxData;
 
-  return {
-    from: account.address,
-    to: contractAddress,
-    value: inputValueToHex(currentFunction.payAmount),
-    data
-  };
+    return {
+      from: account.address,
+      to: contractAddress,
+      value: inputValueToHex(currentFunction.payAmount),
+      data
+    };
+  } catch {
+    return {};
+  }
 };

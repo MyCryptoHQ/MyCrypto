@@ -265,7 +265,10 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     return decodeOutput(result, network.chainId);
   };
 
-  const handleInteractionFormWriteSubmit = async (submitedFunction: ABIItem, after: () => void) => {
+  const handleInteractionFormWriteSubmit = async (
+    submittedFunction: ABIItem,
+    after: () => void
+  ) => {
     const {
       contractAddress,
       account,
@@ -282,11 +285,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     const { network } = account;
 
-    const { value, data, to: address } = constructGasCallProps(
-      contractAddress,
-      submitedFunction,
-      account
-    );
+    const { value, data } = constructGasCallProps(contractAddress, submittedFunction, account);
 
     const { gasLimit: unusedGasLimit, ...transaction } = makeTxFromForm(
       {
@@ -296,11 +295,11 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
         maxPriorityFeePerGas,
         nonce,
         account,
-        address,
+        address: contractAddress,
         network
       },
-      value,
-      data
+      value!,
+      data!
     );
 
     // check if transaction fails everytime
@@ -308,7 +307,7 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     const tx = { ...transaction, gasLimit: inputGasLimitToHex(gasLimit) };
 
-    const txConfig = makeBasicTxConfig(tx, account, submitedFunction.payAmount);
+    const txConfig = makeBasicTxConfig(tx, account, submittedFunction.payAmount);
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
