@@ -28,10 +28,10 @@ export default function MembershipReceipt({
 
   const txItems = transactions.map((tx) => {
     const txConfig =
-      tx.type === ITxType.PURCHASE_MEMBERSHIP
+      tx.txType === ITxType.PURCHASE_MEMBERSHIP
         ? makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig)
         : makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account]);
-    return makeTxItem(tx.type!, txConfig, tx.txHash!, tx.txReceipt);
+    return makeTxItem(tx.txType!, txConfig, tx.txHash!, tx.txReceipt);
   });
 
   const network = getNetworkById(txItems[0].txConfig.networkId);

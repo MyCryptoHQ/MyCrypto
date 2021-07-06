@@ -166,7 +166,8 @@ const getGasPriceFromTx = (tx: {
   tx.type && tx.type > 0
     ? {
         maxFeePerGas: BigNumber.from(tx.maxFeePerGas!).toHexString() as ITxGasPrice,
-        maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas!).toHexString() as ITxGasPrice
+        maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas!).toHexString() as ITxGasPrice,
+        type: tx.type
       }
     : { gasPrice: BigNumber.from(tx.gasPrice!).toHexString() as ITxGasPrice };
 

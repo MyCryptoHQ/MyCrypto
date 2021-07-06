@@ -11,8 +11,12 @@ jest.mock('@vendor', () => {
   return {
     ...jest.requireActual('@vendor'),
     FallbackProvider: jest.fn().mockImplementation(() => ({
-      estimateGas: jest.fn().mockImplementation(() => Promise.resolve(21000)),
-      getTransactionCount: jest.fn().mockImplementation(() => Promise.resolve(10))
+      estimateGas: jest.fn().mockResolvedValue(21000),
+      getTransactionCount: jest.fn().mockResolvedValue(10),
+      getFeeData: jest.fn().mockResolvedValue({
+        maxGasFeePerGas: '20000000000',
+        maxPriorityFeePerGas: '1000000000'
+      })
     }))
   };
 });

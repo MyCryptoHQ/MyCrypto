@@ -31,7 +31,7 @@ export const fTokenMigrationTxs = (): TxParcel[] => {
       gasLimit: inputGasLimitToHex('150000'),
       nonce: inputNonceToHex(tokenMigrationPayload.nonce)
     },
-    type: ITxType.APPROVAL,
+    txType: ITxType.APPROVAL,
     txResponse: fApproveERC20TxResponse,
     status: ITxStatus.CONFIRMING
   };
@@ -43,7 +43,7 @@ export const fTokenMigrationTxs = (): TxParcel[] => {
       gasLimit: inputGasLimitToHex(tokenMigrationPayload.gasLimit.toString()),
       nonce: inputNonceToHex((parseInt(tokenMigrationPayload.nonce) + 1).toString())
     },
-    type: ITxType.REP_TOKEN_MIGRATION,
+    txType: ITxType.REP_TOKEN_MIGRATION,
     txResponse: fREPTokenMigrationTxResponse,
     status: ITxStatus.CONFIRMING
   };

@@ -92,7 +92,8 @@ describe('makeTx', () => {
         ...fETHNonWeb3TxConfig.rawTransaction,
         from: fETHNonWeb3TxConfig.from,
         nonce: '0x06',
-        gasPrice: '0x012a05f200'
+        gasPrice: '0x012a05f200',
+        type: undefined
       }
     });
     expect(result.receipt).toStrictEqual(

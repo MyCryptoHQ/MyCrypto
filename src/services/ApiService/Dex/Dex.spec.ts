@@ -32,7 +32,9 @@ describe('SwapFlow', () => {
         gasPrice: '0x23db1d8400',
         to: '0x6b175474e89094c44da98b954eedeac495271d0f',
         txType: 'APPROVAL',
-        value: '0x0'
+        value: '0x0',
+        maxFeePerGas: undefined,
+        maxPriorityFeePerGas: undefined
       });
       expect(result.tradeTx).toStrictEqual({
         chainId: fNetwork.chainId,

@@ -19,7 +19,7 @@ export interface TxParcel {
   readonly txHash?: ITxHash;
   readonly txReceipt?: TransactionReceipt;
   readonly txResponse?: TransactionResponse;
-  readonly type?: ITxType;
+  readonly txType?: ITxType;
   readonly minedAt?: number; // timestamp of block that included tx
   readonly metadata?: ITxMetadata;
 }
