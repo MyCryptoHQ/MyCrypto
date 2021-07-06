@@ -1,19 +1,19 @@
-import { makePendingTxReceipt } from '@helpers';
+import { makePendingTxReceipt, makeTxFromForm } from '@helpers';
 import { useAccounts, useNetworks } from '@services';
 import { ProviderHandler } from '@services/EthService';
 import {
   Asset,
   ISimpleTxFormFull,
   ITxConfig,
+  ITxData,
   ITxHash,
   ITxStatus,
   ITxType,
   TAddress,
   TStepAction
 } from '@types';
-import { isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { inputValueToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
-import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';
 
 const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
@@ -64,11 +64,15 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   };
 
   const handleUserInputFormSubmit: TStepAction = (payload: ISimpleTxFormFull, cb: any) => {
-    const rawTransaction = createSimpleTxObject({
-      ...payload,
-      address: state.zapSelected!.contractAddress,
-      gasLimit: state.zapSelected!.minimumGasLimit
-    });
+    const rawTransaction = makeTxFromForm(
+      {
+        ...payload,
+        address: state.zapSelected!.contractAddress,
+        gasLimit: state.zapSelected!.minimumGasLimit
+      },
+      inputValueToHex(payload.amount),
+      '0x' as ITxData
+    );
 
     const txConfig: ITxConfig = {
       rawTransaction,
