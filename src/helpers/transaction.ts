@@ -548,7 +548,7 @@ export const makeTxFromForm = (
 
   return {
     ...gas,
-    from: form.account.address,
+    from: form.account?.address,
     to: form.address as ITxToAddress,
     value: inputValueToHex(value),
     data: data,

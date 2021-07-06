@@ -4,7 +4,8 @@ import axios from 'axios';
 
 import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
-import { DexService, getGasEstimate } from '@services';
+import { DexService } from '@services/ApiService';
+import { getGasEstimate } from '@services/ApiService/Gas';
 import { getBaseAssetByNetwork, getSwapAssetsByNetwork, selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
