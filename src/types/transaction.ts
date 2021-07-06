@@ -80,20 +80,11 @@ export type IUnknownTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
   status: ITxStatus.UNKNOWN;
 };
 
-export type ISuccessfulTxReceipt = DistributiveOmit<
+export type IFinishedTxReceipt = DistributiveOmit<
   ITxReceipt,
   'status' | 'timestamp' | 'blockNumber'
 > & {
-  status: ITxStatus.SUCCESS;
-  timestamp: number;
-  blockNumber: number;
-};
-
-export type IFailedTxReceipt = DistributiveOmit<
-  ITxReceipt,
-  'status' | 'timestamp' | 'blockNumber'
-> & {
-  status: ITxStatus.FAILED;
+  status: ITxStatus.SUCCESS | ITxStatus.FAILED;
   timestamp: number;
   blockNumber: number;
 };

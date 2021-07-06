@@ -25,10 +25,9 @@ import {
   Asset,
   DistributiveOmit,
   ExtendedAsset,
-  IFailedTxReceipt,
+  IFinishedTxReceipt,
   IPendingTxReceipt,
   ISimpleTxFormFull,
-  ISuccessfulTxReceipt,
   ITxConfig,
   ITxData,
   ITxFromAddress,
@@ -44,7 +43,6 @@ import {
   ITxToAddress,
   ITxType,
   ITxValue,
-  IUnknownTxReceipt,
   Network,
   StoreAccount,
   TAddress
@@ -100,7 +98,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txType: ITxType,
   txConfig: ITxConfig,
   metadata?: ITxMetadata
-): IPendingTxReceipt | ISuccessfulTxReceipt | IFailedTxReceipt | IUnknownTxReceipt => {
+): ITxReceipt => {
   const { rawTransaction, asset, baseAsset, amount } = txConfig;
   const { data, gasLimit, nonce } = rawTransaction;
 
@@ -150,7 +148,7 @@ export const makeFinishedTxReceipt = (
   blockNumber?: number,
   gasUsed?: BigNumber,
   confirmations?: number
-): IFailedTxReceipt | ISuccessfulTxReceipt => ({
+): IFinishedTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
   timestamp: timestamp || 0,

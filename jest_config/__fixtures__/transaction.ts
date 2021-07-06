@@ -4,9 +4,8 @@ import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   DistributiveOmit,
-  IFailedTxReceipt,
+  IFinishedTxReceipt,
   IPendingTxReceipt,
-  ISuccessfulTxReceipt,
   ITxData,
   ITxFromAddress,
   ITxGasLimit,
@@ -74,12 +73,12 @@ export const fETHNonWeb3TxReceipt = toTxReceipt(ethNonWeb3TxReceipt) as IPending
 export const fETHWeb3TxReceipt = toTxReceipt(ethWeb3TxReceipt) as IPendingTxReceipt;
 export const fERC20NonWeb3TxReceipt = toTxReceipt(erc20NonWeb3TxReceipt) as IPendingTxReceipt;
 export const fERC20Web3TxReceipt = toTxReceipt(erc20Web3TxReceipt) as IPendingTxReceipt;
-export const fFinishedERC20NonWeb3TxReceipt = toTxReceipt(erc20NonWeb3TxReceiptFinished) as
-  | ISuccessfulTxReceipt
-  | IFailedTxReceipt;
-export const fFinishedERC20Web3TxReceipt = toTxReceipt(erc20Web3TxReceiptFinished) as
-  | ISuccessfulTxReceipt
-  | IFailedTxReceipt;
+export const fFinishedERC20NonWeb3TxReceipt = toTxReceipt(
+  erc20NonWeb3TxReceiptFinished
+) as IFinishedTxReceipt;
+export const fFinishedERC20Web3TxReceipt = toTxReceipt(
+  erc20Web3TxReceiptFinished
+) as IFinishedTxReceipt;
 
 export const fDerivedApprovalTx: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> = {
   chainId: 1,
