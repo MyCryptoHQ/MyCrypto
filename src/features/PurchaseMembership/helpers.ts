@@ -1,11 +1,11 @@
 import { AddressZero } from '@ethersproject/constants';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { formatApproveTx } from '@helpers';
+import { formatApproveTx, makeTxFromForm } from '@helpers';
 import { getAssetByUUID } from '@services';
 import { UnlockToken } from '@services/EthService/contracts';
 import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } from '@types';
-import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import { toWei } from '@utils';
 
 import { isERC20Asset } from '../SendAssets';
 import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from './config';
@@ -33,16 +33,16 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
     _recipient: payload.account.address,
     _referrer: AddressZero,
     _data: []
-  });
+  }) as ITxData;
 
-  return {
-    from: payload.account.address,
-    to: membershipSelected.contractAddress as ITxToAddress,
-    value: isERC20Asset(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
-    data: data as ITxData,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    chainId: payload.network.chainId
-  };
+  const value = isERC20Asset(payload.asset) ? '0' : payload.amount;
+
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
+    { ...payload, address: membershipSelected.contractAddress as ITxToAddress },
+    value,
+    data
+  );
+  return tx;
 };
 
 export const makePurchaseMembershipTxConfig = (
