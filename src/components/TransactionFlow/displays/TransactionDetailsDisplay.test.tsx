@@ -12,7 +12,8 @@ import {
   fETHWeb3TxResponse,
   fNetwork,
   fRopDAI,
-  fTxConfig
+  fTxConfig,
+  fTxConfigEIP1559
 } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ITxStatus } from '@types';
@@ -66,5 +67,34 @@ describe('TransactionDetailsDisplay', () => {
     expect(getAllByText(truncate(fAccount.address))).toBeDefined();
     expect(getAllByText(fRopDAI.ticker, { exact: false })).toBeDefined();
     expect(getByTestId('SUCCESS')).toBeDefined();
+  });
+
+  test('it renders legacy gas', async () => {
+    const { getAllByText, container, getByText } = getComponent({
+      ...defaultProps,
+      status: ITxStatus.SUCCESS,
+      gasUsed: BigNumber.from(19000),
+      confirmations: 100,
+      data: fApproveERC20TxResponse.data
+    });
+    fireEvent.click(container.querySelector('button')!);
+    expect(getAllByText(translateRaw('GAS_PRICE'), { exact: false })).toBeDefined();
+    expect(getByText('4.0 gwei', { exact: false })).toBeDefined();
+  });
+
+  test('it renders EIP 1559 gas', async () => {
+    const { container, getByText } = getComponent({
+      ...defaultProps,
+      status: ITxStatus.SUCCESS,
+      gasUsed: BigNumber.from(19000),
+      confirmations: 100,
+      data: fApproveERC20TxResponse.data,
+      rawTransaction: fTxConfigEIP1559.rawTransaction
+    });
+    fireEvent.click(container.querySelector('button')!);
+    expect(getByText(translateRaw('MAX_FEE_PER_GAS'), { exact: false })).toBeDefined();
+    expect(getByText(translateRaw('MAX_PRIORITY_FEE'), { exact: false })).toBeDefined();
+    expect(getByText('20.0 gwei', { exact: false })).toBeDefined();
+    expect(getByText('1.0 gwei', { exact: false })).toBeDefined();
   });
 });

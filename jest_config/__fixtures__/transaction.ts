@@ -59,8 +59,20 @@ export const fTransaction: ITxObject = {
   to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2' as ITxToAddress,
   value: '0x38d7ea4c68000' as ITxValue,
   data: '0x' as ITxData,
-  gasLimit: '21000' as ITxGasLimit,
+  gasLimit: '0x5208' as ITxGasLimit,
   gasPrice: '0xee6b2800' as ITxGasPrice,
+  nonce: '0x9' as ITxNonce,
+  chainId: 3
+};
+
+export const fTransactionEIP1559: ITxObject = {
+  to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2' as ITxToAddress,
+  value: '0x38d7ea4c68000' as ITxValue,
+  data: '0x' as ITxData,
+  gasLimit: '0x5208' as ITxGasLimit,
+  maxFeePerGas: '0x4a817c800' as ITxGasPrice,
+  maxPriorityFeePerGas: '0x3b9aca00' as ITxGasPrice,
+  type: 2,
   nonce: '0x9' as ITxNonce,
   chainId: 3
 };

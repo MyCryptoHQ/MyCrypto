@@ -16,6 +16,7 @@ import {
   fNetworks,
   fSettings,
   fTransaction,
+  fTransactionEIP1559,
   fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
@@ -29,6 +30,7 @@ import {
   ITxReceipt,
   ITxStatus,
   ITxType,
+  ITxType2Object,
   NetworkId,
   TUuid,
   WalletId
@@ -188,6 +190,41 @@ describe('AccountSlice', () => {
             gasUsed: BigNumber.from(fTransaction.gasLimit),
             nonce: BigNumber.from(fTransaction.nonce),
             value: BigNumber.from(fTransaction.value)
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('getAccounts(): supports EIP 1559 transaactions', () => {
+    const state = mockAppState({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [
+            ({
+              ...fTransactionEIP1559,
+              gasUsed: fTransactionEIP1559.gasLimit
+            } as unknown) as ITxReceipt
+          ]
+        }
+      ]
+    });
+    const actual = getAccounts(state);
+    expect(actual).toEqual([
+      {
+        ...fAccount,
+        transactions: [
+          {
+            ...fTransactionEIP1559,
+            gasLimit: BigNumber.from(fTransactionEIP1559.gasLimit),
+            maxFeePerGas: BigNumber.from((fTransactionEIP1559 as ITxType2Object).maxFeePerGas),
+            maxPriorityFeePerGas: BigNumber.from(
+              (fTransactionEIP1559 as ITxType2Object).maxPriorityFeePerGas
+            ),
+            gasUsed: BigNumber.from(fTransactionEIP1559.gasLimit),
+            nonce: BigNumber.from(fTransactionEIP1559.nonce),
+            value: BigNumber.from(fTransactionEIP1559.value)
           }
         ]
       }

@@ -14,7 +14,7 @@ jest.mock('@vendor', () => {
       estimateGas: jest.fn().mockResolvedValue(21000),
       getTransactionCount: jest.fn().mockResolvedValue(10),
       getFeeData: jest.fn().mockResolvedValue({
-        maxGasFeePerGas: '20000000000',
+        maxFeePerGas: '20000000000',
         maxPriorityFeePerGas: '1000000000'
       })
     }))
