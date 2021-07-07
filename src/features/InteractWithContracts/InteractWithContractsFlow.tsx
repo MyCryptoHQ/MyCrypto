@@ -151,10 +151,10 @@ const InteractWithContractsFlow = () => {
     {
       title: translateRaw('INTERACT_SIGN_WRITE'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(interactWithContractsState),
       actions: {
         onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)

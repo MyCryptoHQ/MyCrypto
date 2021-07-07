@@ -22,7 +22,8 @@ export {
   deriveTxFields,
   checkRequiresApproval,
   makeBasicTxConfig,
-  makeTxFromForm
+  makeTxFromForm,
+  toTxReceipt
 } from './transaction';
 export { formatApproveTx } from './erc20';
 export { withProtectTxProvider } from './withProtectTxProvider';

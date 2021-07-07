@@ -126,10 +126,10 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     {
       title: translateRaw('DEPLOY_SIGN'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(deployContractsState),
       actions: {
         onSuccess: (payload: IPendingTxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)

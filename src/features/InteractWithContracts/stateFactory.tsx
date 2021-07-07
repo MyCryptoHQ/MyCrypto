@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { CREATION_ADDRESS } from '@config';
-import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm } from '@helpers';
+import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm, toTxReceipt } from '@helpers';
 import {
   EtherscanService,
   getGasEstimate,
@@ -333,14 +333,14 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
 
     if (isWeb3Wallet(account.wallet)) {
       const txReceipt =
-        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+        signResponse && signResponse.hash
+          ? signResponse
+          : toTxReceipt(signResponse, ITxStatus.PENDING)(ITxType.CONTRACT_INTERACT, txConfig);
       addTxToAccount(state.txConfig.senderAccount, {
         ...txReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
-        amount: state.txConfig.amount,
-        txType: ITxType.CONTRACT_INTERACT,
-        status: ITxStatus.PENDING
+        amount: state.txConfig.amount
       });
       setState((prevState: InteractWithContractState) => ({
         ...prevState,

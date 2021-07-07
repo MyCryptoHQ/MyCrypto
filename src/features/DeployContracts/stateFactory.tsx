@@ -6,7 +6,7 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
-import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm } from '@helpers';
+import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm, toTxReceipt } from '@helpers';
 import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
 import {
@@ -122,14 +122,14 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
 
     if (isWeb3Wallet(account.wallet)) {
       const baseTxReceipt =
-        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+        signResponse && signResponse.hash
+          ? signResponse
+          : toTxReceipt(signResponse, ITxStatus.PENDING)(ITxType.DEPLOY_CONTRACT, txConfig);
       const txReceipt = {
         ...baseTxReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
-        amount: state.txConfig.amount,
-        txType: ITxType.DEPLOY_CONTRACT,
-        status: ITxStatus.PENDING
+        amount: state.txConfig.amount
       };
       addTxToAccount(state.txConfig.senderAccount, txReceipt);
       setState((prevState: DeployContractsState) => ({
