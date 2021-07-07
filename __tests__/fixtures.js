@@ -31,7 +31,9 @@ const PAGES = {
   ADD_ACCOUNT: `${FIXTURES_CONST.BASE_URL}/add-account`,
   TX_STATUS: `${FIXTURES_CONST.BASE_URL}/tx-status`,
   SWAP: `${FIXTURES_CONST.BASE_URL}/swap`,
-  BUY_MEMBERSHIP: `${FIXTURES_CONST.BASE_URL}/membership/buy`
+  BUY_MEMBERSHIP: `${FIXTURES_CONST.BASE_URL}/membership/buy`,
+  INTERACT_WITH_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/interact-with-contracts`,
+  DEPLOY_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/deploy-contracts`
 };
 
 const FIXTURE_ETHEREUM = 'Ethereum';
@@ -250,6 +252,192 @@ const FIXTURE_HARDHAT = {
   userActions: {}
 };
 
+const FIXTURE_CONTRACT_BYTECODE = `0x608060405234801561001057600080fd5b5061017c806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063ef5fb05b14610030575b600080fd5b61003861004e565b60405161004591906100c4565b60405180910390f35b60606040518060400160405280600c81526020017f48656c6c6f20576f726c64210000000000000000000000000000000000000000815250905090565b6000610096826100e6565b6100a081856100f1565b93506100b0818560208601610102565b6100b981610135565b840191505092915050565b600060208201905081810360008301526100de818461008b565b905092915050565b600081519050919050565b600082825260208201905092915050565b60005b83811015610120578082015181840152602081019050610105565b8381111561012f576000848401525b50505050565b6000601f19601f830116905091905056fea26469706673582212201a6960a39a385911e5d30972e41b9ee5841bb76084125663c0df508f87da619e64736f6c63430008030033`;
+
+const FIXTURE_ERC20_ABI = [
+  {
+    name: 'decimals',
+    type: 'function',
+
+    constant: true,
+    payable: false,
+    inputs: [],
+
+    outputs: [
+      {
+        name: '',
+        type: 'uint8'
+      }
+    ]
+  },
+  {
+    name: 'symbol',
+    type: 'function',
+    constant: true,
+    payable: false,
+
+    inputs: [],
+
+    outputs: [
+      {
+        name: '',
+        type: 'string'
+      }
+    ]
+  },
+
+  {
+    name: 'balanceOf',
+    type: 'function',
+    constant: true,
+    payable: false,
+
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address'
+      }
+    ],
+
+    outputs: [
+      {
+        name: 'balance',
+        type: 'uint256'
+      }
+    ]
+  },
+
+  {
+    name: 'transfer',
+    type: 'function',
+    constant: false,
+    payable: false,
+
+    inputs: [
+      {
+        name: '_to',
+        type: 'address'
+      },
+      {
+        name: '_value',
+        type: 'uint256'
+      }
+    ],
+
+    outputs: [
+      {
+        name: 'success',
+        type: 'bool'
+      }
+    ]
+  },
+  {
+    name: 'transferFrom',
+    type: 'function',
+    constant: false,
+    payable: false,
+
+    inputs: [
+      {
+        name: '_from',
+        type: 'address'
+      },
+      {
+        name: '_to',
+        type: 'address'
+      },
+      {
+        name: '_value',
+        type: 'uint256'
+      }
+    ],
+
+    outputs: [
+      {
+        name: 'success',
+        type: 'bool'
+      }
+    ]
+  },
+  {
+    name: 'Transfer',
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: '_from',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        name: '_to',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: '_value',
+        type: 'uint256'
+      }
+    ]
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_spender',
+        type: 'address'
+      },
+      {
+        name: '_value',
+        type: 'uint256'
+      }
+    ],
+    name: 'approve',
+    outputs: [
+      {
+        name: '',
+        type: 'bool'
+      }
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+
+  {
+    name: 'allowance',
+    type: 'function',
+    constant: true,
+    payable: false,
+    stateMutability: 'view',
+
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address'
+      },
+      {
+        name: '_spender',
+        type: 'address'
+      }
+    ],
+
+    outputs: [
+      {
+        name: 'allowance',
+        type: 'uint256'
+      }
+    ]
+  }
+];
+
+const FIXTURE_ERC20_ABI_JSON = JSON.stringify(FIXTURE_ERC20_ABI);
+
+const FIXTURE_DAI_ADDRESS = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+const FIXTURE_CONTRACT_SPENDER = '0x7a250d5630b4cf539739df2c5dacb4c659f2488d';
+const FIXTURE_CONTRACT_ALLOWANCE = '1000000000000000000';
+
 export {
   ENV,
   FIXTURES_CONST,
@@ -265,5 +453,10 @@ export {
   FIXTURE_INCOMING_TX_HASH,
   FIXTURE_WEB3_ADDRESS,
   FIXTURE_HARDHAT_PRIVATE_KEY,
-  FIXTURE_HARDHAT
+  FIXTURE_HARDHAT,
+  FIXTURE_CONTRACT_BYTECODE,
+  FIXTURE_ERC20_ABI_JSON,
+  FIXTURE_DAI_ADDRESS,
+  FIXTURE_CONTRACT_SPENDER,
+  FIXTURE_CONTRACT_ALLOWANCE
 };

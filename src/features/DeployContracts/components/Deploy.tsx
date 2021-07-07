@@ -158,6 +158,7 @@ export const Deploy = (props: Props) => {
       <FieldWrapper>
         <InputWrapper>
           <InputField
+            name="byteCode"
             label={translateRaw('CONTRACT_BYTECODE')}
             value={byteCode}
             placeholder="0x8f87a973e..."
