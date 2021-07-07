@@ -135,7 +135,6 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
-    handleAccountSelected(undefined);
     setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {

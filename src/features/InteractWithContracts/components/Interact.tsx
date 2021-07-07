@@ -346,6 +346,7 @@ function Interact(props: CombinedProps) {
             <FieldWrapper>
               <InputWrapper onClick={() => setWasContractInteracted(false)}>
                 <InputField
+                  name="abi"
                   label={translateRaw('CONTRACT_JSON')}
                   value={abi}
                   placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
