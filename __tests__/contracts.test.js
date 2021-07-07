@@ -19,10 +19,14 @@ test('Can interact with contract', async (t) => {
 
   await contractsPage.fillInteractForm();
 
+  await t.wait(FIXTURES_CONST.TIMEOUT);
+
   const button = await queryAllByText(findByTKey('ACTION_17')).nth(1);
   await t.click(button);
 
-  const signBtn = await queryByText(findByTKey('CONFIRM_AND_SEND'));
+  const signBtn = await queryByText(findByTKey('CONFIRM_AND_SEND')).with({
+    timeout: FIXTURES_CONST.HARDHAT_TIMEOUT
+  });
   await t.expect(signBtn.exists).ok();
   await t.click(signBtn);
 
@@ -42,10 +46,14 @@ test('Can deploy contract', async (t) => {
 
   await contractsPage.fillDeployForm();
 
+  await t.wait(FIXTURES_CONST.TIMEOUT);
+
   const button = await queryAllByText(findByTKey('NAV_DEPLOYCONTRACT')).nth(1);
   await t.click(button);
 
-  const signBtn = await queryByText(findByTKey('CONFIRM_AND_SEND'));
+  const signBtn = await queryByText(findByTKey('CONFIRM_AND_SEND')).with({
+    timeout: FIXTURES_CONST.HARDHAT_TIMEOUT
+  });
   await t.expect(signBtn.exists).ok();
   await t.click(signBtn);
 
