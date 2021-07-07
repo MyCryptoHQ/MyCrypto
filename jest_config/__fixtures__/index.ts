@@ -1,5 +1,6 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
+import { default as txConfigEIP1559 } from './txConfigEIP1559.json';
 
 export { fAssets, fStoreAssets, fRopDAI, fDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
@@ -24,6 +25,7 @@ export {
 } from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };
+export const fTxConfigEIP1559 = txConfigEIP1559;
 
 export { default as fTxConfigs } from './txConfigs.json';
 export { default as fTxReceipt } from './txReceipt.json';

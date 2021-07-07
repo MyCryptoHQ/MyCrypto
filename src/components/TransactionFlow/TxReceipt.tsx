@@ -20,12 +20,7 @@ import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { makeFinishedTxReceipt } from '@helpers';
-import {
-  fetchGasPriceEstimates,
-  getAssetByContractAndNetwork,
-  useAssets,
-  useRates
-} from '@services';
+import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
 import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
@@ -57,7 +52,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { bigify, buildTxUrl, isWeb3Wallet, truncate } from '@utils';
+import { buildTxUrl, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
@@ -214,20 +209,18 @@ const TxReceipt = ({
 
   const handleTxSpeedUpRedirect = async () => {
     if (!txConfig) return;
-    const { fast } = await fetchGasPriceEstimates(network);
     const query = constructSpeedUpTxQuery(
       txConfig,
-      calculateReplacementGasPrice(txConfig, bigify(fast))
+      await calculateReplacementGasPrice(txConfig, network)
     );
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
 
   const handleTxCancelRedirect = async () => {
     if (!txConfig) return;
-    const { fast } = await fetchGasPriceEstimates(network);
     const query = constructCancelTxQuery(
       txConfig,
-      calculateReplacementGasPrice(txConfig, bigify(fast))
+      await calculateReplacementGasPrice(txConfig, network)
     );
     history.replace(`${ROUTE_PATHS.SEND.path}/?${query}`);
   };
