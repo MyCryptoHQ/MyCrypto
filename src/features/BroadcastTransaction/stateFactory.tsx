@@ -1,6 +1,5 @@
-import { makePendingTxReceipt, makeTxConfigFromSignedTx } from 'helpers';
-
 import { DEFAULT_NETWORK } from '@config';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { useAssets, useNetworks } from '@services/Store';
 import { getStoreAccounts, useSelector } from '@store';

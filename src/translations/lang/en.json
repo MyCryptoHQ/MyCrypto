@@ -550,7 +550,7 @@
     "SEND_ASSETS_SEND_ANOTHER": "Send Another Transaction",
     "SEND_RAW": "Raw Transaction ",
     "SEND_SIGNED": "Signed Transaction ",
-    "SEND_TRANS": "Send Transaction ",
+    "SEND_TRANS": "Send Transaction",
     "SEND_LINK": "Send",
     "SETTINGS": "Settings",
     "SETTINGS_ACCOUNTS_TOOLTIP": "Your accounts will show up here even if you leave and come back, thanks to your browser’s local storage! MyCrypto never logs, tracks, or stores any of your account information, and your address is only ever transmitted when you submit a transaction to the blockchain.",

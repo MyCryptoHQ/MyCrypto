@@ -263,6 +263,7 @@ export default function GeneratedInteractionForm({
                         />
                       ) : (
                         <InputField
+                          name={field.name}
                           label={
                             <FieldLabel fieldName={field.displayName!} fieldType={field.type} />
                           }
