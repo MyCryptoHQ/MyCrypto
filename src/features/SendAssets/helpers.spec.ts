@@ -7,6 +7,7 @@ import {
   fERC20TxSendFormikFields,
   fETHNonWeb3TxConfig,
   fETHTxSendFormikFields,
+  fETHTxSendFormikFieldsEIP1559,
   fNetwork
 } from '@fixtures';
 import { translateRaw } from '@translations';
@@ -222,6 +223,10 @@ describe('isERC20Asset', () => {
 describe('processFormDataToTx', () => {
   it('correctly process eth form data to eth tx', () => {
     expect(processFormDataToTx(fETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process eth form data to eth tx for EIP 1559', () => {
+    expect(processFormDataToTx(fETHTxSendFormikFieldsEIP1559)).toMatchSnapshot();
   });
 
   it('correctly process advanced eth form data to eth tx', () => {

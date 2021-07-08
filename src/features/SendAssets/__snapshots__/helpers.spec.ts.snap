@@ -48,6 +48,20 @@ Object {
 }
 `;
 
+exports[`processFormDataToTx correctly process eth form data to eth tx for EIP 1559 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "gasLimit": "0x5208",
+  "maxFeePerGas": "0x4a817c800",
+  "maxPriorityFeePerGas": "0x3b9aca00",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "type": 2,
+  "value": "0x2386f26fc10000",
+}
+`;
+
 exports[`processFormForEstimateGas correctly process advanced erc20 form data for gas limit estimate 1`] = `
 Object {
   "chainId": 3,

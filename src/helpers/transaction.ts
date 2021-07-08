@@ -175,7 +175,6 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   const decodedTx = parseTransaction(signedTx);
 
   return {
-    ...decodedTx,
     to: decodedTx.to as ITxToAddress | undefined,
     from: decodedTx.from as TAddress,
     data: decodedTx.data as ITxData,
@@ -183,6 +182,7 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
     value: decodedTx.value.toHexString() as ITxValue,
     nonce: addHexPrefix(decodedTx.nonce.toString(16)) as ITxNonce,
     gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
+    chainId: decodedTx.chainId,
     // @todo Cleaner way of doing this?
     type: decodedTx.type as 2
   };

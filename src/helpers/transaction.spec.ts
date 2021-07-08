@@ -22,7 +22,10 @@ import {
   fNetwork,
   fNetworks,
   fRopDAI,
-  fSignedTx
+  fSignedTx,
+  fSignedTxEIP1559,
+  fTxConfigEIP1559,
+  fTxReceiptEIP1559
 } from '@fixtures';
 import {
   ITxData,
@@ -108,6 +111,14 @@ describe('toTxReceipt', () => {
       metadata
     );
     expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
+
+  it('supports EIP 1559 gas', () => {
+    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+      ITxType.STANDARD,
+      fTxConfigEIP1559
+    );
+    expect(txReceipt).toStrictEqual(fTxReceiptEIP1559);
   });
 });
 
@@ -606,13 +617,36 @@ describe('makeTxConfigFromSignedTx', () => {
         from: address,
         gasLimit: '0x5208',
         gasPrice: '0x012a05f200',
-        hash: '0xcb065f33abc23fb06d29d8ae0768b9f01ded466a043d5fa43132c58f73fe142d',
         nonce: '0x6',
-        r: '0x686df061021262b4e75eb1608c8baaf043cca2b5ac68fb24420ede62d13a8a7f',
-        s: '0x35389237414433ac06a33d95c863b8221fe2c797a9c650c47a555255be0234f3',
         to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
         type: null,
-        v: 42,
+        value: '0x2386f26fc10000'
+      },
+      receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+      senderAccount: account
+    });
+  });
+
+  it('creates a basic tx config from a signed EIP 1559 tx', () => {
+    const address = '0x0961Ca10D49B9B8e371aA0Bcf77fE5730b18f2E4' as TAddress;
+    const account = { ...fAccounts[1], address };
+    const result = makeTxConfigFromSignedTx(fSignedTxEIP1559, fAssets, fNetworks, [account]);
+    expect(result).toStrictEqual({
+      amount: '0.01',
+      asset: fAssets[1],
+      baseAsset: fAssets[1],
+      from: address,
+      networkId: 'Ropsten',
+      rawTransaction: {
+        chainId: 3,
+        data: '0x',
+        from: address,
+        gasLimit: '0x5208',
+        maxFeePerGas: '0x04a817c800',
+        maxPriorityFeePerGas: '0x3b9aca00',
+        nonce: '0x6',
+        to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+        type: 2,
         value: '0x2386f26fc10000'
       },
       receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',

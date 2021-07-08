@@ -17,6 +17,7 @@ import {
   ITxToAddress,
   ITxValue
 } from '@types';
+import { isType2Receipt } from '@utils';
 
 import { default as erc20NonWeb3TxReceipt } from './erc20NonWeb3TxReceipt.json';
 import { default as erc20NonWeb3TxReceiptFinished } from './erc20NonWeb3TxReceiptFinished.json';
@@ -28,6 +29,7 @@ import { default as ethNonWeb3TxReceipt } from './ethNonWeb3TxReceipt.json';
 import { default as ethNonWeb3TxResponse } from './ethNonWeb3TxResponse.json';
 import { default as ethWeb3TxReceipt } from './ethWeb3TxReceipt.json';
 import { default as ethWeb3TxResponse } from './ethWeb3TxResponse.json';
+import { default as txReceiptEIP1559 } from './txReceiptEIP1559.json';
 
 const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
   ...fixtureTxResponse,
@@ -37,12 +39,18 @@ const toTxResponse = (fixtureTxResponse: any): TransactionResponse => ({
 });
 
 const toTxReceipt = (fixtureTxReceipt: any): ITxReceipt => {
+  const gas = isType2Receipt(fixtureTxReceipt)
+    ? {
+        maxFeePerGas: BigNumber.from(fixtureTxReceipt.maxFeePerGas),
+        maxPriorityFeePerGas: BigNumber.from(fixtureTxReceipt.maxPriorityFeePerGas)
+      }
+    : { gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice) };
   const result = {
     ...fixtureTxReceipt,
     to: getAddress(fixtureTxReceipt.to),
     from: getAddress(fixtureTxReceipt.from),
     receiverAddress: getAddress(fixtureTxReceipt.receiverAddress),
-    gasPrice: BigNumber.from(fixtureTxReceipt.gasPrice),
+    ...gas,
     gasLimit: BigNumber.from(fixtureTxReceipt.gasLimit),
     nonce: BigNumber.from(fixtureTxReceipt.nonce),
     value: BigNumber.from(fixtureTxReceipt.value),
@@ -93,6 +101,8 @@ export const fFinishedERC20Web3TxReceipt = toTxReceipt(
   erc20Web3TxReceiptFinished
 ) as IFinishedTxReceipt;
 
+export const fTxReceiptEIP1559 = toTxReceipt(txReceiptEIP1559) as IPendingTxReceipt;
+
 export const fDerivedApprovalTx: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> = {
   chainId: 1,
   data: '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000' as ITxData,
@@ -122,3 +132,6 @@ export const fDerivedGolemMigrationTx: DistributiveOmit<ITxObject, 'nonce' | 'ga
 
 export const fSignedTx =
   '0xf86b0685012a05f20082520894b2bb2b958afa2e96dab3f3ce7162b87daea39017872386f26fc10000802aa0686df061021262b4e75eb1608c8baaf043cca2b5ac68fb24420ede62d13a8a7fa035389237414433ac06a33d95c863b8221fe2c797a9c650c47a555255be0234f3';
+
+export const fSignedTxEIP1559 =
+  '0x02f8720306843b9aca008504a817c80082520894b2bb2b958afa2e96dab3f3ce7162b87daea39017872386f26fc1000080c001a081236f9a4e0b9544d9c607954349126c1e6a57ef10b6b77d5abd605df98cf8b8a0043bb1f68170d9e21df014d65fa8cae4177bc36efd8507aa30fc3cb45d415111';
