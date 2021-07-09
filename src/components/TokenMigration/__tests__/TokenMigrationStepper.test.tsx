@@ -1,4 +1,4 @@
-import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
+import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fSettings } from '@fixtures';
@@ -7,9 +7,15 @@ import { truncate } from '@utils';
 
 import TokenMigrationStepper from '../TokenMigrationStepper';
 
-jest.mock('@services/EthService', () => ({
-  getNonce: jest.fn().mockReturnValue(1)
-}));
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      estimateGas: jest.fn().mockResolvedValue(21000),
+      getTransactionCount: jest.fn().mockResolvedValue(1)
+    }))
+  };
+});
 
 /* Test components */
 describe('TokenMigrationStepper', () => {
@@ -33,5 +39,22 @@ describe('TokenMigrationStepper', () => {
     const { getByText } = renderComponent();
     const selector = truncate(fAccounts[0].address); // detects the user's account as the first item in the array
     expect(getByText(selector)).toBeInTheDocument();
+  });
+
+  it('can submit form', async () => {
+    const { getByText, getAllByText } = renderComponent();
+    const selector = truncate(fAccounts[0].address); // detects the user's account as the first item in the array
+    expect(getByText(selector)).toBeInTheDocument();
+
+    const button = getAllByText('Migrate REP Tokens')[1];
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+
+    await waitFor(() =>
+      getAllByText(translateRaw('APPROVE_REP_TOKEN_MIGRATION')).forEach((s) =>
+        expect(s).toBeInTheDocument()
+      )
+    );
   });
 });

@@ -72,7 +72,7 @@ describe('SendAssetsReducer', () => {
     it('updates txConfig and signedTx', () => {
       const prevState = {
         txReceipt: undefined,
-        txConfig: { ...defaultTxConfig, baseAsset: fAssets[1] },
+        txConfig: { ...defaultTxConfig, asset: fAssets[1], baseAsset: fAssets[1] },
         signedTx: undefined
       };
       const payload = {

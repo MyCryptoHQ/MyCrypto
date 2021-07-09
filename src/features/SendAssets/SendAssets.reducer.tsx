@@ -69,7 +69,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         assets,
         networks,
         accounts,
-        state.txConfig
+        state.txConfig?.networkId
       );
 
       return { ...state, txConfig, signedTx };

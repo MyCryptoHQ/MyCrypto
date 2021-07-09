@@ -42,7 +42,9 @@ interface Props {
   account: StoreAccount;
   network: Network;
   estimateGasCallProps: TObject;
-  setGasPrice(gas: Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>): void;
+  setGasPrice(
+    gas: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   setGasLimit(gasLimit: string): void;
   setNonce(nonce: string): void;
 }
@@ -75,37 +77,26 @@ export default function GasSelector({
     setIsAutoGasSet(!isAutoGasSet);
   };
 
-  const handleGasPriceChange = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleGasPriceChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      gasPrice: (e.target as HTMLTextAreaElement).value,
-      maxFeePerGas,
-      maxPriorityFeePerGas
+      gasPrice: (e.target as HTMLTextAreaElement).value
     });
-  };
 
-  const handleMaxGasPerFeeChange = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleMaxGasPerFeeChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      gasPrice,
-      maxFeePerGas: (e.target as HTMLTextAreaElement).value,
-      maxPriorityFeePerGas
+      maxFeePerGas: (e.target as HTMLTextAreaElement).value
     });
-  };
 
-  const handleMaxPriorityFeePerGasChange = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleMaxPriorityFeePerGasChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      gasPrice,
-      maxFeePerGas,
       maxPriorityFeePerGas: (e.target as HTMLTextAreaElement).value
     });
-  };
 
-  const handleGasLimitChange = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleGasLimitChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasLimit((e.target as HTMLTextAreaElement).value);
-  };
 
-  const handleNonceChange = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleNonceChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setNonce((e.target as HTMLTextAreaElement).value);
-  };
 
   const estimateGas = async () => {
     if (!account) {

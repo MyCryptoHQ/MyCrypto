@@ -36,9 +36,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
   const handleSendClicked = (signedTx: ISignedTx, cb: any) => {
     const { network } = state;
-    const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, {
-      networkId: network
-    } as ITxConfig);
+    const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, network);
 
     setState((prevState: State) => ({
       ...prevState,

@@ -44,6 +44,7 @@ import {
   ITxType,
   ITxValue,
   Network,
+  NetworkId,
   StoreAccount,
   TAddress
 } from '@types';
@@ -217,19 +218,17 @@ export const makeTxConfigFromSignedTx = (
   assets: ExtendedAsset[],
   networks: Network[],
   accounts: StoreAccount[],
-  oldTxConfig: ITxConfig = {} as ITxConfig
+  networkId?: NetworkId
 ): ITxConfig => {
   const decodedTx = parseTransaction(signedTx);
-  const networkDetected = getNetworkByChainId(decodedTx.chainId, networks);
+  const networkDetected = getNetworkByChainId(decodedTx.chainId, networks)!;
   const contractAsset = getAssetByContractAndNetwork(decodedTx.to, networkDetected)(assets);
   const baseAsset = getBaseAssetByNetwork({
     network: networkDetected || ({} as Network),
     assets
-  });
+  })!;
 
-  const rawTransaction = oldTxConfig.rawTransaction
-    ? oldTxConfig.rawTransaction
-    : buildRawTxFromSigned(signedTx);
+  const rawTransaction = buildRawTxFromSigned(signedTx);
 
   const txConfig: ITxConfig = {
     rawTransaction,
@@ -239,15 +238,11 @@ export const makeTxConfigFromSignedTx = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : bigNumValueToViewableEther(decodedTx.value),
-    networkId: networkDetected?.id || oldTxConfig.networkId,
-    asset: contractAsset || oldTxConfig.asset || baseAsset,
-    baseAsset: baseAsset || oldTxConfig.baseAsset,
-    senderAccount:
-      decodedTx.from && networkDetected
-        ? getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected.id) ||
-          oldTxConfig.senderAccount
-        : oldTxConfig.senderAccount,
-    from: (decodedTx.from || oldTxConfig.from) as TAddress
+    networkId: networkId ?? networkDetected?.id,
+    asset: contractAsset || baseAsset,
+    baseAsset,
+    senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected?.id)!,
+    from: decodedTx.from as TAddress
   };
   return txConfig;
 };

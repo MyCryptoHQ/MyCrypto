@@ -42,12 +42,10 @@ export async function fetchGasPriceEstimates(network?: Network): Promise<GasEsti
   }
 
   // Try to fetch new estimates
-  try {
-    return fetchGasEstimates();
-  } catch (err) {
+  return fetchGasEstimates().catch((err) => {
     console.error(err);
     return getDefaultEstimates(network);
-  }
+  });
 }
 
 export async function fetchEIP1559PriceEstimates(network: Network) {

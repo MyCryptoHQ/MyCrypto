@@ -43,6 +43,19 @@ describe('fetchUniversalGasPriceEstimate', () => {
     ).resolves.toStrictEqual({ gasPrice: '42' });
   });
 
+  it('falls back to default gas estimation settings if gas price endpoint fails', () => {
+    (global.fetch as jest.MockedFunction<typeof global.fetch>).mockRejectedValueOnce(
+      new Error('foo')
+    );
+    return expect(
+      fetchUniversalGasPriceEstimate({
+        ...fNetworks[0],
+        supportsEIP1559: false,
+        shouldEstimateGasPrice: true
+      })
+    ).resolves.toStrictEqual({ gasPrice: fNetworks[0].gasPriceSettings.initial.toString() });
+  });
+
   it('falls back to default gas estimation settings if gas price endpoint not available', () => {
     return expect(
       fetchUniversalGasPriceEstimate({ ...fNetwork, supportsEIP1559: false })
