@@ -32,7 +32,8 @@
     "!**/vendor/**",
     "!**/spec/**",
     "!**/__tests__/**",
-    "!**/*.stories.{js,jsx,ts,tsx}"
+    "!**/*.stories.{js,jsx,ts,tsx}",
+    "!**/src/features/DeFiZap/**"
   ],
   "coverageThreshold": {
     "global": {
