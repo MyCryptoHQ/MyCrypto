@@ -116,8 +116,8 @@ const TxReceipt = ({
     txReceipt ? txReceipt.status : (ITxStatus.PENDING as ITxHistoryStatus)
   );
   const [displayTxReceipt, setDisplayTxReceipt] = useState<ITxReceipt | undefined>(txReceipt);
-  const [blockNumber, setBlockNumber] = useState(0);
-  const [timestamp, setTimestamp] = useState(0);
+  const [blockNumber, setBlockNumber] = useState(txReceipt?.blockNumber ?? 0);
+  const [timestamp, setTimestamp] = useState(txReceipt?.timestamp ?? 0);
   const network = getNetworkById(txConfig.networkId);
 
   // Imported in this way to handle errors where the context is missing, f.x. in Swap Flow
