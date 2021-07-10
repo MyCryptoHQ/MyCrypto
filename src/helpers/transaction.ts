@@ -238,7 +238,7 @@ export const makeTxConfigFromSignedTx = (
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : bigNumValueToViewableEther(decodedTx.value),
-    networkId: networkId ?? networkDetected?.id,
+    networkId: networkDetected?.id ?? networkId,
     asset: contractAsset || baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected?.id)!,
@@ -485,7 +485,7 @@ export const appendNonce = (network: Network, senderAddress: TAddress) => async 
 };
 
 export const verifyTransaction = (transaction: Transaction): boolean => {
-  if (!transaction.r || !transaction.s || !transaction.v) {
+  if (!transaction.r || !transaction.s || transaction.v === undefined) {
     return false;
   }
 
@@ -494,8 +494,7 @@ export const verifyTransaction = (transaction: Transaction): boolean => {
   }
 
   try {
-    // Temporarily remove 'type' from transaction, until bug is fixed https://github.com/ethers-io/ethers.js/issues/1627
-    const { r, s, v, from, hash, type, ...unsignedTransaction } = transaction;
+    const { r, s, v, from, hash, ...unsignedTransaction } = transaction;
     const serializedTransaction = serializeTransaction(unsignedTransaction, { r, s, v });
     return !!recoverAddress(serializedTransaction, { r, s, v });
   } catch (e) {
