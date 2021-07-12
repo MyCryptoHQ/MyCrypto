@@ -13,11 +13,11 @@ export function getParam(query: { [key: string]: string }, key: string) {
   return query[keys[index]];
 }
 
-export const createQueryParamsDefaultObject = (txConfig: ITxConfig, type: TxQueryTypes) => {
+export const createQueryParamsDefaultObject = (txConfig: ITxConfig, queryType: TxQueryTypes) => {
   const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
   const senderAddress = txConfig.senderAccount?.address;
   return {
-    type,
+    queryType,
     from: from || senderAddress,
     to,
     gasLimit,

@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { IStepperPath } from '@components/GeneralStepper/types';
-import { MANDATORY_TRANSACTION_QUERY_PARAMS, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { withProtectTxProvider } from '@helpers';
 import { ProviderHandler, useAccounts, useAssets, useFeatureFlags, useNetworks } from '@services';
@@ -35,7 +35,7 @@ function SendAssets({ location }: RouteComponentProps) {
   const { isFeatureActive } = useFeatureFlags();
 
   const query = parse(location.search);
-  const res = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce(
+  const res = SUPPORTED_TRANSACTION_QUERY_PARAMS.reduce(
     (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
     {}
   );

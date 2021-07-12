@@ -45,7 +45,7 @@ describe('SendAssetsReducer', () => {
         advancedTransaction: false,
         gasEstimates: getDefaultEstimates(fNetwork),
         isAutoGasSet: true,
-        maxGasFeePerGasField: '20',
+        maxFeePerGasField: '20',
         maxPriorityFeePerGasField: '1'
       };
 

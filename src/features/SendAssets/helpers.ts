@@ -1,6 +1,6 @@
 import { bufferToHex } from 'ethereumjs-util';
 
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
@@ -42,7 +42,7 @@ const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network } = formData;
   const gas = network.supportsEIP1559
     ? {
-        maxFeePerGas: inputGasPriceToHex(formData.maxGasFeePerGasField),
+        maxFeePerGas: inputGasPriceToHex(formData.maxFeePerGasField),
         maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),
         // @todo Perhaps needs to be settable by user?
         type: 2 as const
@@ -102,7 +102,7 @@ export const parseQueryParams = (queryParams: any) => (
   accounts: StoreAccount[]
 ) => {
   if (!queryParams || isEmpty(queryParams)) return;
-  switch (queryParams.type) {
+  switch (queryParams.queryType) {
     case TxQueryTypes.SPEEDUP:
       return {
         type: TxQueryTypes.SPEEDUP,
@@ -124,12 +124,16 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
   // if speedup tx does not contain all the necessary parameters to construct a tx config return undefined
-  const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
-    if (queryParams[cv] === undefined) return { ...acc, invalid: true };
-    acc[cv] = queryParams[cv];
-    return acc;
+  const i = SUPPORTED_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
+    if (queryParams[cv] === undefined) return acc;
+    return { ...acc, [cv]: queryParams[cv] };
   }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
-  if (i.invalid) return;
+
+  const containsGas = 'gasPrice' in i || ('maxFeePerGas' in i && 'maxPriorityFeePerGas' in i);
+  const valid =
+    MANDATORY_TRANSACTION_QUERY_PARAMS.every((key) => i[key] !== undefined) && containsGas;
+
+  if (!valid) return;
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);
   if (!network) return;
@@ -137,11 +141,19 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const senderAccount = accounts.find(({ address }) => isSameAddress(address, i.from));
   if (!senderAccount) return;
 
+  const gas = i.gasPrice
+    ? { gasPrice: i.gasPrice }
+    : {
+        maxFeePerGas: i.maxFeePerGas!,
+        maxPriorityFeePerGas: i.maxPriorityFeePerGas!,
+        type: i.type as 2
+      };
+
   const rawTransaction: ITxObject = {
     to: i.to,
     value: i.value,
     gasLimit: i.gasLimit,
-    gasPrice: i.gasPrice,
+    ...gas,
     nonce: i.nonce,
     data: i.data,
     chainId: parseInt(i.chainId, 16)

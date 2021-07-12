@@ -15,6 +15,8 @@ export type TxParam =
   | 'value'
   | 'gasLimit'
   | 'gasPrice'
+  | 'maxFeePerGas'
+  | 'maxPriorityFeePerGas'
   | 'from'
   | 'chainId'
   | 'nonce'
@@ -29,4 +31,5 @@ export type TTxQueryParam =
   | ITxGasPrice
   | ITxToAddress
   | ITxFromAddress
-  | ITxData;
+  | ITxData
+  | number;

@@ -1,7 +1,6 @@
 import { TxParam } from '@features/SendAssets/preFillTx';
 
 export const MANDATORY_TRANSACTION_QUERY_PARAMS: TxParam[] = [
-  'gasPrice',
   'gasLimit',
   'to',
   'data',
@@ -14,6 +13,8 @@ export const MANDATORY_TRANSACTION_QUERY_PARAMS: TxParam[] = [
 export const SUPPORTED_TRANSACTION_QUERY_PARAMS: TxParam[] = [
   'type',
   'gasPrice',
+  'maxFeePerGas',
+  'maxPriorityFeePerGas',
   'gasLimit',
   'to',
   'data',

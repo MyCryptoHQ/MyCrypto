@@ -23,7 +23,7 @@ import {
 } from './helpers';
 
 const validETHSpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x6',
@@ -35,7 +35,7 @@ const validETHSpeedUpQuery = {
 };
 
 const validERC20SpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x7d3c',
   chainId: '3',
   nonce: '0x7',
@@ -48,14 +48,14 @@ const validERC20SpeedUpQuery = {
 };
 
 const invalidSpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x60'
 };
 
 const validETHCancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x6',
@@ -67,7 +67,7 @@ const validETHCancelQuery = {
 };
 
 const validERC20CancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x7d3c',
   chainId: '3',
   nonce: '0x7',
@@ -80,7 +80,7 @@ const validERC20CancelQuery = {
 };
 
 const invalidCancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x60'

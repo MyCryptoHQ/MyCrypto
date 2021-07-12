@@ -76,7 +76,7 @@ export interface IFormikFields {
   network: INetwork;
   advancedTransaction: boolean;
   isAutoGasSet: boolean;
-  maxGasFeePerGasField: string;
+  maxFeePerGasField: string;
   maxPriorityFeePerGasField: string;
 }
 

@@ -31,7 +31,7 @@ export const fETHTxSendFormikFields: IFormikFields = {
     value: fAccounts[0].address
   } as IReceiverAddress,
   amount: '0.01',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1'
 };
 
@@ -60,7 +60,7 @@ export const fAdvancedETHTxSendFormikFields: IFormikFields = {
     value: fAccounts[0].address
   } as IReceiverAddress,
   amount: '0.01',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1'
 };
 
@@ -89,7 +89,7 @@ export const fERC20TxSendFormikFields: IFormikFields = {
     value: fAccounts[1].address
   } as IReceiverAddress,
   amount: '0.01',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1'
 };
 
@@ -118,7 +118,7 @@ export const fAdvancedERC20TxSendFormikFields: IFormikFields = {
     value: fAccounts[1].address
   } as IReceiverAddress,
   amount: '0.01',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1'
 };
 
@@ -147,6 +147,6 @@ export const fETHTxSendFormikFieldsEIP1559: IFormikFields = {
     value: fAccounts[0].address
   } as IReceiverAddress,
   amount: '0.01',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1'
 };

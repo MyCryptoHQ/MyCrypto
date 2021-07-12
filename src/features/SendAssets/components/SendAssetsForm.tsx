@@ -96,7 +96,6 @@ import {
   fromTokenBase,
   gasStringsToMaxGasBN,
   getDecimals,
-  isLegacyTx,
   isSameAddress,
   isVoid,
   sortByLabel,
@@ -208,7 +207,7 @@ const initialFormikValues: IFormikFields = {
   },
   gasPriceSlider: '20',
   gasPriceField: '20',
-  maxGasFeePerGasField: '20',
+  maxFeePerGasField: '20',
   maxPriorityFeePerGasField: '1',
   gasLimitField: '21000',
   advancedTransaction: false,
@@ -234,8 +233,7 @@ const getInitialFormikValues = ({
 }): IFormikFields => {
   const gasPriceInGwei =
     s.rawTransaction &&
-    isLegacyTx(s.rawTransaction) &&
-    s.rawTransaction.gasPrice &&
+    'gasPrice' in s.rawTransaction &&
     bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.gasPrice));
   const state: Partial<IFormikFields> = {
     amount: s.amount,
@@ -247,7 +245,13 @@ const getInitialFormikValues = ({
     address: { value: s.receiverAddress!, display: s.receiverAddress! },
     gasLimitField: s.rawTransaction?.gasLimit && bigify(s.rawTransaction?.gasLimit).toString(),
     gasPriceSlider: gasPriceInGwei as string,
-    gasPriceField: gasPriceInGwei as string
+    gasPriceField: gasPriceInGwei as string,
+    maxFeePerGasField: (s.rawTransaction &&
+      'maxFeePerGas' in s.rawTransaction &&
+      bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.maxFeePerGas))) as string,
+    maxPriorityFeePerGasField: (s.rawTransaction &&
+      'maxPriorityFeePerGas' in s.rawTransaction &&
+      bigNumGasPriceToViewableGwei(bigify(s.rawTransaction.maxPriorityFeePerGas))) as string
   };
 
   const preferValueFromState = (l: FieldValue, r: FieldValue): FieldValue => (isEmpty(r) ? l : r);
@@ -508,7 +512,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       } else {
         fetchEIP1559PriceEstimates(network).then((data) => {
           setFieldValue(
-            'maxGasFeePerGasField',
+            'maxFeePerGasField',
             data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
           );
           setFieldValue(
@@ -823,23 +827,23 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
               <>
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                    <label htmlFor="maxGasFeePerGasField">
+                    <label htmlFor="maxFeePerGasField">
                       {translate('MAX_FEE_PER_GAS')}
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField
                       onChange={(option: string) => {
-                        setFieldValue('maxGasFeePerGasField', option);
+                        setFieldValue('maxFeePerGasField', option);
                       }}
-                      name="maxGasFeePerGasField"
-                      value={values.maxGasFeePerGasField}
-                      error={errors && errors.maxGasFeePerGasField}
+                      name="maxFeePerGasField"
+                      value={values.maxFeePerGasField}
+                      error={errors && errors.maxFeePerGasField}
                     />
                   </div>
                 </div>
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                    <label htmlFor="maxGasFeePerGasField">
+                    <label htmlFor="maxPriorityFeePerGasField">
                       {translate('MAX_PRIORITY_FEE')}
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
