@@ -21,7 +21,6 @@ export default class AddAccountPage extends BasePage {
   }
 
   async addViewOnly() {
-    await this.navigateToPage();
     await this.waitPageLoaded();
     await t.click(getByText(getTransValueByKey('VIEW_ADDR')));
     this.waitForPage(PAGES.ADD_ACCOUNT_VIEWONLY);
@@ -41,7 +40,6 @@ export default class AddAccountPage extends BasePage {
   }
 
   async addWeb3() {
-    await this.navigateToPage();
     await this.waitPageLoaded();
     await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
     await t.click(getByText(getTransValueByKey('X_WEB3_DEFAULT')));
