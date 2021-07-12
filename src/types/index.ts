@@ -99,3 +99,4 @@ export { Bigish } from '@utils/bigify';
 export { BusyBottomConfig } from './busyBottom';
 export * from './claims';
 export * from './omit';
+export * from './query';

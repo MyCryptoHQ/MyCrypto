@@ -42,12 +42,7 @@ export { useInterval } from './useInterval';
 export * from './useStateReducer';
 export { filterObjectOfObjects } from './filterObjectOfObjects';
 export { default as ScrollToTop } from './scrollToTop';
-export {
-  getParam,
-  constructCancelTxQuery,
-  constructSpeedUpTxQuery,
-  createQueryParamsDefaultObject
-} from './queries';
+export * from './queries';
 export { noOp } from './noOp';
 export {
   formatMnemonic,

@@ -1,6 +1,7 @@
 import queryString from 'querystring';
 
-import { ISimpleTxForm, ITxConfig, TxQueryTypes } from '@types';
+import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
+import { IQueryResults, ISimpleTxForm, ITxConfig, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputGasPriceToHex } from '@utils';
 import { mapObjIndexed } from '@vendor';
 
@@ -61,4 +62,10 @@ export const constructSpeedUpTxQuery = (
     ...unfinishedSpeedUpTxQueryParams,
     ...gas
   });
+};
+
+export const isQueryValid = (query: IQueryResults) => {
+  const containsGas =
+    'gasPrice' in query || ('maxFeePerGas' in query && 'maxPriorityFeePerGas' in query);
+  return MANDATORY_TRANSACTION_QUERY_PARAMS.every((key) => query[key] !== undefined) && containsGas;
 };

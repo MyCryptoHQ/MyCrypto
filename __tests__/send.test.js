@@ -19,7 +19,7 @@ const sendAssetsPage = new SendAssetsPage();
 
 fixture('Send')
   .clientScripts({ content: injectLS(FIXTURE_HARDHAT) })
-  .page(PAGES.DASHBOARD);
+  .page(PAGES.SEND);
 
 test('Complete SendFlow', async (t) => {
   await t.click(getByText(findByTKey('SEND_ASSETS')));
@@ -78,7 +78,7 @@ test('Complete SendFlow', async (t) => {
 
 test('Valid transaction query params are correctly parsed and loaded into send flow', async (t) => {
   const validQueryParams =
-    '?type=speedup&gasLimit=0xcb56&chainId=1&nonce=0xD8&gasPrice=0x059682f000&from=0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf&to=0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf&value=0x0&data=0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec7900000000000000000000000000000000000000000000000000038D7EA4C68000';
+    '?queryType=speedup&gasLimit=0xcb56&chainId=1&nonce=0xD8&gasPrice=0x059682f000&from=0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf&to=0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf&value=0x0&data=0xa9059cbb0000000000000000000000005dd6e754d37bababeb95f34639568812900fec7900000000000000000000000000000000000000000000000000038D7EA4C68000';
 
   await sendAssetsPage.navigateToPage(validQueryParams);
   await sendAssetsPage.waitPageLoaded(validQueryParams);

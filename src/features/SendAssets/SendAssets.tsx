@@ -44,8 +44,8 @@ function SendAssets({ location }: RouteComponentProps) {
     const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
     if (
       !txConfigInit ||
-      txConfigInit.type === reducerState.txQueryType ||
-      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
+      txConfigInit.queryType === reducerState.txQueryType ||
+      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.queryType)
     )
       return;
 
@@ -58,7 +58,7 @@ function SendAssets({ location }: RouteComponentProps) {
 
     dispatch({
       type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
+      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.queryType }
     });
   }, [res]);
 

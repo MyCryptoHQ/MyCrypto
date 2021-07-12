@@ -70,7 +70,7 @@ describe('GasSelector', () => {
 
   it('calls functions when changing EIP values', async () => {
     const props = { ...defaultProps, network: { ...fNetwork, supportsEIP1559: true } };
-    const { getByText, container } = getComponent(props);
+    const { container } = getComponent(props);
     const maxFee = container.querySelector('input[name="maxFeePerGas"]')!;
 
     fireEvent.change(maxFee, { target: { value: '40' } });

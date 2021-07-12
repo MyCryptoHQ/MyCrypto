@@ -94,7 +94,7 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.SPEEDUP,
+      queryType: TxQueryTypes.SPEEDUP,
       txConfig: fERC20NonWeb3TxConfig
     });
   });
@@ -106,7 +106,7 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.SPEEDUP,
+      queryType: TxQueryTypes.SPEEDUP,
       txConfig: fETHNonWeb3TxConfig
     });
   });
@@ -118,7 +118,7 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.CANCEL,
+      queryType: TxQueryTypes.CANCEL,
       txConfig: fERC20NonWeb3TxConfig
     });
   });
@@ -126,39 +126,57 @@ describe('Query string parsing', () => {
   it('parses valid eth tx query parameters correctly - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([fNetwork], fAssets, fAccounts);
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.CANCEL,
+      queryType: TxQueryTypes.CANCEL,
       txConfig: fETHNonWeb3TxConfig
     });
   });
 
   it('fails to derive txConfig when invalid eth tx query parameters are included - cancel', () => {
     const parsedQueryParams = parseQueryParams(invalidCancelQuery)([fNetwork], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no network config for specified chainID - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no added account with from address - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([fNetwork], fAssets, []);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when invalid eth tx query parameters are included - speed up', () => {
     const parsedQueryParams = parseQueryParams(invalidSpeedUpQuery)([fNetwork], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no network config for specified chainID - speed up', () => {
     const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no added account with from address - speed up', () => {
     const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([fNetwork], fAssets, []);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
   });
 });
 

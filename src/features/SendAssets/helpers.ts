@@ -1,6 +1,6 @@
 import { bufferToHex } from 'ethereumjs-util';
 
-import { MANDATORY_TRANSACTION_QUERY_PARAMS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
+import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
@@ -8,6 +8,7 @@ import {
   Asset,
   ExtendedAsset,
   IFormikFields,
+  IQueryResults,
   ITxConfig,
   ITxData,
   ITxObject,
@@ -29,6 +30,7 @@ import {
   inputGasPriceToHex,
   inputNonceToHex,
   inputValueToHex,
+  isQueryValid,
   isSameAddress,
   TokenValue,
   toWei
@@ -105,16 +107,16 @@ export const parseQueryParams = (queryParams: any) => (
   switch (queryParams.queryType) {
     case TxQueryTypes.SPEEDUP:
       return {
-        type: TxQueryTypes.SPEEDUP,
+        queryType: TxQueryTypes.SPEEDUP,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     case TxQueryTypes.CANCEL:
       return {
-        type: TxQueryTypes.CANCEL,
+        queryType: TxQueryTypes.CANCEL,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
-      return { type: TxQueryTypes.DEFAULT };
+      return { queryType: TxQueryTypes.DEFAULT };
   }
 };
 
@@ -129,9 +131,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     return { ...acc, [cv]: queryParams[cv] };
   }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
 
-  const containsGas = 'gasPrice' in i || ('maxFeePerGas' in i && 'maxPriorityFeePerGas' in i);
-  const valid =
-    MANDATORY_TRANSACTION_QUERY_PARAMS.every((key) => i[key] !== undefined) && containsGas;
+  const valid = isQueryValid((i as unknown) as IQueryResults);
 
   if (!valid) return;
 
