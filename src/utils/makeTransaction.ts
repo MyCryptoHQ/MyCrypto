@@ -1,5 +1,5 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber';
-import { UnsignedTransaction } from '@ethersproject/transactions';
+import { TransactionRequest } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
 import BigNumber from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
@@ -11,7 +11,7 @@ import { bigify, Bigish } from './bigify';
 import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
-export const makeTransaction = (t: ITxObject): UnsignedTransaction => {
+export const makeTransaction = (t: ITxObject): TransactionRequest => {
   // Hardware wallets need `from` param excluded
   const { from, ...tx } = t;
   return { ...tx, nonce: new BigNumber(t.nonce, 10).toNumber() };

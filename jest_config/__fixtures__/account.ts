@@ -11,7 +11,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ethereum',
     wallet: 'WALLETCONNECT' as WalletId,
-    dPath: "m/44'/1'/0'/0", // Mnemonic dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
@@ -46,7 +50,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ropsten',
     wallet: 'LEDGER_NANO_S' as WalletId,
-    dPath: "m/44'/60'/0'", // Ledger dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -71,7 +79,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
     networkId: 'Ropsten',
     wallet: 'LEDGER_NANO_S' as WalletId,
-    dPath: "m/44'/60'/0'/0", // Ledger dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
@@ -106,7 +118,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
     networkId: 'Ropsten',
     wallet: WalletId.VIEW_ONLY,
-    dPath: "m/44'/60'/0'/0", // Ledger dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
@@ -141,7 +157,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0x9458a933f00da9a927dbbb9cc2ae3fe7dfa9aed5' as TAddress,
     networkId: 'Ropsten',
     wallet: WalletId.TRUST,
-    dPath: "m/44'/60'/0'/0", // Ledger dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
@@ -177,7 +197,11 @@ export const fAccounts: StoreAccount[] = [
     address: '0x03a0775e92dc3ad2d2cb3eaf58af5ee99b183d49' as TAddress,
     networkId: 'Ethereum',
     wallet: 'WALLETCONNECT' as WalletId,
-    dPath: "m/44'/1'/0'/0", // Mnemonic dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
@@ -205,8 +229,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/0",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -219,8 +243,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/1",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -233,8 +257,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/2",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -247,8 +271,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/3",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -261,8 +285,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/4",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,
@@ -275,8 +299,8 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/5",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
       } as ExtendedDPath,

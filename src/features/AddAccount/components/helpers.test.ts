@@ -9,10 +9,8 @@ const inputArr = [
     pathItem: {
       path: "m/44'/60'/0'/0",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'"
       },
       index: 0
     },
@@ -24,10 +22,8 @@ const inputArr = [
     pathItem: {
       path: "m/44'/60'/0'/1",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'"
       },
       index: 1
     },
@@ -39,10 +35,8 @@ const inputArr = [
     pathItem: {
       path: "m/44'/60'/0'/2",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'"
       },
       index: 2
     },
@@ -54,10 +48,8 @@ const inputArr = [
     pathItem: {
       path: "m/44'/60'/0'/3",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
-        offset: 0,
-        numOfAddresses: 5
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'"
       },
       index: 3
     },
@@ -67,10 +59,10 @@ const inputArr = [
 ] as TableAccountDisplay[];
 
 const selectedDPath = {
-  label: 'Ledger (ETH)',
-  value: "m/44'/60'/0'"
+  name: 'Ledger (ETH)',
+  path: "m/44'/60'/0'"
 };
-const baseDPath = { label: 'Ledger (ETH)', value: "m/44'/60'/0'", offset: 0, numOfAddresses: 5 };
+const baseDPath = { name: 'Ledger (ETH)', path: "m/44'/60'/0'" };
 
 describe('sortAccounts', () => {
   it('sorts selected accounts to the front of the array when displayEmptyAddresses === true', () => {

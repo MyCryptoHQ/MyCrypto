@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import { Formik } from 'formik';
 import styled from 'styled-components';
 import { object, string } from 'yup';
@@ -22,7 +23,7 @@ import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
 import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
-import { DPath, ExtendedAsset, Network } from '@types';
+import { ExtendedAsset, Network } from '@types';
 import { filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
 import { DPathSelector } from './DPathSelector';
@@ -132,13 +133,13 @@ export interface HDWalletProps {
 }
 
 interface FormValues {
-  label: string;
-  value: string;
+  name: string;
+  path: string;
 }
 
 const initialFormikValues: FormValues = {
-  label: '',
-  value: ''
+  name: '',
+  path: ''
 };
 
 const HDWallet = ({
@@ -203,27 +204,27 @@ const HDWallet = ({
             </SLabel>
             <SInput
               placeholder="Custom Path"
-              name="label"
-              value={values.label}
+              name="name"
+              value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              isValid={!errors.label}
+              isValid={!errors.name}
               showInvalidWithoutValue={true}
             />
-            <Error>{errors && touched.label && errors.label}</Error>
+            <Error>{errors && touched.name && errors.name}</Error>
             <SLabel htmlFor="value">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL_DPATH" />
             </SLabel>
             <SInput
               placeholder="m/44’/60’/0’/0’"
-              name="value"
-              value={values.value}
+              name="path"
+              value={values.path}
               onChange={handleChange}
               onBlur={handleBlur}
-              isValid={!errors.value}
+              isValid={!errors.path}
               showInvalidWithoutValue={true}
             />
-            <Error>{errors && touched.value && errors.value}</Error>
+            <Error>{errors && touched.path && errors.path}</Error>
             <SButton fullwidth={isMobile} disabled={isSubmitting} type="submit">
               <Trans id="DETERMINISTIC_ADD_DPATH" />
             </SButton>

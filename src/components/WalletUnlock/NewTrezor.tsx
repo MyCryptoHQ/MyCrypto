@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 
+import { DEFAULT_ETH, TREZOR_DERIVATION_PATHS } from '@mycrypto/wallets';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
-import {
-  DEFAULT_GAP_TO_SCAN_FOR,
-  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
-  DPathsList,
-  TREZOR_DERIVATION_PATHS
-} from '@config';
+import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
 import { HDWallet } from '@features/AddAccount';
 import {
   getAssetByUUID,
@@ -33,11 +29,11 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
-  const dpaths = uniqBy(prop('value'), [
+  const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.TREZOR_NEW),
     ...TREZOR_DERIVATION_PATHS
   ]);
-  const defaultDPath = network.dPaths[WalletId.TREZOR] || DPathsList.ETH_TREZOR;
+  const defaultDPath = network.dPaths[WalletId.TREZOR] || DEFAULT_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({

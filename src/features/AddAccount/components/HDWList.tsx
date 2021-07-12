@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Banner, Box, Button, Icon, Spinner, Tooltip, Typography } from '@components';
@@ -8,7 +9,7 @@ import { DWAccountDisplay, ExtendedDPath } from '@services';
 import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
-import { BannerType, DPath, ExtendedAsset, Network } from '@types';
+import { BannerType, ExtendedAsset, IAccountAdditionData, Network } from '@types';
 import { hasBalance, useScreenSize } from '@utils';
 import { prop, uniqBy } from '@vendor';
 
@@ -92,7 +93,7 @@ interface HDWListProps {
   displayEmptyAddresses: boolean;
   selectedDPath: DPath;
   onScanMoreAddresses(dpath: ExtendedDPath): void;
-  onUnlock(param: any): void;
+  onUnlock(param: IAccountAdditionData[]): void;
   handleUpdate(asset: ExtendedAsset): void;
 }
 
@@ -132,7 +133,13 @@ export default function HDWList({
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
   const emptySelectedAccounts = filterZeroBalanceAccounts(selectedAccounts);
   const handleSubmit = () => {
-    onUnlock(selectedAccounts.map(({ pathItem, address }) => ({ address, dPath: pathItem.path })));
+    onUnlock(
+      selectedAccounts.map(({ pathItem, address }) => ({
+        address,
+        path: pathItem.baseDPath,
+        index: pathItem.index
+      }))
+    );
   };
 
   const handleSelection = (account: TableAccountDisplay) => {

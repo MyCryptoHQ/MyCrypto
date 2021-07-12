@@ -1,7 +1,8 @@
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import { ValuesType } from 'utility-types';
 
 import { HDWalletErrors } from '@features/AddAccount/components/hdWallet.slice';
-import { DPath, ExtendedAsset, Network, TAddress, WalletId } from '@types';
+import { ExtendedAsset, Network, TAddress, WalletId } from '@types';
 
 export interface TDWActionError {
   code: ValuesType<typeof HDWalletErrors>;
@@ -19,10 +20,10 @@ export interface DWAccountDisplay {
   isFreshAddress?: boolean;
 }
 
-export interface ExtendedDPath extends DPath {
+export type ExtendedDPath = DPath & {
   offset: number;
   numOfAddresses: number;
-}
+};
 
 export interface HDWalletState {
   isInit: boolean;

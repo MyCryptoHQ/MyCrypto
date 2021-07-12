@@ -7,10 +7,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 0,
       "path": "m/44'/60'/0'/0/0",
@@ -21,10 +21,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 0,
       "path": "m/44'/60'/0'/0",
@@ -35,10 +35,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 0,
       "path": "m/44'/60'/160720'/0'/0",
@@ -49,10 +49,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 0,
       "path": "m/44'/1'/0'/0/0",
@@ -63,10 +63,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 1,
       "path": "m/44'/60'/0'/0/1",
@@ -77,10 +77,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 1,
       "path": "m/44'/60'/0'/1",
@@ -91,10 +91,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 1,
       "path": "m/44'/60'/160720'/0'/1",
@@ -105,10 +105,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 1,
       "path": "m/44'/1'/0'/0/1",
@@ -119,10 +119,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 2,
       "path": "m/44'/60'/0'/0/2",
@@ -133,10 +133,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 2,
       "path": "m/44'/60'/0'/2",
@@ -147,10 +147,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 2,
       "path": "m/44'/60'/160720'/0'/2",
@@ -161,10 +161,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 2,
       "path": "m/44'/1'/0'/0/2",
@@ -175,10 +175,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 3,
       "path": "m/44'/60'/0'/0/3",
@@ -189,10 +189,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 3,
       "path": "m/44'/60'/0'/3",
@@ -203,10 +203,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 3,
       "path": "m/44'/60'/160720'/0'/3",
@@ -217,10 +217,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 3,
       "path": "m/44'/1'/0'/0/3",
@@ -231,10 +231,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 4,
       "path": "m/44'/60'/0'/0/4",
@@ -245,10 +245,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 4,
       "path": "m/44'/60'/0'/4",
@@ -259,10 +259,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 4,
       "path": "m/44'/60'/160720'/0'/4",
@@ -273,10 +273,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 5,
         "offset": 0,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 4,
       "path": "m/44'/1'/0'/0/4",
@@ -287,10 +287,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 4,
       "path": "m/44'/60'/0'/0/4",
@@ -301,10 +301,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 4,
       "path": "m/44'/60'/0'/4",
@@ -315,10 +315,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 4,
       "path": "m/44'/60'/160720'/0'/4",
@@ -329,10 +329,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 4,
       "path": "m/44'/1'/0'/0/4",
@@ -343,10 +343,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Default (ETH)",
+        "name": "Default (ETH)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/60'/0'/0",
+        "path": "m/44'/60'/0'/0",
       },
       "index": 5,
       "path": "m/44'/60'/0'/0/5",
@@ -357,10 +357,10 @@ Array [
     "balance": "15557790000000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 5,
       "path": "m/44'/60'/0'/5",
@@ -371,10 +371,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETC)",
+        "name": "Ledger (ETC)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/60'/160720'/0'",
+        "path": "m/44'/60'/160720'/0'",
       },
       "index": 5,
       "path": "m/44'/60'/160720'/0'/5",
@@ -385,10 +385,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Testnet (ETH)",
+        "name": "Testnet (ETH)",
         "numOfAddresses": 2,
         "offset": 4,
-        "value": "m/44'/1'/0'/0",
+        "path": "m/44'/1'/0'/0",
       },
       "index": 5,
       "path": "m/44'/1'/0'/0/5",
@@ -399,10 +399,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 6,
       "path": "m/44'/60'/0'/6",
@@ -413,10 +413,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 7,
       "path": "m/44'/60'/0'/7",
@@ -427,10 +427,10 @@ Array [
     "balance": "1000000",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 8,
       "path": "m/44'/60'/0'/8",
@@ -441,10 +441,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 6,
         "offset": 4,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 9,
       "path": "m/44'/60'/0'/9",
@@ -455,10 +455,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 9,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 9,
       "path": "m/44'/60'/0'/9",
@@ -469,10 +469,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 9,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 10,
       "path": "m/44'/60'/0'/10",
@@ -483,10 +483,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 9,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 11,
       "path": "m/44'/60'/0'/11",
@@ -497,10 +497,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 9,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 12,
       "path": "m/44'/60'/0'/12",
@@ -511,10 +511,10 @@ Array [
     "balance": "0",
     "pathItem": Object {
       "baseDPath": Object {
-        "label": "Ledger (ETH)",
+        "name": "Ledger (ETH)",
         "numOfAddresses": 5,
         "offset": 9,
-        "value": "m/44'/60'/0'",
+        "path": "m/44'/60'/0'",
       },
       "index": 13,
       "path": "m/44'/60'/0'/13",

@@ -1,4 +1,5 @@
 import { getAddress } from '@ethersproject/address';
+import { TAddress, Wallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
@@ -68,7 +69,7 @@ export const selectSignedMessage = createSelector(selectSlice, (s) => s.signedMe
 export const selectMessage = createSelector(selectSlice, (s) => s.message);
 export const selectWalletId = createSelector(selectSlice, (s) => s.walletId);
 
-export const signMessage = createAction<{ message: string; wallet: IFullWallet }>(
+export const signMessage = createAction<{ message: string; wallet: Wallet | IFullWallet }>(
   `${signMessageSlice.name}/signMessage`
 );
 
@@ -78,15 +79,16 @@ export function* signMessageSaga() {
 
 export function* signMessageWorker({
   payload
-}: PayloadAction<{ message: string; wallet: IFullWallet }>) {
+}: PayloadAction<{ message: string; wallet: Wallet | IFullWallet }>) {
   const { message, wallet } = payload;
   yield put(signMessageRequest());
 
   try {
     const sig: string = yield call({ context: wallet, fn: wallet.signMessage }, message);
+    const address: TAddress = yield call({ context: wallet, fn: wallet.getAddress });
     yield put(
       signMessageSuccess({
-        address: getAddress(wallet.getAddressString()),
+        address: getAddress(address),
         msg: message,
         sig: addHexPrefix(sig),
         version: '2'

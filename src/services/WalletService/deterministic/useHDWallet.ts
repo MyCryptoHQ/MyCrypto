@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { DeterministicWallet } from '@mycrypto/wallets';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -9,6 +10,7 @@ import {
   resetState,
   selectHDWalletAccountQueue,
   selectHDWalletAsset,
+  selectHDWalletConnectionError,
   selectHDWalletCustomDPaths,
   selectHDWalletIsCompleted,
   selectHDWalletIsConnected,
@@ -19,7 +21,7 @@ import {
   triggerComplete,
   updateAsset as updateScannerAsset
 } from '@features/AddAccount/components/hdWallet.slice';
-import { processScannedAccounts, Wallet } from '@services';
+import { processScannedAccounts } from '@services';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
 import { useUnmount } from '@vendor';
 
@@ -30,7 +32,7 @@ export const useHDWallet = (
   walletId: DPathFormat,
   gap: number
 ): IUseHDWallet => {
-  const [session, setSession] = useState((undefined as unknown) as Wallet);
+  const [session, setSession] = useState<DeterministicWallet | undefined>(undefined);
   const dispatch = useDispatch();
   const isConnected = useSelector(selectHDWalletIsConnected);
   const isConnecting = useSelector(selectHDWalletIsConnecting);
@@ -41,6 +43,7 @@ export const useHDWallet = (
   const accountQueue = useSelector(selectHDWalletAccountQueue);
   const scannedAccounts = useSelector(selectHDWalletScannedAccounts);
   const selectedAsset = useSelector(selectHDWalletAsset);
+  const connectionError = useSelector(selectHDWalletConnectionError);
 
   // Reset the hdslice state on unmount
   useUnmount(() => dispatch(resetState()));
@@ -103,6 +106,7 @@ export const useHDWallet = (
     requestConnection,
     updateAsset,
     addDPaths,
-    scanMoreAddresses
+    scanMoreAddresses,
+    connectionError
   };
 };

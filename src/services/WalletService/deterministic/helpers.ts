@@ -1,11 +1,7 @@
-import TransportWebHID from '@ledgerhq/hw-transport-webhid';
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 
-import { LedgerU2F, LedgerUSB, Trezor } from '@services';
-import { DPath, WalletId } from '@types';
 import { bigify } from '@utils';
 
-import { LedgerHID } from '../wallets/ledger';
 import { DWAccountDisplay, ExtendedDPath } from './types';
 
 export const processScannedAccounts = (
@@ -18,7 +14,7 @@ export const processScannedAccounts = (
     balance: acc.balance
   }));
   const relevantIndexes = pathItems.reduce((acc, item) => {
-    const idx = item.baseDPath.value;
+    const idx = item.baseDPath.path;
     const curLastIndex = acc[idx]?.lastIndex;
     const curLastInhabitedIndex = acc[idx]?.lastInhabitedIndex || 0;
     const newLastInhabitedIndex =
@@ -44,7 +40,7 @@ export const processScannedAccounts = (
     );
 
   const customDPathsDetected = customDPaths.filter(
-    (customDPath) => !relevantIndexes[customDPath.value]
+    (customDPath) => !relevantIndexes[customDPath.path]
   );
 
   return { newGapItems: addNewItems, customDPathItems: customDPathsDetected };
@@ -52,19 +48,3 @@ export const processScannedAccounts = (
 
 export const sortAccountDisplayItems = (accounts: DWAccountDisplay[]): DWAccountDisplay[] =>
   accounts.sort((a, b) => a.pathItem.index - b.pathItem.index);
-
-export const selectWallet = async (walletId: WalletId) => {
-  switch (walletId) {
-    default:
-    case WalletId.LEDGER_NANO_S_NEW: {
-      const isWebHIDSupported = await TransportWebHID.isSupported().catch(() => false);
-      if (isWebHIDSupported) {
-        return new LedgerHID();
-      }
-      const isWebUSBSupported = await TransportWebUSB.isSupported().catch(() => false);
-      return isWebUSBSupported ? new LedgerUSB() : new LedgerU2F();
-    }
-    case WalletId.TREZOR_NEW:
-      return new Trezor();
-  }
-};

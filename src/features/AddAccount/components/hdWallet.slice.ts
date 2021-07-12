@@ -1,3 +1,4 @@
+import { DeterministicAddress, DeterministicWallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import { select } from 'redux-saga-test-plan/matchers';
@@ -7,10 +8,9 @@ import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
   DWAccountDisplay,
   ExtendedDPath,
-  HDWalletState,
-  selectWallet
+  HDWalletState
 } from '@services/WalletService/deterministic';
-import { Wallet } from '@services/WalletService/wallets';
+import { getWallet } from '@services/WalletService/walletService';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV } from '@utils';
@@ -168,9 +168,9 @@ export const connectHDWallet = createAction<{
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: Wallet): void;
+  setSession(wallet: DeterministicWallet): void;
 }>(`${slice.name}/connectHDWallet`);
-export const getAccounts = createAction<{ session: Wallet; dpaths: ExtendedDPath[] }>(
+export const getAccounts = createAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>(
   `${slice.name}/getAccounts`
 );
 export const processAccountsQueue = createAction(`${slice.name}/processAccountsQueue`);
@@ -193,13 +193,13 @@ export function* requestConnectionWorker({
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: Wallet): void;
+  setSession(wallet: DeterministicWallet): void;
 }>) {
   const { asset, dpaths, network, walletId, setSession } = payload;
   // initialize the wallet
   try {
-    const session: Wallet = yield call(selectWallet, walletId);
-    yield call([session, 'initialize'], dpaths[0]);
+    const session: DeterministicWallet = yield call(getWallet, walletId);
+    yield call([session, session.getAddress], dpaths[0], 0);
     yield put(slice.actions.requestConnection());
     yield call(setSession, session);
     yield put(slice.actions.requestConnectionSuccess({ asset, network }));
@@ -208,7 +208,7 @@ export function* requestConnectionWorker({
     yield put(
       slice.actions.requestConnectionFailure({
         code: HDWalletErrors.SESSION_CONNECTION_FAILED,
-        message: err
+        message: err.message
       })
     );
   }
@@ -216,16 +216,27 @@ export function* requestConnectionWorker({
 
 export function* getAccountsWorker({
   payload
-}: PayloadAction<{ session: Wallet; dpaths: ExtendedDPath[] }>) {
+}: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>) {
   const { dpaths, session } = payload;
   yield put(slice.actions.requestAddresses());
-  if (!('getMultipleAddresses' in session)) {
+  if (!('getAddressesWithMultipleDPaths' in session)) {
     console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
     return;
   }
   try {
-    const dwaccounts: DWAccountDisplay[] = yield call([session, 'getMultipleAddresses'], dpaths);
-    if (dwaccounts.length === 0) return;
+    const addresses: DeterministicAddress[] = yield call(
+      [session, session.getAddressesWithMultipleDPaths],
+      dpaths.map((path) => ({
+        limit: path.numOfAddresses,
+        offset: path.offset,
+        path
+      }))
+    );
+    if (addresses.length === 0) return;
+    const dwaccounts = addresses.map((a) => ({
+      address: a.address,
+      pathItem: { path: a.dPath, index: a.index, baseDPath: a.dPathInfo as ExtendedDPath }
+    }));
     yield put(slice.actions.enqueueAccounts(dwaccounts));
     yield put(processAccountsQueue());
   } catch (err) {
@@ -261,14 +272,14 @@ export function* accountsQueueWorker() {
   }
 }
 
-// Race handles the case where accountsQueueWorker or getAccountsWorker are still running when resetState is triggered, 
+// Race handles the case where accountsQueueWorker or getAccountsWorker are still running when resetState is triggered,
 // resulting in the state being altered after resetState is triggered (and subsequent usages of hdwallet are broken).
 export function* accountsQueueSagaWatcher() {
   yield race([call(accountsQueueWorker), take(resetState.type)]);
 }
 
 export function* getAccountsSagaWatcher(
-  payload: PayloadAction<{ session: Wallet; dpaths: ExtendedDPath[] }>
+  payload: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>
 ) {
   yield race([call(getAccountsWorker, payload), take(resetState.type)]);
 }

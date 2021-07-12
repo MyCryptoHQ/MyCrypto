@@ -330,12 +330,13 @@ export function* addNewAccountsWorker({
   );
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-  const newRawAccounts = accountsToAdd.map(({ address, dPath }) => ({
+  const newRawAccounts = accountsToAdd.map(({ address, path, index }) => ({
     uuid: generateDeterministicAddressUUID(networkId, address),
     address,
     networkId,
     wallet: walletType,
-    dPath,
+    path,
+    index,
     assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
     transactions: [],
     mtime: 0,

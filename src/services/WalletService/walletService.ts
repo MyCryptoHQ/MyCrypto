@@ -1,3 +1,5 @@
+import { LedgerWallet, TrezorWallet } from '@mycrypto/wallets';
+
 import {
   HardwareWalletInitArgs,
   ViewOnlyWalletInitArgs,
@@ -6,10 +8,14 @@ import {
   Web3WalletInitArgs
 } from '@types';
 
-import { ChainCodeResponse, LedgerWallet, TrezorWallet } from './deterministic';
 import { AddressOnlyWallet } from './non-deterministic';
 import { WalletConnectWallet } from './walletconnect';
 import { unlockWeb3 } from './web3';
+
+const trezorManifest = {
+  email: 'support@mycrypto.com',
+  appUrl: 'https://app.mycrypto.com'
+};
 
 export const WalletFactory = {
   [WalletId.WEB3]: {
@@ -31,24 +37,20 @@ export const WalletFactory = {
     init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
   },
   [WalletId.LEDGER_NANO_S_NEW]: {
-    getChainCode: (dPath: string): Promise<ChainCodeResponse> => LedgerWallet.getChainCode(dPath),
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new LedgerWallet(address, dPath, index)
+      new LedgerWallet().getWallet(dPath, index, address)
   },
   [WalletId.LEDGER_NANO_S]: {
-    getChainCode: (dPath: string): Promise<ChainCodeResponse> => LedgerWallet.getChainCode(dPath),
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new LedgerWallet(address, dPath, index)
+      new LedgerWallet().getWallet(dPath, index, address)
   },
   [WalletId.TREZOR_NEW]: {
-    getChainCode: (dPath: string): Promise<ChainCodeResponse> => TrezorWallet.getChainCode(dPath),
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(address, dPath, index)
+      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
   [WalletId.TREZOR]: {
-    getChainCode: (dPath: string): Promise<ChainCodeResponse> => TrezorWallet.getChainCode(dPath),
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(address, dPath, index)
+      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
@@ -56,5 +58,16 @@ export const WalletFactory = {
   [WalletId.WALLETCONNECT]: {
     init: ({ address, signMessageHandler, killHandler }: WalletConnectWalletInitArgs) =>
       new WalletConnectWallet(address, signMessageHandler, killHandler)
+  }
+};
+
+export const getWallet = (wallet: WalletId) => {
+  switch (wallet) {
+    case WalletId.LEDGER_NANO_S_NEW:
+    case WalletId.LEDGER_NANO_S:
+      return new LedgerWallet();
+    case WalletId.TREZOR_NEW:
+    case WalletId.TREZOR:
+      return new TrezorWallet(trezorManifest);
   }
 };

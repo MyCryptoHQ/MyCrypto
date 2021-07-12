@@ -135,8 +135,19 @@ export const sanitizeAccount = (a: IAccount) => ({
     gasPrice: t.gasPrice,
     gasUsed: t.gasUsed && t.gasUsed
   })),
-  dPath: a.dPath,
+  path: a.path,
+  index: a.index,
   mtime: a.mtime,
   favorite: a.favorite,
   isPrivate: a.isPrivate
 });
+
+export const generateCustomDPath = (dPath: string) => {
+  const dPathArray = dPath.split('/');
+  const index = parseInt(dPathArray.pop()!, 10);
+  const path = {
+    name: 'Custom DPath',
+    path: `${dPathArray.join('/')}/<account>`
+  };
+  return [path, index];
+};

@@ -76,6 +76,7 @@ export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: 
         type="checkbox"
         onChange={onChange}
         checked={checked}
+        data-testid="switch-checkbox"
       />
       <Slider checked={checked} $greyable={$greyable} />
     </SliderBackground>

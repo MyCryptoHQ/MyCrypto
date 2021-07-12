@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { LEDGER_DERIVATION_PATHS } from '@mycrypto/wallets';
+
 import ExtendedContentPanel from '@components/ExtendedContentPanel';
-import { LEDGER_DERIVATION_PATHS } from '@config';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
 
@@ -22,8 +23,8 @@ const defaultProps: HDWalletProps = {
   assetToUse: fAssets[0],
   selectedDPath: {
     ...fDWAccounts[0].pathItem,
-    label: 'Default ETH DPath',
-    value: ''
+    name: 'Default ETH DPath',
+    path: ''
   },
   setSelectedDPath: noOp,
   updateAsset: noOp,

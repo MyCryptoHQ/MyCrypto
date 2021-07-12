@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+import { Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
-import { HardwareWallet, WalletFactory } from '@services/WalletService';
+import { WalletFactory } from '@services/WalletService';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -38,18 +39,6 @@ const ErrorMessageContainer = styled.div`
   margin: 2em;
 `;
 
-export const splitDPath = (fullDPath: string): IDestructuredDPath => {
-  /*
-    m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'", index: "0" }
-  */
-  const dPathArray = fullDPath.split('/');
-  const index = dPathArray.pop() as string;
-  return {
-    dpath: dPathArray.join('/'),
-    index: parseInt(index, 10)
-  };
-};
-
 export interface IProps {
   walletIconType: TIcon;
   signerDescription: string;
@@ -69,7 +58,7 @@ export default function HardwareSignTransaction({
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
-  const [wallet, setWallet] = useState<HardwareWallet | undefined>();
+  const [wallet, setWallet] = useState<Wallet | undefined>();
   const SigningWalletService = WalletFactory[
     senderAccount.wallet as HardwareWalletId
   ] as HardwareWalletService;
@@ -79,14 +68,13 @@ export default function HardwareSignTransaction({
       // Unlock Wallet
       if (!isWalletUnlocked && !isRequestingWalletUnlock) {
         setIsRequestingWalletUnlock(true);
-        const dpathObject = splitDPath(senderAccount.dPath);
-        const walletObject = SigningWalletService.init({
+        const walletObject = await SigningWalletService.init({
           address: senderAccount.address,
-          dPath: dpathObject.dpath,
-          index: dpathObject.index
+          dPath: senderAccount.path!,
+          index: senderAccount.index!
         });
         try {
-          await SigningWalletService.getChainCode(dpathObject.dpath);
+          await walletObject.getAddress();
           setIsRequestingWalletUnlock(false);
           setIsWalletUnlocked(true);
           setWallet(walletObject);
@@ -102,12 +90,12 @@ export default function HardwareSignTransaction({
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.
-    if (wallet && 'signRawTransaction' in wallet && !isRequestingTxSignature) {
+    if (wallet && !isRequestingTxSignature) {
       setIsRequestingTxSignature(true);
       const madeTx = makeTransaction(rawTransaction);
       wallet
-        .signRawTransaction(madeTx)
-        .then((data: any) => {
+        .signTransaction(madeTx)
+        .then((data) => {
           // User approves tx.
           setIsTxSignatureRequestDenied(false);
           onSuccess(data);

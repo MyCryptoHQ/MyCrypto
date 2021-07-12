@@ -1,3 +1,5 @@
+import { LEDGER_ETH } from '@mycrypto/wallets';
+
 import { fNetworks } from '@fixtures';
 import { WalletId } from '@types';
 
@@ -11,22 +13,14 @@ import {
 describe('getDPaths', () => {
   it('correctly handles wallet-specified dpaths', () => {
     const actual = getDPaths(fNetworks, WalletId.LEDGER_NANO_S);
-    expect(actual).toStrictEqual([
-      {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'"
-      }
-    ]);
+    expect(actual).toStrictEqual([LEDGER_ETH]);
   });
 });
 
 describe('getDPath', () => {
   it('correctly handles wallet-specified getDPath', () => {
     const actual = getDPath(fNetworks[0], WalletId.LEDGER_NANO_S);
-    expect(actual).toStrictEqual({
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
-    });
+    expect(actual).toStrictEqual(LEDGER_ETH);
   });
 });
 

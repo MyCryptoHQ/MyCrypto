@@ -1,3 +1,4 @@
+import { DerivationPath } from '@mycrypto/wallets';
 import { Overwrite } from 'utility-types';
 
 import { TAddress } from './address';
@@ -16,7 +17,10 @@ export interface IAccount {
   assets: AssetBalanceObject[];
   wallet: WalletId;
   transactions: ITxReceipt[];
-  dPath: string;
+
+  path?: DerivationPath;
+  index?: number;
+
   mtime: number;
   favorite: boolean;
   isPrivate?: boolean;

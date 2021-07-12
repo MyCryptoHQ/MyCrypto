@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Identicon } from '@mycrypto/ui';
+import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled, { css } from 'styled-components';
 
 import {
@@ -19,7 +20,7 @@ import { Downloader } from '@components/Downloader';
 import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
-import { DPath, ExtendedAsset, Network } from '@types';
+import { ExtendedAsset, Network } from '@types';
 import { bigify, buildAddressUrl, fromTokenBase, useScreenSize } from '@utils';
 import { isEmpty } from '@vendor';
 
@@ -356,7 +357,7 @@ const HDTable = ({
                   <EthAddress address={account.address} truncate={true} />
                 </AddressContainer>
                 <DPathContainer>
-                  <DPathType>{account.pathItem.baseDPath.label.replace(/\(.*?\)/, '')}</DPathType>
+                  <DPathType>{account.pathItem.baseDPath.name.replace(/\(.*?\)/, '')}</DPathType>
                   <DPathDisplay>({account.pathItem.path})</DPathDisplay>
                 </DPathContainer>
                 <ValueContainer>

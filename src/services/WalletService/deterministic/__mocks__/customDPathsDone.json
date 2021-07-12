@@ -4,8 +4,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/0",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -18,8 +18,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/1",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -32,8 +32,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/2",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -46,8 +46,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/3",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -60,8 +60,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/4",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -74,8 +74,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -88,8 +88,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/1",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -102,8 +102,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/2",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -116,8 +116,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/3",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -130,8 +130,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/4",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -144,8 +144,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/0",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -158,8 +158,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/1",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -172,8 +172,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/2",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -186,8 +186,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/3",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -200,8 +200,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/4",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -214,8 +214,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/0",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -228,8 +228,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/1",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -242,8 +242,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/2",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -256,8 +256,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/3",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -270,8 +270,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/4",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 0,
         "numOfAddresses": 5
       },
@@ -284,8 +284,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/4",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -298,8 +298,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/5",
       "baseDPath": {
-        "label": "Default (ETH)",
-        "value": "m/44'/60'/0'/0",
+        "name": "Default (ETH)",
+        "path": "m/44'/60'/0'/0",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -312,8 +312,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/4",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -326,8 +326,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/5",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -340,8 +340,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/6",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -354,8 +354,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/7",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -368,8 +368,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/8",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -382,8 +382,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/9",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 4,
         "numOfAddresses": 6
       },
@@ -396,8 +396,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/4",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -410,8 +410,8 @@
     "pathItem": {
       "path": "m/44'/60'/160720'/0'/5",
       "baseDPath": {
-        "label": "Ledger (ETC)",
-        "value": "m/44'/60'/160720'/0'",
+        "name": "Ledger (ETC)",
+        "path": "m/44'/60'/160720'/0'",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -424,8 +424,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/4",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -438,8 +438,8 @@
     "pathItem": {
       "path": "m/44'/1'/0'/0/5",
       "baseDPath": {
-        "label": "Testnet (ETH)",
-        "value": "m/44'/1'/0'/0",
+        "name": "Testnet (ETH)",
+        "path": "m/44'/1'/0'/0",
         "offset": 4,
         "numOfAddresses": 2
       },
@@ -452,8 +452,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/9",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 9,
         "numOfAddresses": 5
       },
@@ -466,8 +466,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/10",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 9,
         "numOfAddresses": 5
       },
@@ -480,8 +480,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/11",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 9,
         "numOfAddresses": 5
       },
@@ -494,8 +494,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/12",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 9,
         "numOfAddresses": 5
       },
@@ -508,8 +508,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/13",
       "baseDPath": {
-        "label": "Ledger (ETH)",
-        "value": "m/44'/60'/0'",
+        "name": "Ledger (ETH)",
+        "path": "m/44'/60'/0'",
         "offset": 9,
         "numOfAddresses": 5
       },
@@ -522,8 +522,8 @@
     "pathItem": {
       "path": "m/44'/60'/0'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 0,
         "numOfAddresses": 5
@@ -537,8 +537,8 @@
     "pathItem": {
       "path": "m/44'/60'/1'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 0,
         "numOfAddresses": 5
@@ -552,8 +552,8 @@
     "pathItem": {
       "path": "m/44'/60'/2'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 0,
         "numOfAddresses": 5
@@ -567,8 +567,8 @@
     "pathItem": {
       "path": "m/44'/60'/3'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 0,
         "numOfAddresses": 5
@@ -582,8 +582,8 @@
     "pathItem": {
       "path": "m/44'/60'/4'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 0,
         "numOfAddresses": 5
@@ -597,8 +597,8 @@
     "pathItem": {
       "path": "m/44'/60'/4'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 4,
         "numOfAddresses": 2
@@ -612,8 +612,8 @@
     "pathItem": {
       "path": "m/44'/60'/5'/0/0",
       "baseDPath": {
-        "label": "Test Ledger Live (ETH)",
-        "value": "m/44'/60'/0'/0/0",
+        "name": "Test Ledger Live (ETH)",
+        "path": "m/44'/60'/0'/0/0",
         "isHardened": true,
         "offset": 4,
         "numOfAddresses": 2
