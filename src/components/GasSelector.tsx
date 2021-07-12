@@ -139,6 +139,7 @@ export default function GasSelector({
         <>
           <FieldWrapper>
             <InputField
+              name="maxFeePerGas"
               label={<CustomLabel>{translateRaw('MAX_FEE_PER_GAS')}</CustomLabel>}
               value={maxFeePerGas}
               onChange={handleMaxGasPerFeeChange}
@@ -147,6 +148,7 @@ export default function GasSelector({
           </FieldWrapper>
           <FieldWrapper>
             <InputField
+              name="maxPriorityFeePerGas"
               label={<CustomLabel>{translateRaw('MAX_PRIORITY_FEE')}</CustomLabel>}
               value={maxPriorityFeePerGas}
               onChange={handleMaxPriorityFeePerGasChange}
@@ -157,6 +159,7 @@ export default function GasSelector({
       ) : (
         <FieldWrapper>
           <InputField
+            name="gasPrice"
             label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_3')}</CustomLabel>}
             value={gasPrice}
             onChange={handleGasPriceChange}
@@ -166,6 +169,7 @@ export default function GasSelector({
       )}
       <FieldWrapper>
         <InputField
+          name="gasLimit"
           label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_4')}</CustomLabel>}
           value={gasLimit}
           onChange={handleGasLimitChange}
@@ -175,6 +179,7 @@ export default function GasSelector({
       </FieldWrapper>
       <FieldWrapper>
         <InputField
+          name="nonce"
           label={<CustomLabel>{translateRaw('OFFLINE_STEP2_LABEL_5')}</CustomLabel>}
           value={nonce}
           onChange={handleNonceChange}
