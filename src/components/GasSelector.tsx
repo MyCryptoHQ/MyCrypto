@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { Checkbox, InputField, Typography } from '@components';
 import { getWalletConfig } from '@config';
-import { fetchUniversalGasPriceEstimate, getGasEstimate, getNonce } from '@services';
+import { fetchUniversalGasPriceEstimate, getGasEstimate } from '@services/ApiService/Gas';
+import { getNonce } from '@services/EthService';
 import { COLORS, monospace } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISimpleTxForm, Network, StoreAccount } from '@types';

@@ -7,10 +7,13 @@ import { translateRaw } from '@translations';
 
 import GasSelector from './GasSelector';
 
-jest.mock('@services', () => ({
-  ...jest.requireActual('@services'),
-  getNonce: jest.fn().mockResolvedValue(5),
+jest.mock('@services/ApiService/Gas', () => ({
+  getGasEstimate: jest.fn().mockResolvedValue(21000),
   fetchUniversalGasPriceEstimate: jest.fn().mockResolvedValue({ gasPrice: '500' })
+}));
+
+jest.mock('@services/EthService', () => ({
+  getNonce: jest.fn().mockResolvedValue(5)
 }));
 
 function getComponent(props: React.ComponentProps<typeof GasSelector>) {
