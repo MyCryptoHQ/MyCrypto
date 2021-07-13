@@ -146,7 +146,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     : {
         maxFeePerGas: i.maxFeePerGas!,
         maxPriorityFeePerGas: i.maxPriorityFeePerGas!,
-        type: i.type as 2
+        type: (i.type ?? 2) as 2
       };
 
   const rawTransaction: ITxObject = {

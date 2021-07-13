@@ -25,8 +25,9 @@ jest.mock('@services/ApiService/Gas', () => ({
 
 /* Test components */
 describe('SendAssetsFlow', () => {
-  const renderComponent = (networks = APP_STATE.networks) => {
+  const renderComponent = (networks = APP_STATE.networks, route = '/send') => {
     return simpleRender(<SendAssets />, {
+      initialRoute: route,
       initialState: mockAppState({
         accounts: fAccounts,
         assets: fAssets,
@@ -76,5 +77,15 @@ describe('SendAssetsFlow', () => {
 
     await waitFor(() => expect(getByDisplayValue('30')).toBeInTheDocument());
     expect(getByDisplayValue('1')).toBeInTheDocument();
+  });
+
+  it('can read query params and shows confirm screen', async () => {
+    const route =
+      '/send?queryType=speedup&from=0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c&to=0xad6d458402f60fd3bd25163575031acdce07538d&gasLimit=0x7d3c&nonce=0x7&chainId=3&value=0x0&data=0x&gasPrice=0x2e90edd000';
+    const { getByText } = renderComponent(APP_STATE.networks, route);
+
+    await waitFor(() =>
+      expect(getByText(translateRaw('CONFIRM_TX_MODAL_TITLE'))).toBeInTheDocument()
+    );
   });
 });

@@ -11,7 +11,7 @@ import {
   fNetwork
 } from '@fixtures';
 import { translateRaw } from '@translations';
-import { TAddress, TTicker, TxQueryTypes } from '@types';
+import { ILegacyTxObject, TAddress, TTicker, TxQueryTypes } from '@types';
 
 import {
   generateGenericErc20,
@@ -28,6 +28,19 @@ const validETHSpeedUpQuery = {
   chainId: '3',
   nonce: '0x6',
   gasPrice: '0x12a05f200',
+  from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+  to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+  value: '0x2386f26fc10000',
+  data: '0x'
+};
+
+const validETHSpeedUpQueryEIP1559 = {
+  queryType: TxQueryTypes.SPEEDUP,
+  gasLimit: '0x5208',
+  chainId: '3',
+  nonce: '0x6',
+  maxFeePerGas: '0x4a817c800',
+  maxPriorityFeePerGas: '0x3b9aca00',
   from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
   to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
   value: '0x2386f26fc10000',
@@ -111,6 +124,27 @@ describe('Query string parsing', () => {
     });
   });
 
+  it('parses valid eth tx query parameters correctly - speed up EIP 1559', () => {
+    const parsedQueryParams = parseQueryParams(validETHSpeedUpQueryEIP1559)(
+      [fNetwork],
+      fAssets,
+      fAccounts
+    );
+    const { gasPrice, ...rawTransaction } = fETHNonWeb3TxConfig.rawTransaction as ILegacyTxObject;
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: {
+        ...fETHNonWeb3TxConfig,
+        rawTransaction: {
+          ...rawTransaction,
+          maxFeePerGas: '0x4a817c800',
+          maxPriorityFeePerGas: '0x3b9aca00',
+          type: 2
+        }
+      }
+    });
+  });
+
   it('parses valid erc20 tx query parameters correctly - cancel', () => {
     const parsedQueryParams = parseQueryParams(validERC20CancelQuery)(
       [fNetwork],
@@ -176,6 +210,13 @@ describe('Query string parsing', () => {
     expect(parsedQueryParams).toStrictEqual({
       queryType: TxQueryTypes.SPEEDUP,
       txConfig: undefined
+    });
+  });
+
+  it('fails on invalid input', () => {
+    const parsedQueryParams = parseQueryParams({ queryType: undefined })([fNetwork], fAssets, []);
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.DEFAULT
     });
   });
 });
