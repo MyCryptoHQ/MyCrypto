@@ -8,15 +8,19 @@ import { translateRaw } from '@translations';
 
 import InteractWithContractsFlow from './InteractWithContractsFlow';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: () => ({
-    pathname: '/interact-with-contracts'
-  })
-}));
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      estimateGas: jest.fn().mockResolvedValue(21000),
+      getTransactionCount: jest.fn().mockResolvedValue(10)
+    }))
+  };
+});
 
 function getComponent() {
   return simpleRender(<InteractWithContractsFlow />, {
+    initialRoute: '/interact-with-contracts',
     initialState: mockAppState({
       accounts: fAccounts,
       assets: fAssets,
