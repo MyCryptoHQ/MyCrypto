@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
