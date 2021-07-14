@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DisplayProps } from 'styled-system';
 
 import { Box, Icon } from '@components';

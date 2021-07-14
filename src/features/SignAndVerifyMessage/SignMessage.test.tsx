@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, mockStore, simpleRender, waitFor } from 'test-utils';
 
@@ -24,7 +24,7 @@ jest.mock('@services/WalletService/walletService', () => {
   };
 });
 
-const defaultProps: React.ComponentProps<typeof SignMessage> = {
+const defaultProps: ComponentProps<typeof SignMessage> = {
   setShowSubtitle: noOp
 };
 

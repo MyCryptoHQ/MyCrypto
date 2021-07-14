@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { InputField } from '@components';
 
 export function GasPriceField({ value, name, onChange, error }: IGasPriceField) {

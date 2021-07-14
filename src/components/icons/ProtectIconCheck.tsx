@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { COLORS } from '@theme';
 
@@ -7,7 +7,7 @@ interface ProtectIconCheckProps {
   size?: 'sm' | 'lg';
 }
 
-const ProtectIconCheck: React.FC<ProtectIconCheckProps> = ({ fillColor, size }) => {
+const ProtectIconCheck: FC<ProtectIconCheckProps> = ({ fillColor, size }) => {
   return (
     <svg
       width={(size || 'sm') === 'sm' ? '20' : '73'}

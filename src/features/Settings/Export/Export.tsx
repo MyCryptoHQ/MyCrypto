@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Typography } from '@mycrypto/ui';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';

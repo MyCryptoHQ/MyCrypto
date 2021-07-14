@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { Button, LinkApp } from '@components';
 import { Fiats, MYCRYPTO_FAUCET_LINK } from '@config';
@@ -44,7 +44,7 @@ const defaultProps = {
 
 export default { title: 'Features/TxReceipt', components: TxReceiptUIComponent };
 
-const Template = (args: React.ComponentProps<typeof TxReceiptUIComponent>) => (
+const Template = (args: ComponentProps<typeof TxReceiptUIComponent>) => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <TxReceiptUIComponent {...args} />
   </div>

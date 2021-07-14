@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -9,7 +9,7 @@ import { Asset, ExtendedAsset } from '@types';
 import useAssets from './useAssets';
 
 const renderUseAssets = ({ assets = [] as ExtendedAsset[] } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ assets })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useAssets(), { wrapper });

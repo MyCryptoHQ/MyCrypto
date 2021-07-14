@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
@@ -70,8 +68,9 @@ describe('ContractLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: address } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe('Contract');
@@ -97,8 +96,9 @@ describe('ContractLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: inputString } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(inputString);
     expect(output.data.address.display).toBe(inputString);

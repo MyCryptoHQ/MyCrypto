@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, Fragment, ReactNode } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
@@ -89,7 +89,7 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
 
 interface Props {
   id: string;
-  variables?: { [name: string]: () => string | React.ReactNode };
+  variables?: { [name: string]: () => string | ReactNode };
 }
 
 export const Trans: FC<Props> = ({ id, variables }) => {
@@ -143,19 +143,16 @@ export const Trans: FC<Props> = ({ id, variables }) => {
 
         return resolveComponents(matchSplit[1], [
           ...components,
-          <React.Fragment key={uniqueId()}>{matchSplit[0]}</React.Fragment>,
-          <React.Fragment key={uniqueId()}>
+          <Fragment key={uniqueId()}>{matchSplit[0]}</Fragment>,
+          <Fragment key={uniqueId()}>
             {isFunction(variablesComponents[resolvedComponentIndexNumber])
               ? (variablesComponents[resolvedComponentIndexNumber] as () => any)()
               : variablesComponents[resolvedComponentIndexNumber]}
-          </React.Fragment>
+          </Fragment>
         ]);
       }
 
-      return resolveComponents('', [
-        ...components,
-        <React.Fragment key={uniqueId()}>{rest}</React.Fragment>
-      ]);
+      return resolveComponents('', [...components, <Fragment key={uniqueId()}>{rest}</Fragment>]);
     };
 
     return <>{resolveComponents(tString)}</>;

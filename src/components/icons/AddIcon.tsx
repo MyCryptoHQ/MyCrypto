@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC, MouseEventHandler } from 'react';
 
 import { COLORS } from '@theme';
 
@@ -7,10 +7,10 @@ import { deriveIconSize, IconSize } from './helpers';
 interface Props {
   fillColor?: string;
   size?: IconSize;
-  onClick?(e?: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onClick?: MouseEventHandler<SVGSVGElement>;
 }
 
-const AddIcon: React.FC<Props> = ({ fillColor, size, onClick }) => {
+const AddIcon: FC<Props> = ({ fillColor, size, onClick }) => {
   const iconSize = deriveIconSize(size);
   return (
     <svg

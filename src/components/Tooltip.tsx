@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps, FC, ReactNode } from 'react';
 
 import { Tooltip as UITooltip } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ import { SetIntersection } from 'utility-types';
 import Icon from './Icon';
 
 type ToolTipIcon = SetIntersection<
-  React.ComponentProps<typeof Icon>['type'],
+  ComponentProps<typeof Icon>['type'],
   'questionBlack' | 'questionWhite' | 'informational' | 'warning'
 >;
 
@@ -30,11 +30,11 @@ const Override = styled.div<SpaceProps & VerticalAlignProps & DisplayProps>`
   }
 `;
 
-const Tooltip: React.FC<
+const Tooltip: FC<
   {
-    tooltip: React.ReactNode;
+    tooltip: ReactNode;
     type?: ToolTipIcon;
-    children?: React.ReactNode;
+    children?: ReactNode;
     width?: string;
   } & SpaceProps &
     VerticalAlignProps &

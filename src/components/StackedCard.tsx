@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { scale } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 

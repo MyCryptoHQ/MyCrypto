@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { parseEther } from '@ethersproject/units';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';

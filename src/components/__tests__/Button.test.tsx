@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fireEvent, simpleRender } from 'test-utils';
 
 import Button, { Props } from '../Button';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TxReceipt } from '@components/TransactionFlow';
 import { translateRaw } from '@translations';
 import { ITxConfig, ITxReceipt } from '@types';

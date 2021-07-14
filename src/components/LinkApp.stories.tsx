@@ -1,11 +1,11 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import Icon from './Icon';
 import LinkAppComponent from './LinkApp';
 
 export default { title: 'Atoms/LinkApp', component: LinkAppComponent };
 
-const Template = (args: React.ComponentProps<typeof LinkAppComponent>) => (
+const Template = (args: ComponentProps<typeof LinkAppComponent>) => (
   <LinkAppComponent {...args} href="#" />
 );
 

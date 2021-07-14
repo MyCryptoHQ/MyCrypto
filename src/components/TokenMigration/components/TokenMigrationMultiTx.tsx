@@ -1,5 +1,3 @@
-import React from 'react';
-
 import path from 'ramda/src/path';
 
 import { VerticalStepper } from '@components';
@@ -14,14 +12,16 @@ export default function ConfirmTokenMigrationMultiTx({
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);
-  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map((txConstructionConfig, index) => ({
-    title: txConstructionConfig.stepTitle,
-    icon: txConstructionConfig.stepSvg,
-    content: txConstructionConfig.stepContent,
-    buttonText: txConstructionConfig.actionBtnText,
-    loading: status[index] === ITxStatus.BROADCASTED,
-    onClick: onComplete
-  }));
+  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map(
+    (txConstructionConfig, index) => ({
+      title: txConstructionConfig.stepTitle,
+      icon: txConstructionConfig.stepSvg,
+      content: txConstructionConfig.stepContent,
+      buttonText: txConstructionConfig.actionBtnText,
+      loading: status[index] === ITxStatus.BROADCASTED,
+      onClick: onComplete
+    })
+  );
 
   return (
     <div>

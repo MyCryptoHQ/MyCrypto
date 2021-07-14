@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react';
+import { FC, MouseEventHandler, useCallback, useContext } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
@@ -44,16 +44,15 @@ export const ProtectTxSign: FC<Props> = (props) => {
 
   const { txConfig, handleProtectTxConfirmAndSend, account, network } = props;
 
-  const onProtectMyTransactionCancelClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
-      e.preventDefault();
+  const onProtectMyTransactionCancelClick: MouseEventHandler<
+    HTMLButtonElement & SVGSVGElement
+  > = useCallback((e) => {
+    e.preventDefault();
 
-      if (goToInitialStepOrFetchReport) {
-        goToInitialStepOrFetchReport();
-      }
-    },
-    []
-  );
+    if (goToInitialStepOrFetchReport) {
+      goToInitialStepOrFetchReport();
+    }
+  }, []);
 
   const getSignComponent = useCallback(() => {
     if (!isEmpty(txConfig) && values(txConfig).length && account && network) {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import selectEvent from 'react-select-event';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 

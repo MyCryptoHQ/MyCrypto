@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, simpleRender } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { bigify, noOp, truncate } from '@utils';
 import { LAST_CHANGED_AMOUNT } from '../types';
 import ConfirmSwap from './ConfirmSwap';
 
-const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
+const defaultProps: ComponentProps<typeof ConfirmSwap> = {
   account: fAccounts[0],
   flowConfig: {
     fromAsset: fAssets[0],
@@ -23,7 +23,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmSwap> = {
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmSwap>) {
+function getComponent(props: ComponentProps<typeof ConfirmSwap>) {
   return simpleRender(<ConfirmSwap {...props} />, {
     initialState: mockAppState({ accounts: fAccounts, assets: fAssets })
   });

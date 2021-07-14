@@ -1,5 +1,3 @@
-import React from 'react';
-
 import isEmpty from 'lodash/isEmpty';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
@@ -100,7 +98,7 @@ function AssetSelector({
         onChange={(option: TAssetOption) => onSelect(option)}
         getOptionLabel={(option) => (showAssetName ? option.name : option.ticker)}
         optionDivider={true}
-        optionComponent={({ data, selectOption }: OptionProps<TAssetOption>) => {
+        optionComponent={({ data, selectOption }: OptionProps<TAssetOption, false>) => {
           const { ticker, name, uuid } = data;
           return (
             <AssetSelectorItem

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 
 import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -19,7 +19,7 @@ export interface IQueryResults {
 
 interface Props {
   params: TxParam[];
-  withQuery(query: IQueryResults): React.ReactElement<any> | null;
+  withQuery(query: IQueryResults): ReactElement<any> | null;
 }
 
 interface Query {

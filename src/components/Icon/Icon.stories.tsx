@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import IconComponent from '.';
 
 export default { title: 'Atoms/Icon', component: IconComponent };
 
-const Template = (args: React.ComponentProps<typeof IconComponent>) => <IconComponent {...args} />;
+const Template = (args: ComponentProps<typeof IconComponent>) => <IconComponent {...args} />;
 
 export const ExpandableClosed = Template.bind({});
 ExpandableClosed.args = {

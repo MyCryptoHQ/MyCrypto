@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import selectEvent from 'react-select-event';
 import { fireEvent, screen, simpleRender } from 'test-utils';
@@ -8,7 +8,7 @@ import { sortByLabel } from '@utils';
 
 import AccountSelector from './AccountSelector';
 
-type Props = React.ComponentProps<typeof AccountSelector>;
+type Props = ComponentProps<typeof AccountSelector>;
 
 function getComponent(props: Props) {
   return simpleRender(

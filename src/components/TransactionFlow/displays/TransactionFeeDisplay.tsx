@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import { Asset } from '@types';
 import { bigify, gasStringsToMaxGasNumber } from '@utils';
@@ -17,10 +17,10 @@ function TransactionFeeDisplay({ baseAsset, gasLimitToUse, gasPriceToUse, fiatAs
   const fiatValue: string = bigify(fiatAsset.rate).multipliedBy(transactionFeeETH).toFixed(4);
 
   return (
-    <React.Fragment>
+    <Fragment>
       {transactionFeeETH.toFixed(4)} {baseAssetSymbol} / {fiatAsset.symbol}
       {fiatValue} {fiatAsset.fiat}
-    </React.Fragment>
+    </Fragment>
   );
 }
 

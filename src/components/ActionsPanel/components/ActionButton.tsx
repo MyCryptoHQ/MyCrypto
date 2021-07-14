@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button, LinkApp } from '@components';
 import { useUserActions } from '@services';
 import { ACTION_STATE, ExtendedUserAction } from '@types';

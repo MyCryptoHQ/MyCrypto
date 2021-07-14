@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TokenMigrationStepper } from '@components';
 
 import { migrationConfig } from './config';

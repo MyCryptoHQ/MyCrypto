@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 
 import { COLORS } from '@theme';
 import { TCurrencySymbol, TTicker, TUuid } from '@types';

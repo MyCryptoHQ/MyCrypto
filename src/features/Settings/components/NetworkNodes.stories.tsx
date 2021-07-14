@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { storiesOf } from '@storybook/react';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';

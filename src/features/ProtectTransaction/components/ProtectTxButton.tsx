@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import { FC, MouseEvent, useCallback } from 'react';
 
 import styled, { css } from 'styled-components';
 
@@ -87,7 +87,7 @@ interface Props {
   disabled?: boolean;
   reviewReport?: boolean;
   protectTxShow: boolean;
-  onClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  onClick(e: MouseEvent<HTMLButtonElement, MouseEvent>): void;
   stepper(): JSX.Element;
 }
 

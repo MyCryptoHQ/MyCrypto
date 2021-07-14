@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fAssets } from '@fixtures';
 
 import { noOp } from '../utils';

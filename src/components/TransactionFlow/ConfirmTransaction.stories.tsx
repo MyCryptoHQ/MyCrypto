@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { ZapReceiptBanner } from '@features/DeFiZap';
 import { IZapId, ZAPS_CONFIG } from '@features/DeFiZap/config';
@@ -20,7 +20,7 @@ const onComplete = noOp;
 
 export default { title: 'Features/ConfirmTx', components: ConfirmTransactionUI };
 
-const Template = (args: React.ComponentProps<typeof ConfirmTransactionUI>) => (
+const Template = (args: ComponentProps<typeof ConfirmTransactionUI>) => (
   <div className="sb-container" style={{ maxWidth: '620px' }}>
     <ConfirmTransactionUI {...args} />
   </div>

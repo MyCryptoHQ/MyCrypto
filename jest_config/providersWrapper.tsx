@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 import { configureStore, DeepPartial } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -19,7 +19,7 @@ export const ProvidersWrapper = ({
   initialState = mockAppState(),
   initialRoute
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   initialState?: AppState;
   initialRoute?: string;
 }) => {
@@ -43,9 +43,9 @@ export const ProvidersWrapper = ({
  * @param state AppState
  */
 export const withOptions = (
-  state?: React.ComponentProps<typeof ProvidersWrapper>['initialState'],
-  route?: React.ComponentProps<typeof ProvidersWrapper>['initialRoute']
-) => (props: React.ComponentProps<typeof ProvidersWrapper>) => (
+  state?: ComponentProps<typeof ProvidersWrapper>['initialState'],
+  route?: ComponentProps<typeof ProvidersWrapper>['initialRoute']
+) => (props: ComponentProps<typeof ProvidersWrapper>) => (
   <ProvidersWrapper initialState={state} initialRoute={route} {...props}>
     {props.children}
   </ProvidersWrapper>

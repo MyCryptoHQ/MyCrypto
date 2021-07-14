@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';

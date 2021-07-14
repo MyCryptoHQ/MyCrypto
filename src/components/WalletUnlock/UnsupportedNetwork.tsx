@@ -1,16 +1,16 @@
-import React from 'react';
+import { FC, ReactElement } from 'react';
 
 import { Trans } from '@translations';
 import { Network } from '@types';
 
 interface OwnProps {
-  walletType: string | React.ReactElement<string>;
+  walletType: string | ReactElement<string>;
   network: Network;
 }
 
 type Props = OwnProps;
 
-const UnsupportedNetwork: React.FC<Props> = ({ walletType, network }) => {
+const UnsupportedNetwork: FC<Props> = ({ walletType, network }) => {
   return (
     <h2>
       <Trans

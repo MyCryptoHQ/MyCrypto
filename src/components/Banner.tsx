@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 
 import styled from 'styled-components';
 
@@ -10,7 +10,7 @@ import { BannerType } from '@types';
 import { default as Typography } from './Typography';
 
 interface Props {
-  value: string | React.ReactElement<any>;
+  value: string | ReactElement<any>;
   type: BannerType;
   displayIcon?: boolean;
 }

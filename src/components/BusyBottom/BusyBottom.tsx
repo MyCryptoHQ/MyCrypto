@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import { Box, Icon, LinkApp } from '@components';
 import { translateRaw } from '@translations';
@@ -15,7 +15,7 @@ export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
       <Box variant="rowAlign" justifyContent="center">
         {configs[type].map(({ copy, copyVariables, link, external }, index) => {
           return (
-            <React.Fragment key={index}>
+            <Fragment key={index}>
               <LinkApp isExternal={!!external} href={link}>
                 {translateRaw(copy, copyVariables)}
               </LinkApp>
@@ -25,7 +25,7 @@ export const BusyBottom = ({ type }: { type: BusyBottomConfig }) => {
                   <Icon type="separator" />
                 </Box>
               )}
-            </React.Fragment>
+            </Fragment>
           );
         })}
       </Box>

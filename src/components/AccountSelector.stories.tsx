@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fAccounts, fAssets } from '@fixtures';
 import { noOp } from '@utils';
@@ -8,7 +8,7 @@ import AccountSummary from './AccountSummary';
 
 export default { title: 'Molecules/Selectors/AccountSelector', component: AccountSelector };
 
-const initialProps: React.ComponentProps<typeof AccountSelector> = {
+const initialProps: ComponentProps<typeof AccountSelector> = {
   accounts: fAccounts,
   name: '',
   value: null,

@@ -1,15 +1,14 @@
-import React from 'react';
+import { FC, MouseEventHandler } from 'react';
 
 import { COLORS } from '@theme';
 
 interface CloseIconProps {
   fillColor?: string;
   size?: 'sm' | 'lg' | 'md';
-
-  onClick?(e?: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onClick?: MouseEventHandler<SVGSVGElement>;
 }
 
-const CloseIcon: React.FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }) => {
+const CloseIcon: FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }) => {
   const dimensions = (s: string) => {
     switch (s) {
       case 'sm':

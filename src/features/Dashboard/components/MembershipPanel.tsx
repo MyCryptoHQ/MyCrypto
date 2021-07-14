@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 

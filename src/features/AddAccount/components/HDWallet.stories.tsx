@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { LEDGER_DERIVATION_PATHS } from '@mycrypto/wallets';
 
 import ExtendedContentPanel from '@components/ExtendedContentPanel';

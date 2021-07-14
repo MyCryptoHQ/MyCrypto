@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC, MouseEvent } from 'react';
 
 import { COLORS } from '@theme';
 
@@ -6,10 +6,10 @@ interface WarningIconProps {
   fillColor?: string;
   size?: 'sm' | 'lg';
 
-  onClick?(e?: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onClick?(e?: MouseEvent<SVGSVGElement, MouseEvent>): void;
 }
 
-const WarningIcon: React.FC<WarningIconProps> = ({ fillColor, size }) => (
+const WarningIcon: FC<WarningIconProps> = ({ fillColor, size }) => (
   <svg
     width={(size || 'sm') === 'sm' ? '26' : '13'}
     height={(size || 'sm') === 'sm' ? '42' : '21'}

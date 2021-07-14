@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { LinkApp } from '@components';
 import { DOWNLOAD_MYCRYPTO_LINK } from '@config';
@@ -16,7 +16,7 @@ interface InsecureWarningType {
   goToStart: any;
 }
 
-class InsecureWalletWarning extends React.Component<Props> {
+class InsecureWalletWarning extends Component<Props> {
   constructor(props: Props) {
     super(props);
   }

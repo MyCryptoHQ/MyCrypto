@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { GeneralStepper as GeneralStepperComponent, StepperProps } from './GeneralStepper';
 
 const ExampleButtonComponent = ({ onComplete, onCompleteText }: any) => (

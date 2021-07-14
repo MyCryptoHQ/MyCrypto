@@ -1,5 +1,3 @@
-import React from 'react';
-
 import pipe from 'ramda/src/pipe';
 import Responsive from 'react-responsive';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets } from '@fixtures';

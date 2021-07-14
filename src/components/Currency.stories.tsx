@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { FONT_SIZE } from '@theme';
 import { TTicker, TUuid } from '@types';
@@ -6,7 +6,7 @@ import { TTicker, TUuid } from '@types';
 import Currency from './Currency';
 import Divider from './Divider';
 
-const defaultProps: React.ComponentProps<typeof Currency> = {
+const defaultProps: ComponentProps<typeof Currency> = {
   amount: '0.00012312',
   ticker: 'USD' as TTicker
 };

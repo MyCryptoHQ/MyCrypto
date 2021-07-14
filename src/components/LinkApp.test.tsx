@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { screen, simpleRender } from 'test-utils';
 
 import { default as LinkApp } from './LinkApp';
 
-type Props = React.ComponentProps<typeof LinkApp>;
+type Props = ComponentProps<typeof LinkApp>;
 function getComponent(props: Props) {
   return simpleRender(<LinkApp {...props} />);
 }

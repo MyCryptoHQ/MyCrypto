@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, screen, simpleRender } from 'test-utils';
 
@@ -6,7 +6,7 @@ import { TURL } from '@types';
 
 import { default as IFrame } from './IFrame';
 
-function getComponent(props: React.ComponentProps<typeof IFrame>) {
+function getComponent(props: ComponentProps<typeof IFrame>) {
   return simpleRender(<IFrame {...props} />);
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, simpleRender } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { noOp, truncate } from '@utils';
 import { LAST_CHANGED_AMOUNT } from '../types';
 import SwapAssets from './SwapAssets';
 
-const defaultProps: React.ComponentProps<typeof SwapAssets> = {
+const defaultProps: ComponentProps<typeof SwapAssets> = {
   selectedNetwork: 'Ethereum',
   account: fAccounts[0],
   assets: fAssets,
@@ -36,7 +36,7 @@ const defaultProps: React.ComponentProps<typeof SwapAssets> = {
   setNetwork: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof SwapAssets>) {
+function getComponent(props: ComponentProps<typeof SwapAssets>) {
   return simpleRender(<SwapAssets {...props} />, {
     initialState: mockAppState({ accounts: fAccounts })
   });

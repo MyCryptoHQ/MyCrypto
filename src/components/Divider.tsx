@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import Box from './Box';
 
@@ -7,7 +7,7 @@ const Divider = ({
   width = '100%',
   color = 'discrete',
   ...props
-}: React.ComponentProps<typeof Box>) => {
+}: ComponentProps<typeof Box>) => {
   return <Box backgroundColor={color} height={height} width={width} {...props} />;
 };
 

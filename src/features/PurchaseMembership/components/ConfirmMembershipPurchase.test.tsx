@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, simpleRender } from 'test-utils';
 
@@ -9,7 +9,7 @@ import { noOp, truncate } from '@utils';
 
 import ConfirmMembershipPurchase from './ConfirmMembershipPurchase';
 
-const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
+const defaultProps: ComponentProps<typeof ConfirmMembershipPurchase> = {
   account: fAccounts[0],
   transactions: fTxParcels,
   currentTxIdx: 0,
@@ -17,7 +17,7 @@ const defaultProps: React.ComponentProps<typeof ConfirmMembershipPurchase> = {
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof ConfirmMembershipPurchase>) {
+function getComponent(props: ComponentProps<typeof ConfirmMembershipPurchase>) {
   return simpleRender(<ConfirmMembershipPurchase {...props} />, {
     initialState: mockAppState({ accounts: fAccounts })
   });

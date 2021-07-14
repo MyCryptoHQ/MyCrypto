@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { Box, Icon, LinkApp, Text } from '@components';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -10,7 +10,7 @@ import { innerJoin, map, pipe, prop, slice, sort } from '@vendor';
 import useContracts from './useContracts';
 
 const renderUseContract = ({ contracts = [] as ExtendedContract[] } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ contracts })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useContracts(), { wrapper });

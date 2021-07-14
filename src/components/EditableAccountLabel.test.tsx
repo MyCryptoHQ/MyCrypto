@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { TAddress } from '@types';
 
 import { EditableAccountLabel } from './EditableAccountLabel';
 
-type Props = React.ComponentProps<typeof EditableAccountLabel>;
+type Props = ComponentProps<typeof EditableAccountLabel>;
 const defaultProps: Props = {
   updateUserActionStateByName: jest.fn() as any,
   createOrUpdateContact: jest.fn() as any,
@@ -30,6 +30,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.click(text);
     const input = container.querySelector('input') as HTMLElement;
     expect(input).toBeDefined();
+    input.focus();
     fireEvent.keyDown(input, { key: 'Escape' });
     expect(getByText(translateRaw('NO_LABEL'))).toBeDefined();
   });
@@ -43,6 +44,7 @@ describe('EditableAccountLabel', () => {
     expect(input).toBeDefined();
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: inputString } });
+    input.focus();
     await waitFor(() => fireEvent.keyDown(input, enter));
     expect(defaultProps.createOrUpdateContact).toHaveBeenCalledWith(
       expect.objectContaining({ label: inputString })
@@ -55,7 +57,7 @@ describe('EditableAccountLabel', () => {
     fireEvent.click(text);
     const input = container.querySelector('input') as HTMLElement;
     expect(input).toBeDefined();
-    fireEvent.blur(input);
+    input.blur();
     expect(getByText(translateRaw('NO_LABEL'))).toBeDefined();
   });
 });

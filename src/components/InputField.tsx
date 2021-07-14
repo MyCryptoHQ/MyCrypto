@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, ElementType, HTMLProps } from 'react';
 
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ interface CustomInputProps {
   inputError?: string | JSX.Element;
   inputErrorBorder?: boolean;
   showEye?: boolean;
-  customIcon?: React.ReactType;
+  customIcon?: ElementType;
   height?: string;
   maxHeight?: string;
   resizable?: boolean;
@@ -127,14 +127,14 @@ const CustomIcon = styled.span`
 interface Props {
   name?: string;
   type?: string;
-  inputMode?: React.HTMLProps<HTMLInputElement>['inputMode'];
+  inputMode?: HTMLProps<HTMLInputElement>['inputMode'];
   label?: string | JSX.Element;
   value: string | undefined;
   inputError?: string | JSX.Element | undefined;
   inputErrorType?: InlineMessageType;
   inputErrorBorder?: boolean;
   showEye?: boolean;
-  customIcon?: React.ElementType;
+  customIcon?: ElementType;
   textarea?: boolean;
   placeholder?: string;
   height?: string;
@@ -182,7 +182,7 @@ export class InputField extends Component<Props> {
       inputMode
     } = this.props;
 
-    const IconComponent = customIcon as React.ElementType;
+    const IconComponent = customIcon as ElementType;
 
     return (
       <MainWrapper marginBottom={marginBottom}>

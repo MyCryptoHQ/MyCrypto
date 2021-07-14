@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 
@@ -20,5 +20,5 @@ export const PageVisitsAnalytics = withRouter(({ history, location }) => {
     });
   });
 
-  return <React.Fragment />;
+  return <Fragment />;
 });

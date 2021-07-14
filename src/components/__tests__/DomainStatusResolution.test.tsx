@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { simpleRender } from 'test-utils';
 

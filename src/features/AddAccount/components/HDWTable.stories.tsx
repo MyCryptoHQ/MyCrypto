@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';

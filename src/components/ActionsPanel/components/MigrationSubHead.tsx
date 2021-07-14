@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Text } from '@components/NewTypography';
 import { getAccountsByAsset, useAssets } from '@services';
 import { getStoreAccounts, useSelector } from '@store';

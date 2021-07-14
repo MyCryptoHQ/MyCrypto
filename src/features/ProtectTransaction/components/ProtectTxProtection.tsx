@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useContext, useEffect, useState } from 'react';
 
 import bulletIcon from 'assets/images/icn-bullet.svg';
 import BigNumber from 'bignumber.js';
@@ -211,8 +211,8 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     setFeeAmount({ amount, fee, rate: rate ? rate : null });
   }, [sendAssetsValues]);
 
-  const onProtectMyTransactionClick = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onProtectMyTransactionClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+    async (e) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -231,8 +231,8 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
     [feeAmount, setIsLoading]
   );
 
-  const onProtectMyTransactionCancelClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>) => {
+  const onProtectMyTransactionCancelClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
       e.preventDefault();
 
       if (showHideProtectTx) {
@@ -267,8 +267,8 @@ export interface UIProps {
   isPTXFree: boolean;
   isLoading: boolean;
   web3Wallet: { isWeb3Wallet: boolean; name: string | null };
-  onCancel(e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>): void;
-  onProtect(e: React.MouseEvent<HTMLButtonElement & SVGSVGElement, MouseEvent>): void;
+  onCancel: MouseEventHandler<HTMLButtonElement & SVGSVGElement>;
+  onProtect: MouseEventHandler<HTMLButtonElement & SVGSVGElement>;
 }
 
 export const ProtectTxProtectionUI = ({

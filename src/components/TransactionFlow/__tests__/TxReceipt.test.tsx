@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { fireEvent, simpleRender } from 'test-utils';
 
@@ -14,7 +14,7 @@ import { TxReceiptUI } from '../TxReceipt';
 const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 
-const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
+const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
   assetRate: 250,
@@ -31,7 +31,7 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   fiat: Fiats.USD
 };
 
-function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
+function getComponent(props: ComponentProps<typeof TxReceiptUI>) {
   return simpleRender(<TxReceiptUI {...props} />);
 }
 

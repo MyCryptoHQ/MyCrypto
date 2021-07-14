@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import { PureComponent, ReactNode } from 'react';
 
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -9,10 +9,10 @@ import './index.scss';
 
 interface Props {
   isOpen?: boolean;
-  title?: React.ReactNode;
+  title?: ReactNode;
   disableButtons?: boolean;
   hideButtons?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   buttons?: IButton[];
   maxWidth?: number;
   handleClose(): void;

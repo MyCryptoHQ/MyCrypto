@@ -3,7 +3,7 @@
   In order to style the headers particularyly the Icon caret
 */
 
-import React, { ReactNode, useState } from 'react';
+import { ComponentProps, ReactNode, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -15,7 +15,7 @@ import { Text } from './NewTypography';
 import { StackedCard } from './StackedCard';
 import { Table, TableConfig, TableData } from './Table';
 
-type StackedCardData = React.ComponentProps<typeof StackedCard>;
+type StackedCardData = ComponentProps<typeof StackedCard>;
 
 type CollapsibleTableData = TableData & {
   config: TableConfig & {

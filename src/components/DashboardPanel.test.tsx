@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { screen, simpleRender } from 'test-utils';
 
 import { DashboardPanel } from './DashboardPanel';
 
-const getComponent = (props: React.ComponentProps<typeof DashboardPanel>) =>
+const getComponent = (props: ComponentProps<typeof DashboardPanel>) =>
   simpleRender(<DashboardPanel {...props} />);
 
 describe('DashboardPanel', () => {

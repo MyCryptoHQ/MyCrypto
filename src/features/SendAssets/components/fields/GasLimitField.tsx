@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { InputField } from '@components';
 
 export function GasLimitField({ value, name, onChange, disabled, error }: IGasLimitField) {

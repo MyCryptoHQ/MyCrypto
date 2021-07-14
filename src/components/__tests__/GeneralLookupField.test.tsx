@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FallbackProvider } from '@ethersproject/providers';
 import Resolution, { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
@@ -76,8 +74,9 @@ describe('GeneralLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: address } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe(address);
@@ -93,6 +92,7 @@ describe('GeneralLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: ens } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
@@ -108,7 +108,9 @@ describe('GeneralLookupField', () => {
     const { container, getByText, rerender } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: ens } });
+
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
     rerender(<GeneralLookupField {...getDefaultProps()} value={output.data.address} />);
@@ -125,7 +127,9 @@ describe('GeneralLookupField', () => {
     const { container, getByText, rerender } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: ens } });
+
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
     rerender(<GeneralLookupField {...getDefaultProps()} value={output.data.address} />);
@@ -144,6 +148,7 @@ describe('GeneralLookupField', () => {
     const { container, getByText, rerender } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: ens } });
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
@@ -158,8 +163,9 @@ describe('GeneralLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: inputString } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(inputString);
     expect(output.data.address.display).toBe(inputString);
@@ -171,7 +177,9 @@ describe('GeneralLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: option.address } });
+
     await waitFor(() => fireEvent.keyDown(input!, enter));
 
     expect(output.data.address).toStrictEqual({ display: option.label, value: option.address });

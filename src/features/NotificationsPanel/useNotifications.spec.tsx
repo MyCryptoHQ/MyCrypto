@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { act, renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -10,7 +10,7 @@ import { NotificationTemplates } from '.';
 import { useNotifications } from './useNotifications';
 
 const renderUseNotifications = ({ notifications = [] as ExtendedNotification[] } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ notifications })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useNotifications(), { wrapper });

@@ -1,10 +1,10 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { expectToThrow, simpleRender } from 'test-utils';
 
 import Icon from './Icon';
 
-type Props = React.ComponentProps<typeof Icon>;
+type Props = ComponentProps<typeof Icon>;
 const renderComponent = (props: Props) => simpleRender(<Icon {...props} />);
 
 describe('Icon', () => {

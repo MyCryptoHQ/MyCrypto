@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import styled, { css } from 'styled-components';
@@ -13,7 +13,7 @@ const ButtonColorSchemes = { default: 'default', inverted: 'inverted', warning: 
 type TButtonColorScheme = keyof typeof ButtonColorSchemes;
 
 interface ButtonProps {
-  children: React.ReactNode | string;
+  children: ReactNode | string;
   fullwidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
@@ -28,7 +28,7 @@ interface StyledButtonProps {
   _loading?: boolean;
 }
 
-export type Props = ButtonProps & React.ComponentProps<typeof Button>;
+export type Props = ButtonProps & ComponentProps<typeof Button>;
 
 const Wrapper = styled.div`
   display: flex;

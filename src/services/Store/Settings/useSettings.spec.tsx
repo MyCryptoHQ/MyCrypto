@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import { renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
@@ -10,7 +10,7 @@ import { ISettings } from '@types';
 import useSettings from './useSettings';
 
 const renderUseSettings = ({ settings = {} as ISettings } = {}) => {
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper: FC = ({ children }) => (
     <ProvidersWrapper initialState={mockAppState({ settings })}>{children}</ProvidersWrapper>
   );
   return renderHook(() => useSettings(), { wrapper });

@@ -1,4 +1,4 @@
-import React, { HTMLProps } from 'react';
+import { Component, FormEvent, HTMLProps, WheelEvent } from 'react';
 
 import classnames from 'classnames';
 import './Input.scss';
@@ -22,7 +22,7 @@ interface State {
 
 type Props = OwnProps & HTMLProps<HTMLInputElement>;
 
-class Input extends React.Component<Props, State> {
+class Input extends Component<Props, State> {
   public state: State = {
     hasBlurred: false,
     isStateless: true
@@ -73,7 +73,7 @@ class Input extends React.Component<Props, State> {
     );
   }
 
-  private handleOnChange = (args: React.FormEvent<HTMLInputElement>) => {
+  private handleOnChange = (args: FormEvent<HTMLInputElement>) => {
     if (this.state.isStateless) {
       this.setState({ isStateless: false });
     }
@@ -83,7 +83,7 @@ class Input extends React.Component<Props, State> {
   };
   // When number inputs are scrolled on while in focus, the number changes. So we blur
   // it if it's focused to prevent that behavior, without preventing the scroll.
-  private preventNumberScroll(ev: React.WheelEvent<HTMLInputElement>) {
+  private preventNumberScroll(ev: WheelEvent<HTMLInputElement>) {
     if (document.activeElement === ev.currentTarget) {
       ev.currentTarget.blur();
     }

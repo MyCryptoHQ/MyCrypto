@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, simpleRender } from 'test-utils';
 
@@ -10,7 +10,7 @@ import { noOp, truncate } from '@utils';
 import { IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import MembershipReceipt from './MembershipPurchaseReceipt';
 
-const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
+const defaultProps: ComponentProps<typeof MembershipReceipt> = {
   account: fAccounts[0],
   transactions: [
     {
@@ -23,7 +23,7 @@ const defaultProps: React.ComponentProps<typeof MembershipReceipt> = {
   onComplete: noOp
 };
 
-function getComponent(props: React.ComponentProps<typeof MembershipReceipt>) {
+function getComponent(props: ComponentProps<typeof MembershipReceipt>) {
   return simpleRender(<MembershipReceipt {...props} />, {
     initialState: mockAppState({ accounts: fAccounts })
   });

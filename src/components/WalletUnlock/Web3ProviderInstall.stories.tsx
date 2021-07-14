@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { Web3ProviderInstallUI } from './Web3ProviderInstall';
 
@@ -7,7 +7,7 @@ export default {
   component: Web3ProviderInstallUI
 };
 
-const Template = (args: React.ComponentProps<typeof Web3ProviderInstallUI>) => {
+const Template = (args: ComponentProps<typeof Web3ProviderInstallUI>) => {
   return (
     <div className="sb-container" style={{ maxWidth: '620px' }}>
       <Web3ProviderInstallUI {...args} />

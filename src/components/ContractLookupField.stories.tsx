@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Form, Formik } from 'formik';
 
 import { fContracts, fNetwork } from '@fixtures';

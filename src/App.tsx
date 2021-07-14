@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 

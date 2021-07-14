@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
@@ -61,11 +61,11 @@ const AddIcon = styled.img`
 
 const newNode = 'NEW_NODE';
 
-type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
+type NetworkNodeOptionProps = OptionProps<CustomNodeConfig, false> & {
   isEditEnabled: boolean;
 };
 
-const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({ data, label, selectOption }) => {
+const NetworkNodeOption: FC<NetworkNodeOptionProps> = ({ data, label, selectOption }) => {
   const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
 
   if (label !== newNode) {

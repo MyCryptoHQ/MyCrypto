@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ConfirmTransaction } from '@components';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 

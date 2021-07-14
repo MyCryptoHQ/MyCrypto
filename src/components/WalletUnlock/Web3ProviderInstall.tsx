@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import AppStoreBadgeIMG from '@assets/images/mobile/app-store-badge.png';

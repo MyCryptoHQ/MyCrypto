@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
@@ -68,7 +66,7 @@ export default function MembershipSelector({ name, value, onSelect }: Membership
       options={options}
       onChange={(option) => onSelect(option)}
       getOptionLabel={(option) => option.title}
-      optionComponent={({ data, selectOption }: OptionProps<IMembershipConfig>) => (
+      optionComponent={({ data, selectOption }: OptionProps<IMembershipConfig, false>) => (
         <MembershipSelectorItem option={data} onClick={selectOption} paddingLeft={SPACING.SM} />
       )}
       valueComponent={({ value: option }) => <MembershipSelectorItem option={option} />}

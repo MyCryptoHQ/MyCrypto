@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fNetwork } from '@fixtures';
 import { WalletId } from '@types';
 import { noOp } from '@utils';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { AssetIcon, Currency, Icon } from '@components';

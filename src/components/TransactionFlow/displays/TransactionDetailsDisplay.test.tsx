@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { fireEvent, simpleRender } from 'test-utils';
@@ -20,7 +20,7 @@ import { truncate } from '@utils';
 import { TransactionDetailsDisplay } from '.';
 import { constructSenderFromTxConfig } from '../helpers';
 
-const defaultProps: React.ComponentProps<typeof TransactionDetailsDisplay> = {
+const defaultProps: ComponentProps<typeof TransactionDetailsDisplay> = {
   baseAsset: fAssets[0],
   asset: fRopDAI,
   assetAmount: '1.0',
@@ -37,7 +37,7 @@ const defaultProps: React.ComponentProps<typeof TransactionDetailsDisplay> = {
   recipient: fAccounts[1].address
 };
 
-function getComponent(props: React.ComponentProps<typeof TransactionDetailsDisplay>) {
+function getComponent(props: ComponentProps<typeof TransactionDetailsDisplay>) {
   return simpleRender(<TransactionDetailsDisplay {...props} />);
 }
 

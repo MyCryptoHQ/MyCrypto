@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import styled from 'styled-components';
 
@@ -33,7 +33,7 @@ interface ImportProps {
   onNext(): void;
 }
 
-export default class ImportBox extends React.Component<ImportProps> {
+export default class ImportBox extends Component<ImportProps> {
   public state = { dragging: false };
 
   public async componentDidUpdate() {

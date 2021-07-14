@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 
 import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
@@ -70,15 +70,15 @@ export default function GasSelector({
     setIsAutoGasSet(!isAutoGasSet);
   };
 
-  const handleGasPriceChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleGasPriceChange = (e: KeyboardEvent<HTMLInputElement>) => {
     setGasPrice((e.target as HTMLTextAreaElement).value);
   };
 
-  const handleGasLimitChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleGasLimitChange = (e: KeyboardEvent<HTMLInputElement>) => {
     setGasLimit((e.target as HTMLTextAreaElement).value);
   };
 
-  const handleNonceChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleNonceChange = (e: KeyboardEvent<HTMLInputElement>) => {
     setNonce((e.target as HTMLTextAreaElement).value);
   };
 

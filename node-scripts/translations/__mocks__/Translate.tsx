@@ -1,8 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
 
 import translate, { Trans, translateMarker, translateRaw } from '@translations';
 
-const Translate: React.FC = () => {
+const Translate: FC = () => {
   const translateTest2 = translate('TRANSLATE_TEST_2');
   const translateTest2Duplicate = translate('TRANSLATE_TEST_2');
   const translateTest2Reduplicate = translate('TRANSLATE_TEST_2');

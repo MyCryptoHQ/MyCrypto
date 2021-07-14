@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
@@ -15,7 +13,7 @@ const DropdownDPath = styled.span`
 `;
 
 type TDPathOptionProps = { paddingLeft: string } & (
-  | OptionProps<DPath>
+  | OptionProps<DPath, false>
   | { data: DPath; selectOption?(): void }
 );
 const DPathOption = ({ data, paddingLeft, selectOption }: TDPathOptionProps) => (

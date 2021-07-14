@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MemoryRouter, Route, Switch } from 'react-router';
 import { fireEvent, simpleRender } from 'test-utils';
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
@@ -122,7 +122,7 @@ const SwapAssets = (props: Props) => {
   ]);
 
   // SEND AMOUNT CHANGED
-  const handleFromAmountChangedEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFromAmountChangedEvent = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleFromAmountChanged(value);
 
@@ -136,7 +136,7 @@ const SwapAssets = (props: Props) => {
   ]);
 
   // RECEIVE AMOUNT CHANGED
-  const handleToAmountChangedEvent = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleToAmountChangedEvent = async (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     handleToAmountChanged(value);
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import pick from 'ramda/src/pick';
 
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';

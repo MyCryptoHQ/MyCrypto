@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import approval from '@assets/images/transactions/approval.svg';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, screen, simpleRender } from 'test-utils';
 

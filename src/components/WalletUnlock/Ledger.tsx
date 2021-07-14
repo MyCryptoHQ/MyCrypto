@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { LEDGER_DERIVATION_PATHS, LEDGER_ETH } from '@mycrypto/wallets';
 

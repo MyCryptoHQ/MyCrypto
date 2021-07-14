@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { memo, ReactElement, useMemo } from 'react';
 
 import BigNumber from 'bignumber.js';
 import equals from 'ramda/src/equals';
@@ -75,7 +75,7 @@ const CustomLabel = (
   labelProps: CustomLabelProps,
   selectedAssetIndex: number,
   handleMouseOver: BreakdownChartProps['handleMouseOver']
-): React.ReactElement<any> => {
+): ReactElement<any> => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent, ticker, index } = labelProps;
 
   const isActiveSection = selectedAssetIndex === index;
@@ -122,7 +122,7 @@ const generateColors = (length: number) => {
   return colors;
 };
 
-const BreakdownChart = React.memo(
+const BreakdownChart = memo(
   ({
     balances,
     selectedAssetIndex,

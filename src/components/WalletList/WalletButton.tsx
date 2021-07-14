@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Tooltip } from '@mycrypto/ui';
 import styled, { keyframes } from 'styled-components';
 

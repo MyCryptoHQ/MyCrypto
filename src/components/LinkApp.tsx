@@ -1,4 +1,4 @@
-import React from 'react';
+import { AnchorHTMLAttributes, ComponentProps, FC, MouseEvent } from 'react';
 
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 import styled from 'styled-components';
@@ -95,7 +95,7 @@ const LINK_VARIANTS = {
   }
 };
 
-const SLink = styled('a')<LinkStyleProps & React.AnchorHTMLAttributes<HTMLAnchorElement>>`
+const SLink = styled('a')<LinkStyleProps & AnchorHTMLAttributes<HTMLAnchorElement>>`
   /** Overide @mycrypto/ui global styles */
   &&& {
     ${variant({
@@ -141,13 +141,12 @@ interface LinkProps {
   readonly href: string;
   readonly isExternal?: boolean;
   readonly variant?: keyof typeof LINK_VARIANTS;
-  onClick?(e: React.MouseEvent<HTMLAnchorElement>): void | undefined;
+  onClick?(e: MouseEvent<HTMLAnchorElement>): void | undefined;
 }
 
-type Props = LinkProps &
-  (React.ComponentProps<typeof SLink> | React.ComponentProps<typeof SRouterLink>);
+type Props = LinkProps & (ComponentProps<typeof SLink> | ComponentProps<typeof SRouterLink>);
 
-const LinkApp: React.FC<Props> = ({
+const LinkApp: FC<Props> = ({
   href,
   isExternal = false,
   variant = 'defaultLink',

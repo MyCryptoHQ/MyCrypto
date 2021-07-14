@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';

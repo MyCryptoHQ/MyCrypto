@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DeepPartial } from '@reduxjs/toolkit';
 import { fireEvent, mockStore, simpleRender, waitFor } from 'test-utils';
 

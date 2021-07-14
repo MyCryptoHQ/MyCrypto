@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { Fiats } from '@config';
 import { fAssets } from '@fixtures';
@@ -19,9 +19,7 @@ export default {
   component: AmountComponent
 };
 
-const Template = (args: React.ComponentProps<typeof AmountComponent>) => (
-  <AmountComponent {...args} />
-);
+const Template = (args: ComponentProps<typeof AmountComponent>) => <AmountComponent {...args} />;
 
 export const Default = Template.bind({});
 Default.storyName = 'Default';

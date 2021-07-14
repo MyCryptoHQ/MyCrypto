@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
@@ -16,7 +16,7 @@ const Content = styled.div`
   text-align: center;
 `;
 
-export class Import extends React.Component<Props> {
+export class Import extends Component<Props> {
   public state = { step: 0 };
 
   public render() {

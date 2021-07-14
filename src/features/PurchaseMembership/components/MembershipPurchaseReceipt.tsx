@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
 import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getWalletConfig } from '@config';
 import { translateRaw } from '@translations';
 import { WalletId } from '@types';

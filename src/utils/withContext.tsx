@@ -1,4 +1,4 @@
-import React, { Context, useContext } from 'react';
+import { Context, useContext } from 'react';
 
 export function withContext<T>(context: Context<T>) {
   return (Component: any) => (ownProps: any) => {

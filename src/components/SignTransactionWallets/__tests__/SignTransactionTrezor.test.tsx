@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { simpleRender, waitFor } from 'test-utils';
 
@@ -8,7 +8,7 @@ import { WalletId } from '@types';
 
 import { getHeader } from './helper';
 
-const defaultProps: React.ComponentProps<typeof SignTransaction> = {
+const defaultProps: ComponentProps<typeof SignTransaction> = {
   txConfig: {
     ...fTxConfig,
     senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.TREZOR }

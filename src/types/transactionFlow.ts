@@ -1,3 +1,5 @@
+import { ComponentType } from 'react';
+
 import { Brand } from 'utility-types';
 
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
@@ -109,7 +111,7 @@ export interface IReceiverAddress {
 }
 
 export type SigningComponents = {
-  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
+  readonly [k in WalletId]: ComponentType<ISignComponentProps> | null;
 };
 
 export type ITxHistoryStatus =

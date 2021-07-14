@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';

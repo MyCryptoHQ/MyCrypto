@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
 import { connect, ConnectedProps } from 'react-redux';
 

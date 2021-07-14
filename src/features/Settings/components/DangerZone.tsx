@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
@@ -36,7 +36,7 @@ const SDashboardPanel = styled(DashboardPanel)`
   border: 1px solid ${({ theme }) => theme.colors.warning};
 `;
 
-const DangerZone: React.FC<Props> = ({ appReset }) => {
+const DangerZone: FC<Props> = ({ appReset }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import { mockAppState, screen, simpleRender } from 'test-utils';
 
@@ -10,7 +10,7 @@ import { truncate } from '@utils';
 
 import { MigrationTable } from '../components/MigrationTable';
 
-type Props = React.ComponentProps<typeof MigrationTable>;
+type Props = ComponentProps<typeof MigrationTable>;
 
 function getComponent(props: Props) {
   return simpleRender(<MigrationTable {...props} />, {

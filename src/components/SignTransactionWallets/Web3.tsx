@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getAddress } from '@ethersproject/address';
 import { Web3Provider } from '@ethersproject/providers';

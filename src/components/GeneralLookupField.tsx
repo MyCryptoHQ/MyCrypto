@@ -1,4 +1,4 @@
-import React, { FocusEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { FocusEventHandler, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 
@@ -179,7 +179,7 @@ const GeneralLookupField = ({
       return input;
     };
 
-    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    const handleEnterKeyDown = (e: KeyboardEvent<HTMLElement>) => {
       if (e.keyCode === 13) {
         handleNewInput(inputValue.current);
         if (onChange) onChange(inputValue.current);

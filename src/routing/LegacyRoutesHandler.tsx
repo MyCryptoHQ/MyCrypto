@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ interface RouterProps {
   pushArg?: boolean;
 }
 
-class RedirectWithQuery extends React.Component<RouterProps> {
+class RedirectWithQuery extends Component<RouterProps> {
   public render() {
     const { from, to, strictArg, exactArg, pushArg } = this.props;
     return (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import closeIcon from '@assets/images/icn-close.svg';
 import { fAccount } from '@fixtures';

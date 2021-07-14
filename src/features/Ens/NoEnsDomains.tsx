@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 import { COLORS, FONT_SIZE, SPACING } from '@theme';

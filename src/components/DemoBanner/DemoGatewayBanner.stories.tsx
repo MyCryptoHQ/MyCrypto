@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DemoGatewayBanner } from './DemoGatewayBanner';
 
 export default { title: 'Molecules/DemoGatewayBanner', component: DemoGatewayBanner };

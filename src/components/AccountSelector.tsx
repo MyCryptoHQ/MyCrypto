@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { formatUnits } from '@ethersproject/units';
 import { OptionProps } from 'react-select';
@@ -69,7 +69,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
       options={options}
       onChange={handleFormUpdate}
       getOptionLabel={(option) => option.account.label}
-      optionComponent={({ data, selectOption }: OptionProps<TOption>) => {
+      optionComponent={({ data, selectOption }: OptionProps<TOption, false>) => {
         const { account, asset: selectedAsset } = data;
         const { address, label } = account;
         const { balance, assetUUID, assetTicker } = selectedAsset;

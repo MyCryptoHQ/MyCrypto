@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Context as ResponsiveContext } from 'react-responsive';
 import { mockAppState, simpleRender } from 'test-utils';
 

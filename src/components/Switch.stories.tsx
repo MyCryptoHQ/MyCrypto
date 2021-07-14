@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { ComponentProps, FC, useState } from 'react';
 
 import { Switch as SwitchComponent } from './Switch';
 
 export default { title: 'Atoms/Switch', component: SwitchComponent };
 
-const Template: React.FC<React.ComponentProps<typeof SwitchComponent>> = (args) => {
+const Template: FC<ComponentProps<typeof SwitchComponent>> = (args) => {
   const [state, setState] = useState(false);
   const toggleState = () => setState(!state);
   return <SwitchComponent onChange={toggleState} checked={state} {...args} />;

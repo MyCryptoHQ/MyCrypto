@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
 import selectEvent from 'react-select-event';
 import { fireEvent, mockAppState, screen, simpleRender } from 'test-utils';
@@ -7,7 +7,7 @@ import { fNetworks } from '@fixtures';
 
 import NetworkSelector from './NetworkSelector';
 
-type Props = React.ComponentProps<typeof NetworkSelector>;
+type Props = ComponentProps<typeof NetworkSelector>;
 const defaultProps: Props = {
   onChange: jest.fn()
 };

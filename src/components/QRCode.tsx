@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 
 import QRCodeLib from 'qrcode';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ interface State {
   qr?: string;
 }
 
-export default class QRCode extends React.PureComponent<Props, State> {
+export default class QRCode extends PureComponent<Props, State> {
   public state: State = {};
   public UNSAFE_componentWillMount() {
     // Start generating QR codes immediately

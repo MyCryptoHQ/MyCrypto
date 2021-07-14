@@ -1,9 +1,9 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 import Text, { TextProps } from './Text';
 
 interface TypographyProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const Heading = ({

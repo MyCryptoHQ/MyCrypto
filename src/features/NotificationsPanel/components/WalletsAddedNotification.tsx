@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC, ReactElement } from 'react';
 
 import styled from 'styled-components';
 
@@ -40,11 +40,11 @@ const Image = styled.img`
 
 interface ResourceItemProps {
   src: string;
-  title: React.ReactElement<any>;
+  title: ReactElement<any>;
   link: string;
 }
 
-const ResourceItem: React.FC<ResourceItemProps> = ({ src, title, link }) => {
+const ResourceItem: FC<ResourceItemProps> = ({ src, title, link }) => {
   return (
     <ResourceItemWrapper href={link} target="_blank" rel="noopener noreferrer">
       <Image src={src} />
