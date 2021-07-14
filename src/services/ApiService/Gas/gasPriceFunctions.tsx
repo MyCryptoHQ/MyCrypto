@@ -3,6 +3,7 @@ import { ProviderHandler } from '@services/EthService';
 import { GasEstimates, ITxObject, Network } from '@types';
 import { bigNumGasPriceToViewableGwei } from '@utils';
 
+import { suggestFees } from './eip1559';
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network?: Network) {
@@ -50,8 +51,14 @@ export async function fetchGasPriceEstimates(network?: Network): Promise<GasEsti
 
 export async function fetchEIP1559PriceEstimates(network: Network) {
   const provider = new ProviderHandler(network);
-  const { gasPrice, ...rest } = await provider.getFeeData();
-  return rest;
+  const result = await suggestFees(provider);
+  // @todo Decide which strategy to use?
+  //const { gasPrice, ...rest } = await provider.getFeeData();
+  //return rest;
+  return result.map(({ maxFeePerGas, maxPriorityFeePerGas }) => ({
+    maxFeePerGas: Math.floor(maxFeePerGas),
+    maxPriorityFeePerGas: Math.floor(maxPriorityFeePerGas)
+  }))[0];
 }
 
 // Returns fast gasPrice or EIP1559 gas params in gwei
@@ -59,9 +66,10 @@ export async function fetchUniversalGasPriceEstimate(network?: Network) {
   if (network && network.supportsEIP1559) {
     const { maxFeePerGas, maxPriorityFeePerGas } = await fetchEIP1559PriceEstimates(network);
     return {
-      maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
-      maxPriorityFeePerGas:
-        maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+      maxFeePerGas: maxFeePerGas ? bigNumGasPriceToViewableGwei(maxFeePerGas) : undefined,
+      maxPriorityFeePerGas: maxPriorityFeePerGas
+        ? bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+        : undefined
     };
   }
 

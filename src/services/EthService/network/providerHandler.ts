@@ -187,6 +187,27 @@ export class ProviderHandler {
     return this.injectClient((client) => client.getFeeData());
   }
 
+  // @todo Update this when Ethers supports eth_feeHistory
+  public getFeeHistory(
+    blockCount: number,
+    newestBlock: string,
+    rewardPercentiles?: any[]
+  ): Promise<{
+    baseFeePerGas: string[];
+    gasUsedRatio: number[];
+    reward?: string[][];
+    oldestBlock: number;
+  }> {
+    return this.injectClient((client) =>
+      // @ts-expect-error Temp until Ethers supports eth_feeHistory
+      (client as FallbackProvider).providerConfigs[0].provider.send('eth_feeHistory', [
+        blockCount,
+        newestBlock,
+        rewardPercentiles ?? []
+      ])
+    );
+  }
+
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {
     if (clientInjectCb) {
       if (this.isFallbackProvider) {
