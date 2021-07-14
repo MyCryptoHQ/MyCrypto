@@ -468,8 +468,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const network = values.network;
   const baseAsset = !isVoid(network)
-    ? getBaseAssetByNetwork({ network, assets: userAssets })!
-    : getBaseAssetByNetwork({ network: defaultNetwork!, assets: userAssets })!;
+    ? getBaseAssetByNetwork({ network, assets })!
+    : getBaseAssetByNetwork({ network: defaultNetwork!, assets })!;
 
   useEffect(() => {
     if (updateFormValues) {

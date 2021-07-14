@@ -147,7 +147,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
-    gasPriceSettings: GAS_PRICE_TESTNET
+    gasPriceSettings: GAS_PRICE_TESTNET,
+    supportsEIP1559: true
   },
   Goerli: {
     id: 'Goerli',
@@ -170,7 +171,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
       default: TESTNET_ETH
     },
-    gasPriceSettings: GAS_PRICE_TESTNET
+    gasPriceSettings: GAS_PRICE_TESTNET,
+    supportsEIP1559: true
   },
   ETC: {
     id: 'ETC',
