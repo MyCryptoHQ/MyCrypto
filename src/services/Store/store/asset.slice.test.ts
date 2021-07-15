@@ -91,21 +91,6 @@ describe('AccountSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('addFromAPI(): merges current assets with new assets', () => {
-    const a1 = { uuid: 'random', contractAddress: '0x0' } as ExtendedAsset;
-    const a2 = { uuid: 'random1', contractAddress: '0x1' } as ExtendedAsset;
-    const a3 = { uuid: 'random2', contractAddress: '0x2' } as ExtendedAsset;
-    const state = [a1, a2, a3];
-    const modifiedEntities = [
-      { ...a1, address: '0xchanged' } as ExtendedAsset,
-      { ...a2, address: '0xchanged1' } as ExtendedAsset
-    ];
-    const newAssets = modifiedEntities.reduce((acc, cur) => ({ ...acc, [cur.uuid]: cur }), {});
-    const actual = reducer(state, addAssetsFromAPI(newAssets));
-    const expected = [...modifiedEntities, a3];
-    expect(actual).toEqual(expected);
-  });
-
   it('reset(): can reset', () => {
     const entity = { uuid: 'random', contractAddress: '0x0' } as ExtendedAsset;
     const state = [entity];
