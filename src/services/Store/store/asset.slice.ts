@@ -92,12 +92,7 @@ export const getAssetByUUID = (uuid: TUuid) =>
   createSelector([getAssets], (a) => a.find((asset) => asset.uuid === uuid));
 
 export const getCoinGeckoAssetManifest = createSelector(getAssets, (assets) =>
-  assets.reduce((manifest, asset) => {
-    if (asset && asset.mappings && asset.mappings.coinGeckoId) {
-      return { ...manifest, [asset.uuid]: asset.mappings.coinGeckoId };
-    }
-    return manifest;
-  }, {})
+  assets.filter((a) => a.mappings?.coinGeckoId).map((a) => a.uuid)
 );
 
 /**

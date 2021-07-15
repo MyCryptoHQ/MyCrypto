@@ -28,6 +28,7 @@ export default function createStore(initialState?: DeepPartial<AppState>) {
     middleware: (getDefaultMiddleware) => [
       serializeLegacyMiddleware,
       ...getDefaultMiddleware({
+        immutableCheck: IS_DEV,
         thunk: false, // MYC uses sagas
         serializableCheck: {
           ignoredActions: [

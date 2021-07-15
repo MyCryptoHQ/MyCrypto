@@ -13,8 +13,8 @@ function buildUrl(uuid: TUuid) {
   return `${baseURL}/${uuid}.png`;
 }
 
-function getIconUrl(uuid: TUuid, assetIconsManifest: Record<string, string>) {
-  const assetIconExists = assetIconsManifest && !!assetIconsManifest[uuid];
+function getIconUrl(uuid: TUuid, assetIconsManifest?: TUuid[]) {
+  const assetIconExists = assetIconsManifest && assetIconsManifest.includes(uuid);
   return assetIconExists ? buildUrl(uuid) : getSVGIcon('generic-asset-icon');
 }
 
