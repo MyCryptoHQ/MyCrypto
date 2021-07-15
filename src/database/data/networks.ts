@@ -1111,7 +1111,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     unit: 'FTM' as TTicker,
     chainId: 250,
     isCustom: false,
-    color: '#6d2eae',
+    color: '#1969ff',
     blockExplorer: makeExplorer({
       name: 'FTMScan',
       origin: 'https://ftmscan.com'
