@@ -10,6 +10,7 @@ import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
 import { verifySignedMessage } from '@utils';
+import { normalizeJson, normalizeSingleQuotes } from '@utils/normalize';
 
 import { VerifyParams } from './types';
 
@@ -63,11 +64,14 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
 
   const handleClick = () => handleVerifySignedMessage();
 
-  const handleVerifySignedMessage = (json?: string) => {
-    try {
-      const parsedSignature: ISignedMessage = JSON.parse(json ?? message);
-      const isValid = verifySignedMessage(parsedSignature);
+  const handleVerifySignedMessage = (json?: string, trySingleQuotes?: boolean): void => {
+    const rawMessage = json ?? message;
 
+    try {
+      const normalizedMessage = trySingleQuotes ? normalizeSingleQuotes(rawMessage) : rawMessage;
+      const parsedSignature: ISignedMessage = normalizeJson(normalizedMessage);
+
+      const isValid = verifySignedMessage(parsedSignature);
       if (!isValid) {
         throw Error();
       }
@@ -75,6 +79,10 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
       setError(undefined);
       setSignedMessage(parsedSignature);
     } catch (err) {
+      if (!trySingleQuotes) {
+        return handleVerifySignedMessage(rawMessage, true);
+      }
+
       setError(translateRaw('ERROR_38'));
       setSignedMessage(null);
     }
