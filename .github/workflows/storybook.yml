@@ -55,7 +55,7 @@ jobs:
       - name: Install Dependencies
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: yarn build:storybook
         if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'

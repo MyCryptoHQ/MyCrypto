@@ -45,7 +45,7 @@ jobs:
       - name: Install Dependencies
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: yarn validate
         run: yarn validate
@@ -74,7 +74,7 @@ jobs:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: yarn build
         run: yarn build

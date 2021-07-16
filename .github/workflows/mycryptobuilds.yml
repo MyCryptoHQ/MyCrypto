@@ -86,7 +86,7 @@ jobs:
       - name: Install Dependencies
         ## If no cache is found, install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Set outputs
         id: vars
