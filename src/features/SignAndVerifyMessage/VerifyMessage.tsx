@@ -10,6 +10,7 @@ import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
 import { verifySignedMessage } from '@utils';
+import { normalizeQuotes } from '@utils/normalize';
 
 import { VerifyParams } from './types';
 
@@ -65,9 +66,10 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
 
   const handleVerifySignedMessage = (json?: string) => {
     try {
-      const parsedSignature: ISignedMessage = JSON.parse(json ?? message);
-      const isValid = verifySignedMessage(parsedSignature);
+      const normalizedMessage = normalizeQuotes(json ?? message);
+      const parsedSignature: ISignedMessage = JSON.parse(normalizedMessage);
 
+      const isValid = verifySignedMessage(parsedSignature);
       if (!isValid) {
         throw Error();
       }
