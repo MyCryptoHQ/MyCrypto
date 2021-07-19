@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 import { Button, DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
+import { getTokenInformation } from '@helpers/erc20';
 import { CustomAssetService, isValidAddress } from '@services';
 import { useAssets, useNetworks } from '@services/Store';
 import { translateRaw } from '@translations';
@@ -46,6 +47,7 @@ export function AddToken(props: Props) {
   const [addressError, setAddressError] = useState('');
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [isFetching, setFetching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { createAsset } = useAssets();
@@ -82,7 +84,9 @@ export function AddToken(props: Props) {
     if (!validateForm()) {
       return;
     }
+
     setIsSubmitting(true);
+
     const { coinGeckoId } = await CustomAssetService.instance.fetchCoingeckoID(
       address as TAddress,
       networkId
@@ -113,6 +117,36 @@ export function AddToken(props: Props) {
     setShowAddToken(false);
   };
 
+  const handleChangeAddress = (event: ChangeEvent<HTMLInputElement>) =>
+    setAddress(event.target.value);
+
+  const handleChangeTicker = (event: ChangeEvent<HTMLInputElement>) =>
+    setTicker(event.target.value);
+
+  const handleChangeDecimals = (event: ChangeEvent<HTMLInputElement>) =>
+    setDecimals(event.target.value);
+
+  useEffect(() => {
+    if (isValidAddress(address, network.chainId)) {
+      setFetching(true);
+
+      getTokenInformation(network, address as TAddress)
+        .then((tokenInformation) => {
+          if (tokenInformation) {
+            const { symbol, decimals: fetchedDecimals } = tokenInformation;
+            setTicker(symbol || ticker);
+            setDecimals(fetchedDecimals?.toString() || decimals);
+          }
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          setFetching(false);
+        });
+    }
+  }, [network, address]);
+
   return (
     <DashboardPanel
       heading={
@@ -133,32 +167,35 @@ export function AddToken(props: Props) {
         <NetworkSelector network={networkId} onChange={setNetworkId} />
       </NetworkSelectorWrapper>
       <InputField
-        label={translateRaw('SYMBOL')}
-        placeholder={'ETH'}
-        onChange={(e) => setTicker(e.target.value)}
-        value={ticker}
-        inputError={symbolError}
-      />
-      <InputField
         label={translateRaw('ADDRESS')}
         placeholder={translateRaw('ADD_TOKEN_ADDRESS_PLACEHOLDER')}
-        onChange={(e) => setAddress(e.target.value)}
+        onChange={handleChangeAddress}
         value={address}
         inputError={addressError}
+        disabled={isFetching || isSubmitting}
+      />
+      <InputField
+        label={translateRaw('SYMBOL')}
+        placeholder={'ETH'}
+        onChange={handleChangeTicker}
+        value={ticker}
+        inputError={symbolError}
+        disabled={isFetching || isSubmitting}
       />
       <InputField
         label={translateRaw('TOKEN_DEC')}
         placeholder={`${DEFAULT_ASSET_DECIMAL}`}
-        onChange={(e) => setDecimals(e.target.value)}
+        onChange={handleChangeDecimals}
         value={decimals}
         inputError={decimalsError}
         type="number"
+        disabled={isFetching || isSubmitting}
       />
       <ActionsWrapper>
-        <Button onClick={handleCancelClick} disabled={isSubmitting}>
+        <Button onClick={handleCancelClick} disabled={isFetching || isSubmitting}>
           {translateRaw('CANCEL_ACTION')}
         </Button>
-        <Button onClick={handleAddTokenClick} loading={isSubmitting}>
+        <Button onClick={handleAddTokenClick} loading={isFetching || isSubmitting}>
           {translateRaw('ADD_TOKEN')}
         </Button>
       </ActionsWrapper>
