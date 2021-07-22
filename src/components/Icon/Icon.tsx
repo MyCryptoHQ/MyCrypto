@@ -35,6 +35,7 @@ import feedback from '@assets/icons/feedback.svg';
 import navAddAccount from '@assets/icons/navigation/add-account.svg';
 import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
+import navBlog from '@assets/icons/navigation/blog.svg';
 import navBroadcastTransaction from '@assets/icons/navigation/broadcast-transaction.svg';
 import navBuy from '@assets/icons/navigation/buy.svg';
 import navClose from '@assets/icons/navigation/close.svg';
@@ -252,6 +253,7 @@ const svgIcons = {
   'nav-team': navTeam,
   'nav-press': navPress,
   'nav-privacy': navPrivacy,
+  'nav-blog': navBlog,
   'nav-new-tab': navNewTab,
   'nav-desktop': navDesktop,
   'nav-ens': navEns,

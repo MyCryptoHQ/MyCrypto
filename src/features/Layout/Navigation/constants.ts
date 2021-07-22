@@ -385,6 +385,11 @@ export const socialLinks = [
 
 export const MYCLinks = [
   {
+    title: translateRaw('NEW_FOOTER_TEXT_11'),
+    link: 'https://blog.mycrypto.com/',
+    icon: 'nav-blog'
+  },
+  {
     title: translateRaw('NEW_FOOTER_TEXT_8'),
     link: 'https://mycrypto.com/about',
     icon: 'nav-team'
