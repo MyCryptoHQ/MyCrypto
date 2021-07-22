@@ -49,6 +49,7 @@ import navFaucet from '@assets/icons/navigation/faucet.svg';
 import navGithub from '@assets/icons/navigation/github.svg';
 import navHelp from '@assets/icons/navigation/help.svg';
 import navHome from '@assets/icons/navigation/home.svg';
+import navInstagram from '@assets/icons/navigation/instagram.svg';
 import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
 import navLedger from '@assets/icons/navigation/ledger.svg';
 import navLinkedin from '@assets/icons/navigation/linkedin.svg';
@@ -243,6 +244,7 @@ const svgIcons = {
   'nav-twitter': navTwitter,
   'nav-facebook': navFacebook,
   'nav-medium': navMedium,
+  'nav-instagram': navInstagram,
   'nav-linkedin': navLinkedin,
   'nav-github': navGithub,
   'nav-reddit': navReddit,

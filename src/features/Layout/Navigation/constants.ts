@@ -362,8 +362,8 @@ export const socialLinks = [
     icon: 'nav-facebook'
   },
   {
-    link: 'https://medium.com/@mycrypto',
-    icon: 'nav-medium'
+    link: 'https://instagram.com/mycryptohq',
+    icon: 'nav-instagram'
   },
   {
     link: 'https://www.linkedin.com/company/mycrypto',
