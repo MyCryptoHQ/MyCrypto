@@ -18,7 +18,7 @@ import { APP_PERSIST_CONFIG } from './persist.config';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
-import { fetchHistory } from './txHistory.slice';
+import { fetchHistory, fetchSchemaMeta } from './txHistory.slice';
 import userActionSlice from './userAction.slice';
 
 interface IRehydrate {
@@ -58,6 +58,7 @@ function* handleRehydrateSuccess(action: IRehydrate) {
   if (action.key === APP_PERSIST_CONFIG.key) {
     yield put(trackInit());
     yield put(fetchAssets());
+    yield put(fetchSchemaMeta());
     yield put(fetchMemberships());
     yield put(startRatesPolling());
     yield put(fetchHistory());

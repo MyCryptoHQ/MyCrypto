@@ -192,6 +192,13 @@ export enum ITxType {
   WETH_WRAP = 'WETH_WRAP'
 }
 
+export interface ITxTypeMeta {
+  protocol: string;
+  type: string;
+}
+
+export type TxType = Brand<string, 'TxType'>;
+
 export interface ISimpleTxForm {
   address: string; // simple eth address
   amount: string; // in ether - ex: 1
