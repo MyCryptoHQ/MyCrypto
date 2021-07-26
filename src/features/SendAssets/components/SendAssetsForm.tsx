@@ -20,6 +20,7 @@ import {
   InlineMessage,
   LinkApp,
   Tooltip,
+  TransactionFeeEIP1559,
   WhenQueryExists
 } from '@components';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
@@ -597,6 +598,11 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     setIsEstimatingNonce(false);
   };
 
+  const handleGasLimitChange = (value: string) => setFieldValue('gasLimitField', value);
+  const handleMaxFeeChange = (value: string) => setFieldValue('maxFeePerGasField', value);
+  const handleMaxPriorityFeeChange = (value: string) =>
+    setFieldValue('maxPriorityFeePerGasField', value);
+
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
   const userCanAffordTX = canAffordTX(baseAsset, values);
@@ -606,15 +612,19 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const walletConfig = getWalletConfig(values.account.wallet || WalletId.WEB3);
   const supportsNonce = walletConfig.flags.supportsNonce;
 
+  const fiat = getFiat(settings);
+
   const { type, amount, fee } = validateTxFee(
     values.amount,
     getAssetRateInCurrency(baseAsset, Fiats.USD.ticker),
-    getAssetRateInCurrency(baseAsset, getFiat(settings).ticker),
+    getAssetRateInCurrency(baseAsset, fiat.ticker),
     isERC20Asset(values.asset),
     values.gasLimitField.toString(),
     values.advancedTransaction ? values.gasPriceField.toString() : values.gasPriceSlider.toString(),
     getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
   );
+
+  const baseAssetRate = (getAssetRate(baseAsset) || 0).toString();
 
   useEffect(() => {
     if (isSendMax) {
@@ -737,21 +747,39 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       </fieldset>
       {/* Transaction Fee */}
       <fieldset className="SendAssetsForm-fieldset">
-        <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
+        <label
+          htmlFor="transactionFee"
+          className="SendAssetsForm-fieldset-transactionFee input-group-header"
+        >
           <div>{translate('CONFIRM_TX_FEE')}</div>
-          <TransactionFeeDisplay
-            baseAsset={baseAsset}
-            gasLimitToUse={values.gasLimitField}
-            gasPriceToUse={
-              values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
-            }
-            fiatAsset={{
-              fiat: getFiat(settings).ticker,
-              rate: (getAssetRate(baseAsset) || 0).toString(),
-              symbol: getFiat(settings).symbol
-            }}
-          />
+          {!network.supportsEIP1559 && (
+            <TransactionFeeDisplay
+              baseAsset={baseAsset}
+              gasLimitToUse={values.gasLimitField}
+              gasPriceToUse={
+                values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
+              }
+              fiatAsset={{
+                fiat: fiat.ticker,
+                rate: baseAssetRate,
+                symbol: fiat.symbol
+              }}
+            />
+          )}
         </label>
+        {network.supportsEIP1559 && (
+          <TransactionFeeEIP1559
+            baseAsset={baseAsset}
+            baseAssetRate={baseAssetRate}
+            fiat={fiat}
+            gasLimit={values.gasLimitField}
+            maxFeePerGas={values.maxFeePerGasField}
+            maxPriorityFeePerGas={values.maxPriorityFeePerGasField}
+            setGasLimit={handleGasLimitChange}
+            setMaxFeePerGas={handleMaxFeeChange}
+            setMaxPriorityFeePerGas={handleMaxPriorityFeeChange}
+          />
+        )}
         {!values.advancedTransaction && !network.supportsEIP1559 && (
           <GasPriceSlider
             network={values.network}
@@ -764,7 +792,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           type,
           amount,
           fee,
-          fiat: getFiat(settings)
+          fiat
         })}
       </fieldset>
       {/* Advanced Options */}
@@ -794,9 +822,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                 </label>
 
                 <GasLimitField
-                  onChange={(option: string) => {
-                    setFieldValue('gasLimitField', option);
-                  }}
+                  onChange={handleGasLimitChange}
                   name="gasLimitField"
                   value={values.gasLimitField}
                   disabled={values.isAutoGasSet}
@@ -832,9 +858,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField
-                      onChange={(option: string) => {
-                        setFieldValue('maxFeePerGasField', option);
-                      }}
+                      onChange={handleMaxFeeChange}
                       name="maxFeePerGasField"
                       value={values.maxFeePerGasField}
                       error={errors && errors.maxFeePerGasField}
@@ -848,9 +872,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField
-                      onChange={(option: string) => {
-                        setFieldValue('maxPriorityFeePerGasField', option);
-                      }}
+                      onChange={handleMaxPriorityFeeChange}
                       name="maxPriorityFeePerGasField"
                       value={values.maxPriorityFeePerGasField}
                       error={errors && errors.maxPriorityFeePerGasField}

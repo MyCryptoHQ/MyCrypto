@@ -978,7 +978,11 @@
     "ADD_AN_ACCOUNT": "add an account",
     "VIEW_ONLY_ADDRESSES": "View-Only addresses",
     "TX_TYPE": "Transaction Type",
-    "MAX_FEE_PER_GAS": "Max Fee Per Gas",
-    "MAX_PRIORITY_FEE": "Max Priority Fee"
+    "MAX_FEE_PER_GAS": "Max Fee",
+    "MAX_PRIORITY_FEE": "Max Priority Fee",
+    "FEE_RANGE_ESTIMATE": "Fee Range Estimate",
+    "RECOMMENDED_TOTAL_FEE": "Recommended Total Fee",
+    "CURRENT_BASE_FEE": "Current Base Fee: $fee",
+    "EDIT_TRANSACTION_FEE": "Edit Transaction Fee"
   }
 }
