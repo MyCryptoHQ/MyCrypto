@@ -11,7 +11,7 @@
     "yarn": ">= 1.19.1"
   },
   "dependencies": {
-    "@blockstack/stats": "0.7.0",
+    "@datapunt/matomo-tracker-js": "0.4.0",
     "@ethersproject/abstract-provider": "5.4.0",
     "@ethersproject/address": "5.4.0",
     "@ethersproject/bignumber": "5.4.1",

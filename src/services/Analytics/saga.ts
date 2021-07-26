@@ -33,7 +33,7 @@ export function* initAnalytics() {
   if (isActive && canTrack) {
     yield call(AnalyticsService.initAnalytics);
     yield put(trackEvent({ name: 'App Load' }));
-    yield put(trackEvent({ name: 'Total Account Count', params: { totalQty: accounts.length } }));
+    yield put(trackEvent({ name: 'Total Account Count', params: { value: accounts.length } }));
   }
 }
 
