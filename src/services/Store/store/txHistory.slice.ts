@@ -14,9 +14,13 @@ import {
 } from './account.slice';
 import { AppState } from './root.reducer';
 
+export interface ITxMetaTypes {
+  [s: string]: ITxTypeMeta;
+}
+
 export const initialState = {
   history: [] as ITxHistoryApiResponse[],
-  txTypeMeta: {} as Record<TxType, ITxTypeMeta>,
+  txTypeMeta: {} as ITxMetaTypes,
   error: false
 };
 
@@ -28,7 +32,7 @@ const slice = createSlice({
       state.history = action.payload;
     },
     setTxTypeMeta(state, action: PayloadAction<Record<TxType, ITxTypeMeta>>) {
-      state.txTypeMeta = action.payload
+      state.txTypeMeta = action.payload;
     },
     fetchError(state) {
       state.error = true;
@@ -46,7 +50,7 @@ export const getSlice = createSelector(
   (s) => s
 );
 export const getTxHistory = createSelector([getSlice], (s) => s.history);
-export const getTxTypeMeta = createSelector([getSlice], (s) => s.txTypeMeta);
+export const getTxTypeMetas = createSelector([getSlice], (s) => s.txTypeMeta);
 /**
  * Sagas
  */
@@ -74,7 +78,7 @@ export function* fetchHistoryWorker() {
   if (filteredAccounts.length === 0) return;
 
   try {
-    const history = yield call(
+    const history: ITxHistoryApiResponse[] = yield call(
       HistoryService.instance.getHistory,
       filteredAccounts.map(({ address }) => address)
     );
@@ -87,16 +91,13 @@ export function* fetchHistoryWorker() {
 
 export function* fetchTxTypeMetaWorker() {
   try {
-    const txTypeMeta = yield call(
-      MyCryptoApiService.instance.getSchemaMeta
-    );
+    const txTypeMeta: ITxTypeMeta = yield call(MyCryptoApiService.instance.getSchemaMeta);
 
     yield put(slice.actions.setTxTypeMeta(txTypeMeta));
   } catch (err) {
     yield put(slice.actions.fetchError());
   }
 }
-
 
 export const { setHistory, setTxTypeMeta } = slice.actions;
 

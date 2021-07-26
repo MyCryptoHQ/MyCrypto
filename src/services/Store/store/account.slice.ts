@@ -26,6 +26,7 @@ import {
   StoreAccount,
   StoreAsset,
   TUuid,
+  TxType,
   WalletId
 } from '@types';
 import {
@@ -64,7 +65,7 @@ import {
   getIsDemoMode
 } from './settings.slice';
 import { scanTokens } from './tokenScanning.slice';
-import { getTxHistory } from './txHistory.slice';
+import { getTxHistory, getTxTypeMetas } from './txHistory.slice';
 
 export const initialState = [] as IAccount[];
 
@@ -235,10 +236,11 @@ export const getMergedTxHistory = createSelector(
     getAssets,
     selectAccountTxs,
     getTxHistory,
+    getTxTypeMetas,
     selectContacts,
     selectContracts
   ],
-  (accounts, networks, assets, accountTxs, txHistory, contacts, contracts) => {
+  (accounts, networks, assets, accountTxs, txHistory, txTypeMetas, contacts, contracts) => {
     // Constant for now since we only support mainnet for tx history
     const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
@@ -263,7 +265,7 @@ export const getMergedTxHistory = createSelector(
           return {
             ...tx,
             timestamp: tx.timestamp || 0,
-            txType: deriveTxType(accounts, tx) || ITxHistoryType.UNKNOWN,
+            txType: (deriveTxType(txTypeMetas, accounts, tx) || ITxHistoryType.UNKNOWN) as TxType,
             toAddressBookEntry,
             fromAddressBookEntry,
             networkId: network.id

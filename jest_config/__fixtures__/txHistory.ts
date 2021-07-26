@@ -1,4 +1,5 @@
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { ITxMetaTypes } from '@store/txHistory.slice';
 import {
   ITxData,
   ITxGasLimit,
@@ -40,4 +41,23 @@ export const fTxHistoryAPI: ITxHistoryApiResponse = {
   hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40' as ITxHash,
   txType: 'UNISWAP_V2_EXCHANGE' as ITxType,
   data: '0x7ff36ab500000000000000000000000000000000000000000000010f4b84d285e47e19f600000000000000000000000000000000000000000000000000000000000000800000000000000000000000005197b5b062288bbf29008c92b08010a92dd677cd000000000000000000000000000000000000000000000000000000005f398d270000000000000000000000000000000000000000000000000000000000000002000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000bbbbca6a901c926f240b89eacb641d8aec7aeafd' as ITxData
+};
+
+export const fTxTypeMetas: ITxMetaTypes = {
+  '1INCH_EXCHANGE': {
+    protocol: '1INCH',
+    type: 'EXCHANGE'
+  },
+  ERC_20_APPROVE: {
+    protocol: 'ERC_20',
+    type: 'APPROVE'
+  },
+  ERC_20_MINT: {
+    protocol: 'ERC_20',
+    type: 'MINT'
+  },
+  ERC_20_TRANSFER: {
+    protocol: 'ERC_20',
+    type: 'TRANSFER'
+  }
 };
