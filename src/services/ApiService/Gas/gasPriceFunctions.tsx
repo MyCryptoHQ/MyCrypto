@@ -49,16 +49,35 @@ export async function fetchGasPriceEstimates(network?: Network): Promise<GasEsti
   });
 }
 
-export async function fetchEIP1559PriceEstimates(network: Network) {
-  const provider = new ProviderHandler(network);
+async function getCurrentBaseFee(provider: ProviderHandler) {
+  const block = await provider.getLatestBlock();
+  return block?.baseFeePerGas;
+}
+
+async function estimateFeesUsingHistory(provider: ProviderHandler) {
   const result = await suggestFees(provider);
-  // @todo Decide which strategy to use?
-  //const { gasPrice, ...rest } = await provider.getFeeData();
-  //return rest;
   return result.map(({ maxFeePerGas, maxPriorityFeePerGas }) => ({
     maxFeePerGas: Math.floor(maxFeePerGas),
     maxPriorityFeePerGas: Math.floor(maxPriorityFeePerGas)
   }))[0];
+}
+
+async function estimateFeesUsingEthers(provider: ProviderHandler) {
+  const { gasPrice, ...rest } = await provider.getFeeData();
+  return rest;
+}
+
+export async function fetchEIP1559PriceEstimates(network: Network) {
+  const provider = new ProviderHandler(network);
+
+  const baseFee = await getCurrentBaseFee(provider);
+
+  // @todo Decide which strategy to use?
+  const simple = true;
+  const result = await (simple
+    ? estimateFeesUsingEthers(provider)
+    : estimateFeesUsingHistory(provider));
+  return { ...result, baseFee };
 }
 
 // Returns fast gasPrice or EIP1559 gas params in gwei

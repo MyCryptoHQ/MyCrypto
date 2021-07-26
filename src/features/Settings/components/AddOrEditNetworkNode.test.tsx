@@ -10,8 +10,8 @@ import { noOp } from '@utils';
 
 import AddOrEditNetworkNode from './AddOrEditNetworkNode';
 
-// Mock getCurrentBlock
-ProviderHandler.prototype.getCurrentBlock = jest.fn().mockResolvedValue(11386255);
+// Mock getLatestBlockNumber
+ProviderHandler.prototype.getLatestBlockNumber = jest.fn().mockResolvedValue(11386255);
 
 const defaultProps: ComponentProps<typeof AddOrEditNetworkNode> = {
   networkId: 'Ethereum',

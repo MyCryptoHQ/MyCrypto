@@ -16,6 +16,9 @@ jest.mock('@vendor', () => {
       getFeeData: jest.fn().mockResolvedValue({
         maxFeePerGas: '20000000000',
         maxPriorityFeePerGas: '1000000000'
+      }),
+      getBlock: jest.fn().mockResolvedValue({
+        baseFeePerGas: '10000000000'
       })
     }))
   };
@@ -39,7 +42,7 @@ describe('DeployContractsFlow', () => {
   });
 
   it('can submit form', async () => {
-    const { getByText, container } = getComponent();
+    const { getByText, getByDisplayValue, container } = getComponent();
 
     await selectEvent.openMenu(getByText(DEFAULT_NETWORK, { exact: false }));
 
@@ -60,6 +63,8 @@ describe('DeployContractsFlow', () => {
           '0x608060405234801561001057600080fd5b5060c78061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c80632e64cec11460375780636057361d146053575b600080fd5b603d607e565b6040518082815260200191505060405180910390f35b607c60048036036020811015606757600080fd5b81019080803590602001909291905050506087565b005b60008054905090565b806000819055505056fea2646970667358221220c9881e39a8354c748f8a6a5ac025e69ecd01234d361f842269e058dbde9e36db64736f6c63430007040033'
       }
     });
+
+    await waitFor(() => expect(getByDisplayValue('20')).toBeInTheDocument());
 
     fireEvent.click(getByText(translateRaw('NAV_DEPLOYCONTRACT')));
 

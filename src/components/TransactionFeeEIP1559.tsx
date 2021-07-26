@@ -1,18 +1,23 @@
 import { ChangeEvent, useState } from 'react';
 
+import { BigNumber } from '@ethersproject/bignumber';
+
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
-import { gasStringsToMaxGasNumber } from '@utils';
+import { bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
 
 import Box from './Box';
 import { default as Currency } from './Currency';
 import { default as Icon } from './Icon';
 import InputField from './InputField';
+import { default as LinkApp } from './LinkApp';
 import { Body } from './NewTypography';
 
 interface Props {
   baseAsset: Asset;
   fiat: Fiat;
+  // Current Base Fee of the network
+  baseFee?: BigNumber | null;
   baseAssetRate: string;
   gasLimit: string;
   maxFeePerGas: string;
@@ -25,6 +30,7 @@ interface Props {
 export const TransactionFeeEIP1559 = ({
   baseAsset,
   fiat,
+  baseFee,
   baseAssetRate,
   gasLimit,
   maxFeePerGas,
@@ -33,12 +39,12 @@ export const TransactionFeeEIP1559 = ({
   setMaxFeePerGas,
   setMaxPriorityFeePerGas
 }: Props) => {
-  // @todo Add toggle
-  const [editMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const handleGasLimitChange = (e: ChangeEvent<HTMLInputElement>) => setGasLimit(e.target.value);
   const handleMaxFeeChange = (e: ChangeEvent<HTMLInputElement>) => setMaxFeePerGas(e.target.value);
   const handleMaxPriorityFeeChange = (e: ChangeEvent<HTMLInputElement>) =>
     setMaxPriorityFeePerGas(e.target.value);
+  const handleOpenEditMode = () => setEditMode(true);
 
   const totalFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
   const totalFiat = totalFee.multipliedBy(baseAssetRate);
@@ -53,7 +59,9 @@ export const TransactionFeeEIP1559 = ({
               {translateRaw('EDIT_TRANSACTION_FEE')}
             </Body>
             <Body mb="0" fontWeight="bold">
-              {translateRaw('CURRENT_BASE_FEE', { $fee: '10' })}
+              {translateRaw('CURRENT_BASE_FEE', {
+                $fee: baseFee ? bigNumGasPriceToViewableGwei(baseFee) : '?'
+              })}
             </Body>
           </Box>
           <hr />
@@ -94,7 +102,9 @@ export const TransactionFeeEIP1559 = ({
             ) : (
               <Currency bold={true} amount={totalFee.toString()} ticker={baseAsset.ticker} />
             )}{' '}
-            <Icon ml="1" size="16px" type="edit" color="BLUE_SKY" />
+            <LinkApp href="#" isExternal={false} onClick={handleOpenEditMode}>
+              <Icon ml="1" size="16px" type="edit" color="BLUE_SKY" />
+            </LinkApp>
           </Body>
           <Body mt="1" mb="0" color="BLUE_GREY">
             {translateRaw('RECOMMENDED_TOTAL_FEE')}

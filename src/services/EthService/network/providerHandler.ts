@@ -126,8 +126,12 @@ export class ProviderHandler {
   }
 
   /* Tested */
-  public getCurrentBlock(): Promise<string> {
+  public getLatestBlockNumber(): Promise<string> {
     return this.injectClient((client) => client.getBlockNumber().then((data) => data.toString()));
+  }
+
+  public getLatestBlock(): Promise<Block> {
+    return this.getBlockByHash('latest');
   }
 
   public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {

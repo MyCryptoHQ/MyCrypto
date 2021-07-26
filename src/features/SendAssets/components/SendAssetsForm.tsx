@@ -284,6 +284,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
+  const [baseFee, setBaseFee] = useState<BigNumber | null | undefined>(undefined);
 
   const userAssets = useSelector(getUserAssets);
   const isDemoMode = useSelector(getIsDemoMode);
@@ -520,6 +521,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             'maxPriorityFeePerGasField',
             data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
           );
+          setBaseFee(data.baseFee);
         });
       }
       setFieldValue('network', network || {});
@@ -770,6 +772,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         {network.supportsEIP1559 && (
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
+            baseFee={baseFee}
             baseAssetRate={baseAssetRate}
             fiat={fiat}
             gasLimit={values.gasLimitField}
