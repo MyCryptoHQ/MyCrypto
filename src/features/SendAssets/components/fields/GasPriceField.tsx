@@ -30,7 +30,7 @@ export function GasPriceField({
   };
 
   return (
-    <div>
+    <Box mb="3">
       <SInput
         {...value}
         name={name}
@@ -48,7 +48,7 @@ export function GasPriceField({
         )}
       />
       {error && <InlineMessage>{error}</InlineMessage>}
-    </div>
+    </Box>
   );
 }
 

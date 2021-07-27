@@ -112,6 +112,7 @@ export const TransactionFeeEIP1559 = ({
               onChange={setMaxPriorityFeePerGas}
               value={maxPriorityFeePerGas}
               error={maxPriorityFeePerGasError}
+              placeholder="1"
             />
           </Box>
 
