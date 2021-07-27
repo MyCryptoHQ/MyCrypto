@@ -121,9 +121,11 @@ export const TransactionFeeEIP1559 = ({
             )}{' '}
             <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
               {editMode ? (
-                <Body as="span">{translateRaw('SAVE')}</Body>
+                <Body data-testid="save" as="span">
+                  {translateRaw('SAVE')}
+                </Body>
               ) : (
-                <Icon ml="1" size="16px" type="edit" color="BLUE_SKY" />
+                <Icon data-testid="edit" ml="1" size="16px" type="edit" color="BLUE_SKY" />
               )}
             </LinkApp>
           </Body>
