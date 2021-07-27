@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 
+import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
 import { bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
@@ -9,7 +10,6 @@ import { bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
 import Box from './Box';
 import { default as Currency } from './Currency';
 import { default as Icon } from './Icon';
-import InputField from './InputField';
 import { default as LinkApp } from './LinkApp';
 import { Body } from './NewTypography';
 
@@ -22,6 +22,9 @@ interface Props {
   gasLimit: string;
   maxFeePerGas: string;
   maxPriorityFeePerGas: string;
+  gasLimitError?: string;
+  maxFeePerGasError?: string;
+  maxPriorityFeePerGasError?: string;
   setGasLimit(value: string): void;
   setMaxFeePerGas(value: string): void;
   setMaxPriorityFeePerGas(value: string): void;
@@ -37,13 +40,12 @@ export const TransactionFeeEIP1559 = ({
   maxPriorityFeePerGas,
   setGasLimit,
   setMaxFeePerGas,
-  setMaxPriorityFeePerGas
+  setMaxPriorityFeePerGas,
+  gasLimitError,
+  maxFeePerGasError,
+  maxPriorityFeePerGasError
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
-  const handleGasLimitChange = (e: ChangeEvent<HTMLInputElement>) => setGasLimit(e.target.value);
-  const handleMaxFeeChange = (e: ChangeEvent<HTMLInputElement>) => setMaxFeePerGas(e.target.value);
-  const handleMaxPriorityFeeChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setMaxPriorityFeePerGas(e.target.value);
   const handleToggleEditMode = () => setEditMode(!editMode);
 
   const totalFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
@@ -65,24 +67,39 @@ export const TransactionFeeEIP1559 = ({
             </Body>
           </Box>
           <hr />
-          <Box variant="rowAlign">
-            <Box flexGrow={1}>
+          <Box display="flex" alignItems="flex-start">
+            <Box flex="50%">
               {translateRaw('GAS_LIMIT')}
-              <InputField onChange={handleGasLimitChange} value={gasLimit} />
+              <GasLimitField
+                name="gasLimitField"
+                onChange={setGasLimit}
+                value={gasLimit}
+                error={gasLimitError}
+              />
             </Box>
             <Box px="3">
-              <Body mb="0" fontWeight="bold">
+              <Body mt="32px" mb="0" fontWeight="bold">
                 X
               </Body>
             </Box>
-            <Box flexGrow={1}>
+            <Box flex="50%">
               {translateRaw('MAX_FEE_PER_GAS')}
-              <InputField onChange={handleMaxFeeChange} value={maxFeePerGas} />
+              <GasPriceField
+                name="maxFeePerGasField"
+                onChange={setMaxFeePerGas}
+                value={maxFeePerGas}
+                error={maxFeePerGasError}
+              />
             </Box>
           </Box>
           <Box width="45%">
             {translateRaw('MAX_PRIORITY_FEE')}
-            <InputField onChange={handleMaxPriorityFeeChange} value={maxPriorityFeePerGas} />
+            <GasPriceField
+              name="maxPriorityFeePerGasField"
+              onChange={setMaxPriorityFeePerGas}
+              value={maxPriorityFeePerGas}
+              error={maxPriorityFeePerGasError}
+            />
           </Box>
 
           <hr />

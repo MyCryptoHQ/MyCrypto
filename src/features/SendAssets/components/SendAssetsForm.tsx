@@ -419,6 +419,22 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('GASPRICE_ERROR'))
       .test(validateGasPriceField()),
+    maxFeePerGasField: number()
+      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
+      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('GASPRICE_ERROR'))
+      .test(validateGasPriceField()),
+    maxPriorityFeePerGasField: number()
+      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
+      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
+      .required(translateRaw('REQUIRED'))
+      .typeError(translateRaw('GASPRICE_ERROR'))
+      .test(validateGasPriceField())
+      .test('check-max', translateRaw('PRIORITY_FEE_MAX_ERROR'), function (value) {
+        const maxFeePerGas = this.parent.maxFeePerGasField;
+        return bigify(maxFeePerGas).gte(value);
+      }),
     nonceField: number()
       .integer(translateRaw('ERROR_11'))
       .min(0, translateRaw('ERROR_11'))
@@ -781,6 +797,9 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             setGasLimit={handleGasLimitChange}
             setMaxFeePerGas={handleMaxFeeChange}
             setMaxPriorityFeePerGas={handleMaxPriorityFeeChange}
+            gasLimitError={errors && errors.gasLimitField}
+            maxFeePerGasError={errors && errors.maxFeePerGasField}
+            maxPriorityFeePerGasError={errors && errors.maxPriorityFeePerGasField}
           />
         )}
         {!values.advancedTransaction && !network.supportsEIP1559 && (
