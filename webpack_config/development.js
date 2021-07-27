@@ -10,7 +10,7 @@ const { LOCAL } = require('../environment');
 const common = require('./common');
 const config = require('./config');
 
-const HTTP_PORT = 3001;
+const HTTP_PORT = 3000;
 
 module.exports = merge.smart(common, {
   mode: 'development',
@@ -67,7 +67,7 @@ module.exports = merge.smart(common, {
     new ReactRefreshWebpackPlugin(),
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
-    //new BundleAnalyzerPlugin({ openAnalyzer: false }),
+    new BundleAnalyzerPlugin({ openAnalyzer: false }),
 
     // Make .env variables available to react code.
     // We use Github secrets for production, so this is only defined in development.

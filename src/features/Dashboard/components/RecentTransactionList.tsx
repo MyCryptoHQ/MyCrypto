@@ -114,6 +114,8 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
       case 'CONTRACT_INTERACT':
         return contractInteract;
       case 'EXCHANGE':
+      case 'BRIDGE_IN':
+      case 'BRIDGE_OUT':
         return swap;
       case 'APPROVAL':
       case 'APPROVE':

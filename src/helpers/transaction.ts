@@ -366,7 +366,7 @@ export const deriveTxFields = (
   baseAsset: Asset,
   contractAsset?: Asset
 ) => {
-  const isERC20 = ercType === ERCType.TRANSFER;
+  const isERC20 = ercType === ERCType.TRANSFER || ercType === ERCType.APPROVAL;
   const { to, amount: rawAmount, receiverAddress } = deriveTxRecipientsAndAmount(
     ercType,
     data,
