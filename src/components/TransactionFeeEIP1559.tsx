@@ -13,6 +13,7 @@ import { default as Currency } from './Currency';
 import { default as Icon } from './Icon';
 import { default as LinkApp } from './LinkApp';
 import { Body } from './NewTypography';
+import Tooltip from './Tooltip';
 
 interface Props {
   baseAsset: Asset;
@@ -82,7 +83,10 @@ export const TransactionFeeEIP1559 = ({
           <hr />
           <Box display="flex" alignItems="flex-start">
             <Box flex="50%">
-              {translateRaw('GAS_LIMIT')}
+              <Box variant="rowAlign" pl="1" pb="1">
+                <Body mb="0">{translateRaw('GAS_LIMIT')}</Body>
+                <Tooltip ml="1" type="informational" tooltip="Tooltip" />
+              </Box>
               <GasLimitField
                 name="gasLimitField"
                 onChange={setGasLimit}
@@ -96,7 +100,10 @@ export const TransactionFeeEIP1559 = ({
               </Body>
             </Box>
             <Box flex="50%">
-              {translateRaw('MAX_FEE_PER_GAS')}
+              <Box variant="rowAlign" pl="1" pb="1">
+                <Body mb="0">{translateRaw('MAX_FEE_PER_GAS')}</Body>
+                <Tooltip ml="1" type="informational" tooltip="Tooltip" />
+              </Box>
               <GasPriceField
                 name="maxFeePerGasField"
                 onChange={setMaxFeePerGas}
@@ -106,7 +113,10 @@ export const TransactionFeeEIP1559 = ({
             </Box>
           </Box>
           <Box width="45%">
-            {translateRaw('MAX_PRIORITY_FEE')}
+            <Box variant="rowAlign" pl="1" pb="1">
+              <Body mb="0">{translateRaw('MAX_PRIORITY_FEE')}</Body>
+              <Tooltip ml="1" type="informational" tooltip="Tooltip" />
+            </Box>
             <GasPriceField
               name="maxPriorityFeePerGasField"
               onChange={setMaxPriorityFeePerGas}
