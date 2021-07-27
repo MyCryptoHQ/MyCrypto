@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
+import BigNumberJS from 'bignumber.js';
 
 import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
-import { bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
+import { bigify, bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
 
 import Box from './Box';
 import { default as Currency } from './Currency';
@@ -48,9 +49,21 @@ export const TransactionFeeEIP1559 = ({
   const [editMode, setEditMode] = useState(false);
   const handleToggleEditMode = () => setEditMode(!editMode);
 
+  const viewableBaseFee = baseFee && bigify(bigNumGasPriceToViewableGwei(baseFee));
+
   const totalFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
   const totalFiat = totalFee.multipliedBy(baseAssetRate);
   const hasFiatValue = totalFiat.gt(0);
+
+  const cappedPriorityFee =
+    viewableBaseFee &&
+    BigNumberJS.min(maxPriorityFeePerGas, bigify(maxPriorityFeePerGas).minus(viewableBaseFee));
+
+  // @todo Figure out if this is good enough
+  const minFee = viewableBaseFee
+    ? gasStringsToMaxGasNumber(viewableBaseFee.plus(cappedPriorityFee!).toString(), gasLimit)
+    : totalFee;
+  const minFeeFiat = minFee.multipliedBy(baseAssetRate);
 
   return (
     <Box bg="BG_GRAY" p="3">
@@ -62,7 +75,7 @@ export const TransactionFeeEIP1559 = ({
             </Body>
             <Body mb="0" fontWeight="bold">
               {translateRaw('CURRENT_BASE_FEE', {
-                $fee: baseFee ? bigNumGasPriceToViewableGwei(baseFee) : '?'
+                $fee: viewableBaseFee ? viewableBaseFee.toString() : '?'
               })}
             </Body>
           </Box>
@@ -137,9 +150,9 @@ export const TransactionFeeEIP1559 = ({
           {/* @todo Figure out what values to use for range */}
           <Body mb="0" fontWeight="bold" color="GREYISH_BROWN" textAlign="right" fontSize="2">
             {hasFiatValue ? (
-              <Currency bold={true} amount={totalFiat.toString()} decimals={2} />
+              <Currency bold={true} amount={minFeeFiat.toString()} decimals={2} />
             ) : (
-              <Currency bold={true} amount={totalFee.toString()} />
+              <Currency bold={true} amount={minFee.toString()} />
             )}
             {' - '}
             {hasFiatValue ? (
