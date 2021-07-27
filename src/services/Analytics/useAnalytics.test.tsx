@@ -10,7 +10,7 @@ const renderUseAnalytics = () => {
 describe('useAnalytics', () => {
   it('track(): dispatchs action', () => {
     const mockDispatch = mockUseDispatch();
-    const params = { name: 'Add Account' };
+    const params = { action: 'Add Account' };
     const { result } = renderUseAnalytics();
     act(() => result.current.track(params));
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));

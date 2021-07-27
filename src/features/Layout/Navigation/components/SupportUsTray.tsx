@@ -29,8 +29,8 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
 
   const trackDonationClicked = (title: string) => {
     track({
-      name: 'Donate clicked',
-      params: { asset: title }
+      action: 'Donate clicked',
+      name: title
     });
   };
 

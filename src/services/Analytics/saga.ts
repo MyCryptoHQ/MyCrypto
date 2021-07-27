@@ -5,7 +5,7 @@ import { canTrackProductAnalytics, getAccounts, setProductAnalyticsAuthorisation
 import { IAccount } from '@types';
 
 import { isActiveFeature } from '../FeatureFlag';
-import { default as AnalyticsService, PageParams, TrackParams } from './Analytics';
+import { default as AnalyticsService, LinkParams, PageParams, TrackParams } from './Analytics';
 
 /**
  * Actions
@@ -13,6 +13,7 @@ import { default as AnalyticsService, PageParams, TrackParams } from './Analytic
 export const trackInit = createAction(`analytics/init`);
 export const trackEvent = createAction<TrackParams>(`analytics/trackEvent`);
 export const trackPage = createAction<PageParams>(`analytics/trackPage`);
+export const trackLink = createAction<PageParams>(`analytics/trackLink`);
 
 /**
  * Saga
@@ -22,6 +23,7 @@ export function* analyticsSaga() {
     yield takeEvery(trackInit, initAnalytics),
     yield takeEvery(trackEvent.type, trackEventWorker),
     yield takeEvery(trackPage.type, trackPageWorker),
+    yield takeEvery(trackLink.type, trackLinkWorker),
     yield takeEvery(setProductAnalyticsAuthorisation, deactivateAnalyticsWorker)
   ]);
 }
@@ -32,8 +34,8 @@ export function* initAnalytics() {
   const canTrack = yield select(canTrackProductAnalytics);
   if (isActive && canTrack) {
     yield call(AnalyticsService.initAnalytics);
-    yield put(trackEvent({ name: 'App Load' }));
-    yield put(trackEvent({ name: 'Total Account Count', params: { value: accounts.length } }));
+    yield put(trackEvent({ action: 'App Load' }));
+    yield put(trackEvent({ action: 'Total Account Count', value: accounts.length }));
   }
 }
 
@@ -56,5 +58,12 @@ export function* trackPageWorker({ payload }: PayloadAction<PageParams>) {
   const canTrack = yield select(canTrackProductAnalytics);
   if (canTrack) {
     yield call(AnalyticsService.trackPage, payload);
+  }
+}
+
+export function* trackLinkWorker({ payload }: PayloadAction<LinkParams>) {
+  const canTrack = yield select(canTrackProductAnalytics);
+  if (canTrack) {
+    yield call(AnalyticsService.trackLink, payload);
   }
 }

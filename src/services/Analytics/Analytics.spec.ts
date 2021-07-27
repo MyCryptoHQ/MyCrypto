@@ -3,8 +3,8 @@ import AnalyticsService, { TrackParams } from './Analytics';
 describe('AnalyticsService', () => {
   it('track() params are formatted to match api', async () => {
     const data: TrackParams = {
-      name: 'Add Account',
-      params: { accounts: 3 }
+      action: 'Add Account',
+      value: 3
     };
     AnalyticsService.track(data);
     /*expect(event).toHaveBeenCalledWith({
@@ -16,8 +16,8 @@ describe('AnalyticsService', () => {
 
   it('track() ensures params may not override event name', async () => {
     const data: TrackParams = {
-      name: 'Add Asset',
-      params: { qty: 3, name: 'Double whooper' }
+      action: 'Add Asset'
+      //params: { qty: 3, name: 'Double whooper' }
     };
     AnalyticsService.track(data);
     /*expect(event).toHaveBeenCalledWith({

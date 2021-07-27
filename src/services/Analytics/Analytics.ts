@@ -10,24 +10,26 @@ export interface PageParams {
 }
 
 export interface TrackParams {
-  name: TAnalyticEvents;
-  params?: TObject;
+  action: TAnalyticEvents;
+  name?: string;
+  value?: number;
+}
+
+export interface LinkParams {
+  url: string;
+  type?: 'download' | 'link';
 }
 
 const tracker = new MatomoTracker({
   urlBase: 'https://analytics.mycryptoapi.com',
   siteId: 11,
   //userId: 'UID76903202', // optional, default value: `undefined`.
-  disabled: false, // optional, false by default. Makes all tracking calls no-ops if set to true.
+  disabled: false,
   heartBeat: {
-    // optional, enabled by default
-    active: false, // optional, default value: true
-    seconds: 10 // optional, default value: `15
+    active: false
   },
-  linkTracking: false, // optional, default value: true
+  linkTracking: false,
   configurations: {
-    // optional, default value: {}
-    // any valid matomo configuration, all below are optional
     disableCookies: true,
     setSecureCookie: true,
     setRequestMethod: 'POST'
@@ -60,8 +62,8 @@ const setAnonymousID = () => {
   //return getConfig();
 };
 
-const track = ({ name, params }: TrackParams) => {
-  return tracker.trackEvent({ category: 'app', action: name, ...params });
+const track = ({ action, name, value }: TrackParams) => {
+  return tracker.trackEvent({ category: 'app', action, name, value });
 };
 
 const trackPage = ({ name, title }: PageParams) => {
@@ -71,9 +73,14 @@ const trackPage = ({ name, title }: PageParams) => {
   return tracker.trackPageView({ documentTitle: title, href: name });
 };
 
+const trackLink = ({ url, type }: LinkParams) => {
+  return tracker.trackLink({ href: url, linkType: type });
+};
+
 export default {
   track,
   trackPage,
+  trackLink,
   initAnalytics,
   clearAnonymousID,
   setAnonymousID

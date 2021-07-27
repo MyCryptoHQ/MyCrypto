@@ -8,7 +8,7 @@ import { analyticsSaga, initAnalytics, trackEvent, trackEventWorker } from './sa
 
 describe('AnalyticsSaga', () => {
   it('analyticsSaga(): calls AnalyticsService on dispatch', () => {
-    const params: TrackParams = { name: 'Add Account' };
+    const params: TrackParams = { action: 'Add Account' };
     expectSaga(analyticsSaga)
       .withState(mockAppState({ [settingsSlice.name]: initialState }))
       .provide([[call.fn(AnalyticsService.track), params]])
@@ -29,7 +29,7 @@ describe('AnalyticsSaga', () => {
       });
   });
   it('respects user tracking preferences', () => {
-    const params: TrackParams = { name: 'Add Account' };
+    const params: TrackParams = { action: 'Add Account' };
     return expectSaga(trackEventWorker, trackEvent(params))
       .withState(
         mockAppState({ [settingsSlice.name]: { ...initialState, canTrackProductAnalytics: false } })
