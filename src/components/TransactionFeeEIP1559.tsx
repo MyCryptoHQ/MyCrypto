@@ -44,7 +44,7 @@ export const TransactionFeeEIP1559 = ({
   const handleMaxFeeChange = (e: ChangeEvent<HTMLInputElement>) => setMaxFeePerGas(e.target.value);
   const handleMaxPriorityFeeChange = (e: ChangeEvent<HTMLInputElement>) =>
     setMaxPriorityFeePerGas(e.target.value);
-  const handleOpenEditMode = () => setEditMode(true);
+  const handleToggleEditMode = () => setEditMode(!editMode);
 
   const totalFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
   const totalFiat = totalFee.multipliedBy(baseAssetRate);
@@ -102,8 +102,12 @@ export const TransactionFeeEIP1559 = ({
             ) : (
               <Currency bold={true} amount={totalFee.toString()} ticker={baseAsset.ticker} />
             )}{' '}
-            <LinkApp href="#" isExternal={false} onClick={handleOpenEditMode}>
-              <Icon ml="1" size="16px" type="edit" color="BLUE_SKY" />
+            <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
+              {editMode ? (
+                <Body as="span">{translateRaw('SAVE')}</Body>
+              ) : (
+                <Icon ml="1" size="16px" type="edit" color="BLUE_SKY" />
+              )}
             </LinkApp>
           </Body>
           <Body mt="1" mb="0" color="BLUE_GREY">

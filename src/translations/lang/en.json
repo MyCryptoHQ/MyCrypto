@@ -983,6 +983,7 @@
     "FEE_RANGE_ESTIMATE": "Fee Range Estimate",
     "RECOMMENDED_TOTAL_FEE": "Recommended Total Fee",
     "CURRENT_BASE_FEE": "Current Base Fee: $fee",
-    "EDIT_TRANSACTION_FEE": "Edit Transaction Fee"
+    "EDIT_TRANSACTION_FEE": "Edit Transaction Fee",
+    "SAVE": "Save"
   }
 }
