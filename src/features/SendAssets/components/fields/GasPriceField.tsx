@@ -1,4 +1,16 @@
-import { InputField } from '@components';
+import React, { ChangeEvent } from 'react';
+
+import { Input } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import { Box, InlineMessage, Typography } from '@components';
+import { translateRaw } from '@translations';
+import { sanitizeDecimalSeparator } from '@utils';
+
+const SInput = styled(Input)`
+  /* Override Typography from mycrypto/ui */
+  font-size: 1rem !important;
+`;
 
 export function GasPriceField({
   value,
@@ -7,19 +19,35 @@ export function GasPriceField({
   error,
   placeholder = '20'
 }: IGasPriceField) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const val = sanitizeDecimalSeparator(e.target.value);
+
+    const split = val.toString().split('.');
+    if (split.length > 1) {
+      return onChange(`${split[0]}.${split[1].substring(0, 9)}`);
+    }
+    return onChange(val);
+  };
+
   return (
     <div>
-      <InputField
+      <SInput
         {...value}
         name={name}
         value={value}
-        maxLength={6}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleChange}
         placeholder={placeholder}
         className="SendAssetsForm-fieldset-input"
         inputError={error}
         inputMode="decimal"
+        iconSide="right"
+        icon={() => (
+          <Box variant="rowCenter">
+            <Typography>{translateRaw('GWEI')}</Typography>
+          </Box>
+        )}
       />
+      {error && <InlineMessage>{error}</InlineMessage>}
     </div>
   );
 }

@@ -329,8 +329,7 @@ export const gasPriceValidator = (gasPrice: BigNumber | string): boolean => {
     isValidPositiveNumber(gasPriceFloat) &&
     gasPriceFloat.gte(GAS_PRICE_GWEI_LOWER_BOUND) &&
     gasPriceFloat.lte(GAS_PRICE_GWEI_UPPER_BOUND) &&
-    getLength(gasPriceFloat) <= 14 &&
-    getLength(decimalLength) <= 10
+    getLength(decimalLength) <= 9
   );
 };
 

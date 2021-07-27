@@ -75,7 +75,7 @@ export const TransactionFeeEIP1559 = ({
             </Body>
             <Body mb="0" fontWeight="bold">
               {translateRaw('CURRENT_BASE_FEE', {
-                $fee: viewableBaseFee ? viewableBaseFee.toString() : '?'
+                $fee: viewableBaseFee ? viewableBaseFee.toString(10) : '?'
               })}
             </Body>
           </Box>
@@ -124,13 +124,13 @@ export const TransactionFeeEIP1559 = ({
             {hasFiatValue ? (
               <Currency
                 bold={true}
-                amount={totalFiat.toString()}
+                amount={totalFiat.toString(10)}
                 symbol={fiat.symbol}
                 ticker={fiat.ticker}
                 decimals={2}
               />
             ) : (
-              <Currency bold={true} amount={totalFee.toString()} ticker={baseAsset.ticker} />
+              <Currency bold={true} amount={totalFee.toString(10)} ticker={baseAsset.ticker} />
             )}{' '}
             <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
               {editMode ? (
@@ -150,24 +150,24 @@ export const TransactionFeeEIP1559 = ({
           {/* @todo Figure out what values to use for range */}
           <Body mb="0" fontWeight="bold" color="GREYISH_BROWN" textAlign="right" fontSize="2">
             {hasFiatValue ? (
-              <Currency bold={true} amount={minFeeFiat.toString()} decimals={2} />
+              <Currency bold={true} amount={minFeeFiat.toString(10)} decimals={2} />
             ) : (
-              <Currency bold={true} amount={minFee.toString()} />
+              <Currency bold={true} amount={minFee.toString(10)} />
             )}
             {' - '}
             {hasFiatValue ? (
               <Currency
                 bold={true}
-                amount={totalFiat.toString()}
+                amount={totalFiat.toString(10)}
                 symbol={fiat.symbol}
                 ticker={fiat.ticker}
                 decimals={2}
               />
             ) : (
-              <Currency bold={true} amount={totalFee.toString()} ticker={baseAsset.ticker} />
+              <Currency bold={true} amount={totalFee.toString(10)} ticker={baseAsset.ticker} />
             )}
           </Body>
-          <Body mt="1" mb="0" color="BLUE_GREY">
+          <Body mt="1" mb="0" color="BLUE_GREY" textAlign="right">
             {translateRaw('FEE_RANGE_ESTIMATE')}
           </Body>
         </Box>

@@ -985,6 +985,7 @@
     "CURRENT_BASE_FEE": "Current Base Fee: $fee",
     "EDIT_TRANSACTION_FEE": "Edit Transaction Fee",
     "SAVE": "Save",
-    "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be maximum equal to Max Fee"
+    "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be maximum equal to Max Fee",
+    "GWEI": "GWEI"
   }
 }
