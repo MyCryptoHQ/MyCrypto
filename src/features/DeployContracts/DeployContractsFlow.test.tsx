@@ -13,10 +13,6 @@ jest.mock('@vendor', () => {
     FallbackProvider: jest.fn().mockImplementation(() => ({
       estimateGas: jest.fn().mockResolvedValue(21000),
       getTransactionCount: jest.fn().mockResolvedValue(10),
-      getFeeData: jest.fn().mockResolvedValue({
-        maxFeePerGas: '20000000000',
-        maxPriorityFeePerGas: '1000000000'
-      }),
       getBlock: jest.fn().mockResolvedValue({
         baseFeePerGas: '10000000000'
       })

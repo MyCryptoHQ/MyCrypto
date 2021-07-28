@@ -3,7 +3,7 @@ import { ProviderHandler } from '@services/EthService';
 import { GasEstimates, ITxObject, Network } from '@types';
 import { bigNumGasPriceToViewableGwei } from '@utils';
 
-import { suggestFees } from './eip1559';
+import { estimateFees } from './eip1559';
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network?: Network) {
@@ -49,35 +49,10 @@ export async function fetchGasPriceEstimates(network?: Network): Promise<GasEsti
   });
 }
 
-async function getCurrentBaseFee(provider: ProviderHandler) {
-  const block = await provider.getLatestBlock();
-  return block?.baseFeePerGas;
-}
-
-async function estimateFeesUsingHistory(provider: ProviderHandler) {
-  const result = await suggestFees(provider);
-  return result.map(({ maxFeePerGas, maxPriorityFeePerGas }) => ({
-    maxFeePerGas: Math.floor(maxFeePerGas),
-    maxPriorityFeePerGas: Math.floor(maxPriorityFeePerGas)
-  }))[0];
-}
-
-async function estimateFeesUsingEthers(provider: ProviderHandler) {
-  const { gasPrice, ...rest } = await provider.getFeeData();
-  return rest;
-}
-
 export async function fetchEIP1559PriceEstimates(network: Network) {
   const provider = new ProviderHandler(network);
 
-  const baseFee = await getCurrentBaseFee(provider);
-
-  // @todo Decide which strategy to use?
-  const simple = true;
-  const result = await (simple
-    ? estimateFeesUsingEthers(provider)
-    : estimateFeesUsingHistory(provider));
-  return { ...result, baseFee };
+  return estimateFees(provider);
 }
 
 // Returns fast gasPrice or EIP1559 gas params in gwei

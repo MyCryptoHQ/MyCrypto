@@ -18,10 +18,6 @@ jest.mock('@vendor', () => {
   return {
     ...jest.requireActual('@vendor'),
     FallbackProvider: jest.fn().mockImplementation(() => ({
-      getFeeData: jest.fn().mockResolvedValue({
-        maxFeePerGas: '20000000000',
-        maxPriorityFeePerGas: '1000000000'
-      }),
       getBlock: jest.fn().mockResolvedValue({
         baseFeePerGas: '10000000000'
       })
@@ -33,7 +29,7 @@ describe('fetchUniversalGasPriceEstimate', () => {
   it('uses EIP 1559 if possible', () => {
     return expect(
       fetchUniversalGasPriceEstimate({ ...fNetwork, supportsEIP1559: true })
-    ).resolves.toStrictEqual({ maxFeePerGas: '20', maxPriorityFeePerGas: '1' });
+    ).resolves.toStrictEqual({ maxFeePerGas: '20', maxPriorityFeePerGas: '3' });
   });
 
   it('falls back to gas price endpoint if network doesnt support EIP 1559', () => {
