@@ -124,7 +124,7 @@ export default function GasSelector({
       const fetchedGasLimit = await getGasEstimate(network, txConfig);
       setGasLimit(fetchedGasLimit);
     } catch (e) {
-      console.debug(e);
+      console.error(e);
     }
   };
 

@@ -89,7 +89,7 @@ test('Valid transaction query params are correctly parsed and loaded into send f
 });
 
 test('Shows warning for invalid query params', async (t) => {
-  const invalidQueryParams = '?type=speedup&chainId=1';
+  const invalidQueryParams = '?queryType=speedup&chainId=1';
 
   await sendAssetsPage.navigateToPage(invalidQueryParams);
   await sendAssetsPage.waitPageLoaded(invalidQueryParams);
