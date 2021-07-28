@@ -1,9 +1,9 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
 import { fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
+import { bigify } from '@utils';
 
 import { TransactionFeeEIP1559 } from './TransactionFeeEIP1559';
 
@@ -14,7 +14,7 @@ function getComponent(props: React.ComponentProps<typeof TransactionFeeEIP1559>)
 const defaultProps = {
   baseAsset: fAssets[0],
   fiat: Fiats.USD,
-  baseFee: BigNumber.from('200000'),
+  baseFee: bigify('200000'),
   baseAssetRate: '2000',
   maxFeePerGas: '20',
   maxPriorityFeePerGas: '1',

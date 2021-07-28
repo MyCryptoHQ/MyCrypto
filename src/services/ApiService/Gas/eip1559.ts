@@ -62,13 +62,13 @@ const estimatePriorityFee = async (
 export const estimateFees = async (provider: ProviderHandler) => {
   const latestBlock = await provider.getLatestBlock();
 
-  const baseFee = latestBlock.baseFeePerGas;
-
-  if (!baseFee) {
+  if (!latestBlock.baseFeePerGas) {
     return FALLBACK_ESTIMATE;
   }
 
-  const baseFeeGwei = bigify(fromWei(bigify(baseFee), 'gwei'));
+  const baseFee = bigify(latestBlock.baseFeePerGas);
+
+  const baseFeeGwei = bigify(fromWei(baseFee, 'gwei'));
 
   const maxPriorityFeePerGas = await estimatePriorityFee(provider, baseFeeGwei, latestBlock.number);
 
@@ -78,7 +78,7 @@ export const estimateFees = async (provider: ProviderHandler) => {
 
   const multiplier = getBaseFeeMultiplier(baseFeeGwei);
 
-  const potentialMaxFee = bigify(baseFee).multipliedBy(multiplier);
+  const potentialMaxFee = baseFee.multipliedBy(multiplier);
   const maxFeePerGas = maxPriorityFeePerGas.gt(potentialMaxFee)
     ? potentialMaxFee.plus(maxPriorityFeePerGas)
     : potentialMaxFee;

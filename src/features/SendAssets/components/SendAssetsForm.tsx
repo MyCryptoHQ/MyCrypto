@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
+import BigNumberJS from 'bignumber.js';
 import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
@@ -284,7 +285,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
-  const [baseFee, setBaseFee] = useState<BigNumber | null | undefined>(undefined);
+  const [baseFee, setBaseFee] = useState<BigNumberJS | null | undefined>(undefined);
 
   const userAssets = useSelector(getUserAssets);
   const isDemoMode = useSelector(getIsDemoMode);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { BigNumber } from '@ethersproject/bignumber';
-import BigNumberJS from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 
 import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
 import { translateRaw } from '@translations';
@@ -58,7 +57,7 @@ export const TransactionFeeEIP1559 = ({
 
   const cappedPriorityFee =
     viewableBaseFee &&
-    BigNumberJS.min(maxPriorityFeePerGas, bigify(maxPriorityFeePerGas).minus(viewableBaseFee));
+    BigNumber.min(maxPriorityFeePerGas, bigify(maxPriorityFeePerGas).minus(viewableBaseFee));
 
   // @todo Figure out if this is good enough
   const minFee = viewableBaseFee
