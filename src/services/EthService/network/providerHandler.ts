@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { Contract } from '@ethersproject/contracts';
 import {
   BaseProvider,
   Block,
@@ -12,7 +13,8 @@ import Resolution from '@unstoppabledomains/resolution';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
-import { Asset, IHexStrTransaction, ITxSigned, Network } from '@types';
+import { erc20Abi } from '@services/EthService/contracts/erc20';
+import { Asset, IHexStrTransaction, ITxSigned, Network, TAddress, TokenInformation } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
@@ -149,6 +151,23 @@ export class ProviderHandler {
         .then((data) => ERC20.allowance.decodeOutput(data))
         .then(({ allowance }) => allowance)
     );
+  }
+
+  /**
+   * Get token information (symbol, decimals) based on a token address. Returns `undefined` if the information cannot be
+   * fetched (e.g. because the provided address is not a contract or the token does not have a symbol or decimals).
+   */
+  public async getTokenInformation(tokenAddress: TAddress): Promise<TokenInformation | undefined> {
+    return this.injectClient(async (client) => {
+      try {
+        const contract = new Contract(tokenAddress, erc20Abi, client);
+        const [symbol, decimals] = await Promise.all([contract.symbol(), contract.decimals()]);
+
+        return { symbol, decimals };
+      } catch (e) {
+        return undefined;
+      }
+    });
   }
 
   public resolveENSName(name: string): Promise<string | null> {

@@ -2,7 +2,7 @@ import { IERC20 } from '@types';
 
 import { default as Contract } from './contract';
 
-const erc20Abi = [
+export const erc20Abi = [
   {
     name: 'decimals',
     type: 'function',

@@ -13,3 +13,8 @@ export interface IERC20 {
   transferFrom: ABIFunc<{ _from: address; _to: address; _value: uint256 }>;
   allowance: ABIFunc<{ _owner: address; _spender: address }, { allowance: uint256 }>;
 }
+
+export interface TokenInformation {
+  readonly symbol?: string;
+  readonly decimals?: number;
+}
