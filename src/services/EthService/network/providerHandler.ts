@@ -15,7 +15,7 @@ import Resolution from '@unstoppabledomains/resolution';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
-import { Asset, ITxSigned, Network, TAddress, TokenInformation } from '@types';
+import { Asset, ITxObject, ITxSigned, Network, TAddress, TokenInformation } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
