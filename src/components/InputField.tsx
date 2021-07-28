@@ -191,6 +191,7 @@ export class InputField extends Component<Props> {
           {textarea ? (
             <CustomTextArea
               name={name}
+              id={name}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -206,6 +207,7 @@ export class InputField extends Component<Props> {
           ) : (
             <CustomInput
               name={name}
+              id={name}
               value={value}
               onChange={(e) => {
                 if (!onChange) return;

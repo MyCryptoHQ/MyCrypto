@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { Button, DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
 import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
-import { getTokenInformation } from '@helpers/erc20';
-import { CustomAssetService, isValidAddress } from '@services';
+import { CustomAssetService, isValidAddress, ProviderHandler } from '@services';
 import { useAssets, useNetworks } from '@services/Store';
 import { translateRaw } from '@translations';
 import { ExtendedAsset, NetworkId, TAddress, TTicker } from '@types';
@@ -130,7 +129,9 @@ export function AddToken(props: Props) {
     if (isValidAddress(address, network.chainId)) {
       setFetching(true);
 
-      getTokenInformation(network, address as TAddress)
+      const provider = new ProviderHandler(network);
+      provider
+        .getTokenInformation(address as TAddress)
         .then((tokenInformation) => {
           if (tokenInformation) {
             const { symbol, decimals: fetchedDecimals } = tokenInformation;
@@ -167,6 +168,7 @@ export function AddToken(props: Props) {
         <NetworkSelector network={networkId} onChange={setNetworkId} />
       </NetworkSelectorWrapper>
       <InputField
+        name="custom-token-address"
         label={translateRaw('ADDRESS')}
         placeholder={translateRaw('ADD_TOKEN_ADDRESS_PLACEHOLDER')}
         onChange={handleChangeAddress}
@@ -175,6 +177,7 @@ export function AddToken(props: Props) {
         disabled={isFetching || isSubmitting}
       />
       <InputField
+        name="custom-token-symbol"
         label={translateRaw('SYMBOL')}
         placeholder={'ETH'}
         onChange={handleChangeTicker}
@@ -183,6 +186,7 @@ export function AddToken(props: Props) {
         disabled={isFetching || isSubmitting}
       />
       <InputField
+        name="custom-token-decimals"
         label={translateRaw('TOKEN_DEC')}
         placeholder={`${DEFAULT_ASSET_DECIMAL}`}
         onChange={handleChangeDecimals}

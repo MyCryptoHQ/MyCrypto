@@ -644,7 +644,7 @@
     "TOAST_WE_ARE_SORRY": "We’re sorry.",
     "TOKENS": "Tokens",
     "TOKEN_ADDRESS": "Token Contract Address",
-    "TOKEN_DEC": "Decimals ",
+    "TOKEN_DEC": "Decimals",
     "TOKEN_DECIMALS": "Token Decimals",
     "TOKEN_SEND_TOOLTIP": "Whenever you send a token on the Ethereum blockchain, you’re actually sending a request to the token contract to move the tokens around. This doesn’t require any extra action from you, but this is why you see this additional information.",
     "TOKEN_SYMBOL": "Token Symbol ",
