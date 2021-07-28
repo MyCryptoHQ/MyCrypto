@@ -42,6 +42,7 @@ import { Fiats, getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { isEIP1559Supported } from '@helpers';
 import { getNonce, useRates } from '@services';
 import {
   fetchEIP1559PriceEstimates,
@@ -522,7 +523,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     resetForm({ values: { ...newInitialValues, asset } });
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
-      if (!network.supportsEIP1559) {
+      if (!isEIP1559Supported(network, values.account)) {
         fetchGasPriceEstimates(network).then((data) => {
           setFieldValue('gasEstimates', data);
           setFieldValue('gasPriceSlider', data.fast.toString());
@@ -644,6 +645,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   );
 
   const baseAssetRate = (getAssetRate(baseAsset) || 0).toString();
+
+  const isEIP1559 = isEIP1559Supported(network, values.account);
 
   useEffect(() => {
     if (isSendMax) {
@@ -771,7 +774,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           className="SendAssetsForm-fieldset-transactionFee input-group-header"
         >
           <div>{translate('CONFIRM_TX_FEE')}</div>
-          {!network.supportsEIP1559 && (
+          {!isEIP1559 && (
             <TransactionFeeDisplay
               baseAsset={baseAsset}
               gasLimitToUse={values.gasLimitField}
@@ -786,7 +789,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             />
           )}
         </label>
-        {network.supportsEIP1559 && (
+        {isEIP1559 && (
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
             baseFee={baseFee}
@@ -803,7 +806,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             maxPriorityFeePerGasError={errors && errors.maxPriorityFeePerGasField}
           />
         )}
-        {!values.advancedTransaction && !network.supportsEIP1559 && (
+        {!values.advancedTransaction && !isEIP1559 && (
           <GasPriceSlider
             network={values.network}
             gasPrice={values.gasPriceSlider}
@@ -854,7 +857,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
               </div>
             </div>
 
-            {!network.supportsEIP1559 && (
+            {!isEIP1559 && (
               <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
                   <label htmlFor="gasPrice">
@@ -872,7 +875,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                 </div>
               </div>
             )}
-            {network.supportsEIP1559 && (
+            {isEIP1559 && (
               <>
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">

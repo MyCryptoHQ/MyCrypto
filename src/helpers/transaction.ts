@@ -65,6 +65,8 @@ import {
 } from '@utils/makeTransaction';
 import { mapObjIndexed } from '@vendor';
 
+import { isEIP1559Supported } from './eip1559';
+
 const N_DIV_2 = BigNumber.from(
   '0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0'
 );
@@ -426,14 +428,14 @@ export const appendSender = (senderAddress: ITxFromAddress) => (
   };
 };
 
-export const appendGasPrice = (network: Network) => async (
+export const appendGasPrice = (network: Network, account: StoreAccount) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
   // Respect gas price if present
   if (tx.gasPrice || (tx.maxFeePerGas && tx.maxPriorityFeePerGas)) {
     return tx as TxBeforeGasLimit;
   }
-  const gas = await fetchUniversalGasPriceEstimate(network)
+  const gas = await fetchUniversalGasPriceEstimate(network, account)
     .then((r) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
     .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
@@ -530,7 +532,7 @@ export const makeTxFromForm = (
   value: string,
   data: ITxData
 ): ITxObject => {
-  const gas = form.network.supportsEIP1559
+  const gas = isEIP1559Supported(form.network, form.account)
     ? {
         maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
         maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),

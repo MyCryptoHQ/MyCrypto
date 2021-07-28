@@ -4,6 +4,7 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 import { DEFAULT_NETWORK } from '@config';
 import { fAccounts, fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 import DeployContractsFlow from './DeployContractsFlow';
 
@@ -24,7 +25,7 @@ function getComponent() {
   return simpleRender(<DeployContractsFlow />, {
     initialRoute: '/deploy-contracts',
     initialState: mockAppState({
-      accounts: fAccounts,
+      accounts: [{ ...fAccounts[1], wallet: WalletId.WEB3 }],
       assets: fAssets,
       networks: APP_STATE.networks
     })

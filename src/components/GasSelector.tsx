@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Checkbox, InputField, Typography } from '@components';
 import { getWalletConfig } from '@config';
+import { isEIP1559Supported } from '@helpers';
 import { fetchUniversalGasPriceEstimate, getGasEstimate } from '@services/ApiService/Gas';
 import { getNonce } from '@services/EthService';
 import { COLORS, monospace } from '@theme';
@@ -106,7 +107,7 @@ export default function GasSelector({
 
     try {
       const { network } = account;
-      const gas = await fetchUniversalGasPriceEstimate(network);
+      const gas = await fetchUniversalGasPriceEstimate(network, account);
       setGasPrice({
         gasPrice: gas.gasPrice ?? '',
         maxFeePerGas: gas.maxFeePerGas ?? '',
@@ -136,7 +137,7 @@ export default function GasSelector({
         name="autoGasSet"
         label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
       />
-      {network.supportsEIP1559 ? (
+      {isEIP1559Supported(network, account) ? (
         <>
           <FieldWrapper>
             <InputField

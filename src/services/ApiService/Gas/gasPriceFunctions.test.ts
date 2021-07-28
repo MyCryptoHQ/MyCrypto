@@ -1,5 +1,6 @@
 import { GAS_PRICE_DEFAULT } from '@config';
-import { fNetwork, fNetworks } from '@fixtures';
+import { fAccounts, fNetwork, fNetworks } from '@fixtures';
+import { WalletId } from '@types';
 
 import { fetchUniversalGasPriceEstimate } from './gasPriceFunctions';
 
@@ -28,7 +29,10 @@ jest.mock('@vendor', () => {
 describe('fetchUniversalGasPriceEstimate', () => {
   it('uses EIP 1559 if possible', () => {
     return expect(
-      fetchUniversalGasPriceEstimate({ ...fNetwork, supportsEIP1559: true })
+      fetchUniversalGasPriceEstimate(
+        { ...fNetwork, supportsEIP1559: true },
+        { ...fAccounts[1], wallet: WalletId.WEB3 }
+      )
     ).resolves.toStrictEqual({ maxFeePerGas: '20', maxPriorityFeePerGas: '3' });
   });
 

@@ -2,8 +2,9 @@ import React from 'react';
 
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fNetwork } from '@fixtures';
+import { fAccount, fAccounts, fNetwork } from '@fixtures';
 import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 import GasSelector from './GasSelector';
 
@@ -42,7 +43,11 @@ describe('GasSelector', () => {
   });
 
   it('renders EIP gas', () => {
-    const props = { ...defaultProps, network: { ...fNetwork, supportsEIP1559: true } };
+    const props = {
+      ...defaultProps,
+      network: { ...fNetwork, supportsEIP1559: true },
+      account: { ...fAccounts[1], wallet: WalletId.WEB3 }
+    };
     const { getByText } = getComponent(props);
     expect(getByText(translateRaw('MAX_FEE_PER_GAS'))).toBeInTheDocument();
     expect(getByText(translateRaw('MAX_PRIORITY_FEE'))).toBeInTheDocument();
@@ -72,7 +77,11 @@ describe('GasSelector', () => {
   });
 
   it('calls functions when changing EIP values', async () => {
-    const props = { ...defaultProps, network: { ...fNetwork, supportsEIP1559: true } };
+    const props = {
+      ...defaultProps,
+      network: { ...fNetwork, supportsEIP1559: true },
+      account: { ...fAccounts[1], wallet: WalletId.WEB3 }
+    };
     const { container } = getComponent(props);
     const maxFee = container.querySelector('input[name="maxFeePerGas"]')!;
 

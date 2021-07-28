@@ -1,7 +1,7 @@
 import { bufferToHex } from 'ethereumjs-util';
 
 import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
-import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type } from '@helpers';
+import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type, isEIP1559Supported } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
@@ -41,8 +41,8 @@ import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
-  const { network } = formData;
-  const gas = network.supportsEIP1559
+  const { network, account } = formData;
+  const gas = isEIP1559Supported(network, account)
     ? {
         maxFeePerGas: inputGasPriceToHex(formData.maxFeePerGasField),
         maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),
