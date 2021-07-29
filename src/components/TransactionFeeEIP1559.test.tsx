@@ -28,7 +28,7 @@ describe('TransactionFeeEIP1559', () => {
   it('can render', () => {
     const props = { ...defaultProps };
     const { getByText } = getComponent(props);
-    expect(getByText(translateRaw('RECOMMENDED_TOTAL_FEE'))).toBeInTheDocument();
+    expect(getByText(translateRaw('RECOMMENDED_TOTAL_FEE'), { exact: false })).toBeInTheDocument();
   });
 
   it('can toggle edit mode', () => {

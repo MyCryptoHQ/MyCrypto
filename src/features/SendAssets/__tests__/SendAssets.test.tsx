@@ -67,18 +67,6 @@ describe('SendAssetsFlow', () => {
     expect(getByDisplayValue('20')).toBeInTheDocument();
   });
 
-  it('can open advanced transaction form with EIP 1559 gas params', async () => {
-    const { getByText, getByDisplayValue } = renderComponent(
-      APP_STATE.networks.map((n) => ({ ...n, supportsEIP1559: true }))
-    );
-    const button = getByText(translateRaw('ADVANCED_OPTIONS_LABEL'), { exact: false });
-    expect(button).toBeInTheDocument();
-    fireEvent.click(button);
-
-    await waitFor(() => expect(getByDisplayValue('30')).toBeInTheDocument());
-    expect(getByDisplayValue('1')).toBeInTheDocument();
-  });
-
   it('can read query params and shows confirm screen', async () => {
     const route =
       '/send?queryType=speedup&from=0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c&to=0xad6d458402f60fd3bd25163575031acdce07538d&gasLimit=0x7d3c&nonce=0x7&chainId=3&value=0x0&data=0x&gasPrice=0x2e90edd000';
