@@ -49,7 +49,6 @@ import {
   TAddress
 } from '@types';
 import {
-  addHexPrefix,
   bigify,
   bigNumValueToViewableEther,
   fromTokenBase,
@@ -166,13 +165,14 @@ const getGasPriceFromTx = (tx: {
   maxPriorityFeePerGas?: BigNumber | string;
   gasPrice?: BigNumber | string;
 }) =>
-  tx.type && tx.type > 0
+  // Possibly revisit this when more tx types are available
+  tx.type && tx.type == 2
     ? {
-        maxFeePerGas: BigNumber.from(tx.maxFeePerGas!).toHexString() as ITxGasPrice,
-        maxPriorityFeePerGas: BigNumber.from(tx.maxPriorityFeePerGas!).toHexString() as ITxGasPrice,
+        maxFeePerGas: hexlify(tx.maxFeePerGas!) as ITxGasPrice,
+        maxPriorityFeePerGas: hexlify(tx.maxPriorityFeePerGas!) as ITxGasPrice,
         type: tx.type
       }
-    : { gasPrice: BigNumber.from(tx.gasPrice!).toHexString() as ITxGasPrice };
+    : { gasPrice: hexlify(tx.gasPrice!) as ITxGasPrice };
 
 const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   const decodedTx = parseTransaction(signedTx);
@@ -183,7 +183,7 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
     data: decodedTx.data as ITxData,
     ...getGasPriceFromTx(decodedTx),
     value: decodedTx.value.toHexString() as ITxValue,
-    nonce: addHexPrefix(decodedTx.nonce.toString(16)) as ITxNonce,
+    nonce: hexlify(decodedTx.nonce) as ITxNonce,
     gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
     chainId: decodedTx.chainId,
     // @todo Cleaner way of doing this?

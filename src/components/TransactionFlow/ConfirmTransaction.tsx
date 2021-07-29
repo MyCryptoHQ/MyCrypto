@@ -116,12 +116,8 @@ export default function ConfirmTransaction({
   const { getNetworkById } = useNetworks();
   const network = getNetworkById(networkId);
   const { state: ptxState } = useContext(ProtectTxContext);
-  const ptxFee = (() => {
-    if (ptxState && ptxState.enabled && !ptxState.isPTXFree) {
-      return ptxState.feeAmount;
-    }
-    return undefined;
-  })();
+  const ptxFee =
+    ptxState && ptxState.enabled && !ptxState.isPTXFree ? ptxState.feeAmount : undefined;
   /* Get contact info */
   const recipientContact =
     receiverAddress && getContactByAddressAndNetworkId(receiverAddress, network.id);
@@ -218,7 +214,7 @@ export const ConfirmTransactionUI = ({
 
   /* Calculate Transaction Fee */
   const transactionFeeWei = totalTxFeeToWei(gasPrice, rawTransaction.gasLimit);
-  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, rawTransaction.gasLimit);
+  const maxTransactionFeeBase = totalTxFeeToString(gasPrice, rawTransaction.gasLimit);
 
   /* Calculate total base asset amount */
   const valueWei = Wei(rawTransaction.value);

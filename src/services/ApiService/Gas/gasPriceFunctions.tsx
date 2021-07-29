@@ -61,10 +61,9 @@ export async function fetchUniversalGasPriceEstimate(network?: Network, account?
   if (network && account && isEIP1559Supported(network, account)) {
     const { maxFeePerGas, maxPriorityFeePerGas } = await fetchEIP1559PriceEstimates(network);
     return {
-      maxFeePerGas: maxFeePerGas ? bigNumGasPriceToViewableGwei(maxFeePerGas) : undefined,
-      maxPriorityFeePerGas: maxPriorityFeePerGas
-        ? bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
-        : undefined
+      maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
     };
   }
 
@@ -75,5 +74,5 @@ export async function fetchUniversalGasPriceEstimate(network?: Network, account?
 
 export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {
   const provider = new ProviderHandler(network);
-  return await provider.estimateGas(tx);
+  return provider.estimateGas(tx);
 };

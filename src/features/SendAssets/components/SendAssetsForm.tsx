@@ -286,7 +286,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
-  const [baseFee, setBaseFee] = useState<BigNumberJS | null | undefined>(undefined);
+  const [baseFee, setBaseFee] = useState<BigNumberJS | undefined>(undefined);
 
   const userAssets = useSelector(getUserAssets);
   const isDemoMode = useSelector(getIsDemoMode);
@@ -644,7 +644,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
   );
 
-  const baseAssetRate = (getAssetRate(baseAsset) || 0).toString();
+  const baseAssetRate = (getAssetRate(baseAsset) ?? 0).toString();
 
   const isEIP1559 = isEIP1559Supported(network, values.account);
 

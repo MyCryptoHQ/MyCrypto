@@ -111,7 +111,7 @@ export const MembershipFormUI = ({
     gasPrice: '20',
     address: '',
     gasLimit: '',
-    network: (relevantNetworks.find(({ id }) => id === DEFAULT_NETWORK) as unknown) as Network,
+    network: relevantNetworks.find(({ id }) => id === DEFAULT_NETWORK)!,
     maxFeePerGas: '20',
     maxPriorityFeePerGas: '1'
   };

@@ -618,7 +618,7 @@ describe('makeTxConfigFromSignedTx', () => {
         from: address,
         gasLimit: '0x5208',
         gasPrice: '0x012a05f200',
-        nonce: '0x6',
+        nonce: '0x06',
         to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
         type: null,
         value: '0x2386f26fc10000'
@@ -645,7 +645,7 @@ describe('makeTxConfigFromSignedTx', () => {
         gasLimit: '0x5208',
         maxFeePerGas: '0x04a817c800',
         maxPriorityFeePerGas: '0x3b9aca00',
-        nonce: '0x6',
+        nonce: '0x06',
         to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
         type: 2,
         value: '0x2386f26fc10000'

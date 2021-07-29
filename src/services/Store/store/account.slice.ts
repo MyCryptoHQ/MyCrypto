@@ -160,7 +160,7 @@ export const getAccounts = createSelector([getAppState], (s) => {
         nonce: EthersBN.from(t.nonce)
       };
     })
-  })) as StoreAccount[];
+  }));
 });
 
 export const selectAccountTxs = createSelector([getAccounts], (accounts) =>

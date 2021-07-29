@@ -77,7 +77,7 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
   sortBy(
     pAbi.filter((x) => x.type === ABIItemType.FUNCTION),
     (item) => item.name.toLowerCase()
-  ).map((x) => Object.assign(x, { label: x.name }));
+  ).map((x) => ({ ...x, label: x.name }));
 
 export const reduceInputParams = (submitedFunction: ABIItem) =>
   submitedFunction.inputs.reduce((accu, input) => {

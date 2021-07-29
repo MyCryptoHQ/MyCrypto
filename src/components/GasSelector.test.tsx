@@ -42,7 +42,7 @@ describe('GasSelector', () => {
     expect(getByText(translateRaw('TRANS_AUTO_GAS_TOGGLE'))).toBeInTheDocument();
   });
 
-  it('renders EIP gas', () => {
+  it('renders EIP1559 gas', () => {
     const props = {
       ...defaultProps,
       network: { ...fNetwork, supportsEIP1559: true },
@@ -76,7 +76,7 @@ describe('GasSelector', () => {
     await waitFor(() => expect(defaultProps.setNonce).toHaveBeenCalledWith('5'));
   });
 
-  it('calls functions when changing EIP values', async () => {
+  it('calls functions when changing EIP1559 values', async () => {
     const props = {
       ...defaultProps,
       network: { ...fNetwork, supportsEIP1559: true },

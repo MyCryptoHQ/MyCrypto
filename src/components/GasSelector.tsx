@@ -81,24 +81,23 @@ export default function GasSelector({
 
   const handleGasPriceChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      gasPrice: (e.target as HTMLTextAreaElement).value
+      gasPrice: e.currentTarget.value
     });
 
   const handleMaxGasPerFeeChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      maxFeePerGas: (e.target as HTMLTextAreaElement).value
+      maxFeePerGas: e.currentTarget.value
     });
 
   const handleMaxPriorityFeePerGasChange = (e: KeyboardEvent<HTMLInputElement>) =>
     setGasPrice({
-      maxPriorityFeePerGas: (e.target as HTMLTextAreaElement).value
+      maxPriorityFeePerGas: e.currentTarget.value
     });
 
   const handleGasLimitChange = (e: KeyboardEvent<HTMLInputElement>) =>
-    setGasLimit((e.target as HTMLTextAreaElement).value);
+    setGasLimit(e.currentTarget.value);
 
-  const handleNonceChange = (e: KeyboardEvent<HTMLInputElement>) =>
-    setNonce((e.target as HTMLTextAreaElement).value);
+  const handleNonceChange = (e: KeyboardEvent<HTMLInputElement>) => setNonce(e.currentTarget.value);
 
   const estimateGas = async () => {
     if (!account) {
@@ -107,21 +106,24 @@ export default function GasSelector({
 
     try {
       const { network } = account;
-      const gas = await fetchUniversalGasPriceEstimate(network, account);
+      const [gas, fetchedNonce] = await Promise.all([
+        fetchUniversalGasPriceEstimate(network, account),
+        getNonce(network, account.address)
+      ]);
       setGasPrice({
         gasPrice: gas.gasPrice ?? '',
         maxFeePerGas: gas.maxFeePerGas ?? '',
         maxPriorityFeePerGas: gas.maxPriorityFeePerGas ?? ''
       });
       const txGas = mapObjIndexed((v) => v && inputGasPriceToHex(v), gas);
-      const fetchedNonce = await getNonce(network, account.address);
       setNonce(fetchedNonce.toString());
 
-      const txConfig: any = Object.assign({}, estimateGasCallProps, {
+      const txConfig: any = {
+        ...estimateGasCallProps,
         ...txGas,
         nonce: inputNonceToHex(fetchedNonce.toString()),
         chainId: network.chainId
-      });
+      };
       const fetchedGasLimit = await getGasEstimate(network, txConfig);
       setGasLimit(fetchedGasLimit);
     } catch (e) {

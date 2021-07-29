@@ -14,9 +14,8 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // stepper will slice out the first step UNLESS they don't have an associated network or account with the specified details
   // Therefore, we only display errors / messages.
   const deriveSendFormQueryWarning = (queries: IQueryResults) => {
-    const queriesArePresent = Object.values(queries).some((v) => !!v);
     const txQueriesArePresent = isQueryValid(queries);
-    if (!queriesArePresent) return null;
+    if (!Object.values(queries).some((v) => !!v)) return null;
     if (txQueriesArePresent) {
       return displayQueryMessage('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
     }

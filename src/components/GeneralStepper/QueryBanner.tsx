@@ -54,8 +54,7 @@ const createQueryWarning = ({
 );
 
 const deriveTxQueryBanner = (queries: IQueryResults) => {
-  const txQueriesArePresent = isQueryValid(queries);
-  if (!queries.queryType || !txQueriesArePresent) return null;
+  if (!queries.queryType || !isQueryValid(queries)) return null;
   switch (queries.queryType) {
     case TxQueryTypes.SPEEDUP:
       return createQueryWarning({

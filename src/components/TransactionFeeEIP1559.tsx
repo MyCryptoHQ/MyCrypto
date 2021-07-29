@@ -18,7 +18,7 @@ interface Props {
   baseAsset: Asset;
   fiat: Fiat;
   // Current Base Fee of the network
-  baseFee?: BigNumber | null;
+  baseFee?: BigNumber;
   baseAssetRate: string;
   gasLimit: string;
   maxFeePerGas: string;

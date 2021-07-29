@@ -8,7 +8,6 @@ import {
   Asset,
   ExtendedAsset,
   IFormikFields,
-  IQueryResults,
   ITxConfig,
   ITxData,
   ITxObject,
@@ -131,7 +130,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     return { ...acc, [cv]: queryParams[cv] };
   }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
 
-  const valid = isQueryValid((i as unknown) as IQueryResults);
+  const valid = isQueryValid(i);
 
   if (!valid) return;
 
