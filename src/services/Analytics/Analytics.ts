@@ -13,6 +13,7 @@ export interface TrackParams {
   action: TAnalyticEvents;
   name?: string;
   value?: number;
+  customDimensions?: any;
 }
 
 export interface LinkParams {

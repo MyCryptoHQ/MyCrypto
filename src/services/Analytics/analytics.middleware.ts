@@ -18,35 +18,40 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
 ) => (action) => {
   switch (action.type) {
     case addNewAccounts.type: {
-      state.dispatch(
-        trackEvent({
-<<<<<<< HEAD
-          name: 'Add Account',
-          params: {
-            qty: action.payload.newAccounts.length,
-            // multiple add accounts are always of the same type and network
-            walletId: action.payload.accountType,
-            networkId: action.payload.networkId
-          }
-=======
-          action: 'Add Account'
-          /*params: {
-            qty: action.payload.length,
-            // multiple add accounts are always of the same type and network
-            walletId: action.payload[0].wallet,
-            networkId: action.payload[0].networkId
-          }*/
->>>>>>> Improve analytics events for Matomo
-        })
-      );
+      // multiple add accounts are always of the same type and network
+      for (let i = 0; i < action.payload.newAccounts.length; i++) {
+        state.dispatch(
+          trackEvent({
+            action: 'Add Account',
+            customDimensions: [
+              {
+                id: 1,
+                value: action.payload.accountType
+              },
+              {
+                id: 2,
+                value: action.payload.networkId
+              }
+            ]
+          })
+        );
+      }
       break;
     }
     // Track custom token creation. Is also triggered on custom network.
     case createAsset.type: {
       state.dispatch(
         trackEvent({
-          action: 'Add Asset'
-          //params: action.payload
+          action: 'Add Asset',
+          name: action.payload.ticker,
+          customDimensions: action.payload.contractAddress
+            ? [
+                {
+                  id: 3,
+                  value: action.payload.contractAddress
+                }
+              ]
+            : []
         })
       );
       break;
