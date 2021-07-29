@@ -111,6 +111,8 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
       case 'BORROW':
       case 'REPAY':
       case 'MINT':
+      case 'NAME_REGISTERED':
+      case 'CANCEL_ORDER':
       case 'CONTRACT_INTERACT':
         return contractInteract;
       case 'EXCHANGE':
@@ -122,6 +124,7 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
         return approval;
       case 'FAUCET':
       case 'MINING_PAYOUT':
+      case 'CLAIM':
       case 'INBOUND':
         return inbound;
       case 'OUTBOUND':
