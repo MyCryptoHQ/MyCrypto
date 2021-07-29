@@ -1,19 +1,10 @@
+import nock from 'nock';
+
 import { GAS_PRICE_DEFAULT } from '@config';
 import { fAccounts, fNetwork, fNetworks } from '@fixtures';
 import { WalletId } from '@types';
 
 import { fetchUniversalGasPriceEstimate } from './gasPriceFunctions';
-
-global.fetch = jest.fn().mockResolvedValueOnce({
-  status: 200,
-  json: jest.fn().mockResolvedValueOnce({
-    safeLow: 33,
-    standard: 39,
-    fast: 42,
-    fastest: 58,
-    blockNum: 12781209
-  })
-});
 
 jest.mock('@vendor', () => {
   return {
@@ -37,6 +28,15 @@ describe('fetchUniversalGasPriceEstimate', () => {
   });
 
   it('falls back to gas price endpoint if network doesnt support EIP 1559', () => {
+    nock(/.*/)
+      .get(/.*/)
+      .reply(200, () => ({
+        safeLow: 33,
+        standard: 39,
+        fast: 42,
+        fastest: 58,
+        blockNum: 12781209
+      }));
     return expect(
       fetchUniversalGasPriceEstimate({
         ...fNetworks[0],
@@ -47,9 +47,7 @@ describe('fetchUniversalGasPriceEstimate', () => {
   });
 
   it('falls back to default gas estimation settings if gas price endpoint fails', () => {
-    (global.fetch as jest.MockedFunction<typeof global.fetch>).mockRejectedValueOnce(
-      new Error('foo')
-    );
+    nock(/.*/).get(/.*/).replyWithError('foo');
     return expect(
       fetchUniversalGasPriceEstimate({
         ...fNetworks[0],

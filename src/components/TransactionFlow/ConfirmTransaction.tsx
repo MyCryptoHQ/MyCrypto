@@ -7,9 +7,9 @@ import Icon from '@components/Icon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
 import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
+import { useRates } from '@services';
 import { useContacts, useNetworks, useSettings } from '@services/Store';
-import { getStoreAccounts, useSelector } from '@store';
+import { getContractName, getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedContact, ISettings, IStepComponentProps, ITxType, Network } from '@types';
@@ -110,7 +110,6 @@ export default function ConfirmTransaction({
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
-  const { assets } = useAssets();
   const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
   const { getNetworkById } = useNetworks();
@@ -128,15 +127,7 @@ export default function ConfirmTransaction({
   const assetRate = getAssetRate(asset);
   const baseAssetRate = getAssetRate(baseAsset);
 
-  const contractName = (() => {
-    const contact =
-      rawTransaction.to && getContactByAddressAndNetworkId(rawTransaction.to, network.id);
-    if (contact) {
-      return contact.label;
-    }
-    const asset = getAssetByContractAndNetwork(rawTransaction.to, network)(assets);
-    return asset && asset.name;
-  })();
+  const contractName = useSelector(getContractName(network.id, rawTransaction.to));
 
   return (
     <ConfirmTransactionUI

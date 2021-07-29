@@ -524,23 +524,27 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
       if (!isEIP1559Supported(network, values.account)) {
-        fetchGasPriceEstimates(network).then((data) => {
-          setFieldValue('gasEstimates', data);
-          setFieldValue('gasPriceSlider', data.fast.toString());
-          setFieldValue('gasPriceField', data.fast.toString());
-        });
+        fetchGasPriceEstimates(network)
+          .then((data) => {
+            setFieldValue('gasEstimates', data);
+            setFieldValue('gasPriceSlider', data.fast.toString());
+            setFieldValue('gasPriceField', data.fast.toString());
+          })
+          .catch(console.error);
       } else {
-        fetchEIP1559PriceEstimates(network).then((data) => {
-          setFieldValue(
-            'maxFeePerGasField',
-            data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
-          );
-          setFieldValue(
-            'maxPriorityFeePerGasField',
-            data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
-          );
-          setBaseFee(data.baseFee);
-        });
+        fetchEIP1559PriceEstimates(network)
+          .then((data) => {
+            setFieldValue(
+              'maxFeePerGasField',
+              data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
+            );
+            setFieldValue(
+              'maxPriorityFeePerGasField',
+              data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
+            );
+            setBaseFee(data.baseFee);
+          })
+          .catch(console.error);
       }
       setFieldValue('network', network || {});
     }

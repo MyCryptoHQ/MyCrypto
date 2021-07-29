@@ -1,5 +1,3 @@
 import { TxQueryTypes } from './transactionFlow';
 
-export interface IQueryResults {
-  [key: string]: TxQueryTypes | null;
-}
+export type IQueryResults = Record<string, TxQueryTypes | undefined>;

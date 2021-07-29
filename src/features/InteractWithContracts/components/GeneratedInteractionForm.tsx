@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
 import { COLORS, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ITxConfig, Network, StoreAccount } from '@types';
+import { ISimpleTxForm, Network, StoreAccount } from '@types';
 
 import {
   constructGasCallProps,
@@ -106,7 +106,9 @@ interface Props {
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleGasLimitChange(payload: string): void;
   handleNonceChange(payload: string): void;
 }

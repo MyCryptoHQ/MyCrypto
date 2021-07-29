@@ -19,7 +19,7 @@ import {
   Contract,
   ExtendedContract,
   IReceiverAddress,
-  ITxConfig,
+  ISimpleTxForm,
   Network,
   StoreAccount,
   TAddress
@@ -142,7 +142,9 @@ interface Props {
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleDeleteContract(contractUuid: string): void;
   handleGasLimitChange(payload: string): void;
   handleNonceChange(payload: string): void;

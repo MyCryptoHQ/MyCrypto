@@ -179,6 +179,16 @@ export const TokenMigrationFormUI = ({
 
   const isFormValid = checkFormValid(errors);
 
+  const handleSubmit = () => {
+    if (isFormValid) {
+      fetchUniversalGasPriceEstimate(values.network, values.account)
+        .then((gas) => {
+          onComplete({ ...values, ...gas });
+        })
+        .catch(console.error);
+    }
+  };
+
   return (
     <>
       {isDemoMode && <DemoGatewayBanner />}
@@ -218,13 +228,7 @@ export const TokenMigrationFormUI = ({
       <FormFieldSubmitButton
         type="submit"
         loading={isSubmitting}
-        onClick={() => {
-          if (isFormValid) {
-            fetchUniversalGasPriceEstimate(values.network, values.account).then((gas) => {
-              onComplete({ ...values, ...gas });
-            });
-          }
-        }}
+        onClick={handleSubmit}
         disabled={!isFormValid || isDemoMode}
       >
         {tokenMigrationConfig.formActionBtn}

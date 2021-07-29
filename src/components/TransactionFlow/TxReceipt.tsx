@@ -20,7 +20,7 @@ import { getFiat } from '@config/fiats';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { makeFinishedTxReceipt } from '@helpers';
-import { getAssetByContractAndNetwork, useAssets, useRates } from '@services';
+import { useRates } from '@services';
 import {
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash,
@@ -33,7 +33,7 @@ import {
   useNetworks,
   useSettings
 } from '@services/Store';
-import { getStoreAccounts, useSelector } from '@store';
+import { getContractName, getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -108,7 +108,6 @@ const TxReceipt = ({
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
   const { addTxToAccount } = useAccounts();
-  const { assets } = useAssets();
   const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
   const { getNetworkById } = useNetworks();
@@ -133,30 +132,33 @@ const TxReceipt = ({
     if (displayTxReceipt && blockNumber === 0 && displayTxReceipt.hash) {
       const provider = new ProviderHandler(network);
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(displayTxReceipt.hash, provider).then(
-          (transactionOutcome) => {
+        getTransactionReceiptFromHash(displayTxReceipt.hash, provider)
+          .then((transactionOutcome) => {
             if (transactionOutcome) {
               const transactionStatus: ITxHistoryStatus =
                 transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
               setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
               setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-              provider.getTransactionByHash(displayTxReceipt.hash).then((txResponse) => {
-                setDisplayTxReceipt(
-                  makeFinishedTxReceipt(
-                    txReceipt as IPendingTxReceipt,
-                    transactionStatus,
-                    txResponse.timestamp,
-                    txResponse.blockNumber,
-                    transactionOutcome.gasUsed,
-                    transactionOutcome.confirmations
-                  )
-                );
-              });
+              provider
+                .getTransactionByHash(displayTxReceipt.hash)
+                .then((txResponse) => {
+                  setDisplayTxReceipt(
+                    makeFinishedTxReceipt(
+                      txReceipt as IPendingTxReceipt,
+                      transactionStatus,
+                      txResponse.timestamp,
+                      txResponse.blockNumber,
+                      transactionOutcome.gasUsed,
+                      transactionOutcome.confirmations
+                    )
+                  );
+                })
+                .catch(console.error);
             } else if (txStatus === ITxStatus.UNKNOWN) {
               setTxStatus(ITxStatus.PENDING);
             }
-          }
-        );
+          })
+          .catch(console.error);
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
@@ -165,27 +167,29 @@ const TxReceipt = ({
     if (displayTxReceipt && timestamp === 0 && blockNumber !== 0) {
       const provider = new ProviderHandler(network);
       const timestampInterval = setInterval(() => {
-        getTimestampFromBlockNum(blockNumber, provider).then((transactionTimestamp) => {
-          if (txReceipt && txReceipt.txType === ITxType.FAUCET) {
-            const recipientAccount = getStoreAccount(accounts)(txReceipt.to, network.id);
-            if (recipientAccount) {
-              addTxToAccount(recipientAccount, {
+        getTimestampFromBlockNum(blockNumber, provider)
+          .then((transactionTimestamp) => {
+            if (txReceipt && txReceipt.txType === ITxType.FAUCET) {
+              const recipientAccount = getStoreAccount(accounts)(txReceipt.to, network.id);
+              if (recipientAccount) {
+                addTxToAccount(recipientAccount, {
+                  ...displayTxReceipt,
+                  blockNumber: blockNumber || 0,
+                  timestamp: transactionTimestamp || 0,
+                  status: txStatus
+                });
+              }
+            } else if (sender.account && !disableAddTxToAccount) {
+              addTxToAccount(sender.account, {
                 ...displayTxReceipt,
                 blockNumber: blockNumber || 0,
                 timestamp: transactionTimestamp || 0,
                 status: txStatus
               });
             }
-          } else if (sender.account && !disableAddTxToAccount) {
-            addTxToAccount(sender.account, {
-              ...displayTxReceipt,
-              blockNumber: blockNumber || 0,
-              timestamp: transactionTimestamp || 0,
-              status: txStatus
-            });
-          }
-          setTimestamp(transactionTimestamp || 0);
-        });
+            setTimestamp(transactionTimestamp || 0);
+          })
+          .catch(console.error);
       }, 1000);
 
       return () => clearInterval(timestampInterval);
@@ -234,16 +238,7 @@ const TxReceipt = ({
     txConfig.receiverAddress &&
     getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id);
 
-  const contractName = (() => {
-    const contact =
-      txConfig.rawTransaction.to &&
-      getContactByAddressAndNetworkId(txConfig.rawTransaction.to, network.id);
-    if (contact) {
-      return contact.label;
-    }
-    const asset = getAssetByContractAndNetwork(txConfig.rawTransaction.to, network)(assets);
-    return asset && asset.name;
-  })();
+  const contractName = useSelector(getContractName(network.id, txConfig.rawTransaction.to));
 
   const txType = displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD;
 

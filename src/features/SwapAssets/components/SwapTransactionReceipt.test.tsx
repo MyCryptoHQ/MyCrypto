@@ -29,7 +29,8 @@ function getComponent(props: ComponentProps<typeof SwapTransactionReceipt>) {
     initialState: mockAppState({
       assets: fAssets,
       accounts: fAccounts,
-      networks: APP_STATE.networks
+      networks: APP_STATE.networks,
+      contracts: APP_STATE.contracts
     })
   });
 }

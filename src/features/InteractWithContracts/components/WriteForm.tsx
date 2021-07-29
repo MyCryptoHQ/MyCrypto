@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AccountSelector, Button, DemoGatewayBanner, GasSelector, Typography } from '@components';
 import { AppState, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import { Network, StoreAccount } from '@types';
+import { ISimpleTxForm, Network, StoreAccount } from '@types';
 import { getAccountsByNetwork, getAccountsByViewOnly } from '@utils';
 import { pipe } from '@vendor';
 
@@ -40,7 +40,9 @@ interface WriteProps {
   estimateGasCallProps: TObject;
   handleAccountSelected(account: StoreAccount): void;
   handleSubmit(submitedFunction: ABIItem): void;
-  handleGasSelectorChange(payload: any): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleGasLimitChange(payload: string): void;
   handleNonceChange(payload: string): void;
 }

@@ -16,7 +16,7 @@ import {
 } from '@components';
 import { AppState, getIsDemoMode, getStoreAccounts, selectNetwork, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import { NetworkId, StoreAccount } from '@types';
+import { ISimpleTxForm, NetworkId, StoreAccount } from '@types';
 import { getAccountsByNetwork, getAccountsByViewOnly } from '@utils';
 import { pipe } from '@vendor';
 
@@ -71,7 +71,9 @@ interface DeployProps {
   handleNetworkSelected(networkId: string): void;
   handleDeploySubmit(): void;
   handleAccountSelected(account: StoreAccount): void;
-  handleGasSelectorChange(payload: any): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleByteCodeChanged(byteCode: string): void;
   handleGasLimitChange(payload: string): void;
   handleNonceChange(payload: string): void;
