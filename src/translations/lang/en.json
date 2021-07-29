@@ -556,6 +556,7 @@
     "PLATFORM_CLAIM": "Assets Claimed",
     "PLATFORM_DOMAIN_REGISTER": "Name Registered",
     "PLATFORM_DOMAIN_TRANSFER": "Name Transferred",
+    "PLATFORM_DOMAIN_RENEW": "Name Renewed",
     "PLATFORM_CANCEL_ORDER": "Cancel Order",
     "PLATFORM_REGISTER": "Register",
     "PLATFORM_APPROVE": "$ticker Approved",
