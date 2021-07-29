@@ -2,7 +2,7 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { fromUnixTime, isAfter, max } from 'date-fns';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { XDAI_NETWORK } from '@config';
+import { POLYGON_NETWORK, XDAI_NETWORK } from '@config';
 import {
   MEMBERSHIP_CONFIG,
   MembershipState,
@@ -105,24 +105,38 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
   );
   const ethereumNetwork: Network = yield select(selectDefaultNetwork);
   const xdaiNetwork: Network = yield select(selectNetwork(XDAI_NETWORK));
-  const xdaiAccounts = (payload || membershipNetworkAccounts).filter((a) =>
-    isAccountInNetwork(a, XDAI_NETWORK)
-  );
+  const polygonNetwork: Network = yield select(selectNetwork(POLYGON_NETWORK));
 
-  const ethereumAccounts = (payload || membershipNetworkAccounts).filter(isEthereumAccount);
+  const ethereumAccounts = (payload || membershipNetworkAccounts)
+    .filter(isEthereumAccount)
+    .map((a) => a.address);
+
+  const xdaiAccounts = (payload || membershipNetworkAccounts)
+    .filter((a) => isAccountInNetwork(a, XDAI_NETWORK))
+    .map((a) => a.address);
+  const polygonAccounts = (payload || membershipNetworkAccounts)
+    .filter((a) => isAccountInNetwork(a, POLYGON_NETWORK))
+    .map((a) => a.address);
 
   try {
     const ethereumMemberships = yield call(
       MembershipApi.getMemberships,
-      ethereumAccounts.map(({ address }) => address as TAddress),
+      ethereumAccounts,
       ethereumNetwork
     );
-    const xdaiMemberships = yield call(
+    const xdaiMemberships = yield call(MembershipApi.getMemberships, xdaiAccounts, xdaiNetwork);
+    const polygonMemberships = yield call(
       MembershipApi.getMemberships,
-      xdaiAccounts.map(({ address }) => address as TAddress),
-      xdaiNetwork
+      polygonAccounts,
+      polygonNetwork
     );
-    yield put(slice.actions.setMemberships([...ethereumMemberships, ...xdaiMemberships]));
+    yield put(
+      slice.actions.setMemberships([
+        ...ethereumMemberships,
+        ...xdaiMemberships,
+        ...polygonMemberships
+      ])
+    );
   } catch (err) {
     yield put(slice.actions.fetchError());
   }

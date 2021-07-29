@@ -1,7 +1,9 @@
+import { useSelector } from 'react-redux';
 import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import { Selector, Typography } from '@components';
+import { getNetwork } from '@store/network.slice';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -39,10 +41,11 @@ export const MembershipSelectorItem = ({
   paddingLeft,
   onClick
 }: MembershipItemProps & StyleProps) => {
+  const network = useSelector(getNetwork(option.networkId));
   return (
     <SContainer paddingLeft={paddingLeft} onClick={() => onClick && onClick(option)}>
       <Typography value={option.title} />
-      <NetworkName value={` (${option.networkId.toLowerCase()})`} />
+      <NetworkName value={` (${network.name.toLowerCase()})`} />
       <DiscountTypography value={option.discountNotice} />
     </SContainer>
   );
