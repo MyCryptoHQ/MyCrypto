@@ -769,12 +769,12 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       </fieldset>
       {/* Transaction Fee */}
       <fieldset className="SendAssetsForm-fieldset">
-        <label
-          htmlFor="transactionFee"
-          className="SendAssetsForm-fieldset-transactionFee input-group-header"
-        >
-          <div>{translate('CONFIRM_TX_FEE')}</div>
-          {!isEIP1559 && (
+        {!isEIP1559 && (
+          <label
+            htmlFor="transactionFee"
+            className="SendAssetsForm-fieldset-transactionFee input-group-header"
+          >
+            <div>{translate('CONFIRM_TX_FEE')}</div>
             <TransactionFeeDisplay
               baseAsset={baseAsset}
               gasLimitToUse={values.gasLimitField}
@@ -787,8 +787,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                 symbol: fiat.symbol
               }}
             />
-          )}
-        </label>
+          </label>
+        )}
         {isEIP1559 && (
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
@@ -832,76 +832,45 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         </AdvancedOptionsButton>
         {values.advancedTransaction && (
           <div className="SendAssetsForm-advancedOptions-content">
-            <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-              <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
-                <label htmlFor="gasLimit" className="input-group-header label-with-action">
-                  <div>
-                    {translate('OFFLINE_STEP2_LABEL_4')}
-                    <Tooltip tooltip={translate('GAS_LIMIT_TOOLTIP')} />
-                  </div>
-                  <NoMarginCheckbox
-                    onChange={toggleIsAutoGasSet}
-                    checked={values.isAutoGasSet}
-                    name="autoGasSet"
-                    label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
-                  />
-                </label>
-
-                <GasLimitField
-                  onChange={handleGasLimitChange}
-                  name="gasLimitField"
-                  value={values.gasLimitField}
-                  disabled={values.isAutoGasSet}
-                  error={errors && errors.gasLimitField}
-                />
-              </div>
-            </div>
-
             {!isEIP1559 && (
-              <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-                <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                  <label htmlFor="gasPrice">
-                    {translate('OFFLINE_STEP2_LABEL_3')}
-                    <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
-                  </label>
-                  <GasPriceField
-                    onChange={(option: string) => {
-                      setFieldValue('gasPriceField', option);
-                    }}
-                    name="gasPriceField"
-                    value={values.gasPriceField}
-                    error={errors && errors.gasPriceField}
-                  />
-                </div>
-              </div>
-            )}
-            {isEIP1559 && (
               <>
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
-                  <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                    <label htmlFor="maxFeePerGasField">
-                      {translate('MAX_FEE_PER_GAS')}
-                      <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
+                  <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
+                    <label htmlFor="gasLimit" className="input-group-header label-with-action">
+                      <div>
+                        {translate('OFFLINE_STEP2_LABEL_4')}
+                        <Tooltip tooltip={translate('GAS_LIMIT_TOOLTIP')} />
+                      </div>
+                      <NoMarginCheckbox
+                        onChange={toggleIsAutoGasSet}
+                        checked={values.isAutoGasSet}
+                        name="autoGasSet"
+                        label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
+                      />
                     </label>
-                    <GasPriceField
-                      onChange={handleMaxFeeChange}
-                      name="maxFeePerGasField"
-                      value={values.maxFeePerGasField}
-                      error={errors && errors.maxFeePerGasField}
+
+                    <GasLimitField
+                      onChange={handleGasLimitChange}
+                      name="gasLimitField"
+                      value={values.gasLimitField}
+                      disabled={values.isAutoGasSet}
+                      error={errors && errors.gasLimitField}
                     />
                   </div>
                 </div>
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
-                    <label htmlFor="maxPriorityFeePerGasField">
-                      {translate('MAX_PRIORITY_FEE')}
+                    <label htmlFor="gasPrice">
+                      {translate('OFFLINE_STEP2_LABEL_3')}
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField
-                      onChange={handleMaxPriorityFeeChange}
-                      name="maxPriorityFeePerGasField"
-                      value={values.maxPriorityFeePerGasField}
-                      error={errors && errors.maxPriorityFeePerGasField}
+                      onChange={(option: string) => {
+                        setFieldValue('gasPriceField', option);
+                      }}
+                      name="gasPriceField"
+                      value={values.gasPriceField}
+                      error={errors && errors.gasPriceField}
                     />
                   </div>
                 </div>
