@@ -13,8 +13,8 @@ const PRIORITY_FEE_ESTIMATION_TRIGGER = 100; // GWEI
 // Returned if above trigger is not met
 const DEFAULT_PRIORITY_FEE = bigify(toWei('3', getDecimalFromEtherUnit('gwei')));
 // In case something goes wrong fall back to this estimate
-const FALLBACK_ESTIMATE = {
-  maxFeePerGas: toWei('20', getDecimalFromEtherUnit('gwei')),
+export const FALLBACK_ESTIMATE = {
+  maxFeePerGas: bigify(toWei('20', getDecimalFromEtherUnit('gwei'))),
   maxPriorityFeePerGas: DEFAULT_PRIORITY_FEE,
   baseFee: undefined
 };
@@ -60,32 +60,41 @@ const estimatePriorityFee = async (
 };
 
 export const estimateFees = async (provider: ProviderHandler) => {
-  const latestBlock = await provider.getLatestBlock();
+  try {
+    const latestBlock = await provider.getLatestBlock();
 
-  if (!latestBlock.baseFeePerGas) {
+    if (!latestBlock.baseFeePerGas) {
+      throw new Error('An error occurred while fetching current base fee, falling back');
+    }
+
+    const baseFee = bigify(latestBlock.baseFeePerGas);
+
+    const baseFeeGwei = bigify(fromWei(baseFee, 'gwei'));
+
+    const maxPriorityFeePerGas = await estimatePriorityFee(
+      provider,
+      baseFeeGwei,
+      latestBlock.number
+    );
+
+    if (!maxPriorityFeePerGas) {
+      throw new Error('An error occurred while estimating priority fee, falling back');
+    }
+
+    const multiplier = getBaseFeeMultiplier(baseFeeGwei);
+
+    const potentialMaxFee = baseFee.multipliedBy(multiplier);
+    const maxFeePerGas = maxPriorityFeePerGas.gt(potentialMaxFee)
+      ? potentialMaxFee.plus(maxPriorityFeePerGas)
+      : potentialMaxFee;
+
+    return {
+      maxFeePerGas: roundToWholeGwei(maxFeePerGas),
+      maxPriorityFeePerGas: roundToWholeGwei(maxPriorityFeePerGas),
+      baseFee
+    };
+  } catch (err) {
+    console.error(err);
     return FALLBACK_ESTIMATE;
   }
-
-  const baseFee = bigify(latestBlock.baseFeePerGas);
-
-  const baseFeeGwei = bigify(fromWei(baseFee, 'gwei'));
-
-  const maxPriorityFeePerGas = await estimatePriorityFee(provider, baseFeeGwei, latestBlock.number);
-
-  if (!maxPriorityFeePerGas) {
-    return FALLBACK_ESTIMATE;
-  }
-
-  const multiplier = getBaseFeeMultiplier(baseFeeGwei);
-
-  const potentialMaxFee = baseFee.multipliedBy(multiplier);
-  const maxFeePerGas = maxPriorityFeePerGas.gt(potentialMaxFee)
-    ? potentialMaxFee.plus(maxPriorityFeePerGas)
-    : potentialMaxFee;
-
-  return {
-    maxFeePerGas: roundToWholeGwei(maxFeePerGas),
-    maxPriorityFeePerGas: roundToWholeGwei(maxPriorityFeePerGas),
-    baseFee
-  };
 };
