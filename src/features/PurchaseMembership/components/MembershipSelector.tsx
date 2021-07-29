@@ -3,7 +3,7 @@ import { OptionProps } from 'react-select';
 import styled from 'styled-components';
 
 import { Selector, Typography } from '@components';
-import { getNetwork } from '@store/network.slice';
+import { selectNetwork } from '@store';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -41,7 +41,7 @@ export const MembershipSelectorItem = ({
   paddingLeft,
   onClick
 }: MembershipItemProps & StyleProps) => {
-  const network = useSelector(getNetwork(option.networkId));
+  const network = useSelector(selectNetwork(option.networkId));
   return (
     <SContainer paddingLeft={paddingLeft} onClick={() => onClick && onClick(option)}>
       <Typography value={option.title} />

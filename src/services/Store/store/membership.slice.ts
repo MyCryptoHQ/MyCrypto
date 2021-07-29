@@ -110,7 +110,6 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
   const ethereumAccounts = (payload || membershipNetworkAccounts)
     .filter(isEthereumAccount)
     .map((a) => a.address);
-
   const xdaiAccounts = (payload || membershipNetworkAccounts)
     .filter((a) => isAccountInNetwork(a, XDAI_NETWORK))
     .map((a) => a.address);
