@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
@@ -622,10 +622,20 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     setIsEstimatingNonce(false);
   };
 
+  const handleAssetChange = (asset: StoreAsset) => setFieldValue('asset', asset || {});
+  const handleAccountChange = (account: StoreAccount) => setFieldValue('account', account);
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setFieldValue('amount', e.target.value);
+  const handleGasSliderChange = (value: number) => setFieldValue('gasPriceSlider', value);
+  const handleGasPriceChange = (value: string) => setFieldValue('gasPriceField', value);
   const handleGasLimitChange = (value: string) => setFieldValue('gasLimitField', value);
   const handleMaxFeeChange = (value: string) => setFieldValue('maxFeePerGasField', value);
   const handleMaxPriorityFeeChange = (value: string) =>
     setFieldValue('maxPriorityFeePerGasField', value);
+  const handleNonceChange = (value: string) => setFieldValue('nonceField', value);
+  const handleDataChange = (value: string) => setFieldValue('txDataField', value);
+  const handleAdvancedTransactionToggle = () =>
+    setFieldValue('advancedTransaction', !values.advancedTransaction);
 
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
@@ -680,9 +690,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           assets={userAssets}
           searchable={true}
           showAssetName={true}
-          onSelect={(option: StoreAsset) => {
-            setFieldValue('asset', option || {}); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
-          }}
+          onSelect={handleAssetChange}
         />
       </fieldset>
       {/* Sender Address */}
@@ -697,9 +705,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           name="account"
           value={values.account}
           accounts={accountsWithAsset}
-          onSelect={(account: StoreAccount) => {
-            setFieldValue('account', account); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-          }}
+          onSelect={handleAccountChange}
           asset={values.asset}
         />
         {accountsWithAsset.length === 0 && (
@@ -755,9 +761,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         <>
           <AmountInput
             name="amount"
-            onChange={(e) => {
-              setFieldValue('amount', e.target.value);
-            }}
+            onChange={handleAmountChange}
             disabled={isSendMax}
             asset={values.asset}
             value={values.amount}
@@ -815,7 +819,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             network={values.network}
             gasPrice={values.gasPriceSlider}
             gasEstimates={values.gasEstimates}
-            onChange={(g) => setFieldValue('gasPriceSlider', g)}
+            onChange={handleGasSliderChange}
           />
         )}
         {getTxFeeValidation({
@@ -827,10 +831,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       </fieldset>
       {/* Advanced Options */}
       <div className="SendAssetsForm-advancedOptions">
-        <AdvancedOptionsButton
-          basic={true}
-          onClick={() => setFieldValue('advancedTransaction', !values.advancedTransaction)}
-        >
+        <AdvancedOptionsButton basic={true} onClick={handleAdvancedTransactionToggle}>
           {values.advancedTransaction ? translateRaw('HIDE') : translateRaw('SHOW')}{' '}
           {translate('ADVANCED_OPTIONS_LABEL')}
         </AdvancedOptionsButton>
@@ -869,9 +870,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField
-                      onChange={(option: string) => {
-                        setFieldValue('gasPriceField', option);
-                      }}
+                      onChange={handleGasPriceChange}
                       name="gasPriceField"
                       value={values.gasPriceField}
                       error={errors && errors.gasPriceField}
@@ -889,9 +888,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                   </div>
                 </label>
                 <NonceField
-                  onChange={(option: string) => {
-                    setFieldValue('nonceField', option);
-                  }}
+                  onChange={handleNonceChange}
                   name="nonceField"
                   value={values.nonceField}
                   error={
@@ -911,9 +908,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
                     <label htmlFor="data">{translate('TRANS_DATA')}</label>
                     <DataField
-                      onChange={(option: string) => {
-                        setFieldValue('txDataField', option);
-                      }}
+                      onChange={handleDataChange}
                       errors={errors.txDataField}
                       name="txDataField"
                       value={values.txDataField}
