@@ -154,7 +154,6 @@ export const TransactionFeeEIP1559 = ({
                 disabled={isEstimatingGasPrice}
               />
             </Box>
-
             <hr />
           </Box>
         )}
