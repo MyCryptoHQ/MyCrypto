@@ -3,6 +3,7 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 import SendAssets from '@features/SendAssets/SendAssets';
 import { fAccounts, fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 
 // SendFlow makes RPC calls to get nonce and gas.
 jest.mock('@vendor', () => {
@@ -29,7 +30,7 @@ describe('SendAssetsFlow', () => {
     return simpleRender(<SendAssets />, {
       initialRoute: route,
       initialState: mockAppState({
-        accounts: fAccounts,
+        accounts: [{ ...fAccounts[0], wallet: WalletId.WEB3 }],
         assets: fAssets,
         networks
       })
@@ -65,6 +66,17 @@ describe('SendAssetsFlow', () => {
     fireEvent.click(button);
 
     expect(getByDisplayValue('20')).toBeInTheDocument();
+  });
+
+  it('can open EIP1559 gas form', async () => {
+    const { getByTestId, getByDisplayValue } = renderComponent(
+      APP_STATE.networks.map((n) => ({ ...n, supportsEIP1559: true }))
+    );
+    const button = getByTestId('edit');
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+
+    await waitFor(() => expect(getByDisplayValue('30')).toBeInTheDocument());
   });
 
   it('can read query params and shows confirm screen', async () => {

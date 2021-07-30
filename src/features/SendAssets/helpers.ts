@@ -36,7 +36,6 @@ import {
 } from '@utils';
 import { isEmpty } from '@vendor';
 
-import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
@@ -128,11 +127,9 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const i = SUPPORTED_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
     if (queryParams[cv] === undefined) return acc;
     return { ...acc, [cv]: queryParams[cv] };
-  }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
+  }, {}) as IFullTxParam;
 
-  const valid = isQueryValid(i);
-
-  if (!valid) return;
+  if (!isQueryValid(i)) return;
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);
   if (!network) return;
