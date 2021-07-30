@@ -981,10 +981,15 @@
     "MAX_FEE_PER_GAS": "Max Fee",
     "MAX_PRIORITY_FEE": "Max Priority Fee",
     "FEE_RANGE_ESTIMATE": "Fee Range Estimate",
-    "RECOMMENDED_TOTAL_FEE": "Recommended Total Fee",
+    "CUSTOMIZED_TOTAL_FEE": "Your Customized Total Fee",
     "CURRENT_BASE_FEE": "Current Base Fee: $fee",
-    "SAVE": "Save",
+    "SAVE_EDITS": "Save Edits",
     "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be smaller than or equal to Max Fee",
-    "GWEI": "GWEI"
+    "GWEI": "GWEI",
+    "LEARN_WHATS_NEW_WITH_EIP1559": "Learn what’s new with EIP-1559",
+    "MAX_FEE_TOOLTIP": "This is the highest total gas price that you're willing to pay for your transaction.",
+    "GAS_LIMIT_TOOLTIP_2": "This is the amount of units of gas required to compute your transaction. ",
+    "BASE_FEE_TOOLTIP": "This is the minimum gas price required for your transaction to be included in the next block.",
+    "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction."
   }
 }

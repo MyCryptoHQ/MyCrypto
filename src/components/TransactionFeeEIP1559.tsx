@@ -74,11 +74,19 @@ export const TransactionFeeEIP1559 = ({
     <Box>
       <Box variant="rowAlign" justifyContent="space-between" mb="2">
         <Box>{translateRaw('CONFIRM_TX_FEE')}</Box>
-        {editMode && (
+        {editMode ? (
           <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
             <Body data-testid="save" as="span">
-              {translateRaw('SAVE')}
+              {translateRaw('SAVE_EDITS')}
             </Body>
+          </LinkApp>
+        ) : (
+          <LinkApp
+            href="https://thedailygwei.substack.com/p/this-is-eip-1559-the-daily-gwei-300"
+            isExternal={true}
+          >
+            <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
+            <Icon ml="1" width="12px" height="12px" type="link-out" />
           </LinkApp>
         )}
       </Box>
@@ -91,14 +99,14 @@ export const TransactionFeeEIP1559 = ({
                   $fee: viewableBaseFee ? viewableBaseFee.toString(10) : '?'
                 })}
               </Body>
-              <Tooltip ml="1" tooltip="Tooltip" />
+              <Tooltip ml="1" tooltip={translateRaw('BASE_FEE_TOOLTIP')} />
             </Box>
             <hr />
             <Box display="flex" alignItems="flex-start">
               <Box flex="50%">
                 <Box variant="rowAlign" pl="1" pb="1">
                   <Body mb="0">{translateRaw('MAX_FEE_PER_GAS')}</Body>
-                  <Tooltip ml="1" tooltip="Tooltip" />
+                  <Tooltip ml="1" tooltip={translateRaw('MAX_FEE_TOOLTIP')} />
                 </Box>
                 <GasPriceField
                   name="maxFeePerGasField"
@@ -115,7 +123,7 @@ export const TransactionFeeEIP1559 = ({
               <Box flex="50%">
                 <Box variant="rowAlign" pl="1" pb="1">
                   <Body mb="0">{translateRaw('GAS_LIMIT')}</Body>
-                  <Tooltip ml="1" tooltip="Tooltip" />
+                  <Tooltip ml="1" tooltip={translateRaw('GAS_LIMIT_TOOLTIP_2')} />
                 </Box>
                 <GasLimitField
                   name="gasLimitField"
@@ -128,7 +136,7 @@ export const TransactionFeeEIP1559 = ({
             <Box width="45%">
               <Box variant="rowAlign" pl="1" pb="1">
                 <Body mb="0">{translateRaw('MAX_PRIORITY_FEE')}</Body>
-                <Tooltip ml="1" tooltip="Tooltip" />
+                <Tooltip ml="1" tooltip={translateRaw('PRIORITY_FEE_TOOLTIP')} />
               </Box>
               <GasPriceField
                 name="maxPriorityFeePerGasField"
@@ -163,7 +171,7 @@ export const TransactionFeeEIP1559 = ({
               )}
             </Body>
             <Body mt="1" mb="0" color="BLUE_GREY">
-              {translateRaw('RECOMMENDED_TOTAL_FEE')}{' '}
+              {translateRaw('CUSTOMIZED_TOTAL_FEE')}{' '}
               {hasFiatValue && `(${avgFee.toString(10)} ${baseAsset.ticker})`}
             </Body>
           </Box>
