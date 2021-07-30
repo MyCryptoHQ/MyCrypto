@@ -654,19 +654,23 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const fiat = getFiat(settings);
 
+  const isEIP1559 = isEIP1559Supported(network, values.account);
+
   const { type, amount, fee } = validateTxFee(
     values.amount,
     getAssetRateInCurrency(baseAsset, Fiats.USD.ticker),
     getAssetRateInCurrency(baseAsset, fiat.ticker),
     isERC20Asset(values.asset),
     values.gasLimitField.toString(),
-    values.advancedTransaction ? values.gasPriceField.toString() : values.gasPriceSlider.toString(),
+    isEIP1559
+      ? values.maxFeePerGasField.toString()
+      : values.advancedTransaction
+      ? values.gasPriceField.toString()
+      : values.gasPriceSlider.toString(),
     getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
   );
 
   const baseAssetRate = (getAssetRate(baseAsset) ?? 0).toString();
-
-  const isEIP1559 = isEIP1559Supported(network, values.account);
 
   useEffect(() => {
     if (isSendMax) {
