@@ -23,12 +23,16 @@ interface Props {
   gasLimit: string;
   maxFeePerGas: string;
   maxPriorityFeePerGas: string;
+  isEstimatingGasLimit: boolean;
+  isEstimatingGasPrice: boolean;
   gasLimitError?: string;
   maxFeePerGasError?: string;
   maxPriorityFeePerGasError?: string;
   setGasLimit(value: string): void;
   setMaxFeePerGas(value: string): void;
   setMaxPriorityFeePerGas(value: string): void;
+  handleGasPriceEstimation(): void;
+  handleGasLimitEstimation(): void;
 }
 
 export const TransactionFeeEIP1559 = ({
@@ -44,7 +48,11 @@ export const TransactionFeeEIP1559 = ({
   setMaxPriorityFeePerGas,
   gasLimitError,
   maxFeePerGasError,
-  maxPriorityFeePerGasError
+  maxPriorityFeePerGasError,
+  handleGasPriceEstimation,
+  handleGasLimitEstimation,
+  isEstimatingGasLimit,
+  isEstimatingGasPrice
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
   const handleToggleEditMode = () => setEditMode(!editMode);
@@ -104,15 +112,15 @@ export const TransactionFeeEIP1559 = ({
             <hr />
             <Box display="flex" alignItems="flex-start">
               <Box flex="50%">
-                <Box variant="rowAlign" pl="1" pb="1">
-                  <Body mb="0">{translateRaw('MAX_FEE_PER_GAS')}</Body>
-                  <Tooltip ml="1" tooltip={translateRaw('MAX_FEE_TOOLTIP')} />
-                </Box>
                 <GasPriceField
                   name="maxFeePerGasField"
                   onChange={setMaxFeePerGas}
                   value={maxFeePerGas}
                   error={maxFeePerGasError}
+                  label={translateRaw('MAX_FEE_PER_GAS')}
+                  tooltip={translateRaw('MAX_FEE_TOOLTIP')}
+                  refresh={handleGasPriceEstimation}
+                  disabled={isEstimatingGasPrice}
                 />
               </Box>
               <Box px="3">
@@ -121,29 +129,29 @@ export const TransactionFeeEIP1559 = ({
                 </Body>
               </Box>
               <Box flex="50%">
-                <Box variant="rowAlign" pl="1" pb="1">
-                  <Body mb="0">{translateRaw('GAS_LIMIT')}</Body>
-                  <Tooltip ml="1" tooltip={translateRaw('GAS_LIMIT_TOOLTIP_2')} />
-                </Box>
                 <GasLimitField
                   name="gasLimitField"
                   onChange={setGasLimit}
                   value={gasLimit}
                   error={gasLimitError}
+                  disabled={isEstimatingGasLimit}
+                  label={translateRaw('GAS_LIMIT')}
+                  tooltip={translateRaw('GAS_LIMIT_TOOLTIP_2')}
+                  refresh={handleGasLimitEstimation}
                 />
               </Box>
             </Box>
-            <Box width="45%">
-              <Box variant="rowAlign" pl="1" pb="1">
-                <Body mb="0">{translateRaw('MAX_PRIORITY_FEE')}</Body>
-                <Tooltip ml="1" tooltip={translateRaw('PRIORITY_FEE_TOOLTIP')} />
-              </Box>
+            <Box width="49%" pr="16px">
               <GasPriceField
                 name="maxPriorityFeePerGasField"
                 onChange={setMaxPriorityFeePerGas}
                 value={maxPriorityFeePerGas}
                 error={maxPriorityFeePerGasError}
                 placeholder="1"
+                label={translateRaw('MAX_PRIORITY_FEE')}
+                tooltip={translateRaw('PRIORITY_FEE_TOOLTIP')}
+                refresh={handleGasPriceEstimation}
+                disabled={isEstimatingGasPrice}
               />
             </Box>
 

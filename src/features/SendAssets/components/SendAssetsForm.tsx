@@ -281,6 +281,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
+  const [isEstimatingGasPrice, setIsEstimatingGasPrice] = useState(false);
   const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -509,6 +510,32 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     [values.account, values.address, values.amount]
   );
 
+  const handleGasPriceEstimation = async (network = values.network) => {
+    try {
+      setIsEstimatingGasPrice(true);
+      if (!isEIP1559Supported(network, values.account)) {
+        const data = await fetchGasPriceEstimates(network);
+        setFieldValue('gasEstimates', data);
+        setFieldValue('gasPriceSlider', data.fast.toString());
+        setFieldValue('gasPriceField', data.fast.toString());
+      } else {
+        const data = await fetchEIP1559PriceEstimates(network);
+        setFieldValue(
+          'maxFeePerGasField',
+          data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
+        );
+        setFieldValue(
+          'maxPriorityFeePerGasField',
+          data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
+        );
+        setBaseFee(data.baseFee);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setIsEstimatingGasPrice(false);
+  };
+
   useEffect(() => {
     const asset = values.asset;
     const newAccount = getDefaultAccount(asset);
@@ -523,29 +550,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     resetForm({ values: { ...newInitialValues, asset } });
     if (asset && asset.networkId) {
       const network = getNetworkById(asset.networkId, networks);
-      if (!isEIP1559Supported(network, values.account)) {
-        fetchGasPriceEstimates(network)
-          .then((data) => {
-            setFieldValue('gasEstimates', data);
-            setFieldValue('gasPriceSlider', data.fast.toString());
-            setFieldValue('gasPriceField', data.fast.toString());
-          })
-          .catch(console.error);
-      } else {
-        fetchEIP1559PriceEstimates(network)
-          .then((data) => {
-            setFieldValue(
-              'maxFeePerGasField',
-              data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
-            );
-            setFieldValue(
-              'maxPriorityFeePerGasField',
-              data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
-            );
-            setBaseFee(data.baseFee);
-          })
-          .catch(console.error);
-      }
+      handleGasPriceEstimation(network);
       setFieldValue('network', network || {});
     }
   }, [values.asset]);
@@ -567,6 +572,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       handleGasEstimate(true);
     }
   };
+
   const handleGasEstimate = async (forceEstimate: boolean = false) => {
     if (
       values &&
@@ -812,6 +818,10 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             gasLimitError={errors && errors.gasLimitField}
             maxFeePerGasError={errors && errors.maxFeePerGasField}
             maxPriorityFeePerGasError={errors && errors.maxPriorityFeePerGasField}
+            handleGasPriceEstimation={handleGasPriceEstimation}
+            handleGasLimitEstimation={handleGasEstimate}
+            isEstimatingGasLimit={isEstimatingGasLimit}
+            isEstimatingGasPrice={isEstimatingGasPrice}
           />
         )}
         {!values.advancedTransaction && !isEIP1559 && (
@@ -866,7 +876,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
                 <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
                     <label htmlFor="gasPrice">
-                      {translate('OFFLINE_STEP2_LABEL_3')}
+                      {translate('GAS_PRICE')}
                       <Tooltip tooltip={translate('GAS_PRICE_TOOLTIP')} />
                     </label>
                     <GasPriceField

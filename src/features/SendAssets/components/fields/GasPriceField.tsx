@@ -1,23 +1,20 @@
 import React, { ChangeEvent } from 'react';
 
-import { Input } from '@mycrypto/ui';
-import styled from 'styled-components';
-
-import { Box, InlineMessage, Typography } from '@components';
+import { Body, Box, Icon, InputField, LinkApp, Tooltip, Typography } from '@components';
+import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { sanitizeDecimalSeparator } from '@utils';
-
-const SInput = styled(Input)`
-  /* Override Typography from mycrypto/ui */
-  font-size: 1rem !important;
-`;
 
 export function GasPriceField({
   value,
   name,
   onChange,
   error,
-  placeholder = '20'
+  placeholder = '20',
+  label,
+  tooltip,
+  refresh,
+  disabled
 }: IGasPriceField) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = sanitizeDecimalSeparator(e.target.value);
@@ -29,9 +26,26 @@ export function GasPriceField({
     return onChange(val);
   };
 
+  const handleRefreshClicked = () => refresh && refresh();
+
   return (
     <Box mb="3">
-      <SInput
+      {label && (
+        <Box variant="rowAlign" px="1" pb="1" justifyContent="space-between">
+          <Box variant="rowAlign">
+            <Body mb="0">{label}</Body>
+            <Tooltip ml="1" tooltip={tooltip} />
+          </Box>
+          {refresh && (
+            <Box variant="rowAlign">
+              <LinkApp href="#" isExternal={false} onClick={handleRefreshClicked}>
+                <Icon fill={COLORS.BLUE_BRIGHT} width="14px" height="14px" type="refresh" />
+              </LinkApp>
+            </Box>
+          )}
+        </Box>
+      )}
+      <InputField
         {...value}
         name={name}
         value={value}
@@ -40,14 +54,13 @@ export function GasPriceField({
         className="SendAssetsForm-fieldset-input"
         inputError={error}
         inputMode="decimal"
-        iconSide="right"
-        icon={() => (
+        customIcon={() => (
           <Box variant="rowCenter">
             <Typography>{translateRaw('GWEI')}</Typography>
           </Box>
         )}
+        disabled={disabled}
       />
-      {error && <InlineMessage>{error}</InlineMessage>}
     </Box>
   );
 }
@@ -58,6 +71,10 @@ interface IGasPriceField {
   error?: string | JSX.Element | undefined;
   onChange(entry: string): void;
   placeholder?: string;
+  label?: string;
+  tooltip?: string;
+  disabled?: boolean;
+  refresh?(): void;
 }
 
 export default GasPriceField;

@@ -19,9 +19,13 @@ const defaultProps = {
   maxFeePerGas: '20',
   maxPriorityFeePerGas: '1',
   gasLimit: '21000',
+  isEstimatingGasLimit: false,
+  isEstimatingGasPrice: false,
   setGasLimit: jest.fn(),
   setMaxFeePerGas: jest.fn(),
-  setMaxPriorityFeePerGas: jest.fn()
+  setMaxPriorityFeePerGas: jest.fn(),
+  handleGasPriceEstimation: jest.fn(),
+  handleGasLimitEstimation: jest.fn()
 };
 
 describe('TransactionFeeEIP1559', () => {
