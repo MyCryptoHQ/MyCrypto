@@ -123,6 +123,10 @@ const affiliateLinks: IExtUrl[] = [
   {
     name: 'MYCRYPTO_WINTER_REFERRAL',
     url: 'https://winter.mycrypto.com/?utm_source=mycrypto&utm_medium=banner&utm_campaign=winter' as TURL
+  },
+  {
+    name: 'SWAP_REFERRAL',
+    url: 'https://app.mycrypto.com/swap?utm_medium=mycrypto&utm_source=dashboard&utm_campaign=swap' as TURL
   }
 ];
 

@@ -6,6 +6,8 @@ import PooltogetherDesktop from '@assets/images/banners/Pooltogether_Desktop.svg
 import PooltogetherMobile from '@assets/images/banners/Pooltogether_Mobile.svg';
 import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.svg';
 import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.svg';
+import SwapDesktop from '@assets/images/banners/Swap_Desktop.svg';
+import SwapMobile from '@assets/images/banners/Swap_Mobile.svg';
 import trezorDesktop from '@assets/images/banners/Trezor_Desktop.svg';
 import trezorMobile from '@assets/images/banners/Trezor_Mobile.svg';
 import unstoppableDesktop from '@assets/images/banners/UnstoppableDomains_Desktop.svg';
@@ -48,5 +50,11 @@ export const ads = [
     srcDesktop: PooltogetherDesktop,
     srcMobile: PooltogetherMobile,
     url: EXT_URLS.POOLTOGETHER_REFERRAL.url
+  },
+  {
+    name: 'Swap',
+    srcDesktop: SwapDesktop,
+    srcMobile: SwapMobile,
+    url: EXT_URLS.SWAP_REFERRAL.url
   }
 ];
