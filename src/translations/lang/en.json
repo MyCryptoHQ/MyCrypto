@@ -985,7 +985,7 @@
     "CURRENT_BASE_FEE": "Current Base Fee: $fee",
     "SAVE_EDITS": "Save Edits",
     "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be smaller than or equal to Max Fee",
-    "GWEI": "GWEI",
+    "GWEI": "Gwei",
     "LEARN_WHATS_NEW_WITH_EIP1559": "Learn what’s new with EIP-1559",
     "MAX_FEE_TOOLTIP": "This is the highest total gas price that you're willing to pay for your transaction.",
     "GAS_LIMIT_TOOLTIP_2": "This is the amount of units of gas required to compute your transaction. ",

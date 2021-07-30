@@ -40,6 +40,7 @@ export interface IBaseTxObject {
 
 export interface ILegacyTxObject extends IBaseTxObject {
   readonly gasPrice: ITxGasPrice;
+  readonly type?: 0;
 }
 
 // @todo Rename?

@@ -12,7 +12,10 @@ jest.mock('@vendor', () => {
     ...jest.requireActual('@vendor'),
     FallbackProvider: jest.fn().mockImplementation(() => ({
       estimateGas: jest.fn().mockResolvedValue(21000),
-      getTransactionCount: jest.fn().mockResolvedValue(1)
+      getTransactionCount: jest.fn().mockResolvedValue(1),
+      call: jest
+        .fn()
+        .mockResolvedValue('0x0000000000000000000000000000000000000000000000000000000000000000')
     }))
   };
 });

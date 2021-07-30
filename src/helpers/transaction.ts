@@ -187,7 +187,7 @@ const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
     gasLimit: decodedTx.gasLimit.toHexString() as ITxGasLimit,
     chainId: decodedTx.chainId,
     // @todo Cleaner way of doing this?
-    type: decodedTx.type as 2
+    type: decodedTx.type as any
   };
 };
 
@@ -282,7 +282,7 @@ export const makeTxConfigFromTxResponse = (
       from: getAddress(decodedTx.from) as ITxFromAddress,
       ...getGasPriceFromTx(decodedTx),
       // @todo Cleaner way of doing this?
-      type: decodedTx.type as 2
+      type: decodedTx.type as any
     },
     receiverAddress: getAddress(receiverAddress) as TAddress,
     amount,
@@ -305,20 +305,22 @@ export const makeTxConfigFromTxReceipt = (
   const baseAsset = getBaseAssetByNetwork({
     network,
     assets
-  });
+  })!;
 
   const receiver = contractAsset ? decodeTransfer(txReceipt.data)._to : txReceipt.to;
 
   const txConfig = {
     rawTransaction: {
-      to: txReceipt.to && getAddress(txReceipt.to),
-      value: BigNumber.from(txReceipt.value).toHexString(),
-      gasLimit: BigNumber.from(txReceipt.gasLimit).toHexString(),
-      data: txReceipt.data,
+      to: txReceipt.to && (getAddress(txReceipt.to) as TAddress),
+      value: BigNumber.from(txReceipt.value).toHexString() as ITxValue,
+      gasLimit: BigNumber.from(txReceipt.gasLimit).toHexString() as ITxGasLimit,
+      data: txReceipt.data as ITxData,
       ...getGasPriceFromTx(txReceipt),
-      nonce: BigNumber.from(txReceipt.nonce).toHexString(),
+      nonce: BigNumber.from(txReceipt.nonce).toHexString() as ITxNonce,
       chainId: network.chainId,
-      from: getAddress(txReceipt.from)
+      from: getAddress(txReceipt.from) as TAddress,
+      // @todo Cleaner way of doing this?
+      type: txReceipt.type as any
     },
     receiverAddress: receiver && (getAddress(receiver) as TAddress),
     amount: contractAsset
@@ -327,10 +329,9 @@ export const makeTxConfigFromTxReceipt = (
     networkId: network.id,
     asset: contractAsset || baseAsset,
     baseAsset,
-    senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id),
-    from: getAddress(txReceipt.from)
+    senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
+    from: getAddress(txReceipt.from) as TAddress
   };
-  // @ts-expect-error Ignore possible missing senderAccount for now
   return txConfig;
 };
 

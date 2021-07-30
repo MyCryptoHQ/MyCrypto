@@ -8,7 +8,7 @@ import {
 } from '@types';
 
 export const isTypedTx = (tx: ITxObject): tx is ITxType2Object => {
-  return 'type' in tx && tx.type !== null && tx.type !== undefined;
+  return 'type' in tx && tx.type !== null && tx.type !== undefined && tx.type !== 0;
 };
 
 export const isType2Tx = (tx: ITxObject): tx is ITxType2Object => {
@@ -20,7 +20,7 @@ export const isLegacyTx = (tx: ITxObject): tx is ILegacyTxObject => {
 };
 
 export const isTypedReceipt = (tx: ITxReceipt): tx is ITxType2Receipt => {
-  return 'type' in tx && tx.type !== null && tx.type !== undefined;
+  return 'type' in tx && tx.type !== null && tx.type !== undefined && tx.type !== 0;
 };
 
 export const isType2Receipt = (tx: ITxReceipt): tx is ITxType2Receipt => {

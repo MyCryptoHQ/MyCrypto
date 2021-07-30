@@ -57,6 +57,7 @@ export interface IBaseTxReceipt {
 
 export interface ILegacyTxReceipt extends IBaseTxReceipt {
   readonly gasPrice: BigNumber;
+  readonly type?: 0;
 }
 
 // @todo Rename?
