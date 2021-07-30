@@ -14,7 +14,7 @@ function getComponent(props: React.ComponentProps<typeof TransactionFeeEIP1559>)
 const defaultProps = {
   baseAsset: fAssets[0],
   fiat: Fiats.USD,
-  baseFee: bigify('200000'),
+  baseFee: bigify('20000000000'),
   baseAssetRate: '2000',
   maxFeePerGas: '20',
   maxPriorityFeePerGas: '1',
@@ -30,14 +30,27 @@ const defaultProps = {
 
 describe('TransactionFeeEIP1559', () => {
   it('can render', () => {
-    const props = { ...defaultProps };
-    const { getByText } = getComponent(props);
+    const { getByText } = getComponent(defaultProps);
     expect(getByText(translateRaw('CUSTOMIZED_TOTAL_FEE'), { exact: false })).toBeInTheDocument();
   });
 
+  it('can render non fiat', () => {
+    const { getAllByText } = getComponent({ ...defaultProps, baseAssetRate: '0' });
+    getAllByText('ETH', { exact: false }).forEach((t) => expect(t).toBeInTheDocument());
+  });
+
+  it('handles edge case with high priority fee', () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      baseFee: bigify(7),
+      maxPriorityFeePerGas: '7',
+      baseAssetRate: '0'
+    });
+    expect(getByText('0.00015', { exact: false })).toBeInTheDocument();
+  });
+
   it('can toggle edit mode', () => {
-    const props = { ...defaultProps };
-    const { getByText, getByTestId } = getComponent(props);
+    const { getByText, getByTestId } = getComponent(defaultProps);
 
     const edit = getByTestId('edit');
     fireEvent.click(edit);
