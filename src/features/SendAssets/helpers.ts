@@ -6,6 +6,7 @@ import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
   Asset,
+  DistributiveOmit,
   ExtendedAsset,
   IFormikFields,
   ITxConfig,
@@ -88,8 +89,11 @@ export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
   return transform(formData);
 };
 
-export const processFormForEstimateGas = (formData: IFormikFields): ITxObject => {
-  const tx = processFormDataToTx(formData);
+export const processFormForEstimateGas = (
+  formData: IFormikFields
+): DistributiveOmit<ITxObject, 'gasLimit'> => {
+  // Omit gasLimit because that is what we are estimating...
+  const { gasLimit, ...tx } = processFormDataToTx(formData);
   return {
     ...tx,
     from: formData.account.address

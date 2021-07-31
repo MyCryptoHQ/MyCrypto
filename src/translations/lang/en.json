@@ -982,7 +982,7 @@
     "MAX_PRIORITY_FEE": "Max Priority Fee",
     "FEE_RANGE_ESTIMATE": "Fee Range Estimate",
     "CUSTOMIZED_TOTAL_FEE": "Your Customized Total Fee",
-    "CURRENT_BASE_FEE": "Current Base Fee: $fee",
+    "CURRENT_BASE_FEE": "Current Base Fee: $fee Gwei",
     "SAVE_EDITS": "Save Edits",
     "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be smaller than or equal to Max Fee",
     "GWEI": "Gwei",

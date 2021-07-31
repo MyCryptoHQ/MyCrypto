@@ -507,7 +507,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       handleGasEstimate();
     },
     500,
-    [values.account, values.address, values.amount]
+    [values.account, values.address, values.amount, values.txDataField]
   );
 
   const handleGasPriceEstimation = async (network = values.network) => {
