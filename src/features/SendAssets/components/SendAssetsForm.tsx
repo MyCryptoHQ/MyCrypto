@@ -500,6 +500,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   useEffect(() => {
     handleNonceEstimate(values.account);
+    handleGasPriceEstimation();
   }, [values.account]);
 
   useDebounce(
@@ -594,8 +595,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         setGasEstimationError(err.reason ? err.reason : err.message);
       }
       setIsEstimatingGasLimit(false);
-    } else {
-      return;
     }
   };
 
@@ -622,9 +621,13 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       return;
     }
     setIsEstimatingNonce(true);
-    const nonce: number = await getNonce(values.network, account.address);
-    setFieldValue('nonceField', nonce.toString());
-    setFetchedNonce(nonce);
+    try {
+      const nonce: number = await getNonce(values.network, account.address);
+      setFieldValue('nonceField', nonce.toString());
+      setFetchedNonce(nonce);
+    } catch (err) {
+      console.error(err);
+    }
     setIsEstimatingNonce(false);
   };
 

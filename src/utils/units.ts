@@ -84,7 +84,7 @@ const fromWei = (wei: Wei, unit: UnitKey) => {
 };
 
 const toWei = (value: string, decimal: number): Wei => {
-  const wei = convertedToBaseUnit(value, decimal);
+  const wei = convertedToBaseUnit(bigify(value).toString(10), decimal);
   return Wei(wei);
 };
 
@@ -111,7 +111,7 @@ const calculateGasUsedPercentage = (gasLimit: string, gasUsed: string) => {
 };
 
 const gasPriceToBase = (price: string | number) =>
-  toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+  toWei(price.toString(10), getDecimalFromEtherUnit('gwei'));
 
 const totalTxFeeToString = (
   gasPriceEther: string | BigNumber,
