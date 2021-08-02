@@ -362,8 +362,8 @@ export const socialLinks = [
     icon: 'nav-facebook'
   },
   {
-    link: 'https://medium.com/@mycrypto',
-    icon: 'nav-medium'
+    link: 'https://instagram.com/mycryptohq',
+    icon: 'nav-instagram'
   },
   {
     link: 'https://www.linkedin.com/company/mycrypto',
@@ -384,6 +384,11 @@ export const socialLinks = [
 ];
 
 export const MYCLinks = [
+  {
+    title: translateRaw('NEW_FOOTER_TEXT_11'),
+    link: 'https://blog.mycrypto.com/',
+    icon: 'nav-blog'
+  },
   {
     title: translateRaw('NEW_FOOTER_TEXT_8'),
     link: 'https://mycrypto.com/about',

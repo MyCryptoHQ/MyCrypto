@@ -35,6 +35,7 @@ import feedback from '@assets/icons/feedback.svg';
 import navAddAccount from '@assets/icons/navigation/add-account.svg';
 import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
+import navBlog from '@assets/icons/navigation/blog.svg';
 import navBroadcastTransaction from '@assets/icons/navigation/broadcast-transaction.svg';
 import navBuy from '@assets/icons/navigation/buy.svg';
 import navClose from '@assets/icons/navigation/close.svg';
@@ -49,6 +50,7 @@ import navFaucet from '@assets/icons/navigation/faucet.svg';
 import navGithub from '@assets/icons/navigation/github.svg';
 import navHelp from '@assets/icons/navigation/help.svg';
 import navHome from '@assets/icons/navigation/home.svg';
+import navInstagram from '@assets/icons/navigation/instagram.svg';
 import navInteractWithContracts from '@assets/icons/navigation/interact-with-contracts.svg';
 import navLedger from '@assets/icons/navigation/ledger.svg';
 import navLinkedin from '@assets/icons/navigation/linkedin.svg';
@@ -243,6 +245,7 @@ const svgIcons = {
   'nav-twitter': navTwitter,
   'nav-facebook': navFacebook,
   'nav-medium': navMedium,
+  'nav-instagram': navInstagram,
   'nav-linkedin': navLinkedin,
   'nav-github': navGithub,
   'nav-reddit': navReddit,
@@ -250,6 +253,7 @@ const svgIcons = {
   'nav-team': navTeam,
   'nav-press': navPress,
   'nav-privacy': navPrivacy,
+  'nav-blog': navBlog,
   'nav-new-tab': navNewTab,
   'nav-desktop': navDesktop,
   'nav-ens': navEns,
