@@ -57,7 +57,34 @@ describe('estimateFees', () => {
     return expect(estimateFees(mockProvider)).resolves.toStrictEqual({
       baseFee: bigify('100000000000'),
       maxFeePerGas: bigify('160000000000'),
-      maxPriorityFeePerGas: bigify('1000000000')
+      maxPriorityFeePerGas: bigify('5000000000')
+    });
+  });
+
+  it('estimates priority fees removing low outliers', async () => {
+    (mockProvider.getLatestBlock as jest.MockedFunction<
+      typeof mockProvider.getLatestBlock
+    >).mockResolvedValueOnce({ ...block, baseFeePerGas: BigNumber.from('100000000000') });
+    (mockProvider.getFeeHistory as jest.MockedFunction<
+      typeof mockProvider.getFeeHistory
+    >).mockResolvedValueOnce({
+      ...feeHistory,
+      reward: [
+        ['0x1'],
+        ['0x1'],
+        ['0x1'],
+        ['0x1'],
+        ['0x1'],
+        ['0x1a13b8600'],
+        ['0x12a05f1f9'],
+        ['0x3b9aca00'],
+        ['0x1a13b8600']
+      ]
+    });
+    return expect(estimateFees(mockProvider)).resolves.toStrictEqual({
+      baseFee: bigify('100000000000'),
+      maxFeePerGas: bigify('160000000000'),
+      maxPriorityFeePerGas: bigify('5000000000')
     });
   });
 
@@ -71,7 +98,7 @@ describe('estimateFees', () => {
     return expect(estimateFees(mockProvider)).resolves.toStrictEqual({
       baseFee: bigify('200000000000'),
       maxFeePerGas: bigify('280000000000'),
-      maxPriorityFeePerGas: bigify('1000000000')
+      maxPriorityFeePerGas: bigify('5000000000')
     });
   });
 
@@ -85,7 +112,7 @@ describe('estimateFees', () => {
     return expect(estimateFees(mockProvider)).resolves.toStrictEqual({
       baseFee: bigify('300000000000'),
       maxFeePerGas: bigify('360000000000'),
-      maxPriorityFeePerGas: bigify('1000000000')
+      maxPriorityFeePerGas: bigify('5000000000')
     });
   });
 

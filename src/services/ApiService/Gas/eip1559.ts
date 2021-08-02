@@ -5,9 +5,9 @@ import { ProviderHandler } from '@services/EthService';
 import { bigify, fromWei, getDecimalFromEtherUnit, toWei } from '@utils';
 
 // How many blocks to consider for priority fee estimation
-const FEE_HISTORY_BLOCKS = 5;
+const FEE_HISTORY_BLOCKS = 10;
 // Which percentile of effective priority fees to include
-const FEE_HISTORY_PERCENTILE = 1;
+const FEE_HISTORY_PERCENTILE = 5;
 // Which base fee to trigger priority fee estimation at
 const PRIORITY_FEE_ESTIMATION_TRIGGER = 100; // GWEI
 // Returned if above trigger is not met
@@ -18,6 +18,7 @@ export const FALLBACK_ESTIMATE = {
   maxPriorityFeePerGas: DEFAULT_PRIORITY_FEE,
   baseFee: undefined
 };
+const PRIORITY_FEE_INCREASE_BOUNDARY = 200; // %
 
 const roundToWholeGwei = (wei: BigNumber) => {
   const gwei = bigify(fromWei(wei, 'gwei'));
@@ -50,14 +51,36 @@ const estimatePriorityFee = async (
     FEE_HISTORY_PERCENTILE
   ]);
 
-  const rewards = feeHistory.reward?.map((r) => bigify(r[0]));
+  const rewards = feeHistory.reward
+    ?.map((r) => bigify(r[0]))
+    .filter((r) => !r.isZero())
+    .sort();
+
   if (!rewards) {
     return null;
   }
 
-  // Take median
-  rewards.sort();
-  return rewards[Math.floor(rewards.length / 2)];
+  // Calculate percentage increases from between ordered list of fees
+  const percentageIncreases = rewards.reduce((acc, cur, i, arr) => {
+    if (i === arr.length - 1) {
+      return acc;
+    }
+    const next = arr[i + 1];
+    const p = next.minus(cur).dividedBy(cur).multipliedBy(100);
+    return [...acc, p];
+  }, []);
+  const highestIncrease = BigNumber.max(...percentageIncreases);
+  const highestIncreaseIndex = percentageIncreases.findIndex((p) => p.eq(highestIncrease));
+
+  // If we have big increase in value, we could be considering "outliers" in our estimate
+  // Skip the low elements and take a new median
+  const values =
+    highestIncrease.gte(PRIORITY_FEE_INCREASE_BOUNDARY) &&
+    highestIncreaseIndex >= Math.floor(rewards.length / 2)
+      ? rewards.slice(highestIncreaseIndex)
+      : rewards;
+
+  return values[Math.floor(values.length / 2)];
 };
 
 export const estimateFees = async (provider: ProviderHandler) => {
@@ -72,15 +95,17 @@ export const estimateFees = async (provider: ProviderHandler) => {
 
     const baseFeeGwei = bigify(fromWei(baseFee, 'gwei'));
 
-    const maxPriorityFeePerGas = await estimatePriorityFee(
+    const estimatedPriorityFee = await estimatePriorityFee(
       provider,
       baseFeeGwei,
       latestBlock.number
     );
 
-    if (!maxPriorityFeePerGas) {
+    if (estimatedPriorityFee === null) {
       throw new Error('An error occurred while estimating priority fee, falling back');
     }
+
+    const maxPriorityFeePerGas = BigNumber.max(estimatedPriorityFee, DEFAULT_PRIORITY_FEE);
 
     const multiplier = getBaseFeeMultiplier(baseFeeGwei);
 
