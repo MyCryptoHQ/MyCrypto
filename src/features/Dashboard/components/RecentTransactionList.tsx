@@ -99,6 +99,8 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
           $platform: translateRaw(protocol, { $ticker: asset.ticker }),
           $action: translateRaw(`PLATFORM_MIGRATION`, { $ticker: asset.ticker })
         });
+      case ITxHistoryType.PURCHASE_MEMBERSHIP:
+        return translateRaw('PLATFORM_MEMBERSHIP_PURCHASED');
     }
   },
   icon: () => {
