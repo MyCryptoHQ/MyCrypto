@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 
 import Button from './Button';
+import { Identicon } from './Identicon';
 
 const TableOverlay = styled.div`
   height: 100%;
