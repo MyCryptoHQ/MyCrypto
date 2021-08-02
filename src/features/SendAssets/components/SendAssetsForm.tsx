@@ -492,11 +492,19 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     ? getBaseAssetByNetwork({ network, assets })!
     : getBaseAssetByNetwork({ network: defaultNetwork!, assets })!;
 
+  const isEIP1559 = isEIP1559Supported(network, values.account);
+
+  const gasPrice = isEIP1559
+    ? values.maxFeePerGasField.toString()
+    : values.advancedTransaction
+    ? values.gasPriceField.toString()
+    : values.gasPriceSlider.toString();
+
   useEffect(() => {
-    if (updateFormValues) {
+    if (updateFormValues && ptxState.protectTxShow) {
       updateFormValues(values);
     }
-  }, [values]);
+  }, [values, ptxState?.protectTxShow]);
 
   useEffect(() => {
     handleNonceEstimate(values.account);
@@ -603,7 +611,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
       const accountBalance = getAccountBalance(values.account, values.asset);
       const isERC20 = isERC20Asset(values.asset);
       const balance = fromTokenBase(bigify(accountBalance), values.asset.decimal);
-      const gasPrice = values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider;
       const amount = isERC20 // subtract gas cost from balance when sending a base asset
         ? balance
         : baseToConvertedUnit(
@@ -657,19 +664,13 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const fiat = getFiat(settings);
 
-  const isEIP1559 = isEIP1559Supported(network, values.account);
-
   const { type, amount, fee } = validateTxFee(
     values.amount,
     getAssetRateInCurrency(baseAsset, Fiats.USD.ticker),
     getAssetRateInCurrency(baseAsset, fiat.ticker),
     isERC20Asset(values.asset),
     values.gasLimitField.toString(),
-    isEIP1559
-      ? values.maxFeePerGasField.toString()
-      : values.advancedTransaction
-      ? values.gasPriceField.toString()
-      : values.gasPriceSlider.toString(),
+    gasPrice,
     getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
   );
 
@@ -686,6 +687,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     values.account,
     values.advancedTransaction,
     values.gasLimitField,
+    values.maxFeePerGasField,
     isSendMax
   ]);
 
