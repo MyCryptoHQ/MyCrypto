@@ -1,5 +1,6 @@
 name: MyCryptoBuilds
 
+
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_MYCRYPTOBUILDS }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_MYCRYPTOBUILDS }}
