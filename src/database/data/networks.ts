@@ -160,7 +160,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     color: '#adc101',
     blockExplorer: makeExplorer({
       name: 'Etherscan',
-      origin: 'https://goerli.etherscan.io/'
+      origin: 'https://goerli.etherscan.io'
     }),
     tokens: [],
     contracts: require('./contracts/goerli.json'),
