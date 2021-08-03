@@ -78,7 +78,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     },
     gasPriceSettings: GAS_PRICE_DEFAULT,
     shouldEstimateGasPrice: true,
-    supportsEIP1559: false // @todo Enable on fork day
+    supportsEIP1559: true // @todo Enable on fork day
   },
   Ropsten: {
     id: 'Ropsten',
@@ -102,7 +102,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
-    supportsEIP1559: false // @todo Enable on fork day
+    supportsEIP1559: true // @todo Enable on fork day
   },
   Kovan: {
     id: 'Kovan',
@@ -149,7 +149,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
-    supportsEIP1559: false // @todo Enable on fork day
+    supportsEIP1559: true // @todo Enable on fork day
   },
   Goerli: {
     id: 'Goerli',
@@ -173,7 +173,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
-    supportsEIP1559: false // @todo Enable on fork day
+    supportsEIP1559: true // @todo Enable on fork day
   },
   ETC: {
     id: 'ETC',
