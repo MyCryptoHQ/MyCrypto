@@ -655,7 +655,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
-  const userCanAffordTX = canAffordTX(baseAsset, values);
+  const userCanAffordTX = canAffordTX(baseAsset, values, gasPrice);
   const formHasErrors = !checkFormValid(errors);
 
   const isFormValid = !formHasErrors && !gasEstimationError && userCanAffordTX;

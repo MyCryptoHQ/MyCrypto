@@ -107,29 +107,31 @@ describe('amountValidator', () => {
 
 describe('canAffordTX', () => {
   it('returns true if user can afford base asset tx', () => {
-    expect(canAffordTX(fAssets[0], fETHTxSendFormikFields)).toEqual(true);
+    expect(
+      canAffordTX(fAssets[0], fETHTxSendFormikFields, fETHTxSendFormikFields.gasPriceField)
+    ).toEqual(true);
   });
 
   it('returns false if user cant afford base asset tx', () => {
-    expect(
-      canAffordTX(fAssets[0], {
-        ...fETHTxSendFormikFields,
-        gasPriceSlider: '100000'
-      })
-    ).toEqual(false);
+    expect(canAffordTX(fAssets[0], fETHTxSendFormikFields, '100000')).toEqual(false);
   });
 
   it('returns true if user can afford ERC20 tx', () => {
-    expect(canAffordTX(fAssets[1], fERC20TxSendFormikFields)).toEqual(true);
+    expect(
+      canAffordTX(fAssets[1], fERC20TxSendFormikFields, fERC20TxSendFormikFields.gasPriceField)
+    ).toEqual(true);
   });
 
   it('returns false if user cant afford ERC20 tx', () => {
     expect(
-      canAffordTX(fAssets[1], {
-        ...fERC20TxSendFormikFields,
-        gasLimitField: '85000',
-        gasPriceSlider: '100000'
-      })
+      canAffordTX(
+        fAssets[1],
+        {
+          ...fERC20TxSendFormikFields,
+          gasLimitField: '85000'
+        },
+        '100000'
+      )
     ).toEqual(false);
   });
 });
