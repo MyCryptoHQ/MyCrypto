@@ -1,4 +1,4 @@
-import { IFormikFields, IReceiverAddress } from '@types';
+import { IFormikFields, IReceiverAddress, WalletId } from '@types';
 
 import { fAccounts } from './account';
 import { fAssets } from './assets';
@@ -125,7 +125,7 @@ export const fAdvancedERC20TxSendFormikFields: IFormikFields = {
 export const fETHTxSendFormikFieldsEIP1559: IFormikFields = {
   asset: fAssets[1],
   network: { ...fNetwork, supportsEIP1559: true },
-  account: fAccounts[0],
+  account: { ...fAccounts[0], wallet: WalletId.WEB3 },
   txDataField: '0x',
   gasEstimates: {
     safeLow: 50,

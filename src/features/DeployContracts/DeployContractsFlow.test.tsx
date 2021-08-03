@@ -27,7 +27,7 @@ function getComponent() {
     initialState: mockAppState({
       accounts: [{ ...fAccounts[1], wallet: WalletId.WEB3 }],
       assets: fAssets,
-      networks: APP_STATE.networks
+      networks: APP_STATE.networks.map((n) => ({ ...n, supportsEIP1559: true }))
     })
   });
 }
