@@ -55,17 +55,9 @@ export function validateAmountField(): TestOptions {
 
 export const canAffordTX = (
   baseAsset: Asset,
-  {
-    account,
-    asset,
-    advancedTransaction,
-    gasPriceField,
-    gasPriceSlider,
-    gasLimitField,
-    amount
-  }: IFormikFields
+  { account, asset, gasLimitField, amount }: IFormikFields,
+  gasPrice: string
 ) => {
-  const gasPrice = advancedTransaction ? gasPriceField : gasPriceSlider;
   const gasLimit = gasLimitField;
   const gasTotal = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
   const total =
