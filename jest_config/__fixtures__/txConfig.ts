@@ -17,7 +17,7 @@ import { isSameAddress } from '@utils';
 
 import { fAccounts } from './account';
 import { fAssets } from './assets';
-import { fNetwork, fNetworks } from './network';
+import { fNetwork } from './network';
 
 export const fERC20NonWeb3TxConfig: ITxConfig = {
   rawTransaction: {
@@ -31,8 +31,7 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
   },
   receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
   amount: '0.01',
-  network: fNetwork,
-  value: '0',
+  networkId: fNetwork.id,
   asset: {
     uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
     name: 'RopDAI',
@@ -55,11 +54,6 @@ export const fERC20NonWeb3TxConfig: ITxConfig = {
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)
   ) as StoreAccount,
-  gasPrice: '5000000000',
-  gasLimit: '32060',
-  data:
-    '0xa9059cbb000000000000000000000000b2bb2b958AFa2e96dab3f3Ce7162b87daEa39017000000000000000000000000000000000000000000000000002386f26fc10000',
-  nonce: '7',
   from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress
 };
 
@@ -75,8 +69,7 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
   },
   receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
   amount: '0.01',
-  network: fNetwork,
-  value: '10000000000000000',
+  networkId: fNetwork.id,
   asset: {
     ticker: 'RopstenETH' as TTicker,
     name: 'Ropsten',
@@ -98,10 +91,6 @@ export const fETHNonWeb3TxConfig: ITxConfig = {
   senderAccount: fAccounts.find(({ address }) =>
     isSameAddress('0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress, address)
   ) as StoreAccount,
-  gasPrice: '5000000000',
-  gasLimit: '21000',
-  data: '0x',
-  nonce: '6',
   from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress
 };
 
@@ -119,13 +108,6 @@ export const fApproveErc20TxConfig = {
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
   baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
-  data:
-    '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
-  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-  gasLimit: '150000',
-  gasPrice: '5000000000',
-  network: fNetworks[0],
-  nonce: '1',
   rawTransaction: {
     chainId: 1,
     data:
@@ -139,7 +121,8 @@ export const fApproveErc20TxConfig = {
   },
   receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   senderAccount: fAccounts[0],
-  value: '0'
+  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+  networkId: 'Ethereum'
 };
 
 export const fTokenMigrationTxConfig = {
@@ -157,12 +140,7 @@ export const fTokenMigrationTxConfig = {
     uuid: 'd017a1e8-bdd3-5c32-8866-da258f75b0e9'
   },
   baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
-  data: '0x75d9aa1a',
   from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-  gasLimit: '150000',
-  gasPrice: '5000000000',
-  network: fNetworks[0],
-  nonce: '1',
   rawTransaction: {
     chainId: 1,
     data: '0x75d9aa1a',
@@ -175,5 +153,5 @@ export const fTokenMigrationTxConfig = {
   },
   receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   senderAccount: fAccounts[0],
-  value: '0'
+  networkId: 'Ethereum'
 };

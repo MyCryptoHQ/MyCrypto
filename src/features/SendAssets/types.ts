@@ -19,8 +19,9 @@ export interface IPath {
 }
 
 export interface IFullTxParam {
-  invalid?: true;
-  gasPrice: ITxGasPrice;
+  gasPrice?: ITxGasPrice;
+  maxFeePerGas?: ITxGasPrice;
+  maxPriorityFeePerGas?: ITxGasPrice;
   gasLimit: ITxGasLimit;
   to: ITxToAddress;
   data: ITxData;
@@ -28,4 +29,5 @@ export interface IFullTxParam {
   from: ITxFromAddress;
   value: ITxValue;
   chainId: string;
+  type?: number;
 }

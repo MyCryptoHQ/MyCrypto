@@ -1,0 +1,129 @@
+{
+  "rawTransaction": {
+    "to": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
+    "value": "0x5af3107a4000",
+    "data": "0x",
+    "gasLimit": "0x5208",
+    "maxFeePerGas": "0x4a817c800",
+    "maxPriorityFeePerGas": "0x3b9aca00",
+    "nonce": "0x32",
+    "chainId": 3,
+    "type": 2
+  },
+  "amount": "0.0001",
+  "senderAccount": {
+    "address": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+    "networkId": "Ropsten",
+    "wallet": "WALLETCONNECT",
+    "dPath": "",
+    "assets": [
+      {
+        "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+        "name": "RopstenETH",
+        "networkId": "Ropsten",
+        "type": "base",
+        "ticker": "RopstenETH",
+        "decimal": 18,
+        "balance": {
+          "_hex": "0x1b0319f410dfc000"
+        },
+        "mtime": 1582563688522
+      }
+    ],
+    "transactions": [],
+    "favorite": false,
+    "mtime": 0,
+    "uuid": "93799435-3a78-342f-cc62-36e9e5d00455",
+    "network": {
+      "id": "Ropsten",
+      "name": "Ropsten",
+      "chainId": 3,
+      "isCustom": false,
+      "isTestnet": true,
+      "color": "#adc101",
+      "gasPriceSettings": {
+        "min": 0.1,
+        "max": 40,
+        "initial": 4
+      },
+      "dPaths": {
+        "TREZOR": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        },
+        "SAFE_T_MINI": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        },
+        "LEDGER_NANO_S": {
+          "label": "Ledger (ETH)",
+          "value": "m/44'/60'/0'"
+        },
+        "MNEMONIC_PHRASE": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        },
+        "default": {
+          "label": "Testnet (ETH)",
+          "value": "m/44'/1'/0'/0"
+        }
+      },
+      "contracts": [],
+      "assets": [
+        "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+        "e0977bcb-30be-53cf-99d2-e5f031e8624b",
+        "8fa21ab1-48ac-544a-b13c-69d86528d126",
+        "3849a248-49b4-5e85-91cb-0f9f97eaa0c9",
+        "528fb72f-8536-5219-8b65-20fbd0e4355d",
+        "4f6380d2-303e-5fe4-8f0b-25f944e5dc84",
+        "39a543b0-ac4f-5b14-9467-86fd6538a6a2"
+      ],
+      "baseAsset": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+      "baseUnit": "RopstenETH",
+      "nodes": [
+        {
+          "name": "ropsten_infura",
+          "type": "infura",
+          "service": "Infura",
+          "url": "https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286"
+        },
+        {
+          "name": "web3",
+          "isCustom": false,
+          "type": "web3",
+          "url": "",
+          "service": "MetaMask / Web3",
+          "hidden": true,
+          "network": "WEB3_Ropsten"
+        }
+      ],
+      "blockExplorer": {
+        "name": "Etherscan",
+        "origin": "https://ropsten.etherscan.io"
+      }
+    },
+    "label": "WalletConnect Account 2",
+    "balance": "1.946428",
+    "assetTicker": "RopstenETH"
+  },
+  "receiverAddress": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
+  "asset": {
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "name": "RopstenETH",
+    "networkId": "Ropsten",
+    "type": "base",
+    "ticker": "RopstenETH",
+    "decimal": 18,
+    "mtime": 1582563685097
+  },
+  "baseAsset": {
+    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+    "name": "RopstenETH",
+    "networkId": "Ropsten",
+    "type": "base",
+    "ticker": "RopstenETH",
+    "decimal": 18
+  },
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "networkId": "Ropsten"
+}

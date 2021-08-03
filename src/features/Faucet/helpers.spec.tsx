@@ -38,12 +38,8 @@ describe('Faucet helpers', () => {
         amount: '0.000000000000000001',
         asset: fAssets[1],
         baseAsset: fAssets[1],
-        data: '0x',
         from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-        gasLimit: '21000',
-        gasPrice: '1000000000',
-        network: fNetworks[1],
-        nonce: '39',
+        networkId: 'Ropsten',
         rawTransaction: {
           chainId: 3,
           data: '0x',
@@ -55,8 +51,7 @@ describe('Faucet helpers', () => {
           value: '1'
         },
         receiverAddress: fAccount.address,
-        senderAccount: undefined,
-        value: '1'
+        senderAccount: undefined
       });
     });
   });
@@ -72,7 +67,7 @@ describe('Faucet helpers', () => {
         gasLimit: BigNumber.from(21000),
         gasPrice: BigNumber.from(1000000000),
         hash: '0x5049c0847681402db2c303847f2f66ac7f3a6caf63119b676374d5781b8d11e9',
-        nonce: '39',
+        nonce: BigNumber.from(39),
         receiverAddress: fAccount.address,
         status: ITxStatus.PENDING,
         to: fAccount.address,

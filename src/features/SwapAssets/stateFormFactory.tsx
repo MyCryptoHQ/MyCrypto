@@ -4,7 +4,8 @@ import axios from 'axios';
 
 import { MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
-import { DexService, getGasEstimate } from '@services';
+import { DexService } from '@services/ApiService';
+import { getGasEstimate } from '@services/ApiService/Gas';
 import { getBaseAssetByNetwork, getSwapAssetsByNetwork, selectNetwork, useSelector } from '@store';
 import translate from '@translations';
 import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
@@ -110,7 +111,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
       const { price, sellAmount, ...rest } = await DexService.instance.getOrderDetailsTo(
         network,
-        account?.address,
+        account,
         fromAsset,
         toAsset,
         value
@@ -180,7 +181,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
 
       const { price, buyAmount, ...rest } = await DexService.instance.getOrderDetailsFrom(
         network,
-        account?.address,
+        account,
         fromAsset,
         toAsset,
         value
@@ -257,7 +258,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           approvalTx &&
           (await checkRequiresApproval(network, approvalTx.to!, account.address, approvalTx.data!));
 
-        const { type, ...tx } = approvalTx;
+        const { txType, ...tx } = approvalTx;
 
         const approvalGasLimit = inputGasLimitToHex(
           requiresApproval ? await getGasEstimate(network, tx!) : '0'

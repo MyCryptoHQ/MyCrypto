@@ -17,7 +17,7 @@ import {
 import { DEFAULT_NETWORK, ETHUUID, XDAI_NETWORK, XDAIUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
-import { fetchGasPriceEstimates } from '@services/ApiService';
+import { fetchUniversalGasPriceEstimate } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { useAssets, useNetworks } from '@services/Store';
 import { isAccountInNetwork, isEthereumAccount } from '@services/Store/Account/helpers';
@@ -111,7 +111,9 @@ export const MembershipFormUI = ({
     gasPrice: '20',
     address: '',
     gasLimit: '',
-    network: (relevantNetworks.find(({ id }) => id === DEFAULT_NETWORK) as unknown) as Network
+    network: relevantNetworks.find(({ id }) => id === DEFAULT_NETWORK)!,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   };
 
   const MembershipFormSchema = object().shape({
@@ -249,8 +251,8 @@ export const MembershipFormUI = ({
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
-                    fetchGasPriceEstimates(values.network).then(({ fast }) => {
-                      onComplete({ ...values, gasPrice: fast.toString() });
+                    fetchUniversalGasPriceEstimate(values.network, values.account).then((gas) => {
+                      onComplete({ ...values, ...gas });
                     });
                   }
                 }}

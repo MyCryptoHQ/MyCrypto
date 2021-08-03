@@ -9,6 +9,12 @@ import { truncate } from '@utils';
 
 import SwapAssetsFlow from './SwapAssetsFlow';
 
+jest.mock('@services/ApiService/Gas', () => ({
+  ...jest.requireActual('@services/ApiService/Gas'),
+  fetchGasPriceEstimates: () => Promise.resolve({ fast: 20 }),
+  getGasEstimate: () => Promise.resolve(21000)
+}));
+
 function getComponent() {
   return simpleRender(<SwapAssetsFlow />, {
     initialState: mockAppState({

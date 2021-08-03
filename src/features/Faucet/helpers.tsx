@@ -69,12 +69,7 @@ export const makeTxConfig = (
     from: txResult.from,
     asset: baseAsset,
     baseAsset,
-    network,
-    gasPrice: txResult.gasPrice,
-    gasLimit: txResult.gasLimit,
-    nonce: txResult.nonce.toString() as ITxNonce,
-    data: txResult.data,
-    value: txResult.value
+    networkId: network.id
   };
 };
 
@@ -102,7 +97,7 @@ export const makeTxReceipt = (
     to: txResult.to,
     from: txResult.from,
     value: BigNumber.from(txResult.value),
-    nonce: txResult.nonce.toString(),
+    nonce: BigNumber.from(txResult.nonce),
     hash: txResult.hash
   };
 };

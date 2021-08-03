@@ -1,29 +1,15 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
+import { default as txConfigEIP1559 } from './txConfigEIP1559.json';
 
 export { fAssets, fStoreAssets, fRopDAI, fDAI } from './assets';
 export { fAccount, fAccounts, fDWAccounts } from './account';
 export { fContacts } from './contacts';
 export { fNetwork, fNetworks } from './network';
-export {
-  fTransaction,
-  fETHNonWeb3TxResponse,
-  fETHNonWeb3TxReceipt,
-  fETHWeb3TxResponse,
-  fETHWeb3TxReceipt,
-  fERC20Web3TxResponse,
-  fERC20Web3TxReceipt,
-  fERC20NonWeb3TxResponse,
-  fERC20NonWeb3TxReceipt,
-  fFinishedERC20NonWeb3TxReceipt,
-  fFinishedERC20Web3TxReceipt,
-  fDerivedApprovalTx,
-  fDerivedRepMigrationTx,
-  fDerivedGolemMigrationTx,
-  fSignedTx
-} from './transaction';
+export * from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };
+export const fTxConfigEIP1559 = txConfigEIP1559;
 
 export { default as fTxConfigs } from './txConfigs.json';
 export { default as fTxReceipt } from './txReceipt.json';
@@ -55,12 +41,7 @@ export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';
 export { fDefiReserveRates } from './defiRates';
 export { fTxHistoryAPI } from './txHistory';
 
-export {
-  fAdvancedETHTxSendFormikFields,
-  fAdvancedERC20TxSendFormikFields,
-  fERC20TxSendFormikFields,
-  fETHTxSendFormikFields
-} from './sendFormFields';
+export * from './sendFormFields';
 
 export { fNotifications } from './notifications';
 

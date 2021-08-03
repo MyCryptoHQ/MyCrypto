@@ -15,7 +15,6 @@ import {
   TAddress,
   TxQueryTypes
 } from '@types';
-import { hexWeiToString } from '@utils';
 
 import { processFormDataToTx } from './helpers';
 
@@ -42,20 +41,15 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         network: form.network,
         assets
       });
-      const txConfig = {
+      const txConfig: ITxConfig = {
         rawTransaction,
         amount: form.amount,
         senderAccount: form.account,
         receiverAddress: form.address.value as TAddress,
-        network: form.network,
+        networkId: form.network.id,
         asset: form.asset,
         baseAsset: baseAsset || ({} as Asset),
-        from: form.account.address,
-        gasPrice: hexWeiToString(rawTransaction.gasPrice),
-        gasLimit: form.gasLimitField,
-        nonce: form.nonceField,
-        data: rawTransaction.data,
-        value: hexWeiToString(rawTransaction.value)
+        from: form.account.address
       };
       return { ...state, txConfig };
     }
@@ -75,7 +69,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         assets,
         networks,
         accounts,
-        state.txConfig
+        state.txConfig?.networkId
       );
 
       return { ...state, txConfig, signedTx };

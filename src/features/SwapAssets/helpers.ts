@@ -1,24 +1,8 @@
-import BN from 'bn.js';
-import { addHexPrefix } from 'ethereumjs-util';
-
 import { WALLET_STEPS } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { getAssetByTicker, getAssetByUUID } from '@services';
-import {
-  IHexStrTransaction,
-  ISwapAsset,
-  ITxConfig,
-  ITxData,
-  ITxGasLimit,
-  ITxGasPrice,
-  ITxNonce,
-  ITxObject,
-  ITxValue,
-  StoreAccount,
-  StoreAsset,
-  TUuid
-} from '@types';
-import { hexToString, toTokenBase, weiToFloat } from '@utils';
+import { ISwapAsset, ITxConfig, ITxObject, StoreAccount, StoreAsset, TUuid } from '@types';
+import { toTokenBase, weiToFloat } from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
@@ -26,7 +10,6 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   fromAsset: ISwapAsset,
   fromAmount: string
 ): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data } = transaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(assets)(network.baseAsset)!;
   const asset = getAssetByTicker(assets)(fromAsset.ticker) || baseAsset;
@@ -36,30 +19,13 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
     amount: fromAmount,
     receiverAddress: address,
     senderAccount: account,
-    network,
+    networkId: network.id,
     asset,
     baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit: hexToString(gasLimit),
-    value: fromAmount,
-    nonce: hexToString(nonce),
-    data,
     rawTransaction: Object.assign({}, transaction, { chainId: network.chainId })
   };
 
   return txConfig;
-};
-
-export const makeTxObject = (config: ITxConfig): IHexStrTransaction => {
-  return {
-    to: config.receiverAddress,
-    chainId: config.network.chainId,
-    data: config.data as ITxData,
-    value: addHexPrefix(new BN(config.amount).toString(16)) as ITxValue,
-    gasPrice: addHexPrefix(new BN(config.gasPrice).toString(16)) as ITxGasPrice,
-    gasLimit: config.gasLimit as ITxGasLimit,
-    nonce: config.nonce as ITxNonce
-  };
 };
 
 // filter accounts based on wallet type and sufficient balance

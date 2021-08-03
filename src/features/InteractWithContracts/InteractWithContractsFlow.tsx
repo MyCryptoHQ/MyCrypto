@@ -73,6 +73,8 @@ const InteractWithContractsFlow = () => {
     handleTxSigned,
     handleSaveContractSubmit,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     handleDeleteContract
   } = useStateReducer(InteractWithContractsFactory, initialState);
 
@@ -119,30 +121,7 @@ const InteractWithContractsFlow = () => {
     {
       title: translateRaw('NEW_HEADER_TEXT_14'),
       component: Interact,
-      props: (({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }) => ({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
-        account,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }))(interactWithContractsState),
+      props: interactWithContractsState,
       actions: {
         handleNetworkSelected,
         handleContractSelected,
@@ -158,7 +137,9 @@ const InteractWithContractsFlow = () => {
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected,
         handleGasSelectorChange,
-        handleDeleteContract
+        handleDeleteContract,
+        handleGasLimitChange,
+        handleNonceChange
       }
     },
     {
@@ -170,10 +151,10 @@ const InteractWithContractsFlow = () => {
     {
       title: translateRaw('INTERACT_SIGN_WRITE'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(interactWithContractsState),
       actions: {
         onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)

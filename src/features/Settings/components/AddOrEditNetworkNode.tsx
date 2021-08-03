@@ -333,7 +333,7 @@ export default function AddOrEditNetworkNode({
                   })
                 };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
-            await provider.getCurrentBlock();
+            await provider.getLatestBlockNumber();
 
             if (isAddingCustomNetwork) {
               const baseAsset: ExtendedAsset = {

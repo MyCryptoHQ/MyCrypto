@@ -2,10 +2,9 @@ import { bufferToHex } from 'ethereumjs-util';
 import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 
-import { getAssetByUUID } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
-import { ITxConfig, ITxObject, StoreAccount } from '@types';
-import { hexToString, hexWeiToString, inputValueToHex } from '@utils';
+import { ITxData, StoreAccount } from '@types';
+import { inputValueToHex } from '@utils';
 
 import { ABIItem, ABIItemType, StateMutabilityType } from './types';
 
@@ -78,35 +77,7 @@ export const getFunctionsFromABI = (pAbi: ABIItem[]) =>
   sortBy(
     pAbi.filter((x) => x.type === ABIItemType.FUNCTION),
     (item) => item.name.toLowerCase()
-  ).map((x) => Object.assign(x, { label: x.name }));
-
-export const makeContractInteractionTxConfig = (
-  rawTransaction: ITxObject,
-  account: StoreAccount,
-  amount: string
-): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
-  const { address, network } = account;
-  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
-
-  const txConfig: ITxConfig = {
-    from: address,
-    amount,
-    receiverAddress: to,
-    senderAccount: account,
-    network,
-    asset: baseAsset,
-    baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit,
-    value: hexWeiToString(value),
-    nonce,
-    data,
-    rawTransaction
-  };
-
-  return txConfig;
-};
+  ).map((x) => ({ ...x, label: x.name }));
 
 export const reduceInputParams = (submitedFunction: ABIItem) =>
   submitedFunction.inputs.reduce((accu, input) => {
@@ -126,7 +97,7 @@ export const constructGasCallProps = (
   try {
     const { encodeInput } = new AbiFunction(currentFunction, []);
     const parsedInputs = reduceInputParams(currentFunction);
-    const data = encodeInput(parsedInputs);
+    const data = encodeInput(parsedInputs) as ITxData;
 
     return {
       from: account.address,
@@ -134,7 +105,7 @@ export const constructGasCallProps = (
       value: inputValueToHex(currentFunction.payAmount),
       data
     };
-  } catch (e) {
+  } catch {
     return {};
   }
 };

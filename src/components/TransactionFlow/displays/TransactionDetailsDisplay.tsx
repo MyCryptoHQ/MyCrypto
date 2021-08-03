@@ -1,21 +1,24 @@
 import { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
-import { Button, Network } from '@mycrypto/ui';
+import { formatUnits } from '@ethersproject/units';
+import { Button, Network as UINetwork } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Asset, Fiat, ITxObject, ITxStatus, TAddress } from '@types';
+import { Asset, Fiat, ITxObject, ITxStatus, Network, TAddress } from '@types';
 import {
-  baseToConvertedUnit,
   bigify,
   calculateGasUsedPercentage,
   convertToFiat,
   fromWei,
+  isLegacyTx,
   isTransactionDataEmpty,
+  isType2Tx,
+  isTypedTx,
   totalTxFeeToString,
   toWei,
   Wei,
@@ -39,8 +42,7 @@ interface Props {
   confirmations?: number;
   gasUsed?: BigNumber;
   gasLimit: string;
-  gasPrice: string;
-  rawTransaction?: ITxObject;
+  rawTransaction: ITxObject;
   signedTransaction?: string;
   sender: ISender;
   fiat: Fiat;
@@ -48,7 +50,8 @@ interface Props {
   assetRate: number | undefined;
   status?: ITxStatus;
   timestamp?: number;
-  recipient: TAddress;
+  recipient?: TAddress;
+  network: Network;
 }
 
 const SeeMoreDetailsButton = styled(Button)`
@@ -69,7 +72,6 @@ function TransactionDetailsDisplay({
   nonce,
   data,
   gasLimit,
-  gasPrice,
   rawTransaction,
   signedTransaction,
   sender,
@@ -78,14 +80,16 @@ function TransactionDetailsDisplay({
   assetRate,
   status,
   timestamp,
-  recipient
+  recipient,
+  network
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
+  const gasPrice = isType2Tx(rawTransaction)
+    ? rawTransaction.maxFeePerGas
+    : rawTransaction.gasPrice;
+
   const maxTxFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
-  const {
-    network: { name: networkName, color: networkColor }
-  } = sender;
   const userAssetToSend = sender.assets.find((accountAsset) => {
     return accountAsset.uuid === asset.uuid;
   });
@@ -224,7 +228,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
-                <Network color={networkColor || 'blue'}>{networkName}</Network>
+                <UINetwork color={network.color || 'blue'}>{network.name}</UINetwork>
               </div>
             </div>
             <div className="TransactionDetails-row border">
@@ -235,7 +239,9 @@ function TransactionDetailsDisplay({
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_LIMIT')}:</div>
-              <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
+              <div className="TransactionDetails-row-column">{`${bigify(gasLimit).toString(
+                10
+              )}`}</div>
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('GAS_USED')}:</div>
@@ -245,15 +251,49 @@ function TransactionDetailsDisplay({
                   : translate('PENDING_STATE')}
               </div>
             </div>
-            {baseAsset && (
+            {baseAsset && rawTransaction && isLegacyTx(rawTransaction) && rawTransaction.gasPrice && (
               <div className="TransactionDetails-row border">
                 <div className="TransactionDetails-row-column">{translateRaw('GAS_PRICE')}:</div>
                 <div className="TransactionDetails-row-column">{`
-                  ${baseToConvertedUnit(gasPrice, 9)} gwei
-                  (${baseToConvertedUnit(gasPrice, DEFAULT_ASSET_DECIMAL)} ${baseAsset.ticker})
+                  ${formatUnits(rawTransaction.gasPrice, 9)} gwei
+                  (${formatUnits(rawTransaction.gasPrice, DEFAULT_ASSET_DECIMAL)} ${
+                  baseAsset.ticker
+                })
                 `}</div>
               </div>
             )}
+            {baseAsset &&
+              rawTransaction &&
+              isType2Tx(rawTransaction) &&
+              rawTransaction.maxFeePerGas && (
+                <div className="TransactionDetails-row border">
+                  <div className="TransactionDetails-row-column">
+                    {translateRaw('MAX_FEE_PER_GAS')}:
+                  </div>
+                  <div className="TransactionDetails-row-column">{`
+                  ${formatUnits(rawTransaction.maxFeePerGas, 9)} gwei
+                  (${formatUnits(rawTransaction.maxFeePerGas, DEFAULT_ASSET_DECIMAL)} ${
+                    baseAsset.ticker
+                  })
+                `}</div>
+                </div>
+              )}
+            {baseAsset &&
+              rawTransaction &&
+              isType2Tx(rawTransaction) &&
+              rawTransaction.maxPriorityFeePerGas && (
+                <div className="TransactionDetails-row border">
+                  <div className="TransactionDetails-row-column">
+                    {translateRaw('MAX_PRIORITY_FEE')}:
+                  </div>
+                  <div className="TransactionDetails-row-column">{`
+                  ${formatUnits(rawTransaction.maxPriorityFeePerGas, 9)} gwei
+                  (${formatUnits(rawTransaction.maxPriorityFeePerGas, DEFAULT_ASSET_DECIMAL)} ${
+                    baseAsset.ticker
+                  })
+                `}</div>
+                </div>
+              )}
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">
                 {translateRaw('TRANSACTION_FEE')}:
@@ -272,7 +312,7 @@ function TransactionDetailsDisplay({
             </div>
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NONCE')}:</div>
-              <div className="TransactionDetails-row-column">{nonce}</div>
+              <div className="TransactionDetails-row-column">{bigify(nonce).toString(10)}</div>
             </div>
             <div
               className={`TransactionDetails-row border ${
@@ -290,6 +330,14 @@ function TransactionDetailsDisplay({
                 </div>
               )}
             </div>
+            {isTypedTx(rawTransaction) && (
+              <div className="TransactionDetails-row border">
+                <div className="TransactionDetails-row-column">{translateRaw('TX_TYPE')}:</div>
+                <div className="TransactionDetails-row-column">
+                  {rawTransaction.type.toString(10)}
+                </div>
+              </div>
+            )}
             {rawTransaction && (
               <>
                 <div className="TransactionDetails-row border stacked">

@@ -1,6 +1,12 @@
 import {} from '@../jest_config/__fixtures__/transaction';
 import { REPV1UUID } from '@config';
-import { fAccount, fAssets, fDerivedApprovalTx, fDerivedRepMigrationTx, fNetwork } from '@fixtures';
+import {
+  fAccount,
+  fAssets,
+  fDerivedApprovalTx,
+  fDerivedRepMigrationTx,
+  fNetworks
+} from '@fixtures';
 import { ITokenMigrationFormFull } from '@types';
 
 import { repTokenMigrationConfig } from './config';
@@ -9,13 +15,15 @@ import { createApproveTx, createRepMigrationTx } from './helpers';
 const defaultProps: ITokenMigrationFormFull = {
   tokenConfig: repTokenMigrationConfig,
   asset: fAssets.find(({ uuid }) => uuid === REPV1UUID)!,
-  network: fNetwork,
+  network: fNetworks[0],
   address: '',
   amount: '5',
   gasLimit: '50000',
   gasPrice: '5',
   nonce: '',
-  account: fAccount
+  account: fAccount,
+  maxFeePerGas: '20',
+  maxPriorityFeePerGas: '1'
 };
 
 describe('it creates token migration transactions', () => {

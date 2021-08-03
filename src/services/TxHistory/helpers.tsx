@@ -44,7 +44,7 @@ export const makeTxReceipt = (
     gasLimit: BigNumber.from(tx.gasLimit),
     gasUsed: !isVoid(tx.gasUsed) ? BigNumber.from(tx.gasUsed!) : undefined,
     value: parseEther(value),
-    nonce: BigNumber.from(tx.nonce).toString(),
+    nonce: BigNumber.from(tx.nonce),
     blockNumber: !isVoid(tx.blockNumber) ? BigNumber.from(tx.blockNumber!).toNumber() : undefined
   };
 };

@@ -34,6 +34,7 @@ export interface Network {
   nodes: NodeOptions[];
   selectedNode?: string;
   baseUnitName?: string;
+  supportsEIP1559?: boolean;
 }
 
 interface NetworkPropsMissingInLegacy {

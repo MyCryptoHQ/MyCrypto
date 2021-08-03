@@ -196,6 +196,9 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   } = useContext(ProtectTxContext);
 
   useEffect(() => {
+    if (!sendAssetsValues) {
+      return;
+    }
     const {
       account: { wallet: walletId }
     } = sendAssetsValues as { account: IAccount };
@@ -203,7 +206,10 @@ export const ProtectTxProtection: FC<Props> = ({ handleProtectTxSubmit }) => {
   }, [sendAssetsValues]);
 
   useEffect(() => {
-    const { asset } = sendAssetsValues!;
+    if (!sendAssetsValues) {
+      return;
+    }
+    const { asset } = sendAssetsValues;
     const rate = getAssetRate(asset);
 
     const { amount, fee } = getProtectTxFee(sendAssetsValues!, rate);

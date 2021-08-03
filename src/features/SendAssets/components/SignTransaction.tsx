@@ -1,6 +1,7 @@
 import { ComponentType, FC } from 'react';
 
 import { WALLET_STEPS } from '@components';
+import { useNetworks } from '@services/Store';
 import { ISignComponentProps, ISignedTx, IStepComponentProps, ITxReceipt, WalletId } from '@types';
 
 type Props = Pick<IStepComponentProps, 'txConfig' | 'onComplete'> & {
@@ -9,9 +10,11 @@ type Props = Pick<IStepComponentProps, 'txConfig' | 'onComplete'> & {
 
 const SignTransaction: FC<Props> = ({ txConfig, onComplete, protectTxButton }: Props) => {
   const {
-    network,
+    networkId,
     senderAccount: { wallet: walletName }
   } = txConfig;
+  const { getNetworkById } = useNetworks();
+  const network = getNetworkById(networkId);
 
   const getWalletComponent = (walletType: WalletId) => {
     return WALLET_STEPS[walletType];

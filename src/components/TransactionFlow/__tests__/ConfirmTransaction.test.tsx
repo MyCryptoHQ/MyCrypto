@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 
 import { fireEvent, simpleRender } from 'test-utils';
 
-import { fAccount, fContacts, fSettings, fTxConfig } from '@fixtures';
+import { fAccount, fContacts, fNetwork, fSettings, fTxConfig } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ExtendedContact } from '@types';
 import { bigify, truncate } from '@utils';
@@ -21,7 +21,8 @@ const defaultProps: ComponentProps<typeof ConfirmTransactionUI> = {
   baseAssetRate: 250,
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   senderContact,
-  recipientContact
+  recipientContact,
+  network: fNetwork
 };
 
 function getComponent(props: ComponentProps<typeof ConfirmTransactionUI>) {
@@ -45,8 +46,10 @@ describe('ConfirmTransaction', () => {
     const { getByText, container } = getComponent(defaultProps);
     const btn = container.querySelector('.TransactionDetails > div > div > button');
     fireEvent.click(btn!);
-    expect(getByText(defaultProps.txConfig.gasLimit)).toBeDefined();
-    expect(getByText(defaultProps.txConfig.nonce)).toBeDefined();
+    expect(
+      getByText(bigify(defaultProps.txConfig.rawTransaction.gasLimit).toString())
+    ).toBeDefined();
+    expect(getByText(bigify(defaultProps.txConfig.rawTransaction.nonce).toString())).toBeDefined();
     expect(getByText(defaultProps.txConfig.senderAccount.network.name)).toBeDefined();
   });
 

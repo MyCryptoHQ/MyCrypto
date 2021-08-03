@@ -7,10 +7,11 @@ import {
   fERC20TxSendFormikFields,
   fETHNonWeb3TxConfig,
   fETHTxSendFormikFields,
+  fETHTxSendFormikFieldsEIP1559,
   fNetwork
 } from '@fixtures';
 import { translateRaw } from '@translations';
-import { TAddress, TTicker, TxQueryTypes } from '@types';
+import { ILegacyTxObject, TAddress, TTicker, TxQueryTypes } from '@types';
 
 import {
   generateGenericErc20,
@@ -22,7 +23,7 @@ import {
 } from './helpers';
 
 const validETHSpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x6',
@@ -33,8 +34,21 @@ const validETHSpeedUpQuery = {
   data: '0x'
 };
 
+const validETHSpeedUpQueryEIP1559 = {
+  queryType: TxQueryTypes.SPEEDUP,
+  gasLimit: '0x5208',
+  chainId: '3',
+  nonce: '0x6',
+  maxFeePerGas: '0x4a817c800',
+  maxPriorityFeePerGas: '0x3b9aca00',
+  from: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+  to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+  value: '0x2386f26fc10000',
+  data: '0x'
+};
+
 const validERC20SpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x7d3c',
   chainId: '3',
   nonce: '0x7',
@@ -47,14 +61,14 @@ const validERC20SpeedUpQuery = {
 };
 
 const invalidSpeedUpQuery = {
-  type: TxQueryTypes.SPEEDUP,
+  queryType: TxQueryTypes.SPEEDUP,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x60'
 };
 
 const validETHCancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x6',
@@ -66,7 +80,7 @@ const validETHCancelQuery = {
 };
 
 const validERC20CancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x7d3c',
   chainId: '3',
   nonce: '0x7',
@@ -79,7 +93,7 @@ const validERC20CancelQuery = {
 };
 
 const invalidCancelQuery = {
-  type: TxQueryTypes.CANCEL,
+  queryType: TxQueryTypes.CANCEL,
   gasLimit: '0x5208',
   chainId: '3',
   nonce: '0x60'
@@ -93,7 +107,7 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.SPEEDUP,
+      queryType: TxQueryTypes.SPEEDUP,
       txConfig: fERC20NonWeb3TxConfig
     });
   });
@@ -105,8 +119,29 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.SPEEDUP,
+      queryType: TxQueryTypes.SPEEDUP,
       txConfig: fETHNonWeb3TxConfig
+    });
+  });
+
+  it('parses valid eth tx query parameters correctly - speed up EIP 1559', () => {
+    const parsedQueryParams = parseQueryParams(validETHSpeedUpQueryEIP1559)(
+      [fNetwork],
+      fAssets,
+      fAccounts
+    );
+    const { gasPrice, ...rawTransaction } = fETHNonWeb3TxConfig.rawTransaction as ILegacyTxObject;
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: {
+        ...fETHNonWeb3TxConfig,
+        rawTransaction: {
+          ...rawTransaction,
+          maxFeePerGas: '0x4a817c800',
+          maxPriorityFeePerGas: '0x3b9aca00',
+          type: 2
+        }
+      }
     });
   });
 
@@ -117,7 +152,7 @@ describe('Query string parsing', () => {
       fAccounts
     );
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.CANCEL,
+      queryType: TxQueryTypes.CANCEL,
       txConfig: fERC20NonWeb3TxConfig
     });
   });
@@ -125,39 +160,64 @@ describe('Query string parsing', () => {
   it('parses valid eth tx query parameters correctly - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([fNetwork], fAssets, fAccounts);
     expect(parsedQueryParams).toStrictEqual({
-      type: TxQueryTypes.CANCEL,
+      queryType: TxQueryTypes.CANCEL,
       txConfig: fETHNonWeb3TxConfig
     });
   });
 
   it('fails to derive txConfig when invalid eth tx query parameters are included - cancel', () => {
     const parsedQueryParams = parseQueryParams(invalidCancelQuery)([fNetwork], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no network config for specified chainID - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no added account with from address - cancel', () => {
     const parsedQueryParams = parseQueryParams(validETHCancelQuery)([fNetwork], fAssets, []);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.CANCEL, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.CANCEL,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when invalid eth tx query parameters are included - speed up', () => {
     const parsedQueryParams = parseQueryParams(invalidSpeedUpQuery)([fNetwork], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no network config for specified chainID - speed up', () => {
     const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([], fAssets, fAccounts);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
   });
 
   it('fails to derive txConfig when there is no added account with from address - speed up', () => {
     const parsedQueryParams = parseQueryParams(validETHSpeedUpQuery)([fNetwork], fAssets, []);
-    expect(parsedQueryParams).toStrictEqual({ type: TxQueryTypes.SPEEDUP, txConfig: undefined });
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.SPEEDUP,
+      txConfig: undefined
+    });
+  });
+
+  it('fails on invalid input', () => {
+    const parsedQueryParams = parseQueryParams({ queryType: undefined })([fNetwork], fAssets, []);
+    expect(parsedQueryParams).toStrictEqual({
+      queryType: TxQueryTypes.DEFAULT
+    });
   });
 });
 
@@ -222,6 +282,10 @@ describe('isERC20Asset', () => {
 describe('processFormDataToTx', () => {
   it('correctly process eth form data to eth tx', () => {
     expect(processFormDataToTx(fETHTxSendFormikFields)).toMatchSnapshot();
+  });
+
+  it('correctly process eth form data to eth tx for EIP 1559', () => {
+    expect(processFormDataToTx(fETHTxSendFormikFieldsEIP1559)).toMatchSnapshot();
   });
 
   it('correctly process advanced eth form data to eth tx', () => {

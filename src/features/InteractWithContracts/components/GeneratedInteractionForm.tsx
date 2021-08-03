@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
 import { COLORS, monospace, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { ITxConfig, Network, StoreAccount } from '@types';
+import { ISimpleTxForm, Network, StoreAccount } from '@types';
 
 import {
   constructGasCallProps,
@@ -95,13 +95,22 @@ interface Props {
   abi: ABIItem[];
   account: StoreAccount;
   network: Network;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
   handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 export default function GeneratedInteractionForm({
@@ -109,11 +118,17 @@ export default function GeneratedInteractionForm({
   handleInteractionFormSubmit,
   account,
   network,
-  rawTransaction,
+  nonce,
+  gasLimit,
+  gasPrice,
+  maxFeePerGas,
+  maxPriorityFeePerGas,
   contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
   handleGasSelectorChange,
+  handleNonceChange,
+  handleGasLimitChange,
   interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -250,6 +265,7 @@ export default function GeneratedInteractionForm({
                         />
                       ) : (
                         <InputField
+                          name={field.name}
                           label={
                             <FieldLabel fieldName={field.displayName!} fieldType={field.type} />
                           }
@@ -330,9 +346,15 @@ export default function GeneratedInteractionForm({
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}
-                    rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
+                    handleGasLimitChange={handleGasLimitChange}
+                    handleNonceChange={handleNonceChange}
                     estimateGasCallProps={gasCallProps}
+                    nonce={nonce}
+                    gasLimit={gasLimit}
+                    gasPrice={gasPrice}
+                    maxFeePerGas={maxFeePerGas}
+                    maxPriorityFeePerGas={maxPriorityFeePerGas}
                   />
                 </WriteFormWrapper>
               )}

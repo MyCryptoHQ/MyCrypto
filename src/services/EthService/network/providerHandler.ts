@@ -1,3 +1,4 @@
+import { FeeData } from '@ethersproject/abstract-provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import {
@@ -14,7 +15,7 @@ import Resolution from '@unstoppabledomains/resolution';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
-import { Asset, IHexStrTransaction, ITxSigned, Network, TAddress, TokenInformation } from '@types';
+import { Asset, ITxObject, ITxSigned, Network, TAddress, TokenInformation } from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
@@ -55,7 +56,7 @@ export class ProviderHandler {
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<string> {
+  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
     return this.injectClient((client) =>
       client.estimateGas(transaction).then((data) => data.toString())
     );
@@ -125,8 +126,12 @@ export class ProviderHandler {
   }
 
   /* Tested */
-  public getCurrentBlock(): Promise<string> {
+  public getLatestBlockNumber(): Promise<string> {
     return this.injectClient((client) => client.getBlockNumber().then((data) => data.toString()));
+  }
+
+  public getLatestBlock(): Promise<Block> {
+    return this.getBlockByHash('latest');
   }
 
   public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
@@ -180,6 +185,31 @@ export class ProviderHandler {
 
       return client.resolveName(name);
     });
+  }
+
+  public getFeeData(): Promise<FeeData> {
+    return this.injectClient((client) => client.getFeeData());
+  }
+
+  // @todo Update this when Ethers supports eth_feeHistory
+  public getFeeHistory(
+    blockCount: number,
+    newestBlock: string,
+    rewardPercentiles?: any[]
+  ): Promise<{
+    baseFeePerGas: string[];
+    gasUsedRatio: number[];
+    reward?: string[][];
+    oldestBlock: number;
+  }> {
+    return this.injectClient((client) =>
+      // @ts-expect-error Temp until Ethers supports eth_feeHistory
+      (client as FallbackProvider).providerConfigs[0].provider.send('eth_feeHistory', [
+        blockCount,
+        newestBlock,
+        rewardPercentiles ?? []
+      ])
+    );
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

@@ -1,18 +1,19 @@
-import { makePendingTxReceipt } from '@helpers';
-import { useAccounts } from '@services';
+import { makePendingTxReceipt, makeTxFromForm } from '@helpers';
+import { useAccounts, useNetworks } from '@services';
 import { ProviderHandler } from '@services/EthService';
 import {
   Asset,
   ISimpleTxFormFull,
+  ITxConfig,
+  ITxData,
   ITxHash,
   ITxStatus,
   ITxType,
   TAddress,
   TStepAction
 } from '@types';
-import { hexWeiToString, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import { inputValueToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
-import { createSimpleTxObject } from './helpers';
 import { ZapInteractionState } from './types';
 
 const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
@@ -20,6 +21,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   setState
 }) => {
   const { addTxToAccount } = useAccounts();
+  const { getNetworkById } = useNetworks();
 
   const handleTxSigned = async (signResponse: any, cb: any) => {
     const { txConfig } = state;
@@ -44,7 +46,7 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
       }));
       cb();
     } else {
-      const provider = new ProviderHandler(txConfig.network);
+      const provider = new ProviderHandler(getNetworkById(txConfig.networkId));
       provider
         .sendRawTx(signResponse)
         .then((txResponse) => txResponse.hash as ITxHash)
@@ -62,26 +64,25 @@ const ZapInteractionFactory: TUseStateReducerFactory<ZapInteractionState> = ({
   };
 
   const handleUserInputFormSubmit: TStepAction = (payload: ISimpleTxFormFull, cb: any) => {
-    const rawTransaction = createSimpleTxObject({
-      ...payload,
-      address: state.zapSelected!.contractAddress,
-      gasLimit: state.zapSelected!.minimumGasLimit
-    });
+    const rawTransaction = makeTxFromForm(
+      {
+        ...payload,
+        address: state.zapSelected!.contractAddress,
+        gasLimit: state.zapSelected!.minimumGasLimit
+      },
+      inputValueToHex(payload.amount),
+      '0x' as ITxData
+    );
 
-    const txConfig = {
+    const txConfig: ITxConfig = {
       rawTransaction,
       amount: payload.amount,
       senderAccount: payload.account,
       receiverAddress: state.zapSelected!.contractAddress as TAddress,
-      network: payload.network,
+      networkId: payload.network.id,
       asset: payload.asset,
       baseAsset: payload.asset || ({} as Asset),
-      from: payload.account.address,
-      gasPrice: hexWeiToString(rawTransaction.gasPrice),
-      gasLimit: state.zapSelected!.minimumGasLimit.toString(),
-      nonce: payload.nonce,
-      data: '0x',
-      value: hexWeiToString(rawTransaction.value)
+      from: payload.account.address
     };
     setState({
       ...state,

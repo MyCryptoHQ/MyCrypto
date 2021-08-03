@@ -6,7 +6,7 @@ import { useReducer } from 'reinspect';
 import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@helpers';
 import { useAccounts, useAssets } from '@services';
 import { getStoreAccounts } from '@store';
-import { ITxObject, ITxStatus, ITxType } from '@types';
+import { ITxObject, ITxStatus, ITxType, Network, StoreAccount } from '@types';
 import { identity, lensIndex, view } from '@vendor';
 
 import { init, initWith, prepareTx, reset, sendTx, stopYield } from './actions';
@@ -27,11 +27,15 @@ export type TUseTxMulti = () => {
   reset: ReturnType<typeof reset>;
   currentTx: TxParcel;
   state: TxMultiState;
-  init(txs: any[], account: any, network: any): Promise<void>;
+  init(
+    txs: Partial<ITxObject & { label: string; txType: ITxType }>[],
+    account: StoreAccount,
+    network: Network
+  ): Promise<void>;
   initWith(
-    getTxs: () => Promise<Partial<ITxObject & { label: string; type: ITxType }>[]>,
-    account: any,
-    network: any
+    getTxs: () => Promise<Partial<ITxObject & { label: string; txType: ITxType }>[]>,
+    account: StoreAccount,
+    network: Network
   ): Promise<void>;
   stopYield(): Promise<void>;
 };
@@ -58,10 +62,10 @@ export const useTxMulti: TUseTxMulti = () => {
       currentTx.txHash &&
       currentTx.status === ITxStatus.BROADCASTED
     ) {
-      const type = currentTx.type ? currentTx.type : ITxType.UNKNOWN;
+      const txType = currentTx.txType ?? ITxType.UNKNOWN;
       const txConfig = makeTxConfigFromTxResponse(currentTx.txResponse, assets, network, accounts);
       const pendingTxReceipt = makePendingTxReceipt(currentTx.txHash)(
-        type,
+        txType,
         txConfig,
         currentTx.metadata
       );

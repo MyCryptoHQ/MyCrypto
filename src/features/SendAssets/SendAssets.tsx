@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
 import { IStepperPath } from '@components/GeneralStepper/types';
-import { MANDATORY_TRANSACTION_QUERY_PARAMS, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { withProtectTxProvider } from '@helpers';
 import { ProviderHandler, useAccounts, useAssets, useFeatureFlags, useNetworks } from '@services';
@@ -31,11 +31,11 @@ function SendAssets({ location }: RouteComponentProps) {
   } = useContext(ProtectTxContext);
   const accounts = useSelector(getStoreAccounts);
   const { assets } = useAssets();
-  const { networks } = useNetworks();
+  const { networks, getNetworkById } = useNetworks();
   const { isFeatureActive } = useFeatureFlags();
 
   const query = parse(location.search);
-  const res = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce(
+  const res = SUPPORTED_TRANSACTION_QUERY_PARAMS.reduce(
     (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
     {}
   );
@@ -44,8 +44,8 @@ function SendAssets({ location }: RouteComponentProps) {
     const txConfigInit = parseQueryParams(parse(location.search))(networks, assets, accounts);
     if (
       !txConfigInit ||
-      txConfigInit.type === reducerState.txQueryType ||
-      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.type)
+      txConfigInit.queryType === reducerState.txQueryType ||
+      ![TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(txConfigInit.queryType)
     )
       return;
 
@@ -58,7 +58,7 @@ function SendAssets({ location }: RouteComponentProps) {
 
     dispatch({
       type: sendAssetsReducer.actionTypes.SET_TXCONFIG,
-      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.type }
+      payload: { txConfig: txConfigInit.txConfig, txQueryType: txConfigInit.queryType }
     });
   }, [res]);
 
@@ -182,7 +182,7 @@ function SendAssets({ location }: RouteComponentProps) {
       !isWeb3Wallet(reducerState.txConfig!.senderAccount.wallet)
     ) {
       const { txConfig, signedTx } = reducerState;
-      const provider = new ProviderHandler(txConfig!.network);
+      const provider = new ProviderHandler(getNetworkById(txConfig!.networkId));
 
       provider
         .sendRawTx(signedTx)

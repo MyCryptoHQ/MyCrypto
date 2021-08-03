@@ -1,7 +1,7 @@
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
 import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
-import { useAssets, useRates, useSettings } from '@services';
+import { useAssets, useNetworks, useRates, useSettings } from '@services';
 import { ITokenMigrationConfig, ITxType, StoreAccount, TxParcel } from '@types';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
@@ -24,6 +24,7 @@ export default function TokenMigrationReceipt({
   const { settings } = useSettings();
   const { getAssetByUUID, assets } = useAssets();
   const { getAssetRate } = useRates();
+  const { getNetworkById } = useNetworks();
   const txItems = transactions.map((tx, idx) => {
     const txType = flowConfig.txConstructionConfigs[idx].txType;
     const txConfig =
@@ -33,7 +34,9 @@ export default function TokenMigrationReceipt({
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
-  const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
+  const network = getNetworkById(txItems[0].txConfig.networkId);
+
+  const baseAsset = getAssetByUUID(network.baseAsset)!;
 
   const baseAssetRate = getAssetRate(baseAsset);
 

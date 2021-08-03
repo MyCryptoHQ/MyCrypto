@@ -51,7 +51,7 @@ const Tooltip: FC<
   return (
     <Override verticalAlign={verticalAlign} display={display} {...props}>
       <UITooltip tooltip={tooltip}>
-        {children ? children : <Icon type={type} width={width} />}
+        {children ? children : <Icon type={type} width={width} fill="none" />}
       </UITooltip>
     </Override>
   );

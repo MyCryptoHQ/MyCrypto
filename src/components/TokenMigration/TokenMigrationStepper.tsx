@@ -44,7 +44,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
           () => {
             const txs = tokenMigrationConfig.txConstructionConfigs.map((txConstructionConfig) => ({
               ...txConstructionConfig.constructTxFn(formData),
-              type: txConstructionConfig.txType,
+              txType: txConstructionConfig.txType,
               metadata: { receivingAsset: tokenMigrationConfig.toAssetUuid }
             }));
             return Promise.resolve(txs);

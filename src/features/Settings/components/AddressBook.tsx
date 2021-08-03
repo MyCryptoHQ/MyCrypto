@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { Identicon } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled from 'styled-components';
@@ -12,6 +11,7 @@ import {
   EthAddress,
   FixedSizeCollapsibleTable,
   Icon,
+  Identicon,
   LinkApp,
   Network,
   RowDeleteOverlay,

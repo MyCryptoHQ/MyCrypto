@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { TxParam } from '@features/SendAssets/preFillTx';
-import { TxQueryTypes } from '@types';
+import { IQueryResults } from '@types';
 import { getParam } from '@utils';
 
 const parse = (location: RouteComponentProps['location']): Query => {
@@ -12,10 +12,6 @@ const parse = (location: RouteComponentProps['location']): Query => {
   const query = queryString.parse(searchStr);
   return query;
 };
-
-export interface IQueryResults {
-  [key: string]: TxQueryTypes | null;
-}
 
 interface Props {
   params: TxParam[];

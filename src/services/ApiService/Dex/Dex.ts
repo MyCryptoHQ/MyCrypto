@@ -8,16 +8,18 @@ import {
   DEX_TRADE_EXPIRATION,
   MYC_DEX_COMMISSION_RATE
 } from '@config';
-import { formatApproveTx } from '@helpers';
+import { formatApproveTx as formatApproveTxFunc } from '@helpers';
 import {
+  Bigish,
+  ILegacyTxObject,
   ISwapAsset,
   ITxGasLimit,
   ITxGasPrice,
-  ITxObject,
   ITxType,
   ITxValue,
   Network,
   NetworkId,
+  StoreAccount,
   TAddress,
   TTicker
 } from '@types';
@@ -66,7 +68,7 @@ export default class DexService {
 
   public getOrderDetailsFrom = async (
     network: Network,
-    account: TAddress | undefined,
+    account: StoreAccount | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     fromAmount: string
@@ -74,7 +76,7 @@ export default class DexService {
 
   public getOrderDetailsTo = async (
     network: Network,
-    account: TAddress | undefined,
+    account: StoreAccount | undefined,
     from: ISwapAsset,
     to: ISwapAsset,
     toAmount: string
@@ -82,7 +84,7 @@ export default class DexService {
 
   private getOrderDetails = async (
     network: Network,
-    account: TAddress | undefined,
+    account: StoreAccount | undefined,
     sellToken: ISwapAsset,
     buyToken: ISwapAsset,
     sellAmount?: string,
@@ -106,7 +108,7 @@ export default class DexService {
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
         affiliateAddress: DEX_FEE_RECIPIENT,
-        takerAddress: account,
+        takerAddress: account?.address,
         skipValidation: true
       },
       cancelToken: new CancelToken(function executor(c) {
@@ -117,17 +119,14 @@ export default class DexService {
 
     const approvalTx =
       data.allowanceTarget !== AddressZero
-        ? {
-            ...formatApproveTx({
-              fromAddress: account,
-              contractAddress: data.sellTokenAddress,
-              spenderAddress: data.allowanceTarget,
-              hexGasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
-              baseTokenAmount: bigify(data.sellAmount),
-              chainId: network.chainId
-            }),
-            type: ITxType.APPROVAL
-          }
+        ? formatApproveTx({
+            account: account!,
+            contractAddress: data.sellTokenAddress,
+            spenderAddress: data.allowanceTarget,
+            gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+            baseTokenAmount: bigify(data.sellAmount),
+            network
+          })
         : undefined;
 
     const tradeGasLimit = addHexPrefix(
@@ -159,6 +158,47 @@ export default class DexService {
   };
 }
 
+export const formatApproveTx = ({
+  account,
+  contractAddress,
+  baseTokenAmount,
+  spenderAddress,
+  gasPrice,
+  network
+}: {
+  account: StoreAccount;
+  contractAddress: TAddress;
+  baseTokenAmount: Bigish;
+  spenderAddress: TAddress;
+  gasPrice: ITxGasPrice;
+  network: Network;
+}) => {
+  const tx = formatApproveTxFunc({
+    contractAddress,
+    baseTokenAmount,
+    spenderAddress,
+    form: {
+      network,
+      gasPrice,
+      gasLimit: '',
+      address: '',
+      nonce: '',
+      maxFeePerGas: '',
+      maxPriorityFeePerGas: '',
+      account
+    }
+  });
+
+  return {
+    ...tx,
+    gasPrice,
+    maxFeePerGas: undefined,
+    maxPriorityFeePerGas: undefined,
+    txType: ITxType.APPROVAL
+  };
+};
+
+// @todo: Support EIP 1559 gas params when API returns it
 export const formatTradeTx = ({
   to,
   data,
@@ -166,7 +206,7 @@ export const formatTradeTx = ({
   gasPrice,
   chainId,
   buyToken
-}: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+}: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
   buyToken: ISwapAsset;
 }) => {
   return {
@@ -175,7 +215,7 @@ export const formatTradeTx = ({
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId,
     gasPrice,
-    type: ITxType.SWAP,
+    txType: ITxType.SWAP,
     metadata: { receivingAsset: buyToken.uuid }
   };
 };

@@ -30,7 +30,7 @@ export const init = (dispatch: Dispatch<TxMultiAction>) => async (
 };
 
 export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
-  getTxs: () => Promise<(ITxObject & { type: ITxType })[]>,
+  getTxs: () => Promise<(ITxObject & { txType: ITxType })[]>,
   account: StoreAccount,
   network: Network
 ) => {
@@ -38,7 +38,7 @@ export const initWith = (dispatch: Dispatch<TxMultiAction>) => async (
   try {
     const txs = await getTxs();
     const filteredTxs = await filterAsync(txs, async (tx) => {
-      if (network && tx.type === ITxType.APPROVAL && tx.from) {
+      if (network && tx.txType === ITxType.APPROVAL && tx.from && tx.to) {
         try {
           return checkRequiresApproval(network, tx.to, tx.from, tx.data);
         } catch (err) {

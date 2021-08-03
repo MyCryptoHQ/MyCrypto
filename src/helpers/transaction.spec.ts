@@ -3,6 +3,7 @@ import { parse as parseTransaction } from '@ethersproject/transactions';
 
 import { donationAddressMap, ETHUUID } from '@config';
 import {
+  fAccount,
   fAccounts,
   fAssets,
   fERC20NonWeb3TxConfigJSON as fERC20NonWeb3TxConfig,
@@ -22,7 +23,10 @@ import {
   fNetwork,
   fNetworks,
   fRopDAI,
-  fSignedTx
+  fSignedTx,
+  fSignedTxEIP1559,
+  fTxConfigEIP1559,
+  fTxReceiptEIP1559
 } from '@fixtures';
 import {
   ITxData,
@@ -48,6 +52,7 @@ import {
   guessERC20Type,
   makeFinishedTxReceipt,
   makePendingTxReceipt,
+  makeTxConfigFromSignedTx,
   makeTxConfigFromTxResponse,
   makeUnknownTxReceipt,
   toTxReceipt,
@@ -107,6 +112,14 @@ describe('toTxReceipt', () => {
       metadata
     );
     expect(txReceipt).toStrictEqual({ ...fERC20Web3TxReceipt, metadata });
+  });
+
+  it('supports EIP 1559 gas', () => {
+    const txReceipt = toTxReceipt(fERC20Web3TxResponse.hash as ITxHash, ITxStatus.PENDING)(
+      ITxType.STANDARD,
+      fTxConfigEIP1559
+    );
+    expect(txReceipt).toStrictEqual(fTxReceiptEIP1559);
   });
 });
 
@@ -443,7 +456,7 @@ describe('appendGasPrice', () => {
       data: '0x0' as ITxData,
       chainId: 1
     };
-    const actual = await appendGasPrice(fNetworks[0])(input);
+    const actual = await appendGasPrice(fNetworks[0], fAccount)(input);
     const expected = {
       to: senderAddr,
       value: '0x0',
@@ -462,7 +475,7 @@ describe('appendGasPrice', () => {
       gasPrice: '0x2540be400' as ITxGasPrice,
       chainId: 1
     };
-    const actual = await appendGasPrice(fNetworks[0])(input);
+    const actual = await appendGasPrice(fNetworks[0], fAccount)(input);
     const expected = {
       to: senderAddr,
       value: '0x0',
@@ -585,5 +598,60 @@ describe('verifyTransaction', () => {
         nonce: 1
       })
     ).toBe(false);
+  });
+});
+
+describe('makeTxConfigFromSignedTx', () => {
+  it('creates a basic tx config from a signed tx', () => {
+    const address = '0x0961Ca10D49B9B8e371aA0Bcf77fE5730b18f2E4' as TAddress;
+    const account = { ...fAccounts[1], address };
+    const result = makeTxConfigFromSignedTx(fSignedTx, fAssets, fNetworks, [account]);
+    expect(result).toStrictEqual({
+      amount: '0.01',
+      asset: fAssets[1],
+      baseAsset: fAssets[1],
+      from: address,
+      networkId: 'Ropsten',
+      rawTransaction: {
+        chainId: 3,
+        data: '0x',
+        from: address,
+        gasLimit: '0x5208',
+        gasPrice: '0x012a05f200',
+        nonce: '0x06',
+        to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+        type: null,
+        value: '0x2386f26fc10000'
+      },
+      receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+      senderAccount: account
+    });
+  });
+
+  it('creates a basic tx config from a signed EIP 1559 tx', () => {
+    const address = '0x0961Ca10D49B9B8e371aA0Bcf77fE5730b18f2E4' as TAddress;
+    const account = { ...fAccounts[1], address };
+    const result = makeTxConfigFromSignedTx(fSignedTxEIP1559, fAssets, fNetworks, [account]);
+    expect(result).toStrictEqual({
+      amount: '0.01',
+      asset: fAssets[1],
+      baseAsset: fAssets[1],
+      from: address,
+      networkId: 'Ropsten',
+      rawTransaction: {
+        chainId: 3,
+        data: '0x',
+        from: address,
+        gasLimit: '0x5208',
+        maxFeePerGas: '0x04a817c800',
+        maxPriorityFeePerGas: '0x3b9aca00',
+        nonce: '0x06',
+        to: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+        type: 2,
+        value: '0x2386f26fc10000'
+      },
+      receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
+      senderAccount: account
+    });
   });
 });

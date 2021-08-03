@@ -47,8 +47,11 @@ const PurchaseMembershipStepper = () => {
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
           () => {
-            const purchaseTx = { ...createPurchaseTx(formData), type: ITxType.PURCHASE_MEMBERSHIP };
-            const approveTx = { ...createApproveTx(formData), type: ITxType.APPROVAL };
+            const purchaseTx = {
+              ...createPurchaseTx(formData),
+              txType: ITxType.PURCHASE_MEMBERSHIP
+            };
+            const approveTx = { ...createApproveTx(formData), txType: ITxType.APPROVAL };
             return Promise.resolve(
               isERC20Asset(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );

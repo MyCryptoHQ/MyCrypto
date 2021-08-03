@@ -1,8 +1,14 @@
-import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK_CHAINID } from '@config';
-import { formatApproveTx } from '@helpers';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { formatApproveTx, makeTxFromForm } from '@helpers';
 import { AaveMigrator } from '@services/EthService/contracts';
-import { ITokenMigrationFormFull, ITxData, ITxObject, ITxToAddress } from '@types';
-import { inputGasPriceToHex, inputValueToHex, toWei } from '@utils';
+import {
+  DistributiveOmit,
+  ITokenMigrationFormFull,
+  ITxData,
+  ITxObject,
+  ITxToAddress
+} from '@types';
+import { toWei } from '@utils';
 
 import { MIGRATION_CONTRACT } from './config';
 
@@ -12,24 +18,20 @@ export const createApproveTx = (
   formatApproveTx({
     contractAddress: payload.asset.contractAddress as ITxToAddress,
     baseTokenAmount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL),
-    fromAddress: payload.account.address,
     spenderAddress: MIGRATION_CONTRACT,
-    chainId: DEFAULT_NETWORK_CHAINID,
-    hexGasPrice: inputGasPriceToHex(payload.gasPrice)
+    form: payload
   });
 
 export const createMigrationTx = (
   payload: ITokenMigrationFormFull
-): Omit<ITxObject, 'nonce' | 'gasLimit'> => {
+): DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> => {
   const data = AaveMigrator.migrateFromLEND.encodeInput({
     amount: toWei(payload.amount, DEFAULT_ASSET_DECIMAL)
-  });
-  return {
-    from: payload.account.address,
-    to: MIGRATION_CONTRACT,
-    value: inputValueToHex('0'),
-    data: data as ITxData,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    chainId: DEFAULT_NETWORK_CHAINID
-  };
+  }) as ITxData;
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
+    { ...payload, address: MIGRATION_CONTRACT },
+    '0',
+    data
+  );
+  return tx;
 };

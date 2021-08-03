@@ -6,13 +6,20 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_PRICE_GWEI_DEFAULT_HEX
 } from '@config';
-import { makePendingTxReceipt } from '@helpers';
+import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm, toTxReceipt } from '@helpers';
 import { getGasEstimate, ProviderHandler, useAccounts } from '@services';
 import { translateRaw } from '@translations';
-import { ITxHash, ITxStatus, ITxType, NetworkId, StoreAccount } from '@types';
-import { inputGasLimitToHex, inputNonceToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
+import {
+  ISimpleTxForm,
+  ITxData,
+  ITxHash,
+  ITxStatus,
+  ITxType,
+  NetworkId,
+  StoreAccount
+} from '@types';
+import { inputGasLimitToHex, isWeb3Wallet, TUseStateReducerFactory } from '@utils';
 
-import { constructGasCallProps, makeDeployContractTxConfig } from './helpers';
 import { DeployContractsState } from './types';
 
 const deployContractsInitialState = {
@@ -51,7 +58,15 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
   };
 
   const handleDeploySubmit = async (after: () => void) => {
-    const { account, rawTransaction, byteCode } = state;
+    const {
+      account,
+      byteCode,
+      nonce,
+      gasLimit,
+      gasPrice,
+      maxFeePerGas,
+      maxPriorityFeePerGas
+    } = state;
 
     if (!byteCode || !isHexString(byteCode)) {
       throw new Error(translateRaw('DEPLOY_ERROR_INVALID_DATA'));
@@ -62,20 +77,27 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     }
 
     const { network } = account;
-    const { gasPrice, gasLimit, nonce } = rawTransaction;
-    const transaction: any = Object.assign(constructGasCallProps(byteCode, account), {
-      gasPrice,
-      chainId: network.chainId,
-      nonce
-    });
+    const { gasLimit: unusedGasLimit, to, ...transaction } = makeTxFromForm(
+      {
+        gasPrice,
+        gasLimit,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        nonce,
+        account,
+        address: '',
+        network
+      },
+      '0',
+      byteCode as ITxData
+    );
 
     // check if transaction fails everytime
     await getGasEstimate(network, transaction);
-    transaction.gasLimit = inputGasLimitToHex(gasLimit);
-    transaction.nonce = inputNonceToHex(nonce);
-    delete transaction.from;
 
-    const txConfig = makeDeployContractTxConfig(transaction, account, '0');
+    const tx = { ...transaction, gasLimit: inputGasLimitToHex(gasLimit) };
+
+    const txConfig = makeBasicTxConfig(tx, account, '0');
 
     setState((prevState: DeployContractsState) => ({
       ...prevState,
@@ -86,7 +108,7 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     after();
   };
 
-  const handleAccountSelected = (account: StoreAccount | undefined) => {
+  const handleAccountSelected = (account?: StoreAccount) => {
     setState((prevState: DeployContractsState) => ({
       ...prevState,
       account
@@ -100,14 +122,14 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
 
     if (isWeb3Wallet(account.wallet)) {
       const baseTxReceipt =
-        signResponse && signResponse.hash ? signResponse : { ...txConfig, hash: signResponse };
+        signResponse && signResponse.hash
+          ? signResponse
+          : toTxReceipt(signResponse, ITxStatus.PENDING)(ITxType.DEPLOY_CONTRACT, txConfig);
       const txReceipt = {
         ...baseTxReceipt,
         to: state.txConfig.receiverAddress,
         from: state.txConfig.senderAccount.address,
-        amount: state.txConfig.amount,
-        txType: ITxType.DEPLOY_CONTRACT,
-        status: ITxStatus.PENDING
+        amount: state.txConfig.amount
       };
       addTxToAccount(state.txConfig.senderAccount, txReceipt);
       setState((prevState: DeployContractsState) => ({
@@ -134,10 +156,25 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     }
   };
 
-  const handleGasSelectorChange = (payload: any) => {
+  const handleGasSelectorChange = (
+    payload: Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>
+  ) => {
     setState((prevState: DeployContractsState) => ({
       ...prevState,
-      rawTransaction: { ...prevState.rawTransaction, ...payload }
+      ...payload
+    }));
+  };
+  const handleGasLimitChange = (gasLimit: string) => {
+    setState((prevState: DeployContractsState) => ({
+      ...prevState,
+      gasLimit
+    }));
+  };
+
+  const handleNonceChange = (nonce: string) => {
+    setState((prevState: DeployContractsState) => ({
+      ...prevState,
+      nonce
     }));
   };
 
@@ -148,6 +185,8 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
     handleAccountSelected,
     handleTxSigned,
     handleGasSelectorChange,
+    handleNonceChange,
+    handleGasLimitChange,
     deployContractsState: state
   };
 };

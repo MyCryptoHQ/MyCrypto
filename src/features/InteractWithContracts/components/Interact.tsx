@@ -19,7 +19,7 @@ import {
   Contract,
   ExtendedContract,
   IReceiverAddress,
-  ITxConfig,
+  ISimpleTxForm,
   Network,
   StoreAccount,
   TAddress
@@ -124,7 +124,11 @@ interface Props {
   showGeneratedForm: boolean;
   account: StoreAccount;
   customContractName: string;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -138,8 +142,12 @@ interface Props {
   handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleDeleteContract(contractUuid: string): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 const FormSchema = object().shape({
@@ -175,9 +183,15 @@ function Interact(props: CombinedProps) {
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
     handleSaveContractSubmit,
-    rawTransaction,
+    nonce,
+    gasLimit,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     handleGasSelectorChange,
-    handleDeleteContract
+    handleDeleteContract,
+    handleGasLimitChange,
+    handleNonceChange
   } = props;
 
   const [error, setError] = useState<string | undefined>(undefined);
@@ -408,10 +422,16 @@ function Interact(props: CombinedProps) {
                 handleAccountSelected={handleAccountSelected}
                 handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
                 network={network}
-                rawTransaction={rawTransaction}
                 handleGasSelectorChange={handleGasSelectorChange}
                 contractAddress={contractAddress}
                 interactionDataFromURL={interactionDataFromURL}
+                nonce={nonce}
+                gasLimit={gasLimit}
+                gasPrice={gasPrice}
+                maxFeePerGas={maxFeePerGas}
+                maxPriorityFeePerGas={maxPriorityFeePerGas}
+                handleNonceChange={handleNonceChange}
+                handleGasLimitChange={handleGasLimitChange}
               />
             )}
           </>

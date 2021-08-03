@@ -1,4 +1,4 @@
-import { Contract, ITxConfig, ITxReceipt, Network, StoreAccount } from '@types';
+import { Contract, ISimpleTxForm, ITxConfig, ITxReceipt, Network, StoreAccount } from '@types';
 
 export enum ABIItemType {
   FUNCTION = 'function',
@@ -42,7 +42,7 @@ export interface ABIItem {
   outputs: ABIField[];
 }
 
-export interface InteractWithContractState {
+export interface InteractWithContractState extends Omit<ISimpleTxForm, 'account'> {
   network: Network;
   contractAddress: string;
   contract: Contract | undefined;
@@ -52,9 +52,8 @@ export interface InteractWithContractState {
   showGeneratedForm: boolean;
   submitedFunction: ABIItem;
   data: string;
-  account: StoreAccount | undefined;
-  rawTransaction: ITxConfig;
   txConfig: ITxConfig;
   txReceipt: ITxReceipt | undefined;
   addressOrDomainInput: string;
+  account?: StoreAccount;
 }

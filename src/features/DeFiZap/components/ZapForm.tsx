@@ -109,7 +109,9 @@ export const ZapFormUI = ({
     gasPrice: '10',
     address: '',
     gasLimit: '',
-    network
+    network,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   };
 
   const ZapFormSchema = object().shape({

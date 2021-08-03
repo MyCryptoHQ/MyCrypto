@@ -20,7 +20,7 @@ import {
 } from '@components';
 import { ETHUUID } from '@config';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
-import { fetchGasPriceEstimates } from '@services/ApiService';
+import { fetchUniversalGasPriceEstimate } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { useAssets, useNetworks } from '@services/Store';
 import { isEthereumAccount } from '@services/Store/Account/helpers';
@@ -119,7 +119,9 @@ export const TokenMigrationFormUI = ({
     gasPrice: '20',
     address: '',
     gasLimit: '',
-    network
+    network,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   });
 
   const convertedAsset = {
@@ -177,6 +179,16 @@ export const TokenMigrationFormUI = ({
 
   const isFormValid = checkFormValid(errors);
 
+  const handleSubmit = () => {
+    if (isFormValid) {
+      fetchUniversalGasPriceEstimate(values.network, values.account)
+        .then((gas) => {
+          onComplete({ ...values, ...gas });
+        })
+        .catch(console.error);
+    }
+  };
+
   return (
     <>
       {isDemoMode && <DemoGatewayBanner />}
@@ -216,13 +228,7 @@ export const TokenMigrationFormUI = ({
       <FormFieldSubmitButton
         type="submit"
         loading={isSubmitting}
-        onClick={() => {
-          if (isFormValid) {
-            fetchGasPriceEstimates(values.network).then(({ fast }) => {
-              onComplete({ ...values, gasPrice: fast.toString() });
-            });
-          }
-        }}
+        onClick={handleSubmit}
         disabled={!isFormValid || isDemoMode}
       >
         {tokenMigrationConfig.formActionBtn}

@@ -10,7 +10,16 @@ import {
 } from 'test-utils';
 
 import { fAccount, fAccounts, fAssets, fNetwork, fNetworks, fSettings } from '@fixtures';
-import { ITxData, ITxHash, ITxObject, ITxStatus, ITxToAddress, ITxType, ITxValue } from '@types';
+import {
+  ITxData,
+  ITxHash,
+  ITxNonce,
+  ITxObject,
+  ITxStatus,
+  ITxToAddress,
+  ITxType,
+  ITxValue
+} from '@types';
 import { isEmpty } from '@vendor';
 
 import { useTxMulti } from './useTxMulti';
@@ -32,7 +41,7 @@ jest.mock('@vendor', () => ({
           value: '0x00',
           gasLimit: '0x7d3c',
           gasPrice: '0x012a05f200',
-          nonce: '0x',
+          nonce: '0x13',
           to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
           from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
           data: '0x'
@@ -44,7 +53,7 @@ jest.mock('@vendor', () => ({
           value: '0x00',
           gasLimit: '0x7d3c',
           gasPrice: '0x012a05f200',
-          nonce: '0x',
+          nonce: '0x13',
           to: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
           from: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
           data: '0x'
@@ -161,6 +170,7 @@ describe('useTxMulti', () => {
       to: 'address' as ITxToAddress,
       value: '0x00' as ITxValue,
       data: '0x' as ITxData,
+      nonce: '0x13' as ITxNonce,
       chainId: 3
     };
 
@@ -168,8 +178,8 @@ describe('useTxMulti', () => {
       await r.current.initWith(
         () =>
           Promise.resolve([
-            { ...rawTx, value: '0x1' as ITxValue, type: ITxType.APPROVAL },
-            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
+            { ...rawTx, value: '0x1' as ITxValue, txType: ITxType.APPROVAL },
+            { ...rawTx, value: '0x2' as ITxValue, txType: ITxType.PURCHASE_MEMBERSHIP }
           ]),
         fAccount,
         fNetwork
@@ -239,9 +249,9 @@ describe('useTxMulti', () => {
               ...rawTx,
               value: '0x1' as ITxValue,
               data: '0x095ea7b30000000000000000000000006ca105d2af7095b1bceeb6a2113d168dddcd57cf000000000000000000000000000000000000000000000000016345785d8a0000' as ITxData,
-              type: ITxType.APPROVAL
+              txType: ITxType.APPROVAL
             },
-            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
+            { ...rawTx, value: '0x2' as ITxValue, txType: ITxType.PURCHASE_MEMBERSHIP }
           ]),
         fAccount,
         fNetwork
@@ -254,7 +264,7 @@ describe('useTxMulti', () => {
           txRaw: expect.objectContaining({
             value: '0x2'
           }),
-          type: ITxType.PURCHASE_MEMBERSHIP
+          txType: ITxType.PURCHASE_MEMBERSHIP
         })
       )
     );
@@ -281,9 +291,9 @@ describe('useTxMulti', () => {
               ...rawTx,
               value: '0x1' as ITxValue,
               data: '0x095ea7b30000000000000000000000006ca105d2af7095b1bceeb6a2113d168dddcd57cf0000000000000000000000000000000000000000000000008ac7230489e80000' as ITxData,
-              type: ITxType.APPROVAL
+              txType: ITxType.APPROVAL
             },
-            { ...rawTx, value: '0x2' as ITxValue, type: ITxType.PURCHASE_MEMBERSHIP }
+            { ...rawTx, value: '0x2' as ITxValue, txType: ITxType.PURCHASE_MEMBERSHIP }
           ]),
         fAccount,
         fNetwork
@@ -296,7 +306,7 @@ describe('useTxMulti', () => {
           txRaw: expect.objectContaining({
             value: '0x1'
           }),
-          type: ITxType.APPROVAL
+          txType: ITxType.APPROVAL
         })
       )
     );

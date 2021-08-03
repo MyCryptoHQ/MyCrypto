@@ -127,9 +127,5 @@
     "decimal": 18
   },
   "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
-  "gasPrice": "4000000000",
-  "gasLimit": "21000",
-  "nonce": "50",
-  "data": "0x",
-  "value": "100000000000000"
+  "networkId": "Ropsten"
 }

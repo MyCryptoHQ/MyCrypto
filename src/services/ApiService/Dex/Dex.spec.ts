@@ -15,7 +15,7 @@ describe('SwapFlow', () => {
     it('returns the expected two transactions for a multi tx swap', async () => {
       const promise = DexService.instance.getOrderDetailsFrom(
         fNetwork,
-        fAccount.address,
+        fAccount,
         fRopDAI,
         fAssets[0],
         '1'
@@ -31,8 +31,10 @@ describe('SwapFlow', () => {
         from: fAccount.address,
         gasPrice: '0x23db1d8400',
         to: '0x6b175474e89094c44da98b954eedeac495271d0f',
-        type: 'APPROVAL',
-        value: '0x0'
+        txType: 'APPROVAL',
+        value: '0x0',
+        maxFeePerGas: undefined,
+        maxPriorityFeePerGas: undefined
       });
       expect(result.tradeTx).toStrictEqual({
         chainId: fNetwork.chainId,
@@ -40,7 +42,7 @@ describe('SwapFlow', () => {
           '0xd9627aa400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000002429108b8f331000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000006b175474e89094c44da98b954eedeac495271d0f000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee869584cd0000000000000000000000001000000000000000000000000000000000000011000000000000000000000000000000000000000000000096596a1ef6601a8b3a',
         gasPrice: '0x23db1d8400',
         to: '0xdef1c0ded9bec7f1a1670819833240f027b25eff',
-        type: 'SWAP',
+        txType: 'SWAP',
         value: '0x0',
         metadata: { receivingAsset: ETHUUID }
       });
@@ -64,7 +66,7 @@ describe('SwapFlow', () => {
         value: '0xc350' as ITxValue,
         gasPrice: '0x23db1d8400' as ITxGasPrice,
         chainId: 1,
-        type: ITxType.SWAP,
+        txType: ITxType.SWAP,
         metadata: { receivingAsset: ETHUUID }
       });
     });

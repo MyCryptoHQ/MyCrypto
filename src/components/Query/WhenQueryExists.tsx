@@ -1,7 +1,8 @@
-import { MANDATORY_TRANSACTION_QUERY_PARAMS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
-import { TxQueryTypes } from '@types';
+import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
+import { IQueryResults, TxQueryTypes } from '@types';
+import { isQueryValid } from '@utils';
 
-import { IQueryResults, Query } from './Query';
+import { Query } from './Query';
 
 interface Props {
   displayQueryMessage(id?: string): JSX.Element | null;
@@ -13,10 +14,8 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // stepper will slice out the first step UNLESS they don't have an associated network or account with the specified details
   // Therefore, we only display errors / messages.
   const deriveSendFormQueryWarning = (queries: IQueryResults) => {
-    const queriesArePresent = Object.values(queries).some((v) => !!v);
-    const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every((param) => queries[param]);
-    if (!queriesArePresent) return null;
-    if (txQueriesArePresent) {
+    if (!Object.values(queries).some((v) => !!v)) return null;
+    if (isQueryValid(queries)) {
       return displayQueryMessage('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
     }
     if (queries.type && [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(queries.type)) {

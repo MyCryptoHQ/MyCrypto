@@ -26,7 +26,7 @@ export default function ConfirmTokenMigration({
       onComplete={complete}
       resetFlow={complete}
       txConfig={txConfig}
-      txType={currentTx.type || ITxType.STANDARD}
+      txType={currentTx.txType || ITxType.STANDARD}
     />
   );
 }

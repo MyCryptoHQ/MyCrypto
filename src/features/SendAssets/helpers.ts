@@ -1,15 +1,14 @@
 import { bufferToHex } from 'ethereumjs-util';
 
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
-import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type } from '@helpers';
+import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
+import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type, isEIP1559Supported } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
   Asset,
+  DistributiveOmit,
   ExtendedAsset,
   IFormikFields,
-  IHexStrTransaction,
-  IHexStrWeb3Transaction,
   ITxConfig,
   ITxData,
   ITxObject,
@@ -27,39 +26,49 @@ import {
   fromTokenBase,
   generateAssetUUID,
   handleValues,
-  hexNonceToViewable,
-  hexToString,
   inputGasLimitToHex,
   inputGasPriceToHex,
   inputNonceToHex,
   inputValueToHex,
+  isQueryValid,
   isSameAddress,
   TokenValue,
   toWei
 } from '@utils';
 import { isEmpty } from '@vendor';
 
-import { TTxQueryParam, TxParam } from './preFillTx';
 import { IFullTxParam } from './types';
 
-const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
-  const { network } = formData;
+const createBaseTxObject = (formData: IFormikFields): ITxObject => {
+  const { network, account } = formData;
+  const gas = isEIP1559Supported(network, account)
+    ? {
+        maxFeePerGas: inputGasPriceToHex(formData.maxFeePerGasField),
+        maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),
+        // @todo Perhaps needs to be settable by user?
+        type: 2 as const
+      }
+    : {
+        gasPrice: formData.advancedTransaction
+          ? inputGasPriceToHex(formData.gasPriceField)
+          : inputGasPriceToHex(formData.gasPriceSlider)
+      };
   return {
+    ...gas,
     to: formData.address.value as ITxToAddress,
     value: formData.amount ? inputValueToHex(formData.amount) : ('0x0' as ITxValue),
     data: formData.txDataField ? (formData.txDataField as ITxData) : ('0x0' as ITxData),
     gasLimit: inputGasLimitToHex(formData.gasLimitField),
-    gasPrice: formData.advancedTransaction
-      ? inputGasPriceToHex(formData.gasPriceField)
-      : inputGasPriceToHex(formData.gasPriceSlider),
     nonce: inputNonceToHex(formData.nonceField),
     chainId: network.chainId ? network.chainId : 1
   };
 };
 
-const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
-  const { asset, network } = formData;
+const createERC20TxObject = (formData: IFormikFields): ITxObject => {
+  const baseTx = createBaseTxObject(formData);
+  const { asset } = formData;
   return {
+    ...baseTx,
     to: asset.contractAddress! as ITxToAddress,
     value: '0x0' as ITxValue,
     data: bufferToHex(
@@ -67,13 +76,7 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
         Address(formData.address.value),
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue('0')
       )
-    ) as ITxData,
-    gasLimit: inputGasLimitToHex(formData.gasLimitField),
-    gasPrice: formData.advancedTransaction
-      ? inputGasPriceToHex(formData.gasPriceField)
-      : inputGasPriceToHex(formData.gasPriceSlider),
-    nonce: inputNonceToHex(formData.nonceField),
-    chainId: network.chainId ? network.chainId : 1
+    ) as ITxData
   };
 };
 
@@ -81,20 +84,19 @@ export const isERC20Asset = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
   const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
-export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Asset(formData.asset) ? createERC20TxObject : createBaseTxObject;
-  // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
-  // then we add the extra properties required.
-  const { gasLimit, ...tx } = transform(formData);
+export const processFormForEstimateGas = (
+  formData: IFormikFields
+): DistributiveOmit<ITxObject, 'gasLimit'> => {
+  // Omit gasLimit because that is what we are estimating...
+  const { gasLimit, ...tx } = processFormDataToTx(formData);
   return {
     ...tx,
-    from: formData.account.address,
-    gas: inputGasLimitToHex(formData.gasLimitField)
+    from: formData.account.address
   };
 };
 
@@ -104,19 +106,19 @@ export const parseQueryParams = (queryParams: any) => (
   accounts: StoreAccount[]
 ) => {
   if (!queryParams || isEmpty(queryParams)) return;
-  switch (queryParams.type) {
+  switch (queryParams.queryType) {
     case TxQueryTypes.SPEEDUP:
       return {
-        type: TxQueryTypes.SPEEDUP,
+        queryType: TxQueryTypes.SPEEDUP,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     case TxQueryTypes.CANCEL:
       return {
-        type: TxQueryTypes.CANCEL,
+        queryType: TxQueryTypes.CANCEL,
         txConfig: parseTransactionQueryParams(queryParams)(networks, assets, accounts)
       };
     default:
-      return { type: TxQueryTypes.DEFAULT };
+      return { queryType: TxQueryTypes.DEFAULT };
   }
 };
 
@@ -126,12 +128,12 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   accounts: StoreAccount[]
 ): ITxConfig | undefined => {
   // if speedup tx does not contain all the necessary parameters to construct a tx config return undefined
-  const i = MANDATORY_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
-    if (queryParams[cv] === undefined) return { ...acc, invalid: true };
-    acc[cv] = queryParams[cv];
-    return acc;
-  }, {} as Record<TxParam, TTxQueryParam>) as IFullTxParam;
-  if (i.invalid) return;
+  const i = SUPPORTED_TRANSACTION_QUERY_PARAMS.reduce((acc, cv) => {
+    if (queryParams[cv] === undefined) return acc;
+    return { ...acc, [cv]: queryParams[cv] };
+  }, {}) as IFullTxParam;
+
+  if (!isQueryValid(i)) return;
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);
   if (!network) return;
@@ -139,11 +141,19 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const senderAccount = accounts.find(({ address }) => isSameAddress(address, i.from));
   if (!senderAccount) return;
 
+  const gas = i.gasPrice
+    ? { gasPrice: i.gasPrice }
+    : {
+        maxFeePerGas: i.maxFeePerGas!,
+        maxPriorityFeePerGas: i.maxPriorityFeePerGas!,
+        type: (i.type ?? 2) as 2
+      };
+
   const rawTransaction: ITxObject = {
     to: i.to,
     value: i.value,
     gasLimit: i.gasLimit,
-    gasPrice: i.gasPrice,
+    ...gas,
     nonce: i.nonce,
     data: i.data,
     chainId: parseInt(i.chainId, 16)
@@ -167,14 +177,9 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     : baseAsset;
   return {
     from: senderAccount.address,
-    gasPrice: hexToString(i.gasPrice),
-    gasLimit: hexToString(i.gasLimit),
-    nonce: hexNonceToViewable(i.nonce),
-    data: i.data,
     amount: fromTokenBase(handleValues(amount), asset.decimal),
-    value: hexToString(i.value),
     rawTransaction,
-    network,
+    networkId: network.id,
     senderAccount,
     baseAsset,
     asset,

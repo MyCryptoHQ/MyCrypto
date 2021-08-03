@@ -2,15 +2,11 @@ import styled from 'styled-components';
 
 import runningIcon from '@assets/images/icn-running.svg';
 import { LinkApp, Query, Tooltip } from '@components';
-import { IQueryResults } from '@components/Query';
-import {
-  MANDATORY_TRANSACTION_QUERY_PARAMS,
-  ROUTE_PATHS,
-  SUPPORTED_TRANSACTION_QUERY_PARAMS
-} from '@config';
+import { ROUTE_PATHS, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { COLORS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { TxQueryTypes } from '@types';
+import { IQueryResults, TxQueryTypes } from '@types';
+import { isQueryValid } from '@utils';
 
 const BannerContainer = styled.div`
   background: ${COLORS.WARNING_ORANGE};
@@ -58,9 +54,8 @@ const createQueryWarning = ({
 );
 
 const deriveTxQueryBanner = (queries: IQueryResults) => {
-  const txQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every((param) => queries[param]);
-  if (!queries.type || !txQueriesArePresent) return null;
-  switch (queries.type) {
+  if (!queries.queryType || !isQueryValid(queries)) return null;
+  switch (queries.queryType) {
     case TxQueryTypes.SPEEDUP:
       return createQueryWarning({
         contentTranslationKey: 'TX_QUERY_SPEED_UP_BANNER',

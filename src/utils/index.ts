@@ -42,12 +42,7 @@ export { useInterval } from './useInterval';
 export * from './useStateReducer';
 export { filterObjectOfObjects } from './filterObjectOfObjects';
 export { default as ScrollToTop } from './scrollToTop';
-export {
-  getParam,
-  constructCancelTxQuery,
-  constructSpeedUpTxQuery,
-  createQueryParamsDefaultObject
-} from './queries';
+export * from './queries';
 export { noOp } from './noOp';
 export {
   formatMnemonic,
@@ -114,3 +109,4 @@ export { arrayToObj } from './toObject';
 export { mapAsync, filterAsync } from './asyncFilter';
 export { goBack } from './navigation';
 export { addHexPrefix } from './addHexPrefix';
+export * from './typedTx';

@@ -56,6 +56,8 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     handleAccountSelected,
     handleTxSigned,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     deployContractsState
   } = useStateReducer(DeployContractsFactory, {
     ...deployContractsInitialState,
@@ -104,18 +106,15 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     {
       title: translateRaw('DEPLOY_CONTRACTS'),
       component: Deploy,
-      props: (({ networkId, byteCode, rawTransaction }) => ({
-        account,
-        networkId,
-        byteCode,
-        rawTransaction
-      }))(deployContractsState),
+      props: deployContractsState,
       actions: {
         handleByteCodeChanged,
         handleNetworkSelected,
         handleDeploySubmit: () => handleDeploySubmit(goToNextStep),
         handleAccountSelected,
-        handleGasSelectorChange
+        handleGasSelectorChange,
+        handleNonceChange,
+        handleGasLimitChange
       }
     },
     {
@@ -127,10 +126,10 @@ export const DeployContractsFlow = ({ history, location }: RouteComponentProps) 
     {
       title: translateRaw('DEPLOY_SIGN'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(deployContractsState),
       actions: {
         onSuccess: (payload: IPendingTxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)

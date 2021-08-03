@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Identicon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Checkbox, Icon } from '@components';
+import { Checkbox, Icon, Identicon } from '@components';
 import { getLabelByAccount, useContacts } from '@services/Store';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';

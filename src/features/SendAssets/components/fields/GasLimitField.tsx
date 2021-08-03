@@ -1,8 +1,34 @@
-import { InputField } from '@components';
+import { Body, Box, Icon, InputField, LinkApp, Tooltip } from '@components';
+import { COLORS } from '@theme';
 
-export function GasLimitField({ value, name, onChange, disabled, error }: IGasLimitField) {
+export function GasLimitField({
+  value,
+  name,
+  onChange,
+  disabled,
+  error,
+  label,
+  tooltip,
+  refresh
+}: IGasLimitField) {
+  const handleRefreshClicked = () => refresh && refresh();
   return (
-    <div>
+    <Box mb="3">
+      {label && (
+        <Box variant="rowAlign" px="1" pb="1" justifyContent="space-between">
+          <Box variant="rowAlign">
+            <Body mb="0">{label}</Body>
+            <Tooltip ml="1" tooltip={tooltip} />
+          </Box>
+          {refresh && (
+            <Box variant="rowAlign">
+              <LinkApp href="#" isExternal={false} onClick={handleRefreshClicked}>
+                <Icon fill={COLORS.BLUE_BRIGHT} width="14px" height="14px" type="refresh" />
+              </LinkApp>
+            </Box>
+          )}
+        </Box>
+      )}
       <InputField
         {...value}
         name={name}
@@ -15,7 +41,7 @@ export function GasLimitField({ value, name, onChange, disabled, error }: IGasLi
         disabled={disabled}
         inputMode="decimal"
       />
-    </div>
+    </Box>
   );
 }
 
@@ -25,6 +51,9 @@ interface IGasLimitField {
   disabled?: boolean;
   error?: string | JSX.Element | undefined;
   onChange(entry: string): void;
+  label?: string;
+  tooltip?: string;
+  refresh?(): void;
 }
 
 export default GasLimitField;

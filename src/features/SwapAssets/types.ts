@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 
 import {
+  ILegacyTxObject,
   ISwapAsset,
   ITxGasLimit,
   ITxGasPrice,
@@ -53,12 +54,12 @@ export interface SwapFormState {
   gasPrice?: ITxGasPrice;
   approvalGasLimit?: ITxGasLimit;
   tradeGasLimit?: ITxGasLimit;
-  approvalTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId' | 'from'> & {
-    type: ITxType;
+  approvalTx?: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId' | 'from'> & {
+    txType: ITxType;
   };
   expiration?: number;
-  tradeTx?: Pick<ITxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
-    type: ITxType;
+  tradeTx?: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+    txType: ITxType;
     metadata: ITxMetadata;
   };
 }

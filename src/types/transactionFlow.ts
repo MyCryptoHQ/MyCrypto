@@ -16,6 +16,8 @@ import {
   WalletId
 } from '@types';
 
+import { NetworkId } from './networkId';
+
 export type ISignedTx = string;
 
 export type ITxToAddress = TAddress;
@@ -26,32 +28,39 @@ export type ITxGasPrice = Brand<string, 'GasPrice'>; // Hex - wei
 export type ITxData = Brand<string, 'Data'>; // Hex
 export type ITxNonce = Brand<string, 'Nonce'>; // Hex
 
-export interface ITxObject {
-  /* Raw Transaction Object */
-  readonly to: ITxToAddress;
+export interface IBaseTxObject {
+  readonly to?: ITxToAddress;
   readonly value: ITxValue;
   readonly gasLimit: ITxGasLimit;
   readonly data: ITxData;
-  readonly gasPrice: ITxGasPrice;
   readonly nonce: ITxNonce;
   readonly chainId: number;
   readonly from?: ITxFromAddress;
 }
 
+export interface ILegacyTxObject extends IBaseTxObject {
+  readonly gasPrice: ITxGasPrice;
+  readonly type?: 0;
+}
+
+// @todo Rename?
+export interface ITxType2Object extends IBaseTxObject {
+  readonly maxFeePerGas: ITxGasPrice;
+  readonly maxPriorityFeePerGas: ITxGasPrice;
+  readonly type: 2;
+}
+
+export type ITxObject = ILegacyTxObject | ITxType2Object;
+
 export interface ITxConfig {
   readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
   readonly amount: string;
-  readonly receiverAddress: TAddress; // Recipient of the send. NOT the tx's `to` address
+  readonly receiverAddress?: TAddress; // Recipient of the send. NOT always the tx's `to` address
   readonly senderAccount: StoreAccount;
   readonly from: TAddress;
   readonly asset: Asset;
   readonly baseAsset: Asset;
-  readonly network: INetwork;
-  readonly gasPrice: string;
-  readonly gasLimit: string;
-  readonly nonce: string;
-  readonly data: string;
-  readonly value: string;
+  readonly networkId: NetworkId;
 }
 
 export interface IFormikFields {
@@ -68,6 +77,8 @@ export interface IFormikFields {
   network: INetwork;
   advancedTransaction: boolean;
   isAutoGasSet: boolean;
+  maxFeePerGasField: string;
+  maxPriorityFeePerGasField: string;
 }
 
 export interface ISignComponentProps {
@@ -157,6 +168,8 @@ export interface ISimpleTxForm {
   amount: string; // in ether - ex: 1
   gasLimit: string | number; // number - ex: 1,500,000
   gasPrice: string; // gwei
+  maxFeePerGas: string; // gwei
+  maxPriorityFeePerGas: string; // gwei
   nonce: string; // number - ex: 55
   account: StoreAccount;
 }

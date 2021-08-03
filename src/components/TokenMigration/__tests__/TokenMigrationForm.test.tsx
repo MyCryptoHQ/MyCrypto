@@ -27,7 +27,9 @@ const defaultProps: TokenMigrationProps = {
   nonce: '',
   account: fAccount,
   onComplete: jest.fn(),
-  handleUserInputFormSubmit: jest.fn()
+  handleUserInputFormSubmit: jest.fn(),
+  maxFeePerGas: '20',
+  maxPriorityFeePerGas: '1'
 };
 
 function getComponent(props: TokenMigrationProps) {

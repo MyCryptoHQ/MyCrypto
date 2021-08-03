@@ -16,6 +16,7 @@ import {
   fNetworks,
   fSettings,
   fTransaction,
+  fTransactionEIP1559,
   fTxHistoryAPI,
   fTxReceipt
 } from '@fixtures';
@@ -24,10 +25,12 @@ import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@service
 import { translateRaw } from '@translations';
 import {
   IAccount,
+  ILegacyTxObject,
   ISettings,
   ITxReceipt,
   ITxStatus,
   ITxType,
+  ITxType2Object,
   NetworkId,
   TUuid,
   WalletId
@@ -183,9 +186,45 @@ describe('AccountSlice', () => {
           {
             ...fTransaction,
             gasLimit: BigNumber.from(fTransaction.gasLimit),
-            gasPrice: BigNumber.from(fTransaction.gasPrice),
+            gasPrice: BigNumber.from((fTransaction as ILegacyTxObject).gasPrice),
             gasUsed: BigNumber.from(fTransaction.gasLimit),
+            nonce: BigNumber.from(fTransaction.nonce),
             value: BigNumber.from(fTransaction.value)
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('getAccounts(): supports EIP 1559 transaactions', () => {
+    const state = mockAppState({
+      accounts: [
+        {
+          ...fAccount,
+          transactions: [
+            ({
+              ...fTransactionEIP1559,
+              gasUsed: fTransactionEIP1559.gasLimit
+            } as unknown) as ITxReceipt
+          ]
+        }
+      ]
+    });
+    const actual = getAccounts(state);
+    expect(actual).toEqual([
+      {
+        ...fAccount,
+        transactions: [
+          {
+            ...fTransactionEIP1559,
+            gasLimit: BigNumber.from(fTransactionEIP1559.gasLimit),
+            maxFeePerGas: BigNumber.from((fTransactionEIP1559 as ITxType2Object).maxFeePerGas),
+            maxPriorityFeePerGas: BigNumber.from(
+              (fTransactionEIP1559 as ITxType2Object).maxPriorityFeePerGas
+            ),
+            gasUsed: BigNumber.from(fTransactionEIP1559.gasLimit),
+            nonce: BigNumber.from(fTransactionEIP1559.nonce),
+            value: BigNumber.from(fTransactionEIP1559.value)
           }
         ]
       }
@@ -250,10 +289,10 @@ describe('AccountSlice', () => {
       {
         chainId: 3,
         data: '0x',
-        gasLimit: { _hex: '0x5208', _isBigNumber: true },
-        gasPrice: { _hex: '0xee6b2800', _isBigNumber: true },
-        gasUsed: { _hex: '0x5208', _isBigNumber: true },
-        nonce: '0x9',
+        gasLimit: BigNumber.from('0x5208'),
+        gasPrice: BigNumber.from('0xee6b2800'),
+        gasUsed: BigNumber.from('0x5208'),
+        nonce: BigNumber.from('0x9'),
         status: undefined,
         to: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
         value: { _hex: '0x038d7ea4c68000', _isBigNumber: true }
@@ -285,7 +324,7 @@ describe('AccountSlice', () => {
           fromAddressBookEntry: undefined,
           toAddressBookEntry: undefined,
           receiverAddress: fTxHistoryAPI.recipientAddress,
-          nonce: BigNumber.from(fTxHistoryAPI.nonce).toString(),
+          nonce: BigNumber.from(fTxHistoryAPI.nonce),
           networkId: DEFAULT_NETWORK,
           blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
           gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
@@ -311,6 +350,7 @@ describe('AccountSlice', () => {
           ...fTxReceipt,
           gasLimit: BigNumber.from(fTxReceipt.gasLimit),
           gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+          nonce: BigNumber.from(fTxReceipt.nonce),
           value: BigNumber.from(fTxReceipt.value),
           networkId: fNetwork.id,
           timestamp: 0,
@@ -346,6 +386,7 @@ describe('AccountSlice', () => {
           ...fTxReceipt,
           gasLimit: BigNumber.from(fTxReceipt.gasLimit),
           gasPrice: BigNumber.from(fTxReceipt.gasPrice),
+          nonce: BigNumber.from(fTxReceipt.nonce),
           value: BigNumber.from(fTxReceipt.value),
           hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
           networkId: fNetwork.id,
@@ -682,6 +723,7 @@ describe('AccountSlice', () => {
       gasPrice: BigNumber.from(fTxReceipt.gasPrice),
       gasUsed: BigNumber.from(fTxReceipt.gasLimit),
       value: BigNumber.from(fTxReceipt.value),
+      nonce: BigNumber.from(fTxReceipt.nonce),
       asset: fAssets[0],
       baseAsset: fAssets[0]
     };

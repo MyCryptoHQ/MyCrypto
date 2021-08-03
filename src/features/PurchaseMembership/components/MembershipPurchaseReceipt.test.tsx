@@ -16,7 +16,7 @@ const defaultProps: ComponentProps<typeof MembershipReceipt> = {
     {
       ...fTxParcels[0],
       txRaw: { ...fTxParcels[0].txRaw, to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress },
-      type: ITxType.PURCHASE_MEMBERSHIP
+      txType: ITxType.PURCHASE_MEMBERSHIP
     }
   ],
   flowConfig: MEMBERSHIP_CONFIG[IMembershipId.lifetime],

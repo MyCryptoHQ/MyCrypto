@@ -551,7 +551,7 @@
     "SEND_ASSETS_SEND_ANOTHER": "Send Another Transaction",
     "SEND_RAW": "Raw Transaction ",
     "SEND_SIGNED": "Signed Transaction ",
-    "SEND_TRANS": "Send Transaction ",
+    "SEND_TRANS": "Send Transaction",
     "SEND_LINK": "Send",
     "SETTINGS": "Settings",
     "SETTINGS_ACCOUNTS_TOOLTIP": "Your accounts will show up here even if you leave and come back, thanks to your browser’s local storage! MyCrypto never logs, tracks, or stores any of your account information, and your address is only ever transmitted when you submit a transaction to the blockchain.",
@@ -977,6 +977,20 @@
     "NO_NON_VIEW_ONLY_ACCOUNTS": "You currently only have $link_support addresses added to MyCrypto, which you cannot send from. Please $link_add_account.",
     "HERE": "here",
     "ADD_AN_ACCOUNT": "add an account",
-    "VIEW_ONLY_ADDRESSES": "View-Only addresses"
+    "VIEW_ONLY_ADDRESSES": "View-Only addresses",
+    "TX_TYPE": "Transaction Type",
+    "MAX_FEE_PER_GAS": "Max Fee",
+    "MAX_PRIORITY_FEE": "Max Priority Fee",
+    "FEE_RANGE_ESTIMATE": "Fee Range",
+    "CUSTOMIZED_TOTAL_FEE": "Estimated Total Fee",
+    "CURRENT_BASE_FEE": "Current Base Fee: $fee Gwei",
+    "SAVE_EDITS": "Save Edits",
+    "PRIORITY_FEE_MAX_ERROR": "Priority Fee must be smaller than or equal to Max Fee",
+    "GWEI": "Gwei",
+    "LEARN_WHATS_NEW_WITH_EIP1559": "Learn what’s new with EIP-1559",
+    "MAX_FEE_TOOLTIP": "This is the highest total gas price that you're willing to pay for your transaction.",
+    "GAS_LIMIT_TOOLTIP_2": "This is the amount of units of gas required to compute your transaction. ",
+    "BASE_FEE_TOOLTIP": "This is the minimum gas price required for your transaction to be included in the next block.",
+    "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction."
   }
 }

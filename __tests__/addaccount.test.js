@@ -13,7 +13,7 @@ import { findByTKey } from './translation-utils';
 const addAccountPage = new AddAccountPage();
 const dashboardPage = new DashboardPage();
 
-fixture('Add Accounts').page(PAGES.DASHBOARD);
+fixture('Add Accounts').page(PAGES.ADD_ACCOUNT);
 
 test('Should show wallet add UI', async (t) => {
   await addAccountPage.navigateToPage();

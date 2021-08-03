@@ -39,7 +39,8 @@ const defaultProps = {
   fiat: Fiats.USD,
   resetFlow: noOp,
   handleTxCancelRedirect: noOp,
-  handleTxSpeedUpRedirect: noOp
+  handleTxSpeedUpRedirect: noOp,
+  network: fAccount.network
 };
 
 export default { title: 'Features/TxReceipt', components: TxReceiptUIComponent };

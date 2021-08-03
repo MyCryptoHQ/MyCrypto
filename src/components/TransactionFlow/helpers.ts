@@ -8,19 +8,21 @@ import { WALLET_STEPS } from '@components';
 import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
 import { CONTRACT_INTERACTION_TYPES } from '@config';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
+import { fetchUniversalGasPriceEstimate } from '@services/ApiService/Gas';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {
-  Bigish,
   IFlowConfig,
   ISimpleTxFormFull,
   ITxConfig,
   ITxMultiConfirmProps,
   ITxObject,
   ITxType,
+  Network,
   StoreAccount,
   TxParcel
 } from '@types';
 import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
+import { isType2Tx } from '@utils/typedTx';
 
 import { ISender } from './types';
 
@@ -111,11 +113,11 @@ export const constructSenderFromTxConfig = (
   txConfig: ITxConfig,
   accounts: StoreAccount[]
 ): ISender => {
-  const { network, senderAccount, from } = txConfig;
+  const { senderAccount, from, networkId } = txConfig;
   const defaultSender: ISender = {
     address: from,
     assets: [],
-    network
+    networkId
   };
 
   const sender: ISender = mergeDeepWith(
@@ -127,7 +129,7 @@ export const constructSenderFromTxConfig = (
   );
 
   // if account exists in store add it to sender
-  const account = getStoreAccount(accounts)(sender.address, sender.network.id);
+  const account = getStoreAccount(accounts)(sender.address, networkId);
   if (account) {
     sender.account = account;
     sender.accountBalance = getAccountBalance(senderAccount);
@@ -137,11 +139,31 @@ export const constructSenderFromTxConfig = (
 };
 
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
-export const calculateReplacementGasPrice = (txConfig: ITxConfig, fastGasPrice: Bigish) =>
-  BigNumber.max(
-    fastGasPrice,
-    bigify(bigNumGasPriceToViewableGwei(txConfig.gasPrice)).multipliedBy(1.101)
-  );
+export const calculateReplacementGasPrice = async (txConfig: ITxConfig, network: Network) => {
+  const gas = await fetchUniversalGasPriceEstimate(network, txConfig.senderAccount);
+
+  return isType2Tx(txConfig.rawTransaction)
+    ? {
+        maxFeePerGas: BigNumber.max(
+          bigify(gas.maxFeePerGas!),
+          bigify(bigNumGasPriceToViewableGwei(txConfig.rawTransaction.maxFeePerGas)).multipliedBy(
+            1.101
+          )
+        ).toString(10),
+        maxPriorityFeePerGas: BigNumber.max(
+          bigify(gas.maxPriorityFeePerGas!),
+          bigify(
+            bigNumGasPriceToViewableGwei(txConfig.rawTransaction.maxPriorityFeePerGas)
+          ).multipliedBy(1.101)
+        ).toString(10)
+      }
+    : {
+        gasPrice: BigNumber.max(
+          bigify(gas.gasPrice!),
+          bigify(bigNumGasPriceToViewableGwei(txConfig.rawTransaction.gasPrice)).multipliedBy(1.101)
+        ).toString(10)
+      };
+};
 
 export const isContractInteraction = (data: string, type?: ITxType) => {
   if (type) {

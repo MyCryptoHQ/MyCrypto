@@ -1,4 +1,3 @@
-import { Identicon } from '@mycrypto/ui';
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled, { css } from 'styled-components';
 
@@ -15,6 +14,7 @@ import {
   Typography
 } from '@components';
 import { Downloader } from '@components/Downloader';
+import { Identicon } from '@components/Identicon';
 import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
