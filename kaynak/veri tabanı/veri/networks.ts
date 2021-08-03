@@ -33,7 +33,7 @@ import {
   MAINNET_RSK,
   TESTNET_ETH,
   TESTNET_RSK
-} from '@mycrypto/wallets';
+} from '@mycrypto/wallet;0x446e77D66F802a13f9B100177df1d8C112709fed
 
 import {
   DEFAULT_NETWORK,
