@@ -5,7 +5,8 @@ const DISABLED_WALLETS = [
   WalletId.TREZOR,
   WalletId.TREZOR_NEW,
   WalletId.LEDGER_NANO_S,
-  WalletId.LEDGER_NANO_S_NEW
+  WalletId.LEDGER_NANO_S_NEW,
+  WalletId.WALLETCONNECT
 ];
 
 export const isEIP1559Supported = (network: Network, account: StoreAccount) => {
