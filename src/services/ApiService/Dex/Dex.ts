@@ -158,6 +158,7 @@ export default class DexService {
   };
 }
 
+// @todo: Support EIP 1559 gas params when API returns it
 export const formatApproveTx = ({
   account,
   contractAddress,
@@ -194,6 +195,7 @@ export const formatApproveTx = ({
     gasPrice,
     maxFeePerGas: undefined,
     maxPriorityFeePerGas: undefined,
+    type: undefined,
     txType: ITxType.APPROVAL
   };
 };
@@ -215,6 +217,7 @@ export const formatTradeTx = ({
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
     chainId,
     gasPrice,
+    type: undefined,
     txType: ITxType.SWAP,
     metadata: { receivingAsset: buyToken.uuid }
   };
