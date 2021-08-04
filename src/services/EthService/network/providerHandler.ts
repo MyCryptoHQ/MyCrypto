@@ -223,6 +223,7 @@ export class ProviderHandler {
     }
   }
 
+  // @todo Remove this when Geth is updated
   private getMaxGasLimit(transaction: Partial<ITxObject>): Promise<BigNumber | undefined> {
     return this.injectClient(async (client) => {
       if (!transaction.from || !transaction.value || transaction.type !== 2) {
