@@ -16,7 +16,7 @@ import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
 import { Asset, ITxObject, ITxSigned, Network, TAddress, TokenInformation } from '@types';
-import { baseToConvertedUnit } from '@utils';
+import { baseToConvertedUnit, isType2Tx } from '@utils';
 import { FallbackProvider } from '@vendor';
 
 import { EthersJS } from './ethersJsProvider';
@@ -56,9 +56,11 @@ export class ProviderHandler {
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+  public async estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+    const gasLimit = (await this.getMaxGasLimit(transaction)) ?? transaction.gasLimit;
+
     return this.injectClient((client) =>
-      client.estimateGas(transaction).then((data) => data.toString())
+      client.estimateGas({ ...transaction, gasLimit }).then((data) => data.toString())
     );
   }
 
@@ -219,5 +221,34 @@ export class ProviderHandler {
       }
       return clientInjectCb(ProviderHandler.fetchSingleProvider(this.network));
     }
+  }
+
+  private getMaxGasLimit(transaction: Partial<ITxObject>): Promise<BigNumber | undefined> {
+    return this.injectClient(async (client) => {
+      if (!transaction.from || !transaction.value) {
+        return;
+      }
+
+      const rawGasPrice = isType2Tx(transaction) ? transaction.maxFeePerGas : transaction.gasPrice;
+
+      if (!rawGasPrice) {
+        return;
+      }
+
+      const [block, balance] = await Promise.all([
+        client.getBlock('latest'),
+        await client.getBalance(transaction.from)
+      ]);
+
+      const gasPrice = BigNumber.from(rawGasPrice);
+      const value = BigNumber.from(transaction.value);
+
+      const maxGasLimit = balance.sub(value).div(gasPrice);
+      if (maxGasLimit.gt(block.gasLimit)) {
+        return block.gasLimit;
+      }
+
+      return maxGasLimit;
+    });
   }
 }

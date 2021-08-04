@@ -7,11 +7,11 @@ import {
   ITxType2Receipt
 } from '@types';
 
-export const isTypedTx = (tx: ITxObject): tx is ITxType2Object => {
+export const isTypedTx = (tx: Partial<ITxObject>): tx is Partial<ITxType2Object> => {
   return 'type' in tx && tx.type !== null && tx.type !== undefined && tx.type !== 0;
 };
 
-export const isType2Tx = (tx: ITxObject): tx is ITxType2Object => {
+export const isType2Tx = (tx: Partial<ITxObject>): tx is Partial<ITxType2Object> => {
   return isTypedTx(tx) && tx.type === 2;
 };
 
