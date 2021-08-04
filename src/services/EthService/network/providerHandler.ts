@@ -56,9 +56,11 @@ export class ProviderHandler {
   }
 
   /* Tested*/
-  public estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+  public async estimateGas(transaction: Partial<ITxObject>): Promise<string> {
+    const gasLimit = (await this.getMaxGasLimit(transaction)) ?? transaction.gasLimit;
+
     return this.injectClient((client) =>
-      client.estimateGas(transaction).then((data) => data.toString())
+      client.estimateGas({ ...transaction, gasLimit }).then((data) => data.toString())
     );
   }
 
@@ -219,5 +221,33 @@ export class ProviderHandler {
       }
       return clientInjectCb(ProviderHandler.fetchSingleProvider(this.network));
     }
+  }
+
+  // @todo Remove this when Geth is updated
+  private getMaxGasLimit(transaction: Partial<ITxObject>): Promise<BigNumber | undefined> {
+    return this.injectClient(async (client) => {
+      if (!transaction.from || !transaction.value || transaction.type !== 2) {
+        return;
+      }
+
+      try {
+        const [block, balance] = await Promise.all([
+          client.getBlock('latest'),
+          await client.getBalance(transaction.from)
+        ]);
+
+        const gasPrice = BigNumber.from(transaction.maxFeePerGas);
+        const value = BigNumber.from(transaction.value);
+
+        const maxGasLimit = balance.sub(value).div(gasPrice);
+        if (maxGasLimit.gt(block.gasLimit)) {
+          return block.gasLimit;
+        }
+
+        return maxGasLimit;
+      } catch {
+        return;
+      }
+    });
   }
 }

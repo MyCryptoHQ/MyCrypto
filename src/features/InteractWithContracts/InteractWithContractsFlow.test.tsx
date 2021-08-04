@@ -13,8 +13,10 @@ jest.mock('@vendor', () => {
       estimateGas: jest.fn().mockResolvedValue(21000),
       getTransactionCount: jest.fn().mockResolvedValue(10),
       getBlock: jest.fn().mockResolvedValue({
-        baseFeePerGas: '10000000000'
-      })
+        baseFeePerGas: '10000000000',
+        gasLimit: '15000000'
+      }),
+      getBalance: jest.fn().mockResolvedValue('10000000000')
     }))
   };
 });
