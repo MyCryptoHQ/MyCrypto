@@ -41,9 +41,10 @@ export const ethereumMock = () => {
       case 'net_version':
         return chainId.toString();
       case 'eth_sendTransaction': {
-        const { gas, from, ...rest } = params[0];
+        const { gas, from, type, ...rest } = params[0];
         const result = await wallet.sendTransaction({
           ...rest,
+          type: type !== undefined ? parseInt(type, 16) : undefined,
           chainId
         });
         return result.hash;
