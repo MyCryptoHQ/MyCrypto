@@ -368,7 +368,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     address: object()
       .required(translateRaw('REQUIRED'))
       .test('valid', translateRaw('TO_FIELD_ERROR'), function (value) {
-        return isValidETHAddress(value.value);
+        return value && value.value && isValidETHAddress(value.value);
       })
       // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
