@@ -34,7 +34,8 @@ describe('SwapFlow', () => {
         txType: 'APPROVAL',
         value: '0x0',
         maxFeePerGas: undefined,
-        maxPriorityFeePerGas: undefined
+        maxPriorityFeePerGas: undefined,
+        type: undefined
       });
       expect(result.tradeTx).toStrictEqual({
         chainId: fNetwork.chainId,
@@ -44,6 +45,7 @@ describe('SwapFlow', () => {
         to: '0xdef1c0ded9bec7f1a1670819833240f027b25eff',
         txType: 'SWAP',
         value: '0x0',
+        type: undefined,
         metadata: { receivingAsset: ETHUUID }
       });
     });
