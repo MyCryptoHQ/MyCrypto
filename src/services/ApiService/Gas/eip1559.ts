@@ -21,7 +21,7 @@ export const FALLBACK_ESTIMATE = {
 const PRIORITY_FEE_INCREASE_BOUNDARY = 200; // %
 
 const roundToWholeGwei = (wei: BigNumber) => {
-  const gwei = bigify(fromWei(wei, 'gwei'));
+  const gwei = bigify(fromWei(wei.integerValue(), 'gwei'));
   const rounded = gwei.integerValue(BigNumber.ROUND_HALF_UP);
   return bigify(toWei(rounded.toString(10), getDecimalFromEtherUnit('gwei')));
 };

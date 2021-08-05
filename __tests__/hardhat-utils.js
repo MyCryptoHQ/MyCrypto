@@ -43,7 +43,11 @@ export const setupDAI = async () => {
     FIXTURE_WEB3_ADDRESS,
     '100000000000000000000'
   );
-  const sent = await signer.sendTransaction(tx);
+  const sent = await signer.sendTransaction({
+    ...tx,
+    maxFeePerGas: '0xe8990a4600',
+    maxPriorityFeePerGas: '0xe8990a4600'
+  });
 
   await sent.wait();
 

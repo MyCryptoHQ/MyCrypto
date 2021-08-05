@@ -88,6 +88,20 @@ describe('estimateFees', () => {
     });
   });
 
+  it('uses 1.6 multiplier for base if above 40 gwei', async () => {
+    (mockProvider.getLatestBlock as jest.MockedFunction<
+      typeof mockProvider.getLatestBlock
+    >).mockResolvedValueOnce({ ...block, baseFeePerGas: BigNumber.from('0x11766ffa76') });
+    (mockProvider.getFeeHistory as jest.MockedFunction<
+      typeof mockProvider.getFeeHistory
+    >).mockResolvedValueOnce(feeHistory);
+    return expect(estimateFees(mockProvider)).resolves.toStrictEqual({
+      baseFee: bigify('75001494134'),
+      maxFeePerGas: bigify('120000000000'),
+      maxPriorityFeePerGas: bigify('3000000000')
+    });
+  });
+
   it('uses 1.4 multiplier for base if above 100 gwei', async () => {
     (mockProvider.getLatestBlock as jest.MockedFunction<
       typeof mockProvider.getLatestBlock
