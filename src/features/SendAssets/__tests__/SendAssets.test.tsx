@@ -85,7 +85,7 @@ describe('SendAssetsFlow', () => {
     const { getByText } = renderComponent(APP_STATE.networks, route);
 
     await waitFor(() =>
-      expect(getByText(translateRaw('CONFIRM_TX_MODAL_TITLE'))).toBeInTheDocument()
+      expect(getByText(translateRaw('LEDGER_FIRMWARE_NOTICE'))).toBeInTheDocument()
     );
   });
 });
