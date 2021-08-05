@@ -991,6 +991,7 @@
     "MAX_FEE_TOOLTIP": "This is the highest total gas price that you're willing to pay for your transaction.",
     "GAS_LIMIT_TOOLTIP_2": "This is the amount of units of gas required to compute your transaction. ",
     "BASE_FEE_TOOLTIP": "This is the minimum gas price required for your transaction to be included in the next block.",
-    "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction."
+    "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction.",
+    "EIP_1559_SETTINGS_HEADER": "EIP 1559"
   }
 }
