@@ -9,6 +9,7 @@ import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/S
 import { ITxMetaTypes } from '@store/txHistory.slice';
 import { Asset, IAccount, ITxReceipt, Network } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
+import { isSameHash } from '@utils/isSameAddress';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -53,7 +54,7 @@ export const makeTxReceipt = (
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
-  const filteredApiTxs = apiTxs.filter((tx) => !accountTxs.find((a) => a.hash === tx.hash));
+  const filteredApiTxs = apiTxs.filter((tx) => !accountTxs.find((a) => isSameHash(a.hash, tx.hash)));
   return filteredApiTxs.concat(accountTxs);
 };
 
@@ -73,9 +74,9 @@ export const deriveTxType = (
       tx.txType === ITxHistoryType.STANDARD ||
       tx.txType === ITxHistoryType.UNKNOWN ||
       !Object.values(ITxHistoryType).some((t) => t === tx.txType)) &&
-    !(txTypeMetas[tx.txType] ||
-      !Object.values(ITxHistoryType).some((t) => t === tx.txType));
-
+    !(txTypeMetas[tx.txType] || Object.values(ITxHistoryType).some((t) => t === tx.txType));
+  console.debug('[deriveTxType]: Hash: ', tx.hash, " type: ", tx.txType, " isInvalid: ", isInvalidTxHistoryType, " isContractInteraction: ", isContractInteraction(tx.data))
+  
   if (isInvalidTxHistoryType && isContractInteraction(tx.data)) {
     return ITxHistoryType.CONTRACT_INTERACT;
   } else if (isInvalidTxHistoryType && toAccount && fromAccount) {
