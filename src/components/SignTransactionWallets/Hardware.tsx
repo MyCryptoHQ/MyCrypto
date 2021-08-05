@@ -166,6 +166,11 @@ export const SignTxHardwareUI = ({
         )}
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Body>
+      {wallet === BusyBottomConfig.LEDGER && (
+        <Body textAlign="center" fontWeight="bold">
+          {translateRaw('LEDGER_FIRMWARE_NOTICE')}
+        </Body>
+      )}
       <SFooter>
         <BusyBottom type={wallet} />
       </SFooter>

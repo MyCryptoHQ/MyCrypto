@@ -992,6 +992,7 @@
     "GAS_LIMIT_TOOLTIP_2": "This is the amount of units of gas required to compute your transaction. ",
     "BASE_FEE_TOOLTIP": "This is the minimum gas price required for your transaction to be included in the next block.",
     "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction.",
-    "EIP_1559_SETTINGS_HEADER": "EIP 1559"
+    "EIP_1559_SETTINGS_HEADER": "EIP 1559",
+    "LEDGER_FIRMWARE_NOTICE": "If you cannot connect to your Ledger, make sure your Ledger firmware is up to date in the Ledger Live application."
   }
 }
