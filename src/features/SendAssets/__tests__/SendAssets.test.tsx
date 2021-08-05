@@ -30,7 +30,7 @@ describe('SendAssetsFlow', () => {
     return simpleRender(<SendAssets />, {
       initialRoute: route,
       initialState: mockAppState({
-        accounts: [{ ...fAccounts[0], wallet: WalletId.WEB3 }],
+        accounts: [{ ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S }],
         assets: fAssets,
         networks
       })
@@ -85,7 +85,7 @@ describe('SendAssetsFlow', () => {
     const { getByText } = renderComponent(APP_STATE.networks, route);
 
     await waitFor(() =>
-      expect(getByText(translateRaw('CONFIRM_TX_MODAL_TITLE'))).toBeInTheDocument()
+      expect(getByText(translateRaw('LEDGER_FIRMWARE_NOTICE'))).toBeInTheDocument()
     );
   });
 });

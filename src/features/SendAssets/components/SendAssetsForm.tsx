@@ -367,6 +367,9 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     account: object().required(translateRaw('REQUIRED')),
     address: object()
       .required(translateRaw('REQUIRED'))
+      .test('valid', translateRaw('TO_FIELD_ERROR'), function (value) {
+        return value && value.value && isValidETHAddress(value.value);
+      })
       // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
@@ -655,7 +658,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const accountsWithAsset = getAccountsByAsset(validAccounts, values.asset);
 
-  const userCanAffordTX = canAffordTX(baseAsset, values);
+  const userCanAffordTX = canAffordTX(baseAsset, values, gasPrice);
   const formHasErrors = !checkFormValid(errors);
 
   const isFormValid = !formHasErrors && !gasEstimationError && userCanAffordTX;

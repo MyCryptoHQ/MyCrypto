@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 
 import { Button } from '@mycrypto/ui';
 import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import { DashboardPanel, Divider, LinkApp, SubHeading, Switch, Tooltip } from '@components';
 import { Fiats, PRIVACY_POLICY_LINK, ROUTE_PATHS } from '@config';
+import { getEIP1559FeatureFlag, setEIP1559FeatureFlag } from '@helpers';
 import {
   AppState,
   canTrackProductAnalytics,
@@ -67,6 +68,13 @@ const GeneralSettings = ({
     setProductAnalyticsAuthorisation(!canTrackProductAnalytics);
   };
 
+  const [eip1559, setEIP1559] = useState(getEIP1559FeatureFlag());
+
+  const toggleEIP1559 = () => {
+    setEIP1559(!eip1559);
+    setEIP1559FeatureFlag(!eip1559);
+  };
+
   const changeCurrencySelection = (event: FormEvent<HTMLSelectElement>) => {
     const target = event.target as HTMLSelectElement;
     setFiat(target.value as TFiatTicker);
@@ -107,6 +115,18 @@ const GeneralSettings = ({
               ))}
             </select>
           </SelectContainer>
+        </SettingsControl>
+      </SettingsField>
+      <SettingsField>
+        <SubHeading fontWeight="initial">{translate('EIP_1559_SETTINGS_HEADER')}</SubHeading>
+        <SettingsControl>
+          <Switch
+            $greyable={true}
+            checked={getEIP1559FeatureFlag()}
+            onChange={toggleEIP1559}
+            labelLeft="OFF"
+            labelRight="ON"
+          />
         </SettingsControl>
       </SettingsField>
       <SettingsField>

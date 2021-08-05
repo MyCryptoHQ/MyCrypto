@@ -46,7 +46,7 @@ describe('GasSelector', () => {
     const props = {
       ...defaultProps,
       network: { ...fNetwork, supportsEIP1559: true },
-      account: { ...fAccounts[1], wallet: WalletId.WEB3 }
+      account: { ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }
     };
     const { getByText } = getComponent(props);
     expect(getByText(translateRaw('MAX_FEE_PER_GAS'))).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('GasSelector', () => {
     const props = {
       ...defaultProps,
       network: { ...fNetwork, supportsEIP1559: true },
-      account: { ...fAccounts[1], wallet: WalletId.WEB3 }
+      account: { ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }
     };
     const { container } = getComponent(props);
     const maxFee = container.querySelector('input[name="maxFeePerGas"]')!;
