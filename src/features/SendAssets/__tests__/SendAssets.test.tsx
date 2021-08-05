@@ -30,7 +30,7 @@ describe('SendAssetsFlow', () => {
     return simpleRender(<SendAssets />, {
       initialRoute: route,
       initialState: mockAppState({
-        accounts: [{ ...fAccounts[0], wallet: WalletId.WEB3 }],
+        accounts: [{ ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S }],
         assets: fAssets,
         networks
       })

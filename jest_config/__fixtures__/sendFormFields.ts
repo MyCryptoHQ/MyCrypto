@@ -125,7 +125,7 @@ export const fAdvancedERC20TxSendFormikFields: IFormikFields = {
 export const fETHTxSendFormikFieldsEIP1559: IFormikFields = {
   asset: fAssets[1],
   network: { ...fNetwork, supportsEIP1559: true },
-  account: { ...fAccounts[0], wallet: WalletId.WEB3 },
+  account: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S },
   txDataField: '0x',
   gasEstimates: {
     safeLow: 50,

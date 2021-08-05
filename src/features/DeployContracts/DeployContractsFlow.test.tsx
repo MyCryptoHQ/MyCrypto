@@ -27,7 +27,7 @@ function getComponent() {
   return simpleRender(<DeployContractsFlow />, {
     initialRoute: '/deploy-contracts',
     initialState: mockAppState({
-      accounts: [{ ...fAccounts[1], wallet: WalletId.WEB3 }],
+      accounts: [{ ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }],
       assets: fAssets,
       networks: APP_STATE.networks.map((n) => ({ ...n, supportsEIP1559: true }))
     })

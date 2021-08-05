@@ -22,7 +22,7 @@ describe('fetchUniversalGasPriceEstimate', () => {
     return expect(
       fetchUniversalGasPriceEstimate(
         { ...fNetwork, supportsEIP1559: true },
-        { ...fAccounts[1], wallet: WalletId.WEB3 }
+        { ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }
       )
     ).resolves.toStrictEqual({ maxFeePerGas: '20', maxPriorityFeePerGas: '3' });
   });
