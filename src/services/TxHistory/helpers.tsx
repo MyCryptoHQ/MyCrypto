@@ -73,7 +73,8 @@ export const deriveTxType = (
       tx.txType === ITxHistoryType.STANDARD ||
       tx.txType === ITxHistoryType.UNKNOWN ||
       !Object.values(ITxHistoryType).some((t) => t === tx.txType)) &&
-    !txTypeMetas[tx.txType];
+    !(txTypeMetas[tx.txType] ||
+      !Object.values(ITxHistoryType).some((t) => t === tx.txType));
 
   if (isInvalidTxHistoryType && isContractInteraction(tx.data)) {
     return ITxHistoryType.CONTRACT_INTERACT;
