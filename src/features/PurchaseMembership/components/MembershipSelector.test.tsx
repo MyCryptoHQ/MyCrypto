@@ -35,7 +35,7 @@ describe('MembershipSelector', () => {
     Object.values(MEMBERSHIP_CONFIG)
       .filter(({ disabled }) => !disabled)
       .map((p) => p.title)
-      .forEach((t) => expect(getAllByText(t)).toHaveLength(2));
+      .forEach((t) => expect(getAllByText(t)).toHaveLength(3));
   });
 
   test('it calls the success handler with the correct value', async () => {
@@ -43,7 +43,7 @@ describe('MembershipSelector', () => {
     const { getByRole, getByLabelText } = getComponent(props);
 
     expect(getByRole('form')).toHaveFormValues({ [defaultProps.name]: '' });
-    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.xdaionemonth.title);
-    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.xdaionemonth);
+    await selectEvent.select(getByLabelText('Membership'), MEMBERSHIP_CONFIG.polygononemonth.title);
+    expect(defaultProps.onSelect).toHaveBeenCalledWith(MEMBERSHIP_CONFIG.polygononemonth);
   });
 });

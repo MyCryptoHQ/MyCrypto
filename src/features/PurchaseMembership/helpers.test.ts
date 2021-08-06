@@ -1,7 +1,8 @@
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 
-import { DAIUUID, XDAIUUID } from '@config';
+import { DAIUUID, POLYGON_NETWORK, USDCPolygonUUID, XDAIUUID } from '@config';
 import { fAccounts, fNetworks } from '@fixtures';
+import { TTicker } from '@types';
 
 import { IMembershipId, MEMBERSHIP_CONFIG } from './config';
 import { createApproveTx, createPurchaseTx } from './helpers';
@@ -65,6 +66,34 @@ describe('createPurchaseTx()', () => {
       from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
       gasPrice: '0x3b9aca00',
       to: '0xf97f516Cc0700a4Ce9Ee64D488F744f631e1525d',
+      value: '0x1a055690d9db80000'
+    };
+    expect(createPurchaseTx(p)).toStrictEqual(expected);
+  });
+
+  it('can create valid purchaseTx for a 12 month polygon membership', () => {
+    const membershipId = 'polygontwelvemonths' as IMembershipId;
+    const p: MembershipSimpleTxFormFull = {
+      ...payload,
+      membershipSelected: MEMBERSHIP_CONFIG[membershipId],
+      asset: {
+        uuid: USDCPolygonUUID,
+        name: 'USDC',
+        type: 'erc20',
+        networkId: POLYGON_NETWORK,
+        isCustom: false,
+        ticker: 'USDC' as TTicker,
+        decimal: 6
+      },
+      network: { ...fNetworks[2], chainId: 137 }
+    };
+    const expected = {
+      chainId: 137,
+      data:
+        '0x3f33133a0000000000000000000000000000000000000000000000000000000001c9c380000000000000000000000000fe5443fac29fa621cfc33d41d1927fd0f5e0bb7c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000',
+      from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+      gasPrice: '0x3b9aca00',
+      to: '0x46522c5a1018E13E40e3117191200e4CF6039241',
       value: '0x1a055690d9db80000'
     };
     expect(createPurchaseTx(p)).toStrictEqual(expected);

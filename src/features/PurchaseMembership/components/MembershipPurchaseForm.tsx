@@ -14,13 +14,12 @@ import {
   DemoGatewayBanner,
   InlineMessage
 } from '@components';
-import { DEFAULT_NETWORK, ETHUUID, XDAI_NETWORK, XDAIUUID } from '@config';
+import { DEFAULT_NETWORK } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { fetchUniversalGasPriceEstimate } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
 import { useAssets, useNetworks } from '@services/Store';
-import { isAccountInNetwork, isEthereumAccount } from '@services/Store/Account/helpers';
 import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -71,12 +70,9 @@ const FormFieldSubmitButton = styled(Button)`
 const MembershipForm = ({ isSubmitting, error, isDemoMode, onComplete }: Props) => {
   const accounts = useSelector(getStoreAccounts);
   const { networks } = useNetworks();
-  const relevantNetworks = networks.filter((n) =>
-    [ETHUUID, XDAIUUID].includes(n.baseAsset)
-  ) as Network[];
-  const relevantAccounts = accounts.filter(
-    (account) => isEthereumAccount(account) || isAccountInNetwork(account, XDAI_NETWORK)
-  );
+  const networkIds = [...new Set(Object.values(MEMBERSHIP_CONFIG).map((m) => m.networkId))];
+  const relevantNetworks = networks.filter((n) => networkIds.includes(n.id)) as Network[];
+  const relevantAccounts = accounts.filter((account) => networkIds.includes(account.networkId));
 
   return (
     <MembershipFormUI
