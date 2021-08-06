@@ -19,7 +19,10 @@ export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
 export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> =>
   formatApproveTx({
     contractAddress: payload.asset.contractAddress as ITxToAddress,
-    baseTokenAmount: toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL),
+    baseTokenAmount: toWei(
+      payload.membershipSelected.price,
+      payload.asset.decimal ?? DEFAULT_ASSET_DECIMAL
+    ),
     spenderAddress: payload.membershipSelected.contractAddress as TAddress,
     form: payload
   });
@@ -27,7 +30,7 @@ export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<IT
 export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
   const membershipSelected = payload.membershipSelected;
 
-  const weiPrice = toWei(membershipSelected.price, DEFAULT_ASSET_DECIMAL);
+  const weiPrice = toWei(membershipSelected.price, payload.asset.decimal ?? DEFAULT_ASSET_DECIMAL);
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
