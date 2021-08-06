@@ -73,7 +73,8 @@ describe('createPurchaseTx()', () => {
 
   it('can create valid purchaseTx for a 12 month polygon membership', () => {
     const membershipId = 'polygontwelvemonths' as IMembershipId;
-    const payload: MembershipSimpleTxFormFull = {
+    const p: MembershipSimpleTxFormFull = {
+      ...payload,
       membershipSelected: MEMBERSHIP_CONFIG[membershipId],
       asset: {
         uuid: USDCPolygonUUID,
@@ -84,13 +85,7 @@ describe('createPurchaseTx()', () => {
         ticker: 'USDC' as TTicker,
         decimal: 6
       },
-      network: { ...fNetworks[2], chainId: 137 },
-      address: fAccounts[0].address,
-      amount: '30',
-      gasLimit: 500000,
-      gasPrice: '1',
-      nonce: '1',
-      account: fAccounts[0]
+      network: { ...fNetworks[2], chainId: 137 }
     };
     const expected = {
       chainId: 137,
@@ -101,6 +96,6 @@ describe('createPurchaseTx()', () => {
       to: '0x46522c5a1018E13E40e3117191200e4CF6039241',
       value: '0x1a055690d9db80000'
     };
-    expect(createPurchaseTx(payload)).toStrictEqual(expected);
+    expect(createPurchaseTx(p)).toStrictEqual(expected);
   });
 });
