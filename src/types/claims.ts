@@ -2,7 +2,8 @@ import { TAddress } from './address';
 import { ITxValue } from './transactionFlow';
 
 export enum ClaimType {
-  UNI = 'UNI'
+  UNI = 'UNI',
+  DAPPNODE = 'DAPPNODE'
 }
 
 export enum ClaimState {

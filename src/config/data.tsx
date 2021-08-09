@@ -50,6 +50,8 @@ export const BUY_MYCRYPTO_WEBSITE = 'https://buy.mycrypto.com' as TURL;
 export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptoapi.com/sign';
 export const UNISWAP_UNI_CLAIM_API = 'https://uni.mycryptoapi.com/claims';
 export const UNISWAP_TOKEN_DISTRIBUTOR = '0x090D4613473dEE047c3f2706764f49E0821D256e';
+export const DAPPNODE_CLAIM_API = 'https://dappnode.mycryptoapi.com/claims';
+export const DAPPNODE_TOKEN_DISTRIBUTOR = '0x87d6180b65ad76a9443064dcd1596388fcc3ee2a';
 
 export const LETS_ENCRYPT_URL = 'https://letsencrypt.org/';
 

@@ -1,10 +1,11 @@
 import { waitFor } from '@testing-library/react';
 import mockAxios from 'jest-mock-axios';
 
+import { UNISWAP_UNI_CLAIM_API } from '@config';
 import { fAccount, fNetwork } from '@fixtures';
-import { ClaimState, ITxValue } from '@types';
+import { ClaimState, ClaimType, ITxValue } from '@types';
 
-import { UniswapService } from '.';
+import { ClaimsService } from '.';
 
 jest.mock('@vendor', () => ({
   ...jest.requireActual('@vendor'),
@@ -26,15 +27,21 @@ const mockClaim = {
   }
 };
 
-describe('UniswapService', () => {
+describe('ClaimsService', () => {
   afterEach(() => {
     mockAxios.reset();
   });
   it('can get claims', async () => {
     const addresses = [fAccount.address];
-    const claims = UniswapService.instance.getClaims(addresses);
+    const claims = ClaimsService.instance.getClaims(ClaimType.UNI, addresses);
 
-    await waitFor(() => expect(mockAxios.post).toHaveBeenCalledWith('', { addresses }));
+    await waitFor(() =>
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        '',
+        { addresses },
+        { baseURL: UNISWAP_UNI_CLAIM_API }
+      )
+    );
 
     mockAxios.mockResponse({
       data: { claims: mockClaim }
@@ -45,7 +52,7 @@ describe('UniswapService', () => {
   });
 
   it('can check whether claims are still valid', async () => {
-    const claims = await UniswapService.instance.isClaimed(fNetwork, mockClaim);
+    const claims = await ClaimsService.instance.isClaimed(fNetwork, ClaimType.UNI, mockClaim);
     expect(claims).toStrictEqual([
       {
         address: fAccount.address,

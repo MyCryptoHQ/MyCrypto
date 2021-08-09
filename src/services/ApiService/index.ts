@@ -18,7 +18,7 @@ export {
   CryptoScamDBService
 } from './CryptoScamDB';
 export { MoonpaySignerService } from './MoonpaySigner';
-export { UniswapService } from './Uniswap';
+export * from './Claims';
 export * from './constants';
 export { ENSService } from './Ens';
 export { CustomAssetService } from './CustomAsset';
