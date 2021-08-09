@@ -1,33 +1,20 @@
 import { AxiosInstance } from 'axios';
 import { toChecksumAddress } from 'ethereumjs-util';
 
-import { UNISWAP_TOKEN_DISTRIBUTOR, UNISWAP_UNI_CLAIM_API } from '@config/data';
+import { UNISWAP_UNI_CLAIM_API } from '@config/data';
 import { ApiService } from '@services/ApiService';
 import { ProviderHandler } from '@services/EthService';
 import { UniDistributor } from '@services/EthService/contracts';
-import { ClaimResult, ClaimState, ITxValue, Network, TAddress } from '@types';
+import { ClaimResult, ClaimState, ClaimType, Network, TAddress } from '@types';
 import { mapAsync } from '@utils/asyncFilter';
+
+import { CLAIM_CONFIG } from './config';
+import { Claim, Response } from './types';
 
 let instantiated = false;
 
-interface Response {
-  success: boolean;
-  claims: Record<string, UniClaim | null>;
-}
-
-interface UniClaim {
-  Index: number;
-  Amount: ITxValue; // HEX
-  // proof: ITxData[]; @todo
-  Flags: {
-    IsSOCKS: boolean;
-    ISLP: boolean;
-    IsUser: boolean;
-  };
-}
-
-export default class UniswapService {
-  public static instance = new UniswapService();
+export default class ClaimsService {
+  public static instance = new ClaimsService();
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: UNISWAP_UNI_CLAIM_API,
@@ -36,17 +23,21 @@ export default class UniswapService {
 
   constructor() {
     if (instantiated) {
-      throw new Error(`UniswapService has already been instantiated.`);
+      throw new Error(`ClaimsService has already been instantiated.`);
     } else {
       instantiated = true;
     }
   }
 
-  public getClaims(addresses: TAddress[]) {
+  public getClaims(type: ClaimType, addresses: TAddress[]) {
     return this.service
-      .post('', {
-        addresses: addresses.map((a) => toChecksumAddress(a))
-      })
+      .post(
+        '',
+        {
+          addresses: addresses.map((a) => toChecksumAddress(a))
+        },
+        { baseURL: CLAIM_CONFIG[type].api }
+      )
       .then((res) => res.data)
       .then(({ claims }: Response) => {
         return claims;
@@ -59,14 +50,15 @@ export default class UniswapService {
 
   public isClaimed(
     network: Network,
-    claims: Record<string, UniClaim | null>
+    type: ClaimType,
+    claims: Record<string, Claim | null>
   ): Promise<ClaimResult[]> {
     const provider = new ProviderHandler(network);
     return mapAsync(Object.entries(claims), async ([address, claim]) => {
       if (claim !== null) {
         const claimed = await provider
           .call({
-            to: UNISWAP_TOKEN_DISTRIBUTOR,
+            to: CLAIM_CONFIG[type].tokenDistributor,
             data: UniDistributor.isClaimed.encodeInput({ index: claim.Index })
           })
           .then((data) => UniDistributor.isClaimed.decodeOutput(data))

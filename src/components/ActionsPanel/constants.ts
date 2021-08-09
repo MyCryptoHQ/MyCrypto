@@ -3,6 +3,7 @@ import { add, isBefore } from 'date-fns';
 import { TIcon } from '@components';
 import {
   ANTv1UUID,
+  DAPPNODE_AIRDROP_LINK,
   ETHUUID,
   EXT_URLS,
   FAUCET_NETWORKS,
@@ -106,10 +107,10 @@ export const actionTemplates: ActionTemplate[] = [
   },
   {
     name: ACTION_NAME.CLAIM_UNI,
-    heading: translateRaw('CLAIM_UNI_ACTION_HEADING'),
+    heading: translateRaw('CLAIM_TOKENS_ACTION_HEADING', { $token: 'UNI' }),
     icon: 'uni-logo',
     subHeading: ClaimSubHead,
-    body: [translate('CLAIM_UNI_ACTION_BODY')],
+    body: [translate('CLAIM_TOKENS_ACTION_BODY', { $token: 'UNI' })],
     filter: ({ claims }: ActionFilters) =>
       claims[ClaimType.UNI]?.some((c) => c.state === ClaimState.UNCLAIMED),
     priority: 30,
@@ -120,8 +121,31 @@ export const actionTemplates: ActionTemplate[] = [
     button: {
       component: ActionButton,
       props: {
-        content: translateRaw('CLAIM_UNI_ACTION_BUTTON'),
+        content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
         to: UNISWAP_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: ACTION_NAME.CLAIM_DAPPNODE,
+    heading: translateRaw('CLAIM_TOKENS_ACTION_HEADING', { $token: 'NODE' }),
+    icon: 'node-logo',
+    subHeading: ClaimSubHead,
+    body: [translate('CLAIM_TOKENS_ACTION_BODY', { $token: 'NODE' })],
+    filter: ({ claims }: ActionFilters) =>
+      claims[ClaimType.NODE]?.some((c) => c.state === ClaimState.UNCLAIMED),
+    priority: 30,
+    Component: ClaimTable,
+    props: {
+      type: ClaimType.NODE
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
+        to: DAPPNODE_AIRDROP_LINK,
         external: true
       }
     },

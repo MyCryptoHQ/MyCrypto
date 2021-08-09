@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { UniswapService } from '@services/ApiService';
+import { ClaimsService } from '@services/ApiService';
 import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
 
 import {
@@ -56,13 +56,13 @@ export function* claimsSaga() {
         resetAndCreateManyAccounts.type,
         destroyAccount.type
       ],
-      fetchUniClaimsWorker
+      fetchClaimsWorker
     ),
-    takeLatest(fetchClaims.type, fetchUniClaimsWorker)
+    takeLatest(fetchClaims.type, fetchClaimsWorker)
   ]);
 }
 
-export function* fetchUniClaimsWorker() {
+export function* fetchClaimsWorker() {
   const accounts: StoreAccount[] = yield select(getAccounts);
 
   const filteredAccounts = accounts.filter((a) => a.networkId === 'Ethereum');
@@ -71,21 +71,27 @@ export function* fetchUniClaimsWorker() {
 
   const network: Network = yield select(selectDefaultNetwork);
 
-  try {
-    const rawClaims = yield call(
-      [UniswapService.instance, UniswapService.instance.getClaims],
-      filteredAccounts.map((a) => a.address)
-    );
+  const types = Object.values(ClaimType);
 
-    const claims = yield call(
-      [UniswapService.instance, UniswapService.instance.isClaimed],
-      network,
-      rawClaims
-    );
+  for (const type of types) {
+    try {
+      const rawClaims = yield call(
+        [ClaimsService.instance, ClaimsService.instance.getClaims],
+        type,
+        filteredAccounts.map((a) => a.address)
+      );
 
-    yield put(slice.actions.setClaims({ type: ClaimType.UNI, claims }));
-  } catch (err) {
-    yield put(slice.actions.fetchError());
+      const claims = yield call(
+        [ClaimsService.instance, ClaimsService.instance.isClaimed],
+        network,
+        type,
+        rawClaims
+      );
+
+      yield put(slice.actions.setClaims({ type, claims }));
+    } catch (err) {
+      yield put(slice.actions.fetchError());
+    }
   }
 }
 

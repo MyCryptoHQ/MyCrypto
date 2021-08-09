@@ -126,6 +126,7 @@ import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import linkOutIcon from '@assets/images/link-out.svg';
 import membership from '@assets/images/membership/membership-none.svg';
+import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
@@ -270,7 +271,8 @@ const pngIcons = {
   'uni-logo': uniLogo,
   'lend-logo': lendLogo,
   'ant-logo': antLogo,
-  'gol-logo': golemLogo
+  'gol-logo': golemLogo,
+  'node-logo': nodeLogo
 };
 
 type SvgIcons = keyof typeof svgIcons;

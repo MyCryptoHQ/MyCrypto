@@ -3,7 +3,7 @@ import { throwError } from 'redux-saga-test-plan/providers';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { fAccounts, fNetworks } from '@fixtures';
-import { UniswapService } from '@services/ApiService';
+import { ClaimsService } from '@services/ApiService';
 import { ClaimState, ClaimType, ITxValue, TAddress } from '@types';
 
 import slice, { claimsSaga, fetchClaims, initialState } from './claims.slice';
@@ -56,8 +56,8 @@ describe('claimsSaga()', () => {
         })
       )
       .provide([
-        [call.fn(UniswapService.instance.getClaims), []],
-        [call.fn(UniswapService.instance.isClaimed), claims]
+        [call.fn(ClaimsService.instance.getClaims), []],
+        [call.fn(ClaimsService.instance.isClaimed), claims]
       ])
       .put(setClaims({ type: ClaimType.UNI, claims }))
       .dispatch(fetchClaims())
@@ -68,7 +68,7 @@ describe('claimsSaga()', () => {
     const error = new Error('error');
     return expectSaga(claimsSaga)
       .withState(mockAppState({ accounts: fAccounts, networks: fNetworks }))
-      .provide([[call.fn(UniswapService.instance.getClaims), throwError(error)]])
+      .provide([[call.fn(ClaimsService.instance.getClaims), throwError(error)]])
       .put(fetchError())
       .dispatch(fetchClaims())
       .silentRun();
