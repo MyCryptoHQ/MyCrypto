@@ -11,7 +11,7 @@ export const CLAIM_CONFIG = {
     api: UNISWAP_UNI_CLAIM_API,
     tokenDistributor: UNISWAP_TOKEN_DISTRIBUTOR
   },
-  [ClaimType.DAPPNODE]: {
+  [ClaimType.NODE]: {
     api: DAPPNODE_CLAIM_API,
     tokenDistributor: DAPPNODE_TOKEN_DISTRIBUTOR
   }

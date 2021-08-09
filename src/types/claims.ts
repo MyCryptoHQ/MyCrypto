@@ -3,7 +3,7 @@ import { ITxValue } from './transactionFlow';
 
 export enum ClaimType {
   UNI = 'UNI',
-  DAPPNODE = 'DAPPNODE'
+  NODE = 'NODE'
 }
 
 export enum ClaimState {

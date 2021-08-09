@@ -13,6 +13,7 @@ export enum ACTION_NAME {
   MIGRATE_REP = 'migrate_rep',
   MIGRATE_ANT = 'migrate_ant',
   CLAIM_UNI = 'claim_uni',
+  CLAIM_DAPPNODE = 'claim_dappnode',
   RENEW_ENS = 'renew_ens',
   BUY_HW = 'buy_hw',
   MYC_MEMBERSHIP = 'myc_membership',

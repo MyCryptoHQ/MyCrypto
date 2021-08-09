@@ -2,19 +2,7 @@ export * from './data';
 export { DEMO_SETTINGS } from './demo';
 export * from './donations';
 export * from './addressMessages';
-export {
-  EXT_URLS,
-  partnerLinks,
-  productLinks,
-  socialMediaLinks,
-  DOWNLOAD_MYCRYPTO_LINK,
-  SUBSCRIBE_NEWSLETTER_LINK,
-  UNISWAP_LINK,
-  MYC_WINTER_LINK,
-  TWEET_LINK,
-  MYCRYPTO_FAUCET_LINK,
-  MYCRYPTO_PROD_LINK
-} from './links';
+export * from './links';
 export * from './constants';
 export * from './uuids';
 export { ETHSCAN_NETWORKS } from './ethScan';
