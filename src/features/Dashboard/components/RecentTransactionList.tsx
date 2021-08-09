@@ -76,6 +76,7 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
           $platform: translateRaw(protocol, { $ticker: asset.ticker }),
           $action: translateRaw(`PLATFORM_${type}`, { $ticker: asset.ticker })
         });
+      case "GENERIC_CONTRACT_CALL" as ITxHistoryType:
       case ITxHistoryType.CONTRACT_INTERACT:
         return translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
           $ticker: asset.ticker || translateRaw('UNKNOWN')
@@ -114,7 +115,9 @@ const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigOb
       case 'REPAY':
       case 'MINT':
       case 'NAME_REGISTERED':
+      case 'NAME_RENEWED':
       case 'CANCEL_ORDER':
+      case 'GENERIC_CONTRACT_CALL':
       case 'CONTRACT_INTERACT':
         return contractInteract;
       case 'EXCHANGE':
