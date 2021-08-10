@@ -79,6 +79,7 @@ const trackLink = ({ url, type }: LinkParams) => {
 };
 
 export default {
+  tracker,
   track,
   trackPage,
   trackLink,
