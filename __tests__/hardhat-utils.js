@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts';
-import { JsonRpcProvider, TransactionRequest } from '@ethersproject/providers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 
 import { FIXTURE_WEB3_ADDRESS } from './fixtures';
 
