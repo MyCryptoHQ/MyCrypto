@@ -1,11 +1,16 @@
 import mockAxios from 'jest-mock-axios';
 
 import { ETHUUID } from '@config';
-import { fAccount, fAssets, fNetwork, fRopDAI, fSwapQuote } from '@fixtures';
+import { fAccount, fAssets, fNetwork, fNetworks, fRopDAI, fSwapQuote } from '@fixtures';
 import { ITxData, ITxGasPrice, ITxToAddress, ITxType, ITxValue, TTicker, TUuid } from '@types';
 
 import { DexService } from '.';
 import { formatTradeTx } from './Dex';
+
+jest.mock('@services/ApiService/Gas', () => ({
+  ...jest.requireActual('@services/ApiService/Gas'),
+  fetchUniversalGasPriceEstimate: jest.fn().mockResolvedValue({ gasPrice: '154' })
+}));
 
 describe('SwapFlow', () => {
   afterEach(() => {
@@ -14,7 +19,7 @@ describe('SwapFlow', () => {
   describe('getOrderDetails', () => {
     it('returns the expected two transactions for a multi tx swap', async () => {
       const promise = DexService.instance.getOrderDetailsFrom(
-        fNetwork,
+        { ...fNetwork, supportsEIP1559: false },
         fAccount,
         fRopDAI,
         fAssets[0],
@@ -32,10 +37,7 @@ describe('SwapFlow', () => {
         gasPrice: '0x23db1d8400',
         to: '0x6b175474e89094c44da98b954eedeac495271d0f',
         txType: 'APPROVAL',
-        value: '0x0',
-        maxFeePerGas: undefined,
-        maxPriorityFeePerGas: undefined,
-        type: undefined
+        value: '0x0'
       });
       expect(result.tradeTx).toStrictEqual({
         chainId: fNetwork.chainId,
@@ -45,7 +47,6 @@ describe('SwapFlow', () => {
         to: '0xdef1c0ded9bec7f1a1670819833240f027b25eff',
         txType: 'SWAP',
         value: '0x0',
-        type: undefined,
         metadata: { receivingAsset: ETHUUID }
       });
     });
@@ -58,8 +59,9 @@ describe('SwapFlow', () => {
           to: '0xA65440C4CC83D70b44cF244a0da5373acA16a9cb' as ITxToAddress,
           data: '0x5d46ec340000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000000d8775f648430679a709e98d2b0cb6250d2887ef00000000000000000000000000000000000000000000000000038d7ea4c680000000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000001c000000000000000000000000000000000000000000000000000000000000002a00000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000e807dc3fe542f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002a1530c4c41db0b0b2bb646cb5eb1a67b715866700000000000000000000000000000000000000000000000000000000000000010000000000000000000000002a1530c4c41db0b0b2bb646cb5eb1a67b715866700000000000000000000000000000000000000000000000000000000000000a4ddf7e1a700000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000000e807dc3fe542f0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000005e6275fe0000000000000000000000000d8775f648430679a709e98d2b0cb6250d2887ef000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a400000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000' as ITxData,
           value: '50000' as ITxValue,
-          gasPrice: '0x23db1d8400' as ITxGasPrice,
-          chainId: 1,
+          gas: { gasPrice: '154' },
+          network: { ...fNetworks[0], supportsEIP1559: false },
+          account: fAccount,
           buyToken: { name: 'Ethereum', ticker: 'ETH' as TTicker, uuid: ETHUUID as TUuid }
         })
       ).toEqual({
