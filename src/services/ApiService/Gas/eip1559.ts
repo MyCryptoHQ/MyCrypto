@@ -4,6 +4,8 @@ import BigNumber from 'bignumber.js';
 import { ProviderHandler } from '@services/EthService';
 import { bigify, fromWei, getDecimalFromEtherUnit, toWei } from '@utils';
 
+import { MAX_GAS_FAST } from './constants';
+
 // How many blocks to consider for priority fee estimation
 const FEE_HISTORY_BLOCKS = 10;
 // Which percentile of effective priority fees to include
@@ -20,8 +22,10 @@ export const FALLBACK_ESTIMATE = {
 };
 const PRIORITY_FEE_INCREASE_BOUNDARY = 200; // %
 
+const toGwei = (wei: BigNumber) => bigify(fromWei(wei.integerValue(), 'gwei'));
+
 const roundToWholeGwei = (wei: BigNumber) => {
-  const gwei = bigify(fromWei(wei.integerValue(), 'gwei'));
+  const gwei = toGwei(wei);
   const rounded = gwei.integerValue(BigNumber.ROUND_HALF_UP);
   return bigify(toWei(rounded.toString(10), getDecimalFromEtherUnit('gwei')));
 };
@@ -113,6 +117,10 @@ export const estimateFees = async (provider: ProviderHandler) => {
     const maxFeePerGas = maxPriorityFeePerGas.gt(potentialMaxFee)
       ? potentialMaxFee.plus(maxPriorityFeePerGas)
       : potentialMaxFee;
+
+    if (toGwei(maxFeePerGas).gte(MAX_GAS_FAST) || toGwei(maxPriorityFeePerGas).gte(MAX_GAS_FAST)) {
+      throw new Error('Estimated gas fee was much higher than expected, erroring');
+    }
 
     return {
       maxFeePerGas: roundToWholeGwei(maxFeePerGas),
