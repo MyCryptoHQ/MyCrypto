@@ -41,9 +41,6 @@ const FIXTURE_ETHEREUM = 'Ethereum';
 // MyCrypto Dev Testing Account with multiple tokens - should probably be swapped out for a dedicated E2E testing account
 const FIXTURE_VIEW_ONLY_ADDRESS = '0x82D69476357A03415E92B5780C89e5E9e972Ce75';
 
-const FIXTURE_INCOMING_TX_HASH =
-  '0x3513f1483cd87ffca1d2c2f9d5a6c49376c2c87d8e27b98e7ae973642cd8a10b';
-
 const FIXTURE_VIEW_ONLY_TOKENS = ['ANT', 'BAT', 'DAI'];
 
 const FIXTURE_SEND_CONTACT = 'Web3 Account 1';
@@ -458,7 +455,6 @@ export {
   FIXTURE_ETHEREUM,
   FIXTURE_VIEW_ONLY_ADDRESS,
   FIXTURE_VIEW_ONLY_TOKENS,
-  FIXTURE_INCOMING_TX_HASH,
   FIXTURE_WEB3_ADDRESS,
   FIXTURE_HARDHAT_PRIVATE_KEY,
   FIXTURE_HARDHAT,

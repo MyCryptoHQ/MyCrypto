@@ -3,9 +3,9 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 
 import { FIXTURE_WEB3_ADDRESS } from './fixtures';
 
-export const resetFork = async (stickyBlockNum = true) => {
-  const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
+const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
 
+export const resetFork = async (stickyBlockNum = true) => {
   await provider.send('hardhat_reset', [
     {
       forking: {
@@ -18,8 +18,6 @@ export const resetFork = async (stickyBlockNum = true) => {
 
 // Transfers DAI to the test address
 export const setupDAI = async () => {
-  const provider = new JsonRpcProvider('http://127.0.0.1:8546/');
-
   await provider.send('hardhat_impersonateAccount', ['0x28c6c06298d514db089934071355e5743bf21d60']);
 
   const signer = await provider.getSigner('0x28c6c06298d514db089934071355e5743bf21d60');
@@ -54,4 +52,18 @@ export const setupDAI = async () => {
   await provider.send('hardhat_stopImpersonatingAccount', [
     '0x28c6c06298d514db089934071355e5743bf21d60'
   ]);
+};
+
+export const sendTx = async (tx) => {
+  const signer = await provider.getSigner(tx.from);
+
+  const sent = await signer.sendTransaction({
+    ...tx,
+    maxFeePerGas: '0xe8990a4600',
+    maxPriorityFeePerGas: '0xe8990a4600'
+  });
+
+  await sent.wait();
+
+  return sent.hash;
 };

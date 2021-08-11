@@ -1,7 +1,7 @@
 import { Selector, t } from 'testcafe';
 
 import BasePage from './base-page.po';
-import { FIXTURE_ETHEREUM, FIXTURE_INCOMING_TX_HASH, PAGES } from './fixtures';
+import { FIXTURE_ETHEREUM, PAGES } from './fixtures';
 import { getTransValueByKey } from './translation-utils';
 
 export default class TxStatusPage extends BasePage {
@@ -13,13 +13,13 @@ export default class TxStatusPage extends BasePage {
     await this.waitForPage(PAGES.TX_STATUS, timeout);
   }
 
-  async fillForm() {
+  async fillForm(hash) {
     await t
       .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
         paste: true
       })
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
-      .typeText(Selector(`input[name="txhash"]`), FIXTURE_INCOMING_TX_HASH, { paste: true })
+      .typeText(Selector(`input[name="txhash"]`), hash, { paste: true })
       .click(Selector('button').withText(getTransValueByKey('FETCH')));
   }
 }
