@@ -1,5 +1,5 @@
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
-import { ITxMetaTypes } from '@store/txHistory.slice';
+import { ITxHistoryState, ITxMetaTypes } from '@store/txHistory.slice';
 import {
   ITxData,
   ITxGasLimit,
@@ -60,4 +60,10 @@ export const fTxTypeMetas: ITxMetaTypes = {
     protocol: 'ERC_20',
     type: 'TRANSFER'
   }
+};
+
+export const fTxHistory: ITxHistoryState = {
+  history: [],
+  txTypeMeta: fTxTypeMetas,
+  error: ''
 };

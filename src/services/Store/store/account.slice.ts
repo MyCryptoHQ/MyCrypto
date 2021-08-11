@@ -2,7 +2,6 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { ITxHistoryType } from '@features/Dashboard/types';
 import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -26,7 +25,6 @@ import {
   StoreAccount,
   StoreAsset,
   TUuid,
-  TxType,
   WalletId
 } from '@types';
 import {
@@ -265,7 +263,7 @@ export const getMergedTxHistory = createSelector(
           return {
             ...tx,
             timestamp: tx.timestamp || 0,
-            txType: (deriveTxType(txTypeMetas, accounts, tx) || ITxHistoryType.UNKNOWN) as TxType,
+            txType: deriveTxType(txTypeMetas, accounts, tx),
             toAddressBookEntry,
             fromAddressBookEntry,
             networkId: network.id

@@ -30,6 +30,12 @@ describe('TxHistorySlice', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('setTxTypeMeta(): sets tx type meta objects', () => {
+    const actual = reducer(initialState, setTxTypeMeta(fTxTypeMetas));
+    const expected = { ...initialState, txTypeMeta: fTxTypeMetas };
+    expect(actual).toEqual(expected);
+  });
+
   it('fetchError(): sets an error', () => {
     const actual = reducer(initialState, fetchError());
     const expected = { ...initialState, error: true };

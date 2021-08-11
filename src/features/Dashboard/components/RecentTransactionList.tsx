@@ -1,13 +1,5 @@
 import styled from 'styled-components';
 
-import approval from '@assets/images/transactions/approval.svg';
-import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
-import contractInteract from '@assets/images/transactions/contract-interact.svg';
-import defizap from '@assets/images/transactions/defizap.svg';
-import inbound from '@assets/images/transactions/inbound.svg';
-import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
-import outbound from '@assets/images/transactions/outbound.svg';
-import swap from '@assets/images/transactions/swap.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import {
   Account,
@@ -25,13 +17,13 @@ import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { getMergedTxHistory, useSelector } from '@store';
-import { getTxTypeMetas, ITxMetaTypes } from '@store/txHistory.slice';
+import { getTxTypeMetas } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import { Asset, ITxStatus, ITxTypeMeta, StoreAccount, TxType } from '@types';
+import { Asset, ITxStatus, StoreAccount, TxType } from '@types';
 import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
 
-import { ITxHistoryType } from '../types';
+import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 
@@ -40,111 +32,10 @@ interface Props {
   accountsList: StoreAccount[];
 }
 
-interface ITxTypeConfigObj {
+export interface ITxTypeConfigObj {
   icon(): any;
   label(asset: Asset): string;
 }
-
-// type ITxTypeConfig = {
-//   [txType in ITxHistoryType]: ITxTypeConfigObj;
-// };
-
-const deriveTxType = (txTypeMetas: ITxMetaTypes, txType: TxType): ITxTypeMeta => {
-  if (txTypeMetas[txType]) {
-    return txTypeMetas[txType];
-  }
-  switch (txType) {
-    default:
-      return {
-        type: txType,
-        protocol: 'base'
-      };
-    case ITxHistoryType.APPROVAL:
-      return {
-        type: txType,
-        protocol: 'ERC20'
-      };
-  }
-};
-
-// @todo: figure out what we need to manually configure here
-const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigObj => ({
-  label: (asset: Asset) => {
-    switch (type) {
-      default:
-        return translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
-          $platform: translateRaw(protocol, { $ticker: asset.ticker }),
-          $action: translateRaw(`PLATFORM_${type}`, { $ticker: asset.ticker })
-        });
-      case "GENERIC_CONTRACT_CALL" as ITxHistoryType:
-      case ITxHistoryType.CONTRACT_INTERACT:
-        return translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
-        });
-      case ITxHistoryType.INBOUND:
-        return translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
-        });
-      case ITxHistoryType.OUTBOUND:
-        return translateRaw('RECENT_TX_LIST_LABEL_SENT', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
-        });
-      case ITxHistoryType.TRANSFER:
-        return translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
-        });
-      case ITxHistoryType.REP_TOKEN_MIGRATION:
-      case ITxHistoryType.GOLEM_TOKEN_MIGRATION:
-      case ITxHistoryType.ANT_TOKEN_MIGRATION:
-        return translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
-          $platform: translateRaw(protocol, { $ticker: asset.ticker }),
-          $action: translateRaw(`PLATFORM_MIGRATION`, { $ticker: asset.ticker })
-        });
-      case ITxHistoryType.PURCHASE_MEMBERSHIP:
-        return translateRaw('PLATFORM_MEMBERSHIP_PURCHASED');
-    }
-  },
-  icon: () => {
-    // @todo: figure this icon switching shit out.
-    switch (type) {
-      case 'DEPOSIT':
-      case 'WITHDRAW':
-      case 'DEPOSIT_TOKEN':
-      case 'ROUTER_TO':
-      case 'BORROW':
-      case 'REPAY':
-      case 'MINT':
-      case 'NAME_REGISTERED':
-      case 'NAME_RENEWED':
-      case 'CANCEL_ORDER':
-      case 'GENERIC_CONTRACT_CALL':
-      case 'CONTRACT_INTERACT':
-        return contractInteract;
-      case 'EXCHANGE':
-      case 'BRIDGE_IN':
-      case 'BRIDGE_OUT':
-        return swap;
-      case 'APPROVAL':
-      case 'APPROVE':
-        return approval;
-      case 'FAUCET':
-      case 'MINING_PAYOUT':
-      case 'CLAIM':
-      case 'INBOUND':
-        return inbound;
-      case 'OUTBOUND':
-        return outbound;
-      case 'PURCHASE_MEMBERSHIP':
-        return membershipPurchase;
-      case 'DEFIZAP':
-        return defizap;
-      case 'CONTRACT_DEPLOY':
-        return contractDeploy;
-      default:
-        return transfer;
-    }
-  }
-});
 
 const SAssetIcon = styled(AssetIcon)`
   filter: grayscale(1); /* W3C */
@@ -176,7 +67,7 @@ const makeTxIcon = (txConfig: ITxTypeConfigObj, asset: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <Box mr="16px" position="relative">
-      <img src={txConfig ? txConfig.icon() : transfer} width="36px" height="36px" />
+      <img src={txConfig?.icon() ?? transfer} width="36px" height="36px" />
       {greyscaleIcon}
     </Box>
   );
@@ -227,7 +118,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: recipient,
           networkId
         };
-        const entryConfig = constructTxTypeConfig(deriveTxType(txTypeMetas, txType));
+        const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
         return [
           <TransactionLabel
             key={0}

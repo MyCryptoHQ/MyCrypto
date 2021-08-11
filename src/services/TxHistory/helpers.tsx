@@ -7,7 +7,7 @@ import { deriveTxFields, guessERC20Type } from '@helpers';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { ITxMetaTypes } from '@store/txHistory.slice';
-import { Asset, IAccount, ITxReceipt, Network } from '@types';
+import { Asset, IAccount, ITxReceipt, Network, TxType } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
 import { isSameHash } from '@utils/isSameAddress';
 
@@ -57,7 +57,6 @@ export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceip
   const filteredApiTxs = apiTxs.filter(
     (tx) => !accountTxs.find((a) => isSameHash(a.hash, tx.hash))
   );
-  console.debug('merge apiTxs: ', apiTxs, ' accountTxs: ', accountTxs)
   return filteredApiTxs.concat(accountTxs);
 };
 
@@ -65,26 +64,28 @@ export const deriveTxType = (
   txTypeMetas: ITxMetaTypes,
   accountsList: IAccount[],
   tx: ITxReceipt
-): ITxHistoryType => {
+): TxType => {
   const fromAccount =
     tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
   const toAddress = tx.receiverAddress || tx.to;
   const toAccount =
     toAddress && accountsList.find(({ address }) => isSameAddress(address, toAddress));
 
-  const isIncompleteTxType = [ITxHistoryType.STANDARD, ITxHistoryType.UNKNOWN, ""].includes(tx.txType)
-  const isApiTxType = txTypeMetas[tx.txType] ? true : false
-  const isInvalidTxHistoryType = isIncompleteTxType && !isApiTxType
+  const isIncompleteTxType = [ITxHistoryType.STANDARD, ITxHistoryType.UNKNOWN, ''].includes(
+    tx.txType
+  );
+  const isApiTxType = tx.txType in txTypeMetas;
+  const isInvalidTxHistoryType = isIncompleteTxType && isApiTxType ;
 
   if (isInvalidTxHistoryType && isContractInteraction(tx.data)) {
-    return ITxHistoryType.CONTRACT_INTERACT;
+    return ITxHistoryType.CONTRACT_INTERACT as TxType;
   } else if (isInvalidTxHistoryType && toAccount && fromAccount) {
-    return ITxHistoryType.TRANSFER;
+    return ITxHistoryType.TRANSFER as TxType;
   } else if (isInvalidTxHistoryType && !toAccount && fromAccount) {
-    return ITxHistoryType.OUTBOUND;
+    return ITxHistoryType.OUTBOUND as TxType;
   } else if (isInvalidTxHistoryType && toAccount && !fromAccount) {
-    return ITxHistoryType.INBOUND;
+    return ITxHistoryType.INBOUND as TxType;
   }
 
-  return tx.txType as ITxHistoryType;
+  return tx.txType as TxType;
 };

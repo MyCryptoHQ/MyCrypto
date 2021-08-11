@@ -18,6 +18,12 @@ export interface ITxMetaTypes {
   [s: string]: ITxTypeMeta;
 }
 
+export interface ITxHistoryState {
+  history: ITxHistoryApiResponse[];
+  txTypeMeta: ITxMetaTypes;
+  error: string;
+}
+
 export const initialState = {
   history: [] as ITxHistoryApiResponse[],
   txTypeMeta: {} as ITxMetaTypes,

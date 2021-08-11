@@ -193,8 +193,8 @@ export enum ITxType {
 }
 
 export interface ITxTypeMeta {
-  protocol: string;
   type: string;
+  protocol?: string;
 }
 
 export type TxType = Brand<string, 'TxType'>;
