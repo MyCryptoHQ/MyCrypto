@@ -160,4 +160,14 @@ describe('estimateFees', () => {
     >).mockResolvedValueOnce({ ...feeHistory, reward: undefined });
     return expect(estimateFees(mockProvider)).resolves.toStrictEqual(FALLBACK_ESTIMATE);
   });
+
+  it('falls back if gas is VERY high', async () => {
+    (mockProvider.getLatestBlock as jest.MockedFunction<
+      typeof mockProvider.getLatestBlock
+    >).mockResolvedValueOnce({ ...block, baseFeePerGas: BigNumber.from('9999000000000') });
+    (mockProvider.getFeeHistory as jest.MockedFunction<
+      typeof mockProvider.getFeeHistory
+    >).mockResolvedValueOnce(feeHistory);
+    return expect(estimateFees(mockProvider)).resolves.toStrictEqual(FALLBACK_ESTIMATE);
+  });
 });

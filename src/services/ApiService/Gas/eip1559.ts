@@ -22,8 +22,10 @@ export const FALLBACK_ESTIMATE = {
 };
 const PRIORITY_FEE_INCREASE_BOUNDARY = 200; // %
 
+const toGwei = (wei: BigNumber) => bigify(fromWei(wei.integerValue(), 'gwei'));
+
 const roundToWholeGwei = (wei: BigNumber) => {
-  const gwei = bigify(fromWei(wei.integerValue(), 'gwei'));
+  const gwei = toGwei(wei);
   const rounded = gwei.integerValue(BigNumber.ROUND_HALF_UP);
   return bigify(toWei(rounded.toString(10), getDecimalFromEtherUnit('gwei')));
 };
@@ -116,7 +118,7 @@ export const estimateFees = async (provider: ProviderHandler) => {
       ? potentialMaxFee.plus(maxPriorityFeePerGas)
       : potentialMaxFee;
 
-    if (maxFeePerGas.gt(MAX_GAS_FAST) || maxPriorityFeePerGas.gt(MAX_GAS_FAST)) {
+    if (toGwei(maxFeePerGas).gte(MAX_GAS_FAST) || toGwei(maxPriorityFeePerGas).gte(MAX_GAS_FAST)) {
       throw new Error('Estimated gas fee was much higher than expected, erroring');
     }
 
