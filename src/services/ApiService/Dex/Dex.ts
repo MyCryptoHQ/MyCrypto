@@ -8,13 +8,16 @@ import {
   DEX_TRADE_EXPIRATION,
   MYC_DEX_COMMISSION_RATE
 } from '@config';
-import { formatApproveTx as formatApproveTxFunc } from '@helpers';
+import { formatApproveTx as formatApproveTxFunc, makeTxFromForm } from '@helpers';
+import {
+  fetchUniversalGasPriceEstimate,
+  UniversalGasEstimationResult
+} from '@services/ApiService/Gas';
 import {
   Bigish,
-  ILegacyTxObject,
   ISwapAsset,
+  ITxData,
   ITxGasLimit,
-  ITxGasPrice,
   ITxType,
   ITxValue,
   Network,
@@ -23,7 +26,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { addHexPrefix, baseToConvertedUnit, bigify, toWei } from '@utils';
+import { addHexPrefix, baseToConvertedUnit, bigify, inputGasPriceToHex, toWei } from '@utils';
 
 import { default as ApiService } from '../ApiService';
 import { DexTrade } from './types';
@@ -117,15 +120,19 @@ export default class DexService {
       })
     });
 
+    const gas = await fetchUniversalGasPriceEstimate(network, account);
+
+    const gasPrice = gas.gasPrice ?? gas.maxFeePerGas;
+
     const approvalTx =
       data.allowanceTarget !== AddressZero
         ? formatApproveTx({
             account: account!,
             contractAddress: data.sellTokenAddress,
             spenderAddress: data.allowanceTarget,
-            gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
             baseTokenAmount: bigify(data.sellAmount),
-            network
+            network,
+            gas
           })
         : undefined;
 
@@ -141,37 +148,37 @@ export default class DexService {
       sellAmount: bigify(
         baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
       ),
-      gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+      gasPrice: inputGasPriceToHex(gasPrice),
       // @todo: Better way to calculate expiration? This is what matcha.xyz does
       expiration: Date.now() / 1000 + DEX_TRADE_EXPIRATION,
       approvalTx,
       tradeGasLimit,
       tradeTx: formatTradeTx({
+        account: account!,
         to: data.to,
-        data: data.data,
-        gasPrice: addHexPrefix(bigify(data.gasPrice).toString(16)) as ITxGasPrice,
+        data: data.data as ITxData,
+        gas,
         value: data.value,
-        chainId: network.chainId,
+        network,
         buyToken
       })
     };
   };
 }
 
-// @todo: Support EIP 1559 gas params when API returns it
 export const formatApproveTx = ({
   account,
   contractAddress,
   baseTokenAmount,
   spenderAddress,
-  gasPrice,
+  gas,
   network
 }: {
   account: StoreAccount;
   contractAddress: TAddress;
   baseTokenAmount: Bigish;
   spenderAddress: TAddress;
-  gasPrice: ITxGasPrice;
+  gas: UniversalGasEstimationResult;
   network: Network;
 }) => {
   const tx = formatApproveTxFunc({
@@ -180,44 +187,57 @@ export const formatApproveTx = ({
     spenderAddress,
     form: {
       network,
-      gasPrice,
+      gasPrice: gas.gasPrice ?? '',
+      maxFeePerGas: gas.maxFeePerGas ?? '',
+      maxPriorityFeePerGas: gas.maxPriorityFeePerGas ?? '',
       gasLimit: '',
       address: '',
       nonce: '',
-      maxFeePerGas: '',
-      maxPriorityFeePerGas: '',
       account
     }
   });
 
   return {
     ...tx,
-    gasPrice,
-    maxFeePerGas: undefined,
-    maxPriorityFeePerGas: undefined,
-    type: undefined,
     txType: ITxType.APPROVAL
   };
 };
 
-// @todo: Support EIP 1559 gas params when API returns it
 export const formatTradeTx = ({
+  account,
   to,
   data,
   value,
-  gasPrice,
-  chainId,
+  gas,
+  network,
   buyToken
-}: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+}: {
+  account: StoreAccount;
+  to: TAddress;
+  data: ITxData;
+  value: ITxValue;
+  gas: UniversalGasEstimationResult;
+  network: Network;
   buyToken: ISwapAsset;
 }) => {
+  const { gasLimit, nonce, value: unusedValue, from, ...tx } = makeTxFromForm(
+    {
+      network,
+      gasPrice: gas.gasPrice ?? '',
+      maxFeePerGas: gas.maxFeePerGas ?? '',
+      maxPriorityFeePerGas: gas.maxPriorityFeePerGas ?? '',
+      gasLimit: '',
+      address: to,
+      nonce: '',
+      account
+    },
+    '0',
+    data
+  );
+
   return {
-    to,
-    data,
+    ...tx,
     value: addHexPrefix(bigify(value || '0').toString(16)) as ITxValue,
-    chainId,
-    gasPrice,
-    type: undefined,
     txType: ITxType.SWAP,
     metadata: { receivingAsset: buyToken.uuid }
   };

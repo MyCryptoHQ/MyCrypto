@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
+import { DistributiveOmit } from 'react-redux';
 
 import {
-  ILegacyTxObject,
   ISwapAsset,
   ITxGasLimit,
   ITxGasPrice,
@@ -54,11 +54,11 @@ export interface SwapFormState {
   gasPrice?: ITxGasPrice;
   approvalGasLimit?: ITxGasLimit;
   tradeGasLimit?: ITxGasLimit;
-  approvalTx?: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId' | 'from'> & {
+  approvalTx?: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
     txType: ITxType;
   };
   expiration?: number;
-  tradeTx?: Pick<ILegacyTxObject, 'to' | 'data' | 'value' | 'gasPrice' | 'chainId'> & {
+  tradeTx?: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
     txType: ITxType;
     metadata: ITxMetadata;
   };
