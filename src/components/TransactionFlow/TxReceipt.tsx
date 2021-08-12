@@ -139,21 +139,16 @@ const TxReceipt = ({
                 transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
               setTxStatus((prevStatusState) => transactionStatus || prevStatusState);
               setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-              provider
-                .getTransactionByHash(displayTxReceipt.hash)
-                .then((txResponse) => {
-                  setDisplayTxReceipt(
-                    makeFinishedTxReceipt(
-                      txReceipt as IPendingTxReceipt,
-                      transactionStatus,
-                      txResponse.timestamp,
-                      txResponse.blockNumber,
-                      transactionOutcome.gasUsed,
-                      transactionOutcome.confirmations
-                    )
-                  );
-                })
-                .catch(console.error);
+              setDisplayTxReceipt(
+                makeFinishedTxReceipt(
+                  txReceipt as IPendingTxReceipt,
+                  transactionStatus,
+                  0,
+                  transactionOutcome.blockNumber ?? 0,
+                  transactionOutcome.gasUsed,
+                  transactionOutcome.confirmations
+                )
+              );
             } else if (txStatus === ITxStatus.UNKNOWN) {
               setTxStatus(ITxStatus.PENDING);
             }
