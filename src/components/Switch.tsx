@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import styled from 'styled-components';
 
 import { Box, Input, Text } from '@components';
@@ -62,26 +64,30 @@ interface Props {
   checked?: boolean;
   onChange?(): void;
 }
-export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: Props) => (
-  <Box variant="rowCenter">
-    <LabelText as="label" htmlFor="toggle">
-      {labelLeft}
-    </LabelText>
-    <SliderBackground htmlFor="toggle">
-      <Checkbox
-        $greyable={$greyable}
-        id="toggle"
-        type="checkbox"
-        onChange={onChange}
-        checked={checked}
-        data-testid="switch-checkbox"
-      />
-      <Slider checked={checked} $greyable={$greyable} />
-    </SliderBackground>
-    <LabelText as="label" htmlFor="toggle">
-      {labelRight}
-    </LabelText>
-  </Box>
-);
+export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: Props) => {
+  const [id] = useState(`toggle-${Math.random().toString(16).slice(-8)}`);
+
+  return (
+    <Box variant="rowCenter">
+      <LabelText as="label" htmlFor={id}>
+        {labelLeft}
+      </LabelText>
+      <SliderBackground htmlFor={id}>
+        <Checkbox
+          $greyable={$greyable}
+          id={id}
+          type="checkbox"
+          onChange={onChange}
+          checked={checked}
+          data-testid="switch-checkbox"
+        />
+        <Slider checked={checked} $greyable={$greyable} />
+      </SliderBackground>
+      <LabelText as="label" htmlFor={id}>
+        {labelRight}
+      </LabelText>
+    </Box>
+  );
+};
 
 export default Switch;
