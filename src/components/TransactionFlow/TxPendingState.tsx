@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import crowdedBlock from 'assets/images/illustrations/crowded-block.svg';
 import notIncluded from 'assets/images/illustrations/not-included-in-block.svg';
@@ -8,13 +8,22 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
 import { translateRaw } from '@translations';
-import { ITxReceipt, Network } from '@types';
-import { buildTxUrl } from '@utils';
+import { ITxReceipt, ITxStatus, Network } from '@types';
+import { buildTxUrl, useTimeout } from '@utils';
 
 interface Props {
   network: Network;
   txReceipt: ITxReceipt;
   viewDetails(): void;
+}
+
+const CROWDED_TIMEOUT = 20 * 1000; // 20 sec in ms
+
+enum PendingState {
+  PENDING = 'PENDING',
+  SUCCESS = 'SUCCESS',
+  CROWDED = 'CROWDED',
+  NOT_INCLUDED = 'NOT_INCLUDED'
 }
 
 const states = {
@@ -41,7 +50,21 @@ const states = {
 };
 
 export const TxPendingState = ({ network, txReceipt, viewDetails }: Props) => {
-  const { header, description, illustration } = states['PENDING'];
+  const [state, setState] = useState<PendingState>(PendingState.PENDING);
+  const { header, description, illustration } = states[state];
+
+  useEffect(() => {
+    if (txReceipt.status === ITxStatus.SUCCESS) {
+      setState(PendingState.SUCCESS);
+    }
+  }, [txReceipt.status]);
+
+  useTimeout(() => {
+    if (txReceipt.status === ITxStatus.PENDING) {
+      setState(PendingState.CROWDED);
+    }
+  }, CROWDED_TIMEOUT);
+
   return (
     <Box>
       <Heading fontWeight="bold" fontSize="3">

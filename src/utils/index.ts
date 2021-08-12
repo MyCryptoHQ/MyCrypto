@@ -110,3 +110,4 @@ export { goBack } from './navigation';
 export { addHexPrefix } from './addHexPrefix';
 export * from './typedTx';
 export * from './hexlify';
+export { default as useTimeout } from './useTimeout';
