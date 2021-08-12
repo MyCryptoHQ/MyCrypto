@@ -199,7 +199,7 @@ export class ProviderHandler {
     baseFeePerGas: string[];
     gasUsedRatio: number[];
     reward?: string[][];
-    oldestBlock: number;
+    oldestBlock: string;
   }> {
     return this.injectClient((client) =>
       // @ts-expect-error Temp until Ethers supports eth_feeHistory

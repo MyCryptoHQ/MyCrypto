@@ -22,7 +22,7 @@ const block = {
 };
 
 const feeHistory = {
-  oldestBlock: 5219909,
+  oldestBlock: '0x4fa645',
   reward: [['0x0'], ['0x3b9aca00'], ['0x12a05f1f9'], ['0x3b9aca00'], ['0x12a05f1f9']],
   baseFeePerGas: ['0x7', '0x7', '0x7', '0x7', '0x7', '0x7'],
   gasUsedRatio: [0, 0.10772606666666666, 0.0084, 0.12964573239101315, 0.06693689580776942]
