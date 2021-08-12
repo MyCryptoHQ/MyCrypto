@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import BigNumber from 'bignumber.js';
 
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
@@ -89,10 +90,7 @@ export const TransactionFeeEIP1559 = ({
             </Body>
           </LinkApp>
         ) : (
-          <LinkApp
-            href="https://thedailygwei.substack.com/p/this-is-eip-1559-the-daily-gwei-300"
-            isExternal={true}
-          >
+          <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_EIP1559)} isExternal={true}>
             <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
             <Icon ml="1" width="12px" height="12px" type="link-out" />
           </LinkApp>
