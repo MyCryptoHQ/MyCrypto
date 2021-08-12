@@ -607,7 +607,7 @@
     "SIGN_TX_WALLETCONNECT_SESSION_NETWORK": "on network",
     "SIGN_TX_WALLETCONNECT_SESSION_REJECTED": "Session rejected",
     "SIGN_TX_WALLETCONNECT_TRY_AGAIN": "Try Again",
-    "SIGN_TX_WALLETCONNECT_TX_INFO": "Requesting signature for transcation:",
+    "SIGN_TX_WALLETCONNECT_TX_INFO": "Requesting signature for transaction:",
     "SIGN_TX_WALLETCONNECT_TX_REJECTED": "Signature rejected",
     "SIGN_TX_WEB3_FAILED_ACCOUNT": "Please switch the account in $walletName to $address in order to proceed.",
     "SIGN_TX_WEB3_FAILED_NETWORK": "Please switch the network in $walletName to $networkName in order to proceed.",
