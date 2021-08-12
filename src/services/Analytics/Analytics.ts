@@ -1,6 +1,6 @@
 import MatomoTracker from '@datapunt/matomo-tracker-js';
 
-//import { ANALYTICS_API_URL, SEGMENT_WRITE_KEY } from '@utils';
+import { ANALYTICS_API } from '@config';
 
 import { TAnalyticEvents } from './constants';
 
@@ -21,10 +21,25 @@ export interface LinkParams {
   type?: 'download' | 'link';
 }
 
+const LS_ANA_UID_NAME = 'MYC_ANA_UID';
+
+const makeID = () => {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+const getOrSetAnonymousID = () => {
+  const existingID = localStorage.getItem(LS_ANA_UID_NAME);
+  if (existingID) {
+    return existingID;
+  }
+  const newID = makeID();
+  localStorage.setItem(LS_ANA_UID_NAME, newID);
+  return newID;
+};
+
 const tracker = new MatomoTracker({
-  urlBase: 'https://analytics.mycryptoapi.com',
+  urlBase: ANALYTICS_API,
   siteId: 11,
-  //userId: 'UID76903202', // optional, default value: `undefined`.
   disabled: false,
   heartBeat: {
     active: false
@@ -38,29 +53,19 @@ const tracker = new MatomoTracker({
 });
 
 const initAnalytics = () => {
-  /*setConfig({
-    host: "http://localhost:5555",
-    providers: [
-      {
-        name: Providers.Segment,
-        writeKey: SEGMENT_WRITE_KEY!
-      }
-    ]
-  });*/
+  tracker.pushInstruction('setUserId', getOrSetAnonymousID());
 };
 
 /**
- * Blockstack/stats sets an anonymous id on `setConfig`.
  * If a user chooses to deactivate product analytics we ensure to clear
  * the LS value as well.
  */
 const clearAnonymousID = () => {
-  /*const LS_BSK_ID = '__bsk_ana_id__';
-  localStorage.removeItem(LS_BSK_ID);*/
+  localStorage.removeItem(LS_ANA_UID_NAME);
 };
 
 const setAnonymousID = () => {
-  //return getConfig();
+  tracker.pushInstruction('setUserId', getOrSetAnonymousID());
 };
 
 const track = ({ action, name, value }: TrackParams) => {
@@ -68,9 +73,6 @@ const track = ({ action, name, value }: TrackParams) => {
 };
 
 const trackPage = ({ name, title }: PageParams) => {
-  // @blockstack/stats/client already includes domain and path
-  // while omitting query values.
-  //return page({ name, title });
   return tracker.trackPageView({ documentTitle: title, href: name });
 };
 
