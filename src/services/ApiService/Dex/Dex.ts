@@ -1,6 +1,5 @@
 import { AddressZero } from '@ethersproject/constants';
 import axios, { AxiosInstance } from 'axios';
-import { PromiseType } from 'utility-types';
 
 import {
   DEFAULT_ASSET_DECIMAL,
@@ -10,7 +9,10 @@ import {
   MYC_DEX_COMMISSION_RATE
 } from '@config';
 import { formatApproveTx as formatApproveTxFunc, makeTxFromForm } from '@helpers';
-import { fetchUniversalGasPriceEstimate } from '@services/ApiService/Gas';
+import {
+  fetchUniversalGasPriceEstimate,
+  UniversalGasEstimationResult
+} from '@services/ApiService/Gas';
 import {
   Bigish,
   ISwapAsset,
@@ -176,7 +178,7 @@ export const formatApproveTx = ({
   contractAddress: TAddress;
   baseTokenAmount: Bigish;
   spenderAddress: TAddress;
-  gas: PromiseType<ReturnType<typeof fetchUniversalGasPriceEstimate>>;
+  gas: UniversalGasEstimationResult;
   network: Network;
 }) => {
   const tx = formatApproveTxFunc({
@@ -214,7 +216,7 @@ export const formatTradeTx = ({
   to: TAddress;
   data: ITxData;
   value: ITxValue;
-  gas: PromiseType<ReturnType<typeof fetchUniversalGasPriceEstimate>>;
+  gas: UniversalGasEstimationResult;
   network: Network;
   buyToken: ISwapAsset;
 }) => {

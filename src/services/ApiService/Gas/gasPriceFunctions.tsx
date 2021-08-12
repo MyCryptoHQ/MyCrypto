@@ -56,6 +56,18 @@ export async function fetchEIP1559PriceEstimates(network: Network) {
   return estimateFees(provider);
 }
 
+export type UniversalGasEstimationResult =
+  | {
+      gasPrice: string; // Gwei
+      maxFeePerGas: undefined;
+      maxPriorityFeePerGas: undefined;
+    }
+  | {
+      gasPrice: undefined;
+      maxFeePerGas: string; // Gwei
+      maxPriorityFeePerGas: string; // Gwei
+    };
+
 // Returns fast gasPrice or EIP1559 gas params in gwei
 export async function fetchUniversalGasPriceEstimate(network?: Network, account?: StoreAccount) {
   if (network && account && isEIP1559Supported(network, account)) {
