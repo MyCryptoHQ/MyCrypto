@@ -75,7 +75,7 @@ export const deriveTxType = (
     tx.txType
   );
   const isApiTxType = tx.txType in txTypeMetas;
-  const isInvalidTxHistoryType = isIncompleteTxType && isApiTxType ;
+  const isInvalidTxHistoryType = isIncompleteTxType && !isApiTxType;
 
   if (isInvalidTxHistoryType && isContractInteraction(tx.data)) {
     return ITxHistoryType.CONTRACT_INTERACT as TxType;

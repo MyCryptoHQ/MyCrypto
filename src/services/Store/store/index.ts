@@ -119,7 +119,7 @@ export { default as persistenceSlice } from './persistence.slice';
 export { getMemberships, membershipExpiryDate } from './membership.slice';
 export { setRates, getRates, startRatesPolling } from './rates.slice';
 export { trackAsset, getTrackedAssets } from './trackedAssets.slice';
-export { fetchHistory, fetchSchemaMeta, getTxHistory } from './txHistory.slice';
+export { fetchHistory, fetchSchemaMeta, getTxHistory, getTxTypeMetas } from './txHistory.slice';
 export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
 export { getClaims, getAllClaims } from './claims.slice';
 export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUndo.slice';

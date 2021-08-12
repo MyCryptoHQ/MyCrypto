@@ -495,6 +495,7 @@
     "RAW_TRANSACTION": "Raw Transaction",
     "READ": "Read",
     "READ_MORE": "Read more",
+    "RECENT_TRANSACTIONS": "Recent Transactions",
     "RECENT_TRANSACTIONS_DATE": "Date",
     "RECENT_TRANSACTIONS_FROM_ADDRESS": "From",
     "RECENT_TRANSACTIONS_TO_ADDRESS": "To",

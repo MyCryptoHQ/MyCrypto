@@ -14,7 +14,7 @@ import {
 
 export const fTxHistoryAPI: ITxHistoryApiResponse = {
   to: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,
-  from: '0x5197b5b062288bbf29008c92b08010a92dd677cd' as TAddress,
+  from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
   value: '0x1f399b1438a10000' as ITxValue,
   blockNumber: '0xa2db5e',
   timestamp: 1597606012,
@@ -59,6 +59,10 @@ export const fTxTypeMetas: ITxMetaTypes = {
   ERC_20_TRANSFER: {
     protocol: 'ERC_20',
     type: 'TRANSFER'
+  },
+  UNISWAP_V2_EXCHANGE: {
+    protocol: 'UNISWAP_V2',
+    type: 'EXCHANGE'
   }
 };
 
