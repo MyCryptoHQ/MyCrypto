@@ -142,6 +142,15 @@ const initialFormikValues: FormValues = {
   path: ''
 };
 
+const CUSTOM_DERIVATION_PATH_SCHEMA = object().shape({
+  name: string().required(translateRaw('REQUIRED')),
+  path: string()
+    .required(translateRaw('REQUIRED'))
+    .test('check-valid-path', translateRaw('DETERMINISTIC_INVALID_DPATH'), (value) =>
+      isValidPath(value)
+    )
+});
+
 const HDWallet = ({
   selectedAsset,
   scannedAccounts,
@@ -162,6 +171,7 @@ const HDWallet = ({
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);
+
   const handleDPathAddition = (values: FormValues) => {
     addDPaths([
       {
@@ -173,16 +183,11 @@ const HDWallet = ({
     setDpathAddView(false);
   };
 
-  const Schema = object().shape({
-    label: string().required(translateRaw('REQUIRED')),
-    value: string()
-      .required(translateRaw('REQUIRED'))
-      .test('check-valid-path', translateRaw('DETERMINISTIC_INVALID_DPATH'), (value) =>
-        isValidPath(value)
-      )
-  });
+  const handleToggleShowEmptyAddresses = () => setDisplayEmptyAddresses((value) => !value);
+
   const relevantAssets = network ? filterValidAssets(assets, network.id) : [];
   const filteredAssets = sortByTicker(relevantAssets);
+
   return dpathAddView ? (
     <MnemonicWrapper>
       <HeadingWrapper>
@@ -194,12 +199,12 @@ const HDWallet = ({
       <Typography>{translate('DETERMINISTIC_CUSTOM_GET_INFORMED')}</Typography>
       <Formik
         initialValues={initialFormikValues}
-        onSubmit={(values) => handleDPathAddition(values)}
-        validationSchema={Schema}
+        onSubmit={handleDPathAddition}
+        validationSchema={CUSTOM_DERIVATION_PATH_SCHEMA}
       >
         {({ errors, touched, handleChange, handleBlur, values, isSubmitting, handleSubmit }) => (
           <SForm onSubmit={handleSubmit}>
-            <SLabel htmlFor="label">
+            <SLabel htmlFor="name">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL" />
             </SLabel>
             <SInput
@@ -212,7 +217,7 @@ const HDWallet = ({
               showInvalidWithoutValue={true}
             />
             <Error>{errors && touched.name && errors.name}</Error>
-            <SLabel htmlFor="value">
+            <SLabel htmlFor="path">
               <Trans id="DETERMINISTIC_CUSTOM_LABEL_DPATH" />
             </SLabel>
             <SInput
@@ -292,7 +297,7 @@ const HDWallet = ({
         <Switch
           id="address-toggle"
           checked={displayEmptyAddresses}
-          onChange={() => setDisplayEmptyAddresses(!displayEmptyAddresses)}
+          onChange={handleToggleShowEmptyAddresses}
           labelLeft={translateRaw('HIDE_EMPTY_ADDRESSES')}
           labelRight={translateRaw('SHOW_EMPTY_ADDRESSES')}
         />
