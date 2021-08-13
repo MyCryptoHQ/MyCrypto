@@ -290,6 +290,7 @@ const HDWallet = ({
         mr={!isMobile ? '-25px' : '0px'}
       >
         <Switch
+          id="address-toggle"
           checked={displayEmptyAddresses}
           onChange={() => setDisplayEmptyAddresses(!displayEmptyAddresses)}
           labelLeft={translateRaw('HIDE_EMPTY_ADDRESSES')}

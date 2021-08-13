@@ -56,21 +56,22 @@ const Slider = styled.span<{ $greyable?: boolean; checked?: boolean }>`
 `;
 
 interface Props {
+  id: string;
   $greyable?: boolean;
   labelLeft?: string;
   labelRight?: string;
   checked?: boolean;
   onChange?(): void;
 }
-export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: Props) => (
+export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked, id }: Props) => (
   <Box variant="rowCenter">
-    <LabelText as="label" htmlFor="toggle">
+    <LabelText as="label" htmlFor={id}>
       {labelLeft}
     </LabelText>
-    <SliderBackground htmlFor="toggle">
+    <SliderBackground htmlFor={id}>
       <Checkbox
         $greyable={$greyable}
-        id="toggle"
+        id={id}
         type="checkbox"
         onChange={onChange}
         checked={checked}
@@ -78,7 +79,7 @@ export const Switch = ({ $greyable, onChange, labelLeft, labelRight, checked }: 
       />
       <Slider checked={checked} $greyable={$greyable} />
     </SliderBackground>
-    <LabelText as="label" htmlFor="toggle">
+    <LabelText as="label" htmlFor={id}>
       {labelRight}
     </LabelText>
   </Box>
