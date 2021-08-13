@@ -1,4 +1,4 @@
-import { getByText, queryAllByText } from '@testing-library/testcafe';
+import { getAllByTestId, queryAllByText } from '@testing-library/testcafe';
 import { t } from 'testcafe';
 
 import BasePage from './base-page.po';
@@ -16,7 +16,7 @@ export default class MembershipPage extends BasePage {
   }
 
   async useETH() {
-    await t.click(getByText('12 months', { exact: false }));
+    await t.click(getAllByTestId('selector').nth(0));
     await t.click(queryAllByText(findByTKey('MEMBERSHIP_LIFETIME_EMOJI')).nth(0));
   }
 
