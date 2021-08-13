@@ -14,7 +14,7 @@ import { buildTxUrl, useTimeout } from '@utils';
 interface Props {
   network: Network;
   txReceipt: ITxReceipt;
-  viewDetails(): void;
+  showDetails(): void;
 }
 
 const CROWDED_TIMEOUT = 20 * 1000; // 20 sec in ms
@@ -49,7 +49,7 @@ const states = {
   }
 };
 
-export const TxPendingState = ({ network, txReceipt, viewDetails }: Props) => {
+export const TxPendingState = ({ network, txReceipt, showDetails }: Props) => {
   const [state, setState] = useState<PendingState>(PendingState.PENDING);
   const { header, description, illustration } = states[state];
 
@@ -95,7 +95,7 @@ export const TxPendingState = ({ network, txReceipt, viewDetails }: Props) => {
       <Box variant="rowAlign" justifyContent="center">
         <img src={illustration} />
       </Box>
-      <Button colorScheme="inverted" fullwidth={true} onClick={viewDetails}>
+      <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
         {translateRaw('VIEW_TRANSACTION_DETAILS')}
       </Button>
     </Box>

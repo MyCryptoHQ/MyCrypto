@@ -41,7 +41,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { buildTxUrl, isWeb3Wallet, truncate } from '@utils';
+import { buildTxUrl, isType2Receipt, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
@@ -52,6 +52,7 @@ import {
   constructSenderFromTxConfig,
   isContractInteraction
 } from './helpers';
+import { TxPendingState } from './TxPendingState';
 import { TxReceiptStatusBadge } from './TxReceiptStatusBadge';
 import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
@@ -99,6 +100,7 @@ const TxReceipt = ({
   const { getNetworkById } = useNetworks();
 
   const [receipt, setDisplayTxReceipt] = useState(txReceipt);
+  const [displayDetails, setDisplayDetails] = useState(false);
 
   const transactions = useSelector(selectAccountTxs);
   const userTx = transactions.find((t) => t.hash === receipt!.hash);
@@ -201,6 +203,14 @@ const TxReceipt = ({
   const txType = displayTxReceipt ? displayTxReceipt.txType : ITxType.STANDARD;
 
   const fiat = getFiat(settings);
+
+  const showDetails = () => setDisplayDetails(true);
+
+  if (!displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
+    return (
+      <TxPendingState network={network} txReceipt={displayTxReceipt} showDetails={showDetails} />
+    );
+  }
 
   return (
     <TxReceiptUI
