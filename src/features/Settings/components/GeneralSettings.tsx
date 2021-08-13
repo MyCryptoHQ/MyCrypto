@@ -121,6 +121,7 @@ const GeneralSettings = ({
         <SubHeading fontWeight="initial">{translate('EIP_1559_SETTINGS_HEADER')}</SubHeading>
         <SettingsControl>
           <Switch
+            id="toggle-eip1559"
             $greyable={true}
             checked={getEIP1559FeatureFlag()}
             onChange={toggleEIP1559}
@@ -143,6 +144,7 @@ const GeneralSettings = ({
         </SubHeading>
         <SettingsControl>
           <Switch
+            id="toggle-analytics"
             $greyable={true}
             checked={canTrackProductAnalytics}
             onChange={toggleAnalytics}
