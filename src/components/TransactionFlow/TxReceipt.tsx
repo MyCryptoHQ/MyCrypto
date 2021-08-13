@@ -91,7 +91,8 @@ const TxReceipt = ({
   history,
   resetFlow,
   protectTxButton,
-  queryStringsDisabled
+  queryStringsDisabled,
+  isTxStatus
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
@@ -206,7 +207,7 @@ const TxReceipt = ({
 
   const showDetails = () => setDisplayDetails(true);
 
-  if (!displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
+  if (!isTxStatus && !displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
     return (
       <TxPendingState network={network} txReceipt={displayTxReceipt} showDetails={showDetails} />
     );
