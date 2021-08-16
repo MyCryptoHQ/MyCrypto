@@ -69,6 +69,7 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
       case 'CONTRACT_INTERACT':
         return contractInteract;
       case 'EXCHANGE':
+      case 'SWAP':
       case 'BRIDGE_IN':
       case 'BRIDGE_OUT':
         return swap;

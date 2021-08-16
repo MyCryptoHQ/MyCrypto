@@ -568,6 +568,7 @@
     "PLATFORM_DEPOSIT": "Assets Deposited",
     "PLATFORM_WITHDRAW": "Assets Withdrawn",
     "PLATFORM_EXCHANGE": "Assets Swapped",
+    "PLATFORM_SWAP": "Assets Swapped",
     "PLATFORM_BORROW": "Loan Taken",
     "PLATFORM_REPAY": "Loan Repayed",
     "PLATFORM_MIGRATION": "Assets Migrated",

@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import styled from 'styled-components';
 
 import transfer from '@assets/images/transactions/transfer.svg';
@@ -81,11 +83,17 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const txHistory = useSelector(getMergedTxHistory);
   const { isMobile } = useScreenSize();
 
-  const accountTxs = txHistory
-    .filter((tx) =>
-      accountsList.some((a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from))
-    )
-    .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType }));
+  const accountTxs = useMemo(
+    () =>
+      txHistory
+        .filter((tx) =>
+          accountsList.some(
+            (a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from)
+          )
+        )
+        .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
+    [txHistory, accountsList.length]
+  );
 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
@@ -112,7 +120,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: from,
           networkId
         };
-        const recipient = receiverAddress || to;
+        const recipient = receiverAddress ?? to;
         const labelToProps = {
           addressBookEntry: toAddressBookEntry,
           address: recipient,
@@ -209,7 +217,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     }
   };
   return (
-    <DashboardPanel heading={translateRaw('RECENT_TRANSACTIONS')} className={`RecentTransactionsList ${className}`}>
+    <DashboardPanel
+      heading={translateRaw('RECENT_TRANSACTIONS')}
+      className={`RecentTransactionsList ${className}`}
+    >
       {filteredGroups.length >= 1 ? (
         <FixedSizeCollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
       ) : (
