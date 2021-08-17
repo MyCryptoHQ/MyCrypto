@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+import excludedTranslationKeys from './excludedTranslationKeys.json';
 import {
   findTranslationKeys,
   getJsonKeys,
@@ -50,7 +51,9 @@ describe('Translations extract', () => {
     const jsonKeys = getJsonKeys();
     jsonKeys.forEach((language) => {
       const matchedKeys = findTranslationKeys(PROJECT_FILE_PATTERN, language);
-      const keysInUse = [...new Set([...extractedKeys, ...matchedKeys])];
+      const keysInUse = [
+        ...new Set([...extractedKeys, ...matchedKeys, ...excludedTranslationKeys])
+      ];
       expect(keysInUse.sort()).toStrictEqual(language.sort());
     });
   });

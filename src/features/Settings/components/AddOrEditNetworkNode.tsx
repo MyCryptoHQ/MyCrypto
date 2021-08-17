@@ -127,7 +127,7 @@ const SError = styled.div`
   color: ${COLORS.PASTEL_RED};
 `;
 
-const DeleteButton = styled(Button)<{ disabled: boolean }>`
+const DeleteButton = styled(Button) <{ disabled: boolean }>`
   ${(props) =>
     !props.disabled &&
     `
@@ -307,31 +307,31 @@ export default function AddOrEditNetworkNode({
             const network: Network = !isAddingCustomNetwork
               ? getNetworkById(selectedNetworkId)
               : {
-                  id: selectedNetworkId,
+                id: selectedNetworkId,
+                name: networkName!,
+                chainId: parseInt(chainId!, 10),
+                baseUnit: baseUnit as TTicker,
+                baseAsset: generateAssetUUID(chainId!),
+                isCustom: true,
+                nodes: [node],
+                dPaths: {
+                  [WalletId.TREZOR]: DEFAULT_ETH,
+                  [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
+                  default: DEFAULT_ETH
+                },
+                gasPriceSettings: {
+                  min: 1,
+                  max: 100,
+                  initial: 1
+                },
+                shouldEstimateGasPrice: false,
+                color: undefined,
+                selectedNode: node.name,
+                blockExplorer: makeExplorer({
                   name: networkName!,
-                  chainId: parseInt(chainId!, 10),
-                  baseUnit: baseUnit as TTicker,
-                  baseAsset: generateAssetUUID(chainId!),
-                  isCustom: true,
-                  nodes: [node],
-                  dPaths: {
-                    [WalletId.TREZOR]: DEFAULT_ETH,
-                    [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
-                    default: DEFAULT_ETH
-                  },
-                  gasPriceSettings: {
-                    min: 1,
-                    max: 100,
-                    initial: 1
-                  },
-                  shouldEstimateGasPrice: false,
-                  color: undefined,
-                  selectedNode: node.name,
-                  blockExplorer: makeExplorer({
-                    name: networkName!,
-                    origin: ETHPLORER_URL
-                  })
-                };
+                  origin: ETHPLORER_URL
+                })
+              };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
             await provider.getLatestBlockNumber();
 
@@ -420,7 +420,7 @@ export default function AddOrEditNetworkNode({
                         <InputField
                           {...field}
                           inputError={errors && errors.baseUnit}
-                          placeholder={translateRaw('CUSTOM_NODE_FORM_BASE_UNIT_PLACEHOLDER')}
+                          placeholder={translateRaw('BASE_UNIT')}
                         />
                       )}
                     </Field>

@@ -1,12 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther } from '@ethersproject/units';
 
+import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { ITxHistoryType } from '@features/Dashboard/types';
 import { deriveTxFields, guessERC20Type } from '@helpers';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
-import { Asset, IAccount, ITxReceipt, ITxType, Network } from '@types';
+import { ITxMetaTypes } from '@store/txHistory.slice';
+import { Asset, IAccount, ITxReceipt, Network, TxType } from '@types';
 import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
+import { isSameHash } from '@utils/isSameAddress';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -51,38 +54,38 @@ export const makeTxReceipt = (
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
-  const filteredApiTxs = apiTxs.filter((tx) => !accountTxs.find((a) => a.hash === tx.hash));
+  const filteredApiTxs = apiTxs.filter(
+    (tx) => !accountTxs.find((a) => isSameHash(a.hash, tx.hash))
+  );
   return filteredApiTxs.concat(accountTxs);
 };
 
-// Mapping from TX API types to our current types
-const TYPE_MAPPING = { ERC_20_APPROVE: ITxType.APPROVAL } as { [key: string]: ITxHistoryType };
-
-export const deriveTxType = (accountsList: IAccount[], tx: ITxReceipt): ITxHistoryType => {
+export const deriveTxType = (
+  txTypeMetas: ITxMetaTypes,
+  accountsList: IAccount[],
+  tx: ITxReceipt
+): TxType => {
   const fromAccount =
     tx.from && accountsList.find(({ address }) => isSameAddress(address, tx.from));
   const toAddress = tx.receiverAddress || tx.to;
   const toAccount =
     toAddress && accountsList.find(({ address }) => isSameAddress(address, toAddress));
 
-  const isInvalidTxHistoryType =
-    !('txType' in tx) ||
-    tx.txType === ITxHistoryType.STANDARD ||
-    tx.txType === ITxHistoryType.UNKNOWN ||
-    !Object.values(ITxHistoryType).some((t) => t === tx.txType);
+  const isIncompleteTxType = [ITxHistoryType.STANDARD, ITxHistoryType.UNKNOWN, ''].includes(
+    tx.txType
+  );
+  const isApiTxType = tx.txType in txTypeMetas;
+  const isInvalidTxHistoryType = isIncompleteTxType && !isApiTxType;
 
-  const mapping = Object.keys(TYPE_MAPPING).find((t) => t === tx.txType);
-  if (isInvalidTxHistoryType && mapping) {
-    return TYPE_MAPPING[mapping];
-  }
-
-  if (isInvalidTxHistoryType && toAccount && fromAccount) {
-    return ITxHistoryType.TRANSFER;
+  if (isInvalidTxHistoryType && isContractInteraction(tx.data)) {
+    return ITxHistoryType.CONTRACT_INTERACT as TxType;
+  } else if (isInvalidTxHistoryType && toAccount && fromAccount) {
+    return ITxHistoryType.TRANSFER as TxType;
   } else if (isInvalidTxHistoryType && !toAccount && fromAccount) {
-    return ITxHistoryType.OUTBOUND;
+    return ITxHistoryType.OUTBOUND as TxType;
   } else if (isInvalidTxHistoryType && toAccount && !fromAccount) {
-    return ITxHistoryType.INBOUND;
+    return ITxHistoryType.INBOUND as TxType;
   }
 
-  return tx.txType as ITxHistoryType;
+  return tx.txType as TxType;
 };

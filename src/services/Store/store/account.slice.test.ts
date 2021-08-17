@@ -18,7 +18,8 @@ import {
   fTransaction,
   fTransactionEIP1559,
   fTxHistoryAPI,
-  fTxReceipt
+  fTxReceipt,
+  fTxTypeMetas
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
 import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
@@ -311,7 +312,7 @@ describe('AccountSlice', () => {
     it('uses tx history from store', () => {
       const state = {
         ...mockAppState(defaultAppState),
-        txHistory: { history: [fTxHistoryAPI], error: false }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
       };
       const actual = getMergedTxHistory(state);
 
@@ -321,7 +322,13 @@ describe('AccountSlice', () => {
           amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'),
           asset: fAssets[0],
           baseAsset: fAssets[0],
-          fromAddressBookEntry: undefined,
+          fromAddressBookEntry: {
+            address: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+              label: "WalletConnect Account 2",
+              network: "Ethereum",
+              notes: "",
+              uuid: "4ffb0d4a-adf3-1990-5eb9-fe78e613f70c",
+            },
           toAddressBookEntry: undefined,
           receiverAddress: fTxHistoryAPI.recipientAddress,
           nonce: BigNumber.from(fTxHistoryAPI.nonce),
@@ -341,7 +348,7 @@ describe('AccountSlice', () => {
           ...defaultAppState,
           accounts: [{ ...fAccount, transactions: [fTxReceipt] }]
         }),
-        txHistory: { history: [], error: false }
+        txHistory: { history: [], error: false, txTypeMeta: fTxTypeMetas }
       };
       const actual = getMergedTxHistory(state);
 
@@ -377,7 +384,7 @@ describe('AccountSlice', () => {
             }
           ]
         }),
-        txHistory: { history: [fTxHistoryAPI], error: false }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
       };
       const actual = getMergedTxHistory(state);
       expect(actual).toHaveLength(1);
@@ -409,7 +416,7 @@ describe('AccountSlice', () => {
             }
           ]
         }),
-        txHistory: { history: [fTxHistoryAPI], error: false }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
       };
       const actual = getMergedTxHistory(state);
       expect(actual).toHaveLength(2);
@@ -740,7 +747,7 @@ describe('AccountSlice', () => {
             addressBook: [],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI] }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
         .provide([
           [call.fn(getTxStatus), ITxStatus.SUCCESS],
@@ -778,7 +785,7 @@ describe('AccountSlice', () => {
             addressBook: [contact],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI] }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
         .put(
           updateAccount({
@@ -812,7 +819,7 @@ describe('AccountSlice', () => {
             addressBook: [contact],
             contracts: fContracts
           }),
-          txHistory: { history: [overwrittenTx] }
+          txHistory: { history: [overwrittenTx], txTypeMeta: fTxTypeMetas }
         })
         .put(
           updateAccount({
@@ -840,7 +847,7 @@ describe('AccountSlice', () => {
             addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI] }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
         .not.put(
           addTxToAccount({
@@ -865,7 +872,7 @@ describe('AccountSlice', () => {
             addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI] }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
         .provide([
           [call.fn(getTxStatus), undefined],

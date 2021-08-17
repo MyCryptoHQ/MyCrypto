@@ -2,10 +2,17 @@ import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { fAccounts, fTxHistoryAPI } from '@fixtures';
+import { fAccounts, fTxHistoryAPI, fTxTypeMetas } from '@fixtures';
+import { MyCryptoApiService } from '@services';
 import { HistoryService } from '@services/ApiService/History';
 
-import slice, { fetchHistory, initialState, txHistorySaga } from './txHistory.slice';
+import slice, {
+  fetchHistory,
+  fetchSchemaMeta,
+  initialState,
+  setTxTypeMeta,
+  txHistorySaga
+} from './txHistory.slice';
 
 const reducer = slice.reducer;
 const { fetchError, setHistory } = slice.actions;
@@ -20,6 +27,12 @@ describe('TxHistorySlice', () => {
   it('setHistory(): sets history array', () => {
     const actual = reducer(initialState, setHistory([fTxHistoryAPI]));
     const expected = { ...initialState, history: [fTxHistoryAPI] };
+    expect(actual).toEqual(expected);
+  });
+
+  it('setTxTypeMeta(): sets tx type meta objects', () => {
+    const actual = reducer(initialState, setTxTypeMeta(fTxTypeMetas));
+    const expected = { ...initialState, txTypeMeta: fTxTypeMetas };
     expect(actual).toEqual(expected);
   });
 
@@ -43,6 +56,15 @@ describe('txHistorySaga()', () => {
       .silentRun();
   });
 
+  it('fetches tx type schema based on load', () => {
+    return expectSaga(txHistorySaga)
+      .withState(mockAppState({ accounts: fAccounts }))
+      .provide([[call(MyCryptoApiService.instance.getSchemaMeta), fTxTypeMetas]])
+      .put(setTxTypeMeta(fTxTypeMetas))
+      .dispatch(fetchSchemaMeta())
+      .silentRun();
+  });
+
   it('can sets error if the call fails', () => {
     const error = new Error('error');
     return expectSaga(txHistorySaga)
@@ -50,6 +72,16 @@ describe('txHistorySaga()', () => {
       .provide([[call.fn(HistoryService.instance.getHistory), throwError(error)]])
       .put(fetchError())
       .dispatch(fetchHistory())
+      .silentRun();
+  });
+
+  it('can sets error if the getSchemaMeta fails', () => {
+    const error = new Error('error');
+    return expectSaga(txHistorySaga)
+      .withState(mockAppState({ accounts: fAccounts }))
+      .provide([[call.fn(MyCryptoApiService.instance.getSchemaMeta), throwError(error)]])
+      .put(fetchError())
+      .dispatch(fetchSchemaMeta())
       .silentRun();
   });
 });

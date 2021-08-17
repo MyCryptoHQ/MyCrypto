@@ -1,6 +1,11 @@
-import { TAddress } from '@types';
+import { ITxHash, TAddress } from '@types';
 
-export const isSameAddress = (addressOne?: TAddress, addressTwo?: TAddress) => {
-  if (!addressOne || !addressTwo) return false;
-  return addressOne.toLowerCase() === addressTwo.toLowerCase();
+export const isSameAddress = (addressOne?: TAddress, addressTwo?: TAddress) =>
+  isSameString(addressOne, addressTwo);
+
+export const isSameHash = (hashOne?: ITxHash, hashTwo?: ITxHash) => isSameString(hashOne, hashTwo);
+
+const isSameString = (strOne?: string, strTwo?: string) => {
+  if (!strOne || !strTwo) return false;
+  return strOne.toLowerCase() === strTwo.toLowerCase();
 };

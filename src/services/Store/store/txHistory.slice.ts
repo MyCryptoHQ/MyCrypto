@@ -1,8 +1,9 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { MyCryptoApiService } from '@services/ApiService';
 import { HistoryService, ITxHistoryApiResponse } from '@services/ApiService/History';
-import { StoreAccount } from '@types';
+import { ITxTypeMeta, StoreAccount, TxType } from '@types';
 
 import {
   createAccount,
@@ -13,8 +14,19 @@ import {
 } from './account.slice';
 import { AppState } from './root.reducer';
 
+export interface ITxMetaTypes {
+  [s: string]: ITxTypeMeta;
+}
+
+export interface ITxHistoryState {
+  history: ITxHistoryApiResponse[];
+  txTypeMeta: ITxMetaTypes;
+  error: string;
+}
+
 export const initialState = {
   history: [] as ITxHistoryApiResponse[],
+  txTypeMeta: {} as ITxMetaTypes,
   error: false
 };
 
@@ -25,6 +37,9 @@ const slice = createSlice({
     setHistory(state, action: PayloadAction<ITxHistoryApiResponse[]>) {
       state.history = action.payload;
     },
+    setTxTypeMeta(state, action: PayloadAction<Record<TxType, ITxTypeMeta>>) {
+      state.txTypeMeta = action.payload;
+    },
     fetchError(state) {
       state.error = true;
     }
@@ -32,7 +47,7 @@ const slice = createSlice({
 });
 
 export const fetchHistory = createAction(`${slice.name}/fetchHistory`);
-
+export const fetchSchemaMeta = createAction(`${slice.name}/fetchSchemaMeta`);
 /**
  * Selectors
  */
@@ -41,6 +56,7 @@ export const getSlice = createSelector(
   (s) => s
 );
 export const getTxHistory = createSelector([getSlice], (s) => s.history);
+export const getTxTypeMetas = createSelector([getSlice], (s) => s.txTypeMeta);
 /**
  * Sagas
  */
@@ -55,7 +71,8 @@ export function* txHistorySaga() {
       ],
       fetchHistoryWorker
     ),
-    takeLatest(fetchHistory.type, fetchHistoryWorker)
+    takeLatest(fetchHistory.type, fetchHistoryWorker),
+    takeLatest(fetchSchemaMeta.type, fetchTxTypeMetaWorker)
   ]);
 }
 
@@ -67,7 +84,7 @@ export function* fetchHistoryWorker() {
   if (filteredAccounts.length === 0) return;
 
   try {
-    const history = yield call(
+    const history: ITxHistoryApiResponse[] = yield call(
       HistoryService.instance.getHistory,
       filteredAccounts.map(({ address }) => address)
     );
@@ -78,6 +95,16 @@ export function* fetchHistoryWorker() {
   }
 }
 
-export const { setHistory } = slice.actions;
+export function* fetchTxTypeMetaWorker() {
+  try {
+    const txTypeMeta: ITxTypeMeta = yield call(MyCryptoApiService.instance.getSchemaMeta);
+
+    yield put(slice.actions.setTxTypeMeta(txTypeMeta));
+  } catch (err) {
+    yield put(slice.actions.fetchError());
+  }
+}
+
+export const { setHistory, setTxTypeMeta } = slice.actions;
 
 export default slice;
