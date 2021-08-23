@@ -87,7 +87,7 @@ export function useWalletConnect(autoKill?: boolean): IUseWalletConnect {
         reject(Error('[useWalletConnect]: network chainId does not match tx chainId'));
       } else {
         return service
-          .sendTx(tx)
+          .sendTx({ ...tx, type: tx.type !== undefined ? tx.type.toString() : undefined })
           .then((txHash: ITxHash) => {
             dispatch({ type: WcReducer.actionTypes.SIGN_SUCCESS });
             resolve(txHash);
