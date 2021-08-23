@@ -7,7 +7,7 @@ export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,
   makeTxConfigFromTxReceipt,
-  makeTxConfigFromTxResponse,
+  makeTxConfigFromTx,
   makeFinishedTxReceipt,
   makeUnknownTxReceipt,
   guessERC20Type,

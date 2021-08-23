@@ -250,8 +250,8 @@ export const makeTxConfigFromSignedTx = (
 };
 
 // needs testing
-export const makeTxConfigFromTxResponse = (
-  decodedTx: TransactionResponse,
+export const makeTxConfigFromTx = (
+  decodedTx: TransactionResponse | ITxObject,
   assets: ExtendedAsset[],
   network: Network,
   accounts: StoreAccount[]
@@ -279,7 +279,7 @@ export const makeTxConfigFromTxResponse = (
       data: decodedTx.data as ITxData,
       nonce: hexlify(decodedTx.nonce) as ITxNonce,
       chainId: decodedTx.chainId,
-      from: getAddress(decodedTx.from) as ITxFromAddress,
+      from: (decodedTx.from && getAddress(decodedTx.from)) as ITxFromAddress,
       ...getGasPriceFromTx(decodedTx),
       // @todo Cleaner way of doing this?
       type: decodedTx.type as any
@@ -290,7 +290,7 @@ export const makeTxConfigFromTxResponse = (
     asset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, network.id)!,
-    from: getAddress(decodedTx.from) as TAddress
+    from: (decodedTx.from && getAddress(decodedTx.from)) as TAddress
   };
   return txConfig;
 };

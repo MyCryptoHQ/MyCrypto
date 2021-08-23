@@ -1,6 +1,6 @@
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
+import { makeTxConfigFromTx, makeTxItem } from '@helpers';
 import { useAssets, useNetworks, useRates, useSettings } from '@services';
 import { ITxType, StoreAccount, TxParcel } from '@types';
 
@@ -30,7 +30,7 @@ export default function MembershipReceipt({
     const txConfig =
       tx.txType === ITxType.PURCHASE_MEMBERSHIP
         ? makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig)
-        : makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account]);
+        : makeTxConfigFromTx(tx.txRaw, assets, account.network, [account]);
     return makeTxItem(tx.txType!, txConfig, tx.txHash!, tx.txReceipt);
   });
 

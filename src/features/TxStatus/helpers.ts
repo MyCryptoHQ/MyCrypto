@@ -1,10 +1,6 @@
 import { TransactionResponse } from '@ethersproject/providers';
 
-import {
-  makeTxConfigFromTxReceipt,
-  makeTxConfigFromTxResponse,
-  makeUnknownTxReceipt
-} from '@helpers';
+import { makeTxConfigFromTx, makeTxConfigFromTxReceipt, makeUnknownTxReceipt } from '@helpers';
 import { ITxHistoryEntry, ProviderHandler } from '@services';
 import { Asset, ITxHash, ITxReceipt, ITxType, Network, NetworkId, StoreAccount } from '@types';
 
@@ -58,7 +54,7 @@ export const makeTx = ({
       receipt: cachedTx
     };
   } else {
-    const fetchedTxConfig = makeTxConfigFromTxResponse(fetchedTx!, assets, network, accounts);
+    const fetchedTxConfig = makeTxConfigFromTx(fetchedTx!, assets, network, accounts);
     return {
       config: fetchedTxConfig,
       receipt: makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
