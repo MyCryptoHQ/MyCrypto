@@ -8,6 +8,7 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
+import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Fiat, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
 import { bigNumGasPriceToViewableGwei, buildTxUrl, useTimeout } from '@utils';
@@ -100,7 +101,7 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
           )}
         </Box>
       </Box>
-      <Box variant="rowAlign" justifyContent="center">
+      <Box variant="rowCenter">
         <img src={illustration} />
       </Box>
       {resend && (
@@ -111,6 +112,29 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
             maxFeePerGas={bigNumGasPriceToViewableGwei(maxFeePerGas)}
             maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)}
             fiat={fiat}
+            label={translateRaw('CURRENT_TRANSACTION_FEE')}
+            baseAssetRate={baseAssetRate}
+            isEstimatingGasLimit={false}
+            isEstimatingGasPrice={false}
+            disabled={true}
+          />
+          <Box variant="rowCenter">
+            <Icon
+              type="arrow-right"
+              width="24px"
+              height="24px"
+              fill={COLORS.BLUE_BRIGHT}
+              transform="rotate(90)"
+              my="3"
+            />
+          </Box>
+          <TransactionFeeEIP1559
+            baseAsset={baseAsset}
+            gasLimit={gasLimit.toString()}
+            maxFeePerGas={bigNumGasPriceToViewableGwei(maxFeePerGas)}
+            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)}
+            fiat={fiat}
+            label={translateRaw('UPDATED_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
             isEstimatingGasLimit={false}
             isEstimatingGasPrice={false}

@@ -26,6 +26,8 @@ interface Props {
   maxPriorityFeePerGas: string;
   isEstimatingGasLimit: boolean;
   isEstimatingGasPrice: boolean;
+  label?: string;
+  disabled?: boolean;
   gasLimitError?: string;
   maxFeePerGasError?: string;
   maxPriorityFeePerGasError?: string;
@@ -44,6 +46,8 @@ export const TransactionFeeEIP1559 = ({
   gasLimit,
   maxFeePerGas,
   maxPriorityFeePerGas,
+  label = translateRaw('CONFIRM_TX_FEE'),
+  disabled,
   setGasLimit,
   setMaxFeePerGas,
   setMaxPriorityFeePerGas,
@@ -82,18 +86,22 @@ export const TransactionFeeEIP1559 = ({
   return (
     <Box>
       <Box variant="rowAlign" justifyContent="space-between" mb="2">
-        <Box>{translateRaw('CONFIRM_TX_FEE')}</Box>
-        {editMode ? (
-          <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
-            <Body data-testid="save" as="span">
-              {translateRaw('SAVE_EDITS')}
-            </Body>
-          </LinkApp>
-        ) : (
-          <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_EIP1559)} isExternal={true}>
-            <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
-            <Icon ml="1" width="12px" height="12px" type="link-out" />
-          </LinkApp>
+        <Box>{label}</Box>
+        {!disabled && (
+          <>
+            {editMode ? (
+              <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
+                <Body data-testid="save" as="span">
+                  {translateRaw('SAVE_EDITS')}
+                </Body>
+              </LinkApp>
+            ) : (
+              <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_EIP1559)} isExternal={true}>
+                <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
+                <Icon ml="1" width="12px" height="12px" type="link-out" />
+              </LinkApp>
+            )}
+          </>
         )}
       </Box>
       <Box bg="BG_GRAY" p="3">
@@ -169,7 +177,7 @@ export const TransactionFeeEIP1559 = ({
               ) : (
                 <Currency bold={true} amount={avgFee.toString(10)} ticker={baseAsset.ticker} />
               )}{' '}
-              {!editMode && (
+              {!editMode && !disabled && (
                 <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
                   <Icon data-testid="edit" ml="1" size="16px" type="edit" color="BLUE_SKY" />
                 </LinkApp>
