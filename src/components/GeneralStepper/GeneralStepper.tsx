@@ -87,6 +87,7 @@ export function GeneralStepper({
     >
       <QueryBanner />
       <Step
+        heading={label}
         onComplete={(payload: any) =>
           stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()
         }
