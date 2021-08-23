@@ -20,7 +20,7 @@ interface Props {
   fiat: Fiat;
   // Current Base Fee of the network
   baseFee?: BigNumber;
-  baseAssetRate: string;
+  baseAssetRate: string | number;
   gasLimit: string;
   maxFeePerGas: string;
   maxPriorityFeePerGas: string;
@@ -177,7 +177,7 @@ export const TransactionFeeEIP1559 = ({
             </Body>
             <Body mt="1" mb="0" color="BLUE_GREY">
               {translateRaw('CUSTOMIZED_TOTAL_FEE')}{' '}
-              {hasFiatValue && `(${avgFee.toString(10)} ${baseAsset.ticker})`}
+              {hasFiatValue && `(${avgFee.toFixed(6)} ${baseAsset.ticker})`}
             </Body>
           </Box>
           <Box>

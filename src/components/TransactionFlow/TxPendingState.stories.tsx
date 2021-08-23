@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import { fNetwork, fTxReceipt } from '@fixtures';
+import { fNetwork, fTxReceiptEIP1559 } from '@fixtures';
 
 import { TxPendingState } from './TxPendingState';
 
@@ -14,5 +14,5 @@ const Template = (args: ComponentProps<typeof TxPendingState>) => (
 export const Default = Template.bind({});
 Default.args = {
   network: fNetwork,
-  txReceipt: fTxReceipt
+  txReceipt: fTxReceiptEIP1559
 };

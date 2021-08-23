@@ -209,7 +209,13 @@ const TxReceipt = ({
 
   if (!isTxStatus && !displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
     return (
-      <TxPendingState network={network} txReceipt={displayTxReceipt} showDetails={showDetails} />
+      <TxPendingState
+        network={network}
+        txReceipt={displayTxReceipt}
+        fiat={fiat}
+        baseAssetRate={baseAssetRate}
+        showDetails={showDetails}
+      />
     );
   }
 

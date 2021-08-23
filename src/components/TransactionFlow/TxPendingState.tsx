@@ -7,13 +7,16 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
+import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
 import { translateRaw } from '@translations';
-import { ITxReceipt, ITxStatus, Network } from '@types';
-import { buildTxUrl, useTimeout } from '@utils';
+import { Fiat, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
+import { bigNumGasPriceToViewableGwei, buildTxUrl, useTimeout } from '@utils';
 
 interface Props {
   network: Network;
   txReceipt: ITxReceipt;
+  fiat: Fiat;
+  baseAssetRate: number;
   showDetails(): void;
 }
 
@@ -30,28 +33,33 @@ const states = {
   PENDING: {
     header: 'Transaction Processing...',
     description: 'bla',
-    illustration: txPool
+    illustration: txPool,
+    resend: false
   },
   SUCCESS: {
     header: 'Your transaction made it into the block!',
     description: 'bla',
-    illustration: txInBlock
+    illustration: txInBlock,
+    resend: false
   },
   CROWDED: {
     header: 'The network is currently crowded',
     description: 'bla',
-    illustration: crowdedBlock
+    illustration: crowdedBlock,
+    resend: true
   },
   NOT_INCLUDED: {
     header: 'Your transaction was not included in the current block',
     description: 'bla',
-    illustration: notIncluded
+    illustration: notIncluded,
+    resend: true
   }
 };
 
-export const TxPendingState = ({ network, txReceipt, showDetails }: Props) => {
+export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDetails }: Props) => {
   const [state, setState] = useState<PendingState>(PendingState.PENDING);
-  const { header, description, illustration } = states[state];
+  const { header, description, illustration, resend } = states[state];
+  const { baseAsset, gasLimit, maxFeePerGas, maxPriorityFeePerGas } = txReceipt as ITxType2Receipt;
 
   useEffect(() => {
     if (txReceipt.status === ITxStatus.SUCCESS) {
@@ -95,6 +103,23 @@ export const TxPendingState = ({ network, txReceipt, showDetails }: Props) => {
       <Box variant="rowAlign" justifyContent="center">
         <img src={illustration} />
       </Box>
+      {resend && (
+        <>
+          <TransactionFeeEIP1559
+            baseAsset={baseAsset}
+            gasLimit={gasLimit.toString()}
+            maxFeePerGas={bigNumGasPriceToViewableGwei(maxFeePerGas)}
+            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)}
+            fiat={fiat}
+            baseAssetRate={baseAssetRate}
+            isEstimatingGasLimit={false}
+            isEstimatingGasPrice={false}
+          />
+          <Button fullwidth={true} onClick={showDetails}>
+            {translateRaw('RESEND_TRANSACTION')}
+          </Button>
+        </>
+      )}
       <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
         {translateRaw('VIEW_TRANSACTION_DETAILS')}
       </Button>
