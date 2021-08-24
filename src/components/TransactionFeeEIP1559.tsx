@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
+import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
 import { bigify, bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
@@ -84,7 +85,7 @@ export const TransactionFeeEIP1559 = ({
   const avgFeeFiat = avgFee.multipliedBy(baseAssetRate);
 
   return (
-    <Box>
+    <Box opacity={disabled ? '0.5' : undefined}>
       <Box variant="rowAlign" justifyContent="space-between" mb="2">
         <Box>{label}</Box>
         {!disabled && (
@@ -104,7 +105,12 @@ export const TransactionFeeEIP1559 = ({
           </>
         )}
       </Box>
-      <Box bg="BG_GRAY" p="3">
+      <Box
+        bg={!disabled ? 'BG_GRAY' : undefined}
+        border={disabled ? `1px solid ${COLORS.GREY_LIGHTER}` : undefined}
+        borderRadius="2px"
+        p="3"
+      >
         {editMode && (
           <Box>
             <Box variant="rowAlign">

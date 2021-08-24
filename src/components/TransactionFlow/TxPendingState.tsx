@@ -8,7 +8,6 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
-import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Fiat, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
 import { bigNumGasPriceToViewableGwei, buildTxUrl, useTimeout } from '@utils';
@@ -80,6 +79,9 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
         {header}
       </Heading>
       <Body mt="1">{description}</Body>
+      <Box variant="rowCenter">
+        <img src={illustration} />
+      </Box>
       <Box bg="BG_GRAY" variant="rowAlign" my="3" p="2">
         <Body as="span" fontWeight="bold" width="20%">
           {translateRaw('TX_HASH')}
@@ -101,9 +103,6 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
           )}
         </Box>
       </Box>
-      <Box variant="rowCenter">
-        <img src={illustration} />
-      </Box>
       {resend && (
         <>
           <TransactionFeeEIP1559
@@ -118,15 +117,15 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
             isEstimatingGasPrice={false}
             disabled={true}
           />
-          <Box variant="rowCenter">
-            <Icon
-              type="arrow-right"
-              width="24px"
-              height="24px"
-              fill={COLORS.BLUE_BRIGHT}
-              transform="rotate(90)"
-              my="3"
-            />
+          <Box variant="rowCenter" p="3">
+            <Box bg="rgba(85, 182, 226, 0.2)" p="2" borderRadius="2px">
+              <Icon
+                type="arrow-right"
+                width="24px"
+                height="24px"
+                style={{ transform: 'rotate(90deg)' }}
+              />
+            </Box>
           </Box>
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
