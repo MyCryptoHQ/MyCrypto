@@ -50,10 +50,11 @@ const estimatePriorityFee = async (
   if (baseFeeGwei.lt(PRIORITY_FEE_ESTIMATION_TRIGGER)) {
     return DEFAULT_PRIORITY_FEE;
   }
-  // @todo Hexlify all values when Geth is updated
-  const feeHistory = await provider.getFeeHistory(FEE_HISTORY_BLOCKS, hexlify(blockNumber), [
-    FEE_HISTORY_PERCENTILE
-  ]);
+  const feeHistory = await provider.getFeeHistory(
+    hexlify(FEE_HISTORY_BLOCKS),
+    hexlify(blockNumber),
+    [FEE_HISTORY_PERCENTILE]
+  );
 
   const rewards = feeHistory.reward
     ?.map((r) => bigify(r[0]))
