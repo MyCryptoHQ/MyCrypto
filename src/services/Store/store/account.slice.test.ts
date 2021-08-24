@@ -52,6 +52,8 @@ import {
   getUserAssets,
   initialState,
   pendingTxPolling,
+  removeAccountTx,
+  removeAccountTxWorker,
   resetAndCreateAccount,
   resetAndCreateManyAccounts,
   selectAccountTxs,
@@ -323,12 +325,12 @@ describe('AccountSlice', () => {
           asset: fAssets[0],
           baseAsset: fAssets[0],
           fromAddressBookEntry: {
-            address: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
-              label: "WalletConnect Account 2",
-              network: "Ethereum",
-              notes: "",
-              uuid: "4ffb0d4a-adf3-1990-5eb9-fe78e613f70c",
-            },
+            address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+            label: 'WalletConnect Account 2',
+            network: 'Ethereum',
+            notes: '',
+            uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70c'
+          },
           toAddressBookEntry: undefined,
           receiverAddress: fTxHistoryAPI.recipientAddress,
           nonce: BigNumber.from(fTxHistoryAPI.nonce),
@@ -835,9 +837,11 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
-    it('skips if pending tx not mined', () => {
+    it('removes tx if pending tx not mined, but nonce is used already', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
+      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
+      const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
         .withState({
           ...mockAppState({
@@ -849,10 +853,15 @@ describe('AccountSlice', () => {
           }),
           txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
-        .not.put(
-          addTxToAccount({
-            account: sanitizeAccount(account),
-            tx: makeFinishedTxReceipt(pendingTx, ITxStatus.SUCCESS, timestamp, blockNum)
+        .put(
+          removeAccountTx({
+            account: toStoreAccount(
+              account,
+              fAssets,
+              APP_STATE.networks.find((n) => n.id === 'Ethereum')!,
+              contact
+            ),
+            txHash: pendingTx.hash
           })
         )
         .silentRun();
@@ -904,6 +913,20 @@ describe('AccountSlice', () => {
       .select(selectCurrentAccounts)
       .call(getAccountsAssetsBalances, [fAccounts[1]])
       .put(updateAccounts(result))
+      .silentRun();
+  });
+});
+
+describe('removeAccountTxWorker', () => {
+  it('updates account to remove tx', () => {
+    return expectSaga(
+      removeAccountTxWorker,
+      removeAccountTx({
+        account: { ...fAccount, transactions: [fTxReceipt] },
+        txHash: fTxReceipt.hash
+      })
+    )
+      .put(updateAccount(fAccount))
       .silentRun();
   });
 });

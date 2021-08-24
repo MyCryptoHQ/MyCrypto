@@ -16,6 +16,7 @@ import {
   IAccountAdditionData,
   IPendingTxReceipt,
   IProvidersMappings,
+  ITxHash,
   ITxReceipt,
   ITxStatus,
   ITxType,
@@ -289,6 +290,10 @@ export const addTxToAccount = createAction<{
   account: IAccount;
   tx: ITxReceipt;
 }>(`${slice.name}/addTxToAccount`);
+export const removeAccountTx = createAction<{
+  account: IAccount;
+  txHash: ITxHash;
+}>(`${slice.name}/removeAccountTx`);
 
 export const startTxPolling = createAction(`${slice.name}/startTxPolling`);
 export const stopTxPolling = createAction(`${slice.name}/stopTxPolling`);
@@ -302,6 +307,7 @@ export const stopBalancesPolling = createAction(`${slice.name}/stopBalancesPolli
 export function* accountsSaga() {
   yield all([
     takeLatest(addTxToAccount.type, addTxToAccountWorker),
+    takeLatest(removeAccountTx.type, removeAccountTxWorker),
     takeLatest(addNewAccounts.type, addNewAccountsWorker),
     pollingSaga(pendingTxPollingPayload),
     pollingSaga(balancesPollingPayload)
@@ -320,6 +326,19 @@ const pendingTxPollingPayload: IPollingPayload = {
   },
   saga: pendingTxPolling
 };
+
+export function* removeAccountTxWorker({
+  payload: { account, txHash }
+}: PayloadAction<{
+  account: IAccount;
+  txHash: ITxHash;
+}>) {
+  const newAccountData = {
+    ...account,
+    transactions: account.transactions.filter((tx) => tx.hash !== txHash)
+  };
+  yield put(updateAccount(newAccountData));
+}
 
 export function* addNewAccountsWorker({
   payload: { networkId, accountType, newAccounts }
@@ -496,7 +515,19 @@ export function* pendingTxPolling() {
     const txResponse = yield call([provider, provider.getTransactionByHash], pendingTxReceipt.hash);
     // Fail out if tx receipt cant be found.
     // This initial check stops us from spamming node for data before there is data to fetch.
-    if (!txResponse || !txResponse.blockNumber) continue;
+    // This occurs when tx is pending
+    if (!txResponse || !txResponse.blockNumber) {
+      const transactionCount = yield call(
+        [provider, provider.getTransactionCount],
+        pendingTxReceipt.from
+      );
+      // If transaction count > pendingTx nonce, then the nonce has been used already
+      // (i.e - tx may have been overwritten somewhere other than mycrypto)
+      if (transactionCount >= pendingTxReceipt.nonce.toNumber()) {
+        yield put(removeAccountTx({ account: senderAccount, txHash: pendingTxReceipt.hash }));
+      }
+      continue;
+    }
 
     const txStatus = yield call(getTxStatus, provider, pendingTxReceipt.hash);
     const txTimestamp = yield call(getTimestampFromBlockNum, txResponse.blockNumber, provider);

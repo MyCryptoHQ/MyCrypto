@@ -30,6 +30,7 @@ export {
   selectAccountTxs,
   selectTxsByStatus,
   addTxToAccount,
+  removeAccountTx,
   getStoreAccounts,
   getDefaultAccount,
   getMergedTxHistory,
