@@ -65,7 +65,7 @@ import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
 import navPress from '@assets/icons/navigation/press.svg';
 import navPrivacy from '@assets/icons/navigation/privacy.svg';
-import navQuiknode from '@assets/icons/navigation/quiknode.svg';
+import navQuicknode from '@assets/icons/navigation/quicknode.svg';
 import navReceive from '@assets/icons/navigation/receive.svg';
 import navReddit from '@assets/icons/navigation/reddit.svg';
 import navSend from '@assets/icons/navigation/send.svg';
@@ -234,7 +234,7 @@ const svgIcons = {
   'nav-support-us': navSupportUs,
   'nav-ledger': navLedger,
   'nav-trezor': navTrezor,
-  'nav-quiknode': navQuiknode,
+  'nav-quicknode': navQuicknode,
   'nav-coinbase': navCoinbase,
   'nav-unstoppable': navUnstoppable,
   'nav-settings': navSettings,
