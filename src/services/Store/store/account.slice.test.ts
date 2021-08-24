@@ -837,9 +837,11 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
-    it('skips if pending tx not mined and nonce hasn\'t been used', () => {
+    it("skips if pending tx not mined and nonce hasn't been used", () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
-      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce - 1);
+      ProviderHandler.prototype.getTransactionCount = jest
+        .fn()
+        .mockResolvedValue(fTxReceipt.nonce - 1);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
         .withState({
