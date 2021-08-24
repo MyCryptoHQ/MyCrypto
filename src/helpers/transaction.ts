@@ -533,15 +533,16 @@ export const makeTxFromForm = (
   value: string,
   data: ITxData
 ): ITxObject => {
-  const gas = isEIP1559Supported(form.network, form.account)
-    ? {
-        maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
-        maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
-        type: 2 as const
-      }
-    : {
-        gasPrice: inputGasPriceToHex(form.gasPrice)
-      };
+  const gas =
+    form.account && isEIP1559Supported(form.network, form.account)
+      ? {
+          maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
+          maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
+          type: 2 as const
+        }
+      : {
+          gasPrice: inputGasPriceToHex(form.gasPrice)
+        };
 
   return {
     ...gas,
