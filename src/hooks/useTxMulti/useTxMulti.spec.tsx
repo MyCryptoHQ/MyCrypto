@@ -195,33 +195,33 @@ describe('useTxMulti', () => {
 
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload({
-          account: fAccount,
-          network: fNetwork,
-          tx: expect.objectContaining({
-            asset: fAssets[1],
-            baseAsset: fAssets[1],
-            hash: '0x1',
-            txType: ITxType.APPROVAL,
-            status: ITxStatus.PENDING
+        actionWithPayload(
+          expect.objectContaining({
+            tx: expect.objectContaining({
+              asset: fAssets[1],
+              baseAsset: fAssets[1],
+              hash: '0x1',
+              txType: ITxType.APPROVAL,
+              status: ITxStatus.PENDING
+            })
           })
-        })
+        )
       )
     );
 
     await waitFor(() =>
       expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload({
-          account: fAccount,
-          network: fNetwork,
-          tx: expect.objectContaining({
-            asset: fAssets[1],
-            baseAsset: fAssets[1],
-            hash: '0x2',
-            txType: ITxType.PURCHASE_MEMBERSHIP,
-            status: ITxStatus.PENDING
+        actionWithPayload(
+          expect.objectContaining({
+            tx: expect.objectContaining({
+              asset: fAssets[1],
+              baseAsset: fAssets[1],
+              hash: '0x2',
+              txType: ITxType.PURCHASE_MEMBERSHIP,
+              status: ITxStatus.PENDING
+            })
           })
-        })
+        )
       )
     );
     expect(mockDispatch).toHaveBeenCalledTimes(2);
