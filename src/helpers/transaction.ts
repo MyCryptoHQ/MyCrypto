@@ -168,11 +168,11 @@ const getGasPriceFromTx = (tx: {
   // Possibly revisit this when more tx types are available
   tx.type && tx.type == 2
     ? {
-        maxFeePerGas: hexlify(tx.maxFeePerGas!) as ITxGasPrice,
-        maxPriorityFeePerGas: hexlify(tx.maxPriorityFeePerGas!) as ITxGasPrice,
+        maxFeePerGas: hexlify(tx.maxFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
+        maxPriorityFeePerGas: hexlify(tx.maxPriorityFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
         type: tx.type
       }
-    : { gasPrice: hexlify(tx.gasPrice!) as ITxGasPrice };
+    : { gasPrice: hexlify(tx.gasPrice!, { hexPad: 'left' }) as ITxGasPrice };
 
 const buildRawTxFromSigned = (signedTx: BytesLike): ITxObject => {
   const decodedTx = parseTransaction(signedTx);
@@ -271,13 +271,15 @@ export const makeTxConfigFromTx = (
     contractAsset
   );
 
+  const hexConfig = { hexPad: 'left' as const };
+
   const txConfig: ITxConfig = {
     rawTransaction: {
       to: getAddress(to) as ITxToAddress,
-      value: hexlify(decodedTx.value) as ITxValue,
-      gasLimit: hexlify(decodedTx.gasLimit) as ITxGasLimit,
+      value: hexlify(decodedTx.value, hexConfig) as ITxValue,
+      gasLimit: hexlify(decodedTx.gasLimit, hexConfig) as ITxGasLimit,
       data: decodedTx.data as ITxData,
-      nonce: hexlify(decodedTx.nonce) as ITxNonce,
+      nonce: hexlify(decodedTx.nonce, hexConfig) as ITxNonce,
       chainId: decodedTx.chainId,
       from: (decodedTx.from && getAddress(decodedTx.from)) as ITxFromAddress,
       ...getGasPriceFromTx(decodedTx),
