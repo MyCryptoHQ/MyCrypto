@@ -60,6 +60,18 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     }));
   };
 
+  const handleFlipAssets = () => {
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      fromAsset: prevState.toAsset,
+      toAsset: prevState.fromAsset,
+      fromAmount: prevState.toAmount,
+      toAmount: prevState.fromAmount,
+      fromAmountError: '',
+      toAmountError: ''
+    }));
+  };
+
   const handleFromAssetSelected = (fromAsset: ISwapAsset) => {
     const { isCalculatingFromAmount, isCalculatingToAmount } = state;
     if (isCalculatingFromAmount || isCalculatingToAmount) {
@@ -306,6 +318,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
+    handleFlipAssets,
     formState: { ...state, assets: sortedAssets }
   };
 };

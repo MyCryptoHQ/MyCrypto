@@ -10,8 +10,10 @@ import {
   Box,
   Button,
   DemoGatewayBanner,
+  Icon,
   InlineMessage,
   InputField,
+  LinkApp,
   NetworkSelector,
   PoweredByText,
   Tooltip
@@ -57,6 +59,7 @@ type Props = SwapFormState & {
   handleAccountSelected(account?: StoreAccount): void;
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
+  handleFlipAssets(): void;
   setNetwork(network: NetworkId): void;
 };
 
@@ -85,6 +88,7 @@ const SwapAssets = (props: Props) => {
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
+    handleFlipAssets,
     approvalTx,
     exchangeRate,
     approvalGasLimit,
@@ -255,6 +259,16 @@ const SwapAssets = (props: Props) => {
             disabled={isCalculatingToAmount || isCalculatingFromAmount}
             searchable={true}
           />
+        </Box>
+        <Box variant="rowCenter" my="2">
+          <LinkApp href="#" isExternal={false} onClick={handleFlipAssets}>
+            <Icon
+              type="arrow-right"
+              width="24px"
+              height="24px"
+              style={{ transform: 'rotate(90deg)' }}
+            />
+          </LinkApp>
         </Box>
         <Box display="flex">
           <Box mr="1em" flex="1">
