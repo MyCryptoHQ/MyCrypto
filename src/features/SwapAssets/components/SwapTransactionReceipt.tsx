@@ -3,7 +3,7 @@ import pick from 'ramda/src/pick';
 import { MultiTxReceipt, TxReceipt } from '@components/TransactionFlow';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
 import { getFiat } from '@config/fiats';
-import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
+import { makeTxConfigFromTx, makeTxItem } from '@helpers';
 import { useAssets, useNetworks, useRates, useSettings } from '@services';
 import { getAccountsAssets, useSelector } from '@store';
 import { translateRaw } from '@translations';
@@ -46,7 +46,7 @@ export default function SwapTransactionReceipt({
             assetPair.fromAsset,
             assetPair.fromAmount.toString()
           )
-        : makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account]);
+        : makeTxConfigFromTx(tx.txRaw, assets, account.network, [account]);
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 

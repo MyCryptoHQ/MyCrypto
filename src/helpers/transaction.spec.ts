@@ -53,7 +53,7 @@ import {
   makeFinishedTxReceipt,
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,
-  makeTxConfigFromTxResponse,
+  makeTxConfigFromTx,
   makeUnknownTxReceipt,
   toTxReceipt,
   verifyTransaction
@@ -370,10 +370,10 @@ describe('deriveTxFields', () => {
   });
 });
 
-describe('makeTxConfigFromTxResponse', () => {
+describe('makeTxConfigFromTx', () => {
   it('interprets an web3 tx response correctly', () => {
     const toAddress = '0x5197B5b062288Bbf29008C92B08010a92Dd677CD';
-    const result = makeTxConfigFromTxResponse(fETHWeb3TxResponse, fAssets, fNetwork, fAccounts);
+    const result = makeTxConfigFromTx(fETHWeb3TxResponse, fAssets, fNetwork, fAccounts);
     expect(result).toStrictEqual(
       expect.objectContaining({
         from: toAddress,

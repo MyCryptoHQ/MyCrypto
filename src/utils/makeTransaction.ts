@@ -8,7 +8,6 @@ import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';
 
 import { bigify, BigifySupported, Bigish } from './bigify';
-import { hexEncodeQuantity } from './hexEncode';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
 export const makeTransaction = (t: ITxObject): TransactionRequest => {
@@ -27,7 +26,7 @@ export const inputGasLimitToHex = (gasLimit: string | BigifySupported): ITxGasLi
   addHexPrefix(bigify(gasLimit).toString(16)) as ITxGasLimit;
 
 export const inputValueToHex = (valueEther: string): ITxValue =>
-  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL)) as ITxValue;
+  addHexPrefix(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL).toString(16)) as ITxValue;
 
 export const inputNonceToHex = (nonce: string): ITxNonce =>
   addHexPrefix(bigify(nonce).toString(16)) as ITxNonce;

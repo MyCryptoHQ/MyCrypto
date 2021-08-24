@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useReducer } from 'reinspect';
 
-import { makePendingTxReceipt, makeTxConfigFromTxResponse } from '@helpers';
+import { makePendingTxReceipt, makeTxConfigFromTx } from '@helpers';
 import { useAccounts, useAssets } from '@services';
 import { getStoreAccounts } from '@store';
 import { ITxObject, ITxStatus, ITxType, Network, StoreAccount } from '@types';
@@ -58,12 +58,12 @@ export const useTxMulti: TUseTxMulti = () => {
       account &&
       network &&
       currentTx &&
-      currentTx.txResponse &&
+      currentTx.txRaw &&
       currentTx.txHash &&
       currentTx.status === ITxStatus.BROADCASTED
     ) {
       const txType = currentTx.txType ?? ITxType.UNKNOWN;
-      const txConfig = makeTxConfigFromTxResponse(currentTx.txResponse, assets, network, accounts);
+      const txConfig = makeTxConfigFromTx(currentTx.txRaw, assets, network, accounts);
       const pendingTxReceipt = makePendingTxReceipt(currentTx.txHash)(
         txType,
         txConfig,

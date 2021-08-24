@@ -1,6 +1,6 @@
 import { MultiTxReceipt } from '@components/TransactionFlow';
 import { getFiat } from '@config/fiats';
-import { makeTxConfigFromTxResponse, makeTxItem } from '@helpers';
+import { makeTxConfigFromTx, makeTxItem } from '@helpers';
 import { useAssets, useNetworks, useRates, useSettings } from '@services';
 import { ITokenMigrationConfig, ITxType, StoreAccount, TxParcel } from '@types';
 
@@ -29,7 +29,7 @@ export default function TokenMigrationReceipt({
     const txType = flowConfig.txConstructionConfigs[idx].txType;
     const txConfig =
       txType === ITxType.APPROVAL
-        ? makeTxConfigFromTxResponse(tx.txResponse!, assets, account.network, [account])
+        ? makeTxConfigFromTx(tx.txRaw, assets, account.network, [account])
         : makeTokenMigrationTxConfig(tx.txRaw, account, amount)(flowConfig);
     return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
