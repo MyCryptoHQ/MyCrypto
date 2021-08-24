@@ -8,9 +8,10 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
+import { useGasForm } from '@hooks';
 import { translateRaw } from '@translations';
 import { Fiat, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
-import { bigNumGasPriceToViewableGwei, buildTxUrl, useTimeout } from '@utils';
+import { bigNumGasPriceToViewableGwei, buildTxUrl, noOp, useTimeout } from '@utils';
 
 interface Props {
   network: Network;
@@ -59,7 +60,34 @@ const states = {
 export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDetails }: Props) => {
   const [state, setState] = useState<PendingState>(PendingState.PENDING);
   const { header, description, illustration, resend } = states[state];
-  const { baseAsset, gasLimit, maxFeePerGas, maxPriorityFeePerGas } = txReceipt as ITxType2Receipt;
+  const {
+    baseAsset,
+    gasLimit: curGasLimit,
+    maxFeePerGas: curMaxFeePerGas,
+    maxPriorityFeePerGas: curMaxPriorityFeePerGas
+  } = txReceipt as ITxType2Receipt;
+
+  const initialValues = {
+    gasLimitField: curGasLimit,
+    maxFeePerGasField: curMaxFeePerGas,
+    maxPriorityFeePerGasField: curMaxPriorityFeePerGas
+  };
+
+  const {
+    values,
+    handleGasLimitChange,
+    handleMaxFeeChange,
+    handleMaxPriorityFeeChange
+  } = useGasForm({
+    initialValues,
+    onSubmit: noOp
+  });
+
+  const {
+    gasLimitField: newGasLimit,
+    maxFeePerGasField: newMaxFeePerGas,
+    maxPriorityFeePerGasField: newMaxPriorityFeePerGas
+  } = values;
 
   useEffect(() => {
     if (txReceipt.status === ITxStatus.SUCCESS) {
@@ -107,14 +135,19 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
         <>
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
-            gasLimit={gasLimit.toString()}
-            maxFeePerGas={bigNumGasPriceToViewableGwei(maxFeePerGas)}
-            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)}
+            gasLimit={curGasLimit.toString()}
+            maxFeePerGas={bigNumGasPriceToViewableGwei(curMaxFeePerGas)}
+            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(curMaxPriorityFeePerGas)}
             fiat={fiat}
             label={translateRaw('CURRENT_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
             isEstimatingGasLimit={false}
             isEstimatingGasPrice={false}
+            handleGasLimitEstimation={noOp}
+            handleGasPriceEstimation={noOp}
+            setGasLimit={noOp}
+            setMaxFeePerGas={noOp}
+            setMaxPriorityFeePerGas={noOp}
             disabled={true}
           />
           <Box variant="rowCenter" p="3">
@@ -129,14 +162,19 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
           </Box>
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
-            gasLimit={gasLimit.toString()}
-            maxFeePerGas={bigNumGasPriceToViewableGwei(maxFeePerGas)}
-            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)}
+            gasLimit={newGasLimit.toString()}
+            maxFeePerGas={bigNumGasPriceToViewableGwei(newMaxFeePerGas)}
+            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(newMaxPriorityFeePerGas)}
             fiat={fiat}
             label={translateRaw('UPDATED_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
             isEstimatingGasLimit={false}
             isEstimatingGasPrice={false}
+            handleGasLimitEstimation={noOp}
+            handleGasPriceEstimation={noOp}
+            setGasLimit={handleGasLimitChange}
+            setMaxFeePerGas={handleMaxFeeChange}
+            setMaxPriorityFeePerGas={handleMaxPriorityFeeChange}
           />
           <Button fullwidth={true} onClick={showDetails}>
             {translateRaw('RESEND_TRANSACTION')}

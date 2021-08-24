@@ -3,7 +3,6 @@ import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button as UIBtn } from '@mycrypto/ui';
 import BigNumberJS from 'bignumber.js';
-import { useFormik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import styled from 'styled-components';
@@ -29,10 +28,6 @@ import {
   DEFAULT_ASSET_DECIMAL,
   DEFAULT_NETWORK,
   ETHUUID,
-  GAS_LIMIT_LOWER_BOUND,
-  GAS_LIMIT_UPPER_BOUND,
-  GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
   getKBHelpArticle,
   getWalletConfig,
   KB_HELP_ARTICLE,
@@ -43,6 +38,7 @@ import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { isEIP1559Supported } from '@helpers';
+import { useGasForm } from '@hooks';
 import { getNonce, useRates } from '@services';
 import {
   fetchEIP1559PriceEstimates,
@@ -111,8 +107,6 @@ import {
   canAffordTX,
   validateAmountField,
   validateDataField,
-  validateGasLimitField,
-  validateGasPriceField,
   validateNonceField
 } from './validators';
 
@@ -351,34 +345,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
         }
         return true;
       }),
-    gasLimitField: number()
-      .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
-      .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
-      .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('ERROR_8'))
-      .test(validateGasLimitField()),
-    gasPriceField: number()
-      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
-      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
-      .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('GASPRICE_ERROR'))
-      .test(validateGasPriceField()),
-    maxFeePerGasField: number()
-      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
-      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
-      .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('GASPRICE_ERROR'))
-      .test(validateGasPriceField()),
-    maxPriorityFeePerGasField: number()
-      .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('LOW_GAS_PRICE_WARNING'))
-      .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
-      .required(translateRaw('REQUIRED'))
-      .typeError(translateRaw('GASPRICE_ERROR'))
-      .test(validateGasPriceField())
-      .test('check-max', translateRaw('PRIORITY_FEE_MAX_ERROR'), function (value) {
-        const maxFeePerGas = this.parent.maxFeePerGasField;
-        return bigify(maxFeePerGas).gte(value);
-      }),
     nonceField: number()
       .integer(translateRaw('ERROR_11'))
       .min(0, translateRaw('ERROR_11'))
@@ -419,8 +385,12 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     setFieldError,
     resetForm,
     errors,
-    touched
-  } = useFormik({
+    touched,
+    handleGasPriceChange,
+    handleGasLimitChange,
+    handleMaxFeeChange,
+    handleMaxPriorityFeeChange
+  } = useGasForm({
     initialValues,
     validationSchema: SendAssetsSchema,
     onSubmit: (fields) => {
@@ -584,11 +554,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFieldValue('amount', e.target.value);
   const handleGasSliderChange = (value: number) => setFieldValue('gasPriceSlider', value);
-  const handleGasPriceChange = (value: string) => setFieldValue('gasPriceField', value);
-  const handleGasLimitChange = (value: string) => setFieldValue('gasLimitField', value);
-  const handleMaxFeeChange = (value: string) => setFieldValue('maxFeePerGasField', value);
-  const handleMaxPriorityFeeChange = (value: string) =>
-    setFieldValue('maxPriorityFeePerGasField', value);
   const handleNonceChange = (value: string) => setFieldValue('nonceField', value);
   const handleDataChange = (value: string) => setFieldValue('txDataField', value);
   const handleAdvancedTransactionToggle = () =>
