@@ -30,7 +30,7 @@ import {
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, NetworkId, StoreAccount } from '@types';
-import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
+import { bigify, getTimeDifference, sortByLabel, totalTxFeeToString, useInterval } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -164,6 +164,13 @@ const SwapAssets = (props: Props) => {
   const filteredAccounts = fromAsset
     ? getAccountsWithAssetBalance(accounts, fromAsset, fromAmount, baseAsset.uuid, estimatedGasFee)
     : [];
+
+  useEffect(() => {
+    const defaultAccount = sortByLabel(filteredAccounts)[0];
+    if (defaultAccount && ((account && account.uuid !== defaultAccount.uuid) || !account)) {
+      handleAccountSelected(defaultAccount);
+    }
+  }, [filteredAccounts]);
 
   useEffect(() => {
     if (

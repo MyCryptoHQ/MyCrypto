@@ -52,7 +52,11 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
       ...prevState,
-      selectedNetwork: network
+      selectedNetwork: network,
+      fromAmount: '',
+      fromAmountError: '',
+      toAmount: '',
+      toAmountError: ''
     }));
   };
 
