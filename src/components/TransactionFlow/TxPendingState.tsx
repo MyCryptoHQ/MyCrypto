@@ -13,6 +13,7 @@ import { useGasForm } from '@hooks';
 import { translateRaw } from '@translations';
 import { Fiat, ITxConfig, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
 import {
+  bigify,
   bigNumGasPriceToViewableGwei,
   buildTxUrl,
   constructSpeedUpTxQuery,
@@ -113,8 +114,8 @@ export const TxPendingState = ({
   };
 
   const queryString = constructSpeedUpTxQuery(txConfig, {
-    maxFeePerGas: tx.maxFeePerGas,
-    maxPriorityFeePerGas: tx.maxPriorityFeePerGas
+    maxFeePerGas: values.maxFeePerGasField,
+    maxPriorityFeePerGas: values.maxPriorityFeePerGasField
   });
 
   const handleGasPriceEstimation = () => performGasPriceEstimation(network, account);
@@ -173,12 +174,13 @@ export const TxPendingState = ({
         <>
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
-            gasLimit={curGasLimit.toString()}
+            gasLimit={bigify(curGasLimit).toString(10)}
             maxFeePerGas={bigNumGasPriceToViewableGwei(curMaxFeePerGas)}
             maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(curMaxPriorityFeePerGas)}
             fiat={fiat}
             label={translateRaw('CURRENT_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
+            baseFee={baseFee}
             isEstimatingGasLimit={false}
             isEstimatingGasPrice={false}
             handleGasLimitEstimation={noOp}
@@ -201,8 +203,8 @@ export const TxPendingState = ({
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
             gasLimit={newGasLimit.toString()}
-            maxFeePerGas={bigNumGasPriceToViewableGwei(newMaxFeePerGas)}
-            maxPriorityFeePerGas={bigNumGasPriceToViewableGwei(newMaxPriorityFeePerGas)}
+            maxFeePerGas={newMaxFeePerGas}
+            maxPriorityFeePerGas={newMaxPriorityFeePerGas}
             fiat={fiat}
             label={translateRaw('UPDATED_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
