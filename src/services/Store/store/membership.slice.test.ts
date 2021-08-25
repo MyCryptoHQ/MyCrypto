@@ -7,7 +7,12 @@ import { accountWithMembership, fAccount, fNetwork, fNetworks } from '@fixtures'
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
 
-import slice, { fetchMemberships, fetchMembershipsSaga, initialState, MembershipErrorState } from './membership.slice';
+import slice, {
+  fetchMemberships,
+  fetchMembershipsSaga,
+  initialState,
+  MembershipErrorState
+} from './membership.slice';
 
 const reducer = slice.reducer;
 const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
@@ -74,10 +79,10 @@ describe('MembershipsSlice', () => {
 
   it('fetchError(): sets an error', () => {
     const errorState = {
-      'Ethereum': false,
-      'xDAI': true,
-      'MATIC': false
-   }
+      Ethereum: false,
+      xDAI: true,
+      MATIC: false
+    };
     const actual = reducer(initialState, fetchError(errorState));
     const expected = { ...initialState, error: errorState };
     expect(actual).toEqual(expected);
@@ -142,13 +147,13 @@ describe('fetchMembershipsSaga()', () => {
     {
       accounts: polygonAccounts,
       network: polygonNetwork
-    },
-  ]
+    }
+  ];
 
   const membershipFetchExpected = {
     memberships: res,
     errors: {} as MembershipErrorState
-  }
+  };
 
   const initialState = mockAppState({ accounts, networks: [...fNetworks, polygonNetwork] });
 
@@ -157,7 +162,10 @@ describe('fetchMembershipsSaga()', () => {
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
         .provide([
-          [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), membershipFetchExpected]
+          [
+            call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+            membershipFetchExpected
+          ]
         ])
         .put(setMemberships(res))
         .put(fetchError({} as MembershipErrorState))
@@ -172,7 +180,10 @@ describe('fetchMembershipsSaga()', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
       .provide([
-        [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), membershipFetchExpected]
+        [
+          call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+          membershipFetchExpected
+        ]
       ])
       .put(setMemberships(res))
       .put(fetchError({} as MembershipErrorState))
@@ -184,13 +195,16 @@ describe('fetchMembershipsSaga()', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
       .provide([
-        [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), {
-          memberships: membershipFetchExpected.memberships,
-          errors: { 'Ethereum': true }
-        }]
+        [
+          call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+          {
+            memberships: membershipFetchExpected.memberships,
+            errors: { Ethereum: true }
+          }
+        ]
       ])
       .put(setMemberships(res))
-      .put(fetchError({ 'Ethereum': true } as MembershipErrorState))
+      .put(fetchError({ Ethereum: true } as MembershipErrorState))
       .dispatch(fetchMemberships())
       .silentRun();
   });

@@ -20,7 +20,7 @@ import { AppState } from './root.reducer';
 
 export type MembershipErrorState = {
   [key in 'Ethereum' | 'MATIC' | 'xDAI']: boolean;
-};;
+};
 
 export const initialState = {
   record: [] as MembershipStatus[],
@@ -49,7 +49,7 @@ const slice = createSlice({
       state.record.splice(idx, 1);
     },
     fetchError(state, action: PayloadAction<MembershipErrorState>) {
-      state.error = action.payload
+      state.error = action.payload;
     }
   }
 });
@@ -70,10 +70,7 @@ export const getMembershipFetchError = (s: AppState) => s.memberships.error;
 export const getMembershipState = createSelector(
   [getMemberships, getMembershipFetchError, getMembershipExpirations],
   (memberships, error, expirations) => {
-    if (
-      !memberships
-      || Object.values(memberships).length === 0 && !isEmpty(error)
-    ) {
+    if (!memberships || (Object.values(memberships).length === 0 && !isEmpty(error))) {
       return MembershipState.ERROR;
     } else if (Object.values(memberships).length === 0 && isEmpty(error)) {
       return MembershipState.NOTMEMBER;
@@ -126,24 +123,23 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
     },
     {
       accounts: (payload || membershipNetworkAccounts)
-      .filter((a) => isAccountInNetwork(a, XDAI_NETWORK))
-      .map((a) => a.address),
+        .filter((a) => isAccountInNetwork(a, XDAI_NETWORK))
+        .map((a) => a.address),
       network: xdaiNetwork
     },
     {
       accounts: (payload || membershipNetworkAccounts)
-      .filter((a) => isAccountInNetwork(a, POLYGON_NETWORK))
-      .map((a) => a.address),
+        .filter((a) => isAccountInNetwork(a, POLYGON_NETWORK))
+        .map((a) => a.address),
       network: polygonNetwork
     }
-  ]
-  const membershipState: MembershipFetchResult = yield call(MembershipApi.getMultiNetworkMemberships, membershipFetchConfig)
-  yield put(
-    slice.actions.setMemberships(membershipState.memberships)
+  ];
+  const membershipState: MembershipFetchResult = yield call(
+    MembershipApi.getMultiNetworkMemberships,
+    membershipFetchConfig
   );
-  yield put(
-    slice.actions.fetchError(membershipState.errors)
-  );
+  yield put(slice.actions.setMemberships(membershipState.memberships));
+  yield put(slice.actions.fetchError(membershipState.errors));
 }
 
 export const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
