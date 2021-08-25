@@ -147,15 +147,6 @@ const SwapAssets = (props: Props) => {
     calculateNewFromAmountDebounced(value);
   };
 
-  // Calculate new "to amount" after "to asset" is selected
-  useEffect(() => {
-    if (!fromAmount) {
-      return;
-    }
-
-    calculateNewToAmount(fromAmount);
-  }, [toAsset]);
-
   const estimatedGasFee =
     gasPrice &&
     tradeGasLimit &&
@@ -189,7 +180,7 @@ const SwapAssets = (props: Props) => {
 
   useEffect(() => {
     handleRefreshQuote();
-  }, [account]);
+  }, [account, toAsset]);
 
   useEffect(() => {
     handleGasLimitEstimation();

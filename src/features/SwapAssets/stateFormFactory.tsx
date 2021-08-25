@@ -68,7 +68,11 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
       fromAmount: prevState.toAmount,
       toAmount: prevState.fromAmount,
       fromAmountError: '',
-      toAmountError: ''
+      toAmountError: '',
+      lastChangedAmount:
+        prevState.lastChangedAmount === LAST_CHANGED_AMOUNT.FROM
+          ? LAST_CHANGED_AMOUNT.TO
+          : LAST_CHANGED_AMOUNT.FROM
     }));
   };
 
