@@ -87,9 +87,8 @@ function SendAssets({ location }: RouteComponentProps) {
       label: '',
       component: SignTransactionWithProtectTx,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
-      actions: (payload: ITxReceipt | ISignedTx, cb: any) => {
+      actions: (payload: ITxReceipt | ISignedTx) => {
         dispatch({ type: sendAssetsReducer.actionTypes.WEB3_SIGN_SUCCESS, payload });
-        cb();
       }
     },
     {
@@ -127,17 +126,14 @@ function SendAssets({ location }: RouteComponentProps) {
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
       component: ConfirmTransactionWithProtectTx,
-      props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(reducerState),
-      actions: (payload: ITxConfig | ISignedTx, cb: any) => {
+      props: (({ txConfig, signedTx, error }) => ({ txConfig, signedTx, error }))(reducerState),
+      actions: (payload: ITxConfig | ISignedTx) => {
         if (setProtectTxTimeoutFunction) {
           setProtectTxTimeoutFunction(() =>
             dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload })
           );
         } else {
           dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload });
-        }
-        if (cb) {
-          cb();
         }
       }
     },
@@ -186,7 +182,13 @@ function SendAssets({ location }: RouteComponentProps) {
 
       provider
         .sendRawTx(signedTx)
-        .then((payload) => dispatch({ type: sendAssetsReducer.actionTypes.SEND_SUCCESS, payload }));
+        .then((payload) => dispatch({ type: sendAssetsReducer.actionTypes.SEND_SUCCESS, payload }))
+        .catch((err) =>
+          dispatch({
+            type: sendAssetsReducer.actionTypes.SEND_ERROR,
+            payload: err.reason ? err.reason : err.message
+          })
+        );
     }
   }, [reducerState.send]);
 
@@ -199,6 +201,14 @@ function SendAssets({ location }: RouteComponentProps) {
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
       basic={isFeatureActive('PROTECT_TX')}
+      onRender={(goToNextStep) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          if (reducerState.txReceipt) {
+            goToNextStep();
+          }
+        }, [reducerState.txReceipt]);
+      }}
     />
   );
 }
