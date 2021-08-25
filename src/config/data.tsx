@@ -63,3 +63,5 @@ export enum Theme {
 export type ThemeType = 'dark' | 'light';
 
 export const FAUCET_NETWORKS: NetworkId[] = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
+
+export const ETHEREUM_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];

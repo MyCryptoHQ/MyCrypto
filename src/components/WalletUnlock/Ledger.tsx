@@ -4,7 +4,11 @@ import { LEDGER_DERIVATION_PATHS, LEDGER_ETH } from '@mycrypto/wallets';
 
 import { LinkApp } from '@components';
 import HardwareWalletUI from '@components/WalletUnlock/Hardware';
-import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN } from '@config';
+import {
+  DEFAULT_GAP_TO_SCAN_FOR,
+  DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN,
+  ETHEREUM_NETWORKS
+} from '@config';
 import { HDWallet } from '@features/AddAccount';
 import {
   getAssetByUUID,
@@ -23,18 +27,15 @@ interface OwnProps {
   onUnlock(param: any): void;
 }
 
-// const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
-
 const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const { networks } = useNetworks();
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const defaultDPath = network.dPaths[WalletId.LEDGER_NANO_S] || LEDGER_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
-  // @todo: LEDGER_DERIVATION_PATHS are not available on all networks. Fix this to only display DPaths relevant to the specified network.
   const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
-    ...LEDGER_DERIVATION_PATHS
+    ...(formData.network in ETHEREUM_NETWORKS ? LEDGER_DERIVATION_PATHS : [])
   ]);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
