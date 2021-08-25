@@ -422,7 +422,7 @@ export function* addNewAccountsWorker({
       displayNotification({
         templateName: NotificationTemplates.walletsAdded,
         templateData: {
-          accounts: newAccounts
+          numOfAccounts: newAccounts.length
         }
       })
     );
