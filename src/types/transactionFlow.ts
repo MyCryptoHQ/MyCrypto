@@ -6,7 +6,6 @@ import { IMembershipConfig } from '@features/PurchaseMembership/config';
 import { IAssetPair } from '@features/SwapAssets/types';
 import {
   Asset,
-  GasEstimates,
   Network as INetwork,
   ITokenMigrationConfig,
   ITxReceipt,
@@ -69,7 +68,6 @@ export interface IFormikFields {
   amount: string;
   account: StoreAccount;
   txDataField: string;
-  gasEstimates: GasEstimates;
   gasPriceField: string;
   gasPriceSlider: string;
   gasLimitField: string;

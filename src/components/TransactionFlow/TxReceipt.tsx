@@ -211,6 +211,7 @@ const TxReceipt = ({
     return (
       <TxPendingState
         network={network}
+        txConfig={txConfig}
         txReceipt={displayTxReceipt}
         fiat={fiat}
         baseAssetRate={baseAssetRate}

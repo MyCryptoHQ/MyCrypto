@@ -1,5 +1,8 @@
+import { useState } from 'react';
+
+import { BigNumber } from 'bignumber.js';
 import { FormikConfig, FormikValues, useFormik } from 'formik';
-import { number } from 'yup';
+import { number, object } from 'yup';
 
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -8,8 +11,16 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
 import { validateGasLimitField, validateGasPriceField } from '@features/SendAssets/components';
+import { isEIP1559Supported } from '@helpers';
+import {
+  fetchEIP1559PriceEstimates,
+  fetchGasPriceEstimates,
+  getDefaultEstimates,
+  getGasEstimate
+} from '@services/ApiService/Gas';
 import { translateRaw } from '@translations';
-import { bigify } from '@utils';
+import { GasEstimates, ITxObject, Network, StoreAccount } from '@types';
+import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
 
 export const GasSchema = {
   gasLimitField: number()
@@ -48,7 +59,7 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
   onSubmit,
   ...formikConfig
 }: FormikConfig<Values>) => {
-  const validationSchema = passedValidationSchema.shape(GasSchema);
+  const validationSchema = (passedValidationSchema ?? object()).shape(GasSchema);
   const initialValues = ({
     ...passedInitialValues,
     gasPriceField: '20',
@@ -70,12 +81,63 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
   const handleMaxPriorityFeeChange = (value: string) =>
     setFieldValue('maxPriorityFeePerGasField', value);
 
+  const [isEstimatingGasPrice, setIsEstimatingGasPrice] = useState(false);
+  const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
+  const [gasEstimationError, setGasEstimationError] = useState<string | undefined>(undefined);
+  const [baseFee, setBaseFee] = useState<BigNumber | undefined>(undefined);
+  const [legacyGasEstimates, setLegacyGasEstimates] = useState<GasEstimates>(getDefaultEstimates());
+
+  const handleGasPriceEstimation = async (network: Network, account: StoreAccount) => {
+    try {
+      setIsEstimatingGasPrice(true);
+      if (!isEIP1559Supported(network, account)) {
+        const data = await fetchGasPriceEstimates(network);
+        setLegacyGasEstimates(data);
+        setFieldValue('gasPriceSlider', data.fast.toString());
+        setFieldValue('gasPriceField', data.fast.toString());
+      } else {
+        const data = await fetchEIP1559PriceEstimates(network);
+        setFieldValue(
+          'maxFeePerGasField',
+          data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
+        );
+        setFieldValue(
+          'maxPriorityFeePerGasField',
+          data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
+        );
+        setBaseFee(data.baseFee);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setIsEstimatingGasPrice(false);
+  };
+
+  const handleGasLimitEstimation = async (network: Network, tx: Partial<ITxObject>) => {
+    setIsEstimatingGasLimit(true);
+    try {
+      const gas = await getGasEstimate(network, tx);
+      setFieldValue('gasLimitField', gas);
+      setGasEstimationError(undefined);
+    } catch (err) {
+      setGasEstimationError(err.reason ? err.reason : err.message);
+    }
+    setIsEstimatingGasLimit(false);
+  };
+
   return {
     setFieldValue,
     handleGasPriceChange,
     handleGasLimitChange,
     handleMaxFeeChange,
     handleMaxPriorityFeeChange,
+    handleGasPriceEstimation,
+    handleGasLimitEstimation,
+    isEstimatingGasPrice,
+    isEstimatingGasLimit,
+    gasEstimationError,
+    baseFee,
+    legacyGasEstimates,
     ...formik
   };
 };

@@ -8,13 +8,23 @@ import txPool from 'assets/images/illustrations/tx-pool.svg';
 import { Box, Button, Icon, LinkApp, Text } from '@components';
 import { Body, Heading } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
+import { ROUTE_PATHS } from '@config';
 import { useGasForm } from '@hooks';
 import { translateRaw } from '@translations';
-import { Fiat, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
-import { bigNumGasPriceToViewableGwei, buildTxUrl, noOp, useTimeout } from '@utils';
+import { Fiat, ITxConfig, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
+import {
+  bigNumGasPriceToViewableGwei,
+  buildTxUrl,
+  constructSpeedUpTxQuery,
+  inputGasLimitToHex,
+  inputGasPriceToHex,
+  noOp,
+  useTimeout
+} from '@utils';
 
 interface Props {
   network: Network;
+  txConfig: ITxConfig;
   txReceipt: ITxReceipt;
   fiat: Fiat;
   baseAssetRate: number;
@@ -57,7 +67,14 @@ const states = {
   }
 };
 
-export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDetails }: Props) => {
+export const TxPendingState = ({
+  network,
+  txConfig,
+  txReceipt,
+  fiat,
+  baseAssetRate,
+  showDetails
+}: Props) => {
   const [state, setState] = useState<PendingState>(PendingState.PENDING);
   const { header, description, illustration, resend } = states[state];
   const {
@@ -67,21 +84,41 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
     maxPriorityFeePerGas: curMaxPriorityFeePerGas
   } = txReceipt as ITxType2Receipt;
 
-  const initialValues = {
-    gasLimitField: curGasLimit,
-    maxFeePerGasField: curMaxFeePerGas,
-    maxPriorityFeePerGasField: curMaxPriorityFeePerGas
-  };
+  const account = txConfig.senderAccount;
+
+  const initialValues = {};
 
   const {
     values,
+    baseFee,
+    isEstimatingGasPrice,
+    isEstimatingGasLimit,
     handleGasLimitChange,
     handleMaxFeeChange,
-    handleMaxPriorityFeeChange
+    handleMaxPriorityFeeChange,
+    handleGasPriceEstimation: performGasPriceEstimation,
+    handleGasLimitEstimation: performGasLimitEstimation
   } = useGasForm({
     initialValues,
     onSubmit: noOp
   });
+
+  const oldTx = txConfig.rawTransaction;
+
+  const tx = {
+    ...oldTx,
+    gasLimit: inputGasLimitToHex(values.gasLimitField),
+    maxFeePerGas: inputGasPriceToHex(values.maxFeePerGasField),
+    maxPriorityFeePerGas: inputGasPriceToHex(values.maxPriorityFeePerGasField)
+  };
+
+  const queryString = constructSpeedUpTxQuery(txConfig, {
+    maxFeePerGas: tx.maxFeePerGas,
+    maxPriorityFeePerGas: tx.maxPriorityFeePerGas
+  });
+
+  const handleGasPriceEstimation = () => performGasPriceEstimation(network, account);
+  const handleGasLimitEstimation = () => performGasLimitEstimation(network, tx);
 
   const {
     gasLimitField: newGasLimit,
@@ -98,6 +135,7 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
   useTimeout(() => {
     if (txReceipt.status === ITxStatus.PENDING) {
       setState(PendingState.CROWDED);
+      handleGasPriceEstimation();
     }
   }, CROWDED_TIMEOUT);
 
@@ -168,17 +206,18 @@ export const TxPendingState = ({ network, txReceipt, fiat, baseAssetRate, showDe
             fiat={fiat}
             label={translateRaw('UPDATED_TRANSACTION_FEE')}
             baseAssetRate={baseAssetRate}
-            isEstimatingGasLimit={false}
-            isEstimatingGasPrice={false}
-            handleGasLimitEstimation={noOp}
-            handleGasPriceEstimation={noOp}
+            baseFee={baseFee}
+            isEstimatingGasLimit={isEstimatingGasLimit}
+            isEstimatingGasPrice={isEstimatingGasPrice}
+            handleGasLimitEstimation={handleGasLimitEstimation}
+            handleGasPriceEstimation={handleGasPriceEstimation}
             setGasLimit={handleGasLimitChange}
             setMaxFeePerGas={handleMaxFeeChange}
             setMaxPriorityFeePerGas={handleMaxPriorityFeeChange}
           />
-          <Button fullwidth={true} onClick={showDetails}>
-            {translateRaw('RESEND_TRANSACTION')}
-          </Button>
+          <LinkApp href={`${ROUTE_PATHS.SEND.path}/?${queryString}`} isExternal={false}>
+            <Button fullwidth={true}>{translateRaw('RESEND_TRANSACTION')}</Button>
+          </LinkApp>
         </>
       )}
       <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
