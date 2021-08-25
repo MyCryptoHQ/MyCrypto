@@ -1,5 +1,4 @@
 import { call } from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, POLYGON_NETWORK, XDAI_NETWORK } from '@config';
@@ -8,7 +7,7 @@ import { accountWithMembership, fAccount, fNetwork, fNetworks } from '@fixtures'
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
 
-import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
+import slice, { fetchMemberships, fetchMembershipsSaga, initialState, MembershipErrorState } from './membership.slice';
 
 const reducer = slice.reducer;
 const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
@@ -74,8 +73,13 @@ describe('MembershipsSlice', () => {
   });
 
   it('fetchError(): sets an error', () => {
-    const actual = reducer(initialState, fetchError());
-    const expected = { ...initialState, error: true };
+    const errorState = {
+      'Ethereum': false,
+      'xDAI': true,
+      'MATIC': false
+   }
+    const actual = reducer(initialState, fetchError(errorState));
+    const expected = { ...initialState, error: errorState };
     expect(actual).toEqual(expected);
   });
 });
@@ -126,6 +130,26 @@ describe('fetchMembershipsSaga()', () => {
     .filter(({ networkId }) => networkId === POLYGON_NETWORK)
     .map(({ address }) => address);
 
+  const membershipFetchState = [
+    {
+      accounts: ethereumAccounts,
+      network: fNetworks[0]
+    },
+    {
+      accounts: xdaiAccounts,
+      network: fNetworks[2]
+    },
+    {
+      accounts: polygonAccounts,
+      network: polygonNetwork
+    },
+  ]
+
+  const membershipFetchExpected = {
+    memberships: res,
+    errors: {} as MembershipErrorState
+  }
+
   const initialState = mockAppState({ accounts, networks: [...fNetworks, polygonNetwork] });
 
   it('can fetch memberships from provided accounts', () => {
@@ -133,11 +157,10 @@ describe('fetchMembershipsSaga()', () => {
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
         .provide([
-          [call(MembershipApi.getMemberships, ethereumAccounts, fNetworks[0]), [res[0]]],
-          [call(MembershipApi.getMemberships, xdaiAccounts, fNetworks[2]), [res[1]]],
-          [call(MembershipApi.getMemberships, polygonAccounts, polygonNetwork), [res[2]]]
+          [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), membershipFetchExpected]
         ])
         .put(setMemberships(res))
+        .put(fetchError({} as MembershipErrorState))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
         // use `silentRun` to silence the warning.
@@ -149,21 +172,25 @@ describe('fetchMembershipsSaga()', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
       .provide([
-        [call(MembershipApi.getMemberships, ethereumAccounts, fNetworks[0]), [res[0]]],
-        [call(MembershipApi.getMemberships, xdaiAccounts, fNetworks[2]), [res[1]]],
-        [call(MembershipApi.getMemberships, polygonAccounts, polygonNetwork), [res[2]]]
+        [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), membershipFetchExpected]
       ])
       .put(setMemberships(res))
+      .put(fetchError({} as MembershipErrorState))
       .dispatch(fetchMemberships())
       .silentRun();
   });
 
-  it('can sets error if the call fails', () => {
-    const error = new Error('error');
+  it('can sets error if the call throws an error', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
-      .provide([[call.fn(MembershipApi.getMemberships), throwError(error)]])
-      .put(fetchError())
+      .provide([
+        [call(MembershipApi.getMultiNetworkMemberships, membershipFetchState), {
+          memberships: membershipFetchExpected.memberships,
+          errors: { 'Ethereum': true }
+        }]
+      ])
+      .put(setMemberships(res))
+      .put(fetchError({ 'Ethereum': true } as MembershipErrorState))
       .dispatch(fetchMemberships())
       .silentRun();
   });
