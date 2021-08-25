@@ -580,7 +580,7 @@ describe('AccountSlice', () => {
         .put(
           displayNotification({
             templateName: NotificationTemplates.walletsAdded,
-            templateData: { accounts }
+            templateData: { numOfAccounts: accounts.length }
           })
         )
         .silentRun();
