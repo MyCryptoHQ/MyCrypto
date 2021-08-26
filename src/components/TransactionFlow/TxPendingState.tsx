@@ -154,27 +154,6 @@ export const TxPendingState = ({
       <Box variant="rowCenter">
         <img src={illustration} />
       </Box>
-      <Box bg="BG_GRAY" variant="rowAlign" my="3" p="2">
-        <Body as="span" fontWeight="bold" width="20%">
-          {translateRaw('TX_HASH')}
-          {': '}
-        </Body>
-        <Box display="inline-flex" variant="rowAlign">
-          <Text as="span" overflow="hidden">
-            {txReceipt.hash}
-          </Text>
-          {network && network.blockExplorer && (
-            <LinkApp
-              href={buildTxUrl(network.blockExplorer, txReceipt.hash)}
-              isExternal={true}
-              variant="opacityLink"
-              display="inline-flex"
-            >
-              <Icon type="link-out" ml={'1ch'} height="1em" />
-            </LinkApp>
-          )}
-        </Box>
-      </Box>
       {resend && (
         <>
           <TransactionFeeEIP1559
@@ -222,10 +201,33 @@ export const TxPendingState = ({
             setMaxFeePerGas={handleMaxFeeChange}
             setMaxPriorityFeePerGas={handleMaxPriorityFeeChange}
           />
-          <LinkApp href={`${ROUTE_PATHS.SEND.path}/?${queryString}`} isExternal={false}>
-            <Button fullwidth={true}>{translateRaw('RESEND_TRANSACTION')}</Button>
-          </LinkApp>
         </>
+      )}
+      <Box bg="BG_GRAY" variant="rowAlign" my="3" p="2">
+        <Body as="span" fontWeight="bold" width="20%">
+          {translateRaw('TX_HASH')}
+          {': '}
+        </Body>
+        <Box display="inline-flex" variant="rowAlign">
+          <Text as="span" overflow="hidden" textOverflow="ellipsis">
+            {txReceipt.hash}
+          </Text>
+          {network && network.blockExplorer && (
+            <LinkApp
+              href={buildTxUrl(network.blockExplorer, txReceipt.hash)}
+              isExternal={true}
+              variant="opacityLink"
+              display="inline-flex"
+            >
+              <Icon type="link-out" ml={'1ch'} height="1em" />
+            </LinkApp>
+          )}
+        </Box>
+      </Box>
+      {resend && (
+        <LinkApp href={`${ROUTE_PATHS.SEND.path}/?${queryString}`} isExternal={false}>
+          <Button fullwidth={true}>{translateRaw('RESEND_TRANSACTION')}</Button>
+        </LinkApp>
       )}
       <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
         {translateRaw('VIEW_TRANSACTION_DETAILS')}
