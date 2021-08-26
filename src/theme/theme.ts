@@ -184,6 +184,10 @@ const FLEX_VARIANTS = {
   columnAlignLeft: {
     flexDirection: 'column',
     ...FLEX_RECIPES.start
+  },
+  columnAlignRight: {
+    flexDirection: 'column',
+    ...FLEX_RECIPES.end
   }
 };
 

@@ -4,9 +4,20 @@ export interface OpenSeaNFT {
   name: string;
   image_url: string;
   permalink: string;
-  collection: OpenSeaCollection;
+  collection: OpenSeaCollectionMetadata;
+}
+
+interface OpenSeaCollectionMetadata {
+  name: string;
+  slug: string;
 }
 
 export interface OpenSeaCollection {
+  slug: string;
   name: string;
+  stats: OpenSeaCollectionStats;
+}
+
+interface OpenSeaCollectionStats {
+  floor_price: number;
 }

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Body, Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
+import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -31,14 +31,20 @@ const StyledLayout = styled.div`
 
 export default function NftDashboard() {
   const [assets, setAssets] = useState<OpenSeaNFT[]>([]);
+  const [collections, setCollections] = useState<OpenSeaCollection[]>([]);
 
   useEffect(() => {
     OpenSeaService.fetchAssets('0xe77162b7d2ceb3625a4993bab557403a7b706f18').then((result) => {
       setAssets(result ?? []);
     });
+
+    OpenSeaService.fetchCollections('0xe77162b7d2ceb3625a4993bab557403a7b706f18').then((result) => {
+      setCollections(result ?? []);
+    });
   }, []);
 
   console.log(assets);
+  console.log(collections);
 
   return (
     <StyledLayout>
@@ -72,21 +78,35 @@ export default function NftDashboard() {
           <Box variant="rowAlign" justifyContent="center">
             {assets &&
               assets.map((asset) => (
-                <Box key={asset.id} p="3">
+                <Box key={asset.id} p="3" variant="columnAlignLeft">
                   <img
                     src={asset.image_url}
                     style={{
                       objectFit: 'cover',
                       borderRadius: '2px',
-                      width: '200px',
-                      height: '200px'
+                      width: '250px',
+                      height: '250px'
                     }}
                   />
-                  <Body fontSize="12px" m="0">
-                    {asset.collection.name}
-                  </Body>
-                  <Body>{asset.name}</Body>
-                  <LinkApp isExternal={true} href={asset.permalink}>
+                  <Box variant="rowAlign" justifyContent="space-between">
+                    <Box variant="columnAlignLeft">
+                      <Body fontSize="12px" m="0">
+                        {asset.collection.name}
+                      </Body>
+                      <Body>{asset.name}</Body>
+                    </Box>
+                    <Box variant="columnAlignRight">
+                      <Body fontSize="12px" m="0" textAlign="right">
+                        Floor
+                      </Body>
+                      <Body fontSize="12px" m="0" textAlign="right">
+                        {collections.find((c) => c.slug === asset.collection.slug)?.stats
+                          .floor_price ?? '?'}{' '}
+                        ETH
+                      </Body>
+                    </Box>
+                  </Box>
+                  <LinkApp isExternal={true} href={asset.permalink} textAlign="center">
                     View on OpenSea
                   </LinkApp>
                 </Box>
