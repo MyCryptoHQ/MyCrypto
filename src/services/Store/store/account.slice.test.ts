@@ -860,8 +860,10 @@ describe('AccountSlice', () => {
         .silentRun();
     });
     it('removes tx if pending tx not mined, but nonce is used already', () => {
-      ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
-      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce + 1);
+      ProviderHandler.prototype.getTransactionReceipt = jest.fn().mockResolvedValue(undefined);
+      ProviderHandler.prototype.getTransactionCount = jest
+        .fn()
+        .mockResolvedValue(fTxReceipt.nonce + 1);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
