@@ -38,6 +38,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
+    handleFlipAssets,
     formState
   } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
   const {
@@ -121,6 +122,7 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         handleAccountSelected,
         handleGasLimitEstimation,
         handleRefreshQuote,
+        handleFlipAssets,
         setNetwork,
         onSuccess: () => {
           const pair: IAssetPair = {

@@ -52,7 +52,27 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
   const setNetwork = (network: NetworkId) => {
     setState((prevState: SwapFormState) => ({
       ...prevState,
-      selectedNetwork: network
+      selectedNetwork: network,
+      fromAmount: '',
+      fromAmountError: '',
+      toAmount: '',
+      toAmountError: ''
+    }));
+  };
+
+  const handleFlipAssets = () => {
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      fromAsset: prevState.toAsset,
+      toAsset: prevState.fromAsset,
+      fromAmount: prevState.toAmount,
+      toAmount: prevState.fromAmount,
+      fromAmountError: '',
+      toAmountError: '',
+      lastChangedAmount:
+        prevState.lastChangedAmount === LAST_CHANGED_AMOUNT.FROM
+          ? LAST_CHANGED_AMOUNT.TO
+          : LAST_CHANGED_AMOUNT.FROM
     }));
   };
 
@@ -302,6 +322,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
+    handleFlipAssets,
     formState: { ...state, assets: sortedAssets }
   };
 };

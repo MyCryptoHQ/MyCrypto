@@ -10,8 +10,10 @@ import {
   Box,
   Button,
   DemoGatewayBanner,
+  Icon,
   InlineMessage,
   InputField,
+  LinkApp,
   NetworkSelector,
   PoweredByText,
   Tooltip
@@ -30,7 +32,7 @@ import {
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, NetworkId, StoreAccount } from '@types';
-import { bigify, getTimeDifference, totalTxFeeToString, useInterval } from '@utils';
+import { bigify, getTimeDifference, sortByLabel, totalTxFeeToString, useInterval } from '@utils';
 
 import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
@@ -57,6 +59,7 @@ type Props = SwapFormState & {
   handleAccountSelected(account?: StoreAccount): void;
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
+  handleFlipAssets(): void;
   setNetwork(network: NetworkId): void;
 };
 
@@ -85,6 +88,7 @@ const SwapAssets = (props: Props) => {
     handleAccountSelected,
     handleGasLimitEstimation,
     handleRefreshQuote,
+    handleFlipAssets,
     approvalTx,
     exchangeRate,
     approvalGasLimit,
@@ -143,15 +147,6 @@ const SwapAssets = (props: Props) => {
     calculateNewFromAmountDebounced(value);
   };
 
-  // Calculate new "to amount" after "to asset" is selected
-  useEffect(() => {
-    if (!fromAmount) {
-      return;
-    }
-
-    calculateNewToAmount(fromAmount);
-  }, [toAsset]);
-
   const estimatedGasFee =
     gasPrice &&
     tradeGasLimit &&
@@ -166,6 +161,13 @@ const SwapAssets = (props: Props) => {
     : [];
 
   useEffect(() => {
+    const defaultAccount = sortByLabel(filteredAccounts)[0];
+    if (defaultAccount && ((account && account.uuid !== defaultAccount.uuid) || !account)) {
+      handleAccountSelected(defaultAccount);
+    }
+  }, [filteredAccounts]);
+
+  useEffect(() => {
     if (
       fromAmount &&
       fromAsset &&
@@ -178,7 +180,7 @@ const SwapAssets = (props: Props) => {
 
   useEffect(() => {
     handleRefreshQuote();
-  }, [account]);
+  }, [account, toAsset]);
 
   useEffect(() => {
     handleGasLimitEstimation();
@@ -248,6 +250,20 @@ const SwapAssets = (props: Props) => {
             disabled={isCalculatingToAmount || isCalculatingFromAmount}
             searchable={true}
           />
+        </Box>
+        <Box variant="rowCenter" my="2">
+          <hr style={{ margin: 'auto 0.5rem auto 1px', width: '100%' }} />
+          <LinkApp
+            variant="barren"
+            href="#"
+            isExternal={false}
+            onClick={handleFlipAssets}
+            width="24px"
+            height="24px"
+          >
+            <Icon type="swap-flip" width="24px" height="24px" />
+          </LinkApp>
+          <hr style={{ margin: 'auto 1px auto 0.5rem', width: '100%' }} />
         </Box>
         <Box display="flex">
           <Box mr="1em" flex="1">
