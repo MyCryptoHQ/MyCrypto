@@ -43,26 +43,26 @@ enum PendingState {
 
 const states = {
   PENDING: {
-    header: 'Transaction Processing...',
-    description: 'bla',
+    header: translateRaw('TRANSACTION_PENDING_HEADER'),
+    description: translateRaw('TRANSACTION_PENDING_DESCRIPTION'),
     illustration: txPool,
     resend: false
   },
   SUCCESS: {
-    header: 'Your transaction made it into the block!',
-    description: 'bla',
+    header: translateRaw('TRANSACTION_SUCCESS_HEADER'),
+    description: translateRaw('TRANSACTION_SUCCESS_DESCRIPTION'),
     illustration: txInBlock,
     resend: false
   },
   CROWDED: {
-    header: 'The network is currently crowded',
-    description: 'bla',
+    header: translateRaw('TRANSACTION_CROWDED_HEADER'),
+    description: translateRaw('TRANSACTION_CROWDED_DESCRIPTION'),
     illustration: crowdedBlock,
     resend: true
   },
   NOT_INCLUDED: {
-    header: 'Your transaction was not included in the current block',
-    description: 'bla',
+    header: '',
+    description: '',
     illustration: notIncluded,
     resend: true
   }
