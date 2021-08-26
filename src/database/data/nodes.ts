@@ -361,9 +361,9 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://rpc-mainnet.maticvigil.com'
     },
     {
-      name: NetworkUtils.makeNodeName('MATIC', 'quiknode'),
+      name: NetworkUtils.makeNodeName('MATIC', 'quicknode'),
       type: NodeType.RPC,
-      service: 'Quiknode',
+      service: 'Quicknode',
       url: 'https://rpc-mainnet.matic.quiknode.pro'
     },
     {

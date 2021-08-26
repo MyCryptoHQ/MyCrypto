@@ -167,9 +167,9 @@ export const supportUsTray: INavTray = {
     },
     {
       type: 'external',
-      title: translateRaw('NAVIGATION_GET_QUIKNODE'),
-      link: EXT_URLS.QUIKNODE_REFERRAL.url,
-      icon: 'nav-quiknode'
+      title: translateRaw('NAVIGATION_GET_QUICKNODE'),
+      link: EXT_URLS.QUICKNODE_REFERRAL.url,
+      icon: 'nav-quicknode'
     },
     {
       type: 'external',

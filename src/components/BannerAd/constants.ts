@@ -4,8 +4,8 @@ import ledgerDesktop from '@assets/images/banners/Ledger_Desktop.svg';
 import ledgerMobile from '@assets/images/banners/Ledger_Mobile.svg';
 import PooltogetherDesktop from '@assets/images/banners/Pooltogether_Desktop.svg';
 import PooltogetherMobile from '@assets/images/banners/Pooltogether_Mobile.svg';
-import quiknodeDesktop from '@assets/images/banners/QuikNode_Desktop.svg';
-import quiknodeMobile from '@assets/images/banners/QuikNode_Mobile.svg';
+import quicknodeDesktop from '@assets/images/banners/QuickNode_Desktop.svg';
+import quicknodeMobile from '@assets/images/banners/QuickNode_Mobile.svg';
 import SwapDesktop from '@assets/images/banners/Swap_Desktop.svg';
 import SwapMobile from '@assets/images/banners/Swap_Mobile.svg';
 import trezorDesktop from '@assets/images/banners/Trezor_Desktop.svg';
@@ -34,10 +34,10 @@ export const ads = [
     url: EXT_URLS.COINBASE_REFERRAL.url
   },
   {
-    name: 'Quiknode',
-    srcDesktop: quiknodeDesktop,
-    srcMobile: quiknodeMobile,
-    url: EXT_URLS.QUIKNODE_REFERRAL.url
+    name: 'Quicknode',
+    srcDesktop: quicknodeDesktop,
+    srcMobile: quicknodeMobile,
+    url: EXT_URLS.QUICKNODE_REFERRAL.url
   },
   {
     name: 'UnstoppableDomains',
