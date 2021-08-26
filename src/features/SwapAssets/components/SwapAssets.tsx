@@ -252,14 +252,18 @@ const SwapAssets = (props: Props) => {
           />
         </Box>
         <Box variant="rowCenter" my="2">
-          <LinkApp href="#" isExternal={false} onClick={handleFlipAssets}>
-            <Icon
-              type="arrow-right"
-              width="24px"
-              height="24px"
-              style={{ transform: 'rotate(90deg)' }}
-            />
+          <hr style={{ margin: 'auto 0.5rem auto 1px', width: '100%' }} />
+          <LinkApp
+            variant="barren"
+            href="#"
+            isExternal={false}
+            onClick={handleFlipAssets}
+            width="24px"
+            height="24px"
+          >
+            <Icon type="swap-flip" width="24px" height="24px" />
           </LinkApp>
+          <hr style={{ margin: 'auto 1px auto 0.5rem', width: '100%' }} />
         </Box>
         <Box display="flex">
           <Box mr="1em" flex="1">

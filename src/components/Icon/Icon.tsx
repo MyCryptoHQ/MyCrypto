@@ -122,6 +122,7 @@ import openedEye from '@assets/images/icn-show-eye.svg';
 import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
 import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
+import swapFlip from '@assets/images/icn-swap-flip.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import linkOutIcon from '@assets/images/link-out.svg';
@@ -154,6 +155,7 @@ const svgIcons = {
   'faucet-icon': faucetIcon,
   'down-caret': downCaret,
   'link-out': linkOutIcon,
+  'swap-flip': swapFlip,
 
   /* Tooltips*/
   informational,
