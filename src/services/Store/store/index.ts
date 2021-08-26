@@ -89,10 +89,9 @@ export {
 } from './asset.slice';
 export {
   fetchMemberships,
-  setMemberships,
   setMembership,
   deleteMembership,
-  fetchError,
+  setMembershipFetchState,
   getIsMyCryptoMember,
   getMembershipState
 } from './membership.slice';

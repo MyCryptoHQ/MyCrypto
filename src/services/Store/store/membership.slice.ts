@@ -31,12 +31,13 @@ const slice = createSlice({
   name: 'memberships',
   initialState,
   reducers: {
-    setMemberships(state, action: PayloadAction<MembershipStatus[]>) {
-      const addresses = new Set(action.payload.map((item) => item.address));
+    setMembershipFetchState(state, action: PayloadAction<{ memberships: MembershipStatus[], errors: MembershipErrorState }>) {
+      const addresses = new Set(action.payload.memberships.map((item) => item.address));
       state.record = [
-        ...action.payload,
+        ...action.payload.memberships,
         ...state.record.filter((item) => !addresses.has(item.address))
       ];
+      state.error = action.payload.errors;
     },
     setMembership(state, action: PayloadAction<MembershipStatus>) {
       state.record.push(action.payload);
@@ -47,9 +48,6 @@ const slice = createSlice({
           item.address === action.payload.address && item.networkId === action.payload.networkId
       );
       state.record.splice(idx, 1);
-    },
-    fetchError(state, action: PayloadAction<MembershipErrorState>) {
-      state.error = action.payload;
     }
   }
 });
@@ -138,10 +136,9 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
     MembershipApi.getMultiNetworkMemberships,
     membershipFetchConfig
   );
-  yield put(slice.actions.setMemberships(membershipState.memberships));
-  yield put(slice.actions.fetchError(membershipState.errors));
+  yield put(slice.actions.setMembershipFetchState({ memberships: membershipState.memberships, errors: membershipState.errors }));
 }
 
-export const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
+export const { setMembershipFetchState, setMembership, deleteMembership } = slice.actions;
 
 export default slice;

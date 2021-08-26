@@ -11,11 +11,12 @@ import slice, {
   fetchMemberships,
   fetchMembershipsSaga,
   initialState,
-  MembershipErrorState
+  MembershipErrorState,
+  setMembershipFetchState
 } from './membership.slice';
 
 const reducer = slice.reducer;
-const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
+const { setMembership, deleteMembership } = slice.actions;
 
 describe('MembershipsSlice', () => {
   it('has an initial state', () => {
@@ -24,23 +25,23 @@ describe('MembershipsSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): adds multiple memberships state', () => {
+  it('setMembershipFetchState(): adds multiple memberships state', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer(initialState, setMemberships([m1, m2]));
+    const actual = reducer(initialState, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): deduplicates memberships', () => {
+  it('setMembershipFetchState(): deduplicates memberships', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer({ ...initialState, record: [m1] }, setMemberships([m1, m2]));
+    const actual = reducer({ ...initialState, record: [m1] }, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): deduplicates memberships uses mergeLeft', () => {
+  it('setMembershipFetchState(): deduplicates memberships uses mergeLeft', () => {
     const m1 = {
       address: 'random',
       memberships: [{ type: 'onemonth' }],
@@ -49,7 +50,7 @@ describe('MembershipsSlice', () => {
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const actual = reducer(
       { ...initialState, record: [m1] },
-      setMemberships([{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2] as MembershipStatus[])
+      setMembershipFetchState({ memberships: [{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2]  as MembershipStatus[], errors: {} as MembershipErrorState})
     );
     const expected = {
       ...initialState,
@@ -77,13 +78,13 @@ describe('MembershipsSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('fetchError(): sets an error', () => {
+  it('setMembershipFetchState(): sets an error', () => {
     const errorState = {
       Ethereum: false,
       xDAI: true,
       MATIC: false
     };
-    const actual = reducer(initialState, fetchError(errorState));
+    const actual = reducer(initialState, setMembershipFetchState({ memberships: [], errors: errorState }));
     const expected = { ...initialState, error: errorState };
     expect(actual).toEqual(expected);
   });
@@ -167,8 +168,7 @@ describe('fetchMembershipsSaga()', () => {
             membershipFetchExpected
           ]
         ])
-        .put(setMemberships(res))
-        .put(fetchError({} as MembershipErrorState))
+        .put(setMembershipFetchState({ memberships: res, errors: {} as MembershipErrorState }))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
         // use `silentRun` to silence the warning.
@@ -185,8 +185,7 @@ describe('fetchMembershipsSaga()', () => {
           membershipFetchExpected
         ]
       ])
-      .put(setMemberships(res))
-      .put(fetchError({} as MembershipErrorState))
+      .put(setMembershipFetchState({ memberships: res, errors: {} as MembershipErrorState }))
       .dispatch(fetchMemberships())
       .silentRun();
   });
@@ -203,8 +202,7 @@ describe('fetchMembershipsSaga()', () => {
           }
         ]
       ])
-      .put(setMemberships(res))
-      .put(fetchError({ Ethereum: true } as MembershipErrorState))
+      .put(setMembershipFetchState({ memberships: res, errors: { Ethereum: true } as MembershipErrorState }))
       .dispatch(fetchMemberships())
       .silentRun();
   });
