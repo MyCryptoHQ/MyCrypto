@@ -1051,7 +1051,7 @@
     "TRANSACTION_SUCCESS_HEADER": "Your transaction made it into the block!",
     "TRANSACTION_CROWDED_HEADER": "The network is currently crowded",
     "TRANSACTION_PENDING_DESCRIPTION": "Sit tight while we evaluate whether your transaction will be included in the next block. We'll have an answer for you in 30 sec or less!",
-    "TRANSACTION_SUCCESS_DESCRIPTION": "Woohoo, we can confirmed that your transaction will be mined in the next block.",
+    "TRANSACTION_SUCCESS_DESCRIPTION": "Woohoo, we can confirm that your transaction will be mined in the next block.",
     "TRANSACTION_CROWDED_DESCRIPTION": "You might consider resending your transaction with adjusted fees to increase the likelihood that it will be included in the next block."
   }
 }
