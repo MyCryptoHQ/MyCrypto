@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
-import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
 import { translateRaw } from '@translations';
@@ -483,27 +483,29 @@ export function* pendingTxPolling() {
       pendingTxReceipt.asset.networkId
     ) as StoreAccount;
 
-    if (!senderAccount) continue;
+    // In special cases this might not be true, i.e Faucet txs
+    if (senderAccount) {
+      const txs: ITxHistoryEntry[] = yield select(getMergedTxHistory);
+      const userTxs = txs.filter(
+        (t) =>
+          t.networkId === senderAccount.networkId && isSameAddress(t.from, senderAccount.address)
+      );
+      const overwritingTx = userTxs.find(
+        (t) =>
+          t.nonce === pendingTxReceipt.nonce &&
+          t.asset.networkId === pendingTxReceipt.asset.networkId &&
+          t.hash !== pendingTxReceipt.hash &&
+          t.status === ITxStatus.SUCCESS
+      );
 
-    const txs: ITxHistoryEntry[] = yield select(getMergedTxHistory);
-    const userTxs = txs.filter(
-      (t) => t.networkId === senderAccount.networkId && isSameAddress(t.from, senderAccount.address)
-    );
-    const overwritingTx = userTxs.find(
-      (t) =>
-        t.nonce === pendingTxReceipt.nonce &&
-        t.asset.networkId === pendingTxReceipt.asset.networkId &&
-        t.hash !== pendingTxReceipt.hash &&
-        t.status === ITxStatus.SUCCESS
-    );
-
-    if (overwritingTx) {
-      const updatedAccount = {
-        ...senderAccount,
-        transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
-      };
-      yield put(updateAccount(updatedAccount));
-      continue;
+      if (overwritingTx) {
+        const updatedAccount = {
+          ...senderAccount,
+          transactions: senderAccount.transactions.filter((t) => t.hash !== pendingTxReceipt.hash)
+        };
+        yield put(updateAccount(updatedAccount));
+        continue;
+      }
     }
 
     const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
@@ -512,7 +514,10 @@ export function* pendingTxPolling() {
     const provider = new ProviderHandler(network);
 
     // Special notation for calling class functions that reference `this`
-    const txResponse = yield call([provider, provider.getTransactionByHash], pendingTxReceipt.hash);
+    const txResponse = yield call(
+      [provider, provider.getTransactionReceipt],
+      pendingTxReceipt.hash
+    );
     // Fail out if tx receipt cant be found.
     // This initial check stops us from spamming node for data before there is data to fetch.
     // This occurs when tx is pending
@@ -529,8 +534,11 @@ export function* pendingTxPolling() {
       continue;
     }
 
-    const txStatus = yield call(getTxStatus, provider, pendingTxReceipt.hash);
-    const txTimestamp = yield call(getTimestampFromBlockNum, txResponse.blockNumber, provider);
+    const txStatus = txResponse.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+    const { timestamp: txTimestamp } = yield call(
+      [provider, provider.getBlockByNumber],
+      txResponse.blockNumber
+    );
 
     // Get block tx success/fail and timestamp for block number, then overwrite existing tx in account.
     // txStatus and txTimestamp return undefined on failed lookups.

@@ -56,7 +56,13 @@ export function GeneralStepper({
     return { currentPath: path, label, Step: component, stepAction: actions, props };
   };
 
-  const { currentPath, label, Step, stepAction } = getStep(step);
+  const { currentPath, label: stepLabel, Step, stepAction } = getStep(step);
+
+  const [label, setLabel] = useState(stepLabel);
+
+  useEffect(() => {
+    setLabel(stepLabel);
+  }, [stepLabel]);
 
   // Creates the label for the btn that sends user to the previous step.
   // If there is no previous step, you'll be going to either the default location (dashboard), or a user-specified location.
@@ -72,6 +78,9 @@ export function GeneralStepper({
   const stepProps = stepObject.props;
   const stepActions = stepObject.actions;
 
+  const stepperProps = { goToNextStep, goBack, goToFirstStep, goToPrevStep, setLabel };
+
+  // @todo Remove
   if (onRender) {
     onRender(goToNextStep);
   }
@@ -87,6 +96,7 @@ export function GeneralStepper({
     >
       <QueryBanner />
       <Step
+        heading={label}
         onComplete={(payload: any) =>
           stepAction ? stepAction(payload, goToNextStep, goToPrevStep) : goToNextStep()
         }
@@ -94,6 +104,7 @@ export function GeneralStepper({
         resetFlow={() => (stepAction ? stepAction(goToFirstStep) : goToFirstStep())}
         {...stepProps}
         {...stepActions}
+        {...stepperProps}
       />
     </ContentPanel>
   );

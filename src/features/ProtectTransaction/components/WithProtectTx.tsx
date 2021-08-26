@@ -80,11 +80,7 @@ interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTx(
-  WrappedComponent: ComponentType<Props>,
-  heading: string = '',
-  showButton?: boolean
-) {
+export function withProtectTx(WrappedComponent: ComponentType<Props>, showButton?: boolean) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
     signedTx: signedTxMain,
@@ -93,8 +89,9 @@ export function withProtectTx(
     onComplete: onCompleteMain,
     customDetails,
     resetFlow,
+    heading,
     ...props
-  }: Props) {
+  }: Props & { heading: string }) {
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;

@@ -370,6 +370,8 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
   } else if (type === 'tx-fee') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
+  } else if (type === 'arrow-right') {
+    return <SImg src={svgIcons[type]} {...props} />;
   } else if (isSVGType(type)) {
     return <SInlineSVG src={svgIcons[type]} color={color} fill={color} {...props} />;
   } else if (isPNGType(type)) {

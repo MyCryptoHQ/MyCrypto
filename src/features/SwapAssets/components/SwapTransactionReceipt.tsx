@@ -24,7 +24,8 @@ export default function SwapTransactionReceipt({
   assetPair,
   transactions,
   account,
-  onSuccess
+  onSuccess,
+  ...props
 }: Props) {
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
@@ -80,6 +81,7 @@ export default function SwapTransactionReceipt({
       resetFlow={onSuccess}
       onComplete={onSuccess}
       customComponent={customComponent}
+      {...props}
     />
   ) : (
     <MultiTxReceipt

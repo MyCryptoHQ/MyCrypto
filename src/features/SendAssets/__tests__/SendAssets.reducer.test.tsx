@@ -1,7 +1,6 @@
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 
 import { fAccount, fAccounts, fERC20NonWeb3TxConfig, fNetwork, fSignedTx } from '@fixtures';
-import { getDefaultEstimates } from '@services';
 import { IFormikFields, ILegacyTxReceipt, ITxStatus, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputNonceToHex } from '@utils';
 
@@ -43,7 +42,6 @@ describe('SendAssetsReducer', () => {
         network: fNetwork,
         nonceField: '10',
         advancedTransaction: false,
-        gasEstimates: getDefaultEstimates(fNetwork),
         isAutoGasSet: true,
         maxFeePerGasField: '20',
         maxPriorityFeePerGasField: '1'
