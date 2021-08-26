@@ -1,8 +1,14 @@
-import { DEFAULT_NETWORK, XDAI_NETWORK } from '@config';
-import { IMembershipId } from '@features/PurchaseMembership/config';
-import { accountWithMembership, membershipApiResponse } from '@fixtures';
+import { DEFAULT_NETWORK, POLYGON_NETWORK, XDAI_NETWORK } from '@config';
+import { IMembershipId, MembershipStatus } from '@features/PurchaseMembership/config';
+import { accountWithMembership, fAccount, fNetwork, fNetworks, membershipApiResponse } from '@fixtures';
+import { StoreAccount, WalletId } from '@types';
 
-import { formatResponse, getMembershipContracts } from './MembershipApi';
+import MembershipApi, { formatResponse, getMembershipContracts } from './MembershipApi';
+
+jest.mock('@mycrypto/unlock-scan', () => ({
+  ...jest.requireActual('@mycrypto/unlock-scan'),
+  getUnlockTimestamps: jest.fn().mockResolvedValue(Promise.reject("error fetching balances"))
+}));
 
 describe('MembershipApi', () => {
   it('formatResponse(): transforms timestamps to MembershipStatus', () => {
@@ -19,6 +25,48 @@ describe('MembershipApi', () => {
     const actual = formatResponse(DEFAULT_NETWORK)(membershipApiResponse);
     expect(actual).toEqual(expected);
   });
+  it('getMultiNetworkMemberships(): handles fetch errors', async () => {
+    const accounts = [
+      { address: accountWithMembership, networkId: DEFAULT_NETWORK, wallet: WalletId.LEDGER_NANO_S },
+      { address: '0xfeac75a09662396283f4bb50f0a9249576a81866', networkId: XDAI_NETWORK },
+      { ...fAccount, networkId: POLYGON_NETWORK }
+    ] as StoreAccount[];
+    const polygonNetwork = { ...fNetwork, id: POLYGON_NETWORK };
+
+    const ethereumAccounts = accounts
+      .filter(({ networkId }) => networkId === DEFAULT_NETWORK)
+      .map(({ address }) => address);
+    const xdaiAccounts = accounts
+      .filter(({ networkId }) => networkId === XDAI_NETWORK)
+      .map(({ address }) => address);
+    const polygonAccounts = accounts
+      .filter(({ networkId }) => networkId === POLYGON_NETWORK)
+      .map(({ address }) => address);
+  
+    const membershipFetchState = [
+      {
+        accounts: ethereumAccounts,
+        network: fNetworks[0]
+      },
+      {
+        accounts: xdaiAccounts,
+        network: fNetworks[2]
+      },
+      {
+        accounts: polygonAccounts,
+        network: polygonNetwork
+      }
+    ];
+    const memberships = [] as MembershipStatus[];
+    const errors = {
+      xDAI: true,
+      MATIC: true,
+      Ethereum: true
+    }
+    const expected = { memberships, errors }
+    const res = await MembershipApi.getMultiNetworkMemberships(membershipFetchState)
+    expect(res).toStrictEqual(expected)
+  })
 });
 
 describe('getMembershipContracts()', () => {

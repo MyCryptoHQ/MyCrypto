@@ -1,5 +1,4 @@
 import { call } from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
 import { expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, POLYGON_NETWORK, XDAI_NETWORK } from '@config';
@@ -8,10 +7,16 @@ import { accountWithMembership, fAccount, fNetwork, fNetworks } from '@fixtures'
 import { MembershipApi } from '@services/ApiService';
 import { StoreAccount, WalletId } from '@types';
 
-import slice, { fetchMemberships, fetchMembershipsSaga, initialState } from './membership.slice';
+import slice, {
+  fetchMemberships,
+  fetchMembershipsSaga,
+  initialState,
+  MembershipErrorState,
+  setMembershipFetchState
+} from './membership.slice';
 
 const reducer = slice.reducer;
-const { setMemberships, setMembership, deleteMembership, fetchError } = slice.actions;
+const { setMembership, deleteMembership } = slice.actions;
 
 describe('MembershipsSlice', () => {
   it('has an initial state', () => {
@@ -20,23 +25,23 @@ describe('MembershipsSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): adds multiple memberships state', () => {
+  it('setMembershipFetchState(): adds multiple memberships state', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer(initialState, setMemberships([m1, m2]));
+    const actual = reducer(initialState, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): deduplicates memberships', () => {
+  it('setMembershipFetchState(): deduplicates memberships', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer({ ...initialState, record: [m1] }, setMemberships([m1, m2]));
+    const actual = reducer({ ...initialState, record: [m1] }, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
 
-  it('setMemberships(): deduplicates memberships uses mergeLeft', () => {
+  it('setMembershipFetchState(): deduplicates memberships uses mergeLeft', () => {
     const m1 = {
       address: 'random',
       memberships: [{ type: 'onemonth' }],
@@ -45,7 +50,7 @@ describe('MembershipsSlice', () => {
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const actual = reducer(
       { ...initialState, record: [m1] },
-      setMemberships([{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2] as MembershipStatus[])
+      setMembershipFetchState({ memberships: [{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2]  as MembershipStatus[], errors: {} as MembershipErrorState})
     );
     const expected = {
       ...initialState,
@@ -73,9 +78,14 @@ describe('MembershipsSlice', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('fetchError(): sets an error', () => {
-    const actual = reducer(initialState, fetchError());
-    const expected = { ...initialState, error: true };
+  it('setMembershipFetchState(): sets an error', () => {
+    const errorState = {
+      Ethereum: false,
+      xDAI: true,
+      MATIC: false
+    };
+    const actual = reducer(initialState, setMembershipFetchState({ memberships: [], errors: errorState }));
+    const expected = { ...initialState, error: errorState };
     expect(actual).toEqual(expected);
   });
 });
@@ -126,6 +136,26 @@ describe('fetchMembershipsSaga()', () => {
     .filter(({ networkId }) => networkId === POLYGON_NETWORK)
     .map(({ address }) => address);
 
+  const membershipFetchState = [
+    {
+      accounts: ethereumAccounts,
+      network: fNetworks[0]
+    },
+    {
+      accounts: xdaiAccounts,
+      network: fNetworks[2]
+    },
+    {
+      accounts: polygonAccounts,
+      network: polygonNetwork
+    }
+  ];
+
+  const membershipFetchExpected = {
+    memberships: res,
+    errors: {} as MembershipErrorState
+  };
+
   const initialState = mockAppState({ accounts, networks: [...fNetworks, polygonNetwork] });
 
   it('can fetch memberships from provided accounts', () => {
@@ -133,11 +163,12 @@ describe('fetchMembershipsSaga()', () => {
       expectSaga(fetchMembershipsSaga)
         .withState(initialState)
         .provide([
-          [call(MembershipApi.getMemberships, ethereumAccounts, fNetworks[0]), [res[0]]],
-          [call(MembershipApi.getMemberships, xdaiAccounts, fNetworks[2]), [res[1]]],
-          [call(MembershipApi.getMemberships, polygonAccounts, polygonNetwork), [res[2]]]
+          [
+            call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+            membershipFetchExpected
+          ]
         ])
-        .put(setMemberships(res))
+        .put(setMembershipFetchState({ memberships: res, errors: {} as MembershipErrorState }))
         .dispatch(fetchMemberships(accounts))
         // We test a `takeLatest` saga so we expect a timeout.
         // use `silentRun` to silence the warning.
@@ -149,21 +180,29 @@ describe('fetchMembershipsSaga()', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
       .provide([
-        [call(MembershipApi.getMemberships, ethereumAccounts, fNetworks[0]), [res[0]]],
-        [call(MembershipApi.getMemberships, xdaiAccounts, fNetworks[2]), [res[1]]],
-        [call(MembershipApi.getMemberships, polygonAccounts, polygonNetwork), [res[2]]]
+        [
+          call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+          membershipFetchExpected
+        ]
       ])
-      .put(setMemberships(res))
+      .put(setMembershipFetchState({ memberships: res, errors: {} as MembershipErrorState }))
       .dispatch(fetchMemberships())
       .silentRun();
   });
 
-  it('can sets error if the call fails', () => {
-    const error = new Error('error');
+  it('can sets error if the call throws an error', () => {
     return expectSaga(fetchMembershipsSaga)
       .withState(initialState)
-      .provide([[call.fn(MembershipApi.getMemberships), throwError(error)]])
-      .put(fetchError())
+      .provide([
+        [
+          call(MembershipApi.getMultiNetworkMemberships, membershipFetchState),
+          {
+            memberships: membershipFetchExpected.memberships,
+            errors: { Ethereum: true }
+          }
+        ]
+      ])
+      .put(setMembershipFetchState({ memberships: res, errors: { Ethereum: true } as MembershipErrorState }))
       .dispatch(fetchMemberships())
       .silentRun();
   });
