@@ -92,7 +92,8 @@ const TxReceipt = ({
   resetFlow,
   protectTxButton,
   queryStringsDisabled,
-  isTxStatus
+  isTxStatus,
+  setLabel
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
   const { getContactByAddressAndNetworkId } = useContacts();
@@ -216,6 +217,7 @@ const TxReceipt = ({
         fiat={fiat}
         baseAssetRate={baseAssetRate}
         showDetails={showDetails}
+        setLabel={setLabel}
       />
     );
   }

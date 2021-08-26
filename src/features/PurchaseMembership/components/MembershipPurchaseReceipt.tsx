@@ -19,7 +19,8 @@ export default function MembershipReceipt({
   account,
   transactions,
   flowConfig,
-  onComplete
+  onComplete,
+  ...props
 }: IMembershipPurchaseReceiptProps) {
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
@@ -51,6 +52,7 @@ export default function MembershipReceipt({
       customComponent={customComponent}
       resetFlow={onComplete}
       onComplete={onComplete}
+      {...props}
     />
   ) : (
     <MultiTxReceipt

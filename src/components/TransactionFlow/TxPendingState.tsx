@@ -6,7 +6,7 @@ import txInBlock from 'assets/images/illustrations/tx-in-block.svg';
 import txPool from 'assets/images/illustrations/tx-pool.svg';
 
 import { Box, Button, Icon, LinkApp, Text } from '@components';
-import { Body, Heading } from '@components/NewTypography';
+import { Body } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
 import { ROUTE_PATHS } from '@config';
 import { useGasForm } from '@hooks';
@@ -30,6 +30,7 @@ interface Props {
   fiat: Fiat;
   baseAssetRate: number;
   showDetails(): void;
+  setLabel?(label: string): void;
 }
 
 const CROWDED_TIMEOUT = 20 * 1000; // 20 sec in ms
@@ -74,7 +75,8 @@ export const TxPendingState = ({
   txReceipt,
   fiat,
   baseAssetRate,
-  showDetails
+  showDetails,
+  setLabel
 }: Props) => {
   const [state, setState] = useState<PendingState>(PendingState.PENDING);
   const { header, description, illustration, resend } = states[state];
@@ -140,11 +142,14 @@ export const TxPendingState = ({
     }
   }, CROWDED_TIMEOUT);
 
+  useEffect(() => {
+    if (setLabel) {
+      setLabel(header);
+    }
+  }, [header]);
+
   return (
     <Box>
-      <Heading fontWeight="bold" fontSize="3">
-        {header}
-      </Heading>
       <Body mt="1">{description}</Body>
       <Box variant="rowCenter">
         <img src={illustration} />

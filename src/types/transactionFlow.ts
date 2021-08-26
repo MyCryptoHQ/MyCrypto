@@ -113,6 +113,7 @@ export interface ITxReceiptStepProps {
   completeButton?: string | (() => JSX.Element);
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
   resetFlow(): void;
+  setLabel?(label: string): void;
 }
 
 export interface IReceiverAddress {

@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react';
 
 import { fNetwork, fTxConfig, fTxReceiptEIP1559 } from '@fixtures';
+import { noOp } from '@utils';
 
 import { TxPendingState } from './TxPendingState';
 
@@ -15,5 +16,7 @@ export const Default = Template.bind({});
 Default.args = {
   network: { ...fNetwork, supportsEIP1559: true },
   txConfig: fTxConfig,
-  txReceipt: fTxReceiptEIP1559
+  txReceipt: fTxReceiptEIP1559,
+  setLabel: noOp,
+  showDetails: noOp
 };

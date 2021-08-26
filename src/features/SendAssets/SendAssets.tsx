@@ -138,7 +138,7 @@ function SendAssets({ location }: RouteComponentProps) {
       }
     },
     {
-      label: ' ',
+      label: translateRaw('TRANSACTION_BROADCASTED'),
       component: TxReceiptWithProtectTx,
       props: (({ txConfig, txReceipt, txQueryType }) => ({
         txConfig,
