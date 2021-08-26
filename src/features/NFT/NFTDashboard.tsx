@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Body, Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { OpenSeaService } from '@services/ApiService/OpenSea';
+import { OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -30,11 +30,11 @@ const StyledLayout = styled.div`
 `;
 
 export default function NftDashboard() {
-  const [assets, setAssets] = useState([]);
+  const [assets, setAssets] = useState<OpenSeaNFT[]>([]);
 
   useEffect(() => {
     OpenSeaService.fetchAssets('0xe77162b7d2ceb3625a4993bab557403a7b706f18').then((result) => {
-      setAssets(result);
+      setAssets(result ?? []);
     });
   }, []);
 

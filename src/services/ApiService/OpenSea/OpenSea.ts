@@ -3,8 +3,10 @@ import { AxiosInstance } from 'axios';
 import { OPENSEA_API } from '@config';
 import { ApiService } from '@services/ApiService';
 
+import { OpenSeaNFT } from './types';
+
 export default abstract class OpenSeaService {
-  public static fetchAssets = async (owner: string) => {
+  public static fetchAssets = async (owner: string): Promise<OpenSeaNFT[] | null> => {
     try {
       const { data } = await OpenSeaService.service.get('v1/assets', { params: { owner } });
       return data.assets;
