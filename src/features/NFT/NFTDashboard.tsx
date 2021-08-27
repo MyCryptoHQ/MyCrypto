@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Body, Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
-import { BREAK_POINTS, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 const DashboardWrapper = styled.div`
@@ -54,6 +54,7 @@ export default function NftDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading="NFT Dashboard"
+          padChildren={true}
           headingRight={
             <Box variant="rowAlign">
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
@@ -75,10 +76,17 @@ export default function NftDashboard() {
             </Box>
           }
         >
-          <Box variant="rowAlign" justifyContent="center">
+          <Box variant="rowAlign" justifyContent="center" flexWrap="wrap">
             {assets &&
               assets.map((asset) => (
-                <Box key={asset.id} p="3" variant="columnAlignLeft">
+                <Box
+                  key={asset.id}
+                  p="3"
+                  m="2"
+                  variant="columnAlignLeft"
+                  border={`1.70146px solid ${COLORS.BLUE_BRIGHT}`}
+                  borderRadius="5px"
+                >
                   <img
                     src={asset.image_url}
                     style={{
@@ -88,7 +96,7 @@ export default function NftDashboard() {
                       height: '250px'
                     }}
                   />
-                  <Box variant="rowAlign" justifyContent="space-between">
+                  <Box variant="rowAlignTop" justifyContent="space-between">
                     <Box variant="columnAlignLeft">
                       <Body fontSize="12px" m="0">
                         {asset.collection.name}
