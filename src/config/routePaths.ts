@@ -142,6 +142,11 @@ const PATHS: IRoutePath[] = [
     name: 'FAUCET',
     title: translateRaw('FAUCET'),
     path: '/faucet'
+  },
+  {
+    name: 'NFT_DASHBOARD',
+    title: 'NFT Dashboard',
+    path: '/nft-dashboard'
   }
 ];
 

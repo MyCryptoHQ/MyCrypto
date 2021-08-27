@@ -3,6 +3,7 @@ import { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { ROUTE_PATHS } from '@config';
+import NftDashboard from '@features/NFT/NFTDashboard';
 import { FeatureFlags } from '@services/FeatureFlag';
 import { IAppRoute } from '@types';
 import { isTruthy } from '@utils';
@@ -319,6 +320,15 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     requireAccounts: true,
     enabled: isTruthy(featureFlags.FAUCET),
     component: Faucet
+  },
+  {
+    name: ROUTE_PATHS.NFT_DASHBOARD.name,
+    title: ROUTE_PATHS.NFT_DASHBOARD.title,
+    path: ROUTE_PATHS.NFT_DASHBOARD.path,
+    exact: true,
+    requireAccounts: true,
+    enabled: true,
+    component: NftDashboard
   }
 ];
 
