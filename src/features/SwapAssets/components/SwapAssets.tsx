@@ -165,7 +165,7 @@ const SwapAssets = (props: Props) => {
     if (defaultAccount && ((account && account.uuid !== defaultAccount.uuid) || !account)) {
       handleAccountSelected(defaultAccount);
     }
-  }, [filteredAccounts]);
+  }, [JSON.stringify(filteredAccounts)]);
 
   useEffect(() => {
     if (
