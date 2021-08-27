@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Body, Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 const DashboardWrapper = styled.div`
@@ -84,7 +84,9 @@ export default function NftDashboard() {
                   p="3"
                   m="2"
                   variant="columnAlignLeft"
-                  border={`1.70146px solid ${COLORS.BLUE_BRIGHT}`}
+                  borderWidth="1.70146px"
+                  borderStyle="solid"
+                  borderColor="BLUE_BRIGHT"
                   borderRadius="5px"
                 >
                   <img
