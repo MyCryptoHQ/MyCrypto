@@ -1,8 +1,7 @@
-import { hexlify } from '@ethersproject/bytes';
 import BigNumber from 'bignumber.js';
 
 import { ProviderHandler } from '@services/EthService';
-import { bigify, fromWei, getDecimalFromEtherUnit, toWei } from '@utils';
+import { bigify, fromWei, getDecimalFromEtherUnit, hexlify, toWei } from '@utils';
 
 import { MAX_GAS_FAST } from './constants';
 
