@@ -1,7 +1,7 @@
 import { Network, StoreAccount, WalletId } from '@types';
 
 // @todo Figure out if anything else needs to be disabled?
-const DISABLED_WALLETS = [WalletId.TREZOR, WalletId.TREZOR_NEW, WalletId.WALLETCONNECT];
+const DISABLED_WALLETS = [WalletId.TREZOR, WalletId.TREZOR_NEW];
 
 const featureFlagName = 'MYC_EIP1559';
 
