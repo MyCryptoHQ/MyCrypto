@@ -23,7 +23,7 @@ export const Subscribe = () => {
 
   const subscribe = (formValues: FormValues) => {
     subscribeToMailingList(formValues.email).then(() => setSubmitted(true));
-    track({ name: 'Newsletter subscription' });
+    track({ action: 'Newsletter subscription' });
   };
 
   const Schema = object().shape({

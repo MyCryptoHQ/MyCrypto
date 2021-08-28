@@ -1,6 +1,6 @@
-import { event, getConfig, page, Providers, setConfig } from '@blockstack/stats';
+import MatomoTracker from '@datapunt/matomo-tracker-js';
 
-import { ANALYTICS_API_URL, SEGMENT_WRITE_KEY } from '@utils';
+import { ANALYTICS_API } from '@config';
 
 import { TAnalyticEvents } from './constants';
 
@@ -10,47 +10,81 @@ export interface PageParams {
 }
 
 export interface TrackParams {
-  name: TAnalyticEvents;
-  params?: TObject;
+  action: TAnalyticEvents;
+  name?: string;
+  value?: number;
+  customDimensions?: any;
 }
 
+export interface LinkParams {
+  url: string;
+  type?: 'download' | 'link';
+}
+
+const LS_ANA_UID_NAME = 'MYC_ANA_UID';
+
+const makeID = () => {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+const getOrSetAnonymousID = () => {
+  const existingID = localStorage.getItem(LS_ANA_UID_NAME);
+  if (existingID) {
+    return existingID;
+  }
+  const newID = makeID();
+  localStorage.setItem(LS_ANA_UID_NAME, newID);
+  return newID;
+};
+
+const tracker = new MatomoTracker({
+  urlBase: ANALYTICS_API,
+  siteId: 11,
+  disabled: false,
+  heartBeat: {
+    active: false
+  },
+  linkTracking: false,
+  configurations: {
+    disableCookies: true,
+    setSecureCookie: true,
+    setRequestMethod: 'POST'
+  }
+});
+
 const initAnalytics = () => {
-  setConfig({
-    host: ANALYTICS_API_URL,
-    providers: [
-      {
-        name: Providers.Segment,
-        writeKey: SEGMENT_WRITE_KEY!
-      }
-    ]
-  });
+  tracker.pushInstruction('setUserId', getOrSetAnonymousID());
 };
 
 /**
- * Blockstack/stats sets an anonymous id on `setConfig`.
  * If a user chooses to deactivate product analytics we ensure to clear
  * the LS value as well.
  */
 const clearAnonymousID = () => {
-  const LS_BSK_ID = '__bsk_ana_id__';
-  localStorage.removeItem(LS_BSK_ID);
+  localStorage.removeItem(LS_ANA_UID_NAME);
 };
 
-const setAnonymousID = () => getConfig();
+const setAnonymousID = () => {
+  tracker.pushInstruction('setUserId', getOrSetAnonymousID());
+};
 
-const track = ({ name, params }: TrackParams) => {
-  return event({ ...params, name });
+const track = ({ action, name, value }: TrackParams) => {
+  return tracker.trackEvent({ category: 'app', action, name, value });
 };
 
 const trackPage = ({ name, title }: PageParams) => {
-  // @blockstack/stats/client already includes domain and path
-  // while omitting query values.
-  return page({ name, title });
+  return tracker.trackPageView({ documentTitle: title, href: name });
+};
+
+const trackLink = ({ url, type }: LinkParams) => {
+  return tracker.trackLink({ href: url, linkType: type });
 };
 
 export default {
+  tracker,
   track,
   trackPage,
+  trackLink,
   initAnalytics,
   clearAnonymousID,
   setAnonymousID

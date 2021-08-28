@@ -42,7 +42,7 @@ export function Export(props: Props) {
           fileName={getExportFileName(getCurrentDBConfig(), new Date())}
           data={appState}
           onClick={() => {
-            track({ name: 'Export AppState' });
+            track({ action: 'Export AppState' });
             if (backupAction) {
               updateUserAction(backupAction.uuid, {
                 ...backupAction,
