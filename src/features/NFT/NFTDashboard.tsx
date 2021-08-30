@@ -54,7 +54,6 @@ export default function NftDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading="NFT Dashboard"
-          padChildren={true}
           headingRight={
             <Box variant="rowAlign">
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
@@ -76,7 +75,12 @@ export default function NftDashboard() {
             </Box>
           }
         >
-          <Box variant="rowAlign" justifyContent="center" flexWrap="wrap">
+          <Box
+            variant="rowAlign"
+            justifyContent="center"
+            flexWrap="wrap"
+            marginBottom={SPACING.BASE}
+          >
             {assets &&
               assets.map((asset) => (
                 <Box
@@ -88,24 +92,35 @@ export default function NftDashboard() {
                   borderStyle="solid"
                   borderColor="BLUE_BRIGHT"
                   borderRadius="5px"
+                  maxWidth="250px"
                 >
-                  <img
-                    src={asset.image_url}
-                    style={{
-                      objectFit: 'cover',
-                      borderRadius: '2px',
-                      width: '250px',
-                      height: '250px'
-                    }}
-                  />
+                  <Box>
+                    <img
+                      src={asset.image_url}
+                      style={{
+                        objectFit: 'cover',
+                        borderRadius: '2px',
+                        width: '250px',
+                        height: '250px'
+                      }}
+                    />
+                  </Box>
                   <Box variant="rowAlignTop" justifyContent="space-between">
                     <Box variant="columnAlignLeft">
-                      <Body fontSize="12px" m="0">
+                      <Body
+                        fontSize="12px"
+                        m="0"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                      >
                         {asset.collection.name}
                       </Body>
-                      <Body>{asset.name}</Body>
+                      <Body overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                        {asset.name}
+                      </Body>
                     </Box>
-                    <Box variant="columnAlignRight">
+                    <Box variant="columnAlignRight" flexShrink={0}>
                       <Body fontSize="12px" m="0" textAlign="right">
                         Floor
                       </Body>
