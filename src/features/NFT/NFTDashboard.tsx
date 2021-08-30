@@ -3,11 +3,16 @@ import { useEffect, useState } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Body, Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
+import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Spinner, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
+import { getStoreAccounts, useSelector } from '@store';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { NetworkId } from '@types';
+import { mapAsync } from '@utils';
+
+import { NFTCard } from './NFTCard';
 
 const DashboardWrapper = styled.div`
   width: 100%;
@@ -29,17 +34,27 @@ const StyledLayout = styled.div`
   }
 `;
 
+const NFT_NETWORKS = ['Ethereum'] as NetworkId[];
+
 export default function NftDashboard() {
-  const [assets, setAssets] = useState<OpenSeaNFT[]>([]);
-  const [collections, setCollections] = useState<OpenSeaCollection[]>([]);
+  const [assets, setAssets] = useState<OpenSeaNFT[] | null>(null);
+  const [collections, setCollections] = useState<OpenSeaCollection[] | null>(null);
+
+  const accounts = useSelector(getStoreAccounts);
+
+  const filteredAccounts = accounts.filter((a) => NFT_NETWORKS.includes(a.networkId));
 
   useEffect(() => {
-    OpenSeaService.fetchAssets('0xe77162b7d2ceb3625a4993bab557403a7b706f18').then((result) => {
-      setAssets(result ?? []);
-    });
+    mapAsync(filteredAccounts, async (account) => OpenSeaService.fetchAssets(account.address)).then(
+      (result) => {
+        setAssets(result.filter((r) => r !== null).flat());
+      }
+    );
 
-    OpenSeaService.fetchCollections('0xe77162b7d2ceb3625a4993bab557403a7b706f18').then((result) => {
-      setCollections(result ?? []);
+    mapAsync(filteredAccounts, async (account) =>
+      OpenSeaService.fetchCollections(account.address)
+    ).then((result) => {
+      setCollections(result.filter((r) => r !== null).flat());
     });
   }, []);
 
@@ -81,61 +96,17 @@ export default function NftDashboard() {
             flexWrap="wrap"
             marginBottom={SPACING.BASE}
           >
-            {assets &&
+            {assets ? (
               assets.map((asset) => (
-                <Box
+                <NFTCard
                   key={asset.id}
-                  p="3"
-                  m="2"
-                  variant="columnAlignLeft"
-                  borderWidth="1.70146px"
-                  borderStyle="solid"
-                  borderColor="BLUE_BRIGHT"
-                  borderRadius="5px"
-                  maxWidth="250px"
-                >
-                  <Box>
-                    <img
-                      src={asset.image_url}
-                      style={{
-                        objectFit: 'cover',
-                        borderRadius: '2px',
-                        width: '250px',
-                        height: '250px'
-                      }}
-                    />
-                  </Box>
-                  <Box variant="rowAlignTop" justifyContent="space-between">
-                    <Box variant="columnAlignLeft">
-                      <Body
-                        fontSize="12px"
-                        m="0"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                      >
-                        {asset.collection.name}
-                      </Body>
-                      <Body overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-                        {asset.name}
-                      </Body>
-                    </Box>
-                    <Box variant="columnAlignRight" flexShrink={0}>
-                      <Body fontSize="12px" m="0" textAlign="right">
-                        Floor
-                      </Body>
-                      <Body fontSize="12px" m="0" textAlign="right">
-                        {collections.find((c) => c.slug === asset.collection.slug)?.stats
-                          .floor_price ?? '?'}{' '}
-                        ETH
-                      </Body>
-                    </Box>
-                  </Box>
-                  <LinkApp isExternal={true} href={asset.permalink} textAlign="center">
-                    View on OpenSea
-                  </LinkApp>
-                </Box>
-              ))}
+                  asset={asset}
+                  collection={collections?.find((c) => c.slug === asset.collection.slug)}
+                />
+              ))
+            ) : (
+              <Spinner size={3} />
+            )}
           </Box>
         </DashboardPanel>
       </DashboardWrapper>
