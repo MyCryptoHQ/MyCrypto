@@ -176,6 +176,7 @@ const HDWallet = ({
     addDPaths([
       {
         ...values,
+        path: values.path + '/<account>',
         offset: 0,
         numOfAddresses: DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN
       }

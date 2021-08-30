@@ -47,6 +47,7 @@ export interface IUseHDWallet {
   isConnecting: boolean;
   accountQueue: DWAccountDisplay[];
   scannedAccounts: DWAccountDisplay[];
+  mergedDPaths: ExtendedDPath[];
   requestConnection(network: Network, asset: ExtendedAsset): void;
   updateAsset(asset: ExtendedAsset): void;
   addDPaths(dpaths: ExtendedDPath[]): void;

@@ -54,7 +54,8 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
     requestConnection,
     updateAsset,
     addDPaths,
-    scanMoreAddresses
+    scanMoreAddresses,
+    mergedDPaths
   } = useHDWallet(extendedDPaths, WalletId.TREZOR_NEW, DEFAULT_GAP_TO_SCAN_FOR);
 
   const handleNullConnect = () => {
@@ -76,7 +77,7 @@ const TrezorDecrypt = ({ formData, onUnlock }: OwnProps) => {
         assets={assets}
         assetToUse={assetToUse}
         network={network}
-        dpaths={dpaths}
+        dpaths={mergedDPaths}
         setSelectedDPath={setSelectedDPath}
         updateAsset={updateAsset}
         addDPaths={addDPaths}

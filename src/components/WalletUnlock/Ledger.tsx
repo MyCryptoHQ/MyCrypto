@@ -56,7 +56,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     addDPaths,
     scanMoreAddresses,
-    connectionError
+    connectionError,
+    mergedDPaths
   } = useHDWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
@@ -91,7 +92,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
         scannedAccounts={scannedAccounts}
         isCompleted={isCompleted}
         selectedAsset={selectedAsset}
-        dpaths={dpaths}
+        dpaths={mergedDPaths}
         assets={assets}
         assetToUse={assetToUse}
         network={network}
