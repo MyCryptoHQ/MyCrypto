@@ -523,7 +523,7 @@ export function* pendingTxPolling() {
       );
       // If transaction count > pendingTx nonce, then the nonce has been used already
       // (i.e - tx may have been overwritten somewhere other than mycrypto)
-      if (transactionCount >= pendingTxReceipt.nonce.toNumber()) {
+      if (transactionCount > pendingTxReceipt.nonce.toNumber()) {
         yield put(removeAccountTx({ account: senderAccount, txHash: pendingTxReceipt.hash }));
       }
       continue;
