@@ -841,7 +841,7 @@ describe('AccountSlice', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
       ProviderHandler.prototype.getTransactionCount = jest
         .fn()
-        .mockResolvedValue(fTxReceipt.nonce - 1);
+        .mockResolvedValue(fTxReceipt.nonce - 1 );
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
         .withState({
@@ -864,7 +864,7 @@ describe('AccountSlice', () => {
     });
     it('removes tx if pending tx not mined, but nonce is used already', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
-      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce);
+      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce + 1);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
