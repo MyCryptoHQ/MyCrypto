@@ -35,7 +35,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
-    ...(formData.network in ETHEREUM_NETWORKS ? LEDGER_DERIVATION_PATHS : [])
+    ...(ETHEREUM_NETWORKS.includes(formData.network) ? LEDGER_DERIVATION_PATHS : [])
   ]);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
