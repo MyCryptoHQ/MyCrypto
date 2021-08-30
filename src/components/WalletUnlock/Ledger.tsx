@@ -35,7 +35,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const dpaths = uniqBy(prop('path'), [
     ...getDPaths([network], WalletId.LEDGER_NANO_S),
-    ...(formData.network in ETHEREUM_NETWORKS ? LEDGER_DERIVATION_PATHS : [])
+    ...(ETHEREUM_NETWORKS.includes(formData.network) ? LEDGER_DERIVATION_PATHS : [])
   ]);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
@@ -56,7 +56,8 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
     updateAsset,
     addDPaths,
     scanMoreAddresses,
-    connectionError
+    connectionError,
+    mergedDPaths
   } = useHDWallet(extendedDPaths, WalletId.LEDGER_NANO_S_NEW, DEFAULT_GAP_TO_SCAN_FOR);
   const handleAssetUpdate = (newAsset: ExtendedAsset) => {
     setAssetToUse(newAsset);
@@ -91,7 +92,7 @@ const LedgerDecrypt = ({ formData, onUnlock }: OwnProps) => {
         scannedAccounts={scannedAccounts}
         isCompleted={isCompleted}
         selectedAsset={selectedAsset}
-        dpaths={dpaths}
+        dpaths={mergedDPaths}
         assets={assets}
         assetToUse={assetToUse}
         network={network}

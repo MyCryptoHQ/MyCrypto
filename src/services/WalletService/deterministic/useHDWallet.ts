@@ -23,7 +23,7 @@ import {
 } from '@features/AddAccount/components/hdWallet.slice';
 import { processScannedAccounts } from '@services';
 import { DPathFormat, ExtendedAsset, Network } from '@types';
-import { useUnmount } from '@vendor';
+import { prop, uniqBy, useUnmount } from '@vendor';
 
 import { ExtendedDPath, IUseHDWallet } from './types';
 
@@ -96,6 +96,8 @@ export const useHDWallet = (
     dispatch(connectHDWallet({ walletId, network, asset, dpaths, setSession }));
   };
 
+  const mergedDPaths = uniqBy(prop('path'), [...dpaths, ...customDPaths]);
+
   return {
     scannedAccounts,
     isCompleted,
@@ -107,6 +109,7 @@ export const useHDWallet = (
     updateAsset,
     addDPaths,
     scanMoreAddresses,
-    connectionError
+    connectionError,
+    mergedDPaths
   };
 };
