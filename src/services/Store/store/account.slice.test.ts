@@ -841,7 +841,7 @@ describe('AccountSlice', () => {
       ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
       ProviderHandler.prototype.getTransactionCount = jest
         .fn()
-        .mockResolvedValue(fTxReceipt.nonce - 1 );
+        .mockResolvedValue(fTxReceipt.nonce - 1);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       return expectSaga(pendingTxPolling)
         .withState({
