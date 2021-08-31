@@ -42,4 +42,9 @@ describe('Button', () => {
     fireEvent.click(component!);
     expect(defaultProps.steps[0].onClick).toHaveBeenCalledTimes(1);
   });
+
+  test('it renders error', async () => {
+    const { getByText } = getComponent({ ...defaultProps, error: true });
+    expect(getByText('An error occurred.', { exact: false })).toBeDefined();
+  });
 });
