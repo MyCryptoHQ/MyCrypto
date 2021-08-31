@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ import {
   WalletId
 } from '@types';
 import { makeTransaction, useInterval } from '@utils';
+import { useDebounce } from '@vendor';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -88,25 +89,29 @@ export default function HardwareSignTransaction({
     []
   );
 
-  useEffect(() => {
-    // Wallet has been unlocked. Attempting to sign tx now.
-    if (wallet && !isRequestingTxSignature) {
-      setIsRequestingTxSignature(true);
-      const madeTx = makeTransaction(rawTransaction);
-      wallet
-        .signTransaction(madeTx)
-        .then((data) => {
-          // User approves tx.
-          setIsTxSignatureRequestDenied(false);
-          onSuccess(data);
-        })
-        .catch(() => {
-          // User denies tx, or tx times out.
-          setIsTxSignatureRequestDenied(true);
-          setIsRequestingTxSignature(false);
-        });
-    }
-  }, [wallet, isRequestingTxSignature]);
+  useDebounce(
+    () => {
+      // Wallet has been unlocked. Attempting to sign tx now.
+      if (wallet && !isRequestingTxSignature) {
+        setIsRequestingTxSignature(true);
+        const madeTx = makeTransaction(rawTransaction);
+        wallet
+          .signTransaction(madeTx)
+          .then((data) => {
+            // User approves tx.
+            setIsTxSignatureRequestDenied(false);
+            onSuccess(data);
+          })
+          .catch(() => {
+            // User denies tx, or tx times out.
+            setIsTxSignatureRequestDenied(true);
+            setIsRequestingTxSignature(false);
+          });
+      }
+    },
+    1000,
+    [wallet, isRequestingTxSignature]
+  );
 
   const walletType = (() => {
     switch (senderAccount.wallet) {
