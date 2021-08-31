@@ -10,7 +10,8 @@ export default function ConfirmMembershipPurchase({
   flowConfig,
   currentTxIdx,
   transactions,
-  onComplete
+  onComplete,
+  error
 }: ITxMultiConfirmProps) {
   const status = transactions.map((t) => path(['status'], t));
 
@@ -28,6 +29,7 @@ export default function ConfirmMembershipPurchase({
       <VerticalStepper
         currentStep={broadcastingIndex === -1 ? currentTxIdx : broadcastingIndex}
         steps={steps}
+        error={error !== undefined}
       />
     </div>
   );

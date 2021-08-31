@@ -7,7 +7,8 @@ export default function ConfirmTokenMigrationMultiTx({
   currentTxIdx,
   transactions,
   flowConfig,
-  onComplete
+  onComplete,
+  error
 }: ITxMultiConfirmProps) {
   const status = transactions.map((t) => path(['status'], t));
 
@@ -28,6 +29,7 @@ export default function ConfirmTokenMigrationMultiTx({
       <VerticalStepper
         currentStep={broadcastingIndex === -1 ? currentTxIdx : broadcastingIndex}
         steps={steps}
+        error={error !== undefined}
       />
     </div>
   );

@@ -6,9 +6,11 @@ import styled from 'styled-components';
 
 import checkmark from '@assets/images/icn-checkmark-white.svg';
 import { COLORS, FONT_SIZE, SPACING } from '@theme';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
+import { formatSupportEmail } from '@utils';
 
 import Button from './Button';
+import { InlineMessage } from './InlineMessage';
 import Typography from './Typography';
 
 export interface StepData {
@@ -25,6 +27,7 @@ export interface Props {
   size?: 'sm' | 'lg';
   color?: string;
   steps: StepData[];
+  error?: boolean;
 }
 
 interface StepProps {
@@ -99,7 +102,8 @@ function VerticalStepper({
   currentStep = 0,
   steps,
   size = 'sm',
-  color = COLORS.BLUE_BRIGHT
+  color = COLORS.BLUE_BRIGHT,
+  error
 }: Props) {
   const icons = {
     finish: <img src={checkmark} />
@@ -125,6 +129,7 @@ function VerticalStepper({
                   buttonText={s.buttonText}
                   loading={s.loading}
                   size={size}
+                  error={error}
                   onClick={s.onClick}
                 />
               )
@@ -186,6 +191,7 @@ interface DescriptionProps {
   content: ReactNode | string;
   buttonText?: string;
   loading?: boolean;
+  error?: boolean;
   size?: 'sm' | 'lg';
   onClick?(): void;
 }
@@ -202,14 +208,27 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-function StepperContent({ active, content, buttonText, loading, size, onClick }: DescriptionProps) {
+function StepperContent({
+  active,
+  content,
+  buttonText,
+  loading,
+  error,
+  size,
+  onClick
+}: DescriptionProps) {
   return (
     <ContentWrapper size={size}>
       <Typography as={'div'}>{content}</Typography>
       {buttonText && (
-        <SButton disabled={!active} loading={loading} onClick={onClick}>
+        <SButton disabled={!active || error} loading={loading} onClick={onClick}>
           {buttonText}
         </SButton>
+      )}
+      {active && error && (
+        <InlineMessage>
+          {translate('MTX_GENERIC_ERROR', { $link: formatSupportEmail('Multi TX Error') })}
+        </InlineMessage>
       )}
     </ContentWrapper>
   );

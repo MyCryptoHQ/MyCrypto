@@ -38,6 +38,7 @@ interface Props {
   flowConfig: IFlowConfig;
   transactions: TxParcel[];
   isSubmitting: boolean;
+  error?: CustomError;
 
   multiTxTitle: string;
   receiptTitle: string;
@@ -60,6 +61,7 @@ export const createSignConfirmAndReceiptSteps = ({
   receiptComponent,
   account,
   transactions,
+  error,
   isSubmitting,
   sendTx,
   prepareTx
@@ -75,7 +77,8 @@ export const createSignConfirmAndReceiptSteps = ({
         transactions,
         flowConfig,
         currentTxIdx: idx,
-        amount
+        amount,
+        error: error?.reason ? error?.reason : error?.message
       },
       actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
         if (transactions.length > 1) {

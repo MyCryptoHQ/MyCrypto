@@ -9,7 +9,8 @@ export default function ConfirmTokenMigration({
   currentTxIdx,
   flowConfig,
   transactions,
-  onComplete
+  onComplete,
+  error
 }: ITxMultiConfirmProps & { account: StoreAccount; amount: string }) {
   const currentTx = transactions[currentTxIdx];
 
@@ -26,6 +27,7 @@ export default function ConfirmTokenMigration({
       onComplete={complete}
       resetFlow={complete}
       txConfig={txConfig}
+      error={error}
       txType={currentTx.txType || ITxType.STANDARD}
     />
   );

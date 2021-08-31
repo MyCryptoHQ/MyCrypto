@@ -11,10 +11,11 @@ interface Props {
   transactions: TxParcel[];
   account: StoreAccount;
   onComplete(): void;
+  error?: string;
 }
 
 export default function ConfirmMembershipPurchase(props: Props) {
-  const { flowConfig, transactions, currentTxIdx, account, onComplete } = props;
+  const { flowConfig, transactions, currentTxIdx, account, onComplete, error } = props;
 
   const txConfigs = transactions.map((tx) =>
     makePurchaseMembershipTxConfig(tx.txRaw, account, flowConfig)
@@ -27,6 +28,7 @@ export default function ConfirmMembershipPurchase(props: Props) {
       onComplete={onComplete}
       resetFlow={onComplete}
       txConfig={txConfig}
+      error={error}
       customComponent={() => <MembershipReceiptBanner membershipSelected={flowConfig} />}
       txType={ITxType.PURCHASE_MEMBERSHIP}
     />

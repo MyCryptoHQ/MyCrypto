@@ -231,4 +231,5 @@ export interface ITxMultiConfirmProps {
   flowConfig: IFlowConfig;
   account: StoreAccount;
   onComplete?(): void;
+  error?: string;
 }

@@ -12,7 +12,8 @@ export default function ConfirmSwapMultiTx({
   flowConfig,
   currentTxIdx,
   transactions,
-  onComplete
+  onComplete,
+  error
 }: ITxMultiConfirmProps) {
   const { fromAsset, toAsset, fromAmount, toAmount } = flowConfig as IAssetPair;
   const status = transactions.map((t) => path(['status'], t));
@@ -51,6 +52,7 @@ export default function ConfirmSwapMultiTx({
       <VerticalStepper
         currentStep={broadcasting === -1 ? currentTxIdx : broadcasting}
         steps={[approveTx, transferTx]}
+        error={error !== undefined}
       />
     </div>
   );

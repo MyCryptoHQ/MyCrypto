@@ -10,7 +10,8 @@ export default function ConfirmSwap({
   account,
   transactions,
   currentTxIdx,
-  onComplete
+  onComplete,
+  error
 }: ITxMultiConfirmProps) {
   const { fromAsset, toAsset, fromAmount, toAmount } = flowConfig as IAssetPair;
 
@@ -26,6 +27,7 @@ export default function ConfirmSwap({
     <ConfirmTransaction
       resetFlow={() => onComplete && onComplete()}
       onComplete={() => onComplete && onComplete()}
+      error={error}
       txConfig={txConfig}
       txType={ITxType.SWAP}
       customComponent={() => (

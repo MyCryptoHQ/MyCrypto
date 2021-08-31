@@ -67,6 +67,7 @@ const PurchaseMembershipStepper = () => {
       backStepTitle: translateRaw('PURCHASE_MEMBERSHIP'),
       amount: membershipSelected!.price,
       account,
+      error,
       flowConfig: membershipSelected!,
       receiptTitle: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
       multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
