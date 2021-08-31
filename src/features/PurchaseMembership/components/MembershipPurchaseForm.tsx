@@ -24,7 +24,7 @@ import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelect
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
-import { noOp } from '@utils';
+import { noOp, sortByLabel } from '@utils';
 
 import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
@@ -149,6 +149,17 @@ export const MembershipFormUI = ({
             convertedAsset,
             amount
           );
+
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          useEffect(() => {
+            const defaultAccount = sortByLabel(filteredAccounts)[0];
+            if (
+              defaultAccount &&
+              ((values.account && values.account.uuid !== defaultAccount.uuid) || !values.account)
+            ) {
+              setFieldValue('account', defaultAccount);
+            }
+          }, [JSON.stringify(filteredAccounts)]);
 
           // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {
