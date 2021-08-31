@@ -212,7 +212,12 @@ export const MembershipFormUI = ({
                   )}
                 />
                 {filteredAccounts.length === 0 && (
-                  <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
+                  <InlineMessage>
+                    {translateRaw('NO_RELEVANT_ACCOUNTS_DETAILED', {
+                      $amount: values.amount,
+                      $asset: values.asset.ticker
+                    })}
+                  </InlineMessage>
                 )}
               </FormFieldItem>
               <FormFieldItem>

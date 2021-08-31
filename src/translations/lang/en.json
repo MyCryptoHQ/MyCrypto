@@ -424,6 +424,7 @@
     "NO_ADDRESS": "Unknown Address",
     "NO_LABEL": "Unknown Account",
     "NO_RELEVANT_ACCOUNTS": "No accounts with the required amount available",
+    "NO_RELEVANT_ACCOUNTS_DETAILED": "Please connect an account that contains at least $amount $asset.",
     "OFFLINE_STEP2_LABEL_3": "Gas Price (gwei) ",
     "OFFLINE_STEP2_LABEL_4": "Gas Limit ",
     "OFFLINE_STEP2_LABEL_5": "Nonce ",
