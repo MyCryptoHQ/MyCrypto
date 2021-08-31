@@ -262,7 +262,10 @@
       "eslint --fix",
       "git add"
     ],
-    "**/*.{js,json}": "yarn prettier:write"
+    "**/*.{js,json}": [
+      "yarn prettier:write",
+      "git add"
+    ]
   },
   "husky": {
     "hooks": {
