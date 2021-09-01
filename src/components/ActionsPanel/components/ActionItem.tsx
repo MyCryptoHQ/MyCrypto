@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import styled, { css, keyframes } from 'styled-components';
 
+import IconCompleted from '@assets/icons/actions/completed.svg';
 import Icon from '@components/Icon';
 import { Text } from '@components/NewTypography';
 import { useUserActions } from '@services';
@@ -30,7 +31,7 @@ const Action = styled.div<{ state?: string }>`
   ${(p) =>
     p.state === 'completed' &&
     css`
-      & > * {
+      & > div {
         opacity: 0.2;
       }
       text-decoration: line-through;
@@ -89,15 +90,20 @@ export const ActionItem = ({
         </Text>
         {SubHeading && <SubHeading {...actionTemplate.props} />}
       </TitleContainer>
-      <Icon
-        type={hidden ? 'opened-eye' : 'more'}
-        onClick={() =>
-          hidden &&
-          userAction &&
-          updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.NEW })
-        }
-        height={hidden ? '18px' : '24px'}
-      />
+
+      {userAction && userAction.state === 'completed' ? (
+        <img src={IconCompleted} title="Action is completed" />
+      ) : (
+        <Icon
+          type={hidden ? 'opened-eye' : 'more'}
+          onClick={() =>
+            hidden &&
+            userAction &&
+            updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.NEW })
+          }
+          height={hidden ? '18px' : '24px'}
+        />
+      )}
     </Action>
   );
 };
