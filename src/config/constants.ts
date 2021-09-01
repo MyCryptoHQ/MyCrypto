@@ -26,7 +26,7 @@ export const CUSTOM_ASSET_API = 'https://assets.mycryptoapi.com/custom';
 
 export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
-export const FAUCET_API = 'http://localhost:5000';
+export const FAUCET_API = 'https://faucet.mycryptoapi.com';
 
 // this will be changed when we figure out networks
 export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
