@@ -78,7 +78,7 @@ export const createSignConfirmAndReceiptSteps = ({
         flowConfig,
         currentTxIdx: idx,
         amount,
-        error: error?.reason ? error?.reason : error?.message
+        error: error?.reason ?? error?.message
       },
       actions: (_: ISimpleTxFormFull, goToNextStep: () => void) => {
         if (transactions.length > 1) {
