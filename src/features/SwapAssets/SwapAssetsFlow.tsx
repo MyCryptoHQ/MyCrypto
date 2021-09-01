@@ -157,7 +157,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
           account,
           isSubmitting,
           transactions,
-          currentTxIdx: idx
+          currentTxIdx: idx,
+          error: txError?.reason ?? txError?.message
         },
         actions: {
           onComplete: () => {

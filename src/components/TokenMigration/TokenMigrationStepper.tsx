@@ -60,6 +60,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
       backStepTitle: tokenMigrationConfig.formTitle,
       amount: amount!,
       account: account!,
+      error,
       flowConfig: tokenMigrationConfig,
       receiptTitle: tokenMigrationConfig.receiptTitle,
       multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),

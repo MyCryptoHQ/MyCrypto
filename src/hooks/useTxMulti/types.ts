@@ -33,7 +33,7 @@ export interface TxMultiState {
   readonly currentTx?: TxParcel;
   readonly account?: StoreAccount;
   readonly network?: Network;
-  readonly error?: Error;
+  readonly error?: CustomError;
 }
 
 export enum ActionTypes {

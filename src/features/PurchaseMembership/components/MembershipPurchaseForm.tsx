@@ -24,7 +24,7 @@ import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelect
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, IAccount, Network, StoreAccount, TUuid } from '@types';
-import { noOp } from '@utils';
+import { noOp, sortByLabel } from '@utils';
 
 import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
@@ -152,6 +152,17 @@ export const MembershipFormUI = ({
 
           // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {
+            const defaultAccount = sortByLabel(filteredAccounts)[0];
+            if (
+              defaultAccount &&
+              ((values.account && values.account.uuid !== defaultAccount.uuid) || !values.account)
+            ) {
+              setFieldValue('account', defaultAccount);
+            }
+          }, [JSON.stringify(filteredAccounts)]);
+
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          useEffect(() => {
             if (
               amount &&
               asset &&
@@ -212,7 +223,12 @@ export const MembershipFormUI = ({
                   )}
                 />
                 {filteredAccounts.length === 0 && (
-                  <InlineMessage>{translateRaw('NO_RELEVANT_ACCOUNTS')}</InlineMessage>
+                  <InlineMessage>
+                    {translateRaw('NO_RELEVANT_ACCOUNTS_DETAILED', {
+                      $amount: values.amount,
+                      $asset: values.asset.ticker
+                    })}
+                  </InlineMessage>
                 )}
               </FormFieldItem>
               <FormFieldItem>

@@ -424,6 +424,7 @@
     "NO_ADDRESS": "Unknown Address",
     "NO_LABEL": "Unknown Account",
     "NO_RELEVANT_ACCOUNTS": "No accounts with the required amount available",
+    "NO_RELEVANT_ACCOUNTS_DETAILED": "Please connect an account that contains at least $amount $asset.",
     "OFFLINE_STEP2_LABEL_3": "Gas Price (gwei) ",
     "OFFLINE_STEP2_LABEL_4": "Gas Limit ",
     "OFFLINE_STEP2_LABEL_5": "Nonce ",
@@ -1052,6 +1053,7 @@
     "BASE_FEE_TOOLTIP": "This is the minimum gas price required for your transaction to be included in the next block.",
     "PRIORITY_FEE_TOOLTIP": "This is an optional amount that gets paid to a miner for processing your transaction.",
     "EIP_1559_SETTINGS_HEADER": "EIP 1559",
-    "LEDGER_FIRMWARE_NOTICE": "If you cannot connect to your Ledger, make sure your Ledger firmware is up to date in the Ledger Live application."
+    "LEDGER_FIRMWARE_NOTICE": "If you cannot connect to your Ledger, make sure your Ledger firmware is up to date in the Ledger Live application.",
+    "MTX_GENERIC_ERROR": "An error occurred. Please try again, and [contact us]($link) if it doesn’t resolve."
   }
 }
