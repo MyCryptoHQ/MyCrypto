@@ -52,49 +52,43 @@ export const makeTxConfig = (
    * getContactByAddressAndNetworkId() returns ExtendedContact, which is the closest we can get.
    * The result is casted to make it compatible with ITxConfig.
    */
+  const txConfig = {
+    rawTransaction: {
+      to: txResult.to,
+      value: txResult.value as ITxValue,
+      gasLimit: txResult.gasLimit,
+      data: txResult.data,
+      nonce: txResult.nonce.toString() as ITxNonce,
+      chainId: txResult.chainId,
+      from: txResult.from
+    },
+    amount: formatEther(txResult.value),
+    receiverAddress: txResult.to,
+    senderAccount: (senderContact as unknown) as StoreAccount,
+    from: txResult.from,
+    asset: baseAsset,
+    baseAsset,
+    networkId: network.id
+  };
   if ('maxFeePerGas' in txResult && 'maxPriorityFeePerGas' in txResult) {
     /* Type 2 tx */
     return {
+      ...txConfig,
       rawTransaction: {
-        to: txResult.to,
-        value: txResult.value as ITxValue,
-        gasLimit: txResult.gasLimit,
-        data: txResult.data,
+        ...txConfig.rawTransaction,
         maxFeePerGas: txResult.maxFeePerGas,
         maxPriorityFeePerGas: txResult.maxPriorityFeePerGas,
-        nonce: txResult.nonce.toString() as ITxNonce,
-        chainId: txResult.chainId,
-        from: txResult.from,
         type: 2
-      },
-      amount: formatEther(txResult.value),
-      receiverAddress: txResult.to,
-      senderAccount: (senderContact as unknown) as StoreAccount,
-      from: txResult.from,
-      asset: baseAsset,
-      baseAsset,
-      networkId: network.id
+      }
     };
   } else {
     /* Type 1 tx */
     return {
+      ...txConfig,
       rawTransaction: {
-        to: txResult.to,
-        value: txResult.value as ITxValue,
-        gasLimit: txResult.gasLimit,
-        data: txResult.data,
-        gasPrice: txResult.gasPrice,
-        nonce: txResult.nonce.toString() as ITxNonce,
-        chainId: txResult.chainId,
-        from: txResult.from
-      },
-      amount: formatEther(txResult.value),
-      receiverAddress: txResult.to,
-      senderAccount: (senderContact as unknown) as StoreAccount,
-      from: txResult.from,
-      asset: baseAsset,
-      baseAsset,
-      networkId: network.id
+        ...txConfig.rawTransaction,
+        gasPrice: txResult.gasPrice
+      }
     };
   }
 };
@@ -110,43 +104,37 @@ export const makeTxReceipt = (
     assets
   })!;
 
+  const txReceipt = {
+    asset: baseAsset,
+    baseAsset,
+    txType: ITxType.FAUCET,
+    status: ITxStatus.PENDING,
+    receiverAddress: txResult.to,
+    amount: formatEther(txResult.value),
+    data: txResult.data,
+    gasLimit: BigNumber.from(txResult.gasLimit),
+    to: txResult.to,
+    from: txResult.from,
+    value: BigNumber.from(txResult.value),
+    nonce: BigNumber.from(txResult.nonce),
+    hash: txResult.hash
+  };
+
   if ('maxFeePerGas' in txResult && 'maxPriorityFeePerGas' in txResult) {
     /* Type 2 tx */
     return {
-      asset: baseAsset,
-      baseAsset,
-      txType: ITxType.FAUCET,
+      ...txReceipt,
       status: ITxStatus.PENDING,
-      receiverAddress: txResult.to,
-      amount: formatEther(txResult.value),
-      data: txResult.data,
       maxFeePerGas: BigNumber.from(txResult.maxFeePerGas),
       maxPriorityFeePerGas: BigNumber.from(txResult.maxPriorityFeePerGas),
-      type: 2,
-      gasLimit: BigNumber.from(txResult.gasLimit),
-      to: txResult.to,
-      from: txResult.from,
-      value: BigNumber.from(txResult.value),
-      nonce: BigNumber.from(txResult.nonce),
-      hash: txResult.hash
+      type: 2
     };
   } else {
     /* Type 1 tx */
     return {
-      asset: baseAsset,
-      baseAsset,
-      txType: ITxType.FAUCET,
+      ...txReceipt,
       status: ITxStatus.PENDING,
-      receiverAddress: txResult.to,
-      amount: formatEther(txResult.value),
-      data: txResult.data,
-      gasPrice: BigNumber.from(txResult.gasPrice),
-      gasLimit: BigNumber.from(txResult.gasLimit),
-      to: txResult.to,
-      from: txResult.from,
-      value: BigNumber.from(txResult.value),
-      nonce: BigNumber.from(txResult.nonce),
-      hash: txResult.hash
+      gasPrice: BigNumber.from(txResult.gasPrice)
     };
   }
 };
