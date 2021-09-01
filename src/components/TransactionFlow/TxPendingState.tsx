@@ -20,6 +20,7 @@ import {
   inputGasLimitToHex,
   inputGasPriceToHex,
   noOp,
+  useMinimumWait,
   useTimeout
 } from '@utils';
 
@@ -33,6 +34,7 @@ interface Props {
   setLabel?(label: string): void;
 }
 
+const PENDING_MIN_WAIT = 4 * 1000; // 4 sec in ms
 const CROWDED_TIMEOUT = 20 * 1000; // 20 sec in ms
 
 enum PendingState {
@@ -129,11 +131,15 @@ export const TxPendingState = ({
     maxPriorityFeePerGasField: newMaxPriorityFeePerGas
   } = values;
 
-  useEffect(() => {
-    if (txReceipt.status === ITxStatus.SUCCESS) {
-      setState(PendingState.SUCCESS);
-    }
-  }, [txReceipt.status]);
+  useMinimumWait(
+    () => {
+      if (txReceipt.status === ITxStatus.SUCCESS) {
+        setState(PendingState.SUCCESS);
+      }
+    },
+    PENDING_MIN_WAIT,
+    [txReceipt.status]
+  );
 
   useTimeout(() => {
     if (txReceipt.status === ITxStatus.PENDING) {
