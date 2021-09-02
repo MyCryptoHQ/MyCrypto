@@ -39,7 +39,7 @@ export const NFTCard = ({ asset, collection }: Props) => {
             {asset.collection.name}
           </Body>
           <Body overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {asset.name}
+            {asset.name ?? asset.collection.name}
           </Body>
         </Box>
         <Box variant="columnAlignRight" flexShrink={0}>

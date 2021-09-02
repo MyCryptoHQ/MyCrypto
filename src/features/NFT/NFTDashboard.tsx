@@ -49,7 +49,7 @@ export default function NftDashboard() {
           NFT Dashboard
         </DashboardSubHeader>
         <DashboardPanel
-          heading="NFT Dashboard"
+          heading="Your NFTs"
           headingRight={
             <Box variant="rowAlign">
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">

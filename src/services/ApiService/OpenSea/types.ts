@@ -1,7 +1,7 @@
 // @todo Expand
 export interface OpenSeaNFT {
   id: number;
-  name: string;
+  name?: string;
   image_url: string;
   permalink: string;
   collection: OpenSeaCollectionMetadata;
