@@ -165,7 +165,7 @@ export const TxPendingState = ({
       <Box variant="rowCenter">
         <img src={illustration} />
       </Box>
-      {resend && (
+      {resend && !isWeb3 && (
         <>
           <TransactionFeeEIP1559
             baseAsset={baseAsset}
