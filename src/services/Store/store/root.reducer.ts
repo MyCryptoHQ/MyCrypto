@@ -14,6 +14,7 @@ import ensSlice from './ens.slice';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
+import nftSlice from './nft.slice';
 import { APP_PERSIST_CONFIG, createPersistReducer, migrate } from './persist.config';
 import persistenceSlice from './persistence.slice';
 import { getAppState } from './selectors';
@@ -31,7 +32,8 @@ const reducers = combineReducers({
   [txHistorySlice.name]: txHistorySlice.reducer,
   [ensSlice.name]: ensSlice.reducer,
   [claimSlice.name]: claimSlice.reducer,
-  [accountUndoSlice.name]: accountUndoSlice.reducer
+  [accountUndoSlice.name]: accountUndoSlice.reducer,
+  [nftSlice.name]: nftSlice.reducer
 });
 
 /**

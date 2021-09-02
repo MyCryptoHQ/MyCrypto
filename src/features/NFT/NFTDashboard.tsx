@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Spinner, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
-import { getStoreAccounts, useSelector } from '@store';
+import { useDispatch, useSelector } from '@store';
+import { fetchNFTs, getCollections, getNFTs } from '@store/nft.slice';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { NetworkId } from '@types';
-import { mapAsync } from '@utils';
 
 import { NFTCard } from './NFTCard';
 
@@ -34,32 +32,15 @@ const StyledLayout = styled.div`
   }
 `;
 
-const NFT_NETWORKS = ['Ethereum'] as NetworkId[];
-
 export default function NftDashboard() {
-  const [assets, setAssets] = useState<OpenSeaNFT[] | null>(null);
-  const [collections, setCollections] = useState<OpenSeaCollection[] | null>(null);
+  const assets = useSelector(getNFTs);
+  const collections = useSelector(getCollections);
 
-  const accounts = useSelector(getStoreAccounts);
-
-  const filteredAccounts = accounts.filter((a) => NFT_NETWORKS.includes(a.networkId));
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    mapAsync(filteredAccounts, async (account) => OpenSeaService.fetchAssets(account.address)).then(
-      (result) => {
-        setAssets(result.filter((r) => r !== null).flat());
-      }
-    );
-
-    mapAsync(filteredAccounts, async (account) =>
-      OpenSeaService.fetchCollections(account.address)
-    ).then((result) => {
-      setCollections(result.filter((r) => r !== null).flat());
-    });
+    dispatch(fetchNFTs());
   }, []);
-
-  console.log(assets);
-  console.log(collections);
 
   return (
     <StyledLayout>

@@ -11,6 +11,7 @@ import { claimsSaga } from './claims.slice';
 import { ensSaga } from './ens.slice';
 import { fetchMembershipsSaga } from './membership.slice';
 import { networkSaga } from './network.slice';
+import { nftSaga } from './nft.slice';
 import { notificationSaga } from './notification.slice';
 import { persistenceSaga } from './persistence.slice';
 import { ratesSaga } from './rates.slice';
@@ -37,6 +38,7 @@ export default function* rootSaga() {
     ensSaga(),
     notificationSaga(),
     claimsSaga(),
-    accountUndoSaga()
+    accountUndoSaga(),
+    nftSaga()
   ]);
 }
