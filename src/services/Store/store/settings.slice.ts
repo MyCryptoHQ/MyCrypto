@@ -42,6 +42,9 @@ const slice = createSlice({
     },
     setProductAnalyticsAuthorisation(state, action: PayloadAction<boolean>) {
       state.canTrackProductAnalytics = action.payload;
+    },
+    setAnalyticsUserID(state, action: PayloadAction<string>) {
+      state.analyticsUserID = action.payload;
     }
   }
 });
@@ -55,7 +58,8 @@ export const {
   addExcludedAsset,
   removeExcludedAsset,
   setDemoMode,
-  setProductAnalyticsAuthorisation
+  setProductAnalyticsAuthorisation,
+  setAnalyticsUserID
 } = slice.actions;
 
 export default slice;
@@ -73,6 +77,7 @@ export const canTrackProductAnalytics = createSelector(
   getSettings,
   (s) => s.canTrackProductAnalytics
 );
+export const getAnalyticsUserID = createSelector(getSettings, (s) => s.analyticsUserID);
 /**
  * Actions
  */

@@ -1,11 +1,23 @@
 import { createAction, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 
-import { canTrackProductAnalytics, getAccounts, setProductAnalyticsAuthorisation } from '@store';
+import {
+  canTrackProductAnalytics,
+  getAccounts,
+  getAnalyticsUserID,
+  setAnalyticsUserID,
+  setProductAnalyticsAuthorisation
+} from '@store';
 import { IAccount } from '@types';
 
 import { isActiveFeature } from '../FeatureFlag';
-import { default as AnalyticsService, LinkParams, PageParams, TrackParams } from './Analytics';
+import {
+  default as AnalyticsService,
+  LinkParams,
+  makeID,
+  PageParams,
+  TrackParams
+} from './Analytics';
 
 /**
  * Actions
@@ -28,12 +40,23 @@ export function* analyticsSaga() {
   ]);
 }
 
+export function* setAnalyticsID() {
+  const analyticsUserID: string = yield select(getAnalyticsUserID);
+  if (!analyticsUserID) {
+    const newAnalyticsUserID = makeID();
+    yield put(setAnalyticsUserID(newAnalyticsUserID));
+    yield call(AnalyticsService.setAnonymousID, newAnalyticsUserID);
+  } else {
+    yield call(AnalyticsService.setAnonymousID, analyticsUserID);
+  }
+}
+
 export function* initAnalytics() {
   const isActive = yield select(isActiveFeature('ANALYTICS'));
   const accounts: IAccount[] = yield select(getAccounts);
   const canTrack = yield select(canTrackProductAnalytics);
   if (isActive && canTrack) {
-    yield call(AnalyticsService.initAnalytics);
+    yield call(setAnalyticsID);
     yield put(trackEvent({ action: 'App Load' }));
     yield put(trackEvent({ action: 'Total Account Count', value: accounts.length }));
   }
@@ -41,9 +64,9 @@ export function* initAnalytics() {
 
 export function* deactivateAnalyticsWorker({ payload }: PayloadAction<boolean>) {
   if (payload) {
-    yield call(AnalyticsService.setAnonymousID);
+    yield call(setAnalyticsID);
   } else {
-    yield call(AnalyticsService.clearAnonymousID);
+    yield call(setAnalyticsUserID, '');
   }
 }
 

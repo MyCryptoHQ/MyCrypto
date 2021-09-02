@@ -109,6 +109,8 @@ export {
   addAccountsToCurrents,
   canTrackProductAnalytics,
   setProductAnalyticsAuthorisation,
+  getAnalyticsUserID,
+  setAnalyticsUserID,
   getSettings
 } from './settings.slice';
 export { importSuccess, importError, importRequest, importComplete } from './import.slice';
