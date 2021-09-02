@@ -406,8 +406,11 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   useEffect(() => {
     handleNonceEstimate(values.account);
-    handleGasPriceEstimation();
   }, [values.account]);
+
+  useEffect(() => {
+    handleGasPriceEstimation();
+  }, [values.account, values.network]);
 
   useDebounce(
     () => {
