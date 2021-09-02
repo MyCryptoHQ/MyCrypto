@@ -10,15 +10,17 @@ import { Body } from '@components/NewTypography';
 import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
 import { ROUTE_PATHS } from '@config';
 import { useGasForm } from '@hooks';
-import { translateRaw } from '@translations';
-import { Fiat, ITxConfig, ITxReceipt, ITxStatus, ITxType2Receipt, Network } from '@types';
+import translate, { translateRaw } from '@translations';
+import { Fiat, ITxConfig, ITxReceipt, ITxStatus, ITxType2Receipt, Network, WalletId } from '@types';
 import {
   bigify,
   bigNumGasPriceToViewableGwei,
   buildTxUrl,
   constructSpeedUpTxQuery,
+  formatSupportEmail,
   inputGasLimitToHex,
   inputGasPriceToHex,
+  isWeb3Wallet,
   noOp,
   useMinimumWait,
   useTimeout
@@ -154,6 +156,9 @@ export const TxPendingState = ({
     }
   }, [header]);
 
+  const isWeb3 = isWeb3Wallet(account.wallet);
+  const isMetaMask = account.wallet === WalletId.METAMASK;
+
   return (
     <Box>
       <Body mt="1">{description}</Body>
@@ -209,6 +214,17 @@ export const TxPendingState = ({
           />
         </>
       )}
+      {resend && isWeb3 && (
+        <Body mt="2">
+          {!isMetaMask
+            ? translate('PENDING_WEB3_NOTICE', {
+                $link: formatSupportEmail(
+                  'Please help me speed up my pending stuck transaction using a Web3 provider that is not MetaMask'
+                )
+              })
+            : translateRaw('PENDING_METAMASK_NOTICE')}
+        </Body>
+      )}
       <Box bg="BG_GRAY" variant="rowAlign" my="3" p="2">
         <Body as="span" fontWeight="bold" width="20%">
           {translateRaw('TX_HASH')}
@@ -231,9 +247,19 @@ export const TxPendingState = ({
         </Box>
       </Box>
       {resend && (
-        <LinkApp href={`${ROUTE_PATHS.SEND.path}/?${queryString}`} isExternal={false}>
-          <Button fullwidth={true}>{translateRaw('RESEND_TRANSACTION')}</Button>
-        </LinkApp>
+        <>
+          {!isWeb3 ? (
+            <LinkApp href={`${ROUTE_PATHS.SEND.path}/?${queryString}`} isExternal={false}>
+              <Button fullwidth={true}>{translateRaw('RESEND_TRANSACTION')}</Button>
+            </LinkApp>
+          ) : (
+            <LinkApp href={ROUTE_PATHS.DASHBOARD.path} isExternal={false}>
+              <Button fullwidth={true}>
+                {translateRaw('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
+              </Button>
+            </LinkApp>
+          )}
+        </>
       )}
       <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
         {translateRaw('VIEW_TRANSACTION_DETAILS')}
