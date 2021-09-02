@@ -18,6 +18,7 @@ import genericAssetIcon from '@assets/generic.svg';
 import add from '@assets/icons/actions/add.svg';
 import addBold from '@assets/icons/actions/add_bold.svg';
 import back from '@assets/icons/actions/back.svg';
+import completedTaskIcon from '@assets/icons/actions/completed.svg';
 import confirm from '@assets/icons/actions/confirm.svg';
 import downCaret from '@assets/icons/actions/down-caret.svg';
 import edit from '@assets/icons/actions/edit.svg';
@@ -156,6 +157,7 @@ const svgIcons = {
   'down-caret': downCaret,
   'link-out': linkOutIcon,
   'swap-flip': swapFlip,
+  'action-completed': completedTaskIcon,
 
   /* Tooltips*/
   informational,

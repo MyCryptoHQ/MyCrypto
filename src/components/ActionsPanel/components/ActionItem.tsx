@@ -30,7 +30,7 @@ const Action = styled.div<{ state?: string }>`
   ${(p) =>
     p.state === 'completed' &&
     css`
-      & > * {
+      & > div {
         opacity: 0.2;
       }
       text-decoration: line-through;
@@ -89,8 +89,15 @@ export const ActionItem = ({
         </Text>
         {SubHeading && <SubHeading {...actionTemplate.props} />}
       </TitleContainer>
+
       <Icon
-        type={hidden ? 'opened-eye' : 'more'}
+        type={
+          hidden
+            ? 'opened-eye'
+            : userAction && userAction.state === 'completed'
+            ? 'action-completed'
+            : 'more'
+        }
         onClick={() =>
           hidden &&
           userAction &&
