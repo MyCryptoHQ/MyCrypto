@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 import styled, { css, keyframes } from 'styled-components';
 
-import IconCompleted from '@assets/icons/actions/completed.svg';
 import Icon from '@components/Icon';
 import { Text } from '@components/NewTypography';
 import { useUserActions } from '@services';
@@ -91,19 +90,21 @@ export const ActionItem = ({
         {SubHeading && <SubHeading {...actionTemplate.props} />}
       </TitleContainer>
 
-      {userAction && userAction.state === 'completed' ? (
-        <img src={IconCompleted} title="Action is completed" />
-      ) : (
-        <Icon
-          type={hidden ? 'opened-eye' : 'more'}
-          onClick={() =>
-            hidden &&
-            userAction &&
-            updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.NEW })
-          }
-          height={hidden ? '18px' : '24px'}
-        />
-      )}
+      <Icon
+        type={
+          hidden
+            ? 'opened-eye'
+            : userAction && userAction.state === 'completed'
+            ? 'action-completed'
+            : 'more'
+        }
+        onClick={() =>
+          hidden &&
+          userAction &&
+          updateUserAction(userAction.uuid, { ...userAction, state: ACTION_STATE.NEW })
+        }
+        height={hidden ? '18px' : '24px'}
+      />
     </Action>
   );
 };
