@@ -83,6 +83,19 @@ export const getSlice = createSelector(
 );
 export const getNFTs = createSelector([getSlice], (slice) => slice.nfts);
 export const getCollections = createSelector([getSlice], (slice) => slice.collections);
+export const getNFTsByCollection = createSelector([getNFTs, getCollections], (nfts, collections) =>
+  collections.map((collection) => ({
+    collection,
+    nfts: nfts.filter((nft) => nft.collection.slug === collection.slug)
+  }))
+);
+export const getTotalValue = createSelector([getNFTsByCollection], (nftsByCollection) =>
+  nftsByCollection.reduce((acc, obj) => {
+    const { nfts, collection } = obj;
+    // @todo Consider bids?
+    return acc + (collection.stats.floor_price ?? 0) * nfts.length;
+  }, 0)
+);
 
 /**
  * Sagas

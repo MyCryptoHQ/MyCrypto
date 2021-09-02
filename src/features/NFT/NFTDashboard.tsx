@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Spinner, Text } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useDispatch, useSelector } from '@store';
-import { fetchNFTs, getCollections, getNFTs } from '@store/nft.slice';
+import { fetchNFTs, getCollections, getNFTs, getTotalValue } from '@store/nft.slice';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -33,8 +33,9 @@ const StyledLayout = styled.div`
 `;
 
 export default function NftDashboard() {
-  const assets = useSelector(getNFTs);
+  const nfts = useSelector(getNFTs);
   const collections = useSelector(getCollections);
+  const total = useSelector(getTotalValue);
 
   const dispatch = useDispatch();
 
@@ -52,6 +53,9 @@ export default function NftDashboard() {
           heading="Your NFTs"
           headingRight={
             <Box variant="rowAlign">
+              <Box bg="GREY_ATHENS" mr="2" borderRadius="default" p="1">
+                Total Value: {total.toFixed(3)} ETH
+              </Box>
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
                 <Box variant="rowAlign">
                   <Icon type="edit" width="1em" />
@@ -77,12 +81,12 @@ export default function NftDashboard() {
             flexWrap="wrap"
             marginBottom={SPACING.BASE}
           >
-            {assets ? (
-              assets.map((asset) => (
+            {nfts ? (
+              nfts.map((nft) => (
                 <NFTCard
-                  key={asset.id}
-                  asset={asset}
-                  collection={collections?.find((c) => c.slug === asset.collection.slug)}
+                  key={nft.id}
+                  asset={nft}
+                  collection={collections?.find((c) => c.slug === nft.collection.slug)}
                 />
               ))
             ) : (
