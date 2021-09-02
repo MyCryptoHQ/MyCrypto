@@ -5,10 +5,14 @@ import { ApiService } from '@services/ApiService';
 
 import { OpenSeaCollection, OpenSeaNFT } from './types';
 
+const NFT_LIMIT_PER_QUERY = 50; // Max allowed by OpenSea
+
 export default abstract class OpenSeaService {
   public static fetchAssets = async (owner: string): Promise<OpenSeaNFT[] | null> => {
     try {
-      const { data } = await OpenSeaService.service.get('v1/assets', { params: { owner } });
+      const { data } = await OpenSeaService.service.get('v1/assets', {
+        params: { owner, limit: NFT_LIMIT_PER_QUERY }
+      });
       return data.assets;
     } catch (e) {
       console.debug('[OpenSea]: Fetching data from OpenSea failed: ', e);
