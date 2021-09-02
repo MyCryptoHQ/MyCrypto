@@ -141,6 +141,13 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         enabled: APP_ROUTES.FAUCET.enabled,
         title: translateRaw('NAVIGATION_FAUCET'),
         icon: 'nav-faucet'
+      },
+      {
+        type: 'internal',
+        to: APP_ROUTES.NFT_DASHBOARD.path,
+        enabled: APP_ROUTES.NFT_DASHBOARD.enabled,
+        title: translateRaw('NFT_DASHBOARD'),
+        icon: 'nav-faucet'
       }
     ]
   };
@@ -337,6 +344,13 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           to: APP_ROUTES.FAUCET.path,
           enabled: APP_ROUTES.FAUCET.enabled,
           title: translateRaw('NAVIGATION_FAUCET'),
+          icon: 'nav-faucet'
+        },
+        {
+          type: 'internal',
+          to: APP_ROUTES.NFT_DASHBOARD.path,
+          enabled: APP_ROUTES.NFT_DASHBOARD.enabled,
+          title: translateRaw('NFT_DASHBOARD'),
           icon: 'nav-faucet'
         }
       ]
