@@ -1,4 +1,4 @@
-import AnalyticsService, { TrackParams } from './Analytics';
+import AnalyticsService, { LinkParams, PageParams, TrackParams } from './Analytics';
 
 jest.mock('@datapunt/matomo-tracker-js');
 
@@ -28,11 +28,20 @@ describe('AnalyticsService', () => {
   });
 
   it('page() contains a name and a title', async () => {
-    const data = { name: 'Send', title: 'Send any crypto' };
+    const data: PageParams = { name: 'Send', title: 'Send any crypto' };
     AnalyticsService.trackPage(data);
     expect(AnalyticsService.tracker.trackPageView).toHaveBeenCalledWith({
       documentTitle: data.title,
       href: data.name
+    });
+  });
+
+  it('link() params are formatted to match api', async () => {
+    const data: LinkParams = { url: 'mycrypto.com', type: 'link' };
+    AnalyticsService.trackLink(data);
+    expect(AnalyticsService.tracker.trackLink).toHaveBeenCalledWith({
+      href: data.url,
+      linkType: data.type
     });
   });
 });

@@ -25,7 +25,7 @@ import {
 export const trackInit = createAction(`analytics/init`);
 export const trackEvent = createAction<TrackParams>(`analytics/trackEvent`);
 export const trackPage = createAction<PageParams>(`analytics/trackPage`);
-export const trackLink = createAction<PageParams>(`analytics/trackLink`);
+export const trackLink = createAction<LinkParams>(`analytics/trackLink`);
 
 /**
  * Saga

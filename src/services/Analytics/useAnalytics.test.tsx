@@ -22,4 +22,11 @@ describe('useAnalytics', () => {
     act(() => result.current.trackPage(params));
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));
   });
+  it('trackLink(): dispatchs action', () => {
+    const mockDispatch = mockUseDispatch();
+    const params = { url: 'mycrypto.com', type: 'link' };
+    const { result } = renderUseAnalytics();
+    act(() => result.current.trackLink(params));
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));
+  });
 });
