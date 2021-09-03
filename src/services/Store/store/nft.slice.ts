@@ -14,12 +14,14 @@ const NFT_NETWORKS = ['Ethereum'] as NetworkId[];
 const sliceName = 'nft';
 
 export interface NFTState {
+  fetched: boolean;
   collections: OpenSeaCollection[];
   nfts: OpenSeaNFT[];
   error?: string;
 }
 
 export const initialState = {
+  fetched: false,
   collections: [] as OpenSeaCollection[],
   nfts: [] as OpenSeaNFT[],
   error: undefined
@@ -29,6 +31,9 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
+    setFetched(state, action: PayloadAction<boolean>) {
+      state.fetched = action.payload;
+    },
     setNFTs(state, action: PayloadAction<OpenSeaNFT[]>) {
       state.nfts = action.payload;
     },
@@ -64,6 +69,7 @@ const slice = createSlice({
 export const fetchNFTs = createAction(`${slice.name}/fetch`);
 
 export const {
+  setFetched,
   setNFTs,
   setCollections,
   createNFT,
@@ -81,6 +87,7 @@ export const getSlice = createSelector(
   (s: AppState) => s.nft,
   (s) => s
 );
+export const getFetched = createSelector([getSlice], (slice) => slice.fetched);
 export const getNFTs = createSelector([getSlice], (slice) => slice.nfts);
 export const getCollections = createSelector([getSlice], (slice) => slice.collections);
 export const getNFTsByCollection = createSelector([getNFTs, getCollections], (nfts, collections) =>
@@ -122,4 +129,6 @@ export function* fetchAssetsWorker() {
 
   yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
   yield put(setCollections(collections.filter((r) => r !== null).flat()));
+
+  yield put(setFetched(true));
 }

@@ -1,16 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Spinner, Text } from '@components';
+import {
+  Box,
+  DashboardPanel,
+  Icon,
+  LinkApp,
+  PoweredByText,
+  Spinner,
+  Switch,
+  Text
+} from '@components';
 import { ROUTE_PATHS } from '@config';
 import { useDispatch, useSelector } from '@store';
-import { fetchNFTs, getCollections, getNFTs, getTotalValue } from '@store/nft.slice';
+import { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from '@store/nft.slice';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
-import { NFTCard } from './NFTCard';
+import { NFTCollectionView } from './NFTCollectionView';
+import { NFTDefaultView } from './NFTDefaultView';
 
 const DashboardWrapper = styled.div`
   width: 100%;
@@ -33,8 +43,8 @@ const StyledLayout = styled.div`
 `;
 
 export default function NftDashboard() {
-  const nfts = useSelector(getNFTs);
-  const collections = useSelector(getCollections);
+  const fetched = useSelector(getFetched);
+  const nftsByCollection = useSelector(getNFTsByCollection);
   const total = useSelector(getTotalValue);
 
   const dispatch = useDispatch();
@@ -42,6 +52,12 @@ export default function NftDashboard() {
   useEffect(() => {
     dispatch(fetchNFTs());
   }, []);
+
+  const [displayMode, setDisplayMode] = useState(false);
+
+  const toggleDisplayMode = () => {
+    setDisplayMode(!displayMode);
+  };
 
   return (
     <StyledLayout>
@@ -53,9 +69,14 @@ export default function NftDashboard() {
           heading="Your NFTs"
           headingRight={
             <Box variant="rowAlign">
-              <Box bg="GREY_ATHENS" mr="2" borderRadius="default" p="1">
-                Total Value: {total.toFixed(3)} ETH
-              </Box>
+              {fetched && (
+                <>
+                  <Switch id="display-mode" checked={displayMode} onChange={toggleDisplayMode} />
+                  <Box bg="GREY_ATHENS" mr="2" borderRadius="default" p="1">
+                    Total Value: {total.toFixed(3)} ETH
+                  </Box>
+                </>
+              )}
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
                 <Box variant="rowAlign">
                   <Icon type="edit" width="1em" />
@@ -75,24 +96,17 @@ export default function NftDashboard() {
             </Box>
           }
         >
-          <Box
-            variant="rowAlign"
-            justifyContent="center"
-            flexWrap="wrap"
-            marginBottom={SPACING.BASE}
-          >
-            {nfts ? (
-              nfts.map((nft) => (
-                <NFTCard
-                  key={nft.id}
-                  asset={nft}
-                  collection={collections?.find((c) => c.slug === nft.collection.slug)}
-                />
-              ))
+          {fetched ? (
+            !displayMode ? (
+              <NFTDefaultView nftsByCollection={nftsByCollection} />
             ) : (
+              <NFTCollectionView nftsByCollection={nftsByCollection} />
+            )
+          ) : (
+            <Box variant="rowAlign" justifyContent="center" marginBottom={SPACING.BASE}>
               <Spinner size={3} />
-            )}
-          </Box>
+            </Box>
+          )}
         </DashboardPanel>
       </DashboardWrapper>
       {<PoweredByText provider="OPENSEA" />}
