@@ -6,12 +6,32 @@ import { ApiService } from '@services/ApiService';
 import { OpenSeaCollection, OpenSeaNFT } from './types';
 
 const NFT_LIMIT_PER_QUERY = 50; // Max allowed by OpenSea
+const NFT_LIMIT_MAX = 1000; // To prevent overly spamming the API - @todo Discuss
 
 export default abstract class OpenSeaService {
-  public static fetchAssets = async (owner: string): Promise<OpenSeaNFT[] | null> => {
+  // @todo Make prettier
+  public static fetchAllAssets = async (owner: string): Promise<OpenSeaNFT[]> => {
+    let page = 0;
+    let results = [] as OpenSeaNFT[];
+    while (results.length < NFT_LIMIT_MAX) {
+      const currentPage = await OpenSeaService.fetchAssets(owner, page);
+      if (currentPage) {
+        results = results.concat(currentPage);
+      }
+      if (currentPage?.length === NFT_LIMIT_PER_QUERY) {
+        page++;
+      } else {
+        break;
+      }
+    }
+    return results;
+  };
+
+  public static fetchAssets = async (owner: string, page: number): Promise<OpenSeaNFT[] | null> => {
     try {
+      const offset = page * NFT_LIMIT_PER_QUERY;
       const { data } = await OpenSeaService.service.get('v1/assets', {
-        params: { owner, limit: NFT_LIMIT_PER_QUERY }
+        params: { owner, offset, limit: NFT_LIMIT_PER_QUERY }
       });
       return data.assets;
     } catch (e) {

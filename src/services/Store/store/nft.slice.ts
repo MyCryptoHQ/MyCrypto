@@ -125,7 +125,7 @@ export function* fetchAssetsWorker() {
 
   // @todo Proxy image urls
   // @todo Pagination?
-  const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAssets);
+  const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAllAssets);
 
   yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
   yield put(setCollections(collections.filter((r) => r !== null).flat()));
