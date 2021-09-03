@@ -18,7 +18,7 @@ const PlanCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 18%;
+  width: 24%;
   padding: ${SPACING.BASE};
   background-color: ${COLORS.WHITE};
   border-radius: 6px;
