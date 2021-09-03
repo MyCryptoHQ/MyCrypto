@@ -66,7 +66,7 @@ export function* deactivateAnalyticsWorker({ payload }: PayloadAction<boolean>) 
   if (payload) {
     yield call(setAnalyticsID);
   } else {
-    yield call(setAnalyticsUserID, '');
+    yield put(setAnalyticsUserID(''));
   }
 }
 
