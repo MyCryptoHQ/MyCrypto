@@ -120,7 +120,7 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
       setFieldValue('gasLimitField', gas);
       setGasEstimationError(undefined);
     } catch (err) {
-      setGasEstimationError(err.reason ? err.reason : err.message);
+      setGasEstimationError(err?.reason ?? err?.message);
     }
     setIsEstimatingGasLimit(false);
   };

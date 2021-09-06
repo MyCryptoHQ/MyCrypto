@@ -47,25 +47,25 @@ enum PendingState {
 }
 
 const states = {
-  PENDING: {
+  [PendingState.PENDING]: {
     header: translateRaw('TRANSACTION_PENDING_HEADER'),
     description: translateRaw('TRANSACTION_PENDING_DESCRIPTION'),
     illustration: txPool,
     resend: false
   },
-  SUCCESS: {
+  [PendingState.SUCCESS]: {
     header: translateRaw('TRANSACTION_SUCCESS_HEADER'),
     description: translateRaw('TRANSACTION_SUCCESS_DESCRIPTION'),
     illustration: txInBlock,
     resend: false
   },
-  CROWDED: {
+  [PendingState.CROWDED]: {
     header: translateRaw('TRANSACTION_CROWDED_HEADER'),
     description: translateRaw('TRANSACTION_CROWDED_DESCRIPTION'),
     illustration: crowdedBlock,
     resend: true
   },
-  NOT_INCLUDED: {
+  [PendingState.NOT_INCLUDED]: {
     header: '',
     description: '',
     illustration: notIncluded,
@@ -241,7 +241,7 @@ export const TxPendingState = ({
               variant="opacityLink"
               display="inline-flex"
             >
-              <Icon type="link-out" ml={'1ch'} height="1em" />
+              <Icon type="link-out" ml="1ch" height="1em" />
             </LinkApp>
           )}
         </Box>

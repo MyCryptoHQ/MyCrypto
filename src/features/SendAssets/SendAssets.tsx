@@ -186,11 +186,21 @@ function SendAssets({ location }: RouteComponentProps) {
         .catch((err) =>
           dispatch({
             type: sendAssetsReducer.actionTypes.SEND_ERROR,
-            payload: err.reason ? err.reason : err.message
+            payload: err?.reason ?? err?.message
           })
         );
     }
   }, [reducerState.send]);
+
+  // @todo Fix
+  const handleRender = (goToNextStep: () => void) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (reducerState.txReceipt) {
+        goToNextStep();
+      }
+    }, [reducerState.txReceipt]);
+  };
 
   return (
     <GeneralStepper
@@ -201,14 +211,7 @@ function SendAssets({ location }: RouteComponentProps) {
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
       basic={isFeatureActive('PROTECT_TX')}
-      onRender={(goToNextStep) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => {
-          if (reducerState.txReceipt) {
-            goToNextStep();
-          }
-        }, [reducerState.txReceipt]);
-      }}
+      onRender={handleRender}
     />
   );
 }
