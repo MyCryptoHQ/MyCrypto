@@ -1,24 +1,26 @@
 import { ComponentProps } from 'react';
 
 import { formatUnits } from '@ethersproject/units';
-import { fireEvent, simpleRender } from 'test-utils';
+import { fireEvent, mockAppState, simpleRender } from 'test-utils';
 
 import { Fiats } from '@config';
 import {
   fAccount,
+  fAccounts,
   fContacts,
   fNetwork,
   fSettings,
   fTxConfig,
   fTxConfigEIP1559,
-  fTxReceipt
+  fTxReceipt,
+  fTxReceiptEIP1559
 } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ExtendedContact, ILegacyTxObject, ITxStatus, ITxType2Object } from '@types';
 import { bigify, noOp, truncate } from '@utils';
 
 import { constructSenderFromTxConfig } from '../helpers';
-import { TxReceiptUI } from '../TxReceipt';
+import { default as TxReceipt, TxReceiptUI } from '../TxReceipt';
 
 const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
@@ -123,5 +125,22 @@ describe('TxReceipt', () => {
     });
     expect(getByText('PTXBUTTON')).toBeDefined();
     expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();
+  });
+
+  test('it displays the new pending state', async () => {
+    const { getByText } = simpleRender(
+      <TxReceipt
+        {...defaultProps}
+        onComplete={jest.fn()}
+        txConfig={fTxConfigEIP1559}
+        txReceipt={fTxReceiptEIP1559}
+      />,
+      {
+        initialState: mockAppState({
+          accounts: [{ ...fAccounts[0], transactions: [fTxReceiptEIP1559] }]
+        })
+      }
+    );
+    expect(getByText(translateRaw('TRANSACTION_PENDING_DESCRIPTION'))).toBeDefined();
   });
 });

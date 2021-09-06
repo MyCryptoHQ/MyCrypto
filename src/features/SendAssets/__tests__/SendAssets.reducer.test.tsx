@@ -190,4 +190,20 @@ describe('SendAssetsReducer', () => {
       expect(txNumber).toBe(prevState.txNumber + 1);
     });
   });
+  describe('SEND_ERROR', () => {
+    it('sets error state', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: {}
+      };
+      const payload = 'foo';
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.SEND_ERROR,
+        payload
+      })(prevState);
+      expect(newState.send).toBe(false);
+      expect(newState.error).toBe(payload);
+    });
+  });
 });
