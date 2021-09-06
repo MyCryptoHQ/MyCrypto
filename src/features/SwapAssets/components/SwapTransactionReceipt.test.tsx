@@ -10,6 +10,15 @@ import { bigify, noOp, truncate } from '@utils';
 import { SwapTransactionReceipt } from '.';
 import { LAST_CHANGED_AMOUNT } from '../types';
 
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      waitForTransaction: jest.fn().mockResolvedValue({ status: 1 })
+    }))
+  };
+});
+
 const defaultProps: ComponentProps<typeof SwapTransactionReceipt> = {
   account: fAccounts[0],
   assetPair: {
