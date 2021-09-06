@@ -7,6 +7,7 @@ import { OpenSeaCollection, OpenSeaNFT } from './types';
 
 const NFT_LIMIT_PER_QUERY = 50; // Max allowed by OpenSea
 const NFT_LIMIT_MAX = 1000; // To prevent overly spamming the API - @todo Discuss
+const COLLECTION_LIMIT = 300; // @todo Discuss
 
 export default abstract class OpenSeaService {
   // @todo Make prettier
@@ -45,7 +46,7 @@ export default abstract class OpenSeaService {
   ): Promise<OpenSeaCollection[] | null> => {
     try {
       const { data } = await OpenSeaService.service.get('v1/collections', {
-        params: { asset_owner }
+        params: { asset_owner, limit: COLLECTION_LIMIT }
       });
       return data;
     } catch (e) {

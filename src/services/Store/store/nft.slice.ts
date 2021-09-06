@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
 import { NetworkId, StoreAccount } from '@types';
 import { mapAsync } from '@utils';
-import { findIndex, propEq } from '@vendor';
+import { findIndex, prop, propEq, uniqBy } from '@vendor';
 
 import { getAccounts } from './account.slice';
 import { AppState } from './root.reducer';
@@ -128,7 +128,7 @@ export function* fetchAssetsWorker() {
   const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAllAssets);
 
   yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
-  yield put(setCollections(collections.filter((r) => r !== null).flat()));
+  yield put(setCollections(uniqBy(prop('slug'), collections.filter((r) => r !== null).flat())));
 
   yield put(setFetched(true));
 }
