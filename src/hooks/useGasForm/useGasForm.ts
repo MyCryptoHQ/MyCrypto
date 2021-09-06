@@ -94,15 +94,11 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
         const data = await fetchGasPriceEstimates(network);
         setLegacyGasEstimates(data);
         setFieldValue('gasPriceSlider', data.fast.toString());
-        setFieldValue('gasPriceField', data.fast.toString());
+        handleGasPriceChange(data.fast.toString());
       } else {
         const data = await fetchEIP1559PriceEstimates(network);
-        setFieldValue(
-          'maxFeePerGasField',
-          data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas)
-        );
-        setFieldValue(
-          'maxPriorityFeePerGasField',
+        handleMaxFeeChange(data.maxFeePerGas && bigNumGasPriceToViewableGwei(data.maxFeePerGas));
+        handleMaxPriorityFeeChange(
           data.maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(data.maxPriorityFeePerGas)
         );
         setBaseFee(data.baseFee);
@@ -117,7 +113,7 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
     setIsEstimatingGasLimit(true);
     try {
       const gas = await getGasEstimate(network, tx);
-      setFieldValue('gasLimitField', gas);
+      handleGasLimitChange(gas);
       setGasEstimationError(undefined);
     } catch (err) {
       setGasEstimationError(err?.reason ?? err?.message);

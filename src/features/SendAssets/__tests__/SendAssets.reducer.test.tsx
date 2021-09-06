@@ -4,7 +4,7 @@ import { fAccount, fAccounts, fERC20NonWeb3TxConfig, fNetwork, fSignedTx } from 
 import { IFormikFields, ILegacyTxReceipt, ITxStatus, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputNonceToHex } from '@utils';
 
-import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
+import { initialState, ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
 
@@ -204,6 +204,19 @@ describe('SendAssetsReducer', () => {
       })(prevState);
       expect(newState.send).toBe(false);
       expect(newState.error).toBe(payload);
+    });
+  });
+  describe('RESET', () => {
+    it('sets state back to initialState', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: {}
+      };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.RESET
+      })(prevState);
+      expect(newState).toBe(initialState);
     });
   });
 });
