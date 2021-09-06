@@ -2921,14 +2921,6 @@
     bignumber.js "^9.0.1"
     ethers "^5.4.6"
 
-"@ledgerhq/hw-transport-mocker@5.38.0":
-  version "5.38.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-mocker/-/hw-transport-mocker-5.38.0.tgz#f9d50ce65ab39157c134824686fda059a50d2ead"
-  integrity sha512-ysfcKSAWJKj7Q3Iyj433jCwe9oSgX0XnrX0JZaSpoxVjgej/q4Hh2z3XHuyJekkK/YghHEA0evrqXHj92wD4Lw==
-  dependencies:
-    "@ledgerhq/hw-transport" "^5.38.0"
-    "@ledgerhq/logs" "^5.38.0"
-
 "@ledgerhq/hw-transport-node-hid-noevents@6.6.0":
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-6.6.0.tgz#ded5b927807ddabc5f0138f31aeaf175cd685e0b"
@@ -2979,7 +2971,7 @@
     "@ledgerhq/errors" "^6.2.0"
     events "^3.3.0"
 
-"@ledgerhq/hw-transport@^5.34.0", "@ledgerhq/hw-transport@^5.38.0":
+"@ledgerhq/hw-transport@^5.34.0":
   version "5.43.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-5.43.0.tgz#dc9863706d31bae96aed66f193b8922a876cbf82"
   integrity sha512-0S+TGmiEJOqgM2MWnolZQPVKU3oRtoDj4yUFUZts9Owbgby+hmo4dIKTvv0vs8mwknQbOZByUgh3MQOQiK70MQ==
@@ -2988,7 +2980,7 @@
     "@ledgerhq/errors" "^5.43.0"
     events "^3.2.0"
 
-"@ledgerhq/logs@^5.30.0", "@ledgerhq/logs@^5.38.0", "@ledgerhq/logs@^5.43.0":
+"@ledgerhq/logs@^5.30.0", "@ledgerhq/logs@^5.43.0":
   version "5.43.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.43.0.tgz#031bad4b8a3525c5e14210afde0bc09c79564026"
   integrity sha512-QWfQjea3ekh9ZU+JeL2tJC9cTKLZ/JrcS0JGatLejpRYxQajvnHvHfh0dbHOKXEaXfCskEPTZ3f1kzuts742GA==
@@ -4591,21 +4583,6 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
-
-"@types/ledgerhq__hw-transport-u2f@4.21.1":
-  version "4.21.1"
-  resolved "https://registry.yarnpkg.com/@types/ledgerhq__hw-transport-u2f/-/ledgerhq__hw-transport-u2f-4.21.1.tgz#8193aa3199cc5ba6cf7f9d880a88f2993a6c6c3b"
-  integrity sha512-8mVUb2/Oj3VtP/ERpm//HL/JOLxKFZycMeFjKxkRMp3283Vz0slBkeHxSdjxRQjiZi7zRu9amQ8dPXnr1B5nIg==
-  dependencies:
-    "@types/ledgerhq__hw-transport" "*"
-    "@types/node" "*"
-
-"@types/ledgerhq__hw-transport@*", "@types/ledgerhq__hw-transport@4.21.3":
-  version "4.21.3"
-  resolved "https://registry.yarnpkg.com/@types/ledgerhq__hw-transport/-/ledgerhq__hw-transport-4.21.3.tgz#1e658da6b5d01ffab92f9660cf57121aecfa7e2c"
-  integrity sha512-6QveiZLsFLq9WZDk8HWAZhivoGzyz5S8WV36hpUe7KrVDaTR1fDdB+syorrNRhYbyjraAuUJrIdJR5p/7doq8g==
-  dependencies:
-    "@types/node" "*"
 
 "@types/levelup@^4.3.0":
   version "4.3.1"
