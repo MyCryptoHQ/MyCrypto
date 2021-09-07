@@ -99,7 +99,7 @@ describe('mergeNetworks', () => {
 
   test('it correctly merges when custom nodes are present', () => {
     const nodeName = 'MyNode';
-    const nodes = [...fNetworks[0].nodes, { name: nodeName } as NodeOptions];
+    const nodes = [...fNetworks[0].nodes, { name: nodeName, isCustom: true } as NodeOptions];
     const actual = mergeNetworks(
       [{ ...fNetworks[0], nodes, selectedNode: nodeName }, fNetworks[1]],
       fNetworks
@@ -120,6 +120,12 @@ describe('mergeNetworks', () => {
   test('it correctly merges when static info has changed', () => {
     const [first, ...rest] = fNetworks[0].nodes;
     const nodes = [{ ...first, disableByDefault: true }, ...rest];
+    const actual = mergeNetworks([fNetworks[0]], [{ ...fNetworks[0], nodes }]);
+    expect(actual).toEqual([{ ...fNetworks[0], nodes }]);
+  });
+
+  test('it correctly merges when nodes have been deleted', () => {
+    const [, ...nodes] = fNetworks[0].nodes;
     const actual = mergeNetworks([fNetworks[0]], [{ ...fNetworks[0], nodes }]);
     expect(actual).toEqual([{ ...fNetworks[0], nodes }]);
   });
