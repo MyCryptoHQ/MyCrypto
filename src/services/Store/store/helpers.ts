@@ -67,7 +67,7 @@ const mergeNodes = (inbound: NodeOptions[], original: NodeOptions[]) =>
       const existing = inbound.find((i) => i.name === o.name);
       return mergeRight(o, existing || {});
     })
-    .concat(inbound.filter((i) => !original.find((o) => o.name === i.name)));
+    .concat(inbound.filter((i) => i.isCustom));
 
 export const mergeNetworks = (inbound: Network[], original: Network[]) =>
   original
@@ -78,7 +78,7 @@ export const mergeNetworks = (inbound: Network[], original: Network[]) =>
 
       return {
         ...o,
-        nodes: mergeNodes(o.nodes, existingNodes),
+        nodes: mergeNodes(existingNodes, o.nodes),
         selectedNode
       } as Network;
     })
