@@ -554,6 +554,7 @@
     "UNISWAP_V3": "Uniswap v3",
     "PLATFORM_APPROVE": "$ticker Approved",
     "PLATFORM_APPROVAL": "$ticker Approved",
+    "PLATFORM_NFT_APPROVE": "NFT Approved",
     "PLATFORM_BRIDGE_IN": "Bridged To",
     "PLATFROM_BRIDGE_OUT": "Bridged From",
     "PLATFORM_CANCEL_ORDER": "Cancel Order",
