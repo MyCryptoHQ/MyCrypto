@@ -34,7 +34,6 @@ const defaultProps = {
 };
 
 const getComponent = () => {
-  // @ts-expect-error Not mocking out all of store
   const { store } = createStore(mockAppState({ networks: APP_STATE.networks }));
   return simpleRender(
     <Provider store={store}>
