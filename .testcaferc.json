@@ -8,5 +8,6 @@
     }
   ],
   "developmentMode": true,
-  "color": true
+  "color": true,
+  "quarantineMode": true
 }
