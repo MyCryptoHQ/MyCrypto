@@ -27,7 +27,7 @@
     "@mycrypto/ui": "0.24.1",
     "@mycrypto/unlock-scan": "1.2.0",
     "@mycrypto/wallets": "1.3.3",
-    "@reduxjs/toolkit": "1.5.0",
+    "@reduxjs/toolkit": "1.6.0",
     "@styled-system/should-forward-prop": "5.1.5",
     "@types/papaparse": "5.0.6",
     "@types/redux-logger": "3.0.8",

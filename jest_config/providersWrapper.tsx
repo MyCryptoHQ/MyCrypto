@@ -1,6 +1,6 @@
 import { ComponentProps, ReactNode } from 'react';
 
-import { configureStore, DeepPartial } from '@reduxjs/toolkit';
+import { configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -25,7 +25,7 @@ export const ProvidersWrapper = ({
 }) => {
   const store = configureStore({
     reducer: rootReducer,
-    preloadedState: (initialState as unknown) as DeepPartial<AppState>
+    preloadedState: (initialState as unknown) as PreloadedState<AppState>
   });
   return (
     <Router initialEntries={initialRoute ? [initialRoute] : undefined}>

@@ -1,4 +1,4 @@
-import { configureStore, DeepPartial } from '@reduxjs/toolkit';
+import { configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
@@ -19,7 +19,7 @@ import rootReducer, { AppState } from './root.reducer';
 import rootSaga from './sagas';
 import { serializeLegacyMiddleware } from './serialize.middleware';
 
-export default function createStore(initialState?: DeepPartial<AppState>) {
+export default function createStore(initialState?: PreloadedState<AppState>) {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = configureStore({
