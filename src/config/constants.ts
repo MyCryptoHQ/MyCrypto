@@ -28,12 +28,12 @@ export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
 export const FAUCET_API = 'https://faucet.mycryptoapi.com';
 
+export const OPENSEA_API = 'https://opensea.mycryptoapi.com/api';
+
 // The URL and site ID for the Matomo analytics instance.
 export const ANALYTICS_API = 'https://analytics.mycryptoapi.com';
 export const ANALYTICS_SITE_ID_PROD = 17;
 export const ANALYTICS_SITE_ID_DEV = 11;
-
-export const OPENSEA_API = 'https://api.opensea.io/api';
 
 // this will be changed when we figure out networks
 export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
