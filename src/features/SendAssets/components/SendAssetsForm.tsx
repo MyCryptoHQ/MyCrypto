@@ -38,7 +38,7 @@ import {
   KB_HELP_ARTICLE,
   ROUTE_PATHS
 } from '@config';
-import { Fiats, getFiat } from '@config/fiats';
+import { getFiat } from '@config/fiats';
 import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
@@ -52,9 +52,7 @@ import {
 import {
   isBurnAddress,
   isValidETHAddress,
-  isValidPositiveNumber,
-  TxFeeResponseType,
-  validateTxFee
+  isValidPositiveNumber
 } from '@services/EthService/validators';
 import {
   getAccountBalance,
@@ -75,7 +73,6 @@ import translate, { Trans, translateRaw } from '@translations';
 import {
   Asset,
   ErrorObject,
-  Fiat,
   IAccount,
   IFormikFields,
   InlineMessageType,
@@ -109,6 +106,7 @@ import { useDebounce } from '@vendor';
 import { isERC20Asset, processFormForEstimateGas } from '../helpers';
 import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
+import { TxFeeValidation } from './TxFeeValidation';
 import {
   canAffordTX,
   validateAmountField,
@@ -127,66 +125,6 @@ export const AdvancedOptionsButton = styled(UIBtn)`
 const NoMarginCheckbox = styled(Checkbox)`
   margin-bottom: 0;
 `;
-
-const getTxFeeValidation = ({
-  amount = '0',
-  fiat,
-  fee,
-  type
-}: {
-  fiat: Fiat;
-  amount?: string;
-  fee?: string;
-  type: TxFeeResponseType;
-}) => {
-  switch (type) {
-    case 'Warning':
-      return (
-        <InlineMessage
-          type={InlineMessageType.WARNING}
-          value={translate('WARNING_TRANSACTION_FEE', {
-            $amount: `${fiat.symbol}${amount}`,
-            $fee: `${fiat.symbol}${fee}`,
-            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
-          })}
-        />
-      );
-    case 'Warning-Use-Lower':
-      return (
-        <InlineMessage
-          type={InlineMessageType.WARNING}
-          value={translate('TRANSACTION_FEE_NOTICE', {
-            $fee: `${fiat.symbol}${fee}`,
-            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
-          })}
-        />
-      );
-    case 'Error-High-Tx-Fee':
-      return (
-        <InlineMessage
-          type={InlineMessageType.ERROR}
-          value={translate('ERROR_HIGH_TRANSACTION_FEE_HIGH', {
-            $fee: `${fiat.symbol}${fee}`,
-            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
-          })}
-        />
-      );
-    case 'Error-Very-High-Tx-Fee':
-      return (
-        <InlineMessage
-          type={InlineMessageType.ERROR}
-          value={translate('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', {
-            $fee: `${fiat.symbol}${fee}`,
-            $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
-          })}
-        />
-      );
-    case 'Invalid':
-    case 'None':
-    default:
-      return <></>;
-  }
-};
 
 const initialFormikValues: IFormikFields = {
   address: {
@@ -277,7 +215,7 @@ interface ISendFormProps extends IStepComponentProps {
 export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendFormProps) => {
   const accounts = useSelector(getStoreAccounts);
   const networks = useSelector(selectNetworks);
-  const { getAssetRate, getAssetRateInCurrency } = useRates();
+  const { getAssetRate } = useRates();
   const { getAssetByUUID, assets } = useAssets();
   const { settings } = useSettings();
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -667,16 +605,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   const fiat = getFiat(settings);
 
-  const { type, amount, fee } = validateTxFee(
-    values.amount,
-    getAssetRateInCurrency(baseAsset, Fiats.USD.ticker),
-    getAssetRateInCurrency(baseAsset, fiat.ticker),
-    isERC20Asset(values.asset),
-    values.gasLimitField.toString(),
-    gasPrice,
-    getAssetRateInCurrency(EthAsset, Fiats.USD.ticker)
-  );
-
   const baseAssetRate = (getAssetRate(baseAsset) ?? 0).toString();
 
   useEffect(() => {
@@ -844,12 +772,16 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
             onChange={handleGasSliderChange}
           />
         )}
-        {getTxFeeValidation({
-          type,
-          amount,
-          fee,
-          fiat
-        })}
+        <TxFeeValidation
+          amount={values.amount}
+          baseAsset={baseAsset}
+          asset={values.asset}
+          gasLimit={values.gasLimitField}
+          fiat={fiat}
+          gasPrice={gasPrice}
+          ethAsset={EthAsset}
+          baseFee={baseFee}
+        />
       </fieldset>
       {/* Advanced Options */}
       <div className="SendAssetsForm-advancedOptions">
