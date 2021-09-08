@@ -108,6 +108,11 @@ describe('validateTxFee', () => {
       type: TxFeeResponseType.WarningUseLower
     });
   });
+  it('return None if no issues found', () => {
+    expect(validateTxFee('1', 40, 40, false, '21000', '100')).toMatchObject({
+      type: TxFeeResponseType.None
+    });
+  });
 });
 
 describe('isValidETHRecipientAddress', () => {
