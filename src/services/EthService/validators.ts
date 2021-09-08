@@ -211,8 +211,7 @@ export const validateTxFee = (
   ethAssetRate?: number,
   baseFee?: BigNumber
 ): TxFeeResponse => {
-  const humanReadableBaseFee =
-    baseFee && bigify(bigNumGasPriceToViewableGwei(baseFee)).multipliedBy(2);
+  const humanReadableBaseFee = baseFee && bigify(bigNumGasPriceToViewableGwei(baseFee));
 
   if (humanReadableBaseFee && humanReadableBaseFee.gt(VERY_HIGH_BASE_FEE)) {
     return { type: TxFeeResponseType.WarningVeryHighBaseFee };
