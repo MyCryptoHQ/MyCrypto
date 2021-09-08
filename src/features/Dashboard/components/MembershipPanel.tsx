@@ -65,7 +65,11 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
   const isExpired = membershipState === MembershipState.EXPIRED;
   const allMemberships = memberships ? uniq(flatten(memberships.map((m) => m.memberships))) : [];
   const membership =
-    allMemberships.length > 0 ? allMemberships[allMemberships.length - 1] : undefined;
+    allMemberships.length > 0
+      ? allMemberships.reduce((prev, cur) => {
+          return parseInt(prev.expiry, 10) > parseInt(cur.expiry, 10) ? prev : cur;
+        })
+      : undefined;
 
   const icon = (() => {
     if (isExpired) {
