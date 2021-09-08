@@ -177,13 +177,14 @@ export function isValidPath(dPath: string) {
   return dPathRegex.test(dPath);
 }
 
-export type TxFeeResponseType =
-  | 'Warning'
-  | 'Warning-Use-Lower'
-  | 'Error-High-Tx-Fee'
-  | 'Error-Very-High-Tx-Fee'
-  | 'None'
-  | 'Invalid';
+export enum TxFeeResponseType {
+  'Warning',
+  'WarningUseLower',
+  'ErrorHighTxFee',
+  'ErrorVeryHighTxFee',
+  'None',
+  'Invalid'
+}
 interface TxFeeResponse {
   type: TxFeeResponseType;
   amount?: string;
@@ -205,7 +206,7 @@ export const validateTxFee = (
     !gasLimit.match(validInputRegex) ||
     !gasPrice.match(validInputRegex)
   ) {
-    return { type: 'Invalid' };
+    return { type: TxFeeResponseType.Invalid };
   }
   const DEFAULT_RATE_DECIMAL = 4;
   const DEFAULT_DECIMAL = DEFAULT_ASSET_DECIMAL + DEFAULT_RATE_DECIMAL;
@@ -247,7 +248,7 @@ export const validateTxFee = (
 
   // In case of fractions of amount being send
   if (txAmount.lt(EthersBN.from(convertedToBaseUnit('0.000001', DEFAULT_DECIMAL)))) {
-    return createTxFeeResponse('None');
+    return createTxFeeResponse(TxFeeResponseType.None);
   }
 
   // More than 100$ OR 0.5 ETH
@@ -255,7 +256,7 @@ export const validateTxFee = (
     txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit('100', DEFAULT_DECIMAL))) ||
     isGreaterThanEthFraction(0.5)
   ) {
-    return createTxFeeResponse('Error-Very-High-Tx-Fee');
+    return createTxFeeResponse(TxFeeResponseType.ErrorVeryHighTxFee);
   }
 
   // More than 25$ OR 0.15 ETH
@@ -263,22 +264,22 @@ export const validateTxFee = (
     txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit('25', DEFAULT_DECIMAL))) ||
     isGreaterThanEthFraction(0.15)
   ) {
-    return createTxFeeResponse('Error-High-Tx-Fee');
+    return createTxFeeResponse(TxFeeResponseType.ErrorHighTxFee);
   }
 
   // More than 15$ for ERC20 or 10$ for ETH
   if (
     txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit(isERC20 ? '15' : '10', DEFAULT_DECIMAL)))
   ) {
-    return createTxFeeResponse('Warning-Use-Lower');
+    return createTxFeeResponse(TxFeeResponseType.WarningUseLower);
   }
 
   // Erc token where txFee is higher than amount
   if (!isERC20 && txAmount.lt(convertedToBaseUnit(txFee.toString(), DEFAULT_RATE_DECIMAL))) {
-    return createTxFeeResponse('Warning');
+    return createTxFeeResponse(TxFeeResponseType.Warning);
   }
 
-  return createTxFeeResponse('None');
+  return createTxFeeResponse(TxFeeResponseType.None);
 };
 
 export const isTransactionFeeHigh = (
