@@ -42,16 +42,16 @@ describe('isTransactionFeeHigh', () => {
 
 describe('validateTxFee', () => {
   it('should return Invalid', () => {
-    expect(validateTxFee('-0.001', 100, 100, false, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('-0.001', 100, 100, false, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.Invalid
     });
-    expect(validateTxFee('0,001', 100, 100, true, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('0,001', 100, 100, true, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.Invalid
     });
-    expect(validateTxFee('0.001', 100, 100, false, '-21000', '10000')).toStrictEqual({
+    expect(validateTxFee('0.001', 100, 100, false, '-21000', '10000')).toMatchObject({
       type: TxFeeResponseType.Invalid
     });
-    expect(validateTxFee('0.001', 100, 100, false, '21000', '+10000')).toStrictEqual({
+    expect(validateTxFee('0.001', 100, 100, false, '21000', '+10000')).toMatchObject({
       type: TxFeeResponseType.Invalid
     });
   });
@@ -65,46 +65,46 @@ describe('validateTxFee', () => {
   it('should return WarningVeryHighBaseFee when base fee above 200', () => {
     expect(
       validateTxFee('1', 100, 100, false, '21000', '10000', 3000, bigify('201000000000'))
-    ).toStrictEqual({
+    ).toMatchObject({
       type: TxFeeResponseType.WarningVeryHighBaseFee
     });
   });
   it('should return None for small amounts', () => {
-    expect(validateTxFee('0.0000001', 100, 100, false, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('0.0000001', 100, 100, false, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.None
     });
-    expect(validateTxFee('0.0000002', 100, 100, false, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('0.0000002', 100, 100, false, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.None
     });
   });
   it('should return Warning for fee bigger than amounts', () => {
-    expect(validateTxFee('0.000002', 100, 100, false, '21000', '1000')).toStrictEqual({
+    expect(validateTxFee('0.000002', 100, 100, false, '21000', '1000')).toMatchObject({
       type: TxFeeResponseType.Warning
     });
   });
   it('return ErrorVeryHighTxFee', () => {
-    expect(validateTxFee('100', 1000, 1000, true, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('100', 1000, 1000, true, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.ErrorVeryHighTxFee
     });
     // Should take into account eth fraction 0.5
-    expect(validateTxFee('100', 50, 50, true, '21000', '100000', 5000)).toStrictEqual({
+    expect(validateTxFee('100', 50, 50, true, '21000', '100000', 5000)).toMatchObject({
       type: TxFeeResponseType.ErrorVeryHighTxFee
     });
   });
   it('return ErrorHighTxFee', () => {
-    expect(validateTxFee('100', 200, 200, true, '21000', '10000')).toStrictEqual({
+    expect(validateTxFee('100', 200, 200, true, '21000', '10000')).toMatchObject({
       type: TxFeeResponseType.ErrorHighTxFee
     });
     // Should take into account eth fraction 0.15
-    expect(validateTxFee('100', 50, 50, true, '21000', '25000', 5000)).toStrictEqual({
+    expect(validateTxFee('100', 50, 50, true, '21000', '25000', 5000)).toMatchObject({
       type: TxFeeResponseType.ErrorHighTxFee
     });
   });
   it('return WarningUseLower', () => {
-    expect(validateTxFee('100', 40, 40, false, '21000', '15000')).toStrictEqual({
+    expect(validateTxFee('100', 40, 40, false, '21000', '15000')).toMatchObject({
       type: TxFeeResponseType.WarningUseLower
     });
-    expect(validateTxFee('100', 40, 40, true, '21000', '18000')).toStrictEqual({
+    expect(validateTxFee('100', 40, 40, true, '21000', '18000')).toMatchObject({
       type: TxFeeResponseType.WarningUseLower
     });
   });
