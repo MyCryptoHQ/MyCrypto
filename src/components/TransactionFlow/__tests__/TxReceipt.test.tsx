@@ -20,7 +20,7 @@ import { ExtendedContact, ILegacyTxObject, ITxStatus, ITxType2Object } from '@ty
 import { bigify, noOp, truncate } from '@utils';
 
 import { constructSenderFromTxConfig } from '../helpers';
-import { default as TxReceipt, TxReceiptUI } from '../TxReceipt';
+import TxReceipt, { TxReceiptUI } from '../TxReceipt';
 
 const senderContact = Object.values(fContacts)[0] as ExtendedContact;
 const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
