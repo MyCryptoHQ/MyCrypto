@@ -780,6 +780,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
           fiat={fiat}
           gasPrice={gasPrice}
           ethAsset={EthAsset}
+          baseFee={baseFee}
         />
       </fieldset>
       {/* Advanced Options */}

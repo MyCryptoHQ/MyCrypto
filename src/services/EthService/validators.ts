@@ -1,4 +1,3 @@
-import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { ALL_DERIVATION_PATHS } from '@mycrypto/wallets';
 import { ResolutionError } from '@unstoppabledomains/resolution';
 import BigNumber from 'bignumber.js';
@@ -15,7 +14,13 @@ import {
 } from '@config';
 import translate, { translateRaw } from '@translations';
 import { InlineMessageType } from '@types';
-import { baseToConvertedUnit, bigify, convertedToBaseUnit, gasStringsToMaxGasBN } from '@utils';
+import {
+  baseToConvertedUnit,
+  bigify,
+  bigNumGasPriceToViewableGwei,
+  convertedToBaseUnit,
+  gasStringsToMaxGasBN
+} from '@utils';
 
 import { isValidENSName } from './ens/validators';
 
@@ -182,6 +187,8 @@ export enum TxFeeResponseType {
   'WarningUseLower',
   'ErrorHighTxFee',
   'ErrorVeryHighTxFee',
+  'WarningHighBaseFee',
+  'WarningVeryHighBaseFee',
   'None',
   'Invalid'
 }
@@ -191,6 +198,9 @@ interface TxFeeResponse {
   fee?: string;
 }
 
+const HIGH_BASE_FEE = 100;
+const VERY_HIGH_BASE_FEE = 200;
+
 export const validateTxFee = (
   amount: string,
   assetRateUSD: number,
@@ -198,8 +208,18 @@ export const validateTxFee = (
   isERC20: boolean,
   gasLimit: string,
   gasPrice: string,
-  ethAssetRate?: number
+  ethAssetRate?: number,
+  baseFee?: BigNumber
 ): TxFeeResponse => {
+  const humanReadableBaseFee =
+    baseFee && bigify(bigNumGasPriceToViewableGwei(baseFee)).multipliedBy(2);
+
+  if (humanReadableBaseFee && humanReadableBaseFee.gt(VERY_HIGH_BASE_FEE)) {
+    return { type: TxFeeResponseType.WarningVeryHighBaseFee };
+  } else if (humanReadableBaseFee && humanReadableBaseFee.gt(HIGH_BASE_FEE)) {
+    return { type: TxFeeResponseType.WarningHighBaseFee };
+  }
+
   const validInputRegex = /^[0-9]+(\.[0-9])?[0-9]*$/;
   if (
     !amount.match(validInputRegex) ||
@@ -216,16 +236,16 @@ export const validateTxFee = (
   const getEthAssetRate = () =>
     ethAssetRate ? convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL) : 0;
 
-  const txAmount = EthersBN.from(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
-  const txFee = EthersBN.from(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
-  const txFeeFiatValue = EthersBN.from(getAssetRate()).mul(txFee);
+  const txAmount = bigify(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
+  const txFee = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const txFeeFiatValue = bigify(getAssetRate()).multipliedBy(txFee);
 
   const txTransactionFeeInEthFiatValue =
-    ethAssetRate && ethAssetRate > 0 ? EthersBN.from(getEthAssetRate()).mul(txFee) : null;
+    ethAssetRate && ethAssetRate > 0 ? bigify(getEthAssetRate()).multipliedBy(txFee) : null;
 
   const createTxFeeResponse = (type: TxFeeResponseType) => {
-    const txAmountFiatLocalValue = EthersBN.from(getAssetRateLocal()).mul(txAmount);
-    const txFeeFiatLocalValue = EthersBN.from(getAssetRateLocal()).mul(txFee);
+    const txAmountFiatLocalValue = bigify(getAssetRateLocal()).multipliedBy(txAmount);
+    const txFeeFiatLocalValue = bigify(getAssetRateLocal()).multipliedBy(txFee);
     return {
       type,
       amount: bigify(
@@ -247,13 +267,13 @@ export const validateTxFee = (
   };
 
   // In case of fractions of amount being send
-  if (txAmount.lt(EthersBN.from(convertedToBaseUnit('0.000001', DEFAULT_DECIMAL)))) {
+  if (txAmount.lt(convertedToBaseUnit('0.000001', DEFAULT_DECIMAL))) {
     return createTxFeeResponse(TxFeeResponseType.None);
   }
 
   // More than 100$ OR 0.5 ETH
   if (
-    txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit('100', DEFAULT_DECIMAL))) ||
+    txFeeFiatValue.gt(convertedToBaseUnit('100', DEFAULT_DECIMAL)) ||
     isGreaterThanEthFraction(0.5)
   ) {
     return createTxFeeResponse(TxFeeResponseType.ErrorVeryHighTxFee);
@@ -261,16 +281,14 @@ export const validateTxFee = (
 
   // More than 25$ OR 0.15 ETH
   if (
-    txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit('25', DEFAULT_DECIMAL))) ||
+    txFeeFiatValue.gt(convertedToBaseUnit('25', DEFAULT_DECIMAL)) ||
     isGreaterThanEthFraction(0.15)
   ) {
     return createTxFeeResponse(TxFeeResponseType.ErrorHighTxFee);
   }
 
   // More than 15$ for ERC20 or 10$ for ETH
-  if (
-    txFeeFiatValue.gt(EthersBN.from(convertedToBaseUnit(isERC20 ? '15' : '10', DEFAULT_DECIMAL)))
-  ) {
+  if (txFeeFiatValue.gt(convertedToBaseUnit(isERC20 ? '15' : '10', DEFAULT_DECIMAL))) {
     return createTxFeeResponse(TxFeeResponseType.WarningUseLower);
   }
 
@@ -297,16 +315,16 @@ export const isTransactionFeeHigh = (
   ) {
     return false;
   }
-  const amountBN = EthersBN.from(convertedToBaseUnit(amount, DEFAULT_ASSET_DECIMAL));
-  if (amountBN.lt(EthersBN.from(convertedToBaseUnit('0.000001', DEFAULT_ASSET_DECIMAL)))) {
+  const amountBN = bigify(convertedToBaseUnit(amount, DEFAULT_ASSET_DECIMAL));
+  if (amountBN.lt(convertedToBaseUnit('0.000001', DEFAULT_ASSET_DECIMAL))) {
     return false;
   }
-  const transactionFee = EthersBN.from(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
-  const fiatValue = EthersBN.from(assetRate.toFixed(0)).mul(transactionFee);
+  const transactionFee = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const fiatValue = bigify(assetRate.toFixed(0)).multipliedBy(transactionFee);
   // For now transaction fees are too high if they are more than $10 fiat or more than the sent amount
   return (
     (!isERC20 && amountBN.lt(transactionFee)) ||
-    fiatValue.gt(EthersBN.from(convertedToBaseUnit('10', DEFAULT_ASSET_DECIMAL)))
+    fiatValue.gt(convertedToBaseUnit('10', DEFAULT_ASSET_DECIMAL))
   );
 };
 

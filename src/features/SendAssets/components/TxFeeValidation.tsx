@@ -1,5 +1,7 @@
 import { ReactElement } from 'react';
 
+import BigNumber from 'bignumber.js';
+
 import { InlineMessage, TranslateMarkdown } from '@components';
 import { Fiats, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { TxFeeResponseType, validateTxFee } from '@services/EthService/validators';
@@ -48,6 +50,14 @@ const CONFIGS: Record<TxFeeResponseType, ConfigType | null> = {
         $link: getKBHelpArticle(KB_HELP_ARTICLE.WHY_IS_GAS)
       })
   },
+  [TxFeeResponseType.WarningHighBaseFee]: {
+    type: InlineMessageType.WARNING,
+    message: () => translate('BASE_FEE_HIGH')
+  },
+  [TxFeeResponseType.WarningVeryHighBaseFee]: {
+    type: InlineMessageType.WARNING,
+    message: () => translate('BASE_FEE_VERY_HIGH')
+  },
   [TxFeeResponseType.Invalid]: null,
   [TxFeeResponseType.None]: null
 };
@@ -60,6 +70,7 @@ interface Props {
   ethAsset: Asset;
   gasLimit: string;
   gasPrice: string;
+  baseFee?: BigNumber;
 }
 
 export const TxFeeValidation = ({
@@ -69,7 +80,8 @@ export const TxFeeValidation = ({
   ethAsset,
   fiat,
   gasLimit,
-  gasPrice
+  gasPrice,
+  baseFee
 }: Props) => {
   const { getAssetRateInCurrency } = useRates();
 
@@ -80,7 +92,8 @@ export const TxFeeValidation = ({
     isERC20Asset(asset),
     gasLimit,
     gasPrice,
-    getAssetRateInCurrency(ethAsset, Fiats.USD.ticker)
+    getAssetRateInCurrency(ethAsset, Fiats.USD.ticker),
+    baseFee
   );
   const config = CONFIGS[type];
 
