@@ -390,7 +390,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     ? getBaseAssetByNetwork({ network, assets })!
     : getBaseAssetByNetwork({ network: defaultNetwork!, assets })!;
 
-  const isEIP1559 = isEIP1559Supported(network, values.account);
+  const isEIP1559 = isEIP1559Supported(network);
 
   const gasPrice = isEIP1559
     ? values.maxFeePerGasField.toString()
@@ -410,7 +410,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   useEffect(() => {
     handleGasPriceEstimation();
-  }, [values.account, values.network]);
+  }, [values.network]);
 
   useDebounce(
     () => {
@@ -420,8 +420,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     [values.account, values.address, values.amount, values.txDataField]
   );
 
-  const handleGasPriceEstimation = (network = values.network) =>
-    performGasPriceEstimation(network, values.account);
+  const handleGasPriceEstimation = (network = values.network) => performGasPriceEstimation(network);
 
   useEffect(() => {
     const asset = values.asset;

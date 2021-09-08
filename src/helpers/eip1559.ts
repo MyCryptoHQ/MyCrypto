@@ -1,6 +1,4 @@
-import { Network, StoreAccount, WalletId } from '@types';
-
-const DISABLED_WALLETS = [WalletId.WALLETCONNECT];
+import { Network } from '@types';
 
 const featureFlagName = 'MYC_EIP1559';
 
@@ -14,8 +12,6 @@ export const setEIP1559FeatureFlag = (value: boolean) => {
   localStorage.setItem(featureFlagName, value.toString());
 };
 
-export const isEIP1559Supported = (network: Network, account: StoreAccount) => {
-  return (
-    getEIP1559FeatureFlag() && network.supportsEIP1559 && !DISABLED_WALLETS.includes(account.wallet)
-  );
+export const isEIP1559Supported = (network: Network) => {
+  return getEIP1559FeatureFlag() && network.supportsEIP1559;
 };
