@@ -53,6 +53,7 @@ const SImg = styled.img`
 
   width: 50%;
   height: auto;
+  align-self: center;
 `;
 
 const DescriptionColumn = styled.div`
@@ -142,6 +143,8 @@ const MembershipEducation = () => {
         <DescriptionColumn>
           <Typography as="div">{translate('MEMBERSHIP_DESC_FIRST')}</Typography>
           <Typography as="div">{translate('MEMBERSHIP_DESC_SECOND')}</Typography>
+          <Typography as="div">{translate('MEMBERSHIP_DESC_THIRD')}</Typography>
+          <Typography as="div">{translate('MEMBERSHIP_DESC_FOURTH')}</Typography>
           <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
             <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
           </LinkApp>
