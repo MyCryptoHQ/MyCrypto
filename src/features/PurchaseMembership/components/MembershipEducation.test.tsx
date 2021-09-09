@@ -11,6 +11,6 @@ function getComponent() {
 describe('MembershipEducation', () => {
   it('renders', async () => {
     const { getByText } = getComponent();
-    expect(getByText(translateRaw('MEMBERSHIP_DESC_FIRST')).textContent).toBeDefined();
+    expect(getByText(translateRaw('MEMBERSHIP_DESC_SECOND')).textContent).toBeDefined();
   });
 });
