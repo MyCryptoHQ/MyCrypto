@@ -67,14 +67,17 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
       case 'CANCEL_ORDER':
       case 'GENERIC_CONTRACT_CALL':
       case 'CONTRACT_INTERACT':
+      case 'NFT_MINT':
         return contractInteract;
       case 'EXCHANGE':
       case 'SWAP':
       case 'BRIDGE_IN':
       case 'BRIDGE_OUT':
+      case 'NFT_EXCHANGE':
         return swap;
       case 'APPROVAL':
       case 'APPROVE':
+      case 'NFT_APPROVE':
         return approval;
       case 'FAUCET':
       case 'MINING_PAYOUT':
