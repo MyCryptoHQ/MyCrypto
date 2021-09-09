@@ -138,6 +138,7 @@ export function TokenList(props: TokenListProps) {
                     <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>
                   )}
                   <MoreIcon
+                    color="BLUE_DARK_SLATE"
                     type="more"
                     height="24px"
                     alt="More"

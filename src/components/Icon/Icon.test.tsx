@@ -9,8 +9,12 @@ const renderComponent = (props: Props) => simpleRender(<Icon {...props} />);
 
 describe('Icon', () => {
   it('renders a SVG Icon by type', () => {
-    const { container } = renderComponent({ type: 'add' });
+    const { container } = renderComponent({ type: 'add', color: 'white' });
     expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+  it('renders a img tag for SVGs that dont have fill', () => {
+    const { container } = renderComponent({ type: 'add' });
+    expect(container.querySelector('img')).toBeInTheDocument();
   });
   it('renders a PNG Icon by type', () => {
     const { container } = renderComponent({ type: 'uni-logo' });
