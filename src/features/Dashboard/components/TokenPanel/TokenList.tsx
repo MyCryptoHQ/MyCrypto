@@ -102,7 +102,7 @@ export function TokenList(props: TokenListProps) {
         <Box variant="rowAlign">
           <LinkApp href="#" variant="opacityLink" onClick={() => handleScanTokens()}>
             <Box variant="rowAlign" mr={SPACING.BASE}>
-              <Icon type="refresh" width="1em" />
+              <Icon type="refresh" width="1em" color="BLUE_BRIGHT" />
               <Text ml={SPACING.XS} mb={0}>
                 {translateRaw('SCAN_TOKENS_SHORT')}
               </Text>
