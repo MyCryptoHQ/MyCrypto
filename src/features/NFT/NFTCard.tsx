@@ -3,6 +3,8 @@ import React from 'react';
 import { Body, Box, LinkApp } from '@components';
 import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 
+import { NFTCardContent } from './NFTCardContent';
+
 interface Props {
   asset: OpenSeaNFT;
   collection?: OpenSeaCollection;
@@ -23,15 +25,7 @@ export const NFTCard = ({ asset, collection }: Props) => {
       maxWidth="300px"
     >
       <Box>
-        <img
-          src={asset.image_url}
-          style={{
-            objectFit: 'cover',
-            borderRadius: '2px',
-            width: '250px',
-            height: '250px'
-          }}
-        />
+        <NFTCardContent nft={asset} />
       </Box>
       <Box variant="rowAlignTop" justifyContent="space-between">
         <Box variant="columnAlignLeft">
