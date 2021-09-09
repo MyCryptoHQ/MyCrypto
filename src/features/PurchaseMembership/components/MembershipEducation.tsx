@@ -134,6 +134,10 @@ const PlanContainer = styled.div`
   }
 `;
 
+const MembershipDescription = styled(Typography)`
+  margin-top: 0 !important;
+`;
+
 const MembershipEducation = () => {
   return (
     <FullSizeContentPanel width={'1100px'}>
@@ -141,10 +145,10 @@ const MembershipEducation = () => {
       <RowPanelSection>
         <SImg src={membershipIllustration} />
         <DescriptionColumn>
-          <Typography as="div">{translate('MEMBERSHIP_DESC_FIRST')}</Typography>
-          <Typography as="div">{translate('MEMBERSHIP_DESC_SECOND')}</Typography>
-          <Typography as="div">{translate('MEMBERSHIP_DESC_THIRD')}</Typography>
-          <Typography as="div">{translate('MEMBERSHIP_DESC_FOURTH')}</Typography>
+          <MembershipDescription>{translate('MEMBERSHIP_DESC_FIRST')}</MembershipDescription>
+          <MembershipDescription>{translate('MEMBERSHIP_DESC_SECOND')}</MembershipDescription>
+          <MembershipDescription>{translate('MEMBERSHIP_DESC_THIRD')}</MembershipDescription>
+          <MembershipDescription>{translate('MEMBERSHIP_DESC_FOURTH')}</MembershipDescription>
           <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
             <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
           </LinkApp>
