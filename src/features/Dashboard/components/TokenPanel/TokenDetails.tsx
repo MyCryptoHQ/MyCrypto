@@ -199,7 +199,7 @@ export function TokenDetails(props: Props) {
               {social &&
                 filteredSocial.map((s: Social) => (
                   <LinkApp key={s} href={social[s] as string} isExternal={true} variant="barren">
-                    <SIcon alt={s} type={supportedSocialNetworks[s]} />
+                    <SIcon alt={s} type={supportedSocialNetworks[s]} color="BLUE_DARK_SLATE" />
                   </LinkApp>
                 ))}
             </InfoValue>

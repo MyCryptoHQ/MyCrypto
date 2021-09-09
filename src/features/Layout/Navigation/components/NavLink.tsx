@@ -18,9 +18,13 @@ const SBox = styled(Box)`
   transition: all 300ms;
 
   &:hover {
+    cursor: pointer;
     background-color: ${COLORS.BG_GRAY};
     transition: all 300ms;
     color: ${COLORS.GREYISH_BROWN};
+    svg {
+      color: ${COLORS.GREYISH_BROWN};
+    }
   }
 `;
 
