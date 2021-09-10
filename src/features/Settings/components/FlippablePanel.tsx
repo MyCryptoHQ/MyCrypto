@@ -1,7 +1,5 @@
 import { Component } from 'react';
 
-import './FlippablePanel.scss';
-
 interface RenderProps {
   flipped: boolean;
   toggleFlipped(): void;
