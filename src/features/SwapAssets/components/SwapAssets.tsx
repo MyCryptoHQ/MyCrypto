@@ -261,7 +261,7 @@ const SwapAssets = (props: Props) => {
             width="24px"
             height="24px"
           >
-            <Icon type="swap-flip" width="24px" height="24px" />
+            <Icon type="swap-flip" width="24px" height="24px" color="BLUE_BRIGHT" />
           </LinkApp>
           <hr style={{ margin: 'auto 1px auto 0.5rem', width: '100%' }} />
         </Box>

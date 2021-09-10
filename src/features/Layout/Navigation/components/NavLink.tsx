@@ -18,9 +18,13 @@ const SBox = styled(Box)`
   transition: all 300ms;
 
   &:hover {
+    cursor: pointer;
     background-color: ${COLORS.BG_GRAY};
     transition: all 300ms;
     color: ${COLORS.GREYISH_BROWN};
+    svg {
+      color: ${COLORS.GREYISH_BROWN};
+    }
   }
 `;
 
@@ -41,7 +45,11 @@ export const NavLink = ({ link, current }: { link: IRouteLink; current: boolean 
       pt={{ _: '3px', sm: '1.2vh', xxl: '12px' }}
       color={current ? COLORS.GREYISH_BROWN : COLORS.WHITE}
     >
-      <Icon type={link.icon} height={{ _: '24px', sm: '2.4vh', xxl: '24px' }} />
+      <Icon
+        type={link.icon}
+        height={{ _: '24px', sm: '2.4vh', xxl: '24px' }}
+        color={current ? COLORS.GREYISH_BROWN : COLORS.WHITE}
+      />
       <Text variant="navItem" fontSize={{ _: '10px', sm: '1.1vh', xxl: '10px' }}>
         {link.title}
       </Text>
