@@ -148,7 +148,6 @@ const MembershipEducation = () => {
           <MembershipDescription>{translate('MEMBERSHIP_DESC_FIRST')}</MembershipDescription>
           <MembershipDescription>{translate('MEMBERSHIP_DESC_SECOND')}</MembershipDescription>
           <MembershipDescription>{translate('MEMBERSHIP_DESC_THIRD')}</MembershipDescription>
-          <MembershipDescription>{translate('MEMBERSHIP_DESC_FOURTH')}</MembershipDescription>
           <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}>
             <SButton>{translate('BUY_MEMBERSHIP_NOW')}</SButton>
           </LinkApp>
