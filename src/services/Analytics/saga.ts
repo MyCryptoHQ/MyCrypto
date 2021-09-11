@@ -11,13 +11,8 @@ import {
 import { IAccount } from '@types';
 
 import { isActiveFeature } from '../FeatureFlag';
-import {
-  default as AnalyticsService,
-  LinkParams,
-  makeID,
-  PageParams,
-  TrackParams
-} from './Analytics';
+import { default as AnalyticsService, LinkParams, PageParams, TrackParams } from './Analytics';
+import { makeID } from './helpers';
 
 /**
  * Actions

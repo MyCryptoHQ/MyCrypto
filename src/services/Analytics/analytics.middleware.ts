@@ -19,7 +19,7 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
   switch (action.type) {
     case addNewAccounts.type: {
       // multiple add accounts are always of the same type and network
-      for (let i = 0; i < action.payload.newAccounts.length; i++) {
+      action.payload.newAccounts.forEach(() => {
         state.dispatch(
           trackEvent({
             action: 'Add Account',
@@ -35,7 +35,7 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
             ]
           })
         );
-      }
+      });
       break;
     }
     // Track custom token creation. Is also triggered on custom network.

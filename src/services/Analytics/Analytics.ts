@@ -3,6 +3,7 @@ import MatomoTracker from '@datapunt/matomo-tracker-js';
 import { ANALYTICS_API } from '@config';
 
 import { TAnalyticEvents } from './constants';
+import { getSiteID } from './helpers';
 
 export interface PageParams {
   name: string;
@@ -21,12 +22,9 @@ export interface LinkParams {
   type?: 'download' | 'link';
 }
 
-export const makeID = () =>
-  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
 const tracker = new MatomoTracker({
   urlBase: ANALYTICS_API,
-  siteId: 11, // Testing: 11, Production: 17
+  siteId: getSiteID(),
   disabled: false,
   heartBeat: {
     active: false
