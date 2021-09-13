@@ -79,7 +79,11 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
       const singleWordVariable = variable.replace(/\$/g, '__');
       const re = new RegExp(`\\b${singleWordVariable}\\b`, 'g');
 
-      str = str.replace(re, variables[variable]);
+      // Needs to escape '$' because it is a special replacement operator
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
+      const escaped = variables[variable].replace(/\$/g, '$$$$');
+
+      str = str.replace(re, escaped);
     });
 
     return str;
