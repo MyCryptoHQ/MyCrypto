@@ -135,7 +135,7 @@ const PlanContainer = styled.div`
 `;
 
 const MembershipDescription = styled(Typography)`
-  margin-top: 0 !important;
+  margin-top: 1rem !important;
 `;
 
 const MembershipEducation = () => {
