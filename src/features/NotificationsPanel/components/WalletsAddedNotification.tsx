@@ -89,7 +89,9 @@ export default function WalletsAdded({ numOfAccounts }: NotificationProps) {
         transform: 'rotateY(180deg)',
         hideOnMobile: true
       }}
-      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', { $numNewAccounts: numOfAccounts })}
+      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', {
+        $numNewAccounts: numOfAccounts.toString()
+      })}
       additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
     />
