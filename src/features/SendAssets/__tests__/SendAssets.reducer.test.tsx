@@ -1,11 +1,10 @@
 import { fAssets } from '@../jest_config/__fixtures__/assets';
 
 import { fAccount, fAccounts, fERC20NonWeb3TxConfig, fNetwork, fSignedTx } from '@fixtures';
-import { getDefaultEstimates } from '@services';
 import { IFormikFields, ILegacyTxReceipt, ITxStatus, TxQueryTypes } from '@types';
 import { inputGasLimitToHex, inputNonceToHex } from '@utils';
 
-import { ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
+import { initialState, ReducerAction, sendAssetsReducer } from '../SendAssets.reducer';
 
 const dispatch = (action: ReducerAction) => (state: any) => sendAssetsReducer(state, action);
 
@@ -43,7 +42,6 @@ describe('SendAssetsReducer', () => {
         network: fNetwork,
         nonceField: '10',
         advancedTransaction: false,
-        gasEstimates: getDefaultEstimates(fNetwork),
         isAutoGasSet: true,
         maxFeePerGasField: '20',
         maxPriorityFeePerGasField: '1'
@@ -190,6 +188,35 @@ describe('SendAssetsReducer', () => {
       expect(txConfig).toStrictEqual(inputTxConfig);
       expect(txQueryType).toBe(TxQueryTypes.SPEEDUP);
       expect(txNumber).toBe(prevState.txNumber + 1);
+    });
+  });
+  describe('SEND_ERROR', () => {
+    it('sets error state', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: {}
+      };
+      const payload = 'foo';
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.SEND_ERROR,
+        payload
+      })(prevState);
+      expect(newState.send).toBe(false);
+      expect(newState.error).toBe(payload);
+    });
+  });
+  describe('RESET', () => {
+    it('sets state back to initialState', () => {
+      const prevState = {
+        txReceipt: undefined,
+        txConfig: defaultTxConfig,
+        signedTx: {}
+      };
+      const newState = dispatch({
+        type: sendAssetsReducer.actionTypes.RESET
+      })(prevState);
+      expect(newState).toBe(initialState);
     });
   });
 });

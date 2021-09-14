@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Heading, Input, Tooltip } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
@@ -23,7 +23,7 @@ import {
   MYCRYPTO_FAUCET_LINK,
   ROUTE_PATHS
 } from '@config';
-import { useAssets, useContacts, useNetworks } from '@services/Store';
+import { getStoreAccount, useAccounts, useAssets, useContacts, useNetworks } from '@services/Store';
 import { getStoreAccounts, useSelector } from '@store';
 import { COLORS, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
@@ -96,6 +96,8 @@ export default function Faucet() {
 
   const accounts = useSelector(getStoreAccounts);
 
+  const { addTxToAccount } = useAccounts();
+
   const initialValues = {
     recipientAddress: {} as StoreAccount
   };
@@ -107,6 +109,19 @@ export default function Faucet() {
   const { getContactByAddressAndNetworkId } = useContacts();
 
   const [network, setNetwork] = useState<Network | undefined>(undefined);
+
+  useEffect(() => {
+    if (faucetState.txResult) {
+      const txReceipt = makeTxReceipt(faucetState.txResult, networks, assets);
+      const recipientAccount = getStoreAccount(accounts)(
+        txReceipt.to,
+        txReceipt.baseAsset.networkId
+      );
+      if (recipientAccount) {
+        addTxToAccount(recipientAccount, txReceipt);
+      }
+    }
+  }, [faucetState.txResult]);
 
   const steps = [
     <Formik

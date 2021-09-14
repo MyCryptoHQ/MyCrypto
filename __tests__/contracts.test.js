@@ -30,6 +30,12 @@ test('Can interact with contract', async (t) => {
   await t.expect(signBtn.exists).ok();
   await t.click(signBtn);
 
+  const viewDetailsButton = await queryByText(findByTKey('VIEW_TRANSACTION_DETAILS')).with({
+    timeout: FIXTURES_CONST.TIMEOUT
+  });
+  await t.expect(viewDetailsButton.exists).ok();
+  await t.click(viewDetailsButton);
+
   await t
     .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).exists)
     .ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
@@ -56,6 +62,12 @@ test('Can deploy contract', async (t) => {
   });
   await t.expect(signBtn.exists).ok();
   await t.click(signBtn);
+
+  const viewDetailsButton = await queryByText(findByTKey('VIEW_TRANSACTION_DETAILS')).with({
+    timeout: FIXTURES_CONST.TIMEOUT
+  });
+  await t.expect(viewDetailsButton.exists).ok();
+  await t.click(viewDetailsButton);
 
   await t
     .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).exists)

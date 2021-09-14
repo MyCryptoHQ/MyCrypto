@@ -145,7 +145,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               resetFlow={noOp}
               onComplete={noOp}
               disableDynamicTxReceiptDisplay={true}
-              disableAddTxToAccount={true}
+              isTxStatus={true}
             />
             <SButton onClick={clearForm} fullwidth={true} colorScheme={'inverted'}>
               {translateRaw('TX_STATUS_GO_BACK')}

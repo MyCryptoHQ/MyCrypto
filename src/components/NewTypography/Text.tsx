@@ -37,6 +37,7 @@ export type TextProps = SpaceProps &
     as?: keyof JSX.IntrinsicElements | ComponentType<any>;
   } & {
     textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
+    textOverflow?: 'clip' | 'ellipsis' | 'string' | 'initial' | 'inherit';
   };
 
 const SText: FC<TextProps> = styled.p<TextProps>`
@@ -51,6 +52,7 @@ const SText: FC<TextProps> = styled.p<TextProps>`
   ${typography}
   ${layout}
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
+  ${({ textOverflow }) => textOverflow && { 'text-overflow': textOverflow }}
 `;
 
 const Text: FC<TextProps & { isDiscrete?: boolean; isBold?: boolean }> = ({

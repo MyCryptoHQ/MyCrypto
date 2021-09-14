@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function InteractionReceipt(props: Props) {
-  const { txReceipt, txConfig, goToFirstStep } = props;
+  const { txReceipt, txConfig, goToFirstStep, ...rest } = props;
 
   return (
     <TxReceipt
@@ -18,6 +18,7 @@ export default function InteractionReceipt(props: Props) {
       completeButton={translateRaw('INTERACT_ANOTHER')}
       resetFlow={goToFirstStep}
       onComplete={goToFirstStep}
+      {...rest}
     />
   );
 }

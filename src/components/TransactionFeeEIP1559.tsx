@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
+import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
 import { bigify, bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
@@ -20,12 +21,14 @@ interface Props {
   fiat: Fiat;
   // Current Base Fee of the network
   baseFee?: BigNumber;
-  baseAssetRate: string;
+  baseAssetRate: string | number;
   gasLimit: string;
   maxFeePerGas: string;
   maxPriorityFeePerGas: string;
   isEstimatingGasLimit: boolean;
   isEstimatingGasPrice: boolean;
+  label?: string;
+  disabled?: boolean;
   gasLimitError?: string;
   maxFeePerGasError?: string;
   maxPriorityFeePerGasError?: string;
@@ -44,6 +47,8 @@ export const TransactionFeeEIP1559 = ({
   gasLimit,
   maxFeePerGas,
   maxPriorityFeePerGas,
+  label = translateRaw('CONFIRM_TX_FEE'),
+  disabled,
   setGasLimit,
   setMaxFeePerGas,
   setMaxPriorityFeePerGas,
@@ -80,23 +85,32 @@ export const TransactionFeeEIP1559 = ({
   const avgFeeFiat = avgFee.multipliedBy(baseAssetRate);
 
   return (
-    <Box>
+    <Box opacity={disabled ? '0.5' : undefined}>
       <Box variant="rowAlign" justifyContent="space-between" mb="2">
-        <Box>{translateRaw('CONFIRM_TX_FEE')}</Box>
-        {editMode ? (
-          <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
-            <Body data-testid="save" as="span">
-              {translateRaw('SAVE_EDITS')}
-            </Body>
-          </LinkApp>
-        ) : (
-          <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_EIP1559)} isExternal={true}>
-            <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
-            <Icon ml="1" width="12px" height="12px" type="link-out" />
-          </LinkApp>
+        <Box>{label}</Box>
+        {!disabled && (
+          <>
+            {editMode ? (
+              <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
+                <Body data-testid="save" as="span">
+                  {translateRaw('SAVE_EDITS')}
+                </Body>
+              </LinkApp>
+            ) : (
+              <LinkApp href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_EIP1559)} isExternal={true}>
+                <Body as="span">{translateRaw('LEARN_WHATS_NEW_WITH_EIP1559')}</Body>
+                <Icon ml="1" width="12px" height="12px" type="link-out" />
+              </LinkApp>
+            )}
+          </>
         )}
       </Box>
-      <Box bg="BG_GRAY" p="3">
+      <Box
+        bg={!disabled ? 'BG_GRAY' : undefined}
+        border={disabled ? `1px solid ${COLORS.GREY_LIGHTER}` : undefined}
+        borderRadius="2px"
+        p="3"
+      >
         {editMode && (
           <Box>
             <Box variant="rowAlign">
@@ -169,7 +183,7 @@ export const TransactionFeeEIP1559 = ({
               ) : (
                 <Currency bold={true} amount={avgFee.toString(10)} ticker={baseAsset.ticker} />
               )}{' '}
-              {!editMode && (
+              {!editMode && !disabled && (
                 <LinkApp href="#" isExternal={false} onClick={handleToggleEditMode}>
                   <Icon data-testid="edit" ml="1" size="16px" type="edit" color="BLUE_SKY" />
                 </LinkApp>
@@ -177,7 +191,7 @@ export const TransactionFeeEIP1559 = ({
             </Body>
             <Body mt="1" mb="0" color="BLUE_GREY">
               {translateRaw('CUSTOMIZED_TOTAL_FEE')}{' '}
-              {hasFiatValue && `(${avgFee.toString(10)} ${baseAsset.ticker})`}
+              {hasFiatValue && `(${avgFee.toFixed(6)} ${baseAsset.ticker})`}
             </Body>
           </Box>
           <Box>

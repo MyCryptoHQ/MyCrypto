@@ -22,7 +22,7 @@ import {
   fTxTypeMetas
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
-import { getTimestampFromBlockNum, getTxStatus, ProviderHandler } from '@services/EthService';
+import { ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
 import {
   IAccount,
@@ -723,9 +723,10 @@ describe('AccountSlice', () => {
   describe('pendingTxPolling', () => {
     const blockNum = 12568779;
     const timestamp = 1622817966;
-    ProviderHandler.prototype.getTransactionByHash = jest
+    ProviderHandler.prototype.getTransactionReceipt = jest
       .fn()
-      .mockResolvedValue({ blockNumber: blockNum });
+      .mockResolvedValue({ blockNumber: blockNum, status: 1 });
+    ProviderHandler.prototype.getBlockByNumber = jest.fn().mockResolvedValue({ timestamp });
     const pendingTx = {
       ...fTxReceipt,
       gasLimit: BigNumber.from(fTxReceipt.gasLimit),
@@ -751,10 +752,6 @@ describe('AccountSlice', () => {
           }),
           txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
-        .provide([
-          [call.fn(getTxStatus), ITxStatus.SUCCESS],
-          [call.fn(getTimestampFromBlockNum), timestamp]
-        ])
         .put(
           addTxToAccount({
             account: toStoreAccount(
@@ -863,8 +860,10 @@ describe('AccountSlice', () => {
         .silentRun();
     });
     it('removes tx if pending tx not mined, but nonce is used already', () => {
-      ProviderHandler.prototype.getTransactionByHash = jest.fn().mockResolvedValue(undefined);
-      ProviderHandler.prototype.getTransactionCount = jest.fn().mockResolvedValue(fTxReceipt.nonce + 1);
+      ProviderHandler.prototype.getTransactionReceipt = jest.fn().mockResolvedValue(undefined);
+      ProviderHandler.prototype.getTransactionCount = jest
+        .fn()
+        .mockResolvedValue(fTxReceipt.nonce + 1);
       const account = { ...fAccounts[0], transactions: [pendingTx] };
       const contact = { ...fContacts[0], network: 'Ethereum' as NetworkId };
       return expectSaga(pendingTxPolling)
@@ -908,10 +907,6 @@ describe('AccountSlice', () => {
           }),
           txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
         })
-        .provide([
-          [call.fn(getTxStatus), undefined],
-          [call.fn(getTimestampFromBlockNum), undefined]
-        ])
         .not.put(
           addTxToAccount({
             account: sanitizeAccount(account),

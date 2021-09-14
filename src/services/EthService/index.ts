@@ -27,4 +27,3 @@ export {
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
 export { isValidENSName } from './ens';
-export * from './utils';

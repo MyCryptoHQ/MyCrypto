@@ -41,9 +41,8 @@ test('Complete SendFlow', async (t) => {
   const missingInfo = getByText(findByTKey('MISSING_INFORMATION'));
   await t.expect(missingInfo.exists).ok();
 
-  // Close the PTX modal and reset flag.
+  // Close the PTX modal
   await t.click(Selector('.close-icon'));
-  await setFeatureFlag('PROTECT_TX', false);
 
   await setupEthereumMock(FIXTURE_HARDHAT_PRIVATE_KEY, 1);
 
@@ -68,10 +67,12 @@ test('Complete SendFlow', async (t) => {
   await t.click(getByText(findByTKey('CONFIRM_AND_SEND')));
 
   // Expect to reach Tx Receipt
-  await t
-    .expect(Selector('.TransactionReceipt-back').exists)
-    // We are waiting for the Hardhat node to respond. Increase timeout incase of network failures
-    .ok({ timeout: FIXTURES_CONST.TIMEOUT * 2 });
+  const viewDetailsButton = await queryByText(findByTKey('VIEW_TRANSACTION_DETAILS')).with({
+    timeout: FIXTURES_CONST.TIMEOUT
+  });
+  await t.expect(viewDetailsButton.exists).ok();
+  await t.click(viewDetailsButton);
+
   await t.expect(getAllByText(FIXTURE_SEND_AMOUNT, { exact: false }).exists).ok();
   await t.expect(getAllByText(FIXTURE_SEND_CONTACT).exists).ok();
 });

@@ -10,6 +10,15 @@ import { noOp, truncate } from '@utils';
 import { IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import MembershipReceipt from './MembershipPurchaseReceipt';
 
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      waitForTransaction: jest.fn().mockResolvedValue({ status: 1 })
+    }))
+  };
+});
+
 const defaultProps: ComponentProps<typeof MembershipReceipt> = {
   account: fAccounts[0],
   transactions: [
