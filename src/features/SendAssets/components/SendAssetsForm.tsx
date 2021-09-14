@@ -283,7 +283,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
               if (decimals > asset.decimal) {
                 return this.createError({
                   message: translateRaw('TOO_MANY_DECIMALS', {
-                    $decimals: asset.decimal
+                    $decimals: asset.decimal.toString()
                   })
                 });
               }

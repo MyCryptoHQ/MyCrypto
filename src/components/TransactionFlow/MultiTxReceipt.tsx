@@ -110,8 +110,8 @@ export default function MultiTxReceipt({
               <div className="TransactionReceipt-row-column">
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   {translate('TRANSACTIONS_MULTI', {
-                    $current: idx + 1,
-                    $total: transactions.length
+                    $current: (idx + 1).toString(),
+                    $total: transactions.length.toString()
                   })}
                 </div>
                 {transaction.txHash && (

@@ -139,9 +139,11 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
             marginBottom="0"
           />
         </InputWrapper>
-        {!validNetwork && (
+        {!validNetwork && transaction && (
           <InlineMessage>
-            {translate('BROADCAST_TX_INVALID_CHAIN_ID', { $chain_id: transaction?.chainId })}
+            {translate('BROADCAST_TX_INVALID_CHAIN_ID', {
+              $chain_id: transaction.chainId.toString()
+            })}
           </InlineMessage>
         )}
       </Box>
