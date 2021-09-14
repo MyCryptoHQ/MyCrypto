@@ -4,7 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { OpenSeaCollection, OpenSeaNFT, OpenSeaService } from '@services/ApiService/OpenSea';
 import { NetworkId, StoreAccount } from '@types';
 import { mapAsync } from '@utils';
-import { findIndex, prop, propEq, uniqBy } from '@vendor';
+import { prop, uniqBy } from '@vendor';
 
 import { getAccounts } from './account.slice';
 import { AppState } from './root.reducer';
@@ -24,7 +24,7 @@ export const initialState = {
   fetched: false,
   collections: [] as OpenSeaCollection[],
   nfts: [] as OpenSeaNFT[],
-  error: undefined
+  error: undefined as string | undefined
 };
 
 const slice = createSlice({
@@ -40,25 +40,8 @@ const slice = createSlice({
     setCollections(state, action: PayloadAction<OpenSeaCollection[]>) {
       state.collections = action.payload;
     },
-    createNFT(state, action: PayloadAction<OpenSeaNFT>) {
-      state.nfts.push(action.payload);
-    },
-    createManyNFTs(state, action: PayloadAction<OpenSeaNFT[]>) {
-      action.payload.forEach((a) => {
-        state.nfts.push(a);
-      });
-    },
-    destroyNFT(state, action: PayloadAction<number>) {
-      const idx = findIndex(propEq('id', action.payload), state.nfts);
-      state.nfts.splice(idx, 1);
-    },
-    createCollection(state, action: PayloadAction<OpenSeaCollection>) {
-      state.collections.push(action.payload);
-    },
-    createManyCollections(state, action: PayloadAction<OpenSeaCollection[]>) {
-      action.payload.forEach((a) => {
-        state.collections.push(a);
-      });
+    fetchError(state, action: PayloadAction<string>) {
+      state.error = action.payload;
     },
     reset() {
       return initialState;
@@ -68,14 +51,7 @@ const slice = createSlice({
 
 export const fetchNFTs = createAction(`${slice.name}/fetch`);
 
-export const {
-  setFetched,
-  setNFTs,
-  setCollections,
-  createNFT,
-  createManyNFTs,
-  reset: resetAsset
-} = slice.actions;
+export const { setFetched, setNFTs, setCollections, reset, fetchError } = slice.actions;
 
 export default slice;
 
@@ -117,18 +93,22 @@ export function* fetchAssetsWorker() {
   const filteredAccounts = accounts.filter((a) => NFT_NETWORKS.includes(a.networkId));
   const addresses = filteredAccounts.map((a) => a.address);
 
-  const collections: OpenSeaCollection[][] = yield call(
-    mapAsync,
-    addresses,
-    OpenSeaService.fetchCollections
-  );
+  try {
+    const collections: OpenSeaCollection[][] = yield call(
+      mapAsync,
+      addresses,
+      OpenSeaService.fetchCollections
+    );
 
-  // @todo Proxy image urls
-  // @todo Pagination?
-  const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAllAssets);
+    // @todo Proxy image urls
+    // @todo Pagination?
+    const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAllAssets);
 
-  yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
-  yield put(setCollections(uniqBy(prop('slug'), collections.filter((r) => r !== null).flat())));
+    yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
+    yield put(setCollections(uniqBy(prop('slug'), collections.filter((r) => r !== null).flat())));
 
-  yield put(setFetched(true));
+    yield put(setFetched(true));
+  } catch (err) {
+    yield put(fetchError(err.message));
+  }
 }

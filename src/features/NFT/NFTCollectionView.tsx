@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import { Body, Box } from '@components';
 import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { SPACING } from '@theme';
@@ -13,7 +15,7 @@ export const NFTCollectionView = ({
     {nftsByCollection
       .filter(({ nfts }) => nfts.length > 0)
       .map(({ nfts, collection }) => (
-        <>
+        <Fragment key={collection.slug}>
           <Body fontWeight="bold" textAlign="center">
             {collection.name}
           </Body>
@@ -28,7 +30,7 @@ export const NFTCollectionView = ({
               <NFTCard key={nft.id} asset={nft} collection={collection} />
             ))}
           </Box>
-        </>
+        </Fragment>
       ))}
   </>
 );

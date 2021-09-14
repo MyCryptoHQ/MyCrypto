@@ -14,8 +14,14 @@ import {
   Text
 } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useDispatch, useSelector } from '@store';
-import { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from '@store/nft.slice';
+import {
+  fetchNFTs,
+  getFetched,
+  getNFTsByCollection,
+  getTotalValue,
+  useDispatch,
+  useSelector
+} from '@store';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -58,6 +64,9 @@ export default function NftDashboard() {
   const toggleDisplayMode = () => {
     setDisplayMode(!displayMode);
   };
+
+  // @todo Empty state
+  // @todo Error state
 
   return (
     <StyledLayout>
