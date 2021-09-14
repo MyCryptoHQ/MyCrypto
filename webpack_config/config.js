@@ -20,11 +20,11 @@ module.exports = {
   // description < 200 characters
   description:
     'Securely manage ALL of your crypto accounts with MyCrypto. Swap, send, and buy crypto with your favorite wallets like Ledger, Metamask, and Trezor.',
-  url: 'https://beta.mycrypto.com/',
+  url: 'https://app.mycrypto.com/',
   type: 'website',
   // img < 5MB
   // image needs to be an absolute URL
-  img: 'https://beta.mycrypto.com/link-preview.png',
+  img: 'https://app.mycrypto.com/link-preview.png',
   twitter: {
     creator: '@MyCrypto'
   },
