@@ -9,6 +9,6 @@ export function subscribeToMailingList(email: string) {
   return axios.post(url, {
     email_address: email,
     status: 'subscribed',
-    tags: ['beta.mycrypto.com']
+    tags: ['app.mycrypto.com']
   });
 }
