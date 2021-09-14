@@ -1057,6 +1057,10 @@
     "TRANSACTION_CROWDED_DESCRIPTION": "You might consider resending your transaction with adjusted fees to increase the likelihood that it will be included in the next block.",
     "PENDING_METAMASK_NOTICE": "Please use MetaMask to speed your transaction up. You can safely use the values they recommend.",
     "PENDING_WEB3_NOTICE": "Please use your Web3 Provider directly to replace or speed up your transaction. If you aren't sure how to do this, we can help at [support@mycrypto.com]($link).",
-    "NFT_DASHBOARD": "NFT Dashboard"
+    "NFT_DASHBOARD": "NFT Dashboard",
+    "YOUR_NFTS": "Your NFTs",
+    "TOTAL_VALUE": "Total Value: $value",
+    "FLOOR": "Floor",
+    "VIEW_ON_OPENSEA": "View on OpenSea"
   }
 }

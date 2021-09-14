@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { Body, Box, LinkApp } from '@components';
+import { DEFAULT_NETWORK_TICKER } from '@config';
 import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
+import { translateRaw } from '@translations';
 
 import { NFTCardContent } from './NFTCardContent';
 
@@ -38,15 +40,15 @@ export const NFTCard = ({ asset, collection }: Props) => {
         </Box>
         <Box variant="columnAlignRight" flexShrink={0}>
           <Body fontSize="12px" m="0" textAlign="right">
-            Floor
+            {translateRaw('FLOOR')}
           </Body>
           <Body fontSize="12px" m="0" textAlign="right">
-            {floor ? floor.toFixed(2) : '?'} ETH
+            {floor ? floor.toFixed(2) : '?'} {DEFAULT_NETWORK_TICKER}
           </Body>
         </Box>
       </Box>
       <LinkApp isExternal={true} href={asset.permalink} textAlign="center">
-        View on OpenSea
+        {translateRaw('VIEW_ON_OPENSEA')}
       </LinkApp>
     </Box>
   );

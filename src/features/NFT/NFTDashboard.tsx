@@ -13,7 +13,7 @@ import {
   Switch,
   Text
 } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { DEFAULT_NETWORK_TICKER, ROUTE_PATHS } from '@config';
 import {
   fetchNFTs,
   getFetched,
@@ -72,17 +72,19 @@ export default function NftDashboard() {
     <StyledLayout>
       <DashboardWrapper>
         <DashboardSubHeader as="h2" className="Dashboard-desktop-top-left-heading">
-          NFT Dashboard
+          {translateRaw('NFT_DASHBOARD')}
         </DashboardSubHeader>
         <DashboardPanel
-          heading="Your NFTs"
+          heading={translateRaw('YOUR_NFTS')}
           headingRight={
             <Box variant="rowAlign">
               {fetched && (
                 <>
                   <Switch id="display-mode" checked={displayMode} onChange={toggleDisplayMode} />
                   <Box bg="GREY_ATHENS" mr="2" borderRadius="default" p="1">
-                    Total Value: {total.toFixed(3)} ETH
+                    {translateRaw('TOTAL_VALUE', {
+                      $value: `${total.toFixed(3)} ${DEFAULT_NETWORK_TICKER}`
+                    })}
                   </Box>
                 </>
               )}
