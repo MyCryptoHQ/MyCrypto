@@ -237,7 +237,7 @@ module.exports = {
       },
       metaCsp: IS_DEV
         ? ''
-        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://beta.mycrypto.com;`
+        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://app.mycrypto.com;`
     }),
 
     new CopyWebpackPlugin([
