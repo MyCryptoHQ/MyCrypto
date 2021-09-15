@@ -230,9 +230,16 @@ export default function Faucet() {
             faucetState.txResult,
             networks,
             assets,
+            accounts,
             getContactByAddressAndNetworkId
           )}
-          txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
+          txReceipt={makeTxReceipt(faucetState.txResult, makeTxConfig(
+            faucetState.txResult,
+            networks,
+            assets,
+            accounts,
+            getContactByAddressAndNetworkId
+          ))}
           onComplete={() => reset()}
           resetFlow={() => reset()}
           queryStringsDisabled={true}
