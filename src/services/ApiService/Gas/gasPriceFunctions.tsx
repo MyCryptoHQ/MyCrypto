@@ -1,10 +1,11 @@
+import { estimateFees } from '@mycrypto/gas-estimation';
+
 import { GAS_PRICE_DEFAULT } from '@config';
 import { isEIP1559Supported } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { GasEstimates, ITxObject, Network, StoreAccount } from '@types';
 import { bigNumGasPriceToViewableGwei } from '@utils';
 
-import { estimateFees } from './eip1559';
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network?: Network) {

@@ -1,4 +1,3 @@
-import { FeeData } from '@ethersproject/abstract-provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import {
@@ -186,28 +185,10 @@ export class ProviderHandler {
     });
   }
 
-  public getFeeData(): Promise<FeeData> {
-    return this.injectClient((client) => client.getFeeData());
-  }
-
-  // @todo Update this when Ethers supports eth_feeHistory
-  public getFeeHistory(
-    blockCount: string,
-    newestBlock: string,
-    rewardPercentiles?: any[]
-  ): Promise<{
-    baseFeePerGas: string[];
-    gasUsedRatio: number[];
-    reward?: string[][];
-    oldestBlock: string;
-  }> {
+  public send(method: string, params: unknown[]) {
     return this.injectClient((client) =>
       // @ts-expect-error Temp until Ethers supports eth_feeHistory
-      (client as FallbackProvider).providerConfigs[0].provider.send('eth_feeHistory', [
-        blockCount,
-        newestBlock,
-        rewardPercentiles ?? []
-      ])
+      (client as FallbackProvider).providerConfigs[0].provider.send(method, params)
     );
   }
 

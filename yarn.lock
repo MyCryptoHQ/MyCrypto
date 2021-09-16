@@ -3062,13 +3062,18 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mycrypto/eth-scan@3.4.4":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.4.4.tgz#c91de9f818cc7a1f1c74b65c6c39d5dc5c1f4a57"
-  integrity sha512-eSV91zlRXYn3EqdNEyy+wzP7R+St0ZbN4UxLhLuZGTYig/ZZkwygsfR2nAdOih/gNvGtrUcqaj/yOyBCRdz2vg==
+"@mycrypto/eth-scan@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-3.5.0.tgz#57ba90b8329e7828c953000621d0f427f325f365"
+  integrity sha512-eXl3mLlMgzuIOqT/qlQZFUJ9nkZzGQW6ljydt/vlCLWqI5A97bfm3v6FXD20tLu15Nc8THWHPDyMYff9ewMJ8Q==
   dependencies:
     "@findeth/abi" "^0.7.1"
     isomorphic-unfetch "^3.1.0"
+    uuid-random-es "^2.1.1"
+
+"@mycrypto/gas-estimation@link:../gas-estimation":
+  version "0.0.0"
+  uid ""
 
 "@mycrypto/ui@0.24.1":
   version "0.24.1"
@@ -7382,15 +7387,15 @@ bignumber.js@9.0.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
   integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
 
+bignumber.js@9.0.1, bignumber.js@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.1.tgz#8d7ba124c882bfd8e43260c67475518d0689e4e5"
+  integrity sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA==
+
 bignumber.js@^2.1.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.4.0.tgz#838a992da9f9d737e0f4b2db0be62bb09dd0c5e8"
   integrity sha1-g4qZLan51zfg9LLbC+YrsJ3Qxeg=
-
-bignumber.js@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.1.tgz#8d7ba124c882bfd8e43260c67475518d0689e4e5"
-  integrity sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA==
 
 bin-build@^3.0.0:
   version "3.0.0"
@@ -22070,6 +22075,11 @@ uuid-by-string@MyCryptoHQ/uuid-by-string#36afddc, uuid-by-string@^3.0.1:
   dependencies:
     js-md5 MyCryptoHQ/js-md5#b300da8
     js-sha1 MyCryptoHQ/js-sha1#7474a64
+
+uuid-random-es@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/uuid-random-es/-/uuid-random-es-2.1.1.tgz#695bbe28559d9886afdb079dd4713f3faa1651a6"
+  integrity sha512-JUGIsQZb+1O1ETxY4/p/S0rsFGPGgscECbzPXN+Xeqnlz3XmqMR3OzC64bMQ8htxDFjvuA8Gl9y3Ve/l8fQEWg==
 
 uuid@3.2.1:
   version "3.2.1"
