@@ -1,4 +1,12 @@
-import { Children, ComponentClass, ComponentType, FC, KeyboardEvent, ReactElement } from 'react';
+import {
+  Children,
+  ComponentClass,
+  ComponentType,
+  FC,
+  KeyboardEvent,
+  ReactElement,
+  useState
+} from 'react';
 
 import Select, {
   FocusEventHandler,
@@ -104,7 +112,7 @@ const getOption = (
   </OptionWrapper>
 );
 
-const customStyles: Styles<any, false> = {
+const customStyles: (isOpen: boolean) => Styles<any, false> = (isOpen) => ({
   menu: (provided, state) => {
     return {
       ...provided,
@@ -132,17 +140,38 @@ const customStyles: Styles<any, false> = {
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
     paddingLeft: state.hasValue ? 0 : 5
   }),
+  placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
   input: (provided) => ({
     ...provided,
-    display: 'inline-block'
+    display: 'inline-block',
+    ...(isOpen
+      ? {
+          /* expand the Input Component div */
+          width: '100%',
+
+          /* expand the Input Component child div */
+          '> div': {
+            width: '100%'
+          },
+
+          /* expand the Input Component input */
+          input: {
+            width: '100% !important',
+            textAlign: 'left'
+          }
+        }
+      : {})
   }),
   // Allow the valueComponent to handle it's own padding when present.
   // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px'
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px',
+    'div:nth-child(2)': {
+      ...(state.hasValue && isOpen ? { display: 'none' } : {})
+    }
   })
-};
+});
 
 const Selector: <T extends OptionTypeBase>(
   p: SelectorProps<T>
@@ -167,46 +196,56 @@ const Selector: <T extends OptionTypeBase>(
   optionDivider,
   components,
   ...props
-}) => (
-  <Wrapper data-testid="selector">
-    <Select
-      options={options}
-      defaultValue={inputValue}
-      value={value}
-      isDisabled={disabled}
-      placeholder={placeholder}
-      isSearchable={searchable}
-      isClearable={isClearable}
-      name={name}
-      // We use inputId for aria concerns, and to target the react-select component with getByLabelText
-      inputId={inputId || name}
-      blurInputOnSelect={onBlurResetsInput}
-      onMenuClose={() => onCloseResetsInput}
-      onChange={onChange}
-      onBlur={onBlur}
-      onInputChange={onInputChange}
-      onKeyDown={onInputKeyDown}
-      openMenuOnClick={true}
-      styles={customStyles}
-      components={{
-        DropdownIndicator: (props) => {
-          const {
-            selectProps: { menuIsOpen }
-          } = props;
-          return (
-            <DropdownIndicatorWrapper {...props}>
-              <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
-            </DropdownIndicatorWrapper>
-          );
-        },
-        Option: (oProps: any) => getOption({ ...oProps, optionDivider }, optionComponent),
-        ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
-        IndicatorSeparator: () => null,
-        ...components
-      }}
-      {...props}
-    />
-  </Wrapper>
-);
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
 
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+  const styles = customStyles(isOpen);
+
+  return (
+    <Wrapper data-testid="selector">
+      <Select
+        options={options}
+        defaultValue={inputValue}
+        value={value}
+        isDisabled={disabled}
+        placeholder={placeholder}
+        isSearchable={searchable}
+        isClearable={isClearable}
+        name={name}
+        // We use inputId for aria concerns, and to target the react-select component with getByLabelText
+        inputId={inputId || name}
+        blurInputOnSelect={onBlurResetsInput}
+        closeMenuOnSelect={onCloseResetsInput}
+        onMenuClose={handleClose}
+        onMenuOpen={handleOpen}
+        menuIsOpen={isOpen}
+        onChange={onChange}
+        onBlur={onBlur}
+        onInputChange={onInputChange}
+        onKeyDown={onInputKeyDown}
+        openMenuOnClick={true}
+        styles={styles}
+        components={{
+          DropdownIndicator: (props) => {
+            const {
+              selectProps: { menuIsOpen }
+            } = props;
+            return (
+              <DropdownIndicatorWrapper {...props}>
+                <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
+              </DropdownIndicatorWrapper>
+            );
+          },
+          Option: (oProps: any) => getOption({ ...oProps, optionDivider }, optionComponent),
+          ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
+          IndicatorSeparator: () => null,
+          ...components
+        }}
+        {...props}
+      />
+    </Wrapper>
+  );
+};
 export default Selector;
