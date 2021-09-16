@@ -185,11 +185,25 @@ export class ProviderHandler {
     });
   }
 
+  // Until Ethers FallbackProvider supports send
   public send(method: string, params: unknown[]) {
-    return this.injectClient((client) =>
-      // @ts-expect-error Temp until Ethers supports eth_feeHistory
-      (client as FallbackProvider).providerConfigs[0].provider.send(method, params)
-    );
+    return this.injectClient(async (client) => {
+      if (this.isFallbackProvider) {
+        const configs = (client as FallbackProvider).providerConfigs;
+        for (const config of configs) {
+          try {
+            // @ts-expect-error Until Ethers FallbackProvider supports send
+            return await config.provider.send(method, params);
+            // eslint-disable-next-line no-empty
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        throw Error('Failed');
+      }
+      // @ts-expect-error Until Ethers FallbackProvider supports send
+      return client.send(method, params);
+    });
   }
 
   protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {

@@ -75,7 +75,7 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
 
 const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
   const list = getAssetAddresses(account.assets) as string[];
-  const provider = ProviderHandler.fetchProvider(account.network);
+  const provider = new ProviderHandler(account.network);
   return Promise.all([
     etherBalanceFetchWrapper(provider, account.address, { batchSize: ETH_SCAN_BATCH_SIZE }).then(
       bigifyBalanceMap
@@ -196,8 +196,7 @@ export const getSingleTokenBalanceForAddresses = async (
   const providerSingleton = new ProviderHandler(network);
 
   if (isEthScanCompatible(network.id)) {
-    const provider = ProviderHandler.fetchProvider(network);
-    return getTokenBalancesFromEthScan(provider, addresses, asset.contractAddress, {
+    return getTokenBalancesFromEthScan(providerSingleton, addresses, asset.contractAddress, {
       batchSize: ETH_SCAN_BATCH_SIZE
     })
       .then(bigifyBalanceMap)
@@ -255,8 +254,7 @@ export const getBaseAssetBalancesForAddresses = async (
   }
   const providerHandler = new ProviderHandler(network);
   if (isEthScanCompatible(network.id)) {
-    const provider = ProviderHandler.fetchProvider(network);
-    return getEtherBalances(provider, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
+    return getEtherBalances(providerHandler, addresses, { batchSize: ETH_SCAN_BATCH_SIZE })
       .then(bigifyBalanceMap)
       .catch(() => ({} as BalanceMap));
   } else {
