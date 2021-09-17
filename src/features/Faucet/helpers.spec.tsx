@@ -1,7 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
-import { fAccount, fAssets, fNetworks } from '@fixtures';
+import { fAccount, fAssets, fAccounts, fNetworks } from '@fixtures';
 import { ITxStatus, ITxType } from '@types';
+import { hexlify } from '@ethersproject/bytes';
 
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import { ITxFaucetResult } from './types';
@@ -47,7 +48,7 @@ describe('Faucet helpers', () => {
     const getContactByAddressAndNetworkId = jest.fn();
     test('returns expected value for type 1 tx', async () => {
       expect(
-        makeTxConfig(exampleTXResultV1, fNetworks, fAssets, getContactByAddressAndNetworkId)
+        makeTxConfig(exampleTXResultV1, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId)
       ).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -58,11 +59,12 @@ describe('Faucet helpers', () => {
           chainId: 3,
           data: '0x',
           from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-          gasLimit: '21000',
-          gasPrice: '1000000000',
-          nonce: '39',
+          gasLimit: hexlify(21000, { hexPad: 'left' }),
+          gasPrice: hexlify(1000000000, { hexPad: 'left' }),
+          nonce: hexlify(39, { hexPad: 'left' }),
           to: fAccount.address,
-          value: '1'
+          type: 0,
+          value: hexlify(1, { hexPad: 'left' })
         },
         receiverAddress: fAccount.address,
         senderAccount: undefined
@@ -70,7 +72,7 @@ describe('Faucet helpers', () => {
     });
     test('returns expected value for type 2 tx', async () => {
       expect(
-        makeTxConfig(exampleTXResultV2, fNetworks, fAssets, getContactByAddressAndNetworkId)
+        makeTxConfig(exampleTXResultV2, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId)
       ).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -81,13 +83,13 @@ describe('Faucet helpers', () => {
           chainId: 3,
           data: '0x',
           from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-          gasLimit: '21000',
-          maxFeePerGas: '1000000000',
-          maxPriorityFeePerGas: '1000000000',
+          gasLimit: hexlify(21000, { hexPad: 'left' }),
+          maxFeePerGas: hexlify(1000000000, { hexPad: 'left' }),
+          maxPriorityFeePerGas: hexlify(1000000000, { hexPad: 'left' }),
           type: 2,
-          nonce: '39',
+          nonce: hexlify(39, { hexPad: 'left' }),
           to: fAccount.address,
-          value: '1'
+          value: hexlify(1, { hexPad: 'left' })
         },
         receiverAddress: fAccount.address,
         senderAccount: undefined
@@ -96,8 +98,11 @@ describe('Faucet helpers', () => {
   });
 
   describe('makeTxReceipt', () => {
+    const getContactByAddressAndNetworkId = jest.fn();
+
     test('returns expected value for type 1 tx', async () => {
-      expect(makeTxReceipt(exampleTXResultV1, fNetworks, fAssets)).toEqual({
+      const txConfig = makeTxConfig(exampleTXResultV1, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId);
+      expect(makeTxReceipt(exampleTXResultV1, txConfig)).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
         baseAsset: fAssets[1],
@@ -109,13 +114,17 @@ describe('Faucet helpers', () => {
         nonce: BigNumber.from(39),
         receiverAddress: fAccount.address,
         status: ITxStatus.PENDING,
+        blockNumber: 0,
+        timestamp: 0,
+        metadata: undefined,
         to: fAccount.address,
         txType: ITxType.FAUCET,
         value: BigNumber.from('1')
       });
     });
     test('returns expected value for type 2 tx', async () => {
-      expect(makeTxReceipt(exampleTXResultV2, fNetworks, fAssets)).toEqual({
+      const txConfig = makeTxConfig(exampleTXResultV2, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId);
+      expect(makeTxReceipt(exampleTXResultV2, txConfig)).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
         baseAsset: fAssets[1],
@@ -129,6 +138,9 @@ describe('Faucet helpers', () => {
         nonce: BigNumber.from(39),
         receiverAddress: fAccount.address,
         status: ITxStatus.PENDING,
+        blockNumber: 0,
+        timestamp: 0,
+        metadata: undefined,
         to: fAccount.address,
         txType: ITxType.FAUCET,
         value: BigNumber.from('1')
