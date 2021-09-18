@@ -62,15 +62,26 @@ export class ProviderHandler {
   }
 
   public getRawTokenBalance(address: string, token: Asset): Promise<string> {
-    return this.injectClient((client) =>
-      client
+    return this.injectClient((client) => {
+      let contractAddress = token.contractAddress;
+
+      /**
+       * It will fail when you add custom token on RSK network with EIP-1191 checksum address.
+       * Considered sending lowercase address value to pass ethersjs checksum validation
+       * https://github.com/ethers-io/ethers.js/blob/f2a32d0d5b4ea3721d3f3ee14db56e0519cf337f/packages/address/src.ts/index.ts#L92
+       */
+      if (client.network.chainId === 30 || client.network.chainId === 31) {
+        contractAddress = token.contractAddress?.toLocaleLowerCase();
+      }
+
+      return client
         .call({
-          to: token.contractAddress,
+          to: contractAddress,
           data: ERC20.balanceOf.encodeInput({ _owner: address })
         })
         .then((data) => ERC20.balanceOf.decodeOutput(data))
-        .then(({ balance }) => balance)
-    );
+        .then(({ balance }) => balance);
+    });
   }
 
   /* Tested */
@@ -163,8 +174,16 @@ export class ProviderHandler {
    */
   public async getTokenInformation(tokenAddress: TAddress): Promise<TokenInformation | undefined> {
     return this.injectClient(async (client) => {
+      let _tokenAddress = tokenAddress;
+      /**
+       * ethersjs doesn't support EIP-1191 checksum validation.
+       * This will allow to {Add Custom Token} form fields to be filled.
+       */
+      if (client.network.chainId === 30 || client.network.chainId === 31) {
+        _tokenAddress = tokenAddress.toLowerCase() as TAddress;
+      }
       try {
-        const contract = new Contract(tokenAddress, erc20Abi, client);
+        const contract = new Contract(_tokenAddress, erc20Abi, client);
         const [symbol, decimals] = await Promise.all([contract.symbol(), contract.decimals()]);
 
         return { symbol, decimals };
