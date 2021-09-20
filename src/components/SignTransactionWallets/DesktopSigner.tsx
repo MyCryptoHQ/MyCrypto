@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
 
@@ -34,12 +34,16 @@ const SignTransactionDesktopSigner = ({
 
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 
+  const { gasLimit, ...tx } = rawTransaction;
+
   useEffect(() => {
     if (!submitting) {
       setSubmitting(true);
       ethersProvider
         .getSigner()
-        .provider.send('eth_signTransaction', [{ ...rawTransaction, from: senderAccount.address }])
+        .provider.send('eth_signTransaction', [
+          { ...tx, gas: gasLimit, from: senderAccount.address }
+        ])
         .then((txHash) => {
           onSuccess(txHash);
         })
