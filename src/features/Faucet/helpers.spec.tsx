@@ -65,12 +65,12 @@ describe('Faucet helpers', () => {
           chainId: 3,
           data: '0x',
           from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-          gasLimit: hexlify(21000, { hexPad: 'left' }),
-          gasPrice: hexlify(1000000000, { hexPad: 'left' }),
-          nonce: hexlify(39, { hexPad: 'left' }),
+          gasLimit: hexlify(21000),
+          gasPrice: hexlify(1000000000),
+          nonce: hexlify(39),
           to: fAccount.address,
           type: 0,
-          value: hexlify(1, { hexPad: 'left' })
+          value: hexlify(1)
         },
         receiverAddress: fAccount.address,
         senderAccount: undefined
@@ -95,13 +95,13 @@ describe('Faucet helpers', () => {
           chainId: 3,
           data: '0x',
           from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-          gasLimit: hexlify(21000, { hexPad: 'left' }),
-          maxFeePerGas: hexlify(1000000000, { hexPad: 'left' }),
-          maxPriorityFeePerGas: hexlify(1000000000, { hexPad: 'left' }),
+          gasLimit: hexlify(21000),
+          maxFeePerGas: hexlify(1000000000),
+          maxPriorityFeePerGas: hexlify(1000000000),
           type: 2,
-          nonce: hexlify(39, { hexPad: 'left' }),
+          nonce: hexlify(39),
           to: fAccount.address,
-          value: hexlify(1, { hexPad: 'left' })
+          value: hexlify(1)
         },
         receiverAddress: fAccount.address,
         senderAccount: undefined
