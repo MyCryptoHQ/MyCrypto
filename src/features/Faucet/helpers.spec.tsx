@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
-
-import { fAccount, fAssets, fAccounts, fNetworks } from '@fixtures';
-import { ITxStatus, ITxType } from '@types';
 import { hexlify } from '@ethersproject/bytes';
+
+import { fAccount, fAccounts, fAssets, fNetworks } from '@fixtures';
+import { ITxStatus, ITxType } from '@types';
 
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import { ITxFaucetResult } from './types';
@@ -48,7 +48,13 @@ describe('Faucet helpers', () => {
     const getContactByAddressAndNetworkId = jest.fn();
     test('returns expected value for type 1 tx', async () => {
       expect(
-        makeTxConfig(exampleTXResultV1, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId)
+        makeTxConfig(
+          exampleTXResultV1,
+          fNetworks,
+          fAssets,
+          fAccounts,
+          getContactByAddressAndNetworkId
+        )
       ).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -72,7 +78,13 @@ describe('Faucet helpers', () => {
     });
     test('returns expected value for type 2 tx', async () => {
       expect(
-        makeTxConfig(exampleTXResultV2, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId)
+        makeTxConfig(
+          exampleTXResultV2,
+          fNetworks,
+          fAssets,
+          fAccounts,
+          getContactByAddressAndNetworkId
+        )
       ).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -101,7 +113,13 @@ describe('Faucet helpers', () => {
     const getContactByAddressAndNetworkId = jest.fn();
 
     test('returns expected value for type 1 tx', async () => {
-      const txConfig = makeTxConfig(exampleTXResultV1, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId);
+      const txConfig = makeTxConfig(
+        exampleTXResultV1,
+        fNetworks,
+        fAssets,
+        fAccounts,
+        getContactByAddressAndNetworkId
+      );
       expect(makeTxReceipt(exampleTXResultV1, txConfig)).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
@@ -123,7 +141,13 @@ describe('Faucet helpers', () => {
       });
     });
     test('returns expected value for type 2 tx', async () => {
-      const txConfig = makeTxConfig(exampleTXResultV2, fNetworks, fAssets, fAccounts, getContactByAddressAndNetworkId);
+      const txConfig = makeTxConfig(
+        exampleTXResultV2,
+        fNetworks,
+        fAssets,
+        fAccounts,
+        getContactByAddressAndNetworkId
+      );
       expect(makeTxReceipt(exampleTXResultV2, txConfig)).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],

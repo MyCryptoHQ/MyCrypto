@@ -88,7 +88,7 @@ type TxBeforeGasLimit = DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
 type TxBeforeNonce = DistributiveOmit<ITxObject, 'nonce'> & { nonce?: ITxNonce };
 type TxResponseBeforeBroadcast = DistributiveOmit<TransactionResponse, 'confirmations' | 'wait'> & {
   confirmations?: number;
-  wait?: (confirmations?: number) => Promise<TransactionReceipt>;
+  wait?(confirmations?: number): Promise<TransactionReceipt>;
 };
 
 const formatGas = (tx: ITxObject) =>

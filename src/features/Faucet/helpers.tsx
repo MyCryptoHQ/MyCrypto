@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
+import { makeTxConfigFromTx, toTxReceipt } from '@helpers';
 import {
   ExtendedAsset,
   ExtendedContact,
@@ -14,8 +15,6 @@ import {
 } from '@types';
 
 import { ITxFaucetResult } from './types';
-
-import { makeTxConfigFromTx, toTxReceipt } from '@helpers';
 
 export const possibleSolution = (solution: string) => {
   return /^[a-zA-Z0-9]{4}$/.test(solution);
@@ -45,7 +44,10 @@ export const makeTxConfig = (
     ...txResult,
     gasLimit: BigNumber.from(txResult.gasLimit),
     gasPrice: 'gasPrice' in txResult ? BigNumber.from(txResult.gasPrice) : undefined,
-    maxPriorityFeePerGas: 'maxPriorityFeePerGas' in txResult ? BigNumber.from(txResult.maxPriorityFeePerGas) : undefined,
+    maxPriorityFeePerGas:
+      'maxPriorityFeePerGas' in txResult
+        ? BigNumber.from(txResult.maxPriorityFeePerGas)
+        : undefined,
     maxFeePerGas: 'maxFeePerGas' in txResult ? BigNumber.from(txResult.maxFeePerGas) : undefined,
     type: 'maxPriorityFeePerGas' in txResult && 'maxFeePerGas' in txResult ? 2 : 0,
     value: BigNumber.from(txResult.value)
@@ -62,13 +64,9 @@ export const makeTxConfig = (
   };
 
   return txConfig;
-
 };
 
-export const makeTxReceipt = (
-  txResult: ITxFaucetResult,
-  txConfig: ITxConfig
-): ITxReceipt => {
+export const makeTxReceipt = (txResult: ITxFaucetResult, txConfig: ITxConfig): ITxReceipt => {
   const txReceipt = toTxReceipt(txResult.hash, ITxStatus.PENDING)(ITxType.FAUCET, txConfig);
   return txReceipt;
 };
