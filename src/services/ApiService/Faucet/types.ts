@@ -15,7 +15,7 @@ export interface FaucetChallengeResponse {
   };
 }
 
-export interface FaucetSolvedChallengeResponse {
+interface FaucetSolvedChallengeResponseV1 {
   success: true;
   result: {
     chainId: number;
@@ -30,3 +30,24 @@ export interface FaucetSolvedChallengeResponse {
     value: string;
   };
 }
+
+interface FaucetSolvedChallengeResponseV2 {
+  success: true;
+  result: {
+    chainId: number;
+    data: string;
+    from: string;
+    gasLimit: string;
+    maxFeePerGas: string;
+    maxPriorityFeePerGas: string;
+    hash: string;
+    network: string;
+    nonce: number;
+    to: string;
+    value: string;
+  };
+}
+
+export type FaucetSolvedChallengeResponse =
+  | FaucetSolvedChallengeResponseV1
+  | FaucetSolvedChallengeResponseV2;

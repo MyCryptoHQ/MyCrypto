@@ -86,6 +86,10 @@ type TxBeforeGasLimit = DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
   gasLimit?: ITxGasLimit;
 };
 type TxBeforeNonce = DistributiveOmit<ITxObject, 'nonce'> & { nonce?: ITxNonce };
+type TxResponseBeforeBroadcast = DistributiveOmit<TransactionResponse, 'confirmations' | 'wait'> & {
+  confirmations?: number;
+  wait?(confirmations?: number): Promise<TransactionReceipt>;
+};
 
 const formatGas = (tx: ITxObject) =>
   isType2Tx(tx)
@@ -251,7 +255,7 @@ export const makeTxConfigFromSignedTx = (
 
 // needs testing
 export const makeTxConfigFromTx = (
-  decodedTx: TransactionResponse | ITxObject,
+  decodedTx: TxResponseBeforeBroadcast | ITxObject,
   assets: ExtendedAsset[],
   network: Network,
   accounts: StoreAccount[]

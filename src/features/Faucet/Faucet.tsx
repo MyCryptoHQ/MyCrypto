@@ -112,9 +112,14 @@ export default function Faucet() {
 
   const [network, setNetwork] = useState<Network | undefined>(undefined);
 
+  const txConfig =
+    faucetState.txResult &&
+    makeTxConfig(faucetState.txResult, networks, assets, accounts, getContactByAddressAndNetworkId);
+
+  const txReceipt = txConfig && makeTxReceipt(faucetState.txResult, txConfig);
+
   useEffect(() => {
-    if (faucetState.txResult) {
-      const txReceipt = makeTxReceipt(faucetState.txResult, networks, assets);
+    if (txReceipt) {
       const recipientAccount = getStoreAccount(accounts)(
         txReceipt.to,
         txReceipt.baseAsset.networkId
@@ -228,13 +233,8 @@ export default function Faucet() {
     <>
       {faucetState.txResult && (
         <TxReceipt
-          txConfig={makeTxConfig(
-            faucetState.txResult,
-            networks,
-            assets,
-            getContactByAddressAndNetworkId
-          )}
-          txReceipt={makeTxReceipt(faucetState.txResult, networks, assets)}
+          txConfig={txConfig}
+          txReceipt={txReceipt}
           onComplete={() => reset()}
           resetFlow={() => reset()}
           queryStringsDisabled={true}
