@@ -1,4 +1,4 @@
-import { Accordion } from '@mycrypto/ui';
+import { Accordion } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';

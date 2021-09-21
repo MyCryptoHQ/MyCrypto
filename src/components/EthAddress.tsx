@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 
-import { Copyable } from '@mycrypto/ui';
+import { Copyable } from '@mycrypto/ui-legacy';
 import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 

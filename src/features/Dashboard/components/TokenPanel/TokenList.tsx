@@ -1,9 +1,8 @@
-import { Typography } from '@mycrypto/ui';
+import { Body } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import {
   AssetIcon,
-  Body,
   Box,
   DashboardPanel,
   Heading,
@@ -39,7 +38,7 @@ const Asset = styled.div`
   width: 65%;
 `;
 
-const AssetName = styled(Typography)`
+const AssetName = styled(Body)`
   margin: 0 0 0 ${SPACING.SM} !important;
   font-weight: normal;
   font-size: ${FONT_SIZE.SM};
@@ -51,7 +50,7 @@ const TokenValueWrapper = styled.div`
   align-items: center;
 `;
 
-const TokenValue = styled(Typography)`
+const TokenValue = styled(Body)`
   margin: 0 ${SPACING.SM} 0 0 !important;
   font-weight: normal;
   font-size: ${FONT_SIZE.BASE};

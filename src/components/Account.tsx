@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
-import { Avatar, scale } from '@mycrypto/ui';
+import { Blockie } from '@mycrypto/ui';
+import { scale } from '@mycrypto/ui-legacy';
 import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
 
@@ -8,7 +9,6 @@ import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 import EthAddress from './EthAddress';
-import { Identicon } from './Identicon';
 import Tooltip from './Tooltip';
 import Typography from './Typography';
 
@@ -43,32 +43,18 @@ const Address = styled(EthAddress)`
   font-size: ${scale(0.25)};
 `;
 
-const SAvatar = styled(Avatar)`
-  &&& img {
-    height: 36px;
-    width: 36px;
-  }
+const SBlockie = styled(Blockie)`
+  height: 36px;
+  width: 36px;
+  max-width: none;
 `;
-
-const SIdenticon = styled(Identicon)`
-  &&& img {
-    height: 36px;
-    width: 36px;
-    max-width: none;
-  }
-`;
-
-interface TooltipType {
-  image?: string;
-  content: ReactNode | string;
-}
 
 interface Props {
   address: string;
   title?: JSX.Element | string;
   className?: string;
   isCopyable?: boolean;
-  tooltip?: TooltipType;
+  tooltip?: ReactNode | string;
   truncate: boolean;
   onSubmit?(title?: string): void;
 }
@@ -82,8 +68,7 @@ export default function Account({
   className
 }: Props) {
   const TitleComponent = title ? Title : MissingTitle;
-  const ImageComponent = () =>
-    tooltip && tooltip.image ? <SAvatar src={tooltip.image} /> : <SIdenticon address={address} />;
+  const ImageComponent = () => <SBlockie address={address} />;
 
   const TitleItem = typeof title === 'string' ? <TitleComponent>{title}</TitleComponent> : title;
   const renderAddressContent = () => (
@@ -103,7 +88,7 @@ export default function Account({
   );
 
   return tooltip ? (
-    <Tooltip tooltip={<Typography as="div">{tooltip.content}</Typography>}>
+    <Tooltip tooltip={<Typography as="div">{tooltip}</Typography>}>
       {renderAddressContent()}
     </Tooltip>
   ) : (

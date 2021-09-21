@@ -1,4 +1,4 @@
-import { Panel } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui-legacy';
 import { storiesOf } from '@storybook/react';
 
 import { Fiats } from '@config';

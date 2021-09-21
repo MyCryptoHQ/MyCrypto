@@ -1,6 +1,6 @@
 import { ComponentProps, FC, ReactNode } from 'react';
 
-import { Tooltip as UITooltip } from '@mycrypto/ui';
+import { Tooltip as UITooltip } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 import {
   display,

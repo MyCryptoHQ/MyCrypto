@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { Button, Network as UINetwork } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { CopyableCodeBlock, EthAddress } from '@components';
+import { CopyableCodeBlock, EthAddress, Network as UINetwork } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';

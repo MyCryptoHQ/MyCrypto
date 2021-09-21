@@ -1,4 +1,4 @@
-import { Button, Icon } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import {
   AssetSelector,
   BusyBottom,
   ContentPanel,
+  Icon,
   InlineMessage
 } from '@components';
 import {

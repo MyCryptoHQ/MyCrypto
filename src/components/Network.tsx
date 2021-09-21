@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { scale } from '@mycrypto/ui';
+import { scale } from '@mycrypto/ui-legacy';
 import { size } from 'polished';
 import styled from 'styled-components';
 

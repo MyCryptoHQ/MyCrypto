@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { scale } from '@mycrypto/ui';
+import { scale } from '@mycrypto/ui-legacy';
 import styled, { css } from 'styled-components';
 
 import { isEmpty } from '@vendor';

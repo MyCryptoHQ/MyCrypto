@@ -1,3 +1,4 @@
+import { Blockie } from '@mycrypto/ui';
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import styled, { css } from 'styled-components';
 
@@ -14,7 +15,6 @@ import {
   Typography
 } from '@components';
 import { Downloader } from '@components/Downloader';
-import { Identicon } from '@components/Identicon';
 import { DWAccountDisplay, ExtendedDPath, useContacts } from '@services';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import translate, { Trans } from '@translations';
@@ -133,12 +133,10 @@ const LabelContainer = styled.div`
   }
 `;
 
-const SIdenticon = styled(Identicon)`
+const SBlockie = styled(Blockie)`
   margin-right: ${SPACING.SM};
-  & > img {
-    width: 30px;
-    height: 30px;
-  }
+  width: 30px;
+  height: 30px;
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: absolute;
     top: 15px;
@@ -344,7 +342,7 @@ const HDTable = ({
               </SelectedContainer>
               <MobileColumn>
                 <LabelContainer>
-                  <SIdenticon address={account.address} />
+                  <SBlockie address={account.address} />
                   <EditableAccountLabel
                     addressBookEntry={getContactByAddressAndNetworkId(account.address, network.id)}
                     address={account.address}
