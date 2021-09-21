@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
 import { isHexString } from '@ethersproject/bytes';
-import { Input } from '@mycrypto/ui';
 import queryString from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,6 +9,7 @@ import {
   Button,
   ContentPanel,
   InlineMessage,
+  InputField,
   NetworkSelector,
   Spinner,
   TxReceipt
@@ -115,7 +115,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               }
             />
             <SLabel htmlFor="txhash">{translateRaw('TX_HASH')}</SLabel>
-            <Input
+            <InputField
               name="txhash"
               value={txHash}
               onChange={(e) =>

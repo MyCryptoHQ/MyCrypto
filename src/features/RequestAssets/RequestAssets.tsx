@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { Heading, Input } from '@mycrypto/ui';
-import { Tooltip } from '@mycrypto/ui-legacy';
+import { Heading } from '@mycrypto/ui';
+import { Input, Tooltip } from '@mycrypto/ui-legacy';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';

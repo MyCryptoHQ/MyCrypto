@@ -1,6 +1,6 @@
 import { theme as UITheme } from '@mycrypto/ui';
 import { light } from '@mycrypto/ui-legacy';
-import merge from 'lodash.merge';
+import merge from 'lodash/merge';
 import { variant } from 'styled-system';
 
 const breakpoints: string[] & {

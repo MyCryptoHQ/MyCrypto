@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Heading, Input } from '@mycrypto/ui';
+import { Heading } from '@mycrypto/ui';
 import { Tooltip } from '@mycrypto/ui-legacy';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,7 @@ import {
   Button,
   ExtendedContentPanel,
   InlineMessage,
+  InputField,
   LinkApp,
   TxReceipt
 } from '@components';
@@ -203,7 +204,7 @@ export default function Faucet() {
           />
         </div>
       )}
-      <Input
+      <InputField
         value={faucetState.solution}
         name="captcha"
         placeholder={translateRaw('FAUCET_ENTER_RESPONSE')}

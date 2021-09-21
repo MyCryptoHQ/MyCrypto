@@ -3089,10 +3089,10 @@
     react-inlinesvg "^2.0.0"
     react-popper-tooltip "^2.10.1"
 
-"@mycrypto/ui@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-1.0.7.tgz#45e51725f2af28547b8fcf8d2279481b6dffa646"
-  integrity sha512-IzU/JUEElQXWicYSYoUmQYbuBEabnzfxNTw7O18sA85er0otuCwCZP7acQ62d14esxZ4nejExvKjT4C09CnYQw==
+"@mycrypto/ui@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-1.1.1.tgz#ef9404028baa1ec0ba9060382251ce7ff4ef570f"
+  integrity sha512-ng6Cs2Ij/EjSi6jQTQ3ruVFsu2PcLEI2IO8rYprAxFJDfJ/EcK9pAszahL1J2WExJ2dFjeAF1OJ6mEZ2Qd1rKg==
   dependencies:
     "@rebass/forms" "4.0.6"
     ethereum-blockies-base64 "1.0.2"
@@ -15023,11 +15023,6 @@ lodash.isplainobject@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
   integrity sha1-fFJqUtibRcRcxpC4gWO+BJf1UMs=
-
-lodash.merge@4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
-  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
 lodash.set@^4.3.2:
   version "4.3.2"
