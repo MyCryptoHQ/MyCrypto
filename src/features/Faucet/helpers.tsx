@@ -1,17 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { formatEther } from '@ethersproject/units';
 
-import { getBaseAssetByNetwork } from '@services/Store';
+import { makeTxConfigFromTx, toTxReceipt } from '@helpers';
 import {
-  Asset,
   ExtendedAsset,
   ExtendedContact,
   ITxConfig,
-  ITxNonce,
   ITxReceipt,
   ITxStatus,
   ITxType,
-  ITxValue,
   Network,
   NetworkId,
   StoreAccount,
@@ -33,71 +29,44 @@ export const makeTxConfig = (
   txResult: ITxFaucetResult,
   networks: Network[],
   assets: ExtendedAsset[],
+  accounts: StoreAccount[],
   getContactByAddressAndNetworkId: (
     address: TAddress,
     networkId: NetworkId
   ) => ExtendedContact | undefined
 ): ITxConfig => {
   const network = getNetworkByLowercaseId(txResult.network, networks);
-  const baseAsset: Asset = getBaseAssetByNetwork({
-    network,
-    assets
-  })!;
 
   // Guaranteed to work as Faucet address is in STATIC_CONTACTS
   const senderContact = getContactByAddressAndNetworkId(txResult.from, network.id)!;
+
+  const newTxResult = {
+    ...txResult,
+    gasLimit: BigNumber.from(txResult.gasLimit),
+    gasPrice: 'gasPrice' in txResult ? BigNumber.from(txResult.gasPrice) : undefined,
+    maxPriorityFeePerGas:
+      'maxPriorityFeePerGas' in txResult
+        ? BigNumber.from(txResult.maxPriorityFeePerGas)
+        : undefined,
+    maxFeePerGas: 'maxFeePerGas' in txResult ? BigNumber.from(txResult.maxFeePerGas) : undefined,
+    type: 'maxPriorityFeePerGas' in txResult && 'maxFeePerGas' in txResult ? 2 : 0,
+    value: BigNumber.from(txResult.value)
+  };
 
   /*
    * ITxConfig.senderAccount uses type StoreAccount, but in this case the user is the recipient and the faucet is the sender.
    * getContactByAddressAndNetworkId() returns ExtendedContact, which is the closest we can get.
    * The result is casted to make it compatible with ITxConfig.
    */
-  return {
-    rawTransaction: {
-      to: txResult.to,
-      value: txResult.value as ITxValue,
-      gasLimit: txResult.gasLimit,
-      data: txResult.data,
-      gasPrice: txResult.gasPrice,
-      nonce: txResult.nonce.toString() as ITxNonce,
-      chainId: txResult.chainId,
-      from: txResult.from
-    },
-    amount: formatEther(txResult.value),
-    receiverAddress: txResult.to,
-    senderAccount: (senderContact as unknown) as StoreAccount,
-    from: txResult.from,
-    asset: baseAsset,
-    baseAsset,
-    networkId: network.id
+  const txConfig = {
+    ...makeTxConfigFromTx(newTxResult, assets, network, accounts),
+    senderAccount: (senderContact as unknown) as StoreAccount
   };
+
+  return txConfig;
 };
 
-export const makeTxReceipt = (
-  txResult: ITxFaucetResult,
-  networks: Network[],
-  assets: ExtendedAsset[]
-): ITxReceipt => {
-  const network = getNetworkByLowercaseId(txResult.network, networks);
-  const baseAsset: Asset = getBaseAssetByNetwork({
-    network,
-    assets
-  })!;
-
-  return {
-    asset: baseAsset,
-    baseAsset,
-    txType: ITxType.FAUCET,
-    status: ITxStatus.PENDING,
-    receiverAddress: txResult.to,
-    amount: formatEther(txResult.value),
-    data: txResult.data,
-    gasPrice: BigNumber.from(txResult.gasPrice),
-    gasLimit: BigNumber.from(txResult.gasLimit),
-    to: txResult.to,
-    from: txResult.from,
-    value: BigNumber.from(txResult.value),
-    nonce: BigNumber.from(txResult.nonce),
-    hash: txResult.hash
-  };
+export const makeTxReceipt = (txResult: ITxFaucetResult, txConfig: ITxConfig): ITxReceipt => {
+  const txReceipt = toTxReceipt(txResult.hash, ITxStatus.PENDING)(ITxType.FAUCET, txConfig);
+  return txReceipt;
 };
