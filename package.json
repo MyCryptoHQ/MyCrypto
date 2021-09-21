@@ -251,7 +251,7 @@
     "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate"
   },
   "resolutions": {
-    "@storybook/**/@emotion/sheet": "1.0.1"
+    "@emotion/sheet": "1.0.1"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
