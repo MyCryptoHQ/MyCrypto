@@ -3,6 +3,7 @@
   "parser": "@typescript-eslint/parser",
   "extends": ["eslint:recommended", "eslint-config-prettier", "plugin:eslint-plugin-import/errors"],
   "plugins": ["eslint-plugin-react", "eslint-plugin-import"],
+  "ignorePatterns": ["**/static/matomo.js"],
   "rules": {
     "import/first": "error",
     "import/newline-after-import": "error",

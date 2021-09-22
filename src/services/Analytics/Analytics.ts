@@ -26,6 +26,7 @@ const tracker = new MatomoTracker({
   urlBase: ANALYTICS_API,
   siteId: getSiteID(),
   disabled: false,
+  srcUrl: 'matomo.js',
   heartBeat: {
     active: false
   },
