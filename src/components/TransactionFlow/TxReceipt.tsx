@@ -105,7 +105,9 @@ const TxReceipt = ({
   const [displayDetails, setDisplayDetails] = useState(false);
 
   const transactions = useSelector(selectAccountTxs);
-  const userTx = transactions.find((t) => t.hash === receipt!.hash);
+  const userTx = transactions.find(
+    (t) => t.hash === receipt!.hash && t.baseAsset.networkId === receipt!.baseAsset.networkId
+  );
   const displayTxReceipt = userTx ?? receipt!;
 
   const timestamp = displayTxReceipt.timestamp ?? 0;
