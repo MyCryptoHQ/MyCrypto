@@ -18,7 +18,7 @@ module.exports = {
     badBrowserCheck: path.join(config.path.src, 'badBrowserCheck.ts'),
     metaMaskFirefox: path.join(config.path.vendor, 'inpage-metamask.js'),
     main: path.join(config.path.src, 'index.tsx'),
-    piwik: path.join(config.path.vendor, 'piwik.js')
+    matomo: path.join(config.path.vendor, 'matomo.js')
   },
 
   output: {
