@@ -156,7 +156,7 @@ export const TxPendingState = ({
     }
   }, [header]);
 
-  const isWeb3 = isWeb3Wallet(account.wallet);
+  const isWeb3 = account.wallet && isWeb3Wallet(account.wallet);
   const isMetaMask = account.wallet === WalletId.METAMASK;
 
   return (
