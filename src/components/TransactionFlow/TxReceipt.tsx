@@ -506,7 +506,7 @@ export const TxReceiptUI = ({
           </Tooltip>
         )}
       <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">
+        <Button width="100%" mb="25px">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </LinkApp>
