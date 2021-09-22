@@ -239,6 +239,7 @@ export default function Faucet() {
           resetFlow={() => reset()}
           queryStringsDisabled={true}
           customBroadcastText={translateRaw('FAUCET_SUCCESS')}
+          disablePendingState={true}
           customComponent={() => (
             <FaucetReceiptBanner network={network!} received={faucetState.txResult.value} />
           )}
