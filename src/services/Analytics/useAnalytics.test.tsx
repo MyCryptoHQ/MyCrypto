@@ -10,7 +10,7 @@ const renderUseAnalytics = () => {
 describe('useAnalytics', () => {
   it('track(): dispatchs action', () => {
     const mockDispatch = mockUseDispatch();
-    const params = { name: 'Add Account' };
+    const params = { action: 'Add Account' };
     const { result } = renderUseAnalytics();
     act(() => result.current.track(params));
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));
@@ -20,6 +20,13 @@ describe('useAnalytics', () => {
     const params = { name: 'Knowledge base', title: 'dummy title' };
     const { result } = renderUseAnalytics();
     act(() => result.current.trackPage(params));
+    expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));
+  });
+  it('trackLink(): dispatchs action', () => {
+    const mockDispatch = mockUseDispatch();
+    const params = { url: 'mycrypto.com', type: 'link' };
+    const { result } = renderUseAnalytics();
+    act(() => result.current.trackLink(params));
     expect(mockDispatch).toHaveBeenCalledWith(actionWithPayload(params));
   });
 });

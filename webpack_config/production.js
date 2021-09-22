@@ -41,8 +41,6 @@ module.exports = merge.smart(common, {
     // https://webpack.js.org/plugins/environment-plugin/
     new webpack.EnvironmentPlugin([
       'TARGET_ENV',
-      'SEGMENT_WRITE_KEY',
-      'ANALYTICS_API_URL',
       'COMMIT_HASH'
     ]),
 

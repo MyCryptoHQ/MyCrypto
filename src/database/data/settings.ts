@@ -7,5 +7,6 @@ export const defaultSettings = {
   excludedAssets: [],
   language: 'en',
   isDemoMode: false,
-  canTrackProductAnalytics: true
+  canTrackProductAnalytics: true,
+  analyticsUserID: ''
 };
