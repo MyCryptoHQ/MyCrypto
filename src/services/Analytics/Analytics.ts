@@ -26,7 +26,7 @@ const tracker = new MatomoTracker({
   urlBase: ANALYTICS_API,
   siteId: getSiteID(),
   disabled: false,
-  srcUrl: '/vendor/piwik.js',
+  srcUrl: 'piwik.js',
   heartBeat: {
     active: false
   },
