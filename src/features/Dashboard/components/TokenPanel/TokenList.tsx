@@ -41,7 +41,10 @@ const Asset = styled.div`
 const AssetName = styled(Body)`
   margin: 0 0 0 ${SPACING.SM} !important;
   font-weight: normal;
-  font-size: ${FONT_SIZE.SM};
+  font-size: ${FONT_SIZE.BASE};
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-size: ${FONT_SIZE.MD};
+  }
 `;
 
 const TokenValueWrapper = styled.div`
