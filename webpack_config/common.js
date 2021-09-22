@@ -17,7 +17,8 @@ module.exports = {
   entry: {
     badBrowserCheck: path.join(config.path.src, 'badBrowserCheck.ts'),
     metaMaskFirefox: path.join(config.path.vendor, 'inpage-metamask.js'),
-    main: path.join(config.path.src, 'index.tsx')
+    main: path.join(config.path.src, 'index.tsx'),
+    piwik: path.join(config.path.vendor, 'piwik.js')
   },
 
   output: {

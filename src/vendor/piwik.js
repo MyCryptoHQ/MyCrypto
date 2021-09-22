@@ -13,6 +13,7 @@
 if (typeof _paq !== 'object') {
   _paq = [];
 }
+
 if (typeof window.Matomo !== 'object') {
   window.Matomo = window.Piwik = (function () {
     var q,
