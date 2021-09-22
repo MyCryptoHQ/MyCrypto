@@ -26,7 +26,7 @@ export const CUSTOM_ASSET_API = 'https://assets.mycryptoapi.com/custom';
 
 export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
-export const FAUCET_API = 'http://faucet.mycryptoapi.com';
+export const FAUCET_API = 'https://faucet.mycryptoapi.com';
 
 // The URL and site ID for the Matomo analytics instance.
 export const ANALYTICS_API = 'https://analytics.mycryptoapi.com';
