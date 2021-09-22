@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { Button } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { CopyableCodeBlock, EthAddress, Network as UINetwork } from '@components';
@@ -228,7 +228,9 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
-                <UINetwork color={network.color || 'blue'}>{network.name}</UINetwork>
+                <UINetwork color={network.color || 'blue'} justifyContent="flex-end">
+                  {network.name}
+                </UINetwork>
               </div>
             </div>
             <div className="TransactionDetails-row border">

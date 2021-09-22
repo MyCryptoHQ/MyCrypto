@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
+import { Box, BoxProps } from '@mycrypto/ui';
 import { scale } from '@mycrypto/ui-legacy';
 import { size } from 'polished';
 import styled from 'styled-components';
 
-import Box from './Box';
 import { Text } from './NewTypography';
 
 const Color = styled.div`
@@ -16,8 +16,8 @@ const Color = styled.div`
   ${size(scale(-1))};
 `;
 
-export const Network: FC<{ color: string }> = ({ children, color }) => (
-  <Box variant="rowAlign">
+export const Network: FC<{ color: string } & BoxProps> = ({ children, color, ...props }) => (
+  <Box variant="rowAlign" {...props}>
     <Color color={color} />
     <Text as="span">{children}</Text>
   </Box>
