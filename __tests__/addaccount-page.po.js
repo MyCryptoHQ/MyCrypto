@@ -26,11 +26,13 @@ export default class AddAccountPage extends BasePage {
     this.waitForPage(PAGES.ADD_ACCOUNT_VIEWONLY);
 
     await t
+      .click(Selector('div[data-testid="selector"]'))
       .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
         paste: true
       })
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
       .click(Selector('button').withText(getTransValueByKey('ACTION_6')))
+      .click(Selector('div[data-testid="selector"]'))
       .typeText(Selector(`div[data-testid="selector"]`).find('input'), FIXTURE_VIEW_ONLY_ADDRESS, {
         paste: true
       })

@@ -31,6 +31,7 @@ export default class ContractsPage extends BasePage {
 
   async fillInteractForm() {
     await t
+      .click(Selector('div[data-testid="selector"]').nth(1))
       .typeText(Selector('div[data-testid="selector"]').nth(1).find('input'), FIXTURE_DAI_ADDRESS, {
         paste: true
       })
