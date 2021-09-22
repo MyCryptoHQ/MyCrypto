@@ -18,25 +18,40 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
 ) => (action) => {
   switch (action.type) {
     case addNewAccounts.type: {
-      state.dispatch(
-        trackEvent({
-          name: 'Add Account',
-          params: {
-            qty: action.payload.newAccounts.length,
-            // multiple add accounts are always of the same type and network
-            walletId: action.payload.accountType,
-            networkId: action.payload.networkId
-          }
-        })
-      );
+      // multiple add accounts are always of the same type and network
+      action.payload.newAccounts.forEach(() => {
+        state.dispatch(
+          trackEvent({
+            action: 'Add Account',
+            customDimensions: [
+              {
+                id: 1,
+                value: action.payload.accountType
+              },
+              {
+                id: 2,
+                value: action.payload.networkId
+              }
+            ]
+          })
+        );
+      });
       break;
     }
     // Track custom token creation. Is also triggered on custom network.
     case createAsset.type: {
       state.dispatch(
         trackEvent({
-          name: 'Add Asset',
-          params: action.payload
+          action: 'Add Asset',
+          name: action.payload.ticker,
+          customDimensions: action.payload.contractAddress
+            ? [
+                {
+                  id: 3,
+                  value: action.payload.contractAddress
+                }
+              ]
+            : []
         })
       );
       break;
@@ -45,7 +60,7 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
     case setDemoMode.type: {
       state.dispatch(
         trackEvent({
-          name: 'Set Demo Mode'
+          action: 'Set Demo Mode'
         })
       );
       break;
@@ -54,14 +69,14 @@ export const analyticsMiddleware: Middleware<TObject, any, Dispatch<Action>> = (
     case setProductAnalyticsAuthorisation.type: {
       state.dispatch(
         trackEvent({
-          name: 'Deactivate analytics'
+          action: 'Deactivate analytics'
         })
       );
       break;
     }
 
     case importState.type: {
-      state.dispatch(trackEvent({ name: 'Import AppState' }));
+      state.dispatch(trackEvent({ action: 'Import AppState' }));
       break;
     }
 

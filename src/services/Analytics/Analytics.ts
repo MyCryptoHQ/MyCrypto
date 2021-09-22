@@ -1,8 +1,9 @@
-import { event, getConfig, page, Providers, setConfig } from '@blockstack/stats';
+import MatomoTracker from '@datapunt/matomo-tracker-js';
 
-import { ANALYTICS_API_URL, SEGMENT_WRITE_KEY } from '@utils';
+import { ANALYTICS_API } from '@config';
 
 import { TAnalyticEvents } from './constants';
+import { getSiteID } from './helpers';
 
 export interface PageParams {
   name: string;
@@ -10,48 +11,48 @@ export interface PageParams {
 }
 
 export interface TrackParams {
-  name: TAnalyticEvents;
-  params?: TObject;
+  action: TAnalyticEvents;
+  name?: string;
+  value?: number;
+  customDimensions?: any;
 }
 
-const initAnalytics = () => {
-  setConfig({
-    host: ANALYTICS_API_URL,
-    providers: [
-      {
-        name: Providers.Segment,
-        writeKey: SEGMENT_WRITE_KEY!
-      }
-    ]
-  });
+export interface LinkParams {
+  url: string;
+  type?: 'download' | 'link';
+}
+
+const tracker = new MatomoTracker({
+  urlBase: ANALYTICS_API,
+  siteId: getSiteID(),
+  disabled: false,
+  heartBeat: {
+    active: false
+  },
+  linkTracking: false,
+  configurations: {
+    disableCookies: true,
+    setSecureCookie: true,
+    setRequestMethod: 'POST'
+  }
+});
+
+const setAnonymousID = (analyticsUserID: string) => {
+  tracker.pushInstruction('setUserId', analyticsUserID);
 };
 
-/**
- * Blockstack/stats sets an anonymous id on `setConfig`.
- * If a user chooses to deactivate product analytics we ensure to clear
- * the LS value as well.
- */
-const clearAnonymousID = () => {
-  const LS_BSK_ID = '__bsk_ana_id__';
-  localStorage.removeItem(LS_BSK_ID);
-};
+const track = ({ action, name, value }: TrackParams) =>
+  tracker.trackEvent({ category: 'app', action, name, value });
 
-const setAnonymousID = () => getConfig();
+const trackPage = ({ name, title }: PageParams) =>
+  tracker.trackPageView({ documentTitle: title, href: name });
 
-const track = ({ name, params }: TrackParams) => {
-  return event({ ...params, name });
-};
-
-const trackPage = ({ name, title }: PageParams) => {
-  // @blockstack/stats/client already includes domain and path
-  // while omitting query values.
-  return page({ name, title });
-};
+const trackLink = ({ url, type }: LinkParams) => tracker.trackLink({ href: url, linkType: type });
 
 export default {
+  tracker,
   track,
   trackPage,
-  initAnalytics,
-  clearAnonymousID,
+  trackLink,
   setAnonymousID
 };
