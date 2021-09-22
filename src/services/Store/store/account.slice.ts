@@ -483,6 +483,13 @@ export function* pendingTxPolling() {
       pendingTxReceipt.asset.networkId
     ) as StoreAccount;
 
+    const recipientAccount =
+      pendingTxReceipt.to &&
+      (getAccountByAddressAndNetworkName(accounts)(
+        pendingTxReceipt.to,
+        pendingTxReceipt.asset.networkId
+      ) as StoreAccount);
+
     // In special cases this might not be true, i.e Faucet txs
     if (senderAccount) {
       const txs: ITxHistoryEntry[] = yield select(getMergedTxHistory);
@@ -550,7 +557,9 @@ export function* pendingTxPolling() {
       txTimestamp,
       txResponse.blockNumber
     );
-    yield put(addTxToAccount({ account: senderAccount, tx: finishedTxReceipt }));
+    yield put(
+      addTxToAccount({ account: senderAccount ?? recipientAccount, tx: finishedTxReceipt })
+    );
   }
 }
 
