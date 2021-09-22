@@ -60,10 +60,6 @@ const NavigationWarning = styled.div`
 const WarningIcon = styled(Icon)`
   margin-right: ${SPACING.XS};
   vertical-align: middle;
-
-  svg {
-    color: ${COLORS.GREY};
-  }
 `;
 
 interface IBuyFormState {
@@ -179,7 +175,12 @@ export const BuyAssetsForm = () => {
                 )}
               </FormFieldItem>
               <NavigationWarning>
-                <WarningIcon icon="warning" />
+                <WarningIcon
+                  type="warningTriangle"
+                  color={COLORS.GREY}
+                  width="21px"
+                  height="21px"
+                />
                 {translateRaw('EXTERNAL_NAVIGATION_WARNING')}
               </NavigationWarning>
               <FormFieldSubmitButton
