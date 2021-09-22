@@ -1,19 +1,10 @@
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
+import { Button } from '@mycrypto/ui';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {
-  Body,
-  Box,
-  Button,
-  Icon,
-  LinkApp,
-  PoweredByText,
-  Text,
-  TimeElapsed,
-  Tooltip
-} from '@components';
+import { Body, Box, Icon, LinkApp, PoweredByText, Text, TimeElapsed, Tooltip } from '@components';
 import { SubHeading } from '@components/NewTypography';
 import { getWalletConfig, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
@@ -478,7 +469,7 @@ export const TxReceiptUI = ({
       {completeButton && !(txStatus === ITxStatus.PENDING) && (
         <>
           {typeof completeButton === 'string' ? (
-            <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+            <Button variant="inverted" className="TransactionReceipt-another" onClick={resetFlow}>
               {completeButton}
             </Button>
           ) : (

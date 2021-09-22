@@ -190,7 +190,7 @@ export const BuyAssetsForm = () => {
               </FormFieldSubmitButton>
 
               <FormFieldSubmitButton
-                secondary={true}
+                variant="inverted"
                 onClick={() => handleSubmission(values, SubmissionType.SEND_TO_OTHER)}
               >
                 {translateRaw('CHECKOUT_OTHER_CTA')}

@@ -31,7 +31,7 @@ export default function SaveDashboardNotification() {
       description={translate('NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION')}
       resources={
         <LinkApp href={ROUTE_PATHS.SETTINGS_EXPORT.path}>
-          <ResourceItem secondary={true}>
+          <ResourceItem variant="inverted">
             {translate('NOTIFICATIONS_SAVE_DASHBOARD_RESOURCE')}
           </ResourceItem>
         </LinkApp>

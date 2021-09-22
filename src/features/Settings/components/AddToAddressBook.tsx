@@ -173,7 +173,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
               </Field>
             </AddressFieldset>
             <AddressBookButtons>
-              <Button type="button" secondary={true} onClick={toggleFlipped}>
+              <Button type="button" variant="inverted" onClick={toggleFlipped}>
                 {translateRaw('CANCEL_ACTION')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>

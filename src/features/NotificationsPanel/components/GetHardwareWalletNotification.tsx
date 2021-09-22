@@ -35,12 +35,12 @@ const getResources = () => {
   return (
     <>
       <LinkApp href={EXT_URLS.TREZOR_REFERRAL.url} isExternal={true}>
-        <ResourceItem secondary={true}>
+        <ResourceItem variant="inverted">
           {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
         </ResourceItem>
       </LinkApp>
       <LinkApp href={EXT_URLS.LEDGER_REFERRAL.url} isExternal={true}>
-        <ResourceItem secondary={true}>
+        <ResourceItem variant="inverted">
           {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
         </ResourceItem>
       </LinkApp>

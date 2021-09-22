@@ -184,7 +184,7 @@ export default function MultiTxReceipt({
       })}
       {shouldRenderPendingBtn && (
         <Button
-          secondary={true}
+          variant="inverted"
           className="TransactionReceipt-another"
           onClick={() => pendingButton!.action(resetFlow)}
         >
@@ -192,7 +192,7 @@ export default function MultiTxReceipt({
         </Button>
       )}
       {completeButtonText && !shouldRenderPendingBtn && (
-        <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+        <Button variant="inverted" className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}
         </Button>
       )}

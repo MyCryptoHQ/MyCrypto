@@ -1,6 +1,6 @@
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Button } from '@components';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
@@ -65,9 +65,7 @@ const RowDeleteOverlay = ({
     <OverlayText>{prompt}</OverlayText>
     <OverlayButtons>
       <Button onClick={deleteAction}>{deleteText ? deleteText : translateRaw('ACTION_15')}</Button>
-      <Button secondary={true} onClick={cancelAction}>
-        {translateRaw('CANCEL_ACTION')}
-      </Button>
+      <Button onClick={cancelAction}>{translateRaw('CANCEL_ACTION')}</Button>
     </OverlayButtons>
   </TableOverlay>
 );

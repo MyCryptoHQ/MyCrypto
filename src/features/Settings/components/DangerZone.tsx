@@ -62,7 +62,7 @@ const DangerZone: FC<Props> = ({ appReset }) => {
             />
           </SubHeading>
           <SettingsControl>
-            <SettingsButton secondary={true} onClick={() => setConfirmDelete(true)}>
+            <SettingsButton variant="inverted" onClick={() => setConfirmDelete(true)}>
               {translate('SETTINGS_DB_RESET_ACTION')}
             </SettingsButton>
           </SettingsControl>
