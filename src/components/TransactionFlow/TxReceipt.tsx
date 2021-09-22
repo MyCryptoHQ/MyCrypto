@@ -92,7 +92,7 @@ const TxReceipt = ({
   resetFlow,
   protectTxButton,
   queryStringsDisabled,
-  isTxStatus,
+  disablePendingState,
   setLabel
 }: ITxReceiptStepProps & RouteComponentProps & Props) => {
   const { getAssetRate } = useRates();
@@ -208,7 +208,7 @@ const TxReceipt = ({
 
   const showDetails = () => setDisplayDetails(true);
 
-  if (!isTxStatus && !displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
+  if (!disablePendingState && !displayDetails && isType2Receipt(displayTxReceipt) && userTx) {
     return (
       <TxPendingState
         network={network}
