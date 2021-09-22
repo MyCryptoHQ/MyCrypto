@@ -96,24 +96,18 @@ jobs:
         run: yarn build:staging
         if: github.event_name == 'pull_request'
         env:
-          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
           COMMIT_HASH: ${{ github.event.pull_request.head.sha }}
 
       - name: yarn build:staging
         run: yarn build:staging
         if: github.event_name == 'repository_dispatch'
         env:
-          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
           COMMIT_HASH: ${{ github.event.client_payload.pull_request.head.sha }}
 
       - name: yarn build:staging
         run: yarn build:staging
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         env:
-          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-          ANALYTICS_API_URL: ${{ secrets.ANALYTICS_API_URL }}
           COMMIT_HASH: ${{ steps.vars.outputs.sha }}
 
       - name: S3 Sync - Downloadable Branch - push

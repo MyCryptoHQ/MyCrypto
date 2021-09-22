@@ -7,5 +7,6 @@ export const fSettings: ISettings = {
   excludedAssets: ['94201e82-3da9-5ec0-925c-2972030acde9' as TUuid],
   language: 'en',
   isDemoMode: false,
-  canTrackProductAnalytics: true
+  canTrackProductAnalytics: true,
+  analyticsUserID: ''
 };

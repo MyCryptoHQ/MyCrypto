@@ -65,9 +65,16 @@ test('Can export AppState to file', async (t) => {
     'assets',
     0 // First asset in asset list.
   ]);
+
+  // analyticsUserID is a dynamic value.
+  // remove it before we assert equality.
+  const removeKeysFromAccountSettings = omit(['analyticsUserID']);
+  const accountSettingsLens = lensPath(['settings']);
+
   const omitDynamicValues = pipe(
     omit(['mtime']),
-    set(accountAssetsLens, removeKeysFromAccountAsset)
+    set(accountAssetsLens, removeKeysFromAccountAsset),
+    set(accountSettingsLens, removeKeysFromAccountSettings)
   );
 
   const actual = omitDynamicValues(JSON.parse(readFileSync(filePath)));

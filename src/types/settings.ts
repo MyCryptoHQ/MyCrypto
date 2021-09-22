@@ -10,4 +10,5 @@ export interface ISettings {
   language: string; // @todo: Change to enum
   isDemoMode: boolean;
   canTrackProductAnalytics: boolean;
+  analyticsUserID: string;
 }
