@@ -127,10 +127,10 @@ const customStyles: Styles<any, false> = {
     '&:hover': {
       border: '0.125em solid rgba(0,122,153,0.65)'
     },
-    height: state.hasValue ? 'auto' : '54px',
+    height: state.hasValue && !state.selectProps.menuIsOpen ? 'auto' : '54px',
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
-    paddingLeft: state.hasValue ? 0 : 5
+    paddingLeft: state.hasValue && !state.selectProps.menuIsOpen ? 0 : 5
   }),
   placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
   input: (provided, state) => ({
