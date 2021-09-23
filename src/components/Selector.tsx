@@ -130,7 +130,8 @@ const customStyles: Styles<any, false> = {
     height: state.hasValue && !state.selectProps.menuIsOpen ? 'auto' : '54px',
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
-    paddingLeft: state.hasValue && !state.selectProps.menuIsOpen ? 0 : 5
+    paddingLeft: state.hasValue && !state.selectProps.menuIsOpen ? 0 : 5,
+    transition: '300ms ease all'
   }),
   placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
   input: (provided, state) => ({
