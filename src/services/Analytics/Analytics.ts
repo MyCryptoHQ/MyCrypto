@@ -5,6 +5,11 @@ import { ANALYTICS_API } from '@config';
 import { TAnalyticEvents } from './constants';
 import { getSiteID } from './helpers';
 
+interface CustomDimension {
+  id: number;
+  value: string;
+}
+
 export interface PageParams {
   name: string;
   title: string;
@@ -14,7 +19,7 @@ export interface TrackParams {
   action: TAnalyticEvents;
   name?: string;
   value?: number;
-  customDimensions?: any;
+  customDimensions?: CustomDimension[];
 }
 
 export interface LinkParams {
@@ -42,8 +47,8 @@ const setAnonymousID = (analyticsUserID: string) => {
   tracker.pushInstruction('setUserId', analyticsUserID);
 };
 
-const track = ({ action, name, value }: TrackParams) =>
-  tracker.trackEvent({ category: 'app', action, name, value });
+const track = ({ action, name, value, customDimensions }: TrackParams) =>
+  tracker.trackEvent({ category: 'app', action, name, value, customDimensions });
 
 const trackPage = ({ name, title }: PageParams) =>
   tracker.trackPageView({ documentTitle: title, href: name });
