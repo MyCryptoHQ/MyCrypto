@@ -42,8 +42,8 @@ export function AssetSelectorItem({
   );
 }
 
-const Wrapper = styled('div')`
-  width: ${(props: { fluid: boolean }) => (props.fluid ? '100%' : 'default')};
+const Wrapper = styled.div<{ width?: string }>`
+  width: ${(props: { width?: string }) => props.width ?? 'default'};
   min-width: 175px;
   .asset-dropdown-item {
     padding-top: 11px;
@@ -58,7 +58,7 @@ interface AssetSelectorProps<T> {
   showAssetName?: boolean;
   showAssetIcon?: boolean;
   disabled?: boolean;
-  fluid?: boolean;
+  width?: string;
   searchable?: boolean;
   label?: string;
   onSelect(option: T): void;
@@ -75,8 +75,8 @@ function AssetSelector({
   showAssetIcon = true,
   searchable = false,
   disabled = false,
-  fluid = false,
   inputId = 'asset-selector',
+  width,
   ...props
 }: AssetSelectorProps<Asset | ISwapAsset>) {
   useEffectOnce(() => {
@@ -86,7 +86,7 @@ function AssetSelector({
   });
 
   return (
-    <Wrapper fluid={fluid}>
+    <Wrapper width={width}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <Selector<TAssetOption>
         inputId={inputId}

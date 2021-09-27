@@ -127,20 +127,42 @@ const customStyles: Styles<any, false> = {
     '&:hover': {
       border: '0.125em solid rgba(0,122,153,0.65)'
     },
-    height: state.hasValue ? 'auto' : '54px',
+    height: state.hasValue && !state.selectProps.menuIsOpen ? 'auto' : '54px',
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
-    paddingLeft: state.hasValue ? 0 : 5
+    paddingLeft: state.hasValue && !state.selectProps.menuIsOpen ? 0 : 5
   }),
-  input: (provided) => ({
+  placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
+  input: (provided, state) => ({
     ...provided,
-    display: 'inline-block'
+    display: 'inline-block',
+    // @ts-expect-error Type is wrong, this property is available
+    ...(state.selectProps.menuIsOpen
+      ? {
+          /* expand the Input Component div */
+          width: '100%',
+
+          /* expand the Input Component child div */
+          '> div': {
+            width: '100%'
+          },
+
+          /* expand the Input Component input */
+          input: {
+            width: '100% !important',
+            textAlign: 'left'
+          }
+        }
+      : {})
   }),
   // Allow the valueComponent to handle it's own padding when present.
   // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px'
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px',
+    'div:nth-child(2)': {
+      ...(state.hasValue && state.selectProps.menuIsOpen ? { display: 'none' } : {})
+    }
   })
 };
 
@@ -181,7 +203,7 @@ const Selector: <T extends OptionTypeBase>(
       // We use inputId for aria concerns, and to target the react-select component with getByLabelText
       inputId={inputId || name}
       blurInputOnSelect={onBlurResetsInput}
-      onMenuClose={() => onCloseResetsInput}
+      closeMenuOnSelect={onCloseResetsInput}
       onChange={onChange}
       onBlur={onBlur}
       onInputChange={onInputChange}
@@ -208,5 +230,4 @@ const Selector: <T extends OptionTypeBase>(
     />
   </Wrapper>
 );
-
 export default Selector;
