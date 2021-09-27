@@ -249,6 +249,7 @@ const SwapAssets = (props: Props) => {
             onSelect={handleFromAssetSelected}
             disabled={isCalculatingToAmount || isCalculatingFromAmount}
             searchable={true}
+            width="175px"
           />
         </Box>
         <Box variant="rowCenter" my="2">
@@ -286,6 +287,7 @@ const SwapAssets = (props: Props) => {
             onSelect={handleToAssetSelected}
             disabled={isCalculatingToAmount || isCalculatingFromAmount}
             searchable={true}
+            width="175px"
           />
         </Box>
         <Box mb={SPACING.SM}>
