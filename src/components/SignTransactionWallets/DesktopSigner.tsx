@@ -56,7 +56,7 @@ const SignTransactionDesktopSigner = ({
           }
         });
     }
-  });
+  }, []);
 
   return (
     <>
