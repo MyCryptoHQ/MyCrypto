@@ -15,9 +15,7 @@ export default class TxStatusPage extends BasePage {
 
   async fillForm(hash) {
     await t
-      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM, {
-        paste: true
-      })
+      .click(Selector('div[data-testid="selector"]'))
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
       .typeText(Selector(`input[name="txhash"]`), hash, { paste: true })
       .click(Selector('button').withText(getTransValueByKey('FETCH')));
