@@ -130,7 +130,8 @@ const customStyles: Styles<any, false> = {
     height: state.hasValue && !state.selectProps.menuIsOpen ? 'auto' : '54px',
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
-    paddingLeft: state.hasValue && !state.selectProps.menuIsOpen ? 0 : 5
+    paddingLeft:
+      (state.hasValue && !state.selectProps.menuIsOpen) || !state.selectProps.isSearchable ? 0 : 5
   }),
   placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
   input: (provided, state) => ({
@@ -161,7 +162,9 @@ const customStyles: Styles<any, false> = {
     ...styles,
     paddingLeft: state.selectProps.isSearchable ? '4px' : '10px',
     'div:nth-child(2)': {
-      ...(state.hasValue && state.selectProps.menuIsOpen ? { display: 'none' } : {})
+      ...(state.selectProps.isSearchable && state.hasValue && state.selectProps.menuIsOpen
+        ? { display: 'none' }
+        : {})
     }
   })
 };
