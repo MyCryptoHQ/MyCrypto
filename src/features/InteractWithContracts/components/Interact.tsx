@@ -12,6 +12,7 @@ import {
   InputField,
   NetworkSelector
 } from '@components';
+import { DEFAULT_NETWORK } from '@config';
 import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -154,7 +155,7 @@ const FormSchema = object().shape({
   address: object({
     value: string().test(
       'check-eth-address',
-      translateRaw('TO_FIELD_ERROR'),
+      translateRaw('TO_FIELD_ERROR', { $network: DEFAULT_NETWORK }),
       (value) => isValidETHAddress(value) || isValidENSName(value)
     )
   }).required(translateRaw('REQUIRED'))

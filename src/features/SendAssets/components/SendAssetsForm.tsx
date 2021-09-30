@@ -201,14 +201,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const [fetchedNonce, setFetchedNonce] = useState(0);
   const [isSendMax, toggleIsSendMax] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] = useState<Network>(getNetworkById(DEFAULT_NETWORK));
-
-  const TO_FIELD_ERROR = useMemo(() => {
-    if (selectedNetwork && (selectedNetwork.chainId === 30 || selectedNetwork.chainId === 31)) {
-      return translateRaw('TO_FIELD_RSK_ERROR', { $network: selectedNetwork.name });
-    }
-    return translateRaw('TO_FIELD_ERROR');
-  }, [selectedNetwork]);
 
   const userAssets = useSelector(getUserAssets);
   const isDemoMode = useSelector(getIsDemoMode);
@@ -288,9 +280,15 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     account: object().required(translateRaw('REQUIRED')),
     address: object()
       .required(translateRaw('REQUIRED'))
-      .test('valid', TO_FIELD_ERROR, function (value) {
-        return value && value.value && isValidAddress(value.value, selectedNetwork.chainId);
-      })
+      .when('network', (network: Network) =>
+        object().test(
+          'valid',
+          translateRaw('TO_FIELD_ERROR', { $network: network.name }),
+          function (value) {
+            return value && value.value && isValidAddress(value.value, network.chainId);
+          }
+        )
+      )
       // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
@@ -395,6 +393,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   });
 
   const network = values.network;
+  console.log(`network`, network);
   const baseAsset = !isVoid(network)
     ? getBaseAssetByNetwork({ network, assets })!
     : getBaseAssetByNetwork({ network: defaultNetwork!, assets })!;
@@ -419,7 +418,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   useEffect(() => {
     handleGasPriceEstimation();
-    setSelectedNetwork(values.network);
   }, [values.account, values.network]);
 
   useDebounce(

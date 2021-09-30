@@ -13,6 +13,7 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
+import { NETWORKS_CONFIG } from '@database/data';
 import translate, { translateRaw } from '@translations';
 import { InlineMessageType } from '@types';
 import {
@@ -82,31 +83,29 @@ export function isValidETHLikeAddress(address: string, isChecksumValid: boolean)
   return true;
 }
 
-export const isValidETHRecipientAddress = (
+export const isValidRecipientAddress = (
   address: string,
   resolutionErr: ResolutionError | undefined,
-  network?: Network | undefined
+  network: Network = NETWORKS_CONFIG.Ethereum
 ) => {
-  if (network && (network.chainId === 30 || network.chainId === 31)) {
+  if (network.chainId === 30 || network.chainId === 31) {
     // TODO: Consider checking RSN name if it will be supported by unstoppabledomains
     // Is a invalid EIP-1191 checksum when trying to send through RSK network
-    if (!isValidRSKAddress(address, network.chainId)) {
-      return {
-        success: false,
-        name: 'ValidationError',
-        type: InlineMessageType.ERROR,
-        message: translate('CHECKSUM_RSK_ERROR', { $network: network.name })
-      };
-    } else {
-      return { success: true };
-    }
+    return isValidRSKAddress(address, network.chainId)
+      ? { success: true }
+      : {
+          success: false,
+          name: 'ValidationError',
+          type: InlineMessageType.ERROR,
+          message: translate('CHECKSUM_RSK_ERROR', { $network: network.name })
+        };
   } else if (isValidENSName(address) && resolutionErr) {
     // Is a valid ENS name, but it couldn't be resolved or there is some other issue.
     return {
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translateRaw('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR', { $network: network.name })
     };
   } else if (isValidENSName(address) && !resolutionErr) {
     // Is a valid ENS name, and it can be resolved!
@@ -147,7 +146,7 @@ export const isValidETHRecipientAddress = (
       success: false,
       name: 'ValidationError',
       type: InlineMessageType.ERROR,
-      message: translateRaw('TO_FIELD_ERROR')
+      message: translateRaw('TO_FIELD_ERROR', { $network: network.name })
     };
   }
   return { success: true };

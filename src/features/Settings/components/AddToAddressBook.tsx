@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { Network } from '@ethersproject/networks';
 import { Button } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
@@ -60,20 +59,16 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
   const { getContactByAddress } = useContacts();
   const { getNetworkById } = useNetworks();
   const [isResolvingDomain, setIsResolvingDomain] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] = useState<Network>(getNetworkById(DEFAULT_NETWORK));
-
-  const TO_FIELD_ERROR = useMemo(() => {
-    if (selectedNetwork.chainId === 30 || selectedNetwork.chainId === 31) {
-      return translateRaw('TO_FIELD_RSK_ERROR', { $network: selectedNetwork.name });
-    }
-    return translateRaw('TO_FIELD_ERROR');
-  }, [selectedNetwork]);
 
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
     address: object()
-      .test('check-eth-address', TO_FIELD_ERROR, (value) =>
-        isValidAddress(value.value, selectedNetwork.chainId)
+      .when('network', (network: NetworkId) =>
+        object().test(
+          'check-eth-address',
+          translateRaw('TO_FIELD_ERROR', { $network: network ?? DEFAULT_NETWORK }),
+          (value) => isValidAddress(value.value, getNetworkById(network).chainId)
+        )
       )
       .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function (value) {
         const contact = getContactByAddress(value.value);
@@ -164,10 +159,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
                 {({ field, form }: FieldProps<NetworkId>) => (
                   <SNetworkSelector
                     network={field.value}
-                    onChange={(e) => {
-                      setSelectedNetwork(getNetworkById(e));
-                      form.setFieldValue(field.name, e);
-                    }}
+                    onChange={(e) => form.setFieldValue(field.name, e)}
                   />
                 )}
               </Field>

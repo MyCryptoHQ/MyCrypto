@@ -6,8 +6,8 @@ import {
   isENSLabelHash,
   isTransactionFeeHigh,
   isValidAddress,
-  isValidETHRecipientAddress,
   isValidMixedCaseETHAddress,
+  isValidRecipientAddress,
   isValidUpperOrLowerCaseETHAddress,
   TxFeeResponseType,
   validateTxFee
@@ -115,35 +115,35 @@ describe('validateTxFee', () => {
   });
 });
 
-describe('isValidETHRecipientAddress', () => {
+describe('isValidRecipientAddress', () => {
   it('returns true for a valid checksummed address', () => {
     const expected = { success: true };
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
   it('returns true for a valid all-lowercase address', () => {
     const expected = { success: true };
     const testAddress = '0x4bbeeb066ed09b7aed07bf39eee0460dfa261520';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
   it('returns true for a valid all-uppercase address', () => {
     const expected = { success: true };
     const testAddress = '0X4BBEEB066ED09B7AED07BF39EEE0460DFA261520';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
   it('returns true for a valid ens name', () => {
     const expected = { success: true };
     const testAddress = 'mycryptoid.eth';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
   it('returns false for an invalid ens name', () => {
     const expected = { success: false };
     const testAddress = 'mycryptoid.ethhhhh';
-    const returned = isValidETHRecipientAddress(
+    const returned = isValidRecipientAddress(
       testAddress,
       ('Domain mycryptoid.ethhhh is not supported' as unknown) as ResolutionError
     );
@@ -152,7 +152,7 @@ describe('isValidETHRecipientAddress', () => {
   it('returns false for an unresolved ens name', () => {
     const expected = { success: false };
     const testAddress = 'a.eth';
-    const returned = isValidETHRecipientAddress(
+    const returned = isValidRecipientAddress(
       testAddress,
       ('Domain a.eth is not registered' as unknown) as ResolutionError
     );
@@ -161,21 +161,21 @@ describe('isValidETHRecipientAddress', () => {
   it('returns false for an invalid checksummed address', () => {
     const expected = { success: false };
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFA261520';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
 
   it('returns false for an invalid too-short address', () => {
     const expected = { success: false };
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39E';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
 
   it('returns false for an invalid too-long address', () => {
     const expected = { success: false };
     const testAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa2615200000';
-    const returned = isValidETHRecipientAddress(testAddress, undefined);
+    const returned = isValidRecipientAddress(testAddress, undefined);
     expect(returned.success).toBe(expected.success);
   });
 });

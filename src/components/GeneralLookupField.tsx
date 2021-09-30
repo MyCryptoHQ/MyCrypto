@@ -6,7 +6,7 @@ import { DomainStatus, InlineMessage } from '@components';
 import {
   isValidENSName,
   isValidETHAddress,
-  isValidETHRecipientAddress,
+  isValidRecipientAddress,
   ProviderHandler
 } from '@services/EthService';
 import { createENSResolutionError, isResolutionError } from '@services/EthService/ens';
@@ -76,7 +76,7 @@ const GeneralLookupField = ({
   useEffect(() => {
     // Run validation if possible
     if (setFieldError) {
-      const validationResult = isValidETHRecipientAddress(value.value, resolutionError, network);
+      const validationResult = isValidRecipientAddress(value.value, resolutionError, network);
       setFieldError(name, validationResult.success ? undefined : validationResult.message);
     }
   }, [value, resolutionError]);

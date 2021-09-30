@@ -23,7 +23,7 @@ export {
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidETHRecipientAddress
+  isValidRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
 export { isValidENSName } from './ens';
