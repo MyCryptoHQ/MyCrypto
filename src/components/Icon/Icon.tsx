@@ -43,6 +43,7 @@ import navClose from '@assets/icons/navigation/close.svg';
 import navCoinbase from '@assets/icons/navigation/coinbase.svg';
 import navDeployContracts from '@assets/icons/navigation/deploy-contracts.svg';
 import navDesktop from '@assets/icons/navigation/desktop.svg';
+import navDisclaimer from '@assets/icons/navigation/disclaimer.svg';
 import navDiscord from '@assets/icons/navigation/discord.svg';
 import navEns from '@assets/icons/navigation/ens.svg';
 import navEthereum from '@assets/icons/navigation/ethereum.svg';
@@ -269,7 +270,8 @@ const svgIcons = {
   'nav-migrate-gnt': navMigrateGnt,
   'nav-migrate-ant': navMigrateAnt,
   'nav-migrate-lend': navMigrateLend,
-  'nav-faucet': navFaucet
+  'nav-faucet': navFaucet,
+  'nav-disclaimer': navDisclaimer
 };
 
 const pngIcons = {
