@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import styled from 'styled-components';
-import { object, string } from 'yup';
+import { object, ObjectSchema, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
 import { DashboardPanel, InputField, NetworkSelector } from '@components';
@@ -11,7 +11,7 @@ import GeneralLookupField from '@components/GeneralLookupField';
 import { DEFAULT_NETWORK } from '@config/constants';
 import { useToasts } from '@features/Toasts';
 import { useContacts, useNetworks } from '@services';
-import { isValidETHAddress } from '@services/EthService';
+import { isValidAddress } from '@services/EthService';
 import { translateRaw } from '@translations';
 import { Contact, NetworkId } from '@types';
 
@@ -63,8 +63,12 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
   const Schema = object().shape({
     label: string().required(translateRaw('REQUIRED')),
     address: object()
-      .test('check-eth-address', translateRaw('TO_FIELD_ERROR'), (value) =>
-        isValidETHAddress(value.value)
+      .when('network', (network: NetworkId, schema: ObjectSchema) =>
+        schema.test(
+          'check-eth-address',
+          translateRaw('TO_FIELD_ERROR', { $network: network ?? DEFAULT_NETWORK }),
+          (value) => isValidAddress(value.value, getNetworkById(network).chainId)
+        )
       )
       .test('doesnt-exist', translateRaw('ADDRESS_ALREADY_ADDED'), function (value) {
         const contact = getContactByAddress(value.value);
