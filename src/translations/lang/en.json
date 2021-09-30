@@ -358,6 +358,7 @@
     "NETWORK_TOOLTIP": "A network is also known as a blockchain. Most users are here to manage their Ethereum accounts, so this selection defaults to the Ethereum network. [Learn about the other networks that MyCrypto supports.](https://support.mycrypto.com/developers/adding-a-new-network)",
     "NEW_FOOTER_TEXT_10": "Privacy Policy",
     "NEW_FOOTER_TEXT_11": "Blog",
+    "NAVIGATION_DISCLAIMER": "Disclaimer",
     "NEW_FOOTER_TEXT_14": "Your email was added to our mailing list!",
     "NEW_FOOTER_TEXT_15": "*By submitting your email, you **affirmatively** agree to our [Privacy Policy](https://mycrypto.com/privacy/).*",
     "NEW_FOOTER_TEXT_2": "Address Copied to Clipboard!",
