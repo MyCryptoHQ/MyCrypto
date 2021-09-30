@@ -403,6 +403,11 @@ export const MYCLinks = [
     title: translateRaw('NEW_FOOTER_TEXT_10'),
     link: 'https://mycrypto.com/privacy/',
     icon: 'nav-privacy'
+  },
+  {
+    title: translateRaw('NAVIGATION_DISCLAIMER'),
+    link: 'https://mycrypto.com/disclaimer',
+    icon: 'nav-disclaimer'
   }
 ];
 
