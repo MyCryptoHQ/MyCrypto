@@ -13,8 +13,8 @@ import { flatten, uniq } from '@vendor';
 
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    height: 171px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
+    height: 170px;
   }
   ${(props) => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
@@ -130,12 +130,7 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
             </>
           )}
           {membershipState === MembershipState.ERROR && (
-            <>
-              <Typography as="div">{translate('MEMBERSHIP_ERROR')}</Typography>
-              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
-                <SButton>{translateRaw('BUY_MEMBERSHIP')}</SButton>
-              </LinkApp>
-            </>
+            <Typography as="div">{translate('MEMBERSHIP_ERROR')}</Typography>
           )}
         </TextWrapper>
       </Wrapper>
