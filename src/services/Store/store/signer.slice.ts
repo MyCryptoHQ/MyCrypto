@@ -14,7 +14,8 @@ interface KeyPair {
 }
 
 export const initialState = {
-  keyPair: undefined as KeyPair | undefined
+  keyPair: undefined as KeyPair | undefined,
+  nonce: 0
 };
 
 const slice = createSlice({
@@ -23,11 +24,14 @@ const slice = createSlice({
   reducers: {
     setKeyPair(state, action: PayloadAction<KeyPair>) {
       state.keyPair = action.payload;
+    },
+    incrementNonce(state) {
+      state.nonce++;
     }
   }
 });
 
-export const { setKeyPair } = slice.actions;
+export const { setKeyPair, incrementNonce } = slice.actions;
 
 export default slice;
 

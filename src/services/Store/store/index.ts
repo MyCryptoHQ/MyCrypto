@@ -123,4 +123,4 @@ export { fetchHistory, fetchSchemaMeta, getTxHistory, getTxTypeMetas } from './t
 export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
 export { getClaims, getAllClaims } from './claims.slice';
 export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUndo.slice';
-export { signerInit, getKeyPair } from './signer.slice';
+export { signerInit, getKeyPair, incrementNonce } from './signer.slice';
