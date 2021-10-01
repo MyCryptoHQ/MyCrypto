@@ -21,7 +21,7 @@ export const createSignerProvider = (store: EnhancedStore) => {
       const encoded = Buffer.from(stringify({ ...payload, id }), 'utf-8');
       const hash = stripHexPrefix(hexlify(await utils.sha512(encoded)));
       const signature = await sign(hash, state.privateKey);
-      const newPayload = { ...payload, signature, publicKey: state.publicKey };
+      const newPayload = { ...payload, id, signature, publicKey: state.publicKey };
 
       ws.send(newPayload, callback);
     }
