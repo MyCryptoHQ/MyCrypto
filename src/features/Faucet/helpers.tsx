@@ -43,13 +43,9 @@ export const makeTxConfig = (
   const newTxResult = {
     ...txResult,
     gasLimit: BigNumber.from(txResult.gasLimit),
-    gasPrice: 'gasPrice' in txResult ? BigNumber.from(txResult.gasPrice) : undefined,
-    maxPriorityFeePerGas:
-      'maxPriorityFeePerGas' in txResult
-        ? BigNumber.from(txResult.maxPriorityFeePerGas)
-        : undefined,
-    maxFeePerGas: 'maxFeePerGas' in txResult ? BigNumber.from(txResult.maxFeePerGas) : undefined,
-    type: 'maxPriorityFeePerGas' in txResult && 'maxFeePerGas' in txResult ? 2 : 0,
+    maxPriorityFeePerGas: BigNumber.from(txResult.maxPriorityFeePerGas),
+    maxFeePerGas: BigNumber.from(txResult.maxFeePerGas),
+    type: 2,
     value: BigNumber.from(txResult.value)
   };
 
