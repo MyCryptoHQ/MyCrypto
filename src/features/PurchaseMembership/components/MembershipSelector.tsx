@@ -21,7 +21,7 @@ interface MembershipItemProps {
 const SContainer = styled('div')<StyleProps>`
   display: flex;
   flex-direction: row;
-  padding: 12px 12px 12px 0px;
+  padding: 11px 12px 11px 0px;
   ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
 `;
 
