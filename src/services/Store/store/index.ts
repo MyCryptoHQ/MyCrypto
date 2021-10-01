@@ -131,4 +131,4 @@ export { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from './nft
 export { getBaseFee } from './gas.slice';
 export { checkForPromos, getPromoPoap, claimPromo } from './promoPoaps.slice';
 export { getWalletConnection, connectWallet } from './connections.slice';
-export { signerInit, getKeyPair, incrementNonce } from './signer.slice';
+export { SignerState, signerInit, getKeyPair, incrementNonce } from './signer.slice';

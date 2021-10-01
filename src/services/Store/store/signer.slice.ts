@@ -13,8 +13,13 @@ interface KeyPair {
   publicKey: string;
 }
 
-export const initialState = {
-  keyPair: undefined as KeyPair | undefined,
+export interface SignerState {
+  keyPair?: KeyPair;
+  nonce: number;
+}
+
+export const initialState: SignerState = {
+  keyPair: undefined,
   nonce: 0
 };
 
@@ -41,7 +46,6 @@ export const signerInit = createAction(`${slice.name}/init`);
 /**
  * Selectors
  */
-// @ts-expect-error @todo fix typing here
 const getState = createSelector(getAppState, (s) => s[slice.name]);
 export const getKeyPair = createSelector(getState, (signer) => signer.keyPair);
 
