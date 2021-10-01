@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
-import { store } from '@index';
+import { useStore } from 'react-redux';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { WALLETS_CONFIG } from '@config';
 import { getNetworkByChainId, useNetworks } from '@services/Store';
-import { getKeyPair, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { ISignComponentProps } from '@types';
 import { isVoid } from '@utils';
@@ -24,14 +23,14 @@ const SignTransactionDesktopSigner = ({
   onSuccess
 }: ISignComponentProps) => {
   const { networks } = useNetworks();
-  const { publicKey, privateKey } = useSelector(getKeyPair);
+  const store = useStore();
   const detectedNetwork = getNetworkByChainId(rawTransaction.chainId, networks);
 
   const [submitting, setSubmitting] = useState(false);
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
   const [error, setError] = useState('');
 
-  const ws = createSignerProvider(store, privateKey, publicKey);
+  const ws = createSignerProvider(store);
 
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 

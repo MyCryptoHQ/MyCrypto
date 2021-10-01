@@ -1,12 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
-import { store } from '@index';
+import { useStore } from 'react-redux';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { InlineMessage } from '@components';
 import { useNetworks } from '@services/Store';
-import { getKeyPair, useSelector } from '@store';
 import translate from '@translations';
 import { FormData } from '@types';
 import { createSignerProvider } from '@utils/signerProvider';
@@ -23,10 +22,10 @@ interface IWeb3UnlockError {
 
 const DesktopSignerDecrypt: FC<Props> = ({ formData, onUnlock }) => {
   const { addNodeToNetwork, networks } = useNetworks();
-  const { publicKey, privateKey } = useSelector(getKeyPair);
   const network = networks.find((n) => n.id === formData.network);
 
-  const ws = createSignerProvider(store, privateKey, publicKey);
+  const store = useStore();
+  const ws = createSignerProvider(store);
 
   const ethersProvider = new Web3Provider(ws, network!.chainId);
 

@@ -45,7 +45,7 @@ if (!IS_DEV) {
   consoleAdvertisement();
 }
 
-export const { store, persistor } = createStore();
+const { store, persistor } = createStore();
 
 export const render = () => {
   /* eslint-disable-next-line  @typescript-eslint/no-var-requires */
