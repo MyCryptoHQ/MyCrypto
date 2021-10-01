@@ -7,7 +7,7 @@ import { ITxStatus, ITxType } from '@types';
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import { ITxFaucetResult } from './types';
 
-const exampleTXResultV2 = {
+const exampleTXResult = {
   chainId: 3,
   data: '0x',
   from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
@@ -36,7 +36,7 @@ describe('Faucet helpers', () => {
     test('returns expected value', async () => {
       expect(
         makeTxConfig(
-          exampleTXResultV2,
+          exampleTXResult,
           fNetworks,
           fAssets,
           fAccounts,
@@ -71,13 +71,13 @@ describe('Faucet helpers', () => {
 
     test('returns expected value', async () => {
       const txConfig = makeTxConfig(
-        exampleTXResultV2,
+        exampleTXResult,
         fNetworks,
         fAssets,
         fAccounts,
         getContactByAddressAndNetworkId
       );
-      expect(makeTxReceipt(exampleTXResultV2, txConfig)).toEqual({
+      expect(makeTxReceipt(exampleTXResult, txConfig)).toEqual({
         amount: '0.000000000000000001',
         asset: fAssets[1],
         baseAsset: fAssets[1],
