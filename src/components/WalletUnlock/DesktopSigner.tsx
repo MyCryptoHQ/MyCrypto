@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
+import { store } from '@index';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { InlineMessage } from '@components';
@@ -25,7 +26,7 @@ const DesktopSignerDecrypt: FC<Props> = ({ formData, onUnlock }) => {
   const { publicKey, privateKey } = useSelector(getKeyPair);
   const network = networks.find((n) => n.id === formData.network);
 
-  const ws = createSignerProvider(privateKey, publicKey);
+  const ws = createSignerProvider(store, privateKey, publicKey);
 
   const ethersProvider = new Web3Provider(ws, network!.chainId);
 

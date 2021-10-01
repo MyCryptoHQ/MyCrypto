@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Web3Provider } from '@ethersproject/providers';
+import { store } from '@index';
 
 import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import { WALLETS_CONFIG } from '@config';
@@ -30,7 +31,7 @@ const SignTransactionDesktopSigner = ({
   const [walletState, setWalletState] = useState(WalletSigningState.UNKNOWN);
   const [error, setError] = useState('');
 
-  const ws = createSignerProvider(privateKey, publicKey);
+  const ws = createSignerProvider(store, privateKey, publicKey);
 
   const ethersProvider = new Web3Provider(ws, detectedNetwork!.chainId);
 
