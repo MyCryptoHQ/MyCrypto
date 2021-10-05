@@ -61,6 +61,8 @@ describe('nftSaga()', () => {
             return fNFTCollections;
           } else if (effect.args[1] === OpenSeaService.fetchAllAssets) {
             return fNFTs;
+          } else if (effect.fn === OpenSeaService.proxyAssets) {
+            return true;
           }
 
           return next();
