@@ -1,3 +1,4 @@
+import { OPENSEA_IMAGE_PROXY } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
 
 const SUPPORTED_VIDEO_EXTENSIONS = ['mov', 'mp4', 'webm', 'ogg'];
@@ -21,6 +22,8 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
     );
   }
 
+  const pathname = new URL(url).pathname.slice(1).split('/').pop();
+  const proxiedURL = `${OPENSEA_IMAGE_PROXY}/${pathname}`;
   const fileExtension = url.split('.').pop();
   const isVideo = fileExtension && SUPPORTED_VIDEO_EXTENSIONS.includes(fileExtension);
 
@@ -33,7 +36,7 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
         disableRemotePlayback
         disablePictureInPicture
         preload="metadata"
-        src={url}
+        src={proxiedURL}
         style={{
           objectFit: 'cover',
           borderRadius: '2px',
@@ -46,7 +49,7 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
 
   return (
     <img
-      src={url}
+      src={proxiedURL}
       style={{
         objectFit: 'cover',
         borderRadius: '2px',

@@ -100,11 +100,15 @@ export function* fetchAssetsWorker() {
       OpenSeaService.fetchCollections
     );
 
-    // @todo Proxy image urls
     // @todo Pagination?
     const nfts: OpenSeaNFT[][] = yield call(mapAsync, addresses, OpenSeaService.fetchAllAssets);
 
-    yield put(setNFTs(nfts.filter((r) => r !== null).flat()));
+    const assets = nfts.filter((r) => r !== null).flat();
+
+    // @todo Handle error?
+    yield call(OpenSeaService.proxyAssets, assets);
+
+    yield put(setNFTs(assets));
     yield put(setCollections(uniqBy(prop('slug'), collections.filter((r) => r !== null).flat())));
 
     yield put(setFetched(true));

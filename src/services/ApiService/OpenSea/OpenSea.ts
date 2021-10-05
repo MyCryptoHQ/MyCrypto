@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { OPENSEA_API } from '@config';
+import { OPENSEA_API, OPENSEA_IMAGE_PROXY_API } from '@config';
 import { ApiService } from '@services/ApiService';
 
 import { OpenSeaCollection, OpenSeaNFT } from './types';
@@ -52,6 +52,22 @@ export default abstract class OpenSeaService {
     } catch (e) {
       console.debug('[OpenSea]: Fetching data from OpenSea failed: ', e);
       return null;
+    }
+  };
+
+  public static proxyAssets = async (assets: OpenSeaNFT[]): Promise<boolean> => {
+    try {
+      const result = await OpenSeaService.service.post(
+        '',
+        {
+          assetURLs: assets.map((a) => [a.image_preview_url, a.image_url]).flat()
+        },
+        { baseURL: OPENSEA_IMAGE_PROXY_API }
+      );
+      return result.status === 200;
+    } catch (e) {
+      console.debug('[OpenSea]: Proxying images failed: ', e);
+      return false;
     }
   };
 
