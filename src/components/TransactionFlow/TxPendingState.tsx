@@ -172,10 +172,11 @@ export const TxPendingState = ({
     if (!timeout || state !== PendingState.PENDING) {
       return;
     }
+    // Either value should be increased by at least 10%
     if (
       bigify(bigNumGasPriceToViewableGwei(oldTx.maxFeePerGas))
         .multipliedBy(1.101)
-        .lt(newMaxFeePerGas) &&
+        .lt(newMaxFeePerGas) ||
       bigify(bigNumGasPriceToViewableGwei(oldTx.maxPriorityFeePerGas))
         .multipliedBy(1.101)
         .lt(newMaxPriorityFeePerGas)
