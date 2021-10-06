@@ -147,7 +147,7 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         to: APP_ROUTES.NFT_DASHBOARD.path,
         enabled: APP_ROUTES.NFT_DASHBOARD.enabled,
         title: translateRaw('NFT_DASHBOARD'),
-        icon: 'nav-faucet'
+        icon: 'nav-nft'
       }
     ]
   };
@@ -351,7 +351,7 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           to: APP_ROUTES.NFT_DASHBOARD.path,
           enabled: APP_ROUTES.NFT_DASHBOARD.enabled,
           title: translateRaw('NFT_DASHBOARD'),
-          icon: 'nav-faucet'
+          icon: 'nav-nft'
         }
       ]
     },

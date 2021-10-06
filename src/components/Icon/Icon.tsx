@@ -65,6 +65,7 @@ import navMigrateLend from '@assets/icons/navigation/migrate-lend.svg';
 import navMigrateRep from '@assets/icons/navigation/migrate-rep.svg';
 import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
+import navNftDashboard from '@assets/icons/navigation/nft-dashboard.svg';
 import navPress from '@assets/icons/navigation/press.svg';
 import navPrivacy from '@assets/icons/navigation/privacy.svg';
 import navQuicknode from '@assets/icons/navigation/quicknode.svg';
@@ -271,7 +272,8 @@ const svgIcons = {
   'nav-migrate-ant': navMigrateAnt,
   'nav-migrate-lend': navMigrateLend,
   'nav-faucet': navFaucet,
-  'nav-disclaimer': navDisclaimer
+  'nav-disclaimer': navDisclaimer,
+  'nav-nft': navNftDashboard
 };
 
 const pngIcons = {
