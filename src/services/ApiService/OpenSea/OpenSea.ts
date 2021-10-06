@@ -60,7 +60,10 @@ export default abstract class OpenSeaService {
       const result = await OpenSeaService.service.post(
         '',
         {
-          assetURLs: assets.map((a) => [a.image_preview_url, a.image_url]).flat()
+          assetURLs: assets
+            .map((a) => [a.image_preview_url, a.image_url])
+            .flat()
+            .filter((a) => a && a.length > 0)
         },
         { baseURL: OPENSEA_IMAGE_PROXY_API }
       );
