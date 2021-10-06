@@ -42,16 +42,13 @@ const slice = createSlice({
     },
     fetchError(state, action: PayloadAction<string>) {
       state.error = action.payload;
-    },
-    reset() {
-      return initialState;
     }
   }
 });
 
 export const fetchNFTs = createAction(`${slice.name}/fetch`);
 
-export const { setFetched, setNFTs, setCollections, reset, fetchError } = slice.actions;
+export const { setFetched, setNFTs, setCollections, fetchError } = slice.actions;
 
 export default slice;
 
