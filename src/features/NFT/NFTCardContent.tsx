@@ -1,9 +1,9 @@
 import { OPENSEA_IMAGE_PROXY } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
-import { detectMediaType, MediaType } from '@utils';
+import { detectMediaType, getNFTURL, MediaType } from '@utils';
 
 export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
-  const url = nft.image_preview_url ?? nft.image_url;
+  const url = getNFTURL(nft);
   const isEmpty = !(typeof url === 'string' && url.length > 0);
 
   // @todo Figure out graphics for this case

@@ -1,5 +1,6 @@
 import { OPENSEA_API, OPENSEA_IMAGE_PROXY_API } from '@config';
 import { ApiService } from '@services/ApiService';
+import { getNFTURL } from '@utils';
 
 import { OpenSeaCollection, OpenSeaNFT } from './types';
 
@@ -61,10 +62,7 @@ export const OpenSeaService = () => {
       const result = await service.post(
         '',
         {
-          assetURLs: assets
-            .map((a) => [a.image_preview_url, a.image_url])
-            .flat()
-            .filter((a) => a && a.length > 0)
+          assetURLs: assets.map((a) => getNFTURL(a)).filter((a) => a && a.length > 0)
         },
         { baseURL: OPENSEA_IMAGE_PROXY_API }
       );

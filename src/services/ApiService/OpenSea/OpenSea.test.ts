@@ -3,6 +3,7 @@ import mockAxios from 'jest-mock-axios';
 
 import { OPENSEA_IMAGE_PROXY_API } from '@config';
 import { fAccount, fNFTCollections, fNFTs } from '@fixtures';
+import { getNFTURL } from '@utils';
 
 import { OpenSeaService } from '.';
 
@@ -58,7 +59,7 @@ describe('OpenSea', () => {
     expect(mockAxios.post).toHaveBeenCalledWith(
       '',
       expect.objectContaining({
-        assetURLs: fNFTs.map((a) => [a.image_preview_url, a.image_url]).flat()
+        assetURLs: fNFTs.map((a) => getNFTURL(a))
       }),
       { baseURL: OPENSEA_IMAGE_PROXY_API }
     );
