@@ -1,7 +1,5 @@
-import { OPENSEA_IMAGE_PROXY } from '@config';
+import { OPENSEA_IMAGE_PROXY, SUPPORTED_VIDEO_EXTENSIONS } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
-
-const SUPPORTED_VIDEO_EXTENSIONS = ['mov', 'mp4', 'webm', 'ogg'];
 
 export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
   const url = nft.image_preview_url ?? nft.image_url;
