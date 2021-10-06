@@ -1055,6 +1055,7 @@
     "TRANSACTION_PENDING_DESCRIPTION": "Sit tight while we evaluate whether your transaction will be included in the next block. We'll have an answer for you in 30 sec or less!",
     "TRANSACTION_SUCCESS_DESCRIPTION": "Woohoo, we can confirm that your transaction will be mined in the next block.",
     "TRANSACTION_CROWDED_DESCRIPTION": "You might consider resending your transaction with adjusted fees to increase the likelihood that it will be included in the next block.",
+    "TRANSACTION_CROWDED_NO_RESUBMIT_DESCRIPTION": "Things are taking a little longer than expected, but hang tight! Your transaction should be mined shortly.",
     "PENDING_METAMASK_NOTICE": "Please use MetaMask to speed your transaction up. You can safely use the values they recommend.",
     "PENDING_WEB3_NOTICE": "Please use your Web3 Provider directly to replace or speed up your transaction. If you aren't sure how to do this, we can help at [support@mycrypto.com]($link)."
   }

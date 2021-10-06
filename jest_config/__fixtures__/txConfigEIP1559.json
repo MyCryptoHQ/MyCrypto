@@ -14,7 +14,7 @@
   "senderAccount": {
     "address": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
     "networkId": "Ropsten",
-    "wallet": "WALLETCONNECT",
+    "wallet": "WEB3",
     "dPath": "",
     "assets": [
       {
