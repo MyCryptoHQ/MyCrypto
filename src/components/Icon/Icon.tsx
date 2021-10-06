@@ -99,6 +99,7 @@ import arrowRight from '@assets/images/arrow-right.svg';
 import zeroxLogo from '@assets/images/credits/credits-0x.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
+import openSeaLogo from '@assets/images/credits/credits-opensea.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
@@ -190,6 +191,7 @@ const svgIcons = {
 
   /* Partner Icons */
   nansenLogo,
+  openSeaLogo,
   ensLogo,
   coinGeckoLogo,
   zapperLogo,

@@ -86,7 +86,8 @@ const providers: Record<string, PoweredByProvider> = {
     text: translateRaw('POWERED_BY')
   },
   OPENSEA: {
-    text: 'Powered by OpenSea'
+    icon: 'openSeaLogo',
+    text: translateRaw('POWERED_BY')
   }
 };
 
