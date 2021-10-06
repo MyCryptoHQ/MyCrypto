@@ -11,7 +11,16 @@ import { TransactionFeeEIP1559 } from '@components/TransactionFeeEIP1559';
 import { ROUTE_PATHS } from '@config';
 import { useGasForm } from '@hooks';
 import translate, { translateRaw } from '@translations';
-import { Fiat, ITxConfig, ITxReceipt, ITxStatus, ITxType2Receipt, Network, WalletId } from '@types';
+import {
+  Fiat,
+  ITxConfig,
+  ITxReceipt,
+  ITxStatus,
+  ITxType2Object,
+  ITxType2Receipt,
+  Network,
+  WalletId
+} from '@types';
 import {
   bigify,
   bigNumGasPriceToViewableGwei,
@@ -43,6 +52,7 @@ enum PendingState {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   CROWDED = 'CROWDED',
+  CROWDED_NO_RESUBMIT = 'CROWDED_NO_RESUBMIT',
   NOT_INCLUDED = 'NOT_INCLUDED'
 }
 
@@ -64,6 +74,12 @@ const states = {
     description: translateRaw('TRANSACTION_CROWDED_DESCRIPTION'),
     illustration: crowdedBlock,
     resend: true
+  },
+  [PendingState.CROWDED_NO_RESUBMIT]: {
+    header: translateRaw('TRANSACTION_CROWDED_HEADER'),
+    description: translateRaw('TRANSACTION_CROWDED_NO_RESUBMIT_DESCRIPTION'),
+    illustration: crowdedBlock,
+    resend: false
   },
   [PendingState.NOT_INCLUDED]: {
     header: '',
@@ -110,7 +126,7 @@ export const TxPendingState = ({
     onSubmit: noOp
   });
 
-  const oldTx = txConfig.rawTransaction;
+  const oldTx = txConfig.rawTransaction as ITxType2Object;
 
   const tx = {
     ...oldTx,
@@ -143,12 +159,33 @@ export const TxPendingState = ({
     [txReceipt.status]
   );
 
+  const [timeout, setTimeout] = useState(false);
+
   useTimeout(() => {
     if (txReceipt.status === ITxStatus.PENDING) {
-      setState(PendingState.CROWDED);
+      setTimeout(true);
       handleGasPriceEstimation();
     }
   }, CROWDED_TIMEOUT);
+
+  useEffect(() => {
+    if (!timeout || state !== PendingState.PENDING) {
+      return;
+    }
+    // Either value should be increased by at least 10%
+    if (
+      bigify(bigNumGasPriceToViewableGwei(oldTx.maxFeePerGas))
+        .multipliedBy(1.101)
+        .lt(newMaxFeePerGas) ||
+      bigify(bigNumGasPriceToViewableGwei(oldTx.maxPriorityFeePerGas))
+        .multipliedBy(1.101)
+        .lt(newMaxPriorityFeePerGas)
+    ) {
+      setState(PendingState.CROWDED);
+    } else {
+      setState(PendingState.CROWDED_NO_RESUBMIT);
+    }
+  }, [newMaxFeePerGas, newMaxPriorityFeePerGas]);
 
   useEffect(() => {
     if (setLabel) {
