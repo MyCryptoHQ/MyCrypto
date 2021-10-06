@@ -1,5 +1,6 @@
-import { OPENSEA_IMAGE_PROXY, SUPPORTED_VIDEO_EXTENSIONS } from '@config';
+import { OPENSEA_IMAGE_PROXY } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
+import { detectMediaType, MediaType } from '@utils';
 
 export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
   const url = nft.image_preview_url ?? nft.image_url;
@@ -22,10 +23,9 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
 
   const pathname = new URL(url).pathname.slice(1).split('/').pop();
   const proxiedURL = `${OPENSEA_IMAGE_PROXY}/${pathname}`;
-  const fileExtension = url.split('.').pop();
-  const isVideo = fileExtension && SUPPORTED_VIDEO_EXTENSIONS.includes(fileExtension);
+  const mediaType = detectMediaType(url);
 
-  if (isVideo) {
+  if (mediaType === MediaType.Video) {
     return (
       <video
         muted
@@ -44,6 +44,8 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
       />
     );
   }
+
+  // @todo Audio
 
   return (
     <img
