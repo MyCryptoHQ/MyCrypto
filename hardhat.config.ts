@@ -9,7 +9,7 @@ const config: HardhatUserConfig = {
       hardfork: 'london',
       forking: {
         url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-        blockNumber: 12651850
+        blockNumber: 13373860
       },
       accounts: {
         mnemonic: 'test test test test test test test test test test test ball'
