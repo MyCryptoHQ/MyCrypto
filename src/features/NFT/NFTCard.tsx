@@ -40,8 +40,8 @@ export const NFTCard = ({ asset, collection }: Props) => {
       <Box>
         <NFTCardContent nft={asset} />
       </Box>
-      <Box variant="rowAlignTop" justifyContent="space-between">
-        <Box variant="columnAlignLeft">
+      <Box variant="rowAlignTop" justifyContent="space-between" maxWidth="250px">
+        <Box variant="columnAlignLeft" mr="1">
           <Body fontSize="12px" m="0" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {asset.collection.name}
           </Body>
