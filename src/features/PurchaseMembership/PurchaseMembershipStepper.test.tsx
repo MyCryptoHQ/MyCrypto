@@ -35,7 +35,7 @@ describe('PurchaseMembershipStepper', () => {
             ...fAccounts[0],
             assets: [
               ...fAccounts[0].assets,
-              { ...fDAI, balance: BigNumber.from('0x22b1c8c1227a00000') }
+              { ...fDAI, balance: BigNumber.from('0x15af1d78b58c400000') }
             ]
           }
         ]
