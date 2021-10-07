@@ -4,6 +4,8 @@ import { Body, Box, LinkApp } from '@components';
 import { DEFAULT_NETWORK_TICKER } from '@config';
 import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { translateRaw } from '@translations';
+import { Bigish } from '@types';
+import { bigify } from '@utils';
 
 import { NFTCardContent } from './NFTCardContent';
 
@@ -12,8 +14,17 @@ interface Props {
   collection?: OpenSeaCollection;
 }
 
+const formatValue = (price: Bigish | undefined) => {
+  if (!price) {
+    return '?';
+  }
+
+  const value = price.toFixed(3);
+  return price.lt(0.001) ? '<0.001' : value;
+};
+
 export const NFTCard = ({ asset, collection }: Props) => {
-  const floor = collection?.stats.floor_price;
+  const floor = collection?.stats.floor_price ? bigify(collection?.stats.floor_price) : undefined;
 
   return (
     <Box
@@ -43,7 +54,7 @@ export const NFTCard = ({ asset, collection }: Props) => {
             {translateRaw('FLOOR')}
           </Body>
           <Body fontSize="12px" m="0" textAlign="right">
-            {floor ? floor.toFixed(2) : '?'} {DEFAULT_NETWORK_TICKER}
+            {formatValue(floor)} {DEFAULT_NETWORK_TICKER}
           </Body>
         </Box>
       </Box>
