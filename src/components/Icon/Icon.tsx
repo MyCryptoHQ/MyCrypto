@@ -364,7 +364,7 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 export const getSVGIcon = (type: SvgIcons) => svgIcons[type];
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website' || type === 'faucet-icon') {
+  if (type === 'website' || type === 'faucet-icon' || type === 'nav-nft') {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
