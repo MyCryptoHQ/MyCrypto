@@ -25,7 +25,6 @@ export interface IMembershipConfig {
   icon: string;
   price: string;
   networkId: NetworkId;
-  discount?: string;
   assetUUID: string;
   durationInDays: number;
   discountNotice: string;
@@ -76,7 +75,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x6cA105D2AF7095B1BCEeb6A2113D168ddDCD57cf',
     description: '',
     icon: onemonthIcon,
-    price: '4',
+    price: '10',
     assetUUID: DAIUUID,
     durationInDays: 30,
     discountNotice: '',
@@ -89,7 +88,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xcB3BB4CCe15b492E7fdD7cb9a3835C034714207A',
     description: '',
     icon: onemonthIcon,
-    price: '4',
+    price: '10',
     assetUUID: XDAIUUID,
     durationInDays: 30,
     discountNotice: '',
@@ -102,7 +101,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x54d0be5C24e183EF4247c5C1a426A6838696ED88',
     description: '',
     icon: onemonthIcon,
-    price: '4',
+    price: '10',
     assetUUID: USDCPolygonUUID,
     durationInDays: 30,
     discountNotice: '',
@@ -116,7 +115,6 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: threemonthsIcon,
     price: '10.5',
-    discount: '10',
     disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 90,
@@ -131,7 +129,6 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     description: '',
     icon: sixMonthsIcon,
     price: '18',
-    discount: '20',
     disabled: true,
     assetUUID: DAIUUID,
     durationInDays: 180,
@@ -145,11 +142,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xee2B7864d8bc731389562F820148e372F57571D8',
     description: '',
     icon: twelveMonthsIcon,
-    price: '30',
-    discount: '40',
+    price: '100',
     assetUUID: DAIUUID,
     durationInDays: 366,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' }),
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~16.6%' }),
     networkId: DEFAULT_NETWORK
   },
 
@@ -159,11 +155,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0xf97f516Cc0700a4Ce9Ee64D488F744f631e1525d',
     description: '',
     icon: twelveMonthsIcon,
-    price: '30',
-    discount: '40',
+    price: '100',
     assetUUID: XDAIUUID,
     durationInDays: 366,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' }),
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~16.6%' }),
     networkId: XDAI_NETWORK
   },
 
@@ -173,11 +168,10 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x46522c5a1018E13E40e3117191200e4CF6039241',
     description: '',
     icon: twelveMonthsIcon,
-    price: '30',
-    discount: '40',
+    price: '100',
     assetUUID: USDCPolygonUUID,
     durationInDays: 366,
-    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~37.5%' }),
+    discountNotice: translateRaw('MEMBERSHIP_DISCOUNT', { $percentage: '~16.6%' }),
     networkId: POLYGON_NETWORK
   },
 
@@ -187,7 +181,7 @@ export const MEMBERSHIP_CONFIG: IMembershipConfigObject = {
     contractAddress: '0x098D8b363933D742476DDd594c4A5a5F1a62326a',
     description: '',
     icon: lifetimeIcon,
-    price: '2',
+    price: '1',
     assetUUID: ETHUUID,
     durationInDays: 36500,
     discountNotice: translateRaw('MEMBERSHIP_LIFETIME_DESC'),
