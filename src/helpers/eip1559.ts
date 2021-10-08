@@ -1,6 +1,6 @@
 import { Network, StoreAccount, WalletId } from '@types';
 
-const DISABLED_WALLETS = [WalletId.WALLETCONNECT, WalletId.DESKTOP_SIGNER];
+const DISABLED_WALLETS = [WalletId.WALLETCONNECT];
 
 const featureFlagName = 'MYC_EIP1559';
 
