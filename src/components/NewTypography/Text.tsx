@@ -38,6 +38,17 @@ export type TextProps = SpaceProps &
   } & {
     textTransform?: 'uppercase' | 'capitalize' | 'lowercase';
     textOverflow?: 'clip' | 'ellipsis' | 'string' | 'initial' | 'inherit';
+    whiteSpace?:
+      | 'normal'
+      | 'nowrap'
+      | 'pre'
+      | 'pre-wrap'
+      | 'pre-line'
+      | 'break-spaces'
+      | 'inherit'
+      | 'initial'
+      | 'revert'
+      | 'unset';
   };
 
 const SText: FC<TextProps> = styled.p<TextProps>`
@@ -53,6 +64,7 @@ const SText: FC<TextProps> = styled.p<TextProps>`
   ${layout}
   ${({ textTransform }) => textTransform && { 'text-transform': textTransform }}
   ${({ textOverflow }) => textOverflow && { 'text-overflow': textOverflow }}
+  ${({ whiteSpace }) => whiteSpace && { 'white-space': whiteSpace }}
 `;
 
 const Text: FC<TextProps & { isDiscrete?: boolean; isBold?: boolean }> = ({

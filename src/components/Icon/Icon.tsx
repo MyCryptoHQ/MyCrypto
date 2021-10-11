@@ -65,6 +65,7 @@ import navMigrateLend from '@assets/icons/navigation/migrate-lend.svg';
 import navMigrateRep from '@assets/icons/navigation/migrate-rep.svg';
 import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
+import navNftDashboard from '@assets/icons/navigation/nft-dashboard.svg';
 import navPress from '@assets/icons/navigation/press.svg';
 import navPrivacy from '@assets/icons/navigation/privacy.svg';
 import navQuicknode from '@assets/icons/navigation/quicknode.svg';
@@ -99,6 +100,7 @@ import arrowRight from '@assets/images/arrow-right.svg';
 import zeroxLogo from '@assets/images/credits/credits-0x.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
+import openSeaLogo from '@assets/images/credits/credits-opensea.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
@@ -192,6 +194,7 @@ const svgIcons = {
 
   /* Partner Icons */
   nansenLogo,
+  openSeaLogo,
   ensLogo,
   coinGeckoLogo,
   zapperLogo,
@@ -271,7 +274,8 @@ const svgIcons = {
   'nav-migrate-ant': navMigrateAnt,
   'nav-migrate-lend': navMigrateLend,
   'nav-faucet': navFaucet,
-  'nav-disclaimer': navDisclaimer
+  'nav-disclaimer': navDisclaimer,
+  'nav-nft': navNftDashboard
 };
 
 const pngIcons = {
@@ -362,7 +366,7 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 export const getSVGIcon = (type: SvgIcons) => svgIcons[type];
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website' || type === 'faucet-icon') {
+  if (type === 'website' || type === 'faucet-icon' || type === 'nav-nft') {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;

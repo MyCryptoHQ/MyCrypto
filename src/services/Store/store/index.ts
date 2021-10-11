@@ -125,3 +125,4 @@ export { fetchHistory, fetchSchemaMeta, getTxHistory, getTxTypeMetas } from './t
 export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
 export { getClaims, getAllClaims } from './claims.slice';
 export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUndo.slice';
+export { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from './nft.slice';
