@@ -217,6 +217,17 @@ export const getAccountsAssets = createSelector([getStoreAccounts], (a) =>
   a.flatMap((a) => a.assets)
 );
 
+export const getSwapAssets = createSelector(
+  [getAssets, getAccountsAssets],
+  (assets, accountAssets) =>
+    assets.filter(
+      (a) => a.isCustom || a.isSwapRelevant || accountAssets.find((asset) => asset.uuid === a.uuid)
+    )
+);
+
+export const getSwapAssetsByNetwork = (network: NetworkId) =>
+  createSelector(getSwapAssets, (assets) => assets.filter((asset) => asset.networkId === network));
+
 export const getDefaultAccount = (includeViewOnly?: boolean, networkId?: NetworkId) =>
   createSelector(
     getStoreAccounts,

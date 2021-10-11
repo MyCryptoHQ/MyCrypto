@@ -37,7 +37,9 @@ export {
   getUserAssets,
   startBalancesPolling,
   stopBalancesPolling,
-  getAccountsAssets
+  getAccountsAssets,
+  getSwapAssets,
+  getSwapAssetsByNetwork
 } from './account.slice';
 export {
   createContact,
@@ -83,9 +85,7 @@ export {
   getAssets,
   getBaseAssetByNetwork,
   getCoinGeckoAssetManifest,
-  getAssetsByNetwork,
-  getSwapAssets,
-  getSwapAssetsByNetwork
+  getAssetsByNetwork
 } from './asset.slice';
 export {
   fetchMemberships,
