@@ -1,7 +1,8 @@
+import { TIcon } from '@components';
 import { ITxType, TURL } from '@types';
 
 export interface Action {
-  icon: string;
+  icon: TIcon;
   faded?: boolean;
   title: string;
   description: string;

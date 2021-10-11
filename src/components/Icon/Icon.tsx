@@ -103,6 +103,7 @@ import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import addressBookIcon from '@assets/images/icn-address-book.svg';
+import buyIcon from '@assets/images/icn-buy.svg';
 import check from '@assets/images/icn-check.svg';
 import trezorLgIcon from '@assets/images/icn-connect-trezor-new.svg';
 import experience from '@assets/images/icn-experience.svg';
@@ -125,13 +126,13 @@ import statusBadgeDeclined from '@assets/images/icn-status-badge-declined.svg';
 import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
 import swapFlip from '@assets/images/icn-swap-flip.svg';
+import swap from '@assets/images/icn-swap.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import linkOutIcon from '@assets/images/link-out.svg';
 import membership from '@assets/images/membership/membership-none.svg';
 import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
-import swap from '@assets/images/swap copy.svg';
 import uniLogo from '@assets/images/uni-logo.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
@@ -159,6 +160,7 @@ const svgIcons = {
   'link-out': linkOutIcon,
   'swap-flip': swapFlip,
   'action-completed': completedTaskIcon,
+  buy: buyIcon,
 
   /* Tooltips*/
   informational,
