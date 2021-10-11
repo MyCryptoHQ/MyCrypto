@@ -84,6 +84,10 @@ const providers: Record<string, PoweredByProvider> = {
   ZEROX: {
     icon: 'zeroxLogo',
     text: translateRaw('POWERED_BY')
+  },
+  OPENSEA: {
+    icon: 'openSeaLogo',
+    text: translateRaw('POWERED_BY')
   }
 };
 

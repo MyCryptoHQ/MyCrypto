@@ -110,3 +110,5 @@ export * from './typedTx';
 export * from './hexlify';
 export { default as useTimeout } from './useTimeout';
 export { default as useMinimumWait } from './useMinimumWait';
+export * from './fileExtensions';
+export * from './nft';

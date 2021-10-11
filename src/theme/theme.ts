@@ -163,6 +163,11 @@ const FLEX_VARIANTS = {
     flexDirection: 'row',
     ...FLEX_RECIPES.align
   },
+  rowAlignTop: {
+    flexDirection: 'row',
+    ...FLEX_RECIPES.align,
+    alignItems: 'flex-start'
+  },
   rowCenter: {
     flexDirection: 'row',
     ...FLEX_RECIPES.center
@@ -184,6 +189,10 @@ const FLEX_VARIANTS = {
   columnAlignLeft: {
     flexDirection: 'column',
     ...FLEX_RECIPES.start
+  },
+  columnAlignRight: {
+    flexDirection: 'column',
+    ...FLEX_RECIPES.end
   }
 };
 

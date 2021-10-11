@@ -28,6 +28,12 @@ export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
 export const FAUCET_API = 'https://faucet.mycryptoapi.com';
 
+export const OPENSEA_API = 'https://opensea.mycryptoapi.com/api';
+
+export const OPENSEA_IMAGE_PROXY_API = 'https://opensea.assets.mycryptoapi.com/v1';
+
+export const OPENSEA_IMAGE_PROXY = 'https://mycryptoapi.com/api/v1/images/opensea';
+
 // The URL and site ID for the Matomo analytics instance.
 export const ANALYTICS_API = 'https://analytics.mycryptoapi.com';
 export const ANALYTICS_SITE_ID_PROD = 17;

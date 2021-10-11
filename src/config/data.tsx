@@ -65,3 +65,7 @@ export type ThemeType = 'dark' | 'light';
 export const FAUCET_NETWORKS: NetworkId[] = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
 
 export const ETHEREUM_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
+
+export const SUPPORTED_VIDEO_EXTENSIONS = ['mov', 'mp4', 'webm', 'ogv'];
+
+export const SUPPORTED_AUDIO_EXTENSIONS = ['mp3', 'ogg', 'wav'];
