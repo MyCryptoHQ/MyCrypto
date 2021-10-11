@@ -1,7 +1,7 @@
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { LinkApp } from '@components';
+import { Icon, LinkApp } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { isUrl } from '@utils';
 
@@ -51,11 +51,21 @@ const SButton = styled(Button)<{ faded?: boolean }>`
     height: 50px;
     display: block;
   }
+  & > svg {
+    height: 50px;
+    display: block;
+    fill: none !important;
+  }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
+    & > svg {
+      opacity: ${(props) => (props.faded ? '.8' : 'inherit')};
+      height: 54px;
+      order: 1;
+    }
     & > img {
       opacity: ${(props) => (props.faded ? '.8' : 'inherit')};
       height: 54px;
@@ -99,7 +109,7 @@ function ActionTile({ icon, faded, title, description, link }: Action) {
     <SContainer>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
-          <img src={icon} alt={title} />
+          <Icon type={icon} alt={title} />
           <Typography as="div">
             <STitle isLonger={title.length > 15}>{title}</STitle>
             <SDescription>{description}</SDescription>
