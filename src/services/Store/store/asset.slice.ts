@@ -79,13 +79,8 @@ export default slice;
  */
 
 export const getAssets = createSelector([getAppState], (s) => s.assets);
-export const getSwapAssets = createSelector([getAssets], (assets) =>
-  assets.filter((a) => a.isCustom || a.isSwapRelevant)
-);
 export const getAssetsByNetwork = (network: NetworkId) =>
   createSelector(getAssets, (assets) => assets.filter((asset) => asset.networkId === network));
-export const getSwapAssetsByNetwork = (network: NetworkId) =>
-  createSelector(getSwapAssets, (assets) => assets.filter((asset) => asset.networkId === network));
 export const getBaseAssetByNetwork = (network: Network) =>
   createSelector(getAssets, (assets) => assets.find((asset) => asset.uuid === network.baseAsset)!);
 export const getAssetByUUID = (uuid: TUuid) =>
