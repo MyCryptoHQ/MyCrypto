@@ -28,7 +28,7 @@ export interface TableAccountDisplay extends DWAccountDisplay {
   isSelected: boolean;
 }
 
-export type ITableAccounts = Record<string, TableAccountDisplay>;
+export type ITableAccounts = TableAccountDisplay[];
 
 export interface HDTableProps {
   isCompleted: boolean;
@@ -271,9 +271,8 @@ const HDTable = ({
 }: HDTableProps) => {
   const { getContactByAddressAndNetworkId } = useContacts();
   const { isMobile } = useScreenSize();
-  const allAccounts = Object.values(accounts);
-  const accountsToDisplay = sortAccounts(allAccounts, displayEmptyAddresses, selectedDPath);
-  const selectedDPathOffset = calculateDPathOffset(allAccounts, selectedDPath);
+  const accountsToDisplay = sortAccounts(accounts, displayEmptyAddresses, selectedDPath);
+  const selectedDPathOffset = calculateDPathOffset(accounts, selectedDPath);
 
   const handleClick = () => {
     if (!isCompleted) return;

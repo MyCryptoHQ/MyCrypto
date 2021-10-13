@@ -11,7 +11,6 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Trans } from '@translations';
 import { BannerType, ExtendedAsset, IAccountAdditionData, Network } from '@types';
 import { hasBalance, useScreenSize } from '@utils';
-import { prop, uniqBy } from '@vendor';
 
 import { selectHDWalletScannedAccountsCSV } from './hdWallet.slice';
 import HDTable, { ITableAccounts, TableAccountDisplay } from './HDWTable';
@@ -110,25 +109,34 @@ export default function HDWList({
 }: HDWListProps) {
   const { isMobile } = useScreenSize();
   const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
-  const [tableAccounts, setTableAccounts] = useState({} as ITableAccounts);
+  const [tableAccounts, setTableAccounts] = useState<ITableAccounts>([]);
 
-  const accountsToUse = uniqBy(prop('address'), scannedAccounts);
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set
   // and if accountsToUse is cleared (occurs when re-scanning all accounts or when changing asset), refresh tableAccounts
   useEffect(() => {
-    if (accountsToUse.length === 0 && Object.keys(tableAccounts).length !== 0) {
-      setTableAccounts({} as ITableAccounts);
+    if (scannedAccounts.length === 0 && Object.keys(tableAccounts).length !== 0) {
+      setTableAccounts([]);
     } else {
-      const tableAccs = accountsToUse.reduce((acc, idx) => {
-        acc[idx.address] = tableAccounts[idx.address] || {
-          ...idx,
-          isSelected: hasBalance(idx.balance) || false
-        };
-        return acc;
+      const tableAccs = scannedAccounts.reduce((acc, cur) => {
+        const existingEntry = tableAccounts.find(
+          (a) =>
+            a.pathItem.index === cur.pathItem.index &&
+            a.pathItem.baseDPath.path === cur.pathItem.baseDPath.path
+        );
+        if (existingEntry) {
+          return acc;
+        }
+        return [
+          ...acc,
+          {
+            ...cur,
+            isSelected: hasBalance(cur.balance) || false
+          }
+        ];
       }, tableAccounts);
       setTableAccounts(tableAccs);
     }
-  }, [accountsToUse]);
+  }, [scannedAccounts]);
 
   const selectedAccounts = Object.values(tableAccounts).filter(({ isSelected }) => isSelected);
   const emptySelectedAccounts = filterZeroBalanceAccounts(selectedAccounts);
@@ -195,7 +203,7 @@ export default function HDWList({
         />
       </TableWrapper>
       <StatusBar>
-        {isCompleted && !!accountsToUse.length && (
+        {isCompleted && !!scannedAccounts.length && (
           <StatusWrapper>
             <IconWrapper>
               <Icon type="confirm" width="32px" />
@@ -217,7 +225,7 @@ export default function HDWList({
             </Typography>
           </StatusWrapper>
         )}
-        {isCompleted && !accountsToUse.length && (
+        {isCompleted && !scannedAccounts.length && (
           <StatusWrapper>
             <IconWrapper>
               <Icon type="info-small" />
