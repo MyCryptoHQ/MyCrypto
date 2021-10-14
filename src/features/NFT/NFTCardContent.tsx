@@ -1,6 +1,6 @@
 import { OPENSEA_IMAGE_PROXY } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
-import { detectMediaType, getNFTURL, MediaType } from '@utils';
+import { detectMediaType, getFileExtension, getNFTURL, getUUID, MediaType } from '@utils';
 
 export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
   const url = getNFTURL(nft);
@@ -21,8 +21,11 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
     );
   }
 
-  const pathname = new URL(url).pathname.slice(1).split('/').pop();
-  const proxiedURL = `${OPENSEA_IMAGE_PROXY}/${pathname}`;
+  const pathname = new URL(url).pathname;
+  const fileExtension = getFileExtension(pathname);
+  const hash = getUUID(pathname);
+  const postfix = fileExtension ? `.${fileExtension}` : '';
+  const proxiedURL = `${OPENSEA_IMAGE_PROXY}/${hash}${postfix}`;
   const mediaType = detectMediaType(url);
 
   if (mediaType === MediaType.Video) {
