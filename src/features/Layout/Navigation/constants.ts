@@ -67,24 +67,10 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
       },
       {
         type: 'internal',
-        title: translateRaw('NAVIGATION_VERIFY_MESSAGE'),
-        to: APP_ROUTES.VERIFY_MESSAGE.path,
-        enabled: APP_ROUTES.VERIFY_MESSAGE.enabled,
-        icon: 'nav-verify-message'
-      },
-      {
-        type: 'internal',
-        title: translateRaw('NAVIGATION_INTERACT_WITH_CONTRACTS'),
+        title: translateRaw('NAVIGATION_CONTRACTS'),
         to: APP_ROUTES.INTERACT_WITH_CONTRACTS.path,
         enabled: APP_ROUTES.INTERACT_WITH_CONTRACTS.enabled,
         icon: 'nav-interact-with-contracts'
-      },
-      {
-        type: 'internal',
-        title: translateRaw('NAVIGATION_DEPLOY_CONTRACTS'),
-        to: APP_ROUTES.DEPLOY_CONTRACTS.path,
-        enabled: APP_ROUTES.DEPLOY_CONTRACTS.enabled,
-        icon: 'nav-deploy-contracts'
       },
       {
         type: 'internal',
@@ -271,24 +257,10 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
         },
         {
           type: 'internal',
-          title: translateRaw('NAVIGATION_VERIFY_MESSAGE'),
-          to: APP_ROUTES.VERIFY_MESSAGE.path,
-          enabled: APP_ROUTES.VERIFY_MESSAGE.enabled,
-          icon: 'nav-verify-message'
-        },
-        {
-          type: 'internal',
-          title: translateRaw('NAVIGATION_INTERACT_WITH_CONTRACTS'),
+          title: translateRaw('NAVIGATION_CONTRACTS'),
           to: APP_ROUTES.INTERACT_WITH_CONTRACTS.path,
           enabled: APP_ROUTES.INTERACT_WITH_CONTRACTS.enabled,
           icon: 'nav-interact-with-contracts'
-        },
-        {
-          type: 'internal',
-          title: translateRaw('NAVIGATION_DEPLOY_CONTRACTS'),
-          to: APP_ROUTES.DEPLOY_CONTRACTS.path,
-          enabled: APP_ROUTES.DEPLOY_CONTRACTS.enabled,
-          icon: 'nav-deploy-contracts'
         },
         {
           type: 'internal',
