@@ -948,7 +948,7 @@
     "NAVIGATION_BUY": "Buy",
     "NAVIGATION_ADD_ACCOUNT": "Add",
     "NAVIGATION_TOOLS": "Tools",
-    "NAVIGATION_SIGN_MESSAGE": "Sign Message",
+    "NAVIGATION_SIGN_MESSAGE": "Sign/Verify Message",
     "NAVIGATION_CONTRACTS": "Contracts",
     "NAVIGATION_BROADCAST_TRANSACTION": "Broadcast Transaction",
     "NAVIGATION_SUPPORT_US": "Support Us",
