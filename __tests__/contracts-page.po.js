@@ -39,6 +39,7 @@ export default class ContractsPage extends BasePage {
         paste: true
       })
       .click(queryAllByText(findByTKey('INTERACT_WITH_CONTRACT')).nth(1))
+      .wait(1000)
       .click(Selector('div[data-testid="selector"]').nth(2))
       .click(getByText('approve'))
       .typeText(Selector('input').nth(6), FIXTURE_CONTRACT_SPENDER, {
