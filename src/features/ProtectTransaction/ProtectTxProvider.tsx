@@ -112,15 +112,13 @@ const ProtectTxProvider: FC = ({ children }) => {
         EtherscanService.instance.getTransactions(address, network!.id).catch((e) => e)
       ]);
 
-      const nansenAddressReport = (() => {
+      const nansenAddressReport: NansenServiceEntry | null = (() => {
         if (nansenAddressReportResponse instanceof Error || nansenAddressReportResponse.error) {
           return null;
         } else if (nansenAddressReportResponse.result.labels.length === 0) {
-          return { address, label: [] };
+          return { labels: [] };
         }
-        return (
-          nansenAddressReportResponse.result.name || nansenAddressReportResponse.result.labels[0]
-        );
+        return nansenAddressReportResponse.result;
       })();
 
       const etherscanBalanceReport =

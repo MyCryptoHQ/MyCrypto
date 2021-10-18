@@ -1,5 +1,5 @@
 export interface NansenServiceResponse {
-  result?: NansenServiceEntry[];
+  result?: NansenServiceEntry;
   error?: string;
 }
 
