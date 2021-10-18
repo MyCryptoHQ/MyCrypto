@@ -35,8 +35,6 @@ describe('NFTCardContent', () => {
       nft: { ...fNFTs[0], image_preview_url: '', image_url: '' }
     });
     expect(container.querySelector('img')).toBeInTheDocument();
-    expect(container.querySelector('img')?.src).toBe(
-      'https://opensea.io/static/images/placeholder.png'
-    );
+    expect(container.querySelector('img')?.src).toBe('http://localhost/test-file-stub');
   });
 });
