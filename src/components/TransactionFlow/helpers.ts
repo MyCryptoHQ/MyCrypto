@@ -143,7 +143,7 @@ export const constructSenderFromTxConfig = (
 
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
 export const calculateReplacementGasPrice = async (txConfig: ITxConfig, network: Network) => {
-  const gas = await fetchUniversalGasPriceEstimate(network, txConfig.senderAccount);
+  const { estimate: gas } = await fetchUniversalGasPriceEstimate(network, txConfig.senderAccount);
 
   return isType2Tx(txConfig.rawTransaction)
     ? {

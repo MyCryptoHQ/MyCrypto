@@ -39,7 +39,7 @@ describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price with too low fast gas price', () => {
     (fetchUniversalGasPriceEstimate as jest.MockedFunction<
       typeof fetchUniversalGasPriceEstimate
-    >).mockResolvedValueOnce({ gasPrice: '1' });
+    >).mockResolvedValueOnce({ estimate: { gasPrice: '1' } });
     return expect(
       calculateReplacementGasPrice(fTxConfig, { ...fNetworks[0], supportsEIP1559: false })
     ).resolves.toStrictEqual({
@@ -50,7 +50,7 @@ describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price for eip 1559', () => {
     (fetchUniversalGasPriceEstimate as jest.MockedFunction<
       typeof fetchUniversalGasPriceEstimate
-    >).mockResolvedValueOnce({ maxFeePerGas: '1', maxPriorityFeePerGas: '1' });
+    >).mockResolvedValueOnce({ estimate: { maxFeePerGas: '1', maxPriorityFeePerGas: '1' } });
     return expect(
       calculateReplacementGasPrice(fTxConfigEIP1559, { ...fNetworks[0], supportsEIP1559: true })
     ).resolves.toStrictEqual({
@@ -62,7 +62,7 @@ describe('calculateReplacementGasPrice', () => {
   it('correctly determines tx gas price for eip 1559 when new price too high', () => {
     (fetchUniversalGasPriceEstimate as jest.MockedFunction<
       typeof fetchUniversalGasPriceEstimate
-    >).mockResolvedValueOnce({ maxFeePerGas: '100', maxPriorityFeePerGas: '10' });
+    >).mockResolvedValueOnce({ estimate: { maxFeePerGas: '100', maxPriorityFeePerGas: '10' } });
     return expect(
       calculateReplacementGasPrice(fTxConfigEIP1559, { ...fNetworks[0], supportsEIP1559: true })
     ).resolves.toStrictEqual({

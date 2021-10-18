@@ -61,7 +61,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
     approvalTx,
     isEstimatingGas,
     tradeTx,
-    selectedNetwork
+    selectedNetwork,
+    gas
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
@@ -110,7 +111,8 @@ const SwapAssetsFlow = (props: RouteComponentProps) => {
         approvalTx,
         isEstimatingGas,
         isSubmitting,
-        selectedNetwork
+        selectedNetwork,
+        gas
       },
       actions: {
         handleFromAssetSelected,

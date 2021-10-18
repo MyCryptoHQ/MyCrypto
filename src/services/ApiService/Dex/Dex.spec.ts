@@ -64,7 +64,7 @@ describe('SwapFlow', () => {
     it('returns the expected two transactions for a multi tx swap using eip1559', async () => {
       (fetchUniversalGasPriceEstimate as jest.MockedFunction<
         typeof fetchUniversalGasPriceEstimate
-      >).mockResolvedValueOnce({ maxFeePerGas: '100', maxPriorityFeePerGas: '10' });
+      >).mockResolvedValueOnce({ estimate: { maxFeePerGas: '100', maxPriorityFeePerGas: '10' } });
       const promise = DexService.instance.getOrderDetailsFrom(
         { ...fNetwork, supportsEIP1559: true },
         { ...fAccount, wallet: WalletId.LEDGER_NANO_S_NEW },

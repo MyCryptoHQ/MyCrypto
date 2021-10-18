@@ -71,17 +71,22 @@ export type UniversalGasEstimationResult =
 // Returns fast gasPrice or EIP1559 gas params in gwei
 export async function fetchUniversalGasPriceEstimate(network?: Network, account?: StoreAccount) {
   if (network && account && isEIP1559Supported(network, account)) {
-    const { maxFeePerGas, maxPriorityFeePerGas } = await fetchEIP1559PriceEstimates(network);
+    const { maxFeePerGas, maxPriorityFeePerGas, baseFee } = await fetchEIP1559PriceEstimates(
+      network
+    );
     return {
-      maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
-      maxPriorityFeePerGas:
-        maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+      baseFee,
+      estimate: {
+        maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
+        maxPriorityFeePerGas:
+          maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+      }
     };
   }
 
   const { fast } = await fetchGasPriceEstimates(network);
 
-  return { gasPrice: fast.toString() };
+  return { estimate: { gasPrice: fast.toString() } };
 }
 
 export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {
