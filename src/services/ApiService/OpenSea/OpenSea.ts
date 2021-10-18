@@ -14,7 +14,6 @@ export const OpenSeaService = () => {
     timeout: 15000
   });
 
-  // @todo Make prettier
   const fetchAllAssets = async (owner: string): Promise<OpenSeaNFT[]> => {
     let page = 0;
     let results = [] as OpenSeaNFT[];
@@ -64,7 +63,7 @@ export const OpenSeaService = () => {
         {
           assetURLs: assets.map((a) => getNFTURL(a)).filter((a) => a && a.length > 0)
         },
-        { baseURL: OPENSEA_IMAGE_PROXY_API }
+        { baseURL: OPENSEA_IMAGE_PROXY_API, timeout: 60000 }
       );
       return result.status === 200;
     } catch (e) {
