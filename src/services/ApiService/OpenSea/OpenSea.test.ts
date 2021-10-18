@@ -61,7 +61,7 @@ describe('OpenSea', () => {
       expect.objectContaining({
         assetURLs: fNFTs.map((a) => getNFTURL(a))
       }),
-      { baseURL: OPENSEA_IMAGE_PROXY_API }
+      { baseURL: OPENSEA_IMAGE_PROXY_API, timeout: 60000 }
     );
     mockAxios.mockResponse();
     const result = await promise;
