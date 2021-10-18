@@ -273,7 +273,7 @@ const ProtectTxProvider: FC = ({ children }) => {
       etherscanLastTokenTxReport,
       etherscanBalanceReport
     } = state;
-    const labels = nansenAddressReport ? nansenAddressReport.label : null;
+    const labels = nansenAddressReport ? nansenAddressReport.labels : null;
     const status = labels ? getNansenReportType(labels) : null;
     const lastTx = getLastTx(etherscanLastTxReport, etherscanLastTokenTxReport, address);
     const balance = getBalance(etherscanBalanceReport);
