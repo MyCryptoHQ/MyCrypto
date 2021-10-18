@@ -1,3 +1,4 @@
+import placeholder from '@assets/images/nft-placeholder.png';
 import { OPENSEA_IMAGE_PROXY } from '@config';
 import { OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { detectMediaType, getFileExtension, getNFTURL, getUUID, MediaType } from '@utils';
@@ -6,11 +7,10 @@ export const NFTCardContent = ({ nft }: { nft: OpenSeaNFT }) => {
   const url = getNFTURL(nft);
   const isEmpty = !(typeof url === 'string' && url.length > 0);
 
-  // @todo Figure out graphics for this case
   if (isEmpty || !url) {
     return (
       <img
-        src="https://opensea.io/static/images/placeholder.png"
+        src={placeholder}
         style={{
           objectFit: 'cover',
           borderRadius: '2px',
