@@ -113,12 +113,14 @@ const ProtectTxProvider: FC = ({ children }) => {
       ]);
 
       const nansenAddressReport = (() => {
-        if (nansenAddressReportResponse instanceof Error) {
+        if (nansenAddressReportResponse instanceof Error || nansenAddressReportResponse.error) {
           return null;
-        } else if (nansenAddressReportResponse.page.length === 0) {
+        } else if (nansenAddressReportResponse.result.labels.length === 0) {
           return { address, label: [] };
         }
-        return nansenAddressReportResponse.page[0];
+        return (
+          nansenAddressReportResponse.result.name || nansenAddressReportResponse.result.labels[0]
+        );
       })();
 
       const etherscanBalanceReport =
