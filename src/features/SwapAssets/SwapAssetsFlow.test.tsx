@@ -11,7 +11,7 @@ import SwapAssetsFlow from './SwapAssetsFlow';
 
 jest.mock('@services/ApiService/Gas', () => ({
   ...jest.requireActual('@services/ApiService/Gas'),
-  fetchUniversalGasPriceEstimate: () => Promise.resolve({ gasPrice: '20' }),
+  fetchUniversalGasPriceEstimate: () => Promise.resolve({ estimate: { gasPrice: '20' } }),
   getGasEstimate: () => Promise.resolve(21000)
 }));
 

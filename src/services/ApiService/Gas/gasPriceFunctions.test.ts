@@ -3,6 +3,7 @@ import nock from 'nock';
 import { GAS_PRICE_DEFAULT } from '@config';
 import { fAccounts, fNetwork, fNetworks } from '@fixtures';
 import { WalletId } from '@types';
+import { bigify } from '@utils';
 
 import { fetchUniversalGasPriceEstimate } from './gasPriceFunctions';
 
@@ -24,7 +25,10 @@ describe('fetchUniversalGasPriceEstimate', () => {
         { ...fNetwork, supportsEIP1559: true },
         { ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }
       )
-    ).resolves.toStrictEqual({ maxFeePerGas: '20', maxPriorityFeePerGas: '3' });
+    ).resolves.toStrictEqual({
+      baseFee: bigify(10000000000),
+      estimate: { maxFeePerGas: '20', maxPriorityFeePerGas: '3' }
+    });
   });
 
   it('falls back to gas price endpoint if network doesnt support EIP 1559', () => {
@@ -43,7 +47,7 @@ describe('fetchUniversalGasPriceEstimate', () => {
         supportsEIP1559: false,
         shouldEstimateGasPrice: true
       })
-    ).resolves.toStrictEqual({ gasPrice: '42' });
+    ).resolves.toStrictEqual({ estimate: { gasPrice: '42' } });
   });
 
   it('falls back to default gas estimation settings if gas price endpoint fails', () => {
@@ -54,18 +58,24 @@ describe('fetchUniversalGasPriceEstimate', () => {
         supportsEIP1559: false,
         shouldEstimateGasPrice: true
       })
-    ).resolves.toStrictEqual({ gasPrice: fNetworks[0].gasPriceSettings.initial.toString() });
+    ).resolves.toStrictEqual({
+      estimate: { gasPrice: fNetworks[0].gasPriceSettings.initial.toString() }
+    });
   });
 
   it('falls back to default gas estimation settings if gas price endpoint not available', () => {
     return expect(
       fetchUniversalGasPriceEstimate({ ...fNetwork, supportsEIP1559: false })
-    ).resolves.toStrictEqual({ gasPrice: fNetwork.gasPriceSettings.initial.toString() });
+    ).resolves.toStrictEqual({
+      estimate: { gasPrice: fNetwork.gasPriceSettings.initial.toString() }
+    });
   });
 
   it('falls back to default gas estimation settings if no network', () => {
     return expect(fetchUniversalGasPriceEstimate()).resolves.toStrictEqual({
-      gasPrice: GAS_PRICE_DEFAULT.initial.toString()
+      estimate: {
+        gasPrice: GAS_PRICE_DEFAULT.initial.toString()
+      }
     });
   });
 });
