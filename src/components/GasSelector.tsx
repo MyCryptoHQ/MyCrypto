@@ -106,10 +106,11 @@ export default function GasSelector({
 
     try {
       const { network } = account;
-      const [gas, fetchedNonce] = await Promise.all([
+      const [gasEstimate, fetchedNonce] = await Promise.all([
         fetchUniversalGasPriceEstimate(network, account),
         getNonce(network, account.address)
       ]);
+      const { estimate: gas } = gasEstimate;
       setGasPrice({
         gasPrice: gas.gasPrice ?? '',
         maxFeePerGas: gas.maxFeePerGas ?? '',

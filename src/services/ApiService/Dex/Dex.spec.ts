@@ -13,13 +13,14 @@ import {
   TUuid,
   WalletId
 } from '@types';
+import { bigify } from '@utils';
 
 import { DexService } from '.';
 import { formatTradeTx } from './Dex';
 
 jest.mock('@services/ApiService/Gas', () => ({
   ...jest.requireActual('@services/ApiService/Gas'),
-  fetchUniversalGasPriceEstimate: jest.fn().mockResolvedValue({ gasPrice: '154' })
+  fetchUniversalGasPriceEstimate: jest.fn().mockResolvedValue({ estimate: { gasPrice: '154' } })
 }));
 
 describe('SwapFlow', () => {
@@ -64,7 +65,10 @@ describe('SwapFlow', () => {
     it('returns the expected two transactions for a multi tx swap using eip1559', async () => {
       (fetchUniversalGasPriceEstimate as jest.MockedFunction<
         typeof fetchUniversalGasPriceEstimate
-      >).mockResolvedValueOnce({ maxFeePerGas: '100', maxPriorityFeePerGas: '10' });
+      >).mockResolvedValueOnce({
+        baseFee: bigify(100000000000),
+        estimate: { maxFeePerGas: '100', maxPriorityFeePerGas: '10' }
+      });
       const promise = DexService.instance.getOrderDetailsFrom(
         { ...fNetwork, supportsEIP1559: true },
         { ...fAccount, wallet: WalletId.LEDGER_NANO_S_NEW },

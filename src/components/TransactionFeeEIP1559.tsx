@@ -7,7 +7,7 @@ import { GasLimitField, GasPriceField } from '@features/SendAssets/components';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, Fiat } from '@types';
-import { bigify, bigNumGasPriceToViewableGwei, gasStringsToMaxGasNumber } from '@utils';
+import { calculateMinMaxFee } from '@utils';
 
 import Box from './Box';
 import { default as Currency } from './Currency';
@@ -63,26 +63,16 @@ export const TransactionFeeEIP1559 = ({
   const [editMode, setEditMode] = useState(false);
   const handleToggleEditMode = () => setEditMode(!editMode);
 
-  const viewableBaseFee = baseFee && bigify(bigNumGasPriceToViewableGwei(baseFee));
-
-  const maxFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
-  const maxFeeFiat = maxFee.multipliedBy(baseAssetRate);
-  const hasFiatValue = maxFeeFiat.gt(0);
-
-  const minMaxFee =
-    viewableBaseFee &&
-    BigNumber.min(
-      bigify(maxPriorityFeePerGas).gt(viewableBaseFee)
-        ? bigify(maxPriorityFeePerGas).plus(viewableBaseFee)
-        : viewableBaseFee,
-      maxFeePerGas
-    );
-
-  const minFee = minMaxFee ? gasStringsToMaxGasNumber(minMaxFee.toString(), gasLimit) : maxFee;
-  const minFeeFiat = minFee.multipliedBy(baseAssetRate);
-
-  const avgFee = minFee.plus(maxFee).dividedBy(2);
-  const avgFeeFiat = avgFee.multipliedBy(baseAssetRate);
+  const {
+    viewableBaseFee,
+    minFee,
+    minFeeFiat,
+    avgFee,
+    avgFeeFiat,
+    maxFee,
+    maxFeeFiat,
+    hasFiatValue
+  } = calculateMinMaxFee({ baseFee, baseAssetRate, maxFeePerGas, maxPriorityFeePerGas, gasLimit });
 
   return (
     <Box opacity={disabled ? '0.5' : undefined}>
