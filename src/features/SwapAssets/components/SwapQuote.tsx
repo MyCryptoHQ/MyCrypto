@@ -53,7 +53,7 @@ export const SwapQuote = ({
       </Heading>
       <LinkApp href="#" variant="opacityLink">
         <Box variant="rowAlign" onClick={() => handleRefreshQuote()}>
-          <Icon type="refresh" width="16px" />
+          <Icon type="refresh" width="16px" color="BLUE_BRIGHT" />
           <Text ml={SPACING.XS} mb={0}>
             {translateRaw('GET_NEW_QUOTE')}
           </Text>
