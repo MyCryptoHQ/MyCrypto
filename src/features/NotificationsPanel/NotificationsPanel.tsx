@@ -77,8 +77,9 @@ const NotificationsPanel = ({ accounts }: Props) => {
     });
   }
 
+  const template = currentNotification?.template;
+
   const getNotificationBody = () => {
-    const template = currentNotification!.template;
     const templateData = currentNotification!.templateData;
     const NotificationComponent = notificationsConfigs[template].layout;
     return <NotificationComponent {...templateData} />;
@@ -87,7 +88,7 @@ const NotificationsPanel = ({ accounts }: Props) => {
   return (
     <Fragment>
       {currentNotification && (
-        <MainPanel>
+        <MainPanel style={notificationsConfigs[template].style}>
           <CloseButton basic={true} onClick={handleCloseClick}>
             <img src={closeIcon} alt="Close" />
           </CloseButton>

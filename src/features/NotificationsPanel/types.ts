@@ -9,6 +9,7 @@ export interface NotificationConfig {
   repeatInterval?: number;
   preventDismisExisting?: boolean;
   condition?(notification: ExtendedNotification): boolean;
+  style?: any;
 }
 
 export interface NotificationsConfigsProps {

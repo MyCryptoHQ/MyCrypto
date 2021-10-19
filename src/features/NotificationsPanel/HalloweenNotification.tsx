@@ -1,17 +1,16 @@
 import React from 'react';
 
-import bg from '@assets/images/halloween-bg.svg';
 import poapImage from '@assets/images/halloween-poap.svg';
 import { Body, Box, Button, Heading } from '@components';
 import { translateRaw } from '@translations';
 
 export const HalloweenNotification = () => (
-  <Box variant="rowAlign" style={{ backgroundImage: `url(${bg})` }}>
-    <Box mr="3">
+  <Box variant="rowAlign">
+    <Box mr="4">
       <img src={poapImage} />
     </Box>
-    <Box>
-      <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px">
+    <Box mr="4">
+      <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
         {translateRaw('POAP_NOTIFICATION_HEADER')}
       </Heading>
       <Body color="WARNING_ORANGE">
@@ -19,7 +18,7 @@ export const HalloweenNotification = () => (
         ultricies turpis elit varius. Porttitor amet, tortor, nunc lectus.
       </Body>
     </Box>
-    <Box ml="3">
+    <Box>
       <Button>{translateRaw('CLAIM_NOW')}</Button>
     </Box>
   </Box>

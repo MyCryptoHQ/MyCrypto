@@ -34,6 +34,8 @@ export const OPENSEA_IMAGE_PROXY_API = 'https://opensea.assets.mycryptoapi.com/v
 
 export const OPENSEA_IMAGE_PROXY = 'https://mycryptoapi.com/api/v1/images/opensea';
 
+export const POAP_CLAIM_API = 'https://poap.mycryptoapi.com/v1';
+
 // The URL and site ID for the Matomo analytics instance.
 export const ANALYTICS_API = 'https://analytics.mycryptoapi.com';
 export const ANALYTICS_SITE_ID_PROD = 17;
