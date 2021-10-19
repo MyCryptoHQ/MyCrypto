@@ -20,7 +20,7 @@ export const MYC_API = 'https://mycryptoapi.com/api/v1';
 
 export const HISTORY_API = 'https://history.mycryptoapi.com/history';
 
-export const NANSEN_API = 'https://nansen.mycryptoapi.com/v1';
+export const NANSEN_API = 'https://nansen.mycryptoapi.com/v2';
 
 export const CUSTOM_ASSET_API = 'https://assets.mycryptoapi.com/custom';
 

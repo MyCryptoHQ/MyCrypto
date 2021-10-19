@@ -112,13 +112,17 @@ const ProtectTxProvider: FC = ({ children }) => {
         EtherscanService.instance.getTransactions(address, network!.id).catch((e) => e)
       ]);
 
-      const nansenAddressReport = (() => {
-        if (nansenAddressReportResponse instanceof Error) {
+      const nansenAddressReport: NansenServiceEntry | null = (() => {
+        if (
+          nansenAddressReportResponse instanceof Error ||
+          !nansenAddressReportResponse ||
+          nansenAddressReportResponse?.error
+        ) {
           return null;
-        } else if (nansenAddressReportResponse.page.length === 0) {
-          return { address, label: [] };
+        } else if (nansenAddressReportResponse.result.labels.length === 0) {
+          return { labels: [] };
         }
-        return nansenAddressReportResponse.page[0];
+        return nansenAddressReportResponse.result;
       })();
 
       const etherscanBalanceReport =
@@ -271,7 +275,7 @@ const ProtectTxProvider: FC = ({ children }) => {
       etherscanLastTokenTxReport,
       etherscanBalanceReport
     } = state;
-    const labels = nansenAddressReport ? nansenAddressReport.label : null;
+    const labels = nansenAddressReport ? nansenAddressReport.labels : null;
     const status = labels ? getNansenReportType(labels) : null;
     const lastTx = getLastTx(etherscanLastTxReport, etherscanLastTokenTxReport, address);
     const balance = getBalance(etherscanBalanceReport);
