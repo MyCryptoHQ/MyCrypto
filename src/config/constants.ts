@@ -61,10 +61,11 @@ export const DEFAULT_NETWORK_CHAINID = 1;
 export const SECONDS_IN_MONTH = 60 * 60 * 24 * 30;
 
 // Assets that are excluded when loading assets from asset API
-// Spam tokens which return Infinity value for every balance query.
+// Tokens which are non-standard and/or may return Infinity value for every balance query.
 export const EXCLUDED_ASSETS = [
   '1e917c91-e52b-5997-af67-2ffd01843701',
-  '17da00cc-4901-5e04-87e0-f7e3cf9b382a'
+  '17da00cc-4901-5e04-87e0-f7e3cf9b382a',
+  '2e96d50d-af13-5186-8ece-fc33872ab70c'
 ];
 
 export const ETH_SCAN_BATCH_SIZE = 300;
