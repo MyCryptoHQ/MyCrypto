@@ -113,7 +113,11 @@ const ProtectTxProvider: FC = ({ children }) => {
       ]);
 
       const nansenAddressReport: NansenServiceEntry | null = (() => {
-        if (nansenAddressReportResponse instanceof Error || nansenAddressReportResponse.error) {
+        if (
+          nansenAddressReportResponse instanceof Error ||
+          !nansenAddressReportResponse ||
+          nansenAddressReportResponse?.error
+        ) {
           return null;
         } else if (nansenAddressReportResponse.result.labels.length === 0) {
           return { labels: [] };
