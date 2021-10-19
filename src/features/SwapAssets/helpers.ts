@@ -12,7 +12,14 @@ import {
   StoreAsset,
   TUuid
 } from '@types';
-import { bigify, calculateMinMaxFee, totalTxFeeToString, toTokenBase, weiToFloat } from '@utils';
+import {
+  bigify,
+  calculateMinMaxFee,
+  inputGasPriceToHex,
+  totalTxFeeToString,
+  toTokenBase,
+  weiToFloat
+} from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
@@ -68,7 +75,7 @@ export const getEstimatedGasFee = ({
     gas?.estimate.gasPrice &&
     tradeGasLimit &&
     totalTxFeeToString(
-      gas.estimate.gasPrice,
+      inputGasPriceToHex(gas.estimate.gasPrice),
       bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
     )
   );
