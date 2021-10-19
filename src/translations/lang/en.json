@@ -1064,6 +1064,8 @@
     "MAX": "Max",
     "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!",
     "CURRENT_BASE_FEE_TEXT": "Current Base Fee",
-    "ETH_TRANSFER_FEE": "ETH Transfer Fee"
+    "ETH_TRANSFER_FEE": "ETH Transfer Fee",
+    "POAP_NOTIFICATION_HEADER": "Claim your exclusive Halloween POAP now!",
+    "CLAIM_NOW": "Claim Now"
   }
 }
