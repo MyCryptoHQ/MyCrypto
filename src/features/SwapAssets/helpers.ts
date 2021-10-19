@@ -1,8 +1,25 @@
+import BigNumber from 'bignumber.js';
+
 import { WALLET_STEPS } from '@components';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { getAssetByTicker, getAssetByUUID } from '@services';
-import { ISwapAsset, ITxConfig, ITxObject, StoreAccount, StoreAsset, TUuid } from '@types';
-import { toTokenBase, weiToFloat } from '@utils';
+import { getAssetByTicker, getAssetByUUID, UniversalGasEstimationResult } from '@services';
+import {
+  ISwapAsset,
+  ITxConfig,
+  ITxGasLimit,
+  ITxObject,
+  StoreAccount,
+  StoreAsset,
+  TUuid
+} from '@types';
+import {
+  bigify,
+  calculateMinMaxFee,
+  inputGasPriceToHex,
+  totalTxFeeToString,
+  toTokenBase,
+  weiToFloat
+} from '@utils';
 
 export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   transaction: ITxObject,
@@ -26,6 +43,42 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
   };
 
   return txConfig;
+};
+
+export const getEstimatedGasFee = ({
+  tradeGasLimit,
+  approvalGasLimit,
+  baseAssetRate,
+  gas
+}: {
+  tradeGasLimit?: ITxGasLimit;
+  approvalGasLimit?: ITxGasLimit;
+  baseAssetRate?: number;
+  gas?: { estimate: UniversalGasEstimationResult; baseFee?: BigNumber };
+}) => {
+  if (tradeGasLimit && gas?.estimate.maxFeePerGas) {
+    const { avgFee } = calculateMinMaxFee({
+      baseFee: gas.baseFee,
+      ...gas.estimate,
+      gasLimit:
+        tradeGasLimit &&
+        bigify(tradeGasLimit)
+          .plus(approvalGasLimit ? approvalGasLimit : 0)
+          .toString(),
+      baseAssetRate
+    });
+
+    return avgFee.toFixed(6);
+  }
+
+  return (
+    gas?.estimate.gasPrice &&
+    tradeGasLimit &&
+    totalTxFeeToString(
+      inputGasPriceToHex(gas.estimate.gasPrice),
+      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
+    )
+  );
 };
 
 // filter accounts based on wallet type and sufficient balance

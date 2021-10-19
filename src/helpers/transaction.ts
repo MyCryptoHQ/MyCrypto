@@ -443,7 +443,7 @@ export const appendGasPrice = (network: Network, account: StoreAccount) => async
     return tx as TxBeforeGasLimit;
   }
   const gas = await fetchUniversalGasPriceEstimate(network, account)
-    .then((r) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
+    .then(({ estimate: r }) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
     .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
     });

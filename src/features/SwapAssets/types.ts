@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { DistributiveOmit } from 'react-redux';
 
+import { UniversalGasEstimationResult } from '@services';
 import {
   ISwapAsset,
   ITxGasLimit,
@@ -62,6 +63,7 @@ export interface SwapFormState {
     txType: ITxType;
     metadata: ITxMetadata;
   };
+  gas?: { estimate: UniversalGasEstimationResult; baseFee?: BigNumber };
 }
 
 export interface IAssetPair {

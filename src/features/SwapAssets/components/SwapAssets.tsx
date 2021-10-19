@@ -32,9 +32,9 @@ import {
 import { SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { Asset, ISwapAsset, Network, NetworkId, StoreAccount } from '@types';
-import { bigify, getTimeDifference, sortByLabel, totalTxFeeToString, useInterval } from '@utils';
+import { getTimeDifference, sortByLabel, useInterval } from '@utils';
 
-import { getAccountsWithAssetBalance, getUnselectedAssets } from '../helpers';
+import { getAccountsWithAssetBalance, getEstimatedGasFee, getUnselectedAssets } from '../helpers';
 import { SwapFormState } from '../types';
 import { SwapQuote } from './SwapQuote';
 
@@ -96,7 +96,8 @@ const SwapAssets = (props: Props) => {
     gasPrice,
     isEstimatingGas,
     expiration,
-    setNetwork
+    setNetwork,
+    gas
   } = props;
 
   const settings = useSelector(getSettings);
@@ -147,13 +148,12 @@ const SwapAssets = (props: Props) => {
     calculateNewFromAmountDebounced(value);
   };
 
-  const estimatedGasFee =
-    gasPrice &&
-    tradeGasLimit &&
-    totalTxFeeToString(
-      gasPrice,
-      bigify(tradeGasLimit).plus(approvalGasLimit ? approvalGasLimit : 0)
-    );
+  const estimatedGasFee = getEstimatedGasFee({
+    tradeGasLimit,
+    approvalGasLimit,
+    baseAssetRate,
+    gas
+  });
 
   // Accounts with a balance of the chosen asset and base asset
   const filteredAccounts = fromAsset
