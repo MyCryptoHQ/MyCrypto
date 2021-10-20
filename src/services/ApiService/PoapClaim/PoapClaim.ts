@@ -12,8 +12,8 @@ export const PoapClaimService = () => {
 
   const claim = async (id: string): Promise<PoapClaimResult | null> => {
     try {
-      const { data } = await service.get('', {
-        params: { uniqueId: getUUID(id) }
+      const { data } = await service.post('', {
+        uniqueId: getUUID(id)
       });
       return data;
     } catch (e) {

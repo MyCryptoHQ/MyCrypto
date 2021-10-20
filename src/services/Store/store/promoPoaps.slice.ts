@@ -30,18 +30,15 @@ const slice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
-    create(state, action: PayloadAction<PromoPoap>) {
-      state.promos[action.payload.key] = action.payload;
-    },
-    update(state, action: PayloadAction<PromoPoap>) {
-      state.promos[action.payload.key] = action.payload;
+    claim(state, action: PayloadAction<{ key: string; claim: string }>) {
+      state.promos[action.payload.key] = { ...action.payload, claimed: true };
     }
   }
 });
 
 export const checkForPromos = createAction(`${slice.name}/check`);
 
-export const { create: createUserAction, update: updateUserAction } = slice.actions;
+export const { claim: claimPromo } = slice.actions;
 
 export default slice;
 
