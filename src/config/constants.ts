@@ -65,7 +65,8 @@ export const SECONDS_IN_MONTH = 60 * 60 * 24 * 30;
 export const EXCLUDED_ASSETS = [
   '1e917c91-e52b-5997-af67-2ffd01843701',
   '17da00cc-4901-5e04-87e0-f7e3cf9b382a',
-  '2e96d50d-af13-5186-8ece-fc33872ab70c'
+  '2e96d50d-af13-5186-8ece-fc33872ab70c',
+  'b1ef1841-6348-584e-a12e-ff2e3bbcd7ff'
 ];
 
 export const ETH_SCAN_BATCH_SIZE = 300;
