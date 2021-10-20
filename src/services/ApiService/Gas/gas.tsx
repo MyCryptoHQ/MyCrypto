@@ -57,7 +57,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
         estimateRes.fast > estimateRes.fastest
       ) {
         throw new Error(
-          `Gas esimates are in illogical order: should be safeLow < standard < fast < fastest, received ${estimateRes.safeLow} < ${estimateRes.standard} < ${estimateRes.fast} < ${estimateRes.fastest}`
+          `Gas estimates are in illogical order: should be safeLow < standard < fast < fastest, received ${estimateRes.safeLow} < ${estimateRes.standard} < ${estimateRes.fast} < ${estimateRes.fastest}`
         );
       }
 
