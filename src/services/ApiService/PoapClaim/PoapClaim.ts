@@ -1,7 +1,7 @@
 import { POAP_CLAIM_API } from '@config';
-import { ApiService } from '@services/ApiService';
 import { getUUID } from '@utils';
 
+import { default as ApiService } from '../ApiService';
 import { PoapClaimResult } from './types';
 
 export const PoapClaimService = () => {
