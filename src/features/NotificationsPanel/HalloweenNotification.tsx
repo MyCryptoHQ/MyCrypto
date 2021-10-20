@@ -44,18 +44,20 @@ export const HalloweenNotification = () => {
           ultricies turpis elit varius. Porttitor amet, tortor, nunc lectus.
         </Body>
       </Box>
-      <Box>
+      <Box variant="rowCenter" style={{ flexGrow: 1 }}>
         {!isClaimed ? (
           <Button onClick={handleClaim} loading={isClaiming}>
             {translateRaw('CLAIM_NOW')}
           </Button>
         ) : (
-          <>
-            <Text>{translateRaw('POAP_CLAIM_APPROVED')}</Text>
-            <LinkApp isExternal href={promo!.claim!}>
+          <Box variant="columnCenter">
+            <Text as="div" color="white" fontSize="2">
+              {translateRaw('POAP_CLAIM_APPROVED')}
+            </Text>
+            <LinkApp mt="2" isExternal href={promo!.claim!}>
               {translateRaw('ACCESS_POAP_LINK')}
             </LinkApp>
-          </>
+          </Box>
         )}
       </Box>
     </Box>
