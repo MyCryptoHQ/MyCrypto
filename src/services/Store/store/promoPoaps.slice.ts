@@ -2,13 +2,19 @@ import { createAction, createSelector, createSlice, PayloadAction } from '@redux
 import { all, put, takeLatest } from 'redux-saga/effects';
 
 import { NotificationTemplates } from '@features/NotificationsPanel';
+import { LSKeys, PromoPoap } from '@types';
 import { dateIsBetween } from '@utils';
 
 import { displayNotification } from './notification.slice';
-import { AppState } from './root.reducer';
+import { getAppState } from './selectors';
 
-const sliceName = 'promoPoaps';
-export const initialState = { promos: {} as Record<string, PromoPoap> };
+const sliceName = LSKeys.PROMO_POAPS;
+
+export interface PromoPoapsState {
+  promos: Record<string, PromoPoap>;
+}
+
+export const initialState = { promos: {} } as PromoPoapsState;
 
 const config = [
   {
@@ -18,12 +24,6 @@ const config = [
     endDate: new Date('2021-10-31')
   }
 ];
-
-interface PromoPoap {
-  key: string;
-  claimed: boolean;
-  claim: string;
-}
 
 // @todo Persistence
 const slice = createSlice({
@@ -46,10 +46,7 @@ export default slice;
  * Selectors
  */
 
-export const getSlice = createSelector(
-  (s: AppState) => s.promoPoaps,
-  (s) => s
-);
+export const getSlice = createSelector([getAppState], (s) => s[slice.name]);
 
 export const getPromos = createSelector([getSlice], (s) => Object.values(s.promos));
 

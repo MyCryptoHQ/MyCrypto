@@ -100,3 +100,4 @@ export { BusyBottomConfig } from './busyBottom';
 export * from './claims';
 export * from './omit';
 export * from './query';
+export * from './promoPoap';
