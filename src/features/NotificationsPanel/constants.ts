@@ -2,6 +2,7 @@ import halloweenBg from '@assets/images/halloween-bg.svg';
 
 import {
   GetHardwareWalletNotification,
+  HalloweenNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification,
   SaveDashboardNotification,
@@ -11,7 +12,6 @@ import {
   WalletsAddedNotification,
   WalletsNotAddedNotification
 } from './components';
-import { HalloweenNotification } from './HalloweenNotification';
 import {
   getHardwareWalletCheck,
   onboardingPleaseUnderstandCheck,
