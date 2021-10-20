@@ -2,17 +2,14 @@ import { ExtendedContentPanel } from '@components';
 import { fAssets, fDWAccounts, fNetworks } from '@fixtures';
 import { noOp } from '@utils';
 
-import { default as HDTable, HDTableProps, ITableAccounts } from './HDWTable';
+import { default as HDTable, HDTableProps } from './HDWTable';
 
 export default { title: 'Organisms/HDWTable' };
 
-const addressMap = fDWAccounts.reduce((acc, item) => {
-  acc[item.address as string] = {
-    ...item,
-    isSelected: true
-  };
-  return acc;
-}, {} as ITableAccounts);
+const addressMap = fDWAccounts.map((item) => ({
+  ...item,
+  isSelected: true
+}));
 
 const initialProps: HDTableProps = {
   isCompleted: true,
