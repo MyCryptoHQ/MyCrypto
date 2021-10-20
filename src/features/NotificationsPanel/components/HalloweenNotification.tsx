@@ -35,7 +35,7 @@ export const HalloweenNotification = () => {
       <Box mr="4">
         <img src={poapImage} />
       </Box>
-      <Box mr="4">
+      <Box mr="2">
         <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
           {translateRaw('POAP_NOTIFICATION_HEADER')}
         </Heading>
