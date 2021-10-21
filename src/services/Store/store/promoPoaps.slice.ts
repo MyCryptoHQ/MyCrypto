@@ -1,12 +1,14 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, put, select, takeLatest } from 'redux-saga/effects';
 
 import { NotificationTemplates } from '@features/NotificationsPanel';
-import { LSKeys, PromoPoap } from '@types';
+import { IAccount, LSKeys, PromoPoap } from '@types';
 import { dateIsBetween } from '@utils';
 
+import { getAccounts } from './account.slice';
 import { displayNotification } from './notification.slice';
 import { getAppState } from './selectors';
+import { addAccountsToCurrents } from './settings.slice';
 
 const sliceName = LSKeys.PROMO_POAPS;
 
@@ -57,10 +59,17 @@ export const getPromoPoap = (key: string) =>
  * Sagas
  */
 export function* promoPoapsSaga() {
-  yield all([takeLatest(checkForPromos.type, checkForPromosWorker)]);
+  yield all([
+    takeLatest(checkForPromos.type, checkForPromosWorker),
+    takeLatest(addAccountsToCurrents.type, checkForPromosWorker)
+  ]);
 }
 
 export function* checkForPromosWorker() {
+  const accounts: IAccount[] = yield select(getAccounts);
+  if (accounts.filter((a) => a.wallet !== 'VIEW_ONLY').length === 0) {
+    return;
+  }
   const currentPromos = config.filter(
     (c) => dateIsBetween(c.startDate, c.endDate) && c.notification
   );

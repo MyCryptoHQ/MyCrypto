@@ -4,7 +4,7 @@ import poapImage from '@assets/images/halloween-poap.svg';
 import { Body, Box, Button, Heading, LinkApp, Text } from '@components';
 import { PoapClaimService } from '@services/ApiService/PoapClaim';
 import { claimPromo, getAnalyticsUserID, getPromoPoap, useDispatch, useSelector } from '@store';
-import { translateRaw } from '@translations';
+import translate, { translateRaw } from '@translations';
 
 export const HalloweenNotification = () => {
   const dispatch = useDispatch();
@@ -12,6 +12,7 @@ export const HalloweenNotification = () => {
   const analyticsId = useSelector(getAnalyticsUserID);
   const promo = useSelector(getPromoPoap(key));
   const [isClaiming, setIsClaiming] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleClaim = () => {
     if (isClaiming) {
@@ -22,7 +23,7 @@ export const HalloweenNotification = () => {
       if (res?.success) {
         dispatch(claimPromo({ key, claim: res.claim }));
       } else {
-        // @todo
+        setIsError(true);
       }
       setIsClaiming(false);
     });
@@ -37,15 +38,21 @@ export const HalloweenNotification = () => {
       </Box>
       <Box mr="2">
         <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
-          {translateRaw('POAP_NOTIFICATION_HEADER')}
+          {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
         </Heading>
-        <Body color="WARNING_ORANGE">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Euismod pharetra quis fringilla
-          ultricies turpis elit varius. Porttitor amet, tortor, nunc lectus.
-        </Body>
+        <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
       </Box>
       <Box variant="rowCenter" style={{ flexGrow: 1 }}>
-        {!isClaimed ? (
+        {isError ? (
+          <Box variant="columnCenter">
+            <Text as="div" color="white" fontSize="2">
+              {translateRaw('HALLOWEEN_POAP_ERROR_HEADER')}
+            </Text>
+            <Text as="div" color="white">
+              {translate('HALLOWEEN_POAP_ERROR')}
+            </Text>
+          </Box>
+        ) : !isClaimed ? (
           <Button onClick={handleClaim} loading={isClaiming}>
             {translateRaw('CLAIM_NOW')}
           </Button>
