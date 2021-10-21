@@ -89,6 +89,7 @@ const SwapAssets = (props: Props) => {
     handleGasLimitEstimation,
     handleRefreshQuote,
     handleFlipAssets,
+    handleSwapMax,
     approvalTx,
     exchangeRate,
     approvalGasLimit,
@@ -240,6 +241,15 @@ const SwapAssets = (props: Props) => {
               isLoading={isCalculatingFromAmount}
               inputError={fromAmountError}
               inputMode="decimal"
+              customIcon={() =>
+                account ? (
+                  <Box>
+                    <LinkApp href="#" mr="1" onClick={handleSwapMax}>
+                      Max
+                    </LinkApp>
+                  </Box>
+                ) : null
+              }
             />
           </Box>
           <AssetSelector

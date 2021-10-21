@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
+import { formatUnits } from '@ethersproject/units';
 import axios from 'axios';
 
-import { MYC_DEX_COMMISSION_RATE } from '@config';
+import { DEFAULT_ASSET_DECIMAL, MYC_DEX_COMMISSION_RATE } from '@config';
 import { checkRequiresApproval } from '@helpers';
 import { DexService } from '@services/ApiService';
 import { getGasEstimate } from '@services/ApiService/Gas';
+import { getAccountBalance } from '@services/Store/utils';
 import { getBaseAssetByNetwork, getSwapAssetsByNetwork, selectNetwork, useSelector } from '@store';
 import translate from '@translations';
-import { ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
+import { Asset, ISwapAsset, ITxGasLimit, Network, NetworkId, StoreAccount } from '@types';
 import {
   bigify,
   divideBNFloats,
@@ -74,6 +76,21 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
           ? LAST_CHANGED_AMOUNT.TO
           : LAST_CHANGED_AMOUNT.FROM
     }));
+  };
+
+  const handleSwapMax = async () => {
+    const asset = state.fromAsset;
+    const balance = getAccountBalance(state.account, asset as Asset);
+    const fromAmount = formatUnits(balance, asset.decimal ?? DEFAULT_ASSET_DECIMAL);
+
+    setState((prevState: SwapFormState) => ({
+      ...prevState,
+      fromAmount,
+      fromAmountError: '',
+      toAmountError: '',
+      lastChangedAmount: LAST_CHANGED_AMOUNT.FROM
+    }));
+    await calculateNewToAmount(fromAmount);
   };
 
   const handleFromAssetSelected = (fromAsset: ISwapAsset) => {
@@ -323,6 +340,7 @@ const SwapFormFactory: TUseStateReducerFactory<SwapFormState> = ({ state, setSta
     handleGasLimitEstimation,
     handleRefreshQuote,
     handleFlipAssets,
+    handleSwapMax,
     formState: { ...state, assets: sortedAssets }
   };
 };
