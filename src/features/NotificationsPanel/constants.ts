@@ -93,6 +93,7 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.halloweenPoap]: {
     analyticsEvent: 'Halloween Poap',
     layout: HalloweenNotification,
+    priority: true,
     style: {
       backgroundImage: `url(${halloweenBg})`,
       backgroundSize: '100% 100%'

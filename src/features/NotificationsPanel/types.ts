@@ -10,6 +10,7 @@ export interface NotificationConfig {
   preventDismisExisting?: boolean;
   condition?(notification: ExtendedNotification): boolean;
   style?: any;
+  priority?: boolean; // Is sorted above any other notifications
 }
 
 export interface NotificationsConfigsProps {
