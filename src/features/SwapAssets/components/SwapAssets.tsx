@@ -60,6 +60,7 @@ type Props = SwapFormState & {
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
   handleFlipAssets(): void;
+  handleSwapMax(): void;
   setNetwork(network: NetworkId): void;
 };
 
