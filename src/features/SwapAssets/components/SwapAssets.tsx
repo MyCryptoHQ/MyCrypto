@@ -243,7 +243,7 @@ const SwapAssets = (props: Props) => {
               inputError={fromAmountError}
               inputMode="decimal"
               customIcon={() =>
-                account ? (
+                account && fromAsset?.contractAddress ? (
                   <Box>
                     <LinkApp href="#" mr="1" onClick={handleSwapMax}>
                       Max
