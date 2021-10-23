@@ -246,7 +246,7 @@ const SwapAssets = (props: Props) => {
                 account && fromAsset?.contractAddress ? (
                   <Box>
                     <LinkApp href="#" mr="1" onClick={handleSwapMax}>
-                      Max
+                      {translateRaw('MAX')}
                     </LinkApp>
                   </Box>
                 ) : null
