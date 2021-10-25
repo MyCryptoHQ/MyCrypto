@@ -30,7 +30,7 @@ function getCurrent(notifications: ExtendedNotification[]) {
   const canDisplay = (n: ExtendedNotification): boolean => {
     return (
       !n.dismissed &&
-      (notificationsConfigs[n.template].condition
+      (notificationsConfigs[n.template]?.condition
         ? notificationsConfigs[n.template].condition!(n)
         : true)
     );

@@ -16,7 +16,7 @@ export const emptyState = {
   [LSKeys.NOTIFICATIONS]: [],
   [LSKeys.SETTINGS]: defaultSettings,
   [LSKeys.USER_ACTIONS]: [],
-  [LSKeys.PROMO_POAPS]: {} as PromoPoapsState
+  [LSKeys.PROMO_POAPS]: { promos: {} } as PromoPoapsState
 };
 /**
  * @todo migrate to new store structure once redux-persist is in setup.
