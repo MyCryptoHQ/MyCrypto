@@ -34,6 +34,7 @@ const defaultProps: ComponentProps<typeof SwapAssets> = {
   handleGasLimitEstimation: noOp,
   handleRefreshQuote: noOp,
   handleFlipAssets: noOp,
+  handleSwapMax: noOp,
   setNetwork: noOp
 };
 

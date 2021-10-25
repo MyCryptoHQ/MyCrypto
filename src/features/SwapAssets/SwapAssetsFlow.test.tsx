@@ -4,6 +4,7 @@ import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-
 
 import { DEX_BASE_URLS } from '@config';
 import { fAccounts, fAssets, fDAI, fSwapQuote, fSwapQuoteReverse } from '@fixtures';
+import { translateRaw } from '@translations';
 import { NetworkId } from '@types';
 import { truncate } from '@utils';
 
@@ -82,6 +83,34 @@ describe('SwapAssetsFlow', () => {
     await waitFor(() => expect(getAllByDisplayValue('1', { exact: false })).toBeDefined());
     await waitFor(() =>
       expect(getAllByDisplayValue('1.305248867560021093', { exact: false })).toBeDefined()
+    );
+  });
+
+  it('allows to swap max', async () => {
+    const {
+      getAllByText,
+      getAllByDisplayValue,
+      getAllByLabelText,
+      getByTestId,
+      getByText
+    } = getComponent();
+    await selectEvent.openMenu(getAllByLabelText(/asset/i)[0]);
+    fireEvent.pointerDown(getByTestId('asset-selector-option-REPv1'));
+    await waitFor(() => expect(getAllByText(fAssets[10].ticker, { exact: false })).toBeDefined());
+    await waitFor(() => expect(getAllByText(fAssets[13].ticker, { exact: false })).toBeDefined());
+    await waitFor(() => expect(getByText(translateRaw('MAX'))).toBeDefined());
+    const maxButton = getByText(translateRaw('MAX'));
+    fireEvent.click(maxButton);
+    await waitFor(() =>
+      expect(mockAxios.get).toHaveBeenCalledWith(
+        'swap/v1/quote',
+        expect.objectContaining({ baseURL: DEX_BASE_URLS.Ethereum })
+      )
+    );
+    mockAxios.mockResponse({ data: fSwapQuote });
+    await waitFor(() => expect(getAllByDisplayValue('4', { exact: false })).toBeDefined());
+    await waitFor(() =>
+      expect(getAllByDisplayValue('0.000642566300455615', { exact: false })).toBeDefined()
     );
   });
 

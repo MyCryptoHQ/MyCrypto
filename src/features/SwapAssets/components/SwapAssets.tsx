@@ -60,6 +60,7 @@ type Props = SwapFormState & {
   handleGasLimitEstimation(): void;
   handleRefreshQuote(): void;
   handleFlipAssets(): void;
+  handleSwapMax(): void;
   setNetwork(network: NetworkId): void;
 };
 
@@ -89,6 +90,7 @@ const SwapAssets = (props: Props) => {
     handleGasLimitEstimation,
     handleRefreshQuote,
     handleFlipAssets,
+    handleSwapMax,
     approvalTx,
     exchangeRate,
     approvalGasLimit,
@@ -240,6 +242,15 @@ const SwapAssets = (props: Props) => {
               isLoading={isCalculatingFromAmount}
               inputError={fromAmountError}
               inputMode="decimal"
+              customIcon={() =>
+                account && fromAsset?.contractAddress ? (
+                  <Box>
+                    <LinkApp href="#" mr="1" onClick={handleSwapMax}>
+                      {translateRaw('MAX')}
+                    </LinkApp>
+                  </Box>
+                ) : null
+              }
             />
           </Box>
           <AssetSelector
