@@ -1,4 +1,4 @@
-import { add, isBefore } from 'date-fns';
+import { add, fromUnixTime, isBefore } from 'date-fns';
 
 import { TIcon } from '@components';
 import {
@@ -217,7 +217,7 @@ export const actionTemplates: ActionTemplate[] = [
     icon: 'ensLogo',
     filter: ({ ensOwnershipRecords }: ActionFilters) =>
       ensOwnershipRecords.some((r) =>
-        isBefore(new Date(r.expiryDate), add(new Date(), { days: 60 }))
+        isBefore(fromUnixTime(parseInt(r.expiryDate, 10)), add(new Date(), { days: 60 }))
       ),
     body: [translate('RENEW_ENS_ACTION_BODY')],
     priority: 30,
