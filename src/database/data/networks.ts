@@ -6,9 +6,7 @@ import {
   DEFAULT_AUX,
   DEFAULT_AVAX,
   DEFAULT_CLO,
-  DEFAULT_DEXON,
   DEFAULT_EGEM,
-  DEFAULT_ERE,
   DEFAULT_ETC,
   DEFAULT_ETH,
   DEFAULT_ETHO,
@@ -22,7 +20,6 @@ import {
   DEFAULT_MIX,
   DEFAULT_POA,
   DEFAULT_POLYGON,
-  DEFAULT_REOSC,
   DEFAULT_THUNDERCORE,
   DEFAULT_TOMO,
   DEFAULT_UBQ,
@@ -578,32 +575,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 20
     }
   },
-  REOSC: {
-    id: 'REOSC',
-    name: 'REOSC',
-    unit: 'REOSC' as TTicker,
-    chainId: 2894,
-    isCustom: false,
-    color: '#1500db',
-    blockExplorer: makeExplorer({
-      name: 'REOSC Explorer',
-      origin: 'https://explorer.reosc.io'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DEFAULT_REOSC,
-      [WalletId.LEDGER_NANO_S]: DEFAULT_REOSC,
-      [WalletId.TREZOR_NEW]: DEFAULT_REOSC,
-      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_REOSC,
-      default: DEFAULT_REOSC
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   ARTIS_SIGMA1: {
     id: 'ARTIS_SIGMA1',
     name: 'ARTIS sigma1',
@@ -734,31 +705,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 80
     }
   },
-  DEXON: {
-    id: 'DEXON',
-    name: 'DEXON Network',
-    unit: 'DXN' as TTicker,
-    chainId: 237,
-    isCustom: false,
-    color: '#954a97',
-    blockExplorer: makeExplorer({
-      name: 'DEXON Scan',
-      origin: 'https://dexonscan.app',
-      txPath: 'transaction'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.LEDGER_NANO_S]: DEFAULT_DEXON,
-      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_DEXON,
-      default: DEFAULT_DEXON
-    },
-    gasPriceSettings: {
-      min: 24,
-      max: 100,
-      initial: 24
-    }
-  },
   ETI: {
     id: 'ETI',
     name: 'Etherinc',
@@ -835,32 +781,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.1,
       max: 40,
       initial: 4
-    }
-  },
-  ERE: {
-    id: 'ERE',
-    name: 'EtherCore',
-    unit: 'ERE' as TTicker,
-    chainId: 466,
-    isCustom: false,
-    color: '#3a6ea7',
-    blockExplorer: makeExplorer({
-      name: 'EtherCore Explorer',
-      origin: 'https://explorer.ethercore.io'
-    }),
-    tokens: [],
-    contracts: [],
-    dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ERE,
-      [WalletId.TREZOR_NEW]: DEFAULT_ERE,
-      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
-      default: DEFAULT_ERE
-    },
-    gasPriceSettings: {
-      min: 0.1,
-      max: 60,
-      initial: 1
     }
   },
   VOLTA: {
