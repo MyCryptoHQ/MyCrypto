@@ -44,7 +44,7 @@ export { NodeType } from './node';
 export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
 export { LocalStorage, LSKeys, DataStore } from './store';
-export { Notification, ExtendedNotification } from './notification';
+export * from './notification';
 export { IERC20, TokenInformation } from './erc20';
 export { IREPV2 } from './repV2';
 export { IAntMigrator } from './antMigrator';

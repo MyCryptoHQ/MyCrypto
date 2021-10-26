@@ -2,7 +2,6 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
@@ -23,6 +22,7 @@ import {
   LSKeys,
   Network,
   NetworkId,
+  NotificationTemplates,
   StoreAccount,
   StoreAsset,
   TUuid,

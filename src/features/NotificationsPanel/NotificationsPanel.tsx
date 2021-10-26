@@ -5,10 +5,10 @@ import styled from 'styled-components';
 
 import closeIcon from '@assets/images/icn-close.svg';
 import { SPACING } from '@theme';
-import { IAccount } from '@types';
+import { IAccount, NotificationTemplates } from '@types';
 import { useEffectOnce } from '@vendor';
 
-import { notificationsConfigs, NotificationTemplates } from './constants';
+import { notificationsConfigs } from './constants';
 import { useNotifications } from './useNotifications';
 
 export const MainPanel = styled(Panel)`

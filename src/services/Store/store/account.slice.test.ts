@@ -5,7 +5,6 @@ import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { NotificationTemplates } from '@features/NotificationsPanel';
 import {
   fAccount,
   fAccounts,
@@ -33,6 +32,7 @@ import {
   ITxType,
   ITxType2Object,
   NetworkId,
+  NotificationTemplates,
   TUuid,
   WalletId
 } from '@types';

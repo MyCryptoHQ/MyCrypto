@@ -1,4 +1,5 @@
 import halloweenBg from '@assets/images/halloween-bg.svg';
+import { NotificationTemplates } from '@types';
 
 import {
   GetHardwareWalletNotification,
@@ -20,19 +21,6 @@ import {
   saveSettingsCheck
 } from './helpers';
 import { NotificationsConfigsProps } from './types';
-
-export const NotificationTemplates = {
-  walletCreated: 'wallet-created',
-  walletAdded: 'wallet-added',
-  walletsAdded: 'wallets-added',
-  walletNotAdded: 'wallet-not-added',
-  walletsNotAdded: 'wallets-not-added',
-  saveSettings: 'save-settings',
-  getHardwareWallet: 'get-hardware-wallet',
-  onboardingPleaseUnderstand: 'onboarding-please-understand',
-  onboardingResponsible: 'onboarding-responsible',
-  halloweenPoap: 'halloween-poap'
-};
 
 export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.walletCreated]: {

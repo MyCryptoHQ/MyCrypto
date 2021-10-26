@@ -1,4 +1,4 @@
-import { NotificationTemplates } from '@features/NotificationsPanel';
+import { NotificationTemplates } from '@types';
 
 export const PROMO_CONFIG = [
   {
