@@ -869,9 +869,9 @@
     "CLAIM_TOKENS_ACTION_HEADING": "Claim your $token",
     "CLAIM_TOKENS_ACTION_BUTTON": "Claim",
     "CLAIM_TOKENS_ACTION_BODY": "One or more of your accounts have unclaimed $token tokens. Claim them now!",
-    "RENEW_ENS_ACTION_HEADING": "Renew your ENS names",
-    "RENEW_ENS_ACTION_BUTTON": "Renew",
-    "RENEW_ENS_ACTION_BODY": "You have one or more ENS names expiring soon. Don't let them get away from you - renew them now!",
+    "RENEW_ENS_ACTION_HEADING": "ENS alert: You have expiring or expired usernames",
+    "RENEW_ENS_ACTION_BUTTON": "Manage ENS",
+    "RENEW_ENS_ACTION_BODY": "You have one or more ENS names that have expired or are expiring soon. Renew now!",
     "BUY_HW_ACTION_HEADING": "Level up your security: Get a hardware wallet",
     "BUY_HW_ACTION_BUTTON": "Buy Now",
     "BUY_HW_ACTION_BODY": "If you have any amount of crypto that you would not want to lose, it's best to get yourself a hardware wallet. With a hardware wallet, your private key never leaves the device and is generally safer than any other method of storage.",
@@ -1061,6 +1061,7 @@
     "TOTAL_VALUE": "Total Value: $value",
     "FLOOR": "Floor",
     "VIEW_ON_OPENSEA": "View on OpenSea",
-    "MAX": "Max"
+    "MAX": "Max",
+    "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!"
   }
 }
