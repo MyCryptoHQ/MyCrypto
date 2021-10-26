@@ -41,6 +41,7 @@ export enum ACTION_CATEGORIES {
 export enum ACTION_STATE {
   DEFAULT = 'default',
   NEW = 'new',
+  VIEWED = 'viewed',
   STARTED = 'started',
   COMPLETED = 'completed',
   HIDDEN = 'hidden'
