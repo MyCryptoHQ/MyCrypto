@@ -31,6 +31,7 @@ import {
   ActionButtonProps,
   ClaimSubHead,
   ClaimTable,
+  EnsSubHead,
   MigrationSubHead,
   MigrationTable
 } from './components';
@@ -214,6 +215,7 @@ export const actionTemplates: ActionTemplate[] = [
   {
     name: ACTION_NAME.RENEW_ENS,
     heading: translateRaw('RENEW_ENS_ACTION_HEADING'),
+    subHeading: EnsSubHead,
     icon: 'ensLogo',
     filter: ({ ensOwnershipRecords }: ActionFilters) =>
       ensOwnershipRecords.some((r) =>
