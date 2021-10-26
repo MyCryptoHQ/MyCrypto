@@ -14,6 +14,7 @@ import {
 } from './components';
 import {
   getHardwareWalletCheck,
+  halloweenCheck,
   onboardingPleaseUnderstandCheck,
   onboardingResponsibleCheck,
   saveSettingsCheck
@@ -93,6 +94,7 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.halloweenPoap]: {
     analyticsEvent: 'Halloween Poap',
     layout: HalloweenNotification,
+    condition: halloweenCheck,
     priority: true,
     style: {
       backgroundImage: `url(${halloweenBg})`,

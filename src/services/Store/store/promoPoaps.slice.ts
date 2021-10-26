@@ -1,7 +1,7 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, put, select, takeLatest } from 'redux-saga/effects';
 
-import { NotificationTemplates } from '@features/NotificationsPanel';
+import { PROMO_CONFIG } from '@config';
 import { IAccount, LSKeys, PromoPoap } from '@types';
 import { dateIsBetween } from '@utils';
 
@@ -18,16 +18,6 @@ export interface PromoPoapsState {
 
 export const initialState = { promos: {} } as PromoPoapsState;
 
-const config = [
-  {
-    key: 'halloween2021',
-    notification: NotificationTemplates.halloweenPoap,
-    startDate: new Date('2021-10-19'),
-    endDate: new Date('2021-10-31')
-  }
-];
-
-// @todo Persistence
 const slice = createSlice({
   name: sliceName,
   initialState,
@@ -70,7 +60,7 @@ export function* checkForPromosWorker() {
   if (accounts.filter((a) => a.wallet !== 'VIEW_ONLY').length === 0) {
     return;
   }
-  const currentPromos = config.filter(
+  const currentPromos = PROMO_CONFIG.filter(
     (c) => dateIsBetween(c.startDate, c.endDate) && c.notification
   );
   for (const promo of currentPromos) {
