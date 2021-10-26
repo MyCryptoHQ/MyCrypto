@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
+
 import styled from 'styled-components';
 
 import Box from '@components/Box';
 import { Body } from '@components/NewTypography';
 import { useUserActions } from '@services';
 import { SPACING } from '@theme';
-import { ActionTemplate } from '@types';
+import { ACTION_STATE, ActionTemplate } from '@types';
 
 const SBox = styled(Box)`
   display: flex;
@@ -28,9 +30,18 @@ const SBody = styled(Body)`
 `;
 
 export const ActionDetails = ({ actionTemplate }: { actionTemplate: ActionTemplate }) => {
-  const { findUserAction } = useUserActions();
+  const { findUserAction, updateUserAction } = useUserActions();
 
   const userAction = findUserAction(actionTemplate.name)!;
+
+  useEffect(() => {
+    if (userAction.state === ACTION_STATE.NEW) {
+      updateUserAction(userAction.uuid, {
+        ...userAction,
+        state: ACTION_STATE.VIEWED
+      });
+    }
+  }, [userAction]);
 
   const Component = actionTemplate.Component;
 

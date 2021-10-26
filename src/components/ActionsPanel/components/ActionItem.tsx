@@ -23,6 +23,10 @@ const greenLightup = keyframes`
 const Action = styled.div<{ state?: string }>`
   display: flex;
   align-items: center;
+  ${(p) =>
+    css`
+      background: ${!p.state || p.state === 'new' ? COLORS.WHITE : 'rgba(232, 234, 237, 0.3)'};
+    `}
   border-bottom: 1px solid ${COLORS.GREY_ATHENS};
   min-height: 60px;
   padding: 0 ${SPACING.BASE};
@@ -73,6 +77,8 @@ export const ActionItem = ({
 
   if (!userAction) createUserAction(actionTemplate);
 
+  const isNew = !userAction || userAction.state === ACTION_STATE.NEW;
+
   const SubHeading = actionTemplate.subHeading;
 
   return (
@@ -84,7 +90,7 @@ export const ActionItem = ({
         <Icon type={actionTemplate.icon} height="28px" />
       </IconContainer>
       <TitleContainer>
-        <Text mb={0} fontSize={2}>
+        <Text mb={0} fontSize={2} fontWeight={isNew ? 'bold' : undefined}>
           {actionTemplate.heading}
         </Text>
         {SubHeading && <SubHeading {...actionTemplate.props} />}
