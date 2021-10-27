@@ -44,7 +44,7 @@ export const DashboardGas = () => {
         <ActionTile
           link="#"
           title={fiatValue ? `${formatCurrency(fiatValue.toString(10), 0, fiat?.ticker)}` : '?'}
-          description={translateRaw('SENDING_ETH_COSTS')}
+          description={translateRaw('ETH_TRANSFER_FEE')}
         />
       </Box>
     </Box>

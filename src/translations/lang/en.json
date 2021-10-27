@@ -1064,6 +1064,6 @@
     "MAX": "Max",
     "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!",
     "CURRENT_BASE_FEE_TEXT": "Current Base Fee",
-    "SENDING_ETH_COSTS": "Sending ETH costs"
+    "ETH_TRANSFER_FEE": "ETH Transfer Fee"
   }
 }
