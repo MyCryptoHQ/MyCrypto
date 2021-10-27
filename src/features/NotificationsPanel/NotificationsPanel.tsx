@@ -88,7 +88,7 @@ const NotificationsPanel = ({ accounts }: Props) => {
   return (
     <Fragment>
       {currentNotification && (
-        <MainPanel style={notificationsConfigs[template].style}>
+        <MainPanel style={notificationsConfigs[template]?.style}>
           <CloseButton basic={true} onClick={handleCloseClick}>
             <img src={closeIcon} alt="Close" />
           </CloseButton>

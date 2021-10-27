@@ -33,5 +33,5 @@ export const halloweenCheck = (): boolean => {
   if (!config) {
     return false;
   }
-  return dateIsBetween(config.startDate, config.endDate);
+  return dateIsBetween(config.startDate, config.endDate, Date.now() / 1000);
 };
