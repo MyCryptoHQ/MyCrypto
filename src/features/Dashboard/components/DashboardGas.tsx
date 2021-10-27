@@ -36,6 +36,7 @@ export const DashboardGas = () => {
       <Box width="48%">
         <ActionTile
           link="#"
+          inverse={true}
           title={baseFeeGwei ? `${baseFeeGwei.toString(10)} ${translateRaw('GWEI')}` : '?'}
           description={translateRaw('CURRENT_BASE_FEE_TEXT')}
         />
@@ -43,6 +44,7 @@ export const DashboardGas = () => {
       <Box width="48%">
         <ActionTile
           link="#"
+          inverse={true}
           title={fiatValue ? `${formatCurrency(fiatValue.toString(10), 0, fiat?.ticker)}` : '?'}
           description={translateRaw('ETH_TRANSFER_FEE')}
         />

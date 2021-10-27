@@ -7,6 +7,7 @@ export interface Action {
   title: string;
   description: string;
   link: string | TURL;
+  inverse?: boolean;
   filter?(isMobile: boolean): boolean;
 }
 

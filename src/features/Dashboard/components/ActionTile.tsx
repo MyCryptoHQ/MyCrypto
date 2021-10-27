@@ -104,15 +104,24 @@ const SDescription = styled('div')`
   }
 `;
 
-function ActionTile({ icon, faded, title, description, link }: Action) {
+function ActionTile({ icon, faded, title, description, link, inverse }: Action) {
   return (
     <SContainer>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
           {icon && <Icon type={icon} alt={title} />}
           <Typography as="div">
-            <STitle isLonger={title.length > 15}>{title}</STitle>
-            <SDescription>{description}</SDescription>
+            {!inverse ? (
+              <>
+                <STitle isLonger={title.length > 15}>{title}</STitle>
+                <SDescription>{description}</SDescription>
+              </>
+            ) : (
+              <>
+                <SDescription>{description}</SDescription>
+                <STitle isLonger={title.length > 15}>{title}</STitle>
+              </>
+            )}
           </Typography>
         </SButton>
       </LinkApp>
