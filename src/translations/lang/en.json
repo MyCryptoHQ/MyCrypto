@@ -1062,6 +1062,8 @@
     "FLOOR": "Floor",
     "VIEW_ON_OPENSEA": "View on OpenSea",
     "MAX": "Max",
-    "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!"
+    "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!",
+    "CURRENT_BASE_FEE_TEXT": "Current Base Fee",
+    "SENDING_ETH_COSTS": "Sending ETH costs"
   }
 }

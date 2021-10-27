@@ -10,6 +10,7 @@ import { fetchClaims } from './claims.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
 import { fetchENS } from './ens.slice';
+import { startGasPolling } from './gas.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { fetchMemberships } from './membership.slice';
 import networkSlice from './network.slice';
@@ -66,5 +67,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(startBalancesPolling());
     yield put(fetchENS());
     yield put(fetchClaims());
+    yield put(startGasPolling());
   }
 }
