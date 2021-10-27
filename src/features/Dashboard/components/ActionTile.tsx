@@ -109,7 +109,7 @@ function ActionTile({ icon, faded, title, description, link }: Action) {
     <SContainer>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
-          <Icon type={icon} alt={title} />
+          {icon && <Icon type={icon} alt={title} />}
           <Typography as="div">
             <STitle isLonger={title.length > 15}>{title}</STitle>
             <SDescription>{description}</SDescription>

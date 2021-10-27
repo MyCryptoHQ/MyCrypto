@@ -13,6 +13,7 @@ import { DashboardZapCTA } from '../DeFiZap';
 import { NotificationsPanel } from '../NotificationsPanel';
 import {
   ActionTile,
+  DashboardGas,
   MembershipPanel,
   RecentTransactionList,
   TokenPanel,
@@ -96,6 +97,7 @@ export default function Dashboard() {
             <Heading as="h2" className="Dashboard-desktop-top-left-heading">
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
+            <DashboardGas />
             <div className="Dashboard-desktop-top-left-actions">
               {relevantActions.map((action) => (
                 <ActionTile key={action.title} {...action} />
