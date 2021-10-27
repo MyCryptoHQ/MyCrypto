@@ -98,16 +98,16 @@ export default function Dashboard() {
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <DashboardGas />
-            <div className="Dashboard-desktop-top-left-actions">
-              {relevantActions.map((action) => (
-                <ActionTile key={action.title} {...action} />
-              ))}
-            </div>
             {featureFlags.MYC_MEMBERSHIP && (
               <div className="Dashboard-desktop-top-left-token">
                 <MembershipPanel />
               </div>
             )}
+            <div className="Dashboard-desktop-top-left-actions">
+              {relevantActions.map((action) => (
+                <ActionTile key={action.title} {...action} />
+              ))}
+            </div>
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>
