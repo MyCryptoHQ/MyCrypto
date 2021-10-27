@@ -8,16 +8,16 @@ import translate, { translateRaw } from '@translations';
 
 export const HalloweenNotification = () => (
   <Box variant="rowAlign">
-    <Box mr="4">
+    <Box mr="4" width="10%">
       <img src={poapImage} />
     </Box>
-    <Box mr="2">
+    <Box mr="2" width="60%">
       <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
         {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
       </Heading>
       <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
     </Box>
-    <Box variant="rowCenter" style={{ flexGrow: 1 }}>
+    <Box variant="rowCenter" width="30%">
       <NotificationContent />
     </Box>
   </Box>
@@ -54,7 +54,7 @@ const NotificationContent = () => {
         <Text as="div" color="white" fontSize="2">
           {translateRaw('HALLOWEEN_POAP_ERROR_HEADER')}
         </Text>
-        <Text as="div" color="white">
+        <Text as="div" color="white" textAlign="center" width="80%">
           {translate('HALLOWEEN_POAP_ERROR')}
         </Text>
       </Box>
