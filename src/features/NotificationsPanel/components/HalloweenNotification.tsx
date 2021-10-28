@@ -16,7 +16,14 @@ export const HalloweenNotification = () => {
         <img src={poapImage} />
       </Box>
       <Box mr="2" width="60%">
-        <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
+        <Heading
+          color="WARNING_ORANGE"
+          fontWeight="bold"
+          fontSize="24px"
+          lineHeight="32px"
+          mt="0"
+          textAlign={isMobile ? 'center' : 'left'}
+        >
           {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
         </Heading>
         <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
@@ -56,7 +63,7 @@ const NotificationContent = () => {
   if (isError) {
     return (
       <Box variant="columnCenter">
-        <Text as="div" color="white" fontSize="2">
+        <Text as="div" color="white" fontSize="2" textAlign="center">
           {translateRaw('HALLOWEEN_POAP_ERROR_HEADER')}
         </Text>
         <Text as="div" color="white" textAlign="center" width="80%">
@@ -72,7 +79,7 @@ const NotificationContent = () => {
     </Button>
   ) : (
     <Box variant="columnCenter">
-      <Text as="div" color="white" fontSize="2">
+      <Text as="div" color="white" fontSize="2" textAlign="center">
         {translateRaw('POAP_CLAIM_APPROVED')}
       </Text>
       <LinkApp mt="2" isExternal href={promo!.claim!} textAlign="center">
