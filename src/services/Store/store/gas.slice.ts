@@ -64,9 +64,13 @@ export function* fetchGas() {
 
   const provider = new ProviderHandler(network);
 
-  const latestBlock = yield call([provider, provider.getLatestBlock]);
+  try {
+    const latestBlock = yield call([provider, provider.getLatestBlock]);
 
-  if (latestBlock?.baseFeePerGas) {
-    yield put(setBaseFee(bigify(latestBlock.baseFeePerGas)));
+    if (latestBlock?.baseFeePerGas) {
+      yield put(setBaseFee(bigify(latestBlock.baseFeePerGas)));
+    }
+  } catch (err) {
+    console.error(err);
   }
 }

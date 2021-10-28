@@ -111,15 +111,15 @@ function ActionTile({ icon, faded, title, description, link, inverse }: Action) 
         <SButton basic={true} faded={faded}>
           {icon && <Icon type={icon} alt={title} />}
           <Typography as="div">
-            {!inverse ? (
+            {inverse ? (
               <>
-                <STitle isLonger={title.length > 15}>{title}</STitle>
                 <SDescription>{description}</SDescription>
+                <STitle isLonger={title.length > 15}>{title}</STitle>
               </>
             ) : (
               <>
-                <SDescription>{description}</SDescription>
                 <STitle isLonger={title.length > 15}>{title}</STitle>
+                <SDescription>{description}</SDescription>
               </>
             )}
           </Typography>
