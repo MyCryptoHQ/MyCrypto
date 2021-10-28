@@ -4,9 +4,8 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
 import { fAccount, fNotifications } from '@fixtures';
-import { ExtendedNotification } from '@types';
+import { ExtendedNotification, NotificationTemplates } from '@types';
 
-import { NotificationTemplates } from '.';
 import { useNotifications } from './useNotifications';
 
 const renderUseNotifications = ({ notifications = [] as ExtendedNotification[] } = {}) => {

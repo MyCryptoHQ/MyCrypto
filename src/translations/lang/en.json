@@ -1064,6 +1064,13 @@
     "MAX": "Max",
     "ENS_ACTION_SUBHEAD": "Renew before someone else can take your name!",
     "CURRENT_BASE_FEE_TEXT": "Current Base Fee",
-    "ETH_TRANSFER_FEE": "ETH Transfer Fee"
+    "ETH_TRANSFER_FEE": "ETH Transfer Fee",
+    "HALLOWEEN_POAP_NOTIFICATION_HEADER": "Claim your exclusive Halloween POAP now!",
+    "CLAIM_NOW": "Claim Now",
+    "ACCESS_POAP_LINK": "Click here to access your POAP",
+    "POAP_CLAIM_APPROVED": "Approved!",
+    "HALLOWEEN_POAP_NOTIFICATION_BODY": "Happy Halloween! There are 500 \"TREAT\" POAP NFTs available so be sure to get yours now! Also, complete the \"TRICK or TREAT\" set by getting the other POAP in the [MyCrypto Discord](https://discord.gg/VSaTXEA) server.",
+    "HALLOWEEN_POAP_ERROR": "Unfortunately, all 500 POAPs have been claimed. You can still get one if you get a [MyCrypto Membership!](https://app.mycrypto.com/membership?utm_medium=organic&utm_source=mycrypto&utm_campaign=halloween)",
+    "HALLOWEEN_POAP_ERROR_HEADER": "We're all out!"
   }
 }
