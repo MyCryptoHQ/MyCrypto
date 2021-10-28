@@ -67,7 +67,7 @@ const TokenDashboardPanel = styled(DashboardPanel)`
   max-height: 740px;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     min-height: 430px;
-    height: 652px;
+    height: 676px;
   }
 `;
 

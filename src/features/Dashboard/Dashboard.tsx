@@ -13,6 +13,7 @@ import { DashboardZapCTA } from '../DeFiZap';
 import { NotificationsPanel } from '../NotificationsPanel';
 import {
   ActionTile,
+  DashboardGas,
   MembershipPanel,
   RecentTransactionList,
   TokenPanel,
@@ -96,16 +97,17 @@ export default function Dashboard() {
             <Heading as="h2" fontSize="4" mb="14px" fontWeight="bold">
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
-            <div className="Dashboard-desktop-top-left-actions">
-              {relevantActions.map((action) => (
-                <ActionTile key={action.title} {...action} />
-              ))}
-            </div>
+            <DashboardGas />
             {featureFlags.MYC_MEMBERSHIP && (
               <div className="Dashboard-desktop-top-left-token">
                 <MembershipPanel />
               </div>
             )}
+            <div className="Dashboard-desktop-top-left-actions">
+              {relevantActions.map((action) => (
+                <ActionTile key={action.title} {...action} />
+              ))}
+            </div>
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>

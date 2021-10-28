@@ -113,3 +113,4 @@ export { default as useMinimumWait } from './useMinimumWait';
 export * from './fileExtensions';
 export * from './nft';
 export * from './eip1559';
+export * from './currency';

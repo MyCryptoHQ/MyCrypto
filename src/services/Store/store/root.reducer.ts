@@ -11,6 +11,7 @@ import { LocalStorage } from '@types';
 import accountUndoSlice from './accountUndo.slice';
 import claimSlice from './claims.slice';
 import ensSlice from './ens.slice';
+import gasSlice from './gas.slice';
 import importSlice from './import.slice';
 import { initialLegacyState } from './legacy.initialState';
 import membershipSlice from './membership.slice';
@@ -33,7 +34,8 @@ const reducers = combineReducers({
   [ensSlice.name]: ensSlice.reducer,
   [claimSlice.name]: claimSlice.reducer,
   [accountUndoSlice.name]: accountUndoSlice.reducer,
-  [nftSlice.name]: nftSlice.reducer
+  [nftSlice.name]: nftSlice.reducer,
+  [gasSlice.name]: gasSlice.reducer
 });
 
 /**

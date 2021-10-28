@@ -1,5 +1,4 @@
-import { Body } from '@mycrypto/ui';
-import { Button } from '@mycrypto/ui-legacy';
+import { Button, Typography } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { Icon, LinkApp } from '@components';
@@ -105,16 +104,25 @@ const SDescription = styled('div')`
   }
 `;
 
-function ActionTile({ icon, faded, title, description, link }: Action) {
+function ActionTile({ icon, faded, title, description, link, inverse }: Action) {
   return (
     <SContainer>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
-          <img src={icon} alt={title} />
-          <Body as="div">
-            <STitle isLonger={title.length > 15}>{title}</STitle>
-            <SDescription>{description}</SDescription>
-          </Body>
+          {icon && <Icon type={icon} alt={title} />}
+          <Typography as="div">
+            {inverse ? (
+              <>
+                <SDescription>{description}</SDescription>
+                <STitle isLonger={title.length > 15}>{title}</STitle>
+              </>
+            ) : (
+              <>
+                <STitle isLonger={title.length > 15}>{title}</STitle>
+                <SDescription>{description}</SDescription>
+              </>
+            )}
+          </Typography>
         </SButton>
       </LinkApp>
     </SContainer>
