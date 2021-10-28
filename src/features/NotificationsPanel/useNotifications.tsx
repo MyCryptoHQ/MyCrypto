@@ -7,7 +7,6 @@ import {
 } from '@store';
 import { ExtendedNotification } from '@types';
 import { getTimeDifference, notUndefined } from '@utils';
-import { filter, last, pipe, sort } from '@vendor';
 
 import { notificationsConfigs } from './constants';
 
@@ -20,19 +19,25 @@ export interface ProviderState {
 
 function getCurrent(notifications: ExtendedNotification[]) {
   const latest = (a: ExtendedNotification, b: ExtendedNotification) => {
-    return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
+    if (notificationsConfigs[a.template].priority) {
+      return -1;
+    } else if (notificationsConfigs[b.template].priority) {
+      return 1;
+    }
+    return new Date(b.dateDisplayed).getTime() - new Date(a.dateDisplayed).getTime();
   };
 
   const canDisplay = (n: ExtendedNotification): boolean => {
     return (
       !n.dismissed &&
-      (notificationsConfigs[n.template].condition
+      (notificationsConfigs[n.template]?.condition
         ? notificationsConfigs[n.template].condition!(n)
         : true)
     );
   };
 
-  return pipe(sort(latest), filter(canDisplay), last)(notifications) as ExtendedNotification;
+  const result = notifications.filter(canDisplay).sort(latest);
+  return result[0];
 }
 
 function isValidNotification(n: ExtendedNotification) {

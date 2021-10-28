@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-import { NotificationTemplates, useNotifications } from '@features/NotificationsPanel';
+import { useNotifications } from '@features/NotificationsPanel';
+import { NotificationTemplates } from '@types';
 
 const ToolWrapper = styled.div`
   display: flex;

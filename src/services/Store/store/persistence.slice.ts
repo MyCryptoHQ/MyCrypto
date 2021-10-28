@@ -16,6 +16,7 @@ import { fetchMemberships } from './membership.slice';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import { APP_PERSIST_CONFIG } from './persist.config';
+import promoPoapsSlice, { checkForPromos } from './promoPoaps.slice';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
@@ -38,7 +39,8 @@ const persistenceReducer = combineReducers({
   [networkSlice.name]: networkSlice.reducer,
   [notificationSlice.name]: notificationSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [userActionSlice.name]: userActionSlice.reducer
+  [userActionSlice.name]: userActionSlice.reducer,
+  [promoPoapsSlice.name]: promoPoapsSlice.reducer
 });
 
 const slice = {
@@ -68,5 +70,6 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(fetchENS());
     yield put(fetchClaims());
     yield put(startGasPolling());
+    yield put(checkForPromos());
   }
 }

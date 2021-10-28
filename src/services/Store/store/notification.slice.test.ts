@@ -1,8 +1,7 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { NotificationTemplates } from '@features/NotificationsPanel';
 import { fAccount, fNotifications } from '@fixtures';
-import { TUuid } from '@types';
+import { NotificationTemplates, TUuid } from '@types';
 
 import {
   createNotification,
