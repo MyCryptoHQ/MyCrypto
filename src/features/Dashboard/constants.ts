@@ -20,7 +20,8 @@ export const actions: Action[] = [
     icon: 'tx-receive',
     title: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_TITLE'),
     link: ROUTE_PATHS.REQUEST_ASSETS.path,
-    description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE')
+    description: translateRaw('DASHBOARD_ACTIONS_REQUEST_ASSETS_SUBTITLE'),
+    filter: (isMobile) => isMobile
   },
   {
     icon: 'buy',
