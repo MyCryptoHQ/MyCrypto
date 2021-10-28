@@ -5,23 +5,28 @@ import { Body, Box, Button, Heading, LinkApp, Text } from '@components';
 import { PoapClaimService } from '@services/ApiService/PoapClaim';
 import { claimPromo, getAnalyticsUserID, getPromoPoap, useDispatch, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
+import { useScreenSize } from '@utils';
 
-export const HalloweenNotification = () => (
-  <Box variant="rowAlign">
-    <Box mr="4" width="10%">
-      <img src={poapImage} />
+export const HalloweenNotification = () => {
+  const { isMobile } = useScreenSize();
+
+  return (
+    <Box variant={isMobile ? 'columnAlign' : 'rowAlign'}>
+      <Box mr="4" width="10%">
+        <img src={poapImage} />
+      </Box>
+      <Box mr="2" width="60%">
+        <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
+          {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
+        </Heading>
+        <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
+      </Box>
+      <Box variant="rowCenter" width="30%">
+        <NotificationContent />
+      </Box>
     </Box>
-    <Box mr="2" width="60%">
-      <Heading color="WARNING_ORANGE" fontWeight="bold" fontSize="24px" lineHeight="32px" mt="0">
-        {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
-      </Heading>
-      <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
-    </Box>
-    <Box variant="rowCenter" width="30%">
-      <NotificationContent />
-    </Box>
-  </Box>
-);
+  );
+};
 
 const NotificationContent = () => {
   const dispatch = useDispatch();
@@ -70,7 +75,7 @@ const NotificationContent = () => {
       <Text as="div" color="white" fontSize="2">
         {translateRaw('POAP_CLAIM_APPROVED')}
       </Text>
-      <LinkApp mt="2" isExternal href={promo!.claim!}>
+      <LinkApp mt="2" isExternal href={promo!.claim!} textAlign="center">
         {translateRaw('ACCESS_POAP_LINK')}
       </LinkApp>
     </Box>
