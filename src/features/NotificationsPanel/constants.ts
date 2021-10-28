@@ -84,9 +84,9 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     layout: HalloweenNotification,
     condition: halloweenCheck,
     priority: true,
-    style: {
+    style: (isMobile) => ({
       backgroundImage: `url(${halloweenBg})`,
-      backgroundSize: '100% 100%'
-    }
+      backgroundSize: isMobile ? 'cover' : '100% 100%'
+    })
   }
 };

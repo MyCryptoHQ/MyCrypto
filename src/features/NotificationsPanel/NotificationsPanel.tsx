@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import closeIcon from '@assets/images/icn-close.svg';
 import { SPACING } from '@theme';
 import { IAccount, NotificationTemplates } from '@types';
+import { useScreenSize } from '@utils';
 import { useEffectOnce } from '@vendor';
 
 import { notificationsConfigs } from './constants';
@@ -79,16 +80,21 @@ const NotificationsPanel = ({ accounts }: Props) => {
 
   const template = currentNotification?.template;
 
+  const { isMobile } = useScreenSize();
+  const config = notificationsConfigs[template];
+
   const getNotificationBody = () => {
     const templateData = currentNotification!.templateData;
-    const NotificationComponent = notificationsConfigs[template].layout;
+    const NotificationComponent = config.layout;
     return <NotificationComponent {...templateData} />;
   };
+
+  const style = config && config.style ? config.style(isMobile) : undefined;
 
   return (
     <Fragment>
       {currentNotification && (
-        <MainPanel style={notificationsConfigs[template]?.style}>
+        <MainPanel style={style}>
           <CloseButton basic={true} onClick={handleCloseClick}>
             <img src={closeIcon} alt="Close" />
           </CloseButton>
