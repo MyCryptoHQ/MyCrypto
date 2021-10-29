@@ -1,4 +1,4 @@
-import { LedgerWallet, TrezorWallet } from '@mycrypto/wallets';
+import { GridPlusWallet, LedgerWallet, TrezorWallet } from '@mycrypto/wallets';
 
 import {
   HardwareWalletInitArgs,
@@ -52,6 +52,10 @@ export const WalletFactory = {
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
       new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
+  // @todo
+  [WalletId.GRIDPLUS]: {
+    init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
+  },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
   },
@@ -69,5 +73,7 @@ export const getWallet = (wallet: WalletId) => {
     case WalletId.TREZOR_NEW:
     case WalletId.TREZOR:
       return new TrezorWallet(trezorManifest);
+    case WalletId.GRIDPLUS:
+      return new GridPlusWallet({ name: 'MyCrypto' });
   }
 };

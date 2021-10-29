@@ -17,6 +17,8 @@ export const WALLET_STEPS: SigningComponents = {
   [WalletId.TREZOR]: SignTransactionTrezor,
   [WalletId.TREZOR_NEW]: SignTransactionTrezor,
   [WalletId.WALLETCONNECT]: SignTransactionWalletConnect,
+  // @todo
+  [WalletId.GRIDPLUS]: null,
   [WalletId.VIEW_ONLY]: null
 };
 export { default as HardwareSignTransaction } from './Hardware';

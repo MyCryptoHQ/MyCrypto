@@ -1,4 +1,5 @@
 import {
+  GridPlusUnlock,
   LedgerDecrypt,
   TrezorUnlock,
   ViewOnlyDecrypt,
@@ -30,6 +31,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.TREZOR_NEW,
     steps: [NetworkSelectPanel, TrezorUnlock]
+  },
+  {
+    name: WalletId.GRIDPLUS,
+    steps: [NetworkSelectPanel, GridPlusUnlock]
   },
   {
     name: WalletId.VIEW_ONLY,

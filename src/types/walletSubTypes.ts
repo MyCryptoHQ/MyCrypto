@@ -6,7 +6,8 @@ export type HardwareWalletId =
   | WalletId.LEDGER_NANO_S
   | WalletId.LEDGER_NANO_S_NEW
   | WalletId.TREZOR
-  | WalletId.TREZOR_NEW;
+  | WalletId.TREZOR_NEW
+  | WalletId.GRIDPLUS;
 export type Web3WalletId = keyof typeof WEB3_WALLETS;
 export type HDWalletId = keyof typeof HD_WALLETS;
 export type SecureWalletId = keyof typeof SECURE_WALLETS;

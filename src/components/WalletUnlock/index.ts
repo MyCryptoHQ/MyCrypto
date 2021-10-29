@@ -7,3 +7,4 @@ export { default as WalletConnectDecrypt } from './WalletConnect';
 export { default as LedgerDecrypt } from './Ledger';
 export { default as TrezorUnlock } from './NewTrezor';
 export { default as HardwareDecrypt } from './Hardware';
+export { GridPlus as GridPlusUnlock } from './GridPlus';

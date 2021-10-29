@@ -30,7 +30,7 @@ interface HWConfig {
 }
 
 type THardwareConfigs = {
-  [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW]: HWConfig;
+  [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS]: HWConfig;
 };
 
 const HardwareImage = styled(Icon)`
@@ -67,7 +67,7 @@ export interface HardwareUIProps {
   network: Network;
   isConnecting: boolean;
   connectionError?: TDWActionError;
-  walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
+  walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS;
 
   handleNullConnect(): void;
 }
@@ -82,6 +82,14 @@ const hardwareConfigs: THardwareConfigs = {
     iconId: 'ledger-icon-lg'
   },
   [WalletId.TREZOR_NEW]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    referralTransKey: 'ORDER_TREZOR',
+    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg'
+  },
+  [WalletId.GRIDPLUS]: {
     walletTypeTransKey: 'X_TREZOR',
     scanTransKey: 'ADD_TREZOR_SCAN',
     referralTransKey: 'ORDER_TREZOR',

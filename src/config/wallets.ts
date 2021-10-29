@@ -237,6 +237,21 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     flags: {
       supportsNonce: false
     }
+  },
+  [WalletId.GRIDPLUS]: {
+    id: WalletId.GRIDPLUS,
+    name: 'GridPlus',
+    isDeterministic: true,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.HARDWARE,
+    lid: 'GridPlus',
+    icon: TrezorSVG,
+    description: 'ADD_HARDWAREDESC',
+    helpLink: '',
+    flags: {
+      supportsNonce: true
+    }
   }
 };
 
