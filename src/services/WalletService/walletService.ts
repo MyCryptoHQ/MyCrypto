@@ -52,9 +52,9 @@ export const WalletFactory = {
     init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
       new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
   },
-  // @todo
   [WalletId.GRIDPLUS]: {
-    init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
+    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
+      new GridPlusWallet({ name: 'MyCrypto' }).getWallet(dPath, index, address)
   },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
