@@ -29,7 +29,7 @@ export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
   const dpaths = uniqBy(prop('path'), [...getDPaths([network], WalletId.GRIDPLUS)]);
-  const defaultDPath = network.dPaths[WalletId.TREZOR] || DEFAULT_ETH;
+  const defaultDPath = network.dPaths[WalletId.GRIDPLUS] || DEFAULT_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
