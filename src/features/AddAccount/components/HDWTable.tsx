@@ -337,7 +337,12 @@ const HDTable = ({
       ) : (
         <Body>
           {accountsToDisplay.map((account: TableAccountDisplay, index) => (
-            <Row key={index} onClick={() => onSelect(account)} isSelected={account.isSelected}>
+            <Row
+              key={index}
+              onClick={() => onSelect(account)}
+              isSelected={account.isSelected}
+              data-testid={`row-${account.address}`}
+            >
               <SelectedContainer isSelected={account.isSelected}>
                 <Icon type="check" />
               </SelectedContainer>
