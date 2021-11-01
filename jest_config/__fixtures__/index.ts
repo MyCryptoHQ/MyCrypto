@@ -61,3 +61,4 @@ export * from './swapQuote';
 export { fBalances } from './balances';
 export * from './ens';
 export * from './nft';
+export * from './hdWallet';
