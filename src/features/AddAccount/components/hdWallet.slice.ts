@@ -198,6 +198,7 @@ export function* requestConnectionWorker({
   const { asset, dpaths, network, walletId, setSession } = payload;
   // initialize the wallet
   try {
+    yield put(slice.actions.requestConnection());
     const session: DeterministicWallet = yield call(getWallet, walletId);
     yield call([session, session.getAddress], dpaths[0], 0);
     yield put(slice.actions.requestConnection());

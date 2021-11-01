@@ -64,6 +64,7 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
         ];
 
       case WalletId.TREZOR_NEW:
+      case WalletId.GRIDPLUS:
         return payload;
       default:
         throw new Error(
