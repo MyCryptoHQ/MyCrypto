@@ -1,10 +1,17 @@
 import { DeterministicWallet } from '@mycrypto/wallets';
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
-import { DWAccountDisplay, ExtendedDPath, getWallet } from '@services/WalletService';
+import {
+  fAssets,
+  fDWAccountDisplay,
+  fDWAccountDisplayPreBalance,
+  fExtendedDPath,
+  fNetwork,
+  fNetworks
+} from '@fixtures';
+import { getWallet } from '@services/WalletService';
 import { AppState } from '@store/root.reducer';
-import { DPathFormat, TAddress, WalletId } from '@types';
+import { DPathFormat, WalletId } from '@types';
 import { bigify as mockBigify, noOp } from '@utils';
 
 import {
@@ -37,28 +44,6 @@ const {
   addCustomDPaths,
   triggerComplete
 } = slice.actions;
-const addressToTestWith = fAccount.address as TAddress;
-
-const fExtendedDPath: ExtendedDPath = {
-  name: 'Ledger (ETH)',
-  path: "m/44'/60'/0'",
-  offset: 0,
-  numOfAddresses: 1
-};
-
-const fDWAccountDisplayPreBalance: DWAccountDisplay = {
-  address: addressToTestWith,
-  pathItem: {
-    baseDPath: fExtendedDPath,
-    path: "m/44'/60'/0'/0",
-    index: 0
-  }
-};
-
-const fDWAccountDisplay: DWAccountDisplay = {
-  ...fDWAccountDisplayPreBalance,
-  balance: '0'
-};
 
 describe('HD Wallet Slice', () => {
   const err = {
