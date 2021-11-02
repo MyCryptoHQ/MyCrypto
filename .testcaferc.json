@@ -9,5 +9,7 @@
   ],
   "developmentMode": true,
   "color": true,
-  "quarantineMode": true
+  "quarantineMode": {
+    "successThreshold": 1
+  }
 }
