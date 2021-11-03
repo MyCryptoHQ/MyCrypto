@@ -14,7 +14,7 @@ const SContainer = styled('div')<{ justifyContent: Property.JustifyContent }>`
   border-radius: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   display: flex;
-  ${(p) => `  justify-content: ${p.justifyContent};`}
+  ${(p) => `justify-content: ${p.justifyContent};`}
   margin-bottom: ${SPACING.BASE};
   padding: ${SPACING.BASE};
 
