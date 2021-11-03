@@ -65,7 +65,7 @@ export const WalletFactory = {
   }
 };
 
-export const getWallet = (wallet: WalletId) => {
+export const getWallet = (wallet: WalletId, params?: unknown) => {
   switch (wallet) {
     case WalletId.LEDGER_NANO_S_NEW:
     case WalletId.LEDGER_NANO_S:
@@ -74,6 +74,6 @@ export const getWallet = (wallet: WalletId) => {
     case WalletId.TREZOR:
       return new TrezorWallet(trezorManifest);
     case WalletId.GRIDPLUS:
-      return new GridPlusWallet({ name: 'MyCrypto' });
+      return new GridPlusWallet({ name: 'MyCrypto', ...(params ?? {}) });
   }
 };

@@ -1,8 +1,12 @@
 import { GridPlusWallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { select } from 'redux-saga-test-plan/matchers';
 import { all, put, takeLatest } from 'redux-saga/effects';
 
-import { requestConnectionSuccess } from '@features/AddAccount/components/hdWallet.slice';
+import {
+  requestConnectionSuccess,
+  selectHDWalletSession
+} from '@features/AddAccount/components/hdWallet.slice';
 import { LSKeys, WalletId } from '@types';
 
 import { getAppState } from './selectors';
@@ -42,7 +46,10 @@ export const getSlice = createSelector([getAppState], (s) => s[slice.name]);
 export const getWalletConnections = createSelector([getSlice], (s) => Object.values(s.wallets));
 
 export const getWalletConnection = (wallet: WalletId) =>
-  createSelector([getWalletConnections], (wallets) => wallets.find((p) => p.wallet === wallet));
+  createSelector(
+    [getWalletConnections],
+    (wallets) => wallets.find((p) => p.wallet === wallet)?.data
+  );
 
 /**
  * Sagas
@@ -52,8 +59,7 @@ export function* connectionsSaga() {
 }
 
 export function* gridPlusWorker() {
-  // @todo Get
-  const session = null;
+  const session = yield select(selectHDWalletSession);
   const credentials = session && (session as GridPlusWallet).getCredentials();
   if (credentials) {
     yield put(setWalletData({ wallet: WalletId.GRIDPLUS, data: credentials }));
