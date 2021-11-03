@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { WALLETS_CONFIG } from '@config';
 import { WalletFactory } from '@services/WalletService';
+import { getWalletConnection, useSelector } from '@store';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -63,6 +64,7 @@ export default function HardwareSignTransaction({
   const SigningWalletService = WalletFactory[
     senderAccount.wallet as HardwareWalletId
   ] as HardwareWalletService;
+  const params = useSelector(getWalletConnection(senderAccount.wallet));
 
   useInterval(
     async () => {
@@ -72,7 +74,8 @@ export default function HardwareSignTransaction({
         const walletObject = await SigningWalletService.init({
           address: senderAccount.address,
           dPath: senderAccount.path!,
-          index: senderAccount.index!
+          index: senderAccount.index!,
+          params
         });
         try {
           await walletObject.getAddress();
@@ -102,7 +105,8 @@ export default function HardwareSignTransaction({
             setIsTxSignatureRequestDenied(false);
             onSuccess(data);
           })
-          .catch(() => {
+          .catch((err) => {
+            console.error(err);
             // User denies tx, or tx times out.
             setIsTxSignatureRequestDenied(true);
             setIsRequestingTxSignature(false);

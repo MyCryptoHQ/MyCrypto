@@ -37,24 +37,24 @@ export const WalletFactory = {
     init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
   },
   [WalletId.LEDGER_NANO_S_NEW]: {
-    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new LedgerWallet().getWallet(dPath, index, address)
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.LEDGER_NANO_S_NEW, params)!.getWallet(dPath, index, address)
   },
   [WalletId.LEDGER_NANO_S]: {
-    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new LedgerWallet().getWallet(dPath, index, address)
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.LEDGER_NANO_S, params)!.getWallet(dPath, index, address)
   },
   [WalletId.TREZOR_NEW]: {
-    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.TREZOR_NEW, params)!.getWallet(dPath, index, address)
   },
   [WalletId.TREZOR]: {
-    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new TrezorWallet(trezorManifest).getWallet(dPath, index, address)
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.TREZOR, params)!.getWallet(dPath, index, address)
   },
   [WalletId.GRIDPLUS]: {
-    init: ({ address, dPath, index }: HardwareWalletInitArgs) =>
-      new GridPlusWallet({ name: 'MyCrypto' }).getWallet(dPath, index, address)
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.GRIDPLUS, params)!.getWallet(dPath, index, address)
   },
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
