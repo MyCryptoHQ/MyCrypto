@@ -21,6 +21,7 @@ export enum HDWalletErrors {
 }
 
 export const initialState: HDWalletState = {
+  session: undefined,
   isInit: false,
   isConnected: false,
   isConnecting: false,
@@ -37,6 +38,9 @@ const slice = createSlice({
   reducers: {
     resetState() {
       return initialState;
+    },
+    setSession(state, action: PayloadAction<DeterministicWallet>) {
+      state.session = action.payload;
     },
     requestConnection(state) {
       state.isConnecting = true;
@@ -119,6 +123,7 @@ const slice = createSlice({
 
 export const {
   resetState,
+  setSession,
   requestConnection,
   requestConnectionFailure,
   requestConnectionSuccess,
@@ -138,6 +143,7 @@ export default slice;
  * Selectors
  */
 const selectHDWallet = (s: AppState) => s[slice.name];
+export const selectHDWalletSession = createSelector(selectHDWallet, (hd) => hd.session);
 export const selectHDWalletAsset = createSelector(selectHDWallet, (hd) => hd.asset);
 export const selectHDWalletNetwork = createSelector(selectHDWallet, (hd) => hd.network);
 export const selectHDWalletAccountQueue = createSelector(selectHDWallet, (hd) => hd.accountQueue);
@@ -168,11 +174,8 @@ export const connectHDWallet = createAction<{
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: DeterministicWallet): void;
 }>(`${slice.name}/connectHDWallet`);
-export const getAccounts = createAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>(
-  `${slice.name}/getAccounts`
-);
+export const getAccounts = createAction<{ dpaths: ExtendedDPath[] }>(`${slice.name}/getAccounts`);
 export const processAccountsQueue = createAction(`${slice.name}/processAccountsQueue`);
 
 /**
@@ -193,16 +196,14 @@ export function* requestConnectionWorker({
   dpaths: ExtendedDPath[];
   network: Network;
   asset: ExtendedAsset;
-  setSession(wallet: DeterministicWallet): void;
 }>) {
-  const { asset, dpaths, network, walletId, setSession } = payload;
+  const { asset, dpaths, network, walletId } = payload;
   // initialize the wallet
   try {
     yield put(slice.actions.requestConnection());
     const session: DeterministicWallet = yield call(getWallet, walletId);
     yield call([session, session.getAddress], dpaths[0], 0);
-    yield put(slice.actions.requestConnection());
-    yield call(setSession, session);
+    yield put(setSession(session));
     yield put(slice.actions.requestConnectionSuccess({ asset, network }));
   } catch (err) {
     console.error(`Connection error for ${walletId} hardware wallet: ${err}`);
@@ -215,10 +216,9 @@ export function* requestConnectionWorker({
   }
 }
 
-export function* getAccountsWorker({
-  payload
-}: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>) {
-  const { dpaths, session } = payload;
+export function* getAccountsWorker({ payload }: PayloadAction<{ dpaths: ExtendedDPath[] }>) {
+  const session = yield select(selectHDWalletSession);
+  const { dpaths } = payload;
   yield put(slice.actions.requestAddresses());
   if (!('getAddressesWithMultipleDPaths' in session)) {
     console.error(`[getAccounts]: Selected HD wallet type has no getMultipleAddresses method`);
@@ -279,8 +279,6 @@ export function* accountsQueueSagaWatcher() {
   yield race([call(accountsQueueWorker), take(resetState.type)]);
 }
 
-export function* getAccountsSagaWatcher(
-  payload: PayloadAction<{ session: DeterministicWallet; dpaths: ExtendedDPath[] }>
-) {
+export function* getAccountsSagaWatcher(payload: PayloadAction<{ dpaths: ExtendedDPath[] }>) {
   yield race([call(getAccountsWorker, payload), take(resetState.type)]);
 }
