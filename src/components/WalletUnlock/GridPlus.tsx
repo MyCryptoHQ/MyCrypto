@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { DEFAULT_ETH } from '@mycrypto/wallets';
+import { DEFAULT_ETH, GRIDPLUS_DERIVATION_PATHS } from '@mycrypto/wallets';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 
@@ -28,7 +28,10 @@ export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
   const { assets } = useAssets();
   const network = getNetworkById(formData.network, networks);
   const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
-  const dpaths = uniqBy(prop('path'), [...getDPaths([network], WalletId.GRIDPLUS)]);
+  const dpaths = uniqBy(prop('path'), [
+    ...getDPaths([network], WalletId.GRIDPLUS),
+    ...GRIDPLUS_DERIVATION_PATHS
+  ]);
   const defaultDPath = network.dPaths[WalletId.GRIDPLUS] || DEFAULT_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;

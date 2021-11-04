@@ -98,7 +98,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
-      [WalletId.GRIDPLUS]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
@@ -123,7 +123,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
-      [WalletId.GRIDPLUS]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_DEFAULT
@@ -147,7 +147,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
-      [WalletId.GRIDPLUS]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
@@ -172,7 +172,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
-      [WalletId.GRIDPLUS]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
