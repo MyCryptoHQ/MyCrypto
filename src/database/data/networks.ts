@@ -860,9 +860,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
     },
     gasPriceSettings: {
-      min: 0.01,
-      max: 30,
-      initial: 1
+      min: 30,
+      max: 100,
+      initial: 30
     },
     shouldEstimateGasPrice: false
   },
