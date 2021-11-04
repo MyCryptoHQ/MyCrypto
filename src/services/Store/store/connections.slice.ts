@@ -16,7 +16,7 @@ const sliceName = LSKeys.CONNECTIONS;
 
 // @todo Long term could store WC stuff too
 export interface ConnectionsState {
-  wallets: Record<WalletId, { wallet: WalletId; data: unknown }>;
+  wallets: Record<string, { wallet: WalletId; data: any }>;
 }
 
 export const initialState = { wallets: {} } as ConnectionsState;
@@ -60,7 +60,8 @@ export function* connectionsSaga() {
 
 export function* gridPlusWorker() {
   const session = yield select(selectHDWalletSession);
-  const credentials = session && (session as GridPlusWallet).getCredentials();
+  const credentials =
+    session && 'getCredentials' in session && (session as GridPlusWallet).getCredentials();
   if (credentials) {
     yield put(setWalletData({ wallet: WalletId.GRIDPLUS, data: credentials }));
   }

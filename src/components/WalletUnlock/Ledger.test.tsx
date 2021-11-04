@@ -34,7 +34,9 @@ const defaultProps = {
 };
 
 const getComponent = () => {
-  const { store } = createStore(mockAppState({ networks: APP_STATE.networks }));
+  const { store } = createStore(
+    mockAppState({ networks: APP_STATE.networks, connections: { wallets: {} } })
+  );
   return simpleRender(
     <Provider store={store}>
       <LedgerDecrypt {...defaultProps} />

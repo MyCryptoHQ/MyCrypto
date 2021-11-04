@@ -65,7 +65,7 @@ export const WalletFactory = {
   }
 };
 
-export const getWallet = (wallet: WalletId, params?: unknown) => {
+export const getWallet = (wallet: WalletId, params?: any) => {
   switch (wallet) {
     case WalletId.LEDGER_NANO_S_NEW:
     case WalletId.LEDGER_NANO_S:
