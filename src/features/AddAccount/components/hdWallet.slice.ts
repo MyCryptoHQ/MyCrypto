@@ -1,8 +1,7 @@
 import { DeterministicAddress, DeterministicWallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import BN from 'bn.js';
-import { select } from 'redux-saga-test-plan/matchers';
-import { all, call, put, race, take, takeLatest } from 'redux-saga/effects';
+import { all, call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { BalanceMap, getAssetBalance } from '@services/Store/BalanceService';
 import {
