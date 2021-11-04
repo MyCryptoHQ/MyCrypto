@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import styled from 'styled-components';
 import { ValuesType } from 'utility-types';
-import { number, object, string } from 'yup';
+import { number, object, ObjectSchema, string } from 'yup';
 
 import {
   AccountSelector,
@@ -41,6 +41,7 @@ import { useGasForm } from '@hooks';
 import { getNonce, useRates } from '@services';
 import {
   isBurnAddress,
+  isValidAddress,
   isValidETHAddress,
   isValidPositiveNumber
 } from '@services/EthService/validators';
@@ -279,9 +280,13 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     account: object().required(translateRaw('REQUIRED')),
     address: object()
       .required(translateRaw('REQUIRED'))
-      .test('valid', translateRaw('TO_FIELD_ERROR'), function (value) {
-        return value && value.value && isValidETHAddress(value.value);
-      })
+      .when('network', (network: Network, schema: ObjectSchema) =>
+        schema.test('valid', translateRaw('TO_FIELD_ERROR', { $network: network.name }), function (
+          value
+        ) {
+          return value && value.value && isValidAddress(value.value, network.chainId);
+        })
+      )
       // @ts-expect-error Hack as Formik doesn't officially support warnings
       // tslint:disable-next-line
       .test('check-sending-to-burn', translateRaw('SENDING_TO_BURN_ADDRESS'), function (value) {
