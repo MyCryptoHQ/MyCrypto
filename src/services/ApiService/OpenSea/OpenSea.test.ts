@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react';
 import mockAxios from 'jest-mock-axios';
 
 import { OPENSEA_IMAGE_PROXY_API } from '@config';
-import { fAccount, fNFTCollections, fNFTs } from '@fixtures';
+import { fAccount, fNFTCollections, fNFTCollectionsStats, fNFTs } from '@fixtures';
 import { getNFTURL } from '@utils';
 
 import { OpenSeaService } from '.';
@@ -52,6 +52,15 @@ describe('OpenSea', () => {
     mockAxios.mockResponse({ data: fNFTCollections });
     const result = await promise;
     expect(result).toStrictEqual(fNFTCollections);
+  });
+
+  it('fetchCollectionsStats fetches stats for a collection', async () => {
+    const { slug, ...stats } = fNFTCollectionsStats[0];
+    const promise = OpenSeaService.fetchCollectionStats(slug);
+    expect(mockAxios.get).toHaveBeenCalledWith(`v1/collection/${slug}/stats`);
+    mockAxios.mockResponse({ data: { stats } });
+    const result = await promise;
+    expect(result).toStrictEqual(fNFTCollectionsStats[0]);
   });
 
   it('proxyAssets fetches collections for owner', async () => {

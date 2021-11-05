@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Body, Box, LinkApp } from '@components';
 import { DEFAULT_NETWORK_TICKER } from '@config';
-import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
+import { CustomOpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { translateRaw } from '@translations';
 import { Bigish } from '@types';
 import { bigify } from '@utils';
@@ -11,7 +11,7 @@ import { NFTCardContent } from './NFTCardContent';
 
 interface Props {
   asset: OpenSeaNFT;
-  collection?: OpenSeaCollection;
+  collection?: CustomOpenSeaCollection;
 }
 
 const formatValue = (price: Bigish | undefined) => {
@@ -24,7 +24,7 @@ const formatValue = (price: Bigish | undefined) => {
 };
 
 export const NFTCard = ({ asset, collection }: Props) => {
-  const floor = collection?.stats.floor_price ? bigify(collection?.stats.floor_price) : undefined;
+  const floor = collection?.stats?.floor_price ? bigify(collection?.stats.floor_price) : undefined;
 
   return (
     <Box
