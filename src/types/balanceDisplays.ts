@@ -18,4 +18,5 @@ export interface Balance {
   isOther?: boolean;
   accounts?: BalanceAccount[];
   uuid?: TUuid;
+  change?: number;
 }

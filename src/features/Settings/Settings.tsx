@@ -46,12 +46,13 @@ const StyledLayout = styled.div`
 function RendedExcludedAssetsPanel() {
   const accounts = useSelector(getStoreAccounts);
   const { settings } = useSettings();
-  const { getAssetRate } = useRates();
+  const { getAssetRate, getAssetChange } = useRates();
   const currentAccounts = useSelector(selectCurrentAccounts);
   const balances: Balance[] = buildBalances(
     currentAccounts,
     settings,
     getAssetRate,
+    getAssetChange,
     isExcludedAsset
   );
 
