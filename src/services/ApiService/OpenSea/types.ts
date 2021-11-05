@@ -103,6 +103,14 @@ export interface OpenSeaCollection extends OpenSeaCollectionMetadata {
   owned_asset_count: number;
 }
 
+export interface CustomOpenSeaCollection extends OpenSeaCollectionMetadata {
+  stats?: CustomOpenSeaCollectionStats;
+}
+
+export interface CustomOpenSeaCollectionStats extends OpenSeaCollectionStats {
+  slug: string;
+}
+
 interface OpenSeaCollectionStats {
   one_day_volume: number;
   one_day_change: number;

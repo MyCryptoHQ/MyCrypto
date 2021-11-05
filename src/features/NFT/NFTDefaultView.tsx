@@ -1,5 +1,5 @@
 import { Box } from '@components';
-import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
+import { CustomOpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { SPACING } from '@theme';
 
 import { NFTCard } from './NFTCard';
@@ -7,7 +7,7 @@ import { NFTCard } from './NFTCard';
 export const NFTDefaultView = ({
   nftsByCollection
 }: {
-  nftsByCollection: { nfts: OpenSeaNFT[]; collection: OpenSeaCollection }[];
+  nftsByCollection: { nfts: OpenSeaNFT[]; collection: CustomOpenSeaCollection }[];
 }) => (
   <Box variant="rowAlign" justifyContent="center" flexWrap="wrap" marginBottom={SPACING.BASE}>
     {nftsByCollection
