@@ -2,7 +2,7 @@ import { OPENSEA_API, OPENSEA_IMAGE_PROXY_API } from '@config';
 import { ApiService } from '@services/ApiService';
 import { getNFTURL } from '@utils';
 
-import { OpenSeaCollection, OpenSeaNFT } from './types';
+import { CustomOpenSeaCollectionStats, OpenSeaCollection, OpenSeaNFT } from './types';
 
 const NFT_LIMIT_PER_QUERY = 50; // Max allowed by OpenSea
 const NFT_LIMIT_MAX = 1000; // To prevent overly spamming the API - @todo Discuss
@@ -56,6 +56,18 @@ export const OpenSeaService = () => {
     }
   };
 
+  const fetchCollectionStats = async (
+    slug: string
+  ): Promise<CustomOpenSeaCollectionStats | null> => {
+    try {
+      const { data } = await service.get(`v1/collection/${slug}/stats`);
+      return { ...data.stats, slug };
+    } catch (e) {
+      console.debug('[OpenSea]: Fetching data from OpenSea failed: ', e);
+      return null;
+    }
+  };
+
   const proxyAssets = async (assets: OpenSeaNFT[]): Promise<boolean> => {
     try {
       const result = await service.post(
@@ -72,7 +84,7 @@ export const OpenSeaService = () => {
     }
   };
 
-  return { fetchAllAssets, fetchAssets, fetchCollections, proxyAssets };
+  return { fetchAllAssets, fetchAssets, fetchCollections, fetchCollectionStats, proxyAssets };
 };
 
 export default OpenSeaService();

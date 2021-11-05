@@ -1,6 +1,6 @@
 import { fireEvent, simpleRender } from 'test-utils';
 
-import { fNFTCollections, fNFTs } from '@fixtures';
+import { fNFTCollectionsStats, fNFTs } from '@fixtures';
 
 import NFTDashboard from './NFTDashboard';
 
@@ -10,7 +10,7 @@ function getComponent(fetched = true) {
       nft: {
         fetched,
         nfts: fNFTs,
-        collections: fNFTCollections
+        stats: fNFTCollectionsStats
       }
     }
   });

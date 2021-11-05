@@ -1,6 +1,6 @@
 import { expectSaga, mockAppState } from 'test-utils';
 
-import { fAccounts, fNFTCollections, fNFTs } from '@fixtures';
+import { fAccounts, fNFTCollections, fNFTCollectionsStats, fNFTs } from '@fixtures';
 import { OpenSeaService } from '@services/ApiService/OpenSea';
 
 import slice, {
@@ -10,7 +10,8 @@ import slice, {
   nftSaga,
   setCollections,
   setFetched,
-  setNFTs
+  setNFTs,
+  setStats
 } from './nft.slice';
 
 const reducer = slice.reducer;
@@ -31,6 +32,12 @@ describe('NFTSlice', () => {
   it('setNFTs(): sets nfts', () => {
     const actual = reducer(initialState, setNFTs(fNFTs));
     const expected = { ...initialState, nfts: fNFTs };
+    expect(actual).toEqual(expected);
+  });
+
+  it('setStats(): sets collection stats', () => {
+    const actual = reducer(initialState, setStats(fNFTCollectionsStats));
+    const expected = { ...initialState, stats: fNFTCollectionsStats };
     expect(actual).toEqual(expected);
   });
 
@@ -57,10 +64,10 @@ describe('nftSaga()', () => {
       )
       .provide({
         call(effect, next) {
-          if (effect.args[1] === OpenSeaService.fetchCollections) {
-            return fNFTCollections;
-          } else if (effect.args[1] === OpenSeaService.fetchAllAssets) {
+          if (effect.args[1] === OpenSeaService.fetchAllAssets) {
             return fNFTs;
+          } else if (effect.args[1] === OpenSeaService.fetchCollectionStats) {
+            return fNFTCollectionsStats;
           } else if (effect.fn === OpenSeaService.proxyAssets) {
             return true;
           }
@@ -69,7 +76,7 @@ describe('nftSaga()', () => {
         }
       })
       .put(setNFTs(fNFTs))
-      .put(setCollections(fNFTCollections))
+      .put(setStats(fNFTCollectionsStats))
       .dispatch(fetchNFTs())
       .silentRun();
   });
