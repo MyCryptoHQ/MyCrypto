@@ -10,10 +10,11 @@ import TrezorSVG from '@assets/images/wallets/trezor.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
 import WalletConnectSVG from '@assets/images/wallets/walletconnect.svg';
 import Web3DefaultIcon from '@assets/images/wallets/web3-default.svg';
-import { WalletId, WalletType } from '@types';
+import { BusyBottomConfig, WalletId, WalletType } from '@types';
 import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
 
 import { getKBHelpArticle, HELP_ARTICLE, KB_HELP_ARTICLE } from './helpArticles';
+import { EXT_URLS } from './links';
 
 const { MIGRATE_TO_METAMASK, MIGRATE_TO_TREZOR, WALLETCONNECT } = KB_HELP_ARTICLE;
 
@@ -272,3 +273,73 @@ export const WEB3_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)
 );
 
 export const getWalletConfig = (walletId: WalletId): IWalletConfig => WALLETS_CONFIG[walletId];
+
+export interface HWConfig {
+  walletTypeTransKey: string;
+
+  unlockTipTransKey: string;
+
+  scanTransKey: string;
+  referralTransKey: string;
+  referralURL: string;
+  iconId: string;
+  busyBottom: BusyBottomConfig;
+}
+
+type THardwareConfigs = {
+  [key in
+    | WalletId.LEDGER_NANO_S_NEW
+    | WalletId.TREZOR_NEW
+    | WalletId.GRIDPLUS
+    | WalletId.LEDGER_NANO_S
+    | WalletId.TREZOR]: HWConfig;
+};
+
+export const HARDWARE_CONFIG: THardwareConfigs = {
+  [WalletId.LEDGER_NANO_S]: {
+    walletTypeTransKey: 'X_LEDGER',
+    scanTransKey: 'ADD_LEDGER_SCAN',
+    referralTransKey: 'LEDGER_REFERRAL_2',
+    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
+    unlockTipTransKey: 'LEDGER_TIP',
+    iconId: 'ledger-icon-lg',
+    busyBottom: BusyBottomConfig.LEDGER
+  },
+  [WalletId.TREZOR]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    referralTransKey: 'ORDER_TREZOR',
+    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg',
+    busyBottom: BusyBottomConfig.TREZOR
+  },
+  [WalletId.LEDGER_NANO_S_NEW]: {
+    walletTypeTransKey: 'X_LEDGER',
+    scanTransKey: 'ADD_LEDGER_SCAN',
+    referralTransKey: 'LEDGER_REFERRAL_2',
+    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
+    unlockTipTransKey: 'LEDGER_TIP',
+    iconId: 'ledger-icon-lg',
+    busyBottom: BusyBottomConfig.LEDGER
+  },
+  [WalletId.TREZOR_NEW]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    referralTransKey: 'ORDER_TREZOR',
+    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg',
+    busyBottom: BusyBottomConfig.TREZOR
+  },
+  // @todo
+  [WalletId.GRIDPLUS]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    referralTransKey: 'ORDER_TREZOR',
+    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg',
+    busyBottom: BusyBottomConfig.TREZOR
+  }
+};

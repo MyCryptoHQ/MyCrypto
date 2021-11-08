@@ -1,38 +1,52 @@
 import React from 'react';
 
+import EthereumApp from '@ledgerhq/hw-app-eth';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
-import TrezorConnect from 'trezor-connect';
 
+import { WALLETS_CONFIG } from '@config';
 import { translateRaw } from '@translations';
-import { FormData } from '@types';
+import { FormData, WalletId } from '@types';
 import { truncate } from '@utils';
 
-import { TrezorDecrypt } from './Trezor';
+import { HWLegacy } from './HWLegacy';
+
+jest.mock('@ledgerhq/hw-transport-u2f');
 
 jest.mock('@mycrypto/eth-scan', () => ({
   ...jest.requireActual('@mycrypto/eth-scan'),
   getEtherBalances: jest.fn().mockResolvedValue({})
 }));
 
-const defaultProps: React.ComponentProps<typeof TrezorDecrypt> = {
+const defaultProps = {
+  wallet: WALLETS_CONFIG[WalletId.LEDGER_NANO_S],
   formData: ({ network: 'Ethereum' } as unknown) as FormData,
   onUnlock: jest.fn()
 };
 
 const getComponent = () => {
-  return simpleRender(<TrezorDecrypt {...defaultProps} />);
+  return simpleRender(<HWLegacy {...defaultProps} />);
 };
 
-describe('Trezor', () => {
+describe('HWLegacy', () => {
+  // @ts-expect-error Bad mock please ignore
+  delete window.location;
+  // @ts-expect-error Bad mock please ignore
+  window.location = Object.assign(new URL('https://example.org'), {
+    ancestorOrigins: '',
+    assign: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn()
+  });
+
   it('renders', () => {
     const { getByText } = getComponent();
     expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
   });
 
-  it('fetches addresses from Trezor and displays them', async () => {
+  it('fetches addresses from Ledger and displays them', async () => {
     const { getByText } = getComponent();
     expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
-    const button = getByText(translateRaw('ADD_TREZOR_SCAN'), { exact: false });
+    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
 
     fireEvent.click(button);
 
@@ -41,18 +55,19 @@ describe('Trezor', () => {
     );
 
     await waitFor(() =>
-      expect(getByText(truncate('0xc6D5a3c98EC9073B54FA0969957Bd582e8D874bf'))).toBeInTheDocument()
+      expect(getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))).toBeInTheDocument()
     );
   });
 
   it('shows error message', async () => {
+    // @ts-expect-error Not overwriting all functions
+    (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementationOnce(() => ({
+      getAddress: jest.fn().mockRejectedValue(new Error('foo'))
+    }));
+
     const { getByText } = getComponent();
     expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
-    const button = getByText(translateRaw('ADD_TREZOR_SCAN'), { exact: false });
-
-    (TrezorConnect.ethereumGetAddress as jest.MockedFunction<
-      typeof TrezorConnect.ethereumGetAddress
-    >).mockRejectedValueOnce(new Error('foo'));
+    const button = getByText(translateRaw('ADD_LEDGER_SCAN'), { exact: false });
 
     fireEvent.click(button);
 

@@ -3,9 +3,7 @@ import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-
-export type Bigish = BigNumber;
-export type BigifySupported = BigNumber.Value | BigNumber | BigNumberish | bigint | BN;
+import { BigifySupported } from '@types';
 
 export const bigify = (v: BigifySupported): BigNumber => {
   BigNumber.config({ DECIMAL_PLACES: DEFAULT_ASSET_DECIMAL, EXPONENTIAL_AT: 1e9 });

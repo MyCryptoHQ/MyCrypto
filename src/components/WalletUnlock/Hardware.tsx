@@ -1,37 +1,12 @@
 import styled from 'styled-components';
 
-import {
-  Body,
-  Box,
-  BusyBottom,
-  Button,
-  Heading,
-  InlineMessage,
-  Spinner,
-  Text,
-  TIcon
-} from '@components';
+import { Body, Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text } from '@components';
 import Icon from '@components/Icon';
-import { EXT_URLS } from '@config';
+import { HARDWARE_CONFIG } from '@config';
 import { TDWActionError } from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
-
-interface HWConfig {
-  walletTypeTransKey: string;
-
-  unlockTipTransKey: string;
-
-  scanTransKey: string;
-  referralTransKey: string;
-  referralURL: string;
-  iconId: TIcon;
-}
-
-type THardwareConfigs = {
-  [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS]: HWConfig;
-};
+import { InlineMessageType, Network, WalletId } from '@types';
 
 const HardwareImage = styled(Icon)`
   vertical-align: center;
@@ -72,33 +47,6 @@ export interface HardwareUIProps {
   handleNullConnect(): void;
 }
 
-const hardwareConfigs: THardwareConfigs = {
-  [WalletId.LEDGER_NANO_S_NEW]: {
-    walletTypeTransKey: 'X_LEDGER',
-    scanTransKey: 'ADD_LEDGER_SCAN',
-    referralTransKey: 'LEDGER_REFERRAL_2',
-    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
-    unlockTipTransKey: 'LEDGER_TIP',
-    iconId: 'ledger-icon-lg'
-  },
-  [WalletId.TREZOR_NEW]: {
-    walletTypeTransKey: 'X_TREZOR',
-    scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
-    unlockTipTransKey: 'TREZOR_TIP',
-    iconId: 'trezor-icon-lg'
-  },
-  [WalletId.GRIDPLUS]: {
-    walletTypeTransKey: 'X_TREZOR',
-    scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
-    unlockTipTransKey: 'TREZOR_TIP',
-    iconId: 'trezor-icon-lg'
-  }
-};
-
 const HardwareWalletUI = ({
   network,
   connectionError,
@@ -110,7 +58,7 @@ const HardwareWalletUI = ({
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('UNLOCK_WALLET')}{' '}
       {translateRaw('YOUR_WALLET_TYPE', {
-        $walletType: translateRaw(hardwareConfigs[walletId].walletTypeTransKey)
+        $walletType: translateRaw(HARDWARE_CONFIG[walletId].walletTypeTransKey)
       })}
     </Heading>
     <Box variant="columnCenter" minHeight="400px">
@@ -122,9 +70,9 @@ const HardwareWalletUI = ({
         color={COLORS.GREY_DARKEST}
         textAlign="center"
       >
-        {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
+        {translate(HARDWARE_CONFIG[walletId].unlockTipTransKey, { $network: network.id })}
       </Text>
-      <HardwareImage type={hardwareConfigs[walletId].iconId} />
+      <HardwareImage type={HARDWARE_CONFIG[walletId].iconId} />
       <Text
         lineHeight="1.5"
         letterSpacing="normal"
@@ -148,7 +96,7 @@ const HardwareWalletUI = ({
           </>
         ) : (
           <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={isConnecting}>
-            {translate(hardwareConfigs[walletId].scanTransKey)}
+            {translate(HARDWARE_CONFIG[walletId].scanTransKey)}
           </HardwareConnectBtn>
         )}
       </Text>
@@ -158,13 +106,7 @@ const HardwareWalletUI = ({
         </Body>
       )}
       <HardwareFooter>
-        <BusyBottom
-          type={
-            walletId === WalletId.LEDGER_NANO_S_NEW
-              ? BusyBottomConfig.LEDGER
-              : BusyBottomConfig.TREZOR
-          }
-        />
+        <BusyBottom type={HARDWARE_CONFIG[walletId].busyBottom} />
       </HardwareFooter>
     </Box>
   </Box>
