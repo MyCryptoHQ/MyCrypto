@@ -696,6 +696,11 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
+      [WalletId.TREZOR]: DEFAULT_WEB,
+      [WalletId.TREZOR_NEW]: DEFAULT_WEB,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_WEB,
       default: DEFAULT_WEB
     },
     gasPriceSettings: {
@@ -801,6 +806,11 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
+      [WalletId.TREZOR]: DEFAULT_AUX,
+      [WalletId.TREZOR_NEW]: DEFAULT_AUX,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_AUX,
       default: DEFAULT_AUX
     },
     gasPriceSettings: {
@@ -1125,3 +1135,5 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     }
   }
 };
+
+console.log(Object.values(NETWORKS_CONFIG).map((a) => `${a.name} - ${a.dPaths.GRIDPLUS?.path}`));

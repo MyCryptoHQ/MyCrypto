@@ -27,6 +27,7 @@ import './LedgerNano.scss';
 
 interface OwnProps {
   wallet: IWalletConfig;
+  walletParams: any;
   formData: FormData;
   onUnlock(param: any): void;
 }
@@ -51,7 +52,7 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
     error: null,
     isLoading: false,
     isConnected: false,
-    wallet: getWallet(this.props.wallet.id)!
+    wallet: getWallet(this.props.wallet.id, this.props.walletParams)!
   };
 
   public render() {
@@ -175,7 +176,14 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
   private handleUnlock = async (address: TAddress, index: number) => {
     try {
       const WalletService = WalletFactory[this.props.wallet.id as HardwareWalletId];
-      this.props.onUnlock(await WalletService.init({ address, dPath: this.state.dPath, index }));
+      this.props.onUnlock(
+        await WalletService.init({
+          address,
+          dPath: this.state.dPath,
+          index,
+          params: this.props.walletParams
+        })
+      );
     } catch (err) {
       console.error(err);
     }
