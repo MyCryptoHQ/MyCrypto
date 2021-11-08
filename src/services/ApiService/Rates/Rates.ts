@@ -15,7 +15,11 @@ export const RatesService = () => {
   ): Promise<IRates> => {
     return service
       .get('/simple/price', {
-        params: { ids: coinGeckoIds.join(','), vs_currencies: currencies.join(',') }
+        params: {
+          ids: coinGeckoIds.join(','),
+          vs_currencies: currencies.join(','),
+          include_24hr_change: true
+        }
       })
       .then((res) => res.data)
       .catch((err) => {

@@ -63,7 +63,7 @@ export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const accounts = useSelector(getStoreAccounts);
   const { settings, updateSettingsAccounts } = useSettings();
-  const { getAssetRate } = useRates();
+  const { getAssetRate, getAssetChange } = useRates();
   const currentAccounts = useSelector(selectCurrentAccounts);
 
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
@@ -71,6 +71,7 @@ export function WalletBreakdown() {
     currentAccounts,
     settings,
     getAssetRate,
+    getAssetChange,
     isNotExcludedAsset
   );
 
