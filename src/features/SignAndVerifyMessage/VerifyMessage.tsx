@@ -6,6 +6,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { InputField } from '@components';
+import { ProviderHandler } from '@services/EthService';
+import { selectDefaultNetwork, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
@@ -61,10 +63,15 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+  const network = useSelector(selectDefaultNetwork);
+  const provider = new ProviderHandler(network);
 
   const handleClick = () => handleVerifySignedMessage();
 
-  const handleVerifySignedMessage = (json?: string, trySingleQuotes?: boolean): void => {
+  const handleVerifySignedMessage = async (
+    json?: string,
+    trySingleQuotes?: boolean
+  ): Promise<void> => {
     const rawMessage = json ?? message;
 
     try {
@@ -72,7 +79,8 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
       const parsedSignature: ISignedMessage = normalizeJson(normalizedMessage);
 
       const isValid = verifySignedMessage(parsedSignature);
-      if (!isValid) {
+      const isValidEIP1271 = !isValid && (await provider.isValidEIP1271Signature(parsedSignature));
+      if (!isValid && !isValidEIP1271) {
         throw Error();
       }
 
