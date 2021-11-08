@@ -17,7 +17,8 @@ export const fBalances: Balance[] = [
         label: 'WalletConnect Account 1'
       }
     ],
-    exchangeRate: '1'
+    exchangeRate: '1',
+    change: 10.5
   },
   {
     id: 'WrappedETH-WETH',
@@ -35,7 +36,8 @@ export const fBalances: Balance[] = [
         label: 'WalletConnect Account 1'
       }
     ],
-    exchangeRate: '1'
+    exchangeRate: '1',
+    change: 10.5
   },
   {
     id: 'Ether-ETH',
@@ -53,7 +55,8 @@ export const fBalances: Balance[] = [
         label: 'WalletConnect Account 1'
       }
     ],
-    exchangeRate: '1'
+    exchangeRate: '1',
+    change: 10.5
   },
   {
     id: 'GoerliETH-GoerliETH',
@@ -71,6 +74,7 @@ export const fBalances: Balance[] = [
         label: 'WalletConnect Account 1'
       }
     ],
-    exchangeRate: '1'
+    exchangeRate: '1',
+    change: 10.5
   }
 ];

@@ -45,4 +45,17 @@ describe('useRates', () => {
     expect(result.current.getAssetRateInCurrency(fAssets[3], 'EUR')).toEqual(0);
     expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
+
+  it('getAssetChange() gets correct change from settings', () => {
+    const { result } = renderUseRates({ rates: fRates });
+    expect(result.current.getAssetChange(fAssets[0])).toBe(fRates[fAssets[0].uuid].usd_24h_change);
+  });
+
+  it('getAssetChange() calls trackAsset on unknown assets', () => {
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseRates({ rates: fRates });
+
+    expect(result.current.getAssetChange(fAssets[3])).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
+  });
 });
