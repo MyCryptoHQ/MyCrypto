@@ -1,18 +1,20 @@
+import { TIcon } from '@components/Icon';
+import { HARDWARE_CONFIG } from '@config';
 import { translateRaw } from '@translations';
-import { ISignComponentProps } from '@types';
+import { ISignComponentProps, WalletId } from '@types';
 
 import HardwareSignTransaction from './Hardware';
 
-// @todo Update copy
 export default function SignTransactionGridPlus({
   senderAccount,
   rawTransaction,
   onSuccess
 }: ISignComponentProps) {
+  const walletIconType = HARDWARE_CONFIG[WalletId.GRIDPLUS].iconId as TIcon;
   return (
     <HardwareSignTransaction
-      signerDescription={translateRaw('SIGN_TX_TREZOR_DESCRIPTION')}
-      walletIconType="trezor-icon-lg"
+      signerDescription={translateRaw('SIGN_TX_GRIDPLUS_DESCRIPTION')}
+      walletIconType={walletIconType}
       senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       onSuccess={onSuccess}

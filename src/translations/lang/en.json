@@ -1082,6 +1082,7 @@
     "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel",
     "X_GRIDPLUS": "GridPlus",
     "GRIDPLUS_CONNECT": "Connect to GridPlus",
-    "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus"
+    "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus",
+    "SIGN_TX_GRIDPLUS_DESCRIPTION": "Follow the on-screen instructions on your GridPlus to sign your transaction."
   }
 }

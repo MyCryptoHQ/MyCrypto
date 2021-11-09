@@ -4,7 +4,7 @@ import { Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
-import { WALLETS_CONFIG } from '@config';
+import { HARDWARE_CONFIG, WALLETS_CONFIG } from '@config';
 import { WalletFactory } from '@services/WalletService';
 import { getWalletConnection, useSelector } from '@store';
 import { FONT_SIZE, SPACING } from '@theme';
@@ -16,8 +16,7 @@ import {
   IAccount,
   IPendingTxReceipt,
   ISignedTx,
-  ITxObject,
-  WalletId
+  ITxObject
 } from '@types';
 import { makeTransaction, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
@@ -117,16 +116,7 @@ export default function HardwareSignTransaction({
     [wallet, isRequestingTxSignature]
   );
 
-  const walletType = (() => {
-    switch (senderAccount.wallet) {
-      case WalletId.TREZOR:
-      case WalletId.TREZOR_NEW:
-        return BusyBottomConfig.TREZOR;
-
-      default:
-        return BusyBottomConfig.LEDGER;
-    }
-  })();
+  const walletType = HARDWARE_CONFIG[senderAccount.wallet as HardwareWalletId].busyBottom;
 
   return (
     <SignTxHardwareUI
