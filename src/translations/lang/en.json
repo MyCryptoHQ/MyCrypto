@@ -1078,6 +1078,9 @@
     "MEMBERSHIP_POAP": "Regular POAP NFT drops",
     "MEMBERSHIP_TREZOR": "10% Discount for Trezor Hardware Wallets",
     "MEMBERSHIP_FAUCET": "Extra Faucet Testnet ETH (Rinkeby, Ropsten, Kovan, Goerli)",
-    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel"
+    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel",
+    "VIEW_ONLY_HEADING": "We’re not fully integrated with $wallet yet",
+    "VIEW_ONLY_SUBHEADING": "You can still see your assets in view-only mode on your MyCrypto dashboard for now",
+    "VIEW_ONLY_PLACEHOLDER": "Enter your $wallet address"
   }
 }
