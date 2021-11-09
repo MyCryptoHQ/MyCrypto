@@ -130,4 +130,4 @@ export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUnd
 export { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from './nft.slice';
 export { getBaseFee } from './gas.slice';
 export { checkForPromos, getPromoPoap, claimPromo } from './promoPoaps.slice';
-export { getWalletConnection } from './connections.slice';
+export { getWalletConnection, connectWallet } from './connections.slice';

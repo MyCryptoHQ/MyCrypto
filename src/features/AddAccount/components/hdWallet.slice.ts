@@ -10,7 +10,7 @@ import {
   HDWalletState
 } from '@services/WalletService/deterministic';
 import { getWallet } from '@services/WalletService/walletService';
-import { getWalletConnection } from '@store/connections.slice';
+import { connectWallet, getWalletConnection } from '@store/connections.slice';
 import { AppState } from '@store/root.reducer';
 import { DPathFormat, ExtendedAsset, Network, TAddress } from '@types';
 import { accountsToCSV } from '@utils';
@@ -205,6 +205,7 @@ export function* requestConnectionWorker({
     const session: DeterministicWallet = yield call(getWallet, walletId, params);
     yield call([session, session.getAddress], dpaths[0], 0);
     yield put(setSession(session));
+    yield put(connectWallet(session));
     yield put(slice.actions.requestConnectionSuccess({ asset, network }));
   } catch (err) {
     console.error(`Connection error for ${walletId} hardware wallet: ${err}`);

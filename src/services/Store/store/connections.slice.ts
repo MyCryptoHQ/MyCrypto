@@ -1,12 +1,7 @@
-import { GridPlusWallet } from '@mycrypto/wallets';
+import { DeterministicWallet, GridPlusWallet, Wallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { select } from 'redux-saga-test-plan/matchers';
 import { all, put, takeLatest } from 'redux-saga/effects';
 
-import {
-  requestConnectionSuccess,
-  selectHDWalletSession
-} from '@features/AddAccount/components/hdWallet.slice';
 import { LSKeys, WalletId } from '@types';
 
 import { getAppState } from './selectors';
@@ -31,7 +26,7 @@ const slice = createSlice({
   }
 });
 
-export const checkForPromos = createAction(`${slice.name}/check`);
+export const connectWallet = createAction<Wallet | DeterministicWallet>(`${slice.name}/connect`);
 
 export const { setWalletData } = slice.actions;
 
@@ -55,13 +50,12 @@ export const getWalletConnection = (wallet: WalletId) =>
  * Sagas
  */
 export function* connectionsSaga() {
-  yield all([takeLatest(requestConnectionSuccess.type, gridPlusWorker)]);
+  yield all([takeLatest(connectWallet.type, gridPlusWorker)]);
 }
 
-export function* gridPlusWorker() {
-  const session = yield select(selectHDWalletSession);
+export function* gridPlusWorker({ payload }: PayloadAction<Wallet>) {
   const credentials =
-    session && 'getCredentials' in session && (session as GridPlusWallet).getCredentials();
+    payload && 'getCredentials' in payload && (payload as GridPlusWallet).getCredentials();
   if (credentials) {
     yield put(setWalletData({ wallet: WalletId.GRIDPLUS, data: credentials }));
   }
