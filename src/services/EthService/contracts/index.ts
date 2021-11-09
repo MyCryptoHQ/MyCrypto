@@ -8,3 +8,4 @@ export { UniDistributor } from './uniDistributor';
 export { AaveMigrator } from './aaveMigrator';
 export { AntMigrator } from './antMigrator';
 export { GolemV2Migration } from './golemV2Migration';
+export * from './eip1271';

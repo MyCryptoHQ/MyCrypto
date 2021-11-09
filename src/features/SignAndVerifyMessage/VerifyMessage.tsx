@@ -1,11 +1,12 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Button } from '@mycrypto/ui';
 import { parse } from 'query-string';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { InputField } from '@components';
+import { Button, InputField } from '@components';
+import { ProviderHandler } from '@services/EthService';
+import { selectDefaultNetwork, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
@@ -23,13 +24,7 @@ const Content = styled.div`
   align-items: center;
 `;
 
-interface VerifyButtonProps {
-  disabled?: boolean;
-}
-
-const VerifyButton = styled(Button)<VerifyButtonProps>`
-  ${(props) => props.disabled && 'opacity: 0.4;'}
-
+const VerifyButton = styled(Button)`
   @media (max-width: ${SCREEN_XS}) {
     width: 100%;
   }
@@ -61,18 +56,26 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const network = useSelector(selectDefaultNetwork);
+  const provider = new ProviderHandler(network);
 
   const handleClick = () => handleVerifySignedMessage();
 
-  const handleVerifySignedMessage = (json?: string, trySingleQuotes?: boolean): void => {
+  const handleVerifySignedMessage = async (
+    json?: string,
+    trySingleQuotes?: boolean
+  ): Promise<void> => {
     const rawMessage = json ?? message;
+    setLoading(true);
 
     try {
       const normalizedMessage = trySingleQuotes ? normalizeSingleQuotes(rawMessage) : rawMessage;
       const parsedSignature: ISignedMessage = normalizeJson(normalizedMessage);
 
       const isValid = verifySignedMessage(parsedSignature);
-      if (!isValid) {
+      const isValidEIP1271 = !isValid && (await provider.isValidEIP1271Signature(parsedSignature));
+      if (!isValid && !isValidEIP1271) {
         throw Error();
       }
 
@@ -85,6 +88,8 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
 
       setError(translateRaw('ERROR_38'));
       setSignedMessage(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,7 +132,7 @@ const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ locatio
         height="150px"
         inputError={error}
       />
-      <VerifyButton disabled={!message} onClick={handleClick}>
+      <VerifyButton disabled={!message} loading={loading} onClick={handleClick}>
         {translate('MSG_VERIFY')}
       </VerifyButton>
       {signedMessage && (
