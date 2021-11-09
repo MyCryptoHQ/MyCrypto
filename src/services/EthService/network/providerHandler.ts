@@ -1,6 +1,7 @@
 import { FeeData } from '@ethersproject/abstract-provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
+import { hashMessage } from '@ethersproject/hash';
 import {
   BaseProvider,
   Block,
@@ -15,10 +16,19 @@ import Resolution from '@unstoppabledomains/resolution';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
-import { Asset, ITxObject, ITxSigned, Network, TAddress, TokenInformation } from '@types';
+import {
+  Asset,
+  ISignedMessage,
+  ITxObject,
+  ITxSigned,
+  Network,
+  TAddress,
+  TokenInformation
+} from '@types';
 import { baseToConvertedUnit } from '@utils';
 import { FallbackProvider } from '@vendor';
 
+import { EIP1271_ABI } from '../contracts';
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 
@@ -170,6 +180,20 @@ export class ProviderHandler {
         return { symbol, decimals };
       } catch (e) {
         return undefined;
+      }
+    });
+  }
+
+  public async isValidEIP1271Signature({ address, msg, sig }: ISignedMessage): Promise<boolean> {
+    return this.injectClient(async (client) => {
+      try {
+        const hash = hashMessage(msg);
+        const contract = new Contract(address, EIP1271_ABI, client);
+        const result = await contract.isValidSignature(hash, sig);
+
+        return result;
+      } catch (e) {
+        return false;
       }
     });
   }
