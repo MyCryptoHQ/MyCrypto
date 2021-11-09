@@ -84,6 +84,20 @@ export const configs: Record<
     },
     SUPPORT_LINK
   ],
+  GRIDPLUS: [
+    {
+      copy: 'BUSY_BOTTOM_GRIDPLUS_1',
+      link: EXT_URLS.GRIDPLUS_REFERRAL.url,
+      external: true
+    },
+    // @todo Add article for this?
+    /**{
+      copy: 'BUSY_BOTTOM_TROUBLESHOOTING',
+      link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
+      external: true
+    },**/
+    SUPPORT_LINK
+  ],
   WALLETCONNECT: [
     {
       copy: 'BUSY_BOTTOM_WALLETCONNECT_1',

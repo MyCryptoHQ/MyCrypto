@@ -1079,6 +1079,9 @@
     "MEMBERSHIP_POAP": "Regular POAP NFT drops",
     "MEMBERSHIP_TREZOR": "10% Discount for Trezor Hardware Wallets",
     "MEMBERSHIP_FAUCET": "Extra Faucet Testnet ETH (Rinkeby, Ropsten, Kovan, Goerli)",
-    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel"
+    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel",
+    "X_GRIDPLUS": "GridPlus",
+    "GRIDPLUS_CONNECT": "Connect to GridPlus",
+    "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus"
   }
 }

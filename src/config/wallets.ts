@@ -3,6 +3,7 @@
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
+import GridPlusSVG from '@assets/images/wallets/gridplus.svg';
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
 import StatusSVG from '@assets/images/wallets/status.svg';
@@ -14,7 +15,6 @@ import { BusyBottomConfig, WalletId, WalletType } from '@types';
 import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
 
 import { getKBHelpArticle, HELP_ARTICLE, KB_HELP_ARTICLE } from './helpArticles';
-import { EXT_URLS } from './links';
 
 const { MIGRATE_TO_METAMASK, MIGRATE_TO_TREZOR, WALLETCONNECT } = KB_HELP_ARTICLE;
 
@@ -247,7 +247,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDesktopOnly: false,
     type: WalletType.HARDWARE,
     lid: 'GridPlus',
-    icon: TrezorSVG,
+    icon: GridPlusSVG,
     description: 'ADD_HARDWAREDESC',
     helpLink: '',
     flags: {
@@ -280,8 +280,6 @@ export interface HWConfig {
   unlockTipTransKey: string;
 
   scanTransKey: string;
-  referralTransKey: string;
-  referralURL: string;
   iconId: string;
   busyBottom: BusyBottomConfig;
 }
@@ -299,8 +297,6 @@ export const HARDWARE_CONFIG: THardwareConfigs = {
   [WalletId.LEDGER_NANO_S]: {
     walletTypeTransKey: 'X_LEDGER',
     scanTransKey: 'ADD_LEDGER_SCAN',
-    referralTransKey: 'LEDGER_REFERRAL_2',
-    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
     unlockTipTransKey: 'LEDGER_TIP',
     iconId: 'ledger-icon-lg',
     busyBottom: BusyBottomConfig.LEDGER
@@ -308,8 +304,6 @@ export const HARDWARE_CONFIG: THardwareConfigs = {
   [WalletId.TREZOR]: {
     walletTypeTransKey: 'X_TREZOR',
     scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
     unlockTipTransKey: 'TREZOR_TIP',
     iconId: 'trezor-icon-lg',
     busyBottom: BusyBottomConfig.TREZOR
@@ -317,8 +311,6 @@ export const HARDWARE_CONFIG: THardwareConfigs = {
   [WalletId.LEDGER_NANO_S_NEW]: {
     walletTypeTransKey: 'X_LEDGER',
     scanTransKey: 'ADD_LEDGER_SCAN',
-    referralTransKey: 'LEDGER_REFERRAL_2',
-    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
     unlockTipTransKey: 'LEDGER_TIP',
     iconId: 'ledger-icon-lg',
     busyBottom: BusyBottomConfig.LEDGER
@@ -326,20 +318,16 @@ export const HARDWARE_CONFIG: THardwareConfigs = {
   [WalletId.TREZOR_NEW]: {
     walletTypeTransKey: 'X_TREZOR',
     scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
     unlockTipTransKey: 'TREZOR_TIP',
     iconId: 'trezor-icon-lg',
     busyBottom: BusyBottomConfig.TREZOR
   },
-  // @todo
+  // @todo Add large icon
   [WalletId.GRIDPLUS]: {
-    walletTypeTransKey: 'X_TREZOR',
-    scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
+    walletTypeTransKey: 'X_GRIDPLUS',
+    scanTransKey: 'GRIDPLUS_CONNECT',
     unlockTipTransKey: 'TREZOR_TIP',
     iconId: 'trezor-icon-lg',
-    busyBottom: BusyBottomConfig.TREZOR
+    busyBottom: BusyBottomConfig.GRIDPLUS
   }
 };
