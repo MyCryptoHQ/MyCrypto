@@ -4,6 +4,7 @@ import { TIcon } from '@components';
 import {
   ANTv1UUID,
   DAPPNODE_AIRDROP_LINK,
+  ENS_AIRDROP_LINK,
   ETHUUID,
   EXT_URLS,
   FAUCET_NETWORKS,
@@ -147,6 +148,29 @@ export const actionTemplates: ActionTemplate[] = [
       props: {
         content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
         to: DAPPNODE_AIRDROP_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: ACTION_NAME.CLAIM_ENS,
+    heading: translateRaw('CLAIM_TOKENS_ACTION_HEADING', { $token: 'ENS' }),
+    icon: 'ensLogo',
+    subHeading: ClaimSubHead,
+    body: [translate('CLAIM_TOKENS_ACTION_BODY', { $token: 'ENS' })],
+    filter: ({ claims }: ActionFilters) =>
+      claims[ClaimType.ENS]?.some((c) => c.state === ClaimState.UNCLAIMED),
+    priority: 30,
+    Component: ClaimTable,
+    props: {
+      type: ClaimType.ENS
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
+        to: ENS_AIRDROP_LINK,
         external: true
       }
     },
