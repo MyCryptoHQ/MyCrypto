@@ -151,6 +151,7 @@ export const partnerLinks: Link[] = [
 
 export const UNISWAP_LINK = 'https://app.uniswap.org/';
 export const DAPPNODE_AIRDROP_LINK = 'https://app.dappnode.io/nodedrop';
+export const ENS_AIRDROP_LINK = 'https://claim.ens.domains/';
 
 export const MYC_WINTER_LINK = 'https://winter.mycrypto.com';
 
