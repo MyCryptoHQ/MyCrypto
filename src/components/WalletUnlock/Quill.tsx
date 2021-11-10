@@ -78,7 +78,7 @@ const QuillDecrypt: FC<Props> = ({ formData, onUnlock }) => {
   }, [addNodeToNetwork, setWeb3Unlocked]);
 
   return (
-    <Box p="2.5em">
+    <Box>
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translate('ADD_ACCOUNT_WEB3_TITLE', { $walletId: WALLETS_CONFIG.QUILL.name })}
       </Heading>
