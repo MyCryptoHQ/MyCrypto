@@ -33,11 +33,14 @@ const slice = createSlice({
     },
     incrementNonce(state) {
       state.nonce++;
+    },
+    setNonce(state, action: PayloadAction<number>) {
+      state.nonce = action.payload;
     }
   }
 });
 
-export const { setKeyPair, incrementNonce } = slice.actions;
+export const { setKeyPair, incrementNonce, setNonce } = slice.actions;
 
 export default slice;
 
