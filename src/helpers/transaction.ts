@@ -463,10 +463,7 @@ export const appendGasLimit = (network: Network) => async (
     return tx as TxBeforeNonce;
   }
   try {
-    const gasLimit = await getGasEstimate(network, tx)
-      .then(bigify)
-      .then((n) => n.multipliedBy(1.2).integerValue(7))
-      .then(inputGasLimitToHex);
+    const gasLimit = await getGasEstimate(network, tx).then(inputGasLimitToHex);
 
     return {
       ...tx,
