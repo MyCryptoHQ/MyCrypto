@@ -33,7 +33,7 @@ export const createSignerProvider = (store: EnhancedStore) => {
     const newPayload = { ...payload, id, signature, publicKey: keyPair.publicKey };
 
     const errorHandlingCallback = (error: Error | null, result: any) => {
-      if (!retryNonce && result?.error && result?.error?.data?.expectedNonce) {
+      if (!retryNonce && result?.error && result?.error?.data?.expectedNonce !== undefined) {
         const expectedNonce = result?.error?.data?.expectedNonce;
         // Correct request nonce and try again
         store.dispatch(setNonce(expectedNonce));
