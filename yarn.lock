@@ -3091,10 +3091,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallet-list@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallet-list/-/wallet-list-1.2.0.tgz#2621a7408a48275334a45250f92367862c0d362c"
-  integrity sha512-cT3sMAQkntSHN9jgldkFO8VNwGa/WL+8qAxbP0ZLoGzhR6pJA8vs4NSFtcxHra/JrD/e0ZY6zP/xtHBNXyv2aQ==
+"@mycrypto/wallet-list@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallet-list/-/wallet-list-1.2.1.tgz#8df44ee0c4e4520cc413d795d066e985d4384aa2"
+  integrity sha512-IU8LNZsAnp+xymG0EHfPpYNCDLcTunmKmhj1ihBP+PwXyJc2wg611uMALvLVRuqbrY2xgGn06c3DEDjtH7YCag==
   dependencies:
     remove "^0.1.5"
 
