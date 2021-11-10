@@ -1,12 +1,12 @@
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
-import myCryptoIcon from '@assets/icons/brand/logo.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
 import GridPlusSVG from '@assets/images/wallets/gridplus.svg';
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
+import quillIcon from '@assets/images/wallets/quill.svg';
 import StatusSVG from '@assets/images/wallets/status.svg';
 import TrezorSVG from '@assets/images/wallets/trezor.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
@@ -257,19 +257,19 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
       supportsNonce: true
     }
   },
-  [WalletId.DESKTOP_SIGNER]: {
-    id: WalletId.DESKTOP_SIGNER,
-    name: 'Desktop Signer',
+  [WalletId.QUILL]: {
+    id: WalletId.QUILL,
+    name: 'Quill',
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
     type: WalletType.MISC,
-    lid: 'Desktop Signer',
-    icon: myCryptoIcon,
+    lid: 'Quill',
+    icon: quillIcon,
     description: '',
     helpLink: '',
     flags: {
-      supportsNonce: false
+      supportsNonce: true
     }
   }
 };

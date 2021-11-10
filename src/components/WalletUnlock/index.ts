@@ -6,4 +6,4 @@ export { Ledger as LegderUnlock } from './Ledger';
 export { Trezor as TrezorUnlock } from './Trezor';
 export { GridPlus as GridPlusUnlock } from './GridPlus';
 export * from './HWLegacy';
-export { default as DesktopSignerUnlock } from './DesktopSigner';
+export { default as QuillUnlock } from './Quill';
