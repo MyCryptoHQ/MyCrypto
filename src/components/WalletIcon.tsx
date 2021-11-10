@@ -16,13 +16,28 @@ export const WalletIcon = ({
     variant="columnCenter"
     borderRadius="50%"
     boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
+    border="1px solid"
+    borderColor="BG_GRAY"
+    position="relative"
   >
     <img width="60px" src={wallet.icon ?? defaultWallet} />
-    <Text fontWeight={700} mt="10px">
+    <Text fontWeight={700} mt="10px" width="69%" textAlign="center">
       {wallet.name}
     </Text>
     {interfaceIcon && (
-      <Box>
+      <Box
+        position="absolute"
+        p="5px"
+        borderRadius="50%"
+        width="50px"
+        height="50px"
+        border="1px solid"
+        borderColor="BG_GRAY"
+        boxShadow="0px 3px 6px rgba(0, 0, 0, 0.07);"
+        bottom="-5px"
+        right="-15px"
+        backgroundColor="WHITE"
+      >
         <Icon type={interfaceIcon} />
       </Box>
     )}

@@ -136,6 +136,7 @@ import membership from '@assets/images/membership/membership-none.svg';
 import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import uniLogo from '@assets/images/uni-logo.png';
+import walletConnectLogo from '@assets/images/wallet-connect.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -284,7 +285,8 @@ const pngIcons = {
   'lend-logo': lendLogo,
   'ant-logo': antLogo,
   'gol-logo': golemLogo,
-  'node-logo': nodeLogo
+  'node-logo': nodeLogo,
+  'wallet-connect': walletConnectLogo
 };
 
 type SvgIcons = keyof typeof svgIcons;

@@ -1081,6 +1081,8 @@
     "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel",
     "VIEW_ONLY_HEADING": "We’re not fully integrated with $wallet yet",
     "VIEW_ONLY_SUBHEADING": "You can still see your assets in view-only mode on your MyCrypto dashboard for now",
-    "VIEW_ONLY_PLACEHOLDER": "Enter your $wallet address"
+    "VIEW_ONLY_PLACEHOLDER": "Enter your $wallet address",
+    "WALLET_CONNECT_HEADER": "Connect to $wallet via WalletConnect",
+    "WALLET_CONNECT_SUBHEADING": "Open your $wallet app and scan the WalletConnect QR code below."
   }
 }
