@@ -1,6 +1,8 @@
 import { PureComponent } from 'react';
 
 import { DeterministicWallet, DerivationPath as DPath } from '@mycrypto/wallets';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
 
 import {
   Box,
@@ -18,6 +20,7 @@ import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths } from '@services/EthService';
 import { INetworkContext, useNetworks } from '@services/Store';
 import { getWallet, WalletFactory } from '@services/WalletService';
+import { connectWallet } from '@store';
 import translate, { Trans, translateRaw } from '@translations';
 import { DPathFormat, FormData, HardwareWalletId, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
@@ -39,8 +42,6 @@ interface State {
   isLoading: boolean;
   wallet: DeterministicWallet;
 }
-
-type Props = OwnProps;
 
 class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
@@ -160,7 +161,10 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
 
     this.state.wallet
       .getAddress(dPath, 0)
-      .then(() => this.setState({ isLoading: false, isConnected: true }))
+      .then(() => {
+        this.setState({ isLoading: false, isConnected: true });
+        this.props.connectWallet(this.state.wallet);
+      })
       .catch((err) =>
         this.setState({
           error: err.message,
@@ -176,14 +180,14 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
   private handleUnlock = async (address: TAddress, index: number) => {
     try {
       const WalletService = WalletFactory[this.props.wallet.id as HardwareWalletId];
-      this.props.onUnlock(
-        await WalletService.init({
-          address,
-          dPath: this.state.dPath,
-          index,
-          params: this.props.walletParams
-        })
-      );
+      const instance = await WalletService.init({
+        address,
+        dPath: this.state.dPath,
+        index,
+        params: this.props.walletParams
+      });
+      this.props.connectWallet(instance);
+      this.props.onUnlock(instance);
     } catch (err) {
       console.error(err);
     }
@@ -205,4 +209,10 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
   }
 }
 
-export const HWLegacy = withHook(useNetworks)(HWLegacyClass);
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ connectWallet }, dispatch);
+
+const connector = connect(() => ({}), mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export const HWLegacy = withHook(useNetworks)(connector(HWLegacyClass));

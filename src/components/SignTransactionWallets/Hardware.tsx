@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { HARDWARE_CONFIG, WALLETS_CONFIG } from '@config';
 import { WalletFactory } from '@services/WalletService';
-import { getWalletConnection, useSelector } from '@store';
+import { connectWallet, getWalletConnection, useDispatch, useSelector } from '@store';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -64,6 +64,7 @@ export default function HardwareSignTransaction({
     senderAccount.wallet as HardwareWalletId
   ] as HardwareWalletService;
   const params = useSelector(getWalletConnection(senderAccount.wallet));
+  const dispatch = useDispatch();
 
   useInterval(
     async () => {
@@ -76,6 +77,7 @@ export default function HardwareSignTransaction({
           index: senderAccount.index!,
           params
         });
+        dispatch(connectWallet(walletObject));
         try {
           await walletObject.getAddress();
           setIsRequestingWalletUnlock(false);
