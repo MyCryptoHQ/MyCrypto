@@ -1135,5 +1135,3 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     }
   }
 };
-
-console.log(Object.values(NETWORKS_CONFIG).map((a) => `${a.name} - ${a.dPaths.GRIDPLUS?.path}`));
