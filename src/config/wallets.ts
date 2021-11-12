@@ -322,12 +322,11 @@ export const HARDWARE_CONFIG: THardwareConfigs = {
     iconId: 'trezor-icon-lg',
     busyBottom: BusyBottomConfig.TREZOR
   },
-  // @todo Add large icon
   [WalletId.GRIDPLUS]: {
     walletTypeTransKey: 'X_GRIDPLUS',
     scanTransKey: 'GRIDPLUS_CONNECT',
     unlockTipTransKey: 'TREZOR_TIP',
-    iconId: 'trezor-icon-lg',
+    iconId: 'gridplus-icon-lg',
     busyBottom: BusyBottomConfig.GRIDPLUS
   }
 };

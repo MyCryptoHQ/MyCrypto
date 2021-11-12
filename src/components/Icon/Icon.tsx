@@ -136,6 +136,7 @@ import membership from '@assets/images/membership/membership-none.svg';
 import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import uniLogo from '@assets/images/uni-logo.png';
+import gridPlusLgIcon from '@assets/images/wallets/gridplus-large.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -178,6 +179,7 @@ const svgIcons = {
   'ledger-icon-lg': ledgerLgIcon,
   'trezor-icon': trezorIcon,
   'trezor-icon-lg': trezorLgIcon,
+  'gridplus-icon-lg': gridPlusLgIcon,
   membership,
   feedback,
   newsletter,
