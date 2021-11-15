@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { usePrevious } from '@vendor';
 
 // https://stackoverflow.com/questions/62974717/useeffect-when-all-dependencies-have-changed
-function useEffectAllDepsChange(fn: () => void, deps: unknown[]) {
+export const useEffectAllDepsChange = (fn: () => void, deps: unknown[]) => {
   const prevDeps = usePrevious(deps);
   const changeTarget = useRef<unknown[] | undefined>();
 
@@ -25,6 +25,4 @@ function useEffectAllDepsChange(fn: () => void, deps: unknown[]) {
       return fn();
     }
   }, [fn, prevDeps, deps]);
-}
-
-export default useEffectAllDepsChange;
+};
