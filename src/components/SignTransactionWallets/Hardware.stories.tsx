@@ -16,7 +16,8 @@ const initialProps: ComponentProps<typeof SignTxHardwareUI> = {
   }),
   wallet: BusyBottomConfig.LEDGER,
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
-  isTxSignatureRequestDenied: true
+  isTxSignatureRequestDenied: true,
+  isRequestingTxSignature: false
 };
 
 export const HardwareWalletUI = () => {

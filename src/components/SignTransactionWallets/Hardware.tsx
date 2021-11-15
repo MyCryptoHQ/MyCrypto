@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
-import { Body, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
+import { Body, Box, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
 import { HARDWARE_CONFIG, WALLETS_CONFIG } from '@config';
 import { WalletFactory } from '@services/WalletService';
 import { connectWallet, getWalletConnection, useDispatch, useSelector } from '@store';
@@ -14,6 +14,7 @@ import {
   HardwareWalletId,
   HardwareWalletService,
   IAccount,
+  InlineMessageType,
   IPendingTxReceipt,
   ISignedTx,
   ITxObject
@@ -36,8 +37,8 @@ const SImgContainer = styled.div`
   margin: 3em;
 `;
 
-const ErrorMessageContainer = styled.div`
-  margin: 2em;
+const SInlineMessage = styled(InlineMessage)`
+  text-align: center;
 `;
 
 export interface IProps {
@@ -98,12 +99,14 @@ export default function HardwareSignTransaction({
       // Wallet has been unlocked. Attempting to sign tx now.
       if (wallet && !isRequestingTxSignature) {
         setIsRequestingTxSignature(true);
+        setIsTxSignatureRequestDenied(false);
         const madeTx = makeTransaction(rawTransaction);
         wallet
           .signTransaction(madeTx)
           .then((data) => {
             // User approves tx.
             setIsTxSignatureRequestDenied(false);
+            setIsRequestingTxSignature(false);
             onSuccess(data);
           })
           .catch((err) => {
@@ -125,6 +128,7 @@ export default function HardwareSignTransaction({
       walletIconType={walletIconType}
       signerDescription={signerDescription}
       isTxSignatureRequestDenied={isTxSignatureRequestDenied}
+      isRequestingTxSignature={isRequestingTxSignature}
       wallet={walletType}
       senderAccount={senderAccount}
     />
@@ -135,6 +139,7 @@ interface UIProps {
   walletIconType: TIcon;
   signerDescription: string;
   isTxSignatureRequestDenied: boolean;
+  isRequestingTxSignature: boolean;
   wallet: BusyBottomConfig;
   senderAccount: IAccount;
 }
@@ -143,6 +148,7 @@ export const SignTxHardwareUI = ({
   walletIconType,
   signerDescription,
   isTxSignatureRequestDenied,
+  isRequestingTxSignature,
   wallet,
   senderAccount
 }: UIProps) => (
@@ -159,12 +165,17 @@ export const SignTxHardwareUI = ({
       <SImgContainer>
         <Icon type={walletIconType} />
       </SImgContainer>
-      <Body textAlign="center">
+      <Box variant="columnCenter" pt={SPACING.SM}>
         {isTxSignatureRequestDenied && (
-          <ErrorMessageContainer>
-            <InlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
-          </ErrorMessageContainer>
+          <SInlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
         )}
+        {isRequestingTxSignature && (
+          <SInlineMessage type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
+            {translate('SIGN_TX_SUBMITTING_PENDING')}
+          </SInlineMessage>
+        )}
+      </Box>
+      <Body textAlign="center" lineHeight="1.5" fontSize={FONT_SIZE.MD} marginTop="16px">
         {translateRaw('SIGN_TX_EXPLANATION')}
       </Body>
       {wallet === BusyBottomConfig.LEDGER && (
