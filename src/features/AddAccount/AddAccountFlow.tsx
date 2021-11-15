@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 
-import { IWallet, WalletConnectivity, wallets } from '@mycrypto/wallet-list';
+import { IWallet, WalletConnectivity } from '@mycrypto/wallet-list';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -9,6 +9,7 @@ import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import { useDispatch } from '@store';
 import { addNewAccounts } from '@store/account.slice';
 import { IStory, WalletId } from '@types';
+import { getFromWalletList, isValidWalletListId } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
 import { formReducer, initialState } from './AddAccountForm.reducer';
@@ -31,15 +32,12 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
   return !!(id && Object.values(WalletId).includes(id as WalletId));
 };
 
-export const isValidWalletListId = (id: string) => !!wallets.find((wallet) => wallet.id === id);
-
-export const getFromWalletList = (id: string) => wallets.find((wallet) => wallet.id === id);
-
 export const getAccountTypeFromWallet = (wallet: IWallet) => {
   switch (wallet.connectivity) {
     case WalletConnectivity.WalletConnect:
       return WalletId.WALLETCONNECT;
     case WalletConnectivity.ViewOnly:
+    case WalletConnectivity.MigrateNonCustodial:
       return WalletId.VIEW_ONLY;
     case WalletConnectivity.Web3:
       return WalletId.WEB3;
@@ -47,8 +45,6 @@ export const getAccountTypeFromWallet = (wallet: IWallet) => {
       return WalletId.LEDGER_NANO_S_NEW;
     case WalletConnectivity.Trezor:
       return WalletId.TREZOR_NEW;
-    default:
-      return WalletId.VIEW_ONLY;
   }
 };
 /*

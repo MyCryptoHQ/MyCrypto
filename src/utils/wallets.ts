@@ -1,3 +1,5 @@
+import { wallets } from '@mycrypto/wallet-list';
+
 import { NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
 
@@ -30,3 +32,7 @@ export const isSenderAccountPresent = (
   accounts.some(
     ({ address, wallet }) => isSameAddress(address, addressToCheck) && !isViewOnlyWallet(wallet)
   );
+
+export const isValidWalletListId = (id: string) => !!wallets.find((wallet) => wallet.id === id);
+
+export const getFromWalletList = (id: string) => wallets.find((wallet) => wallet.id === id);

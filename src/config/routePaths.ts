@@ -147,6 +147,11 @@ const PATHS: IRoutePath[] = [
     name: 'NFT_DASHBOARD',
     title: 'NFT Dashboard',
     path: '/nft-dashboard'
+  },
+  {
+    name: 'ONBOARDING',
+    title: 'Onboarding',
+    path: '/onboarding'
   }
 ];
 

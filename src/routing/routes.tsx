@@ -95,6 +95,10 @@ const GolemTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
 );
 
+const OnboardingFlow = lazy(() =>
+  import(/* webpackChunkName: "Onboarding" */ '@features/Onboarding/OnboardingFlow')
+);
+
 export interface IAppRoutes {
   [K: string]: IAppRoute;
 }
@@ -329,6 +333,14 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     requireAccounts: true,
     enabled: true,
     component: NftDashboard
+  },
+  {
+    name: ROUTE_PATHS.ONBOARDING.name,
+    title: ROUTE_PATHS.ONBOARDING.title,
+    path: `${ROUTE_PATHS.ONBOARDING.path}/:walletId?`,
+    enabled: true,
+    exact: true,
+    component: OnboardingFlow
   }
 ];
 

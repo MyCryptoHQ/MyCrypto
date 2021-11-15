@@ -1083,6 +1083,20 @@
     "VIEW_ONLY_SUBHEADING": "You can still see your assets in view-only mode on your MyCrypto dashboard for now",
     "VIEW_ONLY_PLACEHOLDER": "Enter your $wallet address",
     "WALLET_CONNECT_HEADER": "Connect to $wallet via WalletConnect",
-    "WALLET_CONNECT_SUBHEADING": "Open your $wallet app and scan the WalletConnect QR code below."
+    "WALLET_CONNECT_SUBHEADING": "Open your $wallet app and scan the WalletConnect QR code below.",
+    "MIGRATE_HEADING": "Migrate from $exchange",
+    "MIGRATE_CONNECT_ACCOUNT": "Connect Account",
+    "MIGRATE_CUSTODIAL_SUBHEADING": "$exchange is a custodial service, meaning they hold your crypto on your behalf. If you wish to take full control of your assets, MyCrypto will help you get there. You'll start by creating a new MyCrypto account, and then you'll migrate your crypto off of $exchange and to that new MyCrypto account. We'll walk you through it:",
+    "MIGRATE_CUSTODIAL_01": "Click below to create a new MyCrypto account or connect an existing account. Copy the account address to your clipboard.",
+    "MIGRATE_CUSTODIAL_02": "Login to your $exchange account and safely follow the steps for withdrawing your cryptocurrency. Make sure to only select cryptocurrencies supported by MyCrypto.",
+    "MIGRATE_CUSTODIAL_03": "When the time comes to insert a withdrawal address, input the address you created/connected in step one. Verify that it matches, and then continue with the withdrawal and send your cryptocurrency to that address.",
+    "MIGRATE_NON_CUSTODIAL_SUBHEADING": "Tracking your account is limited and you cannot take action on that account. To manage your $exchange assets on MyCrypto, you'll need to migrate.",
+    "MIGRATE_NON_CUSTODIAL_TOP_BUTTON": "Track your $exchange account",
+    "MIGRATE_NON_CUSTODIAL_01": "Find your $exchange recovery phrase within the $exchange app.",
+    "MIGRATE_NON_CUSTODIAL_02": "Download and install the MyCrypto Desktop App or the MyCrypto Signer App.",
+    "MIGRATE_NON_CUSTODIAL_03": "Click Add Account in the MyCrypto application that you've installed. Then select \"Mnemonic Phrase\" and enter the key you obtained from $exchange",
+    "MIGRATE_GET_HELP_TEXT": "Not sure where to start?",
+    "MIGRATE_GET_HELP_LINK": "Get migration help for $exchange",
+    "MIGRATE_HOW_TO_TRANSFER": "How to Transfer"
   }
 }
