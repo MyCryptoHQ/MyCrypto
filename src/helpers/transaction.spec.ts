@@ -420,7 +420,7 @@ describe('appendGasLimit', () => {
       value: '0x0',
       data: '0x0',
       chainId: 1,
-      gasLimit: '0x6270',
+      gasLimit: '0x5208',
       gasPrice: '0x4a817c800'
     };
     expect(actual).toStrictEqual(expected);
