@@ -45,6 +45,7 @@ const getComponent = () => {
 describe('GridPlus', () => {
   beforeEach(() => {
     window.URL.createObjectURL = jest.fn();
+    jest.setTimeout(60000);
   });
 
   afterEach(() => {

@@ -35,6 +35,7 @@ const getComponent = () => {
 describe('SignTransactionWallets: GridPlus', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    jest.setTimeout(60000);
   });
   afterEach(() => {
     jest.resetAllMocks();

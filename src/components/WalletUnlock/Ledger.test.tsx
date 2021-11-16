@@ -35,6 +35,10 @@ const getComponent = () => {
 };
 
 describe('Ledger', () => {
+  beforeEach(() => {
+    jest.setTimeout(60000);
+  });
+
   // @ts-expect-error Bad mock please ignore
   delete window.location;
   // @ts-expect-error Bad mock please ignore
