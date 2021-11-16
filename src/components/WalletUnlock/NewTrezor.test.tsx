@@ -11,16 +11,6 @@ import { truncate } from '@utils';
 
 import TrezorDecrypt from './NewTrezor';
 
-jest.mock('@mycrypto/wallets', () => ({
-  ...jest.requireActual('@mycrypto/wallets'),
-  TREZOR_DERIVATION_PATHS: [
-    {
-      name: 'Default (ETH)',
-      path: "m/44'/60'/0'/0/<account>"
-    }
-  ]
-}));
-
 jest.mock('@mycrypto/eth-scan', () => ({
   ...jest.requireActual('@mycrypto/eth-scan'),
   getEtherBalances: jest.fn().mockResolvedValue({})
