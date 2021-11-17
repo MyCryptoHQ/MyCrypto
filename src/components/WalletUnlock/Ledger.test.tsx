@@ -53,6 +53,10 @@ describe('Ledger', () => {
     replace: jest.fn()
   });
 
+  beforeEach(() => {
+    jest.setTimeout(60000);
+  });
+
   it('renders', () => {
     const { getByText } = getComponent();
     expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
@@ -78,7 +82,7 @@ describe('Ledger', () => {
         expect(
           getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))
         ).toBeInTheDocument(),
-      { timeout: 10000 }
+      { timeout: 60000 }
     );
   });
 
@@ -94,6 +98,8 @@ describe('Ledger', () => {
 
     fireEvent.click(button);
 
-    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument());
+    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument(), {
+      timeout: 60000
+    });
   });
 });
