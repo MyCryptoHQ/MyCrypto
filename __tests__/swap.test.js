@@ -5,7 +5,7 @@ import {
   queryByText
 } from '@testing-library/testcafe';
 
-import { injectLS } from './clientScripts';
+import { disableEIP1559, injectLS } from './clientScripts';
 import DashboardPage from './dashboard-page.po';
 import { FIXTURE_HARDHAT, FIXTURES_CONST, PAGES } from './fixtures';
 import { resetFork, setupDAI } from './hardhat-utils';
@@ -16,7 +16,7 @@ const swapPage = new SwapPage();
 const dashboardPage = new DashboardPage();
 
 fixture('Swap')
-  .clientScripts({ content: injectLS(FIXTURE_HARDHAT) })
+  .clientScripts({ content: injectLS(FIXTURE_HARDHAT) + disableEIP1559() })
   .page(PAGES.SWAP);
 
 test('can do an ETH swap', async (t) => {
@@ -36,11 +36,11 @@ test('can do an ETH swap', async (t) => {
   await t.expect(send.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
   await t.click(send);
 
-  const viewDetailsButton = await queryByText(findByTKey('VIEW_TRANSACTION_DETAILS')).with({
+  /**const viewDetailsButton = await queryByText(findByTKey('VIEW_TRANSACTION_DETAILS')).with({
     timeout: FIXTURES_CONST.TIMEOUT
   });
   await t.expect(viewDetailsButton.exists).ok();
-  await t.click(viewDetailsButton);
+  await t.click(viewDetailsButton);**/
 
   await t
     .expect(queryAllByTestId('SUCCESS').with({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT }).exists)

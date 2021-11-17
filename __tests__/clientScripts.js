@@ -9,4 +9,11 @@ const injectLS = (ls) => `
   );
 `;
 
-export { injectLS };
+const disableEIP1559 = () => `
+  localStorage.setItem(
+    'MYC_EIP1559',
+    'false'
+  );
+`;
+
+export { injectLS, disableEIP1559 };
