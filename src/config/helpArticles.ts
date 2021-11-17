@@ -33,7 +33,8 @@ export enum KB_HELP_ARTICLE {
   HOW_DOES_VIEW_ADDRESS_WORK = 'how-to/accessing-wallet/how-does-view-address-work',
   WHY_IS_GAS = 'general-knowledge/ethereum-blockchain/why-is-gas',
   HOW_TO_USE_MYCRYPTO_MORE_PRIVATELY = 'staying-safe/how-to-use-mycrypto-more-privately',
-  WHAT_IS_EIP1559 = 'general-knowledge/ethereum-blockchain/what-is-eip-1559'
+  WHAT_IS_EIP1559 = 'general-knowledge/ethereum-blockchain/what-is-eip-1559',
+  WHAT_IS_CONTRACT_ABI = 'general-knowledge/ethereum-blockchain/what-is-contract-abi'
 }
 
 export enum HELP_ARTICLE {
