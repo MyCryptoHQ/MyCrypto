@@ -41,6 +41,10 @@ const getComponent = () => {
 };
 
 describe('NewTrezor', () => {
+  beforeEach(() => {
+    jest.setTimeout(60000);
+  });
+
   it('renders', () => {
     const { getByText } = getComponent();
     expect(getByText(translateRaw('UNLOCK_WALLET'), { exact: false })).toBeInTheDocument();
@@ -66,7 +70,7 @@ describe('NewTrezor', () => {
         expect(
           getByText(truncate('0xc6D5a3c98EC9073B54FA0969957Bd582e8D874bf'))
         ).toBeInTheDocument(),
-      { timeout: 10000 }
+      { timeout: 60000 }
     );
   });
 
@@ -81,6 +85,8 @@ describe('NewTrezor', () => {
 
     fireEvent.click(button);
 
-    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument());
+    await waitFor(() => expect(getByText('foo', { exact: false })).toBeInTheDocument(), {
+      timeout: 60000
+    });
   });
 });
