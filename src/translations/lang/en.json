@@ -1097,6 +1097,13 @@
     "MIGRATE_NON_CUSTODIAL_03": "Click Add Account in the MyCrypto application that you've installed. Then select \"Mnemonic Phrase\" and enter the key you obtained from $exchange",
     "MIGRATE_GET_HELP_TEXT": "Not sure where to start?",
     "MIGRATE_GET_HELP_LINK": "Get migration help for $exchange",
-    "MIGRATE_HOW_TO_TRANSFER": "How to Transfer"
+    "MIGRATE_HOW_TO_TRANSFER": "How to Transfer",
+    "WALLET_TAG_HARDWARE": "Hardware Wallet",
+    "WALLET_TAG_WEB": "Browser-Based",
+    "WALLET_TAG_MOBILE": "Mobile",
+    "WALLET_TAG_DESKTOP": "Desktop",
+    "WALLET_TAG_EXCHANGE": "Exchange",
+    "WALLET_TAG_WALLET_CONNECT": "via Wallet Connect",
+    "WALLET_TAG_OTHER": "Other"
   }
 }

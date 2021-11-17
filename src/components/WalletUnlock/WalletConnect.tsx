@@ -11,7 +11,8 @@ import {
   Overlay,
   QRCodeContainer,
   Typography,
-  WalletIcon
+  WalletIcon,
+  WalletTag
 } from '@components';
 import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
@@ -92,8 +93,11 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps, walletIn
   return (
     <>
       {walletInfos && (
-        <Box display="flex" variant="rowCenter" mb="20px">
-          <WalletIcon wallet={walletInfos} interfaceIcon="wallet-connect" />
+        <Box display="flex" variant="columnCenter">
+          <WalletIcon wallet={walletInfos} />
+          <Box variant="rowCenter">
+            {walletInfos.tags && walletInfos.tags.map((tag, i) => <WalletTag tag={tag} key={i} />)}
+          </Box>
         </Box>
       )}
       <SHeader>

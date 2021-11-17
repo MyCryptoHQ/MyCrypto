@@ -1,6 +1,6 @@
 import { IWallet } from '@mycrypto/wallet-list';
 
-import { Body, Box, Button, Heading, LinkApp, WalletIcon } from '@components';
+import { Body, Box, Button, Heading, LinkApp, WalletIcon, WalletTag } from '@components';
 import { translateRaw } from '@translations';
 
 import { getMigrationGuide } from '../config';
@@ -10,8 +10,11 @@ const Migrate = ({ walletInfos }: { walletInfos: IWallet }) => {
 
   return (
     <Box p="2.5em" variant="columnAlign">
-      <Box display="flex" variant="rowCenter">
+      <Box display="flex" variant="columnCenter">
         <WalletIcon wallet={walletInfos} />
+        <Box variant="rowCenter">
+          {walletInfos.tags && walletInfos.tags.map((tag, i) => <WalletTag tag={tag} key={i} />)}
+        </Box>
       </Box>
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
         {translateRaw('MIGRATE_HEADING', { $exchange: walletInfos.name })}

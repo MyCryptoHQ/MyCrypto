@@ -5,7 +5,7 @@ import { Form, Formik } from 'formik';
 import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
-import { Body, Box, Button, ContactLookupField, Heading, WalletIcon } from '@components';
+import { Body, Box, Button, ContactLookupField, Heading, WalletIcon, WalletTag } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
@@ -58,8 +58,11 @@ export function ViewOnlyDecrypt({ formData, onUnlock, walletInfos }: Props) {
   return (
     <Box p="2.5em">
       {walletInfos && (
-        <Box display="flex" variant="rowCenter">
+        <Box display="flex" variant="columnCenter">
           <WalletIcon wallet={walletInfos} />
+          <Box variant="rowCenter">
+            {walletInfos.tags && walletInfos.tags.map((tag, i) => <WalletTag tag={tag} key={i} />)}
+          </Box>
         </Box>
       )}
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
