@@ -394,7 +394,12 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 export const getSVGIcon = (type: SvgIcons) => svgIcons[type];
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website' || type === 'faucet-icon' || type === 'nav-nft') {
+  if (
+    type === 'website' ||
+    type === 'faucet-icon' ||
+    type === 'nav-nft' ||
+    type === 'walletconnect-tag'
+  ) {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'other-tag') {
     return <SStrokeFillIcon src={svgIcons[type]} color={color} {...props} />;
@@ -407,8 +412,6 @@ const Icon = ({ type, color, ...props }: Props) => {
   } else if (type === 'delete') {
     return <SDeleteIcon src={svgIcons['nav-close']} color={color} {...props} />;
   } else if (type === 'address-book') {
-    return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
-  } else if (type === 'walletconnect-tag') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;
   } else if (type === 'tx-sent') {
     return <SInlineSVG src={svgIcons[type]} fill="none" {...props} />;

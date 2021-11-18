@@ -16,6 +16,10 @@ describe('Icon', () => {
     const { container } = renderComponent({ type: 'add' });
     expect(container.querySelector('img')).toBeInTheDocument();
   });
+  it('renders a SVG Icon with a fill and a stroke', () => {
+    const { container } = renderComponent({ type: 'other-tag' });
+    expect(container.querySelector('svg')).toBeInTheDocument();
+  });
   it('renders a PNG Icon by type', () => {
     const { container } = renderComponent({ type: 'uni-logo' });
     expect(container.querySelector('img')).toBeInTheDocument();

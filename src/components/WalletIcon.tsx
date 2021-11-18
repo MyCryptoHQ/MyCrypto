@@ -37,6 +37,7 @@ export const WalletIcon = ({
         bottom="-5px"
         right="-15px"
         backgroundColor="WHITE"
+        data-testid="interface-icon"
       >
         <Icon type={interfaceIcon} />
       </Box>

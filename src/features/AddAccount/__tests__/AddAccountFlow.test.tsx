@@ -1,8 +1,12 @@
+import { WalletConnectivity, wallets } from '@mycrypto/wallet-list';
 import { MemoryRouter, Route, Switch } from 'react-router';
 import { fireEvent, simpleRender } from 'test-utils';
 
 import { ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import AddAccountFlow, { isValidWalletId } from '@features/AddAccount/AddAccountFlow';
+import AddAccountFlow, {
+  getAccountTypeFromWallet,
+  isValidWalletId
+} from '@features/AddAccount/AddAccountFlow';
 import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
@@ -12,6 +16,29 @@ describe('isValidWalletId()', () => {
     expect(isValidWalletId('WEB3')).toBe(true);
     expect(isValidWalletId('web3')).toBe(false);
     expect(isValidWalletId(undefined)).toBe(false);
+  });
+});
+
+describe('getAccountTypeFromWallet()', () => {
+  it('returns correct WalletId', () => {
+    const walletConnectWallet = wallets.find(
+      (wallet) => wallet.connectivity === WalletConnectivity.WalletConnect
+    );
+    const viewOnlyWallet = wallets.find(
+      (wallet) => wallet.connectivity === WalletConnectivity.ViewOnly
+    );
+    const web3Wallet = wallets.find((wallet) => wallet.connectivity === WalletConnectivity.Web3);
+    const ledgerWallet = wallets.find(
+      (wallet) => wallet.connectivity === WalletConnectivity.Ledger
+    );
+    const trezorWallet = wallets.find(
+      (wallet) => wallet.connectivity === WalletConnectivity.Trezor
+    );
+    expect(getAccountTypeFromWallet(walletConnectWallet!)).toEqual(WalletId.WALLETCONNECT);
+    expect(getAccountTypeFromWallet(viewOnlyWallet!)).toEqual(WalletId.VIEW_ONLY);
+    expect(getAccountTypeFromWallet(web3Wallet!)).toEqual(WalletId.WEB3);
+    expect(getAccountTypeFromWallet(ledgerWallet!)).toEqual(WalletId.LEDGER_NANO_S_NEW);
+    expect(getAccountTypeFromWallet(trezorWallet!)).toEqual(WalletId.TREZOR_NEW);
   });
 });
 

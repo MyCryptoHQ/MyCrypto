@@ -88,7 +88,6 @@ const AddAccountFlow = withRouter(({ history, match }) => {
           type: ActionType.SELECT_ACCOUNT_TYPE,
           payload: { accountType: getAccountTypeFromWallet(selectedWallet) }
         });
-        console.log(formData);
       } else {
         updateFormState({
           type: ActionType.SELECT_ACCOUNT_TYPE,
