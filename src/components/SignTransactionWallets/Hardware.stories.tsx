@@ -5,7 +5,7 @@ import { fAccounts } from '@fixtures';
 import { translateRaw } from '@translations';
 import { BusyBottomConfig, WalletId } from '@types';
 
-import { SignTxHardwareUI } from './Hardware';
+import { SignTxHardwareUI, WalletSigningState } from './Hardware';
 
 export default { title: 'Features/SignTransaction/Hardware', component: SignTxHardwareUI };
 
@@ -16,8 +16,7 @@ const initialProps: ComponentProps<typeof SignTxHardwareUI> = {
   }),
   wallet: BusyBottomConfig.LEDGER,
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
-  isTxSignatureRequestDenied: true,
-  isRequestingTxSignature: false
+  signingState: WalletSigningState.REJECTED
 };
 
 export const HardwareWalletUI = () => {

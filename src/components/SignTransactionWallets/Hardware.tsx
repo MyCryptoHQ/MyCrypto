@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Wallet } from '@mycrypto/wallets';
+import { parse } from '@ethersproject/transactions';
+import { TAddress, Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, Box, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
@@ -19,7 +20,7 @@ import {
   ISignedTx,
   ITxObject
 } from '@types';
-import { makeTransaction, useInterval } from '@utils';
+import { isSameAddress, makeTransaction, useInterval } from '@utils';
 import { useDebounce } from '@vendor';
 
 export interface IDestructuredDPath {
@@ -49,6 +50,14 @@ export interface IProps {
   onSuccess(receipt: IPendingTxReceipt | ISignedTx): void;
 }
 
+export enum WalletSigningState {
+  SUBMITTING,
+  REJECTED,
+  SUCCESS,
+  ADDRESS_MISMATCH,
+  PENDING
+}
+
 export default function HardwareSignTransaction({
   walletIconType,
   signerDescription,
@@ -58,8 +67,7 @@ export default function HardwareSignTransaction({
 }: IProps) {
   const [isRequestingWalletUnlock, setIsRequestingWalletUnlock] = useState(false);
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
-  const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
-  const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
+  const [signingState, setSigningState] = useState(WalletSigningState.PENDING);
   const [wallet, setWallet] = useState<Wallet | undefined>();
   const SigningWalletService = WalletFactory[
     senderAccount.wallet as HardwareWalletId
@@ -97,28 +105,33 @@ export default function HardwareSignTransaction({
   useDebounce(
     () => {
       // Wallet has been unlocked. Attempting to sign tx now.
-      if (wallet && !isRequestingTxSignature) {
-        setIsRequestingTxSignature(true);
-        setIsTxSignatureRequestDenied(false);
+      if (
+        wallet &&
+        ![WalletSigningState.SUBMITTING, WalletSigningState.SUCCESS].includes(signingState)
+      ) {
+        setSigningState(WalletSigningState.SUBMITTING);
         const madeTx = makeTransaction(rawTransaction);
         wallet
           .signTransaction(madeTx)
           .then((data) => {
+            const parsed = parse(data);
+            if (!isSameAddress(senderAccount.address, parsed.from as TAddress)) {
+              setSigningState(WalletSigningState.ADDRESS_MISMATCH);
+              return;
+            }
             // User approves tx.
-            setIsTxSignatureRequestDenied(false);
-            setIsRequestingTxSignature(false);
+            setSigningState(WalletSigningState.SUCCESS);
             onSuccess(data);
           })
           .catch((err) => {
             console.error(err);
             // User denies tx, or tx times out.
-            setIsTxSignatureRequestDenied(true);
-            setIsRequestingTxSignature(false);
+            setSigningState(WalletSigningState.REJECTED);
           });
       }
     },
     1000,
-    [wallet, isRequestingTxSignature]
+    [wallet, signingState]
   );
 
   const walletType = HARDWARE_CONFIG[senderAccount.wallet as HardwareWalletId].busyBottom;
@@ -127,8 +140,7 @@ export default function HardwareSignTransaction({
     <SignTxHardwareUI
       walletIconType={walletIconType}
       signerDescription={signerDescription}
-      isTxSignatureRequestDenied={isTxSignatureRequestDenied}
-      isRequestingTxSignature={isRequestingTxSignature}
+      signingState={signingState}
       wallet={walletType}
       senderAccount={senderAccount}
     />
@@ -138,8 +150,7 @@ export default function HardwareSignTransaction({
 interface UIProps {
   walletIconType: TIcon;
   signerDescription: string;
-  isTxSignatureRequestDenied: boolean;
-  isRequestingTxSignature: boolean;
+  signingState: WalletSigningState;
   wallet: BusyBottomConfig;
   senderAccount: IAccount;
 }
@@ -147,8 +158,7 @@ interface UIProps {
 export const SignTxHardwareUI = ({
   walletIconType,
   signerDescription,
-  isTxSignatureRequestDenied,
-  isRequestingTxSignature,
+  signingState,
   wallet,
   senderAccount
 }: UIProps) => (
@@ -166,10 +176,13 @@ export const SignTxHardwareUI = ({
         <Icon type={walletIconType} />
       </SImgContainer>
       <Box variant="columnCenter" pt={SPACING.SM}>
-        {isTxSignatureRequestDenied && (
+        {signingState === WalletSigningState.REJECTED && (
           <SInlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
         )}
-        {isRequestingTxSignature && (
+        {signingState === WalletSigningState.ADDRESS_MISMATCH && (
+          <SInlineMessage value={'The transaction was not signed by the correct account.'} />
+        )}
+        {signingState === WalletSigningState.SUBMITTING && (
           <SInlineMessage type={InlineMessageType.INDICATOR_INFO_CIRCLE}>
             {translate('SIGN_TX_SUBMITTING_PENDING')}
           </SInlineMessage>
