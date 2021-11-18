@@ -1,4 +1,4 @@
-import { INFURA_API_KEY, POCKET_API_KEY } from '@config';
+import { ETHERSCAN_API_KEY, INFURA_API_KEY, POCKET_API_KEY } from '@config';
 import { NetworkUtils } from '@services/Store/Network/utils';
 import { NetworkId, NodeType, StaticNodeConfig } from '@types';
 
@@ -14,7 +14,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('ETH', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api.etherscan.io/api'
+      url: `https://api.etherscan.io/api?apiKey=${ETHERSCAN_API_KEY}`
     },
     {
       name: NetworkUtils.makeNodeName('ETH', 'infura'),
@@ -42,7 +42,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Ropsten', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api-ropsten.etherscan.io/api'
+      url: `https://api-ropsten.etherscan.io/api?apiKey=${ETHERSCAN_API_KEY}`
     }
   ],
 
@@ -51,7 +51,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Kovan', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api-kovan.etherscan.io/api'
+      url: `https://api-kovan.etherscan.io/api?apiKey=${ETHERSCAN_API_KEY}`
     },
     {
       name: NetworkUtils.makeNodeName('Kovan', 'infura'),
@@ -72,7 +72,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Rinkeby', 'ethscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api-rinkeby.etherscan.io/api'
+      url: `https://api-rinkeby.etherscan.io/api?apiKey=${ETHERSCAN_API_KEY}`
     }
   ],
 
@@ -87,7 +87,7 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       name: NetworkUtils.makeNodeName('Goerli', 'etherscan'),
       type: NodeType.ETHERSCAN,
       service: 'Etherscan',
-      url: 'https://api-goerli.etherscan.io/api'
+      url: `https://api-goerli.etherscan.io/api?apiKey=${ETHERSCAN_API_KEY}`
     },
     {
       name: NetworkUtils.makeNodeName('Goerli', 'infura'),
