@@ -1,13 +1,18 @@
-import { BaseProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { BaseProvider, EtherscanProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
 import { DerivationPath as DPath } from '@mycrypto/wallets';
 import isEmpty from 'lodash/isEmpty';
 import equals from 'ramda/src/equals';
 
+import { ETHERSCAN_API_KEY } from '@config';
 import { DPathFormat, Network, NodeOptions, NodeType } from '@types';
 import { FallbackProvider } from '@vendor';
 
 const getProvider = (node: NodeOptions, chainId: number) => {
-  const { url } = node;
+  const { type, url } = node;
+  if (type === NodeType.ETHERSCAN) {
+    return new EtherscanProvider(chainId, ETHERSCAN_API_KEY);
+  }
+
   const connection = { url, throttleLimit: 3 };
   if ('auth' in node && node.auth) {
     return new StaticJsonRpcProvider(
