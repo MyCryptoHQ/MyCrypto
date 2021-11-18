@@ -52,15 +52,14 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  const providers = sortedNodes
-    .map((n) => getProvider(n as any, chainId))
-    .map((provider, index) => ({
+  const providers = sortedNodes.map((n) => getProvider(n as any, chainId));
+  /**.map((provider, index) => ({
       provider,
       priority: index,
       stallTimeout: 5000
-    }));
+    }));**/
 
-  return new FallbackProvider(providers, 1);
+  return new FallbackProvider(providers);
 };
 
 export const getDPath = (network: Network | undefined, type: DPathFormat): DPath | undefined => {

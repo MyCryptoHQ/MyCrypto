@@ -104,13 +104,13 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        const providers = (client as FallbackProvider).providerConfigs;
+        const providers = (client as FallbackProvider).providers;
         return any(
           providers.map((p) => {
             // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
             // Instead, we reject if the tx is undefined such that we keep searching in other nodes
             return new Promise((resolve, reject) =>
-              p.provider
+              p
                 .getTransaction(txhash)
                 .then((tx) => (tx ? resolve(tx) : reject()))
                 .catch((err) => reject(err))
