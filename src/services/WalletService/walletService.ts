@@ -17,41 +17,31 @@ const trezorManifest = {
   appUrl: 'https://app.mycrypto.com'
 };
 
+const web3 = {
+  init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+};
+
+const ledger = {
+  init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+    getWallet(WalletId.LEDGER_NANO_S_NEW, params)!.getWallet(dPath, index, address)
+};
+
+const trezor = {
+  init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+    getWallet(WalletId.TREZOR_NEW, params)!.getWallet(dPath, index, address)
+};
+
 export const WalletFactory = {
-  [WalletId.WEB3]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.METAMASK]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.STATUS]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.FRAME]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.COINBASE]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.TRUST]: {
-    init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
-  },
-  [WalletId.LEDGER_NANO_S_NEW]: {
-    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
-      getWallet(WalletId.LEDGER_NANO_S_NEW, params)!.getWallet(dPath, index, address)
-  },
-  [WalletId.LEDGER_NANO_S]: {
-    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
-      getWallet(WalletId.LEDGER_NANO_S, params)!.getWallet(dPath, index, address)
-  },
-  [WalletId.TREZOR_NEW]: {
-    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
-      getWallet(WalletId.TREZOR_NEW, params)!.getWallet(dPath, index, address)
-  },
-  [WalletId.TREZOR]: {
-    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
-      getWallet(WalletId.TREZOR, params)!.getWallet(dPath, index, address)
-  },
+  [WalletId.WEB3]: web3,
+  [WalletId.METAMASK]: web3,
+  [WalletId.STATUS]: web3,
+  [WalletId.FRAME]: web3,
+  [WalletId.COINBASE]: web3,
+  [WalletId.TRUST]: web3,
+  [WalletId.LEDGER_NANO_S_NEW]: ledger,
+  [WalletId.LEDGER_NANO_S]: ledger,
+  [WalletId.TREZOR_NEW]: trezor,
+  [WalletId.TREZOR]: trezor,
   [WalletId.GRIDPLUS]: {
     init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
       getWallet(WalletId.GRIDPLUS, params)!.getWallet(dPath, index, address)

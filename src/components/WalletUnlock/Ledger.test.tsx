@@ -36,7 +36,8 @@ const getComponent = () => {
 
 describe('Ledger', () => {
   beforeEach(() => {
-    jest.setTimeout(60000);
+    window.URL.createObjectURL = jest.fn();
+    jest.setTimeout(1200000);
   });
 
   // @ts-expect-error Bad mock please ignore
@@ -77,6 +78,27 @@ describe('Ledger', () => {
       () =>
         expect(
           getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))
+        ).toBeInTheDocument(),
+      { timeout: 60000 }
+    );
+
+    await waitFor(
+      () =>
+        expect(
+          getByText(translateRaw('DETERMINISTIC_SEE_SUMMARY'), { exact: false })
+        ).toBeInTheDocument(),
+      { timeout: 60000 }
+    );
+
+    const scanMoreButton = getByText(translateRaw('DETERMINISTIC_SCAN_MORE_ADDRESSES'));
+    expect(scanMoreButton).toBeInTheDocument();
+
+    fireEvent.click(scanMoreButton);
+
+    await waitFor(
+      () =>
+        expect(
+          getByText(truncate('0x000C836fB231870af352c68c5ED2a445699acc13'))
         ).toBeInTheDocument(),
       { timeout: 60000 }
     );
