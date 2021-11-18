@@ -14,13 +14,13 @@ import {
   useHDWallet,
   useNetworks
 } from '@services';
-import { ExtendedAsset, FormData, WalletId } from '@types';
+import { ExtendedAsset, FormData, IAccountAdditionData, WalletId } from '@types';
 
 import HardwareWalletUI from './Hardware';
 
 interface OwnProps {
   formData: FormData;
-  onUnlock(param: any): void;
+  onUnlock(param: IAccountAdditionData[]): void;
 }
 
 export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
@@ -32,7 +32,7 @@ export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
     ...getDPaths([network], WalletId.GRIDPLUS),
     ...GRIDPLUS_DERIVATION_PATHS
   ]);
-  const defaultDPath = network.dPaths[WalletId.GRIDPLUS] || DEFAULT_ETH;
+  const defaultDPath = network.dPaths[WalletId.GRIDPLUS] ?? DEFAULT_ETH;
   const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
   const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
   const extendedDPaths = dpaths.map((dpath) => ({
@@ -66,7 +66,7 @@ export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
     updateAsset(newAsset);
   };
 
-  if (isConnected && selectedAsset && (accountQueue || scannedAccounts)) {
+  if (isConnected && selectedAsset && (accountQueue ?? scannedAccounts)) {
     return (
       <HDWallet
         scannedAccounts={scannedAccounts}
@@ -85,15 +85,14 @@ export const GridPlus = ({ formData, onUnlock }: OwnProps) => {
         onUnlock={onUnlock}
       />
     );
-  } else {
-    return (
-      <HardwareWalletUI
-        isConnecting={isConnecting}
-        connectionError={connectionError}
-        network={network}
-        handleNullConnect={handleNullConnect}
-        walletId={WalletId.GRIDPLUS}
-      />
-    );
   }
+  return (
+    <HardwareWalletUI
+      isConnecting={isConnecting}
+      connectionError={connectionError}
+      network={network}
+      handleNullConnect={handleNullConnect}
+      walletId={WalletId.GRIDPLUS}
+    />
+  );
 };

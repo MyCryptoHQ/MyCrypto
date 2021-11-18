@@ -49,7 +49,7 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
       getDPath(
         this.props.getNetworkById(this.props.formData.network),
         this.props.wallet.id as DPathFormat
-      ) || getDPaths(this.props.networks, this.props.wallet.id as DPathFormat)[0],
+      ) ?? getDPaths(this.props.networks, this.props.wallet.id as DPathFormat)[0],
     error: null,
     isLoading: false,
     isConnected: false,

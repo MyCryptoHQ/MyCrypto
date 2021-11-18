@@ -284,14 +284,14 @@ export interface HWConfig {
   busyBottom: BusyBottomConfig;
 }
 
-type THardwareConfigs = {
-  [key in
-    | WalletId.LEDGER_NANO_S_NEW
-    | WalletId.TREZOR_NEW
-    | WalletId.GRIDPLUS
-    | WalletId.LEDGER_NANO_S
-    | WalletId.TREZOR]: HWConfig;
-};
+type THardwareConfigs = Record<
+  | WalletId.LEDGER_NANO_S_NEW
+  | WalletId.TREZOR_NEW
+  | WalletId.GRIDPLUS
+  | WalletId.LEDGER_NANO_S
+  | WalletId.TREZOR,
+  HWConfig
+>;
 
 export const HARDWARE_CONFIG: THardwareConfigs = {
   [WalletId.LEDGER_NANO_S]: {
