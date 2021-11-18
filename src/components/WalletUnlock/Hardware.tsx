@@ -1,12 +1,32 @@
+import { useState } from 'react';
+
+import { DEFAULT_ETH, DerivationPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text } from '@components';
 import Icon from '@components/Icon';
-import { HARDWARE_CONFIG } from '@config';
-import { TDWActionError } from '@services';
+import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, HARDWARE_CONFIG } from '@config';
+import { HDWallet } from '@features/AddAccount';
+import {
+  getAssetByUUID,
+  getDPaths,
+  getNetworkById,
+  TDWActionError,
+  useAssets,
+  useHDWallet,
+  useNetworks
+} from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { InlineMessageType, Network, WalletId } from '@types';
+import {
+  ExtendedAsset,
+  FormData,
+  IAccountAdditionData,
+  InlineMessageType,
+  Network,
+  WalletId
+} from '@types';
+import { prop, uniqBy } from '@vendor';
 
 const HardwareImage = styled(Icon)`
   vertical-align: center;
@@ -38,6 +58,84 @@ const HardwareConnectBtn = styled(Button)`
   }
 `;
 
+export interface Props {
+  formData: FormData;
+  wallet: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS;
+  extraDPaths: DerivationPath[];
+  onUnlock(param: IAccountAdditionData[]): void;
+}
+
+export const Hardware = ({ formData, onUnlock, wallet, extraDPaths }: Props) => {
+  const { networks } = useNetworks();
+  const { assets } = useAssets();
+  const network = getNetworkById(formData.network, networks);
+  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const dpaths = uniqBy(prop('path'), [...getDPaths([network], wallet), ...extraDPaths]);
+  const defaultDPath = network.dPaths[wallet] ?? DEFAULT_ETH;
+  const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
+  const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
+  const extendedDPaths = dpaths.map((dpath) => ({
+    ...dpath,
+    offset: 0,
+    numOfAddresses: numOfAccountsToCheck
+  }));
+
+  const [assetToUse, setAssetToUse] = useState(baseAsset);
+  const {
+    isCompleted,
+    isConnected,
+    isConnecting,
+    connectionError,
+    selectedAsset,
+    accountQueue,
+    scannedAccounts,
+    requestConnection,
+    updateAsset,
+    addDPaths,
+    scanMoreAddresses,
+    mergedDPaths
+  } = useHDWallet(extendedDPaths, wallet, DEFAULT_GAP_TO_SCAN_FOR);
+
+  const handleNullConnect = () => {
+    requestConnection(network, assetToUse);
+  };
+
+  const handleAssetUpdate = (newAsset: ExtendedAsset) => {
+    setAssetToUse(newAsset);
+    updateAsset(newAsset);
+  };
+
+  if (isConnected && selectedAsset && (accountQueue ?? scannedAccounts)) {
+    return (
+      <HDWallet
+        scannedAccounts={scannedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
+        selectedDPath={selectedDPath}
+        assets={assets}
+        assetToUse={assetToUse}
+        network={network}
+        dpaths={mergedDPaths}
+        setSelectedDPath={setSelectedDPath}
+        updateAsset={updateAsset}
+        addDPaths={addDPaths}
+        scanMoreAddresses={scanMoreAddresses}
+        handleAssetUpdate={handleAssetUpdate}
+        onUnlock={onUnlock}
+      />
+    );
+  }
+  return (
+    <HardwareWalletUI
+      isConnecting={isConnecting}
+      connectionError={connectionError}
+      network={network}
+      handleNullConnect={handleNullConnect}
+      walletId={wallet}
+    />
+  );
+};
+
 export interface HardwareUIProps {
   network: Network;
   isConnecting: boolean;
@@ -47,7 +145,7 @@ export interface HardwareUIProps {
   handleNullConnect(): void;
 }
 
-const HardwareWalletUI = ({
+export const HardwareWalletUI = ({
   network,
   connectionError,
   isConnecting,
@@ -111,5 +209,3 @@ const HardwareWalletUI = ({
     </Box>
   </Box>
 );
-
-export default HardwareWalletUI;

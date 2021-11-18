@@ -9,7 +9,7 @@ import { translateRaw } from '@translations';
 import { FormData } from '@types';
 import { truncate } from '@utils';
 
-import LedgerDecrypt from './Ledger';
+import { Ledger } from './Ledger';
 
 jest.mock('@ledgerhq/hw-transport-u2f');
 
@@ -29,7 +29,7 @@ const getComponent = () => {
   );
   return simpleRender(
     <Provider store={store}>
-      <LedgerDecrypt {...defaultProps} />
+      <Ledger {...defaultProps} />
     </Provider>
   );
 };

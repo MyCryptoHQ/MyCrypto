@@ -9,14 +9,14 @@ import { translateRaw } from '@translations';
 import { FormData } from '@types';
 import { truncate } from '@utils';
 
-import TrezorDecrypt from './NewTrezor';
+import { Trezor } from './Trezor';
 
 jest.mock('@mycrypto/eth-scan', () => ({
   ...jest.requireActual('@mycrypto/eth-scan'),
   getEtherBalances: jest.fn().mockResolvedValue({})
 }));
 
-const defaultProps: React.ComponentProps<typeof TrezorDecrypt> = {
+const defaultProps: React.ComponentProps<typeof Trezor> = {
   formData: ({ network: 'Ethereum' } as unknown) as FormData,
   onUnlock: jest.fn()
 };
@@ -27,12 +27,12 @@ const getComponent = () => {
   );
   return simpleRender(
     <Provider store={store}>
-      <TrezorDecrypt {...defaultProps} />
+      <Trezor {...defaultProps} />
     </Provider>
   );
 };
 
-describe('NewTrezor', () => {
+describe('Trezor', () => {
   beforeEach(() => {
     jest.setTimeout(60000);
   });
