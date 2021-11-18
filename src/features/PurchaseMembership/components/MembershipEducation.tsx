@@ -1,24 +1,27 @@
 import { Accordion } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import trezor from '@assets/images/icn-connect-trezor-new.svg';
+import membershipCitadel from '@assets/images/membership/membership-citadel.svg';
+import membershipFaucet from '@assets/images/membership/membership-faucet.svg';
 import membershipIllustration from '@assets/images/membership/membership-illustration.svg';
 import membershipLifetime from '@assets/images/membership/membership-lifetime.svg';
 import membershipNoAds from '@assets/images/membership/membership-no-ads.svg';
-import membershipNoSponsor from '@assets/images/membership/membership-no-sponsor.svg';
+import membershipPoap from '@assets/images/membership/membership-poap.svg';
 import membershipShirt from '@assets/images/membership/membership-shirt.svg';
 import membershipStickers from '@assets/images/membership/membership-stickers.svg';
 import membershipUnlimited from '@assets/images/membership/membership-unlimited-transaction.svg';
 import { Button, FullSizeContentPanel, LinkApp, Typography } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
 import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 
 import {
   FullSizePanelSection,
   RowPanelSection,
   SpacedPanelSection
 } from '../../../components/FullSizeContentPanel';
-import { accordionContent, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
+import { IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import MembershipPlanCard from './MembershipPlanCard';
 
 const Heading = styled(FullSizePanelSection)`
@@ -138,6 +141,39 @@ const MembershipDescription = styled(Typography)`
   margin-top: 1rem !important;
 `;
 
+const accordionContent = [
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIRST_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FIRST_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_SECOND_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_SECOND_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_THIRD_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FIFTH_TITLE'),
+    component: (
+      <>
+        {translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT_1')}
+        <ul>
+          <li>{translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT_LIST_1')}</li>
+          <li>{translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT_LIST_2')}</li>
+          <li>{translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT_LIST_3')}</li>
+        </ul>
+        {translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT_2')}
+      </>
+    )
+  },
+  {
+    title: translateRaw('MEMBERSHIP_ACCORDION_FOURTH_TITLE'),
+    component: translate('MEMBERSHIP_ACCORDION_FOURTH_CONTENT')
+  }
+];
+
 const MembershipEducation = () => {
   return (
     <FullSizeContentPanel width={'1100px'}>
@@ -166,6 +202,28 @@ const MembershipEducation = () => {
               <Typography>{translate('MEMBERSHIP_LIST_FIRST')}</Typography>
             </ListItem>
             <ListItem>
+              <ListImg src={membershipPoap} />
+              <Typography>{translate('MEMBERSHIP_POAP')}</Typography>
+            </ListItem>
+            <ListItem>
+              <ListImg src={membershipShirt} />
+              <Typography>{translate('MEMBERSHIP_LIST_SIX')}</Typography>
+            </ListItem>
+            <ListItem>
+              <ListImg src={trezor} />
+              <Typography>{translate('MEMBERSHIP_TREZOR')}</Typography>
+            </ListItem>
+            <ListItem>
+              <ListImg src={membershipFaucet} />
+              <Typography>{translate('MEMBERSHIP_FAUCET')}</Typography>
+            </ListItem>
+          </ListRow>
+          <ListRow>
+            <ListItem>
+              <ListImg src={membershipCitadel} />
+              <Typography>{translate('MEMBERSHIP_CITADEL')}</Typography>
+            </ListItem>
+            <ListItem>
               <ListImg src={membershipUnlimited} />
               <Typography>{translate('MEMBERSHIP_LIST_THIRD_1')}</Typography>&nbsp;
               <LinkApp
@@ -176,22 +234,12 @@ const MembershipEducation = () => {
               </LinkApp>
             </ListItem>
             <ListItem>
-              <ListImg src={membershipNoAds} />
-              <Typography>{translate('MEMBERSHIP_LIST_FIFTH')}</Typography>
-            </ListItem>
-          </ListRow>
-          <ListRow>
-            <ListItem>
-              <ListImg src={membershipNoSponsor} />
-              <Typography>{translate('MEMBERSHIP_LIST_SECOND')}</Typography>
-            </ListItem>
-            <ListItem>
               <ListImg src={membershipStickers} />
               <Typography>{translate('MEMBERSHIP_LIST_FORTH')}</Typography>
             </ListItem>
             <ListItem>
-              <ListImg src={membershipShirt} />
-              <Typography>{translate('MEMBERSHIP_LIST_SIX')}</Typography>
+              <ListImg src={membershipNoAds} />
+              <Typography>{translate('MEMBERSHIP_LIST_FIFTH')}</Typography>
             </ListItem>
           </ListRow>
         </ListContainer>

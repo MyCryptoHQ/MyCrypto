@@ -14,7 +14,7 @@ import {
   XDAI_NETWORK,
   XDAIUUID
 } from '@config';
-import translate, { translateRaw } from '@translations';
+import { translateRaw } from '@translations';
 import { NetworkId, TAddress } from '@types';
 
 export interface IMembershipConfig {
@@ -238,28 +238,5 @@ export const stepsContent = [
     icon: step2SVG,
     content: translateRaw('MEMBERSHIP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`
-  }
-];
-
-export const accordionContent = [
-  {
-    title: translateRaw('MEMBERSHIP_ACCORDION_FIRST_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_FIRST_CONTENT')
-  },
-  {
-    title: translateRaw('MEMBERSHIP_ACCORDION_SECOND_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_SECOND_CONTENT')
-  },
-  {
-    title: translateRaw('MEMBERSHIP_ACCORDION_THIRD_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_THIRD_CONTENT')
-  },
-  {
-    title: translateRaw('MEMBERSHIP_ACCORDION_FIFTH_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_FIFTH_CONTENT')
-  },
-  {
-    title: translateRaw('MEMBERSHIP_ACCORDION_FOURTH_TITLE'),
-    component: translate('MEMBERSHIP_ACCORDION_FOURTH_CONTENT')
   }
 ];
