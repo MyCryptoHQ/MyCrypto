@@ -1,4 +1,4 @@
-import { getByText } from '@testing-library/testcafe';
+import { getAllByText, getByText } from '@testing-library/testcafe';
 
 import AddAccountPage from './addaccount-page.po';
 import DashboardPage from './dashboard-page.po';
@@ -41,4 +41,14 @@ test('Should be able to add a web3 address', async () => {
 
   await dashboardPage.expectAddressToBePresent(FIXTURE_WEB3_ADDRESS);
   await dashboardPage.expectAccountTableToMatchCount(1);
+});
+
+test('Should be able to redirect to the correct flow from wallet id', async (t) => {
+  await addAccountPage.navigateTo(`${PAGES.ADD_ACCOUNT}/portis`);
+  await addAccountPage.waitForPage(PAGES.ADD_ACCOUNT_VIEWONLY);
+
+  await addAccountPage.selectEthereumNetwork();
+
+  const title = getAllByText('Portis');
+  await t.expect(title.exists).ok();
 });
