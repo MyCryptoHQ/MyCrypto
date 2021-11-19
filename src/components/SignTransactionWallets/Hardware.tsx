@@ -180,7 +180,9 @@ export const SignTxHardwareUI = ({
           <SInlineMessage value={translate('SIGN_TX_HARDWARE_FAILED_1')} />
         )}
         {signingState === WalletSigningState.ADDRESS_MISMATCH && (
-          <SInlineMessage value={'The transaction was not signed by the correct account.'} />
+          <SInlineMessage
+            value={translateRaw('HW_SIGN_ADDRESS_MISMATCH', { $address: senderAccount.address })}
+          />
         )}
         {signingState === WalletSigningState.SUBMITTING && (
           <SInlineMessage type={InlineMessageType.INDICATOR_INFO_CIRCLE}>

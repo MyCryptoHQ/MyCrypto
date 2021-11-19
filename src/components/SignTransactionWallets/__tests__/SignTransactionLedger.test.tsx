@@ -33,9 +33,6 @@ describe('SignTransactionWallets: Ledger', () => {
     jest.useFakeTimers();
     jest.setTimeout(60000);
   });
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
 
   it('Can handle Ledger signing', async () => {
     const { getByText } = getComponent();
@@ -53,15 +50,18 @@ describe('SignTransactionWallets: Ledger', () => {
 
   it('shows error message', async () => {
     // @ts-expect-error Not overwriting all functions
-    (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementationOnce(() => ({
-      signTransaction: jest.fn().mockRejectedValueOnce(new Error('foo'))
+    (EthereumApp as jest.MockedClass<typeof EthereumApp>).mockImplementation(() => ({
+      signTransaction: jest.fn().mockRejectedValue(new Error('foo')),
+      getAddress: jest.fn().mockResolvedValue({ address: fTxConfig.senderAccount.address })
     }));
-
     const { getByText } = getComponent();
-    await waitFor(() =>
-      expect(
-        getByText(translateRaw('SIGN_TX_HARDWARE_FAILED_1'), { exact: false })
-      ).toBeInTheDocument()
+
+    await waitFor(
+      () =>
+        expect(
+          getByText(translateRaw('SIGN_TX_HARDWARE_FAILED_1'), { exact: false })
+        ).toBeInTheDocument(),
+      { timeout: 60000 }
     );
   });
 });

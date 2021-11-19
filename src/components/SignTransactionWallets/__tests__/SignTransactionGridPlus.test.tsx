@@ -41,9 +41,6 @@ describe('SignTransactionWallets: GridPlus', () => {
     jest.useFakeTimers();
     jest.setTimeout(60000);
   });
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
 
   it('Can handle GridPlus signing', async () => {
     const { getByText } = getComponent();
@@ -76,7 +73,10 @@ describe('SignTransactionWallets: GridPlus', () => {
     await waitFor(
       () =>
         expect(
-          getByText('The transaction was not signed by the correct account.')
+          getByText(
+            'This transaction was signed by the incorrect account on your hardware wallet.',
+            { exact: false }
+          )
         ).toBeInTheDocument(),
       { timeout: 60000 }
     );

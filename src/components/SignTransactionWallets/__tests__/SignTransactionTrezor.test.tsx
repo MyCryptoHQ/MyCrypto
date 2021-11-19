@@ -29,9 +29,6 @@ describe('SignTransactionWallets: Trezor', () => {
     jest.useFakeTimers();
     jest.setTimeout(60000);
   });
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
 
   test('Can handle Trezor signing', async () => {
     const { getByText } = getComponent();

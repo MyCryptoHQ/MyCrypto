@@ -1081,6 +1081,7 @@
     "X_GRIDPLUS": "GridPlus",
     "GRIDPLUS_CONNECT": "Connect to GridPlus",
     "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus",
-    "SIGN_TX_GRIDPLUS_DESCRIPTION": "Follow the on-screen instructions on your GridPlus to sign your transaction."
+    "SIGN_TX_GRIDPLUS_DESCRIPTION": "Follow the on-screen instructions on your GridPlus to sign your transaction.",
+    "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed."
   }
 }
