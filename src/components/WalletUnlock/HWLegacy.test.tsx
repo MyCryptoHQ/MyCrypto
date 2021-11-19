@@ -54,8 +54,21 @@ describe('HWLegacy', () => {
       expect(getByText(translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS'))).toBeInTheDocument()
     );
 
+    const address = '0x31497F490293CF5a4540b81c9F59910F62519b63';
+
+    await waitFor(() => expect(getByText(truncate(address))).toBeInTheDocument());
+
+    const row = getByText(truncate(address)).parentElement!.parentElement!.parentElement!
+      .parentElement!;
+
+    fireEvent.click(row);
+
+    const unlock = getByText(translateRaw('ACTION_6'));
+
+    fireEvent.click(unlock);
+
     await waitFor(() =>
-      expect(getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))).toBeInTheDocument()
+      expect(defaultProps.onUnlock).toHaveBeenCalledWith(expect.objectContaining({ address }))
     );
   });
 
