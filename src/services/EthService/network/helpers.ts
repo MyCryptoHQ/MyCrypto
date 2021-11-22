@@ -52,12 +52,7 @@ export const createFallbackNetworkProviders = (network: Network): FallbackProvid
     }
   }
 
-  const providers = sortedNodes.map((n) => getProvider(n as any, chainId));
-  /**.map((provider, index) => ({
-      provider,
-      priority: index,
-      stallTimeout: 5000
-    }));**/
+  const providers = sortedNodes.map((n) => getProvider(n, chainId));
 
   return new FallbackProvider(providers);
 };
