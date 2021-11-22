@@ -1,4 +1,3 @@
-import { FallbackProvider } from '@ethersproject/providers';
 import Resolution, { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
@@ -6,6 +5,7 @@ import GeneralLookupField from '@components/GeneralLookupField';
 import { fContacts, fNetwork } from '@fixtures';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
+import { FallbackProvider } from '@vendor';
 
 interface FormValues {
   data: {
