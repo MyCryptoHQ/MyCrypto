@@ -227,7 +227,7 @@ export class ProviderHandler {
   }> {
     return this.injectClient((client) =>
       // @ts-expect-error Temp until Ethers supports eth_feeHistory
-      (client as FallbackProvider).providerConfigs[0].provider.send('eth_feeHistory', [
+      (client as FallbackProvider).providers[0].send('eth_feeHistory', [
         blockCount,
         newestBlock,
         rewardPercentiles ?? []
