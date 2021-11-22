@@ -1,0 +1,31 @@
+.QuillBannerContainer {
+  background-color: #FA873F;
+  color: 'inherit';
+  padding: 15px 10px;
+  padding-right: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  color: white;
+  & > img {
+    vertical-align: top;
+    margin-right: 15px;
+    margin-top: 5px;
+  }
+  a {
+    color: white;
+    font-weight: 600;
+    text-decoration: underline; 
+  }  
+  // In mobile we let the icon stay top-aligned with the text
+  // as screen grows we remove the arbitray value used to align the icon.
+  @media (min-width: 850px) {
+    align-items: center;
+    & > img {
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 850px) {
+    margin-top: 77px;
+  }
+}

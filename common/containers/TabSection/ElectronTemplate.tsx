@@ -9,6 +9,7 @@ import OfflineTab from './OfflineTab';
 import Notifications from './Notifications';
 import ElectronBuildVerified from 'components/ElectronBuildVerified';
 import './ElectronTemplate.scss';
+import { QuillBanner, ANNOUNCEMENT_MSG } from 'components/QuillBanner';
 
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
@@ -31,6 +32,7 @@ class ElectronTemplate extends Component<Props, {}> {
           <ElectronNav />
         </div>
         <div className="ElectronTemplate-content">
+          <QuillBanner value={ANNOUNCEMENT_MSG()} />
           <div className="Tab ElectronTemplate-content-tab">
             <ElectronBuildVerified versionNow={VERSION} />
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
