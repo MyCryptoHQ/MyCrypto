@@ -83,7 +83,8 @@ const slice = createSlice({
       });
     },
     createOrUpdateMany(state, action: PayloadAction<IAccount[]>) {
-      return uniqBy(prop('uuid'), [...action.payload, ...state]);
+      const sanitized = action.payload.map(sanitizeAccount);
+      return uniqBy(prop('uuid'), [...sanitized, ...state]);
     },
     resetAndCreate(_, action: PayloadAction<IAccount>) {
       return [sanitizeAccount(action.payload)];
@@ -380,11 +381,11 @@ export function* addNewAccountsWorker({
       uuid: generateDeterministicAddressUUID(networkId, address),
       address,
       networkId,
+      assets: existingAccount?.assets ?? [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
       wallet: walletType,
+      transactions: existingAccount?.transactions ?? [],
       path,
       index,
-      assets: existingAccount?.assets ?? [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
-      transactions: existingAccount?.transactions ?? [],
       mtime: 0,
       favorite: false,
       isPrivate: existingAccount?.isPrivate ?? undefined
