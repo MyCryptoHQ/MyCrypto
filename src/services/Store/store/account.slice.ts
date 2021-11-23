@@ -369,10 +369,10 @@ export function* addNewAccountsWorker({
 
   const network = getNetworkById(networkId, networks);
   if (!network || newAccounts.length === 0) return;
-  const accountsToAdd = newAccounts.filter(
-    ({ address }) => !getIdenticalAccount(accounts)(address, networkId, accountType)
-  );
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
+  const accountsToAdd = newAccounts.filter(
+    ({ address }) => !getIdenticalAccount(accounts)(address, networkId, walletType)
+  );
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
   const newRawAccounts = accountsToAdd.map(({ address, path, index }) => {
     const existingAccount = getAccountByAddressAndNetworkName(accounts)(address, networkId);
