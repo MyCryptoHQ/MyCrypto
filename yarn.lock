@@ -3431,10 +3431,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallets@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.0.tgz#e7d9d8b4305f25ca912872c533738f133e3c15fb"
-  integrity sha512-/ayapAkROxhxYocclrIslggTurqFPKL4Xcy41rBWzzylhKboizOJih31y59MZJ2XbSv3ReunRVkb1cSc1mEgzA==
+"@mycrypto/wallets@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.1.tgz#fa80ce203ed5b2538f149e5c3cdddf87a3fb1600"
+  integrity sha512-JWghgQgECeuJOtVHj2UFQvUNxoU8hOTdviUijR/uAYFMukyH65acGKhCY7H1ge5pBDl8624KYgtXDghxXK+dHA==
   dependencies:
     "@ethersproject/abstract-provider" "5.4.0"
     "@ethersproject/address" "5.4.0"
