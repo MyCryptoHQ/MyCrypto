@@ -82,6 +82,9 @@ const slice = createSlice({
         state.push(sanitizeAccount(a));
       });
     },
+    createOrUpdateMany(state, action: PayloadAction<IAccount[]>) {
+      return uniqBy(prop('uuid'), [...action.payload, ...state]);
+    },
     resetAndCreate(_, action: PayloadAction<IAccount>) {
       return [sanitizeAccount(action.payload)];
     },
@@ -366,28 +369,24 @@ export function* addNewAccountsWorker({
 
   const network = getNetworkById(networkId, networks);
   if (!network || newAccounts.length === 0) return;
-  const accountsToAdd = newAccounts.filter(
-    ({ address }) => !getAccountByAddressAndNetworkName(accounts)(address, networkId)
-  );
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-  const newRawAccounts = accountsToAdd.map(({ address, path, index }) => ({
-    uuid: generateDeterministicAddressUUID(networkId, address),
-    address,
-    networkId,
-    wallet: walletType,
-    path,
-    index,
-    assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
-    transactions: [],
-    mtime: 0,
-    favorite: false,
-    isPrivate: undefined
-  }));
-  if (newRawAccounts.length === 0) {
-    yield put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }));
-    return;
-  }
+  const newRawAccounts = newAccounts.map(({ address, path, index }) => {
+    const existingAccount = getAccountByAddressAndNetworkName(accounts)(address, networkId);
+    return {
+      uuid: generateDeterministicAddressUUID(networkId, address),
+      address,
+      networkId,
+      wallet: walletType,
+      path,
+      index,
+      assets: existingAccount?.assets ?? [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+      transactions: existingAccount?.transactions ?? [],
+      mtime: 0,
+      favorite: false,
+      isPrivate: existingAccount?.isPrivate ?? undefined
+    };
+  });
   const newLabels = findMultipleNextUnusedDefaultLabels(
     newRawAccounts[0].wallet,
     newRawAccounts.length
@@ -423,7 +422,7 @@ export function* addNewAccountsWorker({
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(newRawAccounts));
   } else {
-    yield put(slice.actions.createMany(newRawAccounts));
+    yield put(slice.actions.createOrUpdateMany(newRawAccounts));
   }
   yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   yield put(scanTokens({ accounts: newRawAccounts }));
