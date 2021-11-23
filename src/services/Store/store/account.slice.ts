@@ -39,7 +39,7 @@ import {
 } from '@utils';
 import { findIndex, isEmpty, prop, propEq, sortBy, uniqBy } from '@vendor';
 
-import { getAccountByAddressAndNetworkName } from '../Account';
+import { getAccountByAddressAndNetworkName, getIdenticalAccount } from '../Account';
 import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import {
@@ -135,7 +135,7 @@ export default slice;
 
 export const addNewAccounts = createAction<{
   networkId: NetworkId;
-  accountType?: WalletId;
+  accountType: WalletId;
   newAccounts: IAccountAdditionData[];
 }>(`${slice.name}/addNewAccounts`);
 
@@ -358,7 +358,7 @@ export function* addNewAccountsWorker({
   payload: { networkId, accountType, newAccounts }
 }: PayloadAction<{
   networkId: NetworkId;
-  accountType?: WalletId;
+  accountType: WalletId;
   newAccounts: IAccountAdditionData[];
 }>) {
   const accounts: StoreAccount[] = yield select(getStoreAccounts);
@@ -369,9 +369,12 @@ export function* addNewAccountsWorker({
 
   const network = getNetworkById(networkId, networks);
   if (!network || newAccounts.length === 0) return;
+  const accountsToAdd = newAccounts.filter(
+    ({ address }) => !getIdenticalAccount(accounts)(address, networkId, accountType)
+  );
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-  const newRawAccounts = newAccounts.map(({ address, path, index }) => {
+  const newRawAccounts = accountsToAdd.map(({ address, path, index }) => {
     const existingAccount = getAccountByAddressAndNetworkName(accounts)(address, networkId);
     return {
       uuid: generateDeterministicAddressUUID(networkId, address),
@@ -387,6 +390,10 @@ export function* addNewAccountsWorker({
       isPrivate: existingAccount?.isPrivate ?? undefined
     };
   });
+  if (newRawAccounts.length === 0) {
+    yield put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }));
+    return;
+  }
   const newLabels = findMultipleNextUnusedDefaultLabels(
     newRawAccounts[0].wallet,
     newRawAccounts.length
