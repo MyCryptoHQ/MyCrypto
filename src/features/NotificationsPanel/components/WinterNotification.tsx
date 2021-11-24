@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import poapImage from '@assets/images/halloween-poap.svg';
+import poapImage from '@assets/images/winter-poap.svg';
 import { Body, Box, Button, Heading, LinkApp, Text } from '@components';
 import { PoapClaimService } from '@services/ApiService/PoapClaim';
 import { claimPromo, getAnalyticsUserID, getPromoPoap, useDispatch, useSelector } from '@store';
 import translate, { translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
 
-export const HalloweenNotification = () => {
+export const WinterNotification = () => {
   const { isMobile } = useScreenSize();
 
   return (
@@ -17,16 +17,19 @@ export const HalloweenNotification = () => {
       </Box>
       <Box mr="2" width="60%">
         <Heading
-          color="WARNING_ORANGE"
+          color="WHITE"
           fontWeight="bold"
           fontSize="24px"
           lineHeight="32px"
           mt="0"
           textAlign={isMobile ? 'center' : 'left'}
         >
-          {translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER')}
+          {translateRaw('POAP_NOTIFICATION_HEADER')}
         </Heading>
-        <Body color="WARNING_ORANGE">{translate('HALLOWEEN_POAP_NOTIFICATION_BODY')}</Body>
+        <Body color="WHITE">{translate('POAP_NOTIFICATION_BODY')}</Body>
+        <Body color="WHITE" fontSize="12px" fontStyle="italic">
+          {translate('POAP_ANALYTICS_NOTICE')}
+        </Body>
       </Box>
       <Box variant="rowCenter" width="30%">
         <NotificationContent />
@@ -37,7 +40,7 @@ export const HalloweenNotification = () => {
 
 const NotificationContent = () => {
   const dispatch = useDispatch();
-  const key = 'halloween2021';
+  const key = 'winter2021';
   const analyticsId = useSelector(getAnalyticsUserID);
   const promo = useSelector(getPromoPoap(key));
   const [isClaiming, setIsClaiming] = useState(false);
@@ -64,17 +67,22 @@ const NotificationContent = () => {
     return (
       <Box variant="columnCenter">
         <Text as="div" color="white" fontSize="2" textAlign="center">
-          {translateRaw('HALLOWEEN_POAP_ERROR_HEADER')}
+          {translateRaw('POAP_ERROR_HEADER')}
         </Text>
         <Text as="div" color="white" textAlign="center" width="80%">
-          {translate('HALLOWEEN_POAP_ERROR')}
+          {translate('POAP_ERROR_BODY')}
         </Text>
       </Box>
     );
   }
 
   return !isClaimed ? (
-    <Button onClick={handleClaim} loading={isClaiming}>
+    <Button
+      onClick={handleClaim}
+      loading={isClaiming}
+      disabled={analyticsId.length === 0}
+      colorScheme="inverted"
+    >
       {translateRaw('CLAIM_NOW')}
     </Button>
   ) : (

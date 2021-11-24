@@ -1,9 +1,8 @@
-import halloweenBg from '@assets/images/halloween-bg.svg';
+import winterBg from '@assets/images/winter-bg.svg';
 import { NotificationTemplates } from '@types';
 
 import {
   GetHardwareWalletNotification,
-  HalloweenNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification,
   SaveDashboardNotification,
@@ -11,13 +10,14 @@ import {
   WalletCreatedNotification,
   WalletNotAddedNotification,
   WalletsAddedNotification,
-  WalletsNotAddedNotification
+  WalletsNotAddedNotification,
+  WinterNotification
 } from './components';
 import {
   getHardwareWalletCheck,
-  halloweenCheck,
   onboardingPleaseUnderstandCheck,
   onboardingResponsibleCheck,
+  promoPoapCheck,
   saveSettingsCheck
 } from './helpers';
 import { NotificationsConfigsProps } from './types';
@@ -79,13 +79,13 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     condition: onboardingResponsibleCheck,
     preventDismisExisting: true
   },
-  [NotificationTemplates.halloweenPoap]: {
-    analyticsEvent: 'Halloween Poap',
-    layout: HalloweenNotification,
-    condition: halloweenCheck,
+  [NotificationTemplates.winterPoap]: {
+    analyticsEvent: 'Winter Poap',
+    layout: WinterNotification,
+    condition: promoPoapCheck,
     priority: true,
     style: (isMobile) => ({
-      backgroundImage: `url(${halloweenBg})`,
+      backgroundImage: `url(${winterBg})`,
       backgroundSize: isMobile ? 'cover' : '100% 100%'
     })
   }

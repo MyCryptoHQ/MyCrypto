@@ -23,5 +23,5 @@ export const NotificationTemplates = {
   getHardwareWallet: 'get-hardware-wallet',
   onboardingPleaseUnderstand: 'onboarding-please-understand',
   onboardingResponsible: 'onboarding-responsible',
-  halloweenPoap: 'halloween-poap'
+  winterPoap: 'winter-poap'
 };
