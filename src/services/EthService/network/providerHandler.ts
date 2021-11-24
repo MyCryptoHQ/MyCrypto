@@ -207,6 +207,9 @@ export class ProviderHandler {
       }
 
       const resolver = await client.getResolver(name);
+      if (!resolver) {
+        return null;
+      }
       const path = network?.dPaths.default;
       const coinType = path && getCoinType(path);
 
