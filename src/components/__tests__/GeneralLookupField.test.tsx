@@ -6,7 +6,6 @@ import { fContacts, fNetwork } from '@fixtures';
 import { ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
-import { FallbackProvider } from '@vendor';
 
 interface FormValues {
   data: {
