@@ -140,7 +140,7 @@ const GeneralLookupField = ({
     setResolutionError(undefined);
     try {
       const provider = new ProviderHandler(ethNetwork);
-      const resolvedAddress = await provider.resolveENSName(domain);
+      const resolvedAddress = await provider.resolveENSName(domain, network);
       if (!resolvedAddress) {
         throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, { domain });
       }

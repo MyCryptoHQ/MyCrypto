@@ -115,3 +115,4 @@ export * from './nft';
 export * from './eip1559';
 export * from './currency';
 export * from './useEffectAllDepsChange';
+export * from './coinType';

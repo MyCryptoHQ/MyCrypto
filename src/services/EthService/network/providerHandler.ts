@@ -13,7 +13,7 @@ import { formatEther } from '@ethersproject/units';
 import any from '@ungap/promise-any';
 import Resolution from '@unstoppabledomains/resolution';
 
-import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { DEFAULT_ASSET_DECIMAL, DEFAULT_COIN_TYPE } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
 import {
@@ -25,7 +25,7 @@ import {
   TAddress,
   TokenInformation
 } from '@types';
-import { baseToConvertedUnit } from '@utils';
+import { baseToConvertedUnit, getCoinType } from '@utils';
 import { FallbackProvider } from '@vendor';
 
 import { EIP1271_ABI } from '../contracts';
@@ -198,15 +198,26 @@ export class ProviderHandler {
     });
   }
 
-  public resolveENSName(name: string): Promise<string | null> {
-    return this.injectClient((client) => {
+  public resolveENSName(name: string, network?: Network): Promise<string | null> {
+    return this.injectClient(async (client) => {
       // Use Unstoppable if supported, otherwise is probably an ENS name
       const unstoppable = Resolution.fromEthersProvider(client);
       if (unstoppable.isSupportedDomain(name)) {
         return unstoppable.addr(name, this.network.baseUnit);
       }
 
-      return client.resolveName(name);
+      const resolver = await client.getResolver(name);
+      const path = network?.dPaths.default;
+      const coinType = path && getCoinType(path);
+
+      if (coinType && coinType !== DEFAULT_COIN_TYPE) {
+        const resolved = await resolver.getAddress(coinType).catch(() => null);
+        if (resolved) {
+          return resolved;
+        }
+      }
+
+      return resolver.getAddress();
     });
   }
 

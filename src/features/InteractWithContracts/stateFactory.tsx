@@ -144,7 +144,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
     }));
 
     const provider = new ProviderHandler(ethNetwork);
-    const resolvedAddress = (await provider.resolveENSName(domain)) || CREATION_ADDRESS;
+    const resolvedAddress =
+      (await provider.resolveENSName(domain, state.network)) || CREATION_ADDRESS;
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,

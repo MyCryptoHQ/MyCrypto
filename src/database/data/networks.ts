@@ -857,7 +857,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_POLYGON,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_POLYGON,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      default: DEFAULT_POLYGON
     },
     gasPriceSettings: {
       min: 30,
@@ -885,7 +886,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_XDAI,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_XDAI,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      default: DEFAULT_XDAI
     },
     gasPriceSettings: {
       min: 0.01,
@@ -911,7 +913,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      default: DEFAULT_ETH
     },
     gasPriceSettings: {
       min: 1,
@@ -937,7 +940,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      default: DEFAULT_ETH
     },
     gasPriceSettings: {
       min: 20,
@@ -996,7 +1000,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_AVAX,
       [WalletId.LEDGER_NANO_S]: DEFAULT_AVAX,
       [WalletId.TREZOR_NEW]: DEFAULT_AVAX,
-      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAX
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAX,
+      default: DEFAULT_AVAX
     },
     gasPriceSettings: {
       min: 10,
