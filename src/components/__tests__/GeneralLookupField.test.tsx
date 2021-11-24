@@ -84,7 +84,7 @@ describe('GeneralLookupField', () => {
 
   it('resolves ens and selects it by keypress enter', async () => {
     jest
-      .spyOn(ProviderHandler.prototype, 'resolveENSName')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockResolvedValue(mockMappedContacts[0].address);
     const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
@@ -101,7 +101,7 @@ describe('GeneralLookupField', () => {
   });
 
   it('handles non registrered domain', async () => {
-    jest.spyOn(ProviderHandler.prototype, 'resolveENSName').mockResolvedValue(null);
+    jest.spyOn(ProviderHandler.prototype, 'resolveName').mockResolvedValue(null);
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };
     const { container, getByText, rerender } = getComponent(getDefaultProps(), output);
@@ -119,7 +119,7 @@ describe('GeneralLookupField', () => {
 
   it('handles Unstoppable errors', async () => {
     jest
-      .spyOn(ProviderHandler.prototype, 'resolveENSName')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockRejectedValue(new ResolutionError(ResolutionErrorCode.RecordNotFound));
     const ens = 'eth.crypto';
     const output = { data: { ...initialFormikValues } };
@@ -140,7 +140,7 @@ describe('GeneralLookupField', () => {
 
   it('handles Ethers errors', async () => {
     jest
-      .spyOn(ProviderHandler.prototype, 'resolveENSName')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockRejectedValue(new Error('network does not support ENS'));
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };

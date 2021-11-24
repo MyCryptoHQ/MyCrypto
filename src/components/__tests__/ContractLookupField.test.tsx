@@ -51,9 +51,7 @@ const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([ke
 }));
 
 // mock domain resolving function
-ProviderHandler.prototype.resolveENSName = jest
-  .fn()
-  .mockResolvedValue(mockMappedContacts[0].address);
+ProviderHandler.prototype.resolveName = jest.fn().mockResolvedValue(mockMappedContacts[0].address);
 
 describe('ContractLookupField', () => {
   test('it renders the placeholder when no value', async () => {

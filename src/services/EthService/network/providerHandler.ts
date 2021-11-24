@@ -198,7 +198,7 @@ export class ProviderHandler {
     });
   }
 
-  public resolveENSName(name: string, network?: Network): Promise<string | null> {
+  public resolveName(name: string, network?: Network): Promise<string | null> {
     return this.injectClient(async (client) => {
       // Use Unstoppable if supported, otherwise is probably an ENS name
       const unstoppable = Resolution.fromEthersProvider(client);
