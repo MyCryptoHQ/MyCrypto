@@ -6,7 +6,6 @@ import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
-import { translateRaw } from '@translations';
 import {
   Asset,
   AssetBalanceObject,
@@ -405,7 +404,7 @@ export function* addNewAccountsWorker({
         rawAccount.address,
         networkId
       );
-      if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+      if (existingContact) {
         return {
           ...existingContact,
           label: newLabels[idx]

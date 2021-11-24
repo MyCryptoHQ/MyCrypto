@@ -664,7 +664,7 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
-    it('updates unknown labels', () => {
+    it('updates labels', () => {
       return expectSaga(
         addNewAccountsWorker,
         addNewAccounts({
@@ -692,47 +692,6 @@ describe('AccountSlice', () => {
           })
         )
         .put(
-          createOrUpdateContacts([
-            {
-              label: 'WalletConnect Account 1',
-              address: fAccounts[0].address,
-              notes: '',
-              network: 'Ethereum',
-              uuid: 'foo' as TUuid
-            }
-          ])
-        )
-        .silentRun();
-    });
-
-    it('doesnt update labels if no updates are needed', () => {
-      return expectSaga(
-        addNewAccountsWorker,
-        addNewAccounts({
-          networkId: 'Ethereum',
-          accountType: WalletId.WALLETCONNECT,
-          newAccounts
-        })
-      )
-        .withState(
-          mockAppState({
-            accounts: [],
-            networks: APP_STATE.networks,
-            assets: fAssets,
-            addressBook: [
-              {
-                uuid: 'foo' as TUuid,
-                address: fAccounts[0].address,
-                label: 'Foobar',
-                notes: '',
-                network: 'Ethereum'
-              }
-            ],
-            contracts: [],
-            settings: fSettings
-          })
-        )
-        .not.put(
           createOrUpdateContacts([
             {
               label: 'WalletConnect Account 1',
