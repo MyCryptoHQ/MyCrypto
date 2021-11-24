@@ -1,4 +1,4 @@
-import Resolution, { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
+import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import GeneralLookupField from '@components/GeneralLookupField';
@@ -119,7 +119,7 @@ describe('GeneralLookupField', () => {
 
   it('handles Unstoppable errors', async () => {
     jest
-      .spyOn(Resolution.prototype, 'addr')
+      .spyOn(ProviderHandler.prototype, 'resolveENSName')
       .mockRejectedValue(new ResolutionError(ResolutionErrorCode.RecordNotFound));
     const ens = 'eth.crypto';
     const output = { data: { ...initialFormikValues } };
