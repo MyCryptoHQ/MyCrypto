@@ -10,6 +10,7 @@ import {
   ProviderHandler
 } from '@services/EthService';
 import { createENSResolutionError, isResolutionError } from '@services/EthService/ens';
+import { selectDefaultNetwork, useSelector } from '@store';
 import { ErrorObject, IReceiverAddress, Network } from '@types';
 
 import AddressLookupSelector, { LabeledAddress } from './AddressLookupSelector';
@@ -51,6 +52,7 @@ const GeneralLookupField = ({
   setFieldTouched,
   setFieldError
 }: IGeneralLookupFieldComponentProps) => {
+  const ethNetwork = useSelector(selectDefaultNetwork);
   const errorMessage =
     error && Object.prototype.hasOwnProperty.call(error, 'message')
       ? (error as ErrorObject).message
@@ -137,7 +139,7 @@ const GeneralLookupField = ({
     setIsResolvingDomain(true);
     setResolutionError(undefined);
     try {
-      const provider = new ProviderHandler(network);
+      const provider = new ProviderHandler(ethNetwork);
       const resolvedAddress = await provider.resolveENSName(domain);
       if (!resolvedAddress) {
         throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, { domain });
