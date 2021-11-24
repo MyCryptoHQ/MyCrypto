@@ -1,8 +1,9 @@
-import { DeterministicWallet, GridPlusWallet, Wallet } from '@mycrypto/wallets';
+import { DeterministicWallet, Wallet } from '@mycrypto/wallets';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, put, takeLatest } from 'redux-saga/effects';
 
 import { LSKeys, WalletId } from '@types';
+import { isGridPlusWallet } from '@utils';
 
 import { getAppState } from './selectors';
 
@@ -53,9 +54,8 @@ export function* connectionsSaga() {
   yield all([takeLatest(connectWallet.type, gridPlusWorker)]);
 }
 
-export function* gridPlusWorker({ payload }: PayloadAction<Wallet>) {
-  const credentials =
-    payload && 'getCredentials' in payload && (payload as GridPlusWallet).getCredentials();
+export function* gridPlusWorker({ payload }: PayloadAction<DeterministicWallet>) {
+  const credentials = payload && isGridPlusWallet(payload) && payload.getCredentials();
   if (credentials) {
     yield put(setWalletData({ wallet: WalletId.GRIDPLUS, data: credentials }));
   }

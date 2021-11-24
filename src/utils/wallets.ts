@@ -1,3 +1,5 @@
+import { DeterministicWallet, GridPlusWallet } from '@mycrypto/wallets';
+
 import { NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
 
@@ -30,3 +32,6 @@ export const isSenderAccountPresent = (
   accounts.some(
     ({ address, wallet }) => isSameAddress(address, addressToCheck) && !isViewOnlyWallet(wallet)
   );
+
+export const isGridPlusWallet = (wallet: DeterministicWallet): wallet is GridPlusWallet =>
+  'getCredentials' in wallet;
