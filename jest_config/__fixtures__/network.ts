@@ -106,16 +106,16 @@ export const xDAI: Network = {
   }),
   dPaths: {
     TREZOR: {
-      name: 'Trezor (ETH)',
-      path: "m/44'/60'/0'/0/<account>"
+      name: 'Trezor (XDAI)',
+      path: "m/44'/700'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
       name: 'Ledger (ETH)',
       path: "m/44'/60'/0'/<account>"
     },
     default: {
-      name: 'Default (ETH)',
-      path: "m/44'/60'/0'/0/<account>"
+      name: 'Default (XDAI)',
+      path: "m/44'/700'/0'/0/<account>"
     }
   },
   gasPriceSettings: {
