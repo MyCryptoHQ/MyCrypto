@@ -1,3 +1,4 @@
+import { DEFAULT_EVRICE } from '@mycrypto/wallets';
 import nock from 'nock';
 
 import { fNetworks } from '@fixtures';
@@ -97,6 +98,121 @@ describe('ProviderHandler', () => {
           version: '2'
         })
       ).resolves.toBe(false);
+    });
+  });
+
+  describe('resolveName', () => {
+    nock.disableNetConnect();
+
+    afterEach(() => {
+      nock.cleanAll();
+    });
+
+    it('resolves an ENS name on Ethereum', async () => {
+      const provider = new ProviderHandler(fNetworks[0]);
+
+      nock(/.*/)
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41'
+        }))
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x0000000000000000000000004bbeeb066ed09b7aed07bf39eee0460dfa261520'
+        }));
+
+      await expect(provider.resolveName('mycrypto.eth')).resolves.toBe(
+        '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'
+      );
+    });
+
+    it('returns null if no resolver found', async () => {
+      const provider = new ProviderHandler(fNetworks[0]);
+
+      nock(/.*/)
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x0000000000000000000000000000000000000000000000000000000000000000'
+        }));
+
+      await expect(provider.resolveName('mycrypto.eth')).resolves.toBeNull();
+    });
+
+    it('resolves an ENS name with a different coinType', async () => {
+      const provider = new ProviderHandler(fNetworks[0]);
+
+      nock(/.*/)
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41'
+        }))
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result:
+            '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000014983110309620d911731ac0932219af06091b6744000000000000000000000000'
+        }));
+
+      await expect(provider.resolveName('brantly.eth', fNetworks[2])).resolves.toBe(
+        '0x983110309620D911731Ac0932219af06091b6744'
+      );
+    });
+
+    it('falls back to ETH name if different coinType doesnt resolve', async () => {
+      const provider = new ProviderHandler(fNetworks[0]);
+
+      nock(/.*/)
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41'
+        }))
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result:
+            '0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000014983110309620d911731ac0932219af06091b6744000000000000000000000000'
+        }))
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result: '0x000000000000000000000000983110309620d911731ac0932219af06091b6744'
+        }));
+
+      await expect(
+        provider.resolveName('brantly.eth', {
+          ...fNetworks[2],
+          dPaths: { default: DEFAULT_EVRICE }
+        })
+      ).resolves.toBe('0x983110309620D911731Ac0932219af06091b6744');
+    });
+
+    it('resolves an UD name on Ethereum', async () => {
+      const provider = new ProviderHandler(fNetworks[0]);
+
+      nock(/.*/)
+        .post(/.*/)
+        .reply(200, () => ({
+          id: 1,
+          jsonrpc: '2.0',
+          result:
+            '0x000000000000000000000000b66dce2da6afaaa98f2013446dbcb0f4b0ab28420000000000000000000000008aad44321a86b170879d7a244c1e8d360c99dda8000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002a30783861614434343332314138366231373038373964374132343463316538643336306339394464413800000000000000000000000000000000000000000000'
+        }));
+      await expect(provider.resolveName('brad.crypto')).resolves.toBe(
+        '0x8aaD44321A86b170879d7A244c1e8d360c99DdA8'
+      );
     });
   });
 });
