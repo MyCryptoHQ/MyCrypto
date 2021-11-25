@@ -9,7 +9,7 @@ export const PROMO_CONFIG = [
   {
     key: 'winter2021',
     notification: NotificationTemplates.winterPoap,
-    startDate: new Date('Tue Nov 23 2021 07:00:00 PST'),
-    endDate: new Date('Fri Dec 31 2021 07:00:00 PST')
+    startDate: new Date('Wed Dec 1 2021 07:00:00 PST'),
+    endDate: new Date('Fri Dec 31 2021 23:59:00 PST')
   }
 ];
