@@ -81,7 +81,7 @@ const NotificationContent = () => {
       onClick={handleClaim}
       loading={isClaiming}
       disabled={analyticsId.length === 0}
-      colorScheme="inverted"
+      colorScheme="transparent"
     >
       {translateRaw('CLAIM_NOW')}
     </Button>
