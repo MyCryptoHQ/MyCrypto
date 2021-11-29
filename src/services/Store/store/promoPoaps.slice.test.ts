@@ -33,14 +33,14 @@ describe('promoPoapsSaga()', () => {
   it('displays notifications if needed', async () => {
     Date.now = jest
       .fn()
-      .mockImplementation(() => new Date('Thu Nov 1 2021 09:00:00 PST').getTime());
+      .mockImplementation(() => new Date('Wed Dec 1 2021 09:00:00 PST').getTime());
     await expectSaga(promoPoapsSaga)
       .withState(
         mockAppState({
           accounts: fAccounts
         })
       )
-      .put(displayNotification({ templateName: NotificationTemplates.halloweenPoap }))
+      .put(displayNotification({ templateName: NotificationTemplates.winterPoap }))
       .dispatch(checkForPromos())
       .silentRun();
   });

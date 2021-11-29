@@ -8,7 +8,12 @@ import { COLORS, SPACING } from '@theme';
 import Spinner from './Spinner';
 import Typography from './Typography';
 
-const ButtonColorSchemes = { default: 'default', inverted: 'inverted', warning: 'warning' };
+const ButtonColorSchemes = {
+  default: 'default',
+  inverted: 'inverted',
+  warning: 'warning',
+  transparent: 'transparent'
+};
 
 type TButtonColorScheme = keyof typeof ButtonColorSchemes;
 
@@ -123,6 +128,35 @@ const SButton = styled(Button)<StyledButtonProps>`
         }
       }
   `}
+
+  ${(props) =>
+    props.colorScheme === 'transparent' &&
+    `
+      background-color: ${props.disabled ? COLORS.GREY_LIGHT : 'transparent'};
+
+      div > span {
+        color:  ${props.disabled ? COLORS.WHITE : COLORS.WHITE};
+      }
+
+      &:hover {
+        div > span {
+          color: ${props.disabled ? COLORS.WHITE : COLORS.BLUE_LIGHT};
+        }
+      }
+
+      border: 2px solid ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+      border-radius: 3px;
+
+      &:hover {
+        background-color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+      }
+      &:focus {
+        div > span {
+          color: ${props.disabled ? COLORS.GREY_LIGHT : COLORS.WHITE};
+        }
+      }
+  `}
+
 
   ${(props) =>
     props.fullwidth &&

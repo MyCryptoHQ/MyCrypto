@@ -28,8 +28,8 @@ export const onboardingResponsibleCheck = (notification: ExtendedNotification): 
   return getDayDifference(notification.templateData.firstDashboardVisitDate) > 1;
 };
 
-export const halloweenCheck = (): boolean => {
-  const config = PROMO_CONFIG.find((c) => c.key === 'halloween2021');
+export const promoPoapCheck = (): boolean => {
+  const config = PROMO_CONFIG.find((c) => c.key === 'winter2021');
   if (!config) {
     return false;
   }
