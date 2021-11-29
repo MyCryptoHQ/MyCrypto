@@ -1,6 +1,6 @@
 import { fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
-import { fAccounts } from '@fixtures';
+import { fAccounts, fSettings } from '@fixtures';
 import { PoapClaimService } from '@services/ApiService/PoapClaim';
 import { translateRaw } from '@translations';
 import { TURL } from '@types';
@@ -17,6 +17,7 @@ function getComponent(claimed = false) {
   return simpleRender(<WinterNotification />, {
     initialState: mockAppState({
       accounts: fAccounts,
+      settings: { ...fSettings, analyticsUserID: 'foo' },
       promoPoaps: {
         promos: {
           winter2021: {
