@@ -25,13 +25,13 @@ function getComponent(
 }
 
 describe('NotificationPanel', () => {
-  it('renders Halloween notification', async () => {
+  it('renders Winter notification', async () => {
     Date.now = jest
       .fn()
-      .mockImplementation(() => new Date('Thu Nov 1 2021 09:00:00 PST').getTime());
+      .mockImplementation(() => new Date('Thu Dec 2 2021 09:00:00 PST').getTime());
     const { getByText } = getComponent(defaultProps, [
-      { template: NotificationTemplates.halloweenPoap } as ExtendedNotification
+      { template: NotificationTemplates.winterPoap } as ExtendedNotification
     ]);
-    expect(getByText(translateRaw('HALLOWEEN_POAP_NOTIFICATION_HEADER'))).toBeDefined();
+    expect(getByText(translateRaw('POAP_NOTIFICATION_HEADER'))).toBeDefined();
   });
 });

@@ -64,6 +64,6 @@ export function* checkForPromosWorker() {
     (c) => dateIsBetween(c.startDate, c.endDate, Date.now() / 1000) && c.notification
   );
   for (const promo of currentPromos) {
-    yield put(displayNotification({ templateName: promo.notification }));
+    yield put(displayNotification({ templateName: promo.notification! }));
   }
 }
