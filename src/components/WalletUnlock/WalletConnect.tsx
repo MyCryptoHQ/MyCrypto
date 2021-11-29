@@ -1,9 +1,19 @@
 import { useEffect } from 'react';
 
+import { IWallet } from '@mycrypto/wallet-list';
 import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
-import { BusyBottom, Button, Overlay, QRCodeContainer, Typography } from '@components';
+import {
+  Box,
+  BusyBottom,
+  Button,
+  Overlay,
+  QRCodeContainer,
+  Typography,
+  WalletIcon,
+  WalletTag
+} from '@components';
 import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
@@ -13,6 +23,7 @@ interface OwnProps {
   useWalletConnectProps: IUseWalletConnect;
   onUnlock(param: any): void;
   goToPreviousStep(): void;
+  walletInfos?: IWallet;
 }
 
 const SHeader = styled.div`
@@ -65,7 +76,7 @@ const SContainer = styled.div`
 
 const WalletService = WalletFactory[WalletId.WALLETCONNECT];
 
-export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnProps) {
+export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps, walletInfos }: OwnProps) {
   const { state, requestConnection, signMessage, kill } = useWalletConnectProps;
 
   useEffect(() => {
@@ -81,14 +92,26 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
 
   return (
     <>
+      {walletInfos && (
+        <Box display="flex" variant="columnCenter">
+          <WalletIcon wallet={walletInfos} />
+          <Box variant="rowCenter">
+            {walletInfos.tags && walletInfos.tags.map((tag, i) => <WalletTag tag={tag} key={i} />)}
+          </Box>
+        </Box>
+      )}
       <SHeader>
-        {translateRaw('SIGNER_SELECT_WALLETCONNECT', {
-          $walletId: translateRaw('X_WALLETCONNECT')
-        })}
+        {walletInfos
+          ? translateRaw('WALLET_CONNECT_HEADER', { $wallet: walletInfos.name })
+          : translateRaw('SIGNER_SELECT_WALLETCONNECT', {
+              $walletId: translateRaw('X_WALLETCONNECT')
+            })}
       </SHeader>
       <SContent>
         <SSection center={true}>
-          {translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_WALLETCONNECT') })}
+          {walletInfos
+            ? translateRaw('WALLET_CONNECT_SUBHEADING', { $wallet: walletInfos.name })
+            : translate('SIGNER_SELECT_WALLET_QR', { $walletId: translateRaw('X_WALLETCONNECT') })}
         </SSection>
         <SSection center={true} withOverlay={true}>
           <Overlay absolute={true} center={true} show={state.isConnected || !isEmpty(state.errors)}>

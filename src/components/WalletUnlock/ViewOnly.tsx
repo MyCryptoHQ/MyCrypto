@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
+import { IWallet } from '@mycrypto/wallet-list';
 import { Form, Formik } from 'formik';
 import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 
-import { Body, Box, Button, ContactLookupField, Heading } from '@components';
+import { Body, Box, Button, ContactLookupField, Heading, WalletIcon, WalletTag } from '@components';
 import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { useNetworks } from '@services/Store';
 import { WalletFactory } from '@services/WalletService';
@@ -24,6 +25,7 @@ const ButtonWrapper = styled(Button)`
 interface Props {
   formData: FormData;
   onUnlock(param: any): void;
+  walletInfos?: IWallet;
 }
 
 const WalletService = WalletFactory[WalletId.VIEW_ONLY];
@@ -39,7 +41,7 @@ const initialFormikValues: FormValues = {
   }
 };
 
-export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
+export function ViewOnlyDecrypt({ formData, onUnlock, walletInfos }: Props) {
   const { getNetworkById } = useNetworks();
   const [isResolvingDomain, setIsResolvingDomain] = useState(false);
   const [network] = useState(getNetworkById(formData.network));
@@ -55,13 +57,25 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
 
   return (
     <Box p="2.5em">
+      {walletInfos && (
+        <Box display="flex" variant="columnCenter">
+          <WalletIcon wallet={walletInfos} />
+          <Box variant="rowCenter">
+            {walletInfos.tags && walletInfos.tags.map((tag, i) => <WalletTag tag={tag} key={i} />)}
+          </Box>
+        </Box>
+      )}
       <Heading fontSize="32px" textAlign="center" fontWeight="bold">
-        {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
+        {walletInfos
+          ? translateRaw('VIEW_ONLY_HEADING', { $wallet: walletInfos.name })
+          : translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
       <Body textAlign="center" fontSize="18px" paddingTop="16px">
-        {translate('VIEW_ONLY_ADDR_DISCLAIMER', {
-          $link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)
-        })}
+        {walletInfos
+          ? translateRaw('VIEW_ONLY_SUBHEADING')
+          : translate('VIEW_ONLY_ADDR_DISCLAIMER', {
+              $link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_DOES_VIEW_ADDRESS_WORK)
+            })}
       </Body>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
         {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
@@ -76,6 +90,9 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               setFieldError={setFieldError}
+              placeholder={
+                walletInfos && translateRaw('VIEW_ONLY_PLACEHOLDER', { $wallet: walletInfos.name })
+              }
             />
             <ButtonWrapper
               type="submit"

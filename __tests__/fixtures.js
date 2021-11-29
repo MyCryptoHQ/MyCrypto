@@ -33,7 +33,8 @@ const PAGES = {
   SWAP: `${FIXTURES_CONST.BASE_URL}/swap`,
   BUY_MEMBERSHIP: `${FIXTURES_CONST.BASE_URL}/membership/buy`,
   INTERACT_WITH_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/interact-with-contracts`,
-  DEPLOY_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/deploy-contracts`
+  DEPLOY_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/deploy-contracts`,
+  ONBOARDING: `${FIXTURES_CONST.BASE_URL}/onboarding`
 };
 
 const FIXTURE_ETHEREUM = 'Ethereum';

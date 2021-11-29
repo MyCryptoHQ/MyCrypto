@@ -32,7 +32,11 @@ import remove from '@assets/icons/actions/remove.svg';
 import logoMyCryptoTextBlue from '@assets/icons/brand/logo-text-blue.svg';
 import logoMyCryptoText from '@assets/icons/brand/logo-text.svg';
 import logoMyCrypto from '@assets/icons/brand/logo.svg';
+import desktopTag from '@assets/icons/desktopTag.svg';
+import exchangeTag from '@assets/icons/exchangeTag.svg';
 import feedback from '@assets/icons/feedback.svg';
+import hardwareTag from '@assets/icons/hardwareTag.svg';
+import mobileTag from '@assets/icons/mobileTag.svg';
 import navAddAccount from '@assets/icons/navigation/add-account.svg';
 import navAssets from '@assets/icons/navigation/assets.svg';
 import navBitcoin from '@assets/icons/navigation/bitcoin.svg';
@@ -84,6 +88,7 @@ import navTxStatus from '@assets/icons/navigation/tx-status.svg';
 import navUnstoppable from '@assets/icons/navigation/unstoppable.svg';
 import navVerifyMessage from '@assets/icons/navigation/verify-message.svg';
 import newsletter from '@assets/icons/newsletter.svg';
+import otherTag from '@assets/icons/otherTag.svg';
 import coinmarketcap from '@assets/icons/social/coinmarketcap.svg';
 import facebook from '@assets/icons/social/facebook.svg';
 import github from '@assets/icons/social/github.svg';
@@ -93,7 +98,9 @@ import telegram from '@assets/icons/social/telegram.svg';
 import twitter from '@assets/icons/social/twitter.svg';
 import telegramIcon from '@assets/icons/telegram.svg';
 import twitterIcon from '@assets/icons/twitter.svg';
+import walletconnectTag from '@assets/icons/walletconnectTag.svg';
 import website from '@assets/icons/website.svg';
+import webTag from '@assets/icons/webTag.svg';
 import whitepaper from '@assets/icons/whitepaper.svg';
 import antLogo from '@assets/images/ant-logo.png';
 import arrowRight from '@assets/images/arrow-right.svg';
@@ -136,6 +143,7 @@ import membership from '@assets/images/membership/membership-none.svg';
 import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import uniLogo from '@assets/images/uni-logo.png';
+import walletConnectLogo from '@assets/images/wallet-connect.png';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -225,6 +233,15 @@ const svgIcons = {
   'tx-receive': receiveIcon,
   'tx-network': networkIcon,
 
+  /* Wallet Tags */
+  'desktop-tag': desktopTag,
+  'exchange-tag': exchangeTag,
+  'hardware-tag': hardwareTag,
+  'mobile-tag': mobileTag,
+  'other-tag': otherTag,
+  'walletconnect-tag': walletconnectTag,
+  'web-tag': webTag,
+
   /* Navigation */
   'nav-home': navHome,
   'nav-send': navSend,
@@ -284,7 +301,8 @@ const pngIcons = {
   'lend-logo': lendLogo,
   'ant-logo': antLogo,
   'gol-logo': golemLogo,
-  'node-logo': nodeLogo
+  'node-logo': nodeLogo,
+  'wallet-connect': walletConnectLogo
 };
 
 type SvgIcons = keyof typeof svgIcons;
@@ -320,6 +338,16 @@ const SStrokeIcon = styled(SInlineSVG)<StylingProps>`
     fill: transparent;
   }
   stroke: ${({ color }) => color && color};
+`;
+
+const SStrokeFillIcon = styled(SInlineSVG)<StylingProps>`
+  &&&& {
+    fill: ${({ color, theme }) => (color ? theme.colors[color] : color)};
+  }
+  &&&&:hover {
+    fill: ${({ color, theme }) => (color ? theme.colors[color] : color)};
+  }
+  stroke: ${({ color, theme }) => (color ? theme.colors[color] : color)};
 `;
 
 const SExpandableIcon = styled(SInlineSVG)<StylingProps>`
@@ -366,8 +394,15 @@ export const isPNGType = (type: TIcon): type is PngIcons =>
 export const getSVGIcon = (type: SvgIcons) => svgIcons[type];
 
 const Icon = ({ type, color, ...props }: Props) => {
-  if (type === 'website' || type === 'faucet-icon' || type === 'nav-nft') {
+  if (
+    type === 'website' ||
+    type === 'faucet-icon' ||
+    type === 'nav-nft' ||
+    type === 'walletconnect-tag'
+  ) {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'other-tag') {
+    return <SStrokeFillIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'sort') {

@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 
+import { IWallet, WalletConnectivity } from '@mycrypto/wallet-list';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -8,6 +9,7 @@ import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
 import { useDispatch } from '@store';
 import { addNewAccounts } from '@store/account.slice';
 import { IStory, WalletId } from '@types';
+import { getFromWalletList, isValidWalletListId } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
 import { formReducer, initialState } from './AddAccountForm.reducer';
@@ -30,6 +32,21 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
   return !!(id && Object.values(WalletId).includes(id as WalletId));
 };
 
+export const getAccountTypeFromWallet = (wallet: IWallet) => {
+  switch (wallet.connectivity) {
+    case WalletConnectivity.WalletConnect:
+      return WalletId.WALLETCONNECT;
+    case WalletConnectivity.ViewOnly:
+    case WalletConnectivity.MigrateNonCustodial:
+      return WalletId.VIEW_ONLY;
+    case WalletConnectivity.Web3:
+      return WalletId.WEB3;
+    case WalletConnectivity.Ledger:
+      return WalletId.LEDGER_NANO_S_NEW;
+    case WalletConnectivity.Trezor:
+      return WalletId.TREZOR_NEW;
+  }
+};
 /*
   Flow to add an account to database. The default view of the component
   displays a list of wallets (e.g. stories) that each posses their own number
@@ -39,6 +56,7 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
 */
 const AddAccountFlow = withRouter(({ history, match }) => {
   const dispatch = useDispatch();
+  const [wallet, setWallet] = useState<IWallet | undefined>();
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
 
@@ -60,13 +78,22 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     const { walletId } = match.params; // Read the walletName parameter from the URL
     if (!walletId) {
       return;
-    } else if (!isValidWalletId(walletId.toUpperCase())) {
+    } else if (!isValidWalletId(walletId.toUpperCase()) && !isValidWalletListId(walletId)) {
       goToStart();
     } else if (walletId.toUpperCase() !== storyName) {
-      updateFormState({
-        type: ActionType.SELECT_ACCOUNT_TYPE,
-        payload: { accountType: walletId.toUpperCase() }
-      });
+      const selectedWallet = getFromWalletList(walletId);
+      if (selectedWallet) {
+        setWallet(selectedWallet);
+        updateFormState({
+          type: ActionType.SELECT_ACCOUNT_TYPE,
+          payload: { accountType: getAccountTypeFromWallet(selectedWallet) }
+        });
+      } else {
+        updateFormState({
+          type: ActionType.SELECT_ACCOUNT_TYPE,
+          payload: { accountType: walletId.toUpperCase() }
+        });
+      }
     }
   }, [match.params]);
 
@@ -123,6 +150,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
               wallet={getWalletInfo(storyName)}
+              walletInfos={wallet}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               goToPreviousStep={goToPreviousStep}
