@@ -1,5 +1,7 @@
 import { FeeData } from '@ethersproject/abstract-provider';
+import { getAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
+import { hexZeroPad } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
 import { hashMessage } from '@ethersproject/hash';
 import {
@@ -214,7 +216,10 @@ export class ProviderHandler {
       const coinType = path && getCoinType(path);
 
       if (coinType && coinType !== DEFAULT_COIN_TYPE) {
-        const resolved = await resolver.getAddress(coinType).catch(() => null);
+        const coinTypeParam = hexZeroPad(BigNumber.from(coinType).toHexString(), 32);
+        const resolvedBytes = await resolver._fetchBytes('0xf1cb7e06', coinTypeParam);
+        const resolved =
+          resolvedBytes != null && resolvedBytes !== '0x' && getAddress(resolvedBytes);
         if (resolved) {
           return resolved;
         }
