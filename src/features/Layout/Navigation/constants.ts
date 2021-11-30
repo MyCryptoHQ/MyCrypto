@@ -95,9 +95,9 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
       },
       {
         type: 'internal',
-        to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_REP'),
+        to: APP_ROUTES.TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
+        title: translateRaw('NAVIGATION_MIGRATE'),
         icon: 'nav-migrate-rep'
       },
       {
@@ -264,9 +264,9 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
         },
         {
           type: 'internal',
-          to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-          title: translateRaw('NAVIGATION_MIGRATE_REP'),
+          to: APP_ROUTES.TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
+          title: translateRaw('NAVIGATION_MIGRATE'),
           icon: 'nav-migrate-rep'
         },
         {

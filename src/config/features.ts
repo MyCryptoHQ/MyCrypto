@@ -36,10 +36,6 @@ export const FEATURE_FLAGS = {
   PRIVATE_TAGS: true,
   PROTECT_TX: true,
   ENS: true,
-  REP_TOKEN_MIGRATION: true,
-  AAVE_TOKEN_MIGRATION: true,
-  ANT_TOKEN_MIGRATION: true,
-  GOLEM_TOKEN_MIGRATION: true,
   CUSTOM_NETWORKS: IS_DEV,
   FAUCET: true
 };

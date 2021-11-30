@@ -101,7 +101,7 @@ export const actionTemplates: ActionTemplate[] = [
       component: ActionButton,
       props: {
         content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-        to: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+        to: ROUTE_PATHS.TOKEN_MIGRATION.path,
         external: false
       }
     },
@@ -190,7 +190,7 @@ export const actionTemplates: ActionTemplate[] = [
       component: ActionButton,
       props: {
         content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-        to: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
+        to: ROUTE_PATHS.TOKEN_MIGRATION.path,
         external: false
       }
     },
@@ -210,7 +210,7 @@ export const actionTemplates: ActionTemplate[] = [
       component: ActionButton,
       props: {
         content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-        to: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
+        to: ROUTE_PATHS.TOKEN_MIGRATION.path,
         external: false
       }
     },
@@ -230,7 +230,7 @@ export const actionTemplates: ActionTemplate[] = [
       component: ActionButton,
       props: {
         content: translateRaw('MIGRATE_REP_ACTION_BUTTON'),
-        to: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
+        to: ROUTE_PATHS.TOKEN_MIGRATION.path,
         external: false
       }
     },

@@ -266,9 +266,9 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     component: TxStatus
   },
   {
-    name: ROUTE_PATHS.REP_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.REP_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+    name: ROUTE_PATHS.TOKEN_MIGRATION.name,
+    title: ROUTE_PATHS.TOKEN_MIGRATION.title,
+    path: ROUTE_PATHS.TOKEN_MIGRATION.path,
     exact: true,
     requireAccounts: true,
     enabled: true,
