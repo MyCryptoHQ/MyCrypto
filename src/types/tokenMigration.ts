@@ -3,7 +3,8 @@ import { ISimpleTxFormFull, ITxObject, ITxType, StoreAccount, TAddress, TUuid } 
 export enum MigrationType {
   REP = 'REP',
   GOLEM = 'GOLEM',
-  ANT = 'ANT'
+  ANT = 'ANT',
+  AAVE = 'AAVE'
 }
 
 export interface TokenMigrationState {

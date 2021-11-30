@@ -102,27 +102,6 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
       },
       {
         type: 'internal',
-        to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_GNT'),
-        icon: 'nav-migrate-gnt'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_ANT'),
-        icon: 'nav-migrate-ant'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_LEND'),
-        icon: 'nav-migrate-lend'
-      },
-      {
-        type: 'internal',
         to: APP_ROUTES.FAUCET.path,
         enabled: APP_ROUTES.FAUCET.enabled,
         title: translateRaw('NAVIGATION_FAUCET'),

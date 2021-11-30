@@ -1,6 +1,9 @@
 import { REPV1UUID } from '@config';
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
-import { createApproveTx, createRepMigrationTx } from '@features/RepTokenMigration/helpers';
+import { MIGRATION_CONFIGS } from '@features/TokenMigration/config';
+import {
+  createApproveTx,
+  createRepMigrationTx
+} from '@features/TokenMigration/RepTokenMigration/helpers';
 import { fApproveERC20TxResponse, fREPTokenMigrationTxResponse } from '@fixtures';
 import { ITokenMigrationFormFull, ITxStatus, ITxType, TxParcel } from '@types';
 import { generateUUID, inputGasLimitToHex, inputNonceToHex } from '@utils';
@@ -11,7 +14,7 @@ import { fNetwork } from './network';
 
 export const fTokenMigrationTxs = (): TxParcel[] => {
   const tokenMigrationPayload: ITokenMigrationFormFull = {
-    tokenConfig: repTokenMigrationConfig,
+    tokenConfig: MIGRATION_CONFIGS.REP,
     asset: fAssets.find(({ uuid }) => uuid === REPV1UUID)!,
     network: fNetwork,
     address: fAccount.address,

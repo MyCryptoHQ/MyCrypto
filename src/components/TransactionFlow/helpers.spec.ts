@@ -1,8 +1,5 @@
-import {
-  TokenMigrationMultiTx,
-  TokenMigrationReceipt
-} from '@components/TokenMigration/components';
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
+import { TokenMigrationMultiTx, TokenMigrationReceipt } from '@features/TokenMigration/components';
+import { MIGRATION_CONFIGS } from '@features/TokenMigration/config';
 import {
   fAccounts,
   fDerivedApprovalTx,
@@ -104,7 +101,7 @@ describe('createSignConfirmAndReceiptSteps', () => {
     amount: '5',
     backStepTitle: translateRaw('REP_TOKEN_MIGRATION'),
     account: fAccounts[0],
-    flowConfig: repTokenMigrationConfig,
+    flowConfig: MIGRATION_CONFIGS.REP,
     receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),
     isSubmitting: false,
     multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),

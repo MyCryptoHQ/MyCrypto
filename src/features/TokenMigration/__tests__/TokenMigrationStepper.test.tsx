@@ -1,6 +1,5 @@
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fSettings } from '@fixtures';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
@@ -23,7 +22,7 @@ jest.mock('@vendor', () => {
 /* Test components */
 describe('TokenMigrationStepper', () => {
   const renderComponent = () =>
-    simpleRender(<TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />, {
+    simpleRender(<TokenMigrationStepper />, {
       initialState: mockAppState({
         assets: fAssets,
         settings: fSettings,

@@ -1,15 +1,15 @@
 import { mockAppState, simpleRender } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fTokenMigrationTxs } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import TokenMigrationReceipt, {
   TokenMigrationReceiptProps
 } from '../components/TokenMigrationReceipt';
+import { MIGRATION_CONFIGS } from '../config';
 
 const defaultProps: TokenMigrationReceiptProps = {
-  flowConfig: repTokenMigrationConfig,
+  flowConfig: MIGRATION_CONFIGS.REP,
   account: fAccounts[0],
   amount: '4',
   transactions: fTokenMigrationTxs(),

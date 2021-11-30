@@ -1,10 +1,10 @@
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
 import { translateRaw } from '@translations';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
+import { MIGRATION_CONFIGS } from '../config';
 
 jest.mock('@vendor', () => {
   return {
@@ -17,7 +17,7 @@ jest.mock('@vendor', () => {
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
-  tokenMigrationConfig: repTokenMigrationConfig,
+  tokenMigrationConfig: MIGRATION_CONFIGS.REP,
   asset: fAssets[0],
   network: fNetwork,
   address: '',

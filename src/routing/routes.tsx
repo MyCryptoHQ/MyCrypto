@@ -78,18 +78,7 @@ const TxStatus = lazy(() =>
   import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
 );
 
-const AaveTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/AaveTokenMigration')
-);
-
-const AntTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/AntTokenMigration')
-);
 const Faucet = lazy(() => import(/* webpackChunkName: "Faucet" */ '@features/Faucet'));
-
-const GolemTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
-);
 
 const Migrations = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration')
@@ -284,33 +273,6 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     requireAccounts: true,
     enabled: true,
     component: Migrations
-  },
-  {
-    name: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.AAVE_TOKEN_MIGRATION),
-    component: AaveTokenMigration
-  },
-  {
-    name: ROUTE_PATHS.ANT_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.ANT_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.ANT_TOKEN_MIGRATION),
-    component: AntTokenMigration
-  },
-  {
-    name: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.GOLEM_TOKEN_MIGRATION),
-    component: GolemTokenMigration
   },
   {
     name: ROUTE_PATHS.FAUCET.name,

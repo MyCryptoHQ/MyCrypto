@@ -5,13 +5,7 @@ import { default as GeneralStepper, IStepperPath } from '@components/GeneralStep
 import { ROUTE_PATHS } from '@config';
 import { useTxMulti } from '@hooks';
 import { translateRaw } from '@translations';
-import {
-  ITokenMigrationConfig,
-  ITokenMigrationFormFull,
-  ITxStatus,
-  MigrationType,
-  TokenMigrationState
-} from '@types';
+import { ITokenMigrationFormFull, ITxStatus, MigrationType, TokenMigrationState } from '@types';
 
 import ConfirmTokenMigration from './components/TokenMigrationConfirm';
 import TokenMigrationForm from './components/TokenMigrationForm';
