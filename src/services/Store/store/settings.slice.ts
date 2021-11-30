@@ -3,7 +3,7 @@ import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { Fiats } from '@config';
 import { LSKeys, TFiatTicker, TUuid } from '@types';
-import { equals, findIndex } from '@vendor';
+import { equals, findIndex, uniq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -20,7 +20,7 @@ const slice = createSlice({
       state.dashboardAccounts.push(action.payload);
     },
     addCurrents(state, action: PayloadAction<TUuid[]>) {
-      state.dashboardAccounts = [...state.dashboardAccounts, ...action.payload];
+      state.dashboardAccounts = uniq([...state.dashboardAccounts, ...action.payload]);
     },
     resetCurrentsTo(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = action.payload;
