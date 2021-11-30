@@ -1,6 +1,13 @@
 import { ISimpleTxFormFull, ITxObject, ITxType, StoreAccount, TAddress, TUuid } from '@types';
 
+export enum MigrationType {
+  REP = 'REP',
+  GOLEM = 'GOLEM',
+  ANT = 'ANT'
+}
+
 export interface TokenMigrationState {
+  migration: MigrationType;
   account?: StoreAccount;
   amount?: string;
 }

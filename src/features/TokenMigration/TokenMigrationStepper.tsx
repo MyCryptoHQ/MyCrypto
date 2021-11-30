@@ -9,6 +9,7 @@ import {
   ITokenMigrationConfig,
   ITokenMigrationFormFull,
   ITxStatus,
+  MigrationType,
   TokenMigrationState
 } from '@types';
 
@@ -16,18 +17,19 @@ import ConfirmTokenMigration from './components/TokenMigrationConfirm';
 import TokenMigrationForm from './components/TokenMigrationForm';
 import ConfirmTokenMigrationMultiTx from './components/TokenMigrationMultiTx';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
+import { MIGRATION_CONFIGS } from './config';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
 
-interface Props {
-  tokenMigrationConfig: ITokenMigrationConfig;
-}
-
-const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
-  const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
+const TokenMigrationStepper = () => {
+  const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {
+    migration: MigrationType.REP
+  });
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions, error } = state;
-  const { account, amount }: TokenMigrationState = reducerState;
+  const { account, amount, migration }: TokenMigrationState = reducerState;
+
+  const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
 
   const steps: IStepperPath[] = [
     {

@@ -78,10 +78,6 @@ const TxStatus = lazy(() =>
   import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
 );
 
-const RepTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/RepTokenMigration')
-);
-
 const AaveTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/AaveTokenMigration')
 );
@@ -93,6 +89,10 @@ const Faucet = lazy(() => import(/* webpackChunkName: "Faucet" */ '@features/Fau
 
 const GolemTokenMigration = lazy(() =>
   import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
+);
+
+const Migrations = lazy(() =>
+  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration')
 );
 
 export interface IAppRoutes {
@@ -282,8 +282,8 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
     exact: true,
     requireAccounts: true,
-    enabled: isTruthy(featureFlags.REP_TOKEN_MIGRATION),
-    component: RepTokenMigration
+    enabled: true,
+    component: Migrations
   },
   {
     name: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.name,
