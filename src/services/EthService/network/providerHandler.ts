@@ -217,9 +217,7 @@ export class ProviderHandler {
 
       if (coinType && coinType !== DEFAULT_COIN_TYPE) {
         const coinTypeParam = hexZeroPad(BigNumber.from(coinType).toHexString(), 32);
-        const resolvedBytes = await resolver
-          ._fetchBytes('0xf1cb7e06', coinTypeParam)
-          .catch(() => null);
+        const resolvedBytes = await resolver._fetchBytes('0xf1cb7e06', coinTypeParam);
         const resolved =
           resolvedBytes != null && resolvedBytes !== '0x' && getAddress(resolvedBytes);
         if (resolved) {
