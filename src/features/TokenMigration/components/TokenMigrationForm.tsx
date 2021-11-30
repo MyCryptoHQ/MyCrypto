@@ -16,6 +16,8 @@ import {
   DemoGatewayBanner,
   InlineMessage,
   Label,
+  OptionType,
+  TextSelector,
   Tooltip
 } from '@components';
 import { ETHUUID } from '@config';
@@ -32,16 +34,19 @@ import {
   ExtendedAsset,
   IAccount,
   ISimpleTxFormFull,
-  ITokenMigrationConfig,
+  MigrationType,
   Network,
   StoreAccount
 } from '@types';
 import { isFormValid as checkFormValid, noOp } from '@utils';
 
+import { MIGRATION_CONFIGS } from '../config';
+
 export interface TokenMigrationProps extends ISimpleTxFormFull {
   isSubmitting: boolean;
   error?: Error;
-  tokenMigrationConfig: ITokenMigrationConfig;
+  migration: MigrationType;
+  changeMigration(migration: MigrationType): void;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -53,8 +58,9 @@ interface UIProps {
   defaultAsset: ExtendedAsset;
   isSubmitting: boolean;
   error?: CustomError;
-  tokenMigrationConfig: ITokenMigrationConfig;
+  migration: MigrationType;
   isDemoMode: boolean;
+  changeMigration(migration: MigrationType): void;
   onComplete(fields: any): void;
 }
 
@@ -67,10 +73,11 @@ const FormFieldSubmitButton = styled(Button)`
 `;
 
 const TokenMigrationForm = ({
-  tokenMigrationConfig,
+  migration,
   isSubmitting,
   error,
   isDemoMode,
+  changeMigration,
   onComplete
 }: Props) => {
   const accounts = useSelector(getStoreAccounts);
@@ -79,6 +86,7 @@ const TokenMigrationForm = ({
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
   const defaultStoreAccount = useSelector(getDefaultAccount());
   const relevantAccounts = accounts.filter(isEthereumAccount);
+  const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
   const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
   const defaultAccount = accounts.find((a) =>
     a.assets.find(({ uuid }) => uuid === tokenMigrationConfig.fromAssetUuid)
@@ -91,7 +99,8 @@ const TokenMigrationForm = ({
       storeDefaultAccount={defaultAccount || defaultStoreAccount}
       defaultAsset={defaultAsset}
       error={error}
-      tokenMigrationConfig={tokenMigrationConfig}
+      migration={migration}
+      changeMigration={changeMigration}
       onComplete={onComplete}
       isDemoMode={isDemoMode}
     />
@@ -105,8 +114,9 @@ export const TokenMigrationFormUI = ({
   relevantAccounts,
   storeDefaultAccount,
   defaultAsset,
-  tokenMigrationConfig,
+  migration,
   onComplete,
+  changeMigration,
   isDemoMode
 }: UIProps) => {
   const getInitialFormikValues = (
@@ -144,6 +154,8 @@ export const TokenMigrationFormUI = ({
     onSubmit: noOp
   });
   const { amount, asset, account: selectedAccount } = values;
+
+  const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
 
   useEffect(() => {
     if (!values.account) return;
@@ -189,9 +201,26 @@ export const TokenMigrationFormUI = ({
     }
   };
 
+  const migrationOptions = Object.values(MigrationType).map((m) => ({
+    label: m.toString(),
+    value: m
+  }));
+  const migrationValue = migrationOptions.find((m) => m.value === migration);
+
+  const handleMigrationChange = (option: OptionType<MigrationType>) =>
+    changeMigration(option.value);
+
   return (
     <>
       {isDemoMode && <DemoGatewayBanner />}
+      <Box mb={SPACING.LG}>
+        <Label>{translate('SELECT_A_MIGRATION')}</Label>
+        <TextSelector
+          value={migrationValue!}
+          options={migrationOptions}
+          onChange={handleMigrationChange}
+        />
+      </Box>
       <Box mb={SPACING.LG}>
         <Label htmlFor="account">{translate('SELECT_YOUR_ACCOUNT')}</Label>
         <AccountSelector

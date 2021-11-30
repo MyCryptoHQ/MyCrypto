@@ -25,12 +25,16 @@ const TokenMigrationStepper = () => {
 
   const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
 
+  const handleMigrationChange = (payload: MigrationType) =>
+    dispatch({ type: tokenMigrationReducer.actionTypes.SELECT_MIGRATION, payload });
+
   const steps: IStepperPath[] = [
     {
       label: tokenMigrationConfig.formTitle,
       component: TokenMigrationForm,
       props: {
-        tokenMigrationConfig,
+        changeMigration: handleMigrationChange,
+        migration,
         account,
         isSubmitting,
         error
