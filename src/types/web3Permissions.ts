@@ -29,7 +29,7 @@ export interface IPrimaryAccountPermission {
 }
 
 export interface IExposedAccountsPermission {
-  type: 'filterResponse';
+  type: 'filterResponse' | 'restrictReturnedAccounts';
   value: TAddress[];
-  name: 'exposedAccounts';
+  name?: 'exposedAccounts';
 }
