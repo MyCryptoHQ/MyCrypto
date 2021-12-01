@@ -14,7 +14,7 @@ import { flatten, uniq } from '@vendor';
 const SDashboardPanel = styled(DashboardPanel)<{ isMemberOrExpired: boolean }>`
   display: flex;
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
-    height: 170px;
+    height: 185px;
   }
   ${(props) => !props.isMemberOrExpired && `background-color: ${COLORS.BLUE_LIGHTEST};`}
 `;
