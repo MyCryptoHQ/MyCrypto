@@ -412,7 +412,7 @@ export default function WalletBreakdownView({
                         decimals={2}
                       />
                     </BreakDownBalanceAssetAmount>
-                    {change !== undefined && change !== 0 && (
+                    {change != undefined && change !== 0 && (
                       <BreakDownBalanceChange change={change}>
                         {change > 0 && '+'}
                         {change.toFixed(2)}%
