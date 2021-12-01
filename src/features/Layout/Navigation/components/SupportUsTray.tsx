@@ -72,7 +72,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
                 width={{ _: '10px', sm: '1vh', xxl: '10px' }}
                 mr={{ _: '10px', sm: '1vh', xxl: '10px' }}
               />
-              <Text mb={0} fontSize={['16px', null, '1.3vh']}>
+              <Text mb={0} fontSize={['16px', null, '0.8rem']}>
                 {translateRaw('NAVIGATION_ETHEREUM')}
               </Text>
             </Box>
@@ -98,7 +98,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
                 width={{ _: '10px', sm: '1vh', xxl: '10px' }}
                 mr={{ _: '10px', sm: '1vh', xxl: '10px' }}
               />
-              <Text mb={0} fontSize={['16px', null, '1.3vh']}>
+              <Text mb={0} fontSize={['16px', null, '0.8rem']}>
                 {translateRaw('NAVIGATION_BITCOIN')}
               </Text>
             </Box>
