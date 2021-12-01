@@ -30,7 +30,7 @@ const TokenMigrationStepper = () => {
 
   const steps: IStepperPath[] = [
     {
-      label: tokenMigrationConfig.formTitle,
+      label: translateRaw('TOKEN_MIGRATION_HEADER'),
       component: TokenMigrationForm,
       props: {
         changeMigration: handleMigrationChange,
@@ -57,7 +57,7 @@ const TokenMigrationStepper = () => {
     },
     ...createSignConfirmAndReceiptSteps({
       transactions,
-      backStepTitle: tokenMigrationConfig.formTitle,
+      backStepTitle: translateRaw('TOKEN_MIGRATION_HEADER'),
       amount: amount!,
       account: account!,
       error,

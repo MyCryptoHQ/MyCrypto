@@ -32,7 +32,6 @@ export interface ITokenMigrationConfig {
   fromContractAddress: TAddress;
   fromAssetUuid: TUuid;
   toAssetUuid: TUuid;
-  formTitle: string;
   formActionBtn: string;
   formAmountTooltip: string;
   receiptTitle: string;

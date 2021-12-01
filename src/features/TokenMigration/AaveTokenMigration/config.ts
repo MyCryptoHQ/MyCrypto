@@ -17,7 +17,6 @@ export const migrationConfig: ITokenMigrationConfig = {
   fromContractAddress: LEND_CONTRACT,
   fromAssetUuid: generateAssetUUID(DEFAULT_NETWORK_CHAINID, LEND_CONTRACT),
   toAssetUuid: generateAssetUUID(DEFAULT_NETWORK_CHAINID, AAVE_CONTRACT),
-  formTitle: translateRaw('AAVE_TOKEN_MIGRATION'),
   formActionBtn: translateRaw('AAVE_TOKEN_MIGRATION'),
   formAmountTooltip: translateRaw('AAVE_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
   receiptTitle: translateRaw('AAVE_TOKEN_MIGRATION_RECEIPT'),

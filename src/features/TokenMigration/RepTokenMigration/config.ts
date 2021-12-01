@@ -12,7 +12,6 @@ export const repTokenMigrationConfig: ITokenMigrationConfig = {
   fromContractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862' as TAddress,
   fromAssetUuid: REPV1UUID,
   toAssetUuid: REPV2UUID,
-  formTitle: translateRaw('REP_TOKEN_MIGRATION'),
   formActionBtn: translateRaw('REP_TOKEN_MIGRATION'),
   formAmountTooltip: translateRaw('REP_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
   receiptTitle: translateRaw('REP_TOKEN_MIGRATION_RECEIPT'),

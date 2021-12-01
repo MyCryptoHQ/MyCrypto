@@ -16,7 +16,6 @@ export const tokenMigrationConfig: ITokenMigrationConfig = {
   fromContractAddress: ANTv1_CONTRACT,
   fromAssetUuid: generateAssetUUID(1, ANTv1_CONTRACT),
   toAssetUuid: generateAssetUUID(1, ANTv2_CONTRACT),
-  formTitle: translateRaw('ANT_TOKEN_MIGRATION'),
   formActionBtn: translateRaw('ANT_TOKEN_MIGRATION'),
   formAmountTooltip: translateRaw('ANT_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
   receiptTitle: translateRaw('ANT_TOKEN_MIGRATION_RECEIPT'),
