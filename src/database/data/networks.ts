@@ -4,7 +4,8 @@ import {
   DEFAULT_ASK,
   DEFAULT_ATH,
   DEFAULT_AUX,
-  DEFAULT_AVAX,
+  DEFAULT_AVAXC,
+  DEFAULT_BSC,
   DEFAULT_CLO,
   DEFAULT_EGEM,
   DEFAULT_ETC,
@@ -14,6 +15,7 @@ import {
   DEFAULT_EVRICE,
   DEFAULT_EWC,
   DEFAULT_EXP,
+  DEFAULT_FTM,
   DEFAULT_GO,
   DEFAULT_HECO,
   DEFAULT_METADIUM,
@@ -948,12 +950,12 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_BSC,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_BSC,
       [WalletId.GRIDPLUS]: DEFAULT_ETH,
-      default: DEFAULT_ETH
+      default: DEFAULT_BSC
     },
     gasPriceSettings: {
       min: 1,
@@ -1007,12 +1009,12 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_AVAX,
+      [WalletId.TREZOR]: DEFAULT_AVAXC,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_AVAX,
+      [WalletId.TREZOR_NEW]: DEFAULT_AVAXC,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
       [WalletId.GRIDPLUS]: DEFAULT_ETH,
-      default: DEFAULT_AVAX
+      default: DEFAULT_AVAXC
     },
     gasPriceSettings: {
       min: 10,
@@ -1038,12 +1040,12 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_AVAX,
-      [WalletId.LEDGER_NANO_S]: DEFAULT_AVAX,
-      [WalletId.TREZOR_NEW]: DEFAULT_AVAX,
-      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAX,
+      [WalletId.TREZOR]: DEFAULT_AVAXC,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_AVAXC,
+      [WalletId.TREZOR_NEW]: DEFAULT_AVAXC,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAXC,
       [WalletId.GRIDPLUS]: DEFAULT_ETH,
-      default: DEFAULT_AVAX
+      default: DEFAULT_AVAXC
     },
     gasPriceSettings: {
       min: 10,
@@ -1092,12 +1094,12 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_FTM,
       [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_FTM,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_ETH,
       [WalletId.GRIDPLUS]: DEFAULT_ETH,
-      default: DEFAULT_ETH
+      default: DEFAULT_FTM
     },
     gasPriceSettings: {
       min: 1,
