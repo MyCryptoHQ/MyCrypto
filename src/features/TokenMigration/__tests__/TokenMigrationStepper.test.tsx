@@ -1,3 +1,4 @@
+import selectEvent from 'react-select-event';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import { fAccounts, fAssets, fSettings } from '@fixtures';
@@ -58,5 +59,12 @@ describe('TokenMigrationStepper', () => {
         expect(s).toBeInTheDocument()
       )
     );
+  });
+
+  it('can change migration', async () => {
+    const { getByText, getByLabelText } = renderComponent();
+    await selectEvent.openMenu(getByLabelText(translateRaw('SELECT_A_MIGRATION')));
+    fireEvent.click(getByText('AAVE'));
+    await waitFor(() => expect(getByText('LEND')).toBeInTheDocument());
   });
 });

@@ -214,7 +214,7 @@ export const TokenMigrationFormUI = ({
     <>
       {isDemoMode && <DemoGatewayBanner />}
       <Box mb={SPACING.LG}>
-        <Label>{translate('SELECT_A_MIGRATION')}</Label>
+        <Label htmlFor="text-selector">{translate('SELECT_A_MIGRATION')}</Label>
         <TextSelector
           value={migrationValue!}
           options={migrationOptions}
