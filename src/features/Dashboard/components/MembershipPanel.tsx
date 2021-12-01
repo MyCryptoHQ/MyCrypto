@@ -60,6 +60,11 @@ const Icon = styled.img<{ isMemberOrExpired: boolean }>`
   ${(props) => !props.isMemberOrExpired && 'opacity: 0.25;'}
 `;
 
+const STypography = styled(Typography)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
 function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
   const isMember = membershipState === MembershipState.MEMBER;
   const isExpired = membershipState === MembershipState.EXPIRED;
@@ -112,7 +117,7 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
           )}
           {membershipState === MembershipState.NOTMEMBER && (
             <>
-              <Typography as="div">{translateRaw('MEMBERSHIP_NOTMEMBER')}</Typography>
+              <STypography as="div">{translateRaw('MEMBERSHIP_NOTMEMBER')}</STypography>
               <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
                 <SButton>{translateRaw('BECOME_MEMBER')}</SButton>
               </LinkApp>
@@ -124,7 +129,7 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
                 <ExpiredOnWrapper as="div">{translateRaw('EXPIRED_ON')}</ExpiredOnWrapper>
                 <Typography as="div">{new Date(expiryDate).toLocaleDateString()}</Typography>
               </ExpiryWrapper>
-              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path}>
+              <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path} mt="10px">
                 <SButton>{translateRaw('RENEW_MEMBERSHIP')}</SButton>
               </LinkApp>
             </>
