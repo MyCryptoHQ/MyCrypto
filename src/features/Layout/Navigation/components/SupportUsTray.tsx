@@ -67,12 +67,12 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               borderRadius="3px"
               py={{ _: '10px', sm: '1vh', xxl: '10px' }}
             >
-              <Icon type="nav-ethereum" width={{ _: '10px', sm: '1vh', xxl: '10px' }} />
-              <Text
-                ml={{ _: '10xp', sm: '1vh', xxl: '10px' }}
-                mb={0}
-                fontSize={{ _: '16px', sm: '1.6vh', xxl: '16px' }}
-              >
+              <Icon
+                type="nav-ethereum"
+                width={{ _: '10px', sm: '1vh', xxl: '10px' }}
+                mr={{ _: '10px', sm: '1vh', xxl: '10px' }}
+              />
+              <Text mb={0} fontSize={{ _: '16px', sm: '1.6vh' }}>
                 {translateRaw('NAVIGATION_ETHEREUM')}
               </Text>
             </Box>
@@ -93,12 +93,12 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               borderRadius="3px"
               py={{ _: '10px', sm: '1vh', xxl: '10px' }}
             >
-              <Icon type="nav-bitcoin" width={{ _: '10px', sm: '1vh', xxl: '10px' }} />
-              <Text
-                ml={{ _: '10xp', sm: '1vh', xxl: '10px' }}
-                mb={0}
-                fontSize={{ _: '16px', sm: '1.6vh', xxl: '16px' }}
-              >
+              <Icon
+                type="nav-bitcoin"
+                width={{ _: '10px', sm: '1vh', xxl: '10px' }}
+                mr={{ _: '10px', sm: '1vh', xxl: '10px' }}
+              />
+              <Text mb={0} fontSize={{ _: '16px', sm: '1.6vh' }}>
                 {translateRaw('NAVIGATION_BITCOIN')}
               </Text>
             </Box>
