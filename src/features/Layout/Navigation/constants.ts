@@ -98,7 +98,7 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
         to: APP_ROUTES.TOKEN_MIGRATION.path,
         enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
         title: translateRaw('NAVIGATION_MIGRATE'),
-        icon: 'nav-migrate-rep'
+        icon: 'nav-migrate'
       },
       {
         type: 'internal',
@@ -267,7 +267,7 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
           to: APP_ROUTES.TOKEN_MIGRATION.path,
           enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
           title: translateRaw('NAVIGATION_MIGRATE'),
-          icon: 'nav-migrate-rep'
+          icon: 'nav-migrate'
         },
         {
           type: 'internal',
