@@ -34,7 +34,7 @@ describe('TokenMigrationStepper', () => {
 
   it('renders the first step in the flow', () => {
     const { getByText } = renderComponent();
-    const selector = translateRaw('REP_TOKEN_MIGRATION');
+    const selector = translateRaw('TOKEN_MIGRATION_HEADER');
     expect(getByText(selector, { selector: 'p' })).toBeInTheDocument();
   });
 
@@ -49,7 +49,7 @@ describe('TokenMigrationStepper', () => {
     const selector = truncate(fAccounts[0].address); // detects the user's account as the first item in the array
     expect(getByText(selector)).toBeInTheDocument();
 
-    const button = getAllByText('Migrate REP Tokens')[1];
+    const button = getAllByText('Migrate REP Tokens')[0];
     expect(button).toBeInTheDocument();
 
     fireEvent.click(button);
