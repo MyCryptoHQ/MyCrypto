@@ -5,9 +5,17 @@ import BigNumber from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { ITxGasLimit, ITxGasPrice, ITxNonce, ITxObject, ITxValue } from '@types';
+import {
+  BigifySupported,
+  Bigish,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxNonce,
+  ITxObject,
+  ITxValue
+} from '@types';
 
-import { bigify, BigifySupported, Bigish } from './bigify';
+import { bigify } from './bigify';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
 export const makeTransaction = (t: ITxObject): TransactionRequest => {

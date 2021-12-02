@@ -7,6 +7,7 @@ export type DPathFormat =
   | WalletId.LEDGER_NANO_S
   | WalletId.TREZOR
   | WalletId.LEDGER_NANO_S_NEW
-  | WalletId.TREZOR_NEW;
+  | WalletId.TREZOR_NEW
+  | WalletId.GRIDPLUS;
 
 export type DPathFormats = Partial<Record<DPathFormat | 'default', DerivationPath>>;

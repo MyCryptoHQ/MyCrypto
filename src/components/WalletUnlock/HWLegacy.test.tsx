@@ -3,11 +3,12 @@ import React from 'react';
 import EthereumApp from '@ledgerhq/hw-app-eth';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
+import { WALLETS_CONFIG } from '@config';
 import { translateRaw } from '@translations';
-import { FormData } from '@types';
+import { FormData, WalletId } from '@types';
 import { truncate } from '@utils';
 
-import { LedgerNanoSDecrypt } from './LedgerNano';
+import { HWLegacy } from './HWLegacy';
 
 jest.mock('@ledgerhq/hw-transport-u2f');
 
@@ -17,15 +18,16 @@ jest.mock('@mycrypto/eth-scan', () => ({
 }));
 
 const defaultProps = {
+  wallet: WALLETS_CONFIG[WalletId.LEDGER_NANO_S],
   formData: ({ network: 'Ethereum' } as unknown) as FormData,
   onUnlock: jest.fn()
 };
 
 const getComponent = () => {
-  return simpleRender(<LedgerNanoSDecrypt {...defaultProps} />);
+  return simpleRender(<HWLegacy {...defaultProps} />);
 };
 
-describe('LedgerNano', () => {
+describe('HWLegacy', () => {
   // @ts-expect-error Bad mock please ignore
   delete window.location;
   // @ts-expect-error Bad mock please ignore
@@ -52,8 +54,21 @@ describe('LedgerNano', () => {
       expect(getByText(translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS'))).toBeInTheDocument()
     );
 
+    const address = '0x31497F490293CF5a4540b81c9F59910F62519b63';
+
+    await waitFor(() => expect(getByText(truncate(address))).toBeInTheDocument());
+
+    const row = getByText(truncate(address)).parentElement!.parentElement!.parentElement!
+      .parentElement!;
+
+    fireEvent.click(row);
+
+    const unlock = getByText(translateRaw('ACTION_6'));
+
+    fireEvent.click(unlock);
+
     await waitFor(() =>
-      expect(getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))).toBeInTheDocument()
+      expect(defaultProps.onUnlock).toHaveBeenCalledWith(expect.objectContaining({ address }))
     );
   });
 

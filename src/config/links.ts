@@ -127,6 +127,10 @@ const affiliateLinks: IExtUrl[] = [
   {
     name: 'SWAP_REFERRAL',
     url: 'https://app.mycrypto.com/swap?utm_medium=mycrypto&utm_source=dashboard&utm_campaign=swap' as TURL
+  },
+  {
+    name: 'GRIDPLUS_REFERRAL',
+    url: 'http://www.gridplus.io?afmc=MyCrypto' as TURL
   }
 ];
 

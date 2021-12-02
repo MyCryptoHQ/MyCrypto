@@ -1,4 +1,4 @@
-import { TREZOR_DERIVATION_PATHS } from '@mycrypto/wallets';
+import { GRIDPLUS_DERIVATION_PATHS } from '@mycrypto/wallets';
 
 import { FormData, IAccountAdditionData, WalletId } from '@types';
 
@@ -9,11 +9,11 @@ interface OwnProps {
   onUnlock(param: IAccountAdditionData[]): void;
 }
 
-export const Trezor = ({ formData, onUnlock }: OwnProps) => (
+export const GridPlus = ({ formData, onUnlock }: OwnProps) => (
   <Hardware
     formData={formData}
     onUnlock={onUnlock}
-    wallet={WalletId.TREZOR_NEW}
-    extraDPaths={TREZOR_DERIVATION_PATHS}
+    wallet={WalletId.GRIDPLUS}
+    extraDPaths={GRIDPLUS_DERIVATION_PATHS}
   />
 );

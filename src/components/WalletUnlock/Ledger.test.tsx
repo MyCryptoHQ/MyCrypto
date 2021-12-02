@@ -9,19 +9,9 @@ import { translateRaw } from '@translations';
 import { FormData } from '@types';
 import { truncate } from '@utils';
 
-import LedgerDecrypt from './Ledger';
+import { Ledger } from './Ledger';
 
 jest.mock('@ledgerhq/hw-transport-u2f');
-
-jest.mock('@mycrypto/wallets', () => ({
-  ...jest.requireActual('@mycrypto/wallets'),
-  LEDGER_DERIVATION_PATHS: [
-    {
-      name: 'Default (ETH)',
-      path: "m/44'/60'/0'/0/<account>"
-    }
-  ]
-}));
 
 jest.mock('@mycrypto/eth-scan', () => ({
   ...jest.requireActual('@mycrypto/eth-scan'),
@@ -34,15 +24,22 @@ const defaultProps = {
 };
 
 const getComponent = () => {
-  const { store } = createStore(mockAppState({ networks: APP_STATE.networks }));
+  const { store } = createStore(
+    mockAppState({ networks: APP_STATE.networks, connections: { wallets: {} } })
+  );
   return simpleRender(
     <Provider store={store}>
-      <LedgerDecrypt {...defaultProps} />
+      <Ledger {...defaultProps} />
     </Provider>
   );
 };
 
 describe('Ledger', () => {
+  beforeEach(() => {
+    window.URL.createObjectURL = jest.fn();
+    jest.setTimeout(1200000);
+  });
+
   // @ts-expect-error Bad mock please ignore
   delete window.location;
   // @ts-expect-error Bad mock please ignore
@@ -81,6 +78,27 @@ describe('Ledger', () => {
       () =>
         expect(
           getByText(truncate('0x31497F490293CF5a4540b81c9F59910F62519b63'))
+        ).toBeInTheDocument(),
+      { timeout: 60000 }
+    );
+
+    await waitFor(
+      () =>
+        expect(
+          getByText(translateRaw('DETERMINISTIC_SEE_SUMMARY'), { exact: false })
+        ).toBeInTheDocument(),
+      { timeout: 60000 }
+    );
+
+    const scanMoreButton = getByText(translateRaw('DETERMINISTIC_SCAN_MORE_ADDRESSES'));
+    expect(scanMoreButton).toBeInTheDocument();
+
+    fireEvent.click(scanMoreButton);
+
+    await waitFor(
+      () =>
+        expect(
+          getByText(truncate('0x000C836fB231870af352c68c5ED2a445699acc13'))
         ).toBeInTheDocument(),
       { timeout: 60000 }
     );

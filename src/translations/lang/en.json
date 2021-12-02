@@ -297,7 +297,6 @@
     "INTERACT_WRITE_ERROR_NO_ACCOUNT": "No account selected.",
     "LATEST_PRICE": "Latest Price",
     "LEDGER_REFERRAL": "Need a Ledger? [Get one now.](https://www.ledgerwallet.com/r/1985?path=/products/)",
-    "LEDGER_REFERRAL_2": "Don’t have a Ledger? [Get one now!](https://www.ledgerwallet.com/r/1985?path=/products/)",
     "GENERIC_HARDWARE_ERROR": "Error connecting to device.",
     "LEDGER_TIP": "Please open the $network app on your Ledger device and follow the on-screen instructions to add this account. If you are unable to do so, please see our [comprehensive troubleshooting guide](https://support.mycrypto.com/troubleshooting/hardware-wallets/ledger/ledger-hardware-wallet-unable-to-connect-on-mycrypto).",
     "LOADING_ADDRESS": "Loading address...",
@@ -411,7 +410,6 @@
     "OFFLINE_STEP2_LABEL_4": "Gas Limit ",
     "OFFLINE_STEP2_LABEL_5": "Nonce ",
     "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
-    "ORDER_TREZOR": "Don’t have a TREZOR? [Get one now!](https://shop.trezor.io/?offer_id=10&aff_id=1735)",
     "PAGE_OF": "PAGE $page OF $all",
     "PENDING": "Pending",
     "PLATFORMS": "Platforms Used",
@@ -1079,6 +1077,11 @@
     "MEMBERSHIP_POAP": "Regular POAP NFT drops",
     "MEMBERSHIP_TREZOR": "10% Discount for Trezor Hardware Wallets",
     "MEMBERSHIP_FAUCET": "Extra Faucet Testnet ETH (Rinkeby, Ropsten, Kovan, Goerli)",
-    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel"
+    "MEMBERSHIP_CITADEL": "Access to the exclusive MyCrypto Citadel",
+    "X_GRIDPLUS": "GridPlus",
+    "GRIDPLUS_CONNECT": "Connect to GridPlus",
+    "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus",
+    "SIGN_TX_GRIDPLUS_DESCRIPTION": "Follow the on-screen instructions on your GridPlus to sign your transaction.",
+    "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed."
   }
 }

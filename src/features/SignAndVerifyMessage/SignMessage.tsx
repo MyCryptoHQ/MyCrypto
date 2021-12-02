@@ -19,7 +19,7 @@ import {
 import { DEFAULT_NETWORK, WALLETS_CONFIG } from '@config';
 import { WalletConnectWallet } from '@services';
 import type { IFullWallet } from '@services/WalletService';
-import { AppState, getIsDemoMode } from '@store';
+import { AppState, getIsDemoMode, getWalletConnection, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { WalletId } from '@types';
@@ -78,6 +78,7 @@ function SignMessage({
   signMessage
 }: Props & OwnProps) {
   const [wallet, setWallet] = useState<Wallet | IFullWallet | undefined>(undefined);
+  const params = useSelector(getWalletConnection(walletId!));
 
   useUnmount(() => {
     // Kill WalletConnect session
@@ -126,6 +127,7 @@ function SignMessage({
           {!wallet && (
             <Step
               wallet={WALLETS_CONFIG[walletId]}
+              walletParams={params}
               onUnlock={onUnlock}
               formData={{
                 network: DEFAULT_NETWORK

@@ -95,8 +95,8 @@ export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens'
 export { IAaveMigrator } from './aaveMigrator';
 export { IGolemMigration } from './golemV2Migration';
 export { IRouteLink, IExternalLink, TTrayItem, INavTray, INavigationProps } from './navigation';
-export { Bigish } from '@utils/bigify';
-export { BusyBottomConfig } from './busyBottom';
+export * from './bigify';
+export * from './busyBottom';
 export * from './claims';
 export * from './omit';
 export * from './query';

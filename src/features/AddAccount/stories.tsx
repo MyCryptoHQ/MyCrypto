@@ -1,5 +1,6 @@
 import {
-  LedgerDecrypt,
+  GridPlusUnlock,
+  LegderUnlock,
   TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
@@ -25,11 +26,15 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.LEDGER_NANO_S_NEW,
-    steps: [NetworkSelectPanel, LedgerDecrypt]
+    steps: [NetworkSelectPanel, LegderUnlock]
   },
   {
     name: WalletId.TREZOR_NEW,
     steps: [NetworkSelectPanel, TrezorUnlock]
+  },
+  {
+    name: WalletId.GRIDPLUS,
+    steps: [NetworkSelectPanel, GridPlusUnlock]
   },
   {
     name: WalletId.VIEW_ONLY,

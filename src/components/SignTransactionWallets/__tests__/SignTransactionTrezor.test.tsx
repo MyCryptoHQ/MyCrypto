@@ -11,7 +11,11 @@ import { getHeader } from './helper';
 const defaultProps: ComponentProps<typeof SignTransaction> = {
   txConfig: {
     ...fTxConfig,
-    senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.TREZOR }
+    senderAccount: {
+      ...fTxConfig.senderAccount,
+      address: '0x31497f490293cf5a4540b81c9f59910f62519b63',
+      wallet: WalletId.TREZOR
+    }
   },
   onComplete: jest.fn()
 };
@@ -24,9 +28,6 @@ describe('SignTransactionWallets: Trezor', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.setTimeout(60000);
-  });
-  afterEach(() => {
-    jest.resetAllMocks();
   });
 
   test('Can handle Trezor signing', async () => {
