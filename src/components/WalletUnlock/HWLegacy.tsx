@@ -1,6 +1,8 @@
 import { PureComponent } from 'react';
 
 import { DeterministicWallet, DerivationPath as DPath } from '@mycrypto/wallets';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
 
 import {
   Box,
@@ -12,19 +14,23 @@ import {
   LinkApp,
   Spinner
 } from '@components';
+import { TIcon } from '@components/Icon';
+import { HARDWARE_CONFIG, IWalletConfig } from '@config';
 import { HDWallets } from '@features/AddAccount';
 import { getDPath, getDPaths } from '@services/EthService';
 import { INetworkContext, useNetworks } from '@services/Store';
 import { getWallet, WalletFactory } from '@services/WalletService';
+import { connectWallet } from '@store';
 import translate, { Trans, translateRaw } from '@translations';
-import { BusyBottomConfig, FormData, TAddress, WalletId } from '@types';
+import { DPathFormat, FormData, HardwareWalletId, TAddress, WalletId } from '@types';
 import { withHook } from '@utils';
 
 import UnsupportedNetwork from './UnsupportedNetwork';
 import './LedgerNano.scss';
 
 interface OwnProps {
-  wallet: TObject;
+  wallet: IWalletConfig;
+  walletParams: any;
   formData: FormData;
   onUnlock(param: any): void;
 }
@@ -37,19 +43,17 @@ interface State {
   wallet: DeterministicWallet;
 }
 
-type Props = OwnProps;
-
-const WalletService = WalletFactory[WalletId.LEDGER_NANO_S];
-
-class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, State> {
+class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
   public state: State = {
     dPath:
-      getDPath(this.props.getNetworkById(this.props.formData.network), WalletId.LEDGER_NANO_S) ||
-      getDPaths(this.props.networks, WalletId.LEDGER_NANO_S)[0],
+      getDPath(
+        this.props.getNetworkById(this.props.formData.network),
+        this.props.wallet.id as DPathFormat
+      ) ?? getDPaths(this.props.networks, this.props.wallet.id as DPathFormat)[0],
     error: null,
     isLoading: false,
     isConnected: false,
-    wallet: getWallet(WalletId.LEDGER_NANO_S)!
+    wallet: getWallet(this.props.wallet.id, this.props.walletParams)!
   };
 
   public render() {
@@ -58,10 +62,12 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     const network = this.props.getNetworkById(this.props.formData.network);
 
     if (!dPath) {
-      return <UnsupportedNetwork walletType={translateRaw('X_LEDGER')} network={network} />;
+      return (
+        <UnsupportedNetwork walletType={translateRaw(this.props.wallet.lid)} network={network} />
+      );
     }
 
-    if (window.location.protocol !== 'https:') {
+    if (this.props.wallet.id === WalletId.LEDGER_NANO_S && window.location.protocol !== 'https:') {
       return (
         <div className="Panel">
           <div className="alert alert-danger">
@@ -85,9 +91,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
         <div className="Mnemonic-dpath">
           <HDWallets
             network={network}
-            walletId={WalletId.LEDGER_NANO_S}
+            wallet={this.state.wallet}
             dPath={dPath}
-            dPaths={getDPaths(networks, WalletId.LEDGER_NANO_S)}
+            dPaths={getDPaths(networks, this.props.wallet.id as DPathFormat)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -99,13 +105,18 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
         <Box p="2.5em">
           <Heading fontSize="32px" textAlign="center" fontWeight="bold">
             {translate('UNLOCK_WALLET')}{' '}
-            {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw('X_LEDGER') })}
+            {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw(this.props.wallet.lid) })}
           </Heading>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">
-              {translate('LEDGER_TIP', { $network: network.id })}
+              {translate(
+                HARDWARE_CONFIG[this.props.wallet.id as HardwareWalletId].unlockTipTransKey,
+                { $network: network.id }
+              )}
               <div className="LedgerPanel-image">
-                <Icon type="ledger-icon-lg" />
+                <Icon
+                  type={HARDWARE_CONFIG[this.props.wallet.id as HardwareWalletId].iconId as TIcon}
+                />
               </div>
               {isLoading ? (
                 <div className="LedgerPanel-loading">
@@ -117,13 +128,17 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
                   onClick={this.handleNullConnect}
                   disabled={isLoading}
                 >
-                  {translate('ADD_LEDGER_SCAN')}
+                  {translate(
+                    HARDWARE_CONFIG[this.props.wallet.id as HardwareWalletId].scanTransKey
+                  )}
                 </Button>
               )}
               {error && <InlineMessage>{error}</InlineMessage>}
             </div>
             <div className="LedgerPanel-footer">
-              <BusyBottom type={BusyBottomConfig.LEDGER} />
+              <BusyBottom
+                type={HARDWARE_CONFIG[this.props.wallet.id as HardwareWalletId].busyBottom}
+              />
             </div>
           </div>
         </Box>
@@ -146,7 +161,10 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
 
     this.state.wallet
       .getAddress(dPath, 0)
-      .then(() => this.setState({ isLoading: false, isConnected: true }))
+      .then(() => {
+        this.setState({ isLoading: false, isConnected: true });
+        this.props.connectWallet(this.state.wallet);
+      })
       .catch((err) =>
         this.setState({
           error: err.message,
@@ -161,7 +179,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
 
   private handleUnlock = async (address: TAddress, index: number) => {
     try {
-      this.props.onUnlock(await WalletService.init({ address, dPath: this.state.dPath, index }));
+      const WalletService = WalletFactory[this.props.wallet.id as HardwareWalletId];
+      const instance = await WalletService.init({
+        address,
+        dPath: this.state.dPath,
+        index,
+        params: this.props.walletParams
+      });
+      this.props.connectWallet(instance);
+      this.props.onUnlock(instance);
     } catch (err) {
       console.error(err);
     }
@@ -177,9 +203,16 @@ class LedgerNanoSDecryptClass extends PureComponent<Props & INetworkContext, Sta
     this.setState({
       isConnected: false,
       dPath:
-        getDPath(network, WalletId.LEDGER_NANO_S) || getDPaths(networks, WalletId.LEDGER_NANO_S)[0]
+        getDPath(network, this.props.wallet.id as DPathFormat) ??
+        getDPaths(networks, this.props.wallet.id as DPathFormat)[0]
     });
   }
 }
 
-export const LedgerNanoSDecrypt = withHook(useNetworks)(LedgerNanoSDecryptClass);
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ connectWallet }, dispatch);
+
+const connector = connect(() => ({}), mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export const HWLegacy = withHook(useNetworks)(connector(HWLegacyClass));

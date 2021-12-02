@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { DeterministicWallet } from '@mycrypto/wallets';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -18,6 +17,7 @@ import {
   selectHDWalletIsGettingAccounts,
   selectHDWalletNetwork,
   selectHDWalletScannedAccounts,
+  selectHDWalletSession,
   triggerComplete,
   updateAsset as updateScannerAsset
 } from '@features/AddAccount/components/hdWallet.slice';
@@ -32,8 +32,8 @@ export const useHDWallet = (
   walletId: DPathFormat,
   gap: number
 ): IUseHDWallet => {
-  const [session, setSession] = useState<DeterministicWallet | undefined>(undefined);
   const dispatch = useDispatch();
+  const session = useSelector(selectHDWalletSession);
   const isConnected = useSelector(selectHDWalletIsConnected);
   const isConnecting = useSelector(selectHDWalletIsConnecting);
   const customDPaths = useSelector(selectHDWalletCustomDPaths);
@@ -51,22 +51,22 @@ export const useHDWallet = (
   // On first connection && on asset update
   useEffect(() => {
     if (!isConnected || !network || !session || scannedAccounts.length !== 0) return;
-    dispatch(getAccounts({ session, dpaths }));
+    dispatch(getAccounts({ dpaths }));
   }, [isConnected, scannedAccounts]);
 
   useEffect(() => {
-    if (scannedAccounts.length === 0 || !session) return;
+    if (!session) return;
     const { newGapItems, customDPathItems } = processScannedAccounts(
       scannedAccounts,
       customDPaths,
       gap
     );
     if (newGapItems.length !== 0) {
-      dispatch(getAccounts({ session, dpaths: newGapItems }));
+      dispatch(getAccounts({ dpaths: newGapItems }));
       return;
     }
     if (customDPathItems.length > 0) {
-      dispatch(getAccounts({ session, dpaths: customDPathItems }));
+      dispatch(getAccounts({ dpaths: customDPathItems }));
       return;
     }
     // trigger completion
@@ -89,11 +89,11 @@ export const useHDWallet = (
 
   const scanMoreAddresses = (dpath: ExtendedDPath) => {
     if (!isConnected || !network || !session) return;
-    dispatch(getAccounts({ session, dpaths: [dpath] }));
+    dispatch(getAccounts({ dpaths: [dpath] }));
   };
 
   const requestConnection = (network: Network, asset: ExtendedAsset) => {
-    dispatch(connectHDWallet({ walletId, network, asset, dpaths, setSession }));
+    dispatch(connectHDWallet({ walletId, network, asset, dpaths }));
   };
 
   const mergedDPaths = uniqBy(prop('path'), [...dpaths, ...customDPaths]);

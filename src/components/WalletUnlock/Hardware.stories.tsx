@@ -2,7 +2,7 @@ import { fNetwork } from '@fixtures';
 import { WalletId } from '@types';
 import { noOp } from '@utils';
 
-import HardwareWalletUI, { HardwareUIProps } from './Hardware';
+import { HardwareUIProps, HardwareWalletUI } from './Hardware';
 
 export default { title: 'Features/AddAccount/Hardware', components: HardwareWalletUI };
 

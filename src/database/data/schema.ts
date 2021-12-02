@@ -16,5 +16,6 @@ export const SCHEMA_BASE: LocalStorage = {
   [LSKeys.SETTINGS]: defaultSettings,
   [LSKeys.NETWORK_NODES]: {} as LocalStorage[LSKeys.NETWORK_NODES],
   [LSKeys.USER_ACTIONS]: {} as LocalStorage[LSKeys.USER_ACTIONS],
-  [LSKeys.PROMO_POAPS]: { promos: {} } as LocalStorage[LSKeys.PROMO_POAPS]
+  [LSKeys.PROMO_POAPS]: { promos: {} } as LocalStorage[LSKeys.PROMO_POAPS],
+  [LSKeys.CONNECTIONS]: { wallets: {} } as LocalStorage[LSKeys.CONNECTIONS]
 };

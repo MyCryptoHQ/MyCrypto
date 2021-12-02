@@ -1,3 +1,4 @@
+import { ConnectionsState } from '@store/connections.slice';
 import { PromoPoapsState } from '@store/promoPoaps.slice';
 import {
   Asset,
@@ -31,7 +32,8 @@ export enum LSKeys {
   SETTINGS = 'settings',
   NETWORK_NODES = 'networkNodes',
   USER_ACTIONS = 'userActions',
-  PROMO_POAPS = 'promoPoaps'
+  PROMO_POAPS = 'promoPoaps',
+  CONNECTIONS = 'connections'
 }
 
 export interface LocalStorage {
@@ -49,6 +51,7 @@ export interface LocalStorage {
   readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
   readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
+  readonly [LSKeys.CONNECTIONS]: ConnectionsState;
 }
 export interface DataStore {
   readonly version: string;
@@ -63,4 +66,5 @@ export interface DataStore {
   readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.USER_ACTIONS]: ExtendedUserAction[];
   readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
+  readonly [LSKeys.CONNECTIONS]: ConnectionsState;
 }

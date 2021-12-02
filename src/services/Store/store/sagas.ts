@@ -8,6 +8,7 @@ import { accountsSaga } from './account.slice';
 import { accountUndoSaga } from './accountUndo.slice';
 import { assetSaga } from './asset.slice';
 import { claimsSaga } from './claims.slice';
+import { connectionsSaga } from './connections.slice';
 import { ensSaga } from './ens.slice';
 import { gasSaga } from './gas.slice';
 import { fetchMembershipsSaga } from './membership.slice';
@@ -43,6 +44,7 @@ export default function* rootSaga() {
     accountUndoSaga(),
     nftSaga(),
     gasSaga(),
-    promoPoapsSaga()
+    promoPoapsSaga(),
+    connectionsSaga()
   ]);
 }

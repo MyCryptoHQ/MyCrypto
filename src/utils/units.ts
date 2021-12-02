@@ -2,8 +2,9 @@ import BigNumber from 'bignumber.js';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { Bigish } from '@types';
 
-import { bigify, Bigish } from './bigify';
+import { bigify } from './bigify';
 
 type UnitKey = keyof typeof Units;
 type Wei = BigNumber;
