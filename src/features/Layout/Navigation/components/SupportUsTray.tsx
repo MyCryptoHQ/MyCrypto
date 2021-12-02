@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import CopyToClipboard from 'react-copy-to-clipboard';
+import styled from 'styled-components';
 
 import { Box, Icon, Text } from '@components';
 import { donationAddressMap } from '@config';
@@ -11,6 +12,20 @@ import { TTrayItem } from '@types';
 import { useEffectOnce, useTimeoutFn } from '@vendor';
 
 import { TrayLink } from './TrayLink';
+
+const SBox = styled(Box)`
+  @media screen and (max-height: 700px) {
+    flex-direction: column;
+  }
+`;
+
+const Button = styled(Box)`
+  @media screen and (max-height: 700px) {
+    width: 90%;
+    height: 30px;
+    margin-top: 10px;
+  }
+`;
 
 export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
   const [displayingMessage, setDisplayingMessage] = useState(false);
@@ -45,7 +60,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
         >
           {translateRaw('NAVIGATION_DONATE')}
         </Text>
-        <Box
+        <SBox
           variant="rowAlign"
           justifyContent="space-between"
           width={{ _: '220px', sm: '100%' }}
@@ -58,7 +73,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               trackDonationClicked('Ethereum');
             }}
           >
-            <Box
+            <Button
               variant="rowCenter"
               width={{ _: '105px', sm: '10.5vh', xxl: '105px' }}
               height={{ _: '32px', sm: '3.2vh', xxl: '32px' }}
@@ -75,7 +90,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               <Text mb={0} fontSize={['16px', null, '0.8rem']}>
                 {translateRaw('NAVIGATION_ETHEREUM')}
               </Text>
-            </Box>
+            </Button>
           </CopyToClipboard>
           <CopyToClipboard
             text={donationAddressMap.BTC}
@@ -84,7 +99,7 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               trackDonationClicked('Bitcoin');
             }}
           >
-            <Box
+            <Button
               variant="rowCenter"
               width={{ _: '105px', sm: '10.5vh', xxl: '105px' }}
               height={{ _: '32px', sm: '3.2vh', xxl: '32px' }}
@@ -101,9 +116,9 @@ export const SupportUsTray = ({ items }: { items: TTrayItem[] }) => {
               <Text mb={0} fontSize={['16px', null, '0.8rem']}>
                 {translateRaw('NAVIGATION_BITCOIN')}
               </Text>
-            </Box>
+            </Button>
           </CopyToClipboard>
-        </Box>
+        </SBox>
         <Box minHeight={{ _: '25px', sm: '2.5vh', xxl: '25px' }} pb={SPACING.SM} variant="rowAlign">
           {displayingMessage && (
             <>
