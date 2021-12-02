@@ -14,7 +14,7 @@ export interface OptionType<T> {
 const Option = <T,>({
   value,
   selectOption,
-  paddingLeft
+  paddingLeft = '0px'
 }: {
   value: OptionType<T>;
   selectOption?(option: OptionType<T>): void;
@@ -25,7 +25,7 @@ const Option = <T,>({
   return (
     <Box
       padding="12px"
-      pl={paddingLeft || '0px'}
+      pl={paddingLeft}
       variant="rowAlign"
       data-testid={`select-${value.label}`}
       onClick={handleClick}
