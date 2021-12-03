@@ -11,7 +11,6 @@ export const golemTokenMigrationConfig: ITokenMigrationConfig = {
   fromContractAddress: '0xa74476443119A942dE498590Fe1f2454d7D4aC0d' as TAddress,
   fromAssetUuid: GOLEMV1UUID,
   toAssetUuid: GOLEMV2UUID,
-  formTitle: translateRaw('GOLEM_TOKEN_MIGRATION'),
   formActionBtn: translateRaw('GOLEM_TOKEN_MIGRATION'),
   formAmountTooltip: translateRaw('GOLEM_TOKEN_MIGRATION_AMOUNT_DISABLED_TOOLTIP'),
   receiptTitle: translateRaw('GOLEM_TOKEN_MIGRATION_RECEIPT'),

@@ -1,13 +1,13 @@
 import { simpleRender } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fTokenMigrationTxs } from '@fixtures';
 import { ITokenMigrationConfig, ITxMultiConfirmProps } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationMultiTx';
+import { MIGRATION_CONFIGS } from '../config';
 
 const defaultProps: ITxMultiConfirmProps = {
-  flowConfig: repTokenMigrationConfig,
+  flowConfig: MIGRATION_CONFIGS.REP,
   currentTxIdx: 0,
   account: fAccount,
   transactions: fTokenMigrationTxs(),

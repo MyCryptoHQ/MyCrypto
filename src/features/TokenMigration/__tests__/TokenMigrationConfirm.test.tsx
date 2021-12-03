@@ -3,17 +3,17 @@ import { ComponentProps } from 'react';
 import { mockAppState, simpleRender } from 'test-utils';
 
 import { REPV1UUID } from '@config';
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fNetworks, fSettings, fTokenMigrationTxs } from '@fixtures';
 import { ITxMultiConfirmProps, StoreAccount } from '@types';
 
 import ConfirmTokenMigration from '../components/TokenMigrationConfirm';
+import { MIGRATION_CONFIGS } from '../config';
 
 const defaultProps: ITxMultiConfirmProps & {
   amount: string;
   account: StoreAccount;
 } = {
-  flowConfig: repTokenMigrationConfig,
+  flowConfig: MIGRATION_CONFIGS.REP,
   currentTxIdx: 0,
   amount: '1',
   account: fAccounts[0],

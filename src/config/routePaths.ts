@@ -119,24 +119,9 @@ const PATHS: IRoutePath[] = [
     path: '/tx-status'
   },
   {
-    name: 'REP_TOKEN_MIGRATION',
-    title: 'REP Token Migration',
-    path: '/migrate/rep'
-  },
-  {
-    name: 'AAVE_TOKEN_MIGRATION',
-    title: 'AAVE Token Migration',
-    path: '/migrate/aave'
-  },
-  {
-    name: 'ANT_TOKEN_MIGRATION',
-    title: 'ANT Token Migration',
-    path: '/migrate/ant'
-  },
-  {
-    name: 'GOLEM_TOKEN_MIGRATION',
-    title: 'GOLEM Token Migration',
-    path: '/migrate/golem'
+    name: 'TOKEN_MIGRATION',
+    title: 'Token Migration',
+    path: '/migrate'
   },
   {
     name: 'FAUCET',

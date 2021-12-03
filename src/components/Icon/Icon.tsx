@@ -59,10 +59,7 @@ import navLinkedin from '@assets/icons/navigation/linkedin.svg';
 import navMedium from '@assets/icons/navigation/medium.svg';
 import navMembership from '@assets/icons/navigation/membership.svg';
 import navMenu from '@assets/icons/navigation/menu.svg';
-import navMigrateAnt from '@assets/icons/navigation/migrate-ant.svg';
-import navMigrateGnt from '@assets/icons/navigation/migrate-gnt.svg';
-import navMigrateLend from '@assets/icons/navigation/migrate-lend.svg';
-import navMigrateRep from '@assets/icons/navigation/migrate-rep.svg';
+import navMigrate from '@assets/icons/navigation/migrate.svg';
 import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
 import navNftDashboard from '@assets/icons/navigation/nft-dashboard.svg';
@@ -271,10 +268,7 @@ const svgIcons = {
   'nav-desktop': navDesktop,
   'nav-ens': navEns,
   'nav-tx-status': navTxStatus,
-  'nav-migrate-rep': navMigrateRep,
-  'nav-migrate-gnt': navMigrateGnt,
-  'nav-migrate-ant': navMigrateAnt,
-  'nav-migrate-lend': navMigrateLend,
+  'nav-migrate': navMigrate,
   'nav-faucet': navFaucet,
   'nav-disclaimer': navDisclaimer,
   'nav-nft': navNftDashboard
