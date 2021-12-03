@@ -134,12 +134,7 @@ export const TokenMigrationFormUI = ({
     maxPriorityFeePerGas: '1'
   });
 
-  const convertedAsset = {
-    name: defaultAsset.name,
-    ticker: defaultAsset.ticker,
-    uuid: defaultAsset.uuid
-  };
-  const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, convertedAsset, '0.001');
+  const filteredAccounts = getAccountsWithAssetBalance(relevantAccounts, defaultAsset, '0.001');
   const TokenMigrationFormSchema = object().shape({
     amount: number()
       .min(0, translateRaw('ERROR_0'))
@@ -181,7 +176,7 @@ export const TokenMigrationFormUI = ({
       amount &&
       asset &&
       selectedAccount &&
-      !getAccountsWithAssetBalance(filteredAccounts, convertedAsset, amount).find(
+      !getAccountsWithAssetBalance(filteredAccounts, defaultAsset, amount).find(
         (a) => a.uuid === selectedAccount.uuid
       )
     ) {
@@ -259,6 +254,7 @@ export const TokenMigrationFormUI = ({
         loading={isSubmitting}
         onClick={handleSubmit}
         disabled={!isFormValid || isDemoMode}
+        data-testid="confirm-migrate"
       >
         {tokenMigrationConfig.formActionBtn}
       </FormFieldSubmitButton>

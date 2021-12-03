@@ -3,7 +3,9 @@ import { useEffect, useReducer } from 'react';
 import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
+import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { useTxMulti } from '@hooks';
+import { getAssets, getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
 import { ITokenMigrationFormFull, ITxStatus, MigrationType, TokenMigrationState } from '@types';
 
@@ -15,9 +17,25 @@ import { MIGRATION_CONFIGS } from './config';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
 
 const TokenMigrationStepper = () => {
+  const accounts = useSelector(getStoreAccounts);
+  const assets = useSelector(getAssets);
+
+  const defaultMigration = Object.values(MigrationType).find((migration) => {
+    const config = MIGRATION_CONFIGS[migration];
+    const asset = assets.find((a) => a.uuid === config.fromAssetUuid);
+    const filteredAccounts = asset && getAccountsWithAssetBalance(accounts, asset, '0.001');
+    return filteredAccounts && filteredAccounts.length > 0;
+  });
+
   const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {
     migration: MigrationType.REP
   });
+
+  useEffect(() => {
+    if (defaultMigration) {
+      handleMigrationChange(defaultMigration);
+    }
+  }, [defaultMigration]);
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions, error } = state;
