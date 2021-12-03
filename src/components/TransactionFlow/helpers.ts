@@ -5,9 +5,9 @@ import pick from 'ramda/src/pick';
 import { Brand, ValuesType } from 'utility-types';
 
 import { WALLET_STEPS } from '@components';
-import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
 import { CONTRACT_INTERACTION_TYPES } from '@config';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
+import { TokenMigrationReceiptProps } from '@features/TokenMigration/components/TokenMigrationReceipt';
 import { fetchUniversalGasPriceEstimate } from '@services/ApiService/Gas';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {

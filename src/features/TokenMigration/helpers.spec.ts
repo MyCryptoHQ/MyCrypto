@@ -1,4 +1,3 @@
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import {
   fAccounts,
   fApproveErc20TxConfig,
@@ -9,6 +8,7 @@ import {
 import { ITxNonce } from '@types';
 import { inputGasLimitToHex } from '@utils';
 
+import { MIGRATION_CONFIGS } from './config';
 import { makeTokenMigrationTxConfig } from './helpers';
 
 describe('makeTokenMigrationTxConfig', () => {
@@ -22,7 +22,7 @@ describe('makeTokenMigrationTxConfig', () => {
       approvalTx,
       fAccounts[0],
       '5'
-    )(repTokenMigrationConfig);
+    )(MIGRATION_CONFIGS.REP);
     expect(txConfig).toStrictEqual(fApproveErc20TxConfig);
   });
   it('creates txConfig from rep token migration tx', () => {
@@ -35,7 +35,7 @@ describe('makeTokenMigrationTxConfig', () => {
       repMigrationTx,
       fAccounts[0],
       '5'
-    )(repTokenMigrationConfig);
+    )(MIGRATION_CONFIGS.REP);
     expect(txConfig).toStrictEqual(fTokenMigrationTxConfig);
   });
 });

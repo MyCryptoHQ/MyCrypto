@@ -78,21 +78,10 @@ const TxStatus = lazy(() =>
   import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
 );
 
-const RepTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/RepTokenMigration')
-);
-
-const AaveTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/AaveTokenMigration')
-);
-
-const AntTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/AntTokenMigration')
-);
 const Faucet = lazy(() => import(/* webpackChunkName: "Faucet" */ '@features/Faucet'));
 
-const GolemTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/GolemTokenMigration')
+const Migrations = lazy(() =>
+  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration')
 );
 
 export interface IAppRoutes {
@@ -277,40 +266,13 @@ export const getStaticAppRoutes = (featureFlags: FeatureFlags): IAppRoute[] => [
     component: TxStatus
   },
   {
-    name: ROUTE_PATHS.REP_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.REP_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
+    name: ROUTE_PATHS.TOKEN_MIGRATION.name,
+    title: ROUTE_PATHS.TOKEN_MIGRATION.title,
+    path: ROUTE_PATHS.TOKEN_MIGRATION.path,
     exact: true,
     requireAccounts: true,
-    enabled: isTruthy(featureFlags.REP_TOKEN_MIGRATION),
-    component: RepTokenMigration
-  },
-  {
-    name: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.AAVE_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.AAVE_TOKEN_MIGRATION),
-    component: AaveTokenMigration
-  },
-  {
-    name: ROUTE_PATHS.ANT_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.ANT_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.ANT_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.ANT_TOKEN_MIGRATION),
-    component: AntTokenMigration
-  },
-  {
-    name: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.GOLEM_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: isTruthy(featureFlags.GOLEM_TOKEN_MIGRATION),
-    component: GolemTokenMigration
+    enabled: true,
+    component: Migrations
   },
   {
     name: ROUTE_PATHS.FAUCET.name,

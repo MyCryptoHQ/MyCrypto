@@ -1,6 +1,6 @@
+import selectEvent from 'react-select-event';
 import { APP_STATE, fireEvent, mockAppState, simpleRender, waitFor } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccounts, fAssets, fSettings } from '@fixtures';
 import { translateRaw } from '@translations';
 import { truncate } from '@utils';
@@ -23,7 +23,7 @@ jest.mock('@vendor', () => {
 /* Test components */
 describe('TokenMigrationStepper', () => {
   const renderComponent = () =>
-    simpleRender(<TokenMigrationStepper tokenMigrationConfig={repTokenMigrationConfig} />, {
+    simpleRender(<TokenMigrationStepper />, {
       initialState: mockAppState({
         assets: fAssets,
         settings: fSettings,
@@ -34,7 +34,7 @@ describe('TokenMigrationStepper', () => {
 
   it('renders the first step in the flow', () => {
     const { getByText } = renderComponent();
-    const selector = translateRaw('REP_TOKEN_MIGRATION');
+    const selector = translateRaw('TOKEN_MIGRATION_HEADER');
     expect(getByText(selector, { selector: 'p' })).toBeInTheDocument();
   });
 
@@ -49,7 +49,7 @@ describe('TokenMigrationStepper', () => {
     const selector = truncate(fAccounts[0].address); // detects the user's account as the first item in the array
     expect(getByText(selector)).toBeInTheDocument();
 
-    const button = getAllByText('Migrate REP Tokens')[1];
+    const button = getAllByText('Migrate REP Tokens')[0];
     expect(button).toBeInTheDocument();
 
     fireEvent.click(button);
@@ -59,5 +59,12 @@ describe('TokenMigrationStepper', () => {
         expect(s).toBeInTheDocument()
       )
     );
+  });
+
+  it('can change migration', async () => {
+    const { getByText, getByLabelText } = renderComponent();
+    await selectEvent.openMenu(getByLabelText(translateRaw('SELECT_A_MIGRATION')));
+    fireEvent.click(getByText('AAVE'));
+    await waitFor(() => expect(getByText('LEND')).toBeInTheDocument());
   });
 });

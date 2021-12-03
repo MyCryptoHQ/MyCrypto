@@ -95,31 +95,10 @@ export const toolsTray = (APP_ROUTES: IAppRoutes) => {
       },
       {
         type: 'internal',
-        to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_REP'),
-        icon: 'nav-migrate-rep'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_GNT'),
-        icon: 'nav-migrate-gnt'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_ANT'),
-        icon: 'nav-migrate-ant'
-      },
-      {
-        type: 'internal',
-        to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
-        enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
-        title: translateRaw('NAVIGATION_MIGRATE_LEND'),
-        icon: 'nav-migrate-lend'
+        to: APP_ROUTES.TOKEN_MIGRATION.path,
+        enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
+        title: translateRaw('NAVIGATION_MIGRATE'),
+        icon: 'nav-migrate'
       },
       {
         type: 'internal',
@@ -285,31 +264,10 @@ export const mobileLinks = (APP_ROUTES: IAppRoutes) => {
         },
         {
           type: 'internal',
-          to: APP_ROUTES.REP_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.REP_TOKEN_MIGRATION.enabled,
-          title: translateRaw('NAVIGATION_MIGRATE_REP'),
-          icon: 'nav-migrate-rep'
-        },
-        {
-          type: 'internal',
-          to: APP_ROUTES.GOLEM_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.GOLEM_TOKEN_MIGRATION.enabled,
-          title: translateRaw('NAVIGATION_MIGRATE_GNT'),
-          icon: 'nav-migrate-gnt'
-        },
-        {
-          type: 'internal',
-          to: APP_ROUTES.ANT_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.ANT_TOKEN_MIGRATION.enabled,
-          title: translateRaw('NAVIGATION_MIGRATE_ANT'),
-          icon: 'nav-migrate-ant'
-        },
-        {
-          type: 'internal',
-          to: APP_ROUTES.AAVE_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES.AAVE_TOKEN_MIGRATION.enabled,
-          title: translateRaw('NAVIGATION_MIGRATE_LEND'),
-          icon: 'nav-migrate-lend'
+          to: APP_ROUTES.TOKEN_MIGRATION.path,
+          enabled: APP_ROUTES.TOKEN_MIGRATION.enabled,
+          title: translateRaw('NAVIGATION_MIGRATE'),
+          icon: 'nav-migrate'
         },
         {
           type: 'internal',

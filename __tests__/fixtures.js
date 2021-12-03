@@ -33,7 +33,8 @@ const PAGES = {
   SWAP: `${FIXTURES_CONST.BASE_URL}/swap`,
   BUY_MEMBERSHIP: `${FIXTURES_CONST.BASE_URL}/membership/buy`,
   INTERACT_WITH_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/interact-with-contracts`,
-  DEPLOY_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/deploy-contracts`
+  DEPLOY_CONTRACTS: `${FIXTURES_CONST.BASE_URL}/deploy-contracts`,
+  MIGRATE: `${FIXTURES_CONST.BASE_URL}/migrate`
 };
 
 const FIXTURE_ETHEREUM = 'Ethereum';
@@ -183,6 +184,20 @@ const FIXTURE_HARDHAT = {
           isCustom: false,
           contractAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
           uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1',
+          balance: '9998866308480000000000',
+          mtime: 1621347441875
+        },
+        {
+          ticker: 'LEND',
+          name: 'EthLend',
+          decimal: 18,
+          support: {},
+          social: {},
+          networkId: 'Ethereum',
+          type: 'erc20',
+          isCustom: false,
+          contractAddress: '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03',
+          uuid: '1c77b322-a88c-57cc-b956-78c2bc17c360',
           balance: '9998866308480000000000',
           mtime: 1621347441875
         }

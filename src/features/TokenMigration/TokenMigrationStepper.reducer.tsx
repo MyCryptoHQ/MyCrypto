@@ -9,6 +9,9 @@ export const tokenMigrationReducer = (
   action: ReducerAction
 ): TokenMigrationState => {
   switch (action.type) {
+    case tokenMigrationReducer.actionTypes.SELECT_MIGRATION: {
+      return { ...state, migration: action.payload };
+    }
     case tokenMigrationReducer.actionTypes.FORM_SUBMIT: {
       const { account, amount } = action.payload;
       return { ...state, account, amount };
@@ -20,5 +23,6 @@ export const tokenMigrationReducer = (
 };
 
 tokenMigrationReducer.actionTypes = {
+  SELECT_MIGRATION: 'SELECT_MIGRATION',
   FORM_SUBMIT: 'FORM_SUBMIT'
 };

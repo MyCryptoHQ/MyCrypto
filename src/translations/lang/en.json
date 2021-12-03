@@ -982,10 +982,7 @@
     "LOW_GAS_PRICE_WARNING": "This seems like a very low gas price. Are you sure you know what you are doing?",
     "NAVIGATION_ENS": "Manage ENS",
     "NAVIGATION_TX_STATUS": "Check Transaction Status",
-    "NAVIGATION_MIGRATE_REP": "Migrate REP",
-    "NAVIGATION_MIGRATE_GNT": "Migrate GOLEM",
-    "NAVIGATION_MIGRATE_ANT": "Migrate ANT",
-    "NAVIGATION_MIGRATE_LEND": "Migrate LEND",
+    "NAVIGATION_MIGRATE": "Token Migrations",
     "NAVIGATION_FAUCET": "Use Testnet Faucet",
     "BROADCAST_TX_RAW_TOOLTIP": "This is the decoded values of your signed transaction input.",
     "DEMO_BANNER": "Viewing in DEMO MODE. Play around in this test environment and $link of your own to get started.",
@@ -1082,6 +1079,8 @@
     "GRIDPLUS_CONNECT": "Connect to GridPlus",
     "BUSY_BOTTOM_GRIDPLUS_1": "Get a GridPlus",
     "SIGN_TX_GRIDPLUS_DESCRIPTION": "Follow the on-screen instructions on your GridPlus to sign your transaction.",
-    "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed."
+    "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed.",
+    "SELECT_A_MIGRATION": "Select a migration",
+    "TOKEN_MIGRATION_HEADER": "Migrate Tokens"
   }
 }

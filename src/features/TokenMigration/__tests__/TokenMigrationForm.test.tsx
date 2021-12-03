@@ -1,8 +1,8 @@
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
-import { repTokenMigrationConfig } from '@features/RepTokenMigration/config';
 import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
 import { translateRaw } from '@translations';
+import { MigrationType } from '@types';
 
 import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
 
@@ -17,7 +17,7 @@ jest.mock('@vendor', () => {
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
-  tokenMigrationConfig: repTokenMigrationConfig,
+  migration: MigrationType.REP,
   asset: fAssets[0],
   network: fNetwork,
   address: '',
@@ -26,6 +26,7 @@ const defaultProps: TokenMigrationProps = {
   gasPrice: '',
   nonce: '',
   account: fAccount,
+  changeMigration: jest.fn(),
   onComplete: jest.fn(),
   handleUserInputFormSubmit: jest.fn(),
   maxFeePerGas: '20',

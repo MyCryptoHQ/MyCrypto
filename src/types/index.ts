@@ -75,12 +75,7 @@ export {
   IPrimaryAccountPermission,
   IExposedAccountsPermission
 } from './web3Permissions';
-export {
-  ITokenMigrationConfig,
-  ITokenMigrationTxConfig,
-  ITokenMigrationFormFull,
-  TokenMigrationState
-} from './tokenMigration';
+export * from './tokenMigration';
 export { IUniDistributor } from './uniDistributor';
 export {
   UserAction,

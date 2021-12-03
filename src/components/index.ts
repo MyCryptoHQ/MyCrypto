@@ -69,7 +69,6 @@ export { default as TimeElapsed } from './TimeElapsed';
 export { default as Icon, TIcon, getSVGIcon } from './Icon';
 export { default as IFrame } from './IFrame';
 export { Downloader } from './Downloader';
-export { TokenMigrationStepper } from './TokenMigration';
 export { Heading, SubHeading, Body, Label, Text, TextProps } from './NewTypography';
 export { ActionPanel, ActionButtonProps, ActionButton } from './ActionsPanel';
 export { default as AppLoading } from './AppLoading';

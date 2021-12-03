@@ -3,38 +3,56 @@ import { useEffect, useReducer } from 'react';
 import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
+import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 import { useTxMulti } from '@hooks';
+import { getAssets, getStoreAccounts, useSelector } from '@store';
 import { translateRaw } from '@translations';
-import {
-  ITokenMigrationConfig,
-  ITokenMigrationFormFull,
-  ITxStatus,
-  TokenMigrationState
-} from '@types';
+import { ITokenMigrationFormFull, ITxStatus, MigrationType, TokenMigrationState } from '@types';
 
 import ConfirmTokenMigration from './components/TokenMigrationConfirm';
 import TokenMigrationForm from './components/TokenMigrationForm';
 import ConfirmTokenMigrationMultiTx from './components/TokenMigrationMultiTx';
 import TokenMigrationReceipt from './components/TokenMigrationReceipt';
+import { MIGRATION_CONFIGS } from './config';
 import { tokenMigrationReducer } from './TokenMigrationStepper.reducer';
 
-interface Props {
-  tokenMigrationConfig: ITokenMigrationConfig;
-}
+const TokenMigrationStepper = () => {
+  const accounts = useSelector(getStoreAccounts);
+  const assets = useSelector(getAssets);
 
-const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
-  const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {});
+  const defaultMigration = Object.values(MigrationType).find((migration) => {
+    const config = MIGRATION_CONFIGS[migration];
+    const asset = assets.find((a) => a.uuid === config.fromAssetUuid);
+    const filteredAccounts = asset && getAccountsWithAssetBalance(accounts, asset, '0.001');
+    return filteredAccounts && filteredAccounts.length > 0;
+  });
+
+  const [reducerState, dispatch] = useReducer(tokenMigrationReducer, {
+    migration: MigrationType.REP
+  });
+
+  useEffect(() => {
+    if (defaultMigration) {
+      handleMigrationChange(defaultMigration);
+    }
+  }, [defaultMigration]);
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
   const { canYield, isSubmitting, transactions, error } = state;
-  const { account, amount }: TokenMigrationState = reducerState;
+  const { account, amount, migration }: TokenMigrationState = reducerState;
+
+  const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
+
+  const handleMigrationChange = (payload: MigrationType) =>
+    dispatch({ type: tokenMigrationReducer.actionTypes.SELECT_MIGRATION, payload });
 
   const steps: IStepperPath[] = [
     {
-      label: tokenMigrationConfig.formTitle,
+      label: translateRaw('TOKEN_MIGRATION_HEADER'),
       component: TokenMigrationForm,
       props: {
-        tokenMigrationConfig,
+        changeMigration: handleMigrationChange,
+        migration,
         account,
         isSubmitting,
         error
@@ -57,7 +75,7 @@ const TokenMigrationStepper = ({ tokenMigrationConfig }: Props) => {
     },
     ...createSignConfirmAndReceiptSteps({
       transactions,
-      backStepTitle: tokenMigrationConfig.formTitle,
+      backStepTitle: translateRaw('TOKEN_MIGRATION_HEADER'),
       amount: amount!,
       account: account!,
       error,
