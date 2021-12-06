@@ -5,7 +5,11 @@ import LocalMessageDuplexStream from 'post-message-stream';
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133
 
 (() => {
-  if (!window.ethereum && !window.web3 && navigator.userAgent.includes('Firefox')) {
+  if (
+    !window.ethereum &&
+    !window.web3 &&
+    (navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('iPhone'))
+  ) {
     // setup background connection
     const metamaskStream = new LocalMessageDuplexStream({
       name: 'inpage',
