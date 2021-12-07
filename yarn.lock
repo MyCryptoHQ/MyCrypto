@@ -3394,6 +3394,11 @@
     pump "^3.0.0"
     safe-event-emitter "^1.0.1"
 
+"@metamask/mobile-provider@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@metamask/mobile-provider/-/mobile-provider-2.1.0.tgz#685b2f6a55d24197af3f26de4dd0bb78e10ac83e"
+  integrity sha512-VuVUIZ5jEQmLaU8SJC8692crxtNncsxyR9q5j1J6epyMHUU75WTtQdq7VSsu1ghkmP9NXNAz3inlWOGsbT8lLA==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
