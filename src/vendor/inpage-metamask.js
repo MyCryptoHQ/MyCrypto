@@ -1,6 +1,8 @@
 import { initProvider } from '@metamask/inpage-provider';
 import LocalMessageDuplexStream from 'post-message-stream';
 
+import ReactNativePostMessageStream from './ReactNativePostMessageStream';
+
 // Firefox Metamask Hack
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133
 
@@ -20,7 +22,7 @@ import LocalMessageDuplexStream from 'post-message-stream';
       connectionStream: metamaskStream
     });
   } else if (navigator.userAgent.includes('iPhone')) {
-    const metamaskStream = new LocalMessageDuplexStream({
+    const metamaskStream = new ReactNativePostMessageStream({
       name: 'metamask-inpage',
       target: 'metamask-contentscript'
     });
