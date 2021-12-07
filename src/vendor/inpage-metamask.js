@@ -20,6 +20,13 @@ import LocalMessageDuplexStream from 'post-message-stream';
       connectionStream: metamaskStream
     });
   } else if (navigator.userAgent.includes('iPhone')) {
-    import('@metamask/mobile-provider');
+    const metamaskStream = new LocalMessageDuplexStream({
+      name: 'metamask-inpage',
+      target: 'metamask-contentscript'
+    });
+
+    initProvider({
+      connectionStream: metamaskStream
+    });
   }
 })();
