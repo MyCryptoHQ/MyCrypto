@@ -1,4 +1,4 @@
-import { initializeProvider, shimWeb3 } from '@metamask/inpage-provider';
+import { initProvider, shimWeb3 } from '@metamask/inpage-provider';
 import ObjectMultiplex from '@metamask/object-multiplex';
 import pump from 'pump';
 
@@ -17,21 +17,12 @@ export const injectMobile = () => {
   });
 
   // Initialize provider object (window.ethereum)
-  initializeProvider({
+  initProvider({
     connectionStream: metamaskStream,
     shouldSendMetadata: false
   });
 
-  // Set content script post-setup function
-  Object.defineProperty(window, '_metamaskSetupProvider', {
-    value: () => {
-      setupProviderStreams();
-      delete window._metamaskSetupProvider;
-    },
-    configurable: true,
-    enumerable: false,
-    writable: false
-  });
+  setupProviderStreams();
 };
 
 // Functions
