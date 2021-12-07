@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Box, Icon, Text } from '@components';
 import { donationAddressMap } from '@config';
 import { useAnalytics } from '@services/Analytics';
-import { SPACING } from '@theme';
+import { SPACING, theme } from '@theme';
 import { translateRaw } from '@translations';
 import { TTrayItem } from '@types';
 import { useEffectOnce, useTimeoutFn } from '@vendor';
@@ -14,13 +14,13 @@ import { useEffectOnce, useTimeoutFn } from '@vendor';
 import { TrayLink } from './TrayLink';
 
 const SBox = styled(Box)`
-  @media screen and (max-height: 700px) {
+  @media screen and (max-height: 700px) and (max-width: ${theme.breakpoints.sm}) {
     flex-direction: column;
   }
 `;
 
 const Button = styled(Box)`
-  @media screen and (max-height: 700px) {
+  @media screen and (max-height: 700px) and (max-width: ${theme.breakpoints.sm}) {
     width: 90%;
     height: 30px;
     margin-top: 10px;
