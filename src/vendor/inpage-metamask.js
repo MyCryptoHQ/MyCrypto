@@ -1,5 +1,5 @@
 import { initializeProvider } from '@metamask/inpage-provider';
-import LocalMessageDuplexStream from 'post-message-stream';
+import { WindowPostMessageStream } from '@metamask/post-message-stream';
 
 import { injectMobile } from './inpage-metamask-mobile';
 
@@ -12,14 +12,15 @@ import { injectMobile } from './inpage-metamask-mobile';
   }
   if (navigator.userAgent.includes('Firefox')) {
     // setup background connection
-    const metamaskStream = new LocalMessageDuplexStream({
-      name: 'inpage',
-      target: 'contentscript'
+    const metamaskStream = new WindowPostMessageStream({
+      name: 'metamask-inpage',
+      target: 'metamask-contentscript'
     });
 
     // this will initialize the provider and set it as window.ethereum
     initializeProvider({
-      connectionStream: metamaskStream
+      connectionStream: metamaskStream,
+      shouldShimWeb3: true
     });
   } else if (navigator.userAgent.includes('iPhone')) {
     injectMobile();
