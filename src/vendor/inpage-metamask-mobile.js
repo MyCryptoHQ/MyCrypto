@@ -1,4 +1,4 @@
-import { initProvider, shimWeb3 } from '@metamask/inpage-provider';
+import { initProvider } from '@metamask/inpage-provider';
 import ObjectMultiplex from '@metamask/object-multiplex';
 import pump from 'pump';
 
@@ -58,9 +58,6 @@ function setupProviderStreams() {
 
   // forward communication across inpage-background for these channels only
   forwardTrafficBetweenMuxes(PROVIDER, pageMux, appMux);
-
-  // add web3 shim
-  shimWeb3(window.ethereum);
 }
 
 /**
