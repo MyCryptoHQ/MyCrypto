@@ -3,7 +3,7 @@ import { WindowPostMessageStream } from '@metamask/post-message-stream';
 
 import { injectMobile } from './inpage-metamask-mobile';
 
-// Firefox Metamask Hack
+// Metamask injection hack
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133
 
 (() => {

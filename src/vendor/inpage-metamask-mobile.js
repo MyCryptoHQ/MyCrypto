@@ -1,3 +1,5 @@
+// Based of: https://github.com/MetaMask/mobile-provider/blob/main/src/inpage/index.js
+
 import { initializeProvider } from '@metamask/inpage-provider';
 import ObjectMultiplex from '@metamask/object-multiplex';
 import pump from 'pump';
