@@ -1,4 +1,4 @@
-import { initProvider } from '@metamask/inpage-provider';
+import { initializeProvider } from '@metamask/inpage-provider';
 import LocalMessageDuplexStream from 'post-message-stream';
 
 import { injectMobile } from './inpage-metamask-mobile';
@@ -18,7 +18,7 @@ import { injectMobile } from './inpage-metamask-mobile';
     });
 
     // this will initialize the provider and set it as window.ethereum
-    initProvider({
+    initializeProvider({
       connectionStream: metamaskStream
     });
   } else if (navigator.userAgent.includes('iPhone')) {

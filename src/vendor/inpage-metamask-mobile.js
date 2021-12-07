@@ -1,4 +1,4 @@
-import { initProvider } from '@metamask/inpage-provider';
+import { initializeProvider } from '@metamask/inpage-provider';
 import ObjectMultiplex from '@metamask/object-multiplex';
 import pump from 'pump';
 
@@ -17,7 +17,7 @@ export const injectMobile = () => {
   });
 
   // Initialize provider object (window.ethereum)
-  initProvider({
+  initializeProvider({
     connectionStream: metamaskStream,
     shouldSendMetadata: false
   });
