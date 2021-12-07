@@ -24,6 +24,7 @@
     "@ethersproject/wallet": "5.4.0",
     "@metamask/inpage-provider": "6.0.1",
     "@metamask/mobile-provider": "2.1.0",
+    "@metamask/object-multiplex": "^1.2.0",
     "@mycrypto/eth-scan": "3.4.4",
     "@mycrypto/ui": "0.24.1",
     "@mycrypto/unlock-scan": "1.2.0",
