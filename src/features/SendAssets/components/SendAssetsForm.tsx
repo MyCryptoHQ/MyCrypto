@@ -477,7 +477,6 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
   };
 
   const setAmountFieldToAssetMax = () => {
-    throw new Error('yada');
     if (values.asset && values.account && baseAsset) {
       const accountBalance = getAccountBalance(values.account, values.asset);
       const isERC20 = isERC20Asset(values.asset);
