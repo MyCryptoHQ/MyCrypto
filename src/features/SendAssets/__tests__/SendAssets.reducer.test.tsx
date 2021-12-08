@@ -154,7 +154,7 @@ describe('SendAssetsReducer', () => {
       const txReceipt = newState.txReceipt! as ILegacyTxReceipt;
       expect(txReceipt.hash).toBe(payload.hash);
       expect(txReceipt.amount).toBe(txConfig.amount);
-      expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
+      expect(txReceipt.baseAsset.uuid).toBe(txConfig.asset.uuid);
       expect(txReceipt.baseAsset.uuid).toBe(txConfig.baseAsset.uuid);
       expect(txReceipt.data).toBe(txConfig.rawTransaction.data);
       expect(txReceipt.status).toBe(ITxStatus.PENDING);

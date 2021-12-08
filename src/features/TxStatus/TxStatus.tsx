@@ -17,6 +17,7 @@ import {
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { useAssets, useNetworks } from '@services';
 import { getMergedTxHistory, getStoreAccounts, useSelector } from '@store';
+import { getIsHistoryFetchCompleted } from '@store/txHistory.slice';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxReceipt } from '@types';
@@ -54,6 +55,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { networks } = useNetworks();
   const accounts = useSelector(getStoreAccounts);
   const txHistory = useSelector(getMergedTxHistory);
+  const isHistoryFetchCompleted = useSelector(getIsHistoryFetchCompleted);
 
   const defaultTxHash = qs.hash ? qs.hash : '';
   const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
@@ -80,7 +82,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   }, [txHash, networkId]);
 
   useEffect(() => {
-    if (fetching) {
+    console.debug('starting effect')
+    if (fetching && isHistoryFetchCompleted) {
+      console.debug('isHistoryFetchCompleted. txhistory length', txHistory.length)
       fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
         .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
@@ -89,7 +93,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
           dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
-  }, [fetching]);
+  }, [fetching, txHistory.length]);
 
   const handleSubmit = (fromLinkSharing: boolean) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
@@ -102,7 +106,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
-
+  if (tx && tx.receipt.hash === '0xc299b46217adacdd6290726f011b0fa42355f08c5b0f36b1063cadb3232ca4e3') {
+    console.debug("~~~~~HERE~~~~~\n", tx.receipt.erc20Transfers)
+  }
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
       <Wrapper fullPageLoading={fullPageLoading ?? false}>

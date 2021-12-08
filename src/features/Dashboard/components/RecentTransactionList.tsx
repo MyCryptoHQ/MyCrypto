@@ -14,16 +14,17 @@ import {
   Icon,
   LinkApp
 } from '@components';
-import { ROUTE_PATHS } from '@config';
+import { DEFAULT_ASSET_DECIMAL, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
+import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { getMergedTxHistory, useSelector } from '@store';
 import { getTxTypeMetas } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount, TxType } from '@types';
-import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
+import { bigify, convertToFiat, isSameAddress, toTokenBase, useScreenSize } from '@utils';
 
 import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
@@ -107,9 +108,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         status,
         from,
         to,
+        baseAsset,
         receiverAddress,
-        amount,
-        asset,
+        erc20Transfers,
+        value,
         fromAddressBookEntry,
         toAddressBookEntry,
         networkId,
@@ -127,11 +129,19 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           networkId
         };
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
+        const firstTransfer = value.isZero()
+          ? erc20Transfers[0]
+          : {
+            asset: baseAsset,
+            to,
+            from,
+            amount: toTokenBase(value.toString(), baseAsset.decimal || DEFAULT_ASSET_DECIMAL).toString()
+          } as IFullTxHistoryValueTransfer
         return [
           <TransactionLabel
             key={0}
-            image={makeTxIcon(entryConfig, asset)}
-            label={entryConfig.label(asset)}
+            image={makeTxIcon(entryConfig, firstTransfer.asset)}
+            label={entryConfig.label(firstTransfer.asset)}
             stage={status}
             date={timestamp}
           />,
@@ -154,13 +164,13 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               // Adapt alignment for mobile display
               alignLeft={isMobile}
               asset={{
-                amount: bigify(amount).toFixed(5),
-                ticker: asset.ticker
+                amount: bigify(firstTransfer.amount).toFixed(5),
+                ticker: firstTransfer.asset.ticker
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
+                amount: convertToFiat(firstTransfer.amount, getAssetRate(firstTransfer.asset)).toFixed(2)
               }}
             />
           </Box>,

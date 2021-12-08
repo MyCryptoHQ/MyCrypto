@@ -4,9 +4,11 @@ import { Amount } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ExtendedAsset, ISettings, ITxObject } from '@types';
-import { bigify, convertToFiat, fromWei, isType2Tx, totalTxFeeToWei, Wei } from '@utils';
+import { bigify, convertToFiat, fromWei, isSameAddress, isType2Tx, totalTxFeeToWei/*, Wei*/ } from '@utils';
+
+import { ITxTransferEvent } from './TxReceipt';
 
 const SIcon = styled(Icon)`
   height: 25px;
@@ -16,9 +18,9 @@ const SIcon = styled(Icon)`
     display: none;
   }
 `;
+
 interface Props {
-  asset: ExtendedAsset;
-  assetAmount: string;
+  valueTransfers: ITxTransferEvent[];
   baseAsset: ExtendedAsset;
   settings: ISettings;
   gasUsed: string;
@@ -29,14 +31,13 @@ interface Props {
 }
 
 export const TxReceiptTotals = ({
-  asset,
-  assetAmount,
+  valueTransfers,
   baseAsset,
   settings,
   gasUsed,
-  value,
+  //value,
   rawTransaction,
-  assetRate,
+  //assetRate,
   baseAssetRate
 }: Props) => {
   const gasPrice = isType2Tx(rawTransaction)
@@ -45,14 +46,15 @@ export const TxReceiptTotals = ({
 
   const feeWei = totalTxFeeToWei(gasPrice, gasUsed);
   const feeFormatted = bigify(fromWei(feeWei, 'ether')).toFixed(6);
-  const valueWei = Wei(value);
-  const totalWei = feeWei.plus(valueWei);
-  const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
+  //const valueWei = Wei(value);
+  //const totalWei = feeWei.plus(valueWei);
+  //const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
   const fiat = getFiat(settings);
 
   return (
     <>
-      <div className="TransactionReceipt-row">
+    {valueTransfers.filter(({ from }) => isSameAddress(from, rawTransaction.from)).map((transfer, idx) => (
+      <div className="TransactionReceipt-row" key={idx}>
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-send" alt="Sent" />
           {translate('CONFIRM_TX_SENT')}
@@ -60,18 +62,41 @@ export const TxReceiptTotals = ({
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
             asset={{
-              amount: bigify(assetAmount).toFixed(6),
-              ticker: asset.ticker,
-              uuid: asset.uuid
+              amount: bigify(transfer.amount).toFixed(6),
+              ticker: transfer.asset.ticker,
+              uuid: transfer.asset.uuid
             }}
             fiat={{
               symbol: fiat.symbol,
               ticker: fiat.ticker,
-              amount: convertToFiat(assetAmount, assetRate).toFixed(2)
+              amount: convertToFiat(transfer.amount, transfer.rate).toFixed(2)
             }}
           />
         </div>
       </div>
+    ))}
+    {valueTransfers.filter(({ from }) => !isSameAddress(from, rawTransaction.from)).map((transfer, idx) => (
+      <div className="TransactionReceipt-row" key={idx}>
+        <div className="TransactionReceipt-row-column">
+          <SIcon type="tx-receive" alt="Sent" />
+          {translateRaw('CONFIRM_TX_RECEIVED') /*@todo: fix*/}
+        </div>
+        <div className="TransactionReceipt-row-column rightAligned">
+          <Amount
+            asset={{
+              amount: bigify(transfer.amount).toFixed(6),
+              ticker: transfer.asset.ticker,
+              uuid: transfer.asset.uuid
+            }}
+            fiat={{
+              symbol: fiat.symbol,
+              ticker: fiat.ticker,
+              amount: convertToFiat(transfer.amount, transfer.rate).toFixed(2)
+            }}
+          />
+        </div>
+      </div>
+    ))}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-fee" alt="Fee" /> {translate('CONFIRM_TX_FEE')}
@@ -97,10 +122,10 @@ export const TxReceiptTotals = ({
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-sent" alt="Sent" />
-          {translate('TOTAL')}
+          {'Total Sent' /* @todo: remove*/}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          {asset.type === 'base' ? (
+          {/*asset.type === 'base' ? (
             <Amount
               asset={{
                 amount: totalEtherFormatted,
@@ -130,7 +155,7 @@ export const TxReceiptTotals = ({
               bold={true}
               baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
             />
-          )}
+            )*/}
         </div>
       </div>
     </>

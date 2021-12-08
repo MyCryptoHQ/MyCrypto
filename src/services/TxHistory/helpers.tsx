@@ -3,12 +3,12 @@ import { parseEther } from '@ethersproject/units';
 
 import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { deriveTxFields, guessERC20Type } from '@helpers';
-import { ITxHistoryApiResponse } from '@services/ApiService/History';
+import { generateGenericErc20 } from '@features/SendAssets';
+import { IFullTxHistoryValueTransfer, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { ITxMetaTypes } from '@store/txHistory.slice';
 import { Asset, IAccount, ITxReceipt, Network, TxType } from '@types';
-import { fromWei, isSameAddress, isVoid, Wei } from '@utils';
+import { fromTokenBase, fromWei, isSameAddress, isVoid, toWei, Wei } from '@utils';
 import { isSameHash } from '@utils/isSameAddress';
 
 export const makeTxReceipt = (
@@ -16,33 +16,26 @@ export const makeTxReceipt = (
   network: Network,
   assets: Asset[]
 ): ITxReceipt => {
-  const contractAsset = getAssetByContractAndNetwork(tx.to, network)(assets);
   const baseAsset = getBaseAssetByNetwork({
     network,
     assets
   })!;
 
   const value = fromWei(Wei(BigNumber.from(tx.value).toString()), 'ether');
-
-  // Use this for now to improve quality of receipts
-  // @todo: Use erc20 transfer array
-  const ercType = guessERC20Type(tx.data);
-  const { amount, asset } = deriveTxFields(
-    ercType,
-    tx.data,
-    tx.to,
-    tx.value,
-    baseAsset,
-    contractAsset
-  );
-
+  const tokenTransfers: IFullTxHistoryValueTransfer[] = tx.erc20Transfers.map((transfer) => {
+    const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets)
+    if (!transferAsset) {
+      const genericAsset = generateGenericErc20(transfer.contractAddress, network.chainId.toString(), network.id)
+      return { to: transfer.to, from: transfer.from, asset: genericAsset, amount: fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal) }
+    }
+    return { to: transfer.to, from: transfer.from, asset: transferAsset, amount: fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal) }
+  })
   return {
     ...tx,
-    asset,
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
-    amount,
     data: tx.data,
+    erc20Transfers: tokenTransfers,
     gasPrice: BigNumber.from(tx.gasPrice),
     gasLimit: BigNumber.from(tx.gasLimit),
     gasUsed: !isVoid(tx.gasUsed) ? BigNumber.from(tx.gasUsed!) : undefined,

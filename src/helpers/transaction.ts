@@ -119,7 +119,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     value: BigNumber.from(txConfig.rawTransaction.value),
     to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
     nonce: BigNumber.from(nonce),
-
+    erc20Transfers: [],
     status,
     amount,
     data,
@@ -329,12 +329,10 @@ export const makeTxConfigFromTxReceipt = (
       type: txReceipt.type as any
     },
     receiverAddress: receiver && (getAddress(receiver) as TAddress),
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
-      : txReceipt.amount,
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
+    amount: '0',
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };

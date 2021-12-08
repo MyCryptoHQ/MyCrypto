@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Body, LinkApp, SubHeading, TimeElapsed, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useRates, useSettings } from '@services';
+import { useContacts, useRates, useSettings } from '@services';
 import { COLORS, SPACING } from '@theme';
 import translate from '@translations';
 import {
@@ -66,6 +66,7 @@ export default function MultiTxReceipt({
 }: Omit<IStepComponentProps, 'txConfig' | 'txReceipt'> & Props) {
   const { settings } = useSettings();
   const { getAssetRate } = useRates();
+  const { getContactByAddressAndNetworkId } = useContacts();
 
   const hasPendingTx = transactions.some((t) => t.status === ITxStatus.PENDING);
   const shouldRenderPendingBtn = pendingButton && hasPendingTx;
@@ -85,7 +86,7 @@ export default function MultiTxReceipt({
 
       {transactions.map((transaction, idx) => {
         const step = steps[idx];
-        const { asset, baseAsset, amount } = transactionsConfigs[idx];
+        const { asset, baseAsset, amount, receiverAddress, senderAccount } = transactionsConfigs[idx];
         const { gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
           transaction.txReceipt && transaction.txReceipt.gasUsed
@@ -99,7 +100,16 @@ export default function MultiTxReceipt({
         const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);
 
         const assetRate = getAssetRate(asset);
-
+        const recipient = receiverAddress || to!
+        const valueTransfer = {
+          amount,
+          asset,
+          rate: assetRate,
+          to: recipient,
+          from: senderAccount.address,
+          fromContact: getContactByAddressAndNetworkId(senderAccount.address, network.id),
+          toContact: recipient && getContactByAddressAndNetworkId(recipient, network.id)
+        }
         return (
           <div key={idx}>
             <div className="TransactionReceipt-row">
@@ -125,8 +135,7 @@ export default function MultiTxReceipt({
             </div>
             <div className="TransactionReceipt-divider" />
             <TxReceiptTotals
-              asset={asset}
-              assetAmount={amount}
+              valueTransfers={[valueTransfer]}
               baseAsset={baseAsset}
               assetRate={assetRate}
               baseAssetRate={baseAssetRate}

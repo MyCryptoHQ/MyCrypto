@@ -332,7 +332,7 @@ describe('AccountSlice', () => {
     it('uses tx history from store', () => {
       const state = {
         ...mockAppState(defaultAppState),
-        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
       };
       const actual = getMergedTxHistory(state);
 
@@ -368,7 +368,7 @@ describe('AccountSlice', () => {
           ...defaultAppState,
           accounts: [{ ...fAccount, transactions: [fTxReceipt] }]
         }),
-        txHistory: { history: [], error: false, txTypeMeta: fTxTypeMetas }
+        txHistory: { history: [], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: false }
       };
       const actual = getMergedTxHistory(state);
 
@@ -404,7 +404,7 @@ describe('AccountSlice', () => {
             }
           ]
         }),
-        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
       };
       const actual = getMergedTxHistory(state);
       expect(actual).toHaveLength(1);
@@ -436,7 +436,7 @@ describe('AccountSlice', () => {
             }
           ]
         }),
-        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas }
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
       };
       const actual = getMergedTxHistory(state);
       expect(actual).toHaveLength(2);
@@ -787,7 +787,7 @@ describe('AccountSlice', () => {
             addressBook: [],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .put(
           addTxToAccount({
@@ -821,7 +821,7 @@ describe('AccountSlice', () => {
             addressBook: [contact],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .put(
           updateAccount({
@@ -855,7 +855,7 @@ describe('AccountSlice', () => {
             addressBook: [contact],
             contracts: fContracts
           }),
-          txHistory: { history: [overwrittenTx], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [overwrittenTx], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .put(
           updateAccount({
@@ -886,7 +886,7 @@ describe('AccountSlice', () => {
             addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .not.put(
           addTxToAccount({
@@ -912,7 +912,7 @@ describe('AccountSlice', () => {
             addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .put(
           removeAccountTx({
@@ -942,7 +942,7 @@ describe('AccountSlice', () => {
             addressBook: [{ ...fContacts[0], network: 'Ethereum' }],
             contracts: fContracts
           }),
-          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas }
+          txHistory: { history: [fTxHistoryAPI], txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
         })
         .not.put(
           addTxToAccount({

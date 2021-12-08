@@ -263,7 +263,7 @@ export const getMergedTxHistory = createSelector(
     return (
       merge(apiTxs, accountTxs)
         .map((tx: ITxReceipt) => {
-          const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
+          const network = networks.find(({ id }) => tx.baseAsset.networkId === id) as Network;
 
           // if Txhistory contains a deleted network ie. MATIC remove from history.
           if (!network) return {} as ITxHistoryEntry;
@@ -498,14 +498,14 @@ export function* pendingTxPolling() {
   for (const pendingTxReceipt of pendingTransactions) {
     const senderAccount = getAccountByAddressAndNetworkName(accounts)(
       pendingTxReceipt.from,
-      pendingTxReceipt.asset.networkId
+      pendingTxReceipt.baseAsset.networkId
     ) as StoreAccount;
 
     const recipientAccount =
       pendingTxReceipt.to &&
       (getAccountByAddressAndNetworkName(accounts)(
         pendingTxReceipt.to,
-        pendingTxReceipt.asset.networkId
+        pendingTxReceipt.baseAsset.networkId
       ) as StoreAccount);
 
     // In special cases this might not be true, i.e Faucet txs
@@ -518,7 +518,7 @@ export function* pendingTxPolling() {
       const overwritingTx = userTxs.find(
         (t) =>
           t.nonce === pendingTxReceipt.nonce &&
-          t.asset.networkId === pendingTxReceipt.asset.networkId &&
+          t.baseAsset.networkId === pendingTxReceipt.baseAsset.networkId &&
           t.hash !== pendingTxReceipt.hash &&
           t.status === ITxStatus.SUCCESS
       );
@@ -533,7 +533,7 @@ export function* pendingTxPolling() {
       }
     }
 
-    const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
+    const network = getNetworkById(pendingTxReceipt.baseAsset.networkId, networks);
     // If network is not found in the pendingTransactionObject, we cannot continue.
     if (!network) continue;
     const provider = new ProviderHandler(network);

@@ -21,12 +21,14 @@ export interface ITxMetaTypes {
 export interface ITxHistoryState {
   history: ITxHistoryApiResponse[];
   txTypeMeta: ITxMetaTypes;
+  isHistoryFetchCompleted: boolean;
   error: string;
 }
 
 export const initialState = {
   history: [] as ITxHistoryApiResponse[],
   txTypeMeta: {} as ITxMetaTypes,
+  isHistoryFetchCompleted: false,
   error: false
 };
 
@@ -36,12 +38,14 @@ const slice = createSlice({
   reducers: {
     setHistory(state, action: PayloadAction<ITxHistoryApiResponse[]>) {
       state.history = action.payload;
+      state.isHistoryFetchCompleted = true;
     },
     setTxTypeMeta(state, action: PayloadAction<Record<TxType, ITxTypeMeta>>) {
       state.txTypeMeta = action.payload;
     },
     fetchError(state) {
       state.error = true;
+      state.isHistoryFetchCompleted = true;
     }
   }
 });
@@ -56,6 +60,7 @@ export const getSlice = createSelector(
   (s) => s
 );
 export const getTxHistory = createSelector([getSlice], (s) => s.history);
+export const getIsHistoryFetchCompleted = createSelector([getSlice], (s) => s.isHistoryFetchCompleted);
 export const getTxTypeMetas = createSelector([getSlice], (s) => s.txTypeMeta);
 /**
  * Sagas

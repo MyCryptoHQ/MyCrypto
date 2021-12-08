@@ -1,4 +1,5 @@
 import {
+  Asset,
   ITxData,
   ITxFromAddress,
   ITxGasLimit,
@@ -15,7 +16,7 @@ import {
 export interface ITxHistoryApiResponse {
   readonly blockNumber?: string; // Hex
   readonly data: ITxData;
-  readonly erc20Transfers?: ITxHistoryERC20Transfer[];
+  readonly erc20Transfers: ITxHistoryERC20Transfer[];
   readonly from: ITxFromAddress;
   readonly gasLimit: ITxGasLimit; // Hex
   readonly gasPrice: ITxGasPrice; // Hex
@@ -35,5 +36,12 @@ export interface ITxHistoryERC20Transfer {
   readonly from: TAddress;
   readonly to: TAddress;
   readonly contractAddress: TAddress;
+  readonly amount: string; // Hex
+}
+
+export interface IFullTxHistoryValueTransfer {
+  readonly from: TAddress;
+  readonly to: TAddress;
+  readonly asset: Asset;
   readonly amount: string; // Hex
 }

@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import BN from 'bn.js';
 import { Brand } from 'utility-types';
 
+import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { Address, Wei } from '@utils';
 
 import { TAddress } from './address';
@@ -30,13 +31,11 @@ export type ITxHash = Brand<string, 'TxHash'>;
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
 export interface IBaseTxReceipt {
-  readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
   readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED | ITxStatus.UNKNOWN;
 
   readonly receiverAddress: TAddress;
-  readonly amount: string;
   readonly data: string;
 
   readonly gasLimit: BigNumber;
@@ -47,7 +46,7 @@ export interface IBaseTxReceipt {
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;
-
+  readonly erc20Transfers: IFullTxHistoryValueTransfer[];
   readonly gasUsed?: BigNumber;
   readonly confirmations?: number;
 

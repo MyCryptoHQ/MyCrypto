@@ -69,5 +69,6 @@ export const fTxTypeMetas: ITxMetaTypes = {
 export const fTxHistory: ITxHistoryState = {
   history: [],
   txTypeMeta: fTxTypeMetas,
-  error: ''
+  error: '',
+  isHistoryFetchCompleted: false
 };

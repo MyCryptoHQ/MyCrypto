@@ -17,8 +17,9 @@ export const fetchTxStatus = async ({
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
   const cachedTx = txCache.find(
-    (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
+    (t) => t.hash === (txHash as ITxHash) && t.baseAsset.networkId === networkId
   );
+  console.debug('Looking for ', txHash, ' in ', cachedTx)
   if (cachedTx) {
     return { cachedTx, fetchedTx: undefined };
   }
