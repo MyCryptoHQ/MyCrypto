@@ -67,7 +67,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     description: 'ADD_WEB3DESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
     install: {
-      getItLink: 'https://metamask.io'
+      getItLink: 'https://metamask.io',
+      appStore: 'https://apps.apple.com/us/app/metamask/id1438144202',
+      googlePlay: 'https://play.google.com/store/apps/details?id=io.metamask'
     },
     flags: {
       supportsNonce: false
