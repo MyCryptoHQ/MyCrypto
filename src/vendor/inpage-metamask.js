@@ -1,20 +1,28 @@
-import { initProvider } from '@metamask/inpage-provider';
-import LocalMessageDuplexStream from 'post-message-stream';
+import { initializeProvider } from '@metamask/inpage-provider';
+import { WindowPostMessageStream } from '@metamask/post-message-stream';
 
-// Firefox Metamask Hack
+import { injectMobile } from './inpage-metamask-mobile';
+
+// Metamask injection hack
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133
 
 (() => {
-  if (!window.ethereum && !window.web3 && navigator.userAgent.includes('Firefox')) {
+  if (window.ethereum || window.web3) {
+    return;
+  }
+  if (navigator.userAgent.includes('Firefox')) {
     // setup background connection
-    const metamaskStream = new LocalMessageDuplexStream({
-      name: 'inpage',
-      target: 'contentscript'
+    const metamaskStream = new WindowPostMessageStream({
+      name: 'metamask-inpage',
+      target: 'metamask-contentscript'
     });
 
     // this will initialize the provider and set it as window.ethereum
-    initProvider({
-      connectionStream: metamaskStream
+    initializeProvider({
+      connectionStream: metamaskStream,
+      shouldShimWeb3: true
     });
+  } else if (navigator.userAgent.includes('iPhone')) {
+    injectMobile();
   }
 })();
