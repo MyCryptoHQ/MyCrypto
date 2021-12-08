@@ -13,7 +13,7 @@ const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 module.exports = merge.smart(common, {
   mode: 'production',
 
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   output: {
     path: path.join(config.path.output, 'web'),
@@ -39,10 +39,7 @@ module.exports = merge.smart(common, {
   plugins: [
     // The EnvironmentPlugin is shorthand for using the DefinePlugin on process.env keys.
     // https://webpack.js.org/plugins/environment-plugin/
-    new webpack.EnvironmentPlugin([
-      'TARGET_ENV',
-      'COMMIT_HASH'
-    ]),
+    new webpack.EnvironmentPlugin(['TARGET_ENV', 'COMMIT_HASH']),
 
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
