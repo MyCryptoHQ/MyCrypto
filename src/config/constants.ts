@@ -71,7 +71,8 @@ export const EXCLUDED_ASSETS = [
   '17da00cc-4901-5e04-87e0-f7e3cf9b382a',
   '2e96d50d-af13-5186-8ece-fc33872ab70c',
   'b1ef1841-6348-584e-a12e-ff2e3bbcd7ff',
-  'd41becc2-9f3a-57e8-a60a-e93ad17d1ea7'
+  'd41becc2-9f3a-57e8-a60a-e93ad17d1ea7',
+  'f383cc01-4942-5d0e-8442-3dbbc8cc8836'
 ];
 
 export const ETH_SCAN_BATCH_SIZE = 300;
