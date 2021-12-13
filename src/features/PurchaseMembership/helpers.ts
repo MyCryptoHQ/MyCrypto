@@ -31,7 +31,8 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   const membershipSelected = payload.membershipSelected;
 
   const weiPrice = toWei(membershipSelected.price, payload.asset.decimal ?? DEFAULT_ASSET_DECIMAL);
-  const useReferral = membershipSelected.networkId !== 'Ethereum';
+  // Referrals are disabled for now as per Unlock advice - usually we only want referrals enabled on cheaper networks since the referral logic adds to the gas cost
+  const useReferral = false;
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
