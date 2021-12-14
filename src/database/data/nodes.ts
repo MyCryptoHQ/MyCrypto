@@ -436,5 +436,21 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'Hecochain.com',
       url: 'https://http-mainnet.hecochain.com/'
     }
+  ],
+  xCHAIN: [
+    {
+      name: NetworkUtils.makeNodeName('xCHAIN', 'xchain.asia'),
+      type: NodeType.RPC,
+      service: 'xchain.asia',
+      url: 'https://rpc.xchain.asia/'
+    }
+  ],
+  Meta: [
+    {
+      name: NetworkUtils.makeNodeName('Meta', 'metachain.asia'),
+      type: NodeType.RPC,
+      service: 'metachain.asia',
+      url: 'https://rpc.metachain.asia/'
+    }
   ]
 };

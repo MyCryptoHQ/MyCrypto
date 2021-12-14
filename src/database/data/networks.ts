@@ -1133,5 +1133,59 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 60,
       initial: 1
     }
+  },
+  xCHAIN: {
+    id: 'xCHAIN',
+    name: 'xCHAIN',
+    unit: 'XTH' as TTicker,
+    chainId: 35,
+    isCustom: false,
+    color: '#1b1b3c',
+    blockExplorer: makeExplorer({
+      name: 'Blockscout',
+      origin: 'https://exp.xchain.asia'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_ETH
+    },
+    gasPriceSettings: {
+      min: 10,
+      max: 60,
+      initial: 13
+    }
+  },
+  Meta: {
+    id: 'Meta',
+    name: 'Meta',
+    unit: 'META' as TTicker,
+    chainId: 17,
+    isCustom: false,
+    color: '#223c99',
+    blockExplorer: makeExplorer({
+      name: 'Blockscout',
+      origin: 'https://exp.metachain.asia'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_ETH
+    },
+    gasPriceSettings: {
+      min: 10,
+      max: 60,
+      initial: 13
+    }
   }
 };
