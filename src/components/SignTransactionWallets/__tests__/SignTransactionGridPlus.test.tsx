@@ -3,7 +3,8 @@ import { ComponentProps } from 'react';
 import { APP_STATE, mockAppState, simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
-import { fTxConfig } from '@fixtures';
+import { fApproveErc20TxConfig, fTxConfig } from '@fixtures';
+import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
 import { getHeader } from './helper';
@@ -80,5 +81,26 @@ describe('SignTransactionWallets: GridPlus', () => {
         ).toBeInTheDocument(),
       { timeout: 60000 }
     );
+  });
+
+  it('Shows contract info if needed', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      txConfig: {
+        ...fApproveErc20TxConfig,
+        senderAccount: {
+          ...fTxConfig.senderAccount,
+          wallet: WalletId.GRIDPLUS
+        }
+      }
+    });
+    expect(
+      getByText(
+        translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
+          $contractName: translateRaw('UNKNOWN').toLowerCase()
+        }),
+        { exact: false }
+      )
+    ).toBeInTheDocument();
   });
 });

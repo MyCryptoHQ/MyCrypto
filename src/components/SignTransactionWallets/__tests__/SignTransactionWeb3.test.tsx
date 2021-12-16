@@ -3,7 +3,8 @@ import { ComponentProps } from 'react';
 import { simpleRender, waitFor } from 'test-utils';
 
 import SignTransaction from '@features/SendAssets/components/SignTransaction';
-import { fTxConfig } from '@fixtures';
+import { fApproveErc20TxConfig, fTxConfig } from '@fixtures';
+import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
 // eslint-disable-next-line jest/no-mocks-import
@@ -15,8 +16,8 @@ const defaultProps: ComponentProps<typeof SignTransaction> = {
   onComplete: jest.fn()
 };
 
-const getComponent = () => {
-  return simpleRender(<SignTransaction {...defaultProps} />);
+const getComponent = (props = defaultProps) => {
+  return simpleRender(<SignTransaction {...props} />);
 };
 
 jest.mock('@ethersproject/providers', () => {
@@ -31,11 +32,11 @@ jest.mock('@ethersproject/providers', () => {
 });
 
 describe('SignTransactionWallets: Web3', () => {
-  afterEach(() => {
+  afterAll(() => {
     jest.resetAllMocks();
   });
 
-  test('Can handle Web3 signing', async () => {
+  it('Can handle Web3 signing', async () => {
     const customWindow = window as CustomWindow;
     // Mock window.ethereum
     mockWindow(customWindow);
@@ -45,5 +46,26 @@ describe('SignTransactionWallets: Web3', () => {
     expect(customWindow.ethereum.enable).toHaveBeenCalled();
     await waitFor(() => expect(customWindow.ethereum.on).toHaveBeenCalled());
     await waitFor(() => expect(defaultProps.onComplete).toHaveBeenCalledWith('txhash'));
+  });
+
+  it('Shows contract info if needed', async () => {
+    const customWindow = window as CustomWindow;
+    // Mock window.ethereum
+    mockWindow(customWindow);
+    const { getByText } = getComponent({
+      ...defaultProps,
+      txConfig: {
+        ...fApproveErc20TxConfig,
+        senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.WEB3 }
+      }
+    });
+    expect(
+      getByText(
+        translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
+          $contractName: translateRaw('UNKNOWN').toLowerCase()
+        }),
+        { exact: false }
+      )
+    ).toBeInTheDocument();
   });
 });
