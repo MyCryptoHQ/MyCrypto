@@ -46,7 +46,7 @@ export interface IBaseTxReceipt {
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;
-  readonly erc20Transfers: IFullTxHistoryValueTransfer[];
+  readonly valueTransfers: IFullTxHistoryValueTransfer[];
   readonly gasUsed?: BigNumber;
   readonly confirmations?: number;
 

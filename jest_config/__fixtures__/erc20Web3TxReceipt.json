@@ -13,6 +13,7 @@
     "isCustom": true,
     "mtime": 1590734746709
   },
+  "valueTransfers": [],
   "baseAsset": {
     "ticker": "RopstenETH",
     "name": "Ropsten",

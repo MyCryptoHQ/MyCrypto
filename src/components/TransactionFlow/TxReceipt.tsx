@@ -43,7 +43,13 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { bigNumValueToViewableEther, buildTxUrl, isType2Receipt, isWeb3Wallet, truncate } from '@utils';
+import {
+  bigNumValueToViewableEther,
+  buildTxUrl,
+  isType2Receipt,
+  isWeb3Wallet,
+  truncate
+} from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
@@ -60,7 +66,6 @@ import { TxReceiptTotals } from './TxReceiptTotals';
 import { ISender } from './types';
 
 import './TxReceipt.scss';
-
 
 interface PendingBtnAction {
   text: string;
@@ -121,7 +126,7 @@ const TxReceipt = ({
   );
 
   const displayTxReceipt = receipt ?? userTx!; // @todo: figure out why this was swapped
-  console.debug('displayTxReceipt', txReceipt)
+  console.debug('displayTxReceipt', txReceipt);
   const timestamp = displayTxReceipt.timestamp ?? 0;
   const txStatus = displayTxReceipt.status ?? 0;
 
@@ -172,18 +177,17 @@ const TxReceipt = ({
     });
   }, []);
 
-  const baseAssetRate = getAssetRate(txConfig.baseAsset)
+  const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const valueTransfers = (() => {
-
-    if (!displayTxReceipt) return []
-    const valueTransferEvents = displayTxReceipt.erc20Transfers.map((transfer) => ({
+    if (!displayTxReceipt) return [];
+    const valueTransferEvents = displayTxReceipt.valueTransfers.map((transfer) => ({
       ...transfer,
       toContact: getContactByAddressAndNetworkId(transfer.to, network.id),
       fromContact: getContactByAddressAndNetworkId(transfer.from, network.id),
       rate: getAssetRate(transfer.asset),
       amount: transfer.amount
-    }))
-    console.debug('here: transfers ', displayTxReceipt.erc20Transfers, valueTransferEvents)
+    }));
+    console.debug('here: transfers ', displayTxReceipt.valueTransfers, valueTransferEvents);
     if (displayTxReceipt && !displayTxReceipt.value.isZero()) {
       valueTransferEvents.push({
         to: displayTxReceipt.to,
@@ -193,19 +197,21 @@ const TxReceipt = ({
         amount: bigNumValueToViewableEther(displayTxReceipt.value),
         asset: displayTxReceipt.baseAsset,
         rate: baseAssetRate
-      })
+      });
     } else if (txConfig.amount != '0') {
       valueTransferEvents.push({
         to: txConfig.receiverAddress || txConfig.rawTransaction.to!, // @todo: remove
         from: txConfig.senderAccount.address,
-        toContact: txConfig.receiverAddress && getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
+        toContact:
+          txConfig.receiverAddress &&
+          getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
         fromContact: getContactByAddressAndNetworkId(txConfig.senderAccount.address, network.id),
         amount: txConfig.amount,
         asset: txConfig.baseAsset,
         rate: baseAssetRate
-      })
+      });
     }
-    return valueTransferEvents
+    return valueTransferEvents;
   })();
 
   const handleTxSpeedUpRedirect = async () => {
@@ -255,7 +261,7 @@ const TxReceipt = ({
       />
     );
   }
-  console.debug('valueTransfers', valueTransfers)
+  console.debug('valueTransfers', valueTransfers);
   return (
     <TxReceiptUI
       settings={settings}
@@ -311,7 +317,7 @@ export interface TxReceiptDataProps {
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
   network: Network;
-  valueTransfers: ITxTransferEvent[]
+  valueTransfers: ITxTransferEvent[];
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;

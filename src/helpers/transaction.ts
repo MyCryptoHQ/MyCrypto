@@ -109,22 +109,21 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   const { data, gasLimit, nonce } = rawTransaction;
 
   const gas = formatGas(rawTransaction);
-
-  const txReceipt = {
+  const to = (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress;
+  const from = getAddress(txConfig.from) as TAddress;
+  const txReceipt: ITxReceipt = {
     ...gas,
     hash: txHash,
-    from: getAddress(txConfig.from) as TAddress,
+    from,
     receiverAddress: (txConfig.receiverAddress && getAddress(txConfig.receiverAddress)) as TAddress,
     gasLimit: BigNumber.from(gasLimit),
     value: BigNumber.from(txConfig.rawTransaction.value),
-    to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
+    to,
     nonce: BigNumber.from(nonce),
-    erc20Transfers: [],
+    valueTransfers: [{ from, to, asset, amount }],
     status,
-    amount,
     data,
     txType,
-    asset,
     baseAsset,
     blockNumber: 0,
     timestamp: 0,

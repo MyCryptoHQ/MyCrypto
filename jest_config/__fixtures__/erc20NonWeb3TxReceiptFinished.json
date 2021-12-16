@@ -9,6 +9,7 @@
     "type": "erc20",
     "isCustom": true
   },
+  "valueTransfers": [],
   "baseAsset": {
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "ticker": "RopstenETH",

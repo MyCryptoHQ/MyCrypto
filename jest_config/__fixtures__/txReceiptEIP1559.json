@@ -46,5 +46,6 @@
   "value": {
     "hex": "0x5af3107a4000",
     "type": "BigNumber"
-  }
+  },
+  "valueTransfers": []
 }

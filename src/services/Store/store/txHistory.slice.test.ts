@@ -26,7 +26,7 @@ describe('TxHistorySlice', () => {
 
   it('setHistory(): sets history array', () => {
     const actual = reducer(initialState, setHistory([fTxHistoryAPI]));
-    const expected = { ...initialState, history: [fTxHistoryAPI] };
+    const expected = { ...initialState, history: [fTxHistoryAPI], isHistoryFetchCompleted: true };
     expect(actual).toEqual(expected);
   });
 
@@ -38,7 +38,7 @@ describe('TxHistorySlice', () => {
 
   it('fetchError(): sets an error', () => {
     const actual = reducer(initialState, fetchError());
-    const expected = { ...initialState, error: true };
+    const expected = { ...initialState, error: true, isHistoryFetchCompleted: true };
     expect(actual).toEqual(expected);
   });
 });

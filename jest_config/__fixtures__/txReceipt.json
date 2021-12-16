@@ -18,6 +18,7 @@
     "ticker": "RopstenETH",
     "decimal": 18
   },
+  "valueTransfers": [],
   "txType": "STANDARD",
   "status": "PENDING",
   "gasPrice": "4000000000",

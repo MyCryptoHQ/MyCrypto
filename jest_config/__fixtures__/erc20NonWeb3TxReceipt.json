@@ -9,6 +9,7 @@
     "type": "erc20",
     "isCustom": true
   },
+  "valueTransfers": [],
   "baseAsset": {
     "ticker": "RopstenETH",
     "name": "Ropsten",

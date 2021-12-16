@@ -110,7 +110,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         to,
         baseAsset,
         receiverAddress,
-        erc20Transfers,
+        valueTransfers,
         value,
         fromAddressBookEntry,
         toAddressBookEntry,
@@ -130,13 +130,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         };
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
         const firstTransfer = value.isZero()
-          ? erc20Transfers[0]
-          : {
-            asset: baseAsset,
-            to,
-            from,
-            amount: toTokenBase(value.toString(), baseAsset.decimal || DEFAULT_ASSET_DECIMAL).toString()
-          } as IFullTxHistoryValueTransfer
+          ? valueTransfers[0]
+          : ({
+              asset: baseAsset,
+              to,
+              from,
+              amount: toTokenBase(
+                value.toString(),
+                baseAsset.decimal || DEFAULT_ASSET_DECIMAL
+              ).toString()
+            } as IFullTxHistoryValueTransfer);
         return [
           <TransactionLabel
             key={0}
@@ -170,7 +173,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: convertToFiat(firstTransfer.amount, getAssetRate(firstTransfer.asset)).toFixed(2)
+                amount: convertToFiat(
+                  firstTransfer.amount,
+                  getAssetRate(firstTransfer.asset)
+                ).toFixed(2)
               }}
             />
           </Box>,

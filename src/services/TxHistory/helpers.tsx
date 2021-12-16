@@ -23,19 +23,33 @@ export const makeTxReceipt = (
 
   const value = fromWei(Wei(BigNumber.from(tx.value).toString()), 'ether');
   const tokenTransfers: IFullTxHistoryValueTransfer[] = tx.erc20Transfers.map((transfer) => {
-    const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets)
+    const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets);
     if (!transferAsset) {
-      const genericAsset = generateGenericErc20(transfer.contractAddress, network.chainId.toString(), network.id)
-      return { to: transfer.to, from: transfer.from, asset: genericAsset, amount: fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal) }
+      const genericAsset = generateGenericErc20(
+        transfer.contractAddress,
+        network.chainId.toString(),
+        network.id
+      );
+      return {
+        to: transfer.to,
+        from: transfer.from,
+        asset: genericAsset,
+        amount: fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal)
+      };
     }
-    return { to: transfer.to, from: transfer.from, asset: transferAsset, amount: fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal) }
-  })
+    return {
+      to: transfer.to,
+      from: transfer.from,
+      asset: transferAsset,
+      amount: fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal)
+    };
+  });
   return {
     ...tx,
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
     data: tx.data,
-    erc20Transfers: tokenTransfers,
+    valueTransfers: tokenTransfers,
     gasPrice: BigNumber.from(tx.gasPrice),
     gasLimit: BigNumber.from(tx.gasLimit),
     gasUsed: !isVoid(tx.gasUsed) ? BigNumber.from(tx.gasUsed!) : undefined,

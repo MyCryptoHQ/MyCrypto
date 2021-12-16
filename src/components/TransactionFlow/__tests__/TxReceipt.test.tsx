@@ -29,7 +29,7 @@ const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
-  assetRate: 250,
+  valueTransfers: [],
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   senderContact,
   recipientContact,

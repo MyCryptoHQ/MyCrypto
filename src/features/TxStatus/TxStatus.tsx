@@ -82,9 +82,9 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   }, [txHash, networkId]);
 
   useEffect(() => {
-    console.debug('starting effect')
+    console.debug('starting effect');
     if (fetching && isHistoryFetchCompleted) {
-      console.debug('isHistoryFetchCompleted. txhistory length', txHistory.length)
+      console.debug('isHistoryFetchCompleted. txhistory length', txHistory.length);
       fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
         .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
@@ -106,8 +106,11 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
-  if (tx && tx.receipt.hash === '0xc299b46217adacdd6290726f011b0fa42355f08c5b0f36b1063cadb3232ca4e3') {
-    console.debug("~~~~~HERE~~~~~\n", tx.receipt.erc20Transfers)
+  if (
+    tx &&
+    tx.receipt.hash === '0xc299b46217adacdd6290726f011b0fa42355f08c5b0f36b1063cadb3232ca4e3'
+  ) {
+    console.debug('~~~~~HERE~~~~~\n', tx.receipt.valueTransfers);
   }
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
