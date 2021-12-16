@@ -1,5 +1,5 @@
 import { WALLETS_CONFIG } from '@config';
-import { fAccounts } from '@fixtures';
+import { fAccounts, fApproveErc20TxConfig } from '@fixtures';
 import { WalletId } from '@types';
 
 import { SignTransactionWeb3UI, UIProps, WalletSigningState } from './Web3';
@@ -10,7 +10,9 @@ const initialProps: UIProps = {
   walletConfig: WALLETS_CONFIG[WalletId.METAMASK],
   walletState: WalletSigningState.SUBMITTING,
   networkName: 'Ethereum',
-  senderAccount: { ...fAccounts[0], wallet: WalletId.METAMASK }
+  senderAccount: { ...fAccounts[0], wallet: WalletId.METAMASK },
+  rawTransaction: fApproveErc20TxConfig.rawTransaction,
+  contractName: '0x Proxy'
 };
 
 export const SignTransactionWeb3 = () => {

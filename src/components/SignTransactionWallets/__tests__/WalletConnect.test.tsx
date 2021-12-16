@@ -1,6 +1,7 @@
 import { simpleRender, waitFor } from 'test-utils';
 
-import { fAccount, fNetwork, fTransaction } from '@fixtures';
+import { fAccount, fApproveErc20TxConfig, fNetwork, fTransaction } from '@fixtures';
+import { translateRaw } from '@translations';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
 
@@ -39,11 +40,11 @@ jest.mock('@walletconnect/client', () =>
 );
 
 describe('SignTransactionWallets: WalletConnect', () => {
-  afterEach(() => {
+  afterAll(() => {
     jest.resetAllMocks();
   });
 
-  test('It renders and can sign', async () => {
+  it('renders and can sign', async () => {
     const titleText = /Connect and Unlock/i;
     const footerText = /What is WalletConnect/i;
 
@@ -57,5 +58,20 @@ describe('SignTransactionWallets: WalletConnect', () => {
 
     await waitFor(() => expect(defaultProps.onSuccess).toHaveBeenCalledWith('txhash'));
     expect(mockSend).toHaveBeenCalled();
+  });
+
+  it('Shows contract info if needed', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      rawTransaction: fApproveErc20TxConfig.rawTransaction
+    });
+    expect(
+      getByText(
+        translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
+          $contractName: translateRaw('UNKNOWN').toLowerCase()
+        }),
+        { exact: false }
+      )
+    ).toBeInTheDocument();
   });
 });

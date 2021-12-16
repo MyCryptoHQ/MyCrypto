@@ -5,9 +5,17 @@ import { TAddress, Wallet } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import { Body, Box, BusyBottom, Heading, Icon, InlineMessage, TIcon } from '@components';
+import { TxIntermediaryDisplay } from '@components/TransactionFlow/displays';
+import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { HARDWARE_CONFIG, WALLETS_CONFIG } from '@config';
 import { WalletFactory } from '@services/WalletService';
-import { connectWallet, getWalletConnection, useDispatch, useSelector } from '@store';
+import {
+  connectWallet,
+  getContractName,
+  getWalletConnection,
+  useDispatch,
+  useSelector
+} from '@store';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
@@ -135,6 +143,8 @@ export default function HardwareSignTransaction({
   );
 
   const walletType = HARDWARE_CONFIG[senderAccount.wallet as HardwareWalletId].busyBottom;
+  const network = senderAccount.networkId;
+  const contractName = useSelector(getContractName(network, rawTransaction.to));
 
   return (
     <SignTxHardwareUI
@@ -143,6 +153,8 @@ export default function HardwareSignTransaction({
       signingState={signingState}
       wallet={walletType}
       senderAccount={senderAccount}
+      rawTransaction={rawTransaction}
+      contractName={contractName}
     />
   );
 }
@@ -153,6 +165,8 @@ interface UIProps {
   signingState: WalletSigningState;
   wallet: BusyBottomConfig;
   senderAccount: IAccount;
+  rawTransaction: ITxObject;
+  contractName?: string;
 }
 
 export const SignTxHardwareUI = ({
@@ -160,7 +174,9 @@ export const SignTxHardwareUI = ({
   signerDescription,
   signingState,
   wallet,
-  senderAccount
+  senderAccount,
+  rawTransaction,
+  contractName
 }: UIProps) => (
   <>
     <Heading textAlign="center" fontWeight="bold" fontSize={FONT_SIZE.XXL}>
@@ -171,6 +187,11 @@ export const SignTxHardwareUI = ({
     <Body fontSize={FONT_SIZE.MD} marginTop={SPACING.MD}>
       {signerDescription}
     </Body>
+    {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
+      <Box mt={3}>
+        <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+      </Box>
+    )}
     <div>
       <SImgContainer>
         <Icon type={walletIconType} />
