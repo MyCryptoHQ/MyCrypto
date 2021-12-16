@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
 import { DEFAULT_NETWORK } from '@config';
-import { fAccounts } from '@fixtures';
+import { fAccounts, fApproveErc20TxConfig } from '@fixtures';
 import { translateRaw } from '@translations';
 import { BusyBottomConfig, WalletId } from '@types';
 
@@ -16,7 +16,9 @@ const initialProps: ComponentProps<typeof SignTxHardwareUI> = {
   }),
   wallet: BusyBottomConfig.LEDGER,
   senderAccount: { ...fAccounts[0], wallet: WalletId.LEDGER_NANO_S_NEW },
-  signingState: WalletSigningState.REJECTED
+  signingState: WalletSigningState.REJECTED,
+  rawTransaction: fApproveErc20TxConfig.rawTransaction,
+  contractName: '0x Proxy'
 };
 
 export const HardwareWalletUI = () => {
