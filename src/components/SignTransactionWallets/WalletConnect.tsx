@@ -171,11 +171,6 @@ export function SignTransactionWalletConnect({
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </SHeader>
       <SContent>
-        {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
-          <Box mt={3}>
-            <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
-          </Box>
-        )}
         {state.isConnected ? (
           <>
             <SSection center={true}>
@@ -208,6 +203,11 @@ export function SignTransactionWalletConnect({
             </Typography>
             <Typography as="div">{translateRaw('SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3')}</Typography>
           </SSection>
+        )}
+        {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
+          <Box mt={3}>
+            <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+          </Box>
         )}
         <SSection center={true} withOverlay={true}>
           <Overlay absolute={true} center={true} show={state.isConnected || !isEmpty(state.errors)}>
