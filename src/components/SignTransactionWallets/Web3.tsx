@@ -5,14 +5,18 @@ import { Web3Provider } from '@ethersproject/providers';
 import styled from 'styled-components';
 
 import { Body, Box, BusyBottom, Heading, InlineMessage } from '@components';
+import { TxIntermediaryDisplay } from '@components/TransactionFlow/displays';
+import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { IWalletConfig, WALLETS_CONFIG } from '@config';
 import { useNetworks } from '@services/Store';
+import { getContractName, useSelector } from '@store';
 import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import {
   BusyBottomConfig,
   InlineMessageType,
   ISignComponentProps,
+  ITxObject,
   StoreAccount,
   TAddress,
   WalletId
@@ -113,12 +117,17 @@ export default function SignTransactionWeb3({
       });
   };
 
+  const network = senderAccount.networkId;
+  const contractName = useSelector(getContractName(network, rawTransaction.to));
+
   return (
     <SignTransactionWeb3UI
       walletConfig={walletConfig}
       walletState={walletState}
       networkName={networkName}
       senderAccount={senderAccount}
+      rawTransaction={rawTransaction}
+      contractName={contractName}
     />
   );
 }
@@ -158,13 +167,17 @@ export interface UIProps {
   walletState: WalletSigningState;
   networkName: string;
   senderAccount: StoreAccount;
+  rawTransaction: ITxObject;
+  contractName?: string;
 }
 
 export const SignTransactionWeb3UI = ({
   walletConfig,
   walletState,
   networkName,
-  senderAccount
+  senderAccount,
+  rawTransaction,
+  contractName
 }: UIProps) => (
   <Box>
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
@@ -177,6 +190,11 @@ export const SignTransactionWeb3UI = ({
         $walletName: walletConfig.name || WALLETS_CONFIG.WEB3.name
       })}
     </Body>
+    {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
+      <Box mt={3}>
+        <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+      </Box>
+    )}
     <Web3ImgContainer>
       <Web3Img>
         <img src={walletConfig.icon} />

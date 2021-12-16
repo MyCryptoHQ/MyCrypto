@@ -3,6 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import {
   ITxConfig,
   ITxData,
+  ITxFromAddress,
   ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
@@ -110,14 +111,13 @@ export const fApproveErc20TxConfig = {
   baseAsset: { ...fAssets[0], balance: BigNumber.from('0x1b9ced41465be000') },
   rawTransaction: {
     chainId: 1,
-    data:
-      '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000',
-    from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
-    gasLimit: '0x249f0',
-    gasPrice: '0x12a05f200',
-    nonce: '0x1',
-    to: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
-    value: '0x0'
+    data: '0x095ea7b3000000000000000000000000221657776846890989a759ba2973e427dff5c9bb0000000000000000000000000000000000000000000000004563918244f40000' as ITxData,
+    from: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as ITxFromAddress,
+    gasLimit: '0x249f0' as ITxGasLimit,
+    gasPrice: '0x12a05f200' as ITxGasPrice,
+    nonce: '0x1' as ITxNonce,
+    to: '0x1985365e9f78359a9B6AD760e32412f4a445E862' as ITxToAddress,
+    value: '0x0' as ITxValue
   },
   receiverAddress: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
   senderAccount: fAccounts[0],

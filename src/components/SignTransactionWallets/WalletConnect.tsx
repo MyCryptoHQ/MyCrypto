@@ -4,6 +4,7 @@ import isEmpty from 'ramda/src/isEmpty';
 import styled, { css } from 'styled-components';
 
 import {
+  Box,
   BusyBottom,
   Button,
   CodeBlock,
@@ -12,9 +13,12 @@ import {
   Spinner,
   Typography
 } from '@components';
+import { TxIntermediaryDisplay } from '@components/TransactionFlow/displays';
+import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { getNetworkByChainId } from '@services';
 import { useNetworks } from '@services/Store';
 import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
+import { getContractName, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
@@ -159,12 +163,19 @@ export function SignTransactionWalletConnect({
     sendTx();
   }, [state.isConnected, state.promptSignRetry, state.errors]);
 
+  const contractName = useSelector(getContractName(network.id, rawTransaction.to));
+
   return (
     <>
       <SHeader>
         {translate('SIGNER_SELECT_WALLETCONNECT', { $walletId: translateRaw('X_WALLETCONNECT') })}
       </SHeader>
       <SContent>
+        {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
+          <Box mt={3}>
+            <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+          </Box>
+        )}
         {state.isConnected ? (
           <>
             <SSection center={true}>
