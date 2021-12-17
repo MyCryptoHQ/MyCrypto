@@ -3,7 +3,7 @@ import { parseEther } from '@ethersproject/units';
 
 import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { generateGenericErc20 } from '@features/SendAssets';
+import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
 import { IFullTxHistoryValueTransfer, ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { ITxMetaTypes } from '@store/txHistory.slice';
@@ -22,34 +22,51 @@ export const makeTxReceipt = (
   })!;
 
   const value = fromWei(Wei(BigNumber.from(tx.value).toString()), 'ether');
-  const tokenTransfers: IFullTxHistoryValueTransfer[] = tx.erc20Transfers.map((transfer) => {
+  const transfers: IFullTxHistoryValueTransfer[] = tx.erc20Transfers.map((transfer) => {
     const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets);
+    const isNFTTransfer = transfer.amount == '0x'
     if (!transferAsset) {
-      const genericAsset = generateGenericErc20(
+      const genericAsset = !isNFTTransfer ? generateGenericERC20(
+        transfer.contractAddress,
+        network.chainId.toString(),
+        network.id
+      ) : generateGenericERC721(
         transfer.contractAddress,
         network.chainId.toString(),
         network.id
       );
+
       return {
         to: transfer.to,
         from: transfer.from,
         asset: genericAsset,
-        amount: fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal)
+        amount: !isNFTTransfer ? fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal) : '0',
+        isNFTTransfer
       };
     }
     return {
       to: transfer.to,
       from: transfer.from,
       asset: transferAsset,
-      amount: fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal)
+      amount: !isNFTTransfer ? fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal) : '0',
+      isNFTTransfer
     };
   });
+  // if (!parseEther(value).isZero()) {
+  //   transfers.push({
+  //     asset: baseAsset,
+  //     to: tx.to,
+  //     from: tx.from,
+  //     amount: parseEther(value).toString(),
+  //     isNFTTransfer: false
+  //   } as IFullTxHistoryValueTransfer)
+  // }
   return {
     ...tx,
     baseAsset: baseAsset!,
     receiverAddress: tx.recipientAddress,
     data: tx.data,
-    valueTransfers: tokenTransfers,
+    valueTransfers: transfers,
     gasPrice: BigNumber.from(tx.gasPrice),
     gasLimit: BigNumber.from(tx.gasLimit),
     gasUsed: !isVoid(tx.gasUsed) ? BigNumber.from(tx.gasUsed!) : undefined,

@@ -73,6 +73,8 @@ const TableHead = styled.tr`
   border-bottom: 0.0625em solid ${(props) => props.theme.tableHeadBorder};
   background: ${(props) => props.theme.tableHeadBackground};
   font-size: 0.9em;
+  z-index: 4;
+  position: sticky;
   & > th:first-child {
     padding-left: ${SPACING.BASE};
   }

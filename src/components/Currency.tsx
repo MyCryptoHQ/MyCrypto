@@ -7,6 +7,7 @@ import { Body } from './NewTypography';
 
 interface Props {
   amount: string;
+  isNFTAsset?: boolean;
   symbol?: TCurrencySymbol;
   ticker?: TTicker;
   uuid?: TUuid;
@@ -19,6 +20,7 @@ interface Props {
 
 function Currency({
   amount,
+  isNFTAsset,
   symbol,
   ticker,
   uuid,
@@ -33,7 +35,7 @@ function Currency({
     <Box variant="rowAlign" display="inline-flex" style={{ fontSize: fontSize }} {...props}>
       {icon && uuid && <AssetIcon uuid={uuid} mr="0.5ch" size="1.2em" />}
       <Body as="span" fontWeight={bold ? 'bold' : 'normal'} fontSize={'inherit'} color={color}>
-        {formatCurrency(amount, decimals, ticker)}
+        {!isNFTAsset && formatCurrency(amount, decimals, ticker)}
         {ticker && !isFiatTicker(ticker) && ` ${symbol ?? ticker}`}
       </Body>
     </Box>

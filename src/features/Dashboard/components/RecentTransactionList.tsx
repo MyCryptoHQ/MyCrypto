@@ -23,8 +23,8 @@ import { getMergedTxHistory, useSelector } from '@store';
 import { getTxTypeMetas } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import { Asset, ITxStatus, StoreAccount, TxType } from '@types';
-import { bigify, convertToFiat, isSameAddress, toTokenBase, useScreenSize } from '@utils';
+import { Asset, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
+import { bigify, convertToFiat, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
 
 import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
@@ -128,23 +128,40 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: recipient,
           networkId
         };
+        if (!value.isZero()) {
+          valueTransfers.push({
+            asset: baseAsset,
+            to,
+            from,
+            amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString(),
+            isNFTTransfer: false
+          } as IFullTxHistoryValueTransfer);
+        }
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
-        const firstTransfer = value.isZero()
-          ? valueTransfers[0]
-          : ({
-              asset: baseAsset,
-              to,
-              from,
-              amount: toTokenBase(
-                value.toString(),
-                baseAsset.decimal || DEFAULT_ASSET_DECIMAL
-              ).toString()
-            } as IFullTxHistoryValueTransfer);
+        const sentValueTransfers = valueTransfers.filter((t) => isSameAddress(t.from, from))
+        const receivedValueTransfers = valueTransfers.filter((t) => isSameAddress(t.to, from))
+        const firstbase = bigify('0')
+        const secondbase = bigify('0')
+        const sentFiatValue = receivedValueTransfers.reduce((acc, cur) => {
+          acc.plus(convertToFiat(
+            cur.amount,
+            getAssetRate(cur.asset)
+          ))
+          return acc
+        }, firstbase)
+        const receivedFiatValue = sentValueTransfers.reduce((acc, cur) => {
+          acc.plus(convertToFiat(
+            cur.amount,
+            getAssetRate(cur.asset)
+          ))
+          return acc
+        }, secondbase)
+        /* todo: change from first transfer to include multi-transactions */
         return [
-          <TransactionLabel
+          <TransactionLabel 
             key={0}
-            image={makeTxIcon(entryConfig, firstTransfer.asset)}
-            label={entryConfig.label(firstTransfer.asset)}
+            image={makeTxIcon(entryConfig, baseAsset)}
+            label={entryConfig.label(baseAsset)}
             stage={status}
             date={timestamp}
           />,
@@ -163,24 +180,46 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             />
           ),
           <Box key={3}>
-            <Amount
+            {sentValueTransfers.length != 0 && <Amount
+              isNFTAsset={sentValueTransfers.length == 1 && sentValueTransfers[0].isNFTTransfer}
               // Adapt alignment for mobile display
               alignLeft={isMobile}
               asset={{
-                amount: bigify(firstTransfer.amount).toFixed(5),
-                ticker: firstTransfer.asset.ticker
+                amount: sentValueTransfers.length > 1
+                  ? sentValueTransfers.length.toString()
+                  : bigify(sentValueTransfers[0].amount).toFixed(5),
+                ticker: sentValueTransfers.length > 1
+                  ? 'Assets' as TTicker
+                  : sentValueTransfers[0].asset.ticker
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: convertToFiat(
-                  firstTransfer.amount,
-                  getAssetRate(firstTransfer.asset)
-                ).toFixed(2)
+                amount: receivedFiatValue.toFixed(2)
               }}
-            />
+            />}
           </Box>,
-          <Box key={4} variant="rowCenter">
+          <Box key={4}>
+            {receivedValueTransfers.length != 0 && <Amount
+              // Adapt alignment for mobile display
+              isNFTAsset={receivedValueTransfers.length == 1 && receivedValueTransfers[0].isNFTTransfer}
+              alignLeft={isMobile}
+              asset={{
+                amount: receivedValueTransfers.length > 1
+                  ? receivedValueTransfers.length.toString()
+                  : bigify(receivedValueTransfers[0].amount).toFixed(5),
+                ticker: receivedValueTransfers.length > 1
+                  ? 'Assets' as TTicker
+                  : receivedValueTransfers[0].asset.ticker
+              }}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: sentFiatValue.toFixed(2)
+              }}
+            />}
+          </Box>,
+          <Box key={5} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
                 translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')
@@ -218,7 +257,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       translateRaw('RECENT_TRANSACTIONS_DATE') || 'Date',
       translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS'),
       translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS'),
-      translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT'),
+      translateRaw('RECENT_TRANSACTIONS_SENT_ASSETS'),
+      translateRaw('RECENT_TRANSACTIONS_RECEIVED_ASSETS'),
       ''
     ],
     body: [],
@@ -230,7 +270,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
       iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
       reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
-    }
+    },
+    overlayRows: [0]
   };
   return (
     <DashboardPanel

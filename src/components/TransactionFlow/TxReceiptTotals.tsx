@@ -61,6 +61,7 @@ export const TxReceiptTotals = ({
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
+            isNFTAsset={transfer.isNFTTransfer}
             asset={{
               amount: bigify(transfer.amount).toFixed(6),
               ticker: transfer.asset.ticker,
@@ -83,6 +84,7 @@ export const TxReceiptTotals = ({
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
+            isNFTAsset={transfer.isNFTTransfer}
             asset={{
               amount: bigify(transfer.amount).toFixed(6),
               ticker: transfer.asset.ticker,
@@ -103,6 +105,7 @@ export const TxReceiptTotals = ({
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
+            isNFTAsset={false}
             asset={{
               amount: feeFormatted,
               ticker: baseAsset.ticker,

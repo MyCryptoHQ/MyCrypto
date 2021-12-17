@@ -44,4 +44,5 @@ export interface IFullTxHistoryValueTransfer {
   readonly to: TAddress;
   readonly asset: Asset;
   readonly amount: string; // Hex
+  readonly isNFTTransfer: boolean;
 }

@@ -173,7 +173,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const asset = isERC20
     ? assets.find(
         ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-      ) ?? generateGenericErc20(to!, i.chainId, network.id)
+      ) ?? generateGenericERC20(to!, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,
@@ -187,7 +187,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   };
 };
 
-export const generateGenericErc20 = (
+export const generateGenericERC20 = (
   contractAddress: TAddress,
   chainId: string,
   networkId: NetworkId
@@ -196,5 +196,17 @@ export const generateGenericErc20 = (
   name: translateRaw('GENERIC_ERC20_NAME'),
   ticker: 'Unknown ERC20' as TTicker,
   type: 'erc20',
+  networkId
+});
+
+export const generateGenericERC721 = (
+  contractAddress: TAddress,
+  chainId: string,
+  networkId: NetworkId
+): ExtendedAsset => ({
+  uuid: generateAssetUUID(chainId, contractAddress),
+  name: translateRaw('GENERIC_ERC721_NAME'),
+  ticker: 'Unknown NFT' as TTicker,
+  type: 'erc721',
   networkId
 });

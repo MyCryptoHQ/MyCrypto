@@ -14,7 +14,7 @@ import { translateRaw } from '@translations';
 import { ILegacyTxObject, TAddress, TTicker, TxQueryTypes } from '@types';
 
 import {
-  generateGenericErc20,
+  generateGenericERC20,
   isERC20Asset,
   parseQueryParams,
   parseTransactionQueryParams,
@@ -250,7 +250,7 @@ describe('parseTransactionQueryParams', () => {
   });
 });
 
-describe('generateGenericErc20', () => {
+describe('generateGenericERC20', () => {
   it('creates a generic erc20 token from contract address and chainID', () => {
     const testGenericERC20 = {
       uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1',
@@ -259,7 +259,7 @@ describe('generateGenericErc20', () => {
       type: 'erc20',
       networkId: 'Ethereum'
     };
-    const genericERC20 = generateGenericErc20(
+    const genericERC20 = generateGenericERC20(
       '0x6B175474E89094C44Da98b954EedeAC495271d0F' as TAddress,
       '1',
       'Ethereum'

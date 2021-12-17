@@ -120,7 +120,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     value: BigNumber.from(txConfig.rawTransaction.value),
     to,
     nonce: BigNumber.from(nonce),
-    valueTransfers: [{ from, to, asset, amount }],
+    valueTransfers: [{ from, to, asset, amount, isNFTTransfer: false }],
     status,
     data,
     txType,
