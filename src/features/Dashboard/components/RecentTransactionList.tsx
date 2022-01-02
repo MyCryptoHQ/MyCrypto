@@ -99,7 +99,6 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
-
   const createEntries = (_: string, collection: ITxHistoryEntry[]) =>
     collection.map(
       ({

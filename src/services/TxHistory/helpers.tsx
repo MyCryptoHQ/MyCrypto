@@ -9,7 +9,6 @@ import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/S
 import { ITxMetaTypes } from '@store/txHistory.slice';
 import { Asset, IAccount, ITxReceipt, Network, TxType } from '@types';
 import { fromTokenBase, fromWei, isSameAddress, isVoid, toWei, Wei } from '@utils';
-import { isSameHash } from '@utils/isSameAddress';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,
@@ -78,10 +77,19 @@ export const makeTxReceipt = (
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
+  const hashMap = accountTxs.reduce((acc, cur) => {
+    acc[cur.hash.toLowerCase()] = true
+    return acc
+  }, {} as { [key: string]: boolean })
   const filteredApiTxs = apiTxs.filter(
-    (tx) => !accountTxs.find((a) => isSameHash(a.hash, tx.hash))
+    (tx) => !hashMap[tx.hash.toLowerCase()]
   );
-  return filteredApiTxs.concat(accountTxs);
+  return Object.values(filteredApiTxs.concat(accountTxs).reduce((acc,curr) => {
+    if (!acc[curr.hash.toLowerCase()]) {
+      acc[curr.hash.toLowerCase()] = curr;
+    }
+    return acc
+  }, {} as { [key: string]: ITxReceipt }));
 };
 
 export const deriveTxType = (
