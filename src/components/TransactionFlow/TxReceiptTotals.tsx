@@ -76,7 +76,7 @@ export const TxReceiptTotals = ({
         </div>
       </div>
     ))}
-    {valueTransfers.filter(({ from }) => !isSameAddress(from, rawTransaction.from)).map((transfer, idx) => (
+    {valueTransfers.filter(({ from }) => isSameAddress(from, rawTransaction.to)).map((transfer, idx) => (
       <div className="TransactionReceipt-row" key={idx}>
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-receive" alt="Sent" />
