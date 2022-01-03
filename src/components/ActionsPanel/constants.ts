@@ -8,6 +8,7 @@ import {
   ETHUUID,
   EXT_URLS,
   FAUCET_NETWORKS,
+  GIV_AIRDROP_LINK,
   GOLEMV1UUID,
   LENDUUID,
   REPV1UUID,
@@ -171,6 +172,29 @@ export const actionTemplates: ActionTemplate[] = [
       props: {
         content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
         to: ENS_AIRDROP_LINK,
+        external: true
+      }
+    },
+    category: ACTION_CATEGORIES.THIRD_PARTY
+  },
+  {
+    name: ACTION_NAME.CLAIM_GIV,
+    heading: translateRaw('CLAIM_TOKENS_ACTION_HEADING', { $token: 'GIV' }),
+    icon: 'givLogo',
+    subHeading: ClaimSubHead,
+    body: [translate('CLAIM_TOKENS_ACTION_BODY', { $token: 'GIV' })],
+    filter: ({ claims }: ActionFilters) =>
+      claims[ClaimType.GIV]?.some((c) => c.state === ClaimState.UNCLAIMED),
+    priority: 30,
+    Component: ClaimTable,
+    props: {
+      type: ClaimType.GIV
+    },
+    button: {
+      component: ActionButton,
+      props: {
+        content: translateRaw('CLAIM_TOKENS_ACTION_BUTTON'),
+        to: GIV_AIRDROP_LINK,
         external: true
       }
     },

@@ -1,7 +1,9 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { DEFAULT_NETWORK } from '@config';
 import { ClaimsService } from '@services/ApiService';
+import { CLAIM_CONFIG } from '@services/ApiService/Claims/config';
 import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
 
 import {
@@ -11,7 +13,7 @@ import {
   getAccounts,
   resetAndCreateManyAccounts
 } from './account.slice';
-import { selectDefaultNetwork } from './network.slice';
+import { selectNetwork } from './network.slice';
 import { AppState } from './root.reducer';
 
 export const initialState = {
@@ -65,15 +67,18 @@ export function* claimsSaga() {
 export function* fetchClaimsWorker() {
   const accounts: StoreAccount[] = yield select(getAccounts);
 
-  const filteredAccounts = accounts.filter((a) => a.networkId === 'Ethereum');
-
-  if (filteredAccounts.length === 0) return;
-
-  const network: Network = yield select(selectDefaultNetwork);
-
   const types = Object.values(ClaimType);
 
   for (const type of types) {
+    const config = CLAIM_CONFIG[type];
+    const filteredAccounts = accounts.filter(
+      (a) => a.networkId === config.network || a.networkId === DEFAULT_NETWORK
+    );
+
+    if (filteredAccounts.length === 0) continue;
+
+    const network: Network = yield select(selectNetwork(config.network));
+
     try {
       const rawClaims = yield call(
         [ClaimsService.instance, ClaimsService.instance.getClaims],
