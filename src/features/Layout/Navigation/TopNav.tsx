@@ -1,11 +1,10 @@
 import { AnnouncementBanner, Box, Icon } from '@components';
-import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL, ROUTE_PATHS } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE, LATEST_NEWS_URL } from '@config';
 import { COLORS, SPACING } from '@theme';
 
 import { TopItem } from './components';
 
 export const TopNav = ({
-  current,
   isMobile,
   isTrayOpen,
   openTray
@@ -16,7 +15,6 @@ export const TopNav = ({
   openTray(): void;
 }) => {
   const color = isMobile && isTrayOpen ? COLORS.WHITE : COLORS.GREYISH_BROWN;
-  const currentPath = isMobile && isTrayOpen ? undefined : current;
 
   return (
     <Box
@@ -50,13 +48,6 @@ export const TopNav = ({
           />
         </>
       )}
-      <TopItem
-        title="NAVIGATION_JOIN"
-        icon="nav-membership"
-        href={ROUTE_PATHS.MYC_MEMBERSHIP.path}
-        current={currentPath === ROUTE_PATHS.MYC_MEMBERSHIP.path}
-        color={color}
-      />
       <TopItem
         isExternal={true}
         title="NAVIGATION_HELP"
