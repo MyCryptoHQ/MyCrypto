@@ -63,10 +63,10 @@ const MoreIcon = styled(Icon)`
 `;
 
 const TokenDashboardPanel = styled(DashboardPanel)<{ isMyCryptoMember: boolean }>`
-  max-height: 890px;
+  max-height: 866px;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     min-height: 430px;
-    height: ${(props) => (props.isMyCryptoMember ? '660px' : '890px')};
+    height: ${(props) => (props.isMyCryptoMember ? '660px' : '866px')};
   }
 `;
 
