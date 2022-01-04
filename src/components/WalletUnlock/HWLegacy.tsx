@@ -102,8 +102,8 @@ class HWLegacyClass extends PureComponent<Props & INetworkContext, State> {
       );
     } else {
       return (
-        <Box p="2.5em">
-          <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+        <Box>
+          <Heading fontSize="32px" textAlign="center" fontWeight="bold" mt="0">
             {translate('UNLOCK_WALLET')}{' '}
             {translateRaw('YOUR_WALLET_TYPE', { $walletType: translateRaw(this.props.wallet.lid) })}
           </Heading>

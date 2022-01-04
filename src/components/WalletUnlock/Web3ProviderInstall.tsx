@@ -108,7 +108,7 @@ const Web3ProviderInstall = () => {
 };
 
 export const Web3ProviderInstallUI = ({ isMobile }: { isMobile: boolean }) => (
-  <Box p={{ _: 0, xs: '2.5em' }}>
+  <Box>
     <Heading fontSize="32px" textAlign="center" fontWeight="bold">
       {translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE', {
         $walletId: isMobile ? 'Web3 Provider' : 'Metamask'
