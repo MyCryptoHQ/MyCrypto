@@ -4,28 +4,17 @@ import styled from 'styled-components';
 
 import { Body, Box, Button, Heading, NetworkSelector } from '@components';
 import { useNetworks } from '@services/Store';
-import { SPACING } from '@theme';
 import translate from '@translations';
 import { FormData, NetworkId } from '@types';
 
 import { FormDataActionType as ActionType } from '../types';
 
 const NetworkForm = styled.div`
-  margin-top: ${SPACING.BASE};
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  margin-top: 2em;
 `;
 
 const SButton = styled(Button)`
-  max-width: 420px;
-  width: 100%;
-  height: 50px;
-  position: absolute;
-  bottom: 2em;
+  margin-top: 4em;
 `;
 
 interface Props {
@@ -49,8 +38,8 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const validNetwork = networks.some((n) => n.id === network);
 
   return (
-    <Box m="2.5em" height="629px" position="relative">
-      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+    <Box position="relative">
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold" mt="0">
         {translate('ADD_ACCOUNT_NETWORK_TITLE')}
       </Heading>
       <Body textAlign="center" fontSize="2" paddingTop="16px">
@@ -64,11 +53,9 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
           showTooltip={true}
         />
       </NetworkForm>
-      <ButtonWrapper>
-        <SButton disabled={!validNetwork} onClick={onSubmit}>
-          {translate('ADD_ACCOUNT_NETWORK_ACTION')}
-        </SButton>
-      </ButtonWrapper>
+      <SButton fullwidth={true} disabled={!validNetwork} onClick={onSubmit}>
+        {translate('ADD_ACCOUNT_NETWORK_ACTION')}
+      </SButton>
     </Box>
   );
 }
