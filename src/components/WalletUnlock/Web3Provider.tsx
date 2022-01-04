@@ -125,8 +125,8 @@ export const Web3UnlockUI = ({
   web3ProviderSettings,
   unlockWallet
 }: Web3UnlockUIProps) => (
-  <Box p="2.5em">
-    <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+  <Box>
+    <Heading fontSize="32px" textAlign="center" fontWeight="bold" mt="0">
       {isDefault
         ? translate('ADD_ACCOUNT_WEB3_TITLE_DEFAULT', transProps)
         : translate('ADD_ACCOUNT_WEB3_TITLE', transProps)}
