@@ -42,7 +42,7 @@ import {
   TxQueryTypes,
   WalletId
 } from '@types';
-import { buildTxUrl, isType2Receipt, isWeb3Wallet, truncate } from '@utils';
+import { buildTxUrl, isSameAddress, isType2Receipt, isWeb3Wallet, truncate } from '@utils';
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
@@ -381,7 +381,7 @@ export const TxReceiptUI = ({
 
       {/* CONTRACT BOX */}
 
-      {rawTransaction.to && isContractCall && (
+      {rawTransaction.to && isContractCall && !isSameAddress(rawTransaction.to, receiverAddress) && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
         </div>

@@ -21,7 +21,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
+import { bigify, bigNumGasPriceToViewableGwei, stripHexPrefix } from '@utils';
 import { isType2Tx } from '@utils/typedTx';
 
 import { ISender } from './types';
@@ -169,8 +169,5 @@ export const calculateReplacementGasPrice = async (txConfig: ITxConfig, network:
 };
 
 export const isContractInteraction = (data: string, type?: ITxType) => {
-  if (type) {
-    return CONTRACT_INTERACTION_TYPES.includes(type);
-  }
-  return data !== '0x';
+  return (type && CONTRACT_INTERACTION_TYPES.includes(type)) || stripHexPrefix(data).length > 0;
 };
