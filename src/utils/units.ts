@@ -84,7 +84,7 @@ const fromWei = (wei: Wei, unit: UnitKey) => {
   return baseToConvertedUnit(wei.toString(), decimal);
 };
 
-const toWei = (value: string | number, decimal: number): Wei => {
+const toWei = (value: BigifySupported, decimal: number): Wei => {
   const wei = convertedToBaseUnit(bigify(value).toString(10), decimal);
   return Wei(wei);
 };
