@@ -3,11 +3,13 @@ import {
   DAPPNODE_TOKEN_DISTRIBUTOR,
   ENS_CLAIM_API,
   ENS_TOKEN_DISTRIBUTOR,
+  GIV_CLAIM_API,
   GIV_TOKEN_DISTRIBUTOR,
   UNISWAP_TOKEN_DISTRIBUTOR,
   UNISWAP_UNI_CLAIM_API
 } from '@config';
 import { ClaimType, NetworkId } from '@types';
+import { bigify, hexlify } from '@utils';
 
 interface ClaimConfig {
   // Base URL
@@ -15,6 +17,8 @@ interface ClaimConfig {
   // Contract Address
   tokenDistributor: string;
   network: NetworkId;
+  // In case the amounts need extra processing
+  processAmount?(hex: string): string;
 }
 
 export const CLAIM_CONFIG: Record<ClaimType, ClaimConfig> = {
@@ -34,8 +38,9 @@ export const CLAIM_CONFIG: Record<ClaimType, ClaimConfig> = {
     network: 'Ethereum'
   },
   [ClaimType.GIV]: {
-    api: ENS_CLAIM_API, // @todo Change
+    api: GIV_CLAIM_API,
     tokenDistributor: GIV_TOKEN_DISTRIBUTOR,
-    network: 'xDAI'
+    network: 'xDAI',
+    processAmount: (hex) => hexlify(bigify(hex).div(10))
   }
 };
