@@ -279,7 +279,7 @@ export const makeTxConfigFromTx = (
 
   const txConfig: ITxConfig = {
     rawTransaction: {
-      to: getAddress(to) as ITxToAddress,
+      to: to && (getAddress(to) as ITxToAddress),
       value: hexlify(decodedTx.value, hexConfig) as ITxValue,
       gasLimit: hexlify(decodedTx.gasLimit, hexConfig) as ITxGasLimit,
       data: decodedTx.data as ITxData,
@@ -290,7 +290,7 @@ export const makeTxConfigFromTx = (
       // @todo Cleaner way of doing this?
       type: decodedTx.type as any
     },
-    receiverAddress: getAddress(receiverAddress) as TAddress,
+    receiverAddress: receiverAddress && (getAddress(receiverAddress) as TAddress),
     amount,
     networkId: network.id,
     asset,
@@ -367,7 +367,7 @@ export const makeTxItem = (
 export const deriveTxFields = (
   ercType: ERCType,
   data: ITxData,
-  toAddress: ITxToAddress,
+  toAddress: ITxToAddress | undefined,
   value: ITxValue,
   baseAsset: Asset,
   contractAsset?: Asset
@@ -410,12 +410,14 @@ export const guessERC20Type = (data: string): ERCType => {
 export const deriveTxRecipientsAndAmount = (
   ercType: ERCType,
   data: ITxData,
-  toAddress: ITxToAddress,
+  toAddress: ITxToAddress | undefined,
   value: ITxValue
 ) => {
   switch (ercType) {
     case ERCType.TRANSFER: {
-      const { _to, _value } = decodeTransfer(data);
+      const { _to, _value }: { _to: ITxToAddress | undefined; _value: ITxValue } = decodeTransfer(
+        data
+      );
       return { to: toAddress, amount: _value, receiverAddress: _to };
     }
 
