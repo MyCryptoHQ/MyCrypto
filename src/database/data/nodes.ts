@@ -364,6 +364,12 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       type: NodeType.RPC,
       service: 'xdaichain.com',
       url: 'https://rpc.xdaichain.com/'
+    },
+    {
+      name: NetworkUtils.makeNodeName('xDAI', 'poanetwork.dev'),
+      type: NodeType.RPC,
+      service: 'poanetwork.dev',
+      url: 'https://xdai.poanetwork.dev/'
     }
   ],
   SmartChain: [
