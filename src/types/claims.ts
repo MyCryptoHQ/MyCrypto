@@ -4,7 +4,8 @@ import { ITxValue } from './transactionFlow';
 export enum ClaimType {
   UNI = 'UNI',
   NODE = 'NODE',
-  ENS = 'ENS'
+  ENS = 'ENS',
+  GIV = 'GIV'
 }
 
 export enum ClaimState {

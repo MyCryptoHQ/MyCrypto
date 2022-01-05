@@ -63,10 +63,12 @@ export default class ClaimsService {
           })
           .then((data) => UniDistributor.isClaimed.decodeOutput(data))
           .then(({ claimed }) => claimed);
+        const config = CLAIM_CONFIG[type];
+        const amount = config.processAmount ? config.processAmount(claim.Amount) : claim.Amount;
         return {
           address,
           state: claimed ? ClaimState.CLAIMED : ClaimState.UNCLAIMED,
-          amount: claim.Amount
+          amount
         };
       }
       return { address, state: ClaimState.NO_CLAIM, amount: '0x00' };

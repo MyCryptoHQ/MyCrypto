@@ -15,6 +15,7 @@ export enum ACTION_NAME {
   CLAIM_UNI = 'claim_uni',
   CLAIM_DAPPNODE = 'claim_dappnode',
   CLAIM_ENS = 'claim_ens',
+  CLAIM_GIV = 'claim_giv',
   RENEW_ENS = 'renew_ens',
   BUY_HW = 'buy_hw',
   MYC_MEMBERSHIP = 'myc_membership',
