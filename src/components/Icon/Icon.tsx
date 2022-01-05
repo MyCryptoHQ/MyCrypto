@@ -100,6 +100,7 @@ import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import openSeaLogo from '@assets/images/credits/credits-opensea.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
+import givLogo from '@assets/images/giveth-logo.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 import buyIcon from '@assets/images/icn-buy.svg';
@@ -201,6 +202,7 @@ const svgIcons = {
   zapperLogo,
   'rep-logo': repLogo,
   zeroxLogo,
+  givLogo,
 
   /* Social Icons */
   coinmarketcap,
