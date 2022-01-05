@@ -6,7 +6,7 @@ import { trackInit } from '@services';
 
 import accountSlice, { startBalancesPolling, startTxPolling } from './account.slice';
 import assetSlice, { fetchAssets } from './asset.slice';
-import { fetchClaims } from './claims.slice';
+import claimsSlice, { fetchClaims } from './claims.slice';
 import connectionsSlice from './connections.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
@@ -42,7 +42,8 @@ const persistenceReducer = combineReducers({
   [settingsSlice.name]: settingsSlice.reducer,
   [userActionSlice.name]: userActionSlice.reducer,
   [promoPoapsSlice.name]: promoPoapsSlice.reducer,
-  [connectionsSlice.name]: connectionsSlice.reducer
+  [connectionsSlice.name]: connectionsSlice.reducer,
+  [claimsSlice.name]: claimsSlice.reducer
 });
 
 const slice = {

@@ -4,7 +4,8 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { DEFAULT_NETWORK } from '@config';
 import { ClaimsService } from '@services/ApiService';
 import { CLAIM_CONFIG } from '@services/ApiService/Claims/config';
-import { ClaimResult, ClaimType, Network, StoreAccount } from '@types';
+import { ClaimResult, ClaimState, ClaimType, LSKeys, Network, StoreAccount } from '@types';
+import { isSameAddress } from '@utils';
 
 import {
   createAccount,
@@ -14,7 +15,12 @@ import {
   resetAndCreateManyAccounts
 } from './account.slice';
 import { selectNetwork } from './network.slice';
-import { AppState } from './root.reducer';
+import { getAppState } from './selectors';
+
+export interface ClaimsState {
+  claims: Record<ClaimType, ClaimResult[]>;
+  error: boolean;
+}
 
 export const initialState = {
   claims: {} as Record<ClaimType, ClaimResult[]>,
@@ -22,11 +28,16 @@ export const initialState = {
 };
 
 const slice = createSlice({
-  name: 'claims',
+  name: LSKeys.CLAIMS,
   initialState,
   reducers: {
     setClaims(state, action: PayloadAction<{ type: ClaimType; claims: ClaimResult[] }>) {
-      state.claims[action.payload.type] = action.payload.claims;
+      const addresses = action.payload.claims.map((a) => a.address);
+      const existing =
+        state.claims[action.payload.type]?.filter((c) =>
+          addresses.every((a) => !isSameAddress(a, c.address))
+        ) ?? [];
+      state.claims[action.payload.type] = [...action.payload.claims, ...existing];
     },
     fetchError(state) {
       state.error = true;
@@ -39,10 +50,7 @@ export const fetchClaims = createAction(`${slice.name}/fetchClaims`);
 /**
  * Selectors
  */
-export const getSlice = createSelector(
-  (s: AppState) => s.claims,
-  (s) => s
-);
+export const getSlice = createSelector([getAppState], (s) => s[slice.name]);
 export const getAllClaims = createSelector([getSlice], (s) => s.claims);
 export const getClaims = (type: ClaimType) =>
   createSelector([getAllClaims], (claims) => claims[type]);
@@ -71,15 +79,35 @@ export function* fetchClaimsWorker() {
 
   for (const type of types) {
     const config = CLAIM_CONFIG[type];
-    const filteredAccounts = accounts.filter(
+    const networkAccounts = accounts.filter(
       (a) => a.networkId === config.network || a.networkId === DEFAULT_NETWORK
     );
 
-    if (filteredAccounts.length === 0) continue;
+    if (networkAccounts.length === 0) continue;
 
     const network: Network = yield select(selectNetwork(config.network));
 
+    const existingClaims: ClaimResult[] = yield select(getClaims(type));
+    const existingFinishedClaims = existingClaims
+      .filter((c) => c.state !== ClaimState.UNCLAIMED)
+      .map((c) => c.address);
+    const existingNonFinishedClaims = existingClaims
+      .filter((c) => c.state === ClaimState.UNCLAIMED)
+      .reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur.address]: { Amount: cur.amount, Index: cur.index }
+        }),
+        {}
+      );
+
     try {
+      const filteredAccounts = networkAccounts.filter((a) =>
+        existingFinishedClaims.every((c) => !isSameAddress(c, a.address))
+      );
+
+      if (filteredAccounts.length === 0) continue;
+
       const rawClaims = yield call(
         [ClaimsService.instance, ClaimsService.instance.getClaims],
         type,
@@ -90,11 +118,12 @@ export function* fetchClaimsWorker() {
         [ClaimsService.instance, ClaimsService.instance.isClaimed],
         network,
         type,
-        rawClaims
+        { ...rawClaims, ...existingNonFinishedClaims }
       );
 
       yield put(slice.actions.setClaims({ type, claims }));
     } catch (err) {
+      console.error(err);
       yield put(slice.actions.fetchError());
     }
   }

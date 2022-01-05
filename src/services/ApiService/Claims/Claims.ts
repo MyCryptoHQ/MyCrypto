@@ -43,7 +43,7 @@ export default class ClaimsService {
         return claims;
       })
       .catch((err) => {
-        console.debug('[UniswapService]: Get Claims failed: ', err);
+        console.debug('[Claims]: Get Claims failed: ', err);
         return null;
       });
   }
@@ -68,7 +68,8 @@ export default class ClaimsService {
         return {
           address,
           state: claimed ? ClaimState.CLAIMED : ClaimState.UNCLAIMED,
-          amount
+          amount,
+          index: claim.Index
         };
       }
       return { address, state: ClaimState.NO_CLAIM, amount: '0x00' };

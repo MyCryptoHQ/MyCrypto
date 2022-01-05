@@ -23,7 +23,8 @@ describe('ClaimsSlice', () => {
       {
         address: fAccounts[0].address as TAddress,
         state: ClaimState.UNCLAIMED,
-        amount: '403' as ITxValue
+        amount: '403' as ITxValue,
+        index: 139
       }
     ];
     const actual = reducer(initialState, setClaims({ type: ClaimType.UNI, claims }));
@@ -45,7 +46,8 @@ describe('claimsSaga()', () => {
       {
         address: fAccounts[0].address,
         state: ClaimState.UNCLAIMED,
-        amount: '0x15AF1D78B58C400000' as ITxValue
+        amount: '0x15AF1D78B58C400000' as ITxValue,
+        index: 139
       }
     ];
     return expectSaga(claimsSaga)
