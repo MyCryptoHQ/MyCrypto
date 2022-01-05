@@ -394,7 +394,7 @@ export const TxReceiptUI = ({
               from: rawTransaction.from,
               nonce: rawTransaction.nonce
             })}
-            label="Transaction deployed following contract"
+            label={translateRaw('TX_DEPLOY_ADDRESS_LABEL')}
           />
         </div>
       )}
