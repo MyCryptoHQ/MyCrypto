@@ -21,7 +21,8 @@ export const calculateMinMaxFee = ({
 
   const maxFee = gasStringsToMaxGasNumber(maxFeePerGas, gasLimit);
   const maxFeeFiat = maxFee.multipliedBy(baseAssetRate);
-  const hasFiatValue = maxFeeFiat.gt(0);
+  // Changed this from >0 to >=0.01 because 0.01 is the lowest fiat value we show in the UI
+  const hasSignificantFiatValue = maxFeeFiat.gte(0.01);
 
   const minMaxFee =
     viewableBaseFee &&
@@ -45,7 +46,7 @@ export const calculateMinMaxFee = ({
     avgFeeFiat,
     maxFee,
     maxFeeFiat,
-    hasFiatValue,
+    hasSignificantFiatValue,
     viewableBaseFee
   };
 };
