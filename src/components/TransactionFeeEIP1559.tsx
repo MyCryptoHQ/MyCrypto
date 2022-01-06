@@ -71,7 +71,7 @@ export const TransactionFeeEIP1559 = ({
     avgFeeFiat,
     maxFee,
     maxFeeFiat,
-    hasFiatValue
+    hasSignificantFiatValue
   } = calculateMinMaxFee({ baseFee, baseAssetRate, maxFeePerGas, maxPriorityFeePerGas, gasLimit });
 
   return (
@@ -162,7 +162,7 @@ export const TransactionFeeEIP1559 = ({
         <Box variant="rowAlign" justifyContent="space-between">
           <Box>
             <Body mb="0" fontWeight="bold" color="GREYISH_BROWN" fontSize="3">
-              {hasFiatValue ? (
+              {hasSignificantFiatValue ? (
                 <Currency
                   bold={true}
                   amount={avgFeeFiat.toString(10)}
@@ -181,18 +181,18 @@ export const TransactionFeeEIP1559 = ({
             </Body>
             <Body mt="1" mb="0" color="BLUE_GREY">
               {translateRaw('CUSTOMIZED_TOTAL_FEE')}{' '}
-              {hasFiatValue && `(${avgFee.toFixed(6)} ${baseAsset.ticker})`}
+              {hasSignificantFiatValue && `(${avgFee.toFixed(6)} ${baseAsset.ticker})`}
             </Body>
           </Box>
           <Box>
             <Body mb="0" fontWeight="bold" color="GREYISH_BROWN" textAlign="right" fontSize="2">
-              {hasFiatValue ? (
+              {hasSignificantFiatValue ? (
                 <Currency bold={true} amount={minFeeFiat.toString(10)} decimals={2} />
               ) : (
                 <Currency bold={true} amount={minFee.toString(10)} />
               )}
               {' - '}
-              {hasFiatValue ? (
+              {hasSignificantFiatValue ? (
                 <Currency
                   bold={true}
                   amount={maxFeeFiat.toString(10)}
