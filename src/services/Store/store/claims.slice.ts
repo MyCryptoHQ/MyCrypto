@@ -18,7 +18,7 @@ import { selectNetwork } from './network.slice';
 import { getAppState } from './selectors';
 
 export interface ClaimsState {
-  claims: Record<ClaimType, ClaimResult[]>;
+  claims: Partial<Record<ClaimType, ClaimResult[]>>;
   error: boolean;
 }
 
@@ -53,7 +53,7 @@ export const fetchClaims = createAction(`${slice.name}/fetchClaims`);
 export const getSlice = createSelector([getAppState], (s) => s[slice.name]);
 export const getAllClaims = createSelector([getSlice], (s) => s.claims);
 export const getClaims = (type: ClaimType) =>
-  createSelector([getAllClaims], (claims) => claims[type]);
+  createSelector([getAllClaims], (claims) => claims[type] ?? []);
 /**
  * Sagas
  */

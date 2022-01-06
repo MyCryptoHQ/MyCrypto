@@ -54,7 +54,8 @@ describe('claimsSaga()', () => {
       .withState(
         mockAppState({
           accounts,
-          networks: fNetworks
+          networks: fNetworks,
+          claims: { claims: {}, error: false }
         })
       )
       .provide([
@@ -69,7 +70,13 @@ describe('claimsSaga()', () => {
   it('can sets error if the call fails', () => {
     const error = new Error('error');
     return expectSaga(claimsSaga)
-      .withState(mockAppState({ accounts: fAccounts, networks: fNetworks }))
+      .withState(
+        mockAppState({
+          accounts: fAccounts,
+          networks: fNetworks,
+          claims: { claims: {}, error: false }
+        })
+      )
       .provide([[call.fn(ClaimsService.instance.getClaims), throwError(error)]])
       .put(fetchError())
       .dispatch(fetchClaims())
