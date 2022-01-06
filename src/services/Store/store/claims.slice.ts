@@ -23,7 +23,7 @@ export interface ClaimsState {
 }
 
 export const initialState = {
-  claims: {} as Record<ClaimType, ClaimResult[]>,
+  claims: {} as Partial<Record<ClaimType, ClaimResult[]>>,
   error: false
 };
 
