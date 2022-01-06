@@ -37,7 +37,7 @@ interface Props {
 
 export interface ITxTypeConfigObj {
   icon(): any;
-  label(asset: Asset): string;
+  label(assetTxTypeDesignation: string): string;
 }
 
 const SAssetIcon = styled(AssetIcon)`
@@ -66,7 +66,7 @@ const SCombinedCircle = (asset: Asset) => {
   );
 };
 
-const makeTxIcon = (txConfig: ITxTypeConfigObj, asset: Asset) => {
+const makeTxIcon = (txConfig: ITxTypeConfigObj, asset?: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <Box mr="16px" position="relative">
@@ -95,7 +95,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
     [txHistory, accountsList.length]
   );
-
+  const accountsMap = accountsList.reduce((acc, cur) => {
+    acc[cur.address.toLowerCase()] = true
+    return acc;
+  }, {} as {[key: string]: boolean} );
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
@@ -137,30 +140,25 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           } as IFullTxHistoryValueTransfer);
         }
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
-        const sentValueTransfers = valueTransfers.filter((t) => isSameAddress(t.from, from))
-        const receivedValueTransfers = valueTransfers.filter((t) => isSameAddress(t.to, from))
-        const firstbase = bigify('0')
-        const secondbase = bigify('0')
-        const sentFiatValue = receivedValueTransfers.reduce((acc, cur) => {
-          acc.plus(convertToFiat(
+        const sentValueTransfers = valueTransfers.filter((t) => accountsMap[t.from.toLowerCase()]);
+        const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()])
+        const receivedFiatValue = receivedValueTransfers.reduce((acc, cur) => {
+          return acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
           ))
-          return acc
-        }, firstbase)
-        const receivedFiatValue = sentValueTransfers.reduce((acc, cur) => {
-          acc.plus(convertToFiat(
+        }, bigify('0'))
+        const sentFiatValue = sentValueTransfers.reduce((acc, cur) => {
+          return  acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
           ))
-          return acc
-        }, secondbase)
-        /* todo: change from first transfer to include multi-transactions */
+        }, bigify('0'))
         return [
           <TransactionLabel 
             key={0}
-            image={makeTxIcon(entryConfig, baseAsset)}
-            label={entryConfig.label(baseAsset)}
+            image={makeTxIcon(entryConfig, valueTransfers.length == 1 ? valueTransfers[0]?.asset : undefined)}
+            label={entryConfig.label(valueTransfers.length == 1 ? valueTransfers[0]?.asset.ticker : translateRaw('ASSETS'))}
             stage={status}
             date={timestamp}
           />,
@@ -194,7 +192,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: receivedFiatValue.toFixed(2)
+                amount: sentFiatValue.toFixed(2)
               }}
             />}
           </Box>,
@@ -214,7 +212,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               fiat={{
                 symbol: getFiat(settings).symbol,
                 ticker: getFiat(settings).ticker,
-                amount: sentFiatValue.toFixed(2)
+                amount: receivedFiatValue.toFixed(2)
               }}
             />}
           </Box>,

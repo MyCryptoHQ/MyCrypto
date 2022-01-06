@@ -1048,6 +1048,7 @@
     "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed.",
     "SELECT_A_MIGRATION": "Select a migration",
     "TOKEN_MIGRATION_HEADER": "Migrate Tokens",
-    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract"
+    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract",
+    "ASSETS": "Assets"
   }
 }

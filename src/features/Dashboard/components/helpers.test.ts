@@ -12,14 +12,14 @@ describe('constructTxTypeConfig', () => {
     const expectedLabel = translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
       $ticker: fAssets[0].ticker
     });
-    expect(result.label(fAssets[0])).toEqual(expectedLabel);
+    expect(result.label(fAssets[0].ticker)).toEqual(expectedLabel);
   });
   test('correctly handles action to determine derived tx label', () => {
     const type = 'EXCHANGE';
     const protocol = 'UNISWAP_V1';
     const result = constructTxTypeConfig({ type, protocol });
     const expectedLabel = 'Uniswap v1: Assets Swapped';
-    expect(result.label(fAssets[0])).toBe(expectedLabel);
+    expect(result.label(fAssets[0].ticker)).toBe(expectedLabel);
   });
 
   test('correctly handles action to determine icon type', () => {
