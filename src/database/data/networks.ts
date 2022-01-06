@@ -934,7 +934,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 30,
       initial: 1
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   SmartChain: {
     id: 'SmartChain',
