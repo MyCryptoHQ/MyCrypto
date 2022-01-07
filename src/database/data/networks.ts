@@ -28,6 +28,7 @@ import {
   DEFAULT_VOLTA,
   DEFAULT_WEB,
   DEFAULT_XDAI,
+  DEFAULT_XDC,
   LEDGER_ETC,
   LEDGER_ETH,
   MAINNET_RSK,
@@ -1106,6 +1107,60 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 1,
       max: 60,
       initial: 1
+    }
+  },
+  XDC: {
+    id: 'XDC',
+    name: 'XDC Network',
+    unit: 'XDC' as TTicker,
+    chainId: 50,
+    isCustom: false,
+    color: '#385686',
+    blockExplorer: makeExplorer({
+      name: 'BlocksScan Explorer',
+      origin: 'https://xdc.blocksscan.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_XDC,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_XDC,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_XDC
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 10
+    }
+  },
+  XDCApothem: {
+    id: 'XDC',
+    name: 'XDC Apothem Network',
+    unit: 'XDC' as TTicker,
+    chainId: 51,
+    isCustom: false,
+    color: '#385686',
+    blockExplorer: makeExplorer({
+      name: 'Apothem BlocksScan Explorer',
+      origin: 'https://apothem.blocksscan.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_XDC,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_XDC,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_XDC
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 10
     }
   },
   HECO: {

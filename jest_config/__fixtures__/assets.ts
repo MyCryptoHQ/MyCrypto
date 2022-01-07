@@ -182,6 +182,15 @@ export const fAssets = [
     networkId: 'SmartChain',
     isCustom: false
   },
+  {
+    uuid: '2c08a3fa-6fde-11ec-90d6-0242ac120003',
+    ticker: 'XDC',
+    name: 'XDC Network',
+    networkId: 'XDC',
+    type: 'base',
+    decimal: 18,
+    isCustom: false
+  },
   fDAI,
   fRopDAI
 ] as ExtendedAsset[];

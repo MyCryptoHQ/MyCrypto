@@ -442,5 +442,21 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'Hecochain.com',
       url: 'https://http-mainnet.hecochain.com/'
     }
+  ],
+  XDC: [
+    {
+      name: NetworkUtils.makeNodeName('XDC', 'blocksscan.io'),
+      type: NodeType.RPC,
+      service: 'BlocksScan.io',
+      url: 'https://mycryptorpc.blocksscan.io'
+    }
+  ],
+  XDCApothem: [
+    {
+      name: NetworkUtils.makeNodeName('XDCApothem', 'Apothem.blocksscan.io'),
+      type: NodeType.RPC,
+      service: 'Apothem.BlocksScan.io',
+      url: 'https://mycryptoarpc.blocksscan.io'
+    }
   ]
 };
