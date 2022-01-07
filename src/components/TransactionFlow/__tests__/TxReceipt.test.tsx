@@ -11,6 +11,7 @@ import {
   fNetwork,
   fSettings,
   fTxConfig,
+  fTxConfigDeploy,
   fTxConfigEIP1559,
   fTxReceipt,
   fTxReceiptEIP1559
@@ -106,6 +107,11 @@ describe('TxReceipt', () => {
   test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(bigify(fTxConfig.amount).toFixed(5), { exact: false })).toBeDefined();
+  });
+
+  test('it displays contract deployment info', async () => {
+    const { getByText } = getComponent({ ...defaultProps, txConfig: fTxConfigDeploy });
+    expect(getByText('0x9f2817015caF6607C1198fB943A8241652EE8906')).toBeDefined();
   });
 
   test('it displays pending state', async () => {
