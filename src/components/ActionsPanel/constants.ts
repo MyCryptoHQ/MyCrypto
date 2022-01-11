@@ -292,23 +292,6 @@ export const actionTemplates: ActionTemplate[] = [
     category: ACTION_CATEGORIES.SECURITY
   },
   {
-    name: ACTION_NAME.MYC_MEMBERSHIP,
-    heading: translateRaw('MYC_MEMBERSHIP_ACTION_HEADING'),
-    icon: 'membership',
-    body: [translate('MYC_MEMBERSHIP_ACTION_BODY')],
-    filter: ({ isMyCryptoMember }: ActionFilters) => !isMyCryptoMember,
-    priority: 0,
-    button: {
-      component: ActionButton,
-      props: {
-        content: translateRaw('MYC_MEMBERSHIP_ACTION_BUTTON'),
-        to: ROUTE_PATHS.MYC_MEMBERSHIP.path,
-        external: false
-      }
-    },
-    category: ACTION_CATEGORIES.SELF_LOVE
-  },
-  {
     name: ACTION_NAME.ADD_ACCOUNT,
     heading: translateRaw('ADD_ACCOUNT_ACTION_HEADING'),
     icon: 'experience',
