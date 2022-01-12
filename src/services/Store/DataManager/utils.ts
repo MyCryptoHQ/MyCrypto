@@ -117,7 +117,8 @@ export function marshallState(ls: LocalStorage): DataStore {
       ? (objToExtendedArray(ls[LSKeys.USER_ACTIONS]) as ExtendedUserAction[])
       : [],
     [LSKeys.PROMO_POAPS]: ls[LSKeys.PROMO_POAPS],
-    [LSKeys.CONNECTIONS]: ls[LSKeys.CONNECTIONS]
+    [LSKeys.CONNECTIONS]: ls[LSKeys.CONNECTIONS],
+    [LSKeys.CLAIMS]: ls[LSKeys.CLAIMS]
   };
 }
 
@@ -181,6 +182,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
     [LSKeys.NETWORK_NODES]: constructNetworkNodes(st[LSKeys.NETWORKS]),
     [LSKeys.USER_ACTIONS]: arrayToObj('uuid')(st[LSKeys.USER_ACTIONS]),
     [LSKeys.PROMO_POAPS]: st[LSKeys.PROMO_POAPS],
-    [LSKeys.CONNECTIONS]: st[LSKeys.CONNECTIONS]
+    [LSKeys.CONNECTIONS]: st[LSKeys.CONNECTIONS],
+    [LSKeys.CLAIMS]: st[LSKeys.CLAIMS]
   };
 }

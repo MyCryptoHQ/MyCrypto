@@ -51,7 +51,7 @@ export enum ACTION_STATE {
 
 export interface ActionFilters {
   assets: StoreAsset[];
-  claims: Record<ClaimType, ClaimResult[]>;
+  claims: Partial<Record<ClaimType, ClaimResult[]>>;
   ensOwnershipRecords: DomainNameRecord[];
   accounts: StoreAccount[];
   isMyCryptoMember: boolean;
@@ -66,7 +66,7 @@ export interface ActionTemplate {
   priority: number;
   Component?(props: Record<string, any>): JSX.Element;
   props?: Record<string, unknown>;
-  filter?(filters: ActionFilters): boolean;
+  filter?(filters: ActionFilters): boolean | undefined;
   time?: {
     start: Date;
     end: Date;
