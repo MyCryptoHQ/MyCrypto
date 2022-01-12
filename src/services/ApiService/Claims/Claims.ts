@@ -18,7 +18,7 @@ export default class ClaimsService {
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: UNISWAP_UNI_CLAIM_API,
-    timeout: 10000
+    timeout: 20000
   });
 
   constructor() {
