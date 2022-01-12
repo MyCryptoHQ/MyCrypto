@@ -57,7 +57,7 @@
     "post-message-stream": "3.0.0",
     "qrcode": "1.4.4",
     "query-string": "6.0.0",
-    "ramda": "0.27.1",
+    "ramda": "0.27.2",
     "rc-slider": "8.6.5",
     "rc-steps": "3.5.0",
     "react": "17.0.2",
