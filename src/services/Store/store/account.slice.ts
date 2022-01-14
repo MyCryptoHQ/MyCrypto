@@ -278,6 +278,7 @@ export const getMergedTxHistory = createSelector(
           );
           return {
             ...tx,
+            valueTransfers: tx.valueTransfers ?? [],
             timestamp: tx.timestamp ?? 0,
             txType: deriveTxType(txTypeMetas, accounts, tx),
             toAddressBookEntry,

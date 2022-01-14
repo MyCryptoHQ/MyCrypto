@@ -352,6 +352,12 @@ const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
   }
 `;
 
+const SMoreIcon = styled(SInlineSVG)<StylingProps>`
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  transform: ${({ isExpanded }) => (isExpanded ? `rotate(270deg)` : `rotate(90deg)`)};
+`;
+
 interface Props
   extends Omit<ComponentProps<typeof SInlineSVG | typeof SImg | typeof SStrokeIcon>, 'src'> {
   type: TIcon | 'sort' | 'delete';
@@ -368,6 +374,8 @@ const Icon = ({ type, color, ...props }: Props) => {
     return <SStrokeIcon src={svgIcons[type]} color={color} {...props} />;
   } else if (type === 'expandable') {
     return <SExpandableIcon src={svgIcons[type]} color={color} {...props} />;
+  } else if (type === 'more') {
+    return <SMoreIcon src={svgIcons[type]} fill={color} {...props} />;
   } else if (type === 'sort') {
     return <SSortIcon src={svgIcons['expandable']} fill={color} {...props} />;
   } else if (type === 'nav-close') {

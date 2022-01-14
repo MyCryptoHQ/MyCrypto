@@ -32,6 +32,7 @@ const defaultProps = {
   timestamp: 1583266291,
   assetRate: 1.34,
   baseAssetRate: 1.34,
+  valueTransfers: fERC20Web3TxReceipt.valueTransfers,
   senderContact: Object.values(fContacts)[0] as ExtendedContact,
   recipientContact: Object.values(fContacts)[1] as ExtendedContact,
   txConfig: fTxConfig,

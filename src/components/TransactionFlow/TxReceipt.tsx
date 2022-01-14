@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { getContractAddress } from '@ethersproject/address';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -177,7 +177,7 @@ const TxReceipt = ({
   }, []);
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
-  const valueTransfers = (() => {
+  const valueTransfers = useMemo(() => {
     if (!displayTxReceipt) return [];
     const valueTransferEvents = displayTxReceipt.valueTransfers.map((transfer) => ({
       ...transfer,
@@ -212,7 +212,7 @@ const TxReceipt = ({
       });
     }
     return valueTransferEvents;
-  })();
+  }, []);
 
   const handleTxSpeedUpRedirect = async () => {
     if (!txConfig) return;
@@ -543,7 +543,8 @@ export const TxReceiptUI = ({
               {translateRaw('CANCEL_TX_BTN')}
             </Button>
           </Tooltip>
-        )}
+        )
+      }
       <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}

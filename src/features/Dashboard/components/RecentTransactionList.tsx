@@ -130,7 +130,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: recipient,
           networkId
         };
-        if (!value.isZero()) {
+        if (!valueTransfers.find(({ asset }) => asset.uuid === baseAsset.uuid) && valueTransfers.length == 0) {
           valueTransfers.push({
             asset: baseAsset,
             to,
@@ -139,6 +139,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             isNFTTransfer: false
           } as IFullTxHistoryValueTransfer);
         }
+        
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[t.from.toLowerCase()]);
         const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()])
@@ -184,7 +185,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               asset={{
                 amount: sentValueTransfers.length > 1
                   ? sentValueTransfers.length.toString()
-                  : bigify(sentValueTransfers[0].amount).toFixed(5),
+                  : bigify(sentValueTransfers[0].amount).toPrecision(6),
                 ticker: sentValueTransfers.length > 1
                   ? 'Assets' as TTicker
                   : sentValueTransfers[0].asset.ticker
@@ -204,7 +205,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               asset={{
                 amount: receivedValueTransfers.length > 1
                   ? receivedValueTransfers.length.toString()
-                  : bigify(receivedValueTransfers[0].amount).toFixed(5),
+                  : bigify(receivedValueTransfers[0].amount).toPrecision(6),
                 ticker: receivedValueTransfers.length > 1
                   ? 'Assets' as TTicker
                   : receivedValueTransfers[0].asset.ticker
