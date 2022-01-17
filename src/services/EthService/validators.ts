@@ -232,11 +232,6 @@ export const validateTxFee = (
   const txFee = gasStringsToMaxGasNumber(gasPrice, gasLimit);
   const txFeeFiatValue = bigify(assetRateUSD).multipliedBy(txFee);
 
-  const txTransactionFeeInEthFiatValue =
-    ethAssetRate && ethAssetRate > 0
-      ? bigify(ethAssetRate ? assetRateUSD : 0).multipliedBy(txFee)
-      : null;
-
   const createTxFeeResponse = (type: TxFeeResponseType) => {
     const txAmountFiatLocalValue = bigify(assetRateFiat).multipliedBy(txAmount);
     const txFeeFiatLocalValue = bigify(assetRateFiat).multipliedBy(txFee);
@@ -246,12 +241,8 @@ export const validateTxFee = (
       fee: txFeeFiatLocalValue.toFixed(4)
     };
   };
-  const isGreaterThanEthFraction = (ethFraction: number) => {
-    if (ethAssetRate && txTransactionFeeInEthFiatValue) {
-      return txTransactionFeeInEthFiatValue.gte(ethAssetRate * ethFraction);
-    }
-    return false;
-  };
+  const isGreaterThanEthFraction = (ethFraction: number) =>
+    ethAssetRate && txFeeFiatValue.gt(ethAssetRate * ethFraction);
 
   // In case of fractions of amount being send
   if (txAmount.lt(0.000001)) {
