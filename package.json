@@ -35,7 +35,7 @@
     "@types/redux-logger": "3.0.8",
     "@types/styled-system": "5.1.10",
     "@ungap/promise-any": "1.1.1",
-    "@unstoppabledomains/resolution": "4.0.2",
+    "@unstoppabledomains/resolution": "5.0.2",
     "@walletconnect/client": "1.6.2",
     "apollo-boost": "0.4.7",
     "axios": "0.21.3",
