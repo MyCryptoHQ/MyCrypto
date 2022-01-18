@@ -455,9 +455,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       default: DEFAULT_GO
     },
     gasPriceSettings: {
-      min: 2,
-      max: 60,
-      initial: 2
+      min: 2000,
+      max: 60000,
+      initial: 2000
     }
   },
 
