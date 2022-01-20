@@ -847,7 +847,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 10,
       initial: 1
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   EnergyWebChain: {
     id: 'EnergyWebChain',
@@ -876,7 +877,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.01,
       max: 10,
       initial: 0.01
-    }
+    },
+    supportsEIP1559: true
   },
   MATIC: {
     id: 'MATIC',
