@@ -847,7 +847,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 10,
       initial: 1
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   EnergyWebChain: {
     id: 'EnergyWebChain',
@@ -876,7 +877,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 0.01,
       max: 10,
       initial: 0.01
-    }
+    },
+    supportsEIP1559: true
   },
   MATIC: {
     id: 'MATIC',
@@ -904,7 +906,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 100,
       initial: 30
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   xDAI: {
     id: 'xDAI',
@@ -1021,7 +1024,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   AvalancheTestnet: {
     id: 'AvalancheTestnet',
@@ -1052,7 +1056,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   EVRICE: {
     id: 'EVRICE',
@@ -1133,6 +1138,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 1,
       max: 60,
       initial: 1
-    }
+    },
+    supportsEIP1559: true
   }
 };
