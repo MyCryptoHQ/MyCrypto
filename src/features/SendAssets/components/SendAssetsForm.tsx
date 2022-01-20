@@ -427,7 +427,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     const asset = values.asset;
     const newAccount = getDefaultAccount(asset);
     const newInitialValues = getInitialFormikValues({
-      s: txConfig,
+      // @ts-expect-error @todo Fix reliance on txConfig being {}
+      s: asset.uuid === txConfig.asset?.uuid ? txConfig : {},
       defaultAccount: newAccount,
       defaultAsset: asset,
       defaultNetwork: getDefaultNetwork(newAccount),
