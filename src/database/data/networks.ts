@@ -904,7 +904,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 100,
       initial: 30
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   xDAI: {
     id: 'xDAI',
@@ -1021,7 +1022,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   AvalancheTestnet: {
     id: 'AvalancheTestnet',
@@ -1052,7 +1054,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   EVRICE: {
     id: 'EVRICE',
@@ -1133,6 +1136,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       min: 1,
       max: 60,
       initial: 1
-    }
+    },
+    supportsEIP1559: true
   }
 };
