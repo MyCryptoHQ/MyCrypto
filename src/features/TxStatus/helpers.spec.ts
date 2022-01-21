@@ -100,12 +100,11 @@ describe('makeTx', () => {
     expect(result.receipt).toStrictEqual(
       expect.objectContaining({
         ...fETHNonWeb3TxReceipt,
-        asset: fAssets[1],
         txType: ITxType.UNKNOWN,
         status: ITxStatus.UNKNOWN,
         to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
         from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
-        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
+        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress),
       })
     );
   });

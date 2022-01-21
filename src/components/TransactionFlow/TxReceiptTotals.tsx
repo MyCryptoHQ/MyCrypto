@@ -4,7 +4,7 @@ import { Amount } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ExtendedAsset, ISettings, ITxObject } from '@types';
 import { bigify, bigNumValueToViewableEther, convertToFiat, fromWei, isType2Tx, totalTxFeeToWei, Wei} from '@utils';
 
@@ -99,7 +99,7 @@ export const TxReceiptTotals = ({
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-sent" alt="Sent" />
-          {`Total ${baseAsset.ticker} Sent`}
+          {`${translateRaw('TOTAL')}:`}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount

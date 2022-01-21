@@ -29,7 +29,7 @@
         "balance": {
           "_hex": "0x1b0319f410dfc000"
         },
-        "mtime": 1582563688522
+        "mtime": 1234567891011
       }
     ],
     "transactions": [],
@@ -116,7 +116,7 @@
     "type": "base",
     "ticker": "RopstenETH",
     "decimal": 18,
-    "mtime": 1582563685097
+    "mtime": 1234567891011
   },
   "baseAsset": {
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",

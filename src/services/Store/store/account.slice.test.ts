@@ -3,8 +3,9 @@ import { parseEther } from '@ethersproject/units';
 import { call } from 'redux-saga-test-plan/matchers';
 import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
-import { DEFAULT_NETWORK, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
+import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
+import { generateGenericERC20 } from '@features/SendAssets';
 import {
   fAccount,
   fAccounts,
@@ -339,8 +340,33 @@ describe('AccountSlice', () => {
       expect(actual).toEqual([
         {
           ...fTxHistoryAPI,
-          amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'),
-          asset: fAssets[0],
+          valueTransfers: [{
+            to: fTxHistoryAPI.erc20Transfers[0].to,
+            from: fTxHistoryAPI.erc20Transfers[0].from,
+            amount: "",
+            asset: generateGenericERC20(
+              fTxHistoryAPI.erc20Transfers[0].contractAddress,
+              DEFAULT_NETWORK_CHAINID.toString(),
+              DEFAULT_NETWORK
+            ),
+            isNFTTransfer: false,
+          },{
+            to: fTxHistoryAPI.erc20Transfers[1].to,
+            from: fTxHistoryAPI.erc20Transfers[1].from,
+            amount: "",
+            asset: generateGenericERC20(
+              fTxHistoryAPI.erc20Transfers[1].contractAddress,
+              DEFAULT_NETWORK_CHAINID.toString(),
+              DEFAULT_NETWORK
+            ),
+            isNFTTransfer: false,
+          },{
+            to: fTxHistoryAPI.recipientAddress,
+            from: fTxHistoryAPI.from,
+            isNFTTransfer: false,
+            asset: fAssets[0],
+            amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
+          }],
           baseAsset: fAssets[0],
           fromAddressBookEntry: {
             address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
@@ -388,7 +414,7 @@ describe('AccountSlice', () => {
       ]);
     });
 
-    it('merges transactions and prioritizes account txs', () => {
+    it('merges transactions and prioritizes account tx\'s data', () => {
       const state = {
         ...mockAppState({
           ...defaultAppState,
@@ -410,14 +436,16 @@ describe('AccountSlice', () => {
       expect(actual).toHaveLength(1);
       expect(actual).toEqual([
         {
+          ...fTxHistoryAPI,
           ...fTxReceipt,
           gasLimit: BigNumber.from(fTxReceipt.gasLimit),
           gasPrice: BigNumber.from(fTxReceipt.gasPrice),
           nonce: BigNumber.from(fTxReceipt.nonce),
           value: BigNumber.from(fTxReceipt.value),
+          blockNumber: parseInt(fTxHistoryAPI.blockNumber!, 16),
+          gasUsed: undefined,
           hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
           networkId: fNetwork.id,
-          timestamp: 0,
           toAddressBookEntry: undefined,
           txType: ITxHistoryType.OUTBOUND,
           fromAddressBookEntry: fContacts[0]

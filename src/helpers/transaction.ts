@@ -105,7 +105,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txConfig: ITxConfig,
   metadata?: ITxMetadata
 ): ITxReceipt => {
-  const { rawTransaction, asset, baseAsset, amount } = txConfig;
+  const { rawTransaction, asset, baseAsset, amount, receiverAddress } = txConfig;
   const { data, gasLimit, nonce } = rawTransaction;
 
   const gas = formatGas(rawTransaction);
@@ -120,7 +120,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     value: BigNumber.from(txConfig.rawTransaction.value),
     to,
     nonce: BigNumber.from(nonce),
-    valueTransfers: [{ from, to, asset, amount, isNFTTransfer: false }],
+    valueTransfers: [{ from, to: receiverAddress || to, asset, amount, isNFTTransfer: false }],
     status,
     data,
     txType,
@@ -331,7 +331,9 @@ export const makeTxConfigFromTxReceipt = (
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
-    amount: '0',
+    amount: contractAsset // @todo: look into this?
+      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
+      : txReceipt.valueTransfers[0].amount,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };

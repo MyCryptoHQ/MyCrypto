@@ -53,7 +53,7 @@ import {
 import { constructCancelTxQuery, constructSpeedUpTxQuery } from '@utils/queries';
 import { path } from '@vendor';
 
-import { FromToAccount } from './displays';
+import { FromToAccount, TransactionDetailsDisplay } from './displays';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import {
   calculateReplacementGasPrice,
@@ -125,7 +125,7 @@ const TxReceipt = ({
     (t) => t.hash === receipt!.hash && t.baseAsset.networkId === receipt!.baseAsset.networkId
   );
 
-  const displayTxReceipt = receipt ?? userTx!; // @todo: figure out why this was swapped
+  const displayTxReceipt = userTx ?? receipt!;
   const timestamp = displayTxReceipt.timestamp ?? 0;
   const txStatus = displayTxReceipt.status ?? 0;
 
@@ -175,6 +175,14 @@ const TxReceipt = ({
       }
     });
   }, []);
+
+  const assetRate = (() => {
+    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+      return getAssetRate(displayTxReceipt.valueTransfers[0].asset);
+    } else {
+      return getAssetRate(txConfig.asset);
+    }
+  })
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const valueTransfers = useMemo(() => {
@@ -264,6 +272,7 @@ const TxReceipt = ({
   return (
     <TxReceiptUI
       settings={settings}
+      assetRate={assetRate()}
       baseAssetRate={baseAssetRate}
       txStatus={txStatus}
       timestamp={timestamp}
@@ -308,6 +317,7 @@ export interface TxReceiptDataProps {
   protectTxEnabled?: boolean;
   queryStringsDisabled?: boolean;
   customBroadcastText?: string;
+  assetRate: number | undefined;
   baseAssetRate: number | undefined;
   handleTxCancelRedirect(): void;
   handleTxSpeedUpRedirect(): void;
@@ -325,6 +335,7 @@ export const TxReceiptUI = ({
   settings,
   txType,
   txConfig,
+  signedTx,
   txStatus,
   timestamp,
   valueTransfers,
@@ -335,7 +346,9 @@ export const TxReceiptUI = ({
   customBroadcastText,
   senderContact,
   sender,
+  assetRate,
   baseAssetRate,
+  fiat,
   recipientContact,
   resetFlow,
   completeButton,
@@ -348,13 +361,29 @@ export const TxReceiptUI = ({
   network
 }: UIProps) => {
   const { baseAsset, receiverAddress, rawTransaction } = txConfig;
-  const { data } = rawTransaction;
+  const { data, gasLimit, nonce } = rawTransaction;
 
   const walletConfig = getWalletConfig(sender.account ? sender.account.wallet : WalletId.VIEW_ONLY);
   const web3Wallet = isWeb3Wallet(walletConfig.id);
   const supportsResubmit = walletConfig.flags.supportsNonce;
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
+
+  const assetAmount = useCallback(() => {
+    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+      return displayTxReceipt.valueTransfers[0].amount;
+    } else {
+      return txConfig.amount;
+    }
+  }, [displayTxReceipt, txConfig.amount]);
+
+  const mainAsset = useCallback(() => {
+    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+      return displayTxReceipt.valueTransfers[0].asset;
+    } else {
+      return txConfig.asset;
+    }
+  }, [displayTxReceipt, txConfig.asset]);
 
   const gasAmount = useCallback(() => {
     if (displayTxReceipt && path(['gasUsed'], displayTxReceipt)) {
@@ -485,7 +514,10 @@ export const TxReceiptUI = ({
 
         {protectTxButton && protectTxButton()}
 
-        {/* <TransactionDetailsDisplay
+        <TransactionDetailsDisplay
+          asset={mainAsset()}
+          assetAmount={assetAmount()}
+          assetRate={assetRate}
           baseAsset={baseAsset}
           confirmations={displayTxReceipt && displayTxReceipt.confirmations}
           gasUsed={displayTxReceipt && displayTxReceipt.gasUsed}
@@ -497,13 +529,12 @@ export const TxReceiptUI = ({
           value={rawTransaction.value}
           fiat={fiat}
           baseAssetRate={baseAssetRate}
-          valueTransfers={valueTransfers}
           status={txStatus}
           timestamp={timestamp}
           recipient={rawTransaction.to}
           network={network}
           signedTransaction={signedTx}
-        /> */}
+        />
       </div>
       {completeButton && !(txStatus === ITxStatus.PENDING) && (
         <>

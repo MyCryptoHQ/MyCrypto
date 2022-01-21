@@ -106,7 +106,7 @@
         "balance": {
           "_hex": "0x54ab1b2ceea88000"
         },
-        "mtime": 1590733930901
+        "mtime": 1234567891011
       },
       {
         "ticker": "RopstenETH",
@@ -119,7 +119,7 @@
         "balance": {
           "_hex": "0x0e22e84c2c724c00"
         },
-        "mtime": 1590733930901
+        "mtime": 1234567891011
       }
     ],
     "transactions": [
@@ -452,7 +452,6 @@
       },
       {
         "asset": {
-          "value": "Ropsten",
           "ticker": "RopstenETH",
           "name": "Ropsten",
           "decimal": 18,
@@ -463,7 +462,7 @@
           "balance": {
             "_hex": "0x0e23a74a9bd96c00"
           },
-          "mtime": 1590722655749
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -558,7 +557,6 @@
       },
       {
         "asset": {
-          "value": "Ropsten",
           "ticker": "RopstenETH",
           "name": "Ropsten",
           "decimal": 18,
@@ -569,7 +567,7 @@
           "balance": {
             "_hex": "0x0e2347cb6425dc00"
           },
-          "mtime": 1590726646380
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",

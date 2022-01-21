@@ -39,6 +39,7 @@ const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   resetFlow: noOp,
   handleTxCancelRedirect: noOp,
   handleTxSpeedUpRedirect: noOp,
+  assetRate: 250,
   baseAssetRate: 250,
   fiat: Fiats.USD,
   network: fNetwork

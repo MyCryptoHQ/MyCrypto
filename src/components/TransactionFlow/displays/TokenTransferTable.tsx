@@ -106,6 +106,7 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
             type="more"
             alt="More"
             isExpanded={isExpanded}
+            rotate90Deg={true}
             onClick={() => {
               setExpanded(!isExpanded);
             }}
@@ -142,7 +143,7 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
                   fontSize="16px"
                 />
               </Box>
-              <Amount
+              {transfer.amount != '' ? <Amount
                 // Adapt alignment for mobile display
                 isNFTAsset={transfer.isNFTTransfer}
                 alignLeft={false}
@@ -152,7 +153,12 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
                   ticker: getFiat(settings).ticker,
                   amount: convertToFiat(transfer.amount, transfer.rate).toFixed(2)
                 }}
-              />
+              /> : <Amount
+                // Adapt alignment for mobile display
+                isNFTAsset={transfer.isNFTTransfer}
+                alignLeft={false}
+                text={transfer.asset.name}
+              />}
             </Row>
           ))}
         </Body>

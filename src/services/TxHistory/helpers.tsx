@@ -39,7 +39,7 @@ export const makeTxReceipt = (
         to: transfer.to,
         from: transfer.from,
         asset: genericAsset,
-        amount: !isNFTTransfer ? fromTokenBase(toWei(transfer.amount, 0), genericAsset.decimal) : '0',
+        amount: '',
         isNFTTransfer
       };
     }
@@ -51,15 +51,15 @@ export const makeTxReceipt = (
       isNFTTransfer
     };
   });
-  // if (!parseEther(value).isZero()) {
-  //   transfers.push({
-  //     asset: baseAsset,
-  //     to: tx.to,
-  //     from: tx.from,
-  //     amount: parseEther(value).toString(),
-  //     isNFTTransfer: false
-  //   } as IFullTxHistoryValueTransfer)
-  // }
+  if (!parseEther(value).isZero()) {
+    transfers.push({
+      asset: baseAsset,
+      to: tx.to,
+      from: tx.from,
+      amount:value.toString(),
+      isNFTTransfer: false
+    } as IFullTxHistoryValueTransfer)
+  }
   return {
     ...tx,
     baseAsset: baseAsset!,
@@ -77,19 +77,16 @@ export const makeTxReceipt = (
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
-  const hashMap = accountTxs.reduce((acc, cur) => {
-    acc[cur.hash.toLowerCase()] = true
+
+  const apiTxsHashMap = apiTxs.reduce((acc, cur) => {
+    acc[cur.hash.toLowerCase()] = cur
     return acc
-  }, {} as { [key: string]: boolean })
-  const filteredApiTxs = apiTxs.filter(
-    (tx) => !hashMap[tx.hash.toLowerCase()]
-  );
-  return Object.values(filteredApiTxs.concat(accountTxs).reduce((acc,curr) => {
-    if (!acc[curr.hash.toLowerCase()]) {
-      acc[curr.hash.toLowerCase()] = curr;
-    }
+  }, {} as { [key: string]: ITxReceipt })
+  const accountTxsHashMap = accountTxs.reduce((acc, cur) => {
+    acc[cur.hash.toLowerCase()] = { ...acc[cur.hash.toLowerCase()], ...cur}
     return acc
-  }, {} as { [key: string]: ITxReceipt }));
+  }, apiTxsHashMap as { [key: string]: ITxReceipt })
+  return Object.values(accountTxsHashMap)
 };
 
 export const deriveTxType = (

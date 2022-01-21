@@ -1,19 +1,20 @@
 {
-  "asset": {
-    "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
-    "name": "RopDAI",
-    "decimal": 18,
-    "ticker": "RopDAI",
-    "networkId": "Ropsten",
-    "balance": {
-      "_hex": "0x54ab1b2ceea88000"
+  "valueTransfers": [{
+    "asset": {
+      "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+      "name": "RopDAI",
+      "decimal": 18,
+      "ticker": "RopDAI",
+      "networkId": "Ropsten",
+      "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+      "type": "erc20",
+      "isCustom": true
     },
-    "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
-    "type": "erc20",
-    "mtime": 1590734746709,
-    "isCustom": true
-  },
-  "valueTransfers": [],
+    "isNFTTransfer": false,
+    "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+    "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+    "amount":  "0.01"
+  }],
   "baseAsset": {
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "ticker": "RopstenETH",
@@ -24,9 +25,8 @@
     "isCustom": false
   },
   "hash": "0xac204139dec2d322ed40e24be9af205fb417cc59ab2a78e7e784ee9ad2cc4163",
-  "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-  "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-  "amount": "0.01",
+  "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+  "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
   "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
   "nonce": "25",
   "gasLimit": {

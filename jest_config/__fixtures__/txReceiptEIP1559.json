@@ -1,14 +1,4 @@
-{
-  "amount": "0.0001",
-  "asset": {
-    "decimal": 18,
-    "mtime": 1582563685097,
-    "name": "RopstenETH",
-    "networkId": "Ropsten",
-    "ticker": "RopstenETH",
-    "type": "base",
-    "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
-  },
+{  
   "baseAsset": {
     "decimal": 18,
     "name": "RopstenETH",
@@ -47,5 +37,18 @@
     "hex": "0x5af3107a4000",
     "type": "BigNumber"
   },
-  "valueTransfers": []
+  "valueTransfers": [{
+    "to": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
+    "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+    "asset": {
+      "decimal": 18,
+      "name": "RopstenETH",
+      "networkId": "Ropsten",
+      "ticker": "RopstenETH",
+      "type": "base",
+      "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
+    },
+    "amount": "0.0001",
+    "isNFTTransfer": false
+  }]
 }

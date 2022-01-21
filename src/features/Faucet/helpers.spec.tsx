@@ -43,14 +43,8 @@ describe('Faucet helpers', () => {
           getContactByAddressAndNetworkId
         )
       ).toEqual({
-        valueTransfers: [
-          {
-            amount: '0.000000000000000001',
-            asset: fAssets[1],
-            to: fAccount.address,
-            from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7'
-          }
-        ],
+        amount: '0.000000000000000001',
+        asset: fAssets[1],
         baseAsset: fAssets[1],
         from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
         networkId: 'Ropsten',
@@ -84,8 +78,6 @@ describe('Faucet helpers', () => {
         getContactByAddressAndNetworkId
       );
       expect(makeTxReceipt(exampleTXResult, txConfig)).toEqual({
-        amount: '0.000000000000000001',
-        asset: fAssets[1],
         baseAsset: fAssets[1],
         data: '0x',
         from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
@@ -103,7 +95,13 @@ describe('Faucet helpers', () => {
         to: fAccount.address,
         txType: ITxType.FAUCET,
         value: BigNumber.from('1'),
-        valueTransfers: []
+        valueTransfers: [{
+          asset: fAssets[1],
+          amount: '0.000000000000000001',
+          to: fAccount.address,
+          from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
+          isNFTTransfer: false
+        }]
       });
     });
   });

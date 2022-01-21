@@ -10,7 +10,7 @@
   },
   "amount": "0.01",
   "senderAccount": {
-    "address": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+    "address": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
     "networkId": "Ropsten",
     "wallet": "METAMASK",
     "dPath": "",
@@ -27,7 +27,7 @@
         "balance": {
           "_hex": "0x016f3d7e97d86d9923"
         },
-        "mtime": 1590734746709
+        "mtime": 1234567891011
       },
       {
         "ticker": "RopstenETH",
@@ -40,7 +40,7 @@
         "balance": {
           "_hex": "0x1b4a253a03a33000"
         },
-        "mtime": 1590734746709
+        "mtime": 1234567891011
       }
     ],
     "transactions": [
@@ -57,7 +57,7 @@
           "balance": {
             "_hex": "0x01c3e899c4c7161923"
           },
-          "mtime": 1590449879477
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -69,7 +69,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x627edefee7ecf29f6f8dd68861f531cb71488291da267902b175da2b33d3b905",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "0",
         "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -102,7 +102,7 @@
           "balance": {
             "_hex": "0x016f410c167d341923"
           },
-          "mtime": 1590450249295
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -114,7 +114,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0xa1eb1fc39b688e35472f451f39bb827eab770abcf47a3241cd732f32c4bda7e2",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "0",
         "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -155,7 +155,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x6ca6a5b9bc9d17fb841dd658f16a36e226cfbf8c099afb7a04edba257dba5242",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "1",
         "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -248,7 +248,7 @@
           "balance": {
             "_hex": "0x297818f5a08d6800"
           },
-          "mtime": 1590448495757
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -260,7 +260,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0xb24cba25e874230deeb85d64249fb5b8e7be56f6183f2e40633953cf0fa7e6fd",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "0.01",
         "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -353,7 +353,7 @@
           "balance": {
             "_hex": "0x01c3e899c4c7161923"
           },
-          "mtime": 1590448321839
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -365,8 +365,8 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x9d4ade074a63df700cc4bf602d83b2dda1418a2c7b6e9b1c95657fd3e1491ac5",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-        "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "amount": "0",
         "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
         "nonce": "11",
@@ -458,7 +458,7 @@
           "balance": {
             "_hex": "0x01c3e899c4c7161923"
           },
-          "mtime": 1590448656201
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -470,7 +470,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x4f02da9d7dab1cdce19996e4c6d83ae8a8444f8bb97bb8b45e228c3d77c85708",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "0",
         "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -551,11 +551,11 @@
         }
       },
       {
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "amount": "0",
         "receiverAddress": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
         "senderAccount": {
-          "address": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+          "address": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
           "networkId": "Ropsten",
           "wallet": "METAMASK",
           "dPath": "",
@@ -572,7 +572,7 @@
               "balance": {
                 "_hex": "0x016f3d7e97d86d9923"
               },
-              "mtime": 1590502259454
+              "mtime": 1234567891011
             },
             {
               "ticker": "RopstenETH",
@@ -585,7 +585,7 @@
               "balance": {
                 "_hex": "0x2950f74dfbbe6800"
               },
-              "mtime": 1590502259454
+              "mtime": 1234567891011
             }
           ],
           "transactions": [
@@ -602,7 +602,7 @@
                 "balance": {
                   "_hex": "0x01c3e899c4c7161923"
                 },
-                "mtime": 1590449879477
+                "mtime": 1234567891011
               },
               "baseAsset": {
                 "ticker": "RopstenETH",
@@ -614,7 +614,7 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0x627edefee7ecf29f6f8dd68861f531cb71488291da267902b175da2b33d3b905",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
               "amount": "0",
               "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -647,7 +647,7 @@
                 "balance": {
                   "_hex": "0x016f410c167d341923"
                 },
-                "mtime": 1590450249295
+                "mtime": 1234567891011
               },
               "baseAsset": {
                 "ticker": "RopstenETH",
@@ -659,7 +659,7 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0xa1eb1fc39b688e35472f451f39bb827eab770abcf47a3241cd732f32c4bda7e2",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
               "amount": "0",
               "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -700,7 +700,7 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0x6ca6a5b9bc9d17fb841dd658f16a36e226cfbf8c099afb7a04edba257dba5242",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
               "amount": "1",
               "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -793,7 +793,7 @@
                 "balance": {
                   "_hex": "0x297818f5a08d6800"
                 },
-                "mtime": 1590448495757
+                "mtime": 1234567891011
               },
               "baseAsset": {
                 "ticker": "RopstenETH",
@@ -805,7 +805,7 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0xb24cba25e874230deeb85d64249fb5b8e7be56f6183f2e40633953cf0fa7e6fd",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
               "amount": "0.01",
               "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -898,7 +898,7 @@
                 "balance": {
                   "_hex": "0x01c3e899c4c7161923"
                 },
-                "mtime": 1590448321839
+                "mtime": 1234567891011
               },
               "baseAsset": {
                 "ticker": "RopstenETH",
@@ -910,8 +910,8 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0x9d4ade074a63df700cc4bf602d83b2dda1418a2c7b6e9b1c95657fd3e1491ac5",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-              "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+              "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "amount": "0",
               "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
               "nonce": "11",
@@ -1003,7 +1003,7 @@
                 "balance": {
                   "_hex": "0x01c3e899c4c7161923"
                 },
-                "mtime": 1590448656201
+                "mtime": 1234567891011
               },
               "baseAsset": {
                 "ticker": "RopstenETH",
@@ -1015,7 +1015,7 @@
                 "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
               },
               "hash": "0x4f02da9d7dab1cdce19996e4c6d83ae8a8444f8bb97bb8b45e228c3d77c85708",
-              "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+              "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
               "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
               "amount": "0",
               "to": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
@@ -1237,7 +1237,7 @@
           "balance": {
             "_hex": "0x2950f74dfbbe6800"
           },
-          "mtime": 1590502259454
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -1250,7 +1250,7 @@
           "balance": {
             "_hex": "0x2950f74dfbbe6800"
           },
-          "mtime": 1590502259454
+          "mtime": 1234567891011
         },
         "gasPrice": "4000000000",
         "gasLimit": 43987,
@@ -1294,8 +1294,8 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x622c0899a0a5d37efb1438874bd73df227f56902373883ae7f506f590fad20e4",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-        "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "amount": "0.01",
         "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "nonce": "21",
@@ -1388,7 +1388,7 @@
           "balance": {
             "_hex": "0x1fceff2a518c00"
           },
-          "mtime": 1590721552587
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -1400,7 +1400,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x90dc8977013f1953a41153dd4883e4f92017b9b31c0734a0e95a5570317f453b",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "0.01",
         "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -1502,8 +1502,8 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0xb3f2bd7a36850b3ee3ab56d49e59c53337820692c71c246728ed7f3c8357226e",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-        "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "amount": "0.01",
         "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "nonce": "20",
@@ -1596,7 +1596,7 @@
           "balance": {
             "_hex": "0x292b87d2a8e40000"
           },
-          "mtime": 1590722197770
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -1608,7 +1608,7 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x6745774224ec78f2b1dcf43bc42719963d14ffc8a5329bc6d81b25272775fac5",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
         "amount": "1",
         "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
@@ -1702,7 +1702,7 @@
           "balance": {
             "_hex": "0x0e2347cb6425dc00"
           },
-          "mtime": 1590726712321
+          "mtime": 1234567891011
         },
         "baseAsset": {
           "ticker": "RopstenETH",
@@ -1714,8 +1714,8 @@
           "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
         },
         "hash": "0x5b8bd3deca986e4c6aa4acc561c32314a0c32c2292be95b739ee76db022cfba8",
-        "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
-        "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+        "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
+        "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "amount": "0.01",
         "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
         "nonce": "24",
@@ -1862,7 +1862,7 @@
       }
     }
   },
-  "receiverAddress": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+  "receiverAddress": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
   "network": {
     "id": "Ropsten",
     "name": "Ropsten",
@@ -1929,11 +1929,7 @@
     "networkId": "Ropsten",
     "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
     "type": "erc20",
-    "isCustom": true,
-    "balance": {
-      "_hex": "0x54ab1b2ceea88000"
-    },
-    "mtime": 1590734746709
+    "isCustom": true
   },
   "baseAsset": {
     "ticker": "RopstenETH",
@@ -1944,7 +1940,7 @@
     "isCustom": false,
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
   },
-  "from": "0x5197b5b062288bbf29008c92b08010a92dd677cd",
+  "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
   "gasPrice": "20000000000",
   "gasLimit": "32048",
   "nonce": "25",

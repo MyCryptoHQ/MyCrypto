@@ -144,16 +144,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[t.from.toLowerCase()]);
         const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()])
         const receivedFiatValue = receivedValueTransfers.reduce((acc, cur) => {
-          return acc.plus(convertToFiat(
+          return cur.amount != '' ? acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
-          ))
+          )) : acc;
         }, bigify('0'))
         const sentFiatValue = sentValueTransfers.reduce((acc, cur) => {
-          return  acc.plus(convertToFiat(
+          return cur.amount != '' ? acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
-          ))
+          )) : acc;
         }, bigify('0'))
         return [
           <TransactionLabel 
@@ -178,17 +178,13 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             />
           ),
           <Box key={3}>
-            {sentValueTransfers.length != 0 && <Amount
-              isNFTAsset={sentValueTransfers.length == 1 && sentValueTransfers[0].isNFTTransfer}
+            {sentValueTransfers.length > 1 && <Amount
               // Adapt alignment for mobile display
+              isNFTAsset={false}
               alignLeft={isMobile}
               asset={{
-                amount: sentValueTransfers.length > 1
-                  ? sentValueTransfers.length.toString()
-                  : bigify(sentValueTransfers[0].amount).toPrecision(6),
-                ticker: sentValueTransfers.length > 1
-                  ? 'Assets' as TTicker
-                  : sentValueTransfers[0].asset.ticker
+                amount: sentValueTransfers.length.toString(),
+                ticker: translateRaw('ASSETS') as TTicker
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -196,19 +192,36 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
                 amount: sentFiatValue.toFixed(2)
               }}
             />}
+            {sentValueTransfers.length === 1 && 
+              <>{(sentValueTransfers[0].amount === '')
+                ? <Amount
+                  isNFTAsset={false}
+                  alignLeft={isMobile}
+                  text={sentValueTransfers[0].asset.name}
+                /> : <Amount
+                  isNFTAsset={false}
+                  alignLeft={isMobile}
+                  asset={{
+                    amount: bigify(sentValueTransfers[0].amount).toPrecision(6),
+                    ticker: sentValueTransfers[0].asset.ticker
+                  }}
+                  fiat={{
+                    symbol: getFiat(settings).symbol,
+                    ticker: getFiat(settings).ticker,
+                    amount: sentFiatValue.toFixed(2)
+                  }}
+                />
+              }</>
+            }
           </Box>,
           <Box key={4}>
-            {receivedValueTransfers.length != 0 && <Amount
+            {receivedValueTransfers.length > 1 && <Amount
               // Adapt alignment for mobile display
-              isNFTAsset={receivedValueTransfers.length == 1 && receivedValueTransfers[0].isNFTTransfer}
+              isNFTAsset={false}
               alignLeft={isMobile}
               asset={{
-                amount: receivedValueTransfers.length > 1
-                  ? receivedValueTransfers.length.toString()
-                  : bigify(receivedValueTransfers[0].amount).toPrecision(6),
-                ticker: receivedValueTransfers.length > 1
-                  ? 'Assets' as TTicker
-                  : receivedValueTransfers[0].asset.ticker
+                amount: receivedValueTransfers.length.toString(),
+                ticker: translateRaw('ASSETS') as TTicker
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -216,6 +229,27 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
                 amount: receivedFiatValue.toFixed(2)
               }}
             />}
+            {receivedValueTransfers.length === 1 && 
+              <>{(receivedValueTransfers[0].amount === '')
+                ? <Amount
+                  isNFTAsset={false}
+                  alignLeft={isMobile}
+                  text={receivedValueTransfers[0].asset.name}
+                /> : <Amount
+                  isNFTAsset={false}
+                  alignLeft={isMobile}
+                  asset={{
+                    amount: bigify(receivedValueTransfers[0].amount).toPrecision(6),
+                    ticker: receivedValueTransfers[0].asset.ticker
+                  }}
+                  fiat={{
+                    symbol: getFiat(settings).symbol,
+                    ticker: getFiat(settings).ticker,
+                    amount: receivedFiatValue.toFixed(2)
+                  }}
+                />
+              }</>
+            }
           </Box>,
           <Box key={5} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
@@ -267,7 +301,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
       iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
-      reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
+      reversedColumns: []
     },
     overlayRows: [0]
   };

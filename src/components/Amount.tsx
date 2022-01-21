@@ -57,7 +57,7 @@ export default function Amount({
       )}
 
       {text && (
-        <Text as="span" isBold={bold}>
+        <Text as="span" isBold={bold} textAlign="right">
           {text}
         </Text>
       )}

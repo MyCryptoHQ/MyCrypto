@@ -289,7 +289,11 @@ type SvgIcons = keyof typeof svgIcons;
 type PngIcons = keyof typeof pngIcons;
 export type TIcon = SvgIcons | PngIcons;
 
-type StylingProps = LayoutProps & SpaceProps & ColorProps & ColorStyleProps;
+interface RotationProps {
+  rotate90Deg?: boolean;
+}
+
+type StylingProps = LayoutProps & SpaceProps & ColorProps & ColorStyleProps & RotationProps;
 
 const SInlineSVG = styled(InlineSVG).withConfig({ shouldForwardProp })<
   StylingProps & { fill: string }
@@ -355,7 +359,7 @@ const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
 const SMoreIcon = styled(SInlineSVG)<StylingProps>`
   cursor: pointer;
   transition: all 0.3s ease-out;
-  transform: ${({ isExpanded }) => (isExpanded ? `rotate(270deg)` : `rotate(90deg)`)};
+  transform: ${({ isExpanded, rotate90Deg }) => (isExpanded ? `rotate(${180 + (rotate90Deg ? 90 : 0)}deg)` : `rotate(${0 + (rotate90Deg ? 90 : 0)}deg)`)};
 `;
 
 interface Props
