@@ -147,7 +147,7 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
                 // Adapt alignment for mobile display
                 isNFTAsset={transfer.isNFTTransfer}
                 alignLeft={false}
-                asset={{ ...transfer.asset, amount: bigify(transfer.amount).toPrecision(4) }}
+                asset={{ ...transfer.asset, amount: bigify(transfer.amount).toFixed(5) }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,

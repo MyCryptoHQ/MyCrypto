@@ -61,7 +61,7 @@ export const TxReceiptTotals = ({
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
             asset={{
-              amount: bigify(bigNumValueToViewableEther(value).toString()).toPrecision(6),
+              amount: bigify(bigNumValueToViewableEther(value).toString()).toFixed(5),
               ticker: baseAsset.ticker,
               uuid: baseAsset.uuid
             }}
