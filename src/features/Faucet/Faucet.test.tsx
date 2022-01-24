@@ -41,7 +41,7 @@ FaucetService.solveChallenge = jest.fn(() =>
       network: 'ropsten',
       nonce: 39,
       to: '0x0000000000000000000000000000000000000000',
-      value: '1'
+      value: '0x01'
     }
   })
 );

@@ -44,6 +44,7 @@ import {
   WalletId
 } from '@types';
 import {
+  bigify,
   bigNumValueToViewableEther,
   buildTxUrl,
   isType2Receipt,
@@ -194,7 +195,7 @@ const TxReceipt = ({
       rate: getAssetRate(transfer.asset),
       amount: transfer.amount
     }));
-    if (displayTxReceipt && !displayTxReceipt.value.isZero()) {
+    if (displayTxReceipt && path(['value'], displayTxReceipt) && !bigify(displayTxReceipt.value).isZero()) {
       valueTransferEvents.push({
         to: displayTxReceipt.to,
         from: displayTxReceipt.from,
@@ -208,11 +209,11 @@ const TxReceipt = ({
     } else if (!displayTxReceipt && txConfig.amount != '0') {
       valueTransferEvents.push({
         to: txConfig.receiverAddress || txConfig.rawTransaction.to!, // @todo: remove
-        from: txConfig.senderAccount.address,
+        from: txConfig.from,
         toContact:
           txConfig.receiverAddress &&
           getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
-        fromContact: getContactByAddressAndNetworkId(txConfig.senderAccount.address, network.id),
+        fromContact: getContactByAddressAndNetworkId(txConfig.from, network.id),
         amount: txConfig.amount,
         asset: txConfig.baseAsset,
         rate: baseAssetRate,

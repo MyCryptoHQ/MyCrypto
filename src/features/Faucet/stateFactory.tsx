@@ -4,7 +4,15 @@ import { TUseStateReducerFactory } from '@utils';
 
 import { FaucetState, ITxFaucetResult } from './types';
 
-const FaucetFactory: TUseStateReducerFactory<FaucetState> = ({ state, setState }) => {
+export interface IFaucetFactoryApi {
+  faucetState: FaucetState;
+  reset(): void;
+  setSolution(solution: string): void;
+  requestFunds(recipientAddress: StoreAccount): void;
+  finalizeRequestFunds(solutionInput: string): void;
+}
+
+const FaucetFactory: TUseStateReducerFactory<FaucetState, IFaucetFactoryApi> = ({ state, setState }) => {
   const reset = () => {
     setState(() => ({
       step: 0,
@@ -54,6 +62,7 @@ const FaucetFactory: TUseStateReducerFactory<FaucetState> = ({ state, setState }
           if (!result.success) {
             throw new Error(result.message);
           } else {
+            console.debug('solve challenge completed')
             setState((prevState: FaucetState) => ({
               ...prevState,
               loading: false,

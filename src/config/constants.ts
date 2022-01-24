@@ -1,4 +1,4 @@
-import { NetworkId, TTicker, TURL } from '@types';
+import { NetworkId, TAddress, TTicker, TURL } from '@types';
 
 export const INFURA_API_KEY = 'f3b4711ae677488bb3c56de93c6cab1a';
 
@@ -85,3 +85,5 @@ export const SETTINGS_FILENAME = 'MyCrypto_Settings_File';
 export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
 
 export const PRIVACY_POLICY_LINK = 'https://mycrypto.com/privacy/';
+
+export const ZEROX_SWAP_PROXY = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' as TAddress

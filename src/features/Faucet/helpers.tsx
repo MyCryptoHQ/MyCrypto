@@ -58,7 +58,7 @@ export const makeTxConfig = (
     ...makeTxConfigFromTx(newTxResult, assets, network, accounts),
     senderAccount: (senderContact as unknown) as StoreAccount
   };
-
+  console.debug('makeTxConfig: ', txConfig)
   return txConfig;
 };
 

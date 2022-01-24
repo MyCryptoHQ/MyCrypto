@@ -33,6 +33,7 @@ import { generateTweet, noOp, useStateReducer } from '@utils';
 import { Error as ErrorComponent } from './components';
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import FaucetFactory from './stateFactory';
+import { FaucetState } from './types';
 
 // Legacy
 
@@ -84,14 +85,14 @@ const SubmitCaptchaButton = styled(Button)`
 const initialFaucetState = () => ({
   step: 0,
   loading: false
-});
+}) as FaucetState;
 
 export default function Faucet() {
   const history = useHistory();
 
   const { faucetState, reset, setSolution, requestFunds, finalizeRequestFunds } = useStateReducer(
     FaucetFactory,
-    initialFaucetState
+    initialFaucetState()
   );
 
   const accounts = useSelector(getStoreAccounts);
@@ -229,7 +230,9 @@ export default function Faucet() {
       </SubmitCaptchaButton>
     </>,
     <>
-      {faucetState.txResult && (
+      {faucetState.txResult && (() => {
+        console.debug('Got to this step ', faucetState.txResult, "\ntxConfig: ", txConfig, "\ntxReceipt: ", txReceipt)
+        return (
         <TxReceipt
           txConfig={txConfig}
           txReceipt={txReceipt}
@@ -260,8 +263,8 @@ export default function Faucet() {
               </Button>
             </LinkApp>
           )}
-        />
-      )}
+        />)})()
+      }
     </>
   ];
 

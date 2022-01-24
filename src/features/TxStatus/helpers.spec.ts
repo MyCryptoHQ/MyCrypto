@@ -104,7 +104,7 @@ describe('makeTx', () => {
         status: ITxStatus.UNKNOWN,
         to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
         from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
-        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress),
+        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
       })
     );
   });
