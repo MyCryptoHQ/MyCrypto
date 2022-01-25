@@ -231,7 +231,6 @@ export default function Faucet() {
     </>,
     <>
       {faucetState.txResult && (() => {
-        console.debug('Got to this step ', faucetState.txResult, "\ntxConfig: ", txConfig, "\ntxReceipt: ", txReceipt)
         return (
         <TxReceipt
           txConfig={txConfig}

@@ -34,8 +34,6 @@ export default function MembershipReceipt({
         : makeTxConfigFromTx(tx.txRaw, assets, account.network, [account]);
     return makeTxItem(tx.txType!, txConfig, tx.txHash!, tx.txReceipt);
   });
-  console.debug('tx length:', transactions.length, '\ntxType: ',transactions[0].txType, '\ntxItems: ', txItems, '\ntransactions: ', transactions)
-
   const network = getNetworkById(txItems[0].txConfig.networkId);
 
   const baseAsset = getAssetByUUID(network.baseAsset)!;

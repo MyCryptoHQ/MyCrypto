@@ -208,7 +208,7 @@ const TxReceipt = ({
       });
     } else if (!displayTxReceipt && txConfig.amount != '0') {
       valueTransferEvents.push({
-        to: txConfig.receiverAddress || txConfig.rawTransaction.to!, // @todo: remove
+        to: txConfig.receiverAddress || txConfig.rawTransaction.to!,
         from: txConfig.from,
         toContact:
           txConfig.receiverAddress &&

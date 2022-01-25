@@ -331,7 +331,7 @@ export const makeTxConfigFromTxReceipt = (
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
-    amount: contractAsset // @todo: look into this?
+    amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.valueTransfers[0].amount,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,

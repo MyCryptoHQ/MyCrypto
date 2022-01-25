@@ -92,7 +92,6 @@ const SMoreIconWrapper = styled.div`
   justify-content: flex-end;
 `
 
-// @todo: fix imports type
 const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
   const [isExpanded, setExpanded] = useState(false)
   const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20')

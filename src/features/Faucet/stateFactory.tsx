@@ -62,7 +62,6 @@ const FaucetFactory: TUseStateReducerFactory<FaucetState, IFaucetFactoryApi> = (
           if (!result.success) {
             throw new Error(result.message);
           } else {
-            console.debug('solve challenge completed')
             setState((prevState: FaucetState) => ({
               ...prevState,
               loading: false,
