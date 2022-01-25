@@ -117,7 +117,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         fromAddressBookEntry,
         toAddressBookEntry,
         networkId,
-        txType
+        txType,
+        displayAsset
       }) => {
         const labelFromProps = {
           addressBookEntry: fromAddressBookEntry,
@@ -130,7 +131,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: recipient,
           networkId
         };
-        if (!valueTransfers.find(({ asset }) => asset.uuid === baseAsset.uuid) && valueTransfers.length == 0) {
+        if (valueTransfers.length == 0) {
           valueTransfers.push({
             asset: baseAsset,
             to,
@@ -139,7 +140,6 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             isNFTTransfer: false
           } as IFullTxHistoryValueTransfer);
         }
-        
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[t.from.toLowerCase()]);
         const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()])
@@ -158,8 +158,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         return [
           <TransactionLabel 
             key={0}
-            image={makeTxIcon(entryConfig, valueTransfers.length == 1 ? valueTransfers[0]?.asset : undefined)}
-            label={entryConfig.label(valueTransfers.length == 1 ? valueTransfers[0]?.asset.ticker : translateRaw('ASSETS'))}
+            image={makeTxIcon(entryConfig, displayAsset)}
+            label={entryConfig.label(displayAsset ? displayAsset.ticker : translateRaw('ASSETS'))}
             stage={status}
             date={timestamp}
           />,

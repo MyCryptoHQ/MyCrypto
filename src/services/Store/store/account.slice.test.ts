@@ -407,6 +407,8 @@ describe('AccountSlice', () => {
           value: BigNumber.from(fTxReceipt.value),
           networkId: fNetwork.id,
           timestamp: 0,
+          displayAsset: { ...fTxReceipt.baseAsset, mtime: 1234567891011 },
+          gasUsed: undefined,
           toAddressBookEntry: undefined,
           txType: ITxHistoryType.OUTBOUND,
           fromAddressBookEntry: fContacts[0]
@@ -443,6 +445,7 @@ describe('AccountSlice', () => {
           nonce: BigNumber.from(fTxReceipt.nonce),
           value: BigNumber.from(fTxReceipt.value),
           blockNumber: parseInt(fTxHistoryAPI.blockNumber!, 16),
+          displayAsset: { ...fTxReceipt.baseAsset, mtime: 1234567891011 },
           gasUsed: undefined,
           hash: '0xbc9a016464ac9d52d29bbe9feec9e5cb7eb3263567a1733650fe8588d426bf40',
           networkId: fNetwork.id,

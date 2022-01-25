@@ -1,5 +1,5 @@
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { Asset, ExtendedAsset, Network, StoreAsset, TAddress, TTicker } from '@types';
+import { Asset, ExtendedAsset, Network, NetworkId, StoreAsset, TAddress, TTicker } from '@types';
 import { generateAssetUUID, isSameAddress } from '@utils';
 
 export const getAssetByTicker = (assets: Asset[]) => (ticker: TTicker): Asset | undefined => {
@@ -44,8 +44,18 @@ export const getAssetByContractAndNetwork = (
   if (!network || !contractAddress) {
     return undefined;
   }
+  return getAssetByContractAndNetworkId(assets)(contractAddress, network.id)
+};
+
+export const getAssetByContractAndNetworkId = (assets: ExtendedAsset[]) => (
+  contractAddress: string | undefined,
+  networkId: NetworkId | undefined
+): Asset | undefined => {
+  if (!networkId || !contractAddress) {
+    return undefined;
+  }
   return assets
-    .filter((asset) => asset.networkId && asset.contractAddress && asset.networkId === network.id)
+    .filter((asset) => asset.networkId && asset.contractAddress && asset.networkId === networkId)
     .find((asset) =>
       asset.contractAddress
         ? isSameAddress(asset.contractAddress as TAddress, contractAddress as TAddress)

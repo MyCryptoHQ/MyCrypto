@@ -515,6 +515,7 @@
     "PLATFORM_NFT_APPROVE": "NFT Approved",
     "PLATFORM_BRIDGE_IN": "Bridged To",
     "PLATFROM_BRIDGE_OUT": "Bridged From",
+    "PLATFORM_FAUCET": "$ticker Received from Faucet",
     "PLATFORM_CANCEL_ORDER": "Cancel Order",
     "PLATFORM_CLAIM": "Assets Claimed",
     "PLATFORM_DEPOSIT_ETH": "ETH Deposited",

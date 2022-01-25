@@ -2,7 +2,10 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { deriveDisplayAsset } from '@features/Dashboard/components/helpers';
 import { makeFinishedTxReceipt } from '@helpers';
+import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
@@ -28,6 +31,8 @@ import {
   WalletId
 } from '@types';
 import {
+  bigify,
+  fromTokenBase,
   generateDeterministicAddressUUID,
   generateUUID,
   getWeb3Config,
@@ -39,7 +44,7 @@ import {
 import { findIndex, isEmpty, prop, propEq, sortBy, uniqBy } from '@vendor';
 
 import { getAccountByAddressAndNetworkName, getIdenticalAccount } from '../Account';
-import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
+import { getAssetByContractAndNetworkId, getNewDefaultAssetTemplateByNetwork } from '../Asset';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import {
   findMultipleNextUnusedDefaultLabels,
@@ -276,14 +281,26 @@ export const getMergedTxHistory = createSelector(
             tx.from,
             network.id
           );
+          const derivedTxType = deriveTxType(txTypeMetas, accounts, tx)
+          const valueTransfers = tx.valueTransfers || []
+          if (valueTransfers.length == 0 && !bigify(tx.value).isZero()) {
+            valueTransfers.push({
+              asset: tx.baseAsset,
+              to: tx.to,
+              from: tx.from,
+              amount: fromTokenBase(bigify(tx.value), DEFAULT_ASSET_DECIMAL).toString(),
+              isNFTTransfer: false
+            } as IFullTxHistoryValueTransfer);
+          }
           return {
             ...tx,
-            valueTransfers: tx.valueTransfers ?? [],
+            valueTransfers: valueTransfers,
             timestamp: tx.timestamp ?? 0,
-            txType: deriveTxType(txTypeMetas, accounts, tx),
+            txType: derivedTxType,
             toAddressBookEntry,
             fromAddressBookEntry,
-            networkId: network.id
+            networkId: network.id,
+            displayAsset: deriveDisplayAsset(derivedTxType, tx.to, network.id, network.chainId, valueTransfers, getAssetByContractAndNetworkId(assets))
           };
         })
         // Remove eventual empty items from list
