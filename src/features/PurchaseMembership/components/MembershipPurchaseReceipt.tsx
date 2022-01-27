@@ -34,6 +34,7 @@ export default function MembershipReceipt({
         : makeTxConfigFromTx(tx.txRaw, assets, account.network, [account]);
     return makeTxItem(tx.txType!, txConfig, tx.txHash!, tx.txReceipt);
   });
+
   const network = getNetworkById(txItems[0].txConfig.networkId);
 
   const baseAsset = getAssetByUUID(network.baseAsset)!;

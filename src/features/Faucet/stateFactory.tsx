@@ -4,15 +4,7 @@ import { TUseStateReducerFactory } from '@utils';
 
 import { FaucetState, ITxFaucetResult } from './types';
 
-export interface IFaucetFactoryApi {
-  faucetState: FaucetState;
-  reset(): void;
-  setSolution(solution: string): void;
-  requestFunds(recipientAddress: StoreAccount): void;
-  finalizeRequestFunds(solutionInput: string): void;
-}
-
-const FaucetFactory: TUseStateReducerFactory<FaucetState, IFaucetFactoryApi> = ({ state, setState }) => {
+const FaucetFactory: TUseStateReducerFactory<FaucetState> = ({ state, setState }) => {
   const reset = () => {
     setState(() => ({
       step: 0,
