@@ -210,3 +210,14 @@ export const generateGenericERC721 = (
   type: 'erc721',
   networkId
 });
+
+export const generateGenericBase = (
+  chainId: string,
+  networkId: NetworkId
+): ExtendedAsset => ({
+  uuid: generateAssetUUID(chainId),
+  name: translateRaw('GENERIC_BASE_NAME'),
+  ticker: 'Unknown' as TTicker,
+  type: 'base',
+  networkId
+});

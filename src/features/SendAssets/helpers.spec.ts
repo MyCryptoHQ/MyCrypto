@@ -1,3 +1,4 @@
+import { ETHUUID } from '@config';
 import {
   fAccounts,
   fAdvancedERC20TxSendFormikFields,
@@ -14,6 +15,7 @@ import { translateRaw } from '@translations';
 import { ILegacyTxObject, TAddress, TTicker, TxQueryTypes } from '@types';
 
 import {
+  generateGenericBase,
   generateGenericERC20,
   isERC20Asset,
   parseQueryParams,
@@ -265,6 +267,23 @@ describe('generateGenericERC20', () => {
       'Ethereum'
     );
     expect(genericERC20).toStrictEqual(testGenericERC20);
+  });
+});
+
+describe('generateGenericBase', () => {
+  it('creates a generic erc20 token from contract address and chainID', () => {
+    const testGenericBase = {
+      uuid: ETHUUID,
+      name: translateRaw('GENERIC_BASE_NAME'),
+      ticker: 'Unknown' as TTicker,
+      type: 'base',
+      networkId: 'Ethereum'
+    };
+    const genericBase = generateGenericBase(
+      '1',
+      'Ethereum'
+    );
+    expect(genericBase).toStrictEqual(testGenericBase);
   });
 });
 

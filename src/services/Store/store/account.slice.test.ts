@@ -5,7 +5,7 @@ import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { generateGenericERC20 } from '@features/SendAssets';
+import { generateGenericBase, generateGenericERC20 } from '@features/SendAssets';
 import {
   fAccount,
   fAccounts,
@@ -333,13 +333,14 @@ describe('AccountSlice', () => {
     it('uses tx history from store', () => {
       const state = {
         ...mockAppState(defaultAppState),
-        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
+        txHistory: { history: [{ ...fTxHistoryAPI, txType: ITxType.CONTRACT_INTERACT }], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
       };
       const actual = getMergedTxHistory(state);
 
       expect(actual).toEqual([
         {
           ...fTxHistoryAPI,
+          txType: ITxType.CONTRACT_INTERACT,
           valueTransfers: [{
             to: fTxHistoryAPI.erc20Transfers[0].to,
             from: fTxHistoryAPI.erc20Transfers[0].from,
@@ -383,6 +384,70 @@ describe('AccountSlice', () => {
           gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
           gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
           gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed ?? 0),
+          value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
+        }
+      ]);
+    });
+
+    it('uses tx history from store and adds unknown base value transfer for uniswap exchange txType', () => {
+      const state = {
+        ...mockAppState(defaultAppState),
+        txHistory: { history: [fTxHistoryAPI], error: false, txTypeMeta: fTxTypeMetas, isHistoryFetchCompleted: true }
+      };
+      const actual = getMergedTxHistory(state);
+
+      expect(actual).toEqual([
+        {
+          ...fTxHistoryAPI,
+          valueTransfers: [{
+            to: fTxHistoryAPI.erc20Transfers[0].to,
+            from: fTxHistoryAPI.erc20Transfers[0].from,
+            amount: "",
+            asset: generateGenericERC20(
+              fTxHistoryAPI.erc20Transfers[0].contractAddress,
+              DEFAULT_NETWORK_CHAINID.toString(),
+              DEFAULT_NETWORK
+            ),
+            isNFTTransfer: false,
+          },{
+            to: fTxHistoryAPI.erc20Transfers[1].to,
+            from: fTxHistoryAPI.erc20Transfers[1].from,
+            amount: "",
+            asset: generateGenericERC20(
+              fTxHistoryAPI.erc20Transfers[1].contractAddress,
+              DEFAULT_NETWORK_CHAINID.toString(),
+              DEFAULT_NETWORK
+            ),
+            isNFTTransfer: false,
+          }, {
+            to: fTxHistoryAPI.recipientAddress,
+            from: fTxHistoryAPI.from,
+            isNFTTransfer: false,
+            asset: fAssets[0],
+            amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
+          }, {
+            amount: "",
+            asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
+            from: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+            isNFTTransfer: false,
+            to: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
+          }],
+          baseAsset: fAssets[0],
+          fromAddressBookEntry: {
+            address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
+            label: 'WalletConnect Account 2',
+            network: 'Ethereum',
+            notes: '',
+            uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70c'
+          },
+          toAddressBookEntry: undefined,
+          receiverAddress: fTxHistoryAPI.recipientAddress,
+          nonce: BigNumber.from(fTxHistoryAPI.nonce),
+          networkId: DEFAULT_NETWORK,
+          blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
+          gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
+          gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
+          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
           value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
         }
       ]);

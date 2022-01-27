@@ -4,6 +4,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { deriveDisplayAsset } from '@features/Dashboard/components/helpers';
+import { generateGenericBase } from '@features/SendAssets';
 import { makeFinishedTxReceipt } from '@helpers';
 import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { ProviderHandler } from '@services/EthService';
@@ -292,6 +293,27 @@ export const getMergedTxHistory = createSelector(
               isNFTTransfer: false
             } as IFullTxHistoryValueTransfer);
           }
+
+          // handles unknown internal transaction value transfer in exchange tx types.
+          // @todo: remove when we have access to internal transactions
+          const accountsMap = accounts.reduce((acc, cur) => {
+            acc[cur.address.toLowerCase()] = true
+            return acc;
+          }, {} as {[key: string]: boolean });
+          if (
+            txTypeMetas[derivedTxType]
+            && txTypeMetas[derivedTxType].type == 'EXCHANGE'
+            && (valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()]) || []).length == 0
+          ) {
+            valueTransfers.push({
+              asset: generateGenericBase(network.chainId.toString(), network.id),
+              to: tx.from,
+              from: tx.to,
+              amount: '',
+              isNFTTransfer: false
+            } as IFullTxHistoryValueTransfer);
+          }
+          
           return {
             ...tx,
             valueTransfers: valueTransfers,

@@ -118,8 +118,7 @@ describe('TxReceipt', () => {
   test('it displays pending state', async () => {
     const { getAllByTestId } = getComponent({
       ...defaultProps,
-      txStatus: ITxStatus.PENDING,
-      displayTxReceipt: undefined
+      txStatus: ITxStatus.PENDING
     });
     expect(getAllByTestId('PENDING')).toBeDefined();
   });

@@ -51,15 +51,17 @@ export const makeTxReceipt = (
       isNFTTransfer
     };
   });
+  // handles base asset value transfer based off transaction.value
   if (!parseEther(value).isZero()) {
     transfers.push({
       asset: baseAsset,
       to: tx.to,
       from: tx.from,
-      amount:value.toString(),
+      amount: value.toString(),
       isNFTTransfer: false
     } as IFullTxHistoryValueTransfer)
   }
+
   return {
     ...tx,
     baseAsset: baseAsset!,
