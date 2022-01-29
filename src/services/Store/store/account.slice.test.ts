@@ -344,7 +344,6 @@ describe('AccountSlice', () => {
           valueTransfers: [{
             to: fTxHistoryAPI.erc20Transfers[0].to,
             from: fTxHistoryAPI.erc20Transfers[0].from,
-            amount: "",
             asset: generateGenericERC20(
               fTxHistoryAPI.erc20Transfers[0].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
@@ -353,7 +352,6 @@ describe('AccountSlice', () => {
           },{
             to: fTxHistoryAPI.erc20Transfers[1].to,
             from: fTxHistoryAPI.erc20Transfers[1].from,
-            amount: "",
             asset: generateGenericERC20(
               fTxHistoryAPI.erc20Transfers[1].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
@@ -399,7 +397,6 @@ describe('AccountSlice', () => {
           valueTransfers: [{
             to: fTxHistoryAPI.erc20Transfers[0].to,
             from: fTxHistoryAPI.erc20Transfers[0].from,
-            amount: "",
             asset: generateGenericERC20(
               fTxHistoryAPI.erc20Transfers[0].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
@@ -408,7 +405,6 @@ describe('AccountSlice', () => {
           },{
             to: fTxHistoryAPI.erc20Transfers[1].to,
             from: fTxHistoryAPI.erc20Transfers[1].from,
-            amount: "",
             asset: generateGenericERC20(
               fTxHistoryAPI.erc20Transfers[1].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
@@ -420,7 +416,6 @@ describe('AccountSlice', () => {
             asset: fAssets[0],
             amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
           }, {
-            amount: "",
             asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
             from: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
             to: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
