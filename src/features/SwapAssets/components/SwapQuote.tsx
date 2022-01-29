@@ -98,7 +98,8 @@ export const SwapQuote = ({
         style={{ textDecoration: isExpired ? 'line-through' : 'none' }}
         asset={{
           amount: estimatedGasFee,
-          ticker: baseAsset.ticker
+          ticker: baseAsset.ticker,
+          type: baseAsset.type
         }}
         fiat={{
           symbol: getFiat(settings).symbol,

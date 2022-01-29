@@ -17,6 +17,7 @@ import { ILegacyTxObject, TAddress, TTicker, TxQueryTypes } from '@types';
 import {
   generateGenericBase,
   generateGenericERC20,
+  generateGenericERC721,
   isERC20Asset,
   parseQueryParams,
   parseTransactionQueryParams,
@@ -271,7 +272,7 @@ describe('generateGenericERC20', () => {
 });
 
 describe('generateGenericBase', () => {
-  it('creates a generic erc20 token from contract address and chainID', () => {
+  it('creates a generic base asset from chainID', () => {
     const testGenericBase = {
       uuid: ETHUUID,
       name: translateRaw('GENERIC_BASE_NAME'),
@@ -284,6 +285,24 @@ describe('generateGenericBase', () => {
       'Ethereum'
     );
     expect(genericBase).toStrictEqual(testGenericBase);
+  });
+});
+
+describe('generateGenericERC721', () => {
+  it('creates a generic erc721 token from contract address and chainID', () => {
+    const testGenericERC721 = {
+      uuid: 'e1f698bf-cb85-5405-b563-14774af14bf1',
+      name: translateRaw('GENERIC_ERC721_NAME'),
+      ticker: 'Unknown NFT' as TTicker,
+      type: 'erc721',
+      networkId: 'Ethereum'
+    };
+    const genericERC721 = generateGenericERC721(
+      '0x6B175474E89094C44Da98b954EedeAC495271d0F' as TAddress,
+      '1',
+      'Ethereum'
+    );
+    expect(genericERC721).toStrictEqual(testGenericERC721);
   });
 });
 

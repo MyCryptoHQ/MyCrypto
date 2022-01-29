@@ -12,8 +12,7 @@
     },
     "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
     "from": "0x909f74Ffdc223586d0d30E78016E707B6F5a45E2",
-    "amount": "0.0001",
-    "isNFTTransfer": false
+    "amount": "0.0001"
   }],
 
   "baseAsset": {

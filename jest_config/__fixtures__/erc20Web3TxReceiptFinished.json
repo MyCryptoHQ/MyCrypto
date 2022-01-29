@@ -10,7 +10,6 @@
       "type": "erc20",
       "isCustom": true
     },
-    "isNFTTransfer": false,
     "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
     "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
     "amount":  "0.01"

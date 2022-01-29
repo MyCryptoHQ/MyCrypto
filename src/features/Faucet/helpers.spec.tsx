@@ -99,8 +99,7 @@ describe('Faucet helpers', () => {
           asset: fAssets[1],
           amount: '0.000000000000000001',
           to: fAccount.address,
-          from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7',
-          isNFTTransfer: false
+          from: '0xa500B2427458D12Ef70dd7b1E031ef99d1cc09f7'
         }]
       });
     });

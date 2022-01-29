@@ -108,8 +108,7 @@ export default function MultiTxReceipt({
           to: recipient,
           from: senderAccount.address,
           fromContact: getContactByAddressAndNetworkId(senderAccount.address, network.id),
-          toContact: recipient && getContactByAddressAndNetworkId(recipient, network.id),
-          isNFTTransfer: false
+          toContact: recipient && getContactByAddressAndNetworkId(recipient, network.id)
         }
         return (
           <div key={idx}>

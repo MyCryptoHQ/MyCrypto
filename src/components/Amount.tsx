@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 
 import { COLORS } from '@theme';
-import { TCurrencySymbol, TTicker, TUuid } from '@types';
+import { TAssetType, TCurrencySymbol, TTicker, TUuid } from '@types';
 import { getDecimals } from '@utils';
 
 import Box from './Box';
@@ -14,6 +14,7 @@ interface Props {
     // Formatted Currency display
     amount: string;
     ticker: TTicker;
+    type: TAssetType;
     uuid?: TUuid;
   };
   fiat?: {
@@ -22,7 +23,6 @@ interface Props {
     symbol: TCurrencySymbol;
     ticker: TTicker;
   };
-  isNFTAsset?: boolean;
   // When sending a token we display the equivalent baseAsset value.
   baseAssetValue?: string;
   fiatColor?: string;
@@ -36,7 +36,6 @@ interface Props {
 // - define default decimals
 export default function Amount({
   asset,
-  isNFTAsset = false,
   text,
   baseAssetValue,
   fiat,
@@ -53,7 +52,7 @@ export default function Amount({
       {...rest}
     >
       {asset && (
-        <Currency amount={asset.amount} isNFTAsset={isNFTAsset} ticker={asset.ticker} icon={true} uuid={asset.uuid} decimals={getDecimals(asset.amount)}/>
+        <Currency amount={asset.amount} isNFTAsset={asset.type === 'erc721'} ticker={asset.ticker} icon={true} uuid={asset.uuid} decimals={getDecimals(asset.amount)}/>
       )}
 
       {text && (

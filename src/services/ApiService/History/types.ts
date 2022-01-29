@@ -1,5 +1,4 @@
 import {
-  Asset,
   ITxData,
   ITxFromAddress,
   ITxGasLimit,
@@ -36,13 +35,5 @@ export interface ITxHistoryERC20Transfer {
   readonly from: TAddress;
   readonly to: TAddress;
   readonly contractAddress: TAddress;
-  readonly amount: string; // Hex
-}
-
-export interface IFullTxHistoryValueTransfer {
-  readonly from: TAddress;
-  readonly to: TAddress;
-  readonly asset: Asset;
-  readonly amount: string; // Hex
-  readonly isNFTTransfer: boolean;
+  readonly amount?: string; // Hex
 }

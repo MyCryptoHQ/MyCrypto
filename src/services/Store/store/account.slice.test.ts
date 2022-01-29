@@ -349,8 +349,7 @@ describe('AccountSlice', () => {
               fTxHistoryAPI.erc20Transfers[0].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
               DEFAULT_NETWORK
-            ),
-            isNFTTransfer: false,
+            )
           },{
             to: fTxHistoryAPI.erc20Transfers[1].to,
             from: fTxHistoryAPI.erc20Transfers[1].from,
@@ -359,12 +358,10 @@ describe('AccountSlice', () => {
               fTxHistoryAPI.erc20Transfers[1].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
               DEFAULT_NETWORK
-            ),
-            isNFTTransfer: false,
+            )
           },{
             to: fTxHistoryAPI.recipientAddress,
             from: fTxHistoryAPI.from,
-            isNFTTransfer: false,
             asset: fAssets[0],
             amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
           }],
@@ -407,8 +404,7 @@ describe('AccountSlice', () => {
               fTxHistoryAPI.erc20Transfers[0].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
               DEFAULT_NETWORK
-            ),
-            isNFTTransfer: false,
+            )
           },{
             to: fTxHistoryAPI.erc20Transfers[1].to,
             from: fTxHistoryAPI.erc20Transfers[1].from,
@@ -417,19 +413,16 @@ describe('AccountSlice', () => {
               fTxHistoryAPI.erc20Transfers[1].contractAddress,
               DEFAULT_NETWORK_CHAINID.toString(),
               DEFAULT_NETWORK
-            ),
-            isNFTTransfer: false,
+            )
           }, {
             to: fTxHistoryAPI.recipientAddress,
             from: fTxHistoryAPI.from,
-            isNFTTransfer: false,
             asset: fAssets[0],
             amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
           }, {
             amount: "",
             asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
             from: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-            isNFTTransfer: false,
             to: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
           }],
           baseAsset: fAssets[0],

@@ -57,7 +57,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const txHistory = useSelector(getMergedTxHistory);
   const isHistoryFetchCompleted = useSelector(getIsHistoryFetchCompleted);
 
-  const defaultTxHash = qs.hash ? qs.hash : '';
+  const defaultTxHash = qs.hash ?? '';
   const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);

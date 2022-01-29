@@ -24,7 +24,7 @@ const Overrides = styled.div`
 
   & button {
     vertical-align: ${(props: SProps) => (props.inline ? 'inherit' : 'middle')};
-    font-size: ${(props: SProps) => (props.fontSize || '1em')};
+    font-size: ${({ fontSize = '1em' }: SProps) => fontSize};
     line-height: 24px;
     color: ${(props: SProps) => props.textColor};
   }
@@ -40,7 +40,7 @@ const Overrides = styled.div`
   & button svg {
     margin-left: -0.5ch;
     height: 0.8em;
-    color: ${(props: SProps) => (props.iconColor || COLORS.BLUE_GREY)};
+    color: ${({ iconColor = COLORS.BLUE_GREY }: SProps) => iconColor};
   }
 `;
 
@@ -61,8 +61,9 @@ export const EthAddress = ({
   iconColor,
   fontSize
 }: Props) => {
+  const click = (e: MouseEvent) => e.stopPropagation()
   return (
-    <Overrides inline={inline} iconColor={iconColor} textColor={textColor} fontSize={fontSize} onClick={(e: MouseEvent) => e.stopPropagation()}>
+    <Overrides inline={inline} iconColor={iconColor} textColor={textColor} fontSize={fontSize} onClick={click}>
       <Copyable
         text={toChecksumAddress(address)}
         isCopyable={isCopyable}

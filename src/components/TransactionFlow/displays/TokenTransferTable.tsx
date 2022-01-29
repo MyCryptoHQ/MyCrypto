@@ -92,7 +92,7 @@ const SMoreIconWrapper = styled.div`
   justify-content: flex-end;
 `
 
-const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
+export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
   const [isExpanded, setExpanded] = useState(false)
   const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20')
   return (
@@ -120,7 +120,7 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
             <Row key={idx}>
               <Box variant='rowAlign'>
                 <SText>
-                  {`${translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS')}:`}
+                  {translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS')}:
                 </SText>
                 <EthAddress
                   address={toChecksumAddress(transfer.from)}
@@ -132,7 +132,7 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
               </Box>
               <Box variant='rowAlign'>
                 <SText>
-                  {`${translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS')}:`}
+                  {translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS')}:
                 </SText>
                 <EthAddress
                   address={toChecksumAddress(transfer.to)}
@@ -142,9 +142,8 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
                   fontSize="16px"
                 />
               </Box>
-              {transfer.amount != '' ? <Amount
+              {transfer.amount ? <Amount
                 // Adapt alignment for mobile display
-                isNFTAsset={transfer.isNFTTransfer}
                 alignLeft={false}
                 asset={{ ...transfer.asset, amount: bigify(transfer.amount).toFixed(5) }}
                 fiat={{
@@ -154,7 +153,6 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
                 }}
               /> : <Amount
                 // Adapt alignment for mobile display
-                isNFTAsset={transfer.isNFTTransfer}
                 alignLeft={false}
                 text={transfer.asset.name}
               />}
@@ -166,4 +164,3 @@ const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
   );
 };
 
-export default TokenTransferTable;

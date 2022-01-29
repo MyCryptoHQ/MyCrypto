@@ -38,8 +38,8 @@ export const getAssetByUUID = (assets: ExtendedAsset[]) => (
 };
 
 export const getAssetByContractAndNetwork = (
-  contractAddress: string | undefined,
-  network: Network | undefined
+  contractAddress?: string,
+  network?: Network
 ) => (assets: ExtendedAsset[]): Asset | undefined => {
   if (!network || !contractAddress) {
     return undefined;
@@ -48,8 +48,8 @@ export const getAssetByContractAndNetwork = (
 };
 
 export const getAssetByContractAndNetworkId = (assets: ExtendedAsset[]) => (
-  contractAddress: string | undefined,
-  networkId: NetworkId | undefined
+  contractAddress?: string,
+  networkId?: NetworkId
 ): Asset | undefined => {
   if (!networkId || !contractAddress) {
     return undefined;

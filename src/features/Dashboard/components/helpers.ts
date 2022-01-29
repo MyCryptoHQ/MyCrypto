@@ -8,9 +8,8 @@ import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
-import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { translateRaw } from '@translations';
-import { Asset, ExtendedAsset, ITxType, ITxTypeMeta, NetworkId, TAddress, TxType } from '@types';
+import { Asset, ExtendedAsset, IFullTxHistoryValueTransfer, ITxType, ITxTypeMeta, NetworkId, TAddress, TxType } from '@types';
 
 import { ITxHistoryType } from '../types';
 import { ITxTypeConfigObj } from './RecentTransactionList';
@@ -117,7 +116,7 @@ export const deriveDisplayAsset = (
     case 'ERC_20_APPROVE':
     case 'ERC_20_TRANSFER':
     case ITxType.APPROVAL:
-      return getAssetByContractAndNetworkId(to, networkId) || generateGenericERC20(to, chainId.toString(), networkId)
+      return getAssetByContractAndNetworkId(to, networkId) ?? generateGenericERC20(to, chainId.toString(), networkId)
     case 'ERC_721_APPROVE':
     case 'ERC_721_TRANSFER':
     case 'ERC_721_MINT':

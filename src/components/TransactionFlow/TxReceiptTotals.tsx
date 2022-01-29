@@ -63,7 +63,8 @@ export const TxReceiptTotals = ({
             asset={{
               amount: bigify(bigNumValueToViewableEther(value).toString()).toFixed(5),
               ticker: baseAsset.ticker,
-              uuid: baseAsset.uuid
+              uuid: baseAsset.uuid,
+              type: 'base'
             }}
             fiat={{
               symbol: fiat.symbol,
@@ -79,11 +80,11 @@ export const TxReceiptTotals = ({
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
-            isNFTAsset={false}
             asset={{
               amount: feeFormatted,
               ticker: baseAsset.ticker,
-              uuid: baseAsset.uuid
+              uuid: baseAsset.uuid,
+              type: 'base'
             }}
             fiat={{
               symbol: fiat.symbol,
@@ -99,14 +100,15 @@ export const TxReceiptTotals = ({
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-sent" alt="Sent" />
-          {`${translateRaw('TOTAL')}:`}
+          {translateRaw('TOTAL')}:
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
             asset={{
               amount: totalEtherFormatted,
               ticker: baseAsset.ticker,
-              uuid: baseAsset.uuid
+              uuid: baseAsset.uuid,
+              type: 'base'
             }}
             fiat={{
               symbol: fiat.symbol,

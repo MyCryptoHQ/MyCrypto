@@ -2,7 +2,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import BN from 'bn.js';
 import { Brand } from 'utility-types';
 
-import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { Address, Wei } from '@utils';
 
 import { TAddress } from './address';
@@ -88,3 +87,11 @@ export type IFinishedTxReceipt = DistributiveOmit<
   timestamp: number;
   blockNumber: number;
 };
+
+export interface IFullTxHistoryValueTransfer {
+  readonly from: TAddress;
+  readonly to: TAddress;
+  readonly asset: Asset;
+  readonly amount?: string; // Hex
+}
+

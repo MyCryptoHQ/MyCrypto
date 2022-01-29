@@ -17,14 +17,13 @@ import {
 import { DEFAULT_ASSET_DECIMAL, ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
-import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { getMergedTxHistory, useSelector } from '@store';
 import { getTxTypeMetas } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
-import { bigify, convertToFiat, fromTokenBase, isSameAddress, useScreenSize } from '@utils';
+import { bigify, convertToFiat, fromTokenBase, generateDeterministicAddressUUID, isSameAddress, useScreenSize } from '@utils';
 
 import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
@@ -96,7 +95,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     [txHistory, accountsList.length]
   );
   const accountsMap = accountsList.reduce((acc, cur) => {
-    acc[cur.address.toLowerCase()] = true
+    acc[cur.uuid] = true
     return acc;
   }, {} as {[key: string]: boolean} );
   const pending = accountTxs.filter(txIsPending);
@@ -136,21 +135,20 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             asset: baseAsset,
             to,
             from,
-            amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString(),
-            isNFTTransfer: false
-          } as IFullTxHistoryValueTransfer);
+            amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString()
+          });
         }
-        const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
-        const sentValueTransfers = valueTransfers.filter((t) => accountsMap[t.from.toLowerCase()]);
-        const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[t.to.toLowerCase()])
+        const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
+        const sentValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]);
+        const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.to)]);
         const receivedFiatValue = receivedValueTransfers.reduce((acc, cur) => {
-          return cur.amount != '' ? acc.plus(convertToFiat(
+          return cur.amount ? acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
           )) : acc;
         }, bigify('0'))
         const sentFiatValue = sentValueTransfers.reduce((acc, cur) => {
-          return cur.amount != '' ? acc.plus(convertToFiat(
+          return cur.amount ? acc.plus(convertToFiat(
             cur.amount,
             getAssetRate(cur.asset)
           )) : acc;
@@ -180,11 +178,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Box key={3}>
             {sentValueTransfers.length > 1 && <Amount
               // Adapt alignment for mobile display
-              isNFTAsset={false}
               alignLeft={isMobile}
               asset={{
                 amount: sentValueTransfers.length.toString(),
-                ticker: translateRaw('ASSETS') as TTicker
+                ticker: translateRaw('ASSETS') as TTicker,
+                type: 'erc20'
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -193,17 +191,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               }}
             />}
             {sentValueTransfers.length === 1 && 
-              <>{(sentValueTransfers[0].amount === '')
+              <>{(!sentValueTransfers[0].amount)
                 ? <Amount
-                  isNFTAsset={false}
                   alignLeft={isMobile}
                   text={sentValueTransfers[0].asset.name}
                 /> : <Amount
-                  isNFTAsset={false}
                   alignLeft={isMobile}
                   asset={{
                     amount: bigify(sentValueTransfers[0].amount).toPrecision(6),
-                    ticker: sentValueTransfers[0].asset.ticker
+                    ticker: sentValueTransfers[0].asset.ticker,
+                    type: sentValueTransfers[0].asset.type
                   }}
                   fiat={{
                     symbol: getFiat(settings).symbol,
@@ -217,11 +214,11 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           <Box key={4}>
             {receivedValueTransfers.length > 1 && <Amount
               // Adapt alignment for mobile display
-              isNFTAsset={false}
               alignLeft={isMobile}
               asset={{
                 amount: receivedValueTransfers.length.toString(),
-                ticker: translateRaw('ASSETS') as TTicker
+                ticker: translateRaw('ASSETS') as TTicker,
+                type: 'erc20'
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -230,17 +227,16 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
               }}
             />}
             {receivedValueTransfers.length === 1 && 
-              <>{(receivedValueTransfers[0].amount === '')
+              <>{(!receivedValueTransfers[0].amount)
                 ? <Amount
-                  isNFTAsset={false}
                   alignLeft={isMobile}
                   text={receivedValueTransfers[0].asset.name}
                 /> : <Amount
-                  isNFTAsset={false}
                   alignLeft={isMobile}
                   asset={{
                     amount: bigify(receivedValueTransfers[0].amount).toPrecision(6),
-                    ticker: receivedValueTransfers[0].asset.ticker
+                    ticker: receivedValueTransfers[0].asset.ticker,
+                    type: receivedValueTransfers[0].asset.type
                   }}
                   fiat={{
                     symbol: getFiat(settings).symbol,

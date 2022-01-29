@@ -11,7 +11,6 @@
       "type": "erc20",
       "isCustom": true
     },
-    "isNFTTransfer": false,
     "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
     "from": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
     "amount":  "0.01"

@@ -13,8 +13,7 @@
       },
       "amount": "0.01",
       "to": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
-      "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD",
-      "isNFTTransfer": false
+      "from": "0x5197B5b062288Bbf29008C92B08010a92Dd677CD"
     }
   ],
   "baseAsset": {

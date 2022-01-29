@@ -4,10 +4,10 @@ import { parseEther } from '@ethersproject/units';
 import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { ITxHistoryType } from '@features/Dashboard/types';
 import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
-import { IFullTxHistoryValueTransfer, ITxHistoryApiResponse } from '@services/ApiService/History';
+import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { ITxMetaTypes } from '@store/txHistory.slice';
-import { Asset, IAccount, ITxReceipt, Network, TxType } from '@types';
+import { Asset, IAccount, IFullTxHistoryValueTransfer, ITxReceipt, Network, TxType } from '@types';
 import { fromTokenBase, fromWei, isSameAddress, isVoid, toWei, Wei } from '@utils';
 
 export const makeTxReceipt = (
@@ -23,13 +23,14 @@ export const makeTxReceipt = (
   const value = fromWei(Wei(BigNumber.from(tx.value).toString()), 'ether');
   const transfers: IFullTxHistoryValueTransfer[] = tx.erc20Transfers.map((transfer) => {
     const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets);
-    const isNFTTransfer = transfer.amount == '0x'
+    // TxHistory API will only feed back an amount of '0x' in erc20Transfers field if the the asset type is an NFT.
+    const isNFTTransfer = transfer.amount === '0x'
     if (!transferAsset) {
-      const genericAsset = !isNFTTransfer ? generateGenericERC20(
+      const genericAsset = isNFTTransfer ? generateGenericERC721(
         transfer.contractAddress,
         network.chainId.toString(),
         network.id
-      ) : generateGenericERC721(
+      ) : generateGenericERC20(
         transfer.contractAddress,
         network.chainId.toString(),
         network.id
@@ -39,16 +40,14 @@ export const makeTxReceipt = (
         to: transfer.to,
         from: transfer.from,
         asset: genericAsset,
-        amount: '',
-        isNFTTransfer
+        amount: undefined
       };
     }
     return {
       to: transfer.to,
       from: transfer.from,
       asset: transferAsset,
-      amount: !isNFTTransfer ? fromTokenBase(toWei(transfer.amount, 0), transferAsset.decimal) : '0',
-      isNFTTransfer
+      amount: isNFTTransfer ? undefined : fromTokenBase(toWei(transfer.amount!, 0), transferAsset.decimal)
     };
   });
   // handles base asset value transfer based off transaction.value
@@ -57,9 +56,8 @@ export const makeTxReceipt = (
       asset: baseAsset,
       to: tx.to,
       from: tx.from,
-      amount: value.toString(),
-      isNFTTransfer: false
-    } as IFullTxHistoryValueTransfer)
+      amount: value.toString()
+    })
   }
 
   return {
@@ -80,14 +78,14 @@ export const makeTxReceipt = (
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
   // Prioritize Account TX - needs to be more advanced?
 
-  const apiTxsHashMap = apiTxs.reduce((acc, cur) => {
+  const apiTxsHashMap = apiTxs.reduce<Record<string,ITxReceipt>>((acc, cur) => {
     acc[cur.hash.toLowerCase()] = cur
     return acc
-  }, {} as { [key: string]: ITxReceipt })
-  const accountTxsHashMap = accountTxs.reduce((acc, cur) => {
+  }, {})
+  const accountTxsHashMap = accountTxs.reduce<Record<string,ITxReceipt>>((acc, cur) => {
     acc[cur.hash.toLowerCase()] = { ...acc[cur.hash.toLowerCase()], ...cur}
     return acc
-  }, apiTxsHashMap as { [key: string]: ITxReceipt })
+  }, apiTxsHashMap)
   return Object.values(accountTxsHashMap)
 };
 

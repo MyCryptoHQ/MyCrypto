@@ -7,5 +7,5 @@ export interface ITxHistoryEntry
   networkId: NetworkId;
   toAddressBookEntry?: ExtendedContact;
   fromAddressBookEntry?: ExtendedContact;
-  displayAsset: Asset | undefined;
+  displayAsset?: Asset;
 }

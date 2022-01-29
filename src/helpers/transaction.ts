@@ -120,7 +120,7 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
     value: BigNumber.from(txConfig.rawTransaction.value),
     to,
     nonce: BigNumber.from(nonce),
-    valueTransfers: [{ from, to: receiverAddress || to, asset, amount, isNFTTransfer: false }],
+    valueTransfers: [{ from, to: receiverAddress ?? to, asset, amount }],
     status,
     data,
     txType,
@@ -333,7 +333,7 @@ export const makeTxConfigFromTxReceipt = (
     baseAsset,
     amount: contractAsset
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
-      : txReceipt.valueTransfers[0].amount,
+      : txReceipt.valueTransfers[0].amount!,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };

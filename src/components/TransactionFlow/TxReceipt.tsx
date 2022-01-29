@@ -22,7 +22,6 @@ import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectT
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { makeFinishedTxReceipt } from '@helpers';
 import { useRates } from '@services';
-import { IFullTxHistoryValueTransfer } from '@services/ApiService/History';
 import { ProviderHandler } from '@services/EthService';
 import { useContacts, useNetworks, useSettings } from '@services/Store';
 import { getContractName, getStoreAccounts, selectAccountTxs, useSelector } from '@store';
@@ -31,6 +30,7 @@ import translate, { translateRaw } from '@translations';
 import {
   ExtendedContact,
   Fiat,
+  IFullTxHistoryValueTransfer,
   IPendingTxReceipt,
   ISettings,
   IStepComponentProps,
@@ -75,9 +75,8 @@ interface PendingBtnAction {
 
 export interface ITxTransferEvent extends IFullTxHistoryValueTransfer {
   rate: number;
-  amount: string;
-  toContact: ExtendedContact | undefined;
-  fromContact: ExtendedContact | undefined;
+  toContact?: ExtendedContact;
+  fromContact?: ExtendedContact;
 }
 
 interface Props {
@@ -203,12 +202,11 @@ const TxReceipt = ({
         fromContact: getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
         amount: bigNumValueToViewableEther(displayTxReceipt.value),
         asset: displayTxReceipt.baseAsset,
-        rate: baseAssetRate,
-        isNFTTransfer: false
+        rate: baseAssetRate
       });
-    } else if (!displayTxReceipt && txConfig.amount != '0') {
+    } else if (!displayTxReceipt && txConfig.amount) {
       valueTransferEvents.push({
-        to: txConfig.receiverAddress || txConfig.rawTransaction.to!,
+        to: txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
         from: txConfig.from,
         toContact:
           txConfig.receiverAddress &&
@@ -216,8 +214,7 @@ const TxReceipt = ({
         fromContact: getContactByAddressAndNetworkId(txConfig.from, network.id),
         amount: txConfig.amount,
         asset: txConfig.baseAsset,
-        rate: baseAssetRate,
-        isNFTTransfer: false
+        rate: baseAssetRate
       });
     }
     return valueTransferEvents;
@@ -371,7 +368,7 @@ export const TxReceiptUI = ({
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
   const assetAmount = useCallback(() => {
-    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0 && displayTxReceipt.valueTransfers[0].amount) {
       return displayTxReceipt.valueTransfers[0].amount;
     } else {
       return txConfig.amount;
@@ -379,7 +376,7 @@ export const TxReceiptUI = ({
   }, [displayTxReceipt, txConfig.amount]);
 
   const mainAsset = useCallback(() => {
-    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0 && displayTxReceipt.valueTransfers[0].amount) {
       return displayTxReceipt.valueTransfers[0].asset;
     } else {
       return txConfig.asset;
