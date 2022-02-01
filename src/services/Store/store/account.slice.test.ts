@@ -1,3 +1,4 @@
+import { fValueTransfers } from '@../jest_config/__fixtures__/txHistory';
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther } from '@ethersproject/units';
 import { call } from 'redux-saga-test-plan/matchers';
@@ -341,28 +342,7 @@ describe('AccountSlice', () => {
         {
           ...fTxHistoryAPI,
           txType: ITxType.CONTRACT_INTERACT,
-          valueTransfers: [{
-            to: fTxHistoryAPI.erc20Transfers[0].to,
-            from: fTxHistoryAPI.erc20Transfers[0].from,
-            asset: generateGenericERC20(
-              fTxHistoryAPI.erc20Transfers[0].contractAddress,
-              DEFAULT_NETWORK_CHAINID.toString(),
-              DEFAULT_NETWORK
-            )
-          },{
-            to: fTxHistoryAPI.erc20Transfers[1].to,
-            from: fTxHistoryAPI.erc20Transfers[1].from,
-            asset: generateGenericERC20(
-              fTxHistoryAPI.erc20Transfers[1].contractAddress,
-              DEFAULT_NETWORK_CHAINID.toString(),
-              DEFAULT_NETWORK
-            )
-          },{
-            to: fTxHistoryAPI.recipientAddress,
-            from: fTxHistoryAPI.from,
-            asset: fAssets[0],
-            amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
-          }],
+          valueTransfers: fValueTransfers,
           baseAsset: fAssets[0],
           fromAddressBookEntry: {
             address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',

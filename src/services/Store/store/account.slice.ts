@@ -2,9 +2,7 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { deriveDisplayAsset } from '@features/Dashboard/components/helpers';
-import { generateGenericBase } from '@features/SendAssets';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
@@ -31,8 +29,6 @@ import {
   WalletId
 } from '@types';
 import {
-  bigify,
-  fromTokenBase,
   generateDeterministicAddressUUID,
   generateUUID,
   getWeb3Config,
@@ -50,7 +46,7 @@ import {
   findMultipleNextUnusedDefaultLabels,
   getContactByAddressAndNetworkId
 } from '../Contact/helpers';
-import { isNotExcludedAsset, isTokenMigration } from '../helpers';
+import { handleBaseAssetTransfer, handleIncExchangeTransaction, isNotExcludedAsset, isTokenMigration } from '../helpers';
 import { getNetworkById } from '../Network';
 import { toStoreAccount } from '../utils';
 import { getAssetByUUID, getAssets } from './asset.slice';
@@ -264,10 +260,10 @@ export const getMergedTxHistory = createSelector(
     const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
     const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
-    const accountsMap = accounts.reduce((acc, cur) => {
+    const accountsMap = accounts.reduce<Record<string, boolean>>((acc, cur) => {
       acc[cur.uuid] = true
       return acc;
-    }, {} as {[key: string]: boolean });
+    }, {});
 
     return (
       merge(apiTxs, accountTxs)
@@ -286,30 +282,13 @@ export const getMergedTxHistory = createSelector(
             network.id
           );
           const derivedTxType = deriveTxType(txTypeMetas, accounts, tx)
-          const valueTransfers = tx.valueTransfers || []
-          if (valueTransfers.length == 0 && !bigify(tx.value).isZero()) {
-            valueTransfers.push({
-              asset: tx.baseAsset,
-              to: tx.to,
-              from: tx.from,
-              amount: fromTokenBase(bigify(tx.value), DEFAULT_ASSET_DECIMAL).toString()
-            });
-          }
+          let valueTransfers = tx.valueTransfers || []
+          // handles base asset value transfer based off transaction.value
+          valueTransfers = handleBaseAssetTransfer(valueTransfers, tx.value.toString(), tx.to, tx.from, tx.baseAsset)
 
           // handles unknown internal transaction value transfer in exchange tx types.
           // @todo: remove when we have access to internal transactions
-          if (
-            txTypeMetas[derivedTxType]
-            && txTypeMetas[derivedTxType].type == 'EXCHANGE'
-            && (valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)]) || []).length == 0
-          ) {
-            valueTransfers.push({
-              asset: generateGenericBase(network.chainId.toString(), network.id),
-              to: tx.from,
-              from: tx.to,
-              amount: undefined
-            });
-          }
+          valueTransfers = handleIncExchangeTransaction(valueTransfers, txTypeMetas, accountsMap, derivedTxType, tx.from, tx.to, network)
           
           return {
             ...tx,

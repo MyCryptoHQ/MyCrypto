@@ -1051,6 +1051,7 @@
     "SELECT_A_MIGRATION": "Select a migration",
     "TOKEN_MIGRATION_HEADER": "Migrate Tokens",
     "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract",
-    "ASSETS": "Assets"
+    "ASSETS": "Assets",
+    "TOKENS_TRANSFERRED": "Tokens Transferred"
   }
 }

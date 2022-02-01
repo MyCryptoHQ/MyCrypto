@@ -100,7 +100,7 @@ export default function MultiTxReceipt({
         const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);
 
         const assetRate = getAssetRate(asset);
-        const recipient = receiverAddress || to!
+        const recipient = receiverAddress ?? to!
         const valueTransfer = {
           amount,
           asset,

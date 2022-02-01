@@ -130,7 +130,6 @@ const TxReceipt = ({
   const txStatus = displayTxReceipt.status ?? 0;
 
   const network = getNetworkById(txConfig.networkId);
-
   // Imported in this way to handle errors where the context is missing, f.x. in Swap Flow
   const { state: ptxState } = useContext(ProtectTxContext);
 

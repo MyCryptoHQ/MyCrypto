@@ -94,10 +94,10 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
     [txHistory, accountsList.length]
   );
-  const accountsMap = accountsList.reduce((acc, cur) => {
-    acc[cur.uuid] = true
-    return acc;
-  }, {} as {[key: string]: boolean} );
+  const accountsMap = accountsList.reduce<Record<string,boolean>>((acc, cur) => ({
+    ...acc,
+    [cur.uuid]: true
+  }), {} );
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
@@ -131,12 +131,12 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           networkId
         };
         if (valueTransfers.length == 0) {
-          valueTransfers.push({
+          valueTransfers = [...valueTransfers, {
             asset: baseAsset,
             to,
             from,
             amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString()
-          });
+          }];
         }
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]);

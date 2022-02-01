@@ -1,4 +1,11 @@
+import approval from '@assets/images/transactions/approval.svg';
+import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
+import contractInteract from '@assets/images/transactions/contract-interact.svg';
+import inbound from '@assets/images/transactions/inbound.svg';
+import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
+import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
+import transfer from '@assets/images/transactions/transfer.svg';
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID } from '@config';
 import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
 import { fAssets, fRopDAI } from '@fixtures';
@@ -8,29 +15,101 @@ import { TAddress, TxType } from '@types';
 import { constructTxTypeConfig, deriveDisplayAsset } from './helpers';
 
 describe('constructTxTypeConfig', () => {
-  test('correctly handles action type to determine label', () => {
-    const type = 'GENERIC_CONTRACT_CALL';
-    const protocol = '';
-    const result = constructTxTypeConfig({ type, protocol });
-    const expectedLabel = translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
-      $ticker: fAssets[0].ticker
+  const assetTxTypeDesignation = fAssets[0].ticker
+  const testCases = [
+    {
+      inputType: 'GENERIC_CONTRACT_CALL',
+      inputProtocol: '',
+      outputLabel: translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
+        $ticker: assetTxTypeDesignation
+      }),
+      outputIcon: contractInteract
+    },{
+      inputType: 'EXCHANGE',
+      inputProtocol: 'UNISWAP_V1',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('UNISWAP_V1', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_EXCHANGE`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: swap
+    },{
+      inputType: 'DEPOSIT',
+      inputProtocol: 'UNISWAP_V1',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('UNISWAP_V1', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_DEPOSIT`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: contractInteract
+    },{
+      inputType: 'WITHDRAW',
+      inputProtocol: 'UNISWAP_V1',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('UNISWAP_V1', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_WITHDRAW`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: contractInteract
+    },{
+      inputType: 'CLAIM',
+      inputProtocol: 'ENS',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('ENS', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_CLAIM`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: inbound
+    },{
+      inputType: 'NAME_REGISTERED',
+      inputProtocol: 'ENS',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('ENS', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_NAME_REGISTERED`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: inbound
+    },{
+      inputType: 'OUTBOUND',
+      inputProtocol: '',
+      outputLabel: translateRaw('RECENT_TX_LIST_LABEL_SENT', {
+        $ticker: assetTxTypeDesignation
+      }),
+      outputIcon: outbound
+    },{
+      inputType: 'CONTRACT_DEPLOY',
+      inputProtocol: '',
+      outputLabel: translateRaw(`PLATFORM_CONTRACT_DEPLOY`, { $ticker: assetTxTypeDesignation }),
+      outputIcon: contractDeploy
+    },{
+      inputType: 'APPROVE',
+      inputProtocol: 'ERC_20',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('ERC_20', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_APPROVE`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: approval
+    },{
+      inputType: 'TRANSFER',
+      inputProtocol: 'ERC_20',
+      outputLabel: translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
+        $ticker: assetTxTypeDesignation
+      }),
+      outputIcon: transfer
+    },{
+      inputType: 'PURCHASE_MEMBERSHIP',
+      inputProtocol: '',
+      outputLabel: translateRaw('PLATFORM_MEMBERSHIP_PURCHASED'),
+      outputIcon: membershipPurchase
+    }
+  ]
+  
+  testCases.forEach((testCase) => {
+    test(`correctly handles action to determine derived tx label for txType ${testCase.inputType}_${testCase.inputProtocol}`, () => {
+      const result = constructTxTypeConfig({ type: testCase.inputType, protocol: testCase.inputProtocol });
+      expect(result.label(fAssets[0].ticker)).toBe(testCase.outputLabel);
     });
-    expect(result.label(fAssets[0].ticker)).toEqual(expectedLabel);
-  });
-  test('correctly handles action to determine derived tx label', () => {
-    const type = 'EXCHANGE';
-    const protocol = 'UNISWAP_V1';
-    const result = constructTxTypeConfig({ type, protocol });
-    const expectedLabel = 'Uniswap v1: Assets Swapped';
-    expect(result.label(fAssets[0].ticker)).toBe(expectedLabel);
-  });
-
-  test('correctly handles action to determine icon type', () => {
-    const type = 'EXCHANGE';
-    const protocol = 'UNISWAP_V1';
-    const result = constructTxTypeConfig({ type, protocol });
-    expect(result.icon()).toBe(swap);
-  });
+  
+    test(`correctly handles action to determine icon type for txType ${testCase.inputType}_${testCase.inputProtocol}`, () => {
+      const result = constructTxTypeConfig({ type: testCase.inputType, protocol: testCase.inputProtocol });
+      expect(result.icon()).toBe(testCase.outputIcon);
+    });
+  })
 });
 
 describe('deriveDisplayAsset', () => {
@@ -44,9 +123,6 @@ describe('deriveDisplayAsset', () => {
   const mockGetAssetReturnsERC721 = () => unknownERC721Asset
   const mockGetAssetReturnsBase = () => fAssets[1]
   const mockGetAssetReturnsUndefined = () => undefined
-
-  
-
 
   test('correctly derives known erc20 token transfer display asset', () => {
     const type = 'ERC_20_TRANSFER' as TxType;
