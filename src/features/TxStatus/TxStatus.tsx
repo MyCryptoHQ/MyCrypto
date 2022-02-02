@@ -17,7 +17,6 @@ import {
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 import { useAssets, useNetworks } from '@services';
 import { getMergedTxHistory, getStoreAccounts, useSelector } from '@store';
-import { getIsHistoryFetchCompleted } from '@store/txHistory.slice';
 import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ITxReceipt } from '@types';
@@ -55,7 +54,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const { networks } = useNetworks();
   const accounts = useSelector(getStoreAccounts);
   const txHistory = useSelector(getMergedTxHistory);
-  const isHistoryFetchCompleted = useSelector(getIsHistoryFetchCompleted);
 
   const defaultTxHash = qs.hash ?? '';
   const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
@@ -82,7 +80,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   }, [txHash, networkId]);
 
   useEffect(() => {
-    if (fetching && isHistoryFetchCompleted) {
+    if (fetching) {
       fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
         .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))

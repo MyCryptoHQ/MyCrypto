@@ -24,7 +24,7 @@ describe('TxStatus', () => {
   const renderComponent = (pathToLoad?: string) => {
     return simpleRender(<TxStatus />, {
       initialRoute: pathToLoad,
-      initialState: { ...mockAppState({ accounts: [fAccount]}), txHistory: { history:[], error: false, txTypeMeta: {}, isHistoryFetchCompleted: true }},
+      initialState: { ...mockAppState({ accounts: [fAccount]}), txHistory: { history:[], error: false, txTypeMeta: {} }},
 
     });
   };

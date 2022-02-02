@@ -126,7 +126,6 @@ export { trackAsset, getTrackedAssets } from './trackedAssets.slice';
 export {
   fetchHistory,
   fetchSchemaMeta,
-  getIsHistoryFetchCompleted,
   getTxHistory,
   getTxTypeMetas
 } from './txHistory.slice';

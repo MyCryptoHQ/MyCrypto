@@ -76,8 +76,7 @@ export const fTxTypeMetas: ITxMetaTypes = {
 export const fTxHistory: ITxHistoryState = {
   history: [],
   txTypeMeta: fTxTypeMetas,
-  error: '',
-  isHistoryFetchCompleted: false
+  error: ''
 };
 
 export const fValueTransfers: IFullTxHistoryValueTransfer[] = [

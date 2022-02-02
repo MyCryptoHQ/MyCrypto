@@ -95,6 +95,7 @@ const SMoreIconWrapper = styled.div`
 export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
   const [isExpanded, setExpanded] = useState(false)
   const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20').filter(({ amount }) => amount)
+  const toggleExpanded = () => setExpanded(!isExpanded)
   return (
     <ERC20Box>
       <LabelBox variant="rowAlign">
@@ -106,9 +107,7 @@ export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
             alt="More"
             isExpanded={isExpanded}
             rotate90Deg={true}
-            onClick={() => {
-              setExpanded(!isExpanded);
-            }}
+            onClick={toggleExpanded}
             height="1em"
             color={COLORS.BLUE_BRIGHT}
           />
