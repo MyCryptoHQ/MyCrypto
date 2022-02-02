@@ -1,8 +1,6 @@
-import { DEFAULT_ASSET_DECIMAL, TOKEN_MIGRATIONS } from '@config';
-import { generateGenericBase } from '@features/SendAssets';
-import { ITxMetaTypes } from '@store/txHistory.slice';
-import { Asset, IFullTxHistoryValueTransfer, ITxReceipt, ITxStatus, ITxType, Network, StoreAccount, StoreAsset, TAddress, TUuid } from '@types';
-import { bigify, convertToFiatFromAsset, fromTokenBase, generateDeterministicAddressUUID } from '@utils';
+import { TOKEN_MIGRATIONS } from '@config';
+import { Asset, ITxReceipt, ITxStatus, ITxType, StoreAccount, StoreAsset, TUuid } from '@types';
+import { bigify, convertToFiatFromAsset } from '@utils';
 
 import { getTotalByAsset } from './Asset';
 
@@ -36,39 +34,3 @@ export const calculateTotalFiat = (accounts: StoreAccount[]) => (
     (sum, asset) => sum.plus(bigify(convertToFiatFromAsset(asset, getAssetRate(asset)))),
     bigify(0)
   );
-
-export const handleBaseAssetTransfer = (
-  valueTransfers: IFullTxHistoryValueTransfer[],
-  value: string,
-  toAddr: TAddress,
-  fromAddr: TAddress,
-  baseAsset: Asset
-): IFullTxHistoryValueTransfer[] => 
-  (valueTransfers.length == 0 && !bigify(value).isZero())
-    ? [...valueTransfers, {
-      asset: baseAsset,
-      to: toAddr,
-      from: fromAddr,
-      amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString()
-    }] : valueTransfers
-
-// Improves verbosity of internal-transaction base value transfers.
-// Only used for incomplete EXCHANGE transaction types (i.e - swapping ERC20 -> ETH)
-export const handleIncExchangeTransaction = (
-  valueTransfers: IFullTxHistoryValueTransfer[],
-  txTypeMetas: ITxMetaTypes,
-  accountsMap: Record<string, boolean>,
-  derivedTxType: string,
-  toAddr: TAddress,
-  fromAddr: TAddress,
-  network: Network
-): IFullTxHistoryValueTransfer[] => 
-  (txTypeMetas[derivedTxType]
-  && txTypeMetas[derivedTxType].type == 'EXCHANGE'
-  && (valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)]) || []).length == 0)
-    ? valueTransfers = [...valueTransfers, {
-      asset: generateGenericBase(network.chainId.toString(), network.id),
-      to: toAddr,
-      from: fromAddr,
-      amount: undefined
-    }] : valueTransfers;

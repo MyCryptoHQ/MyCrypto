@@ -3,13 +3,11 @@ import { parseEther } from '@ethersproject/units';
 
 import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
 import { ITxHistoryApiResponse, ITxHistoryERC20Transfer } from '@services/ApiService/History';
 import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services/Store';
 import { ITxMetaTypes } from '@store/txHistory.slice';
 import { Asset, IAccount, IFullTxHistoryValueTransfer, ITxReceipt, Network, TxType } from '@types';
-import { fromTokenBase, fromWei, isSameAddress, isVoid, toWei, Wei } from '@utils';
-
+import { fromTokenBase, fromWei , generateGenericERC20, generateGenericERC721, isSameAddress, isVoid, toWei, Wei } from '@utils';
 
 export const makeTxReceipt = (
   tx: ITxHistoryApiResponse,

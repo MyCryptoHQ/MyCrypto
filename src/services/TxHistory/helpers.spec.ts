@@ -1,7 +1,7 @@
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { generateGenericERC20, generateGenericERC721 } from '@features/SendAssets';
 import { fAccounts, fAssets, fNetwork, fRopDAI, fTxReceipt, fTxTypeMetas } from '@fixtures';
 import { TAddress } from '@types';
+import { generateGenericERC20, generateGenericERC721 } from '@utils';
 
 import { buildTxValueTransfers, deriveTxType } from './helpers';
 

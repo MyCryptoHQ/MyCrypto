@@ -2,11 +2,10 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { deriveDisplayAsset } from '@features/Dashboard/components/helpers';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
-import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
+import { ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
 import {
   Asset,
   AssetBalanceObject,
@@ -40,19 +39,19 @@ import {
 import { findIndex, isEmpty, prop, propEq, sortBy, uniqBy } from '@vendor';
 
 import { getAccountByAddressAndNetworkName, getIdenticalAccount } from '../Account';
-import { getAssetByContractAndNetworkId, getNewDefaultAssetTemplateByNetwork } from '../Asset';
+import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import {
   findMultipleNextUnusedDefaultLabels,
   getContactByAddressAndNetworkId
 } from '../Contact/helpers';
-import { handleBaseAssetTransfer, handleIncExchangeTransaction, isNotExcludedAsset, isTokenMigration } from '../helpers';
+import { isNotExcludedAsset, isTokenMigration } from '../helpers';
 import { getNetworkById } from '../Network';
 import { toStoreAccount } from '../utils';
 import { getAssetByUUID, getAssets } from './asset.slice';
 import { createOrUpdateContacts, selectAccountContact, selectContacts } from './contact.slice';
 import { selectContracts } from './contract.slice';
-import { sanitizeAccount } from './helpers';
+import { buildTxHistoryEntry, sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { getNetwork, selectNetworks } from './network.slice';
 import { displayNotification } from './notification.slice';
@@ -267,40 +266,7 @@ export const getMergedTxHistory = createSelector(
 
     return (
       merge(apiTxs, accountTxs)
-        .map((tx: ITxReceipt) => {
-          const network = networks.find(({ id }) => tx.baseAsset.networkId === id) as Network;
-
-          // if Txhistory contains a deleted network ie. MATIC remove from history.
-          if (!network) return {} as ITxHistoryEntry;
-
-          const toAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
-            tx.receiverAddress || tx.to,
-            network.id
-          );
-          const fromAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
-            tx.from,
-            network.id
-          );
-          const derivedTxType = deriveTxType(txTypeMetas, accounts, tx)
-          let valueTransfers = tx.valueTransfers || []
-          // handles base asset value transfer based off transaction.value
-          valueTransfers = handleBaseAssetTransfer(valueTransfers, tx.value.toString(), tx.to, tx.from, tx.baseAsset)
-
-          // handles unknown internal transaction value transfer in exchange tx types.
-          // @todo: remove when we have access to internal transactions
-          valueTransfers = handleIncExchangeTransaction(valueTransfers, txTypeMetas, accountsMap, derivedTxType, tx.from, tx.to, network)
-          
-          return {
-            ...tx,
-            valueTransfers: valueTransfers,
-            timestamp: tx.timestamp ?? 0,
-            txType: derivedTxType,
-            toAddressBookEntry,
-            fromAddressBookEntry,
-            networkId: network.id,
-            displayAsset: deriveDisplayAsset(derivedTxType, tx.to, network.id, network.chainId, valueTransfers, getAssetByContractAndNetworkId(assets))
-          };
-        })
+        .map<ITxHistoryEntry>(buildTxHistoryEntry(networks, contacts, contracts, assets, accounts)(txTypeMetas, accountsMap))
         // Remove eventual empty items from list
         .filter((item) => !isEmpty(item))
     );

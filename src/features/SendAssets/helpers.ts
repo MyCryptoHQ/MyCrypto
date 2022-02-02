@@ -3,7 +3,6 @@ import { bufferToHex } from 'ethereumjs-util';
 import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type, isEIP1559Supported } from '@helpers';
 import { encodeTransfer } from '@services/EthService';
-import { translateRaw } from '@translations';
 import {
   Asset,
   DistributiveOmit,
@@ -15,16 +14,14 @@ import {
   ITxToAddress,
   ITxValue,
   Network,
-  NetworkId,
   StoreAccount,
   TAddress,
-  TTicker,
   TxQueryTypes
 } from '@types';
 import {
   Address,
   fromTokenBase,
-  generateAssetUUID,
+  generateGenericERC20,
   handleValues,
   inputGasLimitToHex,
   inputGasPriceToHex,
@@ -38,6 +35,7 @@ import {
 import { isEmpty } from '@vendor';
 
 import { IFullTxParam } from './types';
+import {  } from '@utils/generateAsset';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network, account } = formData;
@@ -186,38 +184,3 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     receiverAddress
   };
 };
-
-export const generateGenericERC20 = (
-  contractAddress: TAddress,
-  chainId: string,
-  networkId: NetworkId
-): ExtendedAsset => ({
-  uuid: generateAssetUUID(chainId, contractAddress),
-  name: translateRaw('GENERIC_ERC20_NAME'),
-  ticker: 'Unknown ERC20' as TTicker,
-  type: 'erc20',
-  networkId
-});
-
-export const generateGenericERC721 = (
-  contractAddress: TAddress,
-  chainId: string,
-  networkId: NetworkId
-): ExtendedAsset => ({
-  uuid: generateAssetUUID(chainId, contractAddress),
-  name: translateRaw('GENERIC_ERC721_NAME'),
-  ticker: 'Unknown NFT' as TTicker,
-  type: 'erc721',
-  networkId
-});
-
-export const generateGenericBase = (
-  chainId: string,
-  networkId: NetworkId
-): ExtendedAsset => ({
-  uuid: generateAssetUUID(chainId),
-  name: translateRaw('GENERIC_BASE_NAME'),
-  ticker: 'Unknown' as TTicker,
-  type: 'base',
-  networkId
-});

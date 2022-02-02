@@ -19,11 +19,11 @@ import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { getMergedTxHistory, useSelector } from '@store';
-import { getTxTypeMetas } from '@store/txHistory.slice';
+import { getTxTypeMetas, ITxMetaTypes } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import { Asset, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
-import { bigify, convertToFiat, fromTokenBase, generateDeterministicAddressUUID, isSameAddress, useScreenSize } from '@utils';
+import { Asset, ExtendedAsset, ISettings, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
+import { bigify, convertToFiat, fromTokenBase, generateDeterministicAddressUUID, useScreenSize } from '@utils';
 
 import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
@@ -82,22 +82,53 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const txTypeMetas = useSelector(getTxTypeMetas);
   const txHistory = useSelector(getMergedTxHistory);
   const { isMobile } = useScreenSize();
-
-  const accountTxs = useMemo(
-    () =>
-      txHistory
-        .filter((tx) =>
-          accountsList.some(
-            (a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from)
-          )
-        )
-        .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
-    [txHistory, accountsList.length]
-  );
   const accountsMap = accountsList.reduce<Record<string,boolean>>((acc, cur) => ({
     ...acc,
     [cur.uuid]: true
   }), {} );
+  const accountTxs = useMemo<ITxHistoryEntry[]>(
+    () =>
+      txHistory
+        .filter((tx) =>
+          accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.to)] || accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.from)]
+        )
+        .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
+    [txHistory, accountsList.length]
+  );
+  
+  return (
+    <RecentTransactionsListUI
+      accountsMap={accountsMap}
+      accountTxs={accountTxs}
+      txTypeMetas={txTypeMetas}
+      isMobile={isMobile}
+      settings={settings}
+      className={className}
+      getAssetRate={getAssetRate}
+    />
+  )
+}
+
+interface UIProps {
+  accountTxs: ITxHistoryEntry[];
+  txTypeMetas: ITxMetaTypes;
+  accountsMap: Record<string,boolean>;
+  isMobile: boolean;
+  settings: ISettings;
+  getAssetRate(asset: ExtendedAsset): number
+  className?: string;
+}
+
+export const RecentTransactionsListUI = ({
+  accountTxs,
+  txTypeMetas,
+  accountsMap,
+  isMobile,
+  settings,
+  getAssetRate,
+  className = ''
+}: UIProps) => {
+
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);

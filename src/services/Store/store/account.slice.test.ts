@@ -1,4 +1,3 @@
-import { fValueTransfers } from '@../jest_config/__fixtures__/txHistory';
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther } from '@ethersproject/units';
 import { call } from 'redux-saga-test-plan/matchers';
@@ -6,13 +5,13 @@ import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { generateGenericBase, generateGenericERC20 } from '@features/SendAssets';
 import {
   fAccount,
   fAccounts,
   fAssets,
   fContacts,
   fContracts,
+  fIncExchangeValueTransfer,
   fNetwork,
   fNetworks,
   fSettings,
@@ -20,7 +19,8 @@ import {
   fTransactionEIP1559,
   fTxHistoryAPI,
   fTxReceipt,
-  fTxTypeMetas
+  fTxTypeMetas,
+  fValueTransfers 
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
@@ -38,7 +38,7 @@ import {
   TUuid,
   WalletId
 } from '@types';
-import { fromWei, Wei } from '@utils';
+import { fromWei, generateGenericERC20, Wei } from '@utils';
 
 import { getAccountsAssetsBalances } from '../BalanceService';
 import { toStoreAccount } from '../utils';
@@ -390,16 +390,7 @@ describe('AccountSlice', () => {
               DEFAULT_NETWORK_CHAINID.toString(),
               DEFAULT_NETWORK
             )
-          }, {
-            to: fTxHistoryAPI.recipientAddress,
-            from: fTxHistoryAPI.from,
-            asset: fAssets[0],
-            amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
-          }, {
-            asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
-            from: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-            to: "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c"
-          }],
+          }, fIncExchangeValueTransfer],
           baseAsset: fAssets[0],
           fromAddressBookEntry: {
             address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',

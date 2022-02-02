@@ -1,14 +1,23 @@
-import { fAccount, fAccounts, fAssets, fNetworks } from '@fixtures';
-import { IProvidersMappings, NodeOptions, StoreAsset, TUuid } from '@types';
+import { BigNumber } from '@ethersproject/bignumber';
+
+import { DEFAULT_NETWORK } from '@config';
+import { fAccount, fAccounts, fAssets, fContacts, fContracts, fIncExchangeValueTransfer, fNetwork, fNetworks, fTxHistoryAPI, fTxTypeMetas, fValueTransfers } from '@fixtures';
+import { makeTxReceipt } from '@services';
+import { IFullTxHistoryValueTransfer, IProvidersMappings, NodeOptions, StoreAsset, TAddress, TUuid } from '@types';
+import { generateDeterministicAddressUUID, generateGenericBase } from '@utils';
 
 import {
   buildCoinGeckoIdMapping,
+  buildTxHistoryEntry,
   destructureCoinGeckoIds,
+  handleBaseAssetTransfer,
+  handleIncExchangeTransaction,
   mergeAssets,
   mergeNetworks,
   serializeAccount,
   serializeNotification
 } from './helpers';
+import { ITxMetaTypes } from './txHistory.slice';
 
 describe('serializeAccount()', () => {
   const serializedAccountAssets = {
@@ -183,5 +192,145 @@ describe('buildCoinGeckoIdMapping', () => {
     expect(result).toEqual(expected);
     expect(result[fAssets[0].uuid]).not.toContain(assets[fAssets[0].uuid].cryptoCompareId);
     expect(Object.keys(result)).not.toContain(fAssets[2].uuid);
+  });
+});
+
+
+describe('handleBaseAssetTransfer', () => {
+  const baseAsset = fAssets[0]
+  const toAddr = '0x0000000000000000000000000000000000000001' as TAddress
+  const fromAddr = '0x0000000000000000000000000000000000000002' as TAddress
+
+  it('handles addition of base asset transfer on non-zero value field', () => {
+    const valueField = '1000000000000000000'
+    const result = handleBaseAssetTransfer([], valueField, toAddr, fromAddr, baseAsset);
+    expect(result).toStrictEqual([{ asset: fAssets[0], from: fromAddr, to: toAddr, amount: '1'}]);
+  });
+
+  it('doesn\'t add base asset transfer on zero value field', () => {
+    const valueField = '0'
+    const result = handleBaseAssetTransfer([], valueField, toAddr, fromAddr, baseAsset);
+    expect(result).toHaveLength(0);
+  });
+});
+
+describe('handleIncExchangeTransaction', () => {
+  const toAddr = '0x0000000000000000000000000000000000000001' as TAddress
+  const fromAddr = '0x0000000000000000000000000000000000000002' as TAddress
+  const valueTransfers = [] as IFullTxHistoryValueTransfer[]
+  const txTypeMetas = {
+    UNISWAP_V2_EXCHANGE: {
+       protocol: "UNISWAP_V2",
+       type: "EXCHANGE"
+    },
+    UNISWAP_V3_DEPOSIT: {
+      protocol: "UNISWAP_V3",
+      type: "DEPOSIT"
+    }
+  } as ITxMetaTypes;
+  const accountsMap = {} as Record<string, boolean>
+  
+  it('handles addition of value transfer for EXCHANGE txs that require a received value transfer', () => {
+    const derivedTxType = 'UNISWAP_V2_EXCHANGE'
+    const accountsMap = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true } as Record<string, boolean>
+    const valueTransfers = [{ from: toAddr, to: fromAddr, amount: undefined, asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id)}]
+    const result = handleIncExchangeTransaction(
+      valueTransfers,
+      txTypeMetas,
+      accountsMap,
+      derivedTxType,
+      toAddr,
+      fromAddr,
+      fNetwork
+    );
+    expect(result).toStrictEqual([{
+      asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id),
+      amount: undefined,
+      from: toAddr,
+      to: fromAddr
+    },
+    {
+      asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id),
+      amount: undefined,
+      from: fromAddr,
+      to: toAddr
+    }])
+  });
+
+  it('does not add value transfer EXCHANGE tx that doesn\'t require a received value transfer', () => {
+    const derivedTxType = 'UNISWAP_V2_EXCHANGE'
+    const accountsMap = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true } as Record<string, boolean>
+    const valueTransfers = [{ from: fromAddr, to: toAddr, asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id)}]
+    const result = handleIncExchangeTransaction(
+      valueTransfers,
+      txTypeMetas,
+      accountsMap,
+      derivedTxType,
+      toAddr,
+      fromAddr,
+      fNetwork
+    );
+    expect(result).toStrictEqual([{
+      asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id),
+      from: "0x0000000000000000000000000000000000000002",
+      to: "0x0000000000000000000000000000000000000001",
+    }]);
+  });
+
+  it('does not add value transfer for txtypes that don\'t exist on txTypeMetas', () => {
+    const derivedTxType = 'UNISWAP_V3_WITHDRAW'
+    const result = handleIncExchangeTransaction(
+      valueTransfers,
+      txTypeMetas,
+      accountsMap,
+      derivedTxType,
+      toAddr,
+      fromAddr,
+      fNetwork
+    );
+    expect(result).toHaveLength(0);
+  });
+
+  it('does not add value transfer for txtypes that are on txTypeMetas but don\'t have EXCHANGE type', () => {
+    const derivedTxType = 'UNISWAP_V3_DEPOSIT'
+    const result = handleIncExchangeTransaction(
+      valueTransfers,
+      txTypeMetas,
+      accountsMap,
+      derivedTxType,
+      toAddr,
+      fromAddr,
+      fNetwork
+    );
+    expect(result).toHaveLength(0);
+  });
+});
+
+describe('buildTxHistoryEntry', () => {
+  const accountsMap = fAccounts.reduce<Record<string,boolean>>((arr,curr) => ({ ...arr, [curr.uuid]: true }), {})
+  const apiTx =  makeTxReceipt(fTxHistoryAPI, fNetworks[0], fAssets);
+  
+  it('correctly builds txHistoryEntry given input tx receipt', () => {
+    const result = buildTxHistoryEntry(fNetworks, fContacts, fContracts, fAssets, fAccounts)(fTxTypeMetas, accountsMap)(apiTx)
+    expect(result).toStrictEqual(
+      {
+        ...fTxHistoryAPI,
+        receiverAddress: fTxHistoryAPI.recipientAddress,
+        nonce: BigNumber.from(fTxHistoryAPI.nonce),
+        gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
+        gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
+        gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed),
+        value: BigNumber.from(fTxHistoryAPI.value),
+        blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber).toNumber(),
+        timestamp: 1597606012,
+        txType: 'UNISWAP_V2_EXCHANGE',
+        valueTransfers: [ ...fValueTransfers, fIncExchangeValueTransfer],
+        toAddressBookEntry: undefined,
+        fromAddressBookEntry: fContacts[1],
+        networkId: DEFAULT_NETWORK,
+        baseAsset: fAssets[0],
+        displayAsset: undefined
+      }
+    )
   });
 });
