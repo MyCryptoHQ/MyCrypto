@@ -550,7 +550,6 @@
     "REQUEST_FORM_TOOLTIP": "Share this QR code with the party who will be fulfilling the payment request. The party will need to scan the QR code with their preferred crypto app. We recommend [Ambo.io!](https://ambo.io/)",
     "REQUEST_PAYMENT_CODE": "Payment Code",
     "REQUEST_QR_CODE": "QR Code",
-    "REQUEST_REWARDS": "Request Rewards",
     "REQUIRED": "Required",
     "RESOURCES": "Resources",
     "RISK_REWARD_COLLATERALIZATION": "**Collateralization:** If the crypto price swings, you don’t get liquidated nor does the entire system collapse.",

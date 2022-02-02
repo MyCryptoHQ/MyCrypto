@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import expiredIcon from '@assets/images/membership/membership-expired.svg';
 import defaultIcon from '@assets/images/membership/membership-none.svg';
 import { Button, DashboardPanel, LinkApp, Typography } from '@components';
-import { getKBHelpArticle, KB_HELP_ARTICLE, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { MEMBERSHIP_CONFIG, MembershipState } from '@features/PurchaseMembership/config';
 import { AppState, getMemberships, getMembershipState, membershipExpiryDate } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
@@ -106,12 +106,6 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
               </ExpiryWrapper>
               <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path} mt={SPACING.SM}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
-              </LinkApp>
-              <LinkApp
-                href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_REQUEST_REWARDS)}
-                isExternal={true}
-              >
-                <SButton colorScheme={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
               </LinkApp>
             </>
           )}
