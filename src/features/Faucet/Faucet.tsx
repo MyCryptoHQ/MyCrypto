@@ -251,11 +251,7 @@ export default function Faucet() {
               )}
               isExternal={true}
             >
-              <Button
-                colorScheme={'inverted'}
-                fullwidth={true}
-                className="TransactionReceipt-tweet"
-              >
+              <Button variant="inverted" fullwidth={true} className="TransactionReceipt-tweet">
                 <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
                 <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
               </Button>
