@@ -15,7 +15,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigify, bigNumGasLimitToViewable, buildTxUrl, truncate } from '@utils';
+import { bigify, bigNumGasLimitToViewable, buildTransferEvent, buildTxUrl, truncate } from '@utils';
 
 import { TransactionDetailsDisplay } from './displays';
 import './TxReceipt.scss';
@@ -101,15 +101,17 @@ export default function MultiTxReceipt({
 
         const assetRate = getAssetRate(asset);
         const recipient = receiverAddress ?? to!
-        const valueTransfer = {
-          amount,
+        const fromContact = getContactByAddressAndNetworkId(senderAccount.address, network.id)
+        const toContact = recipient && getContactByAddressAndNetworkId(recipient, network.id)
+        const transferEvent = buildTransferEvent(
+          recipient,
+          toContact,
+          senderAccount.address,
+          fromContact,
           asset,
-          rate: assetRate,
-          to: recipient,
-          from: senderAccount.address,
-          fromContact: getContactByAddressAndNetworkId(senderAccount.address, network.id),
-          toContact: recipient && getContactByAddressAndNetworkId(recipient, network.id)
-        }
+          assetRate,
+          amount
+        )
         return (
           <div key={idx}>
             <div className="TransactionReceipt-row">
@@ -135,7 +137,7 @@ export default function MultiTxReceipt({
             </div>
             <div className="TransactionReceipt-divider" />
             <TxReceiptTotals
-              valueTransfers={[valueTransfer]}
+              transferEvents={[transferEvent]}
               baseAsset={baseAsset}
               assetRate={assetRate}
               baseAssetRate={baseAssetRate}

@@ -1,4 +1,3 @@
-import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { deriveTxType, getAssetByContractAndNetworkId, ITxHistoryEntry } from '@services';
 import {
   Asset,
@@ -19,7 +18,7 @@ import {
   TAddress,
   TTicker
 } from '@types';
-import { bigify, deriveDisplayAsset, fromTokenBase, generateDeterministicAddressUUID, generateGenericBase, isBigish, isVoid } from '@utils';
+import { addBaseAssetValueTransfer, bigify, deriveDisplayAsset, generateDeterministicAddressUUID, generateGenericBase, isBigish, isVoid } from '@utils';
 import {
   either,
   identity,
@@ -167,12 +166,8 @@ export const handleBaseAssetTransfer = (
   baseAsset: Asset
 ): IFullTxHistoryValueTransfer[] => 
   (valueTransfers.length == 0 && !bigify(value).isZero())
-    ? [...valueTransfers, {
-      asset: baseAsset,
-      to: toAddr,
-      from: fromAddr,
-      amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString()
-    }] : valueTransfers
+    ? addBaseAssetValueTransfer(valueTransfers, fromAddr, toAddr, value, baseAsset)
+    : valueTransfers
 
 // Improves verbosity of internal-transaction base value transfers.
 // Only used for incomplete EXCHANGE transaction types (i.e - swapping ERC20 -> ETH)

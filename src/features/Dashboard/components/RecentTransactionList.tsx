@@ -14,7 +14,7 @@ import {
   Icon,
   LinkApp
 } from '@components';
-import { DEFAULT_ASSET_DECIMAL, ROUTE_PATHS } from '@config';
+import { ROUTE_PATHS } from '@config';
 import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
@@ -23,7 +23,7 @@ import { getTxTypeMetas, ITxMetaTypes } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ExtendedAsset, ISettings, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
-import { bigify, convertToFiat, fromTokenBase, generateDeterministicAddressUUID, useScreenSize } from '@utils';
+import { addBaseAssetValueTransfer, bigify, convertToFiat, generateDeterministicAddressUUID, useScreenSize } from '@utils';
 
 import { constructTxTypeConfig } from './helpers';
 import NoTransactions from './NoTransactions';
@@ -150,6 +150,7 @@ export const RecentTransactionsListUI = ({
         txType,
         displayAsset
       }) => {
+        let displayValueTransfers = valueTransfers;
         const labelFromProps = {
           addressBookEntry: fromAddressBookEntry,
           address: from,
@@ -161,13 +162,10 @@ export const RecentTransactionsListUI = ({
           address: recipient,
           networkId
         };
-        if (valueTransfers.length == 0) {
-          valueTransfers = [...valueTransfers, {
-            asset: baseAsset,
-            to,
-            from,
-            amount: fromTokenBase(bigify(value), DEFAULT_ASSET_DECIMAL).toString()
-          }];
+        // We don't want the actual txReceipt to have a zero value transfer in it's arr of value transfers, but
+        // we DO want to display 0 ETH on a transaction in the RecentTransactionsList if the tx has no value transfers. Improves display in-app
+        if (displayValueTransfers.length == 0) {
+          displayValueTransfers = addBaseAssetValueTransfer(displayValueTransfers, from, to, value.toString(), baseAsset)
         }
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]);

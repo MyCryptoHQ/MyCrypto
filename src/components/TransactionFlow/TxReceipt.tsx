@@ -44,8 +44,10 @@ import {
   WalletId
 } from '@types';
 import {
+  addTransferEvent,
   bigify,
   bigNumValueToViewableEther,
+  buildTransferEvent,
   buildTxUrl,
   isType2Receipt,
   isWeb3Wallet,
@@ -184,39 +186,44 @@ const TxReceipt = ({
   })
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
-  const valueTransfers = useMemo(() => {
+  const transferEvents = useMemo(() => {
     if (!displayTxReceipt) return [];
-    const valueTransferEvents = displayTxReceipt.valueTransfers.map((transfer) => ({
-      ...transfer,
-      toContact: getContactByAddressAndNetworkId(transfer.to, network.id),
-      fromContact: getContactByAddressAndNetworkId(transfer.from, network.id),
-      rate: getAssetRate(transfer.asset),
-      amount: transfer.amount
-    }));
+    let transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>(
+      (transfer) => buildTransferEvent(
+        transfer.to,
+        getContactByAddressAndNetworkId(transfer.to, network.id),
+        transfer.from,
+        getContactByAddressAndNetworkId(transfer.from, network.id),
+        transfer.asset,
+        getAssetRate(transfer.asset),
+        transfer.amount
+      )
+    );
     if (displayTxReceipt && path(['value'], displayTxReceipt) && !bigify(displayTxReceipt.value).isZero()) {
-      valueTransferEvents.push({
-        to: displayTxReceipt.to,
-        from: displayTxReceipt.from,
-        toContact: getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
-        fromContact: getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
-        amount: bigNumValueToViewableEther(displayTxReceipt.value),
-        asset: displayTxReceipt.baseAsset,
-        rate: baseAssetRate
-      });
+      transferEvents = addTransferEvent(
+        transferEvents,
+        displayTxReceipt.to,
+        getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
+        displayTxReceipt.from,
+        getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
+        displayTxReceipt.baseAsset,
+        baseAssetRate,
+        bigNumValueToViewableEther(displayTxReceipt.value)
+      )
     } else if (!displayTxReceipt && txConfig.amount) {
-      valueTransferEvents.push({
-        to: txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
-        from: txConfig.from,
-        toContact:
-          txConfig.receiverAddress &&
+      transferEvents = addTransferEvent(
+        transferEvents,
+        txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
+        txConfig.receiverAddress &&
           getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
-        fromContact: getContactByAddressAndNetworkId(txConfig.from, network.id),
-        amount: txConfig.amount,
-        asset: txConfig.baseAsset,
-        rate: baseAssetRate
-      });
+        txConfig.from,
+        getContactByAddressAndNetworkId(txConfig.from, network.id),
+        txConfig.baseAsset,
+        baseAssetRate,
+        txConfig.amount
+      )
     }
-    return valueTransferEvents;
+    return transferEvents;
   }, []);
 
   const handleTxSpeedUpRedirect = async () => {
@@ -290,7 +297,7 @@ const TxReceipt = ({
       setDisplayTxReceipt={setDisplayTxReceipt}
       resetFlow={resetFlow}
       protectTxButton={protectTxButton}
-      valueTransfers={valueTransfers}
+      transferEvents={transferEvents}
       handleTxCancelRedirect={handleTxCancelRedirect}
       handleTxSpeedUpRedirect={handleTxSpeedUpRedirect}
       txType={txType}
@@ -323,7 +330,7 @@ export interface TxReceiptDataProps {
   protectTxButton?(): JSX.Element;
   customComponent?(): JSX.Element;
   network: Network;
-  valueTransfers: ITxTransferEvent[];
+  transferEvents: ITxTransferEvent[];
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow' | 'onComplete'> & TxReceiptDataProps;
@@ -335,7 +342,7 @@ export const TxReceiptUI = ({
   signedTx,
   txStatus,
   timestamp,
-  valueTransfers,
+  transferEvents,
   contractName,
   displayTxReceipt,
   setDisplayTxReceipt,
@@ -455,7 +462,7 @@ export const TxReceiptUI = ({
 
       <TxReceiptTotals
         baseAsset={baseAsset}
-        valueTransfers={valueTransfers}
+        transferEvents={transferEvents}
         baseAssetRate={baseAssetRate}
         settings={settings}
         rawTransaction={rawTransaction}

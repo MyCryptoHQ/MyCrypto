@@ -94,13 +94,13 @@ const SMoreIconWrapper = styled.div`
 
 export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
   const [isExpanded, setExpanded] = useState(false)
-  const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20').filter(({ amount }) => amount)
+  const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20')
   const toggleExpanded = () => setExpanded(!isExpanded)
   return (
     <ERC20Box>
       <LabelBox variant="rowAlign">
         <Text variant="subHeading" mb={SPACING.NONE}>{translateRaw('TOKENS_TRANSFERRED')}:</Text>
-        <STransferAmounts>{`${tokenTransfers.length}`}</STransferAmounts>
+        <STransferAmounts>{tokenTransfers.length}</STransferAmounts>
         <SMoreIconWrapper>
           <Icon
             type="more"

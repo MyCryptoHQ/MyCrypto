@@ -97,4 +97,3 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
     }
   }
 });
-

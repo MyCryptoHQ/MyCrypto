@@ -21,7 +21,7 @@ const SIcon = styled(Icon)`
 `;
 
 interface Props {
-  valueTransfers: ITxTransferEvent[];
+  transferEvents: ITxTransferEvent[];
   baseAsset: ExtendedAsset;
   settings: ISettings;
   gasUsed: string;
@@ -32,7 +32,7 @@ interface Props {
 }
 
 export const TxReceiptTotals = ({
-  valueTransfers,
+  transferEvents,
   baseAsset,
   settings,
   gasUsed,
@@ -52,7 +52,7 @@ export const TxReceiptTotals = ({
   const fiat = getFiat(settings);
   return (
     <>
-      {valueTransfers.filter(t => t.asset.type === 'erc20').length > 0 && <TokenTransferTable valueTransfers={valueTransfers} settings={settings}/>}
+      {transferEvents.filter(t => t.asset.type === 'erc20').length > 0 && <TokenTransferTable valueTransfers={transferEvents} settings={settings}/>}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-send" alt="Sent" />

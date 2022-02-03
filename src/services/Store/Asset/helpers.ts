@@ -48,12 +48,9 @@ export const getAssetByContractAndNetwork = (
 };
 
 export const getAssetByContractAndNetworkId = (assets: ExtendedAsset[]) => (
-  contractAddress?: string,
-  networkId?: NetworkId
+  contractAddress: string,
+  networkId: NetworkId
 ): Asset | undefined => {
-  if (!networkId || !contractAddress) {
-    return undefined;
-  }
   return assets
     .filter((asset) => asset.networkId && asset.contractAddress && asset.networkId === networkId)
     .find((asset) =>
