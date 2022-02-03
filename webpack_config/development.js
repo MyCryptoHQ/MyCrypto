@@ -78,12 +78,5 @@ module.exports = merge.smart(common, {
 
   performance: {
     hints: false
-  },
-  resolve: {
-    alias: {
-      react: path.join(__dirname, '../node_modules/react/'),
-      'react-dom': path.join(__dirname, '../node_modules/react-dom/'),
-      'styled-components': path.join(__dirname, '../node_modules/styled-components/')
-    }
   }
 });
