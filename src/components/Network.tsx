@@ -16,7 +16,11 @@ const Color = styled.div`
   ${size(scale(-1))};
 `;
 
-export const Network: FC<{ color: string } & BoxProps> = ({ children, color, ...props }) => (
+export const Network: FC<{ color: string } & Omit<BoxProps, 'css'>> = ({
+  children,
+  color,
+  ...props
+}) => (
   <Box variant="rowAlign" {...props}>
     <Color color={color} />
     <Text as="span">{children}</Text>

@@ -171,8 +171,8 @@ module.exports = {
               }
             }
           }
-        ]
-        //include: [config.path.assets, config.path.modules]
+        ],
+        include: [config.path.assets, config.path.modules]
       },
 
       /**

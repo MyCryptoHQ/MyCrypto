@@ -78,3 +78,4 @@ export { AnnouncementBanner } from './AnnouncementBanner';
 export { Switch } from './Switch';
 export { BusyBottom } from './BusyBottom';
 export { TransactionFeeEIP1559 } from './TransactionFeeEIP1559';
+export { OptionType, TextSelector } from './TextSelector';

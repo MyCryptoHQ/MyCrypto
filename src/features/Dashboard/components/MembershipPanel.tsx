@@ -111,7 +111,7 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
                 href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_REQUEST_REWARDS)}
                 isExternal={true}
               >
-                <SButton colorScheme={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
+                <SButton variant={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
               </LinkApp>
             </>
           )}

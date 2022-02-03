@@ -14,7 +14,7 @@ export default function ImportSuccess() {
     <ImportSuccessContainer>
       {translate('SETTINGS_IMPORT_SUCCESS')}
       <LinkApp href="/settings">
-        <Button fullwidth={true} secondary={true}>
+        <Button fullwidth={true} mt="1rem">
           {translate('SETTINGS_IMPORT_COMPLETE')}
         </Button>
       </LinkApp>

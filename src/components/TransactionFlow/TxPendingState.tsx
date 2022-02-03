@@ -299,7 +299,7 @@ export const TxPendingState = ({
           )}
         </>
       )}
-      <Button colorScheme="inverted" fullwidth={true} onClick={showDetails}>
+      <Button variant="inverted" fullwidth={true} onClick={showDetails}>
         {translateRaw('VIEW_TRANSACTION_DETAILS')}
       </Button>
     </Box>

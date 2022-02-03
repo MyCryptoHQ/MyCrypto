@@ -79,10 +79,11 @@ module.exports = merge.smart(common, {
   performance: {
     hints: false
   },
-
   resolve: {
     alias: {
-      react: path.join(__dirname, '../node_modules/react/') // Temporary fix for @mycrypto/ui - Load React exclusively from project modules
+      react: path.join(__dirname, '../node_modules/react/'),
+      'react-dom': path.join(__dirname, '../node_modules/react-dom/'),
+      'styled-components': path.join(__dirname, '../node_modules/styled-components/')
     }
   }
 });
