@@ -34,6 +34,8 @@ import { Error as ErrorComponent } from './components';
 import { makeTxConfig, makeTxReceipt, possibleSolution } from './helpers';
 import FaucetFactory from './stateFactory';
 
+// Legacy
+
 const SLabel = styled.label`
   margin-bottom: ${SPACING.SM};
   color: ${COLORS.GREY_DARKEST};
@@ -258,8 +260,8 @@ export default function Faucet() {
               </Button>
             </LinkApp>
           )}
-        />)
-      }
+        />
+      )}
     </>
   ];
 
