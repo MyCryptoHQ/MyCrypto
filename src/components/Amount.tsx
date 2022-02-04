@@ -52,7 +52,14 @@ export default function Amount({
       {...rest}
     >
       {asset && (
-        <Currency amount={asset.amount} isNFTAsset={asset.type === 'erc721'} ticker={asset.ticker} icon={true} uuid={asset.uuid} decimals={getDecimals(asset.amount)}/>
+        <Currency
+          amount={asset.amount}
+          isNFTAsset={asset.type === 'erc721'}
+          ticker={asset.ticker}
+          icon={true}
+          uuid={asset.uuid}
+          decimals={getDecimals(asset.amount)}
+        />
       )}
 
       {text && (

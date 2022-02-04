@@ -57,27 +57,6 @@ describe('fetchTxStatus', () => {
 });
 
 describe('makeTx', () => {
-  it('creates the correct tx config and receipt from tx receipt', () => {
-    const result = makeTx({
-      accounts: fAccounts,
-      assets: fAssets,
-      networks: fNetworks,
-      networkId: fNetworks[1].id,
-      txHash: fTxReceipt.hash,
-      cachedTx: fETHNonWeb3TxReceipt
-    });
-    expect(result.config).toStrictEqual({
-      ...fETHNonWeb3TxConfig,
-      rawTransaction: {
-        ...fETHNonWeb3TxConfig.rawTransaction,
-        from: fETHNonWeb3TxConfig.from,
-        nonce: '0x06',
-        gasPrice: '0x012a05f200',
-        type: undefined
-      }
-    });
-    expect(result.receipt).toBe(fETHNonWeb3TxReceipt);
-  });
   it('creates the correct tx config and receipt from tx response', () => {
     const result = makeTx({
       accounts: fAccounts,

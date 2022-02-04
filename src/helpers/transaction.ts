@@ -11,6 +11,7 @@ import {
 import { formatEther } from '@ethersproject/units';
 
 import { CREATION_ADDRESS } from '@config';
+import { ITxHistoryEntry } from '@services';
 import { fetchUniversalGasPriceEstimate, getGasEstimate } from '@services/ApiService';
 import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthService';
 import { decodeApproval } from '@services/EthService/contracts/token';
@@ -240,9 +241,7 @@ export const makeTxConfigFromSignedTx = (
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
       : decodedTx.to) as TAddress,
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
-      : bigNumValueToViewableEther(decodedTx.value),
+    amount: deriveAmount(contractAsset, decodedTx.data, decodedTx.value),
     networkId: networkDetected?.id ?? networkId,
     asset: contractAsset ?? baseAsset,
     baseAsset,
@@ -300,8 +299,8 @@ export const makeTxConfigFromTx = (
   return txConfig;
 };
 
-export const makeTxConfigFromTxReceipt = (
-  txReceipt: ITxReceipt,
+export const makeTxConfigFromTxHistoryEntry = (
+  txReceipt: ITxHistoryEntry,
   assets: ExtendedAsset[],
   network: Network,
   accounts: StoreAccount[]
@@ -331,9 +330,7 @@ export const makeTxConfigFromTxReceipt = (
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
-      : txReceipt.valueTransfers[0].amount!,
+    amount:  deriveAmount(contractAsset, txReceipt.data, txReceipt.value),
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };
@@ -559,3 +556,8 @@ export const makeTxFromForm = (
     chainId: form.network.chainId
   };
 };
+
+export const deriveAmount = (contractAsset: Asset | undefined, data: string, value: BigNumber ) => 
+  contractAsset
+    ? fromTokenBase(toWei(decodeTransfer(data)._value, 0), contractAsset.decimal)
+    : bigNumValueToViewableEther(value);

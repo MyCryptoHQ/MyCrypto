@@ -6,6 +6,7 @@ import {
   fAccount,
   fAccounts,
   fAssets,
+  fDAI,
   fERC20NonWeb3TxConfigJSON as fERC20NonWeb3TxConfig,
   fERC20NonWeb3TxReceipt,
   fERC20NonWeb3TxResponse,
@@ -46,6 +47,7 @@ import {
   appendGasPrice,
   appendNonce,
   appendSender,
+  deriveAmount,
   deriveTxFields,
   deriveTxRecipientsAndAmount,
   ERCType,
@@ -653,5 +655,21 @@ describe('makeTxConfigFromSignedTx', () => {
       receiverAddress: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017',
       senderAccount: account
     });
+  });
+});
+
+describe('deriveAmount', () => {
+  const value = BigNumber.from('0xde0b6b3a7640000')
+  const data = '0xa9059cbb000000000000000000000000503828976d22510aad0201ac7ec88293211d23da000000000000000000000000000000000000000000000005c7ca05e3058fe000'
+  
+  it('derives amount correctly when contract asset is present', () => {
+    expect(
+      deriveAmount(fDAI, data, value)
+    ).toBe('106.630046');
+  });
+  it('derives amount correctly when contract asset is not present', () => {
+    expect(
+      deriveAmount(undefined, data, value)
+    ).toBe('1.0');
   });
 });

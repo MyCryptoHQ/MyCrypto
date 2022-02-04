@@ -227,7 +227,7 @@ export const RecentTransactionsListUI = ({
                 /> : <Amount
                   alignLeft={isMobile}
                   asset={{
-                    amount: bigify(sentValueTransfers[0].amount).toPrecision(6),
+                    amount: bigify(sentValueTransfers[0].amount).toFixed(5),
                     ticker: sentValueTransfers[0].asset.ticker,
                     type: sentValueTransfers[0].asset.type
                   }}
@@ -263,7 +263,7 @@ export const RecentTransactionsListUI = ({
                 /> : <Amount
                   alignLeft={isMobile}
                   asset={{
-                    amount: bigify(receivedValueTransfers[0].amount).toPrecision(6),
+                    amount: bigify(receivedValueTransfers[0].amount).toFixed(5),
                     ticker: receivedValueTransfers[0].asset.ticker,
                     type: receivedValueTransfers[0].asset.type
                   }}

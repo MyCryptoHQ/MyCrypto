@@ -6,7 +6,7 @@ export { buildBalances, buildTotalFiatValue } from './buildBalanceDisplays';
 export {
   makePendingTxReceipt,
   makeTxConfigFromSignedTx,
-  makeTxConfigFromTxReceipt,
+  makeTxConfigFromTxHistoryEntry,
   makeTxConfigFromTx,
   makeFinishedTxReceipt,
   makeUnknownTxReceipt,

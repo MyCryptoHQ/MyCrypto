@@ -1,8 +1,8 @@
 import { TransactionResponse } from '@ethersproject/providers';
 
-import { makeTxConfigFromTx, makeTxConfigFromTxReceipt, makeUnknownTxReceipt } from '@helpers';
+import { makeTxConfigFromTx, makeTxConfigFromTxHistoryEntry, makeUnknownTxReceipt } from '@helpers';
 import { ITxHistoryEntry, ProviderHandler } from '@services';
-import { Asset, ITxHash, ITxReceipt, ITxType, Network, NetworkId, StoreAccount } from '@types';
+import { Asset, ITxHash, ITxType, Network, NetworkId, StoreAccount } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
@@ -44,13 +44,13 @@ export const makeTx = ({
   networks: Network[];
   accounts: StoreAccount[];
   assets: Asset[];
-  cachedTx?: ITxHistoryEntry | ITxReceipt;
+  cachedTx?: ITxHistoryEntry;
   fetchedTx?: TransactionResponse;
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
   if (cachedTx) {
     return {
-      config: makeTxConfigFromTxReceipt(cachedTx as ITxReceipt, assets, network, accounts),
+      config: makeTxConfigFromTxHistoryEntry(cachedTx, assets, network, accounts),
       receipt: cachedTx
     };
   } else {
