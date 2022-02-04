@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Button, Panel } from '@mycrypto/ui';
+import { Button, Panel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import closeIcon from '@assets/images/icn-close.svg';

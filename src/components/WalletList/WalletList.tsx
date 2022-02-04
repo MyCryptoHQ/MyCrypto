@@ -90,7 +90,7 @@ const WalletList = ({
       {accounts.length === 0 && (
         <Box variant="rowCenter" mt={SPACING.BASE} mb={SPACING.BASE}>
           <Button
-            colorScheme={'warning'}
+            variant={'warning'}
             onClick={() => importState(JSON.stringify(DEMO_SETTINGS))}
             loading={importRequest}
           >

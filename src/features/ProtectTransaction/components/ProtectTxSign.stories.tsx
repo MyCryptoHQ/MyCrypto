@@ -1,4 +1,4 @@
-import { Panel } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui-legacy';
 import { storiesOf } from '@storybook/react';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';

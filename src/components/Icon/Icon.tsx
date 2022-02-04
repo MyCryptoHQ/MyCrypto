@@ -127,6 +127,7 @@ import statusBadgePending from '@assets/images/icn-status-badge-pending.svg';
 import statusBadgeSuccess from '@assets/images/icn-status-badge-success.svg';
 import swapFlip from '@assets/images/icn-swap-flip.svg';
 import swap from '@assets/images/icn-swap.svg';
+import warningTriangle from '@assets/images/icn-toast-error.svg';
 import warning from '@assets/images/icn-warning.svg';
 import lendLogo from '@assets/images/lend-logo.png';
 import linkOutIcon from '@assets/images/link-out.svg';
@@ -168,6 +169,7 @@ const svgIcons = {
   questionWhite,
   questionBlack,
   warning,
+  warningTriangle,
 
   /* Noun icons */
   website,

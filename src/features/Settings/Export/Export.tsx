@@ -1,4 +1,4 @@
-import { Typography } from '@mycrypto/ui';
+import { Body } from '@mycrypto/ui';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,7 +31,7 @@ export function Export(props: Props) {
   return (
     <ContentPanel width={560} onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
       <Box variant="columnAlign">
-        <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
+        <Body>{translate('SETTINGS_EXPORT_INFO')}</Body>
         <CodeBlock data-testid="export-json-display">{appState}</CodeBlock>
         {isMobile && (
           <InlineMessage type={InlineMessageType.INFO_CIRCLE}>

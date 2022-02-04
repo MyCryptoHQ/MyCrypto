@@ -1,6 +1,5 @@
 import { Component, ElementType, HTMLProps } from 'react';
 
-import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { InlineMessage, Label, Spinner } from '@components';
@@ -20,7 +19,6 @@ interface WrapperProps {
 interface CustomInputProps {
   inputError?: string | JSX.Element;
   inputErrorBorder?: boolean;
-  showEye?: boolean;
   customIcon?: ElementType;
   height?: string;
   maxHeight?: string;
@@ -32,7 +30,7 @@ const CustomInput = styled.input<CustomInputProps>`
   background: ${(props) => props.theme.controlBackground};
   border: 0.125em solid ${(props) => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${(props) => (props.showEye || props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: ${(props) => (props.customIcon ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
@@ -51,7 +49,7 @@ const CustomTextArea = styled.textarea<CustomInputProps>`
   background: ${(props) => props.theme.controlBackground};
   border: 0.125em solid ${(props) => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${(props) => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
+  padding: 12px 12px;
   display: flex;
   :focus-within {
     outline: none;
@@ -75,21 +73,6 @@ const InputWrapper = styled.div`
     :disabled {
       background-color: ${COLORS.GREY_LIGHTER};
     }
-  }
-`;
-
-interface CustomIconProps {
-  showPassword?: boolean;
-}
-
-const EyeIcon = styled(Icon)`
-  svg {
-    margin-top: 6px;
-    width: 23px;
-    height: 23px;
-    color: ${(props: CustomIconProps) => (props.showPassword ? COLORS.BLUE_BRIGHT : '')};
-    cursor: pointer;
-    user-select: none;
   }
 `;
 
@@ -132,7 +115,6 @@ interface Props {
   inputError?: string | JSX.Element | undefined;
   inputErrorType?: InlineMessageType;
   inputErrorBorder?: boolean;
-  showEye?: boolean;
   customIcon?: ElementType;
   textarea?: boolean;
   placeholder?: string;
@@ -168,7 +150,6 @@ export class InputField extends Component<Props> {
       inputErrorType,
       inputErrorBorder = false,
       type,
-      showEye,
       customIcon,
       textarea,
       placeholder,
@@ -221,7 +202,6 @@ export class InputField extends Component<Props> {
               inputError={inputError}
               inputErrorBorder={inputErrorBorder}
               onKeyUp={this.handleKeyUp}
-              showEye={showEye}
               customIcon={customIcon}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
@@ -237,12 +217,6 @@ export class InputField extends Component<Props> {
                 <IconComponent />
               </CustomIcon>
             </CustomIconWrapper>
-          )}
-
-          {showEye && (
-            <DefaultIconWrapper onClick={this.handleEyeClick}>
-              <EyeIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
-            </DefaultIconWrapper>
           )}
 
           {isLoading && (

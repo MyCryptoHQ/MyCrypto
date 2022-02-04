@@ -1,4 +1,4 @@
-import { Button, Icon } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import {
   AssetSelector,
   BusyBottom,
   ContentPanel,
+  Icon,
   InlineMessage
 } from '@components';
 import {
@@ -59,10 +60,6 @@ const NavigationWarning = styled.div`
 const WarningIcon = styled(Icon)`
   margin-right: ${SPACING.XS};
   vertical-align: middle;
-
-  svg {
-    color: ${COLORS.GREY};
-  }
 `;
 
 interface IBuyFormState {
@@ -178,7 +175,12 @@ export const BuyAssetsForm = () => {
                 )}
               </FormFieldItem>
               <NavigationWarning>
-                <WarningIcon icon="warning" />
+                <WarningIcon
+                  type="warningTriangle"
+                  color={COLORS.GREY}
+                  width="21px"
+                  height="21px"
+                />
                 {translateRaw('EXTERNAL_NAVIGATION_WARNING')}
               </NavigationWarning>
               <FormFieldSubmitButton
@@ -188,7 +190,7 @@ export const BuyAssetsForm = () => {
               </FormFieldSubmitButton>
 
               <FormFieldSubmitButton
-                secondary={true}
+                variant="inverted"
                 onClick={() => handleSubmission(values, SubmissionType.SEND_TO_OTHER)}
               >
                 {translateRaw('CHECKOUT_OTHER_CTA')}

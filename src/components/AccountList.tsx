@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import { Blockie } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled from 'styled-components';
@@ -45,7 +46,6 @@ import { truncate, useScreenSize } from '@utils';
 import Checkbox from './Checkbox';
 import { default as Currency } from './Currency';
 import { DashboardPanel } from './DashboardPanel';
-import { Identicon } from './Identicon';
 import Tooltip from './Tooltip';
 
 const SDashboardPanel = styled(DashboardPanel)<{ dashboard?: boolean }>`
@@ -104,11 +104,9 @@ const PrivacyCheckBox = styled(Checkbox)`
   margin-bottom: 0px;
 `;
 
-const SIdenticon = styled(Identicon)`
-  img {
-    height: 2em;
-    min-width: 2em;
-  }
+const SBlockie = styled(Blockie)`
+  height: 2em;
+  min-width: 2em;
   margin-right: 0.8em;
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-right: 1em;
@@ -481,7 +479,7 @@ const BuildAccountTable = (
     body: getFullTableData.map(({ account, index, total, addressCard }) => {
       let bodyContent = [
         <Label key={index}>
-          <SIdenticon address={account.address} />
+          <SBlockie address={account.address} />
           <LabelWithWallet>
             <EditableAccountLabel
               addressBookEntry={addressCard}

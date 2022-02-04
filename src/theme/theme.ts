@@ -1,4 +1,6 @@
-import { light } from '@mycrypto/ui';
+import { theme as UITheme } from '@mycrypto/ui';
+import { light } from '@mycrypto/ui-legacy';
+import merge from 'lodash/merge';
 import { variant } from 'styled-system';
 
 const breakpoints: string[] & {
@@ -64,7 +66,7 @@ const COLORS = {
   BG_GRAY: '#f6f8fa'
 };
 // Combine the themes in a single object to be consummed by SC ThemeProvider
-const theme = Object.assign({}, lightTheme, {
+const oldTheme = Object.assign({}, lightTheme, {
   breakpoints,
   colors: {
     ...COLORS,
@@ -86,6 +88,8 @@ const theme = Object.assign({}, lightTheme, {
     default: '3px'
   }
 });
+
+const theme = merge(UITheme, oldTheme);
 
 const TEXT_VARIANTS = {
   heading: {

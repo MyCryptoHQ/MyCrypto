@@ -1,4 +1,4 @@
-import { Panel as UIPanel } from '@mycrypto/ui';
+import { Panel as UIPanel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 export const Panel = styled(UIPanel)`

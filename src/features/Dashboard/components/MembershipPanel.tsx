@@ -107,6 +107,12 @@ function MembershipPanel({ memberships, membershipState, expiryDate }: Props) {
               <LinkApp href={ROUTE_PATHS.MYC_MEMBERSHIP.path} mt={SPACING.SM}>
                 {translateRaw('MANAGE_MEMBERSHIP')}
               </LinkApp>
+              <LinkApp
+                href={getKBHelpArticle(KB_HELP_ARTICLE.MEMBERSHIP_REQUEST_REWARDS)}
+                isExternal={true}
+              >
+                <SButton variant={'inverted'}>{translateRaw('REQUEST_REWARDS')}</SButton>
+              </LinkApp>
             </>
           )}
           {membershipState === MembershipState.NOTMEMBER && (

@@ -1,4 +1,4 @@
-import { Button, Panel } from '@mycrypto/ui';
+import { Button, Panel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';

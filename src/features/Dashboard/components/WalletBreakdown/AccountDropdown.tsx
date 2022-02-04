@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { Blockie } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Checkbox, Icon, Identicon } from '@components';
+import { Checkbox, Icon } from '@components';
 import { getLabelByAccount, useContacts } from '@services/Store';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -115,9 +116,7 @@ const renderAccounts = (
         checked={selected.includes(account.uuid)}
         onChange={() => handleChange(account.uuid)}
         label={`${truncate(account.address)} - ${trimEllipsis(addressLabel, 65)}`}
-        icon={() => (
-          <Identicon className="AccountDropdown-menu-identicon" address={account.address} />
-        )}
+        icon={() => <Blockie address={account.address} />}
       />
     );
   });

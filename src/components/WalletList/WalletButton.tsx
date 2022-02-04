@@ -1,4 +1,4 @@
-import { Tooltip } from '@mycrypto/ui';
+import { Tooltip } from '@mycrypto/ui-legacy';
 import styled, { keyframes } from 'styled-components';
 
 import { BREAK_POINTS, COLORS } from '@theme';

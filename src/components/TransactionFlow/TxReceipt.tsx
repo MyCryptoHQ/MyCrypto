@@ -493,7 +493,7 @@ export const TxReceiptUI = ({
       {completeButton && !(txStatus === ITxStatus.PENDING) && (
         <>
           {typeof completeButton === 'string' ? (
-            <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+            <Button variant="inverted" className="TransactionReceipt-another" onClick={resetFlow}>
               {completeButton}
             </Button>
           ) : (
@@ -530,7 +530,7 @@ export const TxReceiptUI = ({
           </Tooltip>
         )}
       <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">
+        <Button width="100%" mb="25px">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </LinkApp>

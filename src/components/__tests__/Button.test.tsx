@@ -1,15 +1,16 @@
+import { ButtonProps } from '@mycrypto/ui';
 import { fireEvent, simpleRender } from 'test-utils';
 
-import Button, { Props } from '../Button';
+import Button from '../Button';
 
-const defaultProps: Props = {
+const defaultProps: ButtonProps = {
   children: 'Default',
   loading: false,
   disabled: false,
   onClick: jest.fn()
 };
 
-function getComponent({ children, loading, disabled, onClick }: Props) {
+function getComponent({ children, loading, disabled, onClick }: ButtonProps) {
   return simpleRender(
     <Button loading={loading} disabled={disabled} onClick={onClick}>
       {children}

@@ -83,7 +83,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
     <AddToAddressBookPanel
       heading={
         <>
-          <BackButton basic={true} onClick={toggleFlipped}>
+          <BackButton variant="basic" onClick={toggleFlipped}>
             <img src={backArrowIcon} alt="Back" />
           </BackButton>
           {translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}
@@ -173,7 +173,7 @@ export default function AddToAddressBook({ toggleFlipped, createContact }: Props
               </Field>
             </AddressFieldset>
             <AddressBookButtons>
-              <Button type="button" secondary={true} onClick={toggleFlipped}>
+              <Button type="button" variant="inverted" onClick={toggleFlipped}>
                 {translateRaw('CANCEL_ACTION')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
