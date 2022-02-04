@@ -1,6 +1,6 @@
 import { ComponentType, useCallback, useContext, useEffect, useState } from 'react';
 
-import { Panel } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';

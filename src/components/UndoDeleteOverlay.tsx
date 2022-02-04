@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
+import { Blockie } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 
 import Button from './Button';
-import { Identicon } from './Identicon';
 
 const TableOverlay = styled.div`
   height: 100%;
@@ -27,16 +27,14 @@ const ContentOverlay = styled.div`
   align-items: center;
 `;
 
-const SIdenticon = styled(Identicon)`
+const SBlockie = styled(Blockie)`
   padding-top: 4px;
   margin-left: ${SPACING.SM};
   margin-right: ${SPACING.SM};
   margin-bottom: ${SPACING.SM};
 
-  img {
-    height: 2em;
-    min-width: 2em;
-  }
+  height: 2em;
+  min-width: 2em;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding-top: 0;
@@ -77,11 +75,11 @@ interface Props {
 const UndoDeleteOverlay: FC<Props> = ({ overlayText, restoreAccount, address }) => (
   <TableOverlay>
     <ContentOverlay>
-      <SIdenticon address={address} />
+      <SBlockie address={address} />
       <OverlayText>{overlayText}</OverlayText>
     </ContentOverlay>
     <OverlayButtons>
-      <Button colorScheme={'inverted'} onClick={restoreAccount}>
+      <Button variant="inverted" onClick={restoreAccount}>
         Undo
       </Button>
     </OverlayButtons>

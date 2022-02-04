@@ -146,18 +146,18 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
         </LinkApp>
         <OptionGroup>
           <SLinkApp href={secondaryDownloads[0].link} isExternal={true} target="_self">
-            <SButton secondary={true}>{secondaryDownloads[0].name}</SButton>
+            <SButton variant="inverted">{secondaryDownloads[0].name}</SButton>
           </SLinkApp>
           <SLinkApp href={secondaryDownloads[1].link} isExternal={true} target="_self">
-            <SButton secondary={true}>{secondaryDownloads[1].name}</SButton>
+            <SButton variant="inverted">{secondaryDownloads[1].name}</SButton>
           </SLinkApp>
         </OptionGroup>
         <OptionGroup>
           <SLinkApp href={secondaryDownloads[2].link} isExternal={true} target="_self">
-            <SButton secondary={true}>{secondaryDownloads[2].name}</SButton>
+            <SButton variant="inverted">{secondaryDownloads[2].name}</SButton>
           </SLinkApp>
           <SLinkApp href={secondaryDownloads[3].link} isExternal={true} target="_self">
-            <SButton secondary={true}>{secondaryDownloads[3].name}</SButton>
+            <SButton variant="inverted">{secondaryDownloads[3].name}</SButton>
           </SLinkApp>
         </OptionGroup>
         <Text mb={0}>

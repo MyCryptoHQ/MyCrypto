@@ -94,7 +94,7 @@ export default function Dashboard() {
         <NotificationsPanel accounts={accounts} />
         <div className="Dashboard-desktop-top">
           <div className="Dashboard-desktop-top-left">
-            <Heading as="h2" className="Dashboard-desktop-top-left-heading">
+            <Heading as="h2" fontSize="4" mb="14px" fontWeight="bold">
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
             <DashboardGas />

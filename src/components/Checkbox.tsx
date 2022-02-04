@@ -1,4 +1,4 @@
-import { Typography } from '@mycrypto/ui';
+import { Body } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 interface CheckboxProps {
@@ -139,7 +139,7 @@ export default function Checkbox({
         {icon && <SIconContainer>{icon()}</SIconContainer>}
         {label && (
           <SLabelContainer>
-            <Typography style={{ fontSize: '1em', margin: 0 }}>{label}</Typography>
+            <Body style={{ fontSize: '1em', margin: 0 }}>{label}</Body>
           </SLabelContainer>
         )}
       </div>

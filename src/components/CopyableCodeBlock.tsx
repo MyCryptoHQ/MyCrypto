@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Copyable } from '@mycrypto/ui';
+import { Copyable } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 interface Props {

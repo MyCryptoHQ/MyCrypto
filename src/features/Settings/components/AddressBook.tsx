@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Blockie } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import isNumber from 'lodash/isNumber';
 import styled from 'styled-components';
@@ -11,7 +12,6 @@ import {
   EthAddress,
   FixedSizeCollapsibleTable,
   Icon,
-  Identicon,
   LinkApp,
   Network,
   RowDeleteOverlay,
@@ -39,10 +39,8 @@ const Label = styled.span`
   align-items: center;
 `;
 
-const SIdenticon = styled(Identicon)`
-  > img {
-    height: 2em;
-  }
+const SBlockie = styled(Blockie)`
+  height: 2em;
   margin-right: ${SPACING.SM};
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-right: ${SPACING.MD};
@@ -241,7 +239,7 @@ export default function AddressBook({
           // When displayed as a row, the primary row key is provided by AbstractTable
           /* eslint-disable react/jsx-key */
           <Label>
-            <SIdenticon address={address} />
+            <SBlockie address={address} />
             <SEditableText
               truncate={true}
               value={label}

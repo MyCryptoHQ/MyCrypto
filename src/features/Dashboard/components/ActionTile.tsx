@@ -1,8 +1,9 @@
-import { Button, Typography } from '@mycrypto/ui';
+import { Body } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui-legacy';
 import { Property } from 'csstype';
 import styled from 'styled-components';
 
-import { Icon, LinkApp } from '@components';
+import { LinkApp } from '@components';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import { isUrl } from '@utils';
 
@@ -106,11 +107,11 @@ function ActionTile({ icon, faded, title, description, link, justifyContent }: A
     <SContainer justifyContent={justifyContent ?? 'center'}>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
-          {icon && <Icon type={icon} alt={title} />}
-          <Typography as="div">
+          <img src={icon} alt={title} />
+          <Body as="div">
             <STitle isLonger={title.length > 15}>{title}</STitle>
             <SDescription>{description}</SDescription>
-          </Typography>
+          </Body>
         </SButton>
       </LinkApp>
     </SContainer>

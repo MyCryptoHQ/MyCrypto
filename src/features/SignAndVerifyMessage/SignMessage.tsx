@@ -46,14 +46,13 @@ const SignButton = styled(Button)<{ disabled?: boolean }>`
   }
 `;
 
-const BackButton = styled(ButtonUI)<{ marginBottom: boolean }>`
+const BackButton = styled(ButtonUI)`
   align-self: flex-start;
   color: #007a99;
   font-weight: bold;
   display: flex;
   align-items: center;
   font-size: 20px;
-  ${(props) => props.marginBottom && 'margin-bottom: 40px;'}
 
   img {
     margin-right: 8px;
@@ -119,7 +118,7 @@ function SignMessage({
       {isDemoMode && <DemoGatewayBanner />}
       {walletId ? (
         <>
-          <BackButton marginBottom={!!wallet} basic={true} onClick={reset}>
+          <BackButton mb={wallet ? '40px' : undefined} variant="basic" onClick={reset}>
             <img src={backArrowIcon} alt="Back arrow" />
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>

@@ -402,7 +402,7 @@ export function HDWalletsClass({
           <img src={nextIcon} onClick={nextPage} />
         </Nav>
         <ButtonsGroup>
-          <CancelButton onClick={onCancel} colorScheme={'inverted'}>
+          <CancelButton onClick={onCancel} variant={'inverted'}>
             {translate('CANCEL_ACTION')}
           </CancelButton>
           <Button onClick={handleConfirmAddress} disabled={!selectedAddress}>

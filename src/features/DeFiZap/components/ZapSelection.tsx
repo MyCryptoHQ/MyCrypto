@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Accordion } from '@mycrypto/ui';
+import { Accordion } from '@mycrypto/ui-legacy';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';

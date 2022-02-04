@@ -184,7 +184,7 @@ export default function MultiTxReceipt({
       })}
       {shouldRenderPendingBtn && (
         <Button
-          secondary={true}
+          variant="inverted"
           className="TransactionReceipt-another"
           onClick={() => pendingButton!.action(resetFlow)}
         >
@@ -192,12 +192,12 @@ export default function MultiTxReceipt({
         </Button>
       )}
       {completeButtonText && !shouldRenderPendingBtn && (
-        <Button secondary={true} className="TransactionReceipt-another" onClick={resetFlow}>
+        <Button variant="inverted" className="TransactionReceipt-another" onClick={resetFlow}>
           {completeButtonText}
         </Button>
       )}
       <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
-        <Button className="TransactionReceipt-back">
+        <Button width="100%" mb="25px">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </LinkApp>

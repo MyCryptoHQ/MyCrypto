@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Panel } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { Tooltip } from '@components';

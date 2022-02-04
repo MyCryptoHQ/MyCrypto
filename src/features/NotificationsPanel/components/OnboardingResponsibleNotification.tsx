@@ -94,7 +94,9 @@ export default function OnboardingResponsibleNotification() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <ResourceItem secondary={true}>{translate('NOTIFICATIONS_ONBOARDING_MORE')}</ResourceItem>
+          <ResourceItem variant="inverted">
+            {translate('NOTIFICATIONS_ONBOARDING_MORE')}
+          </ResourceItem>
         </ResourceLink>
       }
     >

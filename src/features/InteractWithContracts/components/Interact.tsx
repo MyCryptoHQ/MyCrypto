@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { Button } from '@mycrypto/ui';
 import { Formik } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
 import {
-  Button,
   ContractLookupField,
   Icon,
   InlineMessage,
@@ -398,12 +398,7 @@ function Interact(props: CombinedProps) {
                       onChange={({ target: { value } }) => handleCustomContractNameChanged(value)}
                     />
                     <SaveButtonWrapper>
-                      <Button
-                        color={BLUE_LIGHT}
-                        large={false}
-                        secondary={true}
-                        onClick={saveContract}
-                      >
+                      <Button color={BLUE_LIGHT} variant="inverted" onClick={saveContract}>
                         {translateRaw('SAVE_CONTRACT')}
                       </Button>
                     </SaveButtonWrapper>

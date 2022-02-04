@@ -1,4 +1,5 @@
-import { Button, Panel, Typography } from '@mycrypto/ui';
+import { Body } from '@mycrypto/ui';
+import { Button, Panel } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
@@ -61,7 +62,7 @@ const ContentPanelHeadingIcon = styled.img`
   height: 45px;
 `;
 
-const ContentPanelDescription = styled(Typography)`
+const ContentPanelDescription = styled(Body)`
   margin: 0;
   margin-bottom: 15px;
 `;

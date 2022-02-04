@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 
 import { BigNumber } from '@ethersproject/bignumber';
-import { Button as UIBtn } from '@mycrypto/ui';
+import { Button as UIBtn } from '@mycrypto/ui-legacy';
 import isEmpty from 'lodash/isEmpty';
 import mergeDeepWith from 'ramda/src/mergeDeepWith';
 import styled from 'styled-components';

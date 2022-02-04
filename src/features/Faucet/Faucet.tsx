@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { Heading, Input, Tooltip } from '@mycrypto/ui';
+import { Heading } from '@mycrypto/ui';
+import { Tooltip } from '@mycrypto/ui-legacy';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ import {
   Button,
   ExtendedContentPanel,
   InlineMessage,
+  InputField,
   LinkApp,
   TxReceipt
 } from '@components';
@@ -207,7 +209,7 @@ export default function Faucet() {
           />
         </div>
       )}
-      <Input
+      <InputField
         value={faucetState.solution}
         name="captcha"
         placeholder={translateRaw('FAUCET_ENTER_RESPONSE')}
@@ -250,11 +252,7 @@ export default function Faucet() {
               )}
               isExternal={true}
             >
-              <Button
-                colorScheme={'inverted'}
-                fullwidth={true}
-                className="TransactionReceipt-tweet"
-              >
+              <Button variant="inverted" fullwidth={true} className="TransactionReceipt-tweet">
                 <i className="sm-icon sm-logo-twitter TransactionReceipt-tweet-icon" />{' '}
                 <span className="TransactionReceipt-tweet-text">{translate('FAUCET_SHARE')}</span>
               </Button>

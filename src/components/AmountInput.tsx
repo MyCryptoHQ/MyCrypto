@@ -1,4 +1,4 @@
-import { Input } from '@mycrypto/ui';
+import { Input } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { Asset } from '@types';

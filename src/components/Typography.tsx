@@ -1,6 +1,6 @@
 import { ComponentType, CSSProperties, FC, MouseEvent, ReactElement } from 'react';
 
-import { Typography as UITypography } from '@mycrypto/ui';
+import { Typography as UITypography } from '@mycrypto/ui-legacy';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from '@theme';
