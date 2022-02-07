@@ -31,7 +31,10 @@ const slice = createSlice({
   name: 'memberships',
   initialState,
   reducers: {
-    setMembershipFetchState(state, action: PayloadAction<{ memberships: MembershipStatus[], errors: MembershipErrorState }>) {
+    setMembershipFetchState(
+      state,
+      action: PayloadAction<{ memberships: MembershipStatus[]; errors: MembershipErrorState }>
+    ) {
       const addresses = new Set(action.payload.memberships.map((item) => item.address));
       state.record = [
         ...action.payload.memberships,
@@ -136,7 +139,12 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
     MembershipApi.getMultiNetworkMemberships,
     membershipFetchConfig
   );
-  yield put(slice.actions.setMembershipFetchState({ memberships: membershipState.memberships, errors: membershipState.errors }));
+  yield put(
+    slice.actions.setMembershipFetchState({
+      memberships: membershipState.memberships,
+      errors: membershipState.errors
+    })
+  );
 }
 
 export const { setMembershipFetchState, setMembership, deleteMembership } = slice.actions;

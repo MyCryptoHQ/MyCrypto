@@ -75,12 +75,15 @@ const MembershipApi = {
           });
       })
     ).then((membershipStates) =>
-      membershipStates.reduce((membershipState, acc) => {
-        return {
-          memberships: [...acc.memberships, ...membershipState.memberships],
-          errors: { ...acc.errors, ...membershipState.errors }
-        };
-      }, { memberships: [], errors: {} } as unknown as MembershipFetchResult)
+      membershipStates.reduce(
+        (membershipState, acc) => {
+          return {
+            memberships: [...acc.memberships, ...membershipState.memberships],
+            errors: { ...acc.errors, ...membershipState.errors }
+          };
+        },
+        ({ memberships: [], errors: {} } as unknown) as MembershipFetchResult
+      )
     );
   }
 };

@@ -14,12 +14,12 @@ describe('RecentTransactionList', () => {
       initialState: mockStore({
         storeSlice: {
           txHistory: {
-            history: [fTxHistoryAPI as unknown as DeepPartial<ITxHistoryApiResponse>],
+            history: [(fTxHistoryAPI as unknown) as DeepPartial<ITxHistoryApiResponse>],
             txTypeMeta: fTxTypeMetas
           }
         }
       })
-    })
+    });
   };
 
   test('Can render', () => {
@@ -30,7 +30,7 @@ describe('RecentTransactionList', () => {
 
   test('Can render transactions', () => {
     const { getByText } = renderComponent();
-    const selector = translateRaw('RECENT_TRANSACTIONS_DATE')
+    const selector = translateRaw('RECENT_TRANSACTIONS_DATE');
     expect(getByText(selector)).toBeInTheDocument();
   });
 

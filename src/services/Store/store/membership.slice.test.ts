@@ -28,7 +28,10 @@ describe('MembershipsSlice', () => {
   it('setMembershipFetchState(): adds multiple memberships state', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer(initialState, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
+    const actual = reducer(
+      initialState,
+      setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState })
+    );
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
@@ -36,7 +39,10 @@ describe('MembershipsSlice', () => {
   it('setMembershipFetchState(): deduplicates memberships', () => {
     const m1 = { address: 'random', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
-    const actual = reducer({ ...initialState, record: [m1] }, setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState}));
+    const actual = reducer(
+      { ...initialState, record: [m1] },
+      setMembershipFetchState({ memberships: [m1, m2], errors: {} as MembershipErrorState })
+    );
     const expected = { ...initialState, record: [m1, m2] };
     expect(actual).toEqual(expected);
   });
@@ -50,7 +56,10 @@ describe('MembershipsSlice', () => {
     const m2 = { address: 'random2', networkId: DEFAULT_NETWORK } as MembershipStatus;
     const actual = reducer(
       { ...initialState, record: [m1] },
-      setMembershipFetchState({ memberships: [{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2]  as MembershipStatus[], errors: {} as MembershipErrorState})
+      setMembershipFetchState({
+        memberships: [{ ...m1, memberships: [{ type: 'sixmonths' }] }, m2] as MembershipStatus[],
+        errors: {} as MembershipErrorState
+      })
     );
     const expected = {
       ...initialState,
@@ -84,7 +93,10 @@ describe('MembershipsSlice', () => {
       xDAI: true,
       MATIC: false
     };
-    const actual = reducer(initialState, setMembershipFetchState({ memberships: [], errors: errorState }));
+    const actual = reducer(
+      initialState,
+      setMembershipFetchState({ memberships: [], errors: errorState })
+    );
     const expected = { ...initialState, error: errorState };
     expect(actual).toEqual(expected);
   });
@@ -202,7 +214,12 @@ describe('fetchMembershipsSaga()', () => {
           }
         ]
       ])
-      .put(setMembershipFetchState({ memberships: res, errors: { Ethereum: true } as MembershipErrorState }))
+      .put(
+        setMembershipFetchState({
+          memberships: res,
+          errors: { Ethereum: true } as MembershipErrorState
+        })
+      )
       .dispatch(fetchMemberships())
       .silentRun();
   });
