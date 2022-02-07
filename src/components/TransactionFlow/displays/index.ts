@@ -5,4 +5,3 @@ export { default as FromToAccount } from './FromToAccount';
 export { default as SwapFromToDiagram } from './SwapFromToDiagram';
 export { FaucetReceiptBanner } from './FaucetReceiptBanner';
 export { TokenTransferTable } from './TokenTransferTable';
-

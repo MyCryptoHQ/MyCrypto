@@ -10,11 +10,11 @@ export const addBaseAssetValueTransfer = (valueTransfers: IFullTxHistoryValueTra
 
 export const buildTransferEvent = (
   to: TAddress,
-  toContact: ExtendedContact | undefined,
   from: TAddress,
-  fromContact:  ExtendedContact | undefined, 
   asset: Asset,
   rate: number,
+  toContact: ExtendedContact | undefined,
+  fromContact:  ExtendedContact | undefined,
   amount: string | undefined
 ): ITxTransferEvent => ({
   to,
@@ -29,13 +29,13 @@ export const buildTransferEvent = (
 export const addTransferEvent = (
   transferEvents: ITxTransferEvent[],
   to: TAddress,
-  toContact: ExtendedContact | undefined,
   from: TAddress,
-  fromContact:  ExtendedContact | undefined, 
   asset: Asset,
   rate: number,
+  toContact: ExtendedContact | undefined,
+  fromContact:  ExtendedContact | undefined, 
   amount: string | undefined
 ): ITxTransferEvent[] => ([
   ...transferEvents,
-  buildTransferEvent(to, toContact, from, fromContact, asset, rate, amount)
+  buildTransferEvent(to, from, asset, rate, toContact, fromContact, amount)
 ])

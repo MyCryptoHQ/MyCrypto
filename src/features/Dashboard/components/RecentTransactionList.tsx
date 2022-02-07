@@ -90,7 +90,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
     () =>
       txHistory
         .filter((tx) =>
-          accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.to)] || accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.from)]
+          accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.to)] ?? accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.from)]
         )
         .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
     [txHistory, accountsList.length]
@@ -220,23 +220,23 @@ export const RecentTransactionsListUI = ({
               }}
             />}
             {sentValueTransfers.length === 1 && 
-              <>{(!sentValueTransfers[0].amount)
+              <>{(sentValueTransfers[0].amount)
                 ? <Amount
-                  alignLeft={isMobile}
-                  text={sentValueTransfers[0].asset.name}
-                /> : <Amount
-                  alignLeft={isMobile}
-                  asset={{
-                    amount: bigify(sentValueTransfers[0].amount).toFixed(5),
-                    ticker: sentValueTransfers[0].asset.ticker,
-                    type: sentValueTransfers[0].asset.type
-                  }}
-                  fiat={{
-                    symbol: getFiat(settings).symbol,
-                    ticker: getFiat(settings).ticker,
-                    amount: sentFiatValue.toFixed(2)
-                  }}
-                />
+                alignLeft={isMobile}
+                asset={{
+                  amount: bigify(sentValueTransfers[0].amount).toFixed(5),
+                  ticker: sentValueTransfers[0].asset.ticker,
+                  type: sentValueTransfers[0].asset.type
+                }}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
+                  amount: sentFiatValue.toFixed(2)
+                }}
+              /> : <Amount
+                alignLeft={isMobile}
+                text={sentValueTransfers[0].asset.name}
+              />
               }</>
             }
           </Box>,
@@ -256,11 +256,8 @@ export const RecentTransactionsListUI = ({
               }}
             />}
             {receivedValueTransfers.length === 1 && 
-              <>{(!receivedValueTransfers[0].amount)
+              <>{(receivedValueTransfers[0].amount)
                 ? <Amount
-                  alignLeft={isMobile}
-                  text={receivedValueTransfers[0].asset.name}
-                /> : <Amount
                   alignLeft={isMobile}
                   asset={{
                     amount: bigify(receivedValueTransfers[0].amount).toFixed(5),
@@ -272,7 +269,10 @@ export const RecentTransactionsListUI = ({
                     ticker: getFiat(settings).ticker,
                     amount: receivedFiatValue.toFixed(2)
                   }}
-                />
+                /> : <Amount
+                  alignLeft={isMobile}
+                  text={receivedValueTransfers[0].asset.name}
+                /> 
               }</>
             }
           </Box>,

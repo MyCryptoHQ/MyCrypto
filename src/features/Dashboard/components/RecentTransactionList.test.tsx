@@ -57,9 +57,9 @@ describe('RecentTransactionList', () => {
     const { getByText } = renderComponent({ txHistory: fTxHistoryAPI });
     const selector = translateRaw('GENERIC_BASE_NAME')
     const elem = getByText(selector, { exact: false,  })
-
     expect(elem).toBeInTheDocument();
   });
+
   test('Can properly display multiple recieved assets', () => {
     const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], to: fTxHistoryAPI.from }
     const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer ] }});

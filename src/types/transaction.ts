@@ -94,4 +94,3 @@ export interface IFullTxHistoryValueTransfer {
   readonly asset: Asset;
   readonly amount?: string; // Hex
 }
-

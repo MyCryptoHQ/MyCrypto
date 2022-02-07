@@ -191,11 +191,11 @@ const TxReceipt = ({
     let transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>(
       (transfer) => buildTransferEvent(
         transfer.to,
-        getContactByAddressAndNetworkId(transfer.to, network.id),
         transfer.from,
-        getContactByAddressAndNetworkId(transfer.from, network.id),
         transfer.asset,
         getAssetRate(transfer.asset),
+        getContactByAddressAndNetworkId(transfer.to, network.id),
+        getContactByAddressAndNetworkId(transfer.from, network.id),
         transfer.amount
       )
     );
@@ -203,23 +203,23 @@ const TxReceipt = ({
       transferEvents = addTransferEvent(
         transferEvents,
         displayTxReceipt.to,
-        getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
         displayTxReceipt.from,
-        getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
         displayTxReceipt.baseAsset,
         baseAssetRate,
+        getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
+        getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
         bigNumValueToViewableEther(displayTxReceipt.value)
       )
     } else if (!displayTxReceipt && txConfig.amount) {
       transferEvents = addTransferEvent(
         transferEvents,
         txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
-        txConfig.receiverAddress &&
-          getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
         txConfig.from,
-        getContactByAddressAndNetworkId(txConfig.from, network.id),
         txConfig.baseAsset,
         baseAssetRate,
+        txConfig.receiverAddress &&
+          getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
+        getContactByAddressAndNetworkId(txConfig.from, network.id),
         txConfig.amount
       )
     }

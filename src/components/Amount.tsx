@@ -54,7 +54,7 @@ export default function Amount({
       {asset && (
         <Currency
           amount={asset.amount}
-          isNFTAsset={asset.type === 'erc721'}
+          assetType={asset.type}
           ticker={asset.ticker}
           icon={true}
           uuid={asset.uuid}

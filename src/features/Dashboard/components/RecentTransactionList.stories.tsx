@@ -7,11 +7,11 @@ import { buildTxHistoryEntry } from '@store/helpers';
 import { RecentTransactionsListUI } from './RecentTransactionList';
 
 const accountsMap = fAccounts.reduce<Record<string,boolean>>((arr,curr) => ({ ...arr, [curr.uuid]: true }), {})
-const apiTxs = [fTxHistoryAPI].map((tx) => makeTxReceipt(tx, fNetworks[0], fAssets));
+const apiTx = makeTxReceipt(fTxHistoryAPI, fNetworks[0], fAssets);
 
 const defaultProps: ComponentProps<typeof RecentTransactionsListUI> = {
   settings: fSettings,
-  accountTxs: apiTxs.map(buildTxHistoryEntry(fNetworks, fContacts, fContracts, fAssets, fAccounts)(fTxTypeMetas, accountsMap)),
+  accountTxs: [buildTxHistoryEntry(fNetworks, fContacts, fContracts, fAssets, fAccounts)(fTxTypeMetas, accountsMap)(apiTx)],
   accountsMap: accountsMap,
   isMobile: false,
   txTypeMetas: fTxTypeMetas,

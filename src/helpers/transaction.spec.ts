@@ -664,12 +664,12 @@ describe('deriveAmount', () => {
   
   it('derives amount correctly when contract asset is present', () => {
     expect(
-      deriveAmount(fDAI, data, value)
+      deriveAmount(data, value, fDAI)
     ).toBe('106.630046');
   });
   it('derives amount correctly when contract asset is not present', () => {
     expect(
-      deriveAmount(undefined, data, value)
+      deriveAmount(data, value, undefined)
     ).toBe('1.0');
   });
 });

@@ -26,19 +26,19 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
       case 'GENERIC_CONTRACT_CALL' as ITxHistoryType:
       case ITxHistoryType.CONTRACT_INTERACT:
         return translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
-          $ticker: assetTxTypeDesignation || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.INBOUND:
         return translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
-          $ticker: assetTxTypeDesignation || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.OUTBOUND:
         return translateRaw('RECENT_TX_LIST_LABEL_SENT', {
-          $ticker: assetTxTypeDesignation || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.TRANSFER:
         return translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
-          $ticker: assetTxTypeDesignation || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.REP_TOKEN_MIGRATION:
       case ITxHistoryType.GOLEM_TOKEN_MIGRATION:

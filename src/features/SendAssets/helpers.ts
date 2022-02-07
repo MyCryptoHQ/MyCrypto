@@ -35,7 +35,6 @@ import {
 import { isEmpty } from '@vendor';
 
 import { IFullTxParam } from './types';
-import {  } from '@utils/generateAsset';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network, account } = formData;

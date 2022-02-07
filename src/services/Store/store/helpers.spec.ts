@@ -228,11 +228,11 @@ describe('handleIncExchangeTransaction', () => {
       type: "DEPOSIT"
     }
   } as ITxMetaTypes;
-  const accountsMap = {} as Record<string, boolean>
+  const accountsMap: Record<string, boolean> = {};
   
   it('handles addition of value transfer for EXCHANGE txs that require a received value transfer', () => {
     const derivedTxType = 'UNISWAP_V2_EXCHANGE'
-    const accountsMap = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true } as Record<string, boolean>
+    const accountsMap: Record<string, boolean> = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true }
     const valueTransfers = [{ from: toAddr, to: fromAddr, amount: undefined, asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id)}]
     const result = handleIncExchangeTransaction(
       valueTransfers,
@@ -259,7 +259,7 @@ describe('handleIncExchangeTransaction', () => {
 
   it('does not add value transfer EXCHANGE tx that doesn\'t require a received value transfer', () => {
     const derivedTxType = 'UNISWAP_V2_EXCHANGE'
-    const accountsMap = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true } as Record<string, boolean>
+    const accountsMap: Record<string, boolean> = { [generateDeterministicAddressUUID(fNetwork.id, toAddr)]: true }
     const valueTransfers = [{ from: fromAddr, to: toAddr, asset: generateGenericBase(fNetwork.chainId.toString(), fNetwork.id)}]
     const result = handleIncExchangeTransaction(
       valueTransfers,

@@ -156,7 +156,6 @@ export const generateCustomDPath = (dPath: string) => {
   return [path, index];
 };
 
-
 // Handles creating a value transfer for a base asset based on transaction value field
 export const handleBaseAssetTransfer = (
   valueTransfers: IFullTxHistoryValueTransfer[],
@@ -193,13 +192,13 @@ export const handleIncExchangeTransaction = (
 export const buildTxHistoryEntry = (networks: Network[], contacts: ExtendedContact[], contracts: ExtendedContract[], assets: ExtendedAsset[], accounts: StoreAccount[]) =>
   (txTypeMetas: ITxMetaTypes, accountsMap: Record<string, boolean>) =>
   (tx: ITxReceipt): ITxHistoryEntry => {
-  const network = networks.find(({ id }) => tx.baseAsset.networkId === id) as Network;
+  const network = networks.find(({ id }) => tx.baseAsset.networkId === id)!;
 
   // if Txhistory contains a deleted network ie. MATIC remove from history.
   if (!network) return {} as ITxHistoryEntry;
 
   const toAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
-    tx.receiverAddress || tx.to,
+    tx.receiverAddress ?? tx.to,
     network.id
   );
   const fromAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
@@ -207,7 +206,7 @@ export const buildTxHistoryEntry = (networks: Network[], contacts: ExtendedConta
     network.id
   );
   const derivedTxType = deriveTxType(txTypeMetas, accounts, tx)
-  let valueTransfers = tx.valueTransfers || []
+  let valueTransfers = tx.valueTransfers ?? []
   // handles base asset value transfer based off transaction.value
   valueTransfers = handleBaseAssetTransfer(valueTransfers, tx.value.toString(), tx.to, tx.from, tx.baseAsset)
 
@@ -218,7 +217,7 @@ export const buildTxHistoryEntry = (networks: Network[], contacts: ExtendedConta
   return {
     ...tx,
     valueTransfers: valueTransfers,
-    timestamp: tx.timestamp || 0,
+    timestamp: tx.timestamp ?? 0,
     txType: derivedTxType,
     toAddressBookEntry,
     fromAddressBookEntry,

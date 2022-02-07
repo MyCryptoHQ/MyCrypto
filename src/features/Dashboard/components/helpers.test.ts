@@ -9,6 +9,7 @@ import transfer from '@assets/images/transactions/transfer.svg';
 import { fAssets } from '@fixtures';
 import { translateRaw } from '@translations';
 
+import { ITxHistoryType } from '../types';
 import { constructTxTypeConfig } from './helpers';
 
 describe('constructTxTypeConfig', () => {
@@ -93,6 +94,19 @@ describe('constructTxTypeConfig', () => {
       inputProtocol: '',
       outputLabel: translateRaw('PLATFORM_MEMBERSHIP_PURCHASED'),
       outputIcon: membershipPurchase
+    },{
+      inputType: ITxHistoryType.REP_TOKEN_MIGRATION,
+      inputProtocol: 'ERC_20',
+      outputLabel: translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
+        $platform: translateRaw('ERC_20', { $ticker: assetTxTypeDesignation }),
+        $action: translateRaw(`PLATFORM_MIGRATION`, { $ticker: assetTxTypeDesignation })
+      }),
+      outputIcon: contractInteract
+    },{
+      inputType: ITxHistoryType.ANT_TOKEN_MIGRATION,
+      inputProtocol: '',
+      outputLabel: translateRaw(`PLATFORM_MIGRATION`, { $ticker: assetTxTypeDesignation  }),
+      outputIcon: contractInteract
     }
   ]
   

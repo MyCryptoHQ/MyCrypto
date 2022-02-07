@@ -41,19 +41,19 @@ describe('buildTransferEvent', () => {
   }
   
   it('correctly includes all values including undefined contacts', () => {
-    const result = buildTransferEvent(baseExpected.to, baseExpected.toContact, baseExpected.from, baseExpected.fromContact, baseExpected.asset, baseExpected.rate, baseExpected.amount);
+    const result = buildTransferEvent(baseExpected.to, baseExpected.from, baseExpected.asset, baseExpected.rate, baseExpected.toContact, baseExpected.fromContact,  baseExpected.amount);
     expect(result).toStrictEqual(baseExpected);
   });
 
   it('correctly includes all values including defined contacts', () => {
     const expected = { ...baseExpected, to: contacts[0].address as TAddress, toContact: contacts[0], from: contacts[1].address as TAddress, fromContact: contacts[1] }
-    const result = buildTransferEvent(expected.to, expected.toContact, expected.from, expected.fromContact, expected.asset, expected.rate, expected.amount);
+    const result = buildTransferEvent(expected.to, expected.from, expected.asset, expected.rate, expected.toContact, expected.fromContact, expected.amount);
     expect(result).toStrictEqual(expected);
   });
 
   it('correctly includes all values including undefined amount', () => {
     const expected = { ...baseExpected, to: contacts[0].address as TAddress, toContact: contacts[0], from: contacts[1].address as TAddress, fromContact: contacts[1], amount: undefined }
-    const result = buildTransferEvent(expected.to, expected.toContact, expected.from, expected.fromContact, expected.asset, expected.rate, undefined);
+    const result = buildTransferEvent(expected.to, expected.from, expected.asset, expected.rate, expected.toContact, expected.fromContact, undefined);
     expect(result).toStrictEqual(expected);
   });
 });
@@ -66,7 +66,7 @@ describe('addTransferEvent', () => {
   const amount = '1'
   
   it('adds a new transfer event to the empty arr includes all values including undefined contacts', () => {
-    const result = addTransferEvent([], toAddr, undefined, fromAddr, undefined, asset, assetRate, amount);
+    const result = addTransferEvent([], toAddr, fromAddr, asset, assetRate, undefined, undefined, amount);
     expect(result).toHaveLength(1);
   });
 });

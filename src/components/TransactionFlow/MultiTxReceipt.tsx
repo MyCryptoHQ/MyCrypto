@@ -105,11 +105,11 @@ export default function MultiTxReceipt({
         const toContact = recipient && getContactByAddressAndNetworkId(recipient, network.id)
         const transferEvent = buildTransferEvent(
           recipient,
-          toContact,
           senderAccount.address,
-          fromContact,
           asset,
           assetRate,
+          toContact,
+          fromContact,
           amount
         )
         return (

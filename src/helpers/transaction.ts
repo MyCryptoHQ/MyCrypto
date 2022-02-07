@@ -241,7 +241,7 @@ export const makeTxConfigFromSignedTx = (
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
       : decodedTx.to) as TAddress,
-    amount: deriveAmount(contractAsset, decodedTx.data, decodedTx.value),
+    amount: deriveAmount(decodedTx.data, decodedTx.value, contractAsset),
     networkId: networkDetected?.id ?? networkId,
     asset: contractAsset ?? baseAsset,
     baseAsset,
@@ -330,7 +330,7 @@ export const makeTxConfigFromTxHistoryEntry = (
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
-    amount:  deriveAmount(contractAsset, txReceipt.data, txReceipt.value),
+    amount:  deriveAmount(txReceipt.data, txReceipt.value, contractAsset),
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };
@@ -557,7 +557,7 @@ export const makeTxFromForm = (
   };
 };
 
-export const deriveAmount = (contractAsset: Asset | undefined, data: string, value: BigNumber ) => 
+export const deriveAmount = (data: string, value: BigNumber, contractAsset: Asset | undefined ) => 
   contractAsset
     ? fromTokenBase(toWei(decodeTransfer(data)._value, 0), contractAsset.decimal)
     : bigNumValueToViewableEther(value);
