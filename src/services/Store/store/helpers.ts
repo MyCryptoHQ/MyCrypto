@@ -182,7 +182,7 @@ export const handleIncExchangeTransaction = (
   (txTypeMetas[derivedTxType]
   && txTypeMetas[derivedTxType].type == 'EXCHANGE'
   && (valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)]) || []).length == 0)
-    ? valueTransfers = [...valueTransfers, {
+    ? [ ...valueTransfers, {
       asset: generateGenericBase(network.chainId.toString(), network.id),
       to: toAddr,
       from: fromAddr,

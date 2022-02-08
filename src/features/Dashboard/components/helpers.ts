@@ -8,7 +8,8 @@ import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import { translateRaw } from '@translations';
-import { ITxTypeMeta } from '@types';
+import { ExtendedAsset, IFullTxHistoryValueTransfer, ITxTypeMeta } from '@types';
+import { bigify, convertToFiat } from '@utils';
 
 import { ITxHistoryType } from '../types';
 import { ITxTypeConfigObj } from './RecentTransactionList';
@@ -97,3 +98,11 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
     }
   }
 });
+
+export const sumValueTransfers = (valueTransfers: IFullTxHistoryValueTransfer[], getAssetRate: (asset: ExtendedAsset) => number) => 
+  valueTransfers.reduce((acc, cur) => {
+    return cur.amount ? acc.plus(convertToFiat(
+      cur.amount,
+      getAssetRate(cur.asset)
+    )) : acc;
+  }, bigify('0'))

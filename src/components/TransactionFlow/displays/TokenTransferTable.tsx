@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
 import { toChecksumAddress } from '@mycrypto/wallets';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { Amount, Box, Icon } from '@components';
 import { EthAddress } from '@components/EthAddress';
 import { Text } from '@components/NewTypography'
 import { getFiat } from '@config/fiats';
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { ISettings } from '@types';
 import { bigify, convertToFiat } from '@utils';
@@ -15,6 +15,7 @@ import { bigify, convertToFiat } from '@utils';
 import { ITxTransferEvent } from '../TxReceipt';
 
 interface Props {
+  isMobile: boolean;
   valueTransfers: ITxTransferEvent[];
   settings: ISettings;
 }
@@ -25,47 +26,31 @@ const ERC20Box = styled(Box)`
   background-color: ${COLORS.GREY_LIGHTEST};
 `
 
-const Table = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+const Body = styled(Box)<{ isMobile: boolean }>`
+  ${({ isMobile }) => isMobile && css`
     border-radius: 1.3px;
     & > *:first-child {
       border-top: 1px solid ${COLORS.GREY_ATHENS};
     }
-  }
+  `}
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  min-height: 60px;
-  width: 100%;
+const Row = styled(Box)<{ isMobile: boolean }>`
   gap: ${SPACING.XS};
   & > *:last-child {
     flex: 1;
   }
-  @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    flex-direction: column;
-    align-items: flex-start;
+  ${({ isMobile }) => isMobile && css`
+    padding: ${SPACING.SM} ${SPACING.NONE};
     position: relative;
     width: 100%;
     border-bottom: 1px solid ${COLORS.GREY_ATHENS};
-    padding: ${SPACING.SM} 0 ${SPACING.SM} 0;
     & > *:last-child {
       align-self: flex-end;
       flex: 1;
       border-bottom: 0px;
     }
-  }
+  `}
 `;
 
 const SText = styled(Text)`
@@ -73,9 +58,8 @@ const SText = styled(Text)`
 `
 
 const STransferAmounts = styled(Text)`
-  /* Night Mode/ Accent */
   padding: 1px 4px;
-  background: #8F8F8F;
+  background: ${COLORS.LEMON_GRASS};
   font-weight: bold;
   border-radius: 5px;
   color: white;
@@ -86,13 +70,7 @@ const LabelBox = styled(Box)`
   gap: ${SPACING.XS};
 `
 
-const SMoreIconWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-`
-
-export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
+export const TokenTransferTable = ({ isMobile, valueTransfers, settings }: Props) => {
   const [isExpanded, setExpanded] = useState(false)
   const tokenTransfers = valueTransfers.filter(t => t.asset.type === 'erc20')
   const toggleExpanded = () => setExpanded(!isExpanded)
@@ -101,7 +79,7 @@ export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
       <LabelBox variant="rowAlign">
         <Text variant="subHeading" mb={SPACING.NONE}>{translateRaw('TOKENS_TRANSFERRED')}:</Text>
         <STransferAmounts>{tokenTransfers.length}</STransferAmounts>
-        <SMoreIconWrapper>
+        <Box flex="1" variant="alignRight">
           <Icon
             type="more"
             alt="More"
@@ -111,12 +89,17 @@ export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
             height="1em"
             color={COLORS.BLUE_BRIGHT}
           />
-        </SMoreIconWrapper>
+        </Box>
       </LabelBox>
-      {isExpanded && <Table>
-        <Body>
+      {isExpanded && <Box variant="columnAlign">
+        <Body isMobile={isMobile} minHeight={SPACING.XL} variant="columnAlignLeft" width="100%">
           {tokenTransfers.map((transfer, idx) => (
-            <Row key={idx}>
+            <Row
+              key={idx}
+              isMobile={isMobile}
+              minHeight={SPACING.XL}
+              variant={isMobile ? 'columnAlignLeft' : 'rowAlign'}
+            >
               <Box variant='rowAlign'>
                 <SText>
                   {translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS')}:
@@ -158,7 +141,7 @@ export const TokenTransferTable = ({ valueTransfers, settings }: Props) => {
             </Row>
           ))}
         </Body>
-      </Table>}
+      </Box>}
     </ERC20Box>
   );
 };

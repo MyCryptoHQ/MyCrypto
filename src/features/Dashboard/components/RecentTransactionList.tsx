@@ -23,9 +23,9 @@ import { getTxTypeMetas, ITxMetaTypes } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
 import { Asset, ExtendedAsset, ISettings, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
-import { addBaseAssetValueTransfer, bigify, convertToFiat, generateDeterministicAddressUUID, useScreenSize } from '@utils';
+import { addBaseAssetValueTransfer, bigify, generateDeterministicAddressUUID, useScreenSize } from '@utils';
 
-import { constructTxTypeConfig } from './helpers';
+import { constructTxTypeConfig, sumValueTransfers } from './helpers';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 
@@ -170,18 +170,8 @@ export const RecentTransactionsListUI = ({
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
         const sentValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]);
         const receivedValueTransfers = valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(networkId, t.to)]);
-        const receivedFiatValue = receivedValueTransfers.reduce((acc, cur) => {
-          return cur.amount ? acc.plus(convertToFiat(
-            cur.amount,
-            getAssetRate(cur.asset)
-          )) : acc;
-        }, bigify('0'))
-        const sentFiatValue = sentValueTransfers.reduce((acc, cur) => {
-          return cur.amount ? acc.plus(convertToFiat(
-            cur.amount,
-            getAssetRate(cur.asset)
-          )) : acc;
-        }, bigify('0'))
+        const receivedFiatValue = sumValueTransfers(receivedValueTransfers, getAssetRate)
+        const sentFiatValue = sumValueTransfers(sentValueTransfers, getAssetRate)
         return [
           <TransactionLabel 
             key={0}

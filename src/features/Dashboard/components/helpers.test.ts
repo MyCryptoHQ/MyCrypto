@@ -6,9 +6,11 @@ import membershipPurchase from '@assets/images/transactions/membership-purchase.
 import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
-import { fAssets } from '@fixtures';
+import { fAssets, fValueTransfers } from '@fixtures';
 import { translateRaw } from '@translations';
+import { ExtendedAsset } from '@types';
 
+import { sumValueTransfers } from '.';
 import { ITxHistoryType } from '../types';
 import { constructTxTypeConfig } from './helpers';
 
@@ -123,3 +125,16 @@ describe('constructTxTypeConfig', () => {
   })
 });
 
+describe('sumValueTransfers', () => {
+  const getAssetRate = (_: ExtendedAsset) => 5
+  it('correctly sums valueTransfers with balance', () => {
+    const expected = '50';
+    const actual = sumValueTransfers(fValueTransfers.map(t => ({ ...t, amount: '5' })), getAssetRate)
+    expect(actual.toString()).toBe(expected)
+  });
+  it('correctly sums valueTransfers with balance and ignores valueTransfers without balance', () => {
+    const expected = '50';
+    const actual = sumValueTransfers([ ...fValueTransfers.map(t => ({ ...t, amount: '5' })), ...fValueTransfers], getAssetRate)
+    expect(actual.toString()).toBe(expected)
+  });
+});

@@ -28,6 +28,11 @@ describe('deriveDisplayAsset', () => {
     const result = deriveDisplayAsset(type, testToAddr, testNetworkId, testChainId, [], mockGetAssetReturnsUndefined);
     expect(result).toEqual(unknownERC20Asset);
   });
+  test('correctly derives unknown erc20 token approval display asset', () => {
+    const type = 'ERC_20_APPROVE' as TxType;
+    const result = deriveDisplayAsset(type, testToAddr, testNetworkId, testChainId, [], mockGetAssetReturnsUndefined);
+    expect(result).toEqual(unknownERC20Asset);
+  });
   test('correctly derives undefined display asset', () => {
     const type = 'STANDARD' as TxType;
     const result = deriveDisplayAsset(type, testToAddr, testNetworkId, testChainId, [], mockGetAssetReturnsUndefined);

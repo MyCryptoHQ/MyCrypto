@@ -4,7 +4,7 @@ import { mockStore, simpleRender } from 'test-utils';
 import { fAccounts, fAssets, fDAI, fSettings, fTxHistoryAPI, fTxTypeMetas } from '@fixtures';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { translateRaw } from '@translations';
-import { TAddress } from '@types';
+import { ITxType, ITxValue, TAddress } from '@types';
 
 import RecentTransactionList from './RecentTransactionList';
 
@@ -55,8 +55,17 @@ describe('RecentTransactionList', () => {
 
   test('Can properly display unknown recieved asset', () => {
     const { getByText } = renderComponent({ txHistory: fTxHistoryAPI });
+    // recent transactions panel will add unknown value transfer because txType is an exchange and there is no recieved value transfer
     const selector = translateRaw('GENERIC_BASE_NAME')
     const elem = getByText(selector, { exact: false,  })
+    expect(elem).toBeInTheDocument();
+  });
+
+  test('Can properly display known received asset', () => {
+    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, txType: ITxType.UNISWAP_V2_DEPOSIT, erc20Transfers: [], value: '0xde0b6b3a7640000' as ITxValue }});
+    const selector = fAssets[0].ticker
+    const elem = getByText(selector, { exact: false })
+
     expect(elem).toBeInTheDocument();
   });
 
@@ -73,6 +82,14 @@ describe('RecentTransactionList', () => {
     const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], from: fTxHistoryAPI.from, contractAddress: fDAI.contractAddress as TAddress, amount: '0xde0b6b3a7640000' }
     const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer ] }});
     const selector = fDAI.ticker
+    const elem = getByText(selector, { exact: false })
+
+    expect(elem).toBeInTheDocument();
+  });
+  test('Can properly display multiple known sent assets', () => {
+    const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], from: fTxHistoryAPI.from, contractAddress: fDAI.contractAddress as TAddress, amount: '0xde0b6b3a7640000' }
+    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer, newERC20Transfer ] }});
+    const selector = `2 ${translateRaw('ASSETS')}`
     const elem = getByText(selector, { exact: false })
 
     expect(elem).toBeInTheDocument();

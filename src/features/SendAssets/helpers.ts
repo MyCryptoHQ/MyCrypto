@@ -1,7 +1,8 @@
 import { bufferToHex } from 'ethereumjs-util';
 
-import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
+import { DEFAULT_ASSET_DECIMAL, SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
 import { deriveTxRecipientsAndAmount, ERCType, guessERC20Type, isEIP1559Supported } from '@helpers';
+import { getAssetByContractAndNetwork, getBaseAssetByNetwork } from '@services';
 import { encodeTransfer } from '@services/EthService';
 import {
   Asset,
@@ -15,7 +16,6 @@ import {
   ITxValue,
   Network,
   StoreAccount,
-  TAddress,
   TxQueryTypes
 } from '@types';
 import {
@@ -134,7 +134,6 @@ export const parseTransactionQueryParams = (queryParams: any) => (
 
   const network = networks.find((n) => n.chainId.toString() === i.chainId);
   if (!network) return;
-
   const senderAccount = accounts.find(({ address }) => isSameAddress(address, i.from));
   if (!senderAccount) return;
 
@@ -159,22 +158,22 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   // This is labeled as "guess" because we can only identify simple erc20 transfers for now. If this is incorrect, It only affects displayed amounts - not the actual tx.
   const ercType = guessERC20Type(i.data);
   const isERC20 = ercType === ERCType.TRANSFER;
-
   const { to, amount, receiverAddress } = deriveTxRecipientsAndAmount(
     ercType,
     i.data,
     i.to,
     i.value
   );
-  const baseAsset = assets.find(({ uuid }) => uuid === network.baseAsset) as ExtendedAsset;
+  const baseAsset = getBaseAssetByNetwork({
+    network,
+    assets
+  })!;
   const asset = isERC20
-    ? assets.find(
-        ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-      ) ?? generateGenericERC20(to!, i.chainId, network.id)
+    ? getAssetByContractAndNetwork(i.to, network)(assets) ?? generateGenericERC20(to!, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,
-    amount: fromTokenBase(handleValues(amount), asset.decimal),
+    amount: fromTokenBase(handleValues(amount), asset.decimal ?? DEFAULT_ASSET_DECIMAL),
     rawTransaction,
     networkId: network.id,
     senderAccount,

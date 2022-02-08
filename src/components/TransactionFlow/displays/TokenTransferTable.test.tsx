@@ -13,6 +13,7 @@ import { truncate } from '@utils';
 import { TokenTransferTable } from './TokenTransferTable';
 
 const defaultProps: ComponentProps<typeof TokenTransferTable> = {
+  isMobile: false,
   valueTransfers: fValueTransfers.map(t => ({ ...t, rate: 0.1, toContact: undefined, fromContact: undefined })),
   settings: fSettings
 };
