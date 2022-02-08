@@ -99,10 +99,10 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
   }
 });
 
-export const sumValueTransfers = (valueTransfers: IFullTxHistoryValueTransfer[], getAssetRate: (asset: ExtendedAsset) => number) => 
+export const sumValueTransfers = (
+  valueTransfers: IFullTxHistoryValueTransfer[],
+  getAssetRate: (asset: ExtendedAsset) => number
+) =>
   valueTransfers.reduce((acc, cur) => {
-    return cur.amount ? acc.plus(convertToFiat(
-      cur.amount,
-      getAssetRate(cur.asset)
-    )) : acc;
-  }, bigify('0'))
+    return cur.amount ? acc.plus(convertToFiat(cur.amount, getAssetRate(cur.asset))) : acc;
+  }, bigify('0'));

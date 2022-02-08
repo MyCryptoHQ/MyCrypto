@@ -41,7 +41,14 @@ export { default as fETHNonWeb3TxConfigJSON } from './ethNonWeb3TxConfig.json';
 export { default as fETHWeb3TxConfigJSON } from './ethWeb3TxConfig.json';
 
 export { fDefiReserveRates } from './defiRates';
-export { fTxHistoryAPI, fTxHistory, fTxTypeMetas, fValueTransfers, fIncExchangeValueTransfer, fBaseValueTransfer } from './txHistory';
+export {
+  fTxHistoryAPI,
+  fTxHistory,
+  fTxTypeMetas,
+  fValueTransfers,
+  fIncExchangeValueTransfer,
+  fBaseValueTransfer
+} from './txHistory';
 
 export * from './sendFormFields';
 

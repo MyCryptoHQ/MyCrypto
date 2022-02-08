@@ -196,12 +196,12 @@ export const migrations = {
           return account;
         }
         const newTransactions = transactions.map((t) => {
-          return {...t, asset: undefined, amount: undefined, valueTransfers: [] }
-        })
+          return { ...t, asset: undefined, amount: undefined, valueTransfers: [] };
+        });
         return {
           ...account,
           transactions: newTransactions
-        }
+        };
       })
     };
   }

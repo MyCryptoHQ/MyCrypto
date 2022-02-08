@@ -1,4 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 import { getContractAddress } from '@ethersproject/address';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -177,19 +185,23 @@ const TxReceipt = ({
     });
   }, []);
 
-  const assetRate = (() => {
-    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0) {
+  const assetRate = () => {
+    if (
+      displayTxReceipt &&
+      path(['valueTransfers'], displayTxReceipt) &&
+      displayTxReceipt.valueTransfers.length > 0
+    ) {
       return getAssetRate(displayTxReceipt.valueTransfers[0].asset);
     } else {
       return getAssetRate(txConfig.asset);
     }
-  })
+  };
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const transferEvents = useMemo(() => {
     if (!displayTxReceipt) return [];
-    let transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>(
-      (transfer) => buildTransferEvent(
+    let transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
+      buildTransferEvent(
         transfer.to,
         transfer.from,
         transfer.asset,
@@ -199,7 +211,11 @@ const TxReceipt = ({
         transfer.amount
       )
     );
-    if (displayTxReceipt && path(['value'], displayTxReceipt) && !bigify(displayTxReceipt.value).isZero()) {
+    if (
+      displayTxReceipt &&
+      path(['value'], displayTxReceipt) &&
+      !bigify(displayTxReceipt.value).isZero()
+    ) {
       transferEvents = addTransferEvent(
         transferEvents,
         displayTxReceipt.to,
@@ -209,7 +225,7 @@ const TxReceipt = ({
         getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
         getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
         bigNumValueToViewableEther(displayTxReceipt.value)
-      )
+      );
     } else if (!displayTxReceipt && txConfig.amount) {
       transferEvents = addTransferEvent(
         transferEvents,
@@ -221,7 +237,7 @@ const TxReceipt = ({
           getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
         getContactByAddressAndNetworkId(txConfig.from, network.id),
         txConfig.amount
-      )
+      );
     }
     return transferEvents;
   }, []);
@@ -374,7 +390,12 @@ export const TxReceiptUI = ({
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
   const assetAmount = useCallback(() => {
-    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0 && displayTxReceipt.valueTransfers[0].amount) {
+    if (
+      displayTxReceipt &&
+      path(['valueTransfers'], displayTxReceipt) &&
+      displayTxReceipt.valueTransfers.length > 0 &&
+      displayTxReceipt.valueTransfers[0].amount
+    ) {
       return displayTxReceipt.valueTransfers[0].amount;
     } else {
       return txConfig.amount;
@@ -382,7 +403,12 @@ export const TxReceiptUI = ({
   }, [displayTxReceipt, txConfig.amount]);
 
   const mainAsset = useCallback(() => {
-    if (displayTxReceipt && path(['valueTransfers'], displayTxReceipt) && displayTxReceipt.valueTransfers.length > 0 && displayTxReceipt.valueTransfers[0].amount) {
+    if (
+      displayTxReceipt &&
+      path(['valueTransfers'], displayTxReceipt) &&
+      displayTxReceipt.valueTransfers.length > 0 &&
+      displayTxReceipt.valueTransfers[0].amount
+    ) {
       return displayTxReceipt.valueTransfers[0].asset;
     } else {
       return txConfig.asset;
@@ -578,8 +604,7 @@ export const TxReceiptUI = ({
               {translateRaw('CANCEL_TX_BTN')}
             </Button>
           </Tooltip>
-        )
-      }
+        )}
       <LinkApp href={ROUTE_PATHS.DASHBOARD.path}>
         <Button className="TransactionReceipt-back">
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}

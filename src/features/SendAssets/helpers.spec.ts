@@ -21,7 +21,7 @@ import {
   processFormForEstimateGas
 } from './helpers';
 
-const UNKNOWN_TOKEN_ADDR = '0x6f36f1ae860b0d3996fd4bb3e69d68cfb60e5f86'
+const UNKNOWN_TOKEN_ADDR = '0x6f36f1ae860b0d3996fd4bb3e69d68cfb60e5f86';
 
 const validETHSpeedUpQuery = {
   queryType: TxQueryTypes.SPEEDUP,
@@ -114,14 +114,21 @@ describe('Query string parsing', () => {
   });
 
   it('parses valid unknown erc20 tx query parameters correctly - speed up', () => {
-    const parsedQueryParams = parseQueryParams({ ...validERC20SpeedUpQuery, to: UNKNOWN_TOKEN_ADDR })(
-      [fNetwork],
-      fAssets,
-      fAccounts
-    );
+    const parsedQueryParams = parseQueryParams({
+      ...validERC20SpeedUpQuery,
+      to: UNKNOWN_TOKEN_ADDR
+    })([fNetwork], fAssets, fAccounts);
     expect(parsedQueryParams).toStrictEqual({
       queryType: TxQueryTypes.SPEEDUP,
-      txConfig: { ...fERC20NonWeb3TxConfig, rawTransaction: { ...fERC20NonWeb3TxConfig.rawTransaction, to: UNKNOWN_TOKEN_ADDR }, asset: generateGenericERC20(UNKNOWN_TOKEN_ADDR as TAddress, validERC20SpeedUpQuery.chainId, fERC20NonWeb3TxConfig.networkId) }
+      txConfig: {
+        ...fERC20NonWeb3TxConfig,
+        rawTransaction: { ...fERC20NonWeb3TxConfig.rawTransaction, to: UNKNOWN_TOKEN_ADDR },
+        asset: generateGenericERC20(
+          UNKNOWN_TOKEN_ADDR as TAddress,
+          validERC20SpeedUpQuery.chainId,
+          fERC20NonWeb3TxConfig.networkId
+        )
+      }
     });
   });
 

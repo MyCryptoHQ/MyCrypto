@@ -6,7 +6,16 @@ import { getFiat } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ExtendedAsset, ISettings, ITxObject } from '@types';
-import { bigify, bigNumValueToViewableEther, convertToFiat, fromWei, isType2Tx, totalTxFeeToWei, useScreenSize, Wei} from '@utils';
+import {
+  bigify,
+  bigNumValueToViewableEther,
+  convertToFiat,
+  fromWei,
+  isType2Tx,
+  totalTxFeeToWei,
+  useScreenSize,
+  Wei
+} from '@utils';
 
 import { TokenTransferTable } from './displays';
 import { ITxTransferEvent } from './TxReceipt';
@@ -53,7 +62,13 @@ export const TxReceiptTotals = ({
   const fiat = getFiat(settings);
   return (
     <>
-      {transferEvents.filter(t => t.asset.type === 'erc20').length > 0 && <TokenTransferTable isMobile={isMobile} valueTransfers={transferEvents} settings={settings}/>}
+      {transferEvents.filter((t) => t.asset.type === 'erc20').length > 0 && (
+        <TokenTransferTable
+          isMobile={isMobile}
+          valueTransfers={transferEvents}
+          settings={settings}
+        />
+      )}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-send" alt="Sent" />
@@ -70,7 +85,10 @@ export const TxReceiptTotals = ({
             fiat={{
               symbol: fiat.symbol,
               ticker: fiat.ticker,
-              amount: convertToFiat(bigNumValueToViewableEther(value).toString(), baseAssetRate).toFixed(2)
+              amount: convertToFiat(
+                bigNumValueToViewableEther(value).toString(),
+                baseAssetRate
+              ).toFixed(2)
             }}
           />
         </div>

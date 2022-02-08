@@ -89,7 +89,8 @@ export const fValueTransfers: IFullTxHistoryValueTransfer[] = [
       DEFAULT_NETWORK
     ),
     amount: undefined
-  },{
+  },
+  {
     to: fTxHistoryAPI.erc20Transfers[1].to,
     from: fTxHistoryAPI.erc20Transfers[1].from,
     asset: generateGenericERC20(
@@ -98,19 +99,19 @@ export const fValueTransfers: IFullTxHistoryValueTransfer[] = [
       DEFAULT_NETWORK
     ),
     amount: undefined
-  },
-]
+  }
+];
 
 export const fBaseValueTransfer: IFullTxHistoryValueTransfer = {
   to: fTxHistoryAPI.recipientAddress,
   from: fTxHistoryAPI.from,
   asset: fAssets[0],
   amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
-}
+};
 
 export const fIncExchangeValueTransfer: IFullTxHistoryValueTransfer = {
   to: fTxHistoryAPI.from,
   from: fTxHistoryAPI.recipientAddress,
   asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
   amount: undefined
-}
+};

@@ -86,7 +86,9 @@ export default function MultiTxReceipt({
 
       {transactions.map((transaction, idx) => {
         const step = steps[idx];
-        const { asset, baseAsset, amount, receiverAddress, senderAccount } = transactionsConfigs[idx];
+        const { asset, baseAsset, amount, receiverAddress, senderAccount } = transactionsConfigs[
+          idx
+        ];
         const { gasLimit, data, nonce, value, to } = transaction.txRaw;
         const gasUsed =
           transaction.txReceipt && transaction.txReceipt.gasUsed
@@ -100,9 +102,9 @@ export default function MultiTxReceipt({
         const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);
 
         const assetRate = getAssetRate(asset);
-        const recipient = receiverAddress ?? to!
-        const fromContact = getContactByAddressAndNetworkId(senderAccount.address, network.id)
-        const toContact = recipient && getContactByAddressAndNetworkId(recipient, network.id)
+        const recipient = receiverAddress ?? to!;
+        const fromContact = getContactByAddressAndNetworkId(senderAccount.address, network.id);
+        const toContact = recipient && getContactByAddressAndNetworkId(recipient, network.id);
         const transferEvent = buildTransferEvent(
           recipient,
           senderAccount.address,
@@ -111,7 +113,7 @@ export default function MultiTxReceipt({
           toContact,
           fromContact,
           amount
-        )
+        );
         return (
           <div key={idx}>
             <div className="TransactionReceipt-row">

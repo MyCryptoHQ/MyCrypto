@@ -13,4 +13,4 @@ describe('isTokenMigration', () => {
     expect(isTokenMigration(ITxType.STANDARD)).toBe(false);
     expect(isTokenMigration(ITxType.DEFIZAP)).toBe(false);
   });
-}); 
+});

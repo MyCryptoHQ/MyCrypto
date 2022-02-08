@@ -49,10 +49,34 @@ describe('Persist Migrations', () => {
   it('7: Handles removal of "amount" and "asset" and introduces valueTransfers array', () => {
     const migration = migrations['7'];
     const { ...account } = fAccounts[0];
-    const fTxHistory = { ...fTxHistoryAPI, erc20Transfers: [{ ...fTxHistoryAPI.erc20Transfers[0], from: fTxHistoryAPI.from, amount: '0xde0b6b3a7640000', contractAddress: fDAI.contractAddress as TAddress }], txType: ITxType.UNISWAP_V2_DEPOSIT, value: '0xde0b6b3a7640000' as ITxValue }
+    const fTxHistory = {
+      ...fTxHistoryAPI,
+      erc20Transfers: [
+        {
+          ...fTxHistoryAPI.erc20Transfers[0],
+          from: fTxHistoryAPI.from,
+          amount: '0xde0b6b3a7640000',
+          contractAddress: fDAI.contractAddress as TAddress
+        }
+      ],
+      txType: ITxType.UNISWAP_V2_DEPOSIT,
+      value: '0xde0b6b3a7640000' as ITxValue
+    };
     const apiTx = makeTxReceipt(fTxHistory, fNetworks[0], fAssets);
     const actual = migration(({
-      [LSKeys.ACCOUNTS]: [{ ...account, transactions: [{ ...apiTx, amount: apiTx.valueTransfers[0].amount, asset: apiTx.valueTransfers[0].asset, valueTransfers: undefined }] }]
+      [LSKeys.ACCOUNTS]: [
+        {
+          ...account,
+          transactions: [
+            {
+              ...apiTx,
+              amount: apiTx.valueTransfers[0].amount,
+              asset: apiTx.valueTransfers[0].asset,
+              valueTransfers: undefined
+            }
+          ]
+        }
+      ]
     } as unknown) as DataStore);
     const expected = {
       [LSKeys.ACCOUNTS]: [{ ...account, transactions: [{ ...apiTx, valueTransfers: [] }] }]

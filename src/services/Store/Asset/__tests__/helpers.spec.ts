@@ -2,7 +2,11 @@ import { DEFAULT_NETWORK } from '@config';
 import { fAssets, fDAI, fNetworks, fStoreAssets } from '@fixtures';
 import { TAddress } from '@types';
 
-import { getAssetByContractAndNetwork, getAssetByContractAndNetworkId, getTotalByAsset } from '../helpers';
+import {
+  getAssetByContractAndNetwork,
+  getAssetByContractAndNetworkId,
+  getTotalByAsset
+} from '../helpers';
 
 describe('getTotalByAsset()', () => {
   it('returns a list of unique assets', () => {
@@ -20,21 +24,24 @@ describe('getTotalByAsset()', () => {
 describe('getAssetByContractAndNetwork()', () => {
   it('returns undefined when contractAddress is undefined', () => {
     const asset = getAssetByContractAndNetwork(undefined, fNetworks[0])(fAssets);
-    expect(asset).toBeUndefined();  
+    expect(asset).toBeUndefined();
   });
   it('returns undefined when network is undefined is undefined', () => {
     const asset = getAssetByContractAndNetwork(fDAI.contractAddress, undefined)(fAssets);
-    expect(asset).toBeUndefined();  
+    expect(asset).toBeUndefined();
   });
   it('returns asset when asset is present in assets param', () => {
     const asset = getAssetByContractAndNetwork(fDAI.contractAddress, fNetworks[0])(fAssets);
-    expect(asset).toStrictEqual(fDAI);  
+    expect(asset).toStrictEqual(fDAI);
   });
 });
 
 describe('getAssetByContractAndNetworkId()', () => {
   it('returns asset when asset is present in assets param', () => {
-    const asset = getAssetByContractAndNetworkId(fAssets)(fDAI.contractAddress as TAddress, DEFAULT_NETWORK);
-    expect(asset).toStrictEqual(fDAI);  
+    const asset = getAssetByContractAndNetworkId(fAssets)(
+      fDAI.contractAddress as TAddress,
+      DEFAULT_NETWORK
+    );
+    expect(asset).toStrictEqual(fDAI);
   });
 });

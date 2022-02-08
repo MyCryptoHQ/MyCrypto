@@ -55,15 +55,26 @@ describe('SwapTransactionReceipt', () => {
   test('it renders multi tx', async () => {
     const { getByText } = getComponent({
       ...defaultProps,
-      transactions: [{
-        ...fTxParcels[0],
-        txType: ITxType.APPROVAL,
-        txRaw: { ...fTxParcels[0].txRaw, from: fAccounts[0].address, to: fDAI.contractAddress as TAddress },
-      }, {
-        ...fTxParcels[0],
-        txRaw: { ...fTxParcels[0].txRaw, from: fAccounts[0].address, to: ZEROX_SWAP_PROXY as TAddress },
-        txType: ITxType.SWAP
-      }]
+      transactions: [
+        {
+          ...fTxParcels[0],
+          txType: ITxType.APPROVAL,
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: fDAI.contractAddress as TAddress
+          }
+        },
+        {
+          ...fTxParcels[0],
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: ZEROX_SWAP_PROXY as TAddress
+          },
+          txType: ITxType.SWAP
+        }
+      ]
     });
     expect(getByText(stepsContent[0].title)).toBeDefined();
   });

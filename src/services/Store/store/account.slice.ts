@@ -259,14 +259,25 @@ export const getMergedTxHistory = createSelector(
     const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
     const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
-    const accountsMap = accounts.reduce<Record<string, boolean>>((acc, cur) => ({
-      ...acc,
-      [cur.uuid]: true
-    }), {});
+    const accountsMap = accounts.reduce<Record<string, boolean>>(
+      (acc, cur) => ({
+        ...acc,
+        [cur.uuid]: true
+      }),
+      {}
+    );
 
     return (
       merge(apiTxs, accountTxs)
-        .map(buildTxHistoryEntry(networks, contacts, contracts, assets, accounts)(txTypeMetas, accountsMap))
+        .map(
+          buildTxHistoryEntry(
+            networks,
+            contacts,
+            contracts,
+            assets,
+            accounts
+          )(txTypeMetas, accountsMap)
+        )
         // Remove eventual empty items from list
         .filter((item) => !isEmpty(item))
     );

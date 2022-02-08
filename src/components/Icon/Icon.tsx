@@ -359,7 +359,10 @@ const SDeleteIcon = styled(SInlineSVG)<StylingProps>`
 const SMoreIcon = styled(SInlineSVG)<StylingProps>`
   cursor: pointer;
   transition: all 0.3s ease-out;
-  transform: ${({ isExpanded, rotate90Deg }) => (isExpanded ? `rotate(${180 + (rotate90Deg ? 90 : 0)}deg)` : `rotate(${0 + (rotate90Deg ? 90 : 0)}deg)`)};
+  transform: ${({ isExpanded, rotate90Deg }) =>
+    isExpanded
+      ? `rotate(${180 + (rotate90Deg ? 90 : 0)}deg)`
+      : `rotate(${0 + (rotate90Deg ? 90 : 0)}deg)`};
 `;
 
 interface Props

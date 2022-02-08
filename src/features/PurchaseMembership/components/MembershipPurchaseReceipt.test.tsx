@@ -51,15 +51,26 @@ describe('MembershipReceipt', () => {
   test('it renders a multi tx receipt', async () => {
     const { getByText } = getComponent({
       ...defaultProps,
-      transactions: [{
-        ...fTxParcels[0],
-        txRaw: { ...fTxParcels[0].txRaw, from: fAccounts[0].address, to: fDAI.contractAddress as TAddress },
-        txType: ITxType.APPROVAL
-      },{
-        ...fTxParcels[0],
-        txRaw: { ...fTxParcels[0].txRaw, from: fAccounts[0].address, to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress },
-        txType: ITxType.PURCHASE_MEMBERSHIP
-      }]
+      transactions: [
+        {
+          ...fTxParcels[0],
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: fDAI.contractAddress as TAddress
+          },
+          txType: ITxType.APPROVAL
+        },
+        {
+          ...fTxParcels[0],
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: MEMBERSHIP_CONFIG.lifetime.contractAddress as TAddress
+          },
+          txType: ITxType.PURCHASE_MEMBERSHIP
+        }
+      ]
     });
     expect(getByText(translateRaw('X_MEMBERSHIP'))).toBeDefined();
   });

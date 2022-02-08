@@ -20,7 +20,7 @@ import {
   fTxHistoryAPI,
   fTxReceipt,
   fTxTypeMetas,
-  fValueTransfers 
+  fValueTransfers
 } from '@fixtures';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
@@ -334,7 +334,11 @@ describe('AccountSlice', () => {
     it('uses tx history from store', () => {
       const state = {
         ...mockAppState(defaultAppState),
-        txHistory: { history: [{ ...fTxHistoryAPI, txType: ITxType.CONTRACT_INTERACT }], error: false, txTypeMeta: fTxTypeMetas }
+        txHistory: {
+          history: [{ ...fTxHistoryAPI, txType: ITxType.CONTRACT_INTERACT }],
+          error: false,
+          txTypeMeta: fTxTypeMetas
+        }
       };
       const actual = getMergedTxHistory(state);
 
@@ -374,23 +378,27 @@ describe('AccountSlice', () => {
       expect(actual).toEqual([
         {
           ...fTxHistoryAPI,
-          valueTransfers: [{
-            to: fTxHistoryAPI.erc20Transfers[0].to,
-            from: fTxHistoryAPI.erc20Transfers[0].from,
-            asset: generateGenericERC20(
-              fTxHistoryAPI.erc20Transfers[0].contractAddress,
-              DEFAULT_NETWORK_CHAINID.toString(),
-              DEFAULT_NETWORK
-            )
-          },{
-            to: fTxHistoryAPI.erc20Transfers[1].to,
-            from: fTxHistoryAPI.erc20Transfers[1].from,
-            asset: generateGenericERC20(
-              fTxHistoryAPI.erc20Transfers[1].contractAddress,
-              DEFAULT_NETWORK_CHAINID.toString(),
-              DEFAULT_NETWORK
-            )
-          }, fIncExchangeValueTransfer],
+          valueTransfers: [
+            {
+              to: fTxHistoryAPI.erc20Transfers[0].to,
+              from: fTxHistoryAPI.erc20Transfers[0].from,
+              asset: generateGenericERC20(
+                fTxHistoryAPI.erc20Transfers[0].contractAddress,
+                DEFAULT_NETWORK_CHAINID.toString(),
+                DEFAULT_NETWORK
+              )
+            },
+            {
+              to: fTxHistoryAPI.erc20Transfers[1].to,
+              from: fTxHistoryAPI.erc20Transfers[1].from,
+              asset: generateGenericERC20(
+                fTxHistoryAPI.erc20Transfers[1].contractAddress,
+                DEFAULT_NETWORK_CHAINID.toString(),
+                DEFAULT_NETWORK
+              )
+            },
+            fIncExchangeValueTransfer
+          ],
           baseAsset: fAssets[0],
           fromAddressBookEntry: {
             address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c',
@@ -440,7 +448,7 @@ describe('AccountSlice', () => {
       ]);
     });
 
-    it('merges transactions and prioritizes account tx\'s data', () => {
+    it("merges transactions and prioritizes account tx's data", () => {
       const state = {
         ...mockAppState({
           ...defaultAppState,

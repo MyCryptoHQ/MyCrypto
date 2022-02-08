@@ -86,4 +86,4 @@ export const ASSET_DROPDOWN_SIZE_THRESHOLD = 150;
 
 export const PRIVACY_POLICY_LINK = 'https://mycrypto.com/privacy/';
 
-export const ZEROX_SWAP_PROXY = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' as TAddress
+export const ZEROX_SWAP_PROXY = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' as TAddress;

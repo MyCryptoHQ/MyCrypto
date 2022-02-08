@@ -61,9 +61,15 @@ export const EthAddress = ({
   iconColor,
   fontSize
 }: Props) => {
-  const click = (e: MouseEvent) => e.stopPropagation()
+  const click = (e: MouseEvent) => e.stopPropagation();
   return (
-    <Overrides inline={inline} iconColor={iconColor} textColor={textColor} fontSize={fontSize} onClick={click}>
+    <Overrides
+      inline={inline}
+      iconColor={iconColor}
+      textColor={textColor}
+      fontSize={fontSize}
+      onClick={click}
+    >
       <Copyable
         text={toChecksumAddress(address)}
         isCopyable={isCopyable}
@@ -72,6 +78,6 @@ export const EthAddress = ({
       />
     </Overrides>
   );
-}
+};
 
 export default EthAddress;

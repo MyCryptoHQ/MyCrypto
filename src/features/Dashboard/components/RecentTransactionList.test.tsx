@@ -13,9 +13,7 @@ interface Props {
 }
 /* Test components */
 describe('RecentTransactionList', () => {
-  const renderComponent = ({
-    txHistory
-  }: Props) => {
+  const renderComponent = ({ txHistory }: Props) => {
     return simpleRender(<RecentTransactionList accountsList={fAccounts} />, {
       initialState: mockStore({
         storeSlice: {
@@ -26,7 +24,7 @@ describe('RecentTransactionList', () => {
         },
         dataStoreState: {
           assets: fAssets,
-          settings: fSettings,
+          settings: fSettings
         }
       })
     });
@@ -56,41 +54,73 @@ describe('RecentTransactionList', () => {
   test('Can properly display unknown recieved asset', () => {
     const { getByText } = renderComponent({ txHistory: fTxHistoryAPI });
     // recent transactions panel will add unknown value transfer because txType is an exchange and there is no recieved value transfer
-    const selector = translateRaw('GENERIC_BASE_NAME')
-    const elem = getByText(selector, { exact: false,  })
+    const selector = translateRaw('GENERIC_BASE_NAME');
+    const elem = getByText(selector, { exact: false });
     expect(elem).toBeInTheDocument();
   });
 
   test('Can properly display known received asset', () => {
-    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, txType: ITxType.UNISWAP_V2_DEPOSIT, erc20Transfers: [], value: '0xde0b6b3a7640000' as ITxValue }});
-    const selector = fAssets[0].ticker
-    const elem = getByText(selector, { exact: false })
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        txType: ITxType.UNISWAP_V2_DEPOSIT,
+        erc20Transfers: [],
+        value: '0xde0b6b3a7640000' as ITxValue
+      }
+    });
+    const selector = fAssets[0].ticker;
+    const elem = getByText(selector, { exact: false });
 
     expect(elem).toBeInTheDocument();
   });
 
   test('Can properly display multiple recieved assets', () => {
-    const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], to: fTxHistoryAPI.from }
-    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer ] }});
-    const selector = `2 ${translateRaw('ASSETS')}`
-    const elem = getByText(selector, { exact: false })
+    const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], to: fTxHistoryAPI.from };
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        erc20Transfers: [...fTxHistoryAPI.erc20Transfers, newERC20Transfer]
+      }
+    });
+    const selector = `2 ${translateRaw('ASSETS')}`;
+    const elem = getByText(selector, { exact: false });
 
     expect(elem).toBeInTheDocument();
   });
 
   test('Can properly display known sent asset', () => {
-    const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], from: fTxHistoryAPI.from, contractAddress: fDAI.contractAddress as TAddress, amount: '0xde0b6b3a7640000' }
-    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer ] }});
-    const selector = fDAI.ticker
-    const elem = getByText(selector, { exact: false })
+    const newERC20Transfer = {
+      ...fTxHistoryAPI.erc20Transfers[0],
+      from: fTxHistoryAPI.from,
+      contractAddress: fDAI.contractAddress as TAddress,
+      amount: '0xde0b6b3a7640000'
+    };
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        erc20Transfers: [...fTxHistoryAPI.erc20Transfers, newERC20Transfer]
+      }
+    });
+    const selector = fDAI.ticker;
+    const elem = getByText(selector, { exact: false });
 
     expect(elem).toBeInTheDocument();
   });
   test('Can properly display multiple known sent assets', () => {
-    const newERC20Transfer = { ...fTxHistoryAPI.erc20Transfers[0], from: fTxHistoryAPI.from, contractAddress: fDAI.contractAddress as TAddress, amount: '0xde0b6b3a7640000' }
-    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, erc20Transfers: [ ...fTxHistoryAPI.erc20Transfers, newERC20Transfer, newERC20Transfer ] }});
-    const selector = `2 ${translateRaw('ASSETS')}`
-    const elem = getByText(selector, { exact: false })
+    const newERC20Transfer = {
+      ...fTxHistoryAPI.erc20Transfers[0],
+      from: fTxHistoryAPI.from,
+      contractAddress: fDAI.contractAddress as TAddress,
+      amount: '0xde0b6b3a7640000'
+    };
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        erc20Transfers: [...fTxHistoryAPI.erc20Transfers, newERC20Transfer, newERC20Transfer]
+      }
+    });
+    const selector = `2 ${translateRaw('ASSETS')}`;
+    const elem = getByText(selector, { exact: false });
 
     expect(elem).toBeInTheDocument();
   });

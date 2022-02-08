@@ -37,14 +37,13 @@ export const getAssetByUUID = (assets: ExtendedAsset[]) => (
   return assets.find((asset) => asset.uuid === uuid);
 };
 
-export const getAssetByContractAndNetwork = (
-  contractAddress?: string,
-  network?: Network
-) => (assets: ExtendedAsset[]): Asset | undefined => {
+export const getAssetByContractAndNetwork = (contractAddress?: string, network?: Network) => (
+  assets: ExtendedAsset[]
+): Asset | undefined => {
   if (!network || !contractAddress) {
     return undefined;
   }
-  return getAssetByContractAndNetworkId(assets)(contractAddress, network.id)
+  return getAssetByContractAndNetworkId(assets)(contractAddress, network.id);
 };
 
 export const getAssetByContractAndNetworkId = (assets: ExtendedAsset[]) => (

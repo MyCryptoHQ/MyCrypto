@@ -169,7 +169,8 @@ export const parseTransactionQueryParams = (queryParams: any) => (
     assets
   })!;
   const asset = isERC20
-    ? getAssetByContractAndNetwork(i.to, network)(assets) ?? generateGenericERC20(to!, i.chainId, network.id)
+    ? getAssetByContractAndNetwork(i.to, network)(assets) ??
+      generateGenericERC20(to!, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,
