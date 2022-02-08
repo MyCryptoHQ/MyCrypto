@@ -235,20 +235,19 @@
     "dev": "cross-env NODE_ENV=development TARGET_ENV=local webpack-dev-server --config webpack_config/development.js",
     "storybook": "start-storybook -p 3001 --ci",
     "build:storybook": "build-storybook",
-    "tscheck": "tsc",
+    "tscheck": "tsc --noEmit",
     "start": " yarn run dev",
     "serve": "ws -d dist/web/ --spa index.html",
     "prod": "npm run build && npm run serve",
     "precommit": "lint-staged",
-    "formatAll": "find ./src/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
-    "prettier:write": "prettier --write --config ./.prettierrc --config-precedence file-override",
-    "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,yml,mdx}\"",
     "update:tokens": "parse-eth-tokens --networks all --output ./src/database/data/tokens --exclude 0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2,0x0027449Bf0887ca3E431D263FFDeFb244D95b555",
     "lint:styles": "stylelint ./src/**/*.tsx",
     "lint:code": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js,.jsx",
+    "lint:format": "prettier --check \"**/*.{ts,tsx,js,json,yml,mdx}\"",
     "node:scripts:tsc": "tsc --project tsconfig.scripts.json",
     "translations:extract": "npm run node:scripts:tsc && node node-scripts/translations/translations-extract.js",
-    "validate": "npm-run-all --parallel lint:styles lint:code tscheck",
+    "validate": "npm-run-all --parallel lint:styles lint:code lint:format tscheck",
     "validate:codecov": "curl --data-binary @codecov.yml https://codecov.io/validate"
   },
   "resolutions": {
@@ -256,12 +255,14 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
-      "yarn prettier:write",
       "yarn lint:styles",
       "eslint --fix",
       "git add"
     ],
-    "**/*.{js,json}": "yarn prettier:write"
+    "**/*.{js,jsx,ts,tsx,json,md,mdx}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "husky": {
     "hooks": {
