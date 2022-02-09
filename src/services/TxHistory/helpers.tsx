@@ -49,24 +49,21 @@ export const makeTxReceipt = (
 };
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
-  // Prioritize Account TX - needs to be more advanced?
-
-  const apiTxsHashMap = apiTxs.reduce<Record<string, ITxReceipt>>(
-    (acc, cur) => ({
-      ...acc,
-      [cur.hash.toLowerCase()]: cur
-    }),
-    {}
-  );
-  const accountTxsHashMap = accountTxs.reduce<Record<string, ITxReceipt>>(
-    (acc, cur) => ({
-      ...acc,
-      [cur.hash.toLowerCase()]: { ...acc[cur.hash.toLowerCase()], ...cur }
-    }),
-    apiTxsHashMap
-  );
+  const apiTxsHashMap = convertTxsToHashMap(apiTxs)
+  const accountTxsHashMap = convertTxsToHashMap(accountTxs, apiTxsHashMap)
   return Object.values(accountTxsHashMap);
 };
+
+export const convertTxsToHashMap = (txs: ITxReceipt[], initialMap?: Record<string, ITxReceipt>) => 
+  txs.reduce<Record<string, ITxReceipt>>(
+    (acc, cur) => ({
+      ...acc,
+      [cur.hash.toLowerCase()]: initialMap
+        ? { ...acc[cur.hash.toLowerCase()], ...cur }
+        : cur
+    }),
+    initialMap || {}
+  );
 
 export const deriveTxType = (
   txTypeMetas: ITxMetaTypes,

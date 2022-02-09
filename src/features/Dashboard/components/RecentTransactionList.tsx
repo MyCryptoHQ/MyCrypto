@@ -183,10 +183,10 @@ export const RecentTransactionsListUI = ({
           );
         }
         const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
-        const sentValueTransfers = valueTransfers.filter(
+        const sentValueTransfers = displayValueTransfers.filter(
           (t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]
         );
-        const receivedValueTransfers = valueTransfers.filter(
+        const receivedValueTransfers = displayValueTransfers.filter(
           (t) => accountsMap[generateDeterministicAddressUUID(networkId, t.to)]
         );
         const receivedFiatValue = sumValueTransfers(receivedValueTransfers, getAssetRate);

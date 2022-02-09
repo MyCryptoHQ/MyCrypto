@@ -191,11 +191,11 @@ export const migrations = {
   7: (state: DataStore) => {
     return {
       ...state,
-      accounts: state.accounts.map(({ transactions, ...account }) => {
-        if (!transactions) {
+      accounts: state.accounts.map((account) => {
+        if (!account.transactions || account.transactions.length === 0) {
           return account;
         }
-        const newTransactions = transactions.map((t) => {
+        const newTransactions = account.transactions.map((t) => {
           return { ...t, asset: undefined, amount: undefined, valueTransfers: [] };
         });
         return {

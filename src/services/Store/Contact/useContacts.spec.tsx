@@ -82,6 +82,30 @@ describe('useContacts', () => {
     ).toBe(fContacts[1]);
   });
 
+  it('getContactByAddressAndNetworkId() returns undefined when no address present', () => {
+    const { result } = renderUseContacts({
+      contacts: fContacts
+    });
+    expect(
+      result.current.getContactByAddressAndNetworkId(
+        undefined,
+        fContacts[1].network
+      )
+    ).toBeUndefined();
+  });
+
+  it('getContactByAddressAndNetworkId() returns undefined when no networkId present', () => {
+    const { result } = renderUseContacts({
+      contacts: fContacts
+    });
+    expect(
+      result.current.getContactByAddressAndNetworkId(
+        undefined,
+        undefined
+      )
+    ).toBeUndefined();
+  });
+
   it('getAccountLabel()', () => {
     const { result } = renderUseContacts({
       contacts: fContacts

@@ -124,4 +124,18 @@ describe('RecentTransactionList', () => {
 
     expect(elem).toBeInTheDocument();
   });
+  test('Can properly add value field valueTransfer and display when no other value transfers are present', () => {
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        txType: ITxType.STANDARD,
+        value: '0x0' as ITxValue,
+        erc20Transfers: []
+      }
+    });
+    const selector = `0.00000 ETH`;
+    const elem = getByText(selector, { exact: false });
+
+    expect(elem).toBeInTheDocument();
+  });
 });

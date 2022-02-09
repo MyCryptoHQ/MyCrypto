@@ -48,7 +48,6 @@ describe('Persist Migrations', () => {
 
   it('7: Handles removal of "amount" and "asset" and introduces valueTransfers array', () => {
     const migration = migrations['7'];
-    const { ...account } = fAccounts[0];
     const fTxHistory = {
       ...fTxHistoryAPI,
       erc20Transfers: [
@@ -66,7 +65,7 @@ describe('Persist Migrations', () => {
     const actual = migration(({
       [LSKeys.ACCOUNTS]: [
         {
-          ...account,
+          ...fAccounts[0],
           transactions: [
             {
               ...apiTx,
@@ -79,8 +78,17 @@ describe('Persist Migrations', () => {
       ]
     } as unknown) as DataStore);
     const expected = {
-      [LSKeys.ACCOUNTS]: [{ ...account, transactions: [{ ...apiTx, valueTransfers: [] }] }]
+      [LSKeys.ACCOUNTS]: [{ ...fAccounts[0], transactions: [{ ...apiTx, valueTransfers: [] }] }]
     };
     expect(actual).toEqual(expected);
   });
+
+  it('7: Does nothing when no transactions are present on account', () => {
+    const migration = migrations['7'];
+    const input = {
+      [LSKeys.ACCOUNTS]: [{ ...fAccounts[0], transactions: [] }]
+    };
+    const actual = migration((input as unknown) as DataStore);
+    expect(actual).toEqual(input)
+  })
 });

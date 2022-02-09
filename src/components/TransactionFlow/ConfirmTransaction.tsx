@@ -118,8 +118,7 @@ export default function ConfirmTransaction({
   const ptxFee =
     ptxState && ptxState.enabled && !ptxState.isPTXFree ? ptxState.feeAmount : undefined;
   /* Get contact info */
-  const recipientContact =
-    receiverAddress && getContactByAddressAndNetworkId(receiverAddress, network.id);
+  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 

@@ -104,7 +104,7 @@ export default function MultiTxReceipt({
         const assetRate = getAssetRate(asset);
         const recipient = receiverAddress ?? to!;
         const fromContact = getContactByAddressAndNetworkId(senderAccount.address, network.id);
-        const toContact = recipient && getContactByAddressAndNetworkId(recipient, network.id);
+        const toContact = getContactByAddressAndNetworkId(recipient, network.id);
         const transferEvent = buildTransferEvent(
           recipient,
           senderAccount.address,

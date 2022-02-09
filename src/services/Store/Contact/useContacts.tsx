@@ -79,8 +79,8 @@ function useContacts() {
     );
   };
 
-  const getContactByAddressAndNetworkId = (address: TAddress, networkId: NetworkId) => {
-    return getContactByAddressAndNetworkIdFunc(contacts, contracts)(address, networkId);
+  const getContactByAddressAndNetworkId = (address?: TAddress, networkId?: NetworkId) => {
+    return address && networkId && getContactByAddressAndNetworkIdFunc(contacts, contracts)(address, networkId);
   };
 
   const getAccountLabel = ({ address, networkId }: { address: TAddress; networkId: NetworkId }) => {

@@ -200,7 +200,7 @@ const TxReceipt = ({
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const transferEvents = useMemo(() => {
     if (!displayTxReceipt) return [];
-    let transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
+    const transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
       buildTransferEvent(
         transfer.to,
         transfer.from,
@@ -216,7 +216,7 @@ const TxReceipt = ({
       path(['value'], displayTxReceipt) &&
       !bigify(displayTxReceipt.value).isZero()
     ) {
-      transferEvents = addTransferEvent(
+      return addTransferEvent(
         transferEvents,
         displayTxReceipt.to,
         displayTxReceipt.from,
@@ -227,14 +227,13 @@ const TxReceipt = ({
         bigNumValueToViewableEther(displayTxReceipt.value)
       );
     } else if (!displayTxReceipt && txConfig.amount) {
-      transferEvents = addTransferEvent(
+      return addTransferEvent(
         transferEvents,
         txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
         txConfig.from,
         txConfig.baseAsset,
         baseAssetRate,
-        txConfig.receiverAddress &&
-          getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
+        getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
         getContactByAddressAndNetworkId(txConfig.from, network.id),
         txConfig.amount
       );
@@ -264,9 +263,7 @@ const TxReceipt = ({
 
   const senderContact = getContactByAddressAndNetworkId(sender.address, network.id);
 
-  const recipientContact =
-    txConfig.receiverAddress &&
-    getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id);
+  const recipientContact = getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id);
 
   const contractName = useSelector(getContractName(network.id, txConfig.rawTransaction.to));
 

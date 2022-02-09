@@ -251,7 +251,7 @@ export const buildTxHistoryEntry = (
 
   return {
     ...tx,
-    valueTransfers: valueTransfers,
+    valueTransfers,
     timestamp: tx.timestamp ?? 0,
     txType: derivedTxType,
     toAddressBookEntry,
