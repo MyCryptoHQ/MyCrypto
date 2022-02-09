@@ -49,18 +49,16 @@ export const makeTxReceipt = (
 };
 
 export const merge = (apiTxs: ITxReceipt[], accountTxs: ITxReceipt[]): ITxReceipt[] => {
-  const apiTxsHashMap = convertTxsToHashMap(apiTxs)
-  const accountTxsHashMap = convertTxsToHashMap(accountTxs, apiTxsHashMap)
+  const apiTxsHashMap = convertTxsToHashMap(apiTxs);
+  const accountTxsHashMap = convertTxsToHashMap(accountTxs, apiTxsHashMap);
   return Object.values(accountTxsHashMap);
 };
 
-export const convertTxsToHashMap = (txs: ITxReceipt[], initialMap?: Record<string, ITxReceipt>) => 
+export const convertTxsToHashMap = (txs: ITxReceipt[], initialMap?: Record<string, ITxReceipt>) =>
   txs.reduce<Record<string, ITxReceipt>>(
     (acc, cur) => ({
       ...acc,
-      [cur.hash.toLowerCase()]: initialMap
-        ? { ...acc[cur.hash.toLowerCase()], ...cur }
-        : cur
+      [cur.hash.toLowerCase()]: initialMap ? { ...acc[cur.hash.toLowerCase()], ...cur } : cur
     }),
     initialMap || {}
   );

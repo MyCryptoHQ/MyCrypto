@@ -89,6 +89,6 @@ describe('Persist Migrations', () => {
       [LSKeys.ACCOUNTS]: [{ ...fAccounts[0], transactions: [] }]
     };
     const actual = migration((input as unknown) as DataStore);
-    expect(actual).toEqual(input)
-  })
+    expect(actual).toEqual(input);
+  });
 });

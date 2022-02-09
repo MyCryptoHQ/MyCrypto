@@ -1,9 +1,24 @@
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { fAccounts, fAssets, fNetwork, fNetworks, fRopDAI, fTxHistoryAPI, fTxReceipt, fTxTypeMetas } from '@fixtures';
+import {
+  fAccounts,
+  fAssets,
+  fNetwork,
+  fNetworks,
+  fRopDAI,
+  fTxHistoryAPI,
+  fTxReceipt,
+  fTxTypeMetas
+} from '@fixtures';
 import { ITxHash, ITxType, ITxValue, TAddress } from '@types';
 import { generateGenericERC20, generateGenericERC721 } from '@utils';
 
-import { buildTxValueTransfers, convertTxsToHashMap, deriveTxType, makeTxReceipt, merge } from './helpers';
+import {
+  buildTxValueTransfers,
+  convertTxsToHashMap,
+  deriveTxType,
+  makeTxReceipt,
+  merge
+} from './helpers';
 
 describe('deriveTxType', () => {
   it('derives OUTBOUND tx correctly', () => {
@@ -125,7 +140,7 @@ const apiTx = makeTxReceipt(fTxHistory, fNetworks[0], fAssets);
 
 describe('convertTxsToHashMap', () => {
   it('correctly converts tx array to hashmap', () => {
-    const result = convertTxsToHashMap([apiTx])
+    const result = convertTxsToHashMap([apiTx]);
     expect(result).toStrictEqual({
       [apiTx.hash.toLowerCase()]: apiTx
     });
@@ -134,7 +149,7 @@ describe('convertTxsToHashMap', () => {
   it('correctly overwrites existing hashmap with new data field updates', () => {
     const result = convertTxsToHashMap([{ ...apiTx, txType: ITxType.STANDARD }], {
       [apiTx.hash.toLowerCase()]: apiTx
-    })
+    });
     expect(result).toStrictEqual({
       [apiTx.hash.toLowerCase()]: { ...apiTx, txType: ITxType.STANDARD }
     });
@@ -143,11 +158,14 @@ describe('convertTxsToHashMap', () => {
 
 describe('merge', () => {
   it('correctly merges two arrays into single array', () => {
-    const result = merge([apiTx], [{ ...apiTx, hash: '0x001' as ITxHash, txType: ITxType.STANDARD }])
+    const result = merge(
+      [apiTx],
+      [{ ...apiTx, hash: '0x001' as ITxHash, txType: ITxType.STANDARD }]
+    );
     expect(result).toStrictEqual([apiTx, { ...apiTx, hash: '0x001', txType: ITxType.STANDARD }]);
   });
-  it('correctly merges two arrays into single array, overwriting the first array\'s values with the second\'s when available', () => {
-    const result = merge([apiTx], [{ ...apiTx, txType: ITxType.STANDARD }])
+  it("correctly merges two arrays into single array, overwriting the first array's values with the second's when available", () => {
+    const result = merge([apiTx], [{ ...apiTx, txType: ITxType.STANDARD }]);
     expect(result).toStrictEqual([{ ...apiTx, txType: ITxType.STANDARD }]);
   });
 });

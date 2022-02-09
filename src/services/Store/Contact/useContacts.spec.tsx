@@ -87,10 +87,7 @@ describe('useContacts', () => {
       contacts: fContacts
     });
     expect(
-      result.current.getContactByAddressAndNetworkId(
-        undefined,
-        fContacts[1].network
-      )
+      result.current.getContactByAddressAndNetworkId(undefined, fContacts[1].network)
     ).toBeUndefined();
   });
 
@@ -98,12 +95,7 @@ describe('useContacts', () => {
     const { result } = renderUseContacts({
       contacts: fContacts
     });
-    expect(
-      result.current.getContactByAddressAndNetworkId(
-        undefined,
-        undefined
-      )
-    ).toBeUndefined();
+    expect(result.current.getContactByAddressAndNetworkId(undefined, undefined)).toBeUndefined();
   });
 
   it('getAccountLabel()', () => {
