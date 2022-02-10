@@ -1,7 +1,15 @@
+import React from 'react';
+
 import styled, { keyframes } from 'styled-components';
 
+import keystore from '@assets/images/icn-keystore.svg';
+import privateKey from '@assets/images/icn-privatekey.svg';
+import securityBadge from '@assets/images/icn-securitybadge.svg';
+import srp from '@assets/images/icn-srp.svg';
+import { Body, Box } from '@components';
 import { WALLETS_CONFIG } from '@config';
-import { BREAK_POINTS, COLORS } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
 const { SCREEN_SM, SCREEN_XS } = BREAK_POINTS;
@@ -57,7 +65,8 @@ const WalletButtonWrapper = styled.div<{ margin?: string; isDisabled?: boolean }
 const WalletLabel = styled.div`
   transition: color 150ms ease;
   font-size: 18px;
-  padding-top: 19px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 `;
 
 const WalletIcon = styled.img`
@@ -69,6 +78,27 @@ const WalletIcon = styled.img`
   }
 `;
 
+const Image = styled.img`
+  height: 25px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+`;
+
+const WALLET_TYPES = [
+  {
+    label: translateRaw('KEYSTORE'),
+    icon: keystore
+  },
+  {
+    label: translateRaw('PRIVATE_KEY'),
+    icon: privateKey
+  },
+  {
+    label: translateRaw('SECRET_RECOVERY_PHRASE'),
+    icon: srp
+  }
+];
+
 export const QuillButton = (props: Props) => {
   const { margin, onClick } = props;
 
@@ -76,8 +106,52 @@ export const QuillButton = (props: Props) => {
 
   return (
     <WalletButtonWrapper onClick={handleClick} margin={margin}>
-      <WalletIcon src={WALLETS_CONFIG.QUILL.icon} alt={WALLETS_CONFIG.QUILL.name + ' logo'} />
+      <Box width="100%" display="flex">
+        <Box flex="1">
+          <Box display="flex" alignItems="center">
+            <Box p="1" bg="rgba(123, 190, 52, 0.1)" borderRadius="2px">
+              <Body as="span" fontSize="12px" fontWeight="bold" color={COLORS.GREEN_ACCENT}>
+                {translateRaw('NEW')}!
+              </Body>
+            </Box>
+          </Box>
+        </Box>
+        <Box flex="1">
+          <WalletIcon src={WALLETS_CONFIG.QUILL.icon} alt={WALLETS_CONFIG.QUILL.name + ' logo'} />
+        </Box>
+        <Box flex="1">
+          <Box display="flex" alignItems="center" justifyContent="end">
+            <Image src={securityBadge} />
+            <Body
+              as="span"
+              color={COLORS.LIGHT_PURPLE}
+              fontSize="12px"
+              fontWeight="bold"
+              textTransform="uppercase"
+            >
+              {translateRaw('INCREASED_SECURITY')}
+            </Body>
+          </Box>
+        </Box>
+      </Box>
       <WalletLabel>{WALLETS_CONFIG.QUILL.name}</WalletLabel>
+
+      <Box display="flex">
+        {WALLET_TYPES.map(({ label, icon }, idx) => (
+          <Box
+            key={label}
+            bg={COLORS.GREY_ATHENS}
+            p="4px 16px"
+            borderRadius="8px"
+            mr={idx < WALLET_TYPES.length - 1 ? '1' : '0'}
+          >
+            <Image src={icon} />
+            <Body as="span" color={COLORS.BLUE_DARK_SLATE} fontSize="12px">
+              {label}
+            </Body>
+          </Box>
+        ))}
+      </Box>
     </WalletButtonWrapper>
   );
 };
