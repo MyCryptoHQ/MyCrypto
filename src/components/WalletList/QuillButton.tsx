@@ -12,7 +12,7 @@ import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 import { WalletId } from '@types';
 
-const { SCREEN_SM, SCREEN_XS } = BREAK_POINTS;
+const { SCREEN_SM } = BREAK_POINTS;
 const { WHITE } = COLORS;
 
 interface OwnProps {
@@ -54,11 +54,6 @@ const WalletButtonWrapper = styled.div<{ margin?: string; isDisabled?: boolean }
 
   :hover {
     ${({ isDisabled }) => (isDisabled ? 'opacity: 0.6;' : 'opacity: 0.8;')}
-  }
-
-  @media only screen and (max-width: ${SCREEN_XS}) {
-    height: 150px;
-    width: 150px;
   }
 `;
 
