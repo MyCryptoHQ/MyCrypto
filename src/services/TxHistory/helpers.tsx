@@ -98,7 +98,7 @@ export const buildTxValueTransfers = (network: Network, assets: Asset[]) => (
 ) => {
   const transferAsset = getAssetByContractAndNetwork(transfer.contractAddress, network)(assets);
   const isEmptyAmountField = transfer.amount === '0x';
-  // We don't have NFTs in our asset list, so nft's will always have no transfer asset.
+  // We don't have NFTs in our asset list, so nft's will have no transfer asset.
   if (!transferAsset) {
     const genericAsset = isEmptyAmountField
       ? generateGenericERC721(transfer.contractAddress, network.chainId.toString(), network.id)
@@ -111,7 +111,7 @@ export const buildTxValueTransfers = (network: Network, assets: Asset[]) => (
       amount: undefined
     };
   }
-
+  // case: transfers 0 of an erc20 token
   if (isEmptyAmountField && transferAsset) {
     return {
       to: transfer.to,
@@ -120,12 +120,11 @@ export const buildTxValueTransfers = (network: Network, assets: Asset[]) => (
       amount: '0'
     };
   }
+  // case: transfers some amount of an erc20 token
   return {
     to: transfer.to,
     from: transfer.from,
     asset: transferAsset,
-    amount: isEmptyAmountField
-      ? undefined
-      : fromTokenBase(toWei(transfer.amount!, 0), transferAsset.decimal)
+    amount: fromTokenBase(toWei(transfer.amount!, 0), transferAsset.decimal)
   };
 };

@@ -12,7 +12,7 @@ import {
 } from '@fixtures';
 import { makeTxReceipt } from '@services';
 import { buildTxHistoryEntry } from '@store/helpers';
-import { ITxType, ITxValue } from '@types';
+import { ITxType, ITxValue, TAddress } from '@types';
 
 import { RecentTransactionsListUI } from './RecentTransactionList';
 
@@ -20,10 +20,16 @@ const accountsMap = fAccounts.reduce<Record<string, boolean>>(
   (arr, curr) => ({ ...arr, [curr.uuid]: true }),
   {}
 );
+const newERC20Transfer = {
+  ...fTxHistoryAPI.erc20Transfers[0],
+  from: fTxHistoryAPI.from,
+  contractAddress: '0x0000000000000000000000000000000000000001' as TAddress,
+  amount: '0xde0b6b3a7640000'
+};
 const fTxHistory = {
   ...fTxHistoryAPI,
-  txType: ITxType.UNISWAP_V2_DEPOSIT,
-  erc20Transfers: [],
+  txType: ITxType.STANDARD,
+  erc20Transfers: [newERC20Transfer],
   value: '0xde0b6b3a7640000' as ITxValue
 };
 const apiTx = makeTxReceipt(fTxHistory, fNetworks[0], fAssets);

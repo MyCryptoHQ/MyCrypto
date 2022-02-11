@@ -88,7 +88,21 @@ describe('RecentTransactionList', () => {
     expect(elem).toBeInTheDocument();
   });
 
-  test('Can properly display known sent asset', () => {
+  test('Can properly display unknown sent asset', () => {
+    const newERC20Transfer = {
+      ...fTxHistoryAPI.erc20Transfers[0],
+      from: fTxHistoryAPI.from,
+      contractAddress: '0x0000000000000000000000000000000000000001' as TAddress,
+      amount: '0xde0b6b3a7640000'
+    };
+    const { getByText } = renderComponent({ txHistory: { ...fTxHistoryAPI, txType: ITxType.STANDARD, erc20Transfers: [newERC20Transfer] } });
+    // recent transactions panel will add unknown value transfer because txType is an exchange and there is no recieved value transfer
+    const selector = translateRaw('GENERIC_ERC20_NAME');
+    const elem = getByText(selector, { exact: false });
+    expect(elem).toBeInTheDocument();
+  });
+
+  test('Can properly display single known sent asset', () => {
     const newERC20Transfer = {
       ...fTxHistoryAPI.erc20Transfers[0],
       from: fTxHistoryAPI.from,

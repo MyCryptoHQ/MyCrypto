@@ -190,8 +190,7 @@ export const handleIncExchangeTransaction = (
   txTypeMetas[derivedTxType] &&
   txTypeMetas[derivedTxType].type === 'EXCHANGE' &&
   (
-    valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)]) ||
-    []
+    valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)])
   ).length === 0
     ? [
         ...valueTransfers,

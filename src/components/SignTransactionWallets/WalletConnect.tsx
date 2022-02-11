@@ -25,7 +25,7 @@ import { BusyBottomConfig, ISignComponentProps, ITxHash, TAddress } from '@types
 import { noOp, objToString } from '@utils';
 import { useUpdateEffect } from '@vendor';
 
-import EthAddress from '../EthAddress';
+import { EthAddress } from '../EthAddress';
 
 const SHeader = styled.div`
   font-size: ${FONT_SIZE.XXL};

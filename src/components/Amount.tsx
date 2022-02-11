@@ -23,6 +23,7 @@ interface Props {
     symbol: TCurrencySymbol;
     ticker: TTicker;
   };
+  useExistingDecimals?: boolean;
   // When sending a token we display the equivalent baseAsset value.
   baseAssetValue?: string;
   fiatColor?: string;
@@ -40,6 +41,7 @@ export default function Amount({
   baseAssetValue,
   fiat,
   fiatColor = COLORS.BLUE_SKY,
+  useExistingDecimals = false,
   bold = false,
   alignLeft = false,
   ...rest
@@ -58,7 +60,7 @@ export default function Amount({
           ticker={asset.ticker}
           icon={true}
           uuid={asset.uuid}
-          decimals={getDecimals(asset.amount)}
+          decimals={useExistingDecimals ? getDecimals(asset.amount) : undefined}
         />
       )}
 

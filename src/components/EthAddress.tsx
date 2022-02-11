@@ -79,5 +79,3 @@ export const EthAddress = ({
     </Overrides>
   );
 };
-
-export default EthAddress;

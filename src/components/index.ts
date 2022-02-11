@@ -45,7 +45,7 @@ export * from './SignTransactionWallets';
 export { WhenQueryExists, Query } from './Query';
 export { default as TranslateMarkdown } from './TranslateMarkdown';
 export { default as GasSelector } from './GasSelector';
-export { default as EthAddress } from './EthAddress';
+export { EthAddress } from './EthAddress';
 export { default as EditableText } from './EditableText';
 export { default as Account } from './Account';
 export { default as GeneralStepper } from './GeneralStepper';

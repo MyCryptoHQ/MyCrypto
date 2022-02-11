@@ -218,6 +218,7 @@ export const RecentTransactionsListUI = ({
               <Amount
                 // Adapt alignment for mobile display
                 alignLeft={isMobile}
+                useExistingDecimals={true}
                 asset={{
                   amount: sentValueTransfers.length.toString(),
                   ticker: translateRaw('ASSETS') as TTicker,
@@ -257,6 +258,7 @@ export const RecentTransactionsListUI = ({
               <Amount
                 // Adapt alignment for mobile display
                 alignLeft={isMobile}
+                useExistingDecimals={true}
                 asset={{
                   amount: receivedValueTransfers.length.toString(),
                   ticker: translateRaw('ASSETS') as TTicker,
