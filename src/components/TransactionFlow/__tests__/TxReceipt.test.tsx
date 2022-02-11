@@ -56,6 +56,25 @@ describe('TxReceipt', () => {
     expect(getByText(truncate(fTxConfig.receiverAddress))).toBeDefined();
   });
 
+  test('it adds and displays transferEvent when displayTxReceipt is undefined', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      displayTxReceipt: undefined
+    });
+    expect(getByText(truncate(fAccount.address))).toBeDefined();
+    expect(getByText(truncate(fTxConfig.receiverAddress))).toBeDefined();
+  });
+
+  test('it adds and displays transferEvent when displayTxReceipt is undefined - and correctly falls back when receiverAddress isnt present', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      txConfig: { ...defaultProps.txConfig, receiverAddress: undefined },
+      displayTxReceipt: undefined
+    });
+    expect(getByText(truncate(fAccount.address))).toBeDefined();
+    expect(getByText(truncate(fTxConfig.rawTransaction.to))).toBeDefined();
+  });
+
   test('it displays the correct contact info', async () => {
     const { getByText } = getComponent(defaultProps);
     expect(getByText(defaultProps.senderContact!.label)).toBeDefined();

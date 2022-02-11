@@ -199,8 +199,7 @@ const TxReceipt = ({
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const transferEvents = useMemo(() => {
-    if (!displayTxReceipt) return [];
-    const transferEvents = displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
+    const transferEvents = displayTxReceipt ? displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
       buildTransferEvent(
         transfer.to,
         transfer.from,
@@ -210,35 +209,21 @@ const TxReceipt = ({
         getContactByAddressAndNetworkId(transfer.from, network.id),
         transfer.amount
       )
-    );
-    if (
-      displayTxReceipt &&
+    ) : []
+     
+    return displayTxReceipt &&
       path(['value'], displayTxReceipt) &&
       !bigify(displayTxReceipt.value).isZero()
-    ) {
-      return addTransferEvent(
-        transferEvents,
-        displayTxReceipt.to,
-        displayTxReceipt.from,
-        displayTxReceipt.baseAsset,
-        baseAssetRate,
-        getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
-        getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
-        bigNumValueToViewableEther(displayTxReceipt.value)
-      );
-    } else if (!displayTxReceipt && txConfig.amount) {
-      return addTransferEvent(
-        transferEvents,
-        txConfig.receiverAddress ?? txConfig.rawTransaction.to!,
-        txConfig.from,
-        txConfig.baseAsset,
-        baseAssetRate,
-        getContactByAddressAndNetworkId(txConfig.receiverAddress, network.id),
-        getContactByAddressAndNetworkId(txConfig.from, network.id),
-        txConfig.amount
-      );
-    }
-    return transferEvents;
+      ? addTransferEvent(
+          transferEvents,
+          displayTxReceipt.to,
+          displayTxReceipt.from,
+          displayTxReceipt.baseAsset,
+          baseAssetRate,
+          getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
+          getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
+          bigNumValueToViewableEther(displayTxReceipt.value)
+      ) : transferEvents;
   }, []);
 
   const handleTxSpeedUpRedirect = async () => {
@@ -379,7 +364,6 @@ export const TxReceiptUI = ({
 }: UIProps) => {
   const { baseAsset, receiverAddress, rawTransaction } = txConfig;
   const { data, gasLimit, nonce } = rawTransaction;
-
   const walletConfig = getWalletConfig(sender.account ? sender.account.wallet : WalletId.VIEW_ONLY);
   const web3Wallet = isWeb3Wallet(walletConfig.id);
   const supportsResubmit = walletConfig.flags.supportsNonce;
