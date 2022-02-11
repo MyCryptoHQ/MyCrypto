@@ -224,7 +224,8 @@ export const getSwapAssets = createSelector(
   [getAssets, getAccountsAssets],
   (assets, accountAssets) =>
     assets.filter(
-      (a) => a.isCustom ?? a.isSwapRelevant ?? accountAssets.find((asset) => asset.uuid === a.uuid)
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      (a) => a.isCustom || a.isSwapRelevant || accountAssets.find((asset) => asset.uuid === a.uuid)
     )
 );
 
