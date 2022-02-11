@@ -57,7 +57,7 @@ export const deriveDisplayAsset = (
 ): Asset | undefined => {
   switch (txType) {
     default:
-      if (valueTransfers.length == 1) {
+      if (valueTransfers.length === 1) {
         return valueTransfers[0].asset;
       }
       return undefined;
