@@ -172,7 +172,7 @@ export const handleBaseAssetTransfer = (
   fromAddr: TAddress,
   baseAsset: Asset
 ): IFullTxHistoryValueTransfer[] =>
-  valueTransfers.length == 0 && !bigify(value).isZero()
+  valueTransfers.length === 0 && !bigify(value).isZero()
     ? addBaseAssetValueTransfer(valueTransfers, fromAddr, toAddr, value, baseAsset)
     : valueTransfers;
 
@@ -188,11 +188,11 @@ export const handleIncExchangeTransaction = (
   network: Network
 ): IFullTxHistoryValueTransfer[] =>
   txTypeMetas[derivedTxType] &&
-  txTypeMetas[derivedTxType].type == 'EXCHANGE' &&
+  txTypeMetas[derivedTxType].type === 'EXCHANGE' &&
   (
     valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)]) ||
     []
-  ).length == 0
+  ).length === 0
     ? [
         ...valueTransfers,
         {

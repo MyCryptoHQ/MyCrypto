@@ -173,7 +173,7 @@ export const RecentTransactionsListUI = ({
         };
         // We don't want the actual txReceipt to have a zero value transfer in it's arr of value transfers, but
         // we DO want to display 0 ETH on a transaction in the RecentTransactionsList if the tx has no value transfers. Improves display in-app
-        if (displayValueTransfers.length == 0) {
+        if (displayValueTransfers.length === 0) {
           displayValueTransfers = addBaseAssetValueTransfer(
             displayValueTransfers,
             from,

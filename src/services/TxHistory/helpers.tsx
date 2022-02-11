@@ -60,7 +60,7 @@ export const convertTxsToHashMap = (txs: ITxReceipt[], initialMap?: Record<strin
       ...acc,
       [cur.hash.toLowerCase()]: initialMap ? { ...acc[cur.hash.toLowerCase()], ...cur } : cur
     }),
-    initialMap || {}
+    initialMap ?? {}
   );
 
 export const deriveTxType = (
