@@ -189,9 +189,8 @@ export const handleIncExchangeTransaction = (
 ): IFullTxHistoryValueTransfer[] =>
   txTypeMetas[derivedTxType] &&
   txTypeMetas[derivedTxType].type === 'EXCHANGE' &&
-  (
-    valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)])
-  ).length === 0
+  valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)])
+    .length === 0
     ? [
         ...valueTransfers,
         {
