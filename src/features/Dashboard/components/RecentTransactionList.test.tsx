@@ -51,7 +51,7 @@ describe('RecentTransactionList', () => {
     expect(getByText(selector)).toBeInTheDocument();
   });
 
-  test('Can properly display unknown recieved asset', () => {
+  test('Can properly display single unknown recieved asset', () => {
     const { getByText } = renderComponent({ txHistory: fTxHistoryAPI });
     // recent transactions panel will add unknown value transfer because txType is an exchange and there is no recieved value transfer
     const selector = translateRaw('GENERIC_BASE_NAME');
@@ -59,7 +59,7 @@ describe('RecentTransactionList', () => {
     expect(elem).toBeInTheDocument();
   });
 
-  test('Can properly display known received asset', () => {
+  test('Can properly display single known received base asset', () => {
     const { getByText } = renderComponent({
       txHistory: {
         ...fTxHistoryAPI,
@@ -69,6 +69,26 @@ describe('RecentTransactionList', () => {
       }
     });
     const selector = fAssets[0].ticker;
+    const elem = getByText(selector, { exact: false });
+
+    expect(elem).toBeInTheDocument();
+  });
+
+  test('Can properly display single known received token asset', () => {
+    const newERC20Transfer = {
+      ...fTxHistoryAPI.erc20Transfers[0],
+      to: fTxHistoryAPI.from,
+      contractAddress: fDAI.contractAddress as TAddress,
+      amount: '0xde0b6b3a7640000'
+    };
+    const { getByText } = renderComponent({
+      txHistory: {
+        ...fTxHistoryAPI,
+        txType: ITxType.STANDARD,
+        erc20Transfers: [newERC20Transfer]
+      }
+    });
+    const selector = fDAI.ticker;
     const elem = getByText(selector, { exact: false });
 
     expect(elem).toBeInTheDocument();
@@ -88,7 +108,7 @@ describe('RecentTransactionList', () => {
     expect(elem).toBeInTheDocument();
   });
 
-  test('Can properly display unknown sent asset', () => {
+  test('Can properly display single unknown sent asset', () => {
     const newERC20Transfer = {
       ...fTxHistoryAPI.erc20Transfers[0],
       from: fTxHistoryAPI.from,
