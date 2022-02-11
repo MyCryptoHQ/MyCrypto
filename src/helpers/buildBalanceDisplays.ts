@@ -32,7 +32,7 @@ const buildBalance = (
   getAssetRate: (asset: Asset) => number | undefined,
   getAssetChange: (asset: Asset) => number | undefined
 ) => (asset: StoreAsset): Balance => {
-  const exchangeRate = getAssetRate(asset) || 0;
+  const exchangeRate = getAssetRate(asset) ?? 0;
   return {
     id: `${asset.name}-${asset.ticker}`,
     name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),

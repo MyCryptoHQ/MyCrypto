@@ -102,7 +102,7 @@ export const getContactByAddressAndNetworkId = (
   return (
     [...contacts, ...STATIC_CONTACTS]
       .filter((contact: ExtendedContact) => contact.network === networkId)
-      .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ||
+      .find((contact: ExtendedContact) => isSameAddress(contact.address as TAddress, address)) ??
     getContactFromContracts(contracts)(address, networkId)
   );
 };

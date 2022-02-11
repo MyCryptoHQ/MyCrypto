@@ -428,7 +428,7 @@ const BuildAccountTable = (
   };
 
   return {
-    head: getColumns(columns, deletable || false, privacyCheckboxEnabled || false),
+    head: getColumns(columns, deletable ?? false, privacyCheckboxEnabled ?? false),
     overlay: ({ indexKey }: { indexKey: number }) => {
       const label = (l?: { label: string }) => (l ? l.label : translateRaw('NO_LABEL'));
 
@@ -502,8 +502,8 @@ const BuildAccountTable = (
           </LabelWithWallet>
         </Label>,
         <EthAddress key={index} address={account.address} truncate={true} isCopyable={copyable} />,
-        <Network key={index} color={account?.network?.color || COLORS.LIGHT_PURPLE}>
-          {getNetworkById(account.networkId)?.name || account.networkId}
+        <Network key={index} color={account?.network?.color ?? COLORS.LIGHT_PURPLE}>
+          {getNetworkById(account.networkId)?.name ?? account.networkId}
         </Network>,
         isScanning ? (
           <SkeletonLoader type="account-list-value" />
@@ -525,7 +525,7 @@ const BuildAccountTable = (
             <PrivacyCheckBox
               name={'Private'}
               marginLeft="0"
-              checked={account.isPrivate || false}
+              checked={account.isPrivate ?? false}
               onChange={() => toggleAccountPrivacy(account.uuid)}
             />
           </Box>

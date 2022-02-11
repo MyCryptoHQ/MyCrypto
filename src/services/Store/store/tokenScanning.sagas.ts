@@ -99,7 +99,7 @@ export const getBalances = async (networks: Network[], accounts: IAccount[], ass
 export function* scanTokensWorker({
   payload
 }: PayloadAction<{ accounts?: IAccount[]; assets?: Asset[] } | undefined>) {
-  const { accounts: requestedAccounts, assets: requestedAssets } = payload || {};
+  const { accounts: requestedAccounts, assets: requestedAssets } = payload ?? {};
 
   yield put(startTokenScan());
 

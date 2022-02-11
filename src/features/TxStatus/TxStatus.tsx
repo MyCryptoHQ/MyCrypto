@@ -105,7 +105,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
-      <Wrapper fullPageLoading={fullPageLoading || false}>
+      <Wrapper fullPageLoading={fullPageLoading ?? false}>
         {!tx && !fromLink && (
           <>
             <NetworkSelector

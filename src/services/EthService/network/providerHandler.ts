@@ -88,7 +88,7 @@ export class ProviderHandler {
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
     return this.getRawTokenBalance(address, token).then((balance) =>
-      baseToConvertedUnit(balance, token.decimal || DEFAULT_ASSET_DECIMAL)
+      baseToConvertedUnit(balance, token.decimal ?? DEFAULT_ASSET_DECIMAL)
     );
   }
 

@@ -56,7 +56,7 @@ function AccountSummary({
       {balance && uuid && (
         <SCurrency
           amount={balance}
-          ticker={assetTicker || ('ETH' as TTicker)}
+          ticker={assetTicker ?? ('ETH' as TTicker)}
           uuid={uuid}
           decimals={4}
           icon={true}

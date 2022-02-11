@@ -15,9 +15,9 @@ const OptionWrapper = styled.div<OptionWrapperProps>`
   display: flex;
   justify-content: space-between;
   padding: 12px 15px 12px 0px;
-  ${(props) => `
-    font-weight: ${props.isSelectable ? 'default' : 'bold'};
-    padding-left: ${props.paddingLeft || '0px'};
+  ${({ isSelectable, paddingLeft = '0' }) => `
+    font-weight: ${isSelectable ? 'default' : 'bold'};
+    padding-left: ${paddingLeft};
   `}
 `;
 

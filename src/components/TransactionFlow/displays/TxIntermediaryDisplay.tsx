@@ -50,7 +50,11 @@ const IntermediaryDisplayContract = styled(Copyable)`
   flex-direction: row;
 `;
 
-function TxIntermediaryDisplay({ address, contractName, label }: Props) {
+function TxIntermediaryDisplay({
+  address,
+  contractName = translateRaw('UNKNOWN').toLowerCase(),
+  label
+}: Props) {
   return (
     <>
       {address && (
@@ -60,7 +64,7 @@ function TxIntermediaryDisplay({ address, contractName, label }: Props) {
               <IntermediaryDisplayLabel>
                 {label ??
                   translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
-                    $contractName: contractName || translateRaw('UNKNOWN').toLowerCase()
+                    $contractName: contractName
                   })}
                 :
               </IntermediaryDisplayLabel>

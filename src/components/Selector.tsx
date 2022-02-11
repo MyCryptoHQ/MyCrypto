@@ -204,7 +204,7 @@ const Selector: <T extends OptionTypeBase>(
       isClearable={isClearable}
       name={name}
       // We use inputId for aria concerns, and to target the react-select component with getByLabelText
-      inputId={inputId || name}
+      inputId={inputId ?? name}
       blurInputOnSelect={onBlurResetsInput}
       closeMenuOnSelect={onCloseResetsInput}
       onChange={onChange}

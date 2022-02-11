@@ -177,9 +177,9 @@ const getInitialFormikValues = ({
   return mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const createQueryWarning = (translationId?: string) => (
+const createQueryWarning = (translationId: string = 'WARN_SEND_LINK') => (
   <div className="alert alert-info">
-    <p>{translate(translationId || 'WARN_SEND_LINK')}</p>
+    <p>{translate(translationId)}</p>
   </div>
 );
 

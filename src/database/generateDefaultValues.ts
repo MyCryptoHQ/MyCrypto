@@ -26,7 +26,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
   const formatNetwork = (n: NetworkLegacy): Network => {
     const baseAssetUuid = generateAssetUUID(n.chainId);
     // add custom nodes from local storage
-    const nodes: NodeOptions[] = [...(NODES_CONFIG[n.id] || []), ...(n.nodes || [])];
+    const nodes: NodeOptions[] = [...(NODES_CONFIG[n.id] ?? []), ...(n.nodes ?? [])];
     const { unit, ...rest } = n;
     return {
       // Also available are: blockExplorer, tokenExplorer, tokens aka assets, contracts
@@ -43,7 +43,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: typeof NETWORKS_CONFIG) => {
 const addContracts = add(LSKeys.CONTRACTS)(
   (networks: Record<NetworkId, NetworkLegacy>, store: LocalStorage) => {
     const formatContract = (id: NetworkId) => (c: ContractLegacy): ExtendedContract => ({
-      uuid: c.uuid || generateDeterministicAddressUUID(id, c.address),
+      uuid: c.uuid ?? generateDeterministicAddressUUID(id, c.address),
       name: c.name,
       address: c.address,
       abi: c.abi,
