@@ -53,7 +53,7 @@ export const configs: Record<
     {
       copy: 'BUSY_BOTTOM_GET_WEB3',
       copyVariables: { $app: web3Config.name },
-      link: web3Config.install?.getItLink || WALLETS_CONFIG[WalletId.METAMASK].install!.getItLink!,
+      link: web3Config.install?.getItLink ?? WALLETS_CONFIG[WalletId.METAMASK].install!.getItLink!,
       external: true
     },
     SUPPORT_LINK

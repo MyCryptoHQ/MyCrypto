@@ -117,19 +117,19 @@ export function* fetchMembershipsWorker({ payload }: PayloadAction<IAccount[] | 
 
   const membershipFetchConfig = [
     {
-      accounts: (payload || membershipNetworkAccounts)
+      accounts: (payload ?? membershipNetworkAccounts)
         .filter(isEthereumAccount)
         .map((a) => a.address),
       network: ethereumNetwork
     },
     {
-      accounts: (payload || membershipNetworkAccounts)
+      accounts: (payload ?? membershipNetworkAccounts)
         .filter((a) => isAccountInNetwork(a, XDAI_NETWORK))
         .map((a) => a.address),
       network: xdaiNetwork
     },
     {
-      accounts: (payload || membershipNetworkAccounts)
+      accounts: (payload ?? membershipNetworkAccounts)
         .filter((a) => isAccountInNetwork(a, POLYGON_NETWORK))
         .map((a) => a.address),
       network: polygonNetwork

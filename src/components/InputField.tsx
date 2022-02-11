@@ -226,7 +226,7 @@ export class InputField extends Component<Props> {
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
               placeholder={placeholder ? placeholder : ''}
               height={height}
-              disabled={isLoading || disabled}
+              disabled={isLoading ?? disabled}
               inputMode={inputMode}
             />
           )}

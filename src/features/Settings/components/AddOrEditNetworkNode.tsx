@@ -67,7 +67,7 @@ const Column = styled.div<{ alignSelf?: string }>`
   flex: 1;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
+    ${({ alignSelf = 'auto' }) => `align-self: ${alignSelf};`};
 
     &:not(:first-child) {
       padding-left: ${SPACING.BASE};

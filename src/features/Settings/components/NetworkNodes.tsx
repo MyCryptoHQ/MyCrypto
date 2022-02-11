@@ -23,8 +23,8 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
       translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER'),
       translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE')
     ],
-    body: networks.map(({ id, name, color }: INetwork, index) => [
-      <Network key={index} color={color || COLORS.LIGHT_PURPLE}>
+    body: networks.map(({ id, name, color = COLORS.LIGHT_PURPLE }: INetwork, index) => [
+      <Network key={index} color={color}>
         {name}
       </Network>,
       <NetworkNodeDropdown

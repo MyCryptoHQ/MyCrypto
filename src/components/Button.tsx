@@ -168,7 +168,7 @@ const SButton = styled(Button)<StyledButtonProps>`
 
 function StyledButton({ children, disabled, loading, colorScheme = 'default', ...props }: Props) {
   return (
-    <SButton disabled={disabled || loading} _loading={loading} colorScheme={colorScheme} {...props}>
+    <SButton disabled={disabled ?? loading} _loading={loading} colorScheme={colorScheme} {...props}>
       <Wrapper>
         {loading && (
           <LoadingSpinnerWrapper>

@@ -150,15 +150,15 @@ export const makeUnknownTxReceipt = (txHash: ITxHash) => (
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
-  timestamp?: number,
-  blockNumber?: number,
+  timestamp: number = 0,
+  blockNumber: number = 0,
   gasUsed?: BigNumber,
   confirmations?: number
 ): IFinishedTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
-  timestamp: timestamp || 0,
-  blockNumber: blockNumber || 0,
+  timestamp: timestamp,
+  blockNumber: blockNumber,
   gasUsed,
   confirmations
 });
@@ -170,7 +170,7 @@ const getGasPriceFromTx = (tx: {
   gasPrice?: BigNumber | string;
 }) =>
   // Possibly revisit this when more tx types are available
-  tx.type && tx.type == 2
+  tx.type && tx.type === 2
     ? {
         maxFeePerGas: hexlify(tx.maxFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
         maxPriorityFeePerGas: hexlify(tx.maxPriorityFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
@@ -245,7 +245,7 @@ export const makeTxConfigFromSignedTx = (
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : bigNumValueToViewableEther(decodedTx.value),
     networkId: networkDetected?.id ?? networkId,
-    asset: contractAsset || baseAsset,
+    asset: contractAsset ?? baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected?.id)!,
     from: decodedTx.from as TAddress
@@ -333,7 +333,7 @@ export const makeTxConfigFromTxReceipt = (
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,
     networkId: network.id,
-    asset: contractAsset || baseAsset,
+    asset: contractAsset ?? baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress

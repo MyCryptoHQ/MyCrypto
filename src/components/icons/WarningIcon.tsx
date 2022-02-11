@@ -9,10 +9,10 @@ interface WarningIconProps {
   onClick?(e?: MouseEvent<SVGSVGElement, MouseEvent>): void;
 }
 
-const WarningIcon: FC<WarningIconProps> = ({ fillColor, size }) => (
+const WarningIcon: FC<WarningIconProps> = ({ fillColor = COLORS.PASTEL_RED, size = 'sm' }) => (
   <svg
-    width={(size || 'sm') === 'sm' ? '26' : '13'}
-    height={(size || 'sm') === 'sm' ? '42' : '21'}
+    width={size === 'sm' ? '26' : '13'}
+    height={size === 'sm' ? '42' : '21'}
     viewBox="0 0 26 42"
     fill="none"
   >
@@ -24,7 +24,7 @@ const WarningIcon: FC<WarningIconProps> = ({ fillColor, size }) => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M13 33C19.6274 33 25 27.6274 25 21C25 14.3726 19.6274 9 13 9C6.37258 9 1 14.3726 1 21C1 27.6274 6.37258 33 13 33Z"
-      stroke={fillColor || COLORS.PASTEL_RED}
+      stroke={fillColor}
       strokeWidth="2"
     />
   </svg>

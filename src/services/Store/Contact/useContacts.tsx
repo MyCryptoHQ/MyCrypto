@@ -75,7 +75,7 @@ function useContacts() {
     return (
       [...contacts, ...STATIC_CONTACTS].find((contact: ExtendedContact) =>
         isSameAddress(contact.address as TAddress, address)
-      ) || getContactFromContracts(contracts)(address)
+      ) ?? getContactFromContracts(contracts)(address)
     );
   };
 

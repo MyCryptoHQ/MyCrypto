@@ -112,7 +112,7 @@ export function TokenDetails(props: Props) {
   const {
     website,
     whitepaper,
-    social,
+    social = {},
     networkId,
     rate = 0,
     balance,
@@ -127,7 +127,7 @@ export function TokenDetails(props: Props) {
   const contractUrl = buildTokenUrl(network.blockExplorer, contractAddress as TAddress);
 
   // Find available supported social links
-  const filteredSocial = Object.keys(social || {}).filter((key: Social) =>
+  const filteredSocial = Object.keys(social).filter((key: Social) =>
     Object.prototype.hasOwnProperty.call(supportedSocialNetworks, key)
   );
 

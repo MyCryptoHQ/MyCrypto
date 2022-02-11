@@ -97,7 +97,7 @@ export const MembershipFormUI = ({
   const { getAssetByUUID } = useAssets();
   const defaultAccount = useSelector(getDefaultAccount());
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
-  const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
+  const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) ?? {}) as Asset;
   const initialFormikValues: Overwrite<MembershipSimpleTxFormFull, { account?: StoreAccount }> = {
     membershipSelected: defaultMembership,
     account: defaultAccount,

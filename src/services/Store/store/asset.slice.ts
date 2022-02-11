@@ -101,8 +101,7 @@ export function* fetchAssetsWorker() {
   const currentAssets = arrayToObj('uuid')(
     lsAssets.filter(
       (a) =>
-        a.isCustom ||
-        a.type === 'base' ||
+        (a.isCustom ?? a.type === 'base') ||
         accountAssets.some((accAsset) => accAsset.uuid === a.uuid && accAsset.balance.gt(0))
     )
   );

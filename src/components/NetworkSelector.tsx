@@ -35,12 +35,12 @@ type UIProps = Overwrite<
 
 const NetworkOption = ({
   data,
-  paddingLeft,
+  paddingLeft = '0',
   selectOption
 }: StyleProps | { data: Network; selectOption?(): void; paddingLeft?: string }) => (
   <Box
     padding="12px"
-    pl={paddingLeft || '0px'}
+    pl={paddingLeft}
     display="flex"
     flexDirection="row"
     data-testid={`network-selector-option-${data.id}`}

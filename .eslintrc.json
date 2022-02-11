@@ -5,7 +5,7 @@
   "plugins": ["eslint-plugin-react", "eslint-plugin-import"],
   "ignorePatterns": ["**/static/matomo.js", "hardhat.config.ts", "jest_config", "node-scripts"],
   "rules": {
-    "eqeqeq": "error",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-deprecated": "error",

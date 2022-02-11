@@ -116,7 +116,7 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, network, onEdit }) => {
   const autoNode = {
     service: translateRaw('AUTO_NODE')
   };
-  const selectedNode = NetworkUtils.getSelectedNode(network) || autoNode;
+  const selectedNode = NetworkUtils.getSelectedNode(network) ?? autoNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (

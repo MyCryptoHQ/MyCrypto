@@ -93,7 +93,7 @@ export default function MultiTxReceipt({
             : gasLimit;
 
         const status = transaction.status;
-        const timestamp = transaction.minedAt || 0; // @todo
+        const timestamp = transaction.minedAt ?? 0; // @todo
         const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
 
         const txUrl = buildTxUrl(network.blockExplorer, transaction.txHash!);

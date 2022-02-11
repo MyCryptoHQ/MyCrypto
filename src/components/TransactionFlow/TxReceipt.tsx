@@ -362,7 +362,7 @@ export const TxReceiptUI = ({
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-desc">
             {protectTxEnabled && !web3Wallet && <SSpacer />}
-            {customBroadcastText || translate('TRANSACTION_BROADCASTED_DESC')}
+            {customBroadcastText ?? translate('TRANSACTION_BROADCASTED_DESC')}
           </div>
         </div>
       )}

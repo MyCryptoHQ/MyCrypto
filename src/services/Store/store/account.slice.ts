@@ -224,7 +224,7 @@ export const getSwapAssets = createSelector(
   [getAssets, getAccountsAssets],
   (assets, accountAssets) =>
     assets.filter(
-      (a) => a.isCustom || a.isSwapRelevant || accountAssets.find((asset) => asset.uuid === a.uuid)
+      (a) => a.isCustom ?? a.isSwapRelevant ?? accountAssets.find((asset) => asset.uuid === a.uuid)
     )
 );
 
@@ -277,7 +277,7 @@ export const getMergedTxHistory = createSelector(
           );
           return {
             ...tx,
-            timestamp: tx.timestamp || 0,
+            timestamp: tx.timestamp ?? 0,
             txType: deriveTxType(txTypeMetas, accounts, tx),
             toAddressBookEntry,
             fromAddressBookEntry,

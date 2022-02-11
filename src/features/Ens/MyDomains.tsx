@@ -15,8 +15,8 @@ const Label = styled.span`
   align-items: center;
 `;
 
-const RowAlignment = styled.div`
-  float: ${(props: { align?: string }) => props.align || 'inherit'};
+const RowAlignment = styled.div<{ align?: string }>`
+  float: ${({ align = 'inherit' }) => align};
 `;
 
 export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
