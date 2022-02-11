@@ -199,18 +199,20 @@ const TxReceipt = ({
 
   const baseAssetRate = getAssetRate(txConfig.baseAsset);
   const transferEvents = useMemo(() => {
-    const transferEvents = displayTxReceipt ? displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
-      buildTransferEvent(
-        transfer.to,
-        transfer.from,
-        transfer.asset,
-        getAssetRate(transfer.asset),
-        getContactByAddressAndNetworkId(transfer.to, network.id),
-        getContactByAddressAndNetworkId(transfer.from, network.id),
-        transfer.amount
-      )
-    ) : []
-     
+    const transferEvents = displayTxReceipt
+      ? displayTxReceipt.valueTransfers.map<ITxTransferEvent>((transfer) =>
+          buildTransferEvent(
+            transfer.to,
+            transfer.from,
+            transfer.asset,
+            getAssetRate(transfer.asset),
+            getContactByAddressAndNetworkId(transfer.to, network.id),
+            getContactByAddressAndNetworkId(transfer.from, network.id),
+            transfer.amount
+          )
+        )
+      : [];
+
     return displayTxReceipt &&
       path(['value'], displayTxReceipt) &&
       !bigify(displayTxReceipt.value).isZero()
@@ -223,7 +225,8 @@ const TxReceipt = ({
           getContactByAddressAndNetworkId(displayTxReceipt.receiverAddress, network.id),
           getContactByAddressAndNetworkId(displayTxReceipt.from, network.id),
           bigNumValueToViewableEther(displayTxReceipt.value)
-      ) : transferEvents;
+        )
+      : transferEvents;
   }, []);
 
   const handleTxSpeedUpRedirect = async () => {
