@@ -18,4 +18,6 @@ export interface ClaimResult {
   address: TAddress;
   state: ClaimState;
   amount: ITxValue;
+  // Index in MerkleTree
+  index?: number;
 }

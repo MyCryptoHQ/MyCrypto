@@ -22,7 +22,6 @@ export enum KB_HELP_ARTICLE {
   STAYING_SAFE = 'staying-safe',
   BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
   MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
-  MEMBERSHIP_REQUEST_REWARDS = 'general-knowledge/about-mycrypto/membership-information#how-to-receive-your-physical-rewards',
   HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper',
   WHERE_TO_GET_TESTNET_ETHER = 'how-to/getting-started/where-to-get-testnet-ether',
   WHAT_IS_WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',

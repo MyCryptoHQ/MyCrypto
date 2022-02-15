@@ -55,7 +55,7 @@ const SMain = styled('main')<{ bgColor?: string; isDemoMode?: boolean }>`
 
   overflow-x: hidden;
   min-width: 350px;
-  background: ${(p: { bgColor?: string }) => p.bgColor || '#f6f8fa'};
+  background: ${({ bgColor = '#f6f8fa' }) => bgColor};
   min-height: 100%;
   display: flex;
   flex-direction: column;

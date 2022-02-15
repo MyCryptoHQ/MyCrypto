@@ -356,7 +356,7 @@ describe('AccountSlice', () => {
           blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
           gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
           gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
-          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
+          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed ?? 0),
           value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
         }
       ]);

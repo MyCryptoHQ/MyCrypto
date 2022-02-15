@@ -87,7 +87,7 @@ const TokenMigrationForm = ({
   const defaultStoreAccount = useSelector(getDefaultAccount());
   const relevantAccounts = accounts.filter(isEthereumAccount);
   const tokenMigrationConfig = MIGRATION_CONFIGS[migration];
-  const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) || {}) as Asset;
+  const defaultAsset = (getAssetByUUID(tokenMigrationConfig.fromAssetUuid) ?? {}) as Asset;
   const defaultAccount = accounts.find((a) =>
     a.assets.find(({ uuid }) => uuid === tokenMigrationConfig.fromAssetUuid)
   );
@@ -96,7 +96,7 @@ const TokenMigrationForm = ({
       isSubmitting={isSubmitting}
       network={network}
       relevantAccounts={relevantAccounts}
-      storeDefaultAccount={defaultAccount || defaultStoreAccount}
+      storeDefaultAccount={defaultAccount ?? defaultStoreAccount}
       defaultAsset={defaultAsset}
       error={error}
       migration={migration}

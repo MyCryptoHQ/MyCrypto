@@ -45,9 +45,9 @@ describe('fetchTxStatus', () => {
     expect(result?.cachedTx).toBeUndefined();
     expect({
       ...result?.fetchedTx,
-      gasLimit: BigNumber.from(result?.fetchedTx?.gasLimit || 0),
-      gasPrice: BigNumber.from(result?.fetchedTx?.gasPrice || 0),
-      value: BigNumber.from(result?.fetchedTx?.value || 0)
+      gasLimit: BigNumber.from(result?.fetchedTx?.gasLimit ?? 0),
+      gasPrice: BigNumber.from(result?.fetchedTx?.gasPrice ?? 0),
+      value: BigNumber.from(result?.fetchedTx?.value ?? 0)
     }).toStrictEqual({
       ...fETHWeb3TxResponse,
       gasLimit: BigNumber.from('0x7d3c'),

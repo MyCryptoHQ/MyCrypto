@@ -58,6 +58,7 @@ describe('ClaimsService', () => {
       {
         address: fAccount.address,
         state: ClaimState.CLAIMED,
+        index: 102925,
         amount: mockClaim[fAccount.address].Amount
       }
     ]);
@@ -69,6 +70,7 @@ describe('ClaimsService', () => {
       {
         address: fAccount.address,
         state: ClaimState.CLAIMED,
+        index: 102925,
         amount: hexlify(bigify(mockClaim[fAccount.address].Amount).div(10))
       }
     ]);

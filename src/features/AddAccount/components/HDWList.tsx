@@ -108,7 +108,7 @@ export default function HDWList({
   handleUpdate
 }: HDWListProps) {
   const { isMobile } = useScreenSize();
-  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) ?? '';
   const [tableAccounts, setTableAccounts] = useState<ITableAccounts>([]);
 
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set

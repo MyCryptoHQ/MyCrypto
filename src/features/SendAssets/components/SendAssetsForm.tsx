@@ -177,9 +177,9 @@ const getInitialFormikValues = ({
   return mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const createQueryWarning = (translationId?: string) => (
+const createQueryWarning = (translationId: string = 'WARN_SEND_LINK') => (
   <div className="alert alert-info">
-    <p>{translate(translationId || 'WARN_SEND_LINK')}</p>
+    <p>{translate(translationId)}</p>
   </div>
 );
 
@@ -427,7 +427,8 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     const asset = values.asset;
     const newAccount = getDefaultAccount(asset);
     const newInitialValues = getInitialFormikValues({
-      s: txConfig,
+      // @ts-expect-error @todo Fix reliance on txConfig being {}
+      s: asset.uuid === txConfig.asset?.uuid ? txConfig : {},
       defaultAccount: newAccount,
       defaultAsset: asset,
       defaultNetwork: getDefaultNetwork(newAccount),

@@ -65,7 +65,7 @@ const mergeNodes = (inbound: NodeOptions[], original: NodeOptions[]) =>
   original
     .map((o) => {
       const existing = inbound.find((i) => i.name === o.name);
-      return mergeRight(o, existing || {});
+      return mergeRight(o, existing ?? {});
     })
     .concat(inbound.filter((i) => i.isCustom));
 
@@ -88,7 +88,7 @@ export const mergeAssets = (inbound: ExtendedAsset[], original: ExtendedAsset[])
   original
     .map((o) => {
       const existing = inbound.find((i) => i.uuid === o.uuid);
-      return mergeRight(o, existing || {});
+      return mergeRight(o, existing ?? {});
     })
     .concat(inbound.filter((i) => !original.find((o) => o.uuid === i.uuid)));
 

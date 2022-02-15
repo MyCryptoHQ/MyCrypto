@@ -167,7 +167,7 @@ const HDWallet = ({
   handleAssetUpdate,
   onUnlock
 }: HDWalletProps) => {
-  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) ?? '';
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);

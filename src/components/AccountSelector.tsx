@@ -45,7 +45,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
       asset: {
         balance: formatUnits(
           asset ? getAccountBalance(a, asset) : getAccountBalance(a),
-          asset?.decimal || DEFAULT_ASSET_DECIMAL
+          asset?.decimal ?? DEFAULT_ASSET_DECIMAL
         ),
         assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
         assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker

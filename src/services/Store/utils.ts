@@ -57,6 +57,6 @@ export const toStoreAccount = (
     ...account,
     assets: accountAssets,
     network,
-    label: contact?.label || account.label || translateRaw('NO_LABEL')
+    label: contact?.label ?? account.label ?? translateRaw('NO_LABEL')
   };
 };

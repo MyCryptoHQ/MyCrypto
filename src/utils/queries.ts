@@ -20,7 +20,7 @@ export const createQueryParamsDefaultObject = (txConfig: ITxConfig, queryType: T
   const senderAddress = txConfig.senderAccount?.address;
   return {
     queryType,
-    from: from || senderAddress,
+    from: from ?? senderAddress,
     to,
     gasLimit,
     nonce,

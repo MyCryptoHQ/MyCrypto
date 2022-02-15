@@ -159,7 +159,7 @@ export const getSortedRows = (
   const { sortFunction = defaultColumnSort } = config;
   // Determine which column to order.
   const headerColumns = getHeaderColumns(head);
-  const sortableColumnIndex = Math.max(headerColumns.indexOf(currentSortColumn || ''), 0);
+  const sortableColumnIndex = Math.max(headerColumns.indexOf(currentSortColumn ?? ''), 0);
   // Create an array containing the data from each row in the specified column.
   const sortableColumnEntries = body
     .map((row) => row[sortableColumnIndex])
@@ -205,7 +205,7 @@ class AbstractTable extends Component<Props, State> {
   public render() {
     const { head, config, overlay, overlayRows, ...rest } = this.props;
     const { collapsedGroups, sortedColumnDirection } = this.state;
-    const { overlayRoot } = config || { overlayRoot: false };
+    const { overlayRoot } = config ?? { overlayRoot: false };
     const { body, groups } = this.getSortedLayout();
 
     const Overlay = overlay;
@@ -345,7 +345,7 @@ class AbstractTable extends Component<Props, State> {
   private readonly getCurrentColumnSortable = () => {
     const { currentSortColumn } = this.state;
     const { config } = this.props;
-    const { sortableColumn } = config || {};
+    const { sortableColumn } = config ?? {};
 
     if (currentSortColumn) {
       return currentSortColumn;
@@ -360,7 +360,7 @@ class AbstractTable extends Component<Props, State> {
 
   private readonly isColumnSortable = (column: string) => {
     const { config } = this.props;
-    const { sortableColumn } = config || {};
+    const { sortableColumn } = config ?? {};
 
     if (Array.isArray(sortableColumn)) {
       return sortableColumn.some((c) => c.includes(column));

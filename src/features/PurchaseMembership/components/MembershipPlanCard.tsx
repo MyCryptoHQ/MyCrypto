@@ -43,7 +43,7 @@ const STypography = styled(Typography)`
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
   const { assets } = useAssets();
-  const planAsset = getAssetByUUID(assets)(plan.assetUUID) || ({} as Asset);
+  const planAsset = getAssetByUUID(assets)(plan.assetUUID) ?? ({} as Asset);
 
   return (
     <PlanCard>

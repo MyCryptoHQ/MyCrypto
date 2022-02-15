@@ -129,7 +129,7 @@ const DownloadApp: FC<RouteComponentProps> = ({ history }) => {
     })();
   }, [setDownloadItems]);
 
-  const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) || downloadItems[0];
+  const primaryDownload = downloadItems.find((x) => x.OS === featuredOS) ?? downloadItems[0];
   const secondaryDownloads = downloadItems.filter((x) => x !== primaryDownload);
   const onBack = () => goBack(history);
 

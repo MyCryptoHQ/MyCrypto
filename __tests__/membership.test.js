@@ -85,7 +85,7 @@ test('can buy with DAI', async (t) => {
   await t.click(home);
 
   await dashboard.waitPageLoaded();
-  const request = await queryByText(findByTKey('REQUEST_REWARDS'), { exact: false });
+  const request = await queryByText(findByTKey('MANAGE_MEMBERSHIP'), { exact: false });
 
   await t.expect(request.exists).ok({ timeout: FIXTURES_CONST.HARDHAT_TIMEOUT });
 });
