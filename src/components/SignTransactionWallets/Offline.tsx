@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { serialize } from '@ethersproject/transactions';
 import styled from 'styled-components';
@@ -7,33 +7,13 @@ import { Body, Box, BusyBottom, Button, Heading, InputField, LinkApp } from '@co
 import { TxIntermediaryDisplay } from '@components/TransactionFlow/displays';
 import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { getWalletConfig, IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
-import { useNetworks } from '@services/Store';
 import { getContractName, useSelector } from '@store';
 import { FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { BusyBottomConfig, ISignComponentProps, ITxObject, StoreAccount, WalletId } from '@types';
+import { BusyBottomConfig, ISignComponentProps, ITxObject, WalletId } from '@types';
 import { makeTransaction } from '@utils';
 
-export enum WalletSigningState {
-  SUBMITTING,
-  REJECTED,
-  ADDRESS_MISMATCH,
-  NETWORK_MISMATCH,
-  SUCCESS,
-  UNKNOWN //used upon component initialization when wallet status is not determined
-}
-
-export function SignTransactionOffline({
-  senderAccount,
-  rawTransaction
-}: // onSuccess
-ISignComponentProps) {
-  const [walletState] = useState(WalletSigningState.UNKNOWN);
-  // const desiredAddress = getAddress(senderAccount.address);
-
-  const { getNetworkByChainId } = useNetworks();
-  const detectedNetwork = getNetworkByChainId(rawTransaction.chainId);
-  const networkName = detectedNetwork ? detectedNetwork.name : translateRaw('UNKNOWN_NETWORK');
+export function SignTransactionOffline({ senderAccount, rawTransaction }: ISignComponentProps) {
   const walletConfig = getWalletConfig(WalletId.OFFLINE);
 
   const network = senderAccount.networkId;
@@ -42,9 +22,6 @@ ISignComponentProps) {
   return (
     <SignTransactionOfflineUI
       walletConfig={walletConfig}
-      walletState={walletState}
-      networkName={networkName}
-      senderAccount={senderAccount}
       rawTransaction={rawTransaction}
       contractName={contractName}
     />
@@ -58,9 +35,6 @@ const Footer = styled.div`
 
 export interface UIProps {
   walletConfig: IWalletConfig;
-  walletState: WalletSigningState;
-  networkName: string;
-  senderAccount: StoreAccount;
   rawTransaction: ITxObject;
   contractName?: string;
 }
