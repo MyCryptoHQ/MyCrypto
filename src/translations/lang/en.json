@@ -1046,6 +1046,9 @@
     "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed.",
     "SELECT_A_MIGRATION": "Select a migration",
     "TOKEN_MIGRATION_HEADER": "Migrate Tokens",
-    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract"
+    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract",
+    "INPUT_OFFLINE_ADDRESS_LABEL": "Add an offline Address or ENS Name",
+    "OFFLINE_DISCLAIMER": "Adding an \"offline\" account means that you will not be able to send a transaction from it through MyCrypto. In order to send a transaction you can use Quill.",
+    "SIGN_TX_OFFLINE_PROMPT": "Enter the raw transaction in Quill in order to sign the transaction. You can then broadcast the signed transaction through MyCrypto."
   }
 }

@@ -1,5 +1,6 @@
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
+import offlineIcon from '@assets/images/icn-desktop-app.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
@@ -221,6 +222,21 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'VIEW_ADDR',
     icon: viewOnlyIcon,
     description: 'ADD_VIEW_ADDRESS_DESC',
+    helpLink: '',
+    flags: {
+      supportsNonce: false
+    }
+  },
+  [WalletId.OFFLINE]: {
+    id: WalletId.OFFLINE,
+    name: 'Offline',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.MISC,
+    lid: 'OFFLINE',
+    icon: offlineIcon,
+    description: 'ADD_OFFLINE_DESC',
     helpLink: '',
     flags: {
       supportsNonce: false

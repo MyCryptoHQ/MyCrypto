@@ -18,7 +18,7 @@ import {
 import { bigify } from './bigify';
 import { fromWei, gasPriceToBase, toTokenBase, toWei, Wei } from './units';
 
-export const makeTransaction = (t: ITxObject): TransactionRequest => {
+export const makeTransaction = (t: ITxObject): TransactionRequest & { nonce: number } => {
   // Hardware wallets need `from` param excluded
   const { from, ...tx } = t;
   return { ...tx, nonce: new BigNumber(t.nonce, 10).toNumber() };

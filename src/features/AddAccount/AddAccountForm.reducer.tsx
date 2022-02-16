@@ -33,6 +33,7 @@ const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
   const wallets = (() => {
     switch (walletType) {
       case WalletId.VIEW_ONLY:
+      case WalletId.OFFLINE:
         return [payload];
       case WalletId.WEB3:
         return payload.map((payloadItem: any) => ({

@@ -6,3 +6,4 @@ export { Ledger as LegderUnlock } from './Ledger';
 export { Trezor as TrezorUnlock } from './Trezor';
 export { GridPlus as GridPlusUnlock } from './GridPlus';
 export * from './HWLegacy';
+export * from './Offline';
