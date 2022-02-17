@@ -3025,10 +3025,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallets@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.3.tgz#a3b7af68f0f186f5cb7fc71e242b1005ad81eeb5"
-  integrity sha512-hsQs6Zm3lmd0LEw8Kj1q2dRkIUBA9DW5tyxqUh7JspD78LOOG174mWUf26JeVv2lxyzXnHouSnjo11m5rth/LQ==
+"@mycrypto/wallets@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.4.tgz#7941cd1d2a87a0f5a55803c943df8ef76b89d61e"
+  integrity sha512-cTak+fxrMqGS2qzTDpkaJvMDecT2ng1En+tJG9zdQQF55ZJIgJyYdZQ7waNT8iG2x4oReXtSFrQrbjKxfJOcSg==
   dependencies:
     "@ethersproject/abstract-provider" "5.5.1"
     "@ethersproject/address" "5.5.0"
