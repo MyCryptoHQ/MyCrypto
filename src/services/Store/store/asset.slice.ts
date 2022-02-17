@@ -101,7 +101,9 @@ export function* fetchAssetsWorker() {
   const currentAssets = arrayToObj('uuid')(
     lsAssets.filter(
       (a) =>
-        (a.isCustom ?? a.type === 'base') ||
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        a.isCustom ||
+        a.type === 'base' ||
         accountAssets.some((accAsset) => accAsset.uuid === a.uuid && accAsset.balance.gt(0))
     )
   );

@@ -118,4 +118,28 @@ describe('fetchAssetsWorker()', () => {
       .put(addAssetsFromAPI(expected))
       .silentRun();
   });
+
+  it('keeps base assets around', () => {
+    const a1 = fAssets[10];
+    const a2 = fAssets[11];
+    const a3 = fAssets[2];
+    const a4 = fAssets[0];
+    const state = [a1, a2, a3, a4];
+    const modifiedEntities = [{ ...a2, contractAddress: '0xchanged1' }];
+    const expected = [a1, a3, a4, modifiedEntities[0]];
+    const apiResult = arrayToObj('uuid')(modifiedEntities);
+    return expectSaga(fetchAssetsWorker)
+      .withState(
+        mockAppState({
+          assets: state,
+          accounts: fAccounts,
+          addressBook: fContacts,
+          networks: fNetworks
+        })
+      )
+      .provide([[call.fn(MyCryptoApiService.instance.getAssets), apiResult]])
+      .call(MyCryptoApiService.instance.getAssets)
+      .put(addAssetsFromAPI(expected))
+      .silentRun();
+  });
 });
