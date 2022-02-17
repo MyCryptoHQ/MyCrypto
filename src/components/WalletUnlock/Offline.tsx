@@ -62,30 +62,37 @@ export function OfflineDecrypt({ formData, onUnlock }: Props) {
         {translateRaw('OFFLINE_DISCLAIMER')}
       </Body>
       <Formik initialValues={initialFormikValues} onSubmit={onSubmit}>
-        {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => (
-          <FormWrapper>
-            <ContactLookupField
-              name="address"
-              value={values.address}
-              error={errors && touched.address && errors.address && (errors.address as ErrorObject)}
-              network={network}
-              isResolvingName={isResolvingDomain}
-              setIsResolvingDomain={setIsResolvingDomain}
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-              setFieldError={setFieldError}
-            />
-            <ButtonWrapper
-              type="submit"
-              disabled={isResolvingDomain || !isFormValid(errors)}
-              color={COLORS.WHITE}
-              fullwidth={true}
-              onClick={() => onSubmit(values)}
-            >
-              {translateRaw('ACTION_6')}
-            </ButtonWrapper>
-          </FormWrapper>
-        )}
+        {({ errors, touched, values, setFieldError, setFieldTouched, setFieldValue }) => {
+          const handleSubmit = () => onSubmit(values);
+
+          return (
+            <FormWrapper>
+              <ContactLookupField
+                name="address"
+                data-testid="address-field"
+                value={values.address}
+                error={
+                  errors && touched.address && errors.address && (errors.address as ErrorObject)
+                }
+                network={network}
+                isResolvingName={isResolvingDomain}
+                setIsResolvingDomain={setIsResolvingDomain}
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+                setFieldError={setFieldError}
+              />
+              <ButtonWrapper
+                type="submit"
+                disabled={isResolvingDomain || !isFormValid(errors)}
+                color={COLORS.WHITE}
+                fullwidth={true}
+                onClick={handleSubmit}
+              >
+                {translateRaw('ACTION_6')}
+              </ButtonWrapper>
+            </FormWrapper>
+          );
+        }}
       </Formik>
     </Box>
   );
