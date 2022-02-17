@@ -3025,10 +3025,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallets@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.3.tgz#a3b7af68f0f186f5cb7fc71e242b1005ad81eeb5"
-  integrity sha512-hsQs6Zm3lmd0LEw8Kj1q2dRkIUBA9DW5tyxqUh7JspD78LOOG174mWUf26JeVv2lxyzXnHouSnjo11m5rth/LQ==
+"@mycrypto/wallets@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.4.tgz#7941cd1d2a87a0f5a55803c943df8ef76b89d61e"
+  integrity sha512-cTak+fxrMqGS2qzTDpkaJvMDecT2ng1En+tJG9zdQQF55ZJIgJyYdZQ7waNT8iG2x4oReXtSFrQrbjKxfJOcSg==
   dependencies:
     "@ethersproject/abstract-provider" "5.5.1"
     "@ethersproject/address" "5.5.0"
@@ -19792,9 +19792,9 @@ simple-concat@^1.0.0:
   integrity sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==
 
 simple-get@^3.0.3:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/simple-get/-/simple-get-3.1.0.tgz#b45be062435e50d159540b576202ceec40b9c6b3"
-  integrity sha512-bCR6cP+aTdScaQCnQKbPKtJOKDp/hj9EDLJo3Nw4y1QksqaovlW/bnptB6/c1e+qmNIDHRK+oXFDdEqBT8WzUA==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/simple-get/-/simple-get-3.1.1.tgz#cc7ba77cfbe761036fbfce3d021af25fc5584d55"
+  integrity sha512-CQ5LTKGfCpvE1K0n2us+kuMPbk/q0EKl82s4aheV9oXjFEz6W/Y7oQFVJuU6QG77hRT4Ghb5RURteF5vnWjupA==
   dependencies:
     decompress-response "^4.2.0"
     once "^1.3.1"
