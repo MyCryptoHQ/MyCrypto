@@ -6,7 +6,6 @@ import QrScanner from 'qr-scanner';
 
 import { useScanner } from './useScanner';
 
-
 jest.mock('qr-scanner');
 
 describe('useScanner', () => {
