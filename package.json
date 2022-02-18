@@ -55,7 +55,7 @@
     "lodash": "4.17.21",
     "papaparse": "5.2.0",
     "post-message-stream": "3.0.0",
-    "qr-scanner": "^1.4.0",
+    "qr-scanner": "1.4.0",
     "qrcode": "1.5.0",
     "query-string": "6.0.0",
     "ramda": "0.27.2",

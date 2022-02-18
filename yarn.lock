@@ -17770,7 +17770,7 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qr-scanner@^1.4.0:
+qr-scanner@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/qr-scanner/-/qr-scanner-1.4.0.tgz#12e5cf1657f30e3ee079421d34e02e1b2d5909b8"
   integrity sha512-/WGS0Vf39G/AEKslmE4EGevoYhhbX2iX4tsFp9dT0wtHJgKlCPk2vCXOJr8HnCICyj4TJS6GRmUUGjBf8AUEHA==
