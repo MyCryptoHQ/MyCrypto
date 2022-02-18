@@ -2,6 +2,7 @@ import { FormEvent, Fragment, useEffect, useState } from 'react';
 
 import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
+import QrScanner from 'qr-scanner';
 import styled from 'styled-components';
 
 import {
@@ -14,12 +15,14 @@ import {
   NetworkSelector,
   Tooltip
 } from '@components';
+import { Scanner } from '@features/BroadcastTransaction/components/Scanner';
 import { verifyTransaction } from '@helpers';
 import { getNetworkByChainId } from '@services/Store/Network';
 import { useSelector } from '@store';
 import { selectNetworks } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
+import { useEffectOnce } from '@vendor';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -96,12 +99,21 @@ interface Props {
 }
 
 export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChanged }: Props) => {
+  const [isScanner, setScanner] = useState(false);
+  const [isScannerEnabled, setScannerEnabled] = useState(false);
+
   const [userInput, setUserInput] = useState(signedTx);
   const [inputError, setInputError] = useState('');
   const [transaction, setTransaction] = useState<Transaction | undefined>(
     makeTxFromSignedTx(signedTx)
   );
   const networks = useSelector(selectNetworks);
+
+  const handleToggleScanner = () => setScanner((value) => !value);
+
+  useEffectOnce(() => {
+    QrScanner.hasCamera().then(setScannerEnabled).catch(console.error);
+  });
 
   useEffect(() => {
     if (transaction && verifyTransaction(transaction)) {
@@ -119,34 +131,52 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
     setTransaction(makeTxFromSignedTx(trimmedValue));
   };
 
+  const handleScan = (signedTransaction: string) => {
+    setScanner(false);
+    setUserInput(signedTransaction);
+    setInputError('');
+    setTransaction(makeTxFromSignedTx(signedTransaction.trim()));
+  };
+
+  const handleComplete = () => onComplete(userInput.trim());
+
   const validNetwork =
     transaction && transaction.chainId ? getNetworkByChainId(transaction?.chainId, networks) : true;
   const isValid = transaction !== undefined && inputError.length === 0 && validNetwork;
 
   return (
     <ContentWrapper>
-      <Description>{translate('BROADCAST_TX_DESCRIPTION')}</Description>
-      <Box pb="15px" width="100%">
-        <InputWrapper>
-          <InputField
-            label={translateRaw('SEND_SIGNED')}
-            value={userInput}
-            textarea={true}
-            height={'250px'}
-            placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
-            onChange={handleChange}
-            inputError={userInput.length > 0 ? inputError : ''}
-            marginBottom="0"
-          />
-        </InputWrapper>
-        {!validNetwork && transaction && (
-          <InlineMessage>
-            {translate('BROADCAST_TX_INVALID_CHAIN_ID', {
-              $chain_id: transaction.chainId.toString()
-            })}
-          </InlineMessage>
-        )}
+      <Description>{translateRaw('BROADCAST_TX_DESCRIPTION')}</Description>
+      <Box mb="15px">
+        <Button onClick={handleToggleScanner} disabled={!isScannerEnabled}>
+          {isScanner ? translateRaw('ENTER_SIGNED_TRANSACTION_MANUALLY') : translateRaw('SCAN_QR')}
+        </Button>
       </Box>
+      {isScanner ? (
+        <Scanner onScan={handleScan} />
+      ) : (
+        <Box pb="15px" width="100%">
+          <InputWrapper>
+            <InputField
+              label={translateRaw('SEND_SIGNED')}
+              value={userInput}
+              textarea={true}
+              height="250px"
+              placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
+              onChange={handleChange}
+              inputError={userInput.length > 0 ? inputError : ''}
+              marginBottom="0"
+            />
+          </InputWrapper>
+          {!validNetwork && transaction && (
+            <InlineMessage>
+              {translate('BROADCAST_TX_INVALID_CHAIN_ID', {
+                $chain_id: transaction.chainId.toString()
+              })}
+            </InlineMessage>
+          )}
+        </Box>
+      )}
       {isValid && (
         <Fragment>
           {!transaction!.chainId && (
@@ -163,7 +193,7 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
           </CodeBlockWrapper>
         </Fragment>
       )}
-      <SendButton disabled={!isValid} onClick={() => onComplete(userInput.trim())}>
+      <SendButton disabled={!isValid} onClick={handleComplete}>
         {translateRaw('SEND_TRANS')}
       </SendButton>
     </ContentWrapper>

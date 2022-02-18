@@ -19,6 +19,14 @@ jest.mock('@vendor', () => {
   };
 });
 
+jest.mock('qr-scanner', () => {
+  return class QrScanner {
+    static hasCamera() {
+      return Promise.resolve(true);
+    }
+  };
+});
+
 function getComponent() {
   return simpleRender(<BroadcastTransactionFlow />, {
     initialState: mockAppState({
@@ -55,5 +63,16 @@ describe('BroadcastTransactionFlow', () => {
     await waitFor(() =>
       expect(getByText(translateRaw('BROADCAST_TX_RECEIPT_TITLE'))).toBeInTheDocument()
     );
+  });
+
+  it('shows the QR scanner', async () => {
+    const { getByText, getByTestId } = getComponent();
+    const button = getByText(translateRaw('SCAN_QR'));
+
+    // Need to wait for a bit for the scanner button to become enabled
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    fireEvent.click(button);
+
+    await waitFor(() => expect(getByTestId('scanner')).toBeInTheDocument());
   });
 });

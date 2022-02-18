@@ -4618,6 +4618,11 @@
   resolved "https://registry.yarnpkg.com/@types/npmlog/-/npmlog-4.1.2.tgz#d070fe6a6b78755d1092a3dc492d34c3d8f871c4"
   integrity sha512-4QQmOF5KlwfxJ5IGXFIudkeLCdMABz03RcUXu+LCb24zmln8QW6aDjuGl4d4XPVLf2j+FnjelHTP7dvceAFbhA==
 
+"@types/offscreencanvas@^2019.6.4":
+  version "2019.6.4"
+  resolved "https://registry.yarnpkg.com/@types/offscreencanvas/-/offscreencanvas-2019.6.4.tgz#64f6d120b53925028299c744fcdd32d2cd525963"
+  integrity sha512-u8SAgdZ8ROtkTF+mfZGOscl0or6BSj9A4g37e6nvxDc+YB/oDut0wHkK2PBBiC2bNR8TS0CPV+1gAk4fNisr1Q==
+
 "@types/overlayscrollbars@^1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@types/overlayscrollbars/-/overlayscrollbars-1.12.0.tgz#98456caceca8ad73bd5bb572632a585074e70764"
@@ -17764,6 +17769,13 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qr-scanner@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/qr-scanner/-/qr-scanner-1.4.0.tgz#12e5cf1657f30e3ee079421d34e02e1b2d5909b8"
+  integrity sha512-/WGS0Vf39G/AEKslmE4EGevoYhhbX2iX4tsFp9dT0wtHJgKlCPk2vCXOJr8HnCICyj4TJS6GRmUUGjBf8AUEHA==
+  dependencies:
+    "@types/offscreencanvas" "^2019.6.4"
 
 qrcode-terminal@^0.10.0:
   version "0.10.0"
