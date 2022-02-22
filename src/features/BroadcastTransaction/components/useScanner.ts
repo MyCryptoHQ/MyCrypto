@@ -3,7 +3,7 @@ import { RefObject, useEffect, useMemo, useState } from 'react';
 import QrScanner from 'qr-scanner';
 
 /**
- * This hook is needed to make it testable. `simpleRender(<Scanner />)` does not initialise the ref, so the cod would
+ * This hook is needed to make it testable. `simpleRender(<Scanner />)` does not initialise the ref, so the code would
  * never be executed then.
  */
 export const useScanner = (

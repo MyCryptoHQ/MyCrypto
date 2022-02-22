@@ -1,6 +1,6 @@
 // @ADD_ACCOUNT_@todo: Icons really belongs to the WalletButton or a WalletIcon
 // component.
-import offlineIcon from '@assets/images/icn-desktop-app.svg';
+import offlineIcon from '@assets/images/icn-offline.svg';
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
