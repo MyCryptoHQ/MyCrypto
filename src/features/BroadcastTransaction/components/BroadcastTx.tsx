@@ -2,7 +2,6 @@ import { FormEvent, Fragment, useEffect, useState } from 'react';
 
 import { parse as parseTransaction, Transaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
-import QrScanner from 'qr-scanner';
 import styled from 'styled-components';
 
 import {
@@ -23,6 +22,8 @@ import { selectNetworks } from '@store/network.slice';
 import translate, { translateRaw } from '@translations';
 import { ISignedTx, NetworkId } from '@types';
 import { useEffectOnce } from '@vendor';
+
+import { hasCamera } from '../helpers';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -112,7 +113,7 @@ export const BroadcastTx = ({ signedTx, networkId, onComplete, handleNetworkChan
   const handleToggleScanner = () => setScanner((value) => !value);
 
   useEffectOnce(() => {
-    QrScanner.hasCamera().then(setScannerEnabled).catch(console.error);
+    hasCamera().then(setScannerEnabled).catch(console.error);
   });
 
   useEffect(() => {

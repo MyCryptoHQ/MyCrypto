@@ -19,13 +19,9 @@ jest.mock('@vendor', () => {
   };
 });
 
-jest.mock('qr-scanner', () => {
-  return class QrScanner {
-    static hasCamera() {
-      return Promise.resolve(true);
-    }
-  };
-});
+jest.mock('./helpers', () => ({
+  hasCamera: jest.fn().mockResolvedValue(true)
+}));
 
 function getComponent() {
   return simpleRender(<BroadcastTransactionFlow />, {

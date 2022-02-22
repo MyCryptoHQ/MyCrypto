@@ -1,40 +1,14 @@
-import { FunctionComponent, useRef, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { parse as parseTransaction } from '@ethersproject/transactions';
 import { toBuffer } from 'ethereumjs-util';
+import { OnResultFunction, QrReader } from 'react-qr-reader';
 import styled from 'styled-components';
 
-import { Box, Spinner } from '@components';
-import { useScanner } from '@features/BroadcastTransaction/components/useScanner';
+import { Box } from '@components';
 import { verifyTransaction } from '@helpers';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-
-const VideoWrapper = styled.div`
-  width: 100%;
-  position: relative;
-
-  svg {
-    stroke: #a086f7 !important;
-  }
-`;
-
-const SpinnerWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Video = styled.video`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
 
 const Error = styled.span`
   min-height: 22px;
@@ -46,25 +20,25 @@ interface ScannerProps {
 }
 
 export const Scanner: FunctionComponent<ScannerProps> = ({ onScan }) => {
-  const [decodeError, setDecodeError] = useState('');
+  const [error, setError] = useState('');
 
-  const handleDecode = ({ data }: { data: string }) => {
-    setDecodeError('');
+  const handleDecode: OnResultFunction = (data) => {
+    setError('');
 
-    try {
-      const buffer = toBuffer(data);
-      const transaction = parseTransaction(buffer);
+    if (data) {
+      try {
+        const text = data.getText();
+        const buffer = toBuffer(text);
+        const transaction = parseTransaction(buffer);
 
-      if (verifyTransaction(transaction)) {
-        onScan(data);
+        if (verifyTransaction(transaction)) {
+          onScan(text!);
+        }
+      } catch (error) {
+        setError(translateRaw('INVALID_SIGNED_TRANSACTION_QR'));
       }
-    } catch (error) {
-      setDecodeError(translateRaw('INVALID_SIGNED_TRANSACTION_QR'));
     }
   };
-
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { isLoading, error } = useScanner(videoRef, handleDecode);
 
   return (
     <Box
@@ -75,15 +49,12 @@ export const Scanner: FunctionComponent<ScannerProps> = ({ onScan }) => {
       alignItems="center"
       data-testid="scanner"
     >
-      <VideoWrapper>
-        <Video ref={videoRef} />
-        {isLoading && (
-          <SpinnerWrapper>
-            <Spinner size={3} color="brand" />
-          </SpinnerWrapper>
-        )}
-      </VideoWrapper>
-      {(error || decodeError) && <Error>{error || decodeError}</Error>}
+      <QrReader
+        constraints={{ facingMode: 'environment', aspectRatio: { ideal: 1 } }}
+        onResult={handleDecode}
+        containerStyle={{ width: '100%' }}
+      />
+      {error && <Error>{error}</Error>}
     </Box>
   );
 };
