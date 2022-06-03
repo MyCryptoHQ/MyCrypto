@@ -1,5 +1,6 @@
 export type NetworkId =
   | 'Ethereum'
+  | 'CNDL'
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'

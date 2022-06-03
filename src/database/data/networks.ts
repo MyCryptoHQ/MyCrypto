@@ -10,6 +10,7 @@ import {
   DEFAULT_EGEM,
   DEFAULT_ETC,
   DEFAULT_ETH,
+  DEFAULT_CNDL,
   DEFAULT_ETHO,
   DEFAULT_ETI,
   DEFAULT_EVRICE,
@@ -291,6 +292,37 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 10,
       initial: 1
     }
+  },
+  CNDL: {
+    id: 'CNDL',
+    name: 'CNDL',
+    unit: 'CNDL' as TTicker,
+    chainId: 534,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://candleexplorer.com/',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_CNDL,
+      [WalletId.LEDGER_NANO_S]:   DEFAULT_CNDL,
+      [WalletId.TREZOR_NEW]: DEFAULT_CNDL,
+      [WalletId.LEDGER_NANO_S_NEW]:   DEFAULT_CNDL,
+      [WalletId.GRIDPLUS]: DEFAULT_CNDL,
+      default: DEFAULT_CNDL
+    },
+    gasPriceSettings: {
+      min: 0.02,
+      max: 10,
+      initial: 1
+    },
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   TOMO: {
     id: 'TOMO',
