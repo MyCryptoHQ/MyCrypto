@@ -31,7 +31,7 @@ const AppLinkContainer = styled.div`
 `;
 
 function InstallTrunk() {
-  const providers = [WALLETS_CONFIG.METAMASK, WALLETS_CONFIG.COINBASE];
+  const providers = [WALLETS_CONFIG.METAMASK];
   return (
     <Box variant="rowAlign" justifyContent="space-between" mt={SPACING.BASE} width="100%">
       {providers.map((provider) => (
