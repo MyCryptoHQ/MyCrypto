@@ -26,6 +26,7 @@ import { ethereumMock } from '@vendor';
  *     https://developer.mozilla.org/en-US/docs/Web/API/Document/domain)
  * 4. Since we run 3 environments we dynamically set the domain to the appropriate hostname.
  */
+// @todo: This breaks remote debugging
 document.domain = getRootDomain(document.location.hostname);
 
 // disables drag-and-drop due to potential security issues by Cure53 recommendation

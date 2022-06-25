@@ -49,6 +49,9 @@ export const WalletFactory = {
   [WalletId.VIEW_ONLY]: {
     init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
   },
+  [WalletId.OFFLINE]: {
+    init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address, true)
+  },
   [WalletId.WALLETCONNECT]: {
     init: ({ address, signMessageHandler, killHandler }: WalletConnectWalletInitArgs) =>
       new WalletConnectWallet(address, signMessageHandler, killHandler)

@@ -1,6 +1,7 @@
 import {
   GridPlusUnlock,
   LegderUnlock,
+  OfflineDecrypt,
   TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
@@ -39,5 +40,9 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.VIEW_ONLY,
     steps: [NetworkSelectPanel, ViewOnlyDecrypt]
+  },
+  {
+    name: WalletId.OFFLINE,
+    steps: [NetworkSelectPanel, OfflineDecrypt]
   }
 ];

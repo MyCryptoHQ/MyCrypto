@@ -111,5 +111,20 @@ export const configs: Record<
     },
     SUPPORT_LINK
   ],
-  SUPPORT: [SUPPORT_LINK]
+  SUPPORT: [SUPPORT_LINK],
+  OFFLINE: [
+    {
+      copy: 'BUSY_BOTTOM_OFFLINE_1',
+      // @todo: Update link
+      link: getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_WALLETCONNECT),
+      external: true
+    },
+    {
+      copy: 'BUSY_BOTTOM_OFFLINE_2',
+      // @todo: Update link
+      link: getKBHelpArticle(KB_HELP_ARTICLE.HOW_TO_USE_WALLETCONNECT),
+      external: true
+    },
+    SUPPORT_LINK
+  ]
 };
