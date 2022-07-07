@@ -1831,7 +1831,7 @@
     rlp "^2.2.4"
     semaphore-async-await "^1.5.1"
 
-"@ethereumjs/common@^2.4.0":
+"@ethereumjs/common@2.4.0", "@ethereumjs/common@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@ethereumjs/common/-/common-2.4.0.tgz#2d67f6e6ba22246c5c89104e6b9a119fb3039766"
   integrity sha512-UdkhFWzWcJCZVsj1O/H8/oqj/0RVYjLc1OhPjBrQdALAkQHpCp8xXI4WLnuGTADqTdJZww0NtgwG+TRPkXt27w==
@@ -1849,7 +1849,7 @@
     ethereumjs-util "^7.0.7"
     miller-rabin "^4.0.0"
 
-"@ethereumjs/tx@^3.3.0":
+"@ethereumjs/tx@3.3.0", "@ethereumjs/tx@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@ethereumjs/tx/-/tx-3.3.0.tgz#14ed1b7fa0f28e1cd61e3ecbdab824205f6a4378"
   integrity sha512-yTwEj2lVzSMgE6Hjw9Oa1DZks/nKTWM8Wn4ykDNapBPua2f4nXO3qKnni86O6lgDj5fVNRqbDsD0yy7/XNGDEA==
@@ -3025,10 +3025,10 @@
   dependencies:
     "@findeth/abi" "^0.7.1"
 
-"@mycrypto/wallets@1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.4.4.tgz#7941cd1d2a87a0f5a55803c943df8ef76b89d61e"
-  integrity sha512-cTak+fxrMqGS2qzTDpkaJvMDecT2ng1En+tJG9zdQQF55ZJIgJyYdZQ7waNT8iG2x4oReXtSFrQrbjKxfJOcSg==
+"@mycrypto/wallets@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/wallets/-/wallets-1.5.0.tgz#09a57cfc61ef448aac7169cd1ebe2ecd74c7c885"
+  integrity sha512-DQxYoJDamiKLszbRchfuDqYsl2gfG/PKxQ098GX2AGf5SktYaS6xDqkTL/R9REOYmq5alNQFf3PBK6MXEIHI1A==
   dependencies:
     "@ethersproject/abstract-provider" "5.5.1"
     "@ethersproject/address" "5.5.0"
@@ -3048,7 +3048,7 @@
     "@ledgerhq/hw-transport-webhid" "6.20.0"
     "@ledgerhq/hw-transport-webusb" "6.20.0"
     ethereumjs-wallet "1.0.2"
-    gridplus-sdk "0.9.7"
+    gridplus-sdk "1.3.4"
     superstruct "0.15.3"
     trezor-connect "8.2.2"
 
@@ -7802,7 +7802,7 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^5.2.0, buffer@^5.2.1, buffer@^5.4.2, buffer@^5.5.0, buffer@^5.6.0:
+buffer@^5.2.0, buffer@^5.2.1, buffer@^5.5.0, buffer@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.7.1.tgz#ba62e7c13133053582197160851a8f648e99eed0"
   integrity sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
@@ -12123,11 +12123,13 @@ graphql@15.0.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.0.0.tgz#042a5eb5e2506a2e2111ce41eb446a8e570b8be9"
   integrity sha512-ZyVO1xIF9F+4cxfkdhOJINM+51B06Friuv4M66W7HzUOeFd+vNzUn4vtswYINPi6sysjf1M2Ri/rwZALqgwbaQ==
 
-gridplus-sdk@0.9.7:
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/gridplus-sdk/-/gridplus-sdk-0.9.7.tgz#fefa45c4373d02e351ea18059b49429b903d6cf5"
-  integrity sha512-n6dG93XYGplDctUaBMyDsBQzi9kWMB+/2XBzNr2uaHVBpXv8SFPSbYD+uPRUwbjIb8xcRsN0RzHL9QqMO+2vOQ==
+gridplus-sdk@1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/gridplus-sdk/-/gridplus-sdk-1.3.4.tgz#6769eb11fdc33a77c015eb3209e4065ae24d2875"
+  integrity sha512-ZkaObVzOh76lfwL9XGH1icJVGZAiRf70Qn45mc/hWKg+U9NLAgGPaLhYcBLtHw4SvlvMElBIy4XVSIdaxZJJAw==
   dependencies:
+    "@ethereumjs/common" "2.4.0"
+    "@ethereumjs/tx" "3.3.0"
     aes-js "^3.1.1"
     bech32 "^2.0.0"
     bignumber.js "^9.0.1"
@@ -12138,8 +12140,9 @@ gridplus-sdk@0.9.7:
     crc-32 "^1.2.0"
     elliptic "6.5.4"
     eth-eip712-util-browser "^0.0.3"
+    hash.js "^1.1.7"
     js-sha3 "^0.8.0"
-    rlp-browser "^1.0.1"
+    rlp "^3.0.0"
     secp256k1 "4.0.2"
     superagent "^3.8.3"
 
@@ -19295,19 +19298,17 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rlp-browser@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rlp-browser/-/rlp-browser-1.0.1.tgz#d1ea37f289359200d33dfa006d46008a288761eb"
-  integrity sha512-JU+9ntlfyKanOOPwtNuMZBmCQ/fWVoryfa7ZSYDTUKAa1zk4v2smvM0WV8BsskJuqn/DdxpO7HO2vEikMvmhOA==
-  dependencies:
-    buffer "^5.4.2"
-
 rlp@^2.0.0, rlp@^2.2.3, rlp@^2.2.4:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/rlp/-/rlp-2.2.6.tgz#c80ba6266ac7a483ef1e69e8e2f056656de2fb2c"
   integrity sha512-HAfAmL6SDYNWPUOJNrM500x4Thn4PZsEy5pijPh40U9WfNk0z15hUYzO9xVIMAdIHdFtD8CBDHd75Td1g36Mjg==
   dependencies:
     bn.js "^4.11.1"
+
+rlp@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rlp/-/rlp-3.0.0.tgz#5a60725ca4314a3a165feecca1836e4f2c1e2343"
+  integrity sha512-PD6U2PGk6Vq2spfgiWZdomLvRGDreBLxi5jv5M8EpRo3pU6VEm31KO+HFxE18Q3vgqfDrQ9pZA3FP95rkijNKw==
 
 rskjs-util@1.0.3:
   version "1.0.3"
