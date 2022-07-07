@@ -1,8 +1,7 @@
 import nock from 'nock';
 
 import { GAS_PRICE_DEFAULT } from '@config';
-import { fAccounts, fNetwork, fNetworks } from '@fixtures';
-import { WalletId } from '@types';
+import { fNetwork, fNetworks } from '@fixtures';
 import { bigify } from '@utils';
 
 import { fetchUniversalGasPriceEstimate } from './gasPriceFunctions';
@@ -21,10 +20,7 @@ jest.mock('@vendor', () => {
 describe('fetchUniversalGasPriceEstimate', () => {
   it('uses EIP 1559 if possible', () => {
     return expect(
-      fetchUniversalGasPriceEstimate(
-        { ...fNetwork, supportsEIP1559: true },
-        { ...fAccounts[1], wallet: WalletId.LEDGER_NANO_S }
-      )
+      fetchUniversalGasPriceEstimate({ ...fNetwork, supportsEIP1559: true })
     ).resolves.toStrictEqual({
       baseFee: bigify(10000000000),
       estimate: { maxFeePerGas: '20', maxPriorityFeePerGas: '3' }

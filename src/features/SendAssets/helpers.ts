@@ -40,8 +40,8 @@ import { isEmpty } from '@vendor';
 import { IFullTxParam } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
-  const { network, account } = formData;
-  const gas = isEIP1559Supported(network, account)
+  const { network } = formData;
+  const gas = isEIP1559Supported(network)
     ? {
         maxFeePerGas: inputGasPriceToHex(formData.maxFeePerGasField),
         maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),

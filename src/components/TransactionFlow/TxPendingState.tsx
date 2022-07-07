@@ -141,7 +141,7 @@ export const TxPendingState = ({
     maxPriorityFeePerGas: values.maxPriorityFeePerGasField
   });
 
-  const handleGasPriceEstimation = () => performGasPriceEstimation(network, account);
+  const handleGasPriceEstimation = () => performGasPriceEstimation(network);
   const handleGasLimitEstimation = () => performGasLimitEstimation(network, tx);
 
   const {

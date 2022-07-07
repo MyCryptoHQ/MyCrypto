@@ -120,7 +120,7 @@ export default class DexService {
       })
     });
 
-    const gasResult = await fetchUniversalGasPriceEstimate(network, account);
+    const gasResult = await fetchUniversalGasPriceEstimate(network);
     const { estimate: gas } = gasResult;
 
     const gasPrice = gas.gasPrice ?? gas.maxFeePerGas;

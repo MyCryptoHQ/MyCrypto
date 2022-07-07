@@ -19,7 +19,7 @@ import {
   getGasEstimate
 } from '@services/ApiService/Gas';
 import { translateRaw } from '@translations';
-import { GasEstimates, ITxObject, Network, StoreAccount } from '@types';
+import { GasEstimates, ITxObject, Network } from '@types';
 import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
 
 export const GasSchema = {
@@ -87,10 +87,10 @@ export const useGasForm = <Values extends FormikValues = FormikValues>({
   const [baseFee, setBaseFee] = useState<BigNumber | undefined>(undefined);
   const [legacyGasEstimates, setLegacyGasEstimates] = useState<GasEstimates>(getDefaultEstimates());
 
-  const handleGasPriceEstimation = async (network: Network, account: StoreAccount) => {
+  const handleGasPriceEstimation = async (network: Network) => {
     try {
       setIsEstimatingGasPrice(true);
-      if (!isEIP1559Supported(network, account)) {
+      if (!isEIP1559Supported(network)) {
         const data = await fetchGasPriceEstimates(network);
         setLegacyGasEstimates(data);
         setFieldValue('gasPriceSlider', data.fast.toString());
