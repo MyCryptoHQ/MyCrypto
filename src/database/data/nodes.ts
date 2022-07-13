@@ -358,6 +358,20 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://rpc-mainnet.matic.network'
     }
   ],
+  CNDL: [
+    {
+      name: NetworkUtils.makeNodeName('CNDL', 'maticvigil'),
+      type: NodeType.RPC,
+      service: 'CNDLSTANDARD',
+      url: 'https://rpc.cndlchain.com'
+    },
+    {
+      name: NetworkUtils.makeNodeName('CNDL', 'matic'),
+      type: NodeType.RPC,
+      service: 'CNDLREDUNDANCY',
+      url: 'https://candle-rpc.com'
+    }
+  ],
   xDAI: [
     {
       name: NetworkUtils.makeNodeName('xDAI', 'xdaichain.com'),
