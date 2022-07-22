@@ -1,4 +1,4 @@
-import { TCurrencySymbol, TTicker, TUuid } from '@types';
+import { TAssetType, TCurrencySymbol, TTicker, TUuid } from '@types';
 import { formatCurrency, isFiatTicker } from '@utils';
 
 import AssetIcon from './AssetIcon';
@@ -7,6 +7,7 @@ import { Body } from './NewTypography';
 
 interface Props {
   amount: string;
+  assetType?: TAssetType;
   symbol?: TCurrencySymbol;
   ticker?: TTicker;
   uuid?: TUuid;
@@ -19,6 +20,7 @@ interface Props {
 
 function Currency({
   amount,
+  assetType,
   symbol,
   ticker,
   uuid,
@@ -32,8 +34,14 @@ function Currency({
   return (
     <Box variant="rowAlign" display="inline-flex" style={{ fontSize: fontSize }} {...props}>
       {icon && uuid && <AssetIcon uuid={uuid} mr="0.5ch" size="1.2em" />}
-      <Body as="span" fontWeight={bold ? 'bold' : 'normal'} fontSize={'inherit'} color={color}>
-        {formatCurrency(amount, decimals, ticker)}
+      <Body
+        as="span"
+        fontWeight={bold ? 'bold' : 'normal'}
+        fontSize={'inherit'}
+        color={color}
+        textAlign="right"
+      >
+        {assetType !== 'erc721' && formatCurrency(amount, decimals, ticker)}
         {ticker && !isFiatTicker(ticker) && ` ${symbol ?? ticker}`}
       </Body>
     </Box>

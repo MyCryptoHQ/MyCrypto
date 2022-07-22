@@ -29,7 +29,7 @@ const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
-  assetRate: 250,
+  transferEvents: [],
   sender: constructSenderFromTxConfig(fTxConfig, [fAccount]),
   senderContact,
   recipientContact,
@@ -39,6 +39,7 @@ const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   resetFlow: noOp,
   handleTxCancelRedirect: noOp,
   handleTxSpeedUpRedirect: noOp,
+  assetRate: 250,
   baseAssetRate: 250,
   fiat: Fiats.USD,
   network: fNetwork
@@ -117,8 +118,7 @@ describe('TxReceipt', () => {
   test('it displays pending state', async () => {
     const { getAllByTestId } = getComponent({
       ...defaultProps,
-      txStatus: ITxStatus.PENDING,
-      displayTxReceipt: undefined
+      txStatus: ITxStatus.PENDING
     });
     expect(getAllByTestId('PENDING')).toBeDefined();
   });

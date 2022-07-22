@@ -118,8 +118,7 @@ export default function ConfirmTransaction({
   const ptxFee =
     ptxState && ptxState.enabled && !ptxState.isPTXFree ? ptxState.feeAmount : undefined;
   /* Get contact info */
-  const recipientContact =
-    receiverAddress && getContactByAddressAndNetworkId(receiverAddress, network.id);
+  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
@@ -259,7 +258,8 @@ export const ConfirmTransactionUI = ({
             asset={{
               amount: bigify(amount).toFixed(6),
               ticker: asset.ticker,
-              uuid: asset.uuid
+              uuid: asset.uuid,
+              type: asset.type
             }}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -279,7 +279,8 @@ export const ConfirmTransactionUI = ({
             asset={{
               amount: maxTransactionFeeBase,
               ticker: baseAsset.ticker,
-              uuid: baseAsset.uuid
+              uuid: baseAsset.uuid,
+              type: baseAsset.type
             }}
             fiat={{
               symbol: getFiat(settings).symbol,
@@ -301,7 +302,8 @@ export const ConfirmTransactionUI = ({
               asset={{
                 amount: totalEtherEgress,
                 ticker: asset.ticker,
-                uuid: asset.uuid
+                uuid: asset.uuid,
+                type: asset.type
               }}
               fiat={{
                 symbol: getFiat(settings).symbol,
@@ -314,7 +316,8 @@ export const ConfirmTransactionUI = ({
               asset={{
                 amount: amount,
                 ticker: asset.ticker,
-                uuid: asset.uuid
+                uuid: asset.uuid,
+                type: asset.type
               }}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
               fiat={{
@@ -341,7 +344,8 @@ export const ConfirmTransactionUI = ({
                 asset={{
                   amount: ptxFee.amount!.toFixed(6),
                   ticker: asset.ticker,
-                  uuid: asset.uuid
+                  uuid: asset.uuid,
+                  type: asset.type
                 }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
@@ -361,7 +365,8 @@ export const ConfirmTransactionUI = ({
                 asset={{
                   amount: ptxFee.fee!.toFixed(6),
                   ticker: asset.ticker,
-                  uuid: asset.uuid
+                  uuid: asset.uuid,
+                  type: asset.type
                 }}
                 fiat={{
                   symbol: getFiat(settings).symbol,

@@ -38,7 +38,12 @@ export const FaucetReceiptBanner = ({
           {translate('CONFIRM_TX_RECEIVED')}
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          <Currency amount={formattedReceived} ticker={baseAsset.ticker} />
+          <Currency
+            amount={formattedReceived}
+            icon={true}
+            uuid={baseAsset.uuid}
+            ticker={baseAsset.ticker}
+          />
         </div>
       </div>
     </>

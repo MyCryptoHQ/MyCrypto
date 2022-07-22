@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
-import EthAddress from './EthAddress';
+import { EthAddress } from './EthAddress';
 import { Identicon } from './Identicon';
 import Tooltip from './Tooltip';
 import Typography from './Typography';

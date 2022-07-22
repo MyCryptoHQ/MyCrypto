@@ -11,6 +11,7 @@ import {
 import { formatEther } from '@ethersproject/units';
 
 import { CREATION_ADDRESS } from '@config';
+import { ITxHistoryEntry } from '@services';
 import { fetchUniversalGasPriceEstimate, getGasEstimate } from '@services/ApiService';
 import { decodeTransfer, ERC20, getNonce, ProviderHandler } from '@services/EthService';
 import { decodeApproval } from '@services/EthService/contracts/token';
@@ -105,26 +106,25 @@ export const toTxReceipt = (txHash: ITxHash, status: ITxHistoryStatus) => (
   txConfig: ITxConfig,
   metadata?: ITxMetadata
 ): ITxReceipt => {
-  const { rawTransaction, asset, baseAsset, amount } = txConfig;
+  const { rawTransaction, asset, baseAsset, amount, receiverAddress } = txConfig;
   const { data, gasLimit, nonce } = rawTransaction;
 
   const gas = formatGas(rawTransaction);
-
-  const txReceipt = {
+  const to = (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress;
+  const from = getAddress(txConfig.from) as TAddress;
+  const txReceipt: ITxReceipt = {
     ...gas,
     hash: txHash,
-    from: getAddress(txConfig.from) as TAddress,
+    from,
     receiverAddress: (txConfig.receiverAddress && getAddress(txConfig.receiverAddress)) as TAddress,
     gasLimit: BigNumber.from(gasLimit),
     value: BigNumber.from(txConfig.rawTransaction.value),
-    to: (txConfig.rawTransaction.to && getAddress(txConfig.rawTransaction.to)) as TAddress,
+    to,
     nonce: BigNumber.from(nonce),
-
+    valueTransfers: [{ from, to: receiverAddress ?? to, asset, amount }],
     status,
-    amount,
     data,
     txType,
-    asset,
     baseAsset,
     blockNumber: 0,
     timestamp: 0,
@@ -241,9 +241,7 @@ export const makeTxConfigFromSignedTx = (
     receiverAddress: (contractAsset
       ? decodeTransfer(decodedTx.data)._to
       : decodedTx.to) as TAddress,
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
-      : bigNumValueToViewableEther(decodedTx.value),
+    amount: deriveAmount(decodedTx.data, decodedTx.value, contractAsset),
     networkId: networkDetected?.id ?? networkId,
     asset: contractAsset ?? baseAsset,
     baseAsset,
@@ -301,8 +299,8 @@ export const makeTxConfigFromTx = (
   return txConfig;
 };
 
-export const makeTxConfigFromTxReceipt = (
-  txReceipt: ITxReceipt,
+export const makeTxConfigFromTxHistoryEntry = (
+  txReceipt: ITxHistoryEntry,
   assets: ExtendedAsset[],
   network: Network,
   accounts: StoreAccount[]
@@ -329,12 +327,10 @@ export const makeTxConfigFromTxReceipt = (
       type: txReceipt.type as any
     },
     receiverAddress: receiver && (getAddress(receiver) as TAddress),
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
-      : txReceipt.amount,
     networkId: network.id,
     asset: contractAsset ?? baseAsset,
     baseAsset,
+    amount: deriveAmount(txReceipt.data, txReceipt.value, contractAsset),
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
   };
@@ -559,3 +555,8 @@ export const makeTxFromForm = (
     chainId: form.network.chainId
   };
 };
+
+export const deriveAmount = (data: string, value: BigNumber, contractAsset: Asset | undefined) =>
+  contractAsset
+    ? fromTokenBase(toWei(decodeTransfer(data)._value, 0), contractAsset.decimal)
+    : bigNumValueToViewableEther(value);

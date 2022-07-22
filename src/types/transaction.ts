@@ -30,13 +30,11 @@ export type ITxHash = Brand<string, 'TxHash'>;
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
 export interface IBaseTxReceipt {
-  readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
   readonly status: ITxStatus.PENDING | ITxStatus.SUCCESS | ITxStatus.FAILED | ITxStatus.UNKNOWN;
 
   readonly receiverAddress: TAddress;
-  readonly amount: string;
   readonly data: string;
 
   readonly gasLimit: BigNumber;
@@ -47,7 +45,7 @@ export interface IBaseTxReceipt {
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;
-
+  readonly valueTransfers: IFullTxHistoryValueTransfer[];
   readonly gasUsed?: BigNumber;
   readonly confirmations?: number;
 
@@ -89,3 +87,10 @@ export type IFinishedTxReceipt = DistributiveOmit<
   timestamp: number;
   blockNumber: number;
 };
+
+export interface IFullTxHistoryValueTransfer {
+  readonly from: TAddress;
+  readonly to: TAddress;
+  readonly asset: Asset;
+  readonly amount?: string; // Hex
+}

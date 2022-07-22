@@ -187,6 +187,23 @@ export const migrations = {
         };
       })
     };
+  },
+  7: (state: DataStore) => {
+    return {
+      ...state,
+      accounts: state.accounts.map((account) => {
+        if (!account.transactions || account.transactions.length === 0) {
+          return account;
+        }
+        const newTransactions = account.transactions.map((t) => {
+          return { ...t, asset: undefined, amount: undefined, valueTransfers: [] };
+        });
+        return {
+          ...account,
+          transactions: newTransactions
+        };
+      })
+    };
   }
 };
 

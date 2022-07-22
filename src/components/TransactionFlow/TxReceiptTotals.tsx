@@ -4,9 +4,21 @@ import { Amount } from '@components';
 import Icon from '@components/Icon';
 import { getFiat } from '@config';
 import { BREAK_POINTS, SPACING } from '@theme';
-import translate from '@translations';
+import translate, { translateRaw } from '@translations';
 import { ExtendedAsset, ISettings, ITxObject } from '@types';
-import { bigify, convertToFiat, fromWei, isType2Tx, totalTxFeeToWei, Wei } from '@utils';
+import {
+  bigify,
+  bigNumValueToViewableEther,
+  convertToFiat,
+  fromWei,
+  isType2Tx,
+  totalTxFeeToWei,
+  useScreenSize,
+  Wei
+} from '@utils';
+
+import { TokenTransferTable } from './displays';
+import { ITxTransferEvent } from './TxReceipt';
 
 const SIcon = styled(Icon)`
   height: 25px;
@@ -16,9 +28,9 @@ const SIcon = styled(Icon)`
     display: none;
   }
 `;
+
 interface Props {
-  asset: ExtendedAsset;
-  assetAmount: string;
+  transferEvents: ITxTransferEvent[];
   baseAsset: ExtendedAsset;
   settings: ISettings;
   gasUsed: string;
@@ -29,16 +41,15 @@ interface Props {
 }
 
 export const TxReceiptTotals = ({
-  asset,
-  assetAmount,
+  transferEvents,
   baseAsset,
   settings,
   gasUsed,
   value,
   rawTransaction,
-  assetRate,
   baseAssetRate
 }: Props) => {
+  const { isMobile } = useScreenSize();
   const gasPrice = isType2Tx(rawTransaction)
     ? rawTransaction.maxFeePerGas
     : rawTransaction.gasPrice;
@@ -49,9 +60,15 @@ export const TxReceiptTotals = ({
   const totalWei = feeWei.plus(valueWei);
   const totalEtherFormatted = bigify(fromWei(totalWei, 'ether')).toFixed(6);
   const fiat = getFiat(settings);
-
   return (
     <>
+      {transferEvents.filter((t) => t.asset.type === 'erc20').length > 0 && (
+        <TokenTransferTable
+          isMobile={isMobile}
+          valueTransfers={transferEvents}
+          settings={settings}
+        />
+      )}
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-send" alt="Sent" />
@@ -60,14 +77,18 @@ export const TxReceiptTotals = ({
         <div className="TransactionReceipt-row-column rightAligned">
           <Amount
             asset={{
-              amount: bigify(assetAmount).toFixed(6),
-              ticker: asset.ticker,
-              uuid: asset.uuid
+              amount: bigify(bigNumValueToViewableEther(value).toString()).toFixed(5),
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid,
+              type: 'base'
             }}
             fiat={{
               symbol: fiat.symbol,
               ticker: fiat.ticker,
-              amount: convertToFiat(assetAmount, assetRate).toFixed(2)
+              amount: convertToFiat(
+                bigNumValueToViewableEther(value).toString(),
+                baseAssetRate
+              ).toFixed(2)
             }}
           />
         </div>
@@ -81,7 +102,8 @@ export const TxReceiptTotals = ({
             asset={{
               amount: feeFormatted,
               ticker: baseAsset.ticker,
-              uuid: baseAsset.uuid
+              uuid: baseAsset.uuid,
+              type: 'base'
             }}
             fiat={{
               symbol: fiat.symbol,
@@ -97,40 +119,22 @@ export const TxReceiptTotals = ({
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           <SIcon type="tx-sent" alt="Sent" />
-          {translate('TOTAL')}
+          {translateRaw('TOTAL')}:
         </div>
         <div className="TransactionReceipt-row-column rightAligned">
-          {asset.type === 'base' ? (
-            <Amount
-              asset={{
-                amount: totalEtherFormatted,
-                ticker: asset.ticker,
-                uuid: asset.uuid
-              }}
-              fiat={{
-                symbol: fiat.symbol,
-                ticker: fiat.ticker,
-                amount: convertToFiat(totalEtherFormatted, assetRate).toFixed(2)
-              }}
-            />
-          ) : (
-            <Amount
-              asset={{
-                amount: assetAmount,
-                ticker: asset.ticker,
-                uuid: asset.uuid
-              }}
-              fiat={{
-                symbol: fiat.symbol,
-                ticker: fiat.ticker,
-                amount: convertToFiat(assetAmount, assetRate)
-                  .plus(convertToFiat(totalEtherFormatted, baseAssetRate))
-                  .toFixed(2)
-              }}
-              bold={true}
-              baseAssetValue={`+ ${totalEtherFormatted} ${baseAsset.ticker}`}
-            />
-          )}
+          <Amount
+            asset={{
+              amount: totalEtherFormatted,
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid,
+              type: 'base'
+            }}
+            fiat={{
+              symbol: fiat.symbol,
+              ticker: fiat.ticker,
+              amount: convertToFiat(totalEtherFormatted, baseAssetRate).toFixed(2)
+            }}
+          />
         </div>
       </div>
     </>

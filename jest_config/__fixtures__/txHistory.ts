@@ -1,6 +1,10 @@
+import { BigNumber } from '@ethersproject/bignumber';
+
+import { DEFAULT_NETWORK, DEFAULT_NETWORK_CHAINID } from '@config';
 import { ITxHistoryApiResponse } from '@services/ApiService/History';
 import { ITxHistoryState, ITxMetaTypes } from '@store/txHistory.slice';
 import {
+  IFullTxHistoryValueTransfer,
   ITxData,
   ITxGasLimit,
   ITxGasPrice,
@@ -11,6 +15,9 @@ import {
   ITxValue,
   TAddress
 } from '@types';
+import { fromWei, generateGenericBase, generateGenericERC20, Wei } from '@utils';
+
+import { fAssets } from './assets';
 
 export const fTxHistoryAPI: ITxHistoryApiResponse = {
   to: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d' as TAddress,
@@ -70,4 +77,41 @@ export const fTxHistory: ITxHistoryState = {
   history: [],
   txTypeMeta: fTxTypeMetas,
   error: ''
+};
+
+export const fValueTransfers: IFullTxHistoryValueTransfer[] = [
+  {
+    to: fTxHistoryAPI.erc20Transfers[0].to,
+    from: fTxHistoryAPI.erc20Transfers[0].from,
+    asset: generateGenericERC20(
+      fTxHistoryAPI.erc20Transfers[0].contractAddress,
+      DEFAULT_NETWORK_CHAINID.toString(),
+      DEFAULT_NETWORK
+    ),
+    amount: undefined
+  },
+  {
+    to: fTxHistoryAPI.erc20Transfers[1].to,
+    from: fTxHistoryAPI.erc20Transfers[1].from,
+    asset: generateGenericERC20(
+      fTxHistoryAPI.erc20Transfers[1].contractAddress,
+      DEFAULT_NETWORK_CHAINID.toString(),
+      DEFAULT_NETWORK
+    ),
+    amount: undefined
+  }
+];
+
+export const fBaseValueTransfer: IFullTxHistoryValueTransfer = {
+  to: fTxHistoryAPI.recipientAddress,
+  from: fTxHistoryAPI.from,
+  asset: fAssets[0],
+  amount: fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether')
+};
+
+export const fIncExchangeValueTransfer: IFullTxHistoryValueTransfer = {
+  to: fTxHistoryAPI.from,
+  from: fTxHistoryAPI.recipientAddress,
+  asset: generateGenericBase(DEFAULT_NETWORK_CHAINID.toString(), DEFAULT_NETWORK),
+  amount: undefined
 };

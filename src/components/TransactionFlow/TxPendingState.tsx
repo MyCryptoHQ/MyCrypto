@@ -37,11 +37,11 @@ import {
 } from '@utils';
 
 interface Props {
+  baseAssetRate: number;
   network: Network;
   txConfig: ITxConfig;
   txReceipt: ITxReceipt;
   fiat: Fiat;
-  baseAssetRate: number;
   showDetails(): void;
   setLabel?(label: string): void;
 }

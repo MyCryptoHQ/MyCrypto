@@ -55,7 +55,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const accounts = useSelector(getStoreAccounts);
   const txHistory = useSelector(getMergedTxHistory);
 
-  const defaultTxHash = qs.hash ? qs.hash : '';
+  const defaultTxHash = qs.hash ?? '';
   const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);
@@ -89,7 +89,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
           dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_ERROR });
         });
     }
-  }, [fetching]);
+  }, [fetching, txHistory.length]);
 
   const handleSubmit = (fromLinkSharing: boolean) => {
     dispatch({ type: txStatusReducer.actionTypes.FETCH_TX, payload: fromLinkSharing });
@@ -102,7 +102,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
   const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
-
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
       <Wrapper fullPageLoading={fullPageLoading ?? false}>

@@ -4,7 +4,7 @@ import { fireEvent, simpleRender } from 'test-utils';
 
 import { noOp, truncate } from '@utils';
 
-import EthAddress from '../EthAddress';
+import { EthAddress } from '../EthAddress';
 
 const defaultProps: ComponentProps<typeof EthAddress> = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',

@@ -5,7 +5,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
-import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
+import { ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
 import {
   Asset,
   AssetBalanceObject,
@@ -51,7 +51,7 @@ import { toStoreAccount } from '../utils';
 import { getAssetByUUID, getAssets } from './asset.slice';
 import { createOrUpdateContacts, selectAccountContact, selectContacts } from './contact.slice';
 import { selectContracts } from './contract.slice';
-import { sanitizeAccount } from './helpers';
+import { buildTxHistoryEntry, sanitizeAccount } from './helpers';
 import { fetchMemberships } from './membership.slice';
 import { getNetwork, selectNetworks } from './network.slice';
 import { displayNotification } from './notification.slice';
@@ -259,32 +259,25 @@ export const getMergedTxHistory = createSelector(
     const ethNetwork = networks.find(({ id }) => id === 'Ethereum')!;
 
     const apiTxs = txHistory ? txHistory.map((tx) => makeTxReceipt(tx, ethNetwork, assets)) : [];
+    const accountsMap = accounts.reduce<Record<string, boolean>>(
+      (acc, cur) => ({
+        ...acc,
+        [cur.uuid]: true
+      }),
+      {}
+    );
 
     return (
       merge(apiTxs, accountTxs)
-        .map((tx: ITxReceipt) => {
-          const network = networks.find(({ id }) => tx.asset.networkId === id) as Network;
-
-          // if Txhistory contains a deleted network ie. MATIC remove from history.
-          if (!network) return {} as ITxHistoryEntry;
-
-          const toAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
-            tx.receiverAddress || tx.to,
-            network.id
-          );
-          const fromAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
-            tx.from,
-            network.id
-          );
-          return {
-            ...tx,
-            timestamp: tx.timestamp ?? 0,
-            txType: deriveTxType(txTypeMetas, accounts, tx),
-            toAddressBookEntry,
-            fromAddressBookEntry,
-            networkId: network.id
-          };
-        })
+        .map(
+          buildTxHistoryEntry(
+            networks,
+            contacts,
+            contracts,
+            assets,
+            accounts
+          )(txTypeMetas, accountsMap)
+        )
         // Remove eventual empty items from list
         .filter((item) => !isEmpty(item))
     );
@@ -498,14 +491,14 @@ export function* pendingTxPolling() {
   for (const pendingTxReceipt of pendingTransactions) {
     const senderAccount = getAccountByAddressAndNetworkName(accounts)(
       pendingTxReceipt.from,
-      pendingTxReceipt.asset.networkId
+      pendingTxReceipt.baseAsset.networkId
     ) as StoreAccount;
 
     const recipientAccount =
       pendingTxReceipt.to &&
       (getAccountByAddressAndNetworkName(accounts)(
         pendingTxReceipt.to,
-        pendingTxReceipt.asset.networkId
+        pendingTxReceipt.baseAsset.networkId
       ) as StoreAccount);
 
     // In special cases this might not be true, i.e Faucet txs
@@ -518,7 +511,7 @@ export function* pendingTxPolling() {
       const overwritingTx = userTxs.find(
         (t) =>
           t.nonce === pendingTxReceipt.nonce &&
-          t.asset.networkId === pendingTxReceipt.asset.networkId &&
+          t.baseAsset.networkId === pendingTxReceipt.baseAsset.networkId &&
           t.hash !== pendingTxReceipt.hash &&
           t.status === ITxStatus.SUCCESS
       );
@@ -533,7 +526,7 @@ export function* pendingTxPolling() {
       }
     }
 
-    const network = getNetworkById(pendingTxReceipt.asset.networkId, networks);
+    const network = getNetworkById(pendingTxReceipt.baseAsset.networkId, networks);
     // If network is not found in the pendingTransactionObject, we cannot continue.
     if (!network) continue;
     const provider = new ProviderHandler(network);

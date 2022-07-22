@@ -356,7 +356,8 @@ export const ProtectTxProtectionUI = ({
             <Amount
               asset={{
                 amount: feeAmount?.fee?.toFixed(6) ?? '--',
-                ticker: DEFAULT_NETWORK_TICKER
+                ticker: DEFAULT_NETWORK_TICKER,
+                type: 'base'
               }}
               fiat={{
                 symbol: fiat.symbol,
@@ -371,7 +372,8 @@ export const ProtectTxProtectionUI = ({
             <Amount
               asset={{
                 amount: feeAmount?.fee?.toFixed(6) ?? '---',
-                ticker: DEFAULT_NETWORK_TICKER
+                ticker: DEFAULT_NETWORK_TICKER,
+                type: 'base'
               }}
               fiat={{
                 symbol: fiat.symbol,

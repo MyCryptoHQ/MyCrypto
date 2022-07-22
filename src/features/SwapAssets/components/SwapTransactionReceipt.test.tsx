@@ -2,9 +2,11 @@ import { ComponentProps } from 'react';
 
 import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
+import { ZEROX_SWAP_PROXY } from '@config';
 import { stepsContent } from '@features/SwapAssets/config';
 import { fAccount, fAccounts, fAssets, fDAI, fTxParcels } from '@fixtures';
 import { translateRaw } from '@translations';
+import { ITxType, TAddress } from '@types';
 import { bigify, noOp, truncate } from '@utils';
 
 import { SwapTransactionReceipt } from '.';
@@ -53,7 +55,26 @@ describe('SwapTransactionReceipt', () => {
   test('it renders multi tx', async () => {
     const { getByText } = getComponent({
       ...defaultProps,
-      transactions: [fTxParcels[0], fTxParcels[0]]
+      transactions: [
+        {
+          ...fTxParcels[0],
+          txType: ITxType.APPROVAL,
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: fDAI.contractAddress as TAddress
+          }
+        },
+        {
+          ...fTxParcels[0],
+          txRaw: {
+            ...fTxParcels[0].txRaw,
+            from: fAccounts[0].address,
+            to: ZEROX_SWAP_PROXY as TAddress
+          },
+          txType: ITxType.SWAP
+        }
+      ]
     });
     expect(getByText(stepsContent[0].title)).toBeDefined();
   });

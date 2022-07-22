@@ -19,13 +19,18 @@ import { getFiat } from '@config/fiats';
 import { ITxHistoryEntry, useRates, useSettings } from '@services';
 import { txIsFailed, txIsPending, txIsSuccessful } from '@services/Store/helpers';
 import { getMergedTxHistory, useSelector } from '@store';
-import { getTxTypeMetas } from '@store/txHistory.slice';
+import { getTxTypeMetas, ITxMetaTypes } from '@store/txHistory.slice';
 import { COLORS } from '@theme';
 import { translateRaw } from '@translations';
-import { Asset, ITxStatus, StoreAccount, TxType } from '@types';
-import { bigify, convertToFiat, isSameAddress, useScreenSize } from '@utils';
+import { Asset, ExtendedAsset, ISettings, ITxStatus, StoreAccount, TTicker, TxType } from '@types';
+import {
+  addBaseAssetValueTransfer,
+  bigify,
+  generateDeterministicAddressUUID,
+  useScreenSize
+} from '@utils';
 
-import { constructTxTypeConfig } from './helpers';
+import { constructTxTypeConfig, sumValueTransfers } from './helpers';
 import NoTransactions from './NoTransactions';
 import TransactionLabel from './TransactionLabel';
 
@@ -36,7 +41,7 @@ interface Props {
 
 export interface ITxTypeConfigObj {
   icon(): any;
-  label(asset: Asset): string;
+  label(assetTxTypeDesignation: string): string;
 }
 
 const SAssetIcon = styled(AssetIcon)`
@@ -65,7 +70,7 @@ const SCombinedCircle = (asset: Asset) => {
   );
 };
 
-const makeTxIcon = (txConfig: ITxTypeConfigObj, asset: Asset) => {
+const makeTxIcon = (txConfig: ITxTypeConfigObj, asset?: Asset) => {
   const greyscaleIcon = asset && <>{SCombinedCircle(asset)}</>;
   const baseIcon = (
     <Box mr="16px" position="relative">
@@ -82,23 +87,60 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const txTypeMetas = useSelector(getTxTypeMetas);
   const txHistory = useSelector(getMergedTxHistory);
   const { isMobile } = useScreenSize();
-
-  const accountTxs = useMemo(
+  const accountsMap = accountsList.reduce<Record<string, boolean>>(
+    (acc, cur) => ({
+      ...acc,
+      [cur.uuid]: true
+    }),
+    {}
+  );
+  const accountTxs = useMemo<ITxHistoryEntry[]>(
     () =>
       txHistory
-        .filter((tx) =>
-          accountsList.some(
-            (a) => isSameAddress(a.address, tx.to) || isSameAddress(a.address, tx.from)
-          )
+        .filter(
+          (tx) =>
+            accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.to)] ??
+            accountsMap[generateDeterministicAddressUUID(tx.networkId, tx.from)]
         )
         .map(({ txType, ...tx }) => ({ ...tx, txType: txType as TxType })),
     [txHistory, accountsList.length]
   );
 
+  return (
+    <RecentTransactionsListUI
+      accountsMap={accountsMap}
+      accountTxs={accountTxs}
+      txTypeMetas={txTypeMetas}
+      isMobile={isMobile}
+      settings={settings}
+      className={className}
+      getAssetRate={getAssetRate}
+    />
+  );
+}
+
+interface UIProps {
+  accountTxs: ITxHistoryEntry[];
+  txTypeMetas: ITxMetaTypes;
+  accountsMap: Record<string, boolean>;
+  isMobile: boolean;
+  settings: ISettings;
+  getAssetRate(asset: ExtendedAsset): number;
+  className?: string;
+}
+
+export const RecentTransactionsListUI = ({
+  accountTxs,
+  txTypeMetas,
+  accountsMap,
+  isMobile,
+  settings,
+  getAssetRate,
+  className = ''
+}: UIProps) => {
   const pending = accountTxs.filter(txIsPending);
   const completed = accountTxs.filter(txIsSuccessful);
   const failed = accountTxs.filter(txIsFailed);
-
   const createEntries = (_: string, collection: ITxHistoryEntry[]) =>
     collection.map(
       ({
@@ -107,14 +149,17 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         status,
         from,
         to,
+        baseAsset,
         receiverAddress,
-        amount,
-        asset,
+        valueTransfers,
+        value,
         fromAddressBookEntry,
         toAddressBookEntry,
         networkId,
-        txType
+        txType,
+        displayAsset
       }) => {
+        let displayValueTransfers = valueTransfers;
         const labelFromProps = {
           addressBookEntry: fromAddressBookEntry,
           address: from,
@@ -126,12 +171,31 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           address: recipient,
           networkId
         };
-        const entryConfig = constructTxTypeConfig(txTypeMetas[txType] || { type: txType });
+        // We don't want the actual txReceipt to have a zero value transfer in it's arr of value transfers, but
+        // we DO want to display 0 ETH on a transaction in the RecentTransactionsList if the tx has no value transfers. Improves display in-app
+        if (displayValueTransfers.length === 0) {
+          displayValueTransfers = addBaseAssetValueTransfer(
+            displayValueTransfers,
+            from,
+            to,
+            value.toString(),
+            baseAsset
+          );
+        }
+        const entryConfig = constructTxTypeConfig(txTypeMetas[txType] ?? { type: txType });
+        const sentValueTransfers = displayValueTransfers.filter(
+          (t) => accountsMap[generateDeterministicAddressUUID(networkId, t.from)]
+        );
+        const receivedValueTransfers = displayValueTransfers.filter(
+          (t) => accountsMap[generateDeterministicAddressUUID(networkId, t.to)]
+        );
+        const receivedFiatValue = sumValueTransfers(receivedValueTransfers, getAssetRate);
+        const sentFiatValue = sumValueTransfers(sentValueTransfers, getAssetRate);
         return [
           <TransactionLabel
             key={0}
-            image={makeTxIcon(entryConfig, asset)}
-            label={entryConfig.label(asset)}
+            image={makeTxIcon(entryConfig, displayAsset)}
+            label={entryConfig.label(displayAsset ? displayAsset.ticker : translateRaw('ASSETS'))}
             stage={status}
             date={timestamp}
           />,
@@ -150,21 +214,86 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
             />
           ),
           <Box key={3}>
-            <Amount
-              // Adapt alignment for mobile display
-              alignLeft={isMobile}
-              asset={{
-                amount: bigify(amount).toFixed(5),
-                ticker: asset.ticker
-              }}
-              fiat={{
-                symbol: getFiat(settings).symbol,
-                ticker: getFiat(settings).ticker,
-                amount: convertToFiat(amount, getAssetRate(asset)).toFixed(2)
-              }}
-            />
+            {sentValueTransfers.length > 1 && (
+              <Amount
+                // Adapt alignment for mobile display
+                alignLeft={isMobile}
+                useExistingDecimals={true}
+                asset={{
+                  amount: sentValueTransfers.length.toString(),
+                  ticker: translateRaw('ASSETS') as TTicker,
+                  type: 'erc20'
+                }}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
+                  amount: sentFiatValue.toFixed(2)
+                }}
+              />
+            )}
+            {sentValueTransfers.length === 1 && (
+              <>
+                {sentValueTransfers[0].amount ? (
+                  <Amount
+                    alignLeft={isMobile}
+                    asset={{
+                      amount: bigify(sentValueTransfers[0].amount).toFixed(5),
+                      ticker: sentValueTransfers[0].asset.ticker,
+                      type: sentValueTransfers[0].asset.type
+                    }}
+                    fiat={{
+                      symbol: getFiat(settings).symbol,
+                      ticker: getFiat(settings).ticker,
+                      amount: sentFiatValue.toFixed(2)
+                    }}
+                  />
+                ) : (
+                  <Amount alignLeft={isMobile} text={sentValueTransfers[0].asset.name} />
+                )}
+              </>
+            )}
           </Box>,
-          <Box key={4} variant="rowCenter">
+          <Box key={4}>
+            {receivedValueTransfers.length > 1 && (
+              <Amount
+                // Adapt alignment for mobile display
+                alignLeft={isMobile}
+                useExistingDecimals={true}
+                asset={{
+                  amount: receivedValueTransfers.length.toString(),
+                  ticker: translateRaw('ASSETS') as TTicker,
+                  type: 'erc20'
+                }}
+                fiat={{
+                  symbol: getFiat(settings).symbol,
+                  ticker: getFiat(settings).ticker,
+                  amount: receivedFiatValue.toFixed(2)
+                }}
+              />
+            )}
+            {receivedValueTransfers.length === 1 && (
+              <>
+                {receivedValueTransfers[0].amount ? (
+                  <Amount
+                    alignLeft={isMobile}
+                    asset={{
+                      amount: bigify(receivedValueTransfers[0].amount).toFixed(5),
+                      ticker: receivedValueTransfers[0].asset.ticker,
+                      type: receivedValueTransfers[0].asset.type
+                    }}
+                    fiat={{
+                      symbol: getFiat(settings).symbol,
+                      ticker: getFiat(settings).ticker,
+                      amount: receivedFiatValue.toFixed(2)
+                    }}
+                  />
+                ) : (
+                  <Amount alignLeft={isMobile} text={receivedValueTransfers[0].asset.name} />
+                )}
+              </>
+            )}
+          </Box>,
+          <Box key={5} variant="rowCenter">
             <LinkApp href={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}>
               {isMobile ? (
                 translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')
@@ -202,7 +331,8 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       translateRaw('RECENT_TRANSACTIONS_DATE') || 'Date',
       translateRaw('RECENT_TRANSACTIONS_FROM_ADDRESS'),
       translateRaw('RECENT_TRANSACTIONS_TO_ADDRESS'),
-      translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT'),
+      translateRaw('RECENT_TRANSACTIONS_SENT_ASSETS'),
+      translateRaw('RECENT_TRANSACTIONS_RECEIVED_ASSETS'),
       ''
     ],
     body: [],
@@ -213,8 +343,9 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       sortFunction: () => (a: any, b: any) => b.props.date - a.props.date,
       hiddenHeadings: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
       iconColumns: [translateRaw('RECENT_TRANSACTIONS_VIEW_MORE')],
-      reversedColumns: [translateRaw('RECENT_TRANSACTIONS_TO_AMOUNT')]
-    }
+      reversedColumns: []
+    },
+    overlayRows: [0]
   };
   return (
     <DashboardPanel
@@ -228,4 +359,4 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       )}
     </DashboardPanel>
   );
-}
+};

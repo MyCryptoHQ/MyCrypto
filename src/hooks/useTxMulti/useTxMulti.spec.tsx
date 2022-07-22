@@ -186,6 +186,21 @@ describe('useTxMulti', () => {
       await r.current.sendTx('0x' as ITxHash);
     });
 
+    await waitFor(() =>
+      expect(mockDispatch).toHaveBeenCalledWith(
+        actionWithPayload(
+          expect.objectContaining({
+            tx: expect.objectContaining({
+              baseAsset: fAssets[1],
+              hash: '0x1',
+              txType: ITxType.APPROVAL,
+              status: ITxStatus.PENDING
+            })
+          })
+        )
+      )
+    );
+
     await waitFor(() => expect(r.current.currentTx.txRaw.value).toBe('0x02'));
 
     await act(async () => {
@@ -198,23 +213,6 @@ describe('useTxMulti', () => {
         actionWithPayload(
           expect.objectContaining({
             tx: expect.objectContaining({
-              asset: fAssets[1],
-              baseAsset: fAssets[1],
-              hash: '0x1',
-              txType: ITxType.APPROVAL,
-              status: ITxStatus.PENDING
-            })
-          })
-        )
-      )
-    );
-
-    await waitFor(() =>
-      expect(mockDispatch).toHaveBeenCalledWith(
-        actionWithPayload(
-          expect.objectContaining({
-            tx: expect.objectContaining({
-              asset: fAssets[1],
               baseAsset: fAssets[1],
               hash: '0x2',
               txType: ITxType.PURCHASE_MEMBERSHIP,

@@ -8,47 +8,48 @@ import outbound from '@assets/images/transactions/outbound.svg';
 import swap from '@assets/images/transactions/swap.svg';
 import transfer from '@assets/images/transactions/transfer.svg';
 import { translateRaw } from '@translations';
-import { Asset, ITxTypeMeta } from '@types';
+import { ExtendedAsset, IFullTxHistoryValueTransfer, ITxTypeMeta } from '@types';
+import { bigify, convertToFiat } from '@utils';
 
 import { ITxHistoryType } from '../types';
 import { ITxTypeConfigObj } from './RecentTransactionList';
 
 export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeConfigObj => ({
-  label: (asset: Asset) => {
+  label: (assetTxTypeDesignation: string) => {
     switch (type) {
       default:
         return protocol
           ? translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
-              $platform: translateRaw(protocol, { $ticker: asset.ticker }),
-              $action: translateRaw(`PLATFORM_${type}`, { $ticker: asset.ticker })
+              $platform: translateRaw(protocol, { $ticker: assetTxTypeDesignation }),
+              $action: translateRaw(`PLATFORM_${type}`, { $ticker: assetTxTypeDesignation })
             })
-          : translateRaw(`PLATFORM_${type}`, { $ticker: asset.ticker });
+          : translateRaw(`PLATFORM_${type}`, { $ticker: assetTxTypeDesignation });
       case 'GENERIC_CONTRACT_CALL' as ITxHistoryType:
       case ITxHistoryType.CONTRACT_INTERACT:
         return translateRaw('RECENT_TX_LIST_LABEL_CONTRACT_INTERACT', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.INBOUND:
         return translateRaw('RECENT_TX_LIST_LABEL_RECEIVED', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.OUTBOUND:
         return translateRaw('RECENT_TX_LIST_LABEL_SENT', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.TRANSFER:
         return translateRaw('RECENT_TX_LIST_LABEL_TRANSFERRED', {
-          $ticker: asset.ticker || translateRaw('UNKNOWN')
+          $ticker: assetTxTypeDesignation ?? translateRaw('UNKNOWN')
         });
       case ITxHistoryType.REP_TOKEN_MIGRATION:
       case ITxHistoryType.GOLEM_TOKEN_MIGRATION:
       case ITxHistoryType.ANT_TOKEN_MIGRATION:
         return protocol
           ? translateRaw('RECENT_TX_LIST_PLATFORM_INTERACTION', {
-              $platform: translateRaw(protocol, { $ticker: asset.ticker }),
-              $action: translateRaw(`PLATFORM_MIGRATION`, { $ticker: asset.ticker })
+              $platform: translateRaw(protocol, { $ticker: assetTxTypeDesignation }),
+              $action: translateRaw(`PLATFORM_MIGRATION`, { $ticker: assetTxTypeDesignation })
             })
-          : translateRaw(`PLATFORM_MIGRATION`, { $ticker: asset.ticker });
+          : translateRaw(`PLATFORM_MIGRATION`, { $ticker: assetTxTypeDesignation });
       case ITxHistoryType.PURCHASE_MEMBERSHIP:
         return translateRaw('PLATFORM_MEMBERSHIP_PURCHASED');
     }
@@ -97,3 +98,11 @@ export const constructTxTypeConfig = ({ type, protocol }: ITxTypeMeta): ITxTypeC
     }
   }
 });
+
+export const sumValueTransfers = (
+  valueTransfers: IFullTxHistoryValueTransfer[],
+  getAssetRate: (asset: ExtendedAsset) => number
+) =>
+  valueTransfers.reduce((acc, cur) => {
+    return cur.amount ? acc.plus(convertToFiat(cur.amount, getAssetRate(cur.asset))) : acc;
+  }, bigify('0'));

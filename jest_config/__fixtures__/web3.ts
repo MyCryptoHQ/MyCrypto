@@ -18,7 +18,7 @@ export const RequestPermissionsReturn: Web3RequestPermissionsResponse = {
         },
         {
           type: 'filterResponse',
-          value: ['0x5197b5b062288bbf29008c92b08010a92dd677cd' as TAddress],
+          value: ['0x5197B5b062288Bbf29008C92B08010a92Dd677CD' as TAddress],
           name: 'exposedAccounts'
         }
       ]

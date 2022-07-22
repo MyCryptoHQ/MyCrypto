@@ -457,7 +457,8 @@
     "RECENT_TRANSACTIONS_DATE": "Date",
     "RECENT_TRANSACTIONS_FROM_ADDRESS": "From",
     "RECENT_TRANSACTIONS_TO_ADDRESS": "To",
-    "RECENT_TRANSACTIONS_TO_AMOUNT": "Amount",
+    "RECENT_TRANSACTIONS_SENT_ASSETS": "Sent Asset(s)",
+    "RECENT_TRANSACTIONS_RECEIVED_ASSETS": "Received Asset(s)",
     "RECENT_TRANSACTIONS_VIEW_MORE": "View More",
     "RECENT_TX_LIST_LABEL_CONTRACT_INTERACT": "Unknown Contract Interaction",
     "RECENT_TX_LIST_LABEL_RECEIVED": "$ticker Received",
@@ -514,8 +515,10 @@
     "PLATFORM_NFT_APPROVE": "NFT Approved",
     "PLATFORM_BRIDGE_IN": "Bridged To",
     "PLATFROM_BRIDGE_OUT": "Bridged From",
+    "PLATFORM_FAUCET": "$ticker Received from Faucet",
     "PLATFORM_CANCEL_ORDER": "Cancel Order",
     "PLATFORM_CLAIM": "Assets Claimed",
+    "PLATFORM_CONTRACT_DEPLOY": "Contract Deployed",
     "PLATFORM_DEPOSIT_ETH": "ETH Deposited",
     "PLATFORM_DEPOSIT_TOKEN": "$ticker Deposited",
     "PLATFORM_MEMBERSHIP_PURCHASED": "Membership Purchased",
@@ -527,6 +530,7 @@
     "PLATFORM_EXCHANGE": "Assets Swapped",
     "PLATFORM_MINING_PAYOUT": "Mining Payout",
     "PLATFORM_MINT": "Asset(s) Minted",
+    "PLATFORM_NAME_REGISTERED": "Name Registered",
     "PLATFORM_NFT_MINT": "NFT(s) Minted",
     "PLATFORM_MULTISIG_APPROVE_TX": "Multisig Tx Approved",
     "PLATFORM_NFT_EXCHANGE": "NFT(s) Exchanged",
@@ -812,6 +816,8 @@
     "NO_ACCOUNTS_SELECTED_DESCRIPTION": "To view your balances, select at least one account in the dropdown above.",
     "ZAP_WITHDRAW_TOOLTIP": "Withdrawing from this Zap requires interacting with Uniswap. If you need assistance, please read [How To Withdraw from Unipool](https://support.mycrypto.com/how-to/defi/how-to-withdraw-from-unipool).",
     "GENERIC_ERC20_NAME": "Unknown ERC20 Token",
+    "GENERIC_ERC721_NAME": "Unknown NFT",
+    "GENERIC_BASE_NAME": "Unknown Asset",
     "WARN_SEND_INCORRECT_PROPS": "The pre-filled transaction settings in the URL are incorrect - they may be incomplete or constructed improperly. Please reconstruct the URL and try again. [Learn how to construct transaction resubmission links](https://support.mycrypto.com/how-to/sending/creating-prefilled-transaction).",
     "WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT": "We couldn't resolve your pre-filled transaction settings - either you do not have the 'Sender' account added to your dashboard or you're not on the specified network. Please double check that these are correct and try again. [Learn more about speedupting a transaction](https://support.mycrypto.com/how-to/sending/checking-or-replacing-a-transaction-after-it-has-been-sent).",
     "SPEED_UP_TX_BTN": "Speed up transaction",
@@ -1046,6 +1052,8 @@
     "HW_SIGN_ADDRESS_MISMATCH": "This transaction was signed by the incorrect account on your hardware wallet. Please be sure you are connected to $address in order to proceed.",
     "SELECT_A_MIGRATION": "Select a migration",
     "TOKEN_MIGRATION_HEADER": "Migrate Tokens",
-    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract"
+    "TX_DEPLOY_ADDRESS_LABEL": "Transaction deployed the following contract",
+    "ASSETS": "Assets",
+    "TOKENS_TRANSFERRED": "Tokens Transferred"
   }
 }

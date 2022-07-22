@@ -109,8 +109,8 @@ describe('SendAssetsReducer', () => {
       const txConfig = prevState.txConfig;
       const txReceipt = newState.txReceipt! as ILegacyTxReceipt;
       expect(txReceipt.hash).toBe(payload);
-      expect(txReceipt.amount).toBe(txConfig.amount);
-      expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
+      expect(txReceipt.valueTransfers[0].amount).toBe(txConfig.amount);
+      expect(txReceipt.valueTransfers[0].asset.uuid).toBe(txConfig.asset.uuid);
       expect(txReceipt.baseAsset.uuid).toBe(txConfig.baseAsset.uuid);
       expect(txReceipt.data).toBe(txConfig.rawTransaction.data);
       expect(txReceipt.status).toBe(ITxStatus.PENDING);
@@ -153,8 +153,8 @@ describe('SendAssetsReducer', () => {
       const txConfig = prevState.txConfig;
       const txReceipt = newState.txReceipt! as ILegacyTxReceipt;
       expect(txReceipt.hash).toBe(payload.hash);
-      expect(txReceipt.amount).toBe(txConfig.amount);
-      expect(txReceipt.asset.uuid).toBe(txConfig.asset.uuid);
+      expect(txReceipt.valueTransfers[0].amount).toBe(txConfig.amount);
+      expect(txReceipt.baseAsset.uuid).toBe(txConfig.asset.uuid);
       expect(txReceipt.baseAsset.uuid).toBe(txConfig.baseAsset.uuid);
       expect(txReceipt.data).toBe(txConfig.rawTransaction.data);
       expect(txReceipt.status).toBe(ITxStatus.PENDING);

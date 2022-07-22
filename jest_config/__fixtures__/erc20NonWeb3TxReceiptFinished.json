@@ -1,14 +1,21 @@
 {
-  "asset": {
-    "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
-    "name": "RopDAI",
-    "decimal": 18,
-    "ticker": "RopDAI",
-    "networkId": "Ropsten",
-    "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
-    "type": "erc20",
-    "isCustom": true
-  },
+  "valueTransfers": [
+    {
+      "asset": {
+        "uuid": "2783a9ff-d6f1-5c9e-bbab-3b74be91adb1",
+        "name": "RopDAI",
+        "decimal": 18,
+        "ticker": "RopDAI",
+        "networkId": "Ropsten",
+        "contractAddress": "0xad6d458402f60fd3bd25163575031acdce07538d",
+        "type": "erc20",
+        "isCustom": true
+      },
+      "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
+      "from": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
+      "amount": "0.01"
+    }
+  ],
   "baseAsset": {
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "ticker": "RopstenETH",
@@ -21,7 +28,6 @@
   "hash": "0x13ca764cb3f852dc6b95118e32d5ff589fb9fccd987d0f7818d6baf3b1ae1a26",
   "from": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
   "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
-  "amount": "0.01",
   "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
   "nonce": "7",
   "gasLimit": {

@@ -1,17 +1,32 @@
+import { deriveTxType, getAssetByContractAndNetworkId, ITxHistoryEntry } from '@services';
 import {
+  Asset,
   AssetBalanceObject,
   ExtendedAsset,
+  ExtendedContact,
+  ExtendedContract,
   ExtendedNotification,
   IAccount,
+  IFullTxHistoryValueTransfer,
   IProvidersMappings,
   IRates,
+  ITxReceipt,
   Network,
   NodeOptions,
   StoreAccount,
   StoreAsset,
+  TAddress,
   TTicker
 } from '@types';
-import { bigify, isBigish, isVoid } from '@utils';
+import {
+  addBaseAssetValueTransfer,
+  bigify,
+  deriveDisplayAsset,
+  generateDeterministicAddressUUID,
+  generateGenericBase,
+  isBigish,
+  isVoid
+} from '@utils';
 import {
   either,
   identity,
@@ -26,6 +41,9 @@ import {
   pipe,
   toString
 } from '@vendor';
+
+import { getContactByAddressAndNetworkId } from '../Contact/helpers';
+import { ITxMetaTypes } from './txHistory.slice';
 
 const balanceLens = lensProp('balance');
 const txValueLens = lensProp('value');
@@ -144,4 +162,106 @@ export const generateCustomDPath = (dPath: string) => {
     path: `${dPathArray.join('/')}/<account>`
   };
   return [path, index];
+};
+
+// Handles creating a value transfer for a base asset based on transaction value field
+export const handleBaseAssetTransfer = (
+  valueTransfers: IFullTxHistoryValueTransfer[],
+  value: string,
+  toAddr: TAddress,
+  fromAddr: TAddress,
+  baseAsset: Asset
+): IFullTxHistoryValueTransfer[] =>
+  valueTransfers.length === 0 && !bigify(value).isZero()
+    ? addBaseAssetValueTransfer(valueTransfers, fromAddr, toAddr, value, baseAsset)
+    : valueTransfers;
+
+// Improves verbosity of internal-transaction base value transfers.
+// Only used for incomplete EXCHANGE transaction types (i.e - swapping ERC20 -> ETH)
+export const handleIncExchangeTransaction = (
+  valueTransfers: IFullTxHistoryValueTransfer[],
+  txTypeMetas: ITxMetaTypes,
+  accountsMap: Record<string, boolean>,
+  derivedTxType: string,
+  toAddr: TAddress,
+  fromAddr: TAddress,
+  network: Network
+): IFullTxHistoryValueTransfer[] =>
+  txTypeMetas[derivedTxType] &&
+  txTypeMetas[derivedTxType].type === 'EXCHANGE' &&
+  valueTransfers.filter((t) => accountsMap[generateDeterministicAddressUUID(network.id, t.to)])
+    .length === 0
+    ? [
+        ...valueTransfers,
+        {
+          asset: generateGenericBase(network.chainId.toString(), network.id),
+          to: toAddr,
+          from: fromAddr,
+          amount: undefined
+        }
+      ]
+    : valueTransfers;
+
+export const buildTxHistoryEntry = (
+  networks: Network[],
+  contacts: ExtendedContact[],
+  contracts: ExtendedContract[],
+  assets: ExtendedAsset[],
+  accounts: StoreAccount[]
+) => (txTypeMetas: ITxMetaTypes, accountsMap: Record<string, boolean>) => (
+  tx: ITxReceipt
+): ITxHistoryEntry => {
+  const network = networks.find(({ id }) => tx.baseAsset.networkId === id)!;
+
+  // if Txhistory contains a deleted network ie. MATIC remove from history.
+  if (!network) return {} as ITxHistoryEntry;
+
+  const toAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
+    tx.receiverAddress ?? tx.to,
+    network.id
+  );
+  const fromAddressBookEntry = getContactByAddressAndNetworkId(contacts, contracts)(
+    tx.from,
+    network.id
+  );
+  const derivedTxType = deriveTxType(txTypeMetas, accounts, tx);
+  let valueTransfers = tx.valueTransfers ?? [];
+  // handles base asset value transfer based off transaction.value
+  valueTransfers = handleBaseAssetTransfer(
+    valueTransfers,
+    tx.value.toString(),
+    tx.to,
+    tx.from,
+    tx.baseAsset
+  );
+
+  // handles unknown internal transaction value transfer in exchange tx types.
+  // @todo: remove when we have access to internal transactions
+  valueTransfers = handleIncExchangeTransaction(
+    valueTransfers,
+    txTypeMetas,
+    accountsMap,
+    derivedTxType,
+    tx.from,
+    tx.to,
+    network
+  );
+
+  return {
+    ...tx,
+    valueTransfers,
+    timestamp: tx.timestamp ?? 0,
+    txType: derivedTxType,
+    toAddressBookEntry,
+    fromAddressBookEntry,
+    networkId: network.id,
+    displayAsset: deriveDisplayAsset(
+      derivedTxType,
+      tx.to,
+      network.id,
+      network.chainId,
+      valueTransfers,
+      getAssetByContractAndNetworkId(assets)
+    )
+  };
 };
