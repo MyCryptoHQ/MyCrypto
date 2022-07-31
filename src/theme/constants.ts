@@ -38,6 +38,7 @@ export const COLORS = {
   ORANGE: '#fa863f',
   GREEN: '#28a745',
   RED: '#FF0000',
+  GREEN_ACCENT: '#7BBE34',
 
   BG_GRAY: '#f6f8fa'
 };

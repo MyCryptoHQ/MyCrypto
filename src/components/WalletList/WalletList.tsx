@@ -20,6 +20,7 @@ import translate, { translateRaw } from '@translations';
 import { BusyBottomConfig, IStory, WalletId } from '@types';
 import { getWeb3Config } from '@utils';
 
+import { QuillButton } from './QuillButton';
 import { WalletButton } from './WalletButton';
 
 const Heading = styled.p`
@@ -77,7 +78,7 @@ const WalletList = ({
     }
   }, [importSuccess, accounts]);
 
-  const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
+  const calculateMargin = (index: number) => (index < 2 ? '2%' : '10px');
 
   return (
     <div>
@@ -101,10 +102,25 @@ const WalletList = ({
       <WalletsContainer>
         {wallets
           .filter((w) => !w.hideFromWalletList)
+          .sort((a, b) => {
+            // Show Quill on top
+            if (a.name === WalletId.QUILL) {
+              return -1;
+            } else if (b.name === WalletId.QUILL) {
+              return 1;
+            }
+            return 0;
+          })
           .map((wallet: IStory, index: number) => {
             const walletInfo =
               wallet.name === WalletId.WEB3 ? getWeb3Config() : getWalletConfig(wallet.name);
-            return (
+            return wallet.name === WalletId.QUILL ? (
+              <QuillButton
+                key={`wallet-icon-${wallet.name}`}
+                margin={calculateMargin(index)}
+                onClick={() => onSelect(wallet.name)}
+              />
+            ) : (
               <WalletButton
                 key={`wallet-icon-${wallet.name}`}
                 name={translateRaw(walletInfo.lid)}

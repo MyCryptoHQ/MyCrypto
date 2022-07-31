@@ -111,5 +111,14 @@ export const configs: Record<
     },
     SUPPORT_LINK
   ],
-  SUPPORT: [SUPPORT_LINK]
+  SUPPORT: [SUPPORT_LINK],
+  // @todo
+  QUILL: [
+    {
+      copy: 'BUSY_BOTTOM_WALLETCONNECT_1',
+      link: getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_WALLETCONNECT),
+      external: true
+    },
+    SUPPORT_LINK
+  ]
 };

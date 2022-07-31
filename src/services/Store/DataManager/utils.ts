@@ -118,7 +118,8 @@ export function marshallState(ls: LocalStorage): DataStore {
       : [],
     [LSKeys.PROMO_POAPS]: ls[LSKeys.PROMO_POAPS],
     [LSKeys.CONNECTIONS]: ls[LSKeys.CONNECTIONS],
-    [LSKeys.CLAIMS]: ls[LSKeys.CLAIMS]
+    [LSKeys.CLAIMS]: ls[LSKeys.CLAIMS],
+    [LSKeys.SIGNER]: ls[LSKeys.SIGNER]
   };
 }
 
@@ -183,6 +184,7 @@ export function deMarshallState(st: DataStore): LocalStorage {
     [LSKeys.USER_ACTIONS]: arrayToObj('uuid')(st[LSKeys.USER_ACTIONS]),
     [LSKeys.PROMO_POAPS]: st[LSKeys.PROMO_POAPS],
     [LSKeys.CONNECTIONS]: st[LSKeys.CONNECTIONS],
-    [LSKeys.CLAIMS]: st[LSKeys.CLAIMS]
+    [LSKeys.CLAIMS]: st[LSKeys.CLAIMS],
+    [LSKeys.SIGNER]: st[LSKeys.SIGNER]
   };
 }

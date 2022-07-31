@@ -1,6 +1,7 @@
 import {
   GridPlusUnlock,
   LegderUnlock,
+  QuillUnlock,
   TrezorUnlock,
   ViewOnlyDecrypt,
   WalletConnectDecrypt,
@@ -35,6 +36,10 @@ export const getStories = (): IStory[] => [
   {
     name: WalletId.GRIDPLUS,
     steps: [NetworkSelectPanel, GridPlusUnlock]
+  },
+  {
+    name: WalletId.QUILL,
+    steps: [NetworkSelectPanel, QuillUnlock]
   },
   {
     name: WalletId.VIEW_ONLY,

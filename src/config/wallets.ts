@@ -6,6 +6,7 @@ import FrameIcon from '@assets/images/wallets/frame.svg';
 import GridPlusSVG from '@assets/images/wallets/gridplus.svg';
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
+import quillIcon from '@assets/images/wallets/quill.svg';
 import StatusSVG from '@assets/images/wallets/status.svg';
 import TrezorSVG from '@assets/images/wallets/trezor.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
@@ -251,6 +252,21 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     lid: 'GridPlus',
     icon: GridPlusSVG,
     description: 'ADD_HARDWAREDESC',
+    helpLink: '',
+    flags: {
+      supportsNonce: true
+    }
+  },
+  [WalletId.QUILL]: {
+    id: WalletId.QUILL,
+    name: 'Quill',
+    isDeterministic: false,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.MISC,
+    lid: 'Quill',
+    icon: quillIcon,
+    description: '',
     helpLink: '',
     flags: {
       supportsNonce: true

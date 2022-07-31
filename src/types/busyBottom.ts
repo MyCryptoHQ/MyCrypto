@@ -7,5 +7,6 @@ export enum BusyBottomConfig {
   TREZOR = 'TREZOR',
   GRIDPLUS = 'GRIDPLUS',
   WALLETCONNECT = 'WALLETCONNECT',
-  SUPPORT = 'SUPPORT'
+  SUPPORT = 'SUPPORT',
+  QUILL = 'QUILL'
 }

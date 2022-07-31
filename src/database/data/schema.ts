@@ -18,5 +18,6 @@ export const SCHEMA_BASE: LocalStorage = {
   [LSKeys.USER_ACTIONS]: {} as LocalStorage[LSKeys.USER_ACTIONS],
   [LSKeys.PROMO_POAPS]: { promos: {} } as LocalStorage[LSKeys.PROMO_POAPS],
   [LSKeys.CONNECTIONS]: { wallets: {} } as LocalStorage[LSKeys.CONNECTIONS],
-  [LSKeys.CLAIMS]: { claims: {} } as LocalStorage[LSKeys.CLAIMS]
+  [LSKeys.CLAIMS]: { claims: {} } as LocalStorage[LSKeys.CLAIMS],
+  [LSKeys.SIGNER]: {} as LocalStorage[LSKeys.SIGNER]
 };

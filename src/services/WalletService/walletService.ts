@@ -5,6 +5,7 @@ import {
   ViewOnlyWalletInitArgs,
   WalletConnectWalletInitArgs,
   WalletId,
+  WalletService,
   Web3WalletInitArgs
 } from '@types';
 
@@ -52,7 +53,9 @@ export const WalletFactory = {
   [WalletId.WALLETCONNECT]: {
     init: ({ address, signMessageHandler, killHandler }: WalletConnectWalletInitArgs) =>
       new WalletConnectWallet(address, signMessageHandler, killHandler)
-  }
+  },
+  // Not implemented
+  [WalletId.QUILL]: {} as WalletService
 };
 
 export const getWallet = (wallet: WalletId, params?: any) => {

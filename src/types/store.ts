@@ -1,6 +1,7 @@
 import { ClaimsState } from '@store/claims.slice';
 import { ConnectionsState } from '@store/connections.slice';
 import { PromoPoapsState } from '@store/promoPoaps.slice';
+import { SignerState } from '@store/signer.slice';
 import {
   Asset,
   ExtendedAsset,
@@ -35,7 +36,8 @@ export enum LSKeys {
   USER_ACTIONS = 'userActions',
   PROMO_POAPS = 'promoPoaps',
   CONNECTIONS = 'connections',
-  CLAIMS = 'claims'
+  CLAIMS = 'claims',
+  SIGNER = 'signer'
 }
 
 export interface LocalStorage {
@@ -55,6 +57,7 @@ export interface LocalStorage {
   readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
   readonly [LSKeys.CONNECTIONS]: ConnectionsState;
   readonly [LSKeys.CLAIMS]: ClaimsState;
+  readonly [LSKeys.SIGNER]: SignerState;
 }
 export interface DataStore {
   readonly version: string;
@@ -71,4 +74,5 @@ export interface DataStore {
   readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
   readonly [LSKeys.CONNECTIONS]: ConnectionsState;
   readonly [LSKeys.CLAIMS]: ClaimsState;
+  readonly [LSKeys.SIGNER]: SignerState;
 }
