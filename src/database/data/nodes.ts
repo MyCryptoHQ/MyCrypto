@@ -180,10 +180,10 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
 
   ETHO: [
     {
-      name: NetworkUtils.makeNodeName('ETHO', 'ether1.org'),
+      name: NetworkUtils.makeNodeName('ETHO', 'ethoprotocol.com'),
       type: NodeType.RPC,
       service: 'ether1.org',
-      url: 'https://rpc.ether1.org'
+      url: 'https://rpc.ethoprotocol.com'
     }
   ],
 

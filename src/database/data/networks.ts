@@ -544,14 +544,14 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   },
   ETHO: {
     id: 'ETHO',
-    name: 'Ether-1',
+    name: 'Etho Protocol',
     unit: 'ETHO' as TTicker,
     chainId: 1313114,
     isCustom: false,
     color: '#7a1336',
     blockExplorer: makeExplorer({
-      name: 'Ether-1 Explorer',
-      origin: 'https://explorer.ether1.org'
+      name: 'Etho Protocol Explorer',
+      origin: 'https://explorer.ethoprotocol.com'
     }),
     tokens: [],
     contracts: [],
